@@ -1,0 +1,104 @@
+.swapContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 16px 16px 18px;
+  border-radius: 16px;
+  background-color: var(--background-grey-dark);
+}
+
+.heading {
+  display: flex;
+  align-items: center;
+  font-size: 16px;
+  line-height: 19px;
+  color: var(--content-grey);
+}
+
+.title {
+  flex: 1;
+  color: var(--content-primary);
+}
+
+.splitter {
+  position: relative;
+  width: 100%;
+  height: 1px;
+  background-color: var(--background-grey-dark);
+  margin: 16px 0;
+}
+
+.convertButton {
+  position: absolute;
+  top: calc(50% - 16px);
+  left: calc(50% - 16px);
+  width: 32px;
+  height: 32px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: none;
+  border-radius: 40px;
+  color: var(--content-grey);
+  background-color: var(--background-primary) !important;
+}
+
+.settingsButton:hover, .converButton:hover {
+  color: var(--content-primary);
+}
+
+.infoHeading {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.settingsText {
+  color: var(--content-secondary);
+}
+
+.settingsSection {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.settingsContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.slippageButtons {
+  display: flex;
+  gap: 8px;
+}
+
+.slippageButton {
+  width: 100%;
+  padding: 14px 12px;
+  border: 1px solid transparent;
+  border-radius: 8px;
+  color: var(--content-dimmed-light);
+  background-color: var(--background-grey-dark);
+}
+
+.slippageButton:hover {
+  color: var(--content-primary);
+  border-color: var(--accent-primary);
+  cursor: pointer;
+}
+
+.slippageInput {
+  width: 100%;
+  padding: 14px 12px;
+  border: 1px solid transparent;
+  border-radius: 8px;
+  color: var(--content-dimmed-light);
+  background-color: var(--background-grey-dark);
+}
+
+.slippageInput:focus {
+  color: var(--content-primary);
+  border-color: var(--accent-primary);
+}

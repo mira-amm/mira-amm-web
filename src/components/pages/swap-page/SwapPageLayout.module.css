@@ -1,0 +1,23 @@
+.swapLayout {
+  display: flex;
+  flex-direction: column;
+  padding: 16px;
+  gap: 16px;
+}
+
+.backLink {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--content-grey);
+  font-size: 16px;
+  line-height: 22px;
+}
+
+@media (min-width: 1024px) {
+  .swapLayout {
+    min-height: calc(100vh - 201px);
+    max-width: 440px;
+    margin: 0 auto;
+  }
+}

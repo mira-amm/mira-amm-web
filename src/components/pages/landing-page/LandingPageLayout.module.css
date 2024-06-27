@@ -1,0 +1,128 @@
+.main {
+  display: flex;
+  flex-direction: column;
+  gap: 44px;
+  padding: 16px;
+}
+
+.topBlock, .bottomBlock {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.subheading {
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 22px;
+  color: var(--content-secondary);
+}
+
+.fuel {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  line-height: 18px;
+  color: var(--content-dimmed-dark);
+}
+
+.socialBlock {
+  height: 149px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+  border-radius: 16px;
+}
+
+.discordBlock {
+  background-color: #32389F;
+}
+
+.xBlock {
+  background-color: #040305;
+}
+
+@media (min-width: 1024px) {
+  .main {
+    max-width: 1084px;
+    margin: 0 auto;
+  }
+
+  .topBlock {
+    flex-direction: row;
+    width: 100%;
+    gap: 72px;
+  }
+
+  .left {
+    max-width: 572px;
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+  }
+
+  .leftTop {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .subheading {
+    font-size: 20px;
+    line-height: 28px;
+  }
+
+  .launchAppButton {
+    max-width: 184px;
+  }
+
+  .swap {
+    width: 440px;
+  }
+
+  .fuel {
+    justify-content: start;
+    font-size: 20px;
+    line-height: 28px;
+  }
+
+  .bottomBlock {
+    flex-direction: row;
+    padding: 32px 40px;
+    border-radius: 24px;
+    background-color: rgba(80, 127, 247, 0.1);
+    box-shadow: 1px 1px 14px 0 rgba(255, 255, 255, 0.05) inset;
+  }
+
+  .bottomBlockText {
+    width: 50%;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .connect {
+    color: var(--content-secondary);
+  }
+
+  .socialBlocks {
+    width: 50%;
+    display: flex;
+    gap: 16px;
+  }
+
+  .socialBlock {
+    width: 230px;
+    height: 230px;
+  }
+
+  .xIconWrapper {
+    padding: 7px 0;
+  }
+}

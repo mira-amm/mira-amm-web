@@ -1,0 +1,12 @@
+.logo {
+  font-family: var(--font-sf-compact-text), sans-serif;
+  font-weight: 900;
+  font-size: 20px;
+  line-height: 24px;
+  text-transform: uppercase;
+  color: var(--content-primary);
+}
+
+.logo a:hover {
+  color: var(--content-primary) !important;
+}

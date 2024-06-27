@@ -1,0 +1,8 @@
+.menuButton {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: transparent;
+  border: none;
+  color: var(--content-primary);
+}
