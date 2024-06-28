@@ -21,8 +21,8 @@ jobs:
           BUCKET_NAME: 'miraly-dev-website'
         run: aws s3 sync ./out/ s3://${{ env.BUCKET_NAME }} --delete
 
-#      - name: Invalidate CloudFront
-#        uses: chetan/invalidate-cloudfront-action@v2
-#        env:
-#          DISTRIBUTION: ${{ secrets.DEV_CLOUD_FRONT_DISTRIBUTION_ID }}
-#          PATHS: "/*"
+      - name: Invalidate CloudFront
+        uses: chetan/invalidate-cloudfront-action@v2
+        env:
+          DISTRIBUTION: ${{ secrets.DEV_CLOUD_FRONT_DISTRIBUTION_ID }}
+          PATHS: "/*"
