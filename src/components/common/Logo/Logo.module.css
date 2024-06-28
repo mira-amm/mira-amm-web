@@ -7,6 +7,6 @@
   color: var(--content-primary);
 }
 
-.logo a:hover {
+.logo:hover {
   color: var(--content-primary) !important;
 }

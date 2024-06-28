@@ -8,12 +8,14 @@ import USDCIcon from "@/src/components/icons/coins/USDCoin/USDCIcon";
 import UNIIcon from "@/src/components/icons/coins/Uniswap/UNIIcon";
 import DAIIcon from "@/src/components/icons/coins/DAI/DAIIcon";
 import ETHIcon from "@/src/components/icons/coins/Ethereum/ETHIcon";
+import {clsx} from "clsx";
 
 type Props = {
   name: string;
+  fullName?: string;
 };
 
-const Coin = ({ name }: Props) => {
+const Coin = ({ name, fullName }: Props) => {
   const IconComponent = useMemo(() => {
     switch (name) {
       case 'USDT':
@@ -34,10 +36,13 @@ const Coin = ({ name }: Props) => {
   }, [name]);
 
   return (
-    <span className={styles.coin}>
+    <span className={clsx(styles.coin, !fullName && styles.centered)}>
       {/* TODO: Select icon from dictionary */}
-      {IconComponent && <div className={styles.icon}><IconComponent /></div>}
-      {name}
+      {IconComponent && <IconComponent />}
+      <div className={styles.names}>
+        <p className={styles.name}>{name}</p>
+        {fullName && <p className={styles.fullName}>{fullName}</p>}
+      </div>
     </span>
   )
 };

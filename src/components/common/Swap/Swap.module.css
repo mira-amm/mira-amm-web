@@ -10,6 +10,7 @@
 .heading {
   display: flex;
   align-items: center;
+  font-weight: 500;
   font-size: 16px;
   line-height: 19px;
   color: var(--content-grey);
@@ -43,7 +44,7 @@
   background-color: var(--background-primary) !important;
 }
 
-.settingsButton:hover, .converButton:hover {
+.settingsButton:hover, .convertButton:hover {
   color: var(--content-primary);
 }
 
@@ -54,7 +55,7 @@
 }
 
 .settingsText {
-  color: var(--content-secondary);
+  color: var(--content-dimmed-light);
 }
 
 .settingsSection {
@@ -101,4 +102,11 @@
 .slippageInput:focus {
   color: var(--content-primary);
   border-color: var(--accent-primary);
+}
+
+@media (min-width: 1024px) {
+  .heading {
+    font-size: 20px;
+    line-height: 24px;
+  }
 }

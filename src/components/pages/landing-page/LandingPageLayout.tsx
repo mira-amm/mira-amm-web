@@ -46,13 +46,11 @@ const LandingPageLayout = () => {
       <main className={clsx('desktopOnly', styles.main)}>
         <section className={styles.topBlock}>
           <div className={styles.left}>
-            <div className={styles.leftTop}>
-              <h1>The Liquidity Hub on Fuel</h1>
-              <h2 className={styles.subheading}>
-                Trade, Earn and get Rewards using the Fuel<br/>most efficient AMM
-              </h2>
-              <ActionButton className={styles.launchAppButton}>Launch App</ActionButton>
-            </div>
+            <h1>The Liquidity Hub on Fuel</h1>
+            <h2 className={styles.subheading}>
+              Trade, Earn and get Rewards using the Fuel<br/>most efficient AMM
+            </h2>
+            <ActionButton className={styles.launchAppButton}>Launch App</ActionButton>
             <div className={styles.fuel}>
               <FuelIcon/>
               <span>Powered by Fuel</span>

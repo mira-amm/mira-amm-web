@@ -51,6 +51,8 @@
 @media (min-width: 1024px) {
   .main {
     max-width: 1084px;
+    padding: 48px 16px;
+    gap: 72px;
     margin: 0 auto;
   }
 
@@ -65,12 +67,6 @@
     display: flex;
     flex-direction: column;
     gap: 32px;
-  }
-
-  .leftTop {
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
   }
 
   .subheading {
