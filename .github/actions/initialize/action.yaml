@@ -1,0 +1,33 @@
+name: Initialize
+description: Common steps for app initialization
+
+inputs:
+  aws_access_key:
+    description: 'CICD user AWS Access Key Id'
+    required: true
+  aws_secret_access_key:
+    description: 'CICD user AWS Secret Access Key'
+    required: true
+
+runs:
+  using: composite
+  steps:
+    - name: Configure AWS Credentials
+      uses: aws-actions/configure-aws-credentials@v1
+      with:
+        aws-access-key-id: ${{ inputs.aws_access_key }}
+        aws-secret-access-key: ${{ inputs.aws_secret_access_key }}
+        aws-region: us-east-1
+
+    - name: Setup node
+      uses: actions/setup-node@v3
+      with:
+        node-version: 20
+
+    - uses: pnpm/action-setup@v3
+      with:
+        version: 9
+
+    - name: Build next app
+      shell: bash
+      run: pnpm install && pnpm run build
