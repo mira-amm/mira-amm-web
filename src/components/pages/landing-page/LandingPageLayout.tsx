@@ -48,7 +48,7 @@ const LandingPageLayout = () => {
           <div className={styles.left}>
             <h1>The Liquidity Hub on Fuel</h1>
             <h2 className={styles.subheading}>
-              Trade, Earn and get Rewards using the Fuel<br/>most efficient AMM
+              Trade, Earn and get Rewards using the most efficient AMM on Fuel
             </h2>
             <ActionButton className={styles.launchAppButton}>Launch App</ActionButton>
             <div className={styles.fuel}>

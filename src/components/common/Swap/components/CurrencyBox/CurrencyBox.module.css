@@ -26,21 +26,13 @@
 .input {
   width: 0;
   flex: 1;
+  font-family: var(--font-sf-ui-text), sans-serif;
   font-weight: 600;
-  font-size: 22px;
-  line-height: 26px;
+  font-size: 20px;
+  line-height: 24px;
   color: var(--content-secondary);
   background: transparent;
   border: none;
-}
-
-.input[type='number'] {
-  -moz-appearance: textfield;
-}
-.input::-webkit-outer-spin-button,
-.input::-webkit-inner-spin-button {
-  -webkit-appearance: none;
-  margin: 0;
 }
 
 .selector {
@@ -52,6 +44,11 @@
   border: none;
   border-radius: 8px;
   color: var(--content-grey);
+}
+
+.selectorHighlighted {
+  background-color: var(--background-grey-dark);
+  cursor: pointer;
 }
 
 .selector:hover {
