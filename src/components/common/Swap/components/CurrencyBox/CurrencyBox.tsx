@@ -3,6 +3,7 @@ import Coin from "@/src/components/common/Coin/Coin";
 import ChevronDownIcon from "@/src/components/icons/ChevronDown/ChevronDownIcon";
 import useModal from "@/src/hooks/useModal/useModal";
 import SearchIcon from "@/src/components/icons/Search/SearchIcon";
+import {ChangeEvent, useState} from "react";
 
 type Props = {
   mode: 'buy' | 'sell';
@@ -10,19 +11,51 @@ type Props = {
 
 const CurrencyBox = ({ mode }: Props) => {
   const [Modal, openModal, closeModal] = useModal();
-  
+  const [value, setValue] = useState('0');
+  const [coin, setCoin] = useState('');
+
+  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+    let inputValue = e.target.value;
+    // Allow numbers, a single period for decimal numbers, or nothing at all for an empty string
+    const re = /^-?\d*[.]?\d*$/;
+
+    // If value is empty or matches regular expression, update the state
+    if (inputValue === '' || re.test(inputValue)) {
+      setValue(e.target.value);
+    }
+    // If input is empty or no 0's followed by non-zero number
+    // if (inputValue === '' || /^0[^.][0-9]*$/.test(inputValue)) {
+    //   setValue('0');
+    // }
+    // If input starts with 0 and not followed by dot
+    // if (inputValue[0] === '0' && inputValue[1] !== '.') {
+    //   setValue(inputValue.slice(1));
+    // } else {
+    //   setValue(inputValue)
+    // }
+  };
+
+  const selectCoin = (coin: string) => {
+    setCoin(coin);
+    closeModal();
+  }
+
+  const noValue = value === '0' || value === '';
+
   return (
     <>
       <div className={styles.currencyBox}>
         <p className={styles.title}>{mode === 'buy' ? 'Buy' : 'Sell'}</p>
         <div className={styles.content}>
-          <input className={styles.input} type="number" pattern="\d*" />
+          <input className={styles.input} type="text" value={value} onChange={handleChange}/>
           <button className={styles.selector} onClick={openModal}>
-            <Coin name={mode === 'buy' ? 'ETH' : 'USDT'} />
+            {coin !== '' ? <Coin name={coin} /> : <p className={styles.chooseCoin}>Choose coin</p>}
             <ChevronDownIcon />
           </button>
         </div>
-        <p className={styles.estimate}>$41 626,62</p>
+        <p className={styles.estimate}>
+          {!noValue && '$41 626.62'}
+        </p>
       </div>
       <Modal title="Choose token">
         <div className={styles.tokenSearch}>
@@ -30,23 +63,23 @@ const CurrencyBox = ({ mode }: Props) => {
           <input className={styles.tokenSearchInput} type="text" placeholder="Search by token or paste address"/>
         </div>
         <div className={styles.tokenList}>
-          <div className={styles.tokenListItem} onClick={closeModal}>
+          <div className={styles.tokenListItem} onClick={() => selectCoin('USDT')}>
             <Coin name="USDT"/>
           </div>
-          <div className={styles.tokenListItem} onClick={closeModal}>
-            <Coin name="USDC"/>
+          <div className={styles.tokenListItem} onClick={() => selectCoin('USDC')}>
+            <Coin name="USDC" fullName="USD Coin"/>
           </div>
-          <div className={styles.tokenListItem} onClick={closeModal}>
-            <Coin name="BTC"/>
+          <div className={styles.tokenListItem} onClick={() => selectCoin('BTC')}>
+            <Coin name="BTC" fullName="Bitcoin"/>
           </div>
-          <div className={styles.tokenListItem} onClick={closeModal}>
-            <Coin name="ETH"/>
+          <div className={styles.tokenListItem} onClick={() => selectCoin('ETH')}>
+            <Coin name="ETH" fullName="Ethereum"/>
           </div>
-          <div className={styles.tokenListItem} onClick={closeModal}>
-            <Coin name="UNI"/>
+          <div className={styles.tokenListItem} onClick={() => selectCoin('UNI')}>
+            <Coin name="UNI" fullName="Uniswap"/>
           </div>
-          <div className={styles.tokenListItem} onClick={closeModal}>
-            <Coin name="DAI"/>
+          <div className={styles.tokenListItem} onClick={() => selectCoin('DAI')}>
+            <Coin name="DAI" fullName="DAI"/>
           </div>
         </div>
       </Modal>

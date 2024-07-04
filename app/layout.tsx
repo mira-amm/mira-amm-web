@@ -35,6 +35,7 @@ const sfUIText = localFont({
       style: 'normal',
     },
   ],
+  variable: '--font-sf-ui-text',
 });
 
 const sfCompactText = localFont({
@@ -49,23 +50,23 @@ const sfCompactText = localFont({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL('https://fuelname.com'),
-  title: "MIRA Protocol - Trade, Swap and manage liquidity on the Fuel blockchain with MIRA AMM ",
+  metadataBase: new URL('https://mira.ly/'),
+  title: "MIRA Protocol - Trade, Swap and manage liquidity on the Fuel blockchain with MIRA AMM",
   description: "Discover the fastest AMM on Fuel blockchain. Trade securely with low fees and slippage, swap and earn by providing liquidity. Join the future of decentralized finance with MIRA Protocol.",
   icons: {
     icon: "/images/favicon.png",
   },
   openGraph: {
-    title: "Fuel Name Service - FNS Domains",
-    siteName: 'Fuel Name Service',
-    url: 'https://fuelname.com/',
+    title: "MIRA Protocol - Trade, Swap and manage liquidity on the Fuel blockchain with MIRA AMM",
+    siteName: 'Mira Automated Market Maker',
+    url: 'https://mira.ly/',
     description: "Discover the fastest AMM on Fuel blockchain. Trade securely with low fees and slippage, swap and earn by providing liquidity. Join the future of decentralized finance with MIRA Protocol.",
-    images: 'https://fuelname.com/images/preview.png',
+    images: 'https://mira.ly/images/preview.png',
   },
   twitter: {
-    title: "Fuel Name Service - FNS Domains",
+    title: "MIRA Protocol - Trade, Swap and manage liquidity on the Fuel blockchain with MIRA AMM",
     description: "Discover the fastest AMM on Fuel blockchain. Trade securely with low fees and slippage, swap and earn by providing liquidity. Join the future of decentralized finance with MIRA Protocol.",
-    images: 'https://fuelname.com/images/preview.png',
+    images: 'https://mira.ly/images/preview.png',
   },
 };
 
@@ -74,8 +75,9 @@ const RootLayout = ({children}: Props) => {
     <html lang="en">
     <body className={clsx(
       sfUIText.className,
+      sfUIText.variable,
       prompt.variable,
-      sfCompactText.variable
+      sfCompactText.variable,
     )}>
       {children}
     </body>
