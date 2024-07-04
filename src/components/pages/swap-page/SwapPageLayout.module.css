@@ -19,5 +19,6 @@
     min-height: calc(100vh - 201px);
     max-width: 440px;
     margin: 0 auto;
+    padding: 84px 16px 48px
   }
 }

@@ -4,6 +4,7 @@ import ChevronDownIcon from "@/src/components/icons/ChevronDown/ChevronDownIcon"
 import useModal from "@/src/hooks/useModal/useModal";
 import SearchIcon from "@/src/components/icons/Search/SearchIcon";
 import {ChangeEvent, useState} from "react";
+import {clsx} from "clsx";
 
 type Props = {
   mode: 'buy' | 'sell';
@@ -42,14 +43,20 @@ const CurrencyBox = ({ mode }: Props) => {
 
   const noValue = value === '0' || value === '';
 
+  const coinNotSelected = coin === '';
+
   return (
     <>
       <div className={styles.currencyBox}>
         <p className={styles.title}>{mode === 'buy' ? 'Buy' : 'Sell'}</p>
         <div className={styles.content}>
           <input className={styles.input} type="text" value={value} onChange={handleChange}/>
-          <button className={styles.selector} onClick={openModal}>
-            {coin !== '' ? <Coin name={coin} /> : <p className={styles.chooseCoin}>Choose coin</p>}
+          <button className={clsx(styles.selector, coinNotSelected && styles.selectorHighlighted)} onClick={openModal}>
+            {coinNotSelected ? (
+              <p className={styles.chooseCoin}>Choose coin</p>
+            ) : (
+              <Coin name={coin} />
+            )}
             <ChevronDownIcon />
           </button>
         </div>

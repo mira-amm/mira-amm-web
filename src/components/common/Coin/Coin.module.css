@@ -25,10 +25,3 @@
   line-height: 19px;
   color: var(--content-dimmed-light);
 }
-
-@media (min-width: 1024px) {
-  .name {
-    font-size: 22px;
-    line-height: 26px;
-  }
-}

@@ -32,14 +32,16 @@ const Header = () => {
         <div className={styles.left}>
           <Logo/>
           <div className={clsx('desktopOnly', styles.links)}>
-            <Link href="/swap" className={clsx(pathname.includes('/swap') && styles.activeLink)}>
+            <Link href="/swap" className={clsx(styles.link, pathname.includes('/swap') && styles.activeLink)}>
               Swap
             </Link>
-            <a href="#">
+            <a href="#" className={styles.link}>
               Liquidity
+              <SoonLabel className={styles.hiddenLabel} />
             </a>
-            <a href="#" className={styles.pointsText}>
+            <a href="#" className={styles.pointsText} data-content="Points">
               Points
+              <SoonLabel className={styles.hiddenLabel} />
             </a>
           </div>
         </div>
@@ -53,15 +55,17 @@ const Header = () => {
           <MobileMenu/>
         </div>
         <div className={clsx('desktopOnly', styles.links)}>
-          <a href="#">
+          <a href="#" className={styles.link}>
             Docs
           </a>
-          <a href="#" className={styles.testnetLabel}>
-            <FuelIcon />
-            Testnet
-          </a>
+          {pathname !== '/' && (
+            <a href="#" className={styles.testnetLabel}>
+              <FuelIcon />
+              Testnet
+            </a>
+          )}
           <ActionButton className={styles.launchAppButton}>
-            Launch App
+            Connect Wallet
           </ActionButton>
         </div>
       </section>

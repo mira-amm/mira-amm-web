@@ -1,11 +1,18 @@
-import styles from './SoonLabel.module.css';
+import {memo} from "react";
 
-const SoonLabel = () => {
+import styles from './SoonLabel.module.css';
+import {clsx} from "clsx";
+
+type Props = {
+  className?: string;
+}
+
+const SoonLabel = ({ className }: Props) => {
   return (
-    <span className={styles.soonLabel}>
+    <span className={clsx(styles.soonLabel, className)}>
       Soon
     </span>
   );
 };
 
-export default SoonLabel;
+export default memo(SoonLabel);
