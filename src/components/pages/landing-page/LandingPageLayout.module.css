@@ -1,8 +1,8 @@
 .main {
   display: flex;
   flex-direction: column;
-  gap: 44px;
-  padding: 16px;
+  gap: 56px;
+  padding: 84px 16px 56px;
 }
 
 .topBlock, .bottomBlock {

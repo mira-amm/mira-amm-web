@@ -18,6 +18,9 @@ const Header = () => {
   const [promoHidden, setPromoHidden] = useState(false);
   const pathname = usePathname();
 
+  const isHomePage = pathname === '/';
+  const buttonTitle = isHomePage ? 'Launch App' : 'Connect Wallet';
+
   return (
     <header className={styles.header}>
       {!promoHidden && (
@@ -58,14 +61,15 @@ const Header = () => {
           <a href="#" className={styles.link}>
             Docs
           </a>
-          {pathname !== '/' && (
+          {!isHomePage && (
             <a href="#" className={styles.testnetLabel}>
               <FuelIcon />
               Testnet
             </a>
           )}
+          {/* TODO: Render ConnectButton here */}
           <ActionButton className={styles.launchAppButton}>
-            Connect Wallet
+            {buttonTitle}
           </ActionButton>
         </div>
       </section>
