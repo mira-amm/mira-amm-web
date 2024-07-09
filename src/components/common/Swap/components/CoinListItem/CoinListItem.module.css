@@ -1,0 +1,39 @@
+.coin {
+  display: flex;
+  gap: 8px;
+  color: var(--content-primary);
+}
+
+.centered {
+  align-items: center;
+}
+
+.names {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.name {
+  font-size: 18px;
+  font-weight: 400;
+  line-height: 22px;
+}
+
+.fullName {
+  font-size: 14px;
+  line-height: 16px;
+  color: var(--content-dimmed-light);
+}
+
+@media (min-width: 1024px) {
+  .name {
+    font-size: 20px;
+    line-height: 24px;
+  }
+
+  .fullName {
+    font-size: 16px;
+    line-height: 19px;
+  }
+}

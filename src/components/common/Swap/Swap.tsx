@@ -7,9 +7,17 @@ import ConvertIcon from "@/src/components/icons/Convert/ConvertIcon";
 import IconButton from "@/src/components/common/IconButton/IconButton";
 import useModal from "@/src/hooks/useModal/useModal";
 import InfoIcon from "@/src/components/icons/Info/InfoIcon";
+import {useConnectUI, useIsConnected} from "@fuels/react";
 
 const Swap = () => {
   const [Modal, openModal, closeModal] = useModal();
+
+  const { isConnected } = useIsConnected();
+  const { connect, isLoading, isConnecting } = useConnectUI();
+
+  const handleConnect = () => {
+    connect();
+  };
 
   return (
     <>
@@ -27,9 +35,11 @@ const Swap = () => {
           </IconButton>
         </div>
         <CurrencyBox mode="buy" />
-        <ActionButton variant="secondary">
-          Connect Wallet
-        </ActionButton>
+        {!isConnected && (
+          <ActionButton variant="secondary" onClick={handleConnect} loading={isConnecting}>
+            Connect Wallet
+          </ActionButton>
+        )}
       </div>
       <Modal title="Settings">
         <div className={styles.settingsContainer}>

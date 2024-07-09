@@ -5,6 +5,7 @@ import useModal from "@/src/hooks/useModal/useModal";
 import SearchIcon from "@/src/components/icons/Search/SearchIcon";
 import {ChangeEvent, useState} from "react";
 import {clsx} from "clsx";
+import CoinListItem from "@/src/components/common/Swap/components/CoinListItem/CoinListItem";
 
 type Props = {
   mode: 'buy' | 'sell';
@@ -71,22 +72,22 @@ const CurrencyBox = ({ mode }: Props) => {
         </div>
         <div className={styles.tokenList}>
           <div className={styles.tokenListItem} onClick={() => selectCoin('USDT')}>
-            <Coin name="USDT"/>
+            <CoinListItem name="USDT"/>
           </div>
           <div className={styles.tokenListItem} onClick={() => selectCoin('USDC')}>
-            <Coin name="USDC" fullName="USD Coin"/>
+            <CoinListItem name="USDC" fullName="USD Coin"/>
           </div>
           <div className={styles.tokenListItem} onClick={() => selectCoin('BTC')}>
-            <Coin name="BTC" fullName="Bitcoin"/>
+            <CoinListItem name="BTC" fullName="Bitcoin"/>
           </div>
           <div className={styles.tokenListItem} onClick={() => selectCoin('ETH')}>
-            <Coin name="ETH" fullName="Ethereum"/>
+            <CoinListItem name="ETH" fullName="Ethereum"/>
           </div>
           <div className={styles.tokenListItem} onClick={() => selectCoin('UNI')}>
-            <Coin name="UNI" fullName="Uniswap"/>
+            <CoinListItem name="UNI" fullName="Uniswap"/>
           </div>
           <div className={styles.tokenListItem} onClick={() => selectCoin('DAI')}>
-            <Coin name="DAI" fullName="DAI"/>
+            <CoinListItem name="DAI" fullName="DAI"/>
           </div>
         </div>
       </Modal>

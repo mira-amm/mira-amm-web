@@ -10,18 +10,19 @@ import Footer from "@/src/components/common/Footer/Footer";
 
 import styles from './LandingPageLayout.module.css';
 import {clsx} from "clsx";
+import LaunchAppButton from "@/src/components/common/LaunchAppButton/LaunchAppButton";
 
 const LandingPageLayout = () => {
   return (
     <>
-      <Header/>
+      <Header isHomePage/>
       <main className={clsx('mobileOnly', styles.main)}>
         <section className={styles.topBlock}>
           <h1>The Liquidity Hub on Fuel</h1>
           <h2 className={styles.subheading}>
             Trade, Earn and get Rewards using the Fuel most efficient AMM
           </h2>
-          <ActionButton>Launch App</ActionButton>
+          <LaunchAppButton />
           <div className={styles.fuel}>
             <FuelIcon/>
             <span>Powered by Fuel</span>
@@ -43,6 +44,7 @@ const LandingPageLayout = () => {
           </div>
         </section>
       </main>
+
       <main className={clsx('desktopOnly', styles.main)}>
         <section className={styles.topBlock}>
           <div className={styles.left}>
@@ -50,7 +52,7 @@ const LandingPageLayout = () => {
             <h2 className={styles.subheading}>
               Trade, Earn and get Rewards using the most efficient AMM on Fuel
             </h2>
-            <ActionButton className={styles.launchAppButton}>Launch App</ActionButton>
+            <LaunchAppButton className={styles.launchAppButton} />
             <div className={styles.fuel}>
               <FuelIcon/>
               <span>Powered by Fuel</span>
