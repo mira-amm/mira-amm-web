@@ -6,15 +6,18 @@ import SearchIcon from "@/src/components/icons/Search/SearchIcon";
 import {ChangeEvent, useState} from "react";
 import {clsx} from "clsx";
 import CoinListItem from "@/src/components/common/Swap/components/CoinListItem/CoinListItem";
+import {coinsConfig} from "@/src/utils/coinsConfig";
+import {CurrencyBoxMode} from "@/src/components/common/Swap/Swap";
 
 type Props = {
-  mode: 'buy' | 'sell';
+  mode: CurrencyBoxMode;
+  selectedCoin: string;
+  selectCoin: (coin: string) => void;
 };
 
-const CurrencyBox = ({ mode }: Props) => {
+const CurrencyBox = ({ mode, selectedCoin, selectCoin }: Props) => {
   const [Modal, openModal, closeModal] = useModal();
   const [value, setValue] = useState('0');
-  const [coin, setCoin] = useState('');
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     let inputValue = e.target.value;
@@ -37,14 +40,14 @@ const CurrencyBox = ({ mode }: Props) => {
     // }
   };
 
-  const selectCoin = (coin: string) => {
-    setCoin(coin);
+  const handleCoinSelection = (coin: string) => {
+    selectCoin(coin);
     closeModal();
   }
 
   const noValue = value === '0' || value === '';
 
-  const coinNotSelected = coin === '';
+  const coinNotSelected = selectedCoin === '';
 
   return (
     <>
@@ -56,7 +59,7 @@ const CurrencyBox = ({ mode }: Props) => {
             {coinNotSelected ? (
               <p className={styles.chooseCoin}>Choose coin</p>
             ) : (
-              <Coin name={coin} />
+              <Coin name={selectedCoin} />
             )}
             <ChevronDownIcon />
           </button>
@@ -65,30 +68,18 @@ const CurrencyBox = ({ mode }: Props) => {
           {!noValue && '$41 626.62'}
         </p>
       </div>
+      {/* TODO: Create modal content component */}
       <Modal title="Choose token">
         <div className={styles.tokenSearch}>
           <SearchIcon />
           <input className={styles.tokenSearchInput} type="text" placeholder="Search by token or paste address"/>
         </div>
         <div className={styles.tokenList}>
-          <div className={styles.tokenListItem} onClick={() => selectCoin('USDT')}>
-            <CoinListItem name="USDT"/>
-          </div>
-          <div className={styles.tokenListItem} onClick={() => selectCoin('USDC')}>
-            <CoinListItem name="USDC" fullName="USD Coin"/>
-          </div>
-          <div className={styles.tokenListItem} onClick={() => selectCoin('BTC')}>
-            <CoinListItem name="BTC" fullName="Bitcoin"/>
-          </div>
-          <div className={styles.tokenListItem} onClick={() => selectCoin('ETH')}>
-            <CoinListItem name="ETH" fullName="Ethereum"/>
-          </div>
-          <div className={styles.tokenListItem} onClick={() => selectCoin('UNI')}>
-            <CoinListItem name="UNI" fullName="Uniswap"/>
-          </div>
-          <div className={styles.tokenListItem} onClick={() => selectCoin('DAI')}>
-            <CoinListItem name="DAI" fullName="DAI"/>
-          </div>
+          {Array.from(coinsConfig.keys()).map((coinName) => (
+            <div className={styles.tokenListItem} onClick={() => handleCoinSelection(coinName)}>
+              <CoinListItem name={coinName} key={coinName} />
+            </div>
+          ))}
         </div>
       </Modal>
     </>
