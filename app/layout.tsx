@@ -6,6 +6,7 @@ import {Prompt} from "next/font/google";
 import localFont from "next/font/local";
 
 import "@/public/css/globals.css";
+import Providers from "@/src/core/providers/Providers";
 
 type Props = Readonly<{
   children: ReactNode;
@@ -79,7 +80,9 @@ const RootLayout = ({children}: Props) => {
       prompt.variable,
       sfCompactText.variable,
     )}>
+    <Providers>
       {children}
+    </Providers>
     </body>
     <Script src="https://www.googletagmanager.com/gtag/js?id=G-K113JNM8XN"/>
     <Script id="gtag">{`

@@ -1,5 +1,3 @@
-'use client';
-
 import MobileMenu from "@/src/components/common/Header/components/MobileMenu/MobileMenu";
 import Logo from "@/src/components/common/Logo/Logo";
 import SoonLabel from "@/src/components/common/SoonLabel/SoonLabel";
@@ -7,19 +5,21 @@ import SoonLabel from "@/src/components/common/SoonLabel/SoonLabel";
 import styles from './Header.module.css';
 import Link from "next/link";
 import {clsx} from "clsx";
-import ActionButton from "@/src/components/common/ActionButton/ActionButton";
 import {usePathname} from "next/navigation";
 import {FuelIcon} from "@/src/components/icons";
 import IconButton from "@/src/components/common/IconButton/IconButton";
 import {useState} from "react";
 import CloseIcon from "@/src/components/icons/Close/CloseIcon";
+import ConnectButton from "@/src/components/common/ConnectButton/ConnectButton";
+import LaunchAppButton from "@/src/components/common/LaunchAppButton/LaunchAppButton";
 
-const Header = () => {
+type Props = {
+  isHomePage?: boolean;
+}
+
+const Header = ({ isHomePage }: Props) => {
   const [promoHidden, setPromoHidden] = useState(false);
   const pathname = usePathname();
-
-  const isHomePage = pathname === '/';
-  const buttonTitle = isHomePage ? 'Launch App' : 'Connect Wallet';
 
   return (
     <header className={styles.header}>
@@ -67,10 +67,12 @@ const Header = () => {
               Testnet
             </a>
           )}
-          {/* TODO: Render ConnectButton here */}
-          <ActionButton className={styles.launchAppButton}>
-            {buttonTitle}
-          </ActionButton>
+          {!isHomePage && (
+            <ConnectButton className={styles.launchAppButton} />
+          )}
+          {isHomePage && (
+            <LaunchAppButton className={styles.launchAppButton} />
+          )}
         </div>
       </section>
     </header>
