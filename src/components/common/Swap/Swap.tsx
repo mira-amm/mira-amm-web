@@ -1,7 +1,7 @@
 import {useMemo, useState} from "react";
 import {useConnectUI, useIsConnected, useWallet} from "@fuels/react";
 import MiraAmm from "sdk-ts";
-import { AssetIdInput } from "sdk-ts/dist/typegen/amm-contract/AmmContractAbi";
+import { AssetIdInput, AssetInput } from "sdk-ts/dist/typegen/amm-contract/AmmContractAbi";
 
 import CurrencyBox from "@/src/components/common/Swap/components/CurrencyBox/CurrencyBox";
 import SettingsIcon from "@/src/components/icons/Settings/SettingsIcon";
@@ -33,7 +33,7 @@ const Swap = () => {
   const miraInstance = useMemo(() => {
     if (wallet && wallet.provider) {
       // @ts-ignore
-      return new MiraAmm({ wallet, provider: wallet?.provider });
+      return new MiraAmm({ wallet, provider: wallet?.provider, contractAddress: '0xb942cd8440a4fe2e2e7548cfcb1d1547881cfe02db66a463b19e1e46ae56f0ca' });
     }
   }, [wallet]);
 
@@ -57,9 +57,23 @@ const Swap = () => {
     const buyAssetId = coinsConfig.get(coins.buy)?.assetId!;
     const buyAssetIdInput: AssetIdInput = { bits: buyAssetId };
     const assetPair: [AssetIdInput, AssetIdInput] = [sellAssetIdInput, buyAssetIdInput];
+    const assetSwapInput:AssetInput = {id: sellAssetIdInput, amount: 100};
     if (miraInstance) {
-      const result = await miraInstance.balance(assetPair, sellAssetIdInput, { gasLimit: 1, maxFee: 1 });
-      console.log(result);
+      // Preview swap exact input
+      // const result = await miraInstance.previewSwapExactInput(assetPair, assetSwapInput, { gasLimit: 100_000, maxFee: 100_000 });
+
+      // Preview swap exact output
+      // const result = await miraInstance.previewSwapExactOutput(assetPair, assetSwapInput, { gasLimit: 100_000, maxFee: 100_000 });
+      
+      // Balance 
+      // const result = await miraInstance.balance(assetPair, sellAssetIdInput, { gasLimit: 100_000, maxFee: 100_000 });
+
+      // Preview add liquidity
+      // const result = await miraInstance.previewAddLiquidity(assetPair, assetSwapInput, { gasLimit: 100_000, maxFee: 100_000 });
+      
+      const result = await miraInstance.previewAddLiquidity(assetPair, assetSwapInput, { gasLimit: 100_000, maxFee: 100_000 });
+
+      console.log(result.value);
     }
   }
 
