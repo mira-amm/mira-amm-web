@@ -86,7 +86,7 @@ const Swap = () => {
       // Preview add liquidity
       // const result = await miraInstance.previewAddLiquidity(assetPair, assetSwapInput, { gasLimit: 100_000, maxFee: 100_000 });
 
-      const result = await miraInstance.swapExactInput( assetPair, assetSwapInput.amount,0,1000000000, { gasLimit: 100_000, maxFee: 100_000 });
+      const result = await miraInstance.swapExactInput( assetPair, assetSwapInput.amount,0,1000000000, { gasLimit: 1_000_000, maxFee: 1_000_000 });
       console.log(result);
       const res = await wallet?.sendTransaction(result); 
       console.log(res);
