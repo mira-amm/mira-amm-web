@@ -10,6 +10,7 @@ import {coinsConfig} from "@/src/utils/coinsConfig";
 import type {CurrencyBoxMode} from "@/src/components/common/Swap/Swap";
 
 import styles from './CurrencyBox.module.css';
+import CoinsListModal from "@/src/components/common/Swap/components/CoinsListModal/CoinsListModal";
 
 type Props = {
   value: string;
@@ -79,19 +80,8 @@ const CurrencyBox = ({ value, coin, mode, selectCoin, setAmount, loading }: Prop
           {/*{!noValue && '$41 626.62'}*/}
         </p>
       </div>
-      {/* TODO: Create modal content component */}
       <Modal title="Choose token">
-        <div className={styles.tokenSearch}>
-          <SearchIcon />
-          <input className={styles.tokenSearchInput} type="text" placeholder="Search by token or paste address"/>
-        </div>
-        <div className={styles.tokenList}>
-          {Array.from(coinsConfig.keys()).map((coinName) => (
-            <div className={styles.tokenListItem} onClick={() => handleCoinSelection(coinName)} key={coinName} >
-              <CoinListItem name={coinName} />
-            </div>
-          ))}
-        </div>
+        <CoinsListModal selectCoin={handleCoinSelection} />
       </Modal>
     </>
   );

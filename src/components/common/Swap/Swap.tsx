@@ -61,8 +61,8 @@ const Swap = () => {
   const { isConnected } = useIsConnected();
   const { connect, isConnecting } = useConnectUI();
 
-  const previousInputPreviewValue = useRef('0');
-  const previousOutputPreviewValue = useRef('0');
+  const previousInputPreviewValue = useRef('');
+  const previousOutputPreviewValue = useRef('');
 
   const { data: inputPreviewData, isFetching: inputPreviewIsFetching } = useExactInputPreview({
     swapState,

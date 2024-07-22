@@ -25,13 +25,13 @@ const useModal = (): [ReturnType, () => void, () => void] => {
       if (event.key === 'Escape') {
         setIsOpen(false);
       }
-
-      window.addEventListener('keydown', handleKeyDown);
-
-      return () => {
-        window.removeEventListener('keydown', handleKeyDown);
-      };
     }
+
+    window.addEventListener('keydown', handleKeyDown);
+
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+    };
   }, []);
 
   const openModal = useCallback(() => {
