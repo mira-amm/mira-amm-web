@@ -80,6 +80,9 @@
 
   .swap {
     width: 440px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
   }
 
   .fuel {

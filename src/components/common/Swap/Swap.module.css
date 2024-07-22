@@ -7,6 +7,21 @@
   background-color: var(--background-grey-dark);
 }
 
+.swapContainerLoading {
+  z-index: 5;
+}
+
+.loadingOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  backdrop-filter: blur(2px);
+  z-index: 4;
+  pointer-events: none;
+}
+
 .heading {
   display: flex;
   align-items: center;
@@ -104,9 +119,41 @@
   border-color: var(--accent-primary);
 }
 
+.summary {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  color: var(--content-tertiary);
+  font-size: 12px;
+  line-height: 16px;
+}
+
+.summaryEntry {
+  display: flex;
+  justify-content: space-between;
+}
+
+.exchangeRate {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 12px;
+  line-height: 18px;
+  color: var(--content-dimmed-light);
+}
+
 @media (min-width: 1024px) {
   .heading {
     font-size: 20px;
     line-height: 24px;
+  }
+
+  .exchangeRate {
+    font-size: 13px;
+  }
+
+  .summary {
+    font-size: 13px;
+    line-height: 18px;
   }
 }

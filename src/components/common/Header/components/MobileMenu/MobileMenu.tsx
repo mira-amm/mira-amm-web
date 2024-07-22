@@ -1,6 +1,7 @@
 'use client';
 
-import {useCallback, useEffect, useState} from "react";
+import {useCallback, useState} from "react";
+import {useScrollLock} from "usehooks-ts";
 import MenuIcon from "@/src/components/icons/Menu/MenuIcon";
 
 import MobileMenuContent from "./components/MobileMenuContent/MobileMenuContent";
@@ -9,17 +10,16 @@ import styles from './MobileMenu.module.css';
 const MobileMenu = () => {
   const [expanded, setExpanded] = useState(false);
 
-  const toggleExpandedState = useCallback(() => {
-    setExpanded((prevState) => !prevState);
-  }, []);
+  const { lock, unlock } = useScrollLock({ autoLock: false });
 
-  useEffect(() => {
+  const toggleExpandedState = useCallback(() => {
+    setExpanded(!expanded);
     if (expanded) {
-      document.body.classList.add('no-scroll');
+      unlock();
     } else {
-      document.body.classList.remove('no-scroll');
+      lock();
     }
-  }, [expanded]);
+  }, [expanded, unlock, lock]);
 
   return (
     <>

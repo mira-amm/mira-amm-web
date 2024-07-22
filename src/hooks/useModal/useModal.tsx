@@ -5,6 +5,7 @@ import styles from './Modal.module.css';
 import {clsx} from "clsx";
 import IconButton from "@/src/components/common/IconButton/IconButton";
 import CloseIcon from "@/src/components/icons/Close/CloseIcon";
+import {useScrollLock} from "usehooks-ts";
 
 type ModalProps = {
   title: string;
@@ -17,13 +18,7 @@ type ReturnType = (props: ModalProps) => ReactPortal | null;
 const useModal = (): [ReturnType, () => void, () => void] => {
   const [isOpen, setIsOpen] = useState(false);
 
-  useEffect(() => {
-    if (isOpen) {
-      document.body.classList.add('no-scroll');
-    } else {
-      document.body.classList.remove('no-scroll');
-    }
-  }, [isOpen]);
+  const { lock, unlock } = useScrollLock({ autoLock: false });
 
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
@@ -39,8 +34,14 @@ const useModal = (): [ReturnType, () => void, () => void] => {
     }
   }, []);
 
-  const openModal = useCallback(() => setIsOpen(true), []);
-  const closeModal = useCallback(() => setIsOpen(false), []);
+  const openModal = useCallback(() => {
+    setIsOpen(true);
+    lock();
+  }, [lock]);
+  const closeModal = useCallback(() => {
+    setIsOpen(false);
+    unlock();
+  }, [unlock]);
 
   const Modal = ({ title, children, className }: ModalProps) => isOpen ? createPortal(
     <>

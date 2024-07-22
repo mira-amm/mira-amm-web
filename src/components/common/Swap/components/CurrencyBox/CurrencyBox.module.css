@@ -35,6 +35,10 @@
   border: none;
 }
 
+.input:disabled {
+  color: var(--content-dimmed-dark);
+}
+
 .selector {
   display: flex;
   align-items: center;
@@ -44,6 +48,14 @@
   border: none;
   border-radius: 8px;
   color: var(--content-grey);
+}
+
+.selector:disabled {
+  cursor: default;
+}
+
+.selector:disabled:hover {
+  background-color: transparent;
 }
 
 .selectorHighlighted {
