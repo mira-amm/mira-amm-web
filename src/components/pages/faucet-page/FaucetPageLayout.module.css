@@ -173,6 +173,8 @@
     font-weight: 500;
     line-height: 22px;
     text-align: left;
+    padding: 16px;
+    border-radius: 16px;
   }
 
   .swapSection {

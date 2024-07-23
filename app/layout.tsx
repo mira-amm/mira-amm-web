@@ -55,7 +55,7 @@ export const metadata: Metadata = {
   title: "Mira DEX - Trade, Swap and manage liquidity on the Fuel blockchain with MIRA AMM",
   description: "Discover the fastest AMM on Fuel blockchain. Trade securely with low fees and slippage, swap and earn by providing liquidity. Join the future of decentralized finance with MIRA Protocol.",
   icons: {
-    icon: "/images/favicon.ico",
+    icon: "/favicon.png",
   },
   openGraph: {
     title: "Mira DEX - Trade, Swap and manage liquidity on the Fuel blockchain with MIRA AMM",

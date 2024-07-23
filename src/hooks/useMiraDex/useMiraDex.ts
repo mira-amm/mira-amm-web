@@ -1,24 +1,24 @@
 import {useWallet} from "@fuels/react";
-import MiraAmm from "mira-dex-ts";
+import MiraDex from "mira-dex-ts";
 import {useMemo} from "react";
 import useProvider from "@/src/hooks/useProvider/useProvider";
 
-import {ammContractAddress} from "@/src/utils/constants";
+import {DexContractAddress} from "@/src/utils/constants";
 
-const useMiraAmm = () => {
+const useMiraDex = () => {
   const { wallet } = useWallet();
   const provider= useProvider();
 
   return useMemo(() => {
     if (provider) {
-      return new MiraAmm({
+      return new MiraDex({
         wallet: wallet ?? undefined,
         provider,
-        contractAddress: ammContractAddress,
+        contractAddress: DexContractAddress,
       });
     }
   }, [wallet, provider]);
 };
 
-export default useMiraAmm;
+export default useMiraDex;
 

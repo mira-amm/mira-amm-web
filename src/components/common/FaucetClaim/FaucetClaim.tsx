@@ -6,29 +6,57 @@ import RetweetIcon from "@/src/components/icons/Retweet/RetweetIcon";
 import useModal from "@/src/hooks/useModal/useModal";
 import TestnetLabel from "@/src/components/common/TestnetLabel/TestnetLabel";
 import ClaimFailureModal from "@/src/components/common/FaucetClaim/components/ClaimFailureModal/ClaimFailureModal";
-import {useCallback} from "react";
-// import {getAuth, signInWithPopup, TwitterAuthProvider} from "firebase/auth";
-// import {initializeApp} from "firebase/app";
-// import {firebaseConfig} from "@/src/utils/initFirebase";
-// import {TwitterAuthProvider} from "@firebase/auth-types";
+import {useCallback, useState} from "react";
+import useTwitterAuth from "@/src/hooks/useTwitterAuth/useTwitterAuth";
+import {getAuth} from "firebase/auth";
+import {openNewTab} from "@/src/utils/common";
+import ClaimSuccessModal from "@/src/components/common/FaucetClaim/components/ClaimSuccessModal/ClaimSuccessModal";
+import useClaimFaucet from "@/src/hooks/useClaimFaucet/useClaimFaucet";
 
 const FaucetClaim = () => {
-  const [Modal, openModal, closeModal] = useModal();
+  const [FailureModal, openFailureModal] = useModal();
+  const [SuccessModal, openSuccessModal] = useModal();
+  const [followClicked, setFollowClicked] = useState(false);
+  const [retweetClicked, setRetweetClicked] = useState(false);
 
-  // const handleConnectClick = () => {
-  //   const provider = new TwitterAuthProvider();
-  //   initializeApp(firebaseConfig);
-  //   const auth = getAuth();
-  //   signInWithPopup(auth, provider)
-  //     .then((result) => {
-  //       // This gives you a Twitter Access Token. You can use it to access the Twitter API.
-  //       console.log(result);
-  //     })
-  // };
+  const { data, mutateAsync, reset } = useTwitterAuth();
 
-  const handleClaimClick = useCallback(() => {
-    openModal();
-  }, []);
+  const handleConnectClick = async () => {
+    await mutateAsync();
+  };
+
+  const handleDisconnectClick = async () => {
+    const auth = getAuth();
+    await auth.signOut();
+    reset();
+  };
+
+  const notAllStepsCompleted = !data || !followClicked || !retweetClicked;
+
+  const { data: claimData, mutateAsync: claim, isPending } = useClaimFaucet();
+
+  const handleClaimClick = useCallback(async () => {
+    if (notAllStepsCompleted) {
+      openFailureModal();
+      return;
+    }
+
+    const claimData = await claim();
+    if (claimData) {
+      openSuccessModal();
+      console.log(claimData);
+    }
+  }, [notAllStepsCompleted, claim, openFailureModal, openSuccessModal]);
+
+  const handleFollowClick = () => {
+    openNewTab('https://x.com/MiraProtocol');
+    setFollowClicked(true);
+  };
+
+  const handleRetweetClick = () => {
+    openNewTab('https://twitter.com/intent/retweet?tweet_id=463440424141459456');
+    setRetweetClicked(true);
+  };
 
   return (
     <>
@@ -37,41 +65,51 @@ const FaucetClaim = () => {
           <div className={styles.stepIcon}>
             <XIcon />
           </div>
-          <div>
-            <button className={styles.buttonLink}>
-              Connect
-            </button>
-            {' '}
-            Twitter
-          </div>
+          {data ? (
+            <div>
+              {data.user.displayName}&nbsp;
+              <button className={styles.buttonLink} onClick={handleDisconnectClick}>
+                Disconnect
+              </button>
+            </div>
+          ) : (
+            <div>
+              <button className={styles.buttonLink} onClick={handleConnectClick}>
+                Connect
+              </button>
+              &nbsp;Twitter
+            </div>
+          )}
         </div>
         <div className={styles.step}>
           <div className={styles.stepIcon}>
             <SubscribeIcon/>
           </div>
           <div>
-            <button className={styles.buttonLink}>
+            <button className={styles.buttonLink} onClick={handleFollowClick}>
               Follow
             </button>
-            {' '}
-            MIRA on X
+            &nbsp;MIRA on X
           </div>
         </div>
         <div className={styles.step}>
           <div className={styles.stepIcon}>
             <RetweetIcon />
           </div>
-          <button className={styles.buttonLink}>
+          <button className={styles.buttonLink} onClick={handleRetweetClick}>
             Retweet
           </button>
         </div>
       </div>
-      <ActionButton className={styles.claimButton} onClick={handleClaimClick}>
-      Claim $mimicMIRA
+      <ActionButton className={styles.claimButton} loading={isPending} onClick={handleClaimClick}>
+        Claim $mimicMIRA
       </ActionButton>
-      <Modal title={<TestnetLabel />}>
+      <FailureModal title={<TestnetLabel />}>
         <ClaimFailureModal />
-      </Modal>
+      </FailureModal>
+      <SuccessModal title={<TestnetLabel />}>
+        <ClaimSuccessModal />
+      </SuccessModal>
     </>
   );
 };

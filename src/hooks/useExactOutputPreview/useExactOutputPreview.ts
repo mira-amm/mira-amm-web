@@ -1,5 +1,5 @@
 import {coinsConfig} from "@/src/utils/coinsConfig";
-import useMiraAmm from "@/src/hooks/useMiraAmm/useMiraAmm";
+import useMiraDex from "@/src/hooks/useMiraDex/useMiraDex";
 import {useQuery} from "@tanstack/react-query";
 import type {CurrencyBoxMode, SwapState} from "@/src/components/common/Swap/Swap";
 import {DefaultTxParams} from "@/src/utils/constants";
@@ -31,7 +31,7 @@ const useExactOutputPreview = ({ swapState, buyAmount, lastFocusedMode }: Props)
     id: buyAssetIdInput, amount
   };
 
-  const miraAmm = useMiraAmm();
+  const miraAmm = useMiraDex();
 
   const miraExists = Boolean(miraAmm);
   const lastFocusedModeIsBuy = lastFocusedMode === 'buy'

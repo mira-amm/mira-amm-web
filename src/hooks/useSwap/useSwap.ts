@@ -1,5 +1,5 @@
 import type {CurrencyBoxMode, SwapState} from "@/src/components/common/Swap/Swap";
-import useMiraAmm from "@/src/hooks/useMiraAmm/useMiraAmm";
+import useMiraDex from "@/src/hooks/useMiraDex/useMiraDex";
 import useSwapData from "@/src/hooks/useAssetPair/useSwapData";
 import {useMutation} from "@tanstack/react-query";
 import {DefaultDeadline, DefaultTxParams} from "@/src/utils/constants";
@@ -13,7 +13,7 @@ type Props = {
 
 const useSwap = ({ swapState, mode, slippage }: Props) => {
   const { wallet } = useWallet();
-  const miraAmm = useMiraAmm();
+  const miraAmm = useMiraDex();
   const swapData = useSwapData(swapState);
 
   const mutationFn = async () => {

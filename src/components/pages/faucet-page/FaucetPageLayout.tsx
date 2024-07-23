@@ -27,11 +27,13 @@ const FaucetPageLayout = () => {
             </h1>
             <p className={styles.descriptionText}>
               Step into the MIRA miracle world, where traders become
-              <br className='desktopOnly' />
+              <br className='desktopOnly'/>
+              <span className='mobileOnly'>&nbsp;</span>
               chameleons, blending seamlessly into the bustling markets.
-              <br />
-              With $mimicMIRA you can adopt the perfect disguise,&nbsp;
-              <br className='desktopOnly' />
+              <br/>
+              With $mimicMIRA you can adopt the perfect disguise,
+              <span className='mobileOnly'>&nbsp;</span>
+              <br className='desktopOnly'/>
               mirroring the movements of the most skilled traders
             </p>
           </div>
@@ -39,21 +41,23 @@ const FaucetPageLayout = () => {
         <section className={styles.claimSection}>
           <h2 className={styles.claimHeading}>
             Three simple steps to claim your
-            <br className='desktopOnly' />
+            <br className='desktopOnly'/>
+            <span className='mobileOnly'>&nbsp;</span>
             $mimicMIRA
           </h2>
-          <FaucetClaim />
+          <FaucetClaim/>
         </section>
         <section className={styles.conditionsSection}>
           <h2 className={styles.claimHeading}>
-            You can request&nbsp;
+            You can request
             <br className='mobileOnly'/>
+            <span className='desktopOnly'>&nbsp;</span>
             $mimicMIRA for testing
-            <br />
+            <br/>
             once per account
           </h2>
           <div className={styles.conditions}>
-            <div className={styles.condition}>
+          <div className={styles.condition}>
               <div className={styles.conditionIcon}>
                 <CupIcon />
               </div>
