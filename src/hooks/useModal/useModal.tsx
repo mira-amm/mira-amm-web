@@ -34,14 +34,20 @@ const useModal = (): [ReturnType, () => void, () => void] => {
     };
   }, []);
 
+  useEffect(() => {
+    if (isOpen) {
+      lock();
+    } else {
+      unlock();
+    }
+  }, [isOpen]);
+
   const openModal = useCallback(() => {
     setIsOpen(true);
-    lock();
-  }, [lock]);
+  }, []);
   const closeModal = useCallback(() => {
     setIsOpen(false);
-    unlock();
-  }, [unlock]);
+  }, []);
 
   const Modal = ({ title, children, className }: ModalProps) => isOpen ? createPortal(
     <>

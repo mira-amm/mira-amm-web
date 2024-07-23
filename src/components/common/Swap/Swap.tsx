@@ -24,6 +24,7 @@ import useBalances from "@/src/hooks/useBalances/useBalances";
 import CoinsListModal from "@/src/components/common/Swap/components/CoinsListModal/CoinsListModal";
 import SwapSuccessModal from "@/src/components/common/Swap/components/SwapSuccessModal/SwapSuccessModal";
 import TestnetLabel from "@/src/components/common/TestnetLabel/TestnetLabel";
+import SettingsModalContent from "@/src/components/common/Swap/components/SettingsModalContent/SettingsModalContent";
 
 export type CurrencyBoxMode = "buy" | "sell";
 export type CurrencyBoxState = {
@@ -66,9 +67,11 @@ const Swap = () => {
   const [swapState, setSwapState] = useState<SwapState>(initialSwapState);
   const [inputsState, setInputsState] = useState<InputsState>(initialInputsState);
   const [lastFocusedMode, setLastFocusedMode] = useState<CurrencyBoxMode>('sell');
+  const [slippage, setSlippage] = useState<number>(1);
 
   const previousInputPreviewValue = useRef('');
   const previousOutputPreviewValue = useRef('');
+  const swapStateForPreview = useRef(swapState);
 
   const { isConnected } = useIsConnected();
   const { connect, isConnecting } = useConnectUI();
@@ -134,19 +137,17 @@ const Swap = () => {
     }));
   };
 
-  const swapAssets = () => {
+  const swapAssets = useCallback(() => {
     setSwapState(prevState => ({
       buy: {
-        coin: prevState.sell.coin,
-        amount: prevState.sell.amount,
+        ...prevState.sell
       },
       sell: {
-        coin: prevState.buy.coin,
-        amount: prevState.buy.amount,
+        ...prevState.buy
       },
     }));
     // setLastFocusedMode(lastFocusedMode === 'buy' ? 'sell' : 'buy');
-  };
+  }, []);
 
   const selectCoin = useCallback((mode: "buy" | "sell") => {
     return (coin: string) => {
@@ -191,14 +192,14 @@ const Swap = () => {
   const handleCoinSelectorClick = useCallback((mode: CurrencyBoxMode) => {
     openCoinsModal();
     setLastFocusedMode(mode);
-  }, []);
+  }, [openCoinsModal]);
 
   const handleCoinSelection = (coin: string) => {
     selectCoin(lastFocusedMode)(coin);
     closeCoinsModal();
   };
 
-  const { mutate, mutateAsync, data: swapData, isPending: isSwapPending } = useSwap({ swapState, mode: lastFocusedMode });
+  const { mutateAsync, data: swapData, isPending: isSwapPending } = useSwap({ swapState, mode: lastFocusedMode, slippage });
 
   const coinMissing = swapState.buy.coin === '' || swapState.sell.coin === '';
   const amountMissing = swapState.buy.amount === '' || swapState.sell.amount === '';
@@ -213,12 +214,22 @@ const Swap = () => {
       return;
     }
 
+    swapStateForPreview.current = swapState;
     const data = await mutateAsync();
 
     if (data) {
       openSuccess();
     }
-  }, [insufficientEthBalance, coinMissing, amountMissing, isSwapPending]);
+  }, [
+    insufficientEthBalance,
+    coinMissing,
+    amountMissing,
+    isSwapPending,
+    swapState,
+    mutateAsync,
+    account,
+    openSuccess
+  ]);
 
   const insufficientSellBalance = parseFloat(sellValue) > sellBalanceValue;
 
@@ -302,40 +313,14 @@ const Swap = () => {
       </div>
       <ExchangeRate swapState={swapState} />
       {isSwapPending && <div className={styles.loadingOverlay} />}
-      {/* TODO: Create modal content component */}
       <SettingsModal title="Settings">
-        <div className={styles.settingsContainer}>
-          <div className={styles.settingsSection}>
-            <p>Slippage Tolerance</p>
-            <p className={styles.settingsText}>
-              The amount the price can change unfavorably before the trade
-              reverts
-            </p>
-          </div>
-          <div className={styles.settingsSection}>
-            <div className={styles.slippageButtons}>
-              <button className={styles.slippageButton}>Auto</button>
-              <button className={styles.slippageButton}>Custom</button>
-            </div>
-            <input type="text" className={styles.slippageInput} value="1%" />
-          </div>
-          <div className={styles.settingsSection}>
-            <p className={styles.infoHeading}>
-              <InfoIcon />
-              Pay attention
-            </p>
-            <p className={styles.settingsText}>
-              Customized price impact limit may lead to loss of funds. Use it at
-              your own risk
-            </p>
-          </div>
-        </div>
+        <SettingsModalContent slippage={slippage} setSlippage={setSlippage} />
       </SettingsModal>
       <CoinsModal title="Choose token">
         <CoinsListModal selectCoin={handleCoinSelection} balances={balances} />
       </CoinsModal>
       <SuccessModal title={<TestnetLabel />}>
-        <SwapSuccessModal swapState={swapState} transactionHash={swapData?.id} />
+        <SwapSuccessModal swapState={swapStateForPreview.current} transactionHash={swapData?.id} />
       </SuccessModal>
     </>
   );

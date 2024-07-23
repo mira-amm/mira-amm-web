@@ -8,9 +8,10 @@ import {useWallet} from "@fuels/react";
 type Props = {
   swapState: SwapState;
   mode: CurrencyBoxMode;
+  slippage: number;
 }
 
-const useSwap = ({ swapState, mode }: Props) => {
+const useSwap = ({ swapState, mode, slippage }: Props) => {
   const { wallet } = useWallet();
   const miraAmm = useMiraAmm();
   const swapData = useSwapData(swapState);
@@ -24,9 +25,17 @@ const useSwap = ({ swapState, mode }: Props) => {
     const sellAmount = Number(swapState.sell.amount) * 10 ** sellDecimals;
     const buyAmount = Number(swapState.buy.amount) * 10 ** buyDecimals;
 
+    console.log(slippage);
+
+    const buyAmountWithSlippage = buyAmount * (1 - slippage / 100);
+    const sellAmountWithSlippage = sellAmount * (1 + slippage / 100);
+
+    console.log(buyAmount, buyAmountWithSlippage);
+    console.log(sellAmount, sellAmountWithSlippage);
+
     const result = mode === 'sell' ?
-      await miraAmm.swapExactInput(assetPair, sellAmount, buyAmount, DefaultDeadline, DefaultTxParams) :
-      await miraAmm.swapExactOutput(assetPair, buyAmount, sellAmount, DefaultDeadline, DefaultTxParams);
+      await miraAmm.swapExactInput(assetPair, sellAmount, buyAmountWithSlippage, DefaultDeadline, DefaultTxParams) :
+      await miraAmm.swapExactOutput(assetPair, buyAmount, sellAmountWithSlippage, DefaultDeadline, DefaultTxParams);
 
     return await wallet.sendTransaction(result);
   };
