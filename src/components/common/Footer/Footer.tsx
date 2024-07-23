@@ -12,9 +12,9 @@ const Footer = () => {
       <section className={styles.content}>
         <Logo/>
         <div className={styles.links}>
-          <a href={DiscordLink} className="desktopOnly">Discord</a>
+          {/*<a href={DiscordLink} className="desktopOnly" target="_blank">Discord</a>*/}
           {/*<a href="#">Github</a>*/}
-          <a href={XLink} className="desktopOnly">X</a>
+          {/*<a href={XLink} className="desktopOnly" target="_blank">X</a>*/}
           {/*<a href="#">Article</a>*/}
           {/*<a href="#">Docs</a>*/}
         </div>

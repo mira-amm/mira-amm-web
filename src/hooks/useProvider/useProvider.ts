@@ -1,4 +1,4 @@
-import {Provider} from "@fuel-ts/account";
+import {Provider} from "fuels";
 import {TestnetUrl} from "@/src/utils/constants";
 import {useQuery} from "@tanstack/react-query";
 

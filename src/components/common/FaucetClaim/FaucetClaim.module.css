@@ -8,6 +8,10 @@
   display: flex;
   align-items: center;
   gap: 16px;
+  font-size: 18px;
+  font-weight: 400;
+  line-height: 22px;
+  text-align: left;
 }
 
 .stepIcon {
@@ -51,6 +55,13 @@
     flex-direction: row;
     justify-content: space-between;
     gap: 64px;
+  }
+
+  .step {
+    font-size: 18px;
+    font-weight: 500;
+    line-height: 22px;
+    text-align: left;
   }
 
   .claimButton {

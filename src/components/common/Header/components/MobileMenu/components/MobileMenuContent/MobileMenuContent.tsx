@@ -32,16 +32,16 @@ const MobileMenuContent = ({ expanded, toggleExpandedState }: Props) => {
       </div>
       <nav className={styles.links}>
         <Link href='/swap'>Swap</Link>
-        <a href="#" className={styles.linkWithLabel}>
+        <a className={styles.linkWithLabel}>
           Liqudity
           <SoonLabel />
         </a>
         {/*<a href="#">Docs</a>*/}
         <Link href='/faucet'>Faucet</Link>
-        <a href="#">Testnet</a>
+        <a>Testnet</a>
         {/*<a href="#">Github</a>*/}
-        <a href={DiscordLink}>Discord</a>
-        <a href={XLink}>X</a>
+        <a href={DiscordLink} target="_blank">Discord</a>
+        <a href={XLink} target="_blank">X</a>
       </nav>
     </div>,
     document.body

@@ -26,9 +26,13 @@ const FaucetPageLayout = () => {
               <span className={styles.headingHighlight}>$mimicMIRA</span>
             </h1>
             <p className={styles.descriptionText}>
-              Step into the MIRA miracle world, where traders become chameleons, blending seamlessly into the bustling markets.
+              Step into the MIRA miracle world, where traders become
+              <br className='desktopOnly' />
+              chameleons, blending seamlessly into the bustling markets.
               <br />
-              With $mimicMIRA you can adopt the perfect disguise, mirroring the movements of the most skilled traders
+              With $mimicMIRA you can adopt the perfect disguise,&nbsp;
+              <br className='desktopOnly' />
+              mirroring the movements of the most skilled traders
             </p>
           </div>
         </section>
@@ -42,8 +46,10 @@ const FaucetPageLayout = () => {
         </section>
         <section className={styles.conditionsSection}>
           <h2 className={styles.claimHeading}>
-            You can request $mimicMIRA for testing
-            <br className='desktopOnly' />
+            You can request&nbsp;
+            <br className='mobileOnly'/>
+            $mimicMIRA for testing
+            <br />
             once per account
           </h2>
           <div className={styles.conditions}>

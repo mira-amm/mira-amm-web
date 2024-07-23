@@ -34,11 +34,11 @@ const LandingPageLayout = () => {
           <p className={styles.subheading}>
             Connect with our thriving community
           </p>
-          <a href={DiscordLink} className={clsx(styles.socialBlock, styles.discordBlock)}>
+          <a href={DiscordLink} className={clsx(styles.socialBlock, styles.discordBlock)} target="_blank">
             <DiscordIcon/>
             <p>Mira Discord community</p>
           </a>
-          <a href={XLink} className={clsx(styles.socialBlock, styles.xBlock)}>
+          <a href={XLink} className={clsx(styles.socialBlock, styles.xBlock)} target="_blank">
             <XIcon/>
             <p>Follow us on X</p>
           </a>
@@ -70,11 +70,11 @@ const LandingPageLayout = () => {
             </p>
           </div>
           <div className={styles.socialBlocks}>
-            <a href={DiscordLink} className={clsx(styles.socialBlock, styles.discordBlock)}>
+            <a href={DiscordLink} className={clsx(styles.socialBlock, styles.discordBlock)} target="_blank">
               <DiscordIcon/>
               <p>Mira Discord community</p>
             </a>
-            <a href={XLink} className={clsx(styles.socialBlock, styles.xBlock)}>
+            <a href={XLink} className={clsx(styles.socialBlock, styles.xBlock)} target="_blank">
               <div className={styles.xIconWrapper}>
                 <XIcon/>
               </div>

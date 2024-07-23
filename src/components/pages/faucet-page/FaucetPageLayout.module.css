@@ -36,7 +36,7 @@
   position: relative;
   display: inline-flex;
   align-items: center;
-  background: radial-gradient(125.88% 889.57% at -1.46% 26.54%, #ECEF27 17.21%, #03AEF5 34.7%, #66CC07 55.81%, #C900FF 94.16%) /* warning: gradient uses a rotation that is not supported by CSS and may not behave as expected */;
+  background: radial-gradient(125.88% 889.57% at -1.46% 26.54%, #03AEF5 25%, #66CC07 50%, #C900FF 85%) /* warning: gradient uses a rotation that is not supported by CSS and may not behave as expected */;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
@@ -51,7 +51,7 @@
 .claimSection {
   display: flex;
   flex-direction: column;
-  align-items: start;
+  align-items: flex-start;
   gap: 24px;
 }
 
@@ -115,12 +115,27 @@
   .faucetPageLayout {
     max-width: 832px;
     align-items: center;
+    padding-top: 72px;
     margin: auto;
+    gap: 104px;
   }
 
   .greetingSection {
     max-width: 531px;
     gap: 40px;
+  }
+
+  .heading {
+    font-size: 60px;
+    font-weight: 600;
+    line-height: 64px;
+    letter-spacing: 0.005em;
+  }
+
+  .descriptionText {
+    font-size: 18px;
+    font-weight: 400;
+    line-height: 26px;
   }
 
   .lizardImage {
@@ -137,12 +152,27 @@
     gap: 44px;
   }
 
+  .claimHeading {
+    font-size: 32px;
+    font-weight: 600;
+    line-height: 40px;
+    letter-spacing: 0.005em;
+  }
+
+  .conditionsSection {
+    width: 100%;
+  }
+
   .conditions {
     flex-direction: row;
   }
 
   .condition {
     flex: 1;
+    font-size: 18px;
+    font-weight: 500;
+    line-height: 22px;
+    text-align: left;
   }
 
   .swapSection {
