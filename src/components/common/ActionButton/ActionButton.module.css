@@ -37,6 +37,7 @@
     background-color: var(--background-secondary);
     border-color: var(--background-secondary);
     color: var(--content-dimmed-dark);
+    box-shadow: unset;
     pointer-events: none;
 }
 

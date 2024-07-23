@@ -8,7 +8,7 @@ import CloseIcon from "@/src/components/icons/Close/CloseIcon";
 import {useScrollLock} from "usehooks-ts";
 
 type ModalProps = {
-  title: string;
+  title: string | ReactNode;
   children: ReactNode;
   className?: string;
 }
@@ -48,9 +48,11 @@ const useModal = (): [ReturnType, () => void, () => void] => {
       <div className={styles.modalBackdrop} onClick={closeModal} />
       <div className={clsx(styles.modalWindow, className)}>
         <div className={styles.modalHeading}>
-          <p className={styles.modalTitle}>{title}</p>
+          <div className={styles.modalTitle}>
+            {title}
+          </div>
           <IconButton onClick={closeModal}>
-            <CloseIcon />
+          <CloseIcon />
           </IconButton>
         </div>
         {children}

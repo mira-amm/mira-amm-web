@@ -1,0 +1,9 @@
+.testnetLabel {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 14px 8px 14px;
+  border-radius: 20px;
+  border: 1px solid var(--content-primary);
+  cursor: default;
+}

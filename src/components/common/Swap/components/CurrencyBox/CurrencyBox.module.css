@@ -75,8 +75,13 @@
   color: var(--content-primary);
 }
 
-.estimate {
-  height: 16px;
+.estimateAndBalance {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 12px;
+  line-height: 16px;
+  color: var(--content-dimmed-light);
 }
 
 @media (min-width: 1024px) {
@@ -84,7 +89,7 @@
     padding: 12px 16px;
   }
 
-  .title, .estimate {
+  .title, .estimateAndBalance {
     font-size: 13px;
     line-height: 18px;
   }

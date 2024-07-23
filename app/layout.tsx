@@ -52,20 +52,20 @@ const sfCompactText = localFont({
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://mira.ly/'),
-  title: "MIRA Protocol - Trade, Swap and manage liquidity on the Fuel blockchain with MIRA AMM",
+  title: "Mira DEX - Trade, Swap and manage liquidity on the Fuel blockchain with MIRA AMM",
   description: "Discover the fastest AMM on Fuel blockchain. Trade securely with low fees and slippage, swap and earn by providing liquidity. Join the future of decentralized finance with MIRA Protocol.",
   icons: {
-    icon: "/images/favicon.png",
+    icon: "/images/favicon.ico",
   },
   openGraph: {
-    title: "MIRA Protocol - Trade, Swap and manage liquidity on the Fuel blockchain with MIRA AMM",
+    title: "Mira DEX - Trade, Swap and manage liquidity on the Fuel blockchain with MIRA AMM",
     siteName: 'Mira Automated Market Maker',
     url: 'https://mira.ly/',
     description: "Discover the fastest AMM on Fuel blockchain. Trade securely with low fees and slippage, swap and earn by providing liquidity. Join the future of decentralized finance with MIRA Protocol.",
     images: 'https://mira.ly/images/preview.png',
   },
   twitter: {
-    title: "MIRA Protocol - Trade, Swap and manage liquidity on the Fuel blockchain with MIRA AMM",
+    title: "Mira DEX - Trade, Swap and manage liquidity on the Fuel blockchain with MIRA AMM",
     description: "Discover the fastest AMM on Fuel blockchain. Trade securely with low fees and slippage, swap and earn by providing liquidity. Join the future of decentralized finance with MIRA Protocol.",
     images: 'https://mira.ly/images/preview.png',
   },

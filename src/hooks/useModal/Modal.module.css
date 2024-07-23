@@ -29,13 +29,10 @@
 
 .modalHeading {
   display: flex;
+  justify-content: space-between;
   font-weight: 500;
   font-size: 18px;
   line-height: 22px;
-}
-
-.modalTitle {
-  flex: 1;
 }
 
 @media (min-width: 1024px) {

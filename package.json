@@ -14,7 +14,7 @@
     "@tanstack/react-query": "^5.50.1",
     "clsx": "^2.1.1",
     "fuels": "^0.92.1",
-    "mira-dex-ts": "^1.0.0",
+    "mira-dex-ts": "^1.0.1",
     "next": "14.2.4",
     "react": "^18",
     "react-dom": "^18",

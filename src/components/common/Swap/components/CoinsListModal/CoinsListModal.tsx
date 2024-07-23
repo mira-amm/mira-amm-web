@@ -1,14 +1,18 @@
 import SearchIcon from "@/src/components/icons/Search/SearchIcon";
 import {coinsConfig} from "@/src/utils/coinsConfig";
 import CoinListItem from "@/src/components/common/Swap/components/CoinListItem/CoinListItem";
-import {ChangeEvent, useEffect, useRef, useState} from "react";
+import {ChangeEvent, memo, useEffect, useMemo, useRef, useState} from "react";
 import styles from "./CoinsListModal.module.css";
+import {CoinQuantity} from "fuels";
 
 type Props = {
   selectCoin: (coin: string) => void;
+  balances: CoinQuantity[] | undefined;
 };
 
-const CoinsListModal = ({ selectCoin }: Props) => {
+const coinsList = Array.from(coinsConfig.values());
+
+const CoinsListModal = ({ selectCoin, balances }: Props) => {
   const [value, setValue] = useState('');
 
   const inputRef = useRef<HTMLInputElement>(null);
@@ -23,9 +27,14 @@ const CoinsListModal = ({ selectCoin }: Props) => {
     setValue(e.target.value);
   };
 
-  const coinsList = Array.from(coinsConfig.keys());
-  // TODO: Filter by fullname too
-  const filteredCoinsList = coinsList.filter((coin) => coin.toLowerCase().includes(value.toLowerCase()));
+  const filteredCoinsList = useMemo(() => {
+    return coinsList.filter((coin) => {
+      return (
+        coin.name.toLowerCase().includes(value.toLowerCase()) ||
+        coin.fullName?.toLowerCase().includes(value.toLowerCase())
+      );
+    });
+  }, [value]);
 
   return (
     <>
@@ -40,13 +49,16 @@ const CoinsListModal = ({ selectCoin }: Props) => {
         />
       </div>
       <div className={styles.tokenList}>
-        {filteredCoinsList.map((coinName) => (
+        {filteredCoinsList.map(({ name }) => (
           <div
             className={styles.tokenListItem}
-            onClick={() => selectCoin(coinName)}
-            key={coinName}
+            onClick={() => selectCoin(name)}
+            key={name}
           >
-            <CoinListItem name={coinName} />
+            <CoinListItem
+              name={name}
+              balance={balances?.find((b) => b.assetId === coinsConfig.get(name)?.assetId)}
+            />
           </div>
         ))}
       </div>
@@ -54,4 +66,4 @@ const CoinsListModal = ({ selectCoin }: Props) => {
   );
 };
 
-export default CoinsListModal;
+export default memo(CoinsListModal);

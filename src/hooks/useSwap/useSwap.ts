@@ -31,12 +31,11 @@ const useSwap = ({ swapState, mode }: Props) => {
     return await wallet.sendTransaction(result);
   };
 
-  const { mutate, mutateAsync, isPending } = useMutation({
+  const { mutate, mutateAsync, data, isPending } = useMutation({
     mutationFn
   });
 
-  return { mutate, mutateAsync, isPending };
-  // const result = await miraAmm.swapExactInput( assetPair, assetSwapInput.amount,0,1000000000, { gasLimit: 1_000_000, maxFee: 1_000_000 });
+  return { mutate, mutateAsync, data, isPending };
 };
 
 export default useSwap;

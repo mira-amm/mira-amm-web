@@ -6,31 +6,26 @@ import styles from './Header.module.css';
 import Link from "next/link";
 import {clsx} from "clsx";
 import {usePathname} from "next/navigation";
-import {FuelIcon} from "@/src/components/icons";
-import IconButton from "@/src/components/common/IconButton/IconButton";
-import {useState} from "react";
-import CloseIcon from "@/src/components/icons/Close/CloseIcon";
 import ConnectButton from "@/src/components/common/ConnectButton/ConnectButton";
 import LaunchAppButton from "@/src/components/common/LaunchAppButton/LaunchAppButton";
+import TestnetLabel from "@/src/components/common/TestnetLabel/TestnetLabel";
 
 type Props = {
   isHomePage?: boolean;
 }
 
 const Header = ({ isHomePage }: Props) => {
-  const [promoHidden, setPromoHidden] = useState(false);
+  // const [promoHidden, setPromoHidden] = useState(false);
   const pathname = usePathname();
 
   return (
     <header className={styles.header}>
-      {!promoHidden && (
-        <section className={styles.promo}>
-          Trade, Earn and get Rewards using the Fuel most efficient AMM
-          <IconButton onClick={() => setPromoHidden(true)} className={styles.promoClose}>
-            <CloseIcon />
-          </IconButton>
-        </section>
-      )}
+      <section className={styles.promo}>
+        Trade, Earn and get Rewards using the Fuel most efficient AMM
+        {/*<IconButton onClick={() => setPromoHidden(true)} className={styles.promoClose}>*/}
+        {/*  <CloseIcon />*/}
+        {/*</IconButton>*/}
+      </section>
       <section className={styles.main}>
         <div className={styles.left}>
           <Logo/>
@@ -38,14 +33,17 @@ const Header = ({ isHomePage }: Props) => {
             <Link href="/swap" className={clsx(styles.link, pathname.includes('/swap') && styles.activeLink)}>
               Swap
             </Link>
-            <a href="#" className={styles.link}>
+            <div className={styles.linkAlike}>
               Liquidity
               <SoonLabel className={styles.hiddenLabel} />
-            </a>
-            <a href="#" className={styles.pointsText} data-content="Points">
+            </div>
+            <Link href="/faucet" className={clsx(styles.link, pathname.includes('/faucet') && styles.activeLink)}>
+              Faucet
+            </Link>
+            <div className={styles.pointsText}>
               Points
               <SoonLabel className={styles.hiddenLabel} />
-            </a>
+            </div>
           </div>
         </div>
         <div className={clsx('mobileOnly', styles.links)}>
@@ -58,14 +56,11 @@ const Header = ({ isHomePage }: Props) => {
           <MobileMenu/>
         </div>
         <div className={clsx('desktopOnly', styles.links)}>
-          <a href="#" className={styles.link}>
-            Docs
-          </a>
+          {/*<a href="#" className={styles.link}>*/}
+          {/*  Docs*/}
+          {/*</a>*/}
           {!isHomePage && (
-            <a href="#" className={styles.testnetLabel}>
-              <FuelIcon />
-              Testnet
-            </a>
+            <TestnetLabel />
           )}
           {!isHomePage && (
             <ConnectButton className={styles.launchAppButton} />

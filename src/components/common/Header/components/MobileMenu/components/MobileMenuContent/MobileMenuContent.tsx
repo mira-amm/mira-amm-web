@@ -8,6 +8,7 @@ import {clsx} from "clsx";
 import CloseIcon from "@/src/components/icons/Close/CloseIcon";
 import Link from "next/link";
 import SoonLabel from "@/src/components/common/SoonLabel/SoonLabel";
+import {DiscordLink, XLink} from "@/src/utils/constants";
 
 type Props = {
   expanded: boolean;
@@ -35,11 +36,12 @@ const MobileMenuContent = ({ expanded, toggleExpandedState }: Props) => {
           Liqudity
           <SoonLabel />
         </a>
-        <a href="#">Docs</a>
+        {/*<a href="#">Docs</a>*/}
+        <Link href='/faucet'>Faucet</Link>
         <a href="#">Testnet</a>
-        <a href="#">Github</a>
-        <a href="#">Discord</a>
-        <a href="#">X</a>
+        {/*<a href="#">Github</a>*/}
+        <a href={DiscordLink}>Discord</a>
+        <a href={XLink}>X</a>
       </nav>
     </div>,
     document.body

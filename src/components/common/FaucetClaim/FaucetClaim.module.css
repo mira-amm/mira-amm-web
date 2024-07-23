@@ -1,0 +1,59 @@
+.steps {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.step {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.stepIcon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 40px;
+  color: var(--content-primary);
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.stepIcon > svg {
+  width: 16px;
+  height: 16px;
+}
+
+.claimButton {
+  width: 100%;
+}
+
+.buttonLink {
+  font-family: inherit;
+  font-size: inherit;
+  line-height: inherit;
+  display: inline;
+  background: transparent;
+  border: none;
+  text-decoration: underline;
+  cursor: pointer;
+  color: var(--content-primary);
+}
+
+.buttonLink:hover {
+  color: var(--content-secondary);
+}
+
+@media (min-width: 1024px) {
+  .steps {
+    flex-direction: row;
+    justify-content: space-between;
+    gap: 64px;
+  }
+
+  .claimButton {
+    max-width: 203px;
+  }
+}

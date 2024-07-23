@@ -3,27 +3,21 @@ import {clsx} from "clsx";
 
 import Coin from "@/src/components/common/Coin/Coin";
 import ChevronDownIcon from "@/src/components/icons/ChevronDown/ChevronDownIcon";
-import useModal from "@/src/hooks/useModal/useModal";
-import SearchIcon from "@/src/components/icons/Search/SearchIcon";
-import CoinListItem from "@/src/components/common/Swap/components/CoinListItem/CoinListItem";
-import {coinsConfig} from "@/src/utils/coinsConfig";
-import type {CurrencyBoxMode} from "@/src/components/common/Swap/Swap";
+import {CurrencyBoxMode} from "@/src/components/common/Swap/Swap";
 
 import styles from './CurrencyBox.module.css';
-import CoinsListModal from "@/src/components/common/Swap/components/CoinsListModal/CoinsListModal";
 
 type Props = {
   value: string;
   coin: string;
   mode: CurrencyBoxMode;
-  selectCoin: (coin: string) => void;
+  balance: number;
   setAmount: (amount: string) => void;
   loading: boolean;
+  onCoinSelectorClick: (mode: CurrencyBoxMode) => void;
 };
 
-const CurrencyBox = ({ value, coin, mode, selectCoin, setAmount, loading }: Props) => {
-  const [Modal, openModal, closeModal] = useModal();
-
+const CurrencyBox = ({ value, coin, mode, balance, setAmount, loading, onCoinSelectorClick }: Props) => {
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const inputValue = e.target.value;
     const re = /^[0-9]*[.,]?[0-9]*$/;
@@ -35,17 +29,13 @@ const CurrencyBox = ({ value, coin, mode, selectCoin, setAmount, loading }: Prop
 
   const handleCoinSelectorClick = () => {
     if (!loading) {
-      openModal();
+      onCoinSelectorClick(mode);
     }
   };
 
-  const handleCoinSelection = (coin: string) => {
-    selectCoin(coin);
-    closeModal();
-  };
-
-  // const noValue = state.amount === '' || state.amount === '0';
   const coinNotSelected = coin === '';
+
+  const balanceValue = parseFloat(balance.toFixed(6));
 
   return (
     <>
@@ -76,13 +66,19 @@ const CurrencyBox = ({ value, coin, mode, selectCoin, setAmount, loading }: Prop
             <ChevronDownIcon />
           </button>
         </div>
-        <p className={styles.estimate}>
-          {/*{!noValue && '$41 626.62'}*/}
-        </p>
+        <div className={styles.estimateAndBalance}>
+          <p className={styles.estimate}>
+            {/*{!noValue && '$41 626.62'}*/}
+          </p>
+          {balanceValue > 0 && (
+            <p>
+              Balance:
+              &nbsp;
+              {balanceValue}
+            </p>
+          )}
+        </div>
       </div>
-      <Modal title="Choose token">
-        <CoinsListModal selectCoin={handleCoinSelection} />
-      </Modal>
     </>
   );
 };

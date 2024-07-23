@@ -1,5 +1,5 @@
 import {useCallback, useRef, useState} from "react";
-import {useConnectUI, useIsConnected} from "@fuels/react";
+import {useAccount, useBalance, useConnectUI, useIsConnected, useWallet} from "@fuels/react";
 import {useDebounceCallback} from "usehooks-ts";
 import {clsx} from "clsx";
 
@@ -14,9 +14,16 @@ import useExactInputPreview from "@/src/hooks/useExactInputPreview/useExactInput
 import useExactOutputPreview from "@/src/hooks/useExactOutputPreview/useExactOutputPreview";
 import {coinsConfig} from "@/src/utils/coinsConfig";
 import useSwap from "@/src/hooks/useSwap/useSwap";
-import ExchangeIcon from "@/src/components/icons/Exchange/ExchangeIcon";
 
 import styles from "./Swap.module.css";
+import {EthAssetId} from "@/src/utils/constants";
+import ExchangeRate from "@/src/components/common/Swap/components/ExchangeRate/ExchangeRate";
+import useExchangeRate from "@/src/hooks/useExchangeRate/useExchangeRate";
+import {openNewTab} from "@/src/utils/common";
+import useBalances from "@/src/hooks/useBalances/useBalances";
+import CoinsListModal from "@/src/components/common/Swap/components/CoinsListModal/CoinsListModal";
+import SwapSuccessModal from "@/src/components/common/Swap/components/SwapSuccessModal/SwapSuccessModal";
+import TestnetLabel from "@/src/components/common/TestnetLabel/TestnetLabel";
 
 export type CurrencyBoxMode = "buy" | "sell";
 export type CurrencyBoxState = {
@@ -52,17 +59,27 @@ const initialInputsState: InputsState = {
 };
 
 const Swap = () => {
-  const [Modal, openModal] = useModal();
+  const [SettingsModal, openSettingsModal] = useModal();
+  const [CoinsModal, openCoinsModal, closeCoinsModal] = useModal();
+  const [SuccessModal, openSuccess] = useModal();
 
   const [swapState, setSwapState] = useState<SwapState>(initialSwapState);
   const [inputsState, setInputsState] = useState<InputsState>(initialInputsState);
   const [lastFocusedMode, setLastFocusedMode] = useState<CurrencyBoxMode>('sell');
 
-  const { isConnected } = useIsConnected();
-  const { connect, isConnecting } = useConnectUI();
-
   const previousInputPreviewValue = useRef('');
   const previousOutputPreviewValue = useRef('');
+
+  const { isConnected } = useIsConnected();
+  const { connect, isConnecting } = useConnectUI();
+  const { account } = useAccount();
+  const { balances } = useBalances();
+
+  const ethBalance = balances?.find(b => b.assetId === EthAssetId)?.amount.toNumber();
+  const sellBalance = balances?.find(b => b.assetId === coinsConfig.get(swapState.sell.coin)?.assetId)?.amount.toNumber();
+  const sellBalanceValue = sellBalance ? sellBalance / 10 ** coinsConfig.get(swapState.sell.coin)?.decimals! : 0;
+  const buyBalance = balances?.find(b => b.assetId === coinsConfig.get(swapState.buy.coin)?.assetId)?.amount.toNumber();
+  const buyBalanceValue = buyBalance ? buyBalance / 10 ** coinsConfig.get(swapState.buy.coin)?.decimals! : 0;
 
   const { data: inputPreviewData, isFetching: inputPreviewIsFetching } = useExactInputPreview({
     swapState,
@@ -105,20 +122,30 @@ const Swap = () => {
   }
 
   const changeCoins = () => {
-    // setSwapState(prevState => ({
-    //   buy: {
-    //     ...prevState.buy,
-    //     coin: prevState.sell.coin,
-    //   },
-    //   sell: {
-    //     ...prevState.sell,
-    //     coin: prevState.buy.coin,
-    //   },
-    // }));
     setSwapState(prevState => ({
-      sell: prevState.buy,
-      buy: prevState.sell,
+      buy: {
+        ...prevState.buy,
+        coin: prevState.sell.coin,
+      },
+      sell: {
+        ...prevState.sell,
+        coin: prevState.buy.coin,
+      },
     }));
+  };
+
+  const swapAssets = () => {
+    setSwapState(prevState => ({
+      buy: {
+        coin: prevState.sell.coin,
+        amount: prevState.sell.amount,
+      },
+      sell: {
+        coin: prevState.buy.coin,
+        amount: prevState.buy.amount,
+      },
+    }));
+    // setLastFocusedMode(lastFocusedMode === 'buy' ? 'sell' : 'buy');
   };
 
   const selectCoin = useCallback((mode: "buy" | "sell") => {
@@ -161,29 +188,57 @@ const Swap = () => {
     };
   }, [debouncedSetState]);
 
-  const { mutate, isPending: isSwapPending } = useSwap({ swapState, mode: lastFocusedMode });
+  const handleCoinSelectorClick = useCallback((mode: CurrencyBoxMode) => {
+    openCoinsModal();
+    setLastFocusedMode(mode);
+  }, []);
+
+  const handleCoinSelection = (coin: string) => {
+    selectCoin(lastFocusedMode)(coin);
+    closeCoinsModal();
+  };
+
+  const { mutate, mutateAsync, data: swapData, isPending: isSwapPending } = useSwap({ swapState, mode: lastFocusedMode });
 
   const coinMissing = swapState.buy.coin === '' || swapState.sell.coin === '';
   const amountMissing = swapState.buy.amount === '' || swapState.sell.amount === '';
-  const handleSwapClick = () => {
+  const insufficientEthBalance = ethBalance !== undefined && ethBalance === 0;
+  const handleSwapClick = useCallback( async () => {
+    if (insufficientEthBalance) {
+      openNewTab(`https://faucet-testnet.fuel.network/?address=${account}`);
+      return;
+    }
+
     if (coinMissing || amountMissing || isSwapPending) {
       return;
     }
-    mutate();
-  };
 
-  const swapButtonTitle = isSwapPending ? 'Waiting for approval in wallet' : 'Swap';
+    const data = await mutateAsync();
 
-  const showRate = swapState.buy.amount && swapState.sell.amount;
-  const buyRate = showRate ? parseFloat(swapState.buy.amount) / parseFloat(swapState.sell.amount) : 0;
-  const rate = `${1} ${swapState.sell.coin} ≈ ${buyRate.toFixed(6)} ${swapState.buy.coin}`;
+    if (data) {
+      openSuccess();
+    }
+  }, [insufficientEthBalance, coinMissing, amountMissing, isSwapPending]);
+
+  const insufficientSellBalance = parseFloat(sellValue) > sellBalanceValue;
+
+  let swapButtonTitle = 'Swap';
+  if (isSwapPending) {
+    swapButtonTitle = 'Waiting for approval in wallet';
+  } else if (insufficientEthBalance) {
+    swapButtonTitle = 'Claim some ETH to pay for gas';
+  } else if (insufficientSellBalance) {
+    swapButtonTitle = 'Insufficient balance';
+  }
+
+  const exchangeRate = useExchangeRate(swapState);
 
   return (
     <>
       <div className={clsx(styles.swapContainer, isSwapPending && styles.swapContainerLoading)}>
         <div className={styles.heading}>
           <p className={styles.title}>Swap</p>
-          <IconButton onClick={openModal} className={styles.settingsButton}>
+          <IconButton onClick={openSettingsModal} className={styles.settingsButton}>
             <SettingsIcon />
           </IconButton>
         </div>
@@ -191,12 +246,13 @@ const Swap = () => {
           value={sellValue}
           coin={swapState.sell.coin}
           mode="sell"
-          selectCoin={selectCoin('sell')}
+          balance={sellBalanceValue}
           setAmount={setAmount('sell')}
           loading={outputPreviewIsFetching || isSwapPending}
+          onCoinSelectorClick={handleCoinSelectorClick}
         />
         <div className={styles.splitter}>
-          <IconButton onClick={changeCoins} className={styles.convertButton}>
+          <IconButton onClick={swapAssets} className={styles.convertButton}>
             <ConvertIcon />
           </IconButton>
         </div>
@@ -204,15 +260,16 @@ const Swap = () => {
           value={buyValue}
           coin={swapState.buy.coin}
           mode="buy"
-          selectCoin={selectCoin('buy')}
+          balance={buyBalanceValue}
           setAmount={setAmount('buy')}
           loading={inputPreviewIsFetching || isSwapPending}
+          onCoinSelectorClick={handleCoinSelectorClick}
         />
         {isSwapPending && (
           <div className={styles.summary}>
             <div className={styles.summaryEntry}>
               <p>Rate</p>
-              <p>{rate}</p>
+              <p>{exchangeRate}</p>
             </div>
             <div className={styles.summaryEntry}>
               <p>Fee (0.25%)</p>
@@ -236,21 +293,17 @@ const Swap = () => {
         {isConnected && (
           <ActionButton
             variant="primary"
+            disabled={insufficientSellBalance}
             onClick={handleSwapClick}
           >
             {swapButtonTitle}
           </ActionButton>
         )}
       </div>
-      {showRate && (
-        <p className={styles.exchangeRate}>
-          {rate}
-          <ExchangeIcon />
-        </p>
-      )}
+      <ExchangeRate swapState={swapState} />
       {isSwapPending && <div className={styles.loadingOverlay} />}
       {/* TODO: Create modal content component */}
-      <Modal title="Settings">
+      <SettingsModal title="Settings">
         <div className={styles.settingsContainer}>
           <div className={styles.settingsSection}>
             <p>Slippage Tolerance</p>
@@ -277,7 +330,13 @@ const Swap = () => {
             </p>
           </div>
         </div>
-      </Modal>
+      </SettingsModal>
+      <CoinsModal title="Choose token">
+        <CoinsListModal selectCoin={handleCoinSelection} balances={balances} />
+      </CoinsModal>
+      <SuccessModal title={<TestnetLabel />}>
+        <SwapSuccessModal swapState={swapState} transactionHash={swapData?.id} />
+      </SuccessModal>
     </>
   );
 };
