@@ -1,0 +1,183 @@
+.faucetPageLayout {
+  display: flex;
+  flex-direction: column;
+  gap: 72px;
+  padding: 0 16px 72px;
+}
+
+.greetingSection {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 24px;
+}
+
+.lizardImage {
+  width: 84px;
+  height: 84px;
+  border-radius: 50%;
+}
+
+.description {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.heading {
+  font-family: var(--font-sf-ui-text) sans-serif;
+  font-weight: 600;
+  font-size: 42px;
+  line-height: 46px;
+  text-align: center;
+}
+
+.headingHighlight {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  background: radial-gradient(125.88% 889.57% at -1.46% 26.54%, #03AEF5 25%, #66CC07 50%, #C900FF 85%) /* warning: gradient uses a rotation that is not supported by CSS and may not behave as expected */;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.descriptionText {
+  font-size: 16px;
+  line-height: 22px;
+  text-align: center;
+  color: var(--content-secondary);
+}
+
+.claimSection {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 24px;
+}
+
+.claimHeading {
+  font-family: var(--font-sf-ui-text) sans-serif;
+  font-size: 27px;
+  font-weight: 500;
+  line-height: 33px;
+  letter-spacing: 0.005em;
+  text-align: center;
+}
+
+.conditionsSection {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 24px;
+}
+
+.conditions {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.condition {
+  display: flex;
+  align-items: center;
+  padding: 12px 10px;
+  gap: 16px;
+  background-color: rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+}
+
+.conditionIcon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 40px;
+  color: var(--content-primary);
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.conditionIcon > svg {
+  width: 16px;
+  height: 16px;
+}
+
+.highlight {
+  color: var(--accent-primary);
+}
+
+.swapSection {
+  width: 100%;
+}
+
+@media (min-width: 1024px) {
+  .faucetPageLayout {
+    max-width: 832px;
+    align-items: center;
+    padding-top: 72px;
+    margin: auto;
+    gap: 104px;
+  }
+
+  .greetingSection {
+    max-width: 531px;
+    gap: 40px;
+  }
+
+  .heading {
+    font-size: 60px;
+    font-weight: 600;
+    line-height: 64px;
+    letter-spacing: 0.005em;
+  }
+
+  .descriptionText {
+    font-size: 18px;
+    font-weight: 400;
+    line-height: 26px;
+  }
+
+  .lizardImage {
+    width: 124px;
+    height: 124px;
+  }
+
+  .description {
+    gap: 24px;
+  }
+
+  .claimSection {
+    align-items: center;
+    gap: 44px;
+  }
+
+  .claimHeading {
+    font-size: 32px;
+    font-weight: 600;
+    line-height: 40px;
+    letter-spacing: 0.005em;
+  }
+
+  .conditionsSection {
+    width: 100%;
+  }
+
+  .conditions {
+    flex-direction: row;
+  }
+
+  .condition {
+    flex: 1;
+    font-size: 18px;
+    font-weight: 500;
+    line-height: 22px;
+    text-align: left;
+    padding: 16px;
+    border-radius: 16px;
+  }
+
+  .swapSection {
+    max-width: 440px;
+  }
+}

@@ -1,4 +1,4 @@
-import {ReactNode} from "react";
+import {memo, ReactNode} from "react";
 import styles from './IconButton.module.css';
 import {clsx} from "clsx";
 
@@ -17,4 +17,4 @@ const IconButton = ({ children, onClick, className, type }: Props) => {
   );
 };
 
-export default IconButton;
+export default memo(IconButton);

@@ -1,58 +1,65 @@
-import styles from './CurrencyBox.module.css';
+import {ChangeEvent, memo} from "react";
+import {clsx} from "clsx";
+
 import Coin from "@/src/components/common/Coin/Coin";
 import ChevronDownIcon from "@/src/components/icons/ChevronDown/ChevronDownIcon";
-import useModal from "@/src/hooks/useModal/useModal";
-import SearchIcon from "@/src/components/icons/Search/SearchIcon";
-import {ChangeEvent, useState} from "react";
-import {clsx} from "clsx";
-import CoinListItem from "@/src/components/common/Swap/components/CoinListItem/CoinListItem";
+import {CurrencyBoxMode} from "@/src/components/common/Swap/Swap";
+import {CoinName} from "@/src/utils/coinsConfig";
+
+import styles from './CurrencyBox.module.css';
 
 type Props = {
-  mode: 'buy' | 'sell';
+  value: string;
+  coin: CoinName;
+  mode: CurrencyBoxMode;
+  balance: number;
+  setAmount: (amount: string) => void;
+  loading: boolean;
+  onCoinSelectorClick: (mode: CurrencyBoxMode) => void;
 };
 
-const CurrencyBox = ({ mode }: Props) => {
-  const [Modal, openModal, closeModal] = useModal();
-  const [value, setValue] = useState('0');
-  const [coin, setCoin] = useState('');
-
+const CurrencyBox = ({ value, coin, mode, balance, setAmount, loading, onCoinSelectorClick }: Props) => {
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-    let inputValue = e.target.value;
-    // Allow numbers, a single period for decimal numbers, or nothing at all for an empty string
-    const re = /^-?\d*[.]?\d*$/;
+    const inputValue = e.target.value;
+    const re = /^[0-9]*[.,]?[0-9]*$/;
 
-    // If value is empty or matches regular expression, update the state
-    if (inputValue === '' || re.test(inputValue)) {
-      setValue(e.target.value);
+    if (re.test(inputValue)) {
+      setAmount(inputValue);
     }
-    // If input is empty or no 0's followed by non-zero number
-    // if (inputValue === '' || /^0[^.][0-9]*$/.test(inputValue)) {
-    //   setValue('0');
-    // }
-    // If input starts with 0 and not followed by dot
-    // if (inputValue[0] === '0' && inputValue[1] !== '.') {
-    //   setValue(inputValue.slice(1));
-    // } else {
-    //   setValue(inputValue)
-    // }
   };
 
-  const selectCoin = (coin: string) => {
-    setCoin(coin);
-    closeModal();
-  }
+  const handleCoinSelectorClick = () => {
+    if (!loading) {
+      onCoinSelectorClick(mode);
+    }
+  };
 
-  const noValue = value === '0' || value === '';
-
+  // @ts-ignore
   const coinNotSelected = coin === '';
+
+  const balanceValue = parseFloat(balance.toFixed(6));
 
   return (
     <>
       <div className={styles.currencyBox}>
         <p className={styles.title}>{mode === 'buy' ? 'Buy' : 'Sell'}</p>
         <div className={styles.content}>
-          <input className={styles.input} type="text" value={value} onChange={handleChange}/>
-          <button className={clsx(styles.selector, coinNotSelected && styles.selectorHighlighted)} onClick={openModal}>
+          <input
+            className={styles.input}
+            type="text"
+            inputMode="decimal"
+            pattern="^[0-9]*[.,]?[0-9]*$"
+            placeholder="0"
+            minLength={1}
+            value={value}
+            disabled={coinNotSelected || loading}
+            onChange={handleChange}
+          />
+          <button
+            className={clsx(styles.selector, coinNotSelected && styles.selectorHighlighted)}
+            onClick={handleCoinSelectorClick}
+            disabled={loading}
+          >
             {coinNotSelected ? (
               <p className={styles.chooseCoin}>Choose coin</p>
             ) : (
@@ -61,38 +68,21 @@ const CurrencyBox = ({ mode }: Props) => {
             <ChevronDownIcon />
           </button>
         </div>
-        <p className={styles.estimate}>
-          {!noValue && '$41 626.62'}
-        </p>
+        <div className={styles.estimateAndBalance}>
+          <p className={styles.estimate}>
+            {/*{!noValue && '$41 626.62'}*/}
+          </p>
+          {balanceValue > 0 && (
+            <p>
+              Balance:
+              &nbsp;
+              {balanceValue}
+            </p>
+          )}
+        </div>
       </div>
-      <Modal title="Choose token">
-        <div className={styles.tokenSearch}>
-          <SearchIcon />
-          <input className={styles.tokenSearchInput} type="text" placeholder="Search by token or paste address"/>
-        </div>
-        <div className={styles.tokenList}>
-          <div className={styles.tokenListItem} onClick={() => selectCoin('USDT')}>
-            <CoinListItem name="USDT"/>
-          </div>
-          <div className={styles.tokenListItem} onClick={() => selectCoin('USDC')}>
-            <CoinListItem name="USDC" fullName="USD Coin"/>
-          </div>
-          <div className={styles.tokenListItem} onClick={() => selectCoin('BTC')}>
-            <CoinListItem name="BTC" fullName="Bitcoin"/>
-          </div>
-          <div className={styles.tokenListItem} onClick={() => selectCoin('ETH')}>
-            <CoinListItem name="ETH" fullName="Ethereum"/>
-          </div>
-          <div className={styles.tokenListItem} onClick={() => selectCoin('UNI')}>
-            <CoinListItem name="UNI" fullName="Uniswap"/>
-          </div>
-          <div className={styles.tokenListItem} onClick={() => selectCoin('DAI')}>
-            <CoinListItem name="DAI" fullName="DAI"/>
-          </div>
-        </div>
-      </Modal>
     </>
   );
 };
 
-export default CurrencyBox;
+export default memo(CurrencyBox);

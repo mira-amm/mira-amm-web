@@ -1,7 +1,6 @@
 'use client';
 
 import Header from "@/src/components/common/Header/Header";
-import ActionButton from "@/src/components/common/ActionButton/ActionButton";
 import FuelIcon from "@/src/components/icons/Fuel/FuelIcon";
 import Swap from "@/src/components/common/Swap/Swap";
 import DiscordIcon from "@/src/components/icons/Discord/DiscordIcon";
@@ -11,6 +10,7 @@ import Footer from "@/src/components/common/Footer/Footer";
 import styles from './LandingPageLayout.module.css';
 import {clsx} from "clsx";
 import LaunchAppButton from "@/src/components/common/LaunchAppButton/LaunchAppButton";
+import {DiscordLink, XLink} from "@/src/utils/constants";
 
 const LandingPageLayout = () => {
   return (
@@ -34,14 +34,14 @@ const LandingPageLayout = () => {
           <p className={styles.subheading}>
             Connect with our thriving community
           </p>
-          <div className={clsx(styles.socialBlock, styles.discordBlock)}>
+          <a href={DiscordLink} className={clsx(styles.socialBlock, styles.discordBlock)} target="_blank">
             <DiscordIcon/>
             <p>Mira Discord community</p>
-          </div>
-          <div className={clsx(styles.socialBlock, styles.xBlock)}>
+          </a>
+          <a href={XLink} className={clsx(styles.socialBlock, styles.xBlock)} target="_blank">
             <XIcon/>
             <p>Follow us on X</p>
-          </div>
+          </a>
         </section>
       </main>
 
@@ -70,16 +70,16 @@ const LandingPageLayout = () => {
             </p>
           </div>
           <div className={styles.socialBlocks}>
-            <div className={clsx(styles.socialBlock, styles.discordBlock)}>
+            <a href={DiscordLink} className={clsx(styles.socialBlock, styles.discordBlock)} target="_blank">
               <DiscordIcon/>
               <p>Mira Discord community</p>
-            </div>
-            <div className={clsx(styles.socialBlock, styles.xBlock)}>
+            </a>
+            <a href={XLink} className={clsx(styles.socialBlock, styles.xBlock)} target="_blank">
               <div className={styles.xIconWrapper}>
                 <XIcon/>
               </div>
               <p>Follow us on X</p>
-            </div>
+            </a>
           </div>
         </section>
       </main>

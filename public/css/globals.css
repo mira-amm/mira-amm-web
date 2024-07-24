@@ -67,10 +67,6 @@ input:focus {
   outline: none;
 }
 
-.no-scroll {
-  overflow: hidden;
-}
-
 @media (min-width: 1024px) {
   h1 {
     font-size: 64px;

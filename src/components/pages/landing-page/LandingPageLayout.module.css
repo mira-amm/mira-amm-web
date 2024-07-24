@@ -15,6 +15,7 @@
   font-weight: 400;
   font-size: 16px;
   line-height: 22px;
+  margin-bottom: 32px;
   color: var(--content-secondary);
 }
 
@@ -72,6 +73,7 @@
   .subheading {
     font-size: 20px;
     line-height: 28px;
+    margin-bottom: 0;
   }
 
   .launchAppButton {
@@ -80,6 +82,9 @@
 
   .swap {
     width: 440px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
   }
 
   .fuel {

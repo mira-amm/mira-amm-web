@@ -11,6 +11,7 @@
 .names {
   display: flex;
   flex-direction: column;
+  flex: 1;
   gap: 4px;
 }
 
@@ -26,14 +27,25 @@
   color: var(--content-dimmed-light);
 }
 
-@media (min-width: 1024px) {
-  .name {
-    font-size: 20px;
-    line-height: 24px;
-  }
+.balance {
+  font-size: 14px;
+  line-height: 16px;
+  color: var(--content-dimmed-dark);
+}
 
-  .fullName {
-    font-size: 16px;
-    line-height: 19px;
-  }
+@media (min-width: 1024px) {
+  /*.name {*/
+  /*  font-size: 18px;*/
+  /*  line-height: 22px;*/
+  /*}*/
+
+  /*.fullName {*/
+  /*  font-size: 14px;*/
+  /*  line-height: 16px;*/
+  /*}*/
+
+  /*.balance {*/
+  /*  font-size: 14px;*/
+  /*  line-height: 16px;*/
+  /*}*/
 }

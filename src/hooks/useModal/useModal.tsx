@@ -5,9 +5,10 @@ import styles from './Modal.module.css';
 import {clsx} from "clsx";
 import IconButton from "@/src/components/common/IconButton/IconButton";
 import CloseIcon from "@/src/components/icons/Close/CloseIcon";
+import {useScrollLock} from "usehooks-ts";
 
 type ModalProps = {
-  title: string;
+  title: string | ReactNode;
   children: ReactNode;
   className?: string;
 }
@@ -17,39 +18,47 @@ type ReturnType = (props: ModalProps) => ReactPortal | null;
 const useModal = (): [ReturnType, () => void, () => void] => {
   const [isOpen, setIsOpen] = useState(false);
 
-  useEffect(() => {
-    if (isOpen) {
-      document.body.classList.add('no-scroll');
-    } else {
-      document.body.classList.remove('no-scroll');
-    }
-  }, [isOpen]);
+  const { lock, unlock } = useScrollLock({ autoLock: false });
 
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
       if (event.key === 'Escape') {
         setIsOpen(false);
       }
-
-      window.addEventListener('keydown', handleKeyDown);
-
-      return () => {
-        window.removeEventListener('keydown', handleKeyDown);
-      };
     }
+
+    window.addEventListener('keydown', handleKeyDown);
+
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+    };
   }, []);
 
-  const openModal = useCallback(() => setIsOpen(true), []);
-  const closeModal = useCallback(() => setIsOpen(false), []);
+  useEffect(() => {
+    if (isOpen) {
+      lock();
+    } else {
+      unlock();
+    }
+  }, [isOpen]);
+
+  const openModal = useCallback(() => {
+    setIsOpen(true);
+  }, []);
+  const closeModal = useCallback(() => {
+    setIsOpen(false);
+  }, []);
 
   const Modal = ({ title, children, className }: ModalProps) => isOpen ? createPortal(
     <>
       <div className={styles.modalBackdrop} onClick={closeModal} />
       <div className={clsx(styles.modalWindow, className)}>
         <div className={styles.modalHeading}>
-          <p className={styles.modalTitle}>{title}</p>
+          <div className={styles.modalTitle}>
+            {title}
+          </div>
           <IconButton onClick={closeModal}>
-            <CloseIcon />
+          <CloseIcon />
           </IconButton>
         </div>
         {children}

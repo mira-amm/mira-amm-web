@@ -37,3 +37,24 @@ button.connected:hover .disconnectLabel {
   transition-delay: 0s;
   margin-left: 4px;
 }
+
+.modalTitle {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 16px;
+  line-height: 16px;
+}
+
+.modalContent {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.modalText {
+  font-size: 25px;
+  font-weight: 500;
+  line-height: 32px;
+  text-align: left;
+}

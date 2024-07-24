@@ -1,4 +1,5 @@
 import Logo from "@/src/components/common/Logo/Logo";
+import {DiscordLink, XLink} from "@/src/utils/constants";
 
 import styles from './Footer.module.css';
 
@@ -11,11 +12,11 @@ const Footer = () => {
       <section className={styles.content}>
         <Logo/>
         <div className={styles.links}>
-          <a href="#" className="desktopOnly">Discord</a>
-          <a href="#">Github</a>
-          <a href="#" className="desktopOnly">X</a>
-          <a href="#">Article</a>
-          <a href="#">Docs</a>
+          {/*<a href={DiscordLink} className="desktopOnly" target="_blank">Discord</a>*/}
+          {/*<a href="#">Github</a>*/}
+          {/*<a href={XLink} className="desktopOnly" target="_blank">X</a>*/}
+          {/*<a href="#">Article</a>*/}
+          {/*<a href="#">Docs</a>*/}
         </div>
         <p className="desktopOnly">&copy; {currentYear} Legal Disclaimer</p>
       </section>

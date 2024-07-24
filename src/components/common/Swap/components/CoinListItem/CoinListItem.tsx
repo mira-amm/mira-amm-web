@@ -1,48 +1,35 @@
-import {memo, useMemo} from "react";
+import {memo} from "react";
+import {clsx} from "clsx";
+import {CoinQuantity} from "fuels";
 
-import USDTIcon from "@/src/components/icons/coins/Tether/USDTIcon";
+import {CoinName, coinsConfig} from "@/src/utils/coinsConfig";
 
 import styles from './CoinListItem.module.css';
-import BTCIcon from "@/src/components/icons/coins/Bitcoin/BTCIcon";
-import USDCIcon from "@/src/components/icons/coins/USDCoin/USDCIcon";
-import UNIIcon from "@/src/components/icons/coins/Uniswap/UNIIcon";
-import DAIIcon from "@/src/components/icons/coins/DAI/DAIIcon";
-import ETHIcon from "@/src/components/icons/coins/Ethereum/ETHIcon";
-import {clsx} from "clsx";
 
 type Props = {
-  name: string;
-  fullName?: string;
+  name: CoinName;
+  balance?: CoinQuantity | undefined;
 };
 
-const CoinListItem = ({ name, fullName }: Props) => {
-  const IconComponent = useMemo(() => {
-    switch (name) {
-      case 'USDT':
-        return USDTIcon;
-      case 'BTC':
-        return BTCIcon;
-      case 'USDC':
-        return USDCIcon;
-      case 'UNI':
-        return UNIIcon;
-      case 'DAI':
-        return DAIIcon;
-      case 'ETH':
-        return ETHIcon;
-      default:
-        return null;
-    }
-  }, [name]);
+const CoinListItem = ({ name, balance }: Props) => {
+  const coinData = coinsConfig.get(name);
+  const fullName = coinData?.fullName;
+  const Icon = coinData?.icon;
+  const decimals = coinData?.decimals ?? 0;
+  const balanceValue = balance ? balance.amount.toNumber() / 10 ** decimals : 0;
 
   return (
     <span className={clsx(styles.coin, !fullName && styles.centered)}>
-      {/* TODO: Select icon from dictionary */}
-      {IconComponent && <IconComponent />}
+      {Icon && <Icon />}
       <div className={styles.names}>
         <p className={styles.name}>{name}</p>
-        {fullName && <p className={styles.fullName}>{fullName}</p>}
+        {fullName && (
+          <p className={styles.fullName}>{fullName}</p>
+        )}
       </div>
+      {balanceValue > 0 && (
+        <p className={styles.balance}>{balanceValue}</p>
+      )}
     </span>
   )
 };

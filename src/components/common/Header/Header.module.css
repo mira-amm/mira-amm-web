@@ -30,6 +30,14 @@
   gap: 4px;
 }
 
+.disconnectMobile {
+  gap: 4px !important;
+  padding: 5px 8px !important;
+  font-weight: 500 !important;
+  font-size: 12px !important;
+  line-height: 16px !important;
+}
+
 .pointsText {
   position: relative;
   display: inline-flex;
@@ -38,6 +46,7 @@
   background-image: radial-gradient(114.58% 814.77% at -1.46% 26.54%, #AEED0D 0%, #5872FC 49.15%, #31FE3A 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
+  cursor: pointer;
 }
 
 @media (min-width: 1024px) {
@@ -86,6 +95,13 @@
     color: var(--content-primary) !important;
   }
 
+  .linkAlike {
+    display: inline-flex;
+    position: relative;
+    align-items: center;
+    cursor: pointer;
+  }
+
   .hiddenLabel {
     opacity: 0;
     padding: 0;
@@ -93,7 +109,7 @@
     transition: opacity .5s, max-width .5s, padding 0s .3s, margin-left 0s .3s;
   }
 
-  .link:hover .hiddenLabel, .pointsText:hover .hiddenLabel {
+  div:hover > .hiddenLabel {
     opacity: 1;
     max-width: 200px;
     padding: 2px 8px 3px;
@@ -114,12 +130,7 @@
   }
 
   .testnetLabel {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    padding: 8px 14px 8px 14px;
-    border-radius: 20px;
-    border: 1px solid var(--content-primary);
+    cursor: pointer;
   }
 
   .launchAppButton {
