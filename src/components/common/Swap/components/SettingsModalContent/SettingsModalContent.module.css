@@ -34,6 +34,19 @@
   cursor: pointer;
 }
 
+.slippageButton:disabled {
+  color: var(--content-dimmed-light);
+  background-color: var(--background-grey-dark);
+  cursor: not-allowed;
+}
+
+.slippageButton:disabled:hover {
+  color: var(--content-dimmed-light);
+  background-color: var(--background-grey-dark);
+  border-color: transparent;
+  cursor: not-allowed;
+}
+
 .slippageButtonActive {
   border-color: var(--accent-primary);
 }

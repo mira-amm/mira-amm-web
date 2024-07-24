@@ -1,5 +1,5 @@
 import {useCallback, useRef, useState} from "react";
-import {useAccount, useBalance, useConnectUI, useIsConnected, useWallet} from "@fuels/react";
+import {useAccount, useConnectUI, useIsConnected} from "@fuels/react";
 import {useDebounceCallback} from "usehooks-ts";
 import {clsx} from "clsx";
 
@@ -9,7 +9,6 @@ import ActionButton from "@/src/components/common/ActionButton/ActionButton";
 import ConvertIcon from "@/src/components/icons/Convert/ConvertIcon";
 import IconButton from "@/src/components/common/IconButton/IconButton";
 import useModal from "@/src/hooks/useModal/useModal";
-import InfoIcon from "@/src/components/icons/Info/InfoIcon";
 import useExactInputPreview from "@/src/hooks/useExactInputPreview/useExactInputPreview";
 import useExactOutputPreview from "@/src/hooks/useExactOutputPreview/useExactOutputPreview";
 import {coinsConfig} from "@/src/utils/coinsConfig";
@@ -76,7 +75,7 @@ const Swap = () => {
   const { isConnected } = useIsConnected();
   const { connect, isConnecting } = useConnectUI();
   const { account } = useAccount();
-  const { balances } = useBalances();
+  const { balances, isPending } = useBalances();
 
   const ethBalance = balances?.find(b => b.assetId === EthAssetId)?.amount.toNumber();
   const sellBalance = balances?.find(b => b.assetId === coinsConfig.get(swapState.sell.coin)?.assetId)?.amount.toNumber();
@@ -203,7 +202,7 @@ const Swap = () => {
 
   const coinMissing = swapState.buy.coin === '' || swapState.sell.coin === '';
   const amountMissing = swapState.buy.amount === '' || swapState.sell.amount === '';
-  const insufficientEthBalance = ethBalance !== undefined && ethBalance === 0;
+  const insufficientEthBalance = !ethBalance || ethBalance === 0;
   const handleSwapClick = useCallback( async () => {
     if (insufficientEthBalance) {
       openNewTab(`https://faucet-testnet.fuel.network/?address=${account}`);
@@ -306,6 +305,7 @@ const Swap = () => {
             variant="primary"
             disabled={insufficientSellBalance}
             onClick={handleSwapClick}
+            loading={isPending}
           >
             {swapButtonTitle}
           </ActionButton>

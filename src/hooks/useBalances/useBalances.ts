@@ -4,7 +4,7 @@ import {useQuery} from "@tanstack/react-query";
 const useBalances = () => {
   const { wallet } = useWallet();
 
-  const { data } = useQuery({
+  const { data, isPending } = useQuery({
     queryKey: ['balances', wallet?.address],
     queryFn: async () => {
       if (!wallet) {
@@ -16,7 +16,7 @@ const useBalances = () => {
     enabled: Boolean(wallet),
   });
 
-  return { balances: data?.balances };
+  return { balances: data?.balances, isPending };
 };
 
 export default useBalances;

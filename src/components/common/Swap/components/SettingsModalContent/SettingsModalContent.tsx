@@ -48,6 +48,7 @@ const SettingsModalContent = ({ slippage, setSlippage }: Props) => {
           <button
             className={clsx(styles.slippageButton, isCustomMode && styles.slippageButtonActive)}
             onClick={() => setMode('custom')}
+            disabled
           >
             Custom
           </button>

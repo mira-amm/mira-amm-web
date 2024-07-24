@@ -12,12 +12,16 @@ import {getAuth} from "firebase/auth";
 import {openNewTab} from "@/src/utils/common";
 import ClaimSuccessModal from "@/src/components/common/FaucetClaim/components/ClaimSuccessModal/ClaimSuccessModal";
 import useClaimFaucet from "@/src/hooks/useClaimFaucet/useClaimFaucet";
+import {useConnectUI, useIsConnected} from "@fuels/react";
 
 const FaucetClaim = () => {
   const [FailureModal, openFailureModal] = useModal();
   const [SuccessModal, openSuccessModal] = useModal();
   const [followClicked, setFollowClicked] = useState(false);
   const [retweetClicked, setRetweetClicked] = useState(false);
+
+  const { isConnected } = useIsConnected();
+  const { connect } = useConnectUI();
 
   const { data, mutateAsync, reset } = useTwitterAuth();
 
@@ -33,7 +37,7 @@ const FaucetClaim = () => {
 
   const notAllStepsCompleted = !data || !followClicked || !retweetClicked;
 
-  const { data: claimData, mutateAsync: claim, isPending } = useClaimFaucet();
+  const { mutateAsync: claim, isPending } = useClaimFaucet();
 
   const handleClaimClick = useCallback(async () => {
     if (notAllStepsCompleted) {
@@ -41,12 +45,24 @@ const FaucetClaim = () => {
       return;
     }
 
-    const claimData = await claim();
-    if (claimData) {
-      openSuccessModal();
-      console.log(claimData);
+    if (!isConnected) {
+      connect();
+      return;
     }
-  }, [notAllStepsCompleted, claim, openFailureModal, openSuccessModal]);
+
+    const claimData = await claim();
+    const result = await claimData?.waitForResult();
+    if (result?.transactionResult.status === 'success') {
+      openSuccessModal();
+    }
+  }, [
+    notAllStepsCompleted,
+    isConnected,
+    claim,
+    openFailureModal,
+    connect,
+    openSuccessModal
+  ]);
 
   const handleFollowClick = () => {
     openNewTab('https://x.com/MiraProtocol');
@@ -67,7 +83,8 @@ const FaucetClaim = () => {
           </div>
           {data ? (
             <div>
-              {data.user.displayName}&nbsp;
+              {data.user.displayName}
+              &nbsp;
               <button className={styles.buttonLink} onClick={handleDisconnectClick}>
                 Disconnect
               </button>
@@ -77,7 +94,8 @@ const FaucetClaim = () => {
               <button className={styles.buttonLink} onClick={handleConnectClick}>
                 Connect
               </button>
-              &nbsp;Twitter
+              &nbsp;
+              Twitter
             </div>
           )}
         </div>
@@ -101,7 +119,12 @@ const FaucetClaim = () => {
           </button>
         </div>
       </div>
-      <ActionButton className={styles.claimButton} loading={isPending} onClick={handleClaimClick}>
+      <ActionButton
+        className={styles.claimButton}
+        loading={isPending}
+        disabled={!data && !followClicked && !retweetClicked}
+        onClick={handleClaimClick}
+      >
         Claim $mimicMIRA
       </ActionButton>
       <FailureModal title={<TestnetLabel />}>
