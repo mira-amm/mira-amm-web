@@ -1,27 +1,12 @@
 .coin {
   display: flex;
+  align-items: center;
   gap: 8px;
   color: var(--content-primary);
-}
-
-.centered {
-  align-items: center;
-}
-
-.names {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
 }
 
 .name {
   font-size: 18px;
   font-weight: 500;
   line-height: 22px;
-}
-
-.fullName {
-  font-size: 16px;
-  line-height: 19px;
-  color: var(--content-dimmed-light);
 }

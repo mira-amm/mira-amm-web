@@ -1,49 +1,21 @@
-import {memo, useMemo} from "react";
+import {memo} from "react";
 
-import USDTIcon from "@/src/components/icons/coins/Tether/USDTIcon";
+import {CoinName, coinsConfig} from "@/src/utils/coinsConfig";
 
 import styles from './Coin.module.css';
-import BTCIcon from "@/src/components/icons/coins/Bitcoin/BTCIcon";
-import USDCIcon from "@/src/components/icons/coins/USDCoin/USDCIcon";
-import UNIIcon from "@/src/components/icons/coins/Uniswap/UNIIcon";
-import DAIIcon from "@/src/components/icons/coins/DAI/DAIIcon";
-import ETHIcon from "@/src/components/icons/coins/Ethereum/ETHIcon";
-import {clsx} from "clsx";
 
 type Props = {
-  name: string;
-  fullName?: string;
+  name: CoinName;
 };
 
-const Coin = ({ name, fullName }: Props) => {
-  const IconComponent = useMemo(() => {
-    switch (name) {
-      case 'USDT':
-        return USDTIcon;
-      case 'BTC':
-        return BTCIcon;
-      case 'USDC':
-        return USDCIcon;
-      case 'UNI':
-        return UNIIcon;
-      case 'DAI':
-        return DAIIcon;
-      case 'ETH':
-        return ETHIcon;
-      default:
-        return null;
-    }
-  }, [name]);
+const Coin = ({ name }: Props) => {
+  const Icon = coinsConfig.get(name)?.icon;
 
   return (
-    <span className={clsx(styles.coin, !fullName && styles.centered)}>
-      {/* TODO: Select icon from dictionary */}
-      {IconComponent && <IconComponent />}
-      <div className={styles.names}>
-        <p className={styles.name}>{name}</p>
-        {fullName && <p className={styles.fullName}>{fullName}</p>}
-      </div>
-    </span>
+    <div className={styles.coin}>
+      {Icon && <Icon />}
+      <p className={styles.name}>{name}</p>
+    </div>
   )
 };
 

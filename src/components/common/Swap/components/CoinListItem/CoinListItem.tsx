@@ -1,12 +1,13 @@
 import {memo} from "react";
 import {clsx} from "clsx";
-
-import styles from './CoinListItem.module.css';
-import {coinsConfig} from "@/src/utils/coinsConfig";
 import {CoinQuantity} from "fuels";
 
+import {CoinName, coinsConfig} from "@/src/utils/coinsConfig";
+
+import styles from './CoinListItem.module.css';
+
 type Props = {
-  name: string;
+  name: CoinName;
   balance?: CoinQuantity | undefined;
 };
 

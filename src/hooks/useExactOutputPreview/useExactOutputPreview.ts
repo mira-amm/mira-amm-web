@@ -1,9 +1,8 @@
-import {coinsConfig} from "@/src/utils/coinsConfig";
 import useMiraDex from "@/src/hooks/useMiraDex/useMiraDex";
 import {useQuery} from "@tanstack/react-query";
 import type {CurrencyBoxMode, SwapState} from "@/src/components/common/Swap/Swap";
-import {DefaultTxParams} from "@/src/utils/constants";
-import type {AssetIdInput, AssetInput} from "mira-dex-ts/src/typegen/amm-contract/AmmContractAbi";
+import type {AssetInput} from "mira-dex-ts/src/typegen/amm-contract/AmmContractAbi";
+import useSwapData from "@/src/hooks/useAssetPair/useSwapData";
 
 type Props = {
   swapState: SwapState;
@@ -12,19 +11,14 @@ type Props = {
 }
 
 const useExactOutputPreview = ({ swapState, buyAmount, lastFocusedMode }: Props) => {
-  const sellAssetId = coinsConfig.get(swapState.sell.coin)?.assetId!;
-  const buyAssetId = coinsConfig.get(swapState.buy.coin)?.assetId!;
-  const sellAssetIdInput: AssetIdInput = {
-    bits: sellAssetId
-  };
-  const buyAssetIdInput: AssetIdInput = {
-    bits: buyAssetId
-  };
-  const assetPair: [AssetIdInput, AssetIdInput] = [
-    sellAssetIdInput,
+  const {
     buyAssetIdInput,
-  ];
-  const decimals = coinsConfig.get(swapState.buy.coin)?.decimals!;
+    sellAssetId,
+    buyAssetId,
+    assets,
+    buyDecimals: decimals,
+  } = useSwapData(swapState);
+
   const amountValid = buyAmount !== null && !isNaN(buyAmount);
   const amount = amountValid ? buyAmount * 10 ** decimals : 0;
   const assetSwapInput: AssetInput = {
@@ -42,11 +36,10 @@ const useExactOutputPreview = ({ swapState, buyAmount, lastFocusedMode }: Props)
     miraExists && lastFocusedModeIsBuy && sellAssetExists && buyAssetExists && amountNonZero;
 
   const { data, isFetching } = useQuery({
-    queryKey: ['exactOutputPreview', assetPair, assetSwapInput],
-    queryFn: () => miraAmm?.previewSwapExactOutput(
-      assetPair,
-      assetSwapInput,
-      DefaultTxParams,
+    queryKey: ['exactOutputPreview', assets, assetSwapInput],
+    queryFn: () => miraAmm?.multihopPreviewSwapExactOutput(
+      assets,
+      amount,
     ),
     enabled: shouldFetch,
     refetchInterval: 15000,

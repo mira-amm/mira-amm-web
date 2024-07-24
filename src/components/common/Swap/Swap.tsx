@@ -11,11 +11,10 @@ import IconButton from "@/src/components/common/IconButton/IconButton";
 import useModal from "@/src/hooks/useModal/useModal";
 import useExactInputPreview from "@/src/hooks/useExactInputPreview/useExactInputPreview";
 import useExactOutputPreview from "@/src/hooks/useExactOutputPreview/useExactOutputPreview";
-import {coinsConfig} from "@/src/utils/coinsConfig";
+import {CoinName, coinsConfig} from "@/src/utils/coinsConfig";
 import useSwap from "@/src/hooks/useSwap/useSwap";
 
 import styles from "./Swap.module.css";
-import {EthAssetId} from "@/src/utils/constants";
 import ExchangeRate from "@/src/components/common/Swap/components/ExchangeRate/ExchangeRate";
 import useExchangeRate from "@/src/hooks/useExchangeRate/useExchangeRate";
 import {openNewTab} from "@/src/utils/common";
@@ -27,8 +26,7 @@ import SettingsModalContent from "@/src/components/common/Swap/components/Settin
 
 export type CurrencyBoxMode = "buy" | "sell";
 export type CurrencyBoxState = {
-  // TODO: Use dict
-  coin: string;
+  coin: CoinName;
   amount: string;
 };
 type InputState = {
@@ -72,24 +70,25 @@ const Swap = () => {
   const previousOutputPreviewValue = useRef('');
   const swapStateForPreview = useRef(swapState);
 
-  const { isConnected } = useIsConnected();
-  const { connect, isConnecting } = useConnectUI();
-  const { account } = useAccount();
-  const { balances, isPending } = useBalances();
+  const {isConnected} = useIsConnected();
+  const {connect, isConnecting} = useConnectUI();
+  const {account} = useAccount();
+  const {balances, isPending, refetch} = useBalances();
 
-  const ethBalance = balances?.find(b => b.assetId === EthAssetId)?.amount.toNumber();
+  const ethAssetId = coinsConfig.get('ETH')?.assetId!;
+  const ethBalance = balances?.find(b => b.assetId === ethAssetId)?.amount.toNumber();
   const sellBalance = balances?.find(b => b.assetId === coinsConfig.get(swapState.sell.coin)?.assetId)?.amount.toNumber();
   const sellBalanceValue = sellBalance ? sellBalance / 10 ** coinsConfig.get(swapState.sell.coin)?.decimals! : 0;
   const buyBalance = balances?.find(b => b.assetId === coinsConfig.get(swapState.buy.coin)?.assetId)?.amount.toNumber();
   const buyBalanceValue = buyBalance ? buyBalance / 10 ** coinsConfig.get(swapState.buy.coin)?.decimals! : 0;
 
-  const { data: inputPreviewData, isFetching: inputPreviewIsFetching } = useExactInputPreview({
+  const {data: inputPreviewData, isFetching: inputPreviewIsFetching} = useExactInputPreview({
     swapState,
     sellAmount: swapState.sell.amount ? parseFloat(swapState.sell.amount) : null,
     lastFocusedMode,
   });
   const buyDecimals = coinsConfig.get(swapState.buy.coin)?.decimals!;
-  const inputPreviewValue = inputPreviewData && inputPreviewData.value.other_asset.amount.toNumber() / 10 ** buyDecimals;
+  const inputPreviewValue = inputPreviewData && inputPreviewData.other_asset.amount.toNumber() / 10 ** buyDecimals;
   const inputPreviewValueString = inputPreviewValue ? inputPreviewValue.toString() : previousInputPreviewValue.current;
   previousInputPreviewValue.current = inputPreviewValueString;
   const buyValue = lastFocusedMode === 'sell' ? inputPreviewValueString : inputsState.buy.amount;
@@ -103,13 +102,13 @@ const Swap = () => {
     }));
   }
 
-  const { data: outputPreviewData, isFetching: outputPreviewIsFetching } = useExactOutputPreview({
+  const {data: outputPreviewData, isFetching: outputPreviewIsFetching} = useExactOutputPreview({
     swapState,
     buyAmount: swapState.buy.amount ? parseFloat(swapState.buy.amount) : null,
     lastFocusedMode,
   });
   const sellDecimals = coinsConfig.get(swapState.sell.coin)?.decimals!;
-  const outputPreviewValue = outputPreviewData && outputPreviewData.value.other_asset.amount.toNumber() / 10 ** sellDecimals;
+  const outputPreviewValue = outputPreviewData && outputPreviewData.other_asset.amount.toNumber() / 10 ** sellDecimals;
   const outputPreviewValueString = outputPreviewValue ? outputPreviewValue.toString() : previousOutputPreviewValue.current;
   previousOutputPreviewValue.current = outputPreviewValueString;
   const sellValue = lastFocusedMode === 'buy' ? outputPreviewValueString : inputsState.sell.amount;
@@ -198,12 +197,13 @@ const Swap = () => {
     closeCoinsModal();
   };
 
-  const { mutateAsync, data: swapData, isPending: isSwapPending } = useSwap({ swapState, mode: lastFocusedMode, slippage });
+  const {mutateAsync, data: swapData, isPending: isSwapPending} = useSwap({swapState, mode: lastFocusedMode, slippage});
 
+  // @ts-ignore
   const coinMissing = swapState.buy.coin === '' || swapState.sell.coin === '';
   const amountMissing = swapState.buy.amount === '' || swapState.sell.amount === '';
   const insufficientEthBalance = !ethBalance || ethBalance === 0;
-  const handleSwapClick = useCallback( async () => {
+  const handleSwapClick = useCallback(async () => {
     if (insufficientEthBalance) {
       openNewTab(`https://faucet-testnet.fuel.network/?address=${account}`);
       return;
@@ -218,6 +218,7 @@ const Swap = () => {
 
     if (data) {
       openSuccess();
+      await refetch();
     }
   }, [
     insufficientEthBalance,
@@ -227,7 +228,8 @@ const Swap = () => {
     swapState,
     mutateAsync,
     account,
-    openSuccess
+    openSuccess,
+    refetch,
   ]);
 
   const insufficientSellBalance = parseFloat(sellValue) > sellBalanceValue;
@@ -245,82 +247,84 @@ const Swap = () => {
 
   return (
     <>
-      <div className={clsx(styles.swapContainer, isSwapPending && styles.swapContainerLoading)}>
-        <div className={styles.heading}>
-          <p className={styles.title}>Swap</p>
-          <IconButton onClick={openSettingsModal} className={styles.settingsButton}>
-            <SettingsIcon />
-          </IconButton>
-        </div>
-        <CurrencyBox
-          value={sellValue}
-          coin={swapState.sell.coin}
-          mode="sell"
-          balance={sellBalanceValue}
-          setAmount={setAmount('sell')}
-          loading={outputPreviewIsFetching || isSwapPending}
-          onCoinSelectorClick={handleCoinSelectorClick}
-        />
-        <div className={styles.splitter}>
-          <IconButton onClick={swapAssets} className={styles.convertButton}>
-            <ConvertIcon />
-          </IconButton>
-        </div>
-        <CurrencyBox
-          value={buyValue}
-          coin={swapState.buy.coin}
-          mode="buy"
-          balance={buyBalanceValue}
-          setAmount={setAmount('buy')}
-          loading={inputPreviewIsFetching || isSwapPending}
-          onCoinSelectorClick={handleCoinSelectorClick}
-        />
-        {isSwapPending && (
-          <div className={styles.summary}>
-            <div className={styles.summaryEntry}>
-              <p>Rate</p>
-              <p>{exchangeRate}</p>
-            </div>
-            <div className={styles.summaryEntry}>
-              <p>Fee (0.25%)</p>
-              <p>&lt;0.01$</p>
-            </div>
-            <div className={styles.summaryEntry}>
-              <p>Network cost</p>
-              <p>&lt;0.01$</p>
-            </div>
+      <div className={styles.swapAndRate}>
+        <div className={clsx(styles.swapContainer, isSwapPending && styles.swapContainerLoading)}>
+          <div className={styles.heading}>
+            <p className={styles.title}>Swap</p>
+            <IconButton onClick={openSettingsModal} className={styles.settingsButton}>
+              <SettingsIcon/>
+            </IconButton>
           </div>
-        )}
-        {!isConnected && (
-          <ActionButton
-            variant="secondary"
-            onClick={connect}
-            loading={isConnecting}
-          >
-            Connect Wallet
-          </ActionButton>
-        )}
-        {isConnected && (
-          <ActionButton
-            variant="primary"
-            disabled={insufficientSellBalance}
-            onClick={handleSwapClick}
-            loading={isPending}
-          >
-            {swapButtonTitle}
-          </ActionButton>
-        )}
+          <CurrencyBox
+            value={sellValue}
+            coin={swapState.sell.coin}
+            mode="sell"
+            balance={sellBalanceValue}
+            setAmount={setAmount('sell')}
+            loading={outputPreviewIsFetching || isSwapPending}
+            onCoinSelectorClick={handleCoinSelectorClick}
+          />
+          <div className={styles.splitter}>
+            <IconButton onClick={swapAssets} className={styles.convertButton}>
+              <ConvertIcon/>
+            </IconButton>
+          </div>
+          <CurrencyBox
+            value={buyValue}
+            coin={swapState.buy.coin}
+            mode="buy"
+            balance={buyBalanceValue}
+            setAmount={setAmount('buy')}
+            loading={inputPreviewIsFetching || isSwapPending}
+            onCoinSelectorClick={handleCoinSelectorClick}
+          />
+          {isSwapPending && (
+            <div className={styles.summary}>
+              <div className={styles.summaryEntry}>
+                <p>Rate</p>
+                <p>{exchangeRate}</p>
+              </div>
+              <div className={styles.summaryEntry}>
+                <p>Fee (0.25%)</p>
+                <p>&lt;0.01$</p>
+              </div>
+              <div className={styles.summaryEntry}>
+                <p>Network cost</p>
+                <p>&lt;0.01$</p>
+              </div>
+            </div>
+          )}
+          {!isConnected && (
+            <ActionButton
+              variant="secondary"
+              onClick={connect}
+              loading={isConnecting}
+            >
+              Connect Wallet
+            </ActionButton>
+          )}
+          {isConnected && (
+            <ActionButton
+              variant="primary"
+              disabled={insufficientSellBalance}
+              onClick={handleSwapClick}
+              loading={isPending}
+            >
+              {swapButtonTitle}
+            </ActionButton>
+          )}
+        </div>
+        <ExchangeRate swapState={swapState} />
       </div>
-      <ExchangeRate swapState={swapState} />
-      {isSwapPending && <div className={styles.loadingOverlay} />}
+      {isSwapPending && <div className={styles.loadingOverlay}/>}
       <SettingsModal title="Settings">
-        <SettingsModalContent slippage={slippage} setSlippage={setSlippage} />
+        <SettingsModalContent slippage={slippage} setSlippage={setSlippage}/>
       </SettingsModal>
       <CoinsModal title="Choose token">
-        <CoinsListModal selectCoin={handleCoinSelection} balances={balances} />
+        <CoinsListModal selectCoin={handleCoinSelection} balances={balances}/>
       </CoinsModal>
-      <SuccessModal title={<TestnetLabel />}>
-        <SwapSuccessModal swapState={swapStateForPreview.current} transactionHash={swapData?.id} />
+      <SuccessModal title={<TestnetLabel/>}>
+        <SwapSuccessModal swapState={swapStateForPreview.current} transactionHash={swapData?.id}/>
       </SuccessModal>
     </>
   );

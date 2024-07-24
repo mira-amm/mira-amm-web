@@ -4,12 +4,13 @@ import {clsx} from "clsx";
 import Coin from "@/src/components/common/Coin/Coin";
 import ChevronDownIcon from "@/src/components/icons/ChevronDown/ChevronDownIcon";
 import {CurrencyBoxMode} from "@/src/components/common/Swap/Swap";
+import {CoinName} from "@/src/utils/coinsConfig";
 
 import styles from './CurrencyBox.module.css';
 
 type Props = {
   value: string;
-  coin: string;
+  coin: CoinName;
   mode: CurrencyBoxMode;
   balance: number;
   setAmount: (amount: string) => void;
@@ -33,6 +34,7 @@ const CurrencyBox = ({ value, coin, mode, balance, setAmount, loading, onCoinSel
     }
   };
 
+  // @ts-ignore
   const coinNotSelected = coin === '';
 
   const balanceValue = parseFloat(balance.toFixed(6));

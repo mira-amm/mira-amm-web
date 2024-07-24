@@ -15,7 +15,7 @@
     "clsx": "^2.1.1",
     "firebase": "^10.12.4",
     "fuels": "^0.92.1",
-    "mira-dex-ts": "^1.0.1",
+    "mira-dex-ts": "^1.0.2",
     "mira-faucet-ts": "^1.0.2",
     "next": "14.2.4",
     "react": "^18",

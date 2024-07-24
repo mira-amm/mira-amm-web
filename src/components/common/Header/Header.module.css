@@ -30,6 +30,14 @@
   gap: 4px;
 }
 
+.disconnectMobile {
+  gap: 4px !important;
+  padding: 5px 8px !important;
+  font-weight: 500 !important;
+  font-size: 12px !important;
+  line-height: 16px !important;
+}
+
 .pointsText {
   position: relative;
   display: inline-flex;

@@ -1,36 +1,48 @@
+import {useMemo} from "react";
+import type {AssetIdInput} from "mira-dex-ts/src/typegen/amm-contract/AmmContractAbi";
+
 import {SwapState} from "@/src/components/common/Swap/Swap";
 import {coinsConfig} from "@/src/utils/coinsConfig";
-import type {AssetIdInput} from "mira-dex-ts/src/typegen/amm-contract/AmmContractAbi";
-import {useMemo} from "react";
 
-type ReturnType = {
+type SwapData = {
   sellAssetId: string;
   buyAssetId: string;
   sellDecimals: number;
   buyDecimals: number;
   sellAssetIdInput: AssetIdInput;
   buyAssetIdInput: AssetIdInput;
-  assetPair: [AssetIdInput, AssetIdInput];
+  assets: AssetIdInput[];
 };
 
-const useSwapData = (swapState: SwapState): ReturnType => {
+const useSwapData = (swapState: SwapState): SwapData => {
   return useMemo(() => {
-    const sellAssetId = coinsConfig.get(swapState.sell.coin)?.assetId!;
-    const buyAssetId = coinsConfig.get(swapState.buy.coin)?.assetId!;
+    const sellCoin = swapState.sell.coin;
+    const buyCoin = swapState.buy.coin;
 
-    const sellDecimals = coinsConfig.get(swapState.sell.coin)?.decimals!;
-    const buyDecimals = coinsConfig.get(swapState.buy.coin)?.decimals!;
+    const sellAssetId = coinsConfig.get(sellCoin)?.assetId!;
+    const buyAssetId = coinsConfig.get(buyCoin)?.assetId!;
+    const mimicAssetId = coinsConfig.get('MIMIC')?.assetId!;
+
+    const sellDecimals = coinsConfig.get(sellCoin)?.decimals!;
+    const buyDecimals = coinsConfig.get(buyCoin)?.decimals!;
 
     const sellAssetIdInput: AssetIdInput = {
-      bits: sellAssetId
+      bits: sellAssetId,
     };
     const buyAssetIdInput: AssetIdInput = {
-      bits: buyAssetId
+      bits: buyAssetId,
     };
-    const assetPair: [AssetIdInput, AssetIdInput] = [
-      sellAssetIdInput,
-      buyAssetIdInput,
-    ];
+    const mimicAssetIdInput: AssetIdInput = {
+      bits: mimicAssetId,
+    };
+
+    let assets: AssetIdInput[] = [];
+
+    if (sellCoin !== 'MIMIC' && buyCoin !== 'MIMIC') {
+      assets = [sellAssetIdInput, mimicAssetIdInput, buyAssetIdInput];
+    } else {
+      assets = [sellAssetIdInput, buyAssetIdInput];
+    }
 
     return {
       sellAssetId,
@@ -39,7 +51,7 @@ const useSwapData = (swapState: SwapState): ReturnType => {
       buyDecimals,
       sellAssetIdInput,
       buyAssetIdInput,
-      assetPair
+      assets,
     };
   }, [swapState.buy.coin, swapState.sell.coin]);
 };

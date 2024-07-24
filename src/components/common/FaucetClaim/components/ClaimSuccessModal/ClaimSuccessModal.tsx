@@ -24,18 +24,18 @@ const ClaimFailureModal = () => {
       <p className={styles.subText}>
         Welcome to the MIRA world! Happy trading,
         <br />
-        and may your strategies be ever successful!
+        and may your strategies be ever successful
       </p>
       <div className={styles.discordBlock}>
         <div className={styles.discordIcon}>
           <DiscordIcon />
         </div>
         <p>
-          <a href={DiscordLink} className={styles.discordLink} target="_blank">Join our Discord</a>
+          <a href={DiscordLink} className={styles.discordLink} target="_blank">
+            Join our Discord
+          </a>
           &nbsp;
-          to learn more about
-          <br />
-          future activities
+          to learn more about future activities
         </p>
       </div>
       <ActionButton onClick={handleButtonClick} className={styles.actionButton}>

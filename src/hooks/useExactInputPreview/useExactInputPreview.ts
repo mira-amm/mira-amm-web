@@ -1,9 +1,8 @@
 import useMiraDex from "@/src/hooks/useMiraDex/useMiraDex";
-import {coinsConfig} from "@/src/utils/coinsConfig";
 import {useQuery} from "@tanstack/react-query";
 import type {CurrencyBoxMode, SwapState} from "@/src/components/common/Swap/Swap";
-import {DefaultTxParams} from "@/src/utils/constants";
-import type {AssetInput, AssetIdInput} from "mira-dex-ts/src/typegen/amm-contract/AmmContractAbi";
+import type {AssetInput} from "mira-dex-ts/src/typegen/amm-contract/AmmContractAbi";
+import useSwapData from "@/src/hooks/useAssetPair/useSwapData";
 
 type Props = {
   swapState: SwapState;
@@ -12,19 +11,14 @@ type Props = {
 }
 
 const useExactInputPreview = ({ swapState, sellAmount, lastFocusedMode }: Props) => {
-  const sellAssetId = coinsConfig.get(swapState.sell.coin)?.assetId!;
-  const buyAssetId = coinsConfig.get(swapState.buy.coin)?.assetId!;
-  const sellAssetIdInput: AssetIdInput = {
-    bits: sellAssetId
-  };
-  const buyAssetIdInput: AssetIdInput = {
-    bits: buyAssetId
-  };
-  const assetPair: [AssetIdInput, AssetIdInput] = [
+  const {
     sellAssetIdInput,
-    buyAssetIdInput,
-  ];
-  const decimals = coinsConfig.get(swapState.sell.coin)?.decimals!;
+    sellAssetId,
+    buyAssetId,
+    assets,
+    sellDecimals: decimals,
+  } = useSwapData(swapState);
+
   const amountValid = sellAmount !== null && !isNaN(sellAmount);
   const amount = amountValid ? sellAmount * 10 ** decimals : 0;
   const assetSwapInput: AssetInput = {
@@ -42,11 +36,10 @@ const useExactInputPreview = ({ swapState, sellAmount, lastFocusedMode }: Props)
     miraExists && lastFocusedModeIsSell && sellAssetExists && buyAssetExists && amountNonZero;
 
   const { data, isFetching, isPending } = useQuery({
-    queryKey: ['exactInputPreview', assetPair, assetSwapInput],
-    queryFn: () => miraAmm?.previewSwapExactInput(
-      assetPair,
+    queryKey: ['exactInputPreview', assets, assetSwapInput],
+    queryFn: () => miraAmm?.multihopPreviewSwapExactInput(
+      assets,
       assetSwapInput,
-      DefaultTxParams,
     ),
     enabled: shouldFetch,
     refetchInterval: 15000,

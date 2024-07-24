@@ -9,6 +9,8 @@ import {usePathname} from "next/navigation";
 import ConnectButton from "@/src/components/common/ConnectButton/ConnectButton";
 import LaunchAppButton from "@/src/components/common/LaunchAppButton/LaunchAppButton";
 import TestnetLabel from "@/src/components/common/TestnetLabel/TestnetLabel";
+import DisconnectDesktop from "@/src/components/common/ConnectButton/DisconnectDesktop";
+import DisconnectMobile from "@/src/components/common/ConnectButton/DisconnectMobile";
 
 type Props = {
   isHomePage?: boolean;
@@ -53,6 +55,7 @@ const Header = ({ isHomePage }: Props) => {
             </span>
             <SoonLabel/>
           </a>
+          <DisconnectMobile className={styles.disconnectMobile} />
           <MobileMenu/>
         </div>
         <div className={clsx('desktopOnly', styles.links)}>
@@ -64,6 +67,9 @@ const Header = ({ isHomePage }: Props) => {
           )}
           {!isHomePage && (
             <ConnectButton className={styles.launchAppButton} />
+          )}
+          {isHomePage && (
+            <DisconnectDesktop className={styles.launchAppButton} />
           )}
           {isHomePage && (
             <LaunchAppButton className={styles.launchAppButton} />
