@@ -5,6 +5,7 @@ import {useMutation} from "@tanstack/react-query";
 import {DefaultDeadline, DefaultTxParams} from "@/src/utils/constants";
 import {useWallet} from "@fuels/react";
 import {useCallback} from "react";
+import {ScriptTransactionRequest} from "fuels";
 
 type Props = {
   swapState: SwapState;
@@ -17,7 +18,7 @@ const useSwap = ({ swapState, mode, slippage }: Props) => {
   const miraDex = useMiraDex();
   const swapData = useSwapData(swapState);
 
-  const mutationFn = useCallback(async () => {
+  const getTxCost = useCallback(async () => {
     if (!wallet || !miraDex) {
       return;
     }
@@ -29,20 +30,39 @@ const useSwap = ({ swapState, mode, slippage }: Props) => {
     const buyAmountWithSlippage = buyAmount * (1 - slippage / 100);
     const sellAmountWithSlippage = sellAmount * (1 + slippage / 100);
 
-    const result = mode === 'sell' ?
+    const tx = mode === 'sell' ?
       await miraDex.swapExactInput(assets, sellAmount, buyAmountWithSlippage, DefaultDeadline, DefaultTxParams) :
       await miraDex.swapExactOutput(assets, buyAmount, sellAmountWithSlippage, DefaultDeadline, DefaultTxParams);
 
-    console.log(result);
+    const txCost = await wallet.provider.getTransactionCost(tx);
 
-    return await wallet.sendTransaction(result);
+    return { tx, txCost };
   }, [wallet, miraDex, swapData, swapState.buy.amount, swapState.sell.amount, slippage, mode]);
 
-  const { mutate, mutateAsync, data, isPending } = useMutation({
-    mutationFn
+  const sendTx = useCallback(async (tx: ScriptTransactionRequest) => {
+    if (!wallet) {
+      return;
+    }
+
+    return await wallet.sendTransaction(tx);
+  }, [wallet]);
+
+  const { mutateAsync: fetchTxCost, data: txCostData, isPending: txCostPending} = useMutation({
+    mutationFn: getTxCost,
   });
 
-  return { mutate, mutateAsync, data, isPending };
+  const { mutateAsync: triggerSwap, data: swapResult, isPending: swapPending } = useMutation({
+    mutationFn: sendTx,
+  });
+
+  return {
+    fetchTxCost,
+    txCostData,
+    txCostPending,
+    triggerSwap,
+    swapResult,
+    swapPending,
+  };
 };
 
 export default useSwap;

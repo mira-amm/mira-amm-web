@@ -42,10 +42,6 @@ const ConnectButton = ({ className }: Props) => {
       return formattedAddress;
     }
 
-    if (isConnected) {
-      return 'Disconnect';
-    }
-
     return 'Connect Wallet';
   }, [isConnected, formattedAddress]);
 

@@ -12,7 +12,7 @@ type Props = {
 
 const queryClient = new QueryClient();
 
-const Providers = ({ children }: Props) => {
+const Providers = ({children}: Props) => {
   let connectors: FuelConnector[] = [];
   if (typeof window !== 'undefined') {
     connectors = [
@@ -28,8 +28,9 @@ const Providers = ({ children }: Props) => {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <FuelProvider fuelConfig={fuelConfig}
-                    theme="dark"
+      <FuelProvider
+        fuelConfig={fuelConfig}
+        theme="dark"
       >
         {children}
       </FuelProvider>

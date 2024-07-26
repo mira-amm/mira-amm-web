@@ -36,7 +36,7 @@ const useSwapData = (swapState: SwapState): SwapData => {
       bits: mimicAssetId,
     };
 
-    let assets: AssetIdInput[] = [];
+    let assets: AssetIdInput[];
 
     if (sellCoin !== 'MIMIC' && buyCoin !== 'MIMIC') {
       assets = [sellAssetIdInput, mimicAssetIdInput, buyAssetIdInput];

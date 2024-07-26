@@ -19,6 +19,7 @@
 }
 
 .content {
+  min-height: 44px;
   display: flex;
   gap: 8px;
 }
@@ -58,14 +59,18 @@
   background-color: transparent;
 }
 
+.selector:hover {
+  background-color: var(--background-grey-dark);
+  cursor: pointer;
+}
+
 .selectorHighlighted {
   background-color: var(--background-grey-dark);
   cursor: pointer;
 }
 
-.selector:hover {
-  background-color: var(--background-grey-dark);
-  cursor: pointer;
+.selectorHighlighted:hover {
+  background-color: var(--background-grey-light);
 }
 
 .chooseCoin {
@@ -76,12 +81,20 @@
 }
 
 .estimateAndBalance {
+  min-height: 16px;
   display: flex;
   justify-content: space-between;
   align-items: center;
   font-size: 12px;
   line-height: 16px;
   color: var(--content-dimmed-light);
+}
+
+.balance {
+  color: inherit;
+  background: transparent;
+  border: none;
+  cursor: pointer;
 }
 
 @media (min-width: 1024px) {
@@ -94,7 +107,7 @@
     line-height: 18px;
   }
 
-  .estimate {
-    height: 18px;
+  .estimateAndBalance {
+    min-height: 18px;
   }
 }
