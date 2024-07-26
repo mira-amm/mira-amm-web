@@ -20,7 +20,7 @@ const ClaimFailureModal = ({ walletConnected, twitterConnected, followClicked, r
   return (
     <div className={styles.claimFailureModal}>
       <FailureIcon />
-      <p className={styles.mainText}>You haven't met all conditions</p>
+      <p className={styles.mainText}>You haven&apos;t met all conditions</p>
       <div className={styles.steps}>
         <div className={styles.step}>
           <div className={clsx(styles.stepIcon, walletConnected && styles.stepIconSuccess)}>
@@ -38,7 +38,7 @@ const ClaimFailureModal = ({ walletConnected, twitterConnected, followClicked, r
           <div className={clsx(styles.stepIcon, followClicked && styles.stepIconSuccess)}>
             {followClicked ? <CheckmarkIcon/> : <CloseIcon/>}
           </div>
-          <p>Follow MIRA on Twitter</p>
+          <p>Follow MIRA on X</p>
         </div>
         <div className={styles.step}>
           <div className={clsx(styles.stepIcon, retweetClicked && styles.stepIconSuccess)}>

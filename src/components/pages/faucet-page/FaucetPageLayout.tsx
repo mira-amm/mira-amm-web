@@ -9,6 +9,7 @@ import CupIcon from "@/src/components/icons/Cup/CupIcon";
 import ExchangeIcon from "@/src/components/icons/Exchange/ExchangeIcon";
 
 import styles from './FaucetPageLayout.module.css';
+import {Suspense} from "react";
 
 const FaucetPageLayout = () => {
   return (
@@ -78,7 +79,9 @@ const FaucetPageLayout = () => {
           </div>
         </section>
         <section className={styles.swapSection}>
-          <Swap />
+          <Suspense>
+            <Swap />
+          </Suspense>
         </section>
       </main>
       <Footer/>

@@ -65,14 +65,7 @@ const FaucetClaim = () => {
     if (result?.transactionResult.status === 'success') {
       openSuccessModal();
     }
-  }, [
-    allStepsCompleted,
-    isConnected,
-    claim,
-    openFailureModal,
-    connect,
-    openSuccessModal
-  ]);
+  }, [allStepsCompleted, claim, openFailureModal, openSuccessModal]);
 
   const handleConnectWalletClick = () => {
     connect();
@@ -102,6 +95,8 @@ const FaucetClaim = () => {
   }
 
   const formattedAddress = useFormattedAddress(account);
+
+  const promptEthClaim = isConnected && !sufficientEthBalance;
 
   return (
     <>
@@ -180,9 +175,10 @@ const FaucetClaim = () => {
         >
           Claim $mimicMIRA
         </ActionButton>
-        {!sufficientEthBalance && (
+        {promptEthClaim && (
           <p className={styles.ethFaucetText}>
-            You'll need test ETH to complete the transaction. Get it
+            You&apos;ll need test ETH to complete the transaction. Get it
+            &nbsp;
             <a href={ethFaucetLink} target="_blank">here</a>
           </p>
         )}

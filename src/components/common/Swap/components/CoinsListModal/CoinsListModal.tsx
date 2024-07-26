@@ -13,7 +13,6 @@ type Props = {
 const coinsList = Array.from(coinsConfig.values());
 
 const CoinsListModal = ({ selectCoin, balances }: Props) => {
-  console.log('Balances in component', balances);
   const [value, setValue] = useState('');
 
   const inputRef = useRef<HTMLInputElement>(null);
@@ -38,12 +37,19 @@ const CoinsListModal = ({ selectCoin, balances }: Props) => {
   }, [value]);
 
   const sortedCoinsList = useMemo(() => {
-    console.log('Balances in memo', balances);
     if (!balances) {
       return filteredCoinsList;
     }
 
     return filteredCoinsList.toSorted((coinA, coinB) => {
+      if (coinA.name === 'MIMIC') {
+        return -1;
+      }
+
+      if (coinB.name === 'MIMIC') {
+        return 1;
+      }
+
       const aDecimals = coinsConfig.get(coinA.name)?.decimals!;
       const aBalance = balances.find((b) => b.assetId === coinA.assetId)?.amount.toNumber();
       const aBalanceValue = aBalance ? aBalance / 10 ** aDecimals : 0;
@@ -51,11 +57,7 @@ const CoinsListModal = ({ selectCoin, balances }: Props) => {
       const bBalance = balances.find((b) => b.assetId === coinB.assetId)?.amount.toNumber();
       const bBalanceValue = bBalance ? bBalance / 10 ** bDecimals : 0;
 
-      if (aBalanceValue && bBalanceValue) {
-        return bBalanceValue - aBalanceValue;
-      }
-
-      return 0;
+      return bBalanceValue - aBalanceValue;
     });
   }, [filteredCoinsList, balances]);
 

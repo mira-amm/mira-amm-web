@@ -1,4 +1,4 @@
-import {useCallback, useRef, useState} from "react";
+import {useCallback, useEffect, useRef, useState} from "react";
 import {useAccount, useConnectUI, useIsConnected} from "@fuels/react";
 import {useDebounceCallback} from "usehooks-ts";
 import {clsx} from "clsx";
@@ -24,6 +24,8 @@ import SwapSuccessModal from "@/src/components/common/Swap/components/SwapSucces
 import TestnetLabel from "@/src/components/common/TestnetLabel/TestnetLabel";
 import SettingsModalContent from "@/src/components/common/Swap/components/SettingsModalContent/SettingsModalContent";
 import useCheckEthBalance from "@/src/hooks/useCheckEthBalance/useCheckEthBalance";
+import {usePathname, useRouter, useSearchParams} from "next/navigation";
+import useInitialSwapState from "@/src/hooks/useInitialSwapState/useInitialSwapState";
 
 export type CurrencyBoxMode = "buy" | "sell";
 export type CurrencyBoxState = {
@@ -36,17 +38,6 @@ type InputState = {
 
 export type SwapState = Record<CurrencyBoxMode, CurrencyBoxState>;
 type InputsState = Record<CurrencyBoxMode, InputState>;
-
-const initialSwapState: SwapState = {
-  sell: {
-    coin: 'MIMIC',
-    amount: '',
-  },
-  buy: {
-    coin: null,
-    amount: '',
-  },
-};
 
 const initialInputsState: InputsState = {
   sell: {
@@ -62,11 +53,27 @@ const Swap = () => {
   const [CoinsModal, openCoinsModal, closeCoinsModal] = useModal();
   const [SuccessModal, openSuccess] = useModal();
 
+  const pathname = usePathname();
+  const router = useRouter();
+  const searchParams = useSearchParams();
+
+  const initialSwapState = useInitialSwapState();
+
   const [swapState, setSwapState] = useState<SwapState>(initialSwapState);
   const [inputsState, setInputsState] = useState<InputsState>(initialInputsState);
   const [lastFocusedMode, setLastFocusedMode] = useState<CurrencyBoxMode>('sell');
   const [slippage, setSlippage] = useState<number>(1);
   const [txCost, setTxCost] = useState<number | null>(null);
+
+  useEffect(() => {
+    if (!swapState.sell.coin) {
+      return;
+    }
+
+    const params = new URLSearchParams(searchParams.toString());
+    params.set('sell', swapState.sell.coin);
+    router.replace(`${pathname}?${params.toString()}`, { scroll: false });
+  }, []);
 
   const previousInputPreviewValue = useRef('');
   const previousOutputPreviewValue = useRef('');
@@ -163,9 +170,12 @@ const Swap = () => {
           }
         }));
       }
+      const params = new URLSearchParams(searchParams.toString());
+      params.set(mode, coin!);
+      router.replace(`${pathname}?${params.toString()}`, { scroll: false });
       setLastFocusedMode(mode);
     };
-  }, [swapState]);
+  }, [pathname, router, searchParams, swapState.buy.coin, swapState.sell.coin]);
 
   const debouncedSetState = useDebounceCallback(setSwapState, 500);
   const setAmount = useCallback((mode: "buy" | "sell") => {
