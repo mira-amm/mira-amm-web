@@ -11,8 +11,11 @@ import styles from './LandingPageLayout.module.css';
 import {clsx} from "clsx";
 import LaunchAppButton from "@/src/components/common/LaunchAppButton/LaunchAppButton";
 import {DiscordLink, XLink} from "@/src/utils/constants";
+import {Suspense} from "react";
+import {useIsClient} from "usehooks-ts";
 
 const LandingPageLayout = () => {
+  const isClient = useIsClient();
   return (
     <>
       <Header isHomePage/>
@@ -28,7 +31,11 @@ const LandingPageLayout = () => {
             <span>Powered by Fuel</span>
           </div>
         </section>
-        <Swap/>
+        {isClient && (
+          <Suspense>
+            <Swap/>
+          </Suspense>
+        )}
         <section className={styles.bottomBlock}>
           <h3>Join early</h3>
           <p className={styles.subheading}>
@@ -59,7 +66,11 @@ const LandingPageLayout = () => {
             </div>
           </div>
           <div className={styles.swap}>
-            <Swap/>
+            {isClient && (
+              <Suspense>
+                <Swap/>
+              </Suspense>
+            )}
           </div>
         </section>
         <section className={styles.bottomBlock}>

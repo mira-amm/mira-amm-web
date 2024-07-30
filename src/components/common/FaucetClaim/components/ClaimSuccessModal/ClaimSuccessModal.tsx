@@ -1,12 +1,14 @@
-import SuccessIcon from "@/src/components/icons/Success/SuccessIcon";
-import styles from './ClaimSuccessModal.module.css';
-import ActionButton from "@/src/components/common/ActionButton/ActionButton";
-import {useRouter} from "next/navigation";
 import {useCallback} from "react";
+import {useRouter} from "next/navigation";
+
+import SuccessIcon from "@/src/components/icons/Success/SuccessIcon";
+import ActionButton from "@/src/components/common/ActionButton/ActionButton";
 import DiscordIcon from "@/src/components/icons/Discord/DiscordIcon";
 import {DiscordLink} from "@/src/utils/constants";
 
-const ClaimFailureModal = () => {
+import styles from './ClaimSuccessModal.module.css';
+
+const ClaimSuccessModal = () => {
   const router = useRouter();
 
   const handleButtonClick = useCallback(() => {
@@ -17,9 +19,9 @@ const ClaimFailureModal = () => {
     <div className={styles.claimFailureModal}>
       <SuccessIcon />
       <p className={styles.mainText}>
-        Seamless Mimicry! Check
+        Seamless Mimicry!
         <br />
-        your wallet
+        Check your wallet
       </p>
       <p className={styles.subText}>
         Welcome to the MIRA world! Happy trading,
@@ -45,4 +47,4 @@ const ClaimFailureModal = () => {
   );
 };
 
-export default ClaimFailureModal;
+export default ClaimSuccessModal;

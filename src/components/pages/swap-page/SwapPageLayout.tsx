@@ -6,14 +6,22 @@ import Swap from "@/src/components/common/Swap/Swap";
 import BackLink from "@/src/components/common/BackLink/BackLink";
 
 import styles from './SwapPageLayout.module.css';
+import {Suspense} from "react";
+import {useIsClient} from "usehooks-ts";
 
 const SwapPageLayout = () => {
+  const isClient = useIsClient();
+
   return (
     <>
       <Header/>
       <main className={styles.swapLayout}>
         <BackLink />
-        <Swap />
+        {isClient && (
+          <Suspense>
+            <Swap />
+          </Suspense>
+        )}
       </main>
       <Footer/>
     </>

@@ -43,18 +43,38 @@
   border: none;
   text-decoration: underline;
   cursor: pointer;
-  color: var(--content-primary);
+  color: var(--accent-primary);
 }
 
 .buttonLink:hover {
-  color: var(--content-secondary);
+  color: var(--content-primary);
+}
+
+.buttonAndLink {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 8px;
+}
+
+.ethFaucetText {
+  color: var(--content-tertiary);
+}
+
+.ethFaucetText > a {
+  text-decoration: underline;
+  /*color: var(--accent-primary);*/
+}
+
+.ethFaucetText > a:hover {
+  color: var(--content-primary);
 }
 
 @media (min-width: 1024px) {
   .steps {
-    flex-direction: row;
-    justify-content: space-between;
-    gap: 64px;
+    /*flex-direction: row;*/
+    /*justify-content: space-between;*/
   }
 
   .step {
@@ -65,6 +85,10 @@
   }
 
   .claimButton {
-    max-width: 203px;
+    max-width: 290px;
+  }
+
+  .buttonAndLink {
+    align-items: center;
   }
 }

@@ -37,7 +37,7 @@ const useExactInputPreview = ({ swapState, sellAmount, lastFocusedMode }: Props)
 
   const { data, isFetching, isPending } = useQuery({
     queryKey: ['exactInputPreview', assets, assetSwapInput],
-    queryFn: () => miraAmm?.multihopPreviewSwapExactInput(
+    queryFn: () => miraAmm?.previewSwapExactInput(
       assets,
       assetSwapInput,
     ),

@@ -3,14 +3,18 @@
 import Header from "@/src/components/common/Header/Header";
 import Footer from "@/src/components/common/Footer/Footer";
 import BackLink from "@/src/components/common/BackLink/BackLink";
-
-import styles from './FaucetPageLayout.module.css';
 import FaucetClaim from "@/src/components/common/FaucetClaim/FaucetClaim";
 import Swap from "@/src/components/common/Swap/Swap";
 import CupIcon from "@/src/components/icons/Cup/CupIcon";
 import ExchangeIcon from "@/src/components/icons/Exchange/ExchangeIcon";
 
+import styles from './FaucetPageLayout.module.css';
+import {Suspense} from "react";
+import {useIsClient} from "usehooks-ts";
+
 const FaucetPageLayout = () => {
+  const isClient = useIsClient();
+
   return (
     <>
       <Header />
@@ -40,10 +44,10 @@ const FaucetPageLayout = () => {
         </section>
         <section className={styles.claimSection}>
           <h2 className={styles.claimHeading}>
-            Three simple steps to claim your
+            Four simple steps
             <br className='desktopOnly'/>
             <span className='mobileOnly'>&nbsp;</span>
-            $mimicMIRA
+            to claim your $mimicMIRA
           </h2>
           <FaucetClaim/>
         </section>
@@ -78,7 +82,11 @@ const FaucetPageLayout = () => {
           </div>
         </section>
         <section className={styles.swapSection}>
-          <Swap />
+          {isClient && (
+            <Suspense>
+              <Swap />
+            </Suspense>
+          )}
         </section>
       </main>
       <Footer/>

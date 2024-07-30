@@ -37,9 +37,10 @@ const useExactOutputPreview = ({ swapState, buyAmount, lastFocusedMode }: Props)
 
   const { data, isFetching } = useQuery({
     queryKey: ['exactOutputPreview', assets, assetSwapInput],
-    queryFn: () => miraAmm?.multihopPreviewSwapExactOutput(
+    queryFn: () => miraAmm?.previewSwapExactOutput(
       assets,
-      amount,
+      // amount,
+      assetSwapInput
     ),
     enabled: shouldFetch,
     refetchInterval: 15000,

@@ -9,6 +9,7 @@
 }
 
 .tokenSearchInput {
+  font-size: 16px;
   flex: 1;
   background: transparent;
   border: none;

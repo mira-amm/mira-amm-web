@@ -4,7 +4,7 @@ import {clsx} from "clsx";
 import Coin from "@/src/components/common/Coin/Coin";
 import ChevronDownIcon from "@/src/components/icons/ChevronDown/ChevronDownIcon";
 import {CurrencyBoxMode} from "@/src/components/common/Swap/Swap";
-import {CoinName} from "@/src/utils/coinsConfig";
+import {CoinName, coinsConfig} from "@/src/utils/coinsConfig";
 
 import styles from './CurrencyBox.module.css';
 
@@ -19,9 +19,11 @@ type Props = {
 };
 
 const CurrencyBox = ({ value, coin, mode, balance, setAmount, loading, onCoinSelectorClick }: Props) => {
+  const decimals = coinsConfig.get(coin)?.decimals!;
+
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const inputValue = e.target.value;
-    const re = /^[0-9]*[.,]?[0-9]*$/;
+    const inputValue = e.target.value.replace(',', '.');
+    const re = new RegExp(`^[0-9]*[.]?[0-9]{0,${decimals}}$`);
 
     if (re.test(inputValue)) {
       setAmount(inputValue);
@@ -34,10 +36,13 @@ const CurrencyBox = ({ value, coin, mode, balance, setAmount, loading, onCoinSel
     }
   };
 
-  // @ts-ignore
-  const coinNotSelected = coin === '';
+  const handleBalanceClick = () => {
+    setAmount(balance.toString());
+  }
 
-  const balanceValue = parseFloat(balance.toFixed(6));
+  const coinNotSelected = coin === null;
+
+  const balanceValue = parseFloat(balance.toFixed(decimals));
 
   return (
     <>
@@ -73,11 +78,13 @@ const CurrencyBox = ({ value, coin, mode, balance, setAmount, loading, onCoinSel
             {/*{!noValue && '$41 626.62'}*/}
           </p>
           {balanceValue > 0 && (
-            <p>
-              Balance:
+            <span className={styles.balance}>
+              Balance: {balanceValue}
               &nbsp;
-              {balanceValue}
-            </p>
+              <button className={styles.maxBalance} onClick={handleBalanceClick}>
+                Max
+              </button>
+            </span>
           )}
         </div>
       </div>

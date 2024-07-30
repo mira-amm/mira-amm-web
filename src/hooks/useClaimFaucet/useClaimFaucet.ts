@@ -1,26 +1,16 @@
-import {useWallet} from "@fuels/react";
 import {useMutation} from "@tanstack/react-query";
-import {useCallback, useMemo} from "react";
+import {useCallback} from "react";
 import {AssetIdInput} from "mira-dex-ts/src/typegen/amm-contract/AmmContractAbi";
-import {Faucet} from 'mira-faucet-ts';
 
-import {DefaultTxParams, FaucetContractAddress} from "@/src/utils/constants";
+import {DefaultTxParams} from "@/src/utils/constants";
 import {coinsConfig} from "@/src/utils/coinsConfig";
+import useFaucetSDK from "@/src/hooks/useFaucetSDK/useFaucetSDK";
 
 const useClaimFaucet = () => {
-  const { wallet } = useWallet();
-
-  const faucetSdk = useMemo(() => {
-    if (wallet) {
-      return new Faucet({
-        wallet,
-        contractAddress: FaucetContractAddress
-      });
-    }
-  }, [wallet]);
+  const faucetSDK = useFaucetSDK();
 
   const mutationFn = useCallback(async () => {
-    if (!faucetSdk) {
+    if (!faucetSDK) {
       return;
     }
 
@@ -31,10 +21,10 @@ const useClaimFaucet = () => {
       bits: mimicAssetId,
     };
 
-    const mimicAmount = 100 * 10 ** mimicDecimals;
+    const mimicAmount = 10 * 10 ** mimicDecimals;
 
-    return faucetSdk.faucetTokens(mimicAssetIdInput, mimicAmount, DefaultTxParams);
-  }, [faucetSdk]);
+    return faucetSDK.faucetTokens(mimicAssetIdInput, mimicAmount, DefaultTxParams);
+  }, [faucetSDK]);
 
   const { data, mutateAsync, isPending } = useMutation({
     mutationFn,

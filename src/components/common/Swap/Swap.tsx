@@ -1,4 +1,4 @@
-import {useCallback, useRef, useState} from "react";
+import {useCallback, useEffect, useRef, useState} from "react";
 import {useAccount, useConnectUI, useIsConnected} from "@fuels/react";
 import {useDebounceCallback} from "usehooks-ts";
 import {clsx} from "clsx";
@@ -23,6 +23,9 @@ import CoinsListModal from "@/src/components/common/Swap/components/CoinsListMod
 import SwapSuccessModal from "@/src/components/common/Swap/components/SwapSuccessModal/SwapSuccessModal";
 import TestnetLabel from "@/src/components/common/TestnetLabel/TestnetLabel";
 import SettingsModalContent from "@/src/components/common/Swap/components/SettingsModalContent/SettingsModalContent";
+import useCheckEthBalance from "@/src/hooks/useCheckEthBalance/useCheckEthBalance";
+import {usePathname, useRouter, useSearchParams} from "next/navigation";
+import useInitialSwapState from "@/src/hooks/useInitialSwapState/useInitialSwapState";
 
 export type CurrencyBoxMode = "buy" | "sell";
 export type CurrencyBoxState = {
@@ -35,17 +38,6 @@ type InputState = {
 
 export type SwapState = Record<CurrencyBoxMode, CurrencyBoxState>;
 type InputsState = Record<CurrencyBoxMode, InputState>;
-
-const initialSwapState: SwapState = {
-  sell: {
-    coin: 'USDC',
-    amount: '',
-  },
-  buy: {
-    coin: 'BTC',
-    amount: '',
-  },
-};
 
 const initialInputsState: InputsState = {
   sell: {
@@ -61,22 +53,38 @@ const Swap = () => {
   const [CoinsModal, openCoinsModal, closeCoinsModal] = useModal();
   const [SuccessModal, openSuccess] = useModal();
 
+  const pathname = usePathname();
+  const router = useRouter();
+  const searchParams = useSearchParams();
+
+  const initialSwapState = useInitialSwapState();
+
   const [swapState, setSwapState] = useState<SwapState>(initialSwapState);
   const [inputsState, setInputsState] = useState<InputsState>(initialInputsState);
   const [lastFocusedMode, setLastFocusedMode] = useState<CurrencyBoxMode>('sell');
   const [slippage, setSlippage] = useState<number>(1);
+  const [txCost, setTxCost] = useState<number | null>(null);
+
+  useEffect(() => {
+    if (!swapState.sell.coin) {
+      return;
+    }
+
+    const params = new URLSearchParams(searchParams.toString());
+    params.set('sell', swapState.sell.coin);
+    router.replace(`${pathname}?${params.toString()}`, { scroll: false });
+  }, []);
 
   const previousInputPreviewValue = useRef('');
   const previousOutputPreviewValue = useRef('');
   const swapStateForPreview = useRef(swapState);
+  const modeForCoinSelector = useRef<CurrencyBoxMode>('sell');
 
   const {isConnected} = useIsConnected();
   const {connect, isConnecting} = useConnectUI();
   const {account} = useAccount();
   const {balances, isPending, refetch} = useBalances();
 
-  const ethAssetId = coinsConfig.get('ETH')?.assetId!;
-  const ethBalance = balances?.find(b => b.assetId === ethAssetId)?.amount.toNumber();
   const sellBalance = balances?.find(b => b.assetId === coinsConfig.get(swapState.sell.coin)?.assetId)?.amount.toNumber();
   const sellBalanceValue = sellBalance ? sellBalance / 10 ** coinsConfig.get(swapState.sell.coin)?.decimals! : 0;
   const buyBalance = balances?.find(b => b.assetId === coinsConfig.get(swapState.buy.coin)?.assetId)?.amount.toNumber();
@@ -88,8 +96,8 @@ const Swap = () => {
     lastFocusedMode,
   });
   const buyDecimals = coinsConfig.get(swapState.buy.coin)?.decimals!;
-  const inputPreviewValue = inputPreviewData && inputPreviewData.other_asset.amount.toNumber() / 10 ** buyDecimals;
-  const inputPreviewValueString = inputPreviewValue ? inputPreviewValue.toString() : previousInputPreviewValue.current;
+  const inputPreviewValue = inputPreviewData && inputPreviewData.value.other_asset.amount.toNumber() / 10 ** buyDecimals;
+  const inputPreviewValueString = inputPreviewValue !== undefined ? inputPreviewValue === 0 ? '' : inputPreviewValue.toFixed(buyDecimals) : previousInputPreviewValue.current;
   previousInputPreviewValue.current = inputPreviewValueString;
   const buyValue = lastFocusedMode === 'sell' ? inputPreviewValueString : inputsState.buy.amount;
   if (buyValue !== swapState.buy.amount) {
@@ -108,8 +116,8 @@ const Swap = () => {
     lastFocusedMode,
   });
   const sellDecimals = coinsConfig.get(swapState.sell.coin)?.decimals!;
-  const outputPreviewValue = outputPreviewData && outputPreviewData.other_asset.amount.toNumber() / 10 ** sellDecimals;
-  const outputPreviewValueString = outputPreviewValue ? outputPreviewValue.toString() : previousOutputPreviewValue.current;
+  const outputPreviewValue = outputPreviewData && outputPreviewData.value.other_asset.amount.toNumber() / 10 ** sellDecimals;
+  const outputPreviewValueString = outputPreviewValue !== undefined ? outputPreviewValue === 0 ? '' : outputPreviewValue.toFixed(sellDecimals) : previousOutputPreviewValue.current;
   previousOutputPreviewValue.current = outputPreviewValueString;
   const sellValue = lastFocusedMode === 'buy' ? outputPreviewValueString : inputsState.sell.amount;
   if (sellValue !== swapState.sell.amount) {
@@ -122,18 +130,27 @@ const Swap = () => {
     }));
   }
 
-  const changeCoins = () => {
-    setSwapState(prevState => ({
-      buy: {
-        ...prevState.buy,
-        coin: prevState.sell.coin,
-      },
-      sell: {
-        ...prevState.sell,
-        coin: prevState.buy.coin,
-      },
-    }));
-  };
+  // const changeCoins = () => {
+  //   setSwapState(prevState => ({
+  //     buy: {
+  //       ...prevState.buy,
+  //       coin: prevState.sell.coin,
+  //     },
+  //     sell: {
+  //       ...prevState.sell,
+  //       coin: prevState.buy.coin,
+  //     },
+  //   }));
+  //
+  //   const params = new URLSearchParams(searchParams.toString());
+  //   if (swapState.sell.coin) {
+  //     params.set('buy', swapState.sell.coin ?? '');
+  //   }
+  //   if (swapState.buy.coin) {
+  //     params.set('sell', swapState.buy.coin ?? '');
+  //   }
+  //   router.replace(`${pathname}?${params.toString()}`, { scroll: false });
+  // };
 
   const swapAssets = useCallback(() => {
     setSwapState(prevState => ({
@@ -144,28 +161,50 @@ const Swap = () => {
         ...prevState.buy
       },
     }));
+
     // setLastFocusedMode(lastFocusedMode === 'buy' ? 'sell' : 'buy');
-  }, []);
+
+    const params = new URLSearchParams(searchParams.toString());
+    if (swapState.sell.coin) {
+      params.set('buy', swapState.sell.coin ?? '');
+    }
+    if (swapState.buy.coin) {
+      params.set('sell', swapState.buy.coin ?? '');
+    }
+    router.replace(`${pathname}?${params.toString()}`, { scroll: false });
+  }, [pathname, router, searchParams, swapState.buy.coin, swapState.sell.coin]);
 
   const selectCoin = useCallback((mode: "buy" | "sell") => {
-    return (coin: string) => {
+    return (coin: CoinName) => {
       if (
         (mode === "buy" && swapState.sell.coin === coin) ||
         (mode === "sell" && swapState.buy.coin === coin)
       ) {
-        changeCoins();
+        swapAssets();
       } else {
+        const decimals = coinsConfig.get(coin)?.decimals!;
+        const amount = inputsState[mode].amount.substring(0, inputsState[mode].amount.indexOf('.') + decimals + 1);
         setSwapState(prevState => ({
           ...prevState,
           [mode]: {
-            ...prevState[mode],
+            amount,
             coin
           }
         }));
+        setInputsState(prevState => ({
+          ...prevState,
+          [mode]: {
+            amount
+          }
+        }));
       }
+
+      const params = new URLSearchParams(searchParams.toString());
+      params.set(mode, coin!);
+      router.replace(`${pathname}?${params.toString()}`, { scroll: false });
       setLastFocusedMode(mode);
     };
-  }, [swapState]);
+  }, [inputsState, pathname, router, searchParams, swapAssets, swapState.buy.coin, swapState.sell.coin]);
 
   const debouncedSetState = useDebounceCallback(setSwapState, 500);
   const setAmount = useCallback((mode: "buy" | "sell") => {
@@ -189,44 +228,50 @@ const Swap = () => {
 
   const handleCoinSelectorClick = useCallback((mode: CurrencyBoxMode) => {
     openCoinsModal();
-    setLastFocusedMode(mode);
+    modeForCoinSelector.current = mode;
   }, [openCoinsModal]);
 
-  const handleCoinSelection = (coin: string) => {
-    selectCoin(lastFocusedMode)(coin);
+  const handleCoinSelection = (coin: CoinName | null) => {
+    selectCoin(modeForCoinSelector.current)(coin);
     closeCoinsModal();
   };
 
-  const {mutateAsync, data: swapData, isPending: isSwapPending} = useSwap({swapState, mode: lastFocusedMode, slippage});
+  const { fetchTxCost, triggerSwap, swapPending, swapResult } = useSwap({swapState, mode: lastFocusedMode, slippage});
 
-  // @ts-ignore
-  const coinMissing = swapState.buy.coin === '' || swapState.sell.coin === '';
+  const coinMissing = swapState.buy.coin === null || swapState.sell.coin === null;
   const amountMissing = swapState.buy.amount === '' || swapState.sell.amount === '';
-  const insufficientEthBalance = !ethBalance || ethBalance === 0;
+  const sufficientEthBalance = useCheckEthBalance();
   const handleSwapClick = useCallback(async () => {
-    if (insufficientEthBalance) {
+    if (!sufficientEthBalance) {
       openNewTab(`https://faucet-testnet.fuel.network/?address=${account}`);
       return;
     }
 
-    if (coinMissing || amountMissing || isSwapPending) {
+    if (amountMissing || swapPending) {
       return;
     }
 
     swapStateForPreview.current = swapState;
-    const data = await mutateAsync();
+    const txCostData = await fetchTxCost();
 
-    if (data) {
-      openSuccess();
-      await refetch();
+    if (txCostData?.txCost.gasPrice) {
+      setTxCost(txCostData.txCost.gasPrice.toNumber() / 10 ** 9);
+    }
+
+    if (txCostData?.tx) {
+      const swapResult = await triggerSwap(txCostData.tx);
+      if (swapResult) {
+        openSuccess();
+        await refetch();
+      }
     }
   }, [
-    insufficientEthBalance,
-    coinMissing,
+    sufficientEthBalance,
     amountMissing,
-    isSwapPending,
+    swapPending,
     swapState,
-    mutateAsync,
+    fetchTxCost,
+    triggerSwap,
     account,
     openSuccess,
     refetch,
@@ -235,20 +280,21 @@ const Swap = () => {
   const insufficientSellBalance = parseFloat(sellValue) > sellBalanceValue;
 
   let swapButtonTitle = 'Swap';
-  if (isSwapPending) {
+  if (swapPending) {
     swapButtonTitle = 'Waiting for approval in wallet';
-  } else if (insufficientEthBalance) {
+  } else if (!sufficientEthBalance) {
     swapButtonTitle = 'Claim some ETH to pay for gas';
   } else if (insufficientSellBalance) {
     swapButtonTitle = 'Insufficient balance';
   }
 
   const exchangeRate = useExchangeRate(swapState);
+  const feeValue = ((0.333 / 100) * parseFloat(sellValue)).toFixed(sellDecimals);
 
   return (
     <>
       <div className={styles.swapAndRate}>
-        <div className={clsx(styles.swapContainer, isSwapPending && styles.swapContainerLoading)}>
+        <div className={clsx(styles.swapContainer, swapPending && styles.swapContainerLoading)}>
           <div className={styles.heading}>
             <p className={styles.title}>Swap</p>
             <IconButton onClick={openSettingsModal} className={styles.settingsButton}>
@@ -261,7 +307,7 @@ const Swap = () => {
             mode="sell"
             balance={sellBalanceValue}
             setAmount={setAmount('sell')}
-            loading={outputPreviewIsFetching || isSwapPending}
+            loading={outputPreviewIsFetching || swapPending}
             onCoinSelectorClick={handleCoinSelectorClick}
           />
           <div className={styles.splitter}>
@@ -275,22 +321,22 @@ const Swap = () => {
             mode="buy"
             balance={buyBalanceValue}
             setAmount={setAmount('buy')}
-            loading={inputPreviewIsFetching || isSwapPending}
+            loading={inputPreviewIsFetching || swapPending}
             onCoinSelectorClick={handleCoinSelectorClick}
           />
-          {isSwapPending && (
+          {swapPending && (
             <div className={styles.summary}>
               <div className={styles.summaryEntry}>
                 <p>Rate</p>
                 <p>{exchangeRate}</p>
               </div>
               <div className={styles.summaryEntry}>
-                <p>Fee (0.25%)</p>
-                <p>&lt;0.01$</p>
+                <p>Fee (0.333%)</p>
+                <p>{feeValue} {swapState.sell.coin}</p>
               </div>
               <div className={styles.summaryEntry}>
                 <p>Network cost</p>
-                <p>&lt;0.01$</p>
+                <p>{txCost?.toFixed(9)} ETH</p>
               </div>
             </div>
           )}
@@ -306,7 +352,7 @@ const Swap = () => {
           {isConnected && (
             <ActionButton
               variant="primary"
-              disabled={insufficientSellBalance}
+              disabled={coinMissing || (sufficientEthBalance && insufficientSellBalance)}
               onClick={handleSwapClick}
               loading={isPending}
             >
@@ -316,7 +362,7 @@ const Swap = () => {
         </div>
         <ExchangeRate swapState={swapState} />
       </div>
-      {isSwapPending && <div className={styles.loadingOverlay}/>}
+      {swapPending && <div className={styles.loadingOverlay}/>}
       <SettingsModal title="Settings">
         <SettingsModalContent slippage={slippage} setSlippage={setSlippage}/>
       </SettingsModal>
@@ -324,7 +370,7 @@ const Swap = () => {
         <CoinsListModal selectCoin={handleCoinSelection} balances={balances}/>
       </CoinsModal>
       <SuccessModal title={<TestnetLabel/>}>
-        <SwapSuccessModal swapState={swapStateForPreview.current} transactionHash={swapData?.id}/>
+        <SwapSuccessModal swapState={swapStateForPreview.current} transactionHash={swapResult?.id}/>
       </SuccessModal>
     </>
   );
