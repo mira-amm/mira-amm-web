@@ -15,6 +15,20 @@ const useInitialSwapState = () => {
     const sell = sellSearchParamExistsInMap ? sellSearchParam as CoinName : 'MIMIC';
     const buy = buySearchParamExistsInMap ? buySearchParam as CoinName : null;
 
+    // TODO: Rewrite search parameters
+    if (sell === buy) {
+      return {
+        sell: {
+          coin: sell,
+          amount: '',
+        },
+        buy: {
+          coin: null,
+          amount: '',
+        },
+      };
+    }
+
     const initialSwapState: SwapState = {
       sell: {
         coin: sell,

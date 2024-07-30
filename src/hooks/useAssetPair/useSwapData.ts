@@ -11,7 +11,7 @@ type SwapData = {
   buyDecimals: number;
   sellAssetIdInput: AssetIdInput;
   buyAssetIdInput: AssetIdInput;
-  assets: AssetIdInput[];
+  assets: [AssetIdInput, AssetIdInput];
 };
 
 const useSwapData = (swapState: SwapState): SwapData => {
@@ -36,13 +36,13 @@ const useSwapData = (swapState: SwapState): SwapData => {
       bits: mimicAssetId,
     };
 
-    let assets: AssetIdInput[];
+    let assets: [AssetIdInput, AssetIdInput];
 
-    if (sellCoin !== 'MIMIC' && buyCoin !== 'MIMIC') {
-      assets = [sellAssetIdInput, mimicAssetIdInput, buyAssetIdInput];
-    } else {
-      assets = [sellAssetIdInput, buyAssetIdInput];
-    }
+    // if (sellCoin !== 'MIMIC' && buyCoin !== 'MIMIC') {
+    //   assets = [sellAssetIdInput, mimicAssetIdInput, buyAssetIdInput];
+    // } else {
+    assets = [sellAssetIdInput, buyAssetIdInput];
+    // }
 
     return {
       sellAssetId,

@@ -14,6 +14,7 @@ import {useLocalStorage} from "usehooks-ts";
 import useFormattedAddress from "@/src/hooks/useFormattedAddress/useFormattedAddress";
 import useFirebase from "@/src/hooks/useFirebase/useFirebase";
 import useCheckEthBalance from "@/src/hooks/useCheckEthBalance/useCheckEthBalance";
+import useCheckIsFaucetAllowed from "@/src/hooks/useCheckIsFaucetAllowed/useCheckIsFaucetAllowed";
 
 const FaucetClaim = () => {
   const [FailureModal, openFailureModal, closeFailureModal] = useModal();
@@ -33,6 +34,8 @@ const FaucetClaim = () => {
   const { connect } = useConnectUI();
   const { disconnect } = useDisconnect();
   const { account } = useAccount();
+
+  const { data: faucetAllowed } = useCheckIsFaucetAllowed(account);
 
   useFirebase();
 
@@ -172,8 +175,9 @@ const FaucetClaim = () => {
           className={styles.claimButton}
           loading={isPending}
           onClick={handleClaimClick}
+          disabled={faucetAllowed === false}
         >
-          Claim $mimicMIRA
+          {faucetAllowed === false ? `You've already claimed $mimicMIRA` : 'Claim $mimicMIRA'}
         </ActionButton>
         {promptEthClaim && (
           <p className={styles.ethFaucetText}>

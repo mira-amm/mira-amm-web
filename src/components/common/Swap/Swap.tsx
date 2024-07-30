@@ -95,8 +95,8 @@ const Swap = () => {
     lastFocusedMode,
   });
   const buyDecimals = coinsConfig.get(swapState.buy.coin)?.decimals!;
-  const inputPreviewValue = inputPreviewData && inputPreviewData.other_asset.amount.toNumber() / 10 ** buyDecimals;
-  const inputPreviewValueString = inputPreviewValue ? inputPreviewValue.toString() : previousInputPreviewValue.current;
+  const inputPreviewValue = inputPreviewData && inputPreviewData.value.other_asset.amount.toNumber() / 10 ** buyDecimals;
+  const inputPreviewValueString = inputPreviewValue !== undefined ? inputPreviewValue === 0 ? '' : inputPreviewValue.toFixed(buyDecimals) : previousInputPreviewValue.current;
   previousInputPreviewValue.current = inputPreviewValueString;
   const buyValue = lastFocusedMode === 'sell' ? inputPreviewValueString : inputsState.buy.amount;
   if (buyValue !== swapState.buy.amount) {
@@ -115,8 +115,8 @@ const Swap = () => {
     lastFocusedMode,
   });
   const sellDecimals = coinsConfig.get(swapState.sell.coin)?.decimals!;
-  const outputPreviewValue = outputPreviewData && outputPreviewData.other_asset.amount.toNumber() / 10 ** sellDecimals;
-  const outputPreviewValueString = outputPreviewValue ? outputPreviewValue.toString() : previousOutputPreviewValue.current;
+  const outputPreviewValue = outputPreviewData && outputPreviewData.value.other_asset.amount.toNumber() / 10 ** sellDecimals;
+  const outputPreviewValueString = outputPreviewValue !== undefined ? outputPreviewValue === 0 ? '' : outputPreviewValue.toFixed(sellDecimals) : previousOutputPreviewValue.current;
   previousOutputPreviewValue.current = outputPreviewValueString;
   const sellValue = lastFocusedMode === 'buy' ? outputPreviewValueString : inputsState.sell.amount;
   if (sellValue !== swapState.sell.amount) {
@@ -129,18 +129,27 @@ const Swap = () => {
     }));
   }
 
-  const changeCoins = () => {
-    setSwapState(prevState => ({
-      buy: {
-        ...prevState.buy,
-        coin: prevState.sell.coin,
-      },
-      sell: {
-        ...prevState.sell,
-        coin: prevState.buy.coin,
-      },
-    }));
-  };
+  // const changeCoins = () => {
+  //   setSwapState(prevState => ({
+  //     buy: {
+  //       ...prevState.buy,
+  //       coin: prevState.sell.coin,
+  //     },
+  //     sell: {
+  //       ...prevState.sell,
+  //       coin: prevState.buy.coin,
+  //     },
+  //   }));
+  //
+  //   const params = new URLSearchParams(searchParams.toString());
+  //   if (swapState.sell.coin) {
+  //     params.set('buy', swapState.sell.coin ?? '');
+  //   }
+  //   if (swapState.buy.coin) {
+  //     params.set('sell', swapState.buy.coin ?? '');
+  //   }
+  //   router.replace(`${pathname}?${params.toString()}`, { scroll: false });
+  // };
 
   const swapAssets = useCallback(() => {
     setSwapState(prevState => ({
@@ -151,8 +160,18 @@ const Swap = () => {
         ...prevState.buy
       },
     }));
+
     // setLastFocusedMode(lastFocusedMode === 'buy' ? 'sell' : 'buy');
-  }, []);
+
+    const params = new URLSearchParams(searchParams.toString());
+    if (swapState.sell.coin) {
+      params.set('buy', swapState.sell.coin ?? '');
+    }
+    if (swapState.buy.coin) {
+      params.set('sell', swapState.buy.coin ?? '');
+    }
+    router.replace(`${pathname}?${params.toString()}`, { scroll: false });
+  }, [pathname, router, searchParams, swapState.buy.coin, swapState.sell.coin]);
 
   const selectCoin = useCallback((mode: "buy" | "sell") => {
     return (coin: CoinName) => {
@@ -160,22 +179,31 @@ const Swap = () => {
         (mode === "buy" && swapState.sell.coin === coin) ||
         (mode === "sell" && swapState.buy.coin === coin)
       ) {
-        changeCoins();
+        swapAssets();
       } else {
+        const decimals = coinsConfig.get(coin)?.decimals!;
+        const amount = inputsState[mode].amount.substring(0, inputsState[mode].amount.indexOf('.') + decimals + 1);
         setSwapState(prevState => ({
           ...prevState,
           [mode]: {
-            ...prevState[mode],
+            amount,
             coin
           }
         }));
+        setInputsState(prevState => ({
+          ...prevState,
+          [mode]: {
+            amount
+          }
+        }));
       }
+
       const params = new URLSearchParams(searchParams.toString());
       params.set(mode, coin!);
       router.replace(`${pathname}?${params.toString()}`, { scroll: false });
       setLastFocusedMode(mode);
     };
-  }, [pathname, router, searchParams, swapState.buy.coin, swapState.sell.coin]);
+  }, [inputsState, pathname, router, searchParams, swapAssets, swapState.buy.coin, swapState.sell.coin]);
 
   const debouncedSetState = useDebounceCallback(setSwapState, 500);
   const setAmount = useCallback((mode: "buy" | "sell") => {
@@ -218,7 +246,7 @@ const Swap = () => {
       return;
     }
 
-    if (coinMissing || amountMissing || swapPending) {
+    if (amountMissing || swapPending) {
       return;
     }
 
@@ -231,14 +259,13 @@ const Swap = () => {
 
     if (txCostData?.tx) {
       const swapResult = await triggerSwap(txCostData.tx);
-      if (swapResult?.gqlTransaction?.status?.type === 'SuccessStatus') {
+      if (swapResult) {
         openSuccess();
         await refetch();
       }
     }
   }, [
     sufficientEthBalance,
-    coinMissing,
     amountMissing,
     swapPending,
     swapState,
@@ -261,7 +288,7 @@ const Swap = () => {
   }
 
   const exchangeRate = useExchangeRate(swapState);
-  const feeValue = (0.333 / 100) * parseFloat(sellValue);
+  const feeValue = ((0.333 / 100) * parseFloat(sellValue)).toFixed(sellDecimals);
 
   return (
     <>
@@ -324,7 +351,7 @@ const Swap = () => {
           {isConnected && (
             <ActionButton
               variant="primary"
-              disabled={sufficientEthBalance && insufficientSellBalance}
+              disabled={coinMissing || (sufficientEthBalance && insufficientSellBalance)}
               onClick={handleSwapClick}
               loading={isPending}
             >

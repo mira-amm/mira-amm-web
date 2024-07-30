@@ -7,16 +7,21 @@ import BackLink from "@/src/components/common/BackLink/BackLink";
 
 import styles from './SwapPageLayout.module.css';
 import {Suspense} from "react";
+import {useIsClient} from "usehooks-ts";
 
 const SwapPageLayout = () => {
+  const isClient = useIsClient();
+
   return (
     <>
       <Header/>
       <main className={styles.swapLayout}>
         <BackLink />
-        <Suspense>
-          <Swap />
-        </Suspense>
+        {isClient && (
+          <Suspense>
+            <Swap />
+          </Suspense>
+        )}
       </main>
       <Footer/>
     </>

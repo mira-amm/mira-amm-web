@@ -10,8 +10,11 @@ import ExchangeIcon from "@/src/components/icons/Exchange/ExchangeIcon";
 
 import styles from './FaucetPageLayout.module.css';
 import {Suspense} from "react";
+import {useIsClient} from "usehooks-ts";
 
 const FaucetPageLayout = () => {
+  const isClient = useIsClient();
+
   return (
     <>
       <Header />
@@ -79,9 +82,11 @@ const FaucetPageLayout = () => {
           </div>
         </section>
         <section className={styles.swapSection}>
-          <Suspense>
-            <Swap />
-          </Suspense>
+          {isClient && (
+            <Suspense>
+              <Swap />
+            </Suspense>
+          )}
         </section>
       </main>
       <Footer/>

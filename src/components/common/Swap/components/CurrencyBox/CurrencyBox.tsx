@@ -78,11 +78,13 @@ const CurrencyBox = ({ value, coin, mode, balance, setAmount, loading, onCoinSel
             {/*{!noValue && '$41 626.62'}*/}
           </p>
           {balanceValue > 0 && (
-            <button className={styles.balance} onClick={handleBalanceClick}>
-              Balance:
+            <span className={styles.balance}>
+              Balance: {balanceValue}
               &nbsp;
-              {balanceValue}
-            </button>
+              <button className={styles.maxBalance} onClick={handleBalanceClick}>
+                Max
+              </button>
+            </span>
           )}
         </div>
       </div>

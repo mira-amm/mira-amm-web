@@ -91,10 +91,17 @@
 }
 
 .balance {
-  color: inherit;
+}
+
+.maxBalance {
+  color: var(--accent-primary);
   background: transparent;
   border: none;
   cursor: pointer;
+}
+
+.maxBalance:hover {
+  color: var(--content-primary);
 }
 
 @media (min-width: 1024px) {

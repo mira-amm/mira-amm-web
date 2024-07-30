@@ -31,7 +31,8 @@ const CoinsListModal = ({ selectCoin, balances }: Props) => {
     return coinsList.filter((coin) => {
       return (
         coin.name?.toLowerCase().includes(value.toLowerCase()) ||
-        coin.fullName?.toLowerCase().includes(value.toLowerCase())
+        coin.fullName?.toLowerCase().includes(value.toLowerCase()) ||
+        coin.assetId?.toLowerCase() === value.toLowerCase()
       );
     });
   }, [value]);
