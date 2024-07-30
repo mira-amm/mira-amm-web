@@ -19,9 +19,9 @@ const ClaimSuccessModal = () => {
     <div className={styles.claimFailureModal}>
       <SuccessIcon />
       <p className={styles.mainText}>
-        Seamless Mimicry! Check
+        Seamless Mimicry!
         <br />
-        your wallet
+        Check your wallet
       </p>
       <p className={styles.subText}>
         Welcome to the MIRA world! Happy trading,

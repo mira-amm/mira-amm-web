@@ -18,7 +18,7 @@ const Footer = () => {
           {/*<a href="#">Article</a>*/}
           {/*<a href="#">Docs</a>*/}
         </div>
-        <p className="desktopOnly">&copy; {currentYear} Legal Disclaimer</p>
+        <p className="desktopOnly">&copy; {currentYear} Mira Finance</p>
       </section>
       <p className="mobileOnly">&copy; {currentYear} Legal Disclaimer</p>
     </footer>

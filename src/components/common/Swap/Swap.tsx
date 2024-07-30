@@ -78,6 +78,7 @@ const Swap = () => {
   const previousInputPreviewValue = useRef('');
   const previousOutputPreviewValue = useRef('');
   const swapStateForPreview = useRef(swapState);
+  const modeForCoinSelector = useRef<CurrencyBoxMode>('sell');
 
   const {isConnected} = useIsConnected();
   const {connect, isConnecting} = useConnectUI();
@@ -227,11 +228,11 @@ const Swap = () => {
 
   const handleCoinSelectorClick = useCallback((mode: CurrencyBoxMode) => {
     openCoinsModal();
-    setLastFocusedMode(mode);
+    modeForCoinSelector.current = mode;
   }, [openCoinsModal]);
 
   const handleCoinSelection = (coin: CoinName | null) => {
-    selectCoin(lastFocusedMode)(coin);
+    selectCoin(modeForCoinSelector.current)(coin);
     closeCoinsModal();
   };
 
