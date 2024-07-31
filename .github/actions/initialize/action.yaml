@@ -13,7 +13,7 @@ runs:
   using: composite
   steps:
     - name: Configure AWS Credentials
-      uses: aws-actions/configure-aws-credentials@v1
+      uses: aws-actions/configure-aws-credentials@v4
       with:
         aws-access-key-id: ${{ inputs.aws_access_key }}
         aws-secret-access-key: ${{ inputs.aws_secret_access_key }}
