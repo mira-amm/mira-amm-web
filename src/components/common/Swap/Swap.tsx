@@ -1,5 +1,5 @@
 import {useCallback, useEffect, useRef, useState} from "react";
-import {useAccount, useConnectUI, useIsConnected} from "@fuels/react";
+import {useAccount, useConnectUI, useFuel, useIsConnected} from "@fuels/react";
 import {useDebounceCallback} from "usehooks-ts";
 import {clsx} from "clsx";
 
@@ -82,6 +82,9 @@ const Swap = () => {
   const modeForCoinSelector = useRef<CurrencyBoxMode>('sell');
 
   const {isConnected} = useIsConnected();
+  const { fuel } = useFuel();
+  console.log('isConnected:', isConnected);
+  console.log('connector:', fuel.currentConnector());
   const {connect, isConnecting} = useConnectUI();
   const {account} = useAccount();
   const {balances, isPending, refetch} = useBalances();
