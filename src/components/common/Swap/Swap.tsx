@@ -26,6 +26,7 @@ import SettingsModalContent from "@/src/components/common/Swap/components/Settin
 import useCheckEthBalance from "@/src/hooks/useCheckEthBalance/useCheckEthBalance";
 import {usePathname, useRouter, useSearchParams} from "next/navigation";
 import useInitialSwapState from "@/src/hooks/useInitialSwapState/useInitialSwapState";
+import useIsMobile from "@/src/hooks/useIsMobile/useIsMobile";
 
 export type CurrencyBoxMode = "buy" | "sell";
 export type CurrencyBoxState = {
@@ -291,6 +292,16 @@ const Swap = () => {
   const exchangeRate = useExchangeRate(swapState);
   const feeValue = ((0.333 / 100) * parseFloat(sellValue)).toFixed(sellDecimals);
 
+  const isMobile = useIsMobile();
+
+  const connectWalletTitle = isMobile ? 'Use desktop to access' : 'Connect Wallet';
+
+  const handleConnect = useCallback(() => {
+    if (!isMobile) {
+      connect();
+    }
+  }, [isMobile, connect]);
+
   return (
     <>
       <div className={styles.swapAndRate}>
@@ -343,10 +354,10 @@ const Swap = () => {
           {!isConnected && (
             <ActionButton
               variant="secondary"
-              onClick={connect}
+              onClick={handleConnect}
               loading={isConnecting}
             >
-              Connect Wallet
+              {connectWalletTitle}
             </ActionButton>
           )}
           {isConnected && (

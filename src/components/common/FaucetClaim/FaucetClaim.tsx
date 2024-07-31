@@ -15,6 +15,7 @@ import useFormattedAddress from "@/src/hooks/useFormattedAddress/useFormattedAdd
 import useFirebase from "@/src/hooks/useFirebase/useFirebase";
 import useCheckEthBalance from "@/src/hooks/useCheckEthBalance/useCheckEthBalance";
 import useCheckIsFaucetAllowed from "@/src/hooks/useCheckIsFaucetAllowed/useCheckIsFaucetAllowed";
+import useIsMobile from "@/src/hooks/useIsMobile/useIsMobile";
 
 const FaucetClaim = () => {
   const [FailureModal, openFailureModal, closeFailureModal] = useModal();
@@ -70,8 +71,12 @@ const FaucetClaim = () => {
     }
   }, [allStepsCompleted, claim, openFailureModal, openSuccessModal]);
 
+  const isMobile = useIsMobile();
+
   const handleConnectWalletClick = () => {
-    connect();
+    if (!isMobile) {
+      connect();
+    }
   };
 
   const handleDisconnectWalletClick = () => {
@@ -123,6 +128,9 @@ const FaucetClaim = () => {
               </button>
               &nbsp;
               Wallet
+              {isMobile && (
+                ' (Use desktop)'
+              )}
             </div>
           )}
         </div>
