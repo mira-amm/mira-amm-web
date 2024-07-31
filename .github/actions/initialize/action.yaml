@@ -24,10 +24,6 @@ runs:
       with:
         node-version: 20
 
-    - uses: pnpm/action-setup@v3
-      with:
-        version: 9
-
     - name: Build next app
       shell: bash
-      run: pnpm install && pnpm run build
+      run: npm install && npm run build
