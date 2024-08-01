@@ -1,5 +1,5 @@
 import {useCallback, useEffect, useRef, useState} from "react";
-import {useAccount, useConnectUI, useFuel, useIsConnected} from "@fuels/react";
+import {useAccount, useConnectUI, useIsConnected} from "@fuels/react";
 import {useDebounceCallback} from "usehooks-ts";
 import {clsx} from "clsx";
 
@@ -27,6 +27,7 @@ import useCheckEthBalance from "@/src/hooks/useCheckEthBalance/useCheckEthBalanc
 import {usePathname, useRouter, useSearchParams} from "next/navigation";
 import useInitialSwapState from "@/src/hooks/useInitialSwapState/useInitialSwapState";
 import useIsMobile from "@/src/hooks/useIsMobile/useIsMobile";
+import usePersistentConnector from "@/src/hooks/usePersistentConnector/usePersistentConnector";
 
 export type CurrencyBoxMode = "buy" | "sell";
 export type CurrencyBoxState = {
@@ -53,6 +54,8 @@ const Swap = () => {
   const [SettingsModal, openSettingsModal] = useModal();
   const [CoinsModal, openCoinsModal, closeCoinsModal] = useModal();
   const [SuccessModal, openSuccess] = useModal();
+
+  usePersistentConnector();
 
   const pathname = usePathname();
   const router = useRouter();
@@ -82,9 +85,6 @@ const Swap = () => {
   const modeForCoinSelector = useRef<CurrencyBoxMode>('sell');
 
   const {isConnected} = useIsConnected();
-  const { fuel } = useFuel();
-  console.log('isConnected:', isConnected);
-  console.log('connector:', fuel.currentConnector());
   const {connect, isConnecting} = useConnectUI();
   const {account} = useAccount();
   const {balances, isPending, refetch} = useBalances();
