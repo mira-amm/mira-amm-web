@@ -5,6 +5,7 @@ import {FuelProvider} from "@fuels/react";
 import {QueryClient, QueryClientProvider} from "@tanstack/react-query";
 import {BurnerWalletConnector, FueletWalletConnector, FuelWalletConnector} from "@fuels/connectors";
 import {FuelConfig, FuelConnector} from "fuels";
+import PersistentConnectorProvider from "@/src/core/providers/PersistentConnector";
 
 type Props = {
   children: ReactNode;
@@ -32,7 +33,9 @@ const Providers = ({children}: Props) => {
         fuelConfig={fuelConfig}
         theme="dark"
       >
-        {children}
+        <PersistentConnectorProvider>
+          {children}
+        </PersistentConnectorProvider>
       </FuelProvider>
     </QueryClientProvider>
   );

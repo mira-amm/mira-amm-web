@@ -27,7 +27,7 @@ import useCheckEthBalance from "@/src/hooks/useCheckEthBalance/useCheckEthBalanc
 import {usePathname, useRouter, useSearchParams} from "next/navigation";
 import useInitialSwapState from "@/src/hooks/useInitialSwapState/useInitialSwapState";
 import useIsMobile from "@/src/hooks/useIsMobile/useIsMobile";
-import usePersistentConnector from "@/src/hooks/usePersistentConnector/usePersistentConnector";
+import {usePersistentConnector} from "@/src/core/providers/PersistentConnector";
 
 export type CurrencyBoxMode = "buy" | "sell";
 export type CurrencyBoxState = {
@@ -55,7 +55,8 @@ const Swap = () => {
   const [CoinsModal, openCoinsModal, closeCoinsModal] = useModal();
   const [SuccessModal, openSuccess] = useModal();
 
-  usePersistentConnector();
+  const { connectPersistedConnector } = usePersistentConnector();
+  connectPersistedConnector();
 
   const pathname = usePathname();
   const router = useRouter();

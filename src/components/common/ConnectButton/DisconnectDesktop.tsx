@@ -6,7 +6,7 @@ import ActionButton from "@/src/components/common/ActionButton/ActionButton";
 
 import styles from "./ConnectButton.module.css";
 import {memo} from "react";
-import usePersistentConnector from "@/src/hooks/usePersistentConnector/usePersistentConnector";
+import {usePersistentConnector} from "@/src/core/providers/PersistentConnector";
 
 type Props = {
   className?: string;
@@ -15,8 +15,7 @@ type Props = {
 const DisconnectDesktop = ({ className }: Props) => {
   const { isConnected } = useIsConnected();
   const { account } = useAccount();
-  const { disconnect } = useDisconnect();
-  const { persistentDisconnect } = usePersistentConnector();
+  const { disconnect } = usePersistentConnector();
 
   const formattedAddress = useFormattedAddress(account);
 
@@ -25,7 +24,7 @@ const DisconnectDesktop = ({ className }: Props) => {
   }
 
   return (
-    <ActionButton className={clsx(className, styles.connected)} onClick={persistentDisconnect}>
+    <ActionButton className={clsx(className, styles.connected)} onClick={disconnect}>
       {isConnected && (
         <img src="/images/avatar.png" width="24" height="24" />
       )}
