@@ -15,6 +15,8 @@ import useFormattedAddress from "@/src/hooks/useFormattedAddress/useFormattedAdd
 import useFirebase from "@/src/hooks/useFirebase/useFirebase";
 import useCheckEthBalance from "@/src/hooks/useCheckEthBalance/useCheckEthBalance";
 import useCheckIsFaucetAllowed from "@/src/hooks/useCheckIsFaucetAllowed/useCheckIsFaucetAllowed";
+import useIsMobile from "@/src/hooks/useIsMobile/useIsMobile";
+import {usePersistentConnector} from "@/src/core/providers/PersistentConnector";
 
 const FaucetClaim = () => {
   const [FailureModal, openFailureModal, closeFailureModal] = useModal();
@@ -31,11 +33,10 @@ const FaucetClaim = () => {
   }, [faucetRequirements]);
 
   const { isConnected } = useIsConnected();
-  const { connect } = useConnectUI();
-  const { disconnect } = useDisconnect();
+  const { connect, disconnect } = usePersistentConnector();
   const { account } = useAccount();
 
-  const { data: faucetAllowed } = useCheckIsFaucetAllowed(account);
+  const { data: faucetAllowed, refetch: refetchFaucetAllowed } = useCheckIsFaucetAllowed(account);
 
   useFirebase();
 
@@ -67,11 +68,16 @@ const FaucetClaim = () => {
     const result = await claimData?.waitForResult();
     if (result?.transactionResult.status === 'success') {
       openSuccessModal();
+      await refetchFaucetAllowed();
     }
-  }, [allStepsCompleted, claim, openFailureModal, openSuccessModal]);
+  }, [allStepsCompleted, claim, openFailureModal, openSuccessModal, refetchFaucetAllowed]);
+
+  const isMobile = useIsMobile();
 
   const handleConnectWalletClick = () => {
-    connect();
+    if (!isMobile) {
+      connect();
+    }
   };
 
   const handleDisconnectWalletClick = () => {
@@ -123,6 +129,9 @@ const FaucetClaim = () => {
               </button>
               &nbsp;
               Wallet
+              {isMobile && (
+                ' (Use desktop)'
+              )}
             </div>
           )}
         </div>
@@ -175,7 +184,7 @@ const FaucetClaim = () => {
           className={styles.claimButton}
           loading={isPending}
           onClick={handleClaimClick}
-          disabled={faucetAllowed === false}
+          disabled={faucetAllowed === false || promptEthClaim === true}
         >
           {faucetAllowed === false ? `You've already claimed $mimicMIRA` : 'Claim $mimicMIRA'}
         </ActionButton>
