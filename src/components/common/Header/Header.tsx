@@ -11,14 +11,15 @@ import LaunchAppButton from "@/src/components/common/LaunchAppButton/LaunchAppBu
 import TestnetLabel from "@/src/components/common/TestnetLabel/TestnetLabel";
 import DisconnectDesktop from "@/src/components/common/ConnectButton/DisconnectDesktop";
 import DisconnectMobile from "@/src/components/common/ConnectButton/DisconnectMobile";
+import {useIsConnected} from "@fuels/react";
 
 type Props = {
   isHomePage?: boolean;
 }
 
 const Header = ({ isHomePage }: Props) => {
-  // const [promoHidden, setPromoHidden] = useState(false);
   const pathname = usePathname();
+  const { isConnected } = useIsConnected();
 
   return (
     <header className={styles.header}>
@@ -71,7 +72,7 @@ const Header = ({ isHomePage }: Props) => {
           {isHomePage && (
             <DisconnectDesktop className={styles.launchAppButton} />
           )}
-          {isHomePage && (
+          {isHomePage && !isConnected && (
             <LaunchAppButton className={styles.launchAppButton} />
           )}
         </div>
