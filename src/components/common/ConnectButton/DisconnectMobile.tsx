@@ -5,6 +5,7 @@ import {clsx} from "clsx";
 import styles from "./ConnectButton.module.css";
 import {memo, useCallback} from "react";
 import useModal from "@/src/hooks/useModal/useModal";
+import usePersistentConnector from "@/src/hooks/usePersistentConnector/usePersistentConnector";
 
 type Props = {
   className?: string;
@@ -13,7 +14,8 @@ type Props = {
 const DisconnectMobile = ({ className }: Props) => {
   const { isConnected } = useIsConnected();
   const { account } = useAccount();
-  const { disconnect } = useDisconnect();
+  // const { disconnect } = useDisconnect();
+  const { persistentDisconnect } = usePersistentConnector();
   const [Modal, openModal, closeModal] = useModal();
 
   const formattedAddress = useFormattedAddress(account);
@@ -23,9 +25,9 @@ const DisconnectMobile = ({ className }: Props) => {
   }, [openModal]);
 
   const handleDisconnect = useCallback(() => {
-    disconnect();
+    persistentDisconnect();
     closeModal();
-  }, [disconnect, closeModal]);
+  }, [persistentDisconnect, closeModal]);
 
   if (!isConnected) {
     return null;

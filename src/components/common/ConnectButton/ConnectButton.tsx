@@ -8,6 +8,7 @@ import styles from './ConnectButton.module.css';
 
 import ActionButton from "@/src/components/common/ActionButton/ActionButton";
 import useFormattedAddress from "@/src/hooks/useFormattedAddress/useFormattedAddress";
+import usePersistentConnector from "@/src/hooks/usePersistentConnector/usePersistentConnector";
 
 type Props = {
   className?: string;
@@ -18,6 +19,7 @@ const ConnectButton = ({ className }: Props) => {
   const { connect, isLoading, isConnecting } = useConnectUI();
   const { disconnect, isPending: disconnectLoading } = useDisconnect();
   const { account } = useAccount();
+  const { persistentDisconnect } = usePersistentConnector()
 
   const loading = isConnecting || disconnectLoading;
 
@@ -27,9 +29,9 @@ const ConnectButton = ({ className }: Props) => {
     }
 
     if (isConnected) {
-      disconnect();
+      persistentDisconnect();
     }
-  }, [isConnected, connect, disconnect]);
+  }, [isConnected, connect, persistentDisconnect]);
 
   const handleClick = useCallback(() => {
     handleConnection();

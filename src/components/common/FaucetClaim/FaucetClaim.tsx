@@ -16,6 +16,7 @@ import useFirebase from "@/src/hooks/useFirebase/useFirebase";
 import useCheckEthBalance from "@/src/hooks/useCheckEthBalance/useCheckEthBalance";
 import useCheckIsFaucetAllowed from "@/src/hooks/useCheckIsFaucetAllowed/useCheckIsFaucetAllowed";
 import useIsMobile from "@/src/hooks/useIsMobile/useIsMobile";
+import usePersistentConnector from "@/src/hooks/usePersistentConnector/usePersistentConnector";
 
 const FaucetClaim = () => {
   const [FailureModal, openFailureModal, closeFailureModal] = useModal();
@@ -33,7 +34,8 @@ const FaucetClaim = () => {
 
   const { isConnected } = useIsConnected();
   const { connect } = useConnectUI();
-  const { disconnect } = useDisconnect();
+  // const { disconnect } = useDisconnect();
+  const { persistentDisconnect } = usePersistentConnector();
   const { account } = useAccount();
 
   const { data: faucetAllowed } = useCheckIsFaucetAllowed(account);
@@ -80,7 +82,7 @@ const FaucetClaim = () => {
   };
 
   const handleDisconnectWalletClick = () => {
-    disconnect();
+    persistentDisconnect();
   };
 
   const handleFollowClick = () => {
