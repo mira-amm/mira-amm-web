@@ -55,7 +55,7 @@ const Swap = () => {
   const [CoinsModal, openCoinsModal, closeCoinsModal] = useModal();
   const [SuccessModal, openSuccess] = useModal();
 
-  const { connectPersistedConnector } = usePersistentConnector();
+  const { connect, connectPersistedConnector } = usePersistentConnector();
   connectPersistedConnector();
 
   const pathname = usePathname();
@@ -86,7 +86,7 @@ const Swap = () => {
   const modeForCoinSelector = useRef<CurrencyBoxMode>('sell');
 
   const {isConnected} = useIsConnected();
-  const {connect, isConnecting} = useConnectUI();
+  const {isConnecting} = useConnectUI();
   const {account} = useAccount();
   const {balances, isPending, refetch} = useBalances();
 
