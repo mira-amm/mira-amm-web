@@ -43,12 +43,12 @@ const PersistentConnectorProvider = ({ children }: Props) => {
     //   }
     // };
 
-    // console.log('Initializing persistent connector');
-    // if (isConnected) {
-      const currentConnector = fuel.currentConnector();
-      console.log('Persisting initial connector:', currentConnector?.name);
-      persistentConnectorName.current = currentConnector?.name;
-    // }
+    console.log('Initializing persistent connector');
+    const currentConnector = localStorage.getItem('fuel-current-connector');
+    if (currentConnector) {
+      console.log('Persisting initial connector:', currentConnector);
+      persistentConnectorName.current = currentConnector;
+    }
 
     // handleInitialConnect();
   }, []);
