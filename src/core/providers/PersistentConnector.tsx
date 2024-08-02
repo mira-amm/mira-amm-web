@@ -32,34 +32,16 @@ const PersistentConnectorProvider = ({ children }: Props) => {
   const { connect } = useConnectUI();
 
   useEffect(() => {
-    // const handleInitialConnect = async () => {
-    //   console.log('Initial connect to wallet')
-    //   const connectStatus = await fuel.connect();
-    //   if (connectStatus) {
-    //     console.log('[i]Connected to wallet');
-    //     const currentConnector = fuel.currentConnector();
-    //     console.log('[i]Persisting new connector:', currentConnector?.name);
-    //     persistentConnectorName.current = currentConnector?.name;
-    //   }
-    // };
-
-    console.log('Initializing persistent connector');
     const currentConnector = localStorage.getItem('fuel-current-connector');
     if (currentConnector) {
-      console.log('Persisting initial connector:', currentConnector);
       persistentConnectorName.current = currentConnector;
     }
-
-    // handleInitialConnect();
   }, []);
 
   useEffect(() => {
     const handleConnectStatusChange = async () => {
-      console.log('[c]Connect status changed:', isConnected);
       if (connectClicked.current && isConnected) {
-        console.log('[c]Connected to wallet');
         const currentConnector = fuel.currentConnector();
-        console.log('[c]Persisting new connector:', currentConnector?.name);
         persistentConnectorName.current = currentConnector?.name;
         connectClicked.current = false;
       }
@@ -69,21 +51,17 @@ const PersistentConnectorProvider = ({ children }: Props) => {
   }, [isConnected]);
 
   const connectPersistedConnector = useCallback(async () => {
-    console.log('Trying to reconnect to persisted connector:', persistentConnectorName.current);
     if (persistentConnectorName.current) {
-      console.log('Reconnecting to persisted connector:', persistentConnectorName.current);
       await fuel.selectConnector(persistentConnectorName.current);
     }
   }, [fuel]);
 
   const persistentConnect = useCallback(async () => {
-    console.log('Connect clicked');
     connect();
     connectClicked.current = true;
-  }, []);
+  }, [connect]);
 
   const persistentDisconnect = useCallback(() => {
-    console.log('Disconnect, previous was', persistentConnectorName.current, 'reset previous');
     persistentConnectorName.current = undefined;
     disconnect();
   }, [disconnect]);
@@ -92,7 +70,7 @@ const PersistentConnectorProvider = ({ children }: Props) => {
     connect: persistentConnect,
     disconnect: persistentDisconnect,
     connectPersistedConnector,
-  }), [persistentDisconnect, connectPersistedConnector]);
+  }), [persistentConnect, persistentDisconnect, connectPersistedConnector]);
 
   return (
     <PersistentConnectorContext.Provider value={contextValue}>

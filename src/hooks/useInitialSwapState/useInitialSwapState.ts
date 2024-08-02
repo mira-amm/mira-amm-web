@@ -1,47 +1,30 @@
 import {CoinName, coinsConfig} from "@/src/utils/coinsConfig";
-import {useSearchParams} from "next/navigation";
 import {SwapState} from "@/src/components/common/Swap/Swap";
 import {useMemo} from "react";
+import {useLocalStorage} from "usehooks-ts";
 
 const useInitialSwapState = () => {
-  const searchParams = useSearchParams();
+  const [swapCoins, setSwapCoins] = useLocalStorage('swapCoins', {sell: null, buy: null});
 
   return useMemo(() => {
-    const sellSearchParam = searchParams.get('sell');
-    const sellSearchParamExistsInMap =  sellSearchParam !== null && coinsConfig.has(sellSearchParam as CoinName);
-    const buySearchParam = searchParams.get('buy');
-    const buySearchParamExistsInMap =  buySearchParam !== null && coinsConfig.has(buySearchParam as CoinName);
-
-    const sell = sellSearchParamExistsInMap ? sellSearchParam as CoinName : 'MIMIC';
-    const buy = buySearchParamExistsInMap ? buySearchParam as CoinName : null;
-
-    // TODO: Rewrite search parameters
-    if (sell === buy) {
-      return {
-        sell: {
-          coin: sell,
-          amount: '',
-        },
-        buy: {
-          coin: null,
-          amount: '',
-        },
-      };
-    }
+    const sellCoinExistsInMap = swapCoins.sell !== null && coinsConfig.has(swapCoins.sell as CoinName);
+    const buyCoinExistsInMap = swapCoins.buy !== null && coinsConfig.has(swapCoins.buy as CoinName);
+    const sellCoin = sellCoinExistsInMap ? swapCoins.sell as CoinName : 'ETH';
+    const buyCoin = buyCoinExistsInMap ? swapCoins.buy as CoinName : 'USDT';
 
     const initialSwapState: SwapState = {
       sell: {
-        coin: sell,
+        coin: sellCoin,
         amount: '',
       },
       buy: {
-        coin: buy,
+        coin: buyCoin,
         amount: '',
       },
     };
 
     return initialSwapState;
-  },[searchParams])
+  },[swapCoins.buy, swapCoins.sell])
 };
 
 export default useInitialSwapState;

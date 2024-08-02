@@ -28,13 +28,13 @@ const useCheckIsFaucetAllowed = (account: string | null) => {
     return faucetSDK.isAllowedToFaucet(assetId, identityInput);
   }, [faucetSDK, account, assetIdB256]);
 
-  const { data } = useQuery({
+  const { data, refetch } = useQuery({
     queryKey: ['isFaucetAllowed', account, assetIdB256],
     queryFn,
     enabled: Boolean(faucetSDK) && Boolean(account),
   });
 
-  return { data };
+  return { data, refetch };
 };
 
 export default useCheckIsFaucetAllowed;

@@ -1,6 +1,6 @@
 import {useCallback, useEffect, useRef, useState} from "react";
 import {useAccount, useConnectUI, useIsConnected} from "@fuels/react";
-import {useDebounceCallback} from "usehooks-ts";
+import {useDebounceCallback, useLocalStorage} from "usehooks-ts";
 import {clsx} from "clsx";
 
 import CurrencyBox from "@/src/components/common/Swap/components/CurrencyBox/CurrencyBox";
@@ -58,9 +58,9 @@ const Swap = () => {
   const { connect, connectPersistedConnector } = usePersistentConnector();
   connectPersistedConnector();
 
-  const pathname = usePathname();
-  const router = useRouter();
-  const searchParams = useSearchParams();
+  // const pathname = usePathname();
+  // const router = useRouter();
+  // const searchParams = useSearchParams();
 
   const initialSwapState = useInitialSwapState();
 
@@ -70,15 +70,7 @@ const Swap = () => {
   const [slippage, setSlippage] = useState<number>(1);
   const [txCost, setTxCost] = useState<number | null>(null);
 
-  useEffect(() => {
-    if (!swapState.sell.coin) {
-      return;
-    }
-
-    const params = new URLSearchParams(searchParams.toString());
-    params.set('sell', swapState.sell.coin);
-    router.replace(`${pathname}?${params.toString()}`, { scroll: false });
-  }, []);
+  const [swapCoins, setSwapCoins] = useLocalStorage('swapCoins', {sell: initialSwapState.sell.coin, buy: initialSwapState.buy.coin});
 
   const previousInputPreviewValue = useRef('');
   const previousOutputPreviewValue = useRef('');
@@ -169,15 +161,11 @@ const Swap = () => {
 
     // setLastFocusedMode(lastFocusedMode === 'buy' ? 'sell' : 'buy');
 
-    const params = new URLSearchParams(searchParams.toString());
-    if (swapState.sell.coin) {
-      params.set('buy', swapState.sell.coin ?? '');
-    }
-    if (swapState.buy.coin) {
-      params.set('sell', swapState.buy.coin ?? '');
-    }
-    router.replace(`${pathname}?${params.toString()}`, { scroll: false });
-  }, [pathname, router, searchParams, swapState.buy.coin, swapState.sell.coin]);
+    setSwapCoins(prevState => ({
+      buy: prevState.sell,
+      sell: prevState.buy,
+    }));
+  }, [setSwapCoins]);
 
   const selectCoin = useCallback((mode: "buy" | "sell") => {
     return (coin: CoinName) => {
@@ -204,12 +192,14 @@ const Swap = () => {
         }));
       }
 
-      const params = new URLSearchParams(searchParams.toString());
-      params.set(mode, coin!);
-      router.replace(`${pathname}?${params.toString()}`, { scroll: false });
+      setSwapCoins(prevState => ({
+        ...prevState,
+        [mode]: coin
+      }));
+
       setLastFocusedMode(mode);
     };
-  }, [inputsState, pathname, router, searchParams, swapAssets, swapState.buy.coin, swapState.sell.coin]);
+  }, [inputsState, setSwapCoins, swapAssets, swapState.buy.coin, swapState.sell.coin]);
 
   const debouncedSetState = useDebounceCallback(setSwapState, 500);
   const setAmount = useCallback((mode: "buy" | "sell") => {
