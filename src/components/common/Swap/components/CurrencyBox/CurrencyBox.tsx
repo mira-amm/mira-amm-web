@@ -7,6 +7,7 @@ import {CurrencyBoxMode} from "@/src/components/common/Swap/Swap";
 import {CoinName, coinsConfig} from "@/src/utils/coinsConfig";
 
 import styles from './CurrencyBox.module.css';
+import {MinEthValue} from "@/src/utils/constants";
 
 type Props = {
   value: string;
@@ -37,7 +38,11 @@ const CurrencyBox = ({ value, coin, mode, balance, setAmount, loading, onCoinSel
   };
 
   const handleBalanceClick = () => {
-    setAmount(balance.toString());
+    let amountToSet = balance;
+    if (coin === 'ETH') {
+      amountToSet = Math.max(0, balance - MinEthValue);
+    }
+    setAmount(amountToSet.toString());
   }
 
   const coinNotSelected = coin === null;
