@@ -59,7 +59,7 @@
 }
 
 .ethFaucetText {
-  color: var(--content-tertiary);
+  color: var(--accent-warning);
 }
 
 .ethFaucetText > a {
