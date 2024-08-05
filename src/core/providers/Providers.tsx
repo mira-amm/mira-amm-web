@@ -35,7 +35,7 @@ const wagmiConfig = createConfig({
       metadata: {
         name: "Mira DEX",
         description: "The Liquidity Hub on Fuel",
-        url: location.href,
+        url: "https://mira.ly/",
         icons: ["https://connectors.fuel.network/logo_white.png"],
       },
     }),
