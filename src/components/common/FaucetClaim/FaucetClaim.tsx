@@ -91,7 +91,7 @@ const FaucetClaim = () => {
   };
 
   const handleRetweetClick = () => {
-    openNewTab('https://x.com/intent/retweet?tweet_id=463440424141459456');
+    openNewTab('https://x.com/intent/retweet?tweet_id=1820503449081102336');
     setRetweetClicked(true);
     setRequirements({ ...faucetRequirements, retweetClicked: true });
   };
