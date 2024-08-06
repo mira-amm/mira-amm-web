@@ -23,7 +23,7 @@ const LandingPageLayout = () => {
         <section className={styles.topBlock}>
           <h1>The Liquidity Hub on Fuel</h1>
           <h2 className={styles.subheading}>
-            Trade, Earn and get Rewards using the Fuel most efficient AMM
+            Trade, Earn and get Rewards using the most efficient AMM on Fuel
           </h2>
           <LaunchAppButton />
           <div className={styles.fuel}>

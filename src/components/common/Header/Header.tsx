@@ -24,7 +24,7 @@ const Header = ({ isHomePage }: Props) => {
   return (
     <header className={styles.header}>
       <section className={styles.promo}>
-        Trade, Earn and get Rewards using the Fuel most efficient AMM
+        Trade, Earn and get Rewards using the most efficient AMM on Fuel
         {/*<IconButton onClick={() => setPromoHidden(true)} className={styles.promoClose}>*/}
         {/*  <CloseIcon />*/}
         {/*</IconButton>*/}
