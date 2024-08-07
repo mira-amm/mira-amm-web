@@ -286,15 +286,9 @@ const Swap = () => {
   const exchangeRate = useExchangeRate(swapState);
   const feeValue = ((0.333 / 100) * parseFloat(sellValue)).toFixed(sellDecimals);
 
-  const isMobile = useIsMobile();
-
-  const connectWalletTitle = isMobile ? 'Use desktop to access' : 'Connect Wallet';
-
   const handleConnect = useCallback(() => {
-    if (!isMobile) {
-      connect();
-    }
-  }, [isMobile, connect]);
+    connect();
+  }, [connect]);
 
   return (
     <>
@@ -351,7 +345,7 @@ const Swap = () => {
               onClick={handleConnect}
               loading={isConnecting}
             >
-              {connectWalletTitle}
+              Connect Wallet
             </ActionButton>
           )}
           {isConnected && (
