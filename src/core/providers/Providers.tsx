@@ -16,6 +16,7 @@ import {FuelConfig, FuelConnector} from "fuels";
 import PersistentConnectorProvider from "@/src/core/providers/PersistentConnector";
 import {sepolia} from "@wagmi/core/chains";
 import {walletConnect} from "@wagmi/connectors";
+import { isMobile } from "react-device-detect";
 
 type Props = {
   children: ReactNode;
@@ -45,7 +46,14 @@ const wagmiConfig = createConfig({
 const Providers = ({children}: Props) => {
   let connectors: FuelConnector[] = [];
   if (typeof window !== 'undefined') {
-    connectors = [
+    connectors = isMobile ? [
+      new BurnerWalletConnector(),
+      new WalletConnectConnector({
+        projectId: WalletConnectProjectId,
+        wagmiConfig: wagmiConfig as any
+      }),
+      new SolanaConnector({projectId: WalletConnectProjectId}),
+    ] : [
       new FueletWalletConnector(),
       new BurnerWalletConnector(),
       new FuelWalletConnector(),
@@ -54,7 +62,7 @@ const Providers = ({children}: Props) => {
         projectId: WalletConnectProjectId,
         wagmiConfig: wagmiConfig as any
       }),
-      new SolanaConnector({projectId: WalletConnectProjectId})
+      new SolanaConnector({projectId: WalletConnectProjectId}),
     ];
   }
 
