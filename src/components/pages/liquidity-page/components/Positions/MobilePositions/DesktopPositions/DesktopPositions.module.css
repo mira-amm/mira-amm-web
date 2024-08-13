@@ -1,0 +1,47 @@
+.desktopPositions {
+  border-radius: 24px;
+  border-collapse: collapse;
+  background-color: var(--background-grey-dark);
+}
+
+.desktopPositions > thead {
+  font-size: 16px;
+  line-height: 19px;
+  color: var(--content-tertiary);
+  padding: 0 16px;
+}
+
+.desktopPositions th {
+  border-bottom: 1px solid var(--background-grey-light);
+}
+
+.desktopPositions td, .desktopPositions th {
+  padding: 16px 24px;
+}
+
+.labelCell {
+  display: flex;
+  justify-content: end;
+}
+
+.labelCell > p {
+  width: fit-content;
+}
+
+.hideButton {
+  background-color: transparent;
+  border: none;
+  color: var(--accent-primary);
+  font-size: 16px;
+  line-height: 19px;
+  cursor: pointer;
+}
+
+button.addButton {
+  width: 100%;
+  padding: 12px;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 19px;
+  box-shadow: unset;
+}

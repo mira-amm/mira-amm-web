@@ -1,4 +1,4 @@
-.swapLayout {
+.addLiquidityLayout {
   display: flex;
   flex-direction: column;
   padding: 16px;
@@ -6,10 +6,10 @@
 }
 
 @media (min-width: 1024px) {
-  .swapLayout {
+  .addLiquidityLayout {
     min-height: calc(100vh - 203px);
-    max-width: 440px;
+    max-width: 524px;
     margin: 0 auto;
-    padding: 84px 16px 48px
+    padding: 32px 16px;
   }
 }

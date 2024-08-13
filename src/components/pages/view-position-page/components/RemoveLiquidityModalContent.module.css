@@ -1,0 +1,103 @@
+.removeLiquidityContent {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.valueAndMax, .someText {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.value {
+  font-weight: 500;
+  font-size: 24px;
+  line-height: 28px;
+}
+
+.maxButton {
+  text-transform: uppercase;
+  color: var(--accent-primary);
+  font-size: 12px;
+  line-height: 16px;
+  padding: 4px 8px;
+  border: 1px solid var(--accent-primary);
+  border-radius: 4px;
+  cursor: pointer;
+  background: transparent;
+}
+
+.someText {
+  font-size: 12px;
+  line-height: 16px;
+}
+
+.dimmed {
+  color: var(--content-tertiary);
+}
+
+.highlight {
+  color: var(--accent-primary);
+}
+
+.tableWrapper {
+  padding: 12px;
+  border-radius: 8px;
+  background-color: var(--background-secondary);
+}
+
+.liquidityTable {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+  line-height: 16px;
+  color: var(--content-tertiary);
+}
+
+.liquidityTable th {
+  text-align: left;
+}
+
+.liquidityTable td, .liquidityTable th {
+  padding: 4px;
+}
+
+.textBlock {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.infoBlockTitle {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.infoBlockTitle > svg {
+  color: var(--accent-primary);
+}
+
+.infoBlockText {
+  font-size: 14px;
+  line-height: 16px;
+  color: var(--content-tertiary);
+}
+
+.buttons {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  gap: 8px;
+}
+
+@media (min-width: 1024px) {
+  .buttons {
+    flex-direction: row;
+  }
+
+  .buttons > button {
+    width: 50%;
+  }
+}

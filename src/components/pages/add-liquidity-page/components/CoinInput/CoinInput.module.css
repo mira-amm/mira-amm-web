@@ -1,0 +1,36 @@
+.coinInput {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 12px;
+  border-radius: 10px;
+  background-color: var(--background-secondary);
+}
+
+.coinInputLine {
+  display: flex;
+  justify-content: space-between;
+}
+
+.input {
+  font-weight: 500;
+  color: var(--content-primary);
+  background: transparent;
+  border: none;
+}
+
+.topline, .topline p {
+  font-size: 14px;
+  line-height: 16px;
+}
+
+.topline svg {
+  width: 16px;
+  height: 16px;
+}
+
+.underline {
+  font-size: 12px;
+  line-height: 16px;
+  color: var(--content-tertiary);
+}

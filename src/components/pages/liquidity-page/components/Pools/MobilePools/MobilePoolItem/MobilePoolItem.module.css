@@ -1,0 +1,23 @@
+.mobilePoolItem {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.infoSection {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.infoBlocks {
+  display: flex;
+  justify-content: space-between;
+}
+
+button.addButton {
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 19px;
+  padding: 12px 0;
+}

@@ -36,10 +36,9 @@ const Header = ({ isHomePage }: Props) => {
             <Link href="/swap" className={clsx(styles.link, pathname.includes('/swap') && styles.activeLink)}>
               Swap
             </Link>
-            <div className={styles.linkAlike}>
+            <Link href="/liquidity" className={clsx(styles.link, pathname.includes('/liquidity') && styles.activeLink)}>
               Liquidity
-              <SoonLabel className={styles.hiddenLabel} />
-            </div>
+            </Link>
             <Link href="/faucet" className={clsx(styles.link, pathname.includes('/faucet') && styles.activeLink)}>
               Faucet
             </Link>
@@ -57,7 +56,7 @@ const Header = ({ isHomePage }: Props) => {
             <SoonLabel/>
           </a>
           <DisconnectMobile className={styles.disconnectMobile} />
-          <MobileMenu/>
+          <MobileMenu />
         </div>
         <div className={clsx('desktopOnly', styles.links)}>
           {/*<a href="#" className={styles.link}>*/}

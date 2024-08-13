@@ -1,0 +1,76 @@
+.addLiquidity {
+  display: flex;
+  flex-direction: column;
+  padding: 16px;
+  border-radius: 16px;
+  gap: 24px;
+  background-color: var(--background-grey-dark);
+}
+
+.title {
+  padding-bottom: 16px;
+  font-weight: 500;
+  text-align: center;
+  border-bottom: 1px solid var(--background-grey-light);
+}
+
+.section {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.sectionContent {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.APR {
+  display: flex;
+  gap: 4px;
+  font-size: 12px;
+  line-height: 14px;
+  margin-left: 56px;
+}
+
+.highlight {
+  color: var(--content-positive);
+}
+
+.fee {
+  padding: 12px;
+  border-radius: 8px;
+  color: var(--content-dimmed-dark);
+  background-color: var(--background-grey-light);
+}
+
+.prices {
+  color: var(--content-dimmed-dark);
+}
+
+.priceBlocks {
+  display: flex;
+  flex-direction: row;
+  gap: 8px;
+}
+
+.priceBlock {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 12px;
+  border-radius: 8px;
+  background-color: var(--background-grey-light);
+}
+
+.priceBlocks > div {
+  width: 50%;
+}
+
+@media (min-width: 1024px) {
+  .coinPair {
+    display: flex;
+    justify-content: space-between;
+  }
+}

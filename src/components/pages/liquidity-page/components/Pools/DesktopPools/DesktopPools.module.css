@@ -1,0 +1,24 @@
+.desktopPools {
+  border-radius: 24px;
+  background-color: var(--background-grey-dark);
+}
+
+.desktopPools > thead {
+  font-size: 16px;
+  line-height: 19px;
+  color: var(--content-tertiary);
+  border-bottom: 1px solid var(--background-grey-light);
+}
+
+.desktopPools td {
+  padding: 16px 24px;
+}
+
+button.addButton {
+  width: 100%;
+  padding: 12px;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 19px;
+  box-shadow: unset;
+}

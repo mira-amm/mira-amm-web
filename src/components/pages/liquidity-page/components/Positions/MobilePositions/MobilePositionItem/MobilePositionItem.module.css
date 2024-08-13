@@ -1,0 +1,16 @@
+.mobilePositionItem {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.infoSection {
+  display: flex;
+  justify-content: space-between;
+}
+
+.positionPrice {
+  font-size: 14px;
+  line-height: 16px;
+  color: var(--content-tertiary);
+}

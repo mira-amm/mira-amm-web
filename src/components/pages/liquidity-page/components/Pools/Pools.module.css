@@ -1,0 +1,10 @@
+.pools {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.poolsTitle {
+  font-size: 20px;
+  line-height: 24px;
+}

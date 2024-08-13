@@ -1,0 +1,177 @@
+.viewPositionLayout {
+  display: flex;
+  flex-direction: column;
+  padding: 16px;
+  gap: 16px;
+}
+
+.contentSection {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.coinPairAndLabel {
+  display: flex;
+  justify-content: space-between;
+}
+
+.infoBlock {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 12px;
+  border-radius: 16px;
+  background-color: var(--background-grey-dark);
+}
+
+.feesTitle {
+  display: flex;
+  justify-content: space-between;
+}
+
+.collectButton {
+  background: transparent;
+  color: var(--accent-primary);
+  border: none;
+  cursor: pointer;
+}
+
+.coinsData {
+  display: flex;
+  justify-content: space-between;
+}
+
+.miraBlock {
+  height: 160px;
+  display: flex;
+  flex-direction: column;
+  justify-content: end;
+  padding: 16px;
+  border-radius: 16px;
+  background: linear-gradient(359.71deg, #8350FD -1.52%, #B2EA12 121.21%);
+}
+
+.miraLogo {
+  font-family: var(--font-sf-compact-text), sans-serif;
+  font-weight: 900;
+  font-size: 32px;
+  line-height: 36px;
+  text-transform: uppercase;
+  margin-bottom: 12px;
+}
+
+.numberAndCopy {
+  display: flex;
+  justify-content: space-between;
+}
+
+.copyButton {
+  display: flex;
+  gap: 4px;
+  align-items: center;
+  color: var(--content-primary);
+  background: transparent;
+  border: none;
+  cursor: pointer;
+}
+
+.priceBlocks {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.priceBlock {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 12px;
+  border-radius: 8px;
+  background-color: var(--background-grey-dark);
+}
+
+.priceBlockTop {
+  width: 100%;
+}
+
+.priceBlockTitle, .priceBlockDescription {
+  font-size: 14px;
+  line-height: 16px;
+  color: var(--content-dimmed-light);
+}
+
+.priceBlockValue {
+  font-size: 20px;
+  line-height: 24px;
+  color: var(--content-primary);
+}
+
+.bottomPriceBlocks {
+  display: flex;
+  gap: 8px;
+}
+
+.bottomPriceBlocks > div {
+  width: 50%;
+}
+
+@media (min-width: 1024px) {
+  .viewPositionLayout {
+    min-height: calc(100vh - 203px);
+    max-width: 716px;
+    margin: 0 auto;
+    padding: 32px 16px;
+  }
+
+  .withdrawButton {
+    max-width: 191px;
+    padding: 8px 24px;
+    font-size: 13px;
+    line-height: 15px;
+  }
+
+  .topRow {
+    display: flex;
+    gap: 20px;
+    width: 100%;
+  }
+
+  .miraBlock {
+    flex: 1;
+    width: 346px;
+    height: 306px;
+  }
+
+  .infoBlocks {
+    flex: 1;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .priceBlocksDesktop {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+  }
+
+  .priceBlockLargeDesktop {
+    width: 100%;
+    padding: 16px;
+    border-radius: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    background-color: var(--background-grey-dark);
+  }
+
+  .priceBlockDesktop {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+  }
+}

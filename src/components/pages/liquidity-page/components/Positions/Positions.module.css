@@ -1,0 +1,10 @@
+.positions {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.positionsTitle {
+  font-size: 20px;
+  line-height: 24px;
+}

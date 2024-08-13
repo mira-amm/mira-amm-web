@@ -1,0 +1,39 @@
+.promoBlock {
+  display: flex;
+  gap: 10px;
+  padding: 12px;
+  border-radius: 8px;
+  background-color: var(--background-grey-dark);
+}
+
+.icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(96.75deg, #BEFA15 -106.79%, #5872FC 48.13%, #C41CFF 168.79%);
+  width: 44px;
+  height: 44px;
+  border-radius: 4px;
+  color: var(--content-primary);
+}
+
+.icon > svg {
+  width: 28px;
+  height: 28px;
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  line-height: 19px;
+}
+
+.title {
+  font-weight: 500;
+}
+
+.text {
+  color: var(--content-dimmed-light);
+}
+
