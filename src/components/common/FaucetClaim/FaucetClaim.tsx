@@ -9,14 +9,13 @@ import {getAuth} from "firebase/auth";
 import {openNewTab} from "@/src/utils/common";
 import ClaimSuccessModal from "@/src/components/common/FaucetClaim/components/ClaimSuccessModal/ClaimSuccessModal";
 import useClaimFaucet from "@/src/hooks/useClaimFaucet/useClaimFaucet";
-import {useAccount, useIsConnected} from "@fuels/react";
+import {useAccount, useConnectUI, useDisconnect, useIsConnected} from "@fuels/react";
 import {useLocalStorage} from "usehooks-ts";
 import useFormattedAddress from "@/src/hooks/useFormattedAddress/useFormattedAddress";
 import useFirebase from "@/src/hooks/useFirebase/useFirebase";
 import useCheckEthBalance from "@/src/hooks/useCheckEthBalance/useCheckEthBalance";
 import useCheckIsFaucetAllowed from "@/src/hooks/useCheckIsFaucetAllowed/useCheckIsFaucetAllowed";
 import useIsMobile from "@/src/hooks/useIsMobile/useIsMobile";
-import {usePersistentConnector} from "@/src/core/providers/PersistentConnector";
 
 const FaucetClaim = () => {
   const [FailureModal, openFailureModal, closeFailureModal] = useModal();
@@ -33,8 +32,9 @@ const FaucetClaim = () => {
   }, [faucetRequirements]);
 
   const { isConnected } = useIsConnected();
-  const { connect, disconnect } = usePersistentConnector();
   const { account } = useAccount();
+  const { connect } = useConnectUI();
+  const { disconnect } = useDisconnect();
 
   const { data: faucetAllowed, refetch: refetchFaucetAllowed } = useCheckIsFaucetAllowed(account);
 
