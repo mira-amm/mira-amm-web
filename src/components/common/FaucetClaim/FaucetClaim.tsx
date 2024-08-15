@@ -72,18 +72,6 @@ const FaucetClaim = () => {
     }
   }, [allStepsCompleted, claim, openFailureModal, openSuccessModal, refetchFaucetAllowed]);
 
-  const isMobile = useIsMobile();
-
-  const handleConnectWalletClick = () => {
-    if (!isMobile) {
-      connect();
-    }
-  };
-
-  const handleDisconnectWalletClick = () => {
-    disconnect();
-  };
-
   const handleFollowClick = () => {
     openNewTab('https://x.com/MiraProtocol');
     setFollowClicked(true);
@@ -118,20 +106,17 @@ const FaucetClaim = () => {
             <div>
               {formattedAddress}
               &nbsp;
-              <button className={styles.buttonLink} onClick={handleDisconnectWalletClick}>
+              <button className={styles.buttonLink} onClick={() => disconnect()}>
                 Disconnect
               </button>
             </div>
           ) : (
             <div>
-              <button className={styles.buttonLink} onClick={handleConnectWalletClick}>
+              <button className={styles.buttonLink} onClick={connect}>
                 Connect
               </button>
               &nbsp;
               Wallet
-              {isMobile && (
-                ' (Use desktop)'
-              )}
             </div>
           )}
         </div>

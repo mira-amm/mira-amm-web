@@ -4,7 +4,8 @@ import {useMemo} from "react";
 import {useLocalStorage} from "usehooks-ts";
 
 const useInitialSwapState = () => {
-  const [swapCoins, setSwapCoins] = useLocalStorage('swapCoins', {sell: null, buy: null});
+  // TODO: Resolve hydration issue without losing the ability to set initial state
+  const [swapCoins] = useLocalStorage('swapCoins', {sell: null, buy: null});
 
   return useMemo(() => {
     const sellCoinExistsInMap = swapCoins.sell !== null && coinsConfig.has(swapCoins.sell as CoinName);
