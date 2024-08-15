@@ -23,7 +23,7 @@ const FaucetPageLayout = () => {
               Meet
               <br className='mobileOnly'/>
               <span className='desktopOnly'>&nbsp;</span>
-              <span className={styles.headingHighlight}>$mimicMIRA</span>
+              <span className={styles.headingHighlight}>mimicMIRA</span>
             </h1>
             <p className={styles.descriptionText}>
               Step into the MIRA miracle world, where traders become
@@ -31,7 +31,7 @@ const FaucetPageLayout = () => {
               <span className='mobileOnly'>&nbsp;</span>
               chameleons, blending seamlessly into the bustling markets.
               <br/>
-              With $mimicMIRA you can adopt the perfect disguise,
+              With mimicMIRA you can adopt the perfect disguise,
               <span className='mobileOnly'>&nbsp;</span>
               <br className='desktopOnly'/>
               mirroring the movements of the most skilled traders
@@ -43,7 +43,7 @@ const FaucetPageLayout = () => {
             Four simple steps
             <br className='desktopOnly'/>
             <span className='mobileOnly'>&nbsp;</span>
-            to claim your $mimicMIRA
+            to claim your mimicMIRA
           </h2>
           <FaucetClaim/>
         </section>
@@ -52,7 +52,7 @@ const FaucetPageLayout = () => {
             You can request
             <br className='mobileOnly'/>
             <span className='desktopOnly'>&nbsp;</span>
-            $mimicMIRA for testing
+            mimicMIRA for testing
             <br/>
             once per account
           </h2>
@@ -63,7 +63,7 @@ const FaucetPageLayout = () => {
               </div>
               <p>
                 <span className={styles.highlight}>Claim </span>
-                $mimicMIRA first
+                mimicMIRA first
               </p>
             </div>
             <div className={styles.condition}>
@@ -72,7 +72,7 @@ const FaucetPageLayout = () => {
               </div>
               <p>
                 <span className={styles.highlight}>Swap </span>
-                $mimicMIRA to more token
+                mimicMIRA to more token
               </p>
             </div>
           </div>

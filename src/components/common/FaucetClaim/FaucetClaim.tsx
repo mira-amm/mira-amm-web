@@ -186,7 +186,7 @@ const FaucetClaim = () => {
           onClick={handleClaimClick}
           disabled={faucetAllowed === false || promptEthClaim === true}
         >
-          {faucetAllowed === false ? `You've already claimed $mimicMIRA` : 'Claim $mimicMIRA'}
+          {faucetAllowed === false ? `You've already claimed mimicMIRA` : 'Claim mimicMIRA'}
         </ActionButton>
         {promptEthClaim && (
           <p className={styles.ethFaucetText}>

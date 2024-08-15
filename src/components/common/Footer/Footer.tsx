@@ -20,7 +20,7 @@ const Footer = () => {
         </div>
         <p className="desktopOnly">&copy; {currentYear} Mira Finance</p>
       </section>
-      <p className="mobileOnly">&copy; {currentYear} Legal Disclaimer</p>
+      <p className="mobileOnly">&copy; {currentYear} Mira Finance</p>
     </footer>
   )
 };
