@@ -1,24 +1,22 @@
 'use client';
 
-import {useCallback, useContext, useMemo} from 'react';
-import {useAccount, useConnect, useConnectUI, useDisconnect, useIsConnected} from "@fuels/react";
+import {useCallback, useMemo} from 'react';
+import {useAccount, useConnectUI, useDisconnect, useIsConnected} from "@fuels/react";
 import {clsx} from "clsx";
 
 import styles from './ConnectButton.module.css';
 
 import ActionButton from "@/src/components/common/ActionButton/ActionButton";
 import useFormattedAddress from "@/src/hooks/useFormattedAddress/useFormattedAddress";
-import {usePersistentConnector} from "@/src/core/providers/PersistentConnector";
 
 type Props = {
   className?: string;
 }
 
 const ConnectButton = ({ className }: Props) => {
-  const { connect, disconnect } = usePersistentConnector();
   const { isConnected } = useIsConnected();
-  const { isLoading, isConnecting } = useConnectUI();
-  const { isPending: disconnectLoading } = useDisconnect();
+  const { connect, isLoading, isConnecting } = useConnectUI();
+  const { disconnect, isPending: disconnectLoading } = useDisconnect();
   const { account } = useAccount();
 
   const loading = isConnecting || disconnectLoading;

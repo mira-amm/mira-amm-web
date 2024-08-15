@@ -13,7 +13,6 @@ import {
 } from "@fuels/connectors";
 import {createConfig, http, injected} from "@wagmi/core";
 import {FuelConfig, FuelConnector} from "fuels";
-import PersistentConnectorProvider from "@/src/core/providers/PersistentConnector";
 import {sepolia} from "@wagmi/core/chains";
 import {walletConnect} from "@wagmi/connectors";
 import { isMobile } from "react-device-detect";
@@ -76,9 +75,7 @@ const Providers = ({children}: Props) => {
         fuelConfig={fuelConfig}
         theme="dark"
       >
-        <PersistentConnectorProvider>
-          {children}
-        </PersistentConnectorProvider>
+        {children}
       </FuelProvider>
     </QueryClientProvider>
   );

@@ -24,10 +24,7 @@ import SwapSuccessModal from "@/src/components/common/Swap/components/SwapSucces
 import TestnetLabel from "@/src/components/common/TestnetLabel/TestnetLabel";
 import SettingsModalContent from "@/src/components/common/Swap/components/SettingsModalContent/SettingsModalContent";
 import useCheckEthBalance from "@/src/hooks/useCheckEthBalance/useCheckEthBalance";
-import {usePathname, useRouter, useSearchParams} from "next/navigation";
 import useInitialSwapState from "@/src/hooks/useInitialSwapState/useInitialSwapState";
-import useIsMobile from "@/src/hooks/useIsMobile/useIsMobile";
-import {usePersistentConnector} from "@/src/core/providers/PersistentConnector";
 
 export type CurrencyBoxMode = "buy" | "sell";
 export type CurrencyBoxState = {
@@ -55,13 +52,6 @@ const Swap = () => {
   const [CoinsModal, openCoinsModal, closeCoinsModal] = useModal();
   const [SuccessModal, openSuccess] = useModal();
 
-  const { connect, connectPersistedConnector } = usePersistentConnector();
-  connectPersistedConnector();
-
-  // const pathname = usePathname();
-  // const router = useRouter();
-  // const searchParams = useSearchParams();
-
   const initialSwapState = useInitialSwapState();
 
   const [swapState, setSwapState] = useState<SwapState>(initialSwapState);
@@ -78,7 +68,7 @@ const Swap = () => {
   const modeForCoinSelector = useRef<CurrencyBoxMode>('sell');
 
   const {isConnected} = useIsConnected();
-  const {isConnecting} = useConnectUI();
+  const {connect, isConnecting} = useConnectUI();
   const {account} = useAccount();
   const {balances, isPending, refetch} = useBalances();
 
@@ -286,10 +276,6 @@ const Swap = () => {
   const exchangeRate = useExchangeRate(swapState);
   const feeValue = ((0.333 / 100) * parseFloat(sellValue)).toFixed(sellDecimals);
 
-  const handleConnect = useCallback(() => {
-    connect();
-  }, [connect]);
-
   return (
     <>
       <div className={styles.swapAndRate}>
@@ -342,7 +328,7 @@ const Swap = () => {
           {!isConnected && (
             <ActionButton
               variant="secondary"
-              onClick={handleConnect}
+              onClick={connect}
               loading={isConnecting}
             >
               Connect Wallet
