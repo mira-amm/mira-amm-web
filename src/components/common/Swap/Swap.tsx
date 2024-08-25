@@ -25,6 +25,7 @@ import TestnetLabel from "@/src/components/common/TestnetLabel/TestnetLabel";
 import SettingsModalContent from "@/src/components/common/Swap/components/SettingsModalContent/SettingsModalContent";
 import useCheckEthBalance from "@/src/hooks/useCheckEthBalance/useCheckEthBalance";
 import useInitialSwapState from "@/src/hooks/useInitialSwapState/useInitialSwapState";
+import useFaucetLink from "@/src/hooks/useFaucetLink";
 
 export type CurrencyBoxMode = "buy" | "sell";
 export type CurrencyBoxState = {
@@ -225,10 +226,11 @@ const Swap = () => {
 
   const coinMissing = swapState.buy.coin === null || swapState.sell.coin === null;
   const amountMissing = swapState.buy.amount === '' || swapState.sell.amount === '';
-  const sufficientEthBalance = useCheckEthBalance();
+  const sufficientEthBalance = useCheckEthBalance(swapState.sell);
+  const faucetLink = useFaucetLink();
   const handleSwapClick = useCallback(async () => {
     if (!sufficientEthBalance) {
-      openNewTab(`https://faucet-testnet.fuel.network/?address=${account}`);
+      openNewTab(faucetLink);
       return;
     }
 
@@ -263,14 +265,16 @@ const Swap = () => {
   ]);
 
   const insufficientSellBalance = parseFloat(sellValue) > sellBalanceValue;
+  const ethWithZeroBalanceSelected = swapState.sell.coin === 'ETH' && balances?.find(b => b.assetId === coinsConfig.get('ETH')?.assetId)?.amount.toNumber() === 0;
+  const showInsufficientBalance = insufficientSellBalance && !ethWithZeroBalanceSelected;
 
   let swapButtonTitle = 'Swap';
   if (swapPending) {
     swapButtonTitle = 'Waiting for approval in wallet';
+  } else if (showInsufficientBalance) {
+    swapButtonTitle = 'Insufficient balance';
   } else if (!sufficientEthBalance) {
     swapButtonTitle = 'Claim some ETH to pay for gas';
-  } else if (insufficientSellBalance) {
-    swapButtonTitle = 'Insufficient balance';
   }
 
   const exchangeRate = useExchangeRate(swapState);
@@ -337,7 +341,7 @@ const Swap = () => {
           {isConnected && (
             <ActionButton
               variant="primary"
-              disabled={coinMissing || (sufficientEthBalance && insufficientSellBalance)}
+              disabled={coinMissing || showInsufficientBalance}
               onClick={handleSwapClick}
               loading={isPending}
             >

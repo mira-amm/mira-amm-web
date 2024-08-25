@@ -16,6 +16,7 @@ import useFirebase from "@/src/hooks/useFirebase/useFirebase";
 import useCheckEthBalance from "@/src/hooks/useCheckEthBalance/useCheckEthBalance";
 import useCheckIsFaucetAllowed from "@/src/hooks/useCheckIsFaucetAllowed/useCheckIsFaucetAllowed";
 import useIsMobile from "@/src/hooks/useIsMobile/useIsMobile";
+import useFaucetLink from "@/src/hooks/useFaucetLink";
 
 const FaucetClaim = () => {
   const [FailureModal, openFailureModal, closeFailureModal] = useModal();
@@ -84,14 +85,9 @@ const FaucetClaim = () => {
     setRequirements({ ...faucetRequirements, retweetClicked: true });
   };
 
-  const sufficientEthBalance = useCheckEthBalance();
-
-  let ethFaucetLink = 'https://faucet-testnet.fuel.network/';
-  if (account) {
-    ethFaucetLink = ethFaucetLink.concat(`?address=${account}`);
-  }
-
+  const faucetLink = useFaucetLink();
   const formattedAddress = useFormattedAddress(account);
+  const sufficientEthBalance = useCheckEthBalance();
 
   const promptEthClaim = isConnected && !sufficientEthBalance;
 
@@ -177,7 +173,7 @@ const FaucetClaim = () => {
           <p className={styles.ethFaucetText}>
             You&apos;ll need test ETH to complete the transaction. Get it
             &nbsp;
-            <a href={ethFaucetLink} target="_blank">here</a>
+            <a href={faucetLink} target="_blank">here</a>
           </p>
         )}
       </div>
