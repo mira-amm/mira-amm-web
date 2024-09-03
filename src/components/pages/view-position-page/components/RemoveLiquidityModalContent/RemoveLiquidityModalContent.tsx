@@ -3,7 +3,11 @@ import CoinPair from "@/src/components/common/CoinPair/CoinPair";
 import InfoIcon from "@/src/components/icons/Info/InfoIcon";
 import ActionButton from "@/src/components/common/ActionButton/ActionButton";
 
-const RemoveLiquidityModalContent = () => {
+type Props = {
+  closeModal: VoidFunction;
+}
+
+const RemoveLiquidityModalContent = ({ closeModal }: Props) => {
   return (
     <div className={styles.removeLiquidityContent}>
       <CoinPair firstCoin="ETH" secondCoin="USDT" />
@@ -67,7 +71,7 @@ const RemoveLiquidityModalContent = () => {
       </div>
       <div className={styles.buttons}>
         <ActionButton>Confirm</ActionButton>
-        <ActionButton variant="secondary">Cancel</ActionButton>
+        <ActionButton variant="secondary" onClick={closeModal}>Cancel</ActionButton>
       </div>
     </div>
   );

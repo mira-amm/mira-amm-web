@@ -1,0 +1,22 @@
+.withdrawFeesContent {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 24px;
+}
+
+.coins {
+  display: flex;
+  justify-content: space-between;
+}
+
+@media (min-width: 1024px) {
+  .withdrawFeesContent {
+    gap: 32px;
+  }
+
+  .coins {
+    justify-content: flex-start;
+    gap: 100px;
+  }
+}

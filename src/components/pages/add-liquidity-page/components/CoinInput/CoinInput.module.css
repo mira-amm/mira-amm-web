@@ -1,6 +1,6 @@
 .coinInput {
   display: flex;
-  flex-direction: column;
+  align-items: center;
   gap: 4px;
   padding: 12px;
   border-radius: 10px;
@@ -13,24 +13,67 @@
 }
 
 .input {
+  width: 100%;
   font-weight: 500;
   color: var(--content-primary);
+  font-size: 14px;
+  line-height: 16px;
   background: transparent;
   border: none;
 }
 
-.topline, .topline p {
-  font-size: 14px;
-  line-height: 16px;
+.leftColumn, .rightColumn {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
 }
 
-.topline svg {
+.leftColumn {
+  align-items: flex-start;
+}
+
+.rightColumn {
+  align-items: flex-end;
+}
+
+.leftColumn {
+  flex: 1;
+}
+
+.rightColumn svg, .rightColumn img {
   width: 16px;
   height: 16px;
 }
 
-.underline {
+.coinName {
+  font-size: 14px;
+  line-height: 16px;
+}
+
+.balance {
   font-size: 12px;
   line-height: 16px;
   color: var(--content-tertiary);
+}
+
+.rate {
+  min-height: 16px;
+  font-size: 12px;
+  line-height: 16px;
+}
+
+@media (min-width: 1024px) {
+  .balance, .rate {
+    font-size: 13px;
+    line-height: 18px;
+  }
+
+  .rate {
+    min-height: 18px;
+  }
+
+  .coinName, .input {
+    font-size: 16px;
+    line-height: 19px;
+  }
 }

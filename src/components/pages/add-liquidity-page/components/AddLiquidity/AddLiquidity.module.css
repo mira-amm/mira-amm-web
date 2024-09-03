@@ -5,6 +5,7 @@
   border-radius: 16px;
   gap: 24px;
   background-color: var(--background-grey-dark);
+  z-index: 5;
 }
 
 .title {
@@ -68,9 +69,97 @@
   width: 50%;
 }
 
+.loadingOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  backdrop-filter: blur(5px);
+  z-index: 4;
+  pointer-events: auto;
+}
+
+.inputsPreview, .previewPriceBlock, .previewCurrentPriceBlock {
+  display: flex;
+  flex-direction: column;
+  padding: 12px;
+  border-radius: 8px;
+  background-color: var(--background-secondary);
+}
+
+.inputsPreview {
+  gap: 12px;
+}
+
+.inputPreviewRow {
+  display: flex;
+  justify-content: space-between;
+
+}
+
+.inputPreviewRow p {
+  font-size: 14px;
+  line-height: 16px;
+  font-weight: 500;
+}
+
+.inputPreviewRow svg, .inputPreviewRow img {
+  width: 20px;
+  height: 20px;
+}
+
+.inputPreviewRow:last-child {
+  padding-top: 12px;
+  border-top: 1px solid var(--background-grey-dark);
+}
+
+.previewPriceBlocks {
+  display: flex;
+  gap: 12px;
+  justify-content: space-between;
+}
+
+.previewPriceBlock {
+  flex: 1;
+  gap: 6px;
+}
+
+.previewCurrentPriceBlock {
+  gap: 4px;
+  align-items: center;
+}
+
+.previewPriceBlockTitle, .previewPriceBlockExchange {
+  color: var(--content-tertiary);
+}
+
+.previewPriceBlockValue {
+  color: var(--content-primary);
+}
+
+.previewPriceBlockDescription {
+  color: var(--background-grey-light);
+}
+
+.previewCoinPair {
+  display: flex;
+  justify-content: space-between;
+}
+
 @media (min-width: 1024px) {
   .coinPair {
     display: flex;
     justify-content: space-between;
+  }
+
+  .inputPreviewRow p {
+    font-size: 16px;
+    line-height: 19px;
+  }
+
+  .inputPreviewRow svg, .inputPreviewRow img {
+    width: 24px;
+    height: 24px;
   }
 }

@@ -17,6 +17,7 @@ type Props = {
   buttonRef?: RefObject<HTMLButtonElement>;
   type?: ButtonType;
   variant?: ButtonVariant;
+  fullWidth?: boolean;
 };
 
 const ActionButton = ({
@@ -28,7 +29,8 @@ const ActionButton = ({
   completed,
   buttonRef,
   type,
-  variant
+  variant,
+  fullWidth,
 }: Props) => {
   const handleClick = useCallback(() => {
     if (loading || completed) {
@@ -47,6 +49,7 @@ const ActionButton = ({
         variant === 'secondary' && styles.secondary,
         loading && styles.loading,
         completed && styles.completed,
+        fullWidth && styles.fullWidth,
         className
       )}
       onClick={handleClick}

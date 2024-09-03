@@ -56,3 +56,7 @@
 .secondary:active {
     background-color: #B6FA081A;
 }
+
+.fullWidth {
+    width: 100%;
+}

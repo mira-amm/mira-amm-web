@@ -4,8 +4,12 @@ import MobilePositionItem
 import styles from "./MobilePositions.module.css";
 import {isMobile} from "react-device-detect";
 
-const MobilePositions = () => {
-  if (!isMobile) {
+type Props = {
+  positions: any[] | null;
+};
+
+const MobilePositions = ({ positions }: Props) => {
+  if (!isMobile || !positions) {
     return null;
   }
 

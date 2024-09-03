@@ -51,6 +51,11 @@
   color: var(--content-grey);
 }
 
+.selector svg, .selector img {
+  width: 20px;
+  height: 20px;
+}
+
 .selector:disabled {
   cursor: default;
 }
@@ -105,6 +110,11 @@
 }
 
 @media (min-width: 1024px) {
+  .selector svg, .selector img {
+    width: 24px;
+    height: 24px;
+  }
+
   .currencyBox {
     padding: 12px 16px;
   }

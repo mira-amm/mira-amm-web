@@ -15,7 +15,7 @@
     "@tanstack/react-table": "^8.20.1",
     "clsx": "^2.1.1",
     "firebase": "^10.12.4",
-    "fuels": "^0.0.0-pr-2943-20240815143842",
+    "fuels": "^0.94.3",
     "mira-dex-ts": "^1.0.2",
     "mira-faucet-ts": "^1.0.3",
     "next": "14.2.4",

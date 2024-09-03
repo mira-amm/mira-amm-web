@@ -9,7 +9,7 @@
   align-items: center;
 }
 
-.coinPairIcons > svg {
+.coinPairIcons > svg, .coinPairIcons > img {
   width: 28px;
   height: 28px;
 }

@@ -5,8 +5,12 @@ import CoinPair from "@/src/components/common/CoinPair/CoinPair";
 import styles from './DesktopPositions.module.css';
 import PositionLabel from "@/src/components/pages/liquidity-page/components/Positions/PositionLabel/PositionLabel";
 
-const DesktopPositions = () => {
-  if (isMobile) {
+type Props = {
+  positions: any[] | null;
+}
+
+const DesktopPositions = ({ positions }: Props) => {
+  if (isMobile || !positions) {
     return null;
   }
 

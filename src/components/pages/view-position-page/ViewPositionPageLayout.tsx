@@ -13,11 +13,14 @@ import {clsx} from "clsx";
 import ActionButton from "@/src/components/common/ActionButton/ActionButton";
 import useModal from "@/src/hooks/useModal/useModal";
 import RemoveLiquidityModalContent
-  from "@/src/components/pages/view-position-page/components/RemoveLiquidityModalContent";
+  from "@/src/components/pages/view-position-page/components/RemoveLiquidityModalContent/RemoveLiquidityModalContent";
 import {isMobile} from "react-device-detect";
+import WithdrawFeesModalContent
+  from "@/src/components/pages/view-position-page/components/WithdrawFeesModalContent/WithdrawFeesModalContent";
 
 const ViewPositionPageLayout = () => {
-  const [RemoveLiquidityModal, openRemoveLiquidityModal] = useModal();
+  const [RemoveLiquidityModal, openRemoveLiquidityModal, closeRemoveLiquidityModal] = useModal();
+  const [WithdrawFeesModal, openWithdrawFeesModal] = useModal();
 
   const handleWithdrawLiquidity = () => {
     openRemoveLiquidityModal();
@@ -45,7 +48,7 @@ const ViewPositionPageLayout = () => {
             <div className={styles.infoBlock}>
               <div className={styles.feesTitle}>
                 <p>Unclaimed fees</p>
-                <button className={styles.collectButton}>
+                <button className={styles.collectButton} onClick={openWithdrawFeesModal}>
                   Collect fees
                 </button>
               </div>
@@ -116,7 +119,7 @@ const ViewPositionPageLayout = () => {
                 <div className={styles.infoBlock}>
                   <div className={styles.feesTitle}>
                     <p>Unclaimed fees</p>
-                    <button className={styles.collectButton}>
+                    <button className={styles.collectButton} onClick={openWithdrawFeesModal}>
                       Collect fees
                     </button>
                   </div>
@@ -153,8 +156,11 @@ const ViewPositionPageLayout = () => {
       </main>
       <Footer/>
       <RemoveLiquidityModal title="Remove Liquidity">
-        <RemoveLiquidityModalContent/>
+        <RemoveLiquidityModalContent closeModal={closeRemoveLiquidityModal}/>
       </RemoveLiquidityModal>
+      <WithdrawFeesModal title="Collect fees">
+        <WithdrawFeesModalContent/>
+      </WithdrawFeesModal>
     </>
   );
 };
