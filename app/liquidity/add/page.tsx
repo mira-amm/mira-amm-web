@@ -1,7 +1,12 @@
 import AddLiquidityPageLayout from "@/src/components/pages/add-liquidity-page/AddLiquidityPageLayout";
+import {Suspense} from "react";
 
 const AddLiquidityPage = () => {
-  return <AddLiquidityPageLayout />;
+  return (
+    <Suspense>
+      <AddLiquidityPageLayout />
+    </Suspense>
+  );
 };
 
 export default AddLiquidityPage;
