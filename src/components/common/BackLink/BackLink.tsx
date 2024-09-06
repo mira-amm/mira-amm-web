@@ -3,14 +3,17 @@ import Link from "next/link";
 
 import styles from './BackLink.module.css';
 import {isMobile} from "react-device-detect";
+import {clsx} from "clsx";
 
 type Props = {
   href?: string;
   showOnDesktop?: boolean;
   title?: string;
+  onClick?: () => void;
+  className?: string;
 };
 
-const BackLink = ({ href, showOnDesktop, title }: Props) => {
+const BackLink = ({ href, showOnDesktop, title, onClick, className }: Props) => {
   if (!isMobile && !showOnDesktop) {
     return null;
   }
@@ -18,8 +21,17 @@ const BackLink = ({ href, showOnDesktop, title }: Props) => {
   const hrefToUse = href || '/';
   const titleToUse = title || 'Back';
 
+  if (onClick) {
+    return (
+      <button onClick={onClick} className={clsx(styles.backLink, className)}>
+        <ChevronLeft />
+        {titleToUse}
+      </button>
+    );
+  }
+
   return (
-    <Link href={hrefToUse} className={styles.backLink}>
+    <Link href={hrefToUse} className={clsx(styles.backLink, className)}>
       <ChevronLeft />
       {titleToUse}
     </Link>

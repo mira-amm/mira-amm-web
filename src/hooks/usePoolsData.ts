@@ -8,7 +8,7 @@ const usePoolsData = () => {
   const mira = useMiraDex();
   const miraExists = Boolean(mira);
 
-  const coinsArray = Array.from(coinsConfig.values());
+  const coinsArray = Array.from(coinsConfig.values()).filter(coin => coin.name !== 'MIMIC');
   const assetIds = coinsArray.map(coin => coin.assetId);
   const assetPairs: [AssetIdInput, AssetIdInput][] = [];
 

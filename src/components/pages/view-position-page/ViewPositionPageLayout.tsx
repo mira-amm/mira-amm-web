@@ -20,7 +20,7 @@ import WithdrawFeesModalContent
 
 const ViewPositionPageLayout = () => {
   const [RemoveLiquidityModal, openRemoveLiquidityModal, closeRemoveLiquidityModal] = useModal();
-  const [WithdrawFeesModal, openWithdrawFeesModal] = useModal();
+  const [WithdrawFeesModal, openWithdrawFeesModal, closeWithdrawFeesModal] = useModal();
 
   const handleWithdrawLiquidity = () => {
     openRemoveLiquidityModal();
@@ -62,10 +62,10 @@ const ViewPositionPageLayout = () => {
               <p className={styles.miraLogo}>Mira</p>
               <div className={styles.numberAndCopy}>
                 <p>#5668403</p>
-                <button className={styles.copyButton}>
-                  <CopyIcon/>
-                  Copy link
-                </button>
+                {/*<button className={styles.copyButton}>*/}
+                {/*  <CopyIcon/>*/}
+                {/*  Copy link*/}
+                {/*</button>*/}
               </div>
             </div>
             <div className={styles.priceBlocks}>
@@ -88,12 +88,17 @@ const ViewPositionPageLayout = () => {
                 </div>
               </div>
             </div>
-            <ActionButton onClick={handleWithdrawLiquidity}>Withdraw Liquidity</ActionButton>
+            <div className={styles.sticky}>
+              <ActionButton onClick={handleWithdrawLiquidity} fullWidth>Withdraw Liquidity</ActionButton>
+            </div>
           </section>
         ) : (
           <section className={styles.contentSection}>
-            <div className={styles.coinPairAndLabel}>
-              <CoinPair firstCoin="USDT" secondCoin="ETH"/>
+            <div className={styles.positionHeading}>
+              <div className={styles.coinPairAndLabel}>
+                <CoinPair firstCoin="USDT" secondCoin="ETH"/>
+                <PositionLabel className={styles.smallLabel} />
+              </div>
               <ActionButton className={styles.withdrawButton} onClick={handleWithdrawLiquidity}>Withdraw Liquidity</ActionButton>
             </div>
             <div className={styles.topRow}>
@@ -101,10 +106,10 @@ const ViewPositionPageLayout = () => {
                 <p className={styles.miraLogo}>Mira</p>
                 <div className={styles.numberAndCopy}>
                   <p>#5668403</p>
-                  <button className={styles.copyButton}>
-                    <CopyIcon/>
-                    Copy link
-                  </button>
+                  {/*<button className={styles.copyButton}>*/}
+                  {/*  <CopyIcon/>*/}
+                  {/*  Copy link*/}
+                  {/*</button>*/}
                 </div>
               </div>
               <div className={styles.infoBlocks}>
@@ -156,10 +161,10 @@ const ViewPositionPageLayout = () => {
       </main>
       <Footer/>
       <RemoveLiquidityModal title="Remove Liquidity">
-        <RemoveLiquidityModalContent closeModal={closeRemoveLiquidityModal}/>
+        <RemoveLiquidityModalContent closeModal={closeRemoveLiquidityModal} openWithdrawFeesModal={openWithdrawFeesModal}/>
       </RemoveLiquidityModal>
       <WithdrawFeesModal title="Collect fees">
-        <WithdrawFeesModalContent/>
+        <WithdrawFeesModalContent closeModal={closeWithdrawFeesModal} />
       </WithdrawFeesModal>
     </>
   );

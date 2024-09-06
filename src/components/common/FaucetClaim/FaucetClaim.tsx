@@ -171,9 +171,7 @@ const FaucetClaim = () => {
         </ActionButton>
         {promptEthClaim && (
           <p className={styles.ethFaucetText}>
-            You&apos;ll need test ETH to complete the transaction. Get it
-            &nbsp;
-            <a href={faucetLink} target="_blank">here</a>
+            You&apos;ll need test ETH to complete the transaction. Get it <a href={faucetLink} target="_blank">here</a>
           </p>
         )}
       </div>

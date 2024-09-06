@@ -2,23 +2,44 @@ import styles from './RemoveLiquidityModalContent.module.css';
 import CoinPair from "@/src/components/common/CoinPair/CoinPair";
 import InfoIcon from "@/src/components/icons/Info/InfoIcon";
 import ActionButton from "@/src/components/common/ActionButton/ActionButton";
+import {ChangeEvent, useEffect, useState} from "react";
 
 type Props = {
   closeModal: VoidFunction;
+  openWithdrawFeesModal: VoidFunction;
 }
 
-const RemoveLiquidityModalContent = ({ closeModal }: Props) => {
+const RemoveLiquidityModalContent = ({ closeModal, openWithdrawFeesModal }: Props) => {
+  const [value, setValue] = useState(50);
+
+  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setValue(Number(e.target.value));
+  };
+
+  const handleMax = () => {
+    setValue(100);
+  };
+
+  const handleFeesOnly = () => {
+    closeModal();
+    openWithdrawFeesModal();
+  };
+
+  useEffect(() => {
+    document.documentElement.style.setProperty('--value', `${value}%`);
+  }, [value]);
+
   return (
     <div className={styles.removeLiquidityContent}>
       <CoinPair firstCoin="ETH" secondCoin="USDT" />
       <div className={styles.valueAndMax}>
-        <p className={styles.value}>25%</p>
-        <button className={styles.maxButton}>Max</button>
+        <p className={styles.value}>{value}%</p>
+        <button className={styles.maxButton} onClick={handleMax}>Max</button>
       </div>
-      <input type="range" className={styles.slider} />
+      <input type="range" className={styles.slider} min={0} max={100} value={value} onChange={handleChange} />
       <div className={styles.someText}>
         <p className={styles.dimmed}>Withdraw fees only</p>
-        <p className={styles.highlight}>Fees only</p>
+        <button className={styles.feesButton} onClick={handleFeesOnly}>Fees only</button>
       </div>
       <div className={styles.tableWrapper}>
         <table className={styles.liquidityTable}>

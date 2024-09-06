@@ -5,6 +5,43 @@
   gap: 24px;
 }
 
+.subtitle {
+  color: var(--content-dimmed-light);
+}
+
+.maintext {
+  font-weight: 500;
+  font-size: 22px;
+  line-height: 26px;
+}
+
+.undertext {
+  font-size: 14px;
+  line-height: 16px;
+  color: var(--content-dimmed-light);
+}
+
+.successAndLoading {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+}
+
+.successAndLoading svg, .successAndLoading img {
+  width: 72px;
+  height: 72px;
+}
+
+.successAndLoadingTexts {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+}
+
 .coins {
   display: flex;
   justify-content: space-between;
@@ -18,5 +55,19 @@
   .coins {
     justify-content: flex-start;
     gap: 100px;
+  }
+
+  .undertext {
+    font-size: 16px;
+    line-height: 20px;
+  }
+
+  .successAndLoading {
+    gap: 24px;
+  }
+
+  .successAndLoading svg, .successAndLoading img {
+    width: 100px;
+    height: 100px;
   }
 }

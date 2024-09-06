@@ -7,12 +7,18 @@
 
 .contentSection {
   display: flex;
+  /*flex-grow: 1;*/
   flex-direction: column;
   gap: 12px;
 }
 
+.contentSection > div:not:last-child {
+  flex: 1;
+}
+
 .coinPairAndLabel {
   display: flex;
+  align-items: center;
   justify-content: space-between;
 }
 
@@ -116,12 +122,35 @@
   width: 50%;
 }
 
+.sticky {
+  position: sticky;
+  bottom: 0;
+  width: 100%;
+  align-self: flex-start;
+}
+
 @media (min-width: 1024px) {
   .viewPositionLayout {
-    min-height: calc(100vh - 203px);
+    min-height: calc(100vh - 157px);
     max-width: 716px;
     margin: 0 auto;
     padding: 32px 16px;
+  }
+
+  .positionHeading {
+    justify-content: space-between;
+    align-items: center;
+    display: flex;
+  }
+
+  .coinPairAndLabel {
+    gap: 8px;
+  }
+
+  p.smallLabel {
+    padding: 4px 8px;
+    font-size: 13px;
+    line-height: 15px;
   }
 
   .withdrawButton {

@@ -8,6 +8,10 @@
   z-index: 5;
 }
 
+.backLink {
+  z-index: 5;
+}
+
 .title {
   padding-bottom: 16px;
   font-weight: 500;
@@ -130,6 +134,11 @@
   align-items: center;
 }
 
+.previewPriceBlockTitle, .previewPriceBlockExchange, .previewPriceBlockDescription {
+  font-size: 12px;
+  line-height: 16px;
+}
+
 .previewPriceBlockTitle, .previewPriceBlockExchange {
   color: var(--content-tertiary);
 }
@@ -161,5 +170,13 @@
   .inputPreviewRow svg, .inputPreviewRow img {
     width: 24px;
     height: 24px;
+  }
+
+  .previewPriceBlock, .previewCurrentPriceBlock {
+    padding: 8px 16px;
+  }
+
+  .previewPriceBlockTitle, .previewPriceBlockExchange, .previewPriceBlockDescription {
+    line-height: 18px;
   }
 }

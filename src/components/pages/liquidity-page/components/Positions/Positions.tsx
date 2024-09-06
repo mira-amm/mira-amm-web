@@ -25,9 +25,9 @@ const Positions = () => {
             </div>
             <p>Your liquidity will appear here</p>
           </div>
-          <button className={styles.viewArchivedButton}>
-            View archive positions
-          </button>
+          {/*<button className={styles.viewArchivedButton}>*/}
+          {/*  View archive positions*/}
+          {/*</button>*/}
         </div>
       )}
     </section>

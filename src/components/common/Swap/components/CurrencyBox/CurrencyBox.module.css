@@ -56,6 +56,11 @@
   height: 20px;
 }
 
+.selector svg:last-child {
+  width: 16px;
+  height: 16px;
+}
+
 .selector:disabled {
   cursor: default;
 }

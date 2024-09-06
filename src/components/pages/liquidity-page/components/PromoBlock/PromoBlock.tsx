@@ -5,10 +5,11 @@ import styles from './PromoBlock.module.css';
 type Props = {
   icon: ReactNode;
   title: string;
-  text: string;
+  link: string;
+  linkText: string;
 };
 
-const PromoBlock = ({ icon, title, text }: Props) => {
+const PromoBlock = ({ icon, title, link, linkText }: Props) => {
   return (
     <div className={styles.promoBlock}>
       <div className={styles.icon}>
@@ -16,7 +17,7 @@ const PromoBlock = ({ icon, title, text }: Props) => {
       </div>
       <div className={styles.content}>
         <p className={styles.title}>{title}</p>
-        <p className={styles.text}>{text}</p>
+        <a href={link} className={styles.text}>{linkText}</a>
       </div>
     </div>
   );

@@ -34,6 +34,11 @@
 }
 
 .text {
+  font-size: 14px;
   color: var(--content-dimmed-light);
+}
+
+.text:hover {
+  color: var(--content-primary);
 }
 

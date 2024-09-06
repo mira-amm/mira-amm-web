@@ -79,7 +79,7 @@ const PreviewAddLiquidityDialog = ({ previewData }: Props) => {
                 {coinA} per {coinB}
               </p>
               <p className={styles.previewPriceBlockDescription}>
-                The price at which the position will be 100% converted to {coinA}
+                Your position will be 100% composed of {coinA} at this price
               </p>
             </div>
             <div className={styles.previewPriceBlock}>
@@ -93,7 +93,7 @@ const PreviewAddLiquidityDialog = ({ previewData }: Props) => {
                 {coinA} per {coinB}
               </p>
               <p className={styles.previewPriceBlockDescription}>
-                The price at which the position will be 100% converted to {coinB}
+                Your position will be 100% composed of {coinB} at this price
               </p>
             </div>
           </div>
@@ -113,7 +113,7 @@ const PreviewAddLiquidityDialog = ({ previewData }: Props) => {
         </div>
       </div>
       <ActionButton loading={isPending} onClick={handleAddLiquidity}>
-        Add Liquidity
+        Add
       </ActionButton>
     </>
   );
