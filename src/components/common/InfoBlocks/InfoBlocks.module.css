@@ -1,0 +1,33 @@
+@font-face {
+    font-family: "SF UI Text";
+    src: url(../../../../public/fonts/SF-UI-Text-Regular.ttf);
+    font-weight: 400;
+}
+
+@font-face {
+    font-family: "SF UI Text";
+    src: url(../../../../public/fonts/SF-UI-Text-Medium.ttf);
+    font-weight: 500;
+}
+
+.infoBlocks {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.title {
+    font-family: "SF UI Text";
+    font-weight: 500;
+    font-size: 26px;
+    line-height: 32px;
+    text-align: center;
+    margin-bottom: 12px;
+}
+
+.blocksList {
+    list-style: none;
+    padding: 0;
+    display: flex;
+    gap: 16px;
+}
