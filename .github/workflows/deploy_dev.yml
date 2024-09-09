@@ -1,8 +1,6 @@
 name: Deploy to dev
 
-on:
-  - push
-  - workflow_dispatch
+on: workflow_dispatch
 
 jobs:
   dev_deploy:
