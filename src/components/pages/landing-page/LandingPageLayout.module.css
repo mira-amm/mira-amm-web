@@ -53,7 +53,7 @@
   .main {
     max-width: 1084px;
     padding: 100px 16px 48px;
-    gap: 174px;
+    gap: 100px;
     margin: 0 auto;
   }
 
@@ -125,5 +125,13 @@
 
   .xIconWrapper {
     padding: 7px 0;
+  }
+
+  .divider {
+    background-color: #1B2749;
+    padding: 28px 0;
+    margin-bottom: 20px; 
+    width: 100vw;
+    align-self: center;
   }
 }
