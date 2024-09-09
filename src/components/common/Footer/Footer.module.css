@@ -1,9 +1,16 @@
+@font-face {
+  font-family: "SF UI Text";
+  src: url(../../../../public/fonts/SF-UI-Text-Medium.ttf);
+  font-weight: 500;
+}
+
 .footer {
+  font-family: "SF UI Text";
   display: flex;
   flex-direction: column;
-  gap: 24px;
-  padding: 16px;
   color: var(--content-dimmed-light);
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  box-sizing: border-box;
 }
 
 .divider {
@@ -19,15 +26,29 @@
 }
 
 .links {
+  font-size: 18px;
+  line-height: 24px;
   display: flex;
-  justify-content: space-around;
   align-items: center;
+  color: #FFFFFF;
+  font-weight: 500;
+}
+
+.supportLink {
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.fuelText {
+  color: rgba(255, 255, 255, 0.8);
+  font-weight: 500;
 }
 
 @media (min-width: 1024px) {
   .footer {
-    max-width: 1084px;
     margin: 0 auto;
+    padding: 24px 0;
+    max-width: 1084px;
+    gap: 40px;
   }
 
   .content {
@@ -39,5 +60,18 @@
 
   .links {
     flex: 1;
+    gap: 44px;
+  }
+
+  .copywright {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .fuelWrapper {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    justify-content: center;
   }
 }
