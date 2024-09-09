@@ -1,0 +1,36 @@
+@font-face {
+    font-family: "Prompt";
+    src: url(../../../../public/fonts/Prompt-Bold.ttf);
+}
+
+@font-face {
+    font-family: "SF UI Text";
+    src: url(../../../../public/fonts/SF-UI-Text-Medium.ttf);
+    font-weight: 500;
+}
+
+
+.title {
+    font-family: "Prompt";
+    font-size: 44px;
+    margin: 0;
+    line-height: 52px;
+    font-weight: 700;
+    text-align: center;
+}
+
+.description {
+    font-size: 20px;
+    margin: 0 0 20px 0;
+    line-height: 28px;
+    text-align: center;
+    font-weight: 500;
+    font-family: "SF UI Text";
+    color: rgba(255, 255, 255, 0.64);
+    max-width: 624px;
+}
+
+.link {
+    color: #AEED0D;
+    text-decoration: underline;
+}

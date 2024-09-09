@@ -1,0 +1,40 @@
+@font-face {
+    font-family: "SF UI Text";
+    src: url(../../../../public/fonts/SF-UI-Text-Semibold.ttf);
+    font-weight: 600;
+}
+
+@font-face {
+    font-family: "SF UI Text";
+    src: url(../../../../public/fonts/SF-UI-Text-Medium.ttf);
+    font-weight: 500;
+}
+
+.stepsBlock {
+    font-family: "SF UI Text";
+    background-color: #262934;
+    border-radius: 16px;
+    width: 350px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+    padding: 28px 24px 40px 24px;
+    box-sizing: border-box;
+}
+
+.title {
+    font-weight: 600;
+    font-size: 26px;
+    line-height: 32px;
+    text-align: center;
+    margin: 22px 0 0 0;
+}
+
+.description {
+    font-weight: 500;
+    color: rgba(255, 255, 255, 0.64);
+    font-size: 16px;
+    line-height: 24px;
+    text-align: center;
+}
