@@ -22,6 +22,7 @@ import EarnIcon from "../../icons/EarnIcon/EarnIcon";
 import { RoadMapBlock } from "../../common/RoadMapBlock/RoadMapBlock";
 import { RoadMapIcon } from "../../common/RoadMapIcons/RoadMapIcon";
 import RoadmapDesktop from "../../icons/Roadmap/RoadmapDesktop";
+import { MiraApp } from "../../common/MiraApp/MiraApp";
 
 const LandingPageLayout = () => {
   return (
@@ -142,6 +143,9 @@ const LandingPageLayout = () => {
             </InfoBlocks>
             <RoadmapDesktop />
           </MainInfo>
+        </section>
+        <section>
+          <MiraApp />
         </section>
         <section className={styles.bottomBlock}>
           <div className={styles.bottomBlockText}>
