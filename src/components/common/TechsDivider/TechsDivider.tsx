@@ -1,14 +1,14 @@
-import styles from "./TechsDivider.module.css";
-import { TrustMessage } from "../TrustMessage/TrustMessage";
+import { DividerText } from "../DividerText/dividerText";
 import { UsedTechs } from "../UsedTechs/UsedTechs";
 import Halborn from "../../icons/Halborn/Halborn";
 import FuelGroup from "../../icons/FuelGroup/FuelGroup";
+import { Divider } from "../Divider/Divider";
 
 export const TechsDivider = () => {
   return (
-    <ul className={styles.techsDivider}>
+    <Divider>
       <li>
-        <TrustMessage />
+        <DividerText text="Trade with confidence" />
       </li>
       <li>
         <UsedTechs text="Audited by">
@@ -20,6 +20,6 @@ export const TechsDivider = () => {
           <FuelGroup />
         </UsedTechs>
       </li>
-    </ul>
+    </Divider>
   );
 };

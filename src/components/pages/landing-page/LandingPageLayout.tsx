@@ -12,6 +12,7 @@ import { clsx } from "clsx";
 import LaunchAppButton from "@/src/components/common/LaunchAppButton/LaunchAppButton";
 import { DiscordLink, XLink } from "@/src/utils/constants";
 import { TechsDivider } from "../../common/TechsDivider/TechsDivider";
+import { AchievementsDivider } from "../../common/AchievementsDivider/AchievementsDivider";
 
 const LandingPageLayout = () => {
   return (
@@ -73,6 +74,9 @@ const LandingPageLayout = () => {
         </section>
         <section className={styles.divider}>
           <TechsDivider />
+        </section>
+        <section className={styles.divider}>
+          <AchievementsDivider />
         </section>
         <section className={styles.bottomBlock}>
           <div className={styles.bottomBlockText}>
