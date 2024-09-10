@@ -23,6 +23,7 @@ import { RoadMapBlock } from "../../common/RoadMapBlock/RoadMapBlock";
 import { RoadMapIcon } from "../../common/RoadMapIcons/RoadMapIcon";
 import RoadmapDesktop from "../../icons/Roadmap/RoadmapDesktop";
 import { MiraApp } from "../../common/MiraApp/MiraApp";
+import { LearnMoreButton } from "../../common/LearnMoreButton/LearnMoreButton";
 
 const LandingPageLayout = () => {
   return (
@@ -34,7 +35,10 @@ const LandingPageLayout = () => {
           <h2 className={styles.subheading}>
             Trade, Earn and get Rewards using the most efficient AMM on Fuel
           </h2>
-          <LaunchAppButton />
+          <div className={styles.buttonsArea}>
+          <LaunchAppButton className={styles.launchAppButton} />
+          <LearnMoreButton />
+          </div>
           <div className={styles.fuel}>
             <FuelIcon />
             <span>Powered by Fuel</span>
@@ -137,7 +141,10 @@ const LandingPageLayout = () => {
             <h2 className={styles.subheading}>
               Trade, Earn and get Rewards using the most efficient AMM on Fuel
             </h2>
+            <div className={styles.buttonsArea}>
             <LaunchAppButton className={styles.launchAppButton} />
+            <LearnMoreButton />
+            </div>
             <div className={styles.fuel}>
               <FuelIcon />
               <span>Powered by Fuel</span>

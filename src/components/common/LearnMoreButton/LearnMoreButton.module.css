@@ -1,0 +1,33 @@
+@font-face {
+    font-family: "SF UI Display";
+    src: url(../../../../public/fonts/sf-ui-display-medium.otf);
+    font-weight: 600;
+}
+
+@font-face {
+    font-family: "SF UI Text";
+    src: url(../../../../public/fonts/SF-UI-Text-Semibold.ttf);
+    font-weight: 600;
+}
+
+.button {
+    width: 184px;
+    border-radius: 12px;
+    padding: 16px 0;
+    background-color: #2E2E2E;
+    border: none;
+    color: #FFFFFF;
+    font-family: "SF UI Display";
+    font-weight: 600;
+    font-size: 18px;
+    line-height: 21.48px;
+    text-align: center;
+}
+
+@media (max-width: 1024px) {
+    .button {
+        width: 100%;
+        line-height: 24px;
+        font-family: "SF UI Text";
+    }
+}
