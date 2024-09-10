@@ -87,7 +87,7 @@ input:focus {
   }
 }
 
-@media (max-width: 1024px) {
+@media (max-width: 1023px) {
   .desktopOnly {
     display: none !important;
   }
