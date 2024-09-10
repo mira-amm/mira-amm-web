@@ -5,11 +5,11 @@ import ActionButton from "@/src/components/common/ActionButton/ActionButton";
 
 import styles from './DesktopPools.module.css';
 import {useRouter} from "next/navigation";
-import {PoolInfoOutput} from "mira-dex-ts/src/typegen/amm-contract/AmmContractAbi";
-import {getCoinsFromKey} from "@/src/utils/common";
+import {createPoolKey, getCoinByAssetId} from "@/src/utils/common";
+import {PoolMetadata} from "mira-dex-ts";
 
 type Props = {
-  poolsData: ({ key: string, value: PoolInfoOutput } | null)[] | undefined;
+  poolsData: (PoolMetadata | null | undefined)[] | undefined;
 }
 
 const DesktopPools = ({ poolsData }: Props) => {
@@ -44,22 +44,25 @@ const DesktopPools = ({ poolsData }: Props) => {
           return null;
         }
 
-        const { key, value } = poolData;
+        const { poolId } = poolData;
 
-        const { coinA, coinB } = getCoinsFromKey(key);
+        const key = createPoolKey(poolId);
+
+        const coinA = getCoinByAssetId(poolId[0].bits);
+        const coinB = getCoinByAssetId(poolId[1].bits);
 
         return (
           <tr key={key}>
             <td>
               <CoinPair firstCoin={coinA} secondCoin={coinB} />
             </td>
-            <td>
+            <td className="blurredText">
               68,78%
             </td>
-            <td>
+            <td className="blurredText">
               $456,567
             </td>
-            <td>
+            <td className="blurredText">
               $1,307,567
             </td>
             <td>

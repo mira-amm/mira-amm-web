@@ -3,21 +3,31 @@ import MobilePositionItem
 
 import styles from "./MobilePositions.module.css";
 import {isMobile} from "react-device-detect";
+import {PoolId} from "mira-dex-ts";
+import {AssetId, CoinQuantity} from "fuels";
+import {Fragment} from "react";
 
 type Props = {
-  positions: any[] | null;
+  positions: { poolId: PoolId, lpAssetId: AssetId, lpBalance: CoinQuantity | undefined }[];
 };
 
 const MobilePositions = ({ positions }: Props) => {
-  if (!isMobile || !positions) {
+  if (!isMobile) {
     return null;
   }
 
   return (
     <div className={styles.mobilePositions}>
-      <MobilePositionItem />
-      <div className={styles.separator}/>
-      <MobilePositionItem />
+      {positions.map(((position, index) => {
+        return (
+          <Fragment key={position.lpAssetId.bits}>
+            <MobilePositionItem position={position} />
+            {index !== positions.length - 1 && (
+              <div className={styles.separator} />
+            )}
+          </Fragment>
+        );
+      }))}
     </div>
   );
 };

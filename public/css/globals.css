@@ -93,3 +93,9 @@ input:focus {
     display: none !important;
   }
 }
+
+.blurredText {
+  filter: blur(5px);
+  pointer-events: none;
+  user-select: none;
+}

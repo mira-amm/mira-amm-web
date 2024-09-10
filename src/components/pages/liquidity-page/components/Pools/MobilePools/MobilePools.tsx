@@ -4,11 +4,11 @@ import MobilePoolItem
   from "@/src/components/pages/liquidity-page/components/Pools/MobilePools/MobilePoolItem/MobilePoolItem";
 
 import styles from './MobilePools.module.css';
-import {PoolInfoOutput} from "mira-dex-ts/src/typegen/amm-contract/AmmContractAbi";
-import {useRouter} from "next/navigation";
+import {PoolMetadata} from "mira-dex-ts";
+import {createPoolKey} from "@/src/utils/common";
 
 type Props = {
-  poolsData: ({ key: string, value: PoolInfoOutput } | null)[] | undefined;
+  poolsData: (PoolMetadata | null | undefined)[] | undefined;
 }
 
 const MobilePools = ({ poolsData }: Props) => {
@@ -27,12 +27,15 @@ const MobilePools = ({ poolsData }: Props) => {
           return null;
         }
 
-        const { key } = poolData;
+        const { poolId } = poolData;
+        const key = createPoolKey(poolId)
 
         return (
           <>
             <MobilePoolItem poolKey={key} key={key}/>
-            {poolsData.indexOf(poolData) !== poolsData.length - 1 && <div className={styles.separator}/>}
+            {poolsData.indexOf(poolData) !== poolsData.length - 1 && (
+              <div className={styles.separator}/>
+            )}
           </>
         );
       })}

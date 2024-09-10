@@ -14,7 +14,6 @@ type AssetsData = {
 
 type PreviewData = {
   assets: AssetsData[];
-  liquidityValue: BN | undefined;
 };
 
 type Props = {
@@ -27,7 +26,6 @@ const PreviewAddLiquidityDialog = ({ previewData }: Props) => {
     firstCoinAmount: previewData.assets[0].amount,
     secondCoin: previewData.assets[1].coin,
     secondCoinAmount: previewData.assets[1].amount,
-    liquidityAmount: previewData.liquidityValue,
   });
 
   const coinA = previewData.assets[0].coin;
@@ -47,7 +45,6 @@ const PreviewAddLiquidityDialog = ({ previewData }: Props) => {
       <div className={styles.section}>
         <div className={styles.previewCoinPair}>
           <CoinPair firstCoin={coinA} secondCoin={coinB}/>
-          <PositionLabel />
         </div>
         <div className={styles.inputsPreview}>
           <div className={styles.inputPreviewRow}>

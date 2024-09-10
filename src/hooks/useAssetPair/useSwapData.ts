@@ -1,5 +1,6 @@
 import {useMemo} from "react";
-import type {AssetIdInput} from "mira-dex-ts/src/typegen/amm-contract/AmmContractAbi";
+import {PoolId} from "mira-dex-ts";
+import {AssetIdInput} from "mira-dex-ts/dist/sdk/typegen/MiraAmmContract";
 
 import {SwapState} from "@/src/components/common/Swap/Swap";
 import {coinsConfig} from "@/src/utils/coinsConfig";
@@ -12,6 +13,7 @@ type SwapData = {
   sellAssetIdInput: AssetIdInput;
   buyAssetIdInput: AssetIdInput;
   assets: [AssetIdInput, AssetIdInput];
+  // poolId: PoolId;
 };
 
 const useSwapData = (swapState: SwapState): SwapData => {
@@ -44,6 +46,8 @@ const useSwapData = (swapState: SwapState): SwapData => {
     assets = [sellAssetIdInput, buyAssetIdInput];
     // }
 
+    // const poolId: PoolId = [sellAssetIdInput, buyAssetIdInput, false];
+
     return {
       sellAssetId,
       buyAssetId,
@@ -52,6 +56,7 @@ const useSwapData = (swapState: SwapState): SwapData => {
       sellAssetIdInput,
       buyAssetIdInput,
       assets,
+      // poolId,
     };
   }, [swapState.buy.coin, swapState.sell.coin]);
 };

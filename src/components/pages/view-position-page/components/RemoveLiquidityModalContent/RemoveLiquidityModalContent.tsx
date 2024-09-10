@@ -2,52 +2,53 @@ import styles from './RemoveLiquidityModalContent.module.css';
 import CoinPair from "@/src/components/common/CoinPair/CoinPair";
 import InfoIcon from "@/src/components/icons/Info/InfoIcon";
 import ActionButton from "@/src/components/common/ActionButton/ActionButton";
-import {ChangeEvent, useEffect, useState} from "react";
+import {ChangeEvent, Dispatch, memo, SetStateAction, useEffect} from "react";
+import {CoinName} from "@/src/utils/coinsConfig";
+import {useDebounceCallback} from "usehooks-ts";
 
 type Props = {
+  coinA: CoinName;
+  coinB: CoinName;
+  liquidityValue: number;
+  setLiquidityValue: Dispatch<SetStateAction<number>>
   closeModal: VoidFunction;
-  openWithdrawFeesModal: VoidFunction;
+  handleRemoveLiquidity: VoidFunction;
 }
 
-const RemoveLiquidityModalContent = ({ closeModal, openWithdrawFeesModal }: Props) => {
-  const [value, setValue] = useState(50);
+const RemoveLiquidityModalContent = ({ coinA, coinB, closeModal, liquidityValue, setLiquidityValue, handleRemoveLiquidity }: Props) => {
+  const debouncedSetValue = useDebounceCallback(setLiquidityValue, 100);
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setValue(Number(e.target.value));
+    debouncedSetValue(Number(e.target.value));
   };
 
   const handleMax = () => {
-    setValue(100);
-  };
-
-  const handleFeesOnly = () => {
-    closeModal();
-    openWithdrawFeesModal();
+    debouncedSetValue(100);
   };
 
   useEffect(() => {
-    document.documentElement.style.setProperty('--value', `${value}%`);
-  }, [value]);
+    document.documentElement.style.setProperty('--value', `${liquidityValue}%`);
+  }, [liquidityValue]);
 
   return (
     <div className={styles.removeLiquidityContent}>
-      <CoinPair firstCoin="ETH" secondCoin="USDT" />
+      <CoinPair firstCoin={coinA} secondCoin={coinB} />
       <div className={styles.valueAndMax}>
-        <p className={styles.value}>{value}%</p>
+        <p className={styles.value}>{liquidityValue}%</p>
         <button className={styles.maxButton} onClick={handleMax}>Max</button>
       </div>
-      <input type="range" className={styles.slider} min={0} max={100} value={value} onChange={handleChange} />
-      <div className={styles.someText}>
-        <p className={styles.dimmed}>Withdraw fees only</p>
-        <button className={styles.feesButton} onClick={handleFeesOnly}>Fees only</button>
-      </div>
+      <input type="range" className={styles.slider} min={0} max={100} value={liquidityValue} onChange={handleChange} />
+      {/*<div className={styles.someText}>*/}
+      {/*  <p className={styles.dimmed}>Withdraw fees only</p>*/}
+      {/*  <button className={styles.feesButton} onClick={handleFeesOnly}>Fees only</button>*/}
+      {/*</div>*/}
       <div className={styles.tableWrapper}>
         <table className={styles.liquidityTable}>
           <thead>
           <tr>
             <th />
-            <th>ETH</th>
-            <th>USDT</th>
+            <th>{coinA}</th>
+            <th>{coinB}</th>
           </tr>
           </thead>
           <tbody>
@@ -91,11 +92,11 @@ const RemoveLiquidityModalContent = ({ closeModal, openWithdrawFeesModal }: Prop
         </p>
       </div>
       <div className={styles.buttons}>
-        <ActionButton>Confirm</ActionButton>
+        <ActionButton onClick={handleRemoveLiquidity}>Confirm</ActionButton>
         <ActionButton variant="secondary" onClick={closeModal}>Cancel</ActionButton>
       </div>
     </div>
   );
 };
 
-export default RemoveLiquidityModalContent;
+export default memo(RemoveLiquidityModalContent);

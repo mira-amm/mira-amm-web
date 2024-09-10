@@ -6,18 +6,21 @@ import DesktopPositions
   from "@/src/components/pages/liquidity-page/components/Positions/MobilePositions/DesktopPositions/DesktopPositions";
 import usePositions from "@/src/hooks/usePositions";
 import DocumentIcon from "@/src/components/icons/Document/DocumentIcon";
+import useBalances from "@/src/hooks/useBalances/useBalances";
 
 const Positions = () => {
-  const positions = usePositions();
+  const { balances } = useBalances();
+  const positions = usePositions({ balances });
+
+  const noPositions = positions.every(positions => !positions.lpBalance);
+  const filteredPositions = positions.filter(position => position.lpBalance);
 
   return (
     <section className={styles.positions}>
       <p className={styles.positionsTitle}>
         Your Positions
       </p>
-      <MobilePositions positions={positions} />
-      <DesktopPositions positions={positions} />
-      {!positions && (
+      {noPositions ? (
         <div className={styles.positionsFallback}>
           <div className={styles.fallbackTop}>
             <div className={styles.icon}>
@@ -29,6 +32,11 @@ const Positions = () => {
           {/*  View archive positions*/}
           {/*</button>*/}
         </div>
+      ) : (
+        <>
+          <MobilePositions positions={filteredPositions} />
+          <DesktopPositions positions={filteredPositions} />
+        </>
       )}
     </section>
   );

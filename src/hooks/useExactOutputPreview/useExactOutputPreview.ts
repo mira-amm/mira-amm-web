@@ -1,8 +1,8 @@
-import useMiraDex from "@/src/hooks/useMiraDex/useMiraDex";
 import {useQuery} from "@tanstack/react-query";
 import type {CurrencyBoxMode, SwapState} from "@/src/components/common/Swap/Swap";
-import type {AssetInput} from "mira-dex-ts/src/typegen/amm-contract/AmmContractAbi";
 import useSwapData from "@/src/hooks/useAssetPair/useSwapData";
+import usePoolsIds from "@/src/hooks/usePoolsIds";
+import useReadonlyMira from "@/src/hooks/useReadonlyMira";
 
 type Props = {
   swapState: SwapState;
@@ -15,17 +15,14 @@ const useExactOutputPreview = ({ swapState, buyAmount, lastFocusedMode }: Props)
     buyAssetIdInput,
     sellAssetId,
     buyAssetId,
-    assets,
     buyDecimals: decimals,
   } = useSwapData(swapState);
 
   const amountValid = buyAmount !== null && !isNaN(buyAmount);
   const amount = amountValid ? buyAmount * 10 ** decimals : 0;
-  const assetSwapInput: AssetInput = {
-    id: buyAssetIdInput, amount
-  };
 
-  const miraAmm = useMiraDex();
+  const miraAmm = useReadonlyMira();
+  const pools = usePoolsIds();
 
   const miraExists = Boolean(miraAmm);
   const lastFocusedModeIsBuy = lastFocusedMode === 'buy'
@@ -36,11 +33,11 @@ const useExactOutputPreview = ({ swapState, buyAmount, lastFocusedMode }: Props)
     miraExists && lastFocusedModeIsBuy && sellAssetExists && buyAssetExists && amountNonZero;
 
   const { data, isFetching } = useQuery({
-    queryKey: ['exactOutputPreview', assets, assetSwapInput],
+    queryKey: ['exactOutputPreview', buyAssetIdInput, amount, pools],
     queryFn: () => miraAmm?.previewSwapExactOutput(
-      assets,
-      // amount,
-      assetSwapInput
+      buyAssetIdInput,
+      amount,
+      pools,
     ),
     enabled: shouldFetch,
     refetchInterval: 15000,

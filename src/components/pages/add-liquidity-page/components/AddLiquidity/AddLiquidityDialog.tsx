@@ -8,7 +8,7 @@ import useBalances from "@/src/hooks/useBalances/useBalances";
 import useCoinBalance from "@/src/hooks/useCoinBalance";
 import {useConnectUI, useIsConnected} from "@fuels/react";
 import usePreviewAddLiquidity from "@/src/hooks/usePreviewAddLiquidity";
-import {useCallback, useEffect, useState} from "react";
+import {useCallback, useEffect, useMemo, useState} from "react";
 import {useDebounceCallback} from "usehooks-ts";
 
 type Props = {
@@ -31,30 +31,30 @@ const AddLiquidityDialog = ({ firstCoin, secondCoin, setPreviewData }: Props) =>
   const [secondAmountInput, setSecondAmountInput] = useState('');
   const [activeCoin, setActiveCoin] = useState<CoinName | null>(null);
 
+  const isFirstToken = activeCoin === firstCoin;
+
   const { data, isFetching } = usePreviewAddLiquidity({
     firstCoin,
     secondCoin,
-    amount: activeCoin === firstCoin ? parseFloat(firstAmount) : parseFloat(secondAmount),
-    activeCoin,
+    amount: isFirstToken ? parseFloat(firstAmount) : parseFloat(secondAmount),
+    isFirstToken
   });
 
   const debouncedSetFirstAmount = useDebounceCallback(setFirstAmount, 500);
   const debouncedSetSecondAmount = useDebounceCallback(setSecondAmount, 500);
 
   useEffect(() => {
-    if (data?.value.other_asset_to_add) {
-      console.log(data);
+    if (data) {
+      const anotherToken = isFirstToken ? secondCoin : firstCoin;
+      const anotherTokenDecimals = coinsConfig.get(anotherToken)?.decimals!;
+      const anotherTokenValue = data[1].toNumber() / 10 ** anotherTokenDecimals;
 
-      if (activeCoin === firstCoin) {
-        const decimals = coinsConfig.get(secondCoin)?.decimals!;
-        const value = data.value.other_asset_to_add.amount.toNumber() / 10 ** decimals;
-        setSecondAmount(value.toString());
-        setSecondAmountInput(value.toString());
+      if (isFirstToken) {
+        setSecondAmount(anotherTokenValue.toFixed(anotherTokenDecimals));
+        setSecondAmountInput(anotherTokenValue.toFixed(anotherTokenDecimals));
       } else {
-        const decimals = coinsConfig.get(firstCoin)?.decimals!;
-        const value = data.value.other_asset_to_add.amount.toNumber() / 10 ** decimals;
-        setFirstAmount(value.toString());
-        setFirstAmountInput(value.toString());
+        setFirstAmount(anotherTokenValue.toFixed(anotherTokenDecimals));
+        setFirstAmountInput(anotherTokenValue.toFixed(anotherTokenDecimals));
       }
     }
   }, [data]);
@@ -84,9 +84,22 @@ const AddLiquidityDialog = ({ firstCoin, secondCoin, setPreviewData }: Props) =>
           amount: secondAmount,
         }
       ],
-      liquidityValue: data?.value.liquidity_asset_to_receive.amount,
     });
-  }, [data?.value.liquidity_asset_to_receive.amount, firstAmount, firstCoin, secondAmount, secondCoin, setPreviewData]);
+  }, [firstCoin, firstAmount, secondCoin, secondAmount, setPreviewData]);
+
+  const insufficientFirstBalance = parseFloat(firstAmount) > firstCoinBalanceValue;
+  const insufficientSecondBalance = parseFloat(secondAmount) > secondCoinBalanceValue;
+  const insufficientBalance = insufficientFirstBalance || insufficientSecondBalance;
+
+  const buttonTitle = useMemo(() => {
+    if (insufficientBalance) {
+      return 'Insufficient balance';
+    }
+
+    return 'Preview';
+  }, [insufficientBalance]);
+
+  const buttonDisabled = insufficientBalance;
 
   return (
     <>
@@ -95,7 +108,7 @@ const AddLiquidityDialog = ({ firstCoin, secondCoin, setPreviewData }: Props) =>
         <div className={styles.sectionContent}>
           <div className={styles.coinPair}>
             <CoinPair firstCoin={firstCoin} secondCoin={secondCoin} />
-            <p className={styles.APR}>
+            <p className={clsx(styles.APR, 'blurredText')}>
               Estimated APR
               <span className={styles.highlight}>+58,78%</span>
             </p>
@@ -148,8 +161,8 @@ const AddLiquidityDialog = ({ firstCoin, secondCoin, setPreviewData }: Props) =>
           Connect Wallet
         </ActionButton>
       ) : (
-        <ActionButton onClick={handleButtonClick}>
-          Preview
+        <ActionButton disabled={buttonDisabled} onClick={handleButtonClick}>
+          {buttonTitle}
         </ActionButton>
       )}
     </>

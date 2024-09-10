@@ -8,6 +8,7 @@ import styles from './ConnectButton.module.css';
 
 import ActionButton from "@/src/components/common/ActionButton/ActionButton";
 import useFormattedAddress from "@/src/hooks/useFormattedAddress/useFormattedAddress";
+import {toBech32} from "fuels";
 
 type Props = {
   className?: string;

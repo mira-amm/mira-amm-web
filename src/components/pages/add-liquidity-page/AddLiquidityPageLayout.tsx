@@ -8,6 +8,7 @@ import styles from './AddLiquidityPageLayout.module.css';
 import AddLiquidity from "@/src/components/pages/add-liquidity-page/components/AddLiquidity/AddLiquidity";
 import {useRouter, useSearchParams} from "next/navigation";
 import {useEffect, useRef} from "react";
+import {isPoolKeyValid} from "@/src/utils/common";
 
 const AddLiquidityPageLayout = () => {
   const router = useRouter();
@@ -22,7 +23,7 @@ const AddLiquidityPageLayout = () => {
     }
   }, []);
 
-  if (!poolKey) {
+  if (!poolKey || !isPoolKeyValid(poolKey)) {
     router.push('/liquidity');
     return null;
   }

@@ -84,7 +84,7 @@ const Swap = () => {
     lastFocusedMode,
   });
   const buyDecimals = coinsConfig.get(swapState.buy.coin)?.decimals!;
-  const inputPreviewValue = inputPreviewData && inputPreviewData.value.other_asset.amount.toNumber() / 10 ** buyDecimals;
+  const inputPreviewValue = inputPreviewData && inputPreviewData[1].toNumber() / 10 ** buyDecimals;
   const inputPreviewValueString = inputPreviewValue !== undefined ? inputPreviewValue === 0 ? '' : inputPreviewValue.toFixed(buyDecimals) : previousInputPreviewValue.current;
   previousInputPreviewValue.current = inputPreviewValueString;
   const buyValue = lastFocusedMode === 'sell' ? inputPreviewValueString : inputsState.buy.amount;
@@ -104,7 +104,7 @@ const Swap = () => {
     lastFocusedMode,
   });
   const sellDecimals = coinsConfig.get(swapState.sell.coin)?.decimals!;
-  const outputPreviewValue = outputPreviewData && outputPreviewData.value.other_asset.amount.toNumber() / 10 ** sellDecimals;
+  const outputPreviewValue = outputPreviewData && outputPreviewData[1].toNumber() / 10 ** sellDecimals;
   const outputPreviewValueString = outputPreviewValue !== undefined ? outputPreviewValue === 0 ? '' : outputPreviewValue.toFixed(sellDecimals) : previousOutputPreviewValue.current;
   previousOutputPreviewValue.current = outputPreviewValueString;
   const sellValue = lastFocusedMode === 'buy' ? outputPreviewValueString : inputsState.sell.amount;

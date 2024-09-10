@@ -2,15 +2,28 @@ import CoinPair from "@/src/components/common/CoinPair/CoinPair";
 import PositionLabel from "@/src/components/pages/liquidity-page/components/Positions/PositionLabel/PositionLabel";
 
 import styles from "./MobilePositionItem.module.css";
+import { PoolId } from "mira-dex-ts";
+import {AssetId, CoinQuantity} from "fuels";
+import {getCoinByAssetId} from "@/src/utils/common";
 
-const MobilePositionItem = () => {
+type Props = {
+  position: { poolId: PoolId; lpAssetId: AssetId; lpBalance: CoinQuantity | undefined };
+}
+
+const MobilePositionItem = ({ position }: Props) => {
+  const { bits: coinAAssetId } = position.poolId[0];
+  const { bits: coinBAssetId } = position.poolId[1];
+
+  const coinA = getCoinByAssetId(coinAAssetId);
+  const coinB = getCoinByAssetId(coinBAssetId);
+
   return (
     <div className={styles.mobilePositionItem}>
       <div className={styles.infoSection}>
-        <CoinPair firstCoin="ETH" secondCoin="USDT" />
+        <CoinPair firstCoin={coinA} secondCoin={coinB} />
         <PositionLabel />
       </div>
-      <p className={styles.positionPrice}>{`Selected Price: 0 UNI <> ∞ UNI`}</p>
+      <p className={styles.positionPrice}>{`Selected Price: 0 ${coinA} <> ∞ ${coinB}`}</p>
     </div>
   );
 };
