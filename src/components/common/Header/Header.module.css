@@ -55,6 +55,12 @@
     line-height: 24px;
   }
 
+  .launchAppArea {
+    display: flex;
+    gap: 24px;
+    align-items: center;
+  }
+
   .promo {
     font-size: 18px;
     line-height: 22px;
