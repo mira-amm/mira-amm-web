@@ -48,7 +48,7 @@ const DesktopPositions = ({ positions }: Props) => {
         const coinB = getCoinByAssetId(coinBAssetId);
 
         return (
-          <tr key={position.lpAssetId.bits} onClick={() => openPosition(position.poolId)}>
+          <tr className={styles.positionRow} key={position.lpAssetId.bits} onClick={() => openPosition(position.poolId)}>
             <td>
               <CoinPair firstCoin={coinA} secondCoin={coinB} />
             </td>
@@ -56,7 +56,7 @@ const DesktopPositions = ({ positions }: Props) => {
               {`0 ${coinA} <> ∞ ${coinB}`}
             </td>
             <td className={styles.labelCell}>
-              <PositionLabel/>
+              Active
             </td>
           </tr>
         );

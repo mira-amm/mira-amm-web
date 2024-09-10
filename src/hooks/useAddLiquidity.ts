@@ -31,7 +31,9 @@ const useAddLiquidity = ({ firstCoin, firstCoinAmount, secondCoin, secondCoinAmo
     const firstCoinAmountToUse = parseFloat(firstCoinAmount) * 10 ** coinsConfig.get(firstCoin)?.decimals!;
     const secondCoinAmountToUse = parseFloat(secondCoinAmount) * 10 ** coinsConfig.get(secondCoin)?.decimals!;
 
-    const tx = await mira.addLiquidity(poolId, firstCoinAmountToUse, secondCoinAmountToUse, 0, 0, MaxDeadline, DefaultTxParams);
+    const txRequest = await mira.addLiquidity(poolId, firstCoinAmountToUse, secondCoinAmountToUse, 0, 0, MaxDeadline, DefaultTxParams);
+    const gasCost = await wallet.getTransactionCost(txRequest);
+    const tx = await wallet.fund(txRequest, gasCost);
     return await wallet.sendTransaction(tx);
   }, [mira, wallet, firstCoin, secondCoin, firstCoinAmount, secondCoinAmount]);
 

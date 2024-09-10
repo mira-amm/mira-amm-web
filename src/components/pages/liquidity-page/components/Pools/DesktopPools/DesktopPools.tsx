@@ -31,11 +31,11 @@ const DesktopPools = ({ poolsData }: Props) => {
     <table className={styles.desktopPools}>
       <thead>
       <tr>
-        <td>Pools</td>
-        <td>APR</td>
-        <td>24H Volume</td>
-        <td>TVL</td>
-        <td/>
+        <th>Pools</th>
+        <th>APR</th>
+        <th>24H Volume</th>
+        <th>TVL</th>
+        <th/>
       </tr>
       </thead>
       <tbody>

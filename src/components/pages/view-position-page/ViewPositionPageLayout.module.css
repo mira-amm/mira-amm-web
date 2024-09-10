@@ -7,7 +7,6 @@
 
 .contentSection {
   display: flex;
-  /*flex-grow: 1;*/
   flex-direction: column;
   gap: 12px;
 }
@@ -127,6 +126,10 @@
   bottom: 0;
   width: 100%;
   align-self: flex-start;
+}
+
+.withdrawLiquidityTitle {
+  text-align: center;
 }
 
 @media (min-width: 1024px) {

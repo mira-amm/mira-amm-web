@@ -27,8 +27,8 @@ const usePreviewAddLiquidity = ({ firstCoin, secondCoin, amount, isFirstToken }:
   const shouldFetch = miraExists && amountToUse !== 0;
 
   const { data, isFetching } = useQuery({
-    queryKey: ['preview-add-liquidity', poolId, amount, isFirstToken],
-    queryFn: () => mira?.getOtherTokenToAddLiquidity(poolId, amount, isFirstToken),
+    queryKey: ['preview-add-liquidity', poolId, amountToUse, isFirstToken],
+    queryFn: () => mira?.getOtherTokenToAddLiquidity(poolId, amountToUse, isFirstToken),
     enabled: shouldFetch,
   })
 

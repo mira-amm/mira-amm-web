@@ -6,7 +6,7 @@ import {useMutation} from "@tanstack/react-query";
 import type {CurrencyBoxMode, SwapState} from "@/src/components/common/Swap/Swap";
 import useMiraDex from "@/src/hooks/useMiraDex/useMiraDex";
 import useSwapData from "@/src/hooks/useAssetPair/useSwapData";
-import {MaxDeadline} from "@/src/utils/constants";
+import {DefaultTxParams, MaxDeadline} from "@/src/utils/constants";
 import usePoolsIds from "@/src/hooks/usePoolsIds";
 
 type Props = {
@@ -34,10 +34,10 @@ const useSwap = ({ swapState, mode, slippage }: Props) => {
     const sellAmountWithSlippage = sellAmount * (1 + slippage / 100);
 
     const tx = mode === 'sell' ?
-      await miraDex.swapExactInput(sellAmount, sellAssetIdInput, buyAmountWithSlippage, pools, MaxDeadline) :
-      await miraDex.swapExactOutput(buyAmount, buyAssetIdInput, sellAmountWithSlippage, pools, MaxDeadline);
+      await miraDex.swapExactInput(sellAmount, sellAssetIdInput, buyAmountWithSlippage, pools, MaxDeadline, DefaultTxParams) :
+      await miraDex.swapExactOutput(buyAmount, buyAssetIdInput, sellAmountWithSlippage, pools, MaxDeadline, DefaultTxParams);
 
-    const txCost = await wallet.provider.getTransactionCost(tx);
+    const txCost = await wallet.getTransactionCost(tx);
 
     return { tx, txCost };
   }, [
@@ -59,7 +59,9 @@ const useSwap = ({ swapState, mode, slippage }: Props) => {
       return;
     }
 
-    return await wallet.sendTransaction(tx);
+    const txCost = await wallet.getTransactionCost(tx);
+    const fundedTx = await wallet.fund(tx, txCost);
+    return await wallet.sendTransaction(fundedTx);
   }, [wallet]);
 
   const { mutateAsync: fetchTxCost, data: txCostData, isPending: txCostPending} = useMutation({

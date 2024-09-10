@@ -9,13 +9,15 @@ import {useDebounceCallback} from "usehooks-ts";
 type Props = {
   coinA: CoinName;
   coinB: CoinName;
+  coinAValue: string;
+  coinBValue: string;
   liquidityValue: number;
   setLiquidityValue: Dispatch<SetStateAction<number>>
   closeModal: VoidFunction;
   handleRemoveLiquidity: VoidFunction;
 }
 
-const RemoveLiquidityModalContent = ({ coinA, coinB, closeModal, liquidityValue, setLiquidityValue, handleRemoveLiquidity }: Props) => {
+const RemoveLiquidityModalContent = ({ coinA, coinB, coinAValue, coinBValue, closeModal, liquidityValue, setLiquidityValue, handleRemoveLiquidity }: Props) => {
   const debouncedSetValue = useDebounceCallback(setLiquidityValue, 100);
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -53,29 +55,29 @@ const RemoveLiquidityModalContent = ({ coinA, coinB, closeModal, liquidityValue,
           </thead>
           <tbody>
           <tr>
-            <td>Deposited</td>
-            <td>2.145.49</td>
-            <td>0</td>
+            <td>Initial</td>
+            <td>{coinAValue}</td>
+            <td>{coinBValue}</td>
           </tr>
           <tr>
             <td>Withdrawal fees</td>
-            <td>31.1495</td>
-            <td>0</td>
+            <td className="blurredText">0.0003</td>
+            <td className="blurredText">0.0003</td>
           </tr>
           <tr>
             <td>Earned fees</td>
-            <td>6.0390</td>
-            <td>9.34905</td>
+            <td className="blurredText">6.0390</td>
+            <td className="blurredText">9.34905</td>
           </tr>
           <tr className={styles.lastRow}>
             <td>
               Total
             </td>
             <td>
-              3.0541
+              {coinAValue}
             </td>
             <td>
-              4.40557
+              {coinBValue}
             </td>
           </tr>
           </tbody>
@@ -93,7 +95,7 @@ const RemoveLiquidityModalContent = ({ coinA, coinB, closeModal, liquidityValue,
       </div>
       <div className={styles.buttons}>
         <ActionButton onClick={handleRemoveLiquidity}>Confirm</ActionButton>
-        <ActionButton variant="secondary" onClick={closeModal}>Cancel</ActionButton>
+        <ActionButton variant="outlined" onClick={closeModal}>Cancel</ActionButton>
       </div>
     </div>
   );

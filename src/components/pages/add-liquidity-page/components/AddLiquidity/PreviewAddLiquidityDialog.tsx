@@ -6,6 +6,12 @@ import ActionButton from "@/src/components/common/ActionButton/ActionButton";
 import {CoinName} from "@/src/utils/coinsConfig";
 import {BN} from "fuels";
 import useAddLiquidity from "@/src/hooks/useAddLiquidity";
+import useModal from "@/src/hooks/useModal/useModal";
+import AddLiquiditySuccessModal
+  from "@/src/components/pages/add-liquidity-page/components/AddLiquiditySuccessModal/AddLiquiditySuccessModal";
+import TestnetLabel from "@/src/components/common/TestnetLabel/TestnetLabel";
+import {useRouter} from "next/navigation";
+import {useCallback} from "react";
 
 type AssetsData = {
   coin: CoinName;
@@ -21,6 +27,10 @@ type Props = {
 }
 
 const PreviewAddLiquidityDialog = ({ previewData }: Props) => {
+  const [SuccessModal, openSuccessModal, closeSuccessModal] = useModal();
+
+  const router = useRouter();
+
   const { data, mutateAsync, isPending } = useAddLiquidity({
     firstCoin: previewData.assets[0].coin,
     firstCoinAmount: previewData.assets[0].amount,
@@ -37,8 +47,14 @@ const PreviewAddLiquidityDialog = ({ previewData }: Props) => {
 
   const handleAddLiquidity = async () => {
     const data = await mutateAsync();
-    console.log(data);
+    if (data?.id) {
+      openSuccessModal();
+    }
   };
+
+  const redirectToLiquidity = useCallback(() => {
+    router.push('/liquidity');
+  }, [router]);
 
   return (
     <>
@@ -112,6 +128,9 @@ const PreviewAddLiquidityDialog = ({ previewData }: Props) => {
       <ActionButton loading={isPending} onClick={handleAddLiquidity}>
         Add
       </ActionButton>
+      <SuccessModal title={<TestnetLabel />} onClose={redirectToLiquidity}>
+        <AddLiquiditySuccessModal coinA={coinA} coinB={coinB} firstCoinAmount={firstCoinAmount} secondCoinAmount={secondCoinAmount} transactionHash={data?.id} />
+      </SuccessModal>
     </>
   );
 };

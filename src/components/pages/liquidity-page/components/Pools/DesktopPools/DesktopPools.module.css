@@ -3,15 +3,23 @@
   background-color: var(--background-grey-dark);
 }
 
-.desktopPools > thead {
+.desktopPools th {
   font-size: 16px;
   line-height: 19px;
+  font-weight: 400;
   color: var(--content-tertiary);
-  border-bottom: 1px solid var(--background-grey-light);
 }
 
-.desktopPools td {
+.desktopPools th, .desktopPools td {
   padding: 16px 24px;
+}
+
+.desktopPools th:first-child, .desktopPools td:first-child {
+  text-align: left;
+}
+
+.desktopPools th:not(:first-child), .desktopPools td:not(:first-child) {
+  text-align: center;
 }
 
 button.addButton {

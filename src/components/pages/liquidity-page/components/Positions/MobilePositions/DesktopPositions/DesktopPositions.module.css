@@ -4,15 +4,13 @@
   background-color: var(--background-grey-dark);
 }
 
-.desktopPositions > thead {
+.desktopPositions th {
   font-size: 16px;
   line-height: 19px;
+  font-weight: 400;
   color: var(--content-tertiary);
   padding: 0 16px;
-}
-
-.desktopPositions th {
-  border-bottom: 1px solid var(--background-grey-light);
+  /*border-bottom: 1px solid var(--background-grey-light);*/
 }
 
 .desktopPositions td, .desktopPositions th {
@@ -21,7 +19,8 @@
 
 .labelCell {
   display: flex;
-  justify-content: end;
+  justify-content: center;
+  color: var(--content-positive);
 }
 
 .labelCell > p {
@@ -37,11 +36,10 @@
   cursor: pointer;
 }
 
-button.addButton {
-  width: 100%;
-  padding: 12px;
-  font-weight: 500;
-  font-size: 16px;
-  line-height: 19px;
-  box-shadow: unset;
+.positionRow {
+  cursor: pointer;
+}
+
+.positionRow:hover td:nth-child(1) {
+  text-decoration: underline;
 }

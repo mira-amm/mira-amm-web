@@ -99,7 +99,9 @@ const AddLiquidityDialog = ({ firstCoin, secondCoin, setPreviewData }: Props) =>
     return 'Preview';
   }, [insufficientBalance]);
 
-  const buttonDisabled = insufficientBalance;
+  const oneOfAmountsEmpty = !firstAmount || !secondAmount;
+
+  const buttonDisabled = insufficientBalance || oneOfAmountsEmpty;
 
   return (
     <>
@@ -108,9 +110,9 @@ const AddLiquidityDialog = ({ firstCoin, secondCoin, setPreviewData }: Props) =>
         <div className={styles.sectionContent}>
           <div className={styles.coinPair}>
             <CoinPair firstCoin={firstCoin} secondCoin={secondCoin} />
-            <p className={clsx(styles.APR, 'blurredText')}>
+            <p className={styles.APR}>
               Estimated APR
-              <span className={styles.highlight}>+58,78%</span>
+              <span className={clsx(styles.highlight, 'blurredText')}>+58,78%</span>
             </p>
           </div>
           <div className={styles.fee}>

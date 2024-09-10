@@ -6,6 +6,7 @@ import MobilePoolItem
 import styles from './MobilePools.module.css';
 import {PoolMetadata} from "mira-dex-ts";
 import {createPoolKey} from "@/src/utils/common";
+import {Fragment} from "react";
 
 type Props = {
   poolsData: (PoolMetadata | null | undefined)[] | undefined;
@@ -31,12 +32,12 @@ const MobilePools = ({ poolsData }: Props) => {
         const key = createPoolKey(poolId)
 
         return (
-          <>
-            <MobilePoolItem poolKey={key} key={key}/>
+          <Fragment key={key}>
+            <MobilePoolItem poolKey={key} />
             {poolsData.indexOf(poolData) !== poolsData.length - 1 && (
               <div className={styles.separator}/>
             )}
-          </>
+          </Fragment>
         );
       })}
     </div>
