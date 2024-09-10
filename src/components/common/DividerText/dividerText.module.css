@@ -12,3 +12,11 @@
     font-weight: 500;
     font-family: "SF UI Text";
 }
+
+@media (max-width: 1024px) {
+    .dividerText {
+        font-size: 16px;
+        line-height: 22px;
+        list-style: none;
+    }
+}

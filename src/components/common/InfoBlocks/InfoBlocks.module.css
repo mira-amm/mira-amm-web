@@ -31,3 +31,16 @@
     display: flex;
     gap: 16px;
 }
+
+@media (max-width: 1024px) {
+    .title {
+        font-size: 24px;
+        line-height: 30px;
+    }
+
+    .blocksList {
+        flex-direction: column;
+        width: 100%;
+        gap: 16px;
+    }
+}

@@ -1,4 +1,4 @@
-.background {
+.iconBackground {
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -7,4 +7,17 @@
     border-radius: 10px;
     width: 64px;
     height: 64px;
+}
+
+@media (max-width: 1024px) {
+    .iconBackground {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        background: linear-gradient(132.04deg, #262F5F 11.87%, #C41CFF 176.88%);
+        border-radius: 10px;
+        width: 64px;
+        height: 64px;
+    }
 }

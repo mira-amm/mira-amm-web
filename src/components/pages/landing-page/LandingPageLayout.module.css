@@ -9,6 +9,7 @@
   display: flex;
   flex-direction: column;
   gap: 16px;
+  align-items: center;
 }
 
 .buttonsArea {
@@ -16,6 +17,7 @@
   flex-direction: column;
   align-items: center;
   gap: 12px;
+  width: 100%;
 }
 
 .launchAppButton {
@@ -27,13 +29,13 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  margin-bottom: 24px;
 }
 
 .subheading {
   font-weight: 400;
   font-size: 16px;
   line-height: 22px;
-  margin-bottom: 32px;
   color: var(--content-secondary);
 }
 
@@ -57,6 +59,7 @@
   align-items: center;
   gap: 12px;
   border-radius: 16px;
+  margin-bottom: 24px;
 }
 
 .discordBlock {
@@ -65,6 +68,17 @@
 
 .xBlock {
   background-color: #040305;
+}
+
+.divider {
+  background-color: #1B2749;
+  width: 100vw;
+  align-self: center;
+  margin-bottom: 24px;
+}
+
+.mainInfo {
+  margin-bottom: 24px;
 }
 
 @media (min-width: 1024px) {
@@ -115,6 +129,11 @@
     line-height: 22px;
   }
 
+  .divider {
+    padding: 28px 0;
+    margin-bottom: 20px; 
+  }
+
   .bottomBlock {
     flex-direction: row;
     padding: 32px 40px;
@@ -147,14 +166,6 @@
 
   .xIconWrapper {
     padding: 7px 0;
-  }
-
-  .divider {
-    background-color: #1B2749;
-    padding: 28px 0;
-    margin-bottom: 20px; 
-    width: 100vw;
-    align-self: center;
   }
 
   .mainInfo {

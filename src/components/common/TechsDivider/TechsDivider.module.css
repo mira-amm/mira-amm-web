@@ -1,7 +1,40 @@
 .techsDivider {
-    display: flex;
-    justify-content: center;
-    gap: 164px;
-    margin: 0 238px 0 141px;
-    list-style: none;
+  display: flex;
+  justify-content: center;
+  margin: 0 238px 0 141px;
+  list-style: none;
+  box-sizing: border-box;
+  gap: 164px;
+}
+
+.logosArea {
+  display: flex;
+  gap: 164px;
+}
+
+@media (max-width: 1365px) {
+  .techsDivider {
+    justify-content: space-between;
+    gap: 0;
+  }
+
+  .logosArea {
+    gap: 120px;
+  }
+}
+
+@media (max-width: 1024px) {
+  .techsDivider {
+    align-items: flex-start;
+    gap: 16px;
+    flex-direction: column;
+    margin: 0;
+    padding: 16px;
+  }
+
+  .logosArea {
+    gap: 16px;
+    overflow-x: scroll;
+    max-height: 22px;
+  }
 }
