@@ -11,7 +11,6 @@
 }
 
 .stepsBlock {
-    font-family: "SF UI Text";
     background-color: #262934;
     border-radius: 16px;
     width: 350px;
@@ -24,6 +23,7 @@
 }
 
 .title {
+    font-family: "SF UI Text";
     font-weight: 600;
     font-size: 26px;
     line-height: 32px;
