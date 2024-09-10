@@ -41,6 +41,71 @@ const LandingPageLayout = () => {
           </div>
         </section>
         <Swap />
+        <section className={styles.divider}>
+          <TechsDivider />
+        </section>
+        <section className={styles.mainInfo}>
+          <MainInfo
+            title="Meet the First ve(3,3) DEX on Fuel*"
+            description="The highest APR for LPs, with the lowest slippage and fees on swaps among other DEXs. Learn more about ve(3,3) "
+            link="here"
+          >
+            <InfoBlocks title="Simple steps to maximize efficiency">
+              <StepsBlock
+                logo={<LockIcon />}
+                title="Lock"
+                description="your MIRA and get in return vote-escrowed MIRA (veMIRA)"
+              />
+              <StepsBlock
+                logo={<VoteIcon />}
+                title="Vote"
+                description="veMIRA gives you the power to decide which pools should receive more MIRA emissions"
+              />
+              <StepsBlock
+                logo={<EarnIcon />}
+                title="Earn"
+                description="After voting for a specific pool you can claim a share of the weekly incentives and trading fees allocated to that pool"
+              />
+            </InfoBlocks>
+          </MainInfo>
+        </section>
+        <section className={styles.divider}>
+          <AchievementsDivider />
+        </section>
+        <section className={styles.mainInfo}>
+          <MainInfo
+            title="MIRA’s Roadmap"
+            description="Join us in on a journey to the future of the internet"
+          >
+            <InfoBlocks>
+              <RoadMapBlock
+                logo={<RoadMapIcon text="Testnet" />}
+                title="Launch a basic DEX with stable swaps"
+                description="July 2024"
+                done={true}
+              />
+              <RoadMapBlock
+                logo={<RoadMapIcon text="Mainnet" />}
+                title="MIRA is LIVE on the same day as Fuel"
+                description="Day one of the Fuel mainnet"
+              />
+              <RoadMapBlock
+                logo={<RoadMapIcon text="POINTS" />}
+                title="POINTS: Both MIRA and Fuel programs"
+                description="After Fuel goes live on the mainnet"
+              />
+              <RoadMapBlock
+                logo={<RoadMapIcon text="Ve(3,3)" />}
+                title="Launch of  ve(3,3) features and governance "
+                description="Late 2024 / Early 2025"
+              />
+            </InfoBlocks>
+            <RoadmapDesktop />
+          </MainInfo>
+        </section>
+        <section>
+          <MiraApp />
+        </section>
         <section className={styles.bottomBlock}>
           <h3>Join early</h3>
           <p className={styles.subheading}>
