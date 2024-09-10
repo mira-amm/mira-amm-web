@@ -1,5 +1,5 @@
 const MiraLogo = () => {
-    return <svg width="100" height="100" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+    return <svg width="100" height="100" viewBox="0 0 100 100" fill="none" display="block" xmlns="http://www.w3.org/2000/svg">
     <g filter="url(#filter0_di_11415_4837)">
     <g clip-path="url(#clip0_11415_4837)">
     <rect x="10" y="10" width="80" height="80" rx="8.04219" fill="#0E111E"/>
