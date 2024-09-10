@@ -1,43 +1,65 @@
 @font-face {
-    font-family: "Prompt";
-    src: url(../../../../public/fonts/Prompt-Bold.ttf);
-    font-weight: 700;
+  font-family: "Prompt";
+  src: url(../../../../public/fonts/Prompt-Bold.ttf);
+  font-weight: 700;
 }
 
 @font-face {
-    font-family: "SF UI Text";
-    src: url(../../../../public/fonts/SF-UI-Text-Medium.ttf);
-    font-weight: 500;
+  font-family: "SF UI Text";
+  src: url(../../../../public/fonts/SF-UI-Text-Medium.ttf);
+  font-weight: 500;
 }
 
 .mira {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 20px;
-    margin-bottom: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  margin-bottom: 20px;
 }
 
 .title {
-    font-family: "Prompt";
-    font-weight: 700;
-    font-size: 54px;
-    line-height: 58px;
-    text-align: center;
-    margin-top: 12px;
+  font-family: "Prompt";
+  font-weight: 700;
+  font-size: 54px;
+  line-height: 58px;
+  text-align: center;
+  margin-top: 12px;
 }
 
 .description {
-    font-family: "SF UI Text";
-    font-weight: 500;
-    font-size: 20px;
-    line-height: 28px;
-    text-align: center;
-    color: rgba(255, 255, 255, 0.64);
-    margin-bottom: 12px;
+  font-family: "SF UI Text";
+  font-weight: 500;
+  font-size: 20px;
+  line-height: 28px;
+  text-align: center;
+  color: rgba(255, 255, 255, 0.64);
+  margin-bottom: 12px;
 }
 
 .launchAppButton {
-    padding: 16px 0;
-    width: 240px;
+  padding: 16px 0;
+  width: 240px;
+}
+
+@media (max-width: 1024px) {
+  .mira {
+    gap: 16px;
+  }
+  
+  .title {
+    font-size: 32px;
+    line-height: 40px;
+  }
+
+  .description {
+    font-size: 18px;
+    line-height: 24px;
+  }
+
+  .launchAppButton {
+    width: 100%;
+    font-size: 18px;
+    line-height: 24px;
+  }
 }

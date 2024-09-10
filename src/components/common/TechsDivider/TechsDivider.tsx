@@ -11,6 +11,7 @@ export const TechsDivider = () => {
       <li>
         <DividerText text="Trade with confidence" />
       </li>
+      <div className={styles.logosArea}>
       <li>
         <UsedTechs text="Audited by">
           <Halborn />
@@ -21,6 +22,7 @@ export const TechsDivider = () => {
           <FuelGroup />
         </UsedTechs>
       </li>
+      </div>
     </Divider>
   );
 };

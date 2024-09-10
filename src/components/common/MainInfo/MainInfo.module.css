@@ -34,3 +34,17 @@
     color: #AEED0D;
     text-decoration: underline;
 }
+
+@media (max-width: 1024px) {
+    .title {
+        font-size: 32px;
+        line-height: 40px;
+        margin-bottom: 16px;
+    }
+
+    .description {
+        font-size: 18px;
+        line-height: 24px;
+        margin-bottom: 28px;
+    }
+}

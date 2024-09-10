@@ -54,3 +54,10 @@
     gap: 8px;
     padding-top: 8px;
 }
+
+@media (max-width: 1024px) {
+    .roadMapBlock {
+        width: 100%;
+        margin: 0;
+    }
+}

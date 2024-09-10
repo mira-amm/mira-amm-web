@@ -25,7 +25,7 @@ import RoadmapDesktop from "../../icons/Roadmap/RoadmapDesktop";
 import { MiraApp } from "../../common/MiraApp/MiraApp";
 import { LearnMoreButton } from "../../common/LearnMoreButton/LearnMoreButton";
 import { StepsIcon } from "../../common/StepsIcon/StepsIcon";
-import MiraIcon from "../../icons/MiraLogo/MiraLogo";
+import RoadmapMobile from "../../icons/Roadmap/RoadmapMobile";
 
 const LandingPageLayout = () => {
   return (
@@ -83,10 +83,11 @@ const LandingPageLayout = () => {
             title="MIRA’s Roadmap"
             description="Join us in on a journey to the future of the internet"
           >
+            <RoadmapMobile />
             <InfoBlocks>
               <RoadMapBlock
                 logo={<RoadMapIcon text="Testnet" />}
-                title="Launch a basic DEX with stable swaps"
+                title="Launch a basic DEX with stable swaps"
                 description="July 2024"
                 done={true}
               />
@@ -97,16 +98,15 @@ const LandingPageLayout = () => {
               />
               <RoadMapBlock
                 logo={<RoadMapIcon text="POINTS" />}
-                title="POINTS: Both MIRA and Fuel programs"
+                title="POINTS: Both MIRA and Fuel programs"
                 description="After Fuel goes live on the mainnet"
               />
               <RoadMapBlock
                 logo={<RoadMapIcon text="Ve(3,3)" />}
-                title="Launch of  ve(3,3) features and governance "
+                title="Launch of ve(3,3) features and governance "
                 description="Late 2024 / Early 2025"
               />
             </InfoBlocks>
-            <RoadmapDesktop />
           </MainInfo>
         </section>
         <section className={styles.miraBlock}>

@@ -11,6 +11,9 @@
   color: var(--content-dimmed-light);
   border-top: 1px solid rgba(255, 255, 255, 0.1);
   box-sizing: border-box;
+  padding: 25px 0 78px 0;
+  max-width: 343px;
+  margin: 0 auto;
 }
 
 .divider {
@@ -26,21 +29,34 @@
 }
 
 .links {
-  font-size: 18px;
-  line-height: 24px;
+  font-size: 16px;
+  line-height: 22px;
   display: flex;
-  align-items: center;
-  color: #FFFFFF;
-  font-weight: 500;
+  align-items: flex-start;
+  color: #FFFFFFA3;
+  font-weight: 400;
+  flex-direction: column;
+  gap: 12px;
 }
 
 .supportLink {
-  color: rgba(255, 255, 255, 0.8);
+  color: rgba(255, 255, 255, 0.64);
 }
 
 .fuelText {
-  color: rgba(255, 255, 255, 0.8);
+  color: #FFFFFF;
   font-weight: 500;
+  margin-top: 4px;
+}
+
+.fuelWrapper {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.socialLinks {
+  margin-bottom: 12px;
 }
 
 @media (min-width: 1024px) {
@@ -61,6 +77,16 @@
   .links {
     flex: 1;
     gap: 44px;
+    flex-direction: row;
+    color: #FFFFFF;
+    font-size: 18px;
+    line-height: 24px;
+    font-weight: 500;
+  }
+
+  .fuelText {
+    color: rgba(255, 255, 255, 0.8);
+    font-weight: 500;
   }
 
   .copywright {
@@ -75,5 +101,9 @@
     justify-content: center;
     font-size: 18px;
     line-height: 24px;
+  }
+
+  .supportLink {
+    color: rgba(255, 255, 255, 0.8);
   }
 }

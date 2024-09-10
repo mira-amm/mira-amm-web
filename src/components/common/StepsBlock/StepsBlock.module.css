@@ -38,3 +38,20 @@
     line-height: 24px;
     text-align: center;
 }
+
+@media (max-width: 1024px) {
+    .stepsBlock {
+        width: 100%;
+        padding: 28px 24px 32px 24px;
+    }
+
+    .title {
+        font-size: 24px;
+        line-height: 30px;
+    }
+
+    .description {
+        font-size: 16px;
+        line-height: 24px;
+    }
+}
