@@ -24,6 +24,8 @@ import { RoadMapIcon } from "../../common/RoadMapIcons/RoadMapIcon";
 import RoadmapDesktop from "../../icons/Roadmap/RoadmapDesktop";
 import { MiraApp } from "../../common/MiraApp/MiraApp";
 import { LearnMoreButton } from "../../common/LearnMoreButton/LearnMoreButton";
+import { StepsIcon } from "../../common/StepsIcon/StepsIcon";
+import MiraIcon from "../../icons/MiraLogo/MiraLogo";
 
 const LandingPageLayout = () => {
   return (
@@ -107,7 +109,7 @@ const LandingPageLayout = () => {
             <RoadmapDesktop />
           </MainInfo>
         </section>
-        <section>
+        <section className={styles.miraBlock}>
           <MiraApp />
         </section>
         <section className={styles.bottomBlock}>
@@ -165,17 +167,17 @@ const LandingPageLayout = () => {
           >
             <InfoBlocks title="Simple steps to maximize efficiency">
               <StepsBlock
-                logo={<LockIcon />}
+                logo={<StepsIcon icon={< LockIcon/>} />}
                 title="Lock"
                 description="your MIRA and get in return vote-escrowed MIRA (veMIRA)"
               />
               <StepsBlock
-                logo={<VoteIcon />}
+                logo={<StepsIcon icon={< VoteIcon/>} />}
                 title="Vote"
                 description="veMIRA gives you the power to decide which pools should receive more MIRA emissions"
               />
               <StepsBlock
-                logo={<EarnIcon />}
+                logo={<StepsIcon icon={< EarnIcon/>} />}
                 title="Earn"
                 description="After voting for a specific pool you can claim a share of the weekly incentives and trading fees allocated to that pool"
               />
@@ -216,8 +218,8 @@ const LandingPageLayout = () => {
             <RoadmapDesktop />
           </MainInfo>
         </section>
-        <section>
-          <MiraApp />
+        <section className={styles.miraBlock}>
+        <MiraApp />
         </section>
         <section className={styles.bottomBlock}>
           <div className={styles.bottomBlockText}>

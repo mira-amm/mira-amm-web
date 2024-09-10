@@ -16,18 +16,18 @@ const Footer = () => {
         <Logo/>
         <div className={styles.links}>
           <a className={styles.supportLink} href="/">Support</a>
-          <a href="/">Partner with us</a>
-          <a href="/">Documentation</a>
-          <a href="/">Contact us</a>
+          <a href="/" target="_blank">Partner with us</a>
+          <a href="/" target="_blank">Documentation</a>
+          <a href="/" target="_blank">Contact us</a>
         </div>
         <div className={styles.socialLinks}>
-          <a href="/">
+          <a href="/" target="_blank">
           <Github />
           </a>
-          <a href={DiscordLink}>
+          <a href={DiscordLink} target="_blank">
             <DiscordIcon />
           </a>
-          <a href={XLink}>
+          <a href={XLink} target="_blank">
             <X />
           </a>
         </div>
