@@ -1,3 +1,4 @@
 export interface DividerProps {
-    children: React.ReactNode
+    children: React.ReactNode;
+    className?: string
 }

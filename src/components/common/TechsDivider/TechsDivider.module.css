@@ -1,7 +1,7 @@
-.divider {
+.techsDivider {
     display: flex;
     justify-content: center;
+    gap: 164px;
+    margin: 0 238px 0 141px;
     list-style: none;
-    font-family: "SF UI Text";
-    box-sizing: border-box;
 }
