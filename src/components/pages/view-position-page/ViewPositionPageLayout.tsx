@@ -23,6 +23,8 @@ import {coinsConfig} from "@/src/utils/coinsConfig";
 import TestnetLabel from "@/src/components/common/TestnetLabel/TestnetLabel";
 import AddLiquiditySuccessModal
   from "@/src/components/pages/add-liquidity-page/components/AddLiquiditySuccessModal/AddLiquiditySuccessModal";
+import RemoveLiquiditySuccessModal
+  from "@/src/components/pages/view-position-page/components/RemoveLiquiditySuccessModal/RemoveLiquiditySuccessModal";
 
 const ViewPositionPageLayout = () => {
   const [RemoveLiquidityModal, openRemoveLiquidityModal, closeRemoveLiquidityModal] = useModal();
@@ -40,12 +42,12 @@ const ViewPositionPageLayout = () => {
 
   const coinADecimals = coinsConfig.get(coinA)?.decimals!;
   const coinAAsset = assets?.[0];
-  const coinAAmount = coinAAsset?.[1].toNumber();
-  const coinAValue = coinAAmount ? (coinAAmount / 10 ** coinADecimals).toFixed(coinADecimals) : '0.00';
+  const coinAAmount = (coinAAsset?.[1].toNumber() ?? 0) / 10 ** coinADecimals;
+  const coinAValue = coinAAmount.toFixed(6);
   const coinBDecimals = coinsConfig.get(coinB)?.decimals!;
   const coinBAsset = assets?.[1];
-  const coinBAmount = coinBAsset?.[1].toNumber();
-  const coinBValue = coinBAmount ? (coinBAmount / 10 ** coinBDecimals).toFixed(coinBDecimals) : '0.00';
+  const coinBAmount = (coinBAsset?.[1].toNumber() ?? 0) / 10 ** coinBDecimals;
+  const coinBValue = coinBAmount.toFixed(6);
 
   const [removeLiquidityValue, setRemoveLiquidityValue] = useState(50);
 
@@ -66,6 +68,8 @@ const ViewPositionPageLayout = () => {
   const redirectToLiquidity = useCallback(() => {
     router.push('/liquidity');
   }, [router]);
+
+  console.log(coinAAmount, coinBAmount);
 
   const rate = (coinAAmount && coinBAmount) ? (coinAAmount/ coinBAmount).toFixed(2) : 'N/A';
 
@@ -216,7 +220,7 @@ const ViewPositionPageLayout = () => {
         />
       </RemoveLiquidityModal>
       <SuccessModal title={<TestnetLabel />} onClose={redirectToLiquidity}>
-        <AddLiquiditySuccessModal coinA={coinA} coinB={coinB} firstCoinAmount={coinAValue} secondCoinAmount={coinBValue} transactionHash={data?.id} />
+        <RemoveLiquiditySuccessModal coinA={coinA} coinB={coinB} firstCoinAmount={coinAValue} secondCoinAmount={coinBValue} transactionHash={data?.id} />
       </SuccessModal>
     </>
   );

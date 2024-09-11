@@ -73,7 +73,7 @@ const PreviewAddLiquidityDialog = ({ previewData }: Props) => {
           </div>
           <div className={styles.inputPreviewRow}>
             <p>Fee tier</p>
-            <p>0.05%</p>
+            <p>0.3%</p>
           </div>
         </div>
       </div>

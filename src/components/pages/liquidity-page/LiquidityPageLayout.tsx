@@ -22,12 +22,12 @@ const LiquidityPageLayout = () => {
         <div className={styles.promoBlocks}>
           <PromoBlock icon={<StarsIcon />}
                       title="Learn about providing liquidity"
-                      link="#"
+                      link="https://mirror.xyz/miraly.eth"
                       linkText="Click here to see the guide"
           />
           <PromoBlock icon={<CupIcon />}
                       title="Fuel Points Program"
-                      link="#"
+                      link="https://app.fuel.network/earn-points"
                       linkText="Join the Fuel Points program with MIRA Protocol. Learn more"
           />
         </div>

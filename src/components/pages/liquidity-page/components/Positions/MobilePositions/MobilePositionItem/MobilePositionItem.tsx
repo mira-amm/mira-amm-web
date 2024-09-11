@@ -8,9 +8,10 @@ import {getCoinByAssetId} from "@/src/utils/common";
 
 type Props = {
   position: { poolId: PoolId; lpAssetId: AssetId; lpBalance: CoinQuantity | undefined };
+  onClick: VoidFunction;
 }
 
-const MobilePositionItem = ({ position }: Props) => {
+const MobilePositionItem = ({ position, onClick }: Props) => {
   const { bits: coinAAssetId } = position.poolId[0];
   const { bits: coinBAssetId } = position.poolId[1];
 
@@ -18,7 +19,7 @@ const MobilePositionItem = ({ position }: Props) => {
   const coinB = getCoinByAssetId(coinBAssetId);
 
   return (
-    <div className={styles.mobilePositionItem}>
+    <div className={styles.mobilePositionItem} onClick={onClick}>
       <div className={styles.infoSection}>
         <CoinPair firstCoin={coinA} secondCoin={coinB} />
         <PositionLabel />

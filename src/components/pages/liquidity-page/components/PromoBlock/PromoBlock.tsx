@@ -17,7 +17,7 @@ const PromoBlock = ({ icon, title, link, linkText }: Props) => {
       </div>
       <div className={styles.content}>
         <p className={styles.title}>{title}</p>
-        <a href={link} className={styles.text}>{linkText}</a>
+        <a href={link} className={styles.text} target="_blank">{linkText}</a>
       </div>
     </div>
   );
