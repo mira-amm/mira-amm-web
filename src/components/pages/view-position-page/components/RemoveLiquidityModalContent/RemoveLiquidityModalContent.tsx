@@ -2,7 +2,16 @@ import styles from './RemoveLiquidityModalContent.module.css';
 import CoinPair from "@/src/components/common/CoinPair/CoinPair";
 import InfoIcon from "@/src/components/icons/Info/InfoIcon";
 import ActionButton from "@/src/components/common/ActionButton/ActionButton";
-import {ChangeEvent, Dispatch, memo, SetStateAction, useEffect} from "react";
+import {
+  ChangeEvent,
+  Dispatch,
+  memo,
+  MouseEvent,
+  SetStateAction,
+  useEffect,
+  useRef,
+  useState
+} from "react";
 import {CoinName} from "@/src/utils/coinsConfig";
 import {useDebounceCallback} from "usehooks-ts";
 
@@ -18,28 +27,48 @@ type Props = {
 }
 
 const RemoveLiquidityModalContent = ({ coinA, coinB, coinAValue, coinBValue, closeModal, liquidityValue, setLiquidityValue, handleRemoveLiquidity }: Props) => {
+  const [displayValue, setDisplayValue] = useState(liquidityValue);
+
+  const sliderRef = useRef<HTMLInputElement>(null);
+
   const debouncedSetValue = useDebounceCallback(setLiquidityValue, 100);
+  const handleMouseUp = (e: MouseEvent<HTMLInputElement>) => {
+    // @ts-ignore
+    debouncedSetValue(Number(e.target.value));
+  };
+
+  useEffect(() => {
+    if (sliderRef.current) {
+      document.documentElement.style.setProperty('--value', `${sliderRef.current.value}%`);
+    }
+  }, []);
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-    debouncedSetValue(Number(e.target.value));
+    setDisplayValue(Number(e.target.value));
+    document.documentElement.style.setProperty('--value', `${e.target.value}%`);
   };
 
   const handleMax = () => {
     debouncedSetValue(100);
+    document.documentElement.style.setProperty('--value', '100%');
   };
-
-  useEffect(() => {
-    document.documentElement.style.setProperty('--value', `${liquidityValue}%`);
-  }, [liquidityValue]);
 
   return (
     <div className={styles.removeLiquidityContent}>
       <CoinPair firstCoin={coinA} secondCoin={coinB} />
       <div className={styles.valueAndMax}>
-        <p className={styles.value}>{liquidityValue}%</p>
+        <p className={styles.value}>{displayValue}%</p>
         <button className={styles.maxButton} onClick={handleMax}>Max</button>
       </div>
-      <input type="range" className={styles.slider} min={0} max={100} value={liquidityValue} onChange={handleChange} />
+      <input type="range"
+             className={styles.slider}
+             min={0}
+             max={100}
+             defaultValue={liquidityValue}
+             onMouseUp={handleMouseUp}
+             onChange={handleChange}
+             ref={sliderRef}
+      />
       {/*<div className={styles.someText}>*/}
       {/*  <p className={styles.dimmed}>Withdraw fees only</p>*/}
       {/*  <button className={styles.feesButton} onClick={handleFeesOnly}>Fees only</button>*/}
@@ -56,8 +85,8 @@ const RemoveLiquidityModalContent = ({ coinA, coinB, coinAValue, coinBValue, clo
           <tbody>
           <tr>
             <td>Initial</td>
-            <td>{coinAValue}</td>
-            <td>{coinBValue}</td>
+            <td className="blurredText">6.03905</td>
+            <td className="blurredText">9.34905</td>
           </tr>
           <tr>
             <td>Withdrawal fees</td>
@@ -66,7 +95,7 @@ const RemoveLiquidityModalContent = ({ coinA, coinB, coinAValue, coinBValue, clo
           </tr>
           <tr>
             <td>Earned fees</td>
-            <td className="blurredText">6.0390</td>
+            <td className="blurredText">6.03905</td>
             <td className="blurredText">9.34905</td>
           </tr>
           <tr className={styles.lastRow}>

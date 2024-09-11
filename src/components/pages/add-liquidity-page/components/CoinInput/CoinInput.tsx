@@ -43,9 +43,9 @@ const CoinInput = ({ coin, value, loading, setAmount, balance }: Props) => {
                disabled={loading}
                onChange={handleChange}
         />
-        <p className={clsx(styles.balance, styles.rate)}>
-          {/*$94.1*/}
-        </p>
+        {/*<p className={clsx(styles.balance, styles.rate)}>*/}
+        {/*  /!*$94.1*!/*/}
+        {/*</p>*/}
       </div>
       <div className={clsx(styles.coinInputLine, styles.rightColumn)}>
         <Coin name={coin} className={styles.coinName} />

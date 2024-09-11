@@ -1,26 +1,33 @@
 import usePoolsIds from "@/src/hooks/usePoolsIds";
 import {getLPAssetId} from "mira-dex-ts";
 import {DEFAULT_AMM_CONTRACT_ID} from "@/src/utils/constants";
-import {CoinQuantity} from "fuels";
+import {useQuery} from "@tanstack/react-query";
+import useReadonlyMira from "@/src/hooks/useReadonlyMira";
+import useBalances from "@/src/hooks/useBalances/useBalances";
 
-type Props = {
-  balances: CoinQuantity[] | undefined;
-}
-
-const usePositions = ({ balances }: Props) => {
+const usePositions = () => {
+  const mira = useReadonlyMira();
   const pools = usePoolsIds();
+  const { balances } = useBalances();
 
-  const nonZeroBalances = balances?.filter(balance => balance.amount.toNumber() > 0);
+  const miraExists = Boolean(mira);
 
-  return pools.map(poolId => {
-    const lpAssetId = getLPAssetId(DEFAULT_AMM_CONTRACT_ID, poolId);
-    const lpBalance = nonZeroBalances?.find(balance => balance.assetId === lpAssetId.bits);
-    return {
-      poolId,
-      lpAssetId,
-      lpBalance,
-    }
+  const { data } = useQuery({
+    queryKey: ['positions', pools, balances],
+    queryFn: async () => {
+      const positionInfoPromises = pools.map(async (pool) => {
+        const lpAssetId = getLPAssetId(DEFAULT_AMM_CONTRACT_ID, pool);
+        const lpBalance = balances?.find(balance => balance.assetId === lpAssetId.bits)?.amount ?? 0;
+        const position = await mira?.getLiquidityPosition(pool, lpBalance);
+        return { ...position, lpBalance };
+      });
+
+      return Promise.all(positionInfoPromises);
+    },
+    enabled: miraExists,
   });
+
+  return { data };
 };
 
 export default usePositions;

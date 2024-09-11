@@ -17,8 +17,6 @@ const usePositionData = ({ pool }: Props) => {
 
   const shouldFetch = Boolean(mira) && Boolean(lpTokenBalance);
 
-  console.log(pool, lpTokenBalance);
-
   const { data } = useQuery({
     queryKey: ['position', pool, lpTokenBalance],
     queryFn: () => mira?.getLiquidityPosition(pool, lpTokenBalance!),

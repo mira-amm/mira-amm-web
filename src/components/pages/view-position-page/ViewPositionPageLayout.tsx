@@ -21,8 +21,6 @@ import useRemoveLiquidity from "@/src/hooks/useRemoveLiquidity";
 import {useRouter, useSearchParams} from "next/navigation";
 import {coinsConfig} from "@/src/utils/coinsConfig";
 import TestnetLabel from "@/src/components/common/TestnetLabel/TestnetLabel";
-import AddLiquiditySuccessModal
-  from "@/src/components/pages/add-liquidity-page/components/AddLiquiditySuccessModal/AddLiquiditySuccessModal";
 import RemoveLiquiditySuccessModal
   from "@/src/components/pages/view-position-page/components/RemoveLiquiditySuccessModal/RemoveLiquiditySuccessModal";
 
@@ -43,11 +41,13 @@ const ViewPositionPageLayout = () => {
   const coinADecimals = coinsConfig.get(coinA)?.decimals!;
   const coinAAsset = assets?.[0];
   const coinAAmount = (coinAAsset?.[1].toNumber() ?? 0) / 10 ** coinADecimals;
-  const coinAValue = coinAAmount.toFixed(6);
+  let coinAValue = coinAAmount.toFixed(5);
+  coinAValue = coinAValue === '0.00000' ? '<0.00001' : coinAValue;
   const coinBDecimals = coinsConfig.get(coinB)?.decimals!;
   const coinBAsset = assets?.[1];
   const coinBAmount = (coinBAsset?.[1].toNumber() ?? 0) / 10 ** coinBDecimals;
-  const coinBValue = coinBAmount.toFixed(6);
+  let coinBValue = coinBAmount.toFixed(5);
+  coinBValue = coinBValue === '0.00000' ? '<0.00001' : coinBValue;
 
   const [removeLiquidityValue, setRemoveLiquidityValue] = useState(50);
 
@@ -69,9 +69,10 @@ const ViewPositionPageLayout = () => {
     router.push('/liquidity');
   }, [router]);
 
-  console.log(coinAAmount, coinBAmount);
-
   const rate = (coinAAmount && coinBAmount) ? (coinAAmount/ coinBAmount).toFixed(2) : 'N/A';
+
+  const coinAAmountToWithdraw = (coinAAmount * removeLiquidityValue / 100).toFixed(coinADecimals);
+  const coinBAmountToWithdraw = (coinBAmount * removeLiquidityValue / 100).toFixed(coinBDecimals);
 
   return (
     <>
@@ -211,8 +212,8 @@ const ViewPositionPageLayout = () => {
         <RemoveLiquidityModalContent
           coinA={coinA}
           coinB={coinB}
-          coinAValue={coinAValue}
-          coinBValue={coinBValue}
+          coinAValue={coinAAmountToWithdraw}
+          coinBValue={coinBAmountToWithdraw}
           closeModal={closeRemoveLiquidityModal}
           liquidityValue={removeLiquidityValue}
           setLiquidityValue={setRemoveLiquidityValue}
@@ -220,7 +221,13 @@ const ViewPositionPageLayout = () => {
         />
       </RemoveLiquidityModal>
       <SuccessModal title={<TestnetLabel />} onClose={redirectToLiquidity}>
-        <RemoveLiquiditySuccessModal coinA={coinA} coinB={coinB} firstCoinAmount={coinAValue} secondCoinAmount={coinBValue} transactionHash={data?.id} />
+        <RemoveLiquiditySuccessModal
+          coinA={coinA}
+          coinB={coinB}
+          firstCoinAmount={coinAAmountToWithdraw}
+          secondCoinAmount={coinBAmountToWithdraw}
+          transactionHash={data?.id}
+        />
       </SuccessModal>
     </>
   );

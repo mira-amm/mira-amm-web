@@ -6,14 +6,12 @@ import DesktopPositions
   from "@/src/components/pages/liquidity-page/components/Positions/MobilePositions/DesktopPositions/DesktopPositions";
 import usePositions from "@/src/hooks/usePositions";
 import DocumentIcon from "@/src/components/icons/Document/DocumentIcon";
-import useBalances from "@/src/hooks/useBalances/useBalances";
 
 const Positions = () => {
-  const { balances } = useBalances();
-  const positions = usePositions({ balances });
+  const { data } = usePositions();
 
-  const noPositions = positions.every(positions => !positions.lpBalance);
-  const filteredPositions = positions.filter(position => position.lpBalance);
+  const noPositions = data?.every(position => !position.lpBalance) ?? true;
+  const filteredPositions = data?.filter(position => Boolean(position.lpBalance));
 
   return (
     <section className={styles.positions}>

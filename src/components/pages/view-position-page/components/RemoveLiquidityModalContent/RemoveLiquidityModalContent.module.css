@@ -59,7 +59,7 @@
 }
 
 .tableWrapper {
-  padding: 12px;
+  padding: 12px 12px 0;
   border-radius: 8px;
   background-color: var(--background-secondary);
 }
@@ -78,6 +78,10 @@
 
 .liquidityTable td, .liquidityTable th {
   padding: 4px;
+}
+
+.liquidityTable th:last-child, .liquidityTable td:last-child {
+  text-align: right;
 }
 
 .textBlock {
@@ -142,7 +146,26 @@
   margin-top: -4px;
 }
 
+.lastRow {
+  font-weight: 500;
+  color: var(--content-primary);
+  border-top: 1px solid var(--background-grey-dark);
+}
+
+.lastRow > td {
+  padding: 16px 4px;
+}
+
+tr:has(+ .lastRow) > td {
+  padding-bottom: 16px;
+}
+
 @media (min-width: 1024px) {
+  .liquidityTable {
+    font-size: 16px;
+    line-height: 19px;
+  }
+
   .buttons {
     flex-direction: row-reverse;
   }

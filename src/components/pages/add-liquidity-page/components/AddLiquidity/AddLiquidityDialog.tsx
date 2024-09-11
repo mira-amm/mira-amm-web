@@ -61,6 +61,15 @@ const AddLiquidityDialog = ({ firstCoin, secondCoin, setPreviewData }: Props) =>
 
   const setAmount = useCallback((coin: CoinName) => {
     return (value: string) => {
+      if (value === '') {
+        debouncedSetFirstAmount('');
+        debouncedSetSecondAmount('');
+        setFirstAmountInput('');
+        setSecondAmountInput('');
+        setActiveCoin(coin);
+        return;
+      }
+
       if (coin === firstCoin) {
         debouncedSetFirstAmount(value);
         setFirstAmountInput(value);

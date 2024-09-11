@@ -1,4 +1,6 @@
 .desktopPositions {
+  width: 100%;
+  table-layout: fixed;
   border-radius: 24px;
   border-collapse: collapse;
   background-color: var(--background-grey-dark);
@@ -10,11 +12,23 @@
   font-weight: 400;
   color: var(--content-tertiary);
   padding: 0 16px;
-  /*border-bottom: 1px solid var(--background-grey-light);*/
 }
 
 .desktopPositions td, .desktopPositions th {
+  width: 100%;
   padding: 16px 24px;
+}
+
+.desktopPositions td:first-child, .desktopPositions th:first-child {
+  text-align: left;
+}
+
+.desktopPositions td:nth-child(2), .desktopPositions th:nth-child(2) {
+  text-align: center;
+}
+
+.desktopPositions td:last-child, .desktopPositions th:last-child {
+  text-align: right;
 }
 
 .labelCell {

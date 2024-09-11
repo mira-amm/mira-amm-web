@@ -1,6 +1,7 @@
 import {CoinName, coinsConfig} from "@/src/utils/coinsConfig";
 
 import styles from './CoinPair.module.css';
+import {clsx} from "clsx";
 
 type Props = {
   firstCoin: CoinName;
@@ -17,7 +18,7 @@ const CoinPair = ({ firstCoin, secondCoin }: Props) => {
         {FirstCoinIcon && <FirstCoinIcon />}
         {SecondCoinIcon && <SecondCoinIcon />}
       </div>
-      <p className={styles.coinPairText}>
+      <p data-identifier="coin-pair">
         {firstCoin}/{secondCoin}
       </p>
     </div>

@@ -5,14 +5,6 @@ import useStableWallet from "@/src/hooks/useStableWallet";
 
 const useBalances = () => {
   const { wallet } = useWallet();
-  // const wallet = useStableWallet();
-  // const {} = useBalance();
-
-  // const walletAddress = useMemo(() => wallet?.address, [wallet]);
-
-  // useEffect(() => {
-  //   console.log("Wallet or wallet address changed:", wallet, walletAddress);
-  // }, [wallet, walletAddress]);
 
   const { data, isPending, refetch } = useQuery({
     queryKey: ['balances', wallet?.address],
@@ -24,13 +16,7 @@ const useBalances = () => {
       return wallet.getBalances();
     },
     enabled: Boolean(wallet),
-    // staleTime: Infinity, // Prevents automatic refetching
-    // cacheTime: Infinity, // Keeps the data in cache indefinitely
   });
-
-  // useEffect(() => {
-  //   console.log("Query data updated:", data);
-  // }, [data]);
 
   return { balances: data?.balances, isPending, refetch };
 };

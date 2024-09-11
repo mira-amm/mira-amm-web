@@ -5,6 +5,7 @@
 
   --background-primary: #0E111E;
   --background-secondary: #1B1C23;
+  --background-grey-darker: rgba(255, 255, 255, 0.05);
   --background-grey-dark: rgba(255, 255, 255, 0.1);
   --background-grey-light: rgba(255, 255, 255, 0.2);
   --content-primary: #FFFFFF;
