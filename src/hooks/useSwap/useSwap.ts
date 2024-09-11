@@ -8,6 +8,8 @@ import useMiraDex from "@/src/hooks/useMiraDex/useMiraDex";
 import useSwapData from "@/src/hooks/useAssetPair/useSwapData";
 import {DefaultTxParams, MaxDeadline} from "@/src/utils/constants";
 import usePoolsIds from "@/src/hooks/usePoolsIds";
+import {createPoolId} from "@/src/utils/common";
+import {buildPoolId} from "mira-dex-ts";
 
 type Props = {
   swapState: SwapState;
@@ -33,9 +35,11 @@ const useSwap = ({ swapState, mode, slippage }: Props) => {
     const buyAmountWithSlippage = buyAmount * (1 - slippage / 100);
     const sellAmountWithSlippage = sellAmount * (1 + slippage / 100);
 
+    const pool = buildPoolId(sellAssetIdInput.bits, buyAssetIdInput.bits, false);
+
     const tx = mode === 'sell' ?
-      await miraDex.swapExactInput(sellAmount, sellAssetIdInput, buyAmountWithSlippage, pools, MaxDeadline, DefaultTxParams) :
-      await miraDex.swapExactOutput(buyAmount, buyAssetIdInput, sellAmountWithSlippage, pools, MaxDeadline, DefaultTxParams);
+      await miraDex.swapExactInput(sellAmount, sellAssetIdInput, buyAmountWithSlippage, [pool], MaxDeadline, DefaultTxParams) :
+      await miraDex.swapExactOutput(buyAmount, buyAssetIdInput, sellAmountWithSlippage, [pool], MaxDeadline, DefaultTxParams);
 
     const txCost = await wallet.getTransactionCost(tx);
 
@@ -54,14 +58,15 @@ const useSwap = ({ swapState, mode, slippage }: Props) => {
     pools
   ]);
 
-  const sendTx = useCallback(async (tx: ScriptTransactionRequest) => {
+  const sendTx = useCallback(async (inputTx: ScriptTransactionRequest) => {
     if (!wallet) {
       return;
     }
 
-    const txCost = await wallet.getTransactionCost(tx);
-    const fundedTx = await wallet.fund(tx, txCost);
-    return await wallet.sendTransaction(fundedTx);
+    const txCost = await wallet.getTransactionCost(inputTx);
+    const fundedTx = await wallet.fund(inputTx, txCost);
+    const tx = await wallet.sendTransaction(fundedTx);
+    return await tx.waitForResult();
   }, [wallet]);
 
   const { mutateAsync: fetchTxCost, data: txCostData, isPending: txCostPending} = useMutation({

@@ -33,8 +33,9 @@ const useAddLiquidity = ({ firstCoin, firstCoinAmount, secondCoin, secondCoinAmo
 
     const txRequest = await mira.addLiquidity(poolId, firstCoinAmountToUse, secondCoinAmountToUse, 0, 0, MaxDeadline, DefaultTxParams);
     const gasCost = await wallet.getTransactionCost(txRequest);
-    const tx = await wallet.fund(txRequest, gasCost);
-    return await wallet.sendTransaction(tx);
+    const fundedTx = await wallet.fund(txRequest, gasCost);
+    const tx = await wallet.sendTransaction(fundedTx);
+    return await tx.waitForResult();
   }, [mira, wallet, firstCoin, secondCoin, firstCoinAmount, secondCoinAmount]);
 
   const { data, mutateAsync, isPending  } = useMutation({

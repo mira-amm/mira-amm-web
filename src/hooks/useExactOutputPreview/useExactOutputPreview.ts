@@ -3,6 +3,7 @@ import type {CurrencyBoxMode, SwapState} from "@/src/components/common/Swap/Swap
 import useSwapData from "@/src/hooks/useAssetPair/useSwapData";
 import usePoolsIds from "@/src/hooks/usePoolsIds";
 import useReadonlyMira from "@/src/hooks/useReadonlyMira";
+import {buildPoolId} from "mira-dex-ts";
 
 type Props = {
   swapState: SwapState;
@@ -12,6 +13,7 @@ type Props = {
 
 const useExactOutputPreview = ({ swapState, buyAmount, lastFocusedMode }: Props) => {
   const {
+    sellAssetIdInput,
     buyAssetIdInput,
     sellAssetId,
     buyAssetId,
@@ -22,7 +24,8 @@ const useExactOutputPreview = ({ swapState, buyAmount, lastFocusedMode }: Props)
   const amount = amountValid ? buyAmount * 10 ** decimals : 0;
 
   const miraAmm = useReadonlyMira();
-  const pools = usePoolsIds();
+
+  const pool = buildPoolId(sellAssetIdInput.bits, buyAssetIdInput.bits, false);
 
   const miraExists = Boolean(miraAmm);
   const lastFocusedModeIsBuy = lastFocusedMode === 'buy'
@@ -33,11 +36,11 @@ const useExactOutputPreview = ({ swapState, buyAmount, lastFocusedMode }: Props)
     miraExists && lastFocusedModeIsBuy && sellAssetExists && buyAssetExists && amountNonZero;
 
   const { data, isFetching } = useQuery({
-    queryKey: ['exactOutputPreview', buyAssetIdInput, amount, pools],
+    queryKey: ['exactOutputPreview', buyAssetIdInput, amount, pool],
     queryFn: () => miraAmm?.previewSwapExactOutput(
       buyAssetIdInput,
       amount,
-      pools,
+      [pool],
     ),
     enabled: shouldFetch,
     refetchInterval: 15000,

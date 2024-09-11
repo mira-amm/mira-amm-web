@@ -38,15 +38,16 @@ const Header = ({ isHomePage }: Props) => {
             <Link href="/swap" className={clsx(styles.link, pathname.includes('/swap') && styles.activeLink)}>
               Swap
             </Link>
-            <Link href="/liquidity" className={clsx(styles.link, pathname.includes('/liquidity') && styles.activeLink)}>
+            <div className={styles.linkAlike}>
               Liquidity
-            </Link>
-            <Link href="/faucet" className={clsx(styles.link, pathname.includes('/faucet') && styles.activeLink)}>
-              Faucet
-            </Link>
+              <SoonLabel className={styles.hiddenLabel}/>
+            </div>
+            {/*<Link href="/faucet" className={clsx(styles.link, pathname.includes('/faucet') && styles.activeLink)}>*/}
+            {/*  Faucet*/}
+            {/*</Link>*/}
             <div className={styles.pointsText}>
               Points
-              <SoonLabel className={styles.hiddenLabel} />
+              <SoonLabel className={styles.hiddenLabel}/>
             </div>
           </div>
         </div>
