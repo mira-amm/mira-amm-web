@@ -2,4 +2,6 @@
 
 [production](https://mira.ly/)
 
-[development](https://d2gdnex5lpr7h7.cloudfront.net)
+[development #1](https://d2gdnex5lpr7h7.cloudfront.net)
+
+[development #2](https://d17jjn01o0jguf.cloudfront.net)
