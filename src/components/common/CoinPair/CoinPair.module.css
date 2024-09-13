@@ -4,6 +4,10 @@
   gap: 8px;
 }
 
+.coinPairAlignStart {
+  align-items: flex-start;
+}
+
 .coinPairIcons {
   display: flex;
   align-items: center;
@@ -16,4 +20,28 @@
 
 .coinPairIcons > svg:nth-child(2) {
   margin-left: -8px;
+}
+
+.coinNames {
+  font-weight: 600;
+  font-size: 18px;
+  line-height: 22px;
+}
+
+.namesAndFee {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.coinPairFee {
+  color: var(--content-tertiary);
+}
+
+@media (min-width: 1024px) {
+  .coinNames {
+    font-weight: 500;
+    font-size: 20px;
+    line-height: 24px;
+  }
 }

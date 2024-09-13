@@ -25,6 +25,7 @@
 
 .desktopPositions td:nth-child(2), .desktopPositions th:nth-child(2) {
   text-align: center;
+  color: var(--content-tertiary);
 }
 
 .desktopPositions td:last-child, .desktopPositions th:last-child {
@@ -54,6 +55,6 @@
   cursor: pointer;
 }
 
-.positionRow:hover td:nth-child(1) {
+.positionRow:hover p[data-identifier="coin-pair"] {
   text-decoration: underline;
 }

@@ -125,7 +125,7 @@ const AddLiquidityDialog = ({ firstCoin, secondCoin, setPreviewData }: Props) =>
             </p>
           </div>
           <div className={styles.fee}>
-            0.30% fee tier
+            0.3% fee tier
           </div>
         </div>
       </div>

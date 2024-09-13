@@ -82,7 +82,7 @@ const ViewPositionPageLayout = () => {
         {isMobile ? (
           <section className={styles.contentSection}>
             <div className={styles.coinPairAndLabel}>
-              <CoinPair firstCoin={coinA} secondCoin={coinB} />
+              <CoinPair firstCoin={coinA} secondCoin={coinB} withFeeBelow/>
               <PositionLabel/>
             </div>
             <div className={styles.infoBlock}>
@@ -144,7 +144,7 @@ const ViewPositionPageLayout = () => {
           <section className={styles.contentSection}>
             <div className={styles.positionHeading}>
               <div className={styles.coinPairAndLabel}>
-                <CoinPair firstCoin={coinA} secondCoin={coinB}/>
+                <CoinPair firstCoin={coinA} secondCoin={coinB} withFeeBelow/>
                 <PositionLabel className={styles.smallLabel} />
               </div>
               <ActionButton className={styles.withdrawButton} onClick={handleWithdrawLiquidity}>Withdraw Liquidity</ActionButton>

@@ -43,11 +43,11 @@ const DesktopPositions = ({ positions }: Props) => {
         const { bits: coinAAssetId } = position[0][0];
         const coinA = getCoinByAssetId(coinAAssetId);
         const coinADecimals = coinsConfig.get(coinA)?.decimals!;
-        const coinAAmount = position[0][1].toNumber() / 10 ** coinADecimals;
+        const coinAAmount = (position[0][1].toNumber() / 10 ** coinADecimals).toFixed(coinADecimals);
         const { bits: coinBAssetId } = position[1][0];
         const coinB = getCoinByAssetId(coinBAssetId);
         const coinBDecimals = coinsConfig.get(coinB)?.decimals!;
-        const coinBAmount = position[1][1].toNumber() / 10 ** coinBDecimals;
+        const coinBAmount = (position[1][1].toNumber() / 10 ** coinBDecimals).toFixed(coinBDecimals);
 
         const key = coinAAssetId.toString() + '-' + coinBAssetId.toString();
         const poolId = [position[0][0], position[1][0], false] as PoolId;
@@ -55,7 +55,7 @@ const DesktopPositions = ({ positions }: Props) => {
         return (
           <tr className={styles.positionRow} key={key} onClick={() => openPosition(poolId)}>
             <td>
-              <CoinPair firstCoin={coinA} secondCoin={coinB} />
+              <CoinPair firstCoin={coinA} secondCoin={coinB} withFee/>
             </td>
             <td>
               {`${coinAAmount} ${coinA} <> ${coinBAmount} ${coinB}`}

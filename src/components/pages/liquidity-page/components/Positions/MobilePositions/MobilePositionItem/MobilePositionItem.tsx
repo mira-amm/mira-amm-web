@@ -16,11 +16,11 @@ const MobilePositionItem = ({ position, onClick }: Props) => {
   const { bits: coinAAssetId } = position[0][0];
   const coinA = getCoinByAssetId(coinAAssetId);
   const coinADecimals = coinsConfig.get(coinA)?.decimals!;
-  const coinAAmount = position[0][1].toNumber() / 10 ** coinADecimals;
+  const coinAAmount = (position[0][1].toNumber() / 10 ** coinADecimals).toFixed(coinADecimals);
   const { bits: coinBAssetId } = position[1][0];
   const coinB = getCoinByAssetId(coinBAssetId);
   const coinBDecimals = coinsConfig.get(coinB)?.decimals!;
-  const coinBAmount = position[1][1].toNumber() / 10 ** coinBDecimals;
+  const coinBAmount = (position[1][1].toNumber() / 10 ** coinBDecimals).toFixed(coinBDecimals);
 
   return (
     <div className={styles.mobilePositionItem} onClick={onClick}>
