@@ -81,7 +81,7 @@ const CurrencyBox = ({ value, coin, mode, balance, setAmount, loading, onCoinSel
             {/*{!noValue && '$41 626.62'}*/}
           </p>
           {balanceValue > 0 && (
-            <span>
+            <span className={styles.balance}>
               Balance: {balanceValue}
               &nbsp;
               <TextButton onClick={handleMaxClick}>

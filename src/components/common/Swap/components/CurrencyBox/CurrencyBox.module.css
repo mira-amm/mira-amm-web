@@ -12,7 +12,7 @@
   border-color: var(--accent-secondary);
 }
 
-.title, .estimate {
+.title, .estimate, .balance {
   font-size: 12px;
   line-height: 16px;
   color: var(--content-tertiary);
@@ -95,8 +95,6 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  font-size: 12px;
-  line-height: 16px;
   color: var(--content-dimmed-light);
 }
 
@@ -110,7 +108,7 @@
     padding: 12px 16px;
   }
 
-  .title, .estimateAndBalance {
+  .title, .balance {
     font-size: 13px;
     line-height: 18px;
   }
