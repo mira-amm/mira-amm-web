@@ -13,7 +13,6 @@ import ActionButton from "@/src/components/common/ActionButton/ActionButton";
 import useModal from "@/src/hooks/useModal/useModal";
 import RemoveLiquidityModalContent
   from "@/src/components/pages/view-position-page/components/RemoveLiquidityModalContent/RemoveLiquidityModalContent";
-import {isMobile} from "react-device-detect";
 import usePositionData from "@/src/hooks/usePositionData";
 import {createPoolId, getCoinsFromKey} from "@/src/utils/common";
 import {useCallback, useState} from "react";
@@ -23,6 +22,11 @@ import {coinsConfig} from "@/src/utils/coinsConfig";
 import TestnetLabel from "@/src/components/common/TestnetLabel/TestnetLabel";
 import RemoveLiquiditySuccessModal
   from "@/src/components/pages/view-position-page/components/RemoveLiquiditySuccessModal/RemoveLiquiditySuccessModal";
+import IconButton from "@/src/components/common/IconButton/IconButton";
+import CopyIcon from "@/src/components/icons/Copy/CopyIcon";
+import {getLPAssetId} from "mira-dex-ts";
+import {DEFAULT_AMM_CONTRACT_ID} from "@/src/utils/constants";
+import useFormattedAddress from "@/src/hooks/useFormattedAddress/useFormattedAddress";
 
 const ViewPositionPageLayout = () => {
   const [RemoveLiquidityModal, openRemoveLiquidityModal, closeRemoveLiquidityModal] = useModal();
@@ -71,149 +75,133 @@ const ViewPositionPageLayout = () => {
 
   const rate = (coinAAmount && coinBAmount) ? (coinAAmount/ coinBAmount).toFixed(2) : 'N/A';
 
+  const currentCoinAAmount = coinAAmount.toFixed(coinADecimals);
+  const currentCoinBAmount = coinBAmount.toFixed(coinBDecimals);
   const coinAAmountToWithdraw = (coinAAmount * removeLiquidityValue / 100).toFixed(coinADecimals);
   const coinBAmountToWithdraw = (coinBAmount * removeLiquidityValue / 100).toFixed(coinBDecimals);
+
+  const lpTokenAssetId = getLPAssetId(DEFAULT_AMM_CONTRACT_ID, pool);
+  const formattedLpTokenAssetId = useFormattedAddress(lpTokenAssetId.bits, false);
+
+  const handleCopy = useCallback(async () => {
+    await navigator.clipboard.writeText(lpTokenAssetId.bits);
+  }, [lpTokenAssetId.bits]);
+
+  const lpTokenDisplayValue = lpTokenBalance?.toNumber();
 
   return (
     <>
       <Header/>
       <main className={styles.viewPositionLayout}>
         <BackLink showOnDesktop href="/liquidity" title="Back to Pool"/>
-        {isMobile ? (
-          <section className={styles.contentSection}>
+        <section className={clsx(styles.contentSection, 'mobileOnly')}>
+          <div className={styles.coinPairAndLabel}>
+            <CoinPair firstCoin={coinA} secondCoin={coinB} withFeeBelow/>
+            <PositionLabel/>
+          </div>
+          <div className={styles.infoBlock}>
+            <p>Liquidity</p>
+            <p className="blurredText">$3.45</p>
+            <div className={styles.coinsData}>
+              <CoinWithAmount coin={coinA} amount={coinAValue}/>
+              <CoinWithAmount coin={coinB} amount={coinBValue}/>
+            </div>
+          </div>
+          <div className={styles.miraBlock}>
+            <p className={styles.miraLogo}>Mira</p>
+            <b>{lpTokenDisplayValue} LP tokens</b>
+            <p className={styles.numberAndCopy}>
+              Asset ID: {formattedLpTokenAssetId}
+              <IconButton onClick={handleCopy}>
+                <CopyIcon/>
+              </IconButton>
+            </p>
+          </div>
+          <div className={styles.priceBlocks}>
+          <p>Selected Price</p>
+            <div className={clsx(styles.priceBlock, styles.priceBlockTop)}>
+              <p className={styles.priceBlockTitle}>Current Price</p>
+              <p className={styles.priceBlockValue}>{rate}</p>
+              <p className={styles.priceBlockDescription}>{coinA} per {coinB}</p>
+            </div>
+            <div className={styles.bottomPriceBlocks}>
+              <div className={styles.priceBlock}>
+                <p className={styles.priceBlockTitle}>Low price</p>
+                <p className={styles.priceBlockValue}>0</p>
+                <p className={styles.priceBlockDescription}>${coinA} per {coinB}</p>
+              </div>
+              <div className={styles.priceBlock}>
+                <p className={styles.priceBlockTitle}>High Price</p>
+                <p className={styles.priceBlockValue}>∞</p>
+                <p className={styles.priceBlockDescription}>{coinA} per {coinB}</p>
+              </div>
+            </div>
+          </div>
+          <div className={styles.sticky}>
+            <ActionButton onClick={handleWithdrawLiquidity} fullWidth>Withdraw Liquidity</ActionButton>
+          </div>
+        </section>
+        <section className={clsx(styles.contentSection, 'desktopOnly')}>
+          <div className={styles.positionHeading}>
             <div className={styles.coinPairAndLabel}>
               <CoinPair firstCoin={coinA} secondCoin={coinB} withFeeBelow/>
-              <PositionLabel/>
+              <PositionLabel className={styles.smallLabel} />
             </div>
-            <div className={styles.infoBlock}>
-              <p>Liquidity</p>
-              <p className="blurredText">$3.45</p>
-              <div className={styles.coinsData}>
-                <CoinWithAmount coin={coinA} amount={coinAValue}/>
-                <CoinWithAmount coin={coinB} amount={coinBValue}/>
-              </div>
-            </div>
-            <div className={styles.infoBlock}>
-              <div className={styles.feesTitle}>
-                <p>Earned fees</p>
-                {/*<button className={styles.collectButton} onClick={openWithdrawFeesModal}>*/}
-                {/*  Collect fees*/}
-                {/*</button>*/}
-              </div>
-              <p className="blurredText">$0,000048</p>
-              <div className={styles.coinsData}>
-                <CoinWithAmount coin={coinA} amount="0.00" hiddenAmount/>
-                <CoinWithAmount coin={coinB} amount="0.00" hiddenAmount/>
-              </div>
-            </div>
+            <ActionButton className={styles.withdrawButton} onClick={handleWithdrawLiquidity}>Withdraw Liquidity</ActionButton>
+          </div>
+          <div className={styles.topRow}>
             <div className={styles.miraBlock}>
               <p className={styles.miraLogo}>Mira</p>
-              <div className={styles.numberAndCopy}>
-                <p className="blurredText">#5668403</p>
-                {/*<button className={styles.copyButton}>*/}
-                {/*  <CopyIcon/>*/}
-                {/*  Copy link*/}
-                {/*</button>*/}
+              <b>{lpTokenDisplayValue} LP tokens</b>
+              <p className={styles.numberAndCopy}>
+                Asset ID: {formattedLpTokenAssetId}
+                <IconButton onClick={handleCopy}>
+                  <CopyIcon />
+                </IconButton>
+              </p>
+            </div>
+            <div className={styles.infoBlocks}>
+              <div className={styles.infoBlock}>
+                <p>Liquidity</p>
+                <p className="blurredText">$3.45</p>
+                <div className={styles.coinsData}>
+                  <CoinWithAmount coin={coinA} amount={coinAValue}/>
+                  <CoinWithAmount coin={coinB} amount={coinBValue}/>
+                </div>
               </div>
             </div>
-            <div className={styles.priceBlocks}>
-              <p>Selected Price</p>
-              <div className={clsx(styles.priceBlock, styles.priceBlockTop)}>
+          </div>
+          <div className={styles.priceBlockLargeDesktop}>
+            <p>Selected Price</p>
+            <div className={styles.priceBlocksDesktop}>
+              <div className={styles.priceBlockDesktop}>
+                <p className={styles.priceBlockTitle}>Low price</p>
+                <p className={styles.priceBlockValue}>0</p>
+                <p className={styles.priceBlockDescription}>{coinA} per {coinB}</p>
+              </div>
+              <div className={styles.priceBlockDesktop}>
                 <p className={styles.priceBlockTitle}>Current Price</p>
                 <p className={styles.priceBlockValue}>{rate}</p>
                 <p className={styles.priceBlockDescription}>{coinA} per {coinB}</p>
               </div>
-              <div className={styles.bottomPriceBlocks}>
-                <div className={styles.priceBlock}>
-                  <p className={styles.priceBlockTitle}>Low price</p>
-                  <p className={styles.priceBlockValue}>0</p>
-                  <p className={styles.priceBlockDescription}>${coinA} per {coinB}</p>
-                </div>
-                <div className={styles.priceBlock}>
-                  <p className={styles.priceBlockTitle}>High Price</p>
-                  <p className={styles.priceBlockValue}>∞</p>
-                  <p className={styles.priceBlockDescription}>{coinA} per {coinB}</p>
-                </div>
+              <div className={styles.priceBlockDesktop}>
+                <p className={styles.priceBlockTitle}>High Price</p>
+                <p className={styles.priceBlockValue}>∞</p>
+                <p className={styles.priceBlockDescription}>{coinA} per {coinB}</p>
               </div>
             </div>
-            <div className={styles.sticky}>
-              <ActionButton onClick={handleWithdrawLiquidity} fullWidth>Withdraw Liquidity</ActionButton>
-            </div>
-          </section>
-        ) : (
-          <section className={styles.contentSection}>
-            <div className={styles.positionHeading}>
-              <div className={styles.coinPairAndLabel}>
-                <CoinPair firstCoin={coinA} secondCoin={coinB} withFeeBelow/>
-                <PositionLabel className={styles.smallLabel} />
-              </div>
-              <ActionButton className={styles.withdrawButton} onClick={handleWithdrawLiquidity}>Withdraw Liquidity</ActionButton>
-            </div>
-            <div className={styles.topRow}>
-              <div className={styles.miraBlock}>
-                <p className={styles.miraLogo}>Mira</p>
-                <div className={styles.numberAndCopy}>
-                  <p className="blurredText">#5668403</p>
-                  {/*<button className={styles.copyButton}>*/}
-                  {/*  <CopyIcon/>*/}
-                  {/*  Copy link*/}
-                  {/*</button>*/}
-                </div>
-              </div>
-              <div className={styles.infoBlocks}>
-                <div className={styles.infoBlock}>
-                  <p>Liquidity</p>
-                  <p className="blurredText">$3.45</p>
-                  <div className={styles.coinsData}>
-                    <CoinWithAmount coin={coinA} amount={coinAValue}/>
-                    <CoinWithAmount coin={coinB} amount={coinBValue}/>
-                  </div>
-                </div>
-                <div className={styles.infoBlock}>
-                  <div className={styles.feesTitle}>
-                    <p>Earned fees</p>
-                    {/*<button className={styles.collectButton} onClick={openWithdrawFeesModal}>*/}
-                    {/*  Collect fees*/}
-                    {/*</button>*/}
-                  </div>
-                  <p className="blurredText">$0,000048</p>
-                  <div className={styles.coinsData}>
-                    <CoinWithAmount coin={coinA} amount="0.00" hiddenAmount/>
-                    <CoinWithAmount coin={coinB} amount="0.00" hiddenAmount/>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div className={styles.priceBlockLargeDesktop}>
-              <p>Selected Price</p>
-              <div className={styles.priceBlocksDesktop}>
-                <div className={styles.priceBlockDesktop}>
-                  <p className={styles.priceBlockTitle}>Low price</p>
-                  <p className={styles.priceBlockValue}>0</p>
-                  <p className={styles.priceBlockDescription}>{coinA} per {coinB}</p>
-                </div>
-                <div className={styles.priceBlockDesktop}>
-                  <p className={styles.priceBlockTitle}>Current Price</p>
-                  <p className={styles.priceBlockValue}>{rate}</p>
-                  <p className={styles.priceBlockDescription}>{coinA} per {coinB}</p>
-                </div>
-                <div className={styles.priceBlockDesktop}>
-                  <p className={styles.priceBlockTitle}>High Price</p>
-                  <p className={styles.priceBlockValue}>∞</p>
-                  <p className={styles.priceBlockDescription}>{coinA} per {coinB}</p>
-                </div>
-              </div>
-            </div>
-          </section>
-        )}
+          </div>
+        </section>
       </main>
       <Footer/>
       <RemoveLiquidityModal title="Withdraw Liquidity" titleClassName={styles.withdrawLiquidityTitle}>
         <RemoveLiquidityModalContent
           coinA={coinA}
           coinB={coinB}
-          coinAValue={coinAAmountToWithdraw}
-          coinBValue={coinBAmountToWithdraw}
+          currentCoinAValue={currentCoinAAmount}
+          currentCoinBValue={currentCoinBAmount}
+          coinAValueToWithdraw={coinAAmountToWithdraw}
+          coinBValueToWithdraw={coinBAmountToWithdraw}
           closeModal={closeRemoveLiquidityModal}
           liquidityValue={removeLiquidityValue}
           setLiquidityValue={setRemoveLiquidityValue}

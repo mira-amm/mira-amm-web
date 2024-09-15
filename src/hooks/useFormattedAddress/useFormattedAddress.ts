@@ -1,11 +1,15 @@
 import { useMemo } from 'react';
 import {B256Address, toBech32} from "fuels";
 
-const useFormattedAddress = (address: B256Address | null) => {
+const useFormattedAddress = (address: B256Address | null, convertToBech32 = true) => {
   return useMemo(() => {
-    const fuelAddress = address ? toBech32(address) : '';
-    return fuelAddress ? fuelAddress.slice(0, 6).concat('...', fuelAddress.slice(-4)) : '';
-  }, [address]);
+    if (!address) {
+      return '';
+    }
+
+    const addressToUse = convertToBech32 ? toBech32(address) : address;
+    return addressToUse ? addressToUse.slice(0, 6).concat('...', addressToUse.slice(-4)) : '';
+  }, [address, convertToBech32]);
 };
 
 export default useFormattedAddress;

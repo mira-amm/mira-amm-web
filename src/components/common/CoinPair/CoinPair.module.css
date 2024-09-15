@@ -23,9 +23,9 @@
 }
 
 .coinNames {
-  font-weight: 600;
-  font-size: 18px;
-  line-height: 22px;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 16px;
 }
 
 .namesAndFee {
@@ -35,13 +35,20 @@
 }
 
 .coinPairFee {
+  font-size: 12px;
+  line-height: 14px;
   color: var(--content-tertiary);
 }
 
 @media (min-width: 1024px) {
   .coinNames {
     font-weight: 500;
-    font-size: 20px;
-    line-height: 24px;
+    font-size: 16px;
+    line-height: 19px;
+  }
+
+  .coinPairFee {
+    font-size: 14px;
+    line-height: 16px;
   }
 }

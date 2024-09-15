@@ -1,5 +1,3 @@
-import {isMobile} from "react-device-detect";
-
 import CoinPair from "@/src/components/common/CoinPair/CoinPair";
 import ActionButton from "@/src/components/common/ActionButton/ActionButton";
 
@@ -7,6 +5,7 @@ import styles from './DesktopPools.module.css';
 import {useRouter} from "next/navigation";
 import {createPoolKey, getCoinByAssetId} from "@/src/utils/common";
 import {PoolMetadata} from "mira-dex-ts";
+import {clsx} from "clsx";
 
 type Props = {
   poolsData: (PoolMetadata | null | undefined)[] | undefined;
@@ -14,10 +13,6 @@ type Props = {
 
 const DesktopPools = ({ poolsData }: Props) => {
   const router = useRouter();
-
-  if (isMobile) {
-    return null;
-  }
 
   if (!poolsData) {
     return null;
@@ -28,7 +23,7 @@ const DesktopPools = ({ poolsData }: Props) => {
   };
 
   return (
-    <table className={styles.desktopPools}>
+    <table className={clsx(styles.desktopPools, 'desktopOnly')}>
       <thead>
       <tr>
         <th>Pools</th>

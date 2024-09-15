@@ -3,8 +3,9 @@ import {CoinName, coinsConfig} from "@/src/utils/coinsConfig";
 
 import styles from './CoinInput.module.css';
 import {clsx} from "clsx";
-import {ChangeEvent, memo} from "react";
-import {useIsConnected} from "@fuels/react";
+import {ChangeEvent, memo, useCallback} from "react";
+import TextButton from "@/src/components/common/TextButton/TextButton";
+import {MinEthValue} from "@/src/utils/constants";
 
 type Props = {
   coin: CoinName;
@@ -15,8 +16,6 @@ type Props = {
 }
 
 const CoinInput = ({ coin, value, loading, setAmount, balance }: Props) => {
-  const { isConnected } = useIsConnected();
-
   const decimals = coinsConfig.get(coin)?.decimals!;
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -27,6 +26,11 @@ const CoinInput = ({ coin, value, loading, setAmount, balance }: Props) => {
       setAmount(inputValue);
     }
   };
+
+  const handleMaxClick = useCallback(() => {
+    const balanceToUse = coin === 'ETH' ? balance - MinEthValue : balance;
+    setAmount(balanceToUse.toString());
+  }, [coin, balance, setAmount]);
 
   const balanceValue = parseFloat(balance.toFixed(decimals));
 
@@ -49,7 +53,15 @@ const CoinInput = ({ coin, value, loading, setAmount, balance }: Props) => {
       </div>
       <div className={clsx(styles.coinInputLine, styles.rightColumn)}>
         <Coin name={coin} className={styles.coinName} />
-        {isConnected && (<p className={styles.balance}>Balance: {balanceValue}</p>)}
+        {balanceValue > 0 && (
+          <span className={styles.balance}>
+            Balance: {balanceValue}
+            &nbsp;
+            <TextButton onClick={handleMaxClick}>
+              Max
+            </TextButton>
+          </span>
+        )}
       </div>
     </div>
   );

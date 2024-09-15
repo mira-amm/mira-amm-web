@@ -7,6 +7,7 @@ import {
   Dispatch,
   memo,
   MouseEvent,
+  TouchEvent,
   SetStateAction,
   useEffect,
   useRef,
@@ -18,21 +19,23 @@ import {useDebounceCallback} from "usehooks-ts";
 type Props = {
   coinA: CoinName;
   coinB: CoinName;
-  coinAValue: string;
-  coinBValue: string;
+  currentCoinAValue: string;
+  currentCoinBValue: string;
+  coinAValueToWithdraw: string;
+  coinBValueToWithdraw: string;
   liquidityValue: number;
   setLiquidityValue: Dispatch<SetStateAction<number>>
   closeModal: VoidFunction;
   handleRemoveLiquidity: VoidFunction;
 }
 
-const RemoveLiquidityModalContent = ({ coinA, coinB, coinAValue, coinBValue, closeModal, liquidityValue, setLiquidityValue, handleRemoveLiquidity }: Props) => {
+const RemoveLiquidityModalContent = ({ coinA, coinB, currentCoinAValue, currentCoinBValue, coinAValueToWithdraw, coinBValueToWithdraw, closeModal, liquidityValue, setLiquidityValue, handleRemoveLiquidity }: Props) => {
   const [displayValue, setDisplayValue] = useState(liquidityValue);
 
   const sliderRef = useRef<HTMLInputElement>(null);
 
   const debouncedSetValue = useDebounceCallback(setLiquidityValue, 100);
-  const handleMouseUp = (e: MouseEvent<HTMLInputElement>) => {
+  const handleMouseUp = (e: MouseEvent<HTMLInputElement> | TouchEvent<HTMLInputElement>) => {
     // @ts-ignore
     debouncedSetValue(Number(e.target.value));
   };
@@ -66,6 +69,7 @@ const RemoveLiquidityModalContent = ({ coinA, coinB, coinAValue, coinBValue, clo
              max={100}
              defaultValue={liquidityValue}
              onMouseUp={handleMouseUp}
+             onTouchEnd={handleMouseUp}
              onChange={handleChange}
              ref={sliderRef}
       />
@@ -84,29 +88,19 @@ const RemoveLiquidityModalContent = ({ coinA, coinB, coinAValue, coinBValue, clo
           </thead>
           <tbody>
           <tr>
-            <td>Initial</td>
-            <td className="blurredText">6.03905</td>
-            <td className="blurredText">9.34905</td>
-          </tr>
-          <tr>
-            <td>Withdrawal fees</td>
-            <td className="blurredText">0.0003</td>
-            <td className="blurredText">0.0003</td>
-          </tr>
-          <tr>
-            <td>Earned fees</td>
-            <td className="blurredText">6.03905</td>
-            <td className="blurredText">9.34905</td>
+            <td>Current position</td>
+            <td>{currentCoinAValue}</td>
+            <td>{currentCoinBValue}</td>
           </tr>
           <tr className={styles.lastRow}>
             <td>
-              Total
+              Withdraw
             </td>
             <td>
-              {coinAValue}
+              {coinAValueToWithdraw}
             </td>
             <td>
-              {coinBValue}
+              {coinBValueToWithdraw}
             </td>
           </tr>
           </tbody>

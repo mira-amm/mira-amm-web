@@ -30,7 +30,7 @@ const useExactInputPreview = ({ swapState, sellAmount, lastFocusedMode }: Props)
   const shouldFetch =
     miraExists && lastFocusedModeIsSell && amountNonZero;
 
-  const { data, isFetching, isPending } = useQuery({
+  const { data, isFetching, error } = useQuery({
     queryKey: ['exactInputPreview', sellAssetIdInput.bits, amount, pool],
     queryFn: () => miraAmm?.previewSwapExactInput(
       sellAssetIdInput,
@@ -41,7 +41,7 @@ const useExactInputPreview = ({ swapState, sellAmount, lastFocusedMode }: Props)
     refetchInterval: 15000,
   });
 
-  return { data, isFetching, isPending };
+  return { data, isFetching, error };
 };
 
 export default useExactInputPreview;

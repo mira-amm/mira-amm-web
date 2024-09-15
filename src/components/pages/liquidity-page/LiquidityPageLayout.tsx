@@ -28,7 +28,7 @@ const LiquidityPageLayout = () => {
           <PromoBlock icon={<CupIcon />}
                       title="Fuel Points Program"
                       link="https://app.fuel.network/earn-points"
-                      linkText="Join the Fuel Points program with MIRA Protocol. Learn more"
+                      linkText="Join the Fuel Points program. Learn more"
           />
         </div>
       </main>

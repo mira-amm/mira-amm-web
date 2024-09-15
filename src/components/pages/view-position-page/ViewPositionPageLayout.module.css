@@ -165,22 +165,20 @@
 
   .topRow {
     display: flex;
-    gap: 20px;
+    gap: 12px;
     width: 100%;
   }
 
   .miraBlock {
+    height: unset;
     flex: 1;
     width: 346px;
-    height: 306px;
   }
 
   .infoBlocks {
     flex: 1;
     width: 100%;
-    display: flex;
     flex-direction: column;
-    gap: 20px;
   }
 
   .priceBlocksDesktop {

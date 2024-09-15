@@ -23,12 +23,9 @@ const usePositions = () => {
     queryKey: ['positions', poolsWithLp, balances],
     queryFn: async () => {
       const positionInfoPromises = poolsWithLp.map(async (pool) => {
-        console.log('pool', pool);
         const lpAssetId = getLPAssetId(DEFAULT_AMM_CONTRACT_ID, pool);
         const lpBalance = balances?.find(balance => balance.assetId === lpAssetId.bits)?.amount ?? new BN(0);
-        console.log('lpBalance', lpBalance);
         const position = await mira?.getLiquidityPosition(pool, lpBalance);
-        console.log('position', position);
         return { ...position, lpBalance };
       });
 

@@ -22,6 +22,10 @@
   border: none;
 }
 
+.input:disabled {
+  color: var(--content-dimmed-dark);
+}
+
 .leftColumn, .rightColumn {
   display: flex;
   flex-direction: column;

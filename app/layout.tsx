@@ -74,6 +74,10 @@ export const metadata: Metadata = {
 const RootLayout = ({children}: Props) => {
   return (
     <html lang="en">
+    <head>
+      <link rel="preload" as="image" href="/images/loader.webp" />
+      <link rel="preload" as="image" href="/images/mimic.webp" />
+    </head>
     <body className={clsx(
       sfUIText.className,
       sfUIText.variable,

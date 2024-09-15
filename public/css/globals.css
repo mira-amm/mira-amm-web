@@ -84,6 +84,11 @@ input:focus {
     letter-spacing: 0.005em;
   }
 
+  p, span {
+    font-size: 16px;
+    line-height: 19px;
+  }
+
   .mobileOnly {
     display: none !important;
   }

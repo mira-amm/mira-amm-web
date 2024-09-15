@@ -1,7 +1,6 @@
 import {useQuery} from "@tanstack/react-query";
 import type {CurrencyBoxMode, SwapState} from "@/src/components/common/Swap/Swap";
 import useSwapData from "@/src/hooks/useAssetPair/useSwapData";
-import usePoolsIds from "@/src/hooks/usePoolsIds";
 import useReadonlyMira from "@/src/hooks/useReadonlyMira";
 import {buildPoolId} from "mira-dex-ts";
 
@@ -15,28 +14,24 @@ const useExactOutputPreview = ({ swapState, buyAmount, lastFocusedMode }: Props)
   const {
     sellAssetIdInput,
     buyAssetIdInput,
-    sellAssetId,
-    buyAssetId,
     buyDecimals: decimals,
   } = useSwapData(swapState);
 
-  const amountValid = buyAmount !== null && !isNaN(buyAmount);
-  const amount = amountValid ? buyAmount * 10 ** decimals : 0;
-
-  const miraAmm = useReadonlyMira();
-
   const pool = buildPoolId(sellAssetIdInput.bits, buyAssetIdInput.bits, false);
 
-  const miraExists = Boolean(miraAmm);
-  const lastFocusedModeIsBuy = lastFocusedMode === 'buy'
-  const sellAssetExists = Boolean(sellAssetId);
-  const buyAssetExists = Boolean(buyAssetId);
+  const amountValid = buyAmount !== null && !isNaN(buyAmount);
+  const amount = amountValid ? buyAmount * 10 ** decimals : 0;
   const amountNonZero = amount > 0;
-  const shouldFetch =
-    miraExists && lastFocusedModeIsBuy && sellAssetExists && buyAssetExists && amountNonZero;
 
-  const { data, isFetching } = useQuery({
-    queryKey: ['exactOutputPreview', buyAssetIdInput, amount, pool],
+  const miraAmm = useReadonlyMira();
+  const miraExists = Boolean(miraAmm);
+
+  const lastFocusedModeIsBuy = lastFocusedMode === 'buy'
+  const shouldFetch =
+    miraExists && lastFocusedModeIsBuy && amountNonZero;
+
+  const { data, isFetching, error } = useQuery({
+    queryKey: ['exactOutputPreview', buyAssetIdInput.bits, amount, pool],
     queryFn: () => miraAmm?.previewSwapExactOutput(
       buyAssetIdInput,
       amount,
@@ -46,7 +41,7 @@ const useExactOutputPreview = ({ swapState, buyAmount, lastFocusedMode }: Props)
     refetchInterval: 15000,
   });
 
-  return { data, isFetching };
+  return { data, isFetching, error };
 };
 
 export default useExactOutputPreview;

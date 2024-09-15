@@ -1,6 +1,7 @@
 .desktopPools {
   border-radius: 24px;
   background-color: var(--background-grey-dark);
+  border-collapse: collapse;
 }
 
 .desktopPools th {
@@ -8,6 +9,7 @@
   line-height: 19px;
   font-weight: 400;
   color: var(--content-tertiary);
+  border-bottom: 1px solid var(--background-grey-darker);
 }
 
 .desktopPools th, .desktopPools td {

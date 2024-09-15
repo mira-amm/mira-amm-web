@@ -1,5 +1,3 @@
-import {isMobile} from "react-device-detect";
-
 import CoinPair from "@/src/components/common/CoinPair/CoinPair";
 
 import styles from './DesktopPositions.module.css';
@@ -8,6 +6,7 @@ import {createPoolKey, getCoinByAssetId} from "@/src/utils/common";
 import {useCallback} from "react";
 import {useRouter} from "next/navigation";
 import {coinsConfig} from "@/src/utils/coinsConfig";
+import {clsx} from "clsx";
 
 type Props = {
   positions: any[] | undefined;
@@ -21,12 +20,12 @@ const DesktopPositions = ({ positions }: Props) => {
     router.push(`/liquidity/position?pool=${poolKey}`);
   }, [router]);
 
-  if (isMobile || !positions) {
+  if (!positions) {
     return null;
   }
 
   return (
-    <table className={styles.desktopPositions}>
+    <table className={clsx(styles.desktopPositions, 'desktopOnly')}>
       <thead>
       <tr>
         <th>Positions</th>
