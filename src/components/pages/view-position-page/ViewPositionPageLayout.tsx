@@ -110,7 +110,9 @@ const ViewPositionPageLayout = () => {
           </div>
           <div className={styles.miraBlock}>
             <p className={styles.miraLogo}>Mira</p>
-            <b>{lpTokenDisplayValue} LP tokens</b>
+            <p className={styles.tokenDisplayValue}>
+              {lpTokenDisplayValue} LP tokens
+            </p>
             <p className={styles.numberAndCopy}>
               Asset ID: {formattedLpTokenAssetId}
               <IconButton onClick={handleCopy}>
@@ -153,7 +155,9 @@ const ViewPositionPageLayout = () => {
           <div className={styles.topRow}>
             <div className={styles.miraBlock}>
               <p className={styles.miraLogo}>Mira</p>
-              <b>{lpTokenDisplayValue} LP tokens</b>
+              <p className={styles.tokenDisplayValue}>
+                {lpTokenDisplayValue} LP tokens
+              </p>
               <p className={styles.numberAndCopy}>
                 Asset ID: {formattedLpTokenAssetId}
                 <IconButton onClick={handleCopy}>

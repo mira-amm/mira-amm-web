@@ -28,8 +28,10 @@ const CoinInput = ({ coin, value, loading, setAmount, balance }: Props) => {
   };
 
   const handleMaxClick = useCallback(() => {
-    const balanceToUse = coin === 'ETH' ? balance - MinEthValue : balance;
-    setAmount(balanceToUse.toString());
+    const amount = coin === 'ETH' ?
+      (balance - MinEthValue).toFixed(9) :
+      balance.toString();
+    setAmount(amount);
   }, [coin, balance, setAmount]);
 
   const balanceValue = parseFloat(balance.toFixed(decimals));

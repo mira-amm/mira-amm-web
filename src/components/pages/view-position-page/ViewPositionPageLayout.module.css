@@ -66,9 +66,18 @@
   margin-bottom: 12px;
 }
 
+.tokenDisplayValue, .numberAndCopy {
+  font-weight: 300;
+}
+
 .numberAndCopy {
   display: flex;
   justify-content: space-between;
+}
+
+.numberAndCopy svg {
+  width: 16px;
+  height: 16px;
 }
 
 .copyButton {

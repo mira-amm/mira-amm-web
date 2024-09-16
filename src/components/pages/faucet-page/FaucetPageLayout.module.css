@@ -36,6 +36,8 @@
   position: relative;
   display: inline-flex;
   align-items: center;
+  font-size: inherit;
+  line-height: inherit;
   background: radial-gradient(125.88% 889.57% at -1.46% 26.54%, #03AEF5 25%, #66CC07 50%, #C900FF 85%) /* warning: gradient uses a rotation that is not supported by CSS and may not behave as expected */;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;

@@ -21,6 +21,11 @@ const prompt = Prompt({
 const sfUIText = localFont({
   src: [
     {
+      path: '../public/fonts/SF-UI-Text-Light.ttf',
+      weight: '300',
+      style: 'normal',
+    },
+    {
       path: '../public/fonts/SF-UI-Text-Regular.ttf',
       weight: '400',
       style: 'normal',

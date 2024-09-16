@@ -39,8 +39,10 @@ const CurrencyBox = ({ value, coin, mode, balance, setAmount, loading, onCoinSel
   };
 
   const handleMaxClick = useCallback(() => {
-    const balanceToUse = coin === 'ETH' && mode === 'sell' ? balance - MinEthValue : balance;
-    setAmount(balanceToUse.toString());
+    const amount = coin === 'ETH' && mode === 'sell' ?
+      (balance - MinEthValue).toFixed(9) :
+      balance.toString();
+    setAmount(amount);
   }, [coin, mode, balance, setAmount]);
 
   const coinNotSelected = coin === null;

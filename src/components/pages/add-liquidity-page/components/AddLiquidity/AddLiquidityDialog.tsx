@@ -10,6 +10,9 @@ import {useConnectUI, useIsConnected} from "@fuels/react";
 import usePreviewAddLiquidity from "@/src/hooks/usePreviewAddLiquidity";
 import {useCallback, useEffect, useMemo, useState} from "react";
 import {useDebounceCallback} from "usehooks-ts";
+import useCheckEthBalance from "@/src/hooks/useCheckEthBalance/useCheckEthBalance";
+import useFaucetLink from "@/src/hooks/useFaucetLink";
+import {openNewTab} from "@/src/utils/common";
 
 type Props = {
   firstCoin: CoinName;
@@ -81,7 +84,18 @@ const AddLiquidityDialog = ({ firstCoin, secondCoin, setPreviewData }: Props) =>
     };
   }, [debouncedSetFirstAmount, debouncedSetSecondAmount, firstCoin]);
 
+
+  const sufficientEthBalanceForFirstCoin = useCheckEthBalance({ coin: firstCoin, amount: firstAmount });
+  const sufficientEthBalanceForSecondCoin = useCheckEthBalance({ coin: secondCoin, amount: secondAmount });
+  const sufficientEthBalance = sufficientEthBalanceForFirstCoin && sufficientEthBalanceForSecondCoin;
+
+  const faucetLink = useFaucetLink();
   const handleButtonClick = useCallback(() => {
+    if (!sufficientEthBalance) {
+      openNewTab(faucetLink);
+      return;
+    }
+
     setPreviewData({
       assets: [
         {
@@ -94,7 +108,7 @@ const AddLiquidityDialog = ({ firstCoin, secondCoin, setPreviewData }: Props) =>
         }
       ],
     });
-  }, [firstCoin, firstAmount, secondCoin, secondAmount, setPreviewData]);
+  }, [sufficientEthBalance, setPreviewData, firstCoin, firstAmount, secondCoin, secondAmount, faucetLink]);
 
   const insufficientFirstBalance = parseFloat(firstAmount) > firstCoinBalanceValue;
   const insufficientSecondBalance = parseFloat(secondAmount) > secondCoinBalanceValue;
@@ -103,10 +117,12 @@ const AddLiquidityDialog = ({ firstCoin, secondCoin, setPreviewData }: Props) =>
   const buttonTitle = useMemo(() => {
     if (insufficientBalance) {
       return 'Insufficient balance';
+    } else if (!sufficientEthBalance) {
+      return 'Claim some ETH to pay for gas';
     }
 
     return 'Preview';
-  }, [insufficientBalance]);
+  }, [insufficientBalance, sufficientEthBalance]);
 
   const oneOfAmountsEmpty = !firstAmount || !secondAmount;
 
@@ -135,7 +151,7 @@ const AddLiquidityDialog = ({ firstCoin, secondCoin, setPreviewData }: Props) =>
           <CoinInput
             coin={firstCoin}
             value={firstAmountInput}
-            loading={false}
+            loading={!isFirstToken && isFetching}
             setAmount={setAmount(firstCoin)}
             balance={firstCoinBalanceValue}
             key={firstCoin}
@@ -143,7 +159,7 @@ const AddLiquidityDialog = ({ firstCoin, secondCoin, setPreviewData }: Props) =>
           <CoinInput
             coin={secondCoin}
             value={secondAmountInput}
-            loading={isFetching}
+            loading={isFirstToken && isFetching}
             setAmount={setAmount(secondCoin)}
             balance={secondCoinBalanceValue}
             key={secondCoin}
