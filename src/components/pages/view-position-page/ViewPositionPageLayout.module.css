@@ -58,11 +58,8 @@
 }
 
 .miraLogo {
-  font-family: var(--font-sf-compact-text), sans-serif;
-  font-weight: 900;
-  font-size: 32px;
-  line-height: 36px;
-  text-transform: uppercase;
+  width: 64px;
+  height: 32px;
   margin-bottom: 12px;
 }
 

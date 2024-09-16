@@ -25,7 +25,7 @@
 }
 
 .heading {
-  font-family: var(--font-sf-ui-text) sans-serif;
+  font-family: var(--font-inter) sans-serif;
   font-weight: 600;
   font-size: 42px;
   line-height: 46px;
@@ -58,7 +58,7 @@
 }
 
 .claimHeading {
-  font-family: var(--font-sf-ui-text) sans-serif;
+  font-family: var(--font-inter) sans-serif;
   font-size: 27px;
   font-weight: 500;
   line-height: 33px;

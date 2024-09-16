@@ -27,7 +27,7 @@
 .input {
   width: 0;
   flex: 1;
-  font-family: var(--font-sf-ui-text), sans-serif;
+  font-family: var(--font-inter), sans-serif;
   font-weight: 600;
   font-size: 20px;
   line-height: 24px;

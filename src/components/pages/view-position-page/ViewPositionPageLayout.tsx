@@ -27,6 +27,7 @@ import CopyIcon from "@/src/components/icons/Copy/CopyIcon";
 import {getLPAssetId} from "mira-dex-ts";
 import {DEFAULT_AMM_CONTRACT_ID} from "@/src/utils/constants";
 import useFormattedAddress from "@/src/hooks/useFormattedAddress/useFormattedAddress";
+import LogoIcon from "@/src/components/icons/Logo/LogoIcon";
 
 const ViewPositionPageLayout = () => {
   const [RemoveLiquidityModal, openRemoveLiquidityModal, closeRemoveLiquidityModal] = useModal();
@@ -109,7 +110,9 @@ const ViewPositionPageLayout = () => {
             </div>
           </div>
           <div className={styles.miraBlock}>
-            <p className={styles.miraLogo}>Mira</p>
+            <div className={styles.miraLogo}>
+              <LogoIcon />
+            </div>
             <p className={styles.tokenDisplayValue}>
               {lpTokenDisplayValue} LP tokens
             </p>
@@ -154,7 +157,9 @@ const ViewPositionPageLayout = () => {
           </div>
           <div className={styles.topRow}>
             <div className={styles.miraBlock}>
-              <p className={styles.miraLogo}>Mira</p>
+              <div className={styles.miraLogo}>
+                <LogoIcon />
+              </div>
               <p className={styles.tokenDisplayValue}>
                 {lpTokenDisplayValue} LP tokens
               </p>

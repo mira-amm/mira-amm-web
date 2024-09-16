@@ -1,7 +1,6 @@
 :root {
-  --font-sf-ui-text: 'SF UI Text';
+  --font-inter: 'Inter';
   --font-prompt: 'Prompt';
-  --font-sf-compact-text: 'SF Compact Text';
 
   --background-primary: #0E111E;
   --background-secondary: #1B1C23;
