@@ -46,12 +46,12 @@ const ViewPositionPageLayout = () => {
   const coinADecimals = coinsConfig.get(coinA)?.decimals!;
   const coinAAsset = assets?.[0];
   const coinAAmount = (coinAAsset?.[1].toNumber() ?? 0) / 10 ** coinADecimals;
-  let coinAValue = coinAAmount.toFixed(5);
+  let coinAValue = coinAAmount.toFixed(coinAAmount < 1 ? 5 : 2);
   coinAValue = coinAValue === '0.00000' ? '<0.00001' : coinAValue;
   const coinBDecimals = coinsConfig.get(coinB)?.decimals!;
   const coinBAsset = assets?.[1];
   const coinBAmount = (coinBAsset?.[1].toNumber() ?? 0) / 10 ** coinBDecimals;
-  let coinBValue = coinBAmount.toFixed(5);
+  let coinBValue = coinBAmount.toFixed(coinBAmount < 1 ? 5 : 2);
   coinBValue = coinBValue === '0.00000' ? '<0.00001' : coinBValue;
 
   const [removeLiquidityValue, setRemoveLiquidityValue] = useState(50);
