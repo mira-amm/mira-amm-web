@@ -87,7 +87,8 @@ const ViewPositionPageLayout = () => {
     await navigator.clipboard.writeText(lpTokenAssetId.bits);
   }, [lpTokenAssetId.bits]);
 
-  const lpTokenDisplayValue = lpTokenBalance?.toNumber();
+  const lpTokenAmount = lpTokenBalance?.toNumber() ?? 0 / 10 ** 9;
+  const lpTokenDisplayValue = lpTokenAmount < 0.01 ? '<0.01' : lpTokenAmount.toFixed(2);
 
   return (
     <>
