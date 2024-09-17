@@ -12,6 +12,7 @@ import TestnetLabel from "@/src/components/common/TestnetLabel/TestnetLabel";
 import DisconnectDesktop from "@/src/components/common/ConnectButton/DisconnectDesktop";
 import DisconnectMobile from "@/src/components/common/ConnectButton/DisconnectMobile";
 import {useIsConnected} from "@fuels/react";
+import useFaucetLink from "@/src/hooks/useFaucetLink";
 
 type Props = {
   isHomePage?: boolean;
@@ -20,6 +21,7 @@ type Props = {
 const Header = ({ isHomePage }: Props) => {
   const pathname = usePathname();
   const { isConnected } = useIsConnected();
+  const faucetLink = useFaucetLink();
 
   return (
     <header className={styles.header}>
@@ -41,9 +43,9 @@ const Header = ({ isHomePage }: Props) => {
             <Link href="/liquidity" className={clsx(styles.link, pathname.includes('/liquidity') && styles.activeLink)}>
               Liquidity
             </Link>
-            <Link href="/faucet" className={clsx(styles.link, pathname.includes('/faucet') && styles.activeLink)}>
-              Faucet
-            </Link>
+            <a href={faucetLink} className={styles.link} target="_blank">
+              ETH Faucet
+            </a>
             <div className={styles.pointsText}>
               Points
               <SoonLabel className={styles.hiddenLabel}/>
