@@ -1,10 +1,10 @@
 import {useMutation} from "@tanstack/react-query";
 import {useCallback} from "react";
-import {AssetIdInput} from "mira-dex-ts/src/typegen/amm-contract/AmmContractAbi";
 
 import {DefaultTxParams} from "@/src/utils/constants";
 import {coinsConfig} from "@/src/utils/coinsConfig";
 import useFaucetSDK from "@/src/hooks/useFaucetSDK/useFaucetSDK";
+import {AssetIdInput} from "mira-dex-ts/dist/sdk/typegen/MiraAmmContract";
 
 const useClaimFaucet = () => {
   const faucetSDK = useFaucetSDK();

@@ -17,7 +17,7 @@ const SwapPageLayout = () => {
       </main>
       <Footer/>
     </>
-  )
+  );
 };
 
 export default SwapPageLayout;

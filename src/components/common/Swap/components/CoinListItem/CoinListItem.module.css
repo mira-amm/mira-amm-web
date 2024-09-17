@@ -4,6 +4,11 @@
   color: var(--content-primary);
 }
 
+.coin svg, .coin img {
+  width: 28px;
+  height: 28px;
+}
+
 .centered {
   align-items: center;
 }
@@ -48,4 +53,8 @@
   /*  font-size: 14px;*/
   /*  line-height: 16px;*/
   /*}*/
+  .coin svg, .coin img {
+    width: 32px;
+    height: 32px;
+  }
 }

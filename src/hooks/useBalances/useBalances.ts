@@ -1,5 +1,7 @@
-import { useWallet } from "@fuels/react";
+import {useBalance, useWallet} from "@fuels/react";
 import {useQuery} from "@tanstack/react-query";
+import {useEffect, useMemo} from "react";
+import useStableWallet from "@/src/hooks/useStableWallet";
 
 const useBalances = () => {
   const { wallet } = useWallet();

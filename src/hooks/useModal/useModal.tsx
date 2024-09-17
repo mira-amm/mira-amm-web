@@ -9,8 +9,10 @@ import {useScrollLock} from "usehooks-ts";
 
 type ModalProps = {
   title: string | ReactNode;
+  titleClassName?: string;
   children: ReactNode;
   className?: string;
+  onClose?: VoidFunction;
 }
 
 type ReturnType = (props: ModalProps) => ReactPortal | null;
@@ -49,16 +51,26 @@ const useModal = (): [ReturnType, () => void, () => void] => {
     setIsOpen(false);
   }, []);
 
-  const Modal = ({ title, children, className }: ModalProps) => isOpen ? createPortal(
+  const Modal = ({ title, titleClassName, children, className, onClose }: ModalProps) => isOpen ? createPortal(
     <>
-      <div className={styles.modalBackdrop} onClick={closeModal} />
+      <div className={styles.modalBackdrop} onClick={() => {
+        if (onClose) {
+          onClose();
+        }
+        closeModal();
+      }} />
       <div className={clsx(styles.modalWindow, className)}>
         <div className={styles.modalHeading}>
-          <div className={styles.modalTitle}>
+          <div className={clsx(styles.modalTitle, titleClassName)}>
             {title}
           </div>
-          <IconButton onClick={closeModal}>
-          <CloseIcon />
+          <IconButton onClick={() => {
+            if (onClose) {
+              onClose();
+            }
+            closeModal();
+          }}>
+            <CloseIcon />
           </IconButton>
         </div>
         {children}

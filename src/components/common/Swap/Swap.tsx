@@ -26,6 +26,7 @@ import SettingsModalContent from "@/src/components/common/Swap/components/Settin
 import useCheckEthBalance from "@/src/hooks/useCheckEthBalance/useCheckEthBalance";
 import useInitialSwapState from "@/src/hooks/useInitialSwapState/useInitialSwapState";
 import useFaucetLink from "@/src/hooks/useFaucetLink";
+import {InsufficientReservesError} from "mira-dex-ts/dist/sdk/errors";
 
 export type CurrencyBoxMode = "buy" | "sell";
 export type CurrencyBoxState = {
@@ -78,13 +79,13 @@ const Swap = () => {
   const buyBalance = balances?.find(b => b.assetId === coinsConfig.get(swapState.buy.coin)?.assetId)?.amount.toNumber();
   const buyBalanceValue = buyBalance ? buyBalance / 10 ** coinsConfig.get(swapState.buy.coin)?.decimals! : 0;
 
-  const {data: inputPreviewData, isFetching: inputPreviewIsFetching} = useExactInputPreview({
+  const {data: inputPreviewData, isFetching: inputPreviewIsFetching, error: inputPreviewError } = useExactInputPreview({
     swapState,
     sellAmount: swapState.sell.amount ? parseFloat(swapState.sell.amount) : null,
     lastFocusedMode,
   });
   const buyDecimals = coinsConfig.get(swapState.buy.coin)?.decimals!;
-  const inputPreviewValue = inputPreviewData && inputPreviewData.value.other_asset.amount.toNumber() / 10 ** buyDecimals;
+  const inputPreviewValue = inputPreviewData && inputPreviewData[1].toNumber() / 10 ** buyDecimals;
   const inputPreviewValueString = inputPreviewValue !== undefined ? inputPreviewValue === 0 ? '' : inputPreviewValue.toFixed(buyDecimals) : previousInputPreviewValue.current;
   previousInputPreviewValue.current = inputPreviewValueString;
   const buyValue = lastFocusedMode === 'sell' ? inputPreviewValueString : inputsState.buy.amount;
@@ -98,13 +99,13 @@ const Swap = () => {
     }));
   }
 
-  const {data: outputPreviewData, isFetching: outputPreviewIsFetching} = useExactOutputPreview({
+  const {data: outputPreviewData, isFetching: outputPreviewIsFetching, error: outputPreviewError} = useExactOutputPreview({
     swapState,
     buyAmount: swapState.buy.amount ? parseFloat(swapState.buy.amount) : null,
     lastFocusedMode,
   });
   const sellDecimals = coinsConfig.get(swapState.sell.coin)?.decimals!;
-  const outputPreviewValue = outputPreviewData && outputPreviewData.value.other_asset.amount.toNumber() / 10 ** sellDecimals;
+  const outputPreviewValue = outputPreviewData && outputPreviewData[1].toNumber() / 10 ** sellDecimals;
   const outputPreviewValueString = outputPreviewValue !== undefined ? outputPreviewValue === 0 ? '' : outputPreviewValue.toFixed(sellDecimals) : previousOutputPreviewValue.current;
   previousOutputPreviewValue.current = outputPreviewValueString;
   const sellValue = lastFocusedMode === 'buy' ? outputPreviewValueString : inputsState.sell.amount;
@@ -195,6 +196,32 @@ const Swap = () => {
   const debouncedSetState = useDebounceCallback(setSwapState, 500);
   const setAmount = useCallback((mode: "buy" | "sell") => {
     return (amount: string) => {
+      // if (amount === '') {
+      //   debouncedSetState(prevState => ({
+      //     'sell': {
+      //       coin: prevState.sell.coin,
+      //       amount: '',
+      //     },
+      //     'buy': {
+      //       coin: prevState.buy.coin,
+      //       amount: '',
+      //     },
+      //   }));
+      //
+      //   setInputsState({
+      //     'sell': {
+      //       amount: '',
+      //     },
+      //     'buy': {
+      //       amount: '',
+      //     },
+      //   });
+      //
+      //   setLastFocusedMode(mode);
+      //
+      //   return;
+      // }
+
       debouncedSetState(prevState => ({
         ...prevState,
         [mode]: {
@@ -267,15 +294,21 @@ const Swap = () => {
   const insufficientSellBalance = parseFloat(sellValue) > sellBalanceValue;
   const ethWithZeroBalanceSelected = swapState.sell.coin === 'ETH' && balances?.find(b => b.assetId === coinsConfig.get('ETH')?.assetId)?.amount.toNumber() === 0;
   const showInsufficientBalance = insufficientSellBalance && !ethWithZeroBalanceSelected;
+  const previewError = inputPreviewError || outputPreviewError;
+  const insufficientReserves = previewError instanceof InsufficientReservesError;
 
   let swapButtonTitle = 'Swap';
   if (swapPending) {
     swapButtonTitle = 'Waiting for approval in wallet';
+  } else if (insufficientReserves) {
+    swapButtonTitle = 'Insufficient reserves in pool';
   } else if (showInsufficientBalance) {
     swapButtonTitle = 'Insufficient balance';
   } else if (!sufficientEthBalance) {
     swapButtonTitle = 'Claim some ETH to pay for gas';
   }
+
+  const swapDisabled = coinMissing || showInsufficientBalance || insufficientReserves;
 
   const exchangeRate = useExchangeRate(swapState);
   const feeValue = ((0.333 / 100) * parseFloat(sellValue)).toFixed(sellDecimals);
@@ -341,7 +374,7 @@ const Swap = () => {
           {isConnected && (
             <ActionButton
               variant="primary"
-              disabled={coinMissing || showInsufficientBalance}
+              disabled={swapDisabled}
               onClick={handleSwapClick}
               loading={isPending}
             >

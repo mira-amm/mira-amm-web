@@ -1,11 +1,15 @@
+import {useCallback} from "react";
+import {ScriptTransactionRequest} from "fuels";
+import {useWallet} from "@fuels/react";
+import {useMutation} from "@tanstack/react-query";
+
 import type {CurrencyBoxMode, SwapState} from "@/src/components/common/Swap/Swap";
 import useMiraDex from "@/src/hooks/useMiraDex/useMiraDex";
 import useSwapData from "@/src/hooks/useAssetPair/useSwapData";
-import {useMutation} from "@tanstack/react-query";
-import {DefaultDeadline, DefaultTxParams} from "@/src/utils/constants";
-import {useWallet} from "@fuels/react";
-import {useCallback} from "react";
-import {ScriptTransactionRequest} from "fuels";
+import {DefaultTxParams, MaxDeadline} from "@/src/utils/constants";
+import usePoolsIds from "@/src/hooks/usePoolsIds";
+import {createPoolId} from "@/src/utils/common";
+import {buildPoolId} from "mira-dex-ts";
 
 type Props = {
   swapState: SwapState;
@@ -17,34 +21,52 @@ const useSwap = ({ swapState, mode, slippage }: Props) => {
   const { wallet } = useWallet();
   const miraDex = useMiraDex();
   const swapData = useSwapData(swapState);
+  const pools = usePoolsIds();
+  const { sellAssetIdInput, buyAssetIdInput, sellDecimals, buyDecimals } = swapData;
 
   const getTxCost = useCallback(async () => {
     if (!wallet || !miraDex) {
       return;
     }
 
-    const { assets, sellDecimals, buyDecimals } = swapData;
     const sellAmount = Number(swapState.sell.amount) * 10 ** sellDecimals;
     const buyAmount = Number(swapState.buy.amount) * 10 ** buyDecimals;
 
     const buyAmountWithSlippage = buyAmount * (1 - slippage / 100);
     const sellAmountWithSlippage = sellAmount * (1 + slippage / 100);
 
-    const tx = mode === 'sell' ?
-      await miraDex.swapExactInput(assets, sellAmount, buyAmountWithSlippage, DefaultDeadline, DefaultTxParams) :
-      await miraDex.swapExactOutput(assets, buyAmount, sellAmountWithSlippage, DefaultDeadline, DefaultTxParams);
+    const pool = buildPoolId(sellAssetIdInput.bits, buyAssetIdInput.bits, false);
 
-    const txCost = await wallet.provider.getTransactionCost(tx);
+    const tx = mode === 'sell' ?
+      await miraDex.swapExactInput(sellAmount, sellAssetIdInput, buyAmountWithSlippage, [pool], MaxDeadline, DefaultTxParams) :
+      await miraDex.swapExactOutput(buyAmount, buyAssetIdInput, sellAmountWithSlippage, [pool], MaxDeadline, DefaultTxParams);
+
+    const txCost = await wallet.getTransactionCost(tx);
 
     return { tx, txCost };
-  }, [wallet, miraDex, swapData, swapState.buy.amount, swapState.sell.amount, slippage, mode]);
+  }, [
+    wallet,
+    miraDex,
+    swapState.buy.amount,
+    sellDecimals,
+    swapState.sell.amount,
+    buyDecimals,
+    slippage,
+    mode,
+    sellAssetIdInput,
+    buyAssetIdInput,
+    pools
+  ]);
 
-  const sendTx = useCallback(async (tx: ScriptTransactionRequest) => {
+  const sendTx = useCallback(async (inputTx: ScriptTransactionRequest) => {
     if (!wallet) {
       return;
     }
 
-    return await wallet.sendTransaction(tx);
+    const txCost = await wallet.getTransactionCost(inputTx);
+    const fundedTx = await wallet.fund(inputTx, txCost);
+    const tx = await wallet.sendTransaction(fundedTx);
+    return await tx.waitForResult();
   }, [wallet]);
 
   const { mutateAsync: fetchTxCost, data: txCostData, isPending: txCostPending} = useMutation({

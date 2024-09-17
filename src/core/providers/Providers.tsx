@@ -75,6 +75,7 @@ const Providers = ({children}: Props) => {
         fuelConfig={fuelConfig}
         theme="dark"
       >
+        {/* @ts-ignore */}
         {children}
       </FuelProvider>
     </QueryClientProvider>

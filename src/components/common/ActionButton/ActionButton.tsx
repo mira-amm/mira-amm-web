@@ -5,7 +5,7 @@ import Loader from "@/src/components/common/Loader/Loader";
 import styles from './ActionButton.module.css';
 
 type ButtonType = 'button' | 'submit' | 'reset';
-type ButtonVariant = 'primary' | 'secondary';
+type ButtonVariant = 'primary' | 'secondary' | 'outlined';
 
 type Props = {
   children: ReactNode;
@@ -17,6 +17,7 @@ type Props = {
   buttonRef?: RefObject<HTMLButtonElement>;
   type?: ButtonType;
   variant?: ButtonVariant;
+  fullWidth?: boolean;
 };
 
 const ActionButton = ({
@@ -28,7 +29,8 @@ const ActionButton = ({
   completed,
   buttonRef,
   type,
-  variant
+  variant,
+  fullWidth,
 }: Props) => {
   const handleClick = useCallback(() => {
     if (loading || completed) {
@@ -45,8 +47,10 @@ const ActionButton = ({
       className={clsx(
         styles.btn,
         variant === 'secondary' && styles.secondary,
+        variant === 'outlined' && styles.outlined,
         loading && styles.loading,
         completed && styles.completed,
+        fullWidth && styles.fullWidth,
         className
       )}
       onClick={handleClick}
