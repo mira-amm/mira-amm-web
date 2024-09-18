@@ -79,7 +79,7 @@ const Header = ({ isHomePage }: Props) => {
           )}
           {isHomePage && !isConnected && (
             <div className={styles.launchAppArea}>
-              <a href="/">Docs</a>
+              <a href="https://docs.mira.ly">Docs</a>
               <LaunchAppButton className={styles.launchAppButton} />
             </div>
           )}

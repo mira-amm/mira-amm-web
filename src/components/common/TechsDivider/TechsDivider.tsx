@@ -14,12 +14,12 @@ export const TechsDivider = () => {
       <div className={styles.logosArea}>
       <li>
         <UsedTechs text="Audited by">
-          <Halborn />
+          <a className={styles.TechsDividerLink} href="https://docs.mira.ly/developer-guides/security-audit"><Halborn /></a>
         </UsedTechs>
       </li>
       <li>
         <UsedTechs text="Supported by">
-          <FuelGroup />
+        <a className={styles.TechsDividerLink} href="https://fuel.network"><FuelGroup /></a>
         </UsedTechs>
       </li>
       </div>

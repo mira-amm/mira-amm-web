@@ -36,7 +36,7 @@ const MobileMenuContent = ({ expanded, toggleExpandedState }: Props) => {
       <nav className={styles.links}>
         <Link href="/swap">Swap</Link>
         <Link href="/liquidity">Liquidity</Link>
-        {/*<a href="#">Docs</a>*/}
+        <a href="https://docs.mira.ly">Docs</a>
         <a href={faucetLink} target="_blank">ETH Faucet</a>
         <a>Testnet</a>
         {/*<a href="#">Github</a>*/}
