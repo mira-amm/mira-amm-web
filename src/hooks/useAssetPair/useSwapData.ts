@@ -1,5 +1,4 @@
 import {useMemo} from "react";
-import {PoolId} from "mira-dex-ts";
 import {AssetIdInput} from "mira-dex-ts/dist/sdk/typegen/MiraAmmContract";
 
 import {SwapState} from "@/src/components/common/Swap/Swap";
@@ -13,7 +12,6 @@ type SwapData = {
   sellAssetIdInput: AssetIdInput;
   buyAssetIdInput: AssetIdInput;
   assets: [AssetIdInput, AssetIdInput];
-  // poolId: PoolId;
 };
 
 const useSwapData = (swapState: SwapState): SwapData => {
@@ -23,7 +21,6 @@ const useSwapData = (swapState: SwapState): SwapData => {
 
     const sellAssetId = coinsConfig.get(sellCoin)?.assetId!;
     const buyAssetId = coinsConfig.get(buyCoin)?.assetId!;
-    const mimicAssetId = coinsConfig.get('MIMIC')?.assetId!;
 
     const sellDecimals = coinsConfig.get(sellCoin)?.decimals!;
     const buyDecimals = coinsConfig.get(buyCoin)?.decimals!;
@@ -34,19 +31,8 @@ const useSwapData = (swapState: SwapState): SwapData => {
     const buyAssetIdInput: AssetIdInput = {
       bits: buyAssetId,
     };
-    const mimicAssetIdInput: AssetIdInput = {
-      bits: mimicAssetId,
-    };
 
-    let assets: [AssetIdInput, AssetIdInput];
-
-    // if (sellCoin !== 'MIMIC' && buyCoin !== 'MIMIC') {
-    //   assets = [sellAssetIdInput, mimicAssetIdInput, buyAssetIdInput];
-    // } else {
-    assets = [sellAssetIdInput, buyAssetIdInput];
-    // }
-
-    // const poolId: PoolId = [sellAssetIdInput, buyAssetIdInput, false];
+    const assets: [AssetIdInput, AssetIdInput] = [sellAssetIdInput, buyAssetIdInput];
 
     return {
       sellAssetId,
@@ -56,7 +42,6 @@ const useSwapData = (swapState: SwapState): SwapData => {
       sellAssetIdInput,
       buyAssetIdInput,
       assets,
-      // poolId,
     };
   }, [swapState.buy.coin, swapState.sell.coin]);
 };

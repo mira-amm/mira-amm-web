@@ -43,14 +43,6 @@ const CoinsListModal = ({ selectCoin, balances }: Props) => {
     }
 
     return filteredCoinsList.toSorted((coinA, coinB) => {
-      if (coinA.name === 'MIMIC') {
-        return -1;
-      }
-
-      if (coinB.name === 'MIMIC') {
-        return 1;
-      }
-
       const aDecimals = coinsConfig.get(coinA.name)?.decimals!;
       const aBalance = balances.find((b) => b.assetId === coinA.assetId)?.amount.toNumber();
       const aBalanceValue = aBalance ? aBalance / 10 ** aDecimals : 0;

@@ -310,8 +310,9 @@ const Swap = () => {
 
   const swapDisabled = coinMissing || showInsufficientBalance || insufficientReserves;
 
+  const feePercentage = 0.3;
   const exchangeRate = useExchangeRate(swapState);
-  const feeValue = ((0.333 / 100) * parseFloat(sellValue)).toFixed(sellDecimals);
+  const feeValue = ((feePercentage / 100) * parseFloat(sellValue)).toFixed(sellDecimals);
 
   return (
     <>
@@ -353,7 +354,7 @@ const Swap = () => {
                 <p>{exchangeRate}</p>
               </div>
               <div className={styles.summaryEntry}>
-                <p>Fee (0.333%)</p>
+                <p>Fee ({feePercentage}%)</p>
                 <p>{feeValue} {swapState.sell.coin}</p>
               </div>
               <div className={styles.summaryEntry}>
