@@ -3,9 +3,8 @@ import {ReactNode} from "react";
 import BTCIcon from "@/src/components/icons/coins/Bitcoin/BTCIcon";
 import USDTIcon from "@/src/components/icons/coins/Tether/USDTIcon";
 import ETHIcon from "@/src/components/icons/coins/Ethereum/ETHIcon";
-import MimicIcon from "@/src/components/icons/coins/Mimic/MimicIcon";
 
-export type CoinName = 'BTC' | 'MIMIC' | 'USDT' | 'ETH' | null;
+export type CoinName = 'BTC' | 'USDT' | 'ETH' | null;
 
 type CoinData = {
   name: CoinName;
@@ -17,16 +16,6 @@ type CoinData = {
 
 export const coinsConfig: Map<CoinName, CoinData> = new Map([
   [
-    'MIMIC',
-    {
-      name: 'MIMIC',
-      decimals: 9,
-      assetId: '0x1fd9caea4559caac4b7b6f28d0e608c6827f307a780e99547e69d57c77acd6f5',
-      fullName: 'mimicMira',
-      icon: MimicIcon,
-    },
-  ],
-  [
     'BTC',
     {
       name: 'BTC',
@@ -36,16 +25,6 @@ export const coinsConfig: Map<CoinName, CoinData> = new Map([
       icon: BTCIcon,
     },
   ],
-  // [
-  //   'DAI',
-  //   {
-  //     name: 'DAI',
-  //     decimals: 6,
-  //     assetId: '0x418f96491bf04ceae3666d9aaa003176e10c513f18a1462a0b5e584b8e48f0b2',
-  //     fullName: 'DAI Test',
-  //     icon: DAIIcon,
-  //   },
-  // ],
   [
     'ETH',
     {
@@ -56,16 +35,6 @@ export const coinsConfig: Map<CoinName, CoinData> = new Map([
       icon: ETHIcon,
     },
   ],
-  // [
-  //   'USDC',
-  //   {
-  //     name: 'USDC',
-  //     decimals: 6,
-  //     assetId: '0x37065861e1a9107b8d5f20da971f0dfd81dac6b0ac3d55508a9cb7b1d73fdc5a',
-  //     fullName: 'USDC Test',
-  //     icon: USDCIcon,
-  //   },
-  // ],
   [
     'USDT',
     {

@@ -49,7 +49,6 @@ const RootLayout = ({children}: Props) => {
     <html lang="en">
     <head>
       <link rel="preload" as="image" href="/images/loader.webp" />
-      <link rel="preload" as="image" href="/images/mimic.webp" />
     </head>
     <body className={clsx(
       inter.className,

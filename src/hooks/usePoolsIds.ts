@@ -4,7 +4,7 @@ import {buildPoolId, PoolId} from "mira-dex-ts";
 
 const usePoolsIds = () => {
   return useMemo(() => {
-    const coinsArray = Array.from(coinsConfig.values()).filter(coin => coin.name !== 'MIMIC');
+    const coinsArray = Array.from(coinsConfig.values());
     const assetIds = coinsArray.map(coin => coin.assetId);
     const poolsIds: PoolId[] = [];
 

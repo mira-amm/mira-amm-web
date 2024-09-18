@@ -7,16 +7,12 @@ import {useCallback} from "react";
 
 const useCheckIsFaucetAllowed = (account: string | null) => {
   const faucetSDK = useFaucetSDK();
-  const assetIdB256 = coinsConfig.get('MIMIC')?.assetId!;
 
   const queryFn = useCallback(async () => {
     if (!faucetSDK || !account) {
       return null;
     }
 
-    const assetId: AssetId = {
-      bits: assetIdB256,
-    };
     const addressInput: AddressInput = {
       bits: toB256(account as Bech32Address)
     };
@@ -25,11 +21,11 @@ const useCheckIsFaucetAllowed = (account: string | null) => {
       Address: addressInput,
     };
 
-    return faucetSDK.isAllowedToFaucet(assetId, identityInput);
-  }, [faucetSDK, account, assetIdB256]);
+    return false;
+  }, [faucetSDK, account]);
 
   const { data, refetch } = useQuery({
-    queryKey: ['isFaucetAllowed', account, assetIdB256],
+    queryKey: ['isFaucetAllowed', account],
     queryFn,
     enabled: Boolean(faucetSDK) && Boolean(account),
   });

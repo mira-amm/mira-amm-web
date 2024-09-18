@@ -65,13 +65,8 @@ const FaucetClaim = () => {
       return;
     }
 
-    const claimData = await claim();
-    const result = await claimData?.waitForResult();
-    if (result?.transactionResult.status === 'success') {
-      openSuccessModal();
-      await refetchFaucetAllowed();
-    }
-  }, [allStepsCompleted, claim, openFailureModal, openSuccessModal, refetchFaucetAllowed]);
+    await claim();
+  }, [allStepsCompleted, claim, openFailureModal]);
 
   const handleFollowClick = () => {
     openNewTab('https://x.com/MiraProtocol');
