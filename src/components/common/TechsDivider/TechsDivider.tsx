@@ -18,7 +18,7 @@ export const TechsDivider = () => {
         </UsedTechs>
       </li>
       <li>
-        <UsedTechs text="Backed by">
+        <UsedTechs text="Supported by">
           <FuelGroup />
         </UsedTechs>
       </li>
