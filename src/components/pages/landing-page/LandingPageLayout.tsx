@@ -41,10 +41,10 @@ const LandingPageLayout = () => {
           <LaunchAppButton className={styles.launchAppButton} />
           {/* <LearnMoreButton /> */}
           </div>
-          <div className={styles.fuel}>
+          {/* <div className={styles.fuel}>
             <FuelIcon />
             <span>Powered by Fuel</span>
-          </div>
+          </div> */}
         </section>
         <Swap />
         <section className={styles.divider}>
@@ -147,10 +147,10 @@ const LandingPageLayout = () => {
             <LaunchAppButton className={styles.launchAppButton} />
             {/* <LearnMoreButton /> */}
             </div>
-            <div className={styles.fuel}>
+            {/* <div className={styles.fuel}>
               <FuelIcon />
               <span>Powered by Fuel</span>
-            </div>
+            </div> */}
           </div>
           <div className={styles.swap}>
             <Swap />
