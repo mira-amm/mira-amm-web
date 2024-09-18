@@ -1,8 +1,8 @@
-import useMiraDex from "@/src/hooks/useMiraDex/useMiraDex";
 import {useQuery} from "@tanstack/react-query";
 import type {CurrencyBoxMode, SwapState} from "@/src/components/common/Swap/Swap";
-import type {AssetInput} from "mira-dex-ts/src/typegen/amm-contract/AmmContractAbi";
 import useSwapData from "@/src/hooks/useAssetPair/useSwapData";
+import useReadonlyMira from "@/src/hooks/useReadonlyMira";
+import {buildPoolId} from "mira-dex-ts";
 
 type Props = {
   swapState: SwapState;
@@ -12,41 +12,36 @@ type Props = {
 
 const useExactOutputPreview = ({ swapState, buyAmount, lastFocusedMode }: Props) => {
   const {
+    sellAssetIdInput,
     buyAssetIdInput,
-    sellAssetId,
-    buyAssetId,
-    assets,
     buyDecimals: decimals,
   } = useSwapData(swapState);
 
+  const pool = buildPoolId(sellAssetIdInput.bits, buyAssetIdInput.bits, false);
+
   const amountValid = buyAmount !== null && !isNaN(buyAmount);
   const amount = amountValid ? buyAmount * 10 ** decimals : 0;
-  const assetSwapInput: AssetInput = {
-    id: buyAssetIdInput, amount
-  };
-
-  const miraAmm = useMiraDex();
-
-  const miraExists = Boolean(miraAmm);
-  const lastFocusedModeIsBuy = lastFocusedMode === 'buy'
-  const sellAssetExists = Boolean(sellAssetId);
-  const buyAssetExists = Boolean(buyAssetId);
   const amountNonZero = amount > 0;
-  const shouldFetch =
-    miraExists && lastFocusedModeIsBuy && sellAssetExists && buyAssetExists && amountNonZero;
 
-  const { data, isFetching } = useQuery({
-    queryKey: ['exactOutputPreview', assets, assetSwapInput],
+  const miraAmm = useReadonlyMira();
+  const miraExists = Boolean(miraAmm);
+
+  const lastFocusedModeIsBuy = lastFocusedMode === 'buy'
+  const shouldFetch =
+    miraExists && lastFocusedModeIsBuy && amountNonZero;
+
+  const { data, isFetching, error } = useQuery({
+    queryKey: ['exactOutputPreview', buyAssetIdInput.bits, amount, pool],
     queryFn: () => miraAmm?.previewSwapExactOutput(
-      assets,
-      // amount,
-      assetSwapInput
+      buyAssetIdInput,
+      amount,
+      [pool],
     ),
     enabled: shouldFetch,
     refetchInterval: 15000,
   });
 
-  return { data, isFetching };
+  return { data, isFetching, error };
 };
 
 export default useExactOutputPreview;

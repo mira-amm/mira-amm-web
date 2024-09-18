@@ -12,7 +12,7 @@
   border-color: var(--accent-secondary);
 }
 
-.title, .estimate {
+.title, .estimate, .balance {
   font-size: 12px;
   line-height: 16px;
   color: var(--content-tertiary);
@@ -27,7 +27,7 @@
 .input {
   width: 0;
   flex: 1;
-  font-family: var(--font-sf-ui-text), sans-serif;
+  font-family: var(--font-inter), sans-serif;
   font-weight: 600;
   font-size: 20px;
   line-height: 24px;
@@ -49,6 +49,16 @@
   border: none;
   border-radius: 8px;
   color: var(--content-grey);
+}
+
+.selector svg, .selector img {
+  width: 20px;
+  height: 20px;
+}
+
+.selector svg:last-child {
+  width: 16px;
+  height: 16px;
 }
 
 .selector:disabled {
@@ -85,31 +95,20 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  font-size: 12px;
-  line-height: 16px;
   color: var(--content-dimmed-light);
 }
 
-.balance {
-}
-
-.maxBalance {
-  color: var(--accent-primary);
-  background: transparent;
-  border: none;
-  cursor: pointer;
-}
-
-.maxBalance:hover {
-  color: var(--content-primary);
-}
-
 @media (min-width: 1024px) {
+  .selector svg, .selector img {
+    width: 24px;
+    height: 24px;
+  }
+
   .currencyBox {
     padding: 12px 16px;
   }
 
-  .title, .estimateAndBalance {
+  .title, .balance {
     font-size: 13px;
     line-height: 18px;
   }

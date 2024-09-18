@@ -65,13 +65,8 @@ const FaucetClaim = () => {
       return;
     }
 
-    const claimData = await claim();
-    const result = await claimData?.waitForResult();
-    if (result?.transactionResult.status === 'success') {
-      openSuccessModal();
-      await refetchFaucetAllowed();
-    }
-  }, [allStepsCompleted, claim, openFailureModal, openSuccessModal, refetchFaucetAllowed]);
+    await claim();
+  }, [allStepsCompleted, claim, openFailureModal]);
 
   const handleFollowClick = () => {
     openNewTab('https://x.com/MiraProtocol');
@@ -171,9 +166,7 @@ const FaucetClaim = () => {
         </ActionButton>
         {promptEthClaim && (
           <p className={styles.ethFaucetText}>
-            You&apos;ll need test ETH to complete the transaction. Get it
-            &nbsp;
-            <a href={faucetLink} target="_blank">here</a>
+            You&apos;ll need test ETH to complete the transaction. Get it <a href={faucetLink} target="_blank">here</a>
           </p>
         )}
       </div>

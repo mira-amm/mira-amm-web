@@ -1,4 +1,4 @@
-import {ChangeEvent, memo} from "react";
+import {ChangeEvent, memo, useCallback} from "react";
 import {clsx} from "clsx";
 
 import Coin from "@/src/components/common/Coin/Coin";
@@ -7,6 +7,8 @@ import {CurrencyBoxMode} from "@/src/components/common/Swap/Swap";
 import {CoinName, coinsConfig} from "@/src/utils/coinsConfig";
 
 import styles from './CurrencyBox.module.css';
+import TextButton from "@/src/components/common/TextButton/TextButton";
+import {MinEthValue} from "@/src/utils/constants";
 
 type Props = {
   value: string;
@@ -36,9 +38,12 @@ const CurrencyBox = ({ value, coin, mode, balance, setAmount, loading, onCoinSel
     }
   };
 
-  const handleBalanceClick = () => {
-    setAmount(balance.toString());
-  }
+  const handleMaxClick = useCallback(() => {
+    const amount = coin === 'ETH' && mode === 'sell' ?
+      (balance - MinEthValue).toFixed(9) :
+      balance.toString();
+    setAmount(amount);
+  }, [coin, mode, balance, setAmount]);
 
   const coinNotSelected = coin === null;
 
@@ -81,9 +86,9 @@ const CurrencyBox = ({ value, coin, mode, balance, setAmount, loading, onCoinSel
             <span className={styles.balance}>
               Balance: {balanceValue}
               &nbsp;
-              <button className={styles.maxBalance} onClick={handleBalanceClick}>
+              <TextButton onClick={handleMaxClick}>
                 Max
-              </button>
+              </TextButton>
             </span>
           )}
         </div>

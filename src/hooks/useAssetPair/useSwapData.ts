@@ -1,5 +1,5 @@
 import {useMemo} from "react";
-import type {AssetIdInput} from "mira-dex-ts/src/typegen/amm-contract/AmmContractAbi";
+import {AssetIdInput} from "mira-dex-ts/dist/sdk/typegen/MiraAmmContract";
 
 import {SwapState} from "@/src/components/common/Swap/Swap";
 import {coinsConfig} from "@/src/utils/coinsConfig";
@@ -21,7 +21,6 @@ const useSwapData = (swapState: SwapState): SwapData => {
 
     const sellAssetId = coinsConfig.get(sellCoin)?.assetId!;
     const buyAssetId = coinsConfig.get(buyCoin)?.assetId!;
-    const mimicAssetId = coinsConfig.get('MIMIC')?.assetId!;
 
     const sellDecimals = coinsConfig.get(sellCoin)?.decimals!;
     const buyDecimals = coinsConfig.get(buyCoin)?.decimals!;
@@ -32,17 +31,8 @@ const useSwapData = (swapState: SwapState): SwapData => {
     const buyAssetIdInput: AssetIdInput = {
       bits: buyAssetId,
     };
-    const mimicAssetIdInput: AssetIdInput = {
-      bits: mimicAssetId,
-    };
 
-    let assets: [AssetIdInput, AssetIdInput];
-
-    // if (sellCoin !== 'MIMIC' && buyCoin !== 'MIMIC') {
-    //   assets = [sellAssetIdInput, mimicAssetIdInput, buyAssetIdInput];
-    // } else {
-    assets = [sellAssetIdInput, buyAssetIdInput];
-    // }
+    const assets: [AssetIdInput, AssetIdInput] = [sellAssetIdInput, buyAssetIdInput];
 
     return {
       sellAssetId,

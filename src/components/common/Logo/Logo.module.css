@@ -1,9 +1,9 @@
 .logo {
-  font-family: var(--font-sf-compact-text), sans-serif;
-  font-weight: 900;
-  font-size: 24px;
-  line-height: 28px;
-  text-transform: uppercase;
+  width: 64px;
+  height: 32px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
   color: var(--content-primary);
 }
 

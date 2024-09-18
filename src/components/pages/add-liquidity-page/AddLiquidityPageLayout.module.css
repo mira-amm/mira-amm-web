@@ -1,0 +1,15 @@
+.addLiquidityLayout {
+  display: flex;
+  flex-direction: column;
+  padding: 16px;
+  gap: 16px;
+}
+
+@media (min-width: 1024px) {
+  .addLiquidityLayout {
+    min-height: calc(100vh - 157px);
+    max-width: 524px;
+    margin: 0 auto;
+    padding: 32px 16px;
+  }
+}

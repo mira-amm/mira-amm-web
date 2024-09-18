@@ -11,7 +11,8 @@ import LaunchAppButton from "@/src/components/common/LaunchAppButton/LaunchAppBu
 import TestnetLabel from "@/src/components/common/TestnetLabel/TestnetLabel";
 import DisconnectDesktop from "@/src/components/common/ConnectButton/DisconnectDesktop";
 import DisconnectMobile from "@/src/components/common/ConnectButton/DisconnectMobile";
-import { useIsConnected } from "@fuels/react";
+import {useIsConnected} from "@fuels/react";
+import useFaucetLink from "@/src/hooks/useFaucetLink";
 
 type Props = {
   isHomePage?: boolean;
@@ -20,15 +21,18 @@ type Props = {
 const Header = ({ isHomePage }: Props) => {
   const pathname = usePathname();
   const { isConnected } = useIsConnected();
+  const faucetLink = useFaucetLink();
 
   return (
     <header className={styles.header}>
-      <section className={styles.promo}>
-        Trade, Earn and get Rewards using the most efficient AMM on Fuel
-        {/*<IconButton onClick={() => setPromoHidden(true)} className={styles.promoClose}>*/}
-        {/*  <CloseIcon />*/}
-        {/*</IconButton>*/}
-      </section>
+      {isHomePage && (
+        <section className={styles.promo}>
+          Trade, Earn and get Rewards using the most efficient AMM on Fuel
+          {/*<IconButton onClick={() => setPromoHidden(true)} className={styles.promoClose}>*/}
+          {/*  <CloseIcon />*/}
+          {/*</IconButton>*/}
+        </section>
+      )}
       <section className={styles.main}>
         <div className={styles.left}>
           <Logo />
@@ -42,22 +46,15 @@ const Header = ({ isHomePage }: Props) => {
             >
               Swap
             </Link>
-            <div className={styles.linkAlike}>
+            <Link href="/liquidity" className={clsx(styles.link, pathname.includes('/liquidity') && styles.activeLink)}>
               Liquidity
-              <SoonLabel className={styles.hiddenLabel} />
-            </div>
-            <Link
-              href="/faucet"
-              className={clsx(
-                styles.link,
-                pathname.includes("/faucet") && styles.activeLink
-              )}
-            >
-              Faucet
             </Link>
+            <a href={faucetLink} className={styles.link} target="_blank">
+              ETH Faucet
+            </a>
             <div className={styles.pointsText}>
               Points
-              <SoonLabel className={styles.hiddenLabel} />
+              <SoonLabel className={styles.hiddenLabel}/>
             </div>
           </div>
         </div>

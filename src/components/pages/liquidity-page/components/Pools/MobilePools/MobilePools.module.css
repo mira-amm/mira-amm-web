@@ -1,0 +1,13 @@
+.mobilePools {
+  display: flex;
+  flex-direction: column;
+  padding: 16px;
+  border-radius: 16px;
+  background-color: var(--background-grey-dark);
+}
+
+.separator {
+  height: 1px;
+  background-color: var(--background-grey-light);
+  margin: 16px -16px;
+}

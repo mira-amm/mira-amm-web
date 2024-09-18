@@ -9,6 +9,7 @@ import CloseIcon from "@/src/components/icons/Close/CloseIcon";
 import Link from "next/link";
 import SoonLabel from "@/src/components/common/SoonLabel/SoonLabel";
 import {DiscordLink, XLink} from "@/src/utils/constants";
+import useFaucetLink from "@/src/hooks/useFaucetLink";
 
 type Props = {
   expanded: boolean;
@@ -17,6 +18,8 @@ type Props = {
 
 const MobileMenuContent = ({ expanded, toggleExpandedState }: Props) => {
   const isBrowser = useIsClient();
+
+  const faucetLink = useFaucetLink();
 
   if (!isBrowser) {
     return null;
@@ -31,13 +34,10 @@ const MobileMenuContent = ({ expanded, toggleExpandedState }: Props) => {
         </button>
       </div>
       <nav className={styles.links}>
-        <Link href='/swap'>Swap</Link>
-        <a className={styles.linkWithLabel}>
-          Liqudity
-          <SoonLabel />
-        </a>
+        <Link href="/swap">Swap</Link>
+        <Link href="/liquidity">Liquidity</Link>
         {/*<a href="#">Docs</a>*/}
-        <Link href='/faucet'>Faucet</Link>
+        <a href={faucetLink} target="_blank">ETH Faucet</a>
         <a>Testnet</a>
         {/*<a href="#">Github</a>*/}
         <a href={DiscordLink} target="_blank">Discord</a>

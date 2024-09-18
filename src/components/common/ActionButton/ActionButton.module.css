@@ -4,7 +4,7 @@
     align-items: center;
     padding: 16px 0;
     text-align: center;
-    font-family: var(--font-sf-ui-text), sans-serif;
+    font-family: var(--font-inter), sans-serif;
     font-weight: 600;
     font-size: 18px;
     line-height: 22px;
@@ -55,4 +55,21 @@
 
 .secondary:active {
     background-color: #B6FA081A;
+}
+
+.outlined {
+    border: 1px solid var(--accent-primary);
+    background: transparent;
+    color: var(--accent-primary);
+    box-shadow: none;
+    transition: opacity 0.2s;
+}
+
+.outlined:hover {
+    box-shadow: none;
+    opacity: 0.8;
+}
+
+.fullWidth {
+    width: 100%;
 }
