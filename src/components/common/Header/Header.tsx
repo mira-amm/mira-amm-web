@@ -13,7 +13,7 @@ import DisconnectDesktop from "@/src/components/common/ConnectButton/DisconnectD
 import DisconnectMobile from "@/src/components/common/ConnectButton/DisconnectMobile";
 import {useIsConnected} from "@fuels/react";
 import useFaucetLink from "@/src/hooks/useFaucetLink";
-import { BlogLink } from "@/src/utils/constants";
+import { BlogLink, TestnetUrl } from "@/src/utils/constants";
 
 type Props = {
   isHomePage?: boolean;
@@ -53,11 +53,12 @@ const Header = ({ isHomePage }: Props) => {
             <a href={faucetLink} className={styles.link} target="_blank">
               ETH Faucet
             </a>
-            <a href={BlogLink} className={styles.link} target="_blank">Blog</a>
             <div className={styles.pointsText}>
               Points
               <SoonLabel className={styles.hiddenLabel}/>
             </div>
+            <a href={BlogLink} className={styles.link} target="_blank">Blog</a>
+            <a href={TestnetUrl} className={styles.link} target="_blank">Testnet</a>
           </div>
         </div>
         <div className={clsx("mobileOnly", styles.links)}>
