@@ -76,12 +76,13 @@
 
   .links {
     flex: 1;
-    gap: 44px;
     flex-direction: row;
+    justify-content: space-between;
     color: #FFFFFF;
     font-size: 18px;
     line-height: 24px;
     font-weight: 500;
+    width: 650px;
   }
 
   .fuelText {

@@ -1,5 +1,5 @@
 import Logo from "@/src/components/common/Logo/Logo";
-import { DiscordLink, XLink } from "@/src/utils/constants";
+import { BlogLink, DiscordLink, XLink } from "@/src/utils/constants";
 
 import styles from "./Footer.module.css";
 import { FuelIcon } from "../../icons";
@@ -29,6 +29,9 @@ const Footer = () => {
             </a>
             <a href="/" target="_blank">
               Documentation
+            </a>
+            <a href={BlogLink} target="_blank">
+              Blog
             </a>
             <a href="/" target="_blank">
               Contact us
@@ -63,6 +66,9 @@ const Footer = () => {
             </a>
             <a href="/" target="_blank">
               Documentation
+            </a>
+            <a href={BlogLink} target="_blank">
+              Blog
             </a>
             <a href="/" target="_blank">
               Contact us

@@ -16,5 +16,7 @@ export const XLink = 'https://x.com/MiraProtocol' as const;
 
 export const TestnetUrl = 'https://testnet.fuel.network/v1/graphql' as const;
 
+export const BlogLink = "https://mirror.xyz/miraly.eth" as const;
+
 export const MinEthValue = 0.001 as const;
 export const MinEthValueBN = MinEthValue * 10 ** 9;
