@@ -4,12 +4,18 @@
   font-weight: 400;
 }
 
+@font-face {
+  font-family: "Inter";
+  src: url(../../../../public/fonts/Inter_18pt-Light.ttf);
+  font-weight: 300;
+}
+
 .usedTechs {
   display: flex;
   gap: 10px;
   font-size: 20px;
   line-height: 24px;
-  font-weight: 400;
+  font-weight: 300;
   align-items: center;
   font-family: "Inter";
 }
