@@ -1,11 +1,11 @@
 @font-face {
-  font-family: "SF UI Text";
-  src: url(../../../../public/fonts/SF-UI-Text-Medium.ttf);
+  font-family: "Inter";
+  src: url(../../../../public/fonts/Inter_18pt-Medium.ttf);
   font-weight: 500;
 }
 
 .footer {
-  font-family: "SF UI Text";
+  font-family: "Inter";
   display: flex;
   flex-direction: column;
   color: var(--content-dimmed-light);

@@ -1,6 +1,6 @@
 @font-face {
-    font-family: "SF UI Text";
-    src: url(../../../../public/fonts/SF-UI-Text-Medium.ttf);
+    font-family: "Inter";
+    src: url(../../../../public/fonts/Inter_18pt-Medium.ttf);
     font-weight: 500;
 }
 
@@ -16,7 +16,7 @@
 }
 
 .text {
-    font-family: "SF UI Text";
+    font-family: "Inter";
     font-weight: 500;
     font-size: 16px;
     line-height: 24px;
