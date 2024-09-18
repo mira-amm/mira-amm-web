@@ -1,12 +1,12 @@
 @font-face {
-    font-family: "SF UI Text";
-    src: url(../../../../public/fonts/SF-UI-Text-Semibold.ttf);
+    font-family: "Inter";
+    src: url(../../../../public/fonts/Inter_18pt-SemiBold.ttf);
     font-weight: 600;
 }
 
 @font-face {
-    font-family: "SF UI Text";
-    src: url(../../../../public/fonts/SF-UI-Text-Medium.ttf);
+    font-family: "Inter";
+    src: url(../../../../public/fonts/Inter_18pt-Medium.ttf);
     font-weight: 500;
 }
 
@@ -23,7 +23,7 @@
 }
 
 .title {
-    font-family: "SF UI Text";
+    font-family: "Inter";
     font-weight: 600;
     font-size: 26px;
     line-height: 32px;

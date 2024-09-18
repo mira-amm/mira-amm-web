@@ -1,12 +1,6 @@
 @font-face {
-    font-family: "SF UI Display";
-    src: url(../../../../public/fonts/sf-ui-display-medium.otf);
-    font-weight: 600;
-}
-
-@font-face {
-    font-family: "SF UI Text";
-    src: url(../../../../public/fonts/SF-UI-Text-Semibold.ttf);
+    font-family: "Inter";
+    src: url(../../../../public/fonts/Inter_18pt-SemiBold.ttf);
     font-weight: 600;
 }
 
@@ -17,7 +11,7 @@
     background-color: #2E2E2E;
     border: none;
     color: #FFFFFF;
-    font-family: "SF UI Display";
+    font-family: "Inter";
     font-weight: 600;
     font-size: 18px;
     line-height: 22px;
@@ -33,6 +27,5 @@
     .button {
         width: 100%;
         line-height: 24px;
-        font-family: "SF UI Text";
     }
 }
