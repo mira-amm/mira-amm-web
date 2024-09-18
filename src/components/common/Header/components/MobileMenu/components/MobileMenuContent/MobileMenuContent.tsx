@@ -8,7 +8,7 @@ import {clsx} from "clsx";
 import CloseIcon from "@/src/components/icons/Close/CloseIcon";
 import Link from "next/link";
 import SoonLabel from "@/src/components/common/SoonLabel/SoonLabel";
-import {DiscordLink, XLink} from "@/src/utils/constants";
+import {BlogLink, DiscordLink, XLink} from "@/src/utils/constants";
 import useFaucetLink from "@/src/hooks/useFaucetLink";
 
 type Props = {
@@ -40,6 +40,7 @@ const MobileMenuContent = ({ expanded, toggleExpandedState }: Props) => {
         <a href={faucetLink} target="_blank">ETH Faucet</a>
         <a>Testnet</a>
         {/*<a href="#">Github</a>*/}
+        <a href={BlogLink} target="_blank">Blog</a>
         <a href={DiscordLink} target="_blank">Discord</a>
         <a href={XLink} target="_blank">X</a>
       </nav>
