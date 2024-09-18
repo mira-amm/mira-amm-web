@@ -113,7 +113,7 @@ const LandingPageLayout = () => {
           <MiraApp />
         </section>
         <section className={styles.bottomBlock}>
-          <h3>Join early</h3>
+          <h3>Be early</h3>
           <p className={styles.subheading}>
             Connect with our thriving community
           </p>
@@ -223,7 +223,7 @@ const LandingPageLayout = () => {
         </section>
         <section className={styles.bottomBlock}>
           <div className={styles.bottomBlockText}>
-            <h3>Join early</h3>
+            <h3>Be early</h3>
             <p className={styles.connect}>
               Connect with our thriving community
             </p>
