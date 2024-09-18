@@ -17,23 +17,26 @@ const Footer = () => {
         <div className={styles.content}>
           <Logo />
           <div className={styles.fuelWrapper}>
-            <p className={styles.fuelText}>*Built with love on Fuel</p>
-            <FuelIcon />
+          <p className={styles.fuelText}>MIRA launched as a basic AMM and will transition to ve(3,3) soon.</p>
+            {/* <FuelIcon /> */}
           </div>
           <div className={styles.links}>
-            <a className={styles.supportLink} href="/">
+            <a className={styles.supportLink} href={DiscordLink}>
               Support
             </a>
-            <a href="/" target="_blank">
+            {/* <a href="/" target="_blank">
               Partner with us
+            </a> */}
+            <a href="https://docs.mira.ly" target="_blank">
+              Docs
             </a>
-            <a href="/" target="_blank">
-              Documentation
+            <a href="https://docs.mira.ly/resources/media-kit" target="_blank">
+              Media Kit
             </a>
             <a href={BlogLink} target="_blank">
               Blog
             </a>
-            <a href="/" target="_blank">
+            <a href="mailto:hi@mira.ly" target="_blank">
               Contact us
             </a>
           </div>
@@ -58,19 +61,25 @@ const Footer = () => {
         <div className={styles.content}>
           <Logo />
           <div className={styles.links}>
-            <a className={styles.supportLink} href="/">
+            <a className={styles.supportLink} href={DiscordLink}>
               Support
             </a>
-            <a href="/" target="_blank">
+            {/* <a href="/" target="_blank">
               Partner with us
+            </a> */}
+            <a href="https://docs.mira.ly" target="_blank">
+              Docs
             </a>
-            <a href="/" target="_blank">
-              Documentation
+            <a href="https://docs.mira.ly/resources/media-kit" target="_blank">
+              Media Kit
+            </a>
+            <a href="https://docs.mira.ly/developer-guides/security-audit" target="_blank">
+            Security Audit 
             </a>
             <a href={BlogLink} target="_blank">
               Blog
             </a>
-            <a href="/" target="_blank">
+            <a href="mailto:hi@mira.ly" target="_blank">
               Contact us
             </a>
           </div>
@@ -88,8 +97,8 @@ const Footer = () => {
         </div>
         <div className={styles.copywright}>
           <div className={styles.fuelWrapper}>
-            <p className={styles.fuelText}>*Built with love on Fuel</p>
-            <FuelIcon />
+            <p className={styles.fuelText}>MIRA launched as a basic AMM and will transition to ve(3,3) soon.</p>
+            {/* <FuelIcon /> */}
           </div>
           <p className="desktopOnly">&copy; {currentYear} Mira Finance</p>
         </div>
