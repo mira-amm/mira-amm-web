@@ -100,6 +100,7 @@
     flex-direction: row;
     width: 100%;
     gap: 72px;
+    margin-bottom: -15px;
   }
 
   .left {
@@ -139,7 +140,7 @@
 
   .divider {
     padding: 28px 0;
-    margin-bottom: 20px; 
+    margin-bottom: 20px;
   }
 
   .bottomBlock {
