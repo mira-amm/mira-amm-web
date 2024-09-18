@@ -39,7 +39,7 @@ const LandingPageLayout = () => {
           </h2>
           <div className={styles.buttonsArea}>
           <LaunchAppButton className={styles.launchAppButton} />
-          <LearnMoreButton />
+          {/* <LearnMoreButton /> */}
           </div>
           <div className={styles.fuel}>
             <FuelIcon />
@@ -145,7 +145,7 @@ const LandingPageLayout = () => {
             </h2>
             <div className={styles.buttonsArea}>
             <LaunchAppButton className={styles.launchAppButton} />
-            <LearnMoreButton />
+            {/* <LearnMoreButton /> */}
             </div>
             <div className={styles.fuel}>
               <FuelIcon />
