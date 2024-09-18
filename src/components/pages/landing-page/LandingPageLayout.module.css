@@ -92,9 +92,9 @@
     margin: 0 auto;
   }
 
-  .miraBlock {
+  /* .miraBlock {
     display: flex !important;
-  }
+  } */
 
   .topBlock {
     flex-direction: row;
