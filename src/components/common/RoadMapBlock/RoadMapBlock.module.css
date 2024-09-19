@@ -29,6 +29,7 @@
     line-height: 30px;
     font-weight: 600;
     text-align: center;
+    min-height: 120px;
 }
 
 .done {
@@ -51,6 +52,7 @@
 .checkboxArea {
     display: flex;
     align-items: center;
+    justify-self: flex-end;
     gap: 8px;
     padding-top: 8px;
 }
@@ -59,5 +61,9 @@
     .roadMapBlock {
         width: 100%;
         margin: 0;
+    }
+
+    .title {
+        min-height: 0;
     }
 }
