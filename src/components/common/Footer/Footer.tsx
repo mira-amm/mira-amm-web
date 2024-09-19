@@ -21,7 +21,7 @@ const Footer = () => {
             {/* <FuelIcon /> */}
           </div>
           <div className={styles.links}>
-            <a className={styles.supportLink} href={DiscordLink}>
+            <a className={styles.link} href={DiscordLink}>
               Support
             </a>
             {/* <a href="/" target="_blank">
@@ -64,39 +64,39 @@ const Footer = () => {
         <div className={styles.content}>
           <Logo />
           <div className={styles.links}>
-            <a className={styles.supportLink} href={DiscordLink}>
+            <a className={styles.link} href={DiscordLink}>
               Support
             </a>
             {/* <a href="/" target="_blank">
               Partner with us
             </a> */}
-            <a href="https://docs.mira.ly/resources/media-kit" target="_blank">
+            <a className={styles.link} href="https://docs.mira.ly/resources/media-kit" target="_blank">
               Media Kit
             </a>
-            <a href="https://docs.mira.ly/developer-guides/security-audit" target="_blank">
+            <a className={styles.link} href="https://docs.mira.ly/developer-guides/security-audit" target="_blank">
             Security Audit 
             </a>
-            <a href="https://docs.mira.ly" target="_blank">
+            <a className={styles.link} href="https://docs.mira.ly" target="_blank">
               Docs
             </a>
-            <a href={BlogLink} target="_blank">
+            <a className={styles.link} href={BlogLink} target="_blank">
               Blog
             </a>
-            <a href={TestnetUrl} target="_blank">
+            <a className={styles.link} href={TestnetUrl} target="_blank">
               Testnet
             </a>
-            <a href="mailto:hi@mira.ly" target="_blank">
+            <a className={styles.link} href="mailto:hi@mira.ly" target="_blank">
               Contact us
             </a>
           </div>
           <div className={styles.socialLinks}>
-            <a href="/" target="_blank">
+            <a className={styles.socialLink} href="/" target="_blank">
               <Github />
             </a>
-            <a href={DiscordLink} target="_blank">
+            <a className={styles.socialLink} href={DiscordLink} target="_blank">
               <DiscordIcon />
             </a>
-            <a href={XLink} target="_blank">
+            <a className={styles.socialLink} href={XLink} target="_blank">
               <X />
             </a>
           </div>

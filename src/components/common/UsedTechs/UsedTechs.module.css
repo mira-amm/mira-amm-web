@@ -33,3 +33,9 @@
     min-width: 81px;
   }
 }
+
+@media (max-width: 464px) {
+  .text {
+    font-size: 14px;
+  }
+}

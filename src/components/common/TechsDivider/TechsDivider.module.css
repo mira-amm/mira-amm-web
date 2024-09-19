@@ -23,7 +23,15 @@
   }
 }
 
-@media (max-width: 1024px) {
+@media (max-width: 1200px) {
+  .techsDivider {
+    gap: 16px;
+    margin: 0 100px 0 41px;
+    padding: 16px;
+  }
+}
+
+@media (max-width: 900px) {
   .techsDivider {
     align-items: flex-start;
     gap: 16px;
