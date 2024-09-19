@@ -35,7 +35,7 @@ body {
 
 body {
   min-height: 100vh;
-  font-weight: 400;
+  font-weight: 300;
   font-size: 16px;
   line-height: 22px;
   color: var(--content-primary);
@@ -106,7 +106,7 @@ input:focus {
   }
 }
 
-@media (max-width: 1023px) {
+@media (max-width: 1024px) {
   .desktopOnly {
     display: none !important;
   }
