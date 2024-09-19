@@ -39,10 +39,6 @@
   gap: 12px;
 }
 
-.supportLink {
-  color: rgba(255, 255, 255, 0.64);
-}
-
 .fuelText {
   color: #FFFFFF;
   font-weight: 500;
@@ -105,7 +101,7 @@
   }
 
   .supportLink {
-    color: rgba(255, 255, 255, 0.8);
+    color: #FFFFFF;
   }
 
   .socialLinks {

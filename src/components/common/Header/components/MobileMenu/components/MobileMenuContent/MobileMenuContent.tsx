@@ -42,7 +42,6 @@ const MobileMenuContent = ({ expanded, toggleExpandedState }: Props) => {
         <a href={XLink} target="_blank">X</a>
         <a href="https://docs.mira.ly">Docs</a>
         <a href={BlogLink} target="_blank">Blog</a>
-        <a href={TestnetUrl} target="_blank">Testnet</a>
       </nav>
     </div>,
     document.body
