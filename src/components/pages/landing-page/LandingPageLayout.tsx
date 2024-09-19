@@ -87,23 +87,23 @@ const LandingPageLayout = () => {
             <InfoBlocks>
               <RoadMapBlock
                 logo={<RoadMapIcon text="Testnet" />}
-                title="Launch a basic DEX with stable swaps"
+                title="Basic AMM with volatile and stable swaps feature complete"
                 description="July 2024"
                 done={true}
               />
               <RoadMapBlock
                 logo={<RoadMapIcon text="Mainnet" />}
-                title="MIRA is LIVE on the same day as Fuel"
+                title="Basic AMM is live on Fuel L2 Mainnet with Fuel network points"
                 description="Day one of the Fuel mainnet"
               />
               <RoadMapBlock
-                logo={<RoadMapIcon text="POINTS" />}
-                title="POINTS: Both MIRA and Fuel programs"
+                logo={<RoadMapIcon text="Mainnet" />}
+                title="Mira dapp points program"
                 description="After Fuel goes live on the mainnet"
               />
               <RoadMapBlock
-                logo={<RoadMapIcon text="Ve(3,3)" />}
-                title="Launch of ve(3,3) features and governance "
+                logo={<RoadMapIcon text="Mainnet" />}
+                title="ve(3,3) features and governance"
                 description="Late 2024 / Early 2025"
               />
             </InfoBlocks>
@@ -195,23 +195,23 @@ const LandingPageLayout = () => {
             <InfoBlocks>
               <RoadMapBlock
                 logo={<RoadMapIcon text="Testnet" />}
-                title="Launch a basic DEX with stable swaps"
+                title="Basic AMM with volatile and stable swaps feature complete"
                 description="July 2024"
                 done={true}
               />
               <RoadMapBlock
                 logo={<RoadMapIcon text="Mainnet" />}
-                title="MIRA is LIVE on the same day as Fuel"
+                title="Basic AMM is live on Fuel L2 Mainnet with Fuel network points"
                 description="Day one of the Fuel mainnet"
               />
               <RoadMapBlock
-                logo={<RoadMapIcon text="POINTS" />}
-                title="POINTS: Both MIRA and Fuel programs"
+                logo={<RoadMapIcon text="Mainnet" />}
+                title="Mira dapp points program"
                 description="After Fuel goes live on the mainnet"
               />
               <RoadMapBlock
-                logo={<RoadMapIcon text="Ve(3,3)" />}
-                title="Launch of  ve(3,3) features and governance "
+                logo={<RoadMapIcon text="Mainnet" />}
+                title="ve(3,3) features and governance"
                 description="Late 2024 / Early 2025"
               />
             </InfoBlocks>
