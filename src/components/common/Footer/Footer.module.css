@@ -81,6 +81,24 @@
     width: 650px;
   }
 
+  .link {
+    transition: all 0.3s ease;
+  }
+
+  .socialLink {
+    transition: all 0.3s ease;
+  }
+
+  .socialLink:hover {
+    transition: all 0.3s ease;
+    opacity: 0.64;
+  }
+
+  .link:hover {
+    color: #FFFFFFA3;
+    transition: all 0.3s ease;
+  }
+
   .fuelText {
     color: rgba(255, 255, 255, 0.8);
     font-weight: 500;

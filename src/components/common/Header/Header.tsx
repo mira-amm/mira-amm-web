@@ -57,7 +57,7 @@ const Header = ({ isHomePage }: Props) => {
               Points
               <SoonLabel className={styles.hiddenLabel}/>
             </div>
-            <a href="https://docs.mira.ly">Docs</a>
+            <a className={styles.link} href="https://docs.mira.ly">Docs</a>
             <a href={BlogLink} className={styles.link} target="_blank">Blog</a>
           </div>
         </div>
