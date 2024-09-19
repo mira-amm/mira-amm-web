@@ -12,6 +12,15 @@
   gap: 164px;
 }
 
+.TechsDividerLink {
+  transition: 0.3s all ease;
+}
+
+.TechsDividerLink:hover {
+  transition: 0.3s all ease;
+  opacity: 0.64;
+}
+
 @media (max-width: 1365px) {
   .techsDivider {
     justify-content: space-between;
