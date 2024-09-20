@@ -46,6 +46,7 @@ const Providers = ({children}: Props) => {
   let connectors: FuelConnector[] = [];
   if (typeof window !== 'undefined') {
     connectors = isMobile ? [
+      new FueletWalletConnector(),
       new BurnerWalletConnector(),
       new WalletConnectConnector({
         projectId: WalletConnectProjectId,
