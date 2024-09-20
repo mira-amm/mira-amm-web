@@ -9,7 +9,7 @@
     height: 64px;
 }
 
-@media (max-width: 1024px) {
+/* @media (max-width: 500px) {
     .iconBackground {
         display: flex;
         flex-direction: column;
@@ -20,4 +20,4 @@
         width: 64px;
         height: 64px;
     }
-}
+} */

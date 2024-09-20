@@ -9,7 +9,6 @@
 
 .logosArea {
   display: flex;
-  gap: 164px;
 }
 
 .TechsDividerLink {
@@ -21,13 +20,22 @@
   opacity: 0.64;
 }
 
+.scrollingContent {
+  display: flex;
+  gap: 164px;
+}
+
+.mobileOnly {
+  display: none;
+}
+
 @media (max-width: 1365px) {
   .techsDivider {
     justify-content: space-between;
     gap: 0;
   }
 
-  .logosArea {
+  .scrollingContent {
     gap: 120px;
   }
 }
@@ -46,12 +54,51 @@
     gap: 16px;
     flex-direction: column;
     margin: 0;
-    padding: 16px;
+    padding: 16px 0 16px 0;
   }
 
   .logosArea {
-    gap: 16px;
-    overflow-x: scroll;
     max-height: 22px;
+    display: flex;
+    overflow: hidden; 
+  }
+
+  .scrollingContent {
+    animation: scroll 30s linear infinite;
+    gap: 16px;
+  }
+
+  @keyframes scroll {
+    0% {
+      transform: translateX(0);
+    }
+    100% {
+      transform: translateX(-50%);
+    }
+  }
+
+  .mobileOnly {
+    display: flex;
   }
 }
+
+@media (max-width: 768px) {
+  .techsDivider {
+    padding: 16px 0 16px 0;
+  }
+
+  .mobileOnly {
+    display: flex;
+  }
+
+  .scrollingContent {
+    animation: scroll 30s linear infinite;
+    gap: 16px;
+  }
+
+  .fuelIcon {
+    margin-left: 12px;
+  }
+}
+
+

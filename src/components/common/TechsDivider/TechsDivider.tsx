@@ -12,16 +12,128 @@ export const TechsDivider = () => {
         <DividerText text="Trade with confidence" />
       </li>
       <div className={styles.logosArea}>
-      <li>
-        <UsedTechs text="Audited by">
-          <a className={styles.TechsDividerLink} href="https://docs.mira.ly/developer-guides/security-audit"><Halborn /></a>
-        </UsedTechs>
-      </li>
-      <li>
-        <UsedTechs text="Supported by">
-        <a className={styles.TechsDividerLink} href="https://fuel.network"><FuelGroup /></a>
-        </UsedTechs>
-      </li>
+        <div className={styles.scrollingContent}>
+          <li>
+            <UsedTechs text="Audited by">
+              <a
+                className={styles.TechsDividerLink}
+                href="https://docs.mira.ly/developer-guides/security-audit"
+              >
+                <Halborn />
+              </a>
+            </UsedTechs>
+          </li>
+          <li>
+            <UsedTechs text="Supported by">
+              <a
+                className={styles.TechsDividerLink}
+                href="https://fuel.network"
+              >
+                <div className={styles.fuelIcon}><FuelGroup /></div>
+              </a>
+            </UsedTechs>
+          </li>
+          <li className={styles.mobileOnly}>
+            <UsedTechs text="Audited by">
+              <a
+                className={styles.TechsDividerLink}
+                href="https://docs.mira.ly/developer-guides/security-audit"
+              >
+                <Halborn />
+              </a>
+            </UsedTechs>
+          </li>
+          <li className={styles.mobileOnly}>
+            <UsedTechs text="Supported by">
+              <a
+                className={styles.TechsDividerLink}
+                href="https://fuel.network"
+              >
+                <div className={styles.fuelIcon}><FuelGroup /></div>
+              </a>
+            </UsedTechs>
+          </li>
+          <li className={styles.mobileOnly}>
+            <UsedTechs text="Audited by">
+              <a
+                className={styles.TechsDividerLink}
+                href="https://docs.mira.ly/developer-guides/security-audit"
+              >
+                <Halborn />
+              </a>
+            </UsedTechs>
+          </li>
+          <li className={styles.mobileOnly}>
+            <UsedTechs text="Supported by">
+              <a
+                className={styles.TechsDividerLink}
+                href="https://fuel.network"
+              >
+                <div className={styles.fuelIcon}><FuelGroup /></div>
+              </a>
+            </UsedTechs>
+          </li>
+          <li className={styles.mobileOnly}>
+            <UsedTechs text="Audited by">
+              <a
+                className={styles.TechsDividerLink}
+                href="https://docs.mira.ly/developer-guides/security-audit"
+              >
+                <Halborn />
+              </a>
+            </UsedTechs>
+          </li>
+          <li className={styles.mobileOnly}>
+            <UsedTechs text="Supported by">
+              <a
+                className={styles.TechsDividerLink}
+                href="https://fuel.network"
+              >
+                <div className={styles.fuelIcon}><FuelGroup /></div>
+              </a>
+            </UsedTechs>
+          </li>
+          <li className={styles.mobileOnly}>
+            <UsedTechs text="Audited by">
+              <a
+                className={styles.TechsDividerLink}
+                href="https://docs.mira.ly/developer-guides/security-audit"
+              >
+                <Halborn />
+              </a>
+            </UsedTechs>
+          </li>
+          <li className={styles.mobileOnly}>
+            <UsedTechs text="Supported by">
+              <a
+                className={styles.TechsDividerLink}
+                href="https://fuel.network"
+              >
+                <div className={styles.fuelIcon}><FuelGroup /></div>
+              </a>
+            </UsedTechs>
+          </li>
+          <li className={styles.mobileOnly}>
+            <UsedTechs text="Audited by">
+              <a
+                className={styles.TechsDividerLink}
+                href="https://docs.mira.ly/developer-guides/security-audit"
+              >
+                <Halborn />
+              </a>
+            </UsedTechs>
+          </li>
+          <li className={styles.mobileOnly}>
+            <UsedTechs text="Supported by">
+              <a
+                className={styles.TechsDividerLink}
+                href="https://fuel.network"
+              >
+                <div className={styles.fuelIcon}><FuelGroup /></div>
+              </a>
+            </UsedTechs>
+          </li>
+        </div>
       </div>
     </Divider>
   );

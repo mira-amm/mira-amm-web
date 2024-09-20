@@ -9,14 +9,14 @@ import styles from './SwapPageLayout.module.css';
 
 const SwapPageLayout = () => {
   return (
-    <>
+    <div className={styles.swapPage}>
       <Header/>
       <main className={styles.swapLayout}>
         <BackLink />
         <Swap />
       </main>
       <Footer/>
-    </>
+    </div>
   );
 };
 

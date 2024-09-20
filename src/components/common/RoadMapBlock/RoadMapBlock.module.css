@@ -10,6 +10,12 @@
     font-weight: 500;
 }
 
+@font-face {
+    font-family: "Inter";
+    src: url(../../../../public/fonts/Inter_18pt-Regular.ttf);
+    font-weight: 400;
+}
+
 .roadMapBlock {
     background-color: #262934;
     border-radius: 16px;
@@ -27,7 +33,7 @@
     font-size: 24px;
     font-family: "Inter";
     line-height: 30px;
-    font-weight: 600;
+    font-weight: 500;
     text-align: center;
     min-height: 120px;
 }
@@ -35,7 +41,7 @@
 .done {
     font-size: 14px;
     color: #46CC44;
-    font-weight: 600;
+    font-weight: 500;
     line-height: 22px;
     text-align: center;
 }
@@ -43,7 +49,7 @@
 .description {
     font-size: 14px;
     color: #9D9D9D;
-    font-weight: 600;
+    font-weight: 500;
     line-height: 22px;
     text-align: center;
     text-wrap: nowrap;

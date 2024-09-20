@@ -69,8 +69,7 @@
   }
 
   .main {
-    padding-left: 40px;
-    padding-right: calc((100vw - 1084px)/2 + 16px);
+    padding: 16px 40px;
   }
 
   .left {

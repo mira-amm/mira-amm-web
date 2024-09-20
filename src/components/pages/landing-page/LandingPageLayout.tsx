@@ -39,37 +39,39 @@ const LandingPageLayout = () => {
             Trade, Earn and get Rewards using the most efficient AMM on Fuel
           </h2>
           <div className={styles.buttonsArea}>
-          <LaunchAppButton className={styles.launchAppButton} />
-          {/* <LearnMoreButton /> */}
+            <LaunchAppButton className={styles.launchAppButton} />
+            <LearnMoreButton />
           </div>
-          {/* <div className={styles.fuel}>
+          <div className={styles.fuel}>
             <FuelIcon />
             <span>Powered by Fuel</span>
-          </div> */}
+          </div>
         </section>
         <Swap />
         <section className={styles.divider}>
           <TechsDivider />
         </section>
         <section className={styles.mainInfo}>
+          <div className={styles.mainInfoBadge}>
+            <RoadMapIcon text="Soon" />
+          </div>
           <MainInfo
             title="Meet the First ve(3,3) DEX on Fuel*"
-            description="The highest APR for LPs, with the lowest slippage and fees on swaps among other DEXs. Learn more about ve(3,3) "
-            link="here"
+            description="The highest APR for LPs, with the lowest slippage and fees on swaps among other DEXs"
           >
             <InfoBlocks title="Simple steps to maximize efficiency">
               <StepsBlock
-                logo={<LockIcon />}
+                logo={<StepsIcon icon={<LockIcon />} />}
                 title="Lock"
                 description="your MIRA and get in return vote-escrowed MIRA (veMIRA)"
               />
               <StepsBlock
-                logo={<VoteIcon />}
+                logo={<StepsIcon icon={<VoteIcon />} />}
                 title="Vote"
                 description="veMIRA gives you the power to decide which pools should receive more MIRA emissions"
               />
               <StepsBlock
-                logo={<EarnIcon />}
+                logo={<StepsIcon icon={<EarnIcon />} />}
                 title="Earn"
                 description="After voting for a specific pool you can claim a share of the weekly incentives and trading fees allocated to that pool"
               />
@@ -99,7 +101,7 @@ const LandingPageLayout = () => {
               />
               <RoadMapBlock
                 logo={<RoadMapIcon text="Mainnet" />}
-                title="Mira dapp points program"
+                title="Mira DApps points program"
                 description="After Fuel goes live on the mainnet"
               />
               <RoadMapBlock
@@ -145,8 +147,8 @@ const LandingPageLayout = () => {
               Trade, Earn and get Rewards using the most efficient AMM on Fuel
             </h2>
             <div className={styles.buttonsArea}>
-            <LaunchAppButton className={styles.launchAppButton} />
-            {/* <LearnMoreButton /> */}
+              <LaunchAppButton className={styles.launchAppButton} />
+              {/* <LearnMoreButton /> */}
             </div>
             {/* <div className={styles.fuel}>
               <FuelIcon />
@@ -161,24 +163,26 @@ const LandingPageLayout = () => {
           <TechsDivider />
         </section>
         <section className={styles.mainInfo}>
+          <div className={styles.mainInfoBadge}>
+            <RoadMapIcon text="Soon" />
+          </div>
           <MainInfo
             title="Meet the First ve(3,3) DEX on Fuel*"
-            description="The highest APR for LPs, with the lowest slippage and fees on swaps among other DEXs. Learn more about ve(3,3) "
-            link="here"
+            description="The highest APR for LPs, with the lowest slippage and fees on swaps among other DEXs"
           >
             <InfoBlocks title="Simple steps to maximize efficiency">
               <StepsBlock
-                logo={<StepsIcon icon={< LockIcon/>} />}
+                logo={<StepsIcon icon={<LockIcon />} />}
                 title="Lock"
                 description="your MIRA and get in return vote-escrowed MIRA (veMIRA)"
               />
               <StepsBlock
-                logo={<StepsIcon icon={< VoteIcon/>} />}
+                logo={<StepsIcon icon={<VoteIcon />} />}
                 title="Vote"
                 description="veMIRA gives you the power to decide which pools should receive more MIRA emissions"
               />
               <StepsBlock
-                logo={<StepsIcon icon={< EarnIcon/>} />}
+                logo={<StepsIcon icon={<EarnIcon />} />}
                 title="Earn"
                 description="After voting for a specific pool you can claim a share of the weekly incentives and trading fees allocated to that pool"
               />
@@ -207,7 +211,7 @@ const LandingPageLayout = () => {
               />
               <RoadMapBlock
                 logo={<RoadMapIcon text="Mainnet" />}
-                title="Mira dapp points program"
+                title="Mira DApps points program"
                 description="After Fuel goes live on the mainnet"
               />
               <RoadMapBlock
@@ -220,7 +224,7 @@ const LandingPageLayout = () => {
           </MainInfo>
         </section>
         <section className={styles.miraBlock}>
-        <MiraApp />
+          <MiraApp />
         </section>
         <section className={styles.bottomBlock}>
           <div className={styles.bottomBlockText}>

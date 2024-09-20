@@ -36,9 +36,6 @@ const Footer = () => {
             <a href={BlogLink} target="_blank">
               Blog
             </a>
-            <a href={TestnetUrl} target="_blank">
-              Testnet
-            </a>
             <a href="mailto:hi@mira.ly" target="_blank">
               Contact us
             </a>
@@ -81,9 +78,6 @@ const Footer = () => {
             </a>
             <a className={styles.link} href={BlogLink} target="_blank">
               Blog
-            </a>
-            <a className={styles.link} href={TestnetUrl} target="_blank">
-              Testnet
             </a>
             <a className={styles.link} href="mailto:hi@mira.ly" target="_blank">
               Contact us

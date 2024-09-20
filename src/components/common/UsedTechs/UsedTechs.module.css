@@ -26,11 +26,14 @@
     line-height: 22px;
     gap: 6px;
     flex-wrap: nowrap;
+    overflow: visible;
   }
 
   .text {
     max-height: 22px;
-    min-width: 81px;
+    min-width: 80px;
+    text-wrap: nowrap;
+    overflow: visible;
   }
 }
 

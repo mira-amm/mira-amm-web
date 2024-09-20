@@ -57,8 +57,6 @@ const Header = ({ isHomePage }: Props) => {
               Points
               <SoonLabel className={styles.hiddenLabel}/>
             </div>
-            <a className={styles.link} href="https://docs.mira.ly">Docs</a>
-            <a href={BlogLink} className={styles.link} target="_blank">Blog</a>
           </div>
         </div>
         <div className={clsx("mobileOnly", styles.links)}>
@@ -70,9 +68,10 @@ const Header = ({ isHomePage }: Props) => {
           <MobileMenu />
         </div>
         <div className={clsx("desktopOnly", styles.links)}>
-          {/*<a href="#" className={styles.link}>*/}
-          {/*  Docs*/}
-          {/*</a>*/}
+          <a href="https://docs.mira.ly" className={styles.link} target="_blank">
+           Docs
+          </a>
+          <a href={BlogLink} className={styles.link} target="_blank">Blog</a>
           {!isHomePage && <TestnetLabel />}
           {!isHomePage && <ConnectButton className={styles.launchAppButton} />}
           {isHomePage && (
