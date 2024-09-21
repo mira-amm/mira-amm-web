@@ -11,7 +11,7 @@ import LaunchAppButton from "@/src/components/common/LaunchAppButton/LaunchAppBu
 import TestnetLabel from "@/src/components/common/TestnetLabel/TestnetLabel";
 import DisconnectDesktop from "@/src/components/common/ConnectButton/DisconnectDesktop";
 import DisconnectMobile from "@/src/components/common/ConnectButton/DisconnectMobile";
-import {useIsConnected} from "@fuels/react";
+import { useIsConnected } from "@fuels/react";
 import useFaucetLink from "@/src/hooks/useFaucetLink";
 import { BlogLink, TestnetUrl } from "@/src/utils/constants";
 
@@ -47,7 +47,13 @@ const Header = ({ isHomePage }: Props) => {
             >
               Swap
             </Link>
-            <Link href="/liquidity" className={clsx(styles.link, pathname.includes('/liquidity') && styles.activeLink)}>
+            <Link
+              href="/liquidity"
+              className={clsx(
+                styles.link,
+                pathname.includes("/liquidity") && styles.activeLink
+              )}
+            >
               Liquidity
             </Link>
             <a href={faucetLink} className={styles.link} target="_blank">
@@ -55,7 +61,7 @@ const Header = ({ isHomePage }: Props) => {
             </a>
             <div className={styles.pointsText}>
               Points
-              <SoonLabel className={styles.hiddenLabel}/>
+              <SoonLabel className={styles.hiddenLabel} />
             </div>
           </div>
         </div>
@@ -68,10 +74,20 @@ const Header = ({ isHomePage }: Props) => {
           <MobileMenu />
         </div>
         <div className={clsx("desktopOnly", styles.links)}>
-          <a href="https://docs.mira.ly" className={styles.link} target="_blank">
-           Docs
-          </a>
-          <a href={BlogLink} className={styles.link} target="_blank">Blog</a>
+          {isHomePage && (
+            <>
+              <a
+                href="https://docs.mira.ly"
+                className={styles.link}
+                target="_blank"
+              >
+                Docs
+              </a>
+              <a href={BlogLink} className={styles.link} target="_blank">
+                Blog
+              </a>
+            </>
+          )}
           {!isHomePage && <TestnetLabel />}
           {!isHomePage && <ConnectButton className={styles.launchAppButton} />}
           {/* {isHomePage && (
