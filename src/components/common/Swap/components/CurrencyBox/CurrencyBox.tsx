@@ -8,7 +8,7 @@ import {CoinName, coinsConfig} from "@/src/utils/coinsConfig";
 
 import styles from './CurrencyBox.module.css';
 import TextButton from "@/src/components/common/TextButton/TextButton";
-import {MinEthValue} from "@/src/utils/constants";
+import {DefaultLocale, MinEthValue} from "@/src/utils/constants";
 
 type Props = {
   value: string;
@@ -47,7 +47,7 @@ const CurrencyBox = ({ value, coin, mode, balance, setAmount, loading, onCoinSel
 
   const coinNotSelected = coin === null;
 
-  const balanceValue = parseFloat(balance.toFixed(decimals));
+  const balanceValue = balance.toLocaleString(DefaultLocale, { minimumFractionDigits: decimals });
 
   return (
     <>
@@ -82,7 +82,7 @@ const CurrencyBox = ({ value, coin, mode, balance, setAmount, loading, onCoinSel
           <p className={styles.estimate}>
             {/*{!noValue && '$41 626.62'}*/}
           </p>
-          {balanceValue > 0 && (
+          {balance > 0 && (
             <span className={styles.balance}>
               Balance: {balanceValue}
               &nbsp;

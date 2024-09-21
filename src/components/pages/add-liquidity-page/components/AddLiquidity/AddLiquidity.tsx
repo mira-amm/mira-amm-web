@@ -6,6 +6,8 @@ import PreviewAddLiquidityDialog
 import AddLiquidityDialog from "@/src/components/pages/add-liquidity-page/components/AddLiquidity/AddLiquidityDialog";
 import BackLink from "@/src/components/common/BackLink/BackLink";
 import {useRouter} from "next/navigation";
+import IconButton from "@/src/components/common/IconButton/IconButton";
+import CloseIcon from "@/src/components/icons/Close/CloseIcon";
 
 type Props = {
   poolKey: string;
@@ -26,20 +28,35 @@ const AddLiquidity = ({ poolKey }: Props) => {
     }
   }, [previewData, router]);
 
+  const handleCloseClick = useCallback(() => {
+    router.push('/liquidity');
+  }, [router]);
+
+  const showPreview = Boolean(previewData);
+
   return (
     <>
       <BackLink showOnDesktop onClick={handleBackClick} className={styles.backLink} />
       <section className={styles.addLiquidity}>
-        <p className={styles.title}>
-          Add Liquidity
-        </p>
-        {previewData ? (
-          <PreviewAddLiquidityDialog previewData={previewData} />
+        <div className={styles.addLiquidityHeading}>
+          <p className={styles.title}>
+            Add Liquidity
+          </p>
+          {showPreview && (
+            <IconButton onClick={handleCloseClick}>
+              <CloseIcon />
+            </IconButton>
+          )}
+        </div>
+        {showPreview ? (
+          <PreviewAddLiquidityDialog previewData={previewData!} />
         ) : (
           <AddLiquidityDialog firstCoin={coinA} secondCoin={coinB} setPreviewData={setPreviewData} />
         )}
       </section>
-      {previewData && <div className={styles.loadingOverlay}/>}
+      {showPreview && (
+        <div className={styles.loadingOverlay}/>
+      )}
     </>
   );
 };

@@ -12,6 +12,7 @@ import AddLiquiditySuccessModal
 import TestnetLabel from "@/src/components/common/TestnetLabel/TestnetLabel";
 import {useRouter} from "next/navigation";
 import {useCallback} from "react";
+import {DefaultLocale} from "@/src/utils/constants";
 
 type AssetsData = {
   coin: CoinName;
@@ -43,7 +44,9 @@ const PreviewAddLiquidityDialog = ({ previewData }: Props) => {
   const firstCoinAmount = previewData.assets[0].amount;
   const secondCoinAmount = previewData.assets[1].amount;
 
-  const rate = (parseFloat(firstCoinAmount) / parseFloat(secondCoinAmount)).toFixed(2);
+  const rate = (
+    parseFloat(firstCoinAmount) / parseFloat(secondCoinAmount)
+  ).toLocaleString(DefaultLocale, { minimumFractionDigits: 2 });
 
   const handleAddLiquidity = async () => {
     const data = await mutateAsync();

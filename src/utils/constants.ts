@@ -18,3 +18,5 @@ export const TestnetUrl = 'https://testnet.fuel.network/v1/graphql' as const;
 
 export const MinEthValue = 0.001 as const;
 export const MinEthValueBN = MinEthValue * 10 ** 9;
+
+export const DefaultLocale = 'en-US' as const;
