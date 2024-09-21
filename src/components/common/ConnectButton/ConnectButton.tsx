@@ -62,12 +62,30 @@ const ConnectButton = ({ className }: Props) => {
     return "Connect Wallet";
   }, [isConnected, formattedAddress]);
 
+  const handleCopy = () => {
+    if (navigator.clipboard && title !== "Connect Wallet") {
+      navigator.clipboard.writeText(title).then(
+        () => {
+          console.log("Address copied to clipboard!");
+        },
+        (err) => {
+          console.error("Failed to copy address: ", err);
+        }
+      );
+    }
+  };
+
   const menuButtons = useMemo(() => {
     return DropDownButtons.map((button) => ({
       ...button,
-      onClick: button.text === "Disconnect" ? handleDisconnect : button.onClick,
+      onClick:
+        button.text === "Disconnect"
+          ? handleDisconnect
+          : button.text === "Copy Address"
+          ? handleCopy
+          : button.onClick,
     }));
-  }, [handleDisconnect]);
+  }, [handleDisconnect, handleCopy]);
 
   return (
     <>
