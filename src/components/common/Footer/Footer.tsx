@@ -41,7 +41,7 @@ const Footer = () => {
             </a>
           </div>
           <div className={styles.socialLinks}>
-            <a href="/" target="_blank">
+            <a href="https://github.com/mira-amm" target="_blank">
               <Github />
             </a>
             <a href={DiscordLink} target="_blank">
@@ -84,7 +84,7 @@ const Footer = () => {
             </a>
           </div>
           <div className={styles.socialLinks}>
-            <a className={styles.socialLink} href="/" target="_blank">
+            <a className={styles.socialLink} href="https://github.com/mira-amm" target="_blank">
               <Github />
             </a>
             <a className={styles.socialLink} href={DiscordLink} target="_blank">

@@ -19,8 +19,8 @@ const DisconnectMobile = ({ className }: Props) => {
   const { disconnect } = useDisconnect();
   const [isMenuOpened, setMenuOpened] = useState(false);
 
-  const touchStartY = useRef(0);
-  const touchEndY = useRef(0);
+  // const touchStartY = useRef(0);
+  // const touchEndY = useRef(0);
 
   useEffect(() => {
     if (isMenuOpened) {
@@ -48,19 +48,19 @@ const DisconnectMobile = ({ className }: Props) => {
     return null;
   }
 
-  const onTouchStart = (e: React.TouchEvent) => {
-    touchStartY.current = e.touches[0].clientY;
-  };
+  // const onTouchStart = (e: React.TouchEvent) => {
+  //   touchStartY.current = e.touches[0].clientY;
+  // };
 
-  const onTouchMove = (e: React.TouchEvent) => {
-    touchEndY.current = e.touches[0].clientY;
-  };
+  // const onTouchMove = (e: React.TouchEvent) => {
+  //   touchEndY.current = e.touches[0].clientY;
+  // };
 
-  const onTouchEnd = () => {
-    if (touchStartY.current < touchEndY.current - 50) {
-      setMenuOpened(false);
-    }
-  };
+  // const onTouchEnd = () => {
+  //   if (touchStartY.current < touchEndY.current - 50) {
+  //     setMenuOpened(false);
+  //   }
+  // };
 
   const menuButtons = DropDownButtons.map((button) => ({
     ...button,
@@ -83,9 +83,9 @@ const DisconnectMobile = ({ className }: Props) => {
       {isMenuOpened && (
         <div
           className={styles.dropDownOverlay}
-          onTouchStart={onTouchStart}
-          onTouchMove={onTouchMove}
-          onTouchEnd={onTouchEnd}
+          // onTouchStart={onTouchStart}
+          // onTouchMove={onTouchMove}
+          // onTouchEnd={onTouchEnd}
         >
           <DropDownMenu buttons={menuButtons}>
             <button className={styles.dropDownTouchClose}>
