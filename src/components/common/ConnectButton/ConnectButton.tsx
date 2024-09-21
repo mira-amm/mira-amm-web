@@ -1,22 +1,27 @@
-'use client';
+"use client";
 
-import {useCallback, useMemo, useState} from 'react';
-import {useAccount, useConnectUI, useDisconnect, useIsConnected} from "@fuels/react";
-import {clsx} from "clsx";
+import { useCallback, useMemo, useState } from "react";
+import {
+  useAccount,
+  useConnectUI,
+  useDisconnect,
+  useIsConnected,
+} from "@fuels/react";
+import { clsx } from "clsx";
 
-import styles from './ConnectButton.module.css';
+import styles from "./ConnectButton.module.css";
 
 import ActionButton from "@/src/components/common/ActionButton/ActionButton";
 import useFormattedAddress from "@/src/hooks/useFormattedAddress/useFormattedAddress";
-import {toBech32} from "fuels";
-import { ArrowDown } from '../../icons/ArrowDown/ArrowDown';
-import { DropDownMenu } from '../DropDownMenu/DropDownMenu';
-import { ArrowUp } from '../../icons/ArrowUp/ArrowUp';
+import { toBech32 } from "fuels";
+import { ArrowDown } from "../../icons/ArrowDown/ArrowDown";
+import { DropDownMenu } from "../DropDownMenu/DropDownMenu";
+import { ArrowUp } from "../../icons/ArrowUp/ArrowUp";
 import { DropDownButtons } from "@/src/utils/DropDownButtons";
 
 type Props = {
   className?: string;
-}
+};
 
 const ConnectButton = ({ className }: Props) => {
   const { isConnected } = useIsConnected();
@@ -54,7 +59,7 @@ const ConnectButton = ({ className }: Props) => {
       return formattedAddress;
     }
 
-    return 'Connect Wallet';
+    return "Connect Wallet";
   }, [isConnected, formattedAddress]);
 
   const menuButtons = useMemo(() => {
@@ -66,23 +71,24 @@ const ConnectButton = ({ className }: Props) => {
 
   return (
     <>
-    <ActionButton
-      className={clsx(className, isConnected && styles.connected)}
-      onClick={handleClick}
-      loading={loading}
-    >
-      {isConnected && (
-        <img src="/images/avatar.png" width="24" height="24" />
-      )}
-      {title}
-      {isConnected && (
-        // <span className={styles.disconnectLabel}>
-        //   Disconnect
-        // </span>
-      (!isMenuOpened ? <ArrowDown /> : <ArrowUp />)
-      )}
-    </ActionButton>
-    {isMenuOpened && <DropDownMenu buttons={menuButtons} />}
+      <ActionButton
+        className={clsx(className, isConnected && styles.connected)}
+        onClick={handleClick}
+        loading={loading}
+      >
+        {isConnected && <img src="/images/avatar.png" width="24" height="24" />}
+        {title}
+        {isConnected &&
+          // <span className={styles.disconnectLabel}>
+          //   Disconnect
+          // </span>
+          (!isMenuOpened ? (
+              <ArrowDown />
+          ) : (
+              <ArrowUp />
+          ))}
+      </ActionButton>
+      {isMenuOpened && <DropDownMenu buttons={menuButtons} />}
     </>
   );
 };

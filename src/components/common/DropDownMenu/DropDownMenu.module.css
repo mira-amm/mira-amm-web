@@ -36,3 +36,20 @@
     background: #FFFFFF1A;
     border-radius: 8px;
 }
+
+@media (max-width: 1023px) {
+    .menuList {
+        top: calc(100vh - 220px);
+        left: 0;
+        right: 0;
+        bottom: 0;
+        width: 100%;
+        max-width: 100%;
+        position: fixed;
+        padding-top: 38px;
+    }
+
+    .menuButton span {
+        font-size: 18px;
+    }
+}

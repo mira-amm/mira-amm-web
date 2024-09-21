@@ -1,10 +1,9 @@
-import { DropDownMenuButtons } from "../ts-interfaces/DropDownMenuButtons";
 import CopyIcon from "../components/icons/Copy/CopyIcon";
 import { ExplorerIcon } from "../components/icons/Explorer/ExplorerIcon";
 import { TransactionsIcon } from "../components/icons/Transactions/TransactionsIcon";
 import { LogOut } from "../components/icons/LogOut/LogOut";
 
-export const DropDownButtons: DropDownMenuButtons[] = [
+export const DropDownButtons = [
   {
     icon: CopyIcon,
     text: "Copy Address",
