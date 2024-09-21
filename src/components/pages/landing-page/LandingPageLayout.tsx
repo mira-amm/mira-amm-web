@@ -40,7 +40,13 @@ const LandingPageLayout = () => {
           </h2>
           <div className={styles.buttonsArea}>
             <LaunchAppButton className={styles.launchAppButton} />
-            <LearnMoreButton />
+            <a className={styles.learnMoreLink}
+              href="https://mirror.xyz/miraly.eth/gIYyYWmf4_ofBY3mb9-AwcnwIfe4-1iK6kdUlJMjfn8
+"
+              target="_blank"
+            >
+              <LearnMoreButton />
+            </a>
           </div>
           <div className={styles.fuel}>
             <FuelIcon />

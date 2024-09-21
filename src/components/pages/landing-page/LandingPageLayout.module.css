@@ -45,6 +45,10 @@
   margin-bottom: 22px;
 }
 
+.learnMoreLink {
+  width: 100%;
+}
+
 .fuel {
   width: 100%;
   display: flex;
