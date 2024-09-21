@@ -1,5 +1,5 @@
-import { UsdtIcon } from "../components/icons/TransactionCoins/usdtIcon";
-import { EthIcon } from "../components/icons/TransactionCoins/ethIcon";
+import { UsdtIcon } from "../components/icons/TransactionCoins/UsdtIcon";
+import { EthIcon } from "../components/icons/TransactionCoins/EthIcon";
 
 export const transactionsList = [
     {
