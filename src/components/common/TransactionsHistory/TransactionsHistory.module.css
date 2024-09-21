@@ -1,0 +1,167 @@
+.wrapper {
+  background: #262834;
+  border-radius: 12px;
+  overflow-x: hidden;
+  display: flex;
+  flex-direction: column;
+  padding: 16px 20px;
+  gap: 24px;
+  height: 880px;
+  overflow-y: scroll;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.title {
+  font-size: 20px;
+  font-weight: 400;
+  line-height: 24px;
+}
+
+.transactionCloseButton {
+  border: none;
+  background: none;
+  padding: 0;
+  cursor: pointer;
+}
+
+.transactionCloseButton:hover {
+  opacity: 0.64;
+}
+
+.accountInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding: 12px;
+  border-radius: 10px;
+  background: linear-gradient(95.91deg, #663e92 -15.22%, #29294e 83.17%);
+}
+
+.accountUserInfo {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.accountAvatar {
+  width: 32px;
+  height: 32px;
+}
+
+.accountWallet {
+  font-size: 16px;
+  line-height: 24px;
+  font-weight: 400;
+}
+
+.copyButton {
+  border: none;
+  background: none;
+  padding: 0;
+  cursor: pointer;
+}
+
+.copyButton:hover {
+  opacity: 0.64;
+}
+
+.accountBalance {
+  font-size: 20px;
+  font-weight: 400;
+  line-height: 24px;
+}
+
+.transactionsList {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.transaction {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.transactionDate {
+  color: #ffffffa3;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 22px;
+}
+
+.transactionInfo {
+  display: flex;
+  gap: 28px;
+  padding: 10px;
+  background: #3b3d48;
+  border-radius: 8px;
+  align-items: center;
+}
+
+.transactionCoins {
+  display: flex;
+  position: relative;
+}
+
+.secondCoin {
+  position: absolute;
+  top: 0;
+  left: 20px;
+  z-index: 2;
+}
+
+.transactionText {
+  display: flex;
+  flex-direction: column;
+  font-size: 16px;
+  line-height: 22px;
+  font-weight: 400;
+  gap: 5px;
+}
+
+.transactionName {
+  color: #ffffff;
+}
+
+.transactionAmount {
+  color: #ffffffa3;
+}
+
+.transactions {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.transactionGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.transactionType {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.typeCircle {
+  width: 12px;
+  height: 12px;
+  border-radius: 100px;
+}
+
+.withdrawal {
+  background-color: #F55353;
+}
+
+.added {
+  background-color: #46CC44;
+}
