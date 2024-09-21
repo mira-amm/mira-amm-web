@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useMemo, useState } from "react";
+import { useCallback, useMemo, useState, useEffect } from "react";
 import {
   useAccount,
   useConnectUI,
@@ -18,6 +18,7 @@ import { ArrowDown } from "../../icons/ArrowDown/ArrowDown";
 import { DropDownMenu } from "../DropDownMenu/DropDownMenu";
 import { ArrowUp } from "../../icons/ArrowUp/ArrowUp";
 import { DropDownButtons } from "@/src/utils/DropDownButtons";
+import { TransactionsHistory } from "../TransactionsHistory/TransactionsHistory";
 
 type Props = {
   className?: string;
@@ -32,6 +33,7 @@ const ConnectButton = ({ className }: Props) => {
   const loading = isConnecting || disconnectLoading;
 
   const [isMenuOpened, setMenuOpened] = useState(false);
+  const [isHistoryOpened, setHistoryOpened] = useState(false);
 
   const handleConnection = useCallback(() => {
     if (!isConnected) {
@@ -75,6 +77,14 @@ const ConnectButton = ({ className }: Props) => {
     }
   };
 
+  const handleHistoryOpen = () => {
+    setHistoryOpened(true);
+  }
+
+  const handleHistoryClose = () => {
+    setHistoryOpened(false);
+  }
+
   const menuButtons = useMemo(() => {
     return DropDownButtons.map((button) => ({
       ...button,
@@ -83,9 +93,23 @@ const ConnectButton = ({ className }: Props) => {
           ? handleDisconnect
           : button.text === "Copy Address"
           ? handleCopy
+          : button.text === "Transaction History"
+          ? handleHistoryOpen
           : button.onClick,
     }));
   }, [handleDisconnect, handleCopy]);
+
+  useEffect(() => {
+    if (isHistoryOpened) {
+      document.documentElement.style.overflowY = "hidden";
+    } else {
+      document.documentElement.style.overflowY = "";
+    }
+
+    return () => {
+      document.documentElement.style.overflowY = "";
+    };
+  }, [isHistoryOpened]);
 
   return (
     <>
@@ -107,6 +131,7 @@ const ConnectButton = ({ className }: Props) => {
           ))}
       </ActionButton>
       {isMenuOpened && <DropDownMenu buttons={menuButtons} />}
+      <TransactionsHistory onClose={handleHistoryClose} isOpened={isHistoryOpened} />
     </>
   );
 };

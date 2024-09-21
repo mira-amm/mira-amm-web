@@ -9,7 +9,6 @@ import { usePathname } from "next/navigation";
 import ConnectButton from "@/src/components/common/ConnectButton/ConnectButton";
 import LaunchAppButton from "@/src/components/common/LaunchAppButton/LaunchAppButton";
 import TestnetLabel from "@/src/components/common/TestnetLabel/TestnetLabel";
-import DisconnectDesktop from "@/src/components/common/ConnectButton/DisconnectDesktop";
 import DisconnectMobile from "@/src/components/common/ConnectButton/DisconnectMobile";
 import { useIsConnected } from "@fuels/react";
 import useFaucetLink from "@/src/hooks/useFaucetLink";
@@ -90,9 +89,6 @@ const Header = ({ isHomePage }: Props) => {
           )}
           {!isHomePage && <TestnetLabel />}
           {!isHomePage && <ConnectButton className={styles.launchAppButton} />}
-          {/* {isHomePage && (
-            <DisconnectDesktop className={styles.launchAppButton} />
-          )} */}
           {isHomePage && (
             <div className={styles.launchAppArea}>
               <LaunchAppButton className={styles.launchAppButton} />

@@ -6,7 +6,6 @@ import Swap from "@/src/components/common/Swap/Swap";
 import BackLink from "@/src/components/common/BackLink/BackLink";
 
 import styles from './SwapPageLayout.module.css';
-import { TransactionsHistory } from "../../common/TransactionsHistory/TransactionsHistory";
 
 const SwapPageLayout = () => {
   return (
@@ -15,7 +14,6 @@ const SwapPageLayout = () => {
       <main className={styles.swapLayout}>
         <BackLink />
         <Swap />
-        <TransactionsHistory />
       </main>
       <Footer/>
     </div>

@@ -1,19 +1,52 @@
-.wrapper {
-  background: #262834;
-  border-radius: 12px;
-  overflow-x: hidden;
-  display: flex;
-  flex-direction: column;
-  padding: 16px 20px;
-  gap: 24px;
-  height: 880px;
-  overflow-y: scroll;
+.overlayOpened {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: #00000059;
+  backdrop-filter: blur(4px);
+  z-index: 100;
 }
+
+.overlayClosed {
+    position: absolute;
+    top: 20px;
+    left: 50%;
+}
+
+.wrapper {
+    background: #262834;
+    border-radius: 12px;
+    overflow-x: hidden;
+    display: flex;
+    flex-direction: column;
+    padding: 16px 20px;
+    gap: 24px;
+    height: calc(100vh - 197px);
+    overflow-y: auto;
+    position: fixed;
+    right: 0;
+    top: 72px;
+    width: 100%;
+    max-width: 472px;
+    transform: translateX(100%);
+    transition: transform 0.3s ease;
+    z-index: 200;
+}
+
+.open {
+    transform: translateX(0);
+}
+
+.close {
+    transform: translateX(100%);
+}
+  
 
 .header {
   display: flex;
   justify-content: space-between;
-  width: 100%;
 }
 
 .title {
@@ -159,9 +192,17 @@
 }
 
 .withdrawal {
-  background-color: #F55353;
+  background-color: #f55353;
 }
 
 .added {
-  background-color: #46CC44;
+  background-color: #46cc44;
+}
+
+@media (max-width: 768px) {
+  .wrapper {
+    height: 100vh;
+    top: 0;
+    left: 0;
+  }
 }

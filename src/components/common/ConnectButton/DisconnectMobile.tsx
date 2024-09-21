@@ -8,6 +8,7 @@ import { DropDownMenu } from "../DropDownMenu/DropDownMenu";
 import { DropDownButtons } from "@/src/utils/DropDownButtons";
 import { TouchCloseIcon } from "../../icons/DropDownClose/TouchCloseIcon";
 import { CloseIcon } from "../../icons/DropDownClose/CloseIcon";
+import { TransactionsHistory } from "../TransactionsHistory/TransactionsHistory";
 
 type Props = {
   className?: string;
@@ -18,6 +19,7 @@ const DisconnectMobile = ({ className }: Props) => {
   const { account } = useAccount();
   const { disconnect } = useDisconnect();
   const [isMenuOpened, setMenuOpened] = useState(false);
+  const [isHistoryOpened, setHistoryOpened] = useState(false);
 
   // const touchStartY = useRef(0);
   // const touchEndY = useRef(0);
@@ -48,6 +50,31 @@ const DisconnectMobile = ({ className }: Props) => {
     return null;
   }
 
+  const handleCloseMenu = () => {
+    setMenuOpened(false);
+  };
+
+  const handleHistoryOpen = () => {
+    setHistoryOpened(true);
+  }
+
+  const handleHistoryClose = () => {
+    setHistoryOpened(false);
+  }
+
+  const handleCopy = () => {
+    if (navigator.clipboard && formattedAddress !== "Connect Wallet") {
+      navigator.clipboard.writeText(formattedAddress).then(
+        () => {
+          console.log("Address copied to clipboard!");
+        },
+        (err) => {
+          console.error("Failed to copy address: ", err);
+        }
+      );
+    }
+  };
+
   // const onTouchStart = (e: React.TouchEvent) => {
   //   touchStartY.current = e.touches[0].clientY;
   // };
@@ -64,12 +91,15 @@ const DisconnectMobile = ({ className }: Props) => {
 
   const menuButtons = DropDownButtons.map((button) => ({
     ...button,
-    onClick: button.text === "Disconnect" ? handleDisconnect : button.onClick,
+    onClick: 
+    button.text === "Disconnect" 
+    ? handleDisconnect
+    : button.text === "Transaction History"
+    ? handleHistoryOpen
+    : button.text === "Copy Address"
+    ? handleCopy
+    : button.onClick,
   }));
-
-  const handleCloseMenu = () => {
-    setMenuOpened(false);
-  };
 
   return (
     <>
@@ -97,6 +127,7 @@ const DisconnectMobile = ({ className }: Props) => {
           </DropDownMenu>
         </div>
       )}
+      <TransactionsHistory onClose={handleHistoryClose} isOpened={isHistoryOpened} />
     </>
   );
 };

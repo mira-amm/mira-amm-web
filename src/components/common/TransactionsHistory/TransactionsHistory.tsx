@@ -19,6 +19,11 @@ interface TransactionProps {
   taken?: boolean;
 }
 
+interface TransactionsHistoryProps {
+    onClose: () => void;
+    isOpened: boolean;
+  }
+
 const groupTransactionsByDate = (transactions: TransactionProps[]) => {
   const grouped: { [key: string]: TransactionProps[] } = {};
 
@@ -32,7 +37,7 @@ const groupTransactionsByDate = (transactions: TransactionProps[]) => {
   return grouped;
 };
 
-export const TransactionsHistory = () => {
+export const TransactionsHistory: React.FC<TransactionsHistoryProps> = ({ onClose, isOpened }) => {
   const sortedTransactions = [...transactionsList].sort(
     (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
   );
@@ -64,10 +69,11 @@ export const TransactionsHistory = () => {
   };
 
   return (
-    <div className={styles.wrapper}>
+    <div className={isOpened ? styles.overlayOpened : styles.overlayClosed}>
+    <div className={`${styles.wrapper} ${isOpened ? styles.open : styles.close}`}>
       <div className={styles.header}>
         <h2 className={styles.title}>Transactions History</h2>
-        <button type="button" className={styles.transactionCloseButton}>
+        <button type="button" className={styles.transactionCloseButton} onClick={onClose}>
           <TransactionsCloseIcon />
         </button>
       </div>
@@ -124,6 +130,7 @@ export const TransactionsHistory = () => {
           </li>
         ))}
       </ul>
+    </div>
     </div>
   );
 };
