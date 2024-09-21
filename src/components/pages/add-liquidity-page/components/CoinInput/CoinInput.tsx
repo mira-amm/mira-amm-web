@@ -5,7 +5,7 @@ import styles from './CoinInput.module.css';
 import {clsx} from "clsx";
 import {ChangeEvent, memo, useCallback} from "react";
 import TextButton from "@/src/components/common/TextButton/TextButton";
-import {MinEthValue} from "@/src/utils/constants";
+import {DefaultLocale, MinEthValue} from "@/src/utils/constants";
 
 type Props = {
   coin: CoinName;
@@ -34,7 +34,7 @@ const CoinInput = ({ coin, value, loading, setAmount, balance }: Props) => {
     setAmount(amount);
   }, [coin, balance, setAmount]);
 
-  const balanceValue = parseFloat(balance.toFixed(decimals));
+  const balanceValue = balance.toLocaleString(DefaultLocale, { minimumFractionDigits: decimals })
 
   return (
     <div className={styles.coinInput}>
@@ -55,7 +55,7 @@ const CoinInput = ({ coin, value, loading, setAmount, balance }: Props) => {
       </div>
       <div className={clsx(styles.coinInputLine, styles.rightColumn)}>
         <Coin name={coin} className={styles.coinName} />
-        {balanceValue > 0 && (
+        {balance > 0 && (
           <span className={styles.balance}>
             Balance: {balanceValue}
             &nbsp;

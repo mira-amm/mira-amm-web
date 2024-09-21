@@ -2,6 +2,7 @@ import {useMemo} from "react";
 
 import type {CurrencyBoxMode, SwapState} from "@/src/components/common/Swap/Swap";
 import {coinsConfig} from "@/src/utils/coinsConfig";
+import {DefaultLocale} from "@/src/utils/constants";
 
 const useExchangeRate = (swapState: SwapState, mode: CurrencyBoxMode = 'sell'): string | null => {
   return useMemo(() => {
@@ -20,7 +21,7 @@ const useExchangeRate = (swapState: SwapState, mode: CurrencyBoxMode = 'sell'): 
     const decimals = coinsConfig.get(swapState[anotherMode].coin)?.decimals!;
 
     const rate = parseFloat(swapState[anotherMode].amount) / parseFloat(swapState[mode].amount);
-    return `1 ${swapState[mode].coin} ≈ ${rate.toFixed(decimals)} ${swapState[anotherMode].coin}`;
+    return `1 ${swapState[mode].coin} ≈ ${rate.toLocaleString(DefaultLocale, { minimumFractionDigits: decimals })} ${swapState[anotherMode].coin}`;
   }, [swapState.buy.amount, swapState.sell.amount, swapState.buy.coin, swapState.sell.coin, mode]);
 };
 

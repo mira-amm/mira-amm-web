@@ -46,3 +46,14 @@ export const isPoolKeyValid = (key: string) => {
   const [coinA, coinB] = key.split('-') as [CoinName, CoinName];
   return coinsConfig.has(coinA) && coinsConfig.has(coinB);
 };
+
+export const floorToTwoSignificantDigits = (value: number | null | undefined) => {
+  if (!value) {
+    return 0;
+  }
+
+  const digitsBeforeDecimal = Math.floor(Math.log10(Math.abs(value))) + 1;
+  const factor = Math.pow(10, 2 - digitsBeforeDecimal);
+
+  return Math.floor(value * factor) / factor;
+};

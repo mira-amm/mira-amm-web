@@ -7,6 +7,7 @@ import {useCallback} from "react";
 import {useRouter} from "next/navigation";
 import {coinsConfig} from "@/src/utils/coinsConfig";
 import {clsx} from "clsx";
+import {DefaultLocale} from "@/src/utils/constants";
 
 type Props = {
   positions: any[] | undefined;
@@ -42,11 +43,11 @@ const DesktopPositions = ({ positions }: Props) => {
         const { bits: coinAAssetId } = position[0][0];
         const coinA = getCoinByAssetId(coinAAssetId);
         const coinADecimals = coinsConfig.get(coinA)?.decimals!;
-        const coinAAmount = (position[0][1].toNumber() / 10 ** coinADecimals).toFixed(coinADecimals);
+        const coinAAmount = (position[0][1].toNumber() / 10 ** coinADecimals).toLocaleString(DefaultLocale, { minimumFractionDigits: coinADecimals });
         const { bits: coinBAssetId } = position[1][0];
         const coinB = getCoinByAssetId(coinBAssetId);
         const coinBDecimals = coinsConfig.get(coinB)?.decimals!;
-        const coinBAmount = (position[1][1].toNumber() / 10 ** coinBDecimals).toFixed(coinBDecimals);
+        const coinBAmount = (position[1][1].toNumber() / 10 ** coinBDecimals).toLocaleString(DefaultLocale, { minimumFractionDigits: coinBDecimals });
 
         const key = coinAAssetId.toString() + '-' + coinBAssetId.toString();
         const poolId = [position[0][0], position[1][0], false] as PoolId;
