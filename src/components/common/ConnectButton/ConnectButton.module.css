@@ -58,3 +58,9 @@ button.connected:hover .disconnectLabel {
   line-height: 32px;
   text-align: left;
 }
+
+.connectButtonDropDown {
+  background: none;
+  border: none;
+  cursor: pointer;
+}

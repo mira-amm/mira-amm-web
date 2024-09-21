@@ -1,6 +1,6 @@
 'use client';
 
-import {useCallback, useMemo} from 'react';
+import {useCallback, useMemo, useState} from 'react';
 import {useAccount, useConnectUI, useDisconnect, useIsConnected} from "@fuels/react";
 import {clsx} from "clsx";
 
@@ -9,6 +9,10 @@ import styles from './ConnectButton.module.css';
 import ActionButton from "@/src/components/common/ActionButton/ActionButton";
 import useFormattedAddress from "@/src/hooks/useFormattedAddress/useFormattedAddress";
 import {toBech32} from "fuels";
+import { ArrowDown } from '../../icons/ArrowDown/ArrowDown';
+import { DropDownMenu } from '../DropDownMenu/DropDownMenu';
+import { ArrowUp } from '../../icons/ArrowUp/ArrowUp';
+import { DropDownButtons } from "@/src/utils/DropDownButtons";
 
 type Props = {
   className?: string;
@@ -22,19 +26,26 @@ const ConnectButton = ({ className }: Props) => {
 
   const loading = isConnecting || disconnectLoading;
 
-  const handleConnection = useCallback( () => {
+  const [isMenuOpened, setMenuOpened] = useState(false);
+
+  const handleConnection = useCallback(() => {
     if (!isConnected) {
       connect();
     }
+  }, [isConnected, connect]);
 
-    if (isConnected) {
-      disconnect();
-    }
-  }, [isConnected, connect, disconnect]);
+  const handleDisconnect = useCallback(() => {
+    disconnect();
+    setMenuOpened(false);
+  }, [disconnect]);
 
   const handleClick = useCallback(() => {
-    handleConnection();
-  }, [handleConnection]);
+    if (!isConnected) {
+      handleConnection();
+    } else {
+      setMenuOpened((prev) => !prev);
+    }
+  }, [isConnected, handleConnection]);
 
   const formattedAddress = useFormattedAddress(account);
 
@@ -46,7 +57,15 @@ const ConnectButton = ({ className }: Props) => {
     return 'Connect Wallet';
   }, [isConnected, formattedAddress]);
 
+  const menuButtons = useMemo(() => {
+    return DropDownButtons.map((button) => ({
+      ...button,
+      onClick: button.text === "Disconnect" ? handleDisconnect : button.onClick,
+    }));
+  }, [handleDisconnect]);
+
   return (
+    <>
     <ActionButton
       className={clsx(className, isConnected && styles.connected)}
       onClick={handleClick}
@@ -57,11 +76,14 @@ const ConnectButton = ({ className }: Props) => {
       )}
       {title}
       {isConnected && (
-        <span className={styles.disconnectLabel}>
-          Disconnect
-        </span>
+        // <span className={styles.disconnectLabel}>
+        //   Disconnect
+        // </span>
+      (!isMenuOpened ? <ArrowDown /> : <ArrowUp />)
       )}
     </ActionButton>
+    {isMenuOpened && <DropDownMenu buttons={menuButtons} />}
+    </>
   );
 };
 

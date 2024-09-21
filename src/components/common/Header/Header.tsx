@@ -74,10 +74,10 @@ const Header = ({ isHomePage }: Props) => {
           <a href={BlogLink} className={styles.link} target="_blank">Blog</a>
           {!isHomePage && <TestnetLabel />}
           {!isHomePage && <ConnectButton className={styles.launchAppButton} />}
-          {isHomePage && (
+          {/* {isHomePage && (
             <DisconnectDesktop className={styles.launchAppButton} />
-          )}
-          {isHomePage && !isConnected && (
+          )} */}
+          {isHomePage && (
             <div className={styles.launchAppArea}>
               <LaunchAppButton className={styles.launchAppButton} />
             </div>

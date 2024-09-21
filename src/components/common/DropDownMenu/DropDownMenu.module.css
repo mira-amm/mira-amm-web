@@ -1,0 +1,38 @@
+.menuList {
+    list-style: none;
+    padding: 10px;
+    background: #262834;
+    border-radius: 12px;
+    display: flex;
+    flex-direction: column;
+    max-width: 205px;
+    box-sizing: border-box;
+    position: absolute;
+    top: 64px;
+    right: 40px;
+    z-index: 2;
+}
+
+.menuButton {
+    border: none;
+    background: none;
+    cursor: pointer;
+    color: #FFFFFF;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 10px;
+    width: 100%;
+}
+
+.menuButton span {
+    font-weight: 400;
+    font-size: 15px;
+    line-height: 24px;
+    text-wrap: nowrap;
+}
+
+.menuButton:hover {
+    background: #FFFFFF1A;
+    border-radius: 8px;
+}
