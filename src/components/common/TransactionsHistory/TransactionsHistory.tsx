@@ -1,7 +1,7 @@
 import React, { useMemo } from "react";
 import styles from "./TransactionsHistory.module.css";
 import { TransactionsCloseIcon } from "../../icons/Close/TransactionsCloseIcon";
-import CopyIcon from "../../icons/Copy/CopyIcon";
+import CopyAddressIcon from "../../icons/Copy/CopyAddressIcon";
 import { transactionsList } from "@/src/utils/transactionsList";
 import { useIsConnected, useAccount } from "@fuels/react";
 import useFormattedAddress from "@/src/hooks/useFormattedAddress/useFormattedAddress";
@@ -82,7 +82,7 @@ export const TransactionsHistory: React.FC<TransactionsHistoryProps> = ({ onClos
           <img className={styles.accountAvatar} src="/images/avatar.png" />
           <span className={styles.accountWallet}>{walletAddress}</span>
           <button className={styles.copyButton} type="button" onClick={handleCopy}>
-            <CopyIcon />
+            <CopyAddressIcon />
           </button>
         </div>
         <span className={styles.accountBalance}>$4,789.06</span>

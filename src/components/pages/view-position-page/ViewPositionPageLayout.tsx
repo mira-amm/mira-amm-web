@@ -23,7 +23,7 @@ import TestnetLabel from "@/src/components/common/TestnetLabel/TestnetLabel";
 import RemoveLiquiditySuccessModal
   from "@/src/components/pages/view-position-page/components/RemoveLiquiditySuccessModal/RemoveLiquiditySuccessModal";
 import IconButton from "@/src/components/common/IconButton/IconButton";
-import CopyIcon from "@/src/components/icons/Copy/CopyIcon";
+import { CopyIcon } from "../../icons/Copy/CopyIcon";
 import {getLPAssetId} from "mira-dex-ts";
 import {DEFAULT_AMM_CONTRACT_ID} from "@/src/utils/constants";
 import useFormattedAddress from "@/src/hooks/useFormattedAddress/useFormattedAddress";
@@ -119,7 +119,7 @@ const ViewPositionPageLayout = () => {
             <p className={styles.numberAndCopy}>
               Asset ID: {formattedLpTokenAssetId}
               <IconButton onClick={handleCopy}>
-                <CopyIcon/>
+                <CopyIcon />
               </IconButton>
             </p>
           </div>

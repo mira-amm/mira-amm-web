@@ -1,11 +1,11 @@
-import CopyIcon from "../components/icons/Copy/CopyIcon";
+import CopyAddressIcon from "../components/icons/Copy/CopyAddressIcon";
 import { ExplorerIcon } from "../components/icons/Explorer/ExplorerIcon";
 import { TransactionsIcon } from "../components/icons/Transactions/TransactionsIcon";
 import { LogOutIcon } from "../components/icons/LogOut/LogOutIcon";
 
 export const DropDownButtons = [
   {
-    icon: CopyIcon,
+    icon: CopyAddressIcon,
     text: "Copy Address",
     onClick: () => {},
   },

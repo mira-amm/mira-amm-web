@@ -1,30 +1,28 @@
-const CopyIcon = () => {
+export const CopyIcon = () => {
   return (
     <svg
-      width="25"
-      height="25"
-      viewBox="0 0 25 25"
-      fill="none"
       xmlns="http://www.w3.org/2000/svg"
+      width={17}
+      height={19}
+      viewBox="0 0 17 19"
+      fill="none"
     >
       <path
-        d="M18.6875 15.8198V6.81982C18.6875 5.71525 17.7921 4.81982 16.6875 4.81982H10.4375"
-        stroke="#9D9D9D"
-        stroke-width="2"
-        stroke-linecap="square"
+        stroke="currentColor"
+        strokeLinecap="square"
+        strokeWidth={2}
+        d="M14.688 12.82v-9a2 2 0 0 0-2-2h-6.25"
       />
       <rect
-        x="5.8877"
-        y="9.1416"
-        width="8.25"
-        height="11"
-        rx="1"
-        stroke="#9D9D9D"
-        stroke-width="2"
-        stroke-linecap="square"
+        width={8.25}
+        height={11}
+        x={1.888}
+        y={6.142}
+        stroke="currentColor"
+        strokeLinecap="square"
+        strokeWidth={2}
+        rx={1}
       />
     </svg>
   );
 };
-
-export default CopyIcon;
