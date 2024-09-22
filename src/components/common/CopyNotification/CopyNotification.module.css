@@ -23,6 +23,13 @@
     color: #FFFFFF;
 }
 
+.closeButton {
+    border: none;
+    background: none;
+    padding: none;
+    cursor: pointer;
+}
+
 @media (max-width: 768px) {
     .wrapper {
         width: 347px;

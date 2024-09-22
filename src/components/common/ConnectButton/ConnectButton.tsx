@@ -141,7 +141,7 @@ const ConnectButton = ({ className }: Props) => {
         onClose={handleHistoryClose}
         isOpened={isHistoryOpened}
       />
-      {isAddressCopied && <CopyNotification />}
+      {isAddressCopied && <CopyNotification onClose={() => setAddressCopied(false)} />}
     </>
   );
 };

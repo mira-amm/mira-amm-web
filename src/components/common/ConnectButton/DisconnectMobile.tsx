@@ -151,7 +151,7 @@ const DisconnectMobile = ({ className }: Props) => {
         </div>
       )}
       <TransactionsHistory onClose={handleHistoryClose} isOpened={isHistoryOpened} />
-      {isAddressCopied && <CopyNotification />}
+      {isAddressCopied && <CopyNotification onClose={() => setAddressCopied(false)} />}
     </>
   );
 };
