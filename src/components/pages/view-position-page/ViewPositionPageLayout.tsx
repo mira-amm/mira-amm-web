@@ -28,6 +28,7 @@ import {getLPAssetId} from "mira-dex-ts";
 import {DEFAULT_AMM_CONTRACT_ID, DefaultLocale} from "@/src/utils/constants";
 import useFormattedAddress from "@/src/hooks/useFormattedAddress/useFormattedAddress";
 import LogoIcon from "@/src/components/icons/Logo/LogoIcon";
+import useCheckActiveNetwork from "@/src/hooks/useCheckActiveNetwork";
 
 const ViewPositionPageLayout = () => {
   const [RemoveLiquidityModal, openRemoveLiquidityModal, closeRemoveLiquidityModal] = useModal();
@@ -89,6 +90,8 @@ const ViewPositionPageLayout = () => {
 
   const lpTokenAssetId = getLPAssetId(DEFAULT_AMM_CONTRACT_ID, pool);
   const formattedLpTokenAssetId = useFormattedAddress(lpTokenAssetId.bits, false);
+
+  const isValidNetwork = useCheckActiveNetwork();
 
   const handleCopy = useCallback(async () => {
     await navigator.clipboard.writeText(lpTokenAssetId.bits);
@@ -226,6 +229,7 @@ const ViewPositionPageLayout = () => {
           liquidityValue={removeLiquidityValue}
           setLiquidityValue={setRemoveLiquidityValue}
           handleRemoveLiquidity={handleRemoveLiquidity}
+          isValidNetwork={isValidNetwork}
         />
       </RemoveLiquidityModal>
       <SuccessModal title={<TestnetLabel />} onClose={redirectToLiquidity}>

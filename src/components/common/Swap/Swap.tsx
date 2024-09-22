@@ -1,4 +1,4 @@
-import {useCallback, useEffect, useRef, useState} from "react";
+import {useCallback, useRef, useState} from "react";
 import {useAccount, useConnectUI, useIsConnected} from "@fuels/react";
 import {useDebounceCallback, useLocalStorage} from "usehooks-ts";
 import {clsx} from "clsx";
@@ -27,6 +27,8 @@ import useCheckEthBalance from "@/src/hooks/useCheckEthBalance/useCheckEthBalanc
 import useInitialSwapState from "@/src/hooks/useInitialSwapState/useInitialSwapState";
 import useFaucetLink from "@/src/hooks/useFaucetLink";
 import {InsufficientReservesError} from "mira-dex-ts/dist/sdk/errors";
+import useCheckActiveNetwork from "@/src/hooks/useCheckActiveNetwork";
+import {ValidNetwork} from "@/src/utils/constants";
 
 export type CurrencyBoxMode = "buy" | "sell";
 export type CurrencyBoxState = {
@@ -73,6 +75,8 @@ const Swap = () => {
   const {connect, isConnecting} = useConnectUI();
   const {account} = useAccount();
   const {balances, isPending, refetch} = useBalances();
+
+  const isValidNetwork = useCheckActiveNetwork();
 
   const sellBalance = balances?.find(b => b.assetId === coinsConfig.get(swapState.sell.coin)?.assetId)?.amount.toNumber();
   const sellBalanceValue = sellBalance ? sellBalance / 10 ** coinsConfig.get(swapState.sell.coin)?.decimals! : 0;
@@ -298,7 +302,9 @@ const Swap = () => {
   const insufficientReserves = previewError instanceof InsufficientReservesError;
 
   let swapButtonTitle = 'Swap';
-  if (swapPending) {
+  if (!isValidNetwork) {
+    swapButtonTitle = 'Incorrect network';
+  } else if (swapPending) {
     swapButtonTitle = 'Waiting for approval in wallet';
   } else if (insufficientReserves) {
     swapButtonTitle = 'Insufficient reserves in pool';
@@ -308,7 +314,8 @@ const Swap = () => {
     swapButtonTitle = 'Claim some ETH to pay for gas';
   }
 
-  const swapDisabled = coinMissing || showInsufficientBalance || insufficientReserves;
+  const swapDisabled =
+    !isValidNetwork || coinMissing || showInsufficientBalance || insufficientReserves;
 
   const feePercentage = 0.3;
   const exchangeRate = useExchangeRate(swapState);

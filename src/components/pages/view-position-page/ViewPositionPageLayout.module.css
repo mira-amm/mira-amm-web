@@ -51,7 +51,7 @@
   height: 160px;
   display: flex;
   flex-direction: column;
-  justify-content: end;
+  justify-content: flex-end;
   padding: 16px;
   border-radius: 16px;
   background: linear-gradient(359.71deg, #8350FD -1.52%, #B2EA12 121.21%);
