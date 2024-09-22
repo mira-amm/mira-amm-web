@@ -13,8 +13,6 @@ import {useDebounceCallback} from "usehooks-ts";
 import useCheckEthBalance from "@/src/hooks/useCheckEthBalance/useCheckEthBalance";
 import useFaucetLink from "@/src/hooks/useFaucetLink";
 import {
-  createPoolIdFromAssetNames,
-  getAssetNameByAssetId,
   getAssetNamesFromPoolId,
   openNewTab
 } from "@/src/utils/common";
@@ -64,7 +62,6 @@ const AddLiquidityDialog = ({ poolId, setPreviewData, newPool }: Props) => {
     isStablePool,
   });
 
-  const poolId = createPoolIdFromAssetNames(firstCoin, secondCoin, isStablePool);
   const { apr } = usePoolAPR(poolId);
   const aprValue = apr
     ? parseFloat(apr).toLocaleString(DefaultLocale, { minimumFractionDigits: 2, maximumFractionDigits: 2 })
