@@ -1,5 +1,5 @@
 import Logo from "@/src/components/common/Logo/Logo";
-import { BlogLink, DiscordLink, TestnetUrl, XLink } from "@/src/utils/constants";
+import { BlogLink, DiscordLink, XLink } from "@/src/utils/constants";
 
 import styles from "./Footer.module.css";
 import GithubIcon from "../../icons/Github/GithubIcon";

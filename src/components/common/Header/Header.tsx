@@ -10,9 +10,8 @@ import ConnectButton from "@/src/components/common/ConnectButton/ConnectButton";
 import LaunchAppButton from "@/src/components/common/LaunchAppButton/LaunchAppButton";
 import TestnetLabel from "@/src/components/common/TestnetLabel/TestnetLabel";
 import DisconnectMobile from "@/src/components/common/ConnectButton/DisconnectMobile";
-import { useIsConnected } from "@fuels/react";
 import useFaucetLink from "@/src/hooks/useFaucetLink";
-import { BlogLink, TestnetUrl } from "@/src/utils/constants";
+import { BlogLink } from "@/src/utils/constants";
 
 type Props = {
   isHomePage?: boolean;
@@ -20,7 +19,6 @@ type Props = {
 
 const Header = ({ isHomePage }: Props) => {
   const pathname = usePathname();
-  const { isConnected } = useIsConnected();
   const faucetLink = useFaucetLink();
 
   return (

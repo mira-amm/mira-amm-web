@@ -7,8 +7,7 @@ import {useIsClient} from "usehooks-ts";
 import {clsx} from "clsx";
 import CloseIcon from "@/src/components/icons/Close/CloseIcon";
 import Link from "next/link";
-import SoonLabel from "@/src/components/common/SoonLabel/SoonLabel";
-import {BlogLink, DiscordLink, TestnetUrl, XLink} from "@/src/utils/constants";
+import {BlogLink, DiscordLink, XLink} from "@/src/utils/constants";
 import useFaucetLink from "@/src/hooks/useFaucetLink";
 
 type Props = {
