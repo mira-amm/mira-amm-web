@@ -9,6 +9,7 @@ import { DropDownButtons } from "@/src/utils/DropDownButtons";
 import { TouchCloseIcon } from "../../icons/DropDownClose/TouchCloseIcon";
 import { CloseIcon } from "../../icons/DropDownClose/CloseIcon";
 import { TransactionsHistory } from "../TransactionsHistory/TransactionsHistory";
+import { CopyNotification } from "../../common/CopyNotification/CopyNotification";
 
 type Props = {
   className?: string;
@@ -20,6 +21,7 @@ const DisconnectMobile = ({ className }: Props) => {
   const { disconnect } = useDisconnect();
   const [isMenuOpened, setMenuOpened] = useState(false);
   const [isHistoryOpened, setHistoryOpened] = useState(false);
+  const [isAddressCopied, setAddressCopied] = useState(false);
 
   // const touchStartY = useRef(0);
   // const touchEndY = useRef(0);
@@ -46,10 +48,6 @@ const DisconnectMobile = ({ className }: Props) => {
     disconnect();
   }, [disconnect]);
 
-  if (!isConnected) {
-    return null;
-  }
-
   const handleCloseMenu = () => {
     setMenuOpened(false);
   };
@@ -62,18 +60,37 @@ const DisconnectMobile = ({ className }: Props) => {
     setHistoryOpened(false);
   }
 
-  const handleCopy = () => {
+  const handleCopy = useCallback(() => {
     if (navigator.clipboard && formattedAddress !== "Connect Wallet") {
       navigator.clipboard.writeText(formattedAddress).then(
         () => {
           console.log("Address copied to clipboard!");
+          setAddressCopied(true);
+          setTimeout(() => setAddressCopied(false), 3000);
         },
         (err) => {
           console.error("Failed to copy address: ", err);
         }
       );
     }
-  };
+  }, [formattedAddress]);
+
+  if (!isConnected) {
+    return null;
+  }
+
+  // const handleCopy = () => {
+  //   if (navigator.clipboard && formattedAddress !== "Connect Wallet") {
+  //     navigator.clipboard.writeText(formattedAddress).then(
+  //       () => {
+  //         console.log("Address copied to clipboard!");
+  //       },
+  //       (err) => {
+  //         console.error("Failed to copy address: ", err);
+  //       }
+  //     );
+  //   }
+  // };
 
   // const onTouchStart = (e: React.TouchEvent) => {
   //   touchStartY.current = e.touches[0].clientY;
@@ -128,6 +145,7 @@ const DisconnectMobile = ({ className }: Props) => {
         </div>
       )}
       <TransactionsHistory onClose={handleHistoryClose} isOpened={isHistoryOpened} />
+      {isAddressCopied && <CopyNotification />}
     </>
   );
 };

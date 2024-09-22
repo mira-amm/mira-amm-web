@@ -19,6 +19,7 @@ import { DropDownMenu } from "../DropDownMenu/DropDownMenu";
 import { ArrowUp } from "../../icons/ArrowUp/ArrowUp";
 import { DropDownButtons } from "@/src/utils/DropDownButtons";
 import { TransactionsHistory } from "../TransactionsHistory/TransactionsHistory";
+import { CopyNotification } from "../../common/CopyNotification/CopyNotification";
 
 type Props = {
   className?: string;
@@ -34,6 +35,7 @@ const ConnectButton = ({ className }: Props) => {
 
   const [isMenuOpened, setMenuOpened] = useState(false);
   const [isHistoryOpened, setHistoryOpened] = useState(false);
+  const [isAddressCopied, setAddressCopied] = useState(false);
 
   const handleConnection = useCallback(() => {
     if (!isConnected) {
@@ -64,18 +66,20 @@ const ConnectButton = ({ className }: Props) => {
     return "Connect Wallet";
   }, [isConnected, formattedAddress]);
 
-  const handleCopy = () => {
+  const handleCopy = useCallback(() => {
     if (navigator.clipboard && title !== "Connect Wallet") {
       navigator.clipboard.writeText(title).then(
         () => {
           console.log("Address copied to clipboard!");
+          setAddressCopied(true);
+          setTimeout(() => setAddressCopied(false), 3000);
         },
         (err) => {
           console.error("Failed to copy address: ", err);
         }
       );
     }
-  };
+  }, [title]);
 
   const handleHistoryOpen = () => {
     setHistoryOpened(true);
@@ -132,6 +136,7 @@ const ConnectButton = ({ className }: Props) => {
       </ActionButton>
       {isMenuOpened && <DropDownMenu buttons={menuButtons} />}
       <TransactionsHistory onClose={handleHistoryClose} isOpened={isHistoryOpened} />
+      {isAddressCopied && <CopyNotification />}
     </>
   );
 };

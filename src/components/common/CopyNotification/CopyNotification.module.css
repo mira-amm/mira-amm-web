@@ -1,0 +1,33 @@
+.wrapper {
+    background: #46CC44;
+    width: 480px;
+    border-radius: 10px;
+    display: flex;
+    justify-content: space-between;
+    padding: 16px 20px;
+    position: absolute;
+    top: 730px;
+    right: 850px;
+
+}
+
+.messageArea {
+    display: flex;
+    gap: 16px;
+}
+
+.message {
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 24px;
+    color: #FFFFFF;
+}
+
+@media (max-width: 768px) {
+    .wrapper {
+        width: 347px;
+        top: 628px;
+        right: 15px;
+        z-index: 500;
+    }
+}
