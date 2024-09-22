@@ -23,9 +23,6 @@ const DisconnectMobile = ({ className }: Props) => {
   const [isHistoryOpened, setHistoryOpened] = useState(false);
   const [isAddressCopied, setAddressCopied] = useState(false);
 
-  // const touchStartY = useRef(0);
-  // const touchEndY = useRef(0);
-
   useEffect(() => {
     if (isMenuOpened) {
       document.documentElement.style.overflowY = "hidden";
@@ -64,47 +61,17 @@ const DisconnectMobile = ({ className }: Props) => {
     window.open("https://app.fuel.network/", "_blank");
   };
 
-  const handleCopy = useCallback(() => {
-    if (navigator.clipboard && formattedAddress !== "Connect Wallet") {
-      navigator.clipboard.writeText(formattedAddress).then(
-        () => {
-          console.log("Address copied to clipboard!");
-          setAddressCopied(true);
-          setTimeout(() => setAddressCopied(false), 3000);
-        },
-        (err) => {
-          console.error("Failed to copy address: ", err);
-        }
-      );
+  const handleCopy = useCallback(async () => {
+    if (isConnected) {
+      try {
+        await navigator.clipboard.writeText(formattedAddress);
+        setAddressCopied(true);
+        setTimeout(() => setAddressCopied(false), 3000);
+      } catch (error) {
+        console.error("Failed to copy address: ", error);
+      }
     }
-  }, [formattedAddress]);
-
-  // const handleCopy = () => {
-  //   if (navigator.clipboard && formattedAddress !== "Connect Wallet") {
-  //     navigator.clipboard.writeText(formattedAddress).then(
-  //       () => {
-  //         console.log("Address copied to clipboard!");
-  //       },
-  //       (err) => {
-  //         console.error("Failed to copy address: ", err);
-  //       }
-  //     );
-  //   }
-  // };
-
-  // const onTouchStart = (e: React.TouchEvent) => {
-  //   touchStartY.current = e.touches[0].clientY;
-  // };
-
-  // const onTouchMove = (e: React.TouchEvent) => {
-  //   touchEndY.current = e.touches[0].clientY;
-  // };
-
-  // const onTouchEnd = () => {
-  //   if (touchStartY.current < touchEndY.current - 50) {
-  //     setMenuOpened(false);
-  //   }
-  // };
+  }, [formattedAddress, isConnected]);
 
   const menuButtons = useMemo(() => {
     return DropDownButtons.map((button) => {
@@ -147,9 +114,6 @@ const DisconnectMobile = ({ className }: Props) => {
       {isMenuOpened && (
         <div
           className={styles.dropDownOverlay}
-          // onTouchStart={onTouchStart}
-          // onTouchMove={onTouchMove}
-          // onTouchEnd={onTouchEnd}
         >
           <DropDownMenu buttons={menuButtons}>
             <button className={styles.dropDownTouchClose}>

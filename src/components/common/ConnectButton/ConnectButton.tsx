@@ -66,20 +66,17 @@ const ConnectButton = ({ className }: Props) => {
     return "Connect Wallet";
   }, [isConnected, formattedAddress]);
 
-  const handleCopy = useCallback(() => {
-    if (navigator.clipboard && title !== "Connect Wallet") {
-      navigator.clipboard.writeText(title).then(
-        () => {
-          console.log("Address copied to clipboard!");
-          setAddressCopied(true);
-          setTimeout(() => setAddressCopied(false), 3000);
-        },
-        (err) => {
-          console.error("Failed to copy address: ", err);
-        }
-      );
+  const handleCopy = useCallback(async () => {
+    if (isConnected) {
+      try {
+        await navigator.clipboard.writeText(title);
+        setAddressCopied(true);
+        setTimeout(() => setAddressCopied(false), 3000);
+      } catch (error) {
+        console.error("Failed to copy address: ", error);
+      }
     }
-  }, [title]);
+  }, [title, isConnected]);
 
   const handleExplorerClick = () => {
     window.open("https://app.fuel.network/", "_blank");
@@ -140,9 +137,6 @@ const ConnectButton = ({ className }: Props) => {
         {isConnected && <img src="/images/avatar.png" width="24" height="24" />}
         {title}
         {isConnected &&
-          // <span className={styles.disconnectLabel}>
-          //   Disconnect
-          // </span>
           (!isMenuOpened ? <ArrowDown /> : <ArrowUp />)}
       </ActionButton>
       {isMenuOpened && <DropDownMenu buttons={menuButtons} />}
