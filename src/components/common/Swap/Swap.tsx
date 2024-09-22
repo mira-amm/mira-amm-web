@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState, useMemo } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { useAccount, useConnectUI, useIsConnected } from "@fuels/react";
 import { useDebounceCallback, useLocalStorage } from "usehooks-ts";
 import { clsx } from "clsx";
@@ -389,33 +389,6 @@ const Swap = () => {
     sellDecimals
   );
 
-  const calculatedPrice = useMemo(() => {
-    if (!exchangeRate) {
-      return null;
-    }
-    const parts = exchangeRate.split('≈');
-    if (parts.length < 2) {
-      return 0;
-    }
-    const priceStr = parts[1].trim().split(' ')[0];
-    const price = parseFloat(priceStr);
-    console.log(price)
-    return price || 0;
-  }, [exchangeRate]);
-
-  const previewPrice = useMemo(() => {
-    if (lastFocusedMode === 'sell' && inputPreviewValue && parseFloat(swapState.sell.amount)) {
-      console.log(inputPreviewValue)
-      console.log(inputPreviewValue / parseFloat(swapState.sell.amount));
-      return inputPreviewValue / parseFloat(swapState.sell.amount);
-    } else if (lastFocusedMode === 'buy' && outputPreviewValue && parseFloat(swapState.buy.amount)) {
-      console.log(outputPreviewValue)
-      console.log(parseFloat(swapState.buy.amount) / outputPreviewValue);
-      return parseFloat(swapState.buy.amount) / outputPreviewValue;
-    }
-    return 0;
-  }, [lastFocusedMode, inputPreviewValue, outputPreviewValue, swapState]);
-
   return (
     <>
       <div className={styles.swapAndRate}>
@@ -496,10 +469,7 @@ const Swap = () => {
           )}
         </div>
         <div className={styles.rates}>
-          {calculatedPrice && <PriceImpact
-            calculatedPrice={calculatedPrice}
-            previewPrice={previewPrice}
-          />}
+          <PriceImpact />
           <ExchangeRate swapState={swapState} />
         </div>
       </div>
