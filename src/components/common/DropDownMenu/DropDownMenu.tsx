@@ -2,7 +2,7 @@ import React from "react";
 import styles from "./DropDownMenu.module.css";
 
 type DropDownMenuProps = {
-  buttons: { icon: React.FC; text: string; onClick: () => void }[];
+  buttons: { icon: React.FC; text: string; onClick: () => void; disabled?: boolean; tooltip?: string }[];
   children?: React.ReactNode;
 };
 
@@ -15,6 +15,9 @@ export const DropDownMenu = ({ buttons, children }: DropDownMenuProps) => {
             <button className={styles.menuButton} onClick={button.onClick}>
               <button.icon />
               <span>{button.text}</span>
+              {button.disabled && button.tooltip && (
+              <div className={styles.tooltip}>{button.tooltip}</div>
+            )}
             </button>
           </li>
         ))}

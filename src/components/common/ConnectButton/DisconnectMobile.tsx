@@ -3,7 +3,7 @@ import useFormattedAddress from "@/src/hooks/useFormattedAddress/useFormattedAdd
 import ActionButton from "@/src/components/common/ActionButton/ActionButton";
 import { clsx } from "clsx";
 import styles from "./ConnectButton.module.css";
-import { useCallback, useState, useEffect, useRef } from "react";
+import { useCallback, useState, useEffect, useMemo } from "react";
 import { DropDownMenu } from "../DropDownMenu/DropDownMenu";
 import { DropDownButtons } from "@/src/utils/DropDownButtons";
 import { TouchCloseIcon } from "../../icons/DropDownClose/TouchCloseIcon";
@@ -79,10 +79,6 @@ const DisconnectMobile = ({ className }: Props) => {
     }
   }, [formattedAddress]);
 
-  if (!isConnected) {
-    return null;
-  }
-
   // const handleCopy = () => {
   //   if (navigator.clipboard && formattedAddress !== "Connect Wallet") {
   //     navigator.clipboard.writeText(formattedAddress).then(
@@ -110,19 +106,34 @@ const DisconnectMobile = ({ className }: Props) => {
   //   }
   // };
 
-  const menuButtons = DropDownButtons.map((button) => ({
-    ...button,
-    onClick: 
-    button.text === "Disconnect" 
-    ? handleDisconnect
-    : button.text === "Transaction History"
-    ? handleHistoryOpen
-    : button.text === "Copy Address"
-    ? handleCopy
-    : button.text === "View in Explorer"
-    ? handleExplorerClick
-    : button.onClick,
-  }));
+  const menuButtons = useMemo(() => {
+    return DropDownButtons.map((button) => {
+      if (button.text === "Transaction History") {
+        return {
+          ...button,
+          disabled: true,
+          tooltip: "Soon",
+          onClick: () => {},
+        };
+      }
+  
+      return {
+        ...button,
+        onClick:
+          button.text === "Disconnect"
+            ? handleDisconnect
+            : button.text === "Copy Address"
+            ? handleCopy
+            : button.text === "View in Explorer"
+            ? handleExplorerClick
+            : button.onClick,
+      };
+    });
+  }, [handleDisconnect, handleCopy]);
+
+  if (!isConnected) {
+    return null;
+  }
 
   return (
     <>
