@@ -9,6 +9,7 @@
     top: 730px;
     right: 850px;
     z-index: 1000;
+    align-items: center;
 }
 
 .messageArea {
@@ -21,6 +22,7 @@
     font-size: 16px;
     line-height: 24px;
     color: #FFFFFF;
+    margin: 0;
 }
 
 .closeButton {
