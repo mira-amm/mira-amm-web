@@ -3,7 +3,7 @@
     height: 40px;
     background: linear-gradient(132.04deg, #262F5F 11.87%, #C41CFF 176.88%);
     border-radius: 40px;
-    color: #FFFFFF;
+    color: var(--content-primary);
     display: flex;
     justify-content: center;
     align-items: center;

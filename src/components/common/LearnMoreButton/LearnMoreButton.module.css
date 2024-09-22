@@ -4,7 +4,7 @@
     padding: 16px 0;
     background-color: #2E2E2E;
     border: none;
-    color: #FFFFFF;
+    color: var(--content-primary);
     font-weight: 600;
     font-size: 18px;
     line-height: 22px;
@@ -24,7 +24,7 @@
         padding: 16px 0;
         background-color: #2E2E2E;
         border: none;
-        color: #FFFFFF;
+        color: var(--content-primary);
         font-size: 18px;
         text-align: center;
         display: inline-flex;

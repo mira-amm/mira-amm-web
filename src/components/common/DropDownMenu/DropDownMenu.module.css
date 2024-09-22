@@ -17,7 +17,7 @@
   border: none;
   background: none;
   cursor: pointer;
-  color: #ffffff;
+  color: var(--content-primary);
   display: flex;
   align-items: center;
   gap: 10px;
@@ -35,13 +35,13 @@
   width: 100%;
   cursor: default;
   background: #262834;
-  color: #9D9D9D;
+  color: var(--content-grey);
 }
 
 .tooltip {
   visibility: hidden;
   width: max-content;
-  background: #aeed0d;
+  background: var(--accent-primary);
   color: #292929;
   text-align: center;
   padding: 3px 8px;
@@ -77,7 +77,7 @@
   }
 
 .menuButton:hover {
-  background: #ffffff1a;
+  background: var(--background-grey-dark);
   border-radius: 8px;
 }
 

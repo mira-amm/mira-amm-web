@@ -122,7 +122,7 @@
 }
 
 .transactionDate {
-  color: #ffffffa3;
+  color: var(--content-primary)a3;
   font-weight: 400;
   font-size: 16px;
   line-height: 22px;
@@ -159,11 +159,11 @@
 }
 
 .transactionName {
-  color: #ffffff;
+  color: var(--content-primary);
 }
 
 .transactionAmount {
-  color: #ffffffa3;
+  color: var(--content-primary)a3;
 }
 
 .transactions {
@@ -191,11 +191,11 @@
 }
 
 .withdrawal {
-  background-color: #f55353;
+  background-color: var(--accent-warning);
 }
 
 .added {
-  background-color: #46cc44;
+  background-color: var(--content-positive);
 }
 
 .linerVisible {

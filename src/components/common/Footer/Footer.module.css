@@ -26,14 +26,14 @@
   line-height: 22px;
   display: flex;
   align-items: flex-start;
-  color: #FFFFFFA3;
+  color: var(--content-primary)A3;
   font-weight: 400;
   flex-direction: column;
   gap: 12px;
 }
 
 .fuelText {
-  color: #FFFFFF;
+  color: var(--content-primary);
   font-weight: 400;
   margin-top: 4px;
 }
@@ -67,7 +67,7 @@
     flex: 1;
     flex-direction: row;
     justify-content: space-between;
-    color: #FFFFFF;
+    color: var(--content-primary);
     font-size: 18px;
     line-height: 24px;
     font-weight: 400;
@@ -88,12 +88,12 @@
   }
 
   .link:hover {
-    color: #FFFFFFA3;
+    color: var(--content-dimmed-light);
     transition: all 0.3s ease;
   }
 
   .fuelText {
-    color: rgba(255, 255, 255, 0.8);
+    color: var(--content-secondary);
     font-weight: 400;
   }
 
@@ -112,7 +112,7 @@
   }
 
   .supportLink {
-    color: #FFFFFF;
+    color: var(--content-primary);
   }
 
   .socialLinks {

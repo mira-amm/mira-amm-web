@@ -10,13 +10,13 @@ export const TransactionsIcon = () => {
       <g clip-path="url(#clip0_11890_35187)">
         <path
           d="M22.3877 7.68945H12.3877M22.3877 7.68945L17.3877 12.6895M22.3877 7.68945L17.3877 2.68945"
-          stroke="#9D9D9D"
+          stroke="var(--content-grey)"
           stroke-width="2"
           stroke-linecap="square"
         />
         <path
           d="M2.3877 17.6895H12.3877M2.3877 17.6895L7.3877 12.6895M2.3877 17.6895L7.3877 22.6895"
-          stroke="#9D9D9D"
+          stroke="var(--content-grey)"
           stroke-width="2"
           stroke-linecap="square"
         />
