@@ -26,7 +26,6 @@ import { MiraApp } from "../../common/MiraApp/MiraApp";
 import { LearnMoreButton } from "../../common/LearnMoreButton/LearnMoreButton";
 import { StepsIcon } from "../../common/StepsIcon/StepsIcon";
 import RoadmapMobile from "../../icons/Roadmap/RoadmapMobile";
-import MiraLogo from "../../icons/MiraLogo/MiraLogo";
 
 const LandingPageLayout = () => {
   return (

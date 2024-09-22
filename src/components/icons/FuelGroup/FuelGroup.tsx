@@ -9,7 +9,6 @@ const FuelGroup = () => {
     >
       <mask
         id="mask0_11415_4631"
-        // style="mask-type:luminance"
         maskUnits="userSpaceOnUse"
         x="0"
         y="0"
