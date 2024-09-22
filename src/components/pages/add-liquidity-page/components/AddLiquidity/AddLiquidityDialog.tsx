@@ -13,6 +13,7 @@ import {useDebounceCallback} from "usehooks-ts";
 import useCheckEthBalance from "@/src/hooks/useCheckEthBalance/useCheckEthBalance";
 import useFaucetLink from "@/src/hooks/useFaucetLink";
 import {openNewTab} from "@/src/utils/common";
+import useCheckActiveNetwork from "@/src/hooks/useCheckActiveNetwork";
 
 type Props = {
   firstCoin: CoinName;
@@ -84,7 +85,6 @@ const AddLiquidityDialog = ({ firstCoin, secondCoin, setPreviewData }: Props) =>
     };
   }, [debouncedSetFirstAmount, debouncedSetSecondAmount, firstCoin]);
 
-
   const sufficientEthBalanceForFirstCoin = useCheckEthBalance({ coin: firstCoin, amount: firstAmount });
   const sufficientEthBalanceForSecondCoin = useCheckEthBalance({ coin: secondCoin, amount: secondAmount });
   const sufficientEthBalance = sufficientEthBalanceForFirstCoin && sufficientEthBalanceForSecondCoin;
@@ -110,23 +110,24 @@ const AddLiquidityDialog = ({ firstCoin, secondCoin, setPreviewData }: Props) =>
     });
   }, [sufficientEthBalance, setPreviewData, firstCoin, firstAmount, secondCoin, secondAmount, faucetLink]);
 
+  const isValidNetwork = useCheckActiveNetwork();
+
   const insufficientFirstBalance = parseFloat(firstAmount) > firstCoinBalanceValue;
   const insufficientSecondBalance = parseFloat(secondAmount) > secondCoinBalanceValue;
   const insufficientBalance = insufficientFirstBalance || insufficientSecondBalance;
 
-  const buttonTitle = useMemo(() => {
-    if (insufficientBalance) {
-      return 'Insufficient balance';
-    } else if (!sufficientEthBalance) {
-      return 'Claim some ETH to pay for gas';
-    }
-
-    return 'Preview';
-  }, [insufficientBalance, sufficientEthBalance]);
+  let buttonTitle = 'Preview';
+  if (!isValidNetwork) {
+    buttonTitle = 'Incorrect network';
+  } else if (insufficientBalance) {
+    buttonTitle = 'Insufficient balance';
+  } else if (!sufficientEthBalance) {
+    buttonTitle = 'Claim some ETH to pay for gas';
+  }
 
   const oneOfAmountsEmpty = !firstAmount || !secondAmount;
 
-  const buttonDisabled = insufficientBalance || oneOfAmountsEmpty;
+  const buttonDisabled = !isValidNetwork || insufficientBalance || oneOfAmountsEmpty;
 
   return (
     <>

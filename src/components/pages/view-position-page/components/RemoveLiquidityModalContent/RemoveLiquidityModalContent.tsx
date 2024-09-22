@@ -27,9 +27,10 @@ type Props = {
   setLiquidityValue: Dispatch<SetStateAction<number>>
   closeModal: VoidFunction;
   handleRemoveLiquidity: VoidFunction;
+  isValidNetwork: boolean;
 }
 
-const RemoveLiquidityModalContent = ({ coinA, coinB, currentCoinAValue, currentCoinBValue, coinAValueToWithdraw, coinBValueToWithdraw, closeModal, liquidityValue, setLiquidityValue, handleRemoveLiquidity }: Props) => {
+const RemoveLiquidityModalContent = ({coinA, coinB, currentCoinAValue, currentCoinBValue, coinAValueToWithdraw, coinBValueToWithdraw, closeModal, liquidityValue, setLiquidityValue, handleRemoveLiquidity, isValidNetwork }: Props) => {
   const [displayValue, setDisplayValue] = useState(liquidityValue);
 
   const sliderRef = useRef<HTMLInputElement>(null);
@@ -55,6 +56,13 @@ const RemoveLiquidityModalContent = ({ coinA, coinB, currentCoinAValue, currentC
     debouncedSetValue(100);
     document.documentElement.style.setProperty('--value', '100%');
   };
+
+  let buttonTitle = 'Confirm';
+  if (!isValidNetwork) {
+    buttonTitle = 'Incorrect network';
+  }
+
+  const withdrawalDisabled = !isValidNetwork;
 
   return (
     <div className={styles.removeLiquidityContent}>
@@ -117,7 +125,11 @@ const RemoveLiquidityModalContent = ({ coinA, coinB, currentCoinAValue, currentC
         </p>
       </div>
       <div className={styles.buttons}>
-        <ActionButton onClick={handleRemoveLiquidity}>Confirm</ActionButton>
+        <ActionButton onClick={handleRemoveLiquidity}
+                      disabled={withdrawalDisabled}
+        >
+          {buttonTitle}
+        </ActionButton>
         <ActionButton variant="outlined" onClick={closeModal}>Cancel</ActionButton>
       </div>
     </div>
