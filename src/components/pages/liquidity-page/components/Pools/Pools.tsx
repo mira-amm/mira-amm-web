@@ -6,6 +6,7 @@ import usePoolsData from "@/src/hooks/usePoolsData";
 import LoaderIcon from "@/src/components/icons/Loader/LoaderIcon";
 import LoaderV2 from "@/src/components/common/LoaderV2/LoaderV2";
 import ActionButton from "@/src/components/common/ActionButton/ActionButton";
+import clsx from "clsx";
 
 const Pools = () => {
   const { data, isPending } = usePoolsData();
@@ -14,7 +15,7 @@ const Pools = () => {
     <section className={styles.pools}>
       <div className={styles.poolsHeader}>
         <p className={styles.poolsTitle}>All Pools</p>
-        <ActionButton className={styles.addButton} onClick={() => {}}>
+        <ActionButton className={clsx("mobileOnly", styles.addButton)} onClick={() => {}}>
           Create a pool
         </ActionButton>
       </div>
