@@ -1,6 +1,6 @@
 import styles from "./MiraApp.module.css";
 import LaunchAppButton from "../LaunchAppButton/LaunchAppButton";
-import miraLogo from "../../icons/26.png";
+import miraLogo from "../../icons/MiraLogo.png";
 
 export const MiraApp = () => {
   return (
