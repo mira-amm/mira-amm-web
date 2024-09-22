@@ -199,6 +199,24 @@
   background-color: #46cc44;
 }
 
+@media (min-width: 480px) and (max-width: 800px) {
+  .wrapper {
+    opacity: 0;
+    transform: translateX(100%);
+    width: 100%;
+    max-width: 800px;
+    pointer-events: none;
+    transition: transform 0.3s ease, opacity 0.3s ease;
+  }
+
+  .wrapper.open {
+    opacity: 1;
+    transform: translateX(0);
+    pointer-events: all;
+  }
+}
+
+
 @media (max-width: 768px) {
   .wrapper {
     height: 100vh;
