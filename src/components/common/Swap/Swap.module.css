@@ -88,11 +88,6 @@
   justify-content: space-between;
 }
 
-.rates {
-  display: flex;
-  justify-content: space-between;
-}
-
 @media (min-width: 1024px) {
   .swapAndRate {
     gap: 16px;
