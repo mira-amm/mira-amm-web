@@ -15,7 +15,8 @@
   .liquidityPageLayout {
     max-width: 1084px;
     margin: 0 auto;
-    min-height: calc(100vh - 157px);
+    /* min-height: calc(100vh - 157px); */
+    min-height: 100vh;
     padding: 32px 16px;
   }
 

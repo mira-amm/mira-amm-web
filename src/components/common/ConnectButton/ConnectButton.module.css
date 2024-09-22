@@ -58,3 +58,38 @@ button.connected:hover .disconnectLabel {
   line-height: 32px;
   text-align: left;
 }
+
+.connectButtonDropDown {
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.dropDownOverlay {
+  width: 100%;
+  height: 100vh;
+  background: #00000059;
+  backdrop-filter: blur(4px);
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 100;
+}
+
+.dropDownTouchClose {
+  position: absolute;
+  top: 8px;
+  left: 46%;
+  border: none;
+  padding: 0;
+  background: none;
+}
+
+.dropDownClose {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  border: none;
+  padding: 0;
+  background: none;
+}

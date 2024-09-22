@@ -7,9 +7,10 @@
 
 @media (min-width: 1024px) {
   .swapLayout {
-    min-height: calc(100vh - 157px);
+    /* min-height: calc(100vh - 157px); */
+    min-height: 100vh;
     max-width: 500px;
     margin: 0 auto;
-    padding: 84px 16px 48px
+    padding: 84px 16px 48px;
   }
 }

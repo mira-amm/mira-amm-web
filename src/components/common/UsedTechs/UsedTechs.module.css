@@ -1,0 +1,31 @@
+.usedTechs {
+  display: flex;
+  gap: 10px;
+  font-size: 20px;
+  line-height: 24px;
+  font-weight: 300;
+  align-items: center;
+}
+
+@media (max-width: 1024px) {
+  .usedTechs {
+    font-size: 16px;
+    line-height: 22px;
+    gap: 6px;
+    flex-wrap: nowrap;
+    overflow: visible;
+  }
+
+  .text {
+    max-height: 22px;
+    min-width: 80px;
+    text-wrap: nowrap;
+    overflow: visible;
+  }
+}
+
+@media (max-width: 464px) {
+  .text {
+    font-size: 14px;
+  }
+}

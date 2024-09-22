@@ -43,7 +43,7 @@
   display: inline-flex;
   align-items: center;
   text-transform: uppercase;
-  background-image: radial-gradient(114.58% 814.77% at -1.46% 26.54%, #AEED0D 0%, #5872FC 49.15%, #31FE3A 100%);
+  background-image: radial-gradient(114.58% 814.77% at -1.46% 26.54%, var(--accent-primary) 0%, #5872FC 49.15%, #31FE3A 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   cursor: pointer;
@@ -53,6 +53,12 @@
   .header {
     font-size: 18px;
     line-height: 24px;
+  }
+
+  .launchAppArea {
+    display: flex;
+    gap: 24px;
+    align-items: center;
   }
 
   .promo {

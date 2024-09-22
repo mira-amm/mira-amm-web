@@ -1,4 +1,4 @@
-const CopyIcon = () => {
+export const CopyIcon = () => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -26,5 +26,3 @@ const CopyIcon = () => {
     </svg>
   );
 };
-
-export default CopyIcon;

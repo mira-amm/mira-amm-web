@@ -19,6 +19,17 @@
   background-color: var(--background-grey-dark);
 }
 
+.poolsHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.addButton {
+  padding: 10px 20px;
+  font-weight: 400;
+}
+
 .loadingFallback img {
   width: 36px;
   height: 36px;
@@ -32,5 +43,9 @@
   .loadingFallback img {
     width: 50px;
     height: 50px;
+  }
+
+  .addButton {
+    display: none;
   }
 }

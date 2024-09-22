@@ -8,7 +8,7 @@ import {clsx} from "clsx";
 import CloseIcon from "@/src/components/icons/Close/CloseIcon";
 import Link from "next/link";
 import SoonLabel from "@/src/components/common/SoonLabel/SoonLabel";
-import {DiscordLink, XLink} from "@/src/utils/constants";
+import {BlogLink, DiscordLink, TestnetUrl, XLink} from "@/src/utils/constants";
 import useFaucetLink from "@/src/hooks/useFaucetLink";
 
 type Props = {
@@ -36,12 +36,12 @@ const MobileMenuContent = ({ expanded, toggleExpandedState }: Props) => {
       <nav className={styles.links}>
         <Link href="/swap">Swap</Link>
         <Link href="/liquidity">Liquidity</Link>
-        {/*<a href="#">Docs</a>*/}
         <a href={faucetLink} target="_blank">ETH Faucet</a>
-        <a>Testnet</a>
         {/*<a href="#">Github</a>*/}
         <a href={DiscordLink} target="_blank">Discord</a>
         <a href={XLink} target="_blank">X</a>
+        <a href="https://docs.mira.ly">Docs</a>
+        <a href={BlogLink} target="_blank">Blog</a>
       </nav>
     </div>,
     document.body
