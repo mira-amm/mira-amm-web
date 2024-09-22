@@ -1,4 +1,4 @@
-const RoadmapMobile = () => {
+const RoadmapMobileIcon = () => {
     return <svg width="343" height="24" viewBox="0 0 343 24" fill="none" xmlns="http://www.w3.org/2000/svg">
     <path d="M11.8276 12L331.172 12" stroke="#6D6D6D" stroke-width="2" stroke-dasharray="10 10"/>
     <ellipse cx="11.8276" cy="12" rx="11.8276" ry="12" fill="#46CC44"/>
@@ -12,4 +12,4 @@ const RoadmapMobile = () => {
     </svg>
 }
 
-export default RoadmapMobile
+export default RoadmapMobileIcon

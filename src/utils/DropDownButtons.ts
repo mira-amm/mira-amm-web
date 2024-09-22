@@ -1,7 +1,7 @@
 import CopyIcon from "../components/icons/Copy/CopyIcon";
 import { ExplorerIcon } from "../components/icons/Explorer/ExplorerIcon";
 import { TransactionsIcon } from "../components/icons/Transactions/TransactionsIcon";
-import { LogOut } from "../components/icons/LogOut/LogOut";
+import { LogOutIcon } from "../components/icons/LogOut/LogOutIcon";
 
 export const DropDownButtons = [
   {
@@ -20,7 +20,7 @@ export const DropDownButtons = [
     onClick: () => {},
   },
   {
-    icon: LogOut,
+    icon: LogOutIcon,
     text: "Disconnect",
     onClick: () => {},
   },

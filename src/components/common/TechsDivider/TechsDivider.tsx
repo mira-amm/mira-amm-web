@@ -1,6 +1,6 @@
 import { DividerText } from "../DividerText/dividerText";
 import { UsedTechs } from "../UsedTechs/UsedTechs";
-import Halborn from "../../icons/Halborn/Halborn";
+import Halborn from "../../icons/Halborn/HalbornIcon";
 import FuelGroup from "../../icons/FuelGroup/FuelGroup";
 import { Divider } from "../Divider/Divider";
 import styles from "./TechsDivider.module.css";

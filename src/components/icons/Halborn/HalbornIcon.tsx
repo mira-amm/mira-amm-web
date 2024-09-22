@@ -1,4 +1,4 @@
-const Halborn = () => {
+const HalbornIcon = () => {
   return (
     <svg
       width="153"
@@ -16,4 +16,4 @@ const Halborn = () => {
   );
 };
 
-export default Halborn;
+export default HalbornIcon;

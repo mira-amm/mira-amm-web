@@ -1,4 +1,4 @@
-const RoadmapDesktop = () => {
+const RoadmapDesktopIcon = () => {
     return <svg width="856" height="24" viewBox="0 0 856 24" fill="none" xmlns="http://www.w3.org/2000/svg">
     <path d="M8 12H848" stroke="#6D6D6D" stroke-width="2" stroke-dasharray="12 12"/>
     <circle cx="12" cy="12" r="12" fill="#46CC44"/>
@@ -12,4 +12,4 @@ const RoadmapDesktop = () => {
     </svg>
 }
 
-export default RoadmapDesktop
+export default RoadmapDesktopIcon

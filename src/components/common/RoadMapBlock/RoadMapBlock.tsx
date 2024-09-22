@@ -1,4 +1,4 @@
-import Checkbox from "../../icons/Checkbox/Checkbox";
+import CheckboxIcon from "../../icons/Checkbox/CheckboxIcon";
 import styles from "./RoadMapBlock.module.css";
 import { InfoBlockProps } from "@/src/ts-interfaces/InfoBlockProps";
 
@@ -14,7 +14,7 @@ export const RoadMapBlock: React.FC<InfoBlockProps> = ({
       <h3 className={styles.title}>{title}</h3>
       <div className={styles.checkboxArea}>
         {""}
-        {done ? <Checkbox /> : ""}
+        {done ? <CheckboxIcon /> : ""}
         <p className={done ? styles.done : styles.description}>{description}</p>
       </div>
     </div>

@@ -1,4 +1,4 @@
-export const NotificationCheckbox = () => {
+export const NotificationCheckboxIcon = () => {
   return (
     <svg
       width="24"

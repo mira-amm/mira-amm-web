@@ -14,9 +14,9 @@ import styles from "./ConnectButton.module.css";
 import ActionButton from "@/src/components/common/ActionButton/ActionButton";
 import useFormattedAddress from "@/src/hooks/useFormattedAddress/useFormattedAddress";
 import { toBech32 } from "fuels";
-import { ArrowDown } from "../../icons/ArrowDown/ArrowDown";
+import { ArrowDownIcon } from "../../icons/ArrowDown/ArrowDownIcon";
 import { DropDownMenu } from "../DropDownMenu/DropDownMenu";
-import { ArrowUp } from "../../icons/ArrowUp/ArrowUp";
+import { ArrowUpIcon } from "../../icons/ArrowUp/ArrowUpIcon";
 import { DropDownButtons } from "@/src/utils/DropDownButtons";
 import { TransactionsHistory } from "../TransactionsHistory/TransactionsHistory";
 import { CopyNotification } from "../../common/CopyNotification/CopyNotification";
@@ -137,7 +137,7 @@ const ConnectButton = ({ className }: Props) => {
         {isConnected && <img src="/images/avatar.png" width="24" height="24" />}
         {title}
         {isConnected &&
-          (!isMenuOpened ? <ArrowDown /> : <ArrowUp />)}
+          (!isMenuOpened ? <ArrowDownIcon /> : <ArrowUpIcon />)}
       </ActionButton>
       {isMenuOpened && <DropDownMenu buttons={menuButtons} />}
       <TransactionsHistory

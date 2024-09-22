@@ -21,11 +21,11 @@ import VoteIcon from "../../icons/VoteIcon/VoteIcon";
 import EarnIcon from "../../icons/EarnIcon/EarnIcon";
 import { RoadMapBlock } from "../../common/RoadMapBlock/RoadMapBlock";
 import { RoadMapIcon } from "../../common/RoadMapIcons/RoadMapIcon";
-import RoadmapDesktop from "../../icons/Roadmap/RoadmapDesktop";
+import RoadmapDesktop from "../../icons/Roadmap/RoadmapDesktopIcon";
 import { MiraApp } from "../../common/MiraApp/MiraApp";
 import { LearnMoreButton } from "../../common/LearnMoreButton/LearnMoreButton";
 import { StepsIcon } from "../../common/StepsIcon/StepsIcon";
-import RoadmapMobile from "../../icons/Roadmap/RoadmapMobile";
+import RoadmapMobile from "../../icons/Roadmap/RoadmapMobileIcon";
 
 const LandingPageLayout = () => {
   return (

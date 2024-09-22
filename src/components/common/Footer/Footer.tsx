@@ -2,10 +2,9 @@ import Logo from "@/src/components/common/Logo/Logo";
 import { BlogLink, DiscordLink, TestnetUrl, XLink } from "@/src/utils/constants";
 
 import styles from "./Footer.module.css";
-import { FuelIcon } from "../../icons";
-import Github from "../../icons/Github/Github";
+import GithubIcon from "../../icons/Github/GithubIcon";
 import DiscordIcon from "../../icons/DiscordIcon/DiscordIcon";
-import X from "../../icons/X/X";
+import X from "../../icons/X/XSocialIcon";
 import clsx from "clsx";
 
 const Footer = () => {
@@ -18,15 +17,11 @@ const Footer = () => {
           <Logo />
           <div className={styles.fuelWrapper}>
           <p className={styles.fuelText}>&#8432;MIRA launched as a basic AMM and will transition to ve(3,3) soon</p>
-            {/* <FuelIcon /> */}
           </div>
           <div className={styles.links}>
             <a className={styles.link} href={DiscordLink}>
               Support
             </a>
-            {/* <a href="/" target="_blank">
-              Partner with us
-            </a> */}
             <a href="https://docs.mira.ly/resources/media-kit" target="_blank">
               Media Kit
             </a>
@@ -42,7 +37,7 @@ const Footer = () => {
           </div>
           <div className={styles.socialLinks}>
             <a href="https://github.com/mira-amm" target="_blank">
-              <Github />
+              <GithubIcon />
             </a>
             <a href={DiscordLink} target="_blank">
               <DiscordIcon />
@@ -64,9 +59,6 @@ const Footer = () => {
             <a className={styles.link} href={DiscordLink}>
               Support
             </a>
-            {/* <a href="/" target="_blank">
-              Partner with us
-            </a> */}
             <a className={styles.link} href="https://docs.mira.ly/resources/media-kit" target="_blank">
               Media Kit
             </a>
@@ -85,7 +77,7 @@ const Footer = () => {
           </div>
           <div className={styles.socialLinks}>
             <a className={styles.socialLink} href="https://github.com/mira-amm" target="_blank">
-              <Github />
+              <GithubIcon />
             </a>
             <a className={styles.socialLink} href={DiscordLink} target="_blank">
               <DiscordIcon />
@@ -98,7 +90,6 @@ const Footer = () => {
         <div className={styles.copywright}>
           <div className={styles.fuelWrapper}>
             <p className={styles.fuelText}>&#8432;MIRA launched as a basic AMM and will transition to ve(3,3) soon</p>
-            {/* <FuelIcon /> */}
           </div>
           <p className="desktopOnly">&copy; {currentYear} Mira Finance</p>
         </div>
