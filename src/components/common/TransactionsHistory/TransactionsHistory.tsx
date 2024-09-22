@@ -131,6 +131,7 @@ export const TransactionsHistory: React.FC<TransactionsHistoryProps> = ({ onClos
         ))}
       </ul>
     </div>
+    <div className={isOpened ? styles.linerVisible : styles.linerHidden}></div>
     </div>
   );
 };
