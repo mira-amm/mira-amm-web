@@ -1,5 +1,6 @@
 import React from "react";
 import styles from "./DropDownMenu.module.css";
+import clsx from "clsx";
 
 type DropDownMenuProps = {
   buttons: { icon: React.FC; text: string; onClick: () => void; disabled?: boolean; tooltip?: string }[];
@@ -12,7 +13,7 @@ export const DropDownMenu = ({ buttons, children }: DropDownMenuProps) => {
       <ul className={styles.menuList}>
         {buttons.map((button) => (
           <li key={button.text}>
-            <button className={styles.menuButton} onClick={button.onClick}>
+            <button className={clsx(button.disabled ? styles.menuButtonDisabled : styles.menuButton)} onClick={button.onClick}>
               <button.icon />
               <span>{button.text}</span>
               {button.disabled && button.tooltip && (

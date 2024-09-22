@@ -1,3 +1,9 @@
+@font-face {
+  font-family: "Inter";
+  src: url(../../../../public/fonts/Inter_18pt-Medium.ttf);
+  font-weight: 500;
+}
+
 .menuList {
   list-style: none;
   padding: 10px;
@@ -25,31 +31,41 @@
   width: 100%;
 }
 
-.menuButton[disabled] {
-  opacity: 0.5;
-  cursor: none;
+.menuButtonDisabled {
+  border: none;
+  background: none;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 10px;
+  width: 100%;
+  cursor: default;
   background: #262834;
+  color: #9D9D9D;
 }
 
 .tooltip {
   visibility: hidden;
   width: max-content;
-  background: #262834;
-  color: #fff;
+  background: #aeed0d;
+  color: #292929;
   text-align: center;
-  padding: 6px 8px;
-  border-radius: 4px;
-
+  padding: 3px 8px;
+  border-radius: 20px;
+  font-family: "Inter";
+  font-size: 10px;
+  line-height: 14px;
+  font-weight: 500;
   position: absolute;
   z-index: 1;
-  left: -1px;
+  left: -60px;
   top: 61%;
   transform: translateY(-50%);
   margin-left: 8px;
   white-space: nowrap;
 }
 
-.menuButton:hover .tooltip {
+.menuButtonDisabled:hover .tooltip {
   visibility: visible;
 }
 
@@ -59,6 +75,13 @@
   line-height: 24px;
   text-wrap: nowrap;
 }
+
+.menuButtonDisabled span {
+    font-weight: 400;
+    font-size: 15px;
+    line-height: 24px;
+    text-wrap: nowrap;
+  }
 
 .menuButton:hover {
   background: #ffffff1a;
@@ -81,8 +104,13 @@
     font-size: 18px;
   }
 
+  .menuButtonDisabled span {
+    font-size: 18px;
+  }
+
   .tooltip {
     top: 64%;
     left: 210px;
+    visibility: visible;
   }
 }

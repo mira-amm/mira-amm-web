@@ -112,7 +112,7 @@ const DisconnectMobile = ({ className }: Props) => {
         return {
           ...button,
           disabled: true,
-          tooltip: "Soon",
+          tooltip: "soon",
           onClick: () => {},
         };
       }

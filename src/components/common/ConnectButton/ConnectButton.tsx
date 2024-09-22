@@ -99,7 +99,7 @@ const ConnectButton = ({ className }: Props) => {
         return {
           ...button,
           disabled: true,
-          tooltip: "Soon",
+          tooltip: "soon",
           onClick: () => {},
         };
       }
