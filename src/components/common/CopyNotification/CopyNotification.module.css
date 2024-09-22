@@ -8,7 +8,7 @@
     position: absolute;
     top: 730px;
     right: 850px;
-
+    z-index: 1000;
 }
 
 .messageArea {

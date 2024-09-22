@@ -81,13 +81,17 @@ const ConnectButton = ({ className }: Props) => {
     }
   }, [title]);
 
+  const handleExplorerClick = () => {
+    window.open("https://app.fuel.network/", "_blank");
+  };
+
   const handleHistoryOpen = () => {
     setHistoryOpened(true);
-  }
+  };
 
   const handleHistoryClose = () => {
     setHistoryOpened(false);
-  }
+  };
 
   const menuButtons = useMemo(() => {
     return DropDownButtons.map((button) => ({
@@ -99,6 +103,8 @@ const ConnectButton = ({ className }: Props) => {
           ? handleCopy
           : button.text === "Transaction History"
           ? handleHistoryOpen
+          : button.text === "View in Explorer"
+          ? handleExplorerClick
           : button.onClick,
     }));
   }, [handleDisconnect, handleCopy]);
@@ -128,14 +134,13 @@ const ConnectButton = ({ className }: Props) => {
           // <span className={styles.disconnectLabel}>
           //   Disconnect
           // </span>
-          (!isMenuOpened ? (
-              <ArrowDown />
-          ) : (
-              <ArrowUp />
-          ))}
+          (!isMenuOpened ? <ArrowDown /> : <ArrowUp />)}
       </ActionButton>
       {isMenuOpened && <DropDownMenu buttons={menuButtons} />}
-      <TransactionsHistory onClose={handleHistoryClose} isOpened={isHistoryOpened} />
+      <TransactionsHistory
+        onClose={handleHistoryClose}
+        isOpened={isHistoryOpened}
+      />
       {isAddressCopied && <CopyNotification />}
     </>
   );

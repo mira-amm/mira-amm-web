@@ -60,6 +60,10 @@ const DisconnectMobile = ({ className }: Props) => {
     setHistoryOpened(false);
   }
 
+  const handleExplorerClick = () => {
+    window.open("https://app.fuel.network/", "_blank");
+  };
+
   const handleCopy = useCallback(() => {
     if (navigator.clipboard && formattedAddress !== "Connect Wallet") {
       navigator.clipboard.writeText(formattedAddress).then(
@@ -115,6 +119,8 @@ const DisconnectMobile = ({ className }: Props) => {
     ? handleHistoryOpen
     : button.text === "Copy Address"
     ? handleCopy
+    : button.text === "View in Explorer"
+    ? handleExplorerClick
     : button.onClick,
   }));
 
