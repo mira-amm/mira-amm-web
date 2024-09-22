@@ -260,7 +260,7 @@ const LandingPageLayout = () => {
           </div>
         </section>
       </main>
-      <Footer />
+      <Footer isHomePage />
     </>
   );
 };
