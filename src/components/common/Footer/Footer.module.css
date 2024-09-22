@@ -1,17 +1,4 @@
-@font-face {
-  font-family: "Inter";
-  src: url(../../../../public/fonts/Inter_18pt-Medium.ttf);
-  font-weight: 500;
-}
-
-@font-face {
-  font-family: "Inter";
-  src: url(../../../../public/fonts/Inter_18pt-Regular.ttf);
-  font-weight: 400;
-}
-
 .footer {
-  font-family: "Inter";
   display: flex;
   flex-direction: column;
   color: var(--content-dimmed-light);

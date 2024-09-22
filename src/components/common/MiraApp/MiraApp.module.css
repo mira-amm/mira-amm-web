@@ -1,21 +1,3 @@
-@font-face {
-  font-family: "Prompt";
-  src: url(../../../../public/fonts/Prompt-Bold.ttf);
-  font-weight: 700;
-}
-
-@font-face {
-  font-family: "Inter";
-  src: url(../../../../public/fonts/Inter_18pt-Medium.ttf);
-  font-weight: 500;
-}
-
-@font-face {
-  font-family: "Inter";
-  src: url(../../../../public/fonts/Inter_18pt-Regular.ttf);
-  font-weight: 400;
-}
-
 .mira {
   display: flex;
   flex-direction: column;
@@ -30,8 +12,7 @@
 }
 
 .title {
-  font-family: "Prompt";
-  font-weight: 700;
+  font-family: var(--font-prompt), sans-serif;
   font-size: 54px;
   line-height: 58px;
   text-align: center;
@@ -39,7 +20,6 @@
 }
 
 .description {
-  font-family: "Inter";
   font-weight: 400;
   font-size: 20px;
   line-height: 28px;

@@ -1,28 +1,9 @@
-@font-face {
-    font-family: "Prompt";
-    src: url(../../../../public/fonts/Prompt-Bold.ttf);
-    font-weight: 700;
-}
-
-@font-face {
-    font-family: "Inter";
-    src: url(../../../../public/fonts/Inter_18pt-Medium.ttf);
-    font-weight: 500;
-}
-
-@font-face {
-    font-family: "Inter";
-    src: url(../../../../public/fonts/Inter_18pt-Regular.ttf);
-    font-weight: 400;
-}
-
 .title {
-    font-family: "Prompt";
     font-size: 44px;
     margin: 0;
     line-height: 52px;
-    font-weight: 700;
     text-align: center;
+    font-family: var(--font-prompt);
 }
 
 .description {
@@ -31,7 +12,6 @@
     line-height: 28px;
     text-align: center;
     font-weight: 400;
-    font-family: "Inter";
     color: rgba(255, 255, 255, 0.64);
     max-width: 624px;
 }
