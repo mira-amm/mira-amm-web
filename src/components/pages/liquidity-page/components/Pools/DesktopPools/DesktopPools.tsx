@@ -31,15 +31,13 @@ const DesktopPools = ({ poolsData }: Props) => {
           <th>24H Volume</th>
           <th>TVL</th>
           <th>
-            {" "}
-            <ActionButton
-              className={styles.addButton}
-              onClick={() => {}}
-            >
-              Create a pool
-            </ActionButton>
+            {/*<ActionButton*/}
+            {/*  className={styles.addButton}*/}
+            {/*  onClick={() => {}}*/}
+            {/*>*/}
+            {/*  Create a pool*/}
+            {/*</ActionButton>*/}
           </th>
-          <th />
         </tr>
       </thead>
       <tbody>
