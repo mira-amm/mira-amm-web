@@ -81,7 +81,7 @@ const ConnectButton = ({ className }: Props) => {
   }, [bech32Address, isConnected]);
 
   const handleExplorerClick = () => {
-    openNewTab("https://app.fuel.network/");
+    openNewTab(`https://app.fuel.network/account/${bech32Address}/transactions`);
   };
 
   const handleHistoryOpen = () => {
