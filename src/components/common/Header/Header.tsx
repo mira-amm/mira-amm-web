@@ -91,7 +91,11 @@ const Header = ({ isHomePage }: Props) => {
           {!isHomePage && <ConnectButton className={styles.launchAppButton} />}
           {isHomePage && (
             <div className={styles.launchAppArea}>
-              <LaunchAppButton className={styles.launchAppButton} />
+              {isConnected ? (
+                <ConnectButton className={styles.launchAppButton} />
+              ) : (
+                <LaunchAppButton className={styles.launchAppButton} />
+              )}
             </div>
           )}
         </div>
