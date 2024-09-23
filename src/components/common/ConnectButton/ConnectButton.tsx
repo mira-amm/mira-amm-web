@@ -28,7 +28,7 @@ type Props = {
 
 const ConnectButton = ({ className }: Props) => {
   const { isConnected } = useIsConnected();
-  const { connect, isLoading, isConnecting } = useConnectUI();
+  const { connect, isConnecting } = useConnectUI();
   const { disconnect, isPending: disconnectLoading } = useDisconnect();
   const { account } = useAccount();
 
@@ -94,20 +94,13 @@ const ConnectButton = ({ className }: Props) => {
 
   const menuButtons = useMemo(() => {
     return DropDownButtons.map((button) => {
-      if (button.text === "Transaction History") {
-        return {
-          ...button,
-          disabled: true,
-          tooltip: "soon",
-          onClick: () => {},
-        };
-      }
-  
       return {
         ...button,
         onClick:
           button.text === "Disconnect"
             ? handleDisconnect
+            : button.text === "Transaction History"
+            ? handleHistoryOpen
             : button.text === "Copy Address"
             ? handleCopy
             : button.text === "View in Explorer"

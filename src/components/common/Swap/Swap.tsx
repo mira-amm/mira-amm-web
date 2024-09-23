@@ -1,5 +1,5 @@
 import {useCallback, useEffect, useRef, useState} from "react";
-import {useAccount, useConnectUI, useIsConnected} from "@fuels/react";
+import {useConnectUI, useIsConnected} from "@fuels/react";
 import {useDebounceCallback, useLocalStorage} from "usehooks-ts";
 import {clsx} from "clsx";
 
@@ -70,7 +70,6 @@ const Swap = () => {
 
   const {isConnected} = useIsConnected();
   const {connect, isConnecting} = useConnectUI();
-  const {account} = useAccount();
   const {balances, isPending, refetch} = useBalances();
 
   const isValidNetwork = useCheckActiveNetwork();
@@ -251,10 +250,10 @@ const Swap = () => {
     swapPending,
     swapState,
     fetchTxCost,
+    faucetLink,
     triggerSwap,
-    account,
     openSuccess,
-    refetch,
+    refetch
   ]);
 
   const insufficientSellBalance = parseFloat(sellValue) > sellBalanceValue;
