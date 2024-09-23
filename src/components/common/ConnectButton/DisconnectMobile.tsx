@@ -61,7 +61,7 @@ const DisconnectMobile = ({ className }: Props) => {
   }
 
   const handleExplorerClick = () => {
-    openNewTab("https://app.fuel.network/");
+    openNewTab(`https://app.fuel.network/account/${bech32Address}/transactions`);
   };
 
   const handleCopy = useCallback(async () => {
