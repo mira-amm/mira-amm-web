@@ -5,7 +5,7 @@ export const DEFAULT_AMM_CONTRACT_ID =
 export const FaucetContractAddress = '0xa1ada1dcab2524dc7f030bbff36c14ede24efd8becffac022a4c501e977e13c6' as const;
 
 export const DefaultTxParams: TxParams = {
-  gasLimit: 1_000_000,
+  gasLimit: 10_000_000,
   maxFee: 1_000_000,
 } as const;
 
