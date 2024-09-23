@@ -20,7 +20,11 @@ const Footer = ({isHomePage}: Props) => {
         <div className={styles.content}>
           <Logo />
           <div className={styles.fuelWrapper}>
-          <p className={styles.fuelText}>&#8432;MIRA launched as a basic AMM and will transition to ve(3,3) soon</p>
+            {isHomePage && (
+              <p className={styles.fuelText}>
+                &#8432;MIRA launched as a basic AMM and will transition to ve(3,3) soon
+              </p>
+            )}
           </div>
           <div className={styles.links}>
             <a className={styles.link} href={DiscordLink}>
@@ -93,7 +97,11 @@ const Footer = ({isHomePage}: Props) => {
         </div>
         <div className={styles.copywright}>
           <div className={styles.fuelWrapper}>
-            {isHomePage && <p className={styles.fuelText}>&#8432;MIRA launched as a basic AMM and will transition to ve(3,3) soon</p>}
+            {isHomePage && (
+              <p className={styles.fuelText}>
+                &#8432;MIRA launched as a basic AMM and will transition to ve(3,3) soon
+              </p>
+            )}
           </div>
           <p className="desktopOnly">&copy; {currentYear} Mira Finance</p>
         </div>
