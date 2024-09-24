@@ -1,0 +1,132 @@
+.overlay {
+  display: flex;
+  flex-direction: column;
+  background: #00000059;
+  height: 100vh;
+  width: 100vw;
+  justify-content: center;
+  align-items: center;
+}
+
+.popup {
+  display: flex;
+  flex-direction: column;
+  background: #262834;
+  width: 546px;
+  padding: 44px 47px;
+  align-items: center;
+  gap: 24px;
+  border-radius: 16px;
+}
+
+.iconWrapper {
+  width: 80px;
+  height: 80px;
+  border-radius: 100%;
+  border: 8px solid var(--accent-warning);
+  position: relative;
+}
+
+.crossPart1 {
+  width: 4px;
+  height: 30px;
+  background: var(--accent-warning);
+  transform: rotate(45deg);
+  position: absolute;
+  top: 18px;
+  left: 30px;
+}
+
+.crossPart2 {
+  width: 4px;
+  height: 30px;
+  background: var(--accent-warning);
+  transform: rotate(-45deg);
+  position: absolute;
+  top: 18px;
+  left: 30px;
+}
+
+.popupText {
+  display: flex;
+  flex-direction: column;
+  list-style: none;
+  align-items: center;
+  gap: 16px;
+}
+
+.popupTitle {
+  font-weight: 400;
+  font-size: 24px;
+  line-height: 1.21;
+}
+
+.popupDescription {
+  text-align: center;
+  font-size: 16px;
+  max-width: 390px;
+  line-height: 1.5;
+  font-weight: 300;
+  margin-bottom: 20px;
+}
+
+.popupDomain {
+  color: var(--content-dimmed-light);
+}
+
+.popupLinks {
+  display: flex;
+  list-style: none;
+  gap: 20px;
+  align-items: center;
+}
+
+.popupLink {
+  transition: 0.3s ease all;
+}
+
+.popupLink:hover {
+  transition: 0.3s ease all;
+  opacity: 0.64;
+}
+
+@media (max-width: 560px) {
+    .popup {
+        width: 343px;
+        padding: 24px 16px;
+        gap: 28px;
+    }
+
+    .popupTitle {
+        font-size: 22px;
+    }
+
+    .popupDescription {
+        margin-bottom: 8px;
+    }
+
+    .popupText {
+        gap: 12px;
+    }
+
+    .iconWrapper {
+        width: 57px;
+        height: 57px;
+        border-width: 5px;
+    }
+
+    .crossPart1 {
+        width: 3px;
+        height: 25px;
+        top: 11.5px;
+        left: 22px;
+    }
+
+
+    .crossPart2 {
+        width: 3px;
+        height: 25px;
+        top: 11.5px;
+        left: 22px;
+    }
+}
