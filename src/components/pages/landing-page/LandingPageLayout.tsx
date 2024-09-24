@@ -68,7 +68,7 @@ const LandingPageLayout = () => {
               <StepsBlock
                 logo={<StepsIcon icon={<LockIcon />} />}
                 title="Lock"
-                description="your MIRA and get in return vote-escrowed MIRA (veMIRA)"
+                description="Mira can be locked in return for escrowed Mira (veMIRA)"
               />
               <StepsBlock
                 logo={<StepsIcon icon={<VoteIcon />} />}
@@ -179,7 +179,7 @@ const LandingPageLayout = () => {
               <StepsBlock
                 logo={<StepsIcon icon={<LockIcon />} />}
                 title="Lock"
-                description="your MIRA and get in return vote-escrowed MIRA (veMIRA)"
+                description="Mira can be locked in return for escrowed Mira (veMIRA)"
               />
               <StepsBlock
                 logo={<StepsIcon icon={<VoteIcon />} />}
