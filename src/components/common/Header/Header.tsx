@@ -56,7 +56,7 @@ const Header = ({ isHomePage }: Props) => {
               Liquidity
             </Link>
             <a href={faucetLink} className={styles.link} target="_blank">
-              ETH Faucet
+              Faucet
             </a>
             <div className={styles.pointsText}>
               Points

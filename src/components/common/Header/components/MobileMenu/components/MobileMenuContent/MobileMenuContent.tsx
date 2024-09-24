@@ -36,7 +36,7 @@ const MobileMenuContent = ({ expanded, toggleExpandedState }: Props) => {
       <nav className={styles.links}>
         <Link href="/swap">Swap</Link>
         <Link href="/liquidity">Liquidity</Link>
-        <a href={faucetLink} target="_blank">ETH Faucet</a>
+        <a href={faucetLink} target="_blank">Faucet</a>
         {/*<a href="#">Github</a>*/}
         <a href={DiscordLink} target="_blank">Discord</a>
         <a href={XLink} target="_blank">X</a>
