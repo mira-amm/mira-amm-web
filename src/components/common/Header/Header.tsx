@@ -66,7 +66,7 @@ const Header = ({ isHomePage }: Props) => {
             >
               <div className={styles.rewardsLink}>
                 <RewardsIcon />
-                Rewards
+                Points
               </div>
             </a>
           </div>
@@ -79,7 +79,7 @@ const Header = ({ isHomePage }: Props) => {
           >
             <div className={styles.rewardsLink}>
               <RewardsIcon />
-              Rewards
+              Points
             </div>
           </a>
           <DisconnectMobile className={styles.disconnectMobile} />
