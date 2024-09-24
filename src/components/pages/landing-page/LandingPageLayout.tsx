@@ -58,7 +58,7 @@ const LandingPageLayout = () => {
         </section>
         <section className={styles.mainInfo}>
           <div className={styles.mainInfoBadge}>
-            <RoadMapIcon text="Soon" />
+            <RoadMapIcon text="Coming Soon" />
           </div>
           <MainInfo
             title="Meet the First ve(3,3) DEX on Fuel*"
@@ -169,7 +169,7 @@ const LandingPageLayout = () => {
         </section>
         <section className={styles.mainInfo}>
           <div className={styles.mainInfoBadge}>
-            <RoadMapIcon text="Soon" />
+            <RoadMapIcon text="Coming Soon" />
           </div>
           <MainInfo
             title="Meet the First ve(3,3) DEX on Fuel*"
