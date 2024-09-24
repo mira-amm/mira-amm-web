@@ -1,10 +1,10 @@
 import {ReactNode} from "react";
 
-import BTCIcon from "@/src/components/icons/coins/Bitcoin/BTCIcon";
 import USDTIcon from "@/src/components/icons/coins/Tether/USDTIcon";
 import ETHIcon from "@/src/components/icons/coins/Ethereum/ETHIcon";
+import USDCIcon from "@/src/components/icons/coins/USDCoin/USDCIcon";
 
-export type CoinName = 'BTC' | 'USDT' | 'ETH' | null;
+export type CoinName = 'USDC' | 'USDT' | 'ETH' | null;
 
 type CoinData = {
   name: CoinName;
@@ -15,16 +15,6 @@ type CoinData = {
 };
 
 export const coinsConfig: Map<CoinName, CoinData> = new Map([
-  [
-    'BTC',
-    {
-      name: 'BTC',
-      decimals: 8,
-      assetId: '0xce90621a26908325c42e95acbbb358ca671a9a7b36dfb6a5405b407ad1efcd30',
-      fullName: 'Bitcoin Test',
-      icon: BTCIcon,
-    },
-  ],
   [
     'ETH',
     {
@@ -40,9 +30,19 @@ export const coinsConfig: Map<CoinName, CoinData> = new Map([
     {
       name: 'USDT',
       decimals: 6,
-      assetId: '0x3f007b72f7bcb9b1e9abe2c76e63790cd574b7c34f1c91d6c2f407a5b55676b9',
-      fullName: 'USDT Test',
+      assetId: '0xa0265fb5c32f6e8db3197af3c7eb05c48ae373605b8165b6f4a51c5b0ba4812e',
+      fullName: 'USDT',
       icon: USDTIcon,
+    },
+  ],
+  [
+    'USDC',
+    {
+      name: 'USDC',
+      decimals: 6,
+      assetId: '0x286c479da40dc953bddc3bb4c453b608bba2e0ac483b077bd475174115395e6b',
+      fullName: 'USDC',
+      icon: USDCIcon,
     },
   ],
 ]);
