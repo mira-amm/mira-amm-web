@@ -1,5 +1,10 @@
 import Logo from "@/src/components/common/Logo/Logo";
-import { BlogLink, DiscordLink, TestnetUrl, XLink } from "@/src/utils/constants";
+import {
+  BlogLink,
+  DiscordLink,
+  TestnetUrl,
+  XLink,
+} from "@/src/utils/constants";
 
 import styles from "./Footer.module.css";
 import GithubIcon from "../../icons/Github/GithubIcon";
@@ -9,9 +14,9 @@ import clsx from "clsx";
 
 type Props = {
   isHomePage?: boolean;
-}
+};
 
-const Footer = ({isHomePage}: Props) => {
+const Footer = ({ isHomePage }: Props) => {
   const currentYear = new Date().getFullYear();
 
   return (
@@ -22,7 +27,8 @@ const Footer = ({isHomePage}: Props) => {
           <div className={styles.fuelWrapper}>
             {isHomePage && (
               <p className={styles.fuelText}>
-                &#8432;MIRA launched as a basic AMM and will transition to ve(3,3) soon
+                &#8432;MIRA launched as a basic AMM and will transition to
+                ve(3,3) soon
               </p>
             )}
           </div>
@@ -38,6 +44,12 @@ const Footer = ({isHomePage}: Props) => {
             </a>
             <a href={BlogLink} target="_blank">
               Blog
+            </a>
+            <a
+              href="https://docs.mira.ly/resources/careers"
+              target="_blank"
+            >
+              Careers
             </a>
             <a href="mailto:hi@mira.ly" target="_blank">
               Contact us
@@ -67,24 +79,46 @@ const Footer = ({isHomePage}: Props) => {
             <a className={styles.link} href={DiscordLink}>
               Support
             </a>
-            <a className={styles.link} href="https://docs.mira.ly/resources/media-kit" target="_blank">
+            <a
+              className={styles.link}
+              href="https://docs.mira.ly/resources/media-kit"
+              target="_blank"
+            >
               Media Kit
             </a>
-            <a className={styles.link} href="https://docs.mira.ly/developer-guides/security-audit" target="_blank">
-            Security Audit 
+            <a
+              className={styles.link}
+              href="https://docs.mira.ly/developer-guides/security-audit"
+              target="_blank"
+            >
+              Security Audit
             </a>
-            <a className={styles.link} href="https://docs.mira.ly" target="_blank">
+            <a
+              className={styles.link}
+              href="https://docs.mira.ly"
+              target="_blank"
+            >
               Docs
             </a>
             <a className={styles.link} href={BlogLink} target="_blank">
               Blog
+            </a>
+            <a className={styles.link}
+              href="https://docs.mira.ly/resources/careers"
+              target="_blank"
+            >
+              Careers
             </a>
             <a className={styles.link} href="mailto:hi@mira.ly" target="_blank">
               Contact us
             </a>
           </div>
           <div className={styles.socialLinks}>
-            <a className={styles.socialLink} href="https://github.com/mira-amm" target="_blank">
+            <a
+              className={styles.socialLink}
+              href="https://github.com/mira-amm"
+              target="_blank"
+            >
               <GithubIcon />
             </a>
             <a className={styles.socialLink} href={DiscordLink} target="_blank">
@@ -99,7 +133,8 @@ const Footer = ({isHomePage}: Props) => {
           <div className={styles.fuelWrapper}>
             {isHomePage && (
               <p className={styles.fuelText}>
-                &#8432;MIRA launched as a basic AMM and will transition to ve(3,3) soon
+                &#8432;MIRA launched as a basic AMM and will transition to
+                ve(3,3) soon
               </p>
             )}
           </div>

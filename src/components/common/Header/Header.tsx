@@ -13,6 +13,7 @@ import DisconnectMobile from "@/src/components/common/ConnectButton/DisconnectMo
 import { useIsConnected } from "@fuels/react";
 import useFaucetLink from "@/src/hooks/useFaucetLink";
 import { BlogLink, TestnetUrl } from "@/src/utils/constants";
+import { RewardsIcon } from "../../icons/Rewards/RewardsIcon";
 
 type Props = {
   isHomePage?: boolean;
@@ -56,18 +57,30 @@ const Header = ({ isHomePage }: Props) => {
               Liquidity
             </Link>
             <a href={faucetLink} className={styles.link} target="_blank">
-              ETH Faucet
+              Faucet
             </a>
-            <div className={styles.pointsText}>
-              Points
-              <SoonLabel className={styles.hiddenLabel} />
-            </div>
+            <a
+              href="https://fuel.mirror.xyz/UfX-NnWGvYy56K8lq5gPfGLPI58DGD3KOHBJupHIibk"
+              className={styles.link}
+              target="_blank"
+            >
+              <div className={styles.rewardsLink}>
+                <RewardsIcon />
+                Points
+              </div>
+            </a>
           </div>
         </div>
         <div className={clsx("mobileOnly", styles.links)}>
-          <a className={styles.points}>
-            <span className={styles.pointsText}>Points</span>
-            <SoonLabel />
+          <a
+            href="https://fuel.mirror.xyz/UfX-NnWGvYy56K8lq5gPfGLPI58DGD3KOHBJupHIibk"
+            className={styles.link}
+            target="_blank"
+          >
+            <div className={styles.rewardsLink}>
+              <RewardsIcon />
+              Points
+            </div>
           </a>
           <DisconnectMobile className={styles.disconnectMobile} />
           <MobileMenu />

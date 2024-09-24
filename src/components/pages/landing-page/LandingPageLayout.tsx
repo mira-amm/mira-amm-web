@@ -58,7 +58,7 @@ const LandingPageLayout = () => {
         </section>
         <section className={styles.mainInfo}>
           <div className={styles.mainInfoBadge}>
-            <RoadMapIcon text="Soon" />
+            <RoadMapIcon text="Coming Soon" />
           </div>
           <MainInfo
             title="Meet the First ve(3,3) DEX on Fuel*"
@@ -68,7 +68,7 @@ const LandingPageLayout = () => {
               <StepsBlock
                 logo={<StepsIcon icon={<LockIcon />} />}
                 title="Lock"
-                description="your MIRA and get in return vote-escrowed MIRA (veMIRA)"
+                description="Mira can be locked in return for escrowed Mira (veMIRA)"
               />
               <StepsBlock
                 logo={<StepsIcon icon={<VoteIcon />} />}
@@ -169,7 +169,7 @@ const LandingPageLayout = () => {
         </section>
         <section className={styles.mainInfo}>
           <div className={styles.mainInfoBadge}>
-            <RoadMapIcon text="Soon" />
+            <RoadMapIcon text="Coming Soon" />
           </div>
           <MainInfo
             title="Meet the First ve(3,3) DEX on Fuel*"
@@ -179,7 +179,7 @@ const LandingPageLayout = () => {
               <StepsBlock
                 logo={<StepsIcon icon={<LockIcon />} />}
                 title="Lock"
-                description="your MIRA and get in return vote-escrowed MIRA (veMIRA)"
+                description="Mira can be locked in return for escrowed Mira (veMIRA)"
               />
               <StepsBlock
                 logo={<StepsIcon icon={<VoteIcon />} />}

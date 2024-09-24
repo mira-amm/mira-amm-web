@@ -49,6 +49,12 @@
   cursor: pointer;
 }
 
+.rewardsLink {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
 @media (min-width: 1024px) {
   .header {
     font-size: 18px;

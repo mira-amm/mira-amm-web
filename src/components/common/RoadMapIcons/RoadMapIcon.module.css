@@ -1,5 +1,5 @@
 .background {
-    width: 112px;
+    min-width: 112px;
     height: 40px;
     background: linear-gradient(132.04deg, #262F5F 11.87%, #C41CFF 176.88%);
     border-radius: 40px;
@@ -7,6 +7,8 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    padding: 8px 25.5px;
+    box-sizing: border-box;
 }
 
 .text {
