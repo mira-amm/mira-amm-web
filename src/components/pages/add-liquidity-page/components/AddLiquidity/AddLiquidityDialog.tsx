@@ -12,8 +12,10 @@ import {useCallback, useEffect, useMemo, useState} from "react";
 import {useDebounceCallback} from "usehooks-ts";
 import useCheckEthBalance from "@/src/hooks/useCheckEthBalance/useCheckEthBalance";
 import useFaucetLink from "@/src/hooks/useFaucetLink";
-import {openNewTab} from "@/src/utils/common";
+import {createPoolIdFromCoins, openNewTab} from "@/src/utils/common";
 import useCheckActiveNetwork from "@/src/hooks/useCheckActiveNetwork";
+import usePoolAPR from "@/src/hooks/usePoolAPR";
+import {DefaultLocale} from "@/src/utils/constants";
 
 type Props = {
   firstCoin: CoinName;
@@ -43,6 +45,10 @@ const AddLiquidityDialog = ({ firstCoin, secondCoin, setPreviewData }: Props) =>
     amount: isFirstToken ? parseFloat(firstAmount) : parseFloat(secondAmount),
     isFirstToken
   });
+
+  const poolId = createPoolIdFromCoins(firstCoin, secondCoin);
+  const { apr } = usePoolAPR(poolId);
+  const aprValue = apr ? parseFloat(apr).toLocaleString(DefaultLocale, { minimumFractionDigits: 2, maximumFractionDigits: 2 }) : null;
 
   const debouncedSetFirstAmount = useDebounceCallback(setFirstAmount, 500);
   const debouncedSetSecondAmount = useDebounceCallback(setSecondAmount, 500);
@@ -138,7 +144,7 @@ const AddLiquidityDialog = ({ firstCoin, secondCoin, setPreviewData }: Props) =>
             <CoinPair firstCoin={firstCoin} secondCoin={secondCoin} />
             <p className={styles.APR}>
               Estimated APR
-              <span className={clsx(styles.highlight, 'blurredText')}>+58,78%</span>
+              <span className={clsx(styles.highlight, !aprValue && 'blurredText')}>+{aprValue ?? '1,23'}%</span>
             </p>
           </div>
           <div className={styles.fee}>

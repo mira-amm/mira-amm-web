@@ -40,10 +40,16 @@
 
 .APR {
   display: flex;
+  align-items: center;
   gap: 4px;
   font-size: 12px;
   line-height: 14px;
   margin-left: 56px;
+}
+
+.APR > span {
+  font-size: 12px;
+  line-height: 14px;
 }
 
 .highlight {

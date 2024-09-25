@@ -1,8 +1,7 @@
 import {useMutation} from "@tanstack/react-query";
 import useMiraDex from "@/src/hooks/useMiraDex/useMiraDex";
 import {CoinName, coinsConfig} from "@/src/utils/coinsConfig";
-import {createAssetIdInput} from "@/src/utils/common";
-import {PoolId} from "mira-dex-ts";
+import {createPoolIdFromCoins} from "@/src/utils/common";
 import {useCallback} from "react";
 import {useWallet} from "@fuels/react";
 import {DefaultTxParams, MaxDeadline} from "@/src/utils/constants";
@@ -23,10 +22,7 @@ const useAddLiquidity = ({ firstCoin, firstCoinAmount, secondCoin, secondCoinAmo
       return;
     }
 
-    const firstCoinAssetIdInput = createAssetIdInput(firstCoin);
-    const secondCoinAssetIdInput = createAssetIdInput(secondCoin);
-
-    const poolId: PoolId = [firstCoinAssetIdInput, secondCoinAssetIdInput, false];
+    const poolId = createPoolIdFromCoins(firstCoin, secondCoin);
 
     const firstCoinAmountToUse = parseFloat(firstCoinAmount) * 10 ** coinsConfig.get(firstCoin)?.decimals!;
     const secondCoinAmountToUse = parseFloat(secondCoinAmount) * 10 ** coinsConfig.get(secondCoin)?.decimals!;

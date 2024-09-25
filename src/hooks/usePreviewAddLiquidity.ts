@@ -1,6 +1,5 @@
 import {useQuery} from "@tanstack/react-query";
 import {CoinName, coinsConfig} from "@/src/utils/coinsConfig";
-import {createAssetIdInput} from "@/src/utils/common";
 import useReadonlyMira from "@/src/hooks/useReadonlyMira";
 import {buildPoolId, PoolId} from "mira-dex-ts";
 
