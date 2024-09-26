@@ -20,7 +20,9 @@ import { ArrowUpIcon } from "../../icons/ArrowUp/ArrowUpIcon";
 import { DropDownButtons } from "@/src/utils/DropDownButtons";
 import { TransactionsHistory } from "../TransactionsHistory/TransactionsHistory";
 import { CopyNotification } from "../../common/CopyNotification/CopyNotification";
-import {openNewTab} from "@/src/utils/common";
+import { openNewTab } from "@/src/utils/common";
+import getPrimaryDomain from "fuelname-ts/dist/sdk/getPrimaryDomain";
+import { Address } from "fuels";
 
 type Props = {
   className?: string;
@@ -60,6 +62,23 @@ const ConnectButton = ({ className }: Props) => {
   const bech32Address = account ? toBech32(account) : null;
   const formattedAddress = useFormattedAddress(bech32Address, false);
 
+  // получение fuel домена (тест)
+  const handleDomainFetch = async () => {
+    let address;
+    if (bech32Address) {
+      address = new Address(bech32Address);
+    } else {
+      throw new Error("Address is required");
+    }
+
+    const a = await getPrimaryDomain(address);
+    console.log(address);
+    console.log(a.value);
+    console.log(a.isSuccess);
+  };
+
+  handleDomainFetch();
+
   const title = useMemo(() => {
     if (isConnected) {
       return formattedAddress;
@@ -81,7 +100,9 @@ const ConnectButton = ({ className }: Props) => {
   }, [bech32Address, isConnected]);
 
   const handleExplorerClick = () => {
-    openNewTab(`https://app.fuel.network/account/${bech32Address}/transactions`);
+    openNewTab(
+      `https://app.fuel.network/account/${bech32Address}/transactions`
+    );
   };
 
   const handleHistoryOpen = () => {
@@ -102,7 +123,7 @@ const ConnectButton = ({ className }: Props) => {
           onClick: () => {},
         };
       }
-  
+
       return {
         ...button,
         onClick:
@@ -138,15 +159,16 @@ const ConnectButton = ({ className }: Props) => {
       >
         {isConnected && <img src="/images/avatar.png" width="24" height="24" />}
         {title}
-        {isConnected &&
-          (!isMenuOpened ? <ArrowDownIcon /> : <ArrowUpIcon />)}
+        {isConnected && (!isMenuOpened ? <ArrowDownIcon /> : <ArrowUpIcon />)}
       </ActionButton>
       {isMenuOpened && <DropDownMenu buttons={menuButtons} />}
       <TransactionsHistory
         onClose={handleHistoryClose}
         isOpened={isHistoryOpened}
       />
-      {isAddressCopied && <CopyNotification onClose={() => setAddressCopied(false)} />}
+      {isAddressCopied && (
+        <CopyNotification onClose={() => setAddressCopied(false)} />
+      )}
     </>
   );
 };
