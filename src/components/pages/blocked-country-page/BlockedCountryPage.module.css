@@ -1,19 +1,31 @@
+.page {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+}
+
 .overlay {
   display: flex;
   flex-direction: column;
   background: #00000059;
-  height: 100vh;
-  width: 100vw;
+  height: 100%;
+  width: 100%;
   justify-content: center;
   align-items: center;
+  backdrop-filter: blur(10px);
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 2;
 }
 
 .popup {
   display: flex;
   flex-direction: column;
   background: #262834;
-  width: 546px;
-  padding: 44px 47px;
+  width: 343px;
+  padding: 40px 16px;
   align-items: center;
   gap: 24px;
   border-radius: 16px;
@@ -55,6 +67,11 @@
   gap: 16px;
 }
 
+.textLink {
+  color: var(--content-dimmed-light);
+  transition: 0.3s ease all;
+}
+
 .popupTitle {
   font-weight: 400;
   font-size: 24px;
@@ -68,10 +85,6 @@
   line-height: 1.5;
   font-weight: 300;
   margin-bottom: 20px;
-}
-
-.popupDomain {
-  color: var(--content-dimmed-light);
 }
 
 .popupLinks {
