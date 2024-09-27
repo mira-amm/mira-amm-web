@@ -12,10 +12,11 @@ import {useCallback, useEffect, useMemo, useState} from "react";
 import {useDebounceCallback} from "usehooks-ts";
 import useCheckEthBalance from "@/src/hooks/useCheckEthBalance/useCheckEthBalance";
 import useFaucetLink from "@/src/hooks/useFaucetLink";
-import {createPoolIdFromCoins, openNewTab} from "@/src/utils/common";
+import {createPoolIdFromAssetNames, openNewTab} from "@/src/utils/common";
 import useCheckActiveNetwork from "@/src/hooks/useCheckActiveNetwork";
 import usePoolAPR from "@/src/hooks/usePoolAPR";
 import {DefaultLocale} from "@/src/utils/constants";
+import Info from "@/src/components/common/Info/Info";
 
 type Props = {
   firstCoin: CoinName;
@@ -36,19 +37,23 @@ const AddLiquidityDialog = ({ firstCoin, secondCoin, setPreviewData }: Props) =>
   const [secondAmount, setSecondAmount] = useState('');
   const [secondAmountInput, setSecondAmountInput] = useState('');
   const [activeCoin, setActiveCoin] = useState<CoinName | null>(null);
+  const [isStablePool, setIsStablePool] = useState(false);
 
   const isFirstToken = activeCoin === firstCoin;
 
   const { data, isFetching } = usePreviewAddLiquidity({
     firstCoin,
     secondCoin,
-    amount: isFirstToken ? parseFloat(firstAmount) : parseFloat(secondAmount),
-    isFirstToken
+    amountString: isFirstToken ? firstAmount : secondAmount,
+    isFirstToken,
+    isStablePool,
   });
 
-  const poolId = createPoolIdFromCoins(firstCoin, secondCoin);
+  const poolId = createPoolIdFromAssetNames(firstCoin, secondCoin, isStablePool);
   const { apr } = usePoolAPR(poolId);
-  const aprValue = apr ? parseFloat(apr).toLocaleString(DefaultLocale, { minimumFractionDigits: 2, maximumFractionDigits: 2 }) : null;
+  const aprValue = apr
+    ? parseFloat(apr).toLocaleString(DefaultLocale, { minimumFractionDigits: 2, maximumFractionDigits: 2 })
+    : null;
 
   const debouncedSetFirstAmount = useDebounceCallback(setFirstAmount, 500);
   const debouncedSetSecondAmount = useDebounceCallback(setSecondAmount, 500);
@@ -131,9 +136,9 @@ const AddLiquidityDialog = ({ firstCoin, secondCoin, setPreviewData }: Props) =>
     buttonTitle = 'Claim some ETH to pay for gas';
   }
 
-  const oneOfAmountsEmpty = !firstAmount || !secondAmount;
+  const oneOfAmountsIsEmpty = !firstAmount || !secondAmount;
 
-  const buttonDisabled = !isValidNetwork || insufficientBalance || oneOfAmountsEmpty;
+  const buttonDisabled = !isValidNetwork || insufficientBalance || oneOfAmountsIsEmpty;
 
   return (
     <>
@@ -144,11 +149,41 @@ const AddLiquidityDialog = ({ firstCoin, secondCoin, setPreviewData }: Props) =>
             <CoinPair firstCoin={firstCoin} secondCoin={secondCoin} />
             <p className={styles.APR}>
               Estimated APR
+              <Info tooltipText="APR info" />
               <span className={clsx(styles.highlight, !aprValue && 'blurredText')}>+{aprValue ?? '1,23'}%</span>
             </p>
           </div>
-          <div className={styles.fee}>
-            0.3% fee tier
+          <div className={styles.poolStability}>
+            <button className={clsx(styles.poolStabilityButton, !isStablePool && styles.poolStabilityButtonActive)}
+                    onClick={() => setIsStablePool(false)}
+            >
+              <div className={styles.poolStabilityButtonTitle}>
+                <p>Volatile pool</p>
+                <Info tooltipText="Volatile pool info"/>
+              </div>
+              <p>0.30% fee tier</p>
+            </button>
+            <button className={clsx(styles.poolStabilityButton, isStablePool && styles.poolStabilityButtonActive)}
+                    onClick={() => setIsStablePool(true)}
+            >
+              <div className={styles.poolStabilityButtonTitle}>
+                <p>Stable pool</p>
+                <Info tooltipText="Stable pool info"/>
+              </div>
+              <p>0.05% fee tier</p>
+            </button>
+            {/*<button className={clsx(styles.poolStabilityButton, !isStablePool && styles.poolStabilityButtonActive, 'desktopOnly')}*/}
+            {/*        onClick={() => setIsStablePool(false)}*/}
+            {/*>*/}
+            {/*  <p>0.30% fee tier (volatile pool)</p>*/}
+            {/*  <Info tooltipText=""/>*/}
+            {/*</button>*/}
+            {/*<button className={clsx(styles.poolStabilityButton, isStablePool && styles.poolStabilityButtonActive, 'desktopOnly')}*/}
+            {/*        onClick={() => setIsStablePool(true)}*/}
+            {/*>*/}
+            {/*  <p>0.05% fee tier (stable pool)</p>*/}
+            {/*  <Info tooltipText=""/>*/}
+            {/*</button>*/}
           </div>
         </div>
       </div>

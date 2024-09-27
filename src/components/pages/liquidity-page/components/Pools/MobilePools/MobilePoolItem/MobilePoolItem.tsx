@@ -4,7 +4,7 @@ import InfoBlock from "@/src/components/common/InfoBlock/InfoBlock";
 
 import styles from './MobilePoolItem.module.css';
 import {useRouter} from "next/navigation";
-import {createPoolIdFromIdString, createPoolKey, getCoinsFromKey, getCoinsFromPoolId} from "@/src/utils/common";
+import {createPoolIdFromIdString, createPoolKey, getCoinsFromKey, getAssetNamesFromPoolId} from "@/src/utils/common";
 import {PoolData} from "@/src/hooks/usePoolsData";
 import {useCallback} from "react";
 import {DefaultLocale} from "@/src/utils/constants";
@@ -23,7 +23,7 @@ const MobilePoolItem = ({ poolData }: Props) => {
     router.push(`/liquidity/add?pool=${poolKey}`);
   }, [router, poolKey]);
 
-  const { coinA, coinB } = getCoinsFromPoolId(poolId);
+  const { firstAssetName, secondAssetName } = getAssetNamesFromPoolId(poolId);
   const { details: { apr, volume, tvl } } = poolData;
 
   const aprValue = parseFloat(apr).toLocaleString(DefaultLocale, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
@@ -33,7 +33,7 @@ const MobilePoolItem = ({ poolData }: Props) => {
   return (
     <div className={styles.mobilePoolItem}>
       <div className={styles.infoSection}>
-        <CoinPair firstCoin={coinA} secondCoin={coinB} />
+        <CoinPair firstCoin={firstAssetName} secondCoin={secondAssetName} />
         <div className={styles.infoBlocks}>
           <InfoBlock title="APR" value={`${aprValue}%`} type="positive" />
           <InfoBlock title="24H Volume" value={`$${volumeValue}`} />

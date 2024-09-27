@@ -6,29 +6,30 @@ import {buildPoolId, PoolId} from "mira-dex-ts";
 type Props = {
   firstCoin: CoinName;
   secondCoin: CoinName;
-  amount: number;
+  amountString: string;
   isFirstToken: boolean;
+  isStablePool: boolean;
 };
 
-const usePreviewAddLiquidity = ({ firstCoin, secondCoin, amount, isFirstToken }: Props) => {
+const usePreviewAddLiquidity = ({ firstCoin, secondCoin, amountString, isFirstToken, isStablePool }: Props) => {
   const mira = useReadonlyMira();
   const miraExists = Boolean(mira);
 
   const firstCoinAssetId = coinsConfig.get(firstCoin)?.assetId!;
   const secondCoinAssetId = coinsConfig.get(secondCoin)?.assetId!;
 
-  const pool: PoolId = buildPoolId(firstCoinAssetId, secondCoinAssetId, false);
+  const pool: PoolId = buildPoolId(firstCoinAssetId, secondCoinAssetId, isStablePool);
 
   const coinForDecimals = isFirstToken ? firstCoin : secondCoin;
   const decimals = coinsConfig.get(coinForDecimals)?.decimals!;
 
-  const amountValid = amount !== null && !isNaN(amount);
-  const amountToUse = amountValid ? amount * 10 ** decimals : 0;
+  const amount = parseFloat(amountString);
+  const amountToUse = !isNaN(amount) ? amount * 10 ** decimals : 0;
 
   const shouldFetch = miraExists && amountToUse !== 0;
 
   const { data, isFetching } = useQuery({
-    queryKey: ['preview-add-liquidity', pool, amountToUse, isFirstToken],
+    queryKey: ['preview-add-liquidity', firstCoinAssetId, secondCoinAssetId, isStablePool, amountToUse, isFirstToken],
     queryFn: () => mira?.getOtherTokenToAddLiquidity(pool, amountToUse, isFirstToken),
     enabled: shouldFetch,
   })

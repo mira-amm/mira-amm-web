@@ -12,8 +12,9 @@
   --content-tertiary: rgba(255, 255, 255, 0.72);
   --content-dimmed-light: rgba(255, 255, 255, 0.64);
   --content-dimmed-dark: rgba(255, 255, 255, 0.4);
-  --content-inverse: #28282F;
   --content-grey: #9D9D9D;
+  --content-grey-dark: #6D6D6D;
+  --content-inverse: #28282F;
   --accent-primary: #AEED0D;
   --accent-secondary: rgba(174, 237, 13, 0.4);
   --accent-dimmed: rgba(174, 237, 13, 0.1);

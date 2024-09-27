@@ -33,10 +33,10 @@ const PreviewAddLiquidityDialog = ({ previewData }: Props) => {
   const router = useRouter();
 
   const { data, mutateAsync, isPending } = useAddLiquidity({
-    firstCoin: previewData.assets[0].coin,
-    firstCoinAmount: previewData.assets[0].amount,
-    secondCoin: previewData.assets[1].coin,
-    secondCoinAmount: previewData.assets[1].amount,
+    firstAssetName: previewData.assets[0].coin,
+    firstAssetAmount: previewData.assets[0].amount,
+    secondAssetName: previewData.assets[1].coin,
+    secondAssetAmount: previewData.assets[1].amount,
   });
 
   const coinA = previewData.assets[0].coin;

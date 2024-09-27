@@ -3,7 +3,7 @@ import ActionButton from "@/src/components/common/ActionButton/ActionButton";
 
 import styles from "./DesktopPools.module.css";
 import { useRouter } from "next/navigation";
-import {createPoolIdFromIdString, createPoolKey, getCoinsFromPoolId} from "@/src/utils/common";
+import {createPoolIdFromIdString, createPoolKey, getAssetNamesFromPoolId} from "@/src/utils/common";
 import { clsx } from "clsx";
 import {PoolData} from "@/src/hooks/usePoolsData";
 import {useCallback} from "react";
@@ -52,7 +52,7 @@ const DesktopPools = ({ poolsData }: Props) => {
 
           const poolId = createPoolIdFromIdString(id);
           const key = createPoolKey(poolId);
-          const { coinA, coinB } = getCoinsFromPoolId(poolId);
+          const { firstAssetName, secondAssetName } = getAssetNamesFromPoolId(poolId);
 
           const { details: { apr, volume, tvl } } = poolData;
 
@@ -63,7 +63,7 @@ const DesktopPools = ({ poolsData }: Props) => {
           return (
             <tr key={key}>
               <td>
-                <CoinPair firstCoin={coinA} secondCoin={coinB} />
+                <CoinPair firstCoin={firstAssetName} secondCoin={secondAssetName} />
               </td>
               <td>{aprValue}%</td>
               <td>${volumeValue}</td>
