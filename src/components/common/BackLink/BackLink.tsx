@@ -11,9 +11,10 @@ type Props = {
   title?: string;
   onClick?: () => void;
   className?: string;
+  chevron?: boolean
 };
 
-const BackLink = ({ href, showOnDesktop, title, onClick, className }: Props) => {
+const BackLink = ({ href, showOnDesktop, title, onClick, className, chevron }: Props) => {
   if (!isMobile && !showOnDesktop) {
     return null;
   }
@@ -32,7 +33,7 @@ const BackLink = ({ href, showOnDesktop, title, onClick, className }: Props) => 
 
   return (
     <Link href={hrefToUse} className={clsx(styles.backLink, className)}>
-      <ChevronLeft />
+      {chevron && <ChevronLeft />}
       {titleToUse}
     </Link>
   );

@@ -1,0 +1,9 @@
+.link {
+    align-self: center;
+}
+
+@media (max-width: 768px) {
+    .page {
+        padding-top: 25%;
+    }
+}
