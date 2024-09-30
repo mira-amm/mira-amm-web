@@ -7,13 +7,13 @@ import pageStyles from "./FueletSwapPageLayout.module.css"; // custom styles for
 import { clsx } from "clsx";
 import { useConnect } from "@fuels/react";
 import { FueletWalletConnector } from "@fuels/connectors";
-import { useRouter } from "next/navigation";
+// import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 
 export const FueletSwapPageLayout = () => {
-  const router = useRouter();
-  const searchParams = new URLSearchParams(window.location.search);
-  const source = searchParams.get("source");
+  // const router = useRouter();
+  // const searchParams = new URLSearchParams(window.location.search);
+  // const source = searchParams.get("source");
   const { connectAsync } = useConnect();
 
   const handleConnect = () => {
@@ -21,12 +21,12 @@ export const FueletSwapPageLayout = () => {
   };
 
   useEffect(() => {
-    if (source !== "fuelet") {
-      router.push("/404");
-    } else {
+    // if (source !== "fuelet") {
+    //   router.push("/404");
+    // } else {
       handleConnect();
-    }
-  }, [source, router]);
+    // }
+  }, []);
 
   return (
     <section className={clsx(pageStyles.page, styles.swapLayout)}>
