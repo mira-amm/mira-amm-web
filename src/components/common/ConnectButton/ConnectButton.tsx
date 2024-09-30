@@ -13,7 +13,7 @@ import styles from "./ConnectButton.module.css";
 
 import ActionButton from "@/src/components/common/ActionButton/ActionButton";
 import useFormattedAddress from "@/src/hooks/useFormattedAddress/useFormattedAddress";
-import { toBech32 } from "fuels";
+import { toB256, toBech32 } from "fuels";
 import { ArrowDownIcon } from "../../icons/ArrowDown/ArrowDownIcon";
 import { DropDownMenu } from "../DropDownMenu/DropDownMenu";
 import { ArrowUpIcon } from "../../icons/ArrowUp/ArrowUpIcon";
@@ -58,7 +58,8 @@ const ConnectButton = ({ className }: Props) => {
   }, [isConnected, handleConnection]);
 
   const bech32Address = account ? toBech32(account) : null;
-  const formattedAddress = useFormattedAddress(bech32Address, false);
+  const b256Address = bech32Address ? toB256(bech32Address) : null;
+  const formattedAddress = useFormattedAddress(b256Address, false);
 
   const title = useMemo(() => {
     if (isConnected) {

@@ -11,7 +11,7 @@ import { CloseIcon } from "../../icons/DropDownClose/CloseIcon";
 import { TransactionsHistory } from "../TransactionsHistory/TransactionsHistory";
 import { CopyNotification } from "../../common/CopyNotification/CopyNotification";
 import {openNewTab} from "@/src/utils/common";
-import {toBech32} from "fuels";
+import {toB256, toBech32} from "fuels";
 
 type Props = {
   className?: string;
@@ -38,7 +38,8 @@ const DisconnectMobile = ({ className }: Props) => {
   }, [isMenuOpened]);
 
   const bech32Address = account ? toBech32(account) : null;
-  const formattedAddress = useFormattedAddress(bech32Address, false);
+  const b256Address = bech32Address ? toB256(bech32Address) : null;
+  const formattedAddress = useFormattedAddress(b256Address, false);
 
   const handleClick = () => {
     setMenuOpened((prev) => !prev);
