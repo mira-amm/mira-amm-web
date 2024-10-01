@@ -23,6 +23,9 @@ export const IndexerUrl = 'https://indexer.bigdevenergy.link/99318f9/v1/graphql'
 // TODO: Use env variables for dev/prod
 export const ApiBaseUrl = 'https://dev.api.mira.ly' as const;
 
+// TODO: Use env variables for dev/prod
+export const ApiBaseUrl = 'https://prod.api.mira.ly' as const;
+
 export const MinEthValue = 0.001 as const;
 export const MinEthValueBN = MinEthValue * 10 ** 9;
 
