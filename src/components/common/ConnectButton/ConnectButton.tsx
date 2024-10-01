@@ -82,9 +82,9 @@ const ConnectButton = ({ className }: Props) => {
     openNewTab(`https://app.fuel.network/account/${account}/transactions`);
   };
 
-  // const handleHistoryOpen = () => {
-  //   setHistoryOpened(true);
-  // };
+  const handleHistoryOpen = () => {
+    setHistoryOpened(true);
+  };
 
   const handleHistoryClose = () => {
     setHistoryOpened(false);
