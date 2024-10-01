@@ -11,15 +11,15 @@ type Props = {
 
 const PromoBlock = ({ icon, title, link, linkText }: Props) => {
   return (
-    <div className={styles.promoBlock}>
+    <a href={link} className={styles.promoBlock}>
       <div className={styles.icon}>
         {icon}
       </div>
       <div className={styles.content}>
         <p className={styles.title}>{title}</p>
-        <a href={link} className={styles.text} target="_blank">{linkText}</a>
+        <p className={styles.text}>{linkText}</p>
       </div>
-    </div>
+    </a>
   );
 };
 
