@@ -33,10 +33,10 @@ const PreviewAddLiquidityDialog = ({ previewData }: Props) => {
   const router = useRouter();
 
   const { data, mutateAsync, isPending } = useAddLiquidity({
-    firstCoin: previewData.assets[0].coin,
-    firstCoinAmount: previewData.assets[0].amount,
-    secondCoin: previewData.assets[1].coin,
-    secondCoinAmount: previewData.assets[1].amount,
+    firstAssetName: previewData.assets[0].coin,
+    firstAssetAmount: previewData.assets[0].amount,
+    secondAssetName: previewData.assets[1].coin,
+    secondAssetAmount: previewData.assets[1].amount,
   });
 
   const coinA = previewData.assets[0].coin;
@@ -128,8 +128,8 @@ const PreviewAddLiquidityDialog = ({ previewData }: Props) => {
           </p>
         </div>
       </div> */}
-      <ActionButton className={styles.addButton} loading={isPending} onClick={handleAddLiquidity}>
-        Add
+      <ActionButton loading={isPending} onClick={handleAddLiquidity}>
+        Add Liquidity
       </ActionButton>
       <SuccessModal title={<TestnetLabel />} onClose={redirectToLiquidity}>
         <AddLiquiditySuccessModal coinA={coinA} coinB={coinB} firstCoinAmount={firstCoinAmount} secondCoinAmount={secondCoinAmount} transactionHash={data?.id} />

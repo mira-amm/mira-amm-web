@@ -1,4 +1,4 @@
-import InfoIcon from "@/src/components/icons/Info/InfoIcon";
+import WarningIcon from "@/src/components/icons/Warning/WarningIcon";
 import styles from './SettingsModalContent.module.css';
 import {ChangeEvent, memo, useState} from "react";
 import {clsx} from "clsx";
@@ -88,7 +88,7 @@ const SettingsModalContent = ({ slippage, setSlippage }: Props) => {
       {isCustomMode && (
         <div className={styles.settingsSection}>
           <p className={styles.infoHeading}>
-            <InfoIcon/>
+            <WarningIcon/>
             Pay attention
           </p>
           <p className={styles.settingsText}>

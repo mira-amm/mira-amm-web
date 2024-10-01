@@ -27,7 +27,7 @@ const useRemoveLiquidity = ({ pool, liquidity, lpTokenBalance }: Props) => {
     const gasCost = await wallet.getTransactionCost(txRequest);
     const fundedTx = await wallet.fund(txRequest, gasCost);
     const tx = await wallet.sendTransaction(fundedTx);
-    return await tx.waitForResult();
+    return tx.waitForResult();
   }, [mira, wallet, pool, liquidity, lpTokenBalance]);
 
   const { data, mutateAsync } = useMutation({

@@ -14,7 +14,7 @@ import useModal from "@/src/hooks/useModal/useModal";
 import RemoveLiquidityModalContent
   from "@/src/components/pages/view-position-page/components/RemoveLiquidityModalContent/RemoveLiquidityModalContent";
 import usePositionData from "@/src/hooks/usePositionData";
-import {createPoolId, floorToTwoSignificantDigits, getCoinsFromKey} from "@/src/utils/common";
+import {createPoolIdFromAssetNames, floorToTwoSignificantDigits, getCoinsFromKey} from "@/src/utils/common";
 import {useCallback, useState} from "react";
 import useRemoveLiquidity from "@/src/hooks/useRemoveLiquidity";
 import {useRouter, useSearchParams} from "next/navigation";
@@ -40,7 +40,7 @@ const ViewPositionPageLayout = () => {
   const poolKey = query.get('pool');
   // TODO: Validate poolkey
   const { coinA, coinB } = getCoinsFromKey(poolKey!);
-  const pool = createPoolId(coinA, coinB);
+  const pool = createPoolIdFromAssetNames(coinA, coinB);
 
   const { positionData: { assets, lpTokenBalance } } = usePositionData({ pool });
 

@@ -134,12 +134,16 @@
   padding: 10px;
   background: #3b3d48;
   border-radius: 8px;
-  align-items: center;
 }
 
 .transactionCoins {
   display: flex;
   position: relative;
+}
+
+.transactionCoins svg {
+  height: 28px;
+  width: 28px;
 }
 
 .secondCoin {

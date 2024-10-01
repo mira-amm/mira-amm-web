@@ -3,24 +3,26 @@ import ActionButton from "@/src/components/common/ActionButton/ActionButton";
 
 import styles from "./DesktopPools.module.css";
 import { useRouter } from "next/navigation";
-import { createPoolKey, getCoinByAssetId } from "@/src/utils/common";
-import { PoolMetadata } from "mira-dex-ts";
+import {createPoolIdFromIdString, createPoolKey, getAssetNamesFromPoolId} from "@/src/utils/common";
 import { clsx } from "clsx";
+import {PoolData} from "@/src/hooks/usePoolsData";
+import {useCallback} from "react";
+import {DefaultLocale} from "@/src/utils/constants";
 
 type Props = {
-  poolsData: (PoolMetadata | null | undefined)[] | undefined;
+  poolsData: PoolData[] | undefined;
 };
 
 const DesktopPools = ({ poolsData }: Props) => {
   const router = useRouter();
 
+  const handleAddClick = useCallback((key: string) => {
+    router.push(`/liquidity/add?pool=${key}`);
+  }, [router]);
+
   if (!poolsData) {
     return null;
   }
-
-  const handleAddClick = (key: string) => {
-    router.push(`/liquidity/add?pool=${key}`);
-  };
 
   return (
     <table className={clsx(styles.desktopPools, "desktopOnly")}>
@@ -46,21 +48,26 @@ const DesktopPools = ({ poolsData }: Props) => {
             return null;
           }
 
-          const { poolId } = poolData;
+          const { id } = poolData;
 
+          const poolId = createPoolIdFromIdString(id);
           const key = createPoolKey(poolId);
+          const { firstAssetName, secondAssetName } = getAssetNamesFromPoolId(poolId);
 
-          const coinA = getCoinByAssetId(poolId[0].bits);
-          const coinB = getCoinByAssetId(poolId[1].bits);
+          const { details: { apr, volume, tvl } } = poolData;
+
+          const aprValue = parseFloat(apr).toLocaleString(DefaultLocale, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+          const volumeValue = parseFloat(volume).toLocaleString(DefaultLocale, { maximumFractionDigits: 0 });
+          const tvlValue = parseFloat(tvl).toLocaleString(DefaultLocale, { maximumFractionDigits: 0 });
 
           return (
             <tr key={key}>
               <td>
-                <CoinPair firstCoin={coinA} secondCoin={coinB} />
+                <CoinPair firstCoin={firstAssetName} secondCoin={secondAssetName} />
               </td>
-              <td className="blurredText">68,78%</td>
-              <td className="blurredText">$456,567</td>
-              <td className="blurredText">$1,307,567</td>
+              <td>{aprValue}%</td>
+              <td>${volumeValue}</td>
+              <td>${tvlValue}</td>
               <td>
                 <ActionButton
                   className={styles.addButton}

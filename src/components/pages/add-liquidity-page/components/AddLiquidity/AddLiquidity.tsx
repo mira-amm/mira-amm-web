@@ -1,5 +1,5 @@
 import styles from './AddLiquidity.module.css';
-import {getCoinsFromKey} from "@/src/utils/common";
+import {createPoolIdFromAssetNames, getCoinsFromKey} from "@/src/utils/common";
 import {useCallback, useState} from "react";
 import PreviewAddLiquidityDialog
   from "@/src/components/pages/add-liquidity-page/components/AddLiquidity/PreviewAddLiquidityDialog";
