@@ -276,7 +276,7 @@ const Swap = () => {
   }
 
   const swapDisabled =
-    !isValidNetwork || coinMissing || showInsufficientBalance || insufficientReserves;
+    !isValidNetwork || coinMissing || showInsufficientBalance || insufficientReserves || !sellValue || !buyValue;
 
   const feePercentage = 0.3;
   const exchangeRate = useExchangeRate(swapState);
