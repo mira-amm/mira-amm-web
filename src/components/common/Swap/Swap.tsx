@@ -49,8 +49,10 @@ const initialInputsState: InputsState = {
   },
 };
 
+export type SlippageMode = 'auto' | 'custom';
+
 const Swap = () => {
-  const [SettingsModal, openSettingsModal] = useModal();
+  const [SettingsModal, openSettingsModal, closeSettingsModal] = useModal();
   const [CoinsModal, openCoinsModal, closeCoinsModal] = useModal();
   const [SuccessModal, openSuccess] = useModal();
 
@@ -61,6 +63,7 @@ const Swap = () => {
   const [lastFocusedMode, setLastFocusedMode] = useState<CurrencyBoxMode>('sell');
   const [slippage, setSlippage] = useState<number>(1);
   const [txCost, setTxCost] = useState<number | null>(null);
+  const [slippageMode, setSlippageMode] = useState<SlippageMode>('auto');
 
   const [swapCoins, setSwapCoins] = useLocalStorage('swapCoins', {sell: initialSwapState.sell.coin, buy: initialSwapState.buy.coin});
 
@@ -290,6 +293,9 @@ const Swap = () => {
         <div className={clsx(styles.swapContainer, swapPending && styles.swapContainerLoading)}>
           <div className={styles.heading}>
             <p className={styles.title}>Swap</p>
+            <p className={styles.slippageLabel}>
+              {slippage}% slippage
+            </p>
             <IconButton onClick={openSettingsModal} className={styles.settingsButton}>
               <SettingsIcon/>
             </IconButton>
@@ -357,7 +363,13 @@ const Swap = () => {
       </div>
       {swapPending && <div className={styles.loadingOverlay}/>}
       <SettingsModal title="Settings">
-        <SettingsModalContent slippage={slippage} setSlippage={setSlippage}/>
+        <SettingsModalContent
+          slippage={slippage}
+          slippageMode={slippageMode}
+          setSlippage={setSlippage}
+          setSlippageMode={setSlippageMode}
+          closeModal={closeSettingsModal}
+        />
       </SettingsModal>
       <CoinsModal title="Choose token">
         <CoinsListModal selectCoin={handleCoinSelection} balances={balances}/>
