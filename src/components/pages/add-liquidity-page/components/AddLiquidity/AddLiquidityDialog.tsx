@@ -208,7 +208,7 @@ const AddLiquidityDialog = ({ firstCoin, secondCoin, setPreviewData }: Props) =>
           />
         </div>
       </div>
-      <div className={clsx(styles.section, styles.prices)}>
+      {/* <div className={clsx(styles.section, styles.prices)}>
         <p>Selected Price</p>
         <div className={clsx(styles.sectionContent, styles.priceBlocks)}>
           <div className={styles.priceBlock}>
@@ -220,7 +220,7 @@ const AddLiquidityDialog = ({ firstCoin, secondCoin, setPreviewData }: Props) =>
             <p>∞</p>
           </div>
         </div>
-      </div>
+      </div> */}
       {!isConnected ? (
         <ActionButton
           variant="secondary"

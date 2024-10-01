@@ -80,7 +80,7 @@ const PreviewAddLiquidityDialog = ({ previewData }: Props) => {
           </div>
         </div>
       </div>
-      <div className={styles.section}>
+      {/* <div className={styles.section}>
         <p>Selected Price</p>
         <div className={styles.sectionContent}>
           <div className={styles.previewPriceBlocks}>
@@ -127,7 +127,7 @@ const PreviewAddLiquidityDialog = ({ previewData }: Props) => {
             {coinA} per {coinB}
           </p>
         </div>
-      </div>
+      </div> */}
       <ActionButton loading={isPending} onClick={handleAddLiquidity}>
         Add Liquidity
       </ActionButton>
