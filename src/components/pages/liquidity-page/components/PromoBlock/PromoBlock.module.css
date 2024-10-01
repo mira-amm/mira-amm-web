@@ -1,9 +1,14 @@
 .promoBlock {
+  width: 100%;
   display: flex;
   gap: 10px;
   padding: 12px;
   border-radius: 8px;
   background-color: var(--background-grey-dark);
+}
+
+.promoBlock:hover .text {
+  color: var(--content-primary);
 }
 
 .icon {
@@ -39,8 +44,3 @@
   line-height: 16px;
   color: var(--content-dimmed-light);
 }
-
-.text:hover {
-  color: var(--content-primary);
-}
-
