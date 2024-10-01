@@ -2,7 +2,9 @@ import styles from './AddLiquidity.module.css';
 import {createPoolIdFromAssetNames, getCoinsFromKey} from "@/src/utils/common";
 import {useCallback, useState} from "react";
 import PreviewAddLiquidityDialog
-  from "@/src/components/pages/add-liquidity-page/components/AddLiquidity/PreviewAddLiquidityDialog";
+  , {
+  AddLiquidityPreviewData
+} from "@/src/components/pages/add-liquidity-page/components/AddLiquidity/PreviewAddLiquidityDialog";
 import AddLiquidityDialog from "@/src/components/pages/add-liquidity-page/components/AddLiquidity/AddLiquidityDialog";
 import BackLink from "@/src/components/common/BackLink/BackLink";
 import {useRouter} from "next/navigation";
@@ -16,7 +18,7 @@ type Props = {
 const AddLiquidity = ({ poolKey }: Props) => {
   const router = useRouter();
 
-  const [previewData, setPreviewData] = useState(null);
+  const [previewData, setPreviewData] = useState<AddLiquidityPreviewData | null>(null);
 
   const { coinA, coinB } = getCoinsFromKey(poolKey);
 

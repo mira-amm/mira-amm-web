@@ -8,7 +8,7 @@ import useBalances from "@/src/hooks/useBalances/useBalances";
 import useCoinBalance from "@/src/hooks/useCoinBalance";
 import {useConnectUI, useIsConnected} from "@fuels/react";
 import usePreviewAddLiquidity from "@/src/hooks/usePreviewAddLiquidity";
-import {useCallback, useEffect, useMemo, useState} from "react";
+import {Dispatch, SetStateAction, useCallback, useEffect, useState} from "react";
 import {useDebounceCallback} from "usehooks-ts";
 import useCheckEthBalance from "@/src/hooks/useCheckEthBalance/useCheckEthBalance";
 import useFaucetLink from "@/src/hooks/useFaucetLink";
@@ -17,11 +17,14 @@ import useCheckActiveNetwork from "@/src/hooks/useCheckActiveNetwork";
 import usePoolAPR from "@/src/hooks/usePoolAPR";
 import {DefaultLocale} from "@/src/utils/constants";
 import Info from "@/src/components/common/Info/Info";
+import {
+  AddLiquidityPreviewData
+} from "@/src/components/pages/add-liquidity-page/components/AddLiquidity/PreviewAddLiquidityDialog";
 
 type Props = {
   firstCoin: CoinName;
   secondCoin: CoinName;
-  setPreviewData: any;
+  setPreviewData: Dispatch<SetStateAction<AddLiquidityPreviewData | null>>;
 }
 
 const AddLiquidityDialog = ({ firstCoin, secondCoin, setPreviewData }: Props) => {
@@ -118,8 +121,18 @@ const AddLiquidityDialog = ({ firstCoin, secondCoin, setPreviewData }: Props) =>
           amount: secondAmount,
         }
       ],
+      isStablePool,
     });
-  }, [sufficientEthBalance, setPreviewData, firstCoin, firstAmount, secondCoin, secondAmount, faucetLink]);
+  }, [
+    sufficientEthBalance,
+    setPreviewData,
+    firstCoin,
+    firstAmount,
+    secondCoin,
+    secondAmount,
+    isStablePool,
+    faucetLink
+  ]);
 
   const isValidNetwork = useCheckActiveNetwork();
 

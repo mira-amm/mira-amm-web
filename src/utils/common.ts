@@ -39,6 +39,13 @@ export const isPoolKeyValid = (key: string) => {
   return coinsConfig.has(coinA) && coinsConfig.has(coinB);
 };
 
+export const createPoolIdFromPoolKey = (key: string) => {
+  const [coinA, coinB, poolStability] = key.split('-') as [CoinName, CoinName, typeof StablePoolKey | typeof VolatilePoolKey];
+  const firstCoinAssetId = coinsConfig.get(coinA)?.assetId!;
+  const secondCoinAssetId = coinsConfig.get(coinB)?.assetId!;
+  return buildPoolId(firstCoinAssetId, secondCoinAssetId, poolStability === StablePoolKey);
+};
+
 export const createPoolIdFromAssetNames = (firstAssetName: CoinName, secondAssetName: CoinName, isStablePool: boolean) => {
   const firstCoinAssetId = coinsConfig.get(firstAssetName)?.assetId!;
   const secondCoinAssetId = coinsConfig.get(secondAssetName)?.assetId!;

@@ -1,10 +1,8 @@
 import styles from "@/src/components/pages/add-liquidity-page/components/AddLiquidity/AddLiquidity.module.css";
 import CoinPair from "@/src/components/common/CoinPair/CoinPair";
-import PositionLabel from "@/src/components/pages/liquidity-page/components/Positions/PositionLabel/PositionLabel";
 import Coin from "@/src/components/common/Coin/Coin";
 import ActionButton from "@/src/components/common/ActionButton/ActionButton";
 import {CoinName} from "@/src/utils/coinsConfig";
-import {BN} from "fuels";
 import useAddLiquidity from "@/src/hooks/useAddLiquidity";
 import useModal from "@/src/hooks/useModal/useModal";
 import AddLiquiditySuccessModal
@@ -19,12 +17,13 @@ type AssetsData = {
   amount: string;
 };
 
-type PreviewData = {
+export type AddLiquidityPreviewData = {
   assets: AssetsData[];
+  isStablePool: boolean;
 };
 
 type Props = {
-  previewData: PreviewData;
+  previewData: AddLiquidityPreviewData;
 }
 
 const PreviewAddLiquidityDialog = ({ previewData }: Props) => {
@@ -37,6 +36,7 @@ const PreviewAddLiquidityDialog = ({ previewData }: Props) => {
     firstAssetAmount: previewData.assets[0].amount,
     secondAssetName: previewData.assets[1].coin,
     secondAssetAmount: previewData.assets[1].amount,
+    isPoolStable: previewData.isStablePool,
   });
 
   const coinA = previewData.assets[0].coin;
