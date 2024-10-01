@@ -26,7 +26,7 @@ type Props = {
 };
 
 const ConnectButton = ({ className }: Props) => {
-  const { isConnected  } = useIsConnected();
+  const { isConnected } = useIsConnected();
   const { connect, isConnecting } = useConnectUI();
   const { disconnect, isPending: disconnectLoading } = useDisconnect();
   const { account } = useAccount();
