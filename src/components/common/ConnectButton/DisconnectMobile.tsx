@@ -11,7 +11,6 @@ import { CloseIcon } from "../../icons/DropDownClose/CloseIcon";
 import { TransactionsHistory } from "../TransactionsHistory/TransactionsHistory";
 import { CopyNotification } from "../../common/CopyNotification/CopyNotification";
 import {openNewTab} from "@/src/utils/common";
-import {toB256, toBech32} from "fuels";
 
 type Props = {
   className?: string;
@@ -37,9 +36,7 @@ const DisconnectMobile = ({ className }: Props) => {
     };
   }, [isMenuOpened]);
 
-  const bech32Address = account ? toBech32(account) : null;
-  const b256Address = bech32Address ? toB256(bech32Address) : null;
-  const formattedAddress = useFormattedAddress(b256Address, false);
+  const formattedAddress = useFormattedAddress(account);
 
   const handleClick = () => {
     setMenuOpened((prev) => !prev);
@@ -62,20 +59,20 @@ const DisconnectMobile = ({ className }: Props) => {
   }
 
   const handleExplorerClick = () => {
-    openNewTab(`https://app.fuel.network/account/${bech32Address}/transactions`);
+    openNewTab(`https://app.fuel.network/account/${account}/transactions`);
   };
 
   const handleCopy = useCallback(async () => {
-    if (isConnected && bech32Address) {
+    if (isConnected && account) {
       try {
-        await navigator.clipboard.writeText(bech32Address);
+        await navigator.clipboard.writeText(account);
         setAddressCopied(true);
         setTimeout(() => setAddressCopied(false), 3000);
       } catch (error) {
         console.error("Failed to copy address: ", error);
       }
     }
-  }, [bech32Address, isConnected]);
+  }, [account, isConnected]);
 
   const menuButtons = useMemo(() => {
     return DropDownButtons.map((button) => {
