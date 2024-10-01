@@ -20,4 +20,8 @@ button.addButton {
   font-size: 16px;
   line-height: 19px;
   padding: 12px 0;
+  box-shadow: unset;
+  background: #AEED0D1A;
+  color: #AEED0D;
+  border: unset;
 }
