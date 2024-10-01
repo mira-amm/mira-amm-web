@@ -11,7 +11,6 @@ type SwapData = {
   buyDecimals: number;
   sellAssetIdInput: AssetIdInput;
   buyAssetIdInput: AssetIdInput;
-  assets: [AssetIdInput, AssetIdInput];
 };
 
 const useSwapData = (swapState: SwapState): SwapData => {
@@ -32,8 +31,6 @@ const useSwapData = (swapState: SwapState): SwapData => {
       bits: buyAssetId,
     };
 
-    const assets: [AssetIdInput, AssetIdInput] = [sellAssetIdInput, buyAssetIdInput];
-
     return {
       sellAssetId,
       buyAssetId,
@@ -41,7 +38,6 @@ const useSwapData = (swapState: SwapState): SwapData => {
       buyDecimals,
       sellAssetIdInput,
       buyAssetIdInput,
-      assets,
     };
   }, [swapState.buy.coin, swapState.sell.coin]);
 };
