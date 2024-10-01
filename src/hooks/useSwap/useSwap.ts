@@ -7,25 +7,23 @@ import type {CurrencyBoxMode, SwapState} from "@/src/components/common/Swap/Swap
 import useMiraDex from "@/src/hooks/useMiraDex/useMiraDex";
 import useSwapData from "@/src/hooks/useAssetPair/useSwapData";
 import {DefaultTxParams, MaxDeadline} from "@/src/utils/constants";
-import usePoolsIds from "@/src/hooks/usePoolsIds";
-import {createPoolId} from "@/src/utils/common";
-import {buildPoolId} from "mira-dex-ts";
+import {PoolId} from "mira-dex-ts";
 
 type Props = {
   swapState: SwapState;
   mode: CurrencyBoxMode;
   slippage: number;
+  pools: PoolId[] | undefined;
 }
 
-const useSwap = ({ swapState, mode, slippage }: Props) => {
+const useSwap = ({ swapState, mode, slippage, pools }: Props) => {
   const { wallet } = useWallet();
   const miraDex = useMiraDex();
   const swapData = useSwapData(swapState);
-  const pools = usePoolsIds();
   const { sellAssetIdInput, buyAssetIdInput, sellDecimals, buyDecimals } = swapData;
 
   const getTxCost = useCallback(async () => {
-    if (!wallet || !miraDex) {
+    if (!wallet || !miraDex || !pools) {
       return;
     }
 
@@ -35,11 +33,9 @@ const useSwap = ({ swapState, mode, slippage }: Props) => {
     const buyAmountWithSlippage = buyAmount * (1 - slippage / 100);
     const sellAmountWithSlippage = sellAmount * (1 + slippage / 100);
 
-    const pool = buildPoolId(sellAssetIdInput.bits, buyAssetIdInput.bits, false);
-
     const tx = mode === 'sell' ?
-      await miraDex.swapExactInput(sellAmount, sellAssetIdInput, buyAmountWithSlippage, [pool], MaxDeadline, DefaultTxParams) :
-      await miraDex.swapExactOutput(buyAmount, buyAssetIdInput, sellAmountWithSlippage, [pool], MaxDeadline, DefaultTxParams);
+      await miraDex.swapExactInput(sellAmount, sellAssetIdInput, buyAmountWithSlippage, pools, MaxDeadline, DefaultTxParams) :
+      await miraDex.swapExactOutput(buyAmount, buyAssetIdInput, sellAmountWithSlippage, pools, MaxDeadline, DefaultTxParams);
 
     const txCost = await wallet.getTransactionCost(tx);
 
@@ -55,7 +51,7 @@ const useSwap = ({ swapState, mode, slippage }: Props) => {
     mode,
     sellAssetIdInput,
     buyAssetIdInput,
-    pools
+    pools,
   ]);
 
   const sendTx = useCallback(async (inputTx: ScriptTransactionRequest) => {
