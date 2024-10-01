@@ -1,9 +1,13 @@
+.page {
+  background: #1e1e22;
+}
+
 .link {
-    align-self: center;
+  align-self: center;
 }
 
 @media (max-width: 768px) {
-    .page {
-        padding-top: 20%;
-    }
+  .page {
+    padding-top: 20%;
+  }
 }
