@@ -18,7 +18,7 @@ export const BlogLink = "https://mirror.xyz/miraly.eth" as const;
 export const ValidNetwork = 'testnet' as const;
 export const TestnetUrl = 'https://testnet.fuel.network/v1/graphql' as const;
 
-export const IndexerUrl = 'https://indexer.bigdevenergy.link/4201e23/v1/graphql' as const;
+export const IndexerUrl = 'https://indexer.bigdevenergy.link/99318f9/v1/graphql' as const;
 
 // TODO: Use env variables for dev/prod
 export const ApiBaseUrl = 'https://prod.api.mira.ly' as const;

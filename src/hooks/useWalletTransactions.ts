@@ -21,13 +21,11 @@ const useWalletTransactions = (account: B256Address | null, fetchCondition: bool
   const query = gql`
     query Transactions($owner:String, $offset:Int, $limit:Int) {
       Transaction(where: { initiator: { _eq: $owner } }, offset:$offset, limit:$limit) {
-        initiator
         asset_0_in
         asset_0_out
         asset_1_in
         asset_1_out
         block_time
-        is_contract_initiator
         pool_id
         transaction_type
       }
