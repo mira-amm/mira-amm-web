@@ -129,7 +129,7 @@ const PreviewAddLiquidityDialog = ({ previewData }: Props) => {
         </div>
       </div>
       <ActionButton loading={isPending} onClick={handleAddLiquidity}>
-        Add
+        Add Liquidity
       </ActionButton>
       <SuccessModal title={<TestnetLabel />} onClose={redirectToLiquidity}>
         <AddLiquiditySuccessModal coinA={coinA} coinB={coinB} firstCoinAmount={firstCoinAmount} secondCoinAmount={secondCoinAmount} transactionHash={data?.id} />
