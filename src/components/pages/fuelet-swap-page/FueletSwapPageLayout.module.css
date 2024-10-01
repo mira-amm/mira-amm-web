@@ -1,5 +1,6 @@
 .page {
   background: #1e1e22;
+  height: 100vh;
 }
 
 .link {
@@ -8,6 +9,6 @@
 
 @media (max-width: 768px) {
   .page {
-    padding-top: 20%;
+    padding-bottom: 40%;
   }
 }
