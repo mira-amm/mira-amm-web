@@ -5,7 +5,7 @@ import CopyAddressIcon from "../../icons/Copy/CopyAddressIcon";
 import { useIsConnected, useAccount } from "@fuels/react";
 import useFormattedAddress from "@/src/hooks/useFormattedAddress/useFormattedAddress";
 import useWalletTransactions, {TransactionsData} from "@/src/hooks/useWalletTransactions";
-import {getCoinByAssetId} from "@/src/utils/common";
+import {getAssetNameByAssetId} from "@/src/utils/common";
 import {coinsConfig} from "@/src/utils/coinsConfig";
 
 interface TransactionProps {
@@ -54,8 +54,8 @@ const transformTransactionsDataAndGroupByDate = (transactionsData: TransactionsD
       year: "numeric",
     });
     const [firstAssetId, secondAssetId] = transaction.pool_id.split("_");
-    const firstCoin = getCoinByAssetId(firstAssetId);
-    const secondCoin = getCoinByAssetId(secondAssetId);
+    const firstCoin = getAssetNameByAssetId(firstAssetId);
+    const secondCoin = getAssetNameByAssetId(secondAssetId);
     const firstCoinIcon = coinsConfig.get(firstCoin)?.icon!;
     const secondCoinIcon = coinsConfig.get(secondCoin)?.icon!;
     const firstCoinDecimals = coinsConfig.get(firstCoin)?.decimals!;
@@ -160,7 +160,7 @@ export const TransactionsHistory: React.FC<TransactionsHistoryProps> = ({ onClos
             <CopyAddressIcon />
           </button>
         </div>
-        <span className={styles.accountBalance}>$4,789.06</span>
+        {/*<span className={styles.accountBalance}>$4,789.06</span>*/}
       </div>
       <ul className={styles.transactionsList}>
         {Object.entries(groupedTransactions).map(([date, transactions]) => (

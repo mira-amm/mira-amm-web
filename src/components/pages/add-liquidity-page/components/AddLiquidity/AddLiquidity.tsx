@@ -1,5 +1,5 @@
 import styles from './AddLiquidity.module.css';
-import {createPoolIdFromAssetNames, getCoinsFromKey} from "@/src/utils/common";
+import {createPoolIdFromAssetNames, createPoolIdFromPoolKey, getCoinsFromKey} from "@/src/utils/common";
 import {useCallback, useState} from "react";
 import PreviewAddLiquidityDialog
   , {
@@ -20,7 +20,7 @@ const AddLiquidity = ({ poolKey }: Props) => {
 
   const [previewData, setPreviewData] = useState<AddLiquidityPreviewData | null>(null);
 
-  const { coinA, coinB } = getCoinsFromKey(poolKey);
+  const poolId = createPoolIdFromPoolKey(poolKey);
 
   const handleBackClick = useCallback(() => {
     if (previewData) {
@@ -53,7 +53,7 @@ const AddLiquidity = ({ poolKey }: Props) => {
         {showPreview ? (
           <PreviewAddLiquidityDialog previewData={previewData!} />
         ) : (
-          <AddLiquidityDialog firstCoin={coinA} secondCoin={coinB} setPreviewData={setPreviewData} />
+          <AddLiquidityDialog poolId={poolId} setPreviewData={setPreviewData} />
         )}
       </section>
       {showPreview && (

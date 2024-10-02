@@ -9,6 +9,7 @@
   border: none;
   color: var(--content-grey-dark);
   cursor: pointer;
+  /*anchor-name: --anchor_1;*/
 }
 
 .infoButton:hover {
@@ -22,4 +23,19 @@
 .infoButton > svg {
   height: 100%;
   width: 100%;
+}
+
+.tooltip {
+  /*position-anchor: --anchor_1;*/
+  /*top: anchor(--anchor_1 bottom);*/
+  /*left: anchor(--anchor_1 right);*/
+  max-width: 200px;
+  font-size: 14px;
+  line-height: 16px;
+  font-weight: 400;
+  padding: 8px;
+  background-color: var(--background-secondary);
+  color: var(--content-dimmed-dark);
+  border: none;
+  border-radius: 8px;
 }

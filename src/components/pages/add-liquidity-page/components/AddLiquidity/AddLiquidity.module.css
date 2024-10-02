@@ -94,6 +94,10 @@
   border-color: var(--accent-primary);
 }
 
+.poolStabilityButtonDisabled {
+  cursor: not-allowed;
+}
+
 .prices {
   color: var(--content-dimmed-dark);
 }

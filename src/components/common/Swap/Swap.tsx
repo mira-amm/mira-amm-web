@@ -51,6 +51,8 @@ const initialInputsState: InputsState = {
 
 export type SlippageMode = 'auto' | 'custom';
 
+export const DefaultSlippageValue = 1;
+
 const Swap = () => {
   const [SettingsModal, openSettingsModal, closeSettingsModal] = useModal();
   const [CoinsModal, openCoinsModal, closeCoinsModal] = useModal();
@@ -61,7 +63,7 @@ const Swap = () => {
   const [swapState, setSwapState] = useState<SwapState>(initialSwapState);
   const [inputsState, setInputsState] = useState<InputsState>(initialInputsState);
   const [lastFocusedMode, setLastFocusedMode] = useState<CurrencyBoxMode>('sell');
-  const [slippage, setSlippage] = useState<number>(1);
+  const [slippage, setSlippage] = useState<number>(DefaultSlippageValue);
   const [txCost, setTxCost] = useState<number | null>(null);
   const [slippageMode, setSlippageMode] = useState<SlippageMode>('auto');
 

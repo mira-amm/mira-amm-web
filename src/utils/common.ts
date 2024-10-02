@@ -12,13 +12,13 @@ export const getCoinsFromKey = (key: string) => {
   return { coinA , coinB };
 };
 
-export const getCoinByAssetId = (assetId: B256Address) => {
+export const getAssetNameByAssetId = (assetId: B256Address) => {
   return Array.from(coinsConfig.values()).find(coin => coin.assetId === assetId)?.name!;
 };
 
 export const getAssetNamesFromPoolId = (poolId: PoolId) => {
-  const firstAssetName = getCoinByAssetId(poolId[0].bits);
-  const secondAssetName = getCoinByAssetId(poolId[1].bits);
+  const firstAssetName = getAssetNameByAssetId(poolId[0].bits);
+  const secondAssetName = getAssetNameByAssetId(poolId[1].bits);
   return { firstAssetName, secondAssetName };
 };
 
@@ -27,8 +27,8 @@ export const VolatilePoolKey = 'volatile' as const;
 
 // Entity used as query param for position/pool pages in format 'ETH-USDT-stable', mutually convertible with pool id
 export const createPoolKey = (poolId: PoolId) => {
-  const firstAssetName = getCoinByAssetId(poolId[0].bits);
-  const secondAssetName = getCoinByAssetId(poolId[1].bits);
+  const firstAssetName = getAssetNameByAssetId(poolId[0].bits);
+  const secondAssetName = getAssetNameByAssetId(poolId[1].bits);
   const poolStability = poolId[2] ? StablePoolKey : VolatilePoolKey;
   return `${firstAssetName}-${secondAssetName}-${poolStability}`;
 };

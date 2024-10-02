@@ -60,7 +60,7 @@ const Header = ({ isHomePage }: Props) => {
               Faucet
             </a>
             <a
-              href="https://fuel.mirror.xyz/UfX-NnWGvYy56K8lq5gPfGLPI58DGD3KOHBJupHIibk"
+              href="https://app.fuel.network/earn-points"
               className={styles.link}
               target="_blank"
             >
@@ -73,7 +73,7 @@ const Header = ({ isHomePage }: Props) => {
         </div>
         <div className={clsx("mobileOnly", styles.links)}>
           <a
-            href="https://fuel.mirror.xyz/UfX-NnWGvYy56K8lq5gPfGLPI58DGD3KOHBJupHIibk"
+            href="https://app.fuel.network/earn-points"
             className={styles.link}
             target="_blank"
           >

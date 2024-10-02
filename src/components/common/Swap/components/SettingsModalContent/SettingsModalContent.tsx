@@ -2,7 +2,7 @@ import WarningIcon from "@/src/components/icons/Warning/WarningIcon";
 import styles from './SettingsModalContent.module.css';
 import {ChangeEvent, Dispatch, memo, SetStateAction, useState, KeyboardEvent, FocusEvent, useRef} from "react";
 import {clsx} from "clsx";
-import {SlippageMode} from "@/src/components/common/Swap/Swap";
+import {DefaultSlippageValue, SlippageMode} from "@/src/components/common/Swap/Swap";
 
 type Props = {
   slippage: number;
@@ -28,7 +28,7 @@ const SettingsModalContent = ({ slippage, slippageMode, setSlippage, setSlippage
     let value = event.target.value.replace('%', '');
     const numericValue = parseFloat(value.replace(',', '.'));
     if (isNaN(numericValue) || numericValue <= 0 || numericValue >= 100) {
-      setSlippage(0.5);
+      setSlippage(DefaultSlippageValue);
       return;
     }
     setSlippage(numericValue);
@@ -52,6 +52,13 @@ const SettingsModalContent = ({ slippage, slippageMode, setSlippage, setSlippage
     closeModal();
   };
 
+  const handleSlippageModeChange = (mode: SlippageMode) => {
+    setSlippageMode(mode);
+    if (mode === 'auto' && !AutoSlippageValues.includes(slippage)) {
+      setSlippage(DefaultSlippageValue);
+    }
+  };
+
   const isAutoMode = slippageMode === 'auto';
   const isCustomMode = slippageMode === 'custom';
 
@@ -68,13 +75,13 @@ const SettingsModalContent = ({ slippage, slippageMode, setSlippage, setSlippage
         <div className={styles.slippageButtons}>
           <button
             className={clsx(styles.slippageButton, isAutoMode && styles.slippageButtonActive)}
-            onClick={() => setSlippageMode('auto')}
+            onClick={() => handleSlippageModeChange('auto')}
           >
             Auto
           </button>
           <button
             className={clsx(styles.slippageButton, isCustomMode && styles.slippageButtonActive)}
-            onClick={() => setSlippageMode('custom')}
+            onClick={() => handleSlippageModeChange('custom')}
           >
             Custom
           </button>
