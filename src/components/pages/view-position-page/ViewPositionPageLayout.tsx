@@ -24,7 +24,6 @@ import {useCallback, useState} from "react";
 import useRemoveLiquidity from "@/src/hooks/useRemoveLiquidity";
 import {useRouter, useSearchParams} from "next/navigation";
 import {coinsConfig} from "@/src/utils/coinsConfig";
-import TestnetLabel from "@/src/components/common/TestnetLabel/TestnetLabel";
 import RemoveLiquiditySuccessModal
   from "@/src/components/pages/view-position-page/components/RemoveLiquiditySuccessModal/RemoveLiquiditySuccessModal";
 import IconButton from "@/src/components/common/IconButton/IconButton";
@@ -237,7 +236,7 @@ const ViewPositionPageLayout = () => {
           isValidNetwork={isValidNetwork}
         />
       </RemoveLiquidityModal>
-      <SuccessModal title={<TestnetLabel />} onClose={redirectToLiquidity}>
+      <SuccessModal title={<></>} onClose={redirectToLiquidity}>
         <RemoveLiquiditySuccessModal
           coinA={coinA}
           coinB={coinB}

@@ -7,7 +7,6 @@ import useAddLiquidity from "@/src/hooks/useAddLiquidity";
 import useModal from "@/src/hooks/useModal/useModal";
 import AddLiquiditySuccessModal
   from "@/src/components/pages/add-liquidity-page/components/AddLiquiditySuccessModal/AddLiquiditySuccessModal";
-import TestnetLabel from "@/src/components/common/TestnetLabel/TestnetLabel";
 import {useRouter} from "next/navigation";
 import {useCallback} from "react";
 import {DefaultLocale} from "@/src/utils/constants";
@@ -131,7 +130,7 @@ const PreviewAddLiquidityDialog = ({ previewData }: Props) => {
       <ActionButton loading={isPending} onClick={handleAddLiquidity}>
         Add Liquidity
       </ActionButton>
-      <SuccessModal title={<TestnetLabel />} onClose={redirectToLiquidity}>
+      <SuccessModal title={<></>} onClose={redirectToLiquidity}>
         <AddLiquiditySuccessModal coinA={coinA} coinB={coinB} firstCoinAmount={firstCoinAmount} secondCoinAmount={secondCoinAmount} transactionHash={data?.id} />
       </SuccessModal>
     </>
