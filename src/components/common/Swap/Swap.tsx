@@ -19,7 +19,6 @@ import {openNewTab} from "@/src/utils/common";
 import useBalances from "@/src/hooks/useBalances/useBalances";
 import CoinsListModal from "@/src/components/common/Swap/components/CoinsListModal/CoinsListModal";
 import SwapSuccessModal from "@/src/components/common/Swap/components/SwapSuccessModal/SwapSuccessModal";
-import TestnetLabel from "@/src/components/common/TestnetLabel/TestnetLabel";
 import SettingsModalContent from "@/src/components/common/Swap/components/SettingsModalContent/SettingsModalContent";
 import useCheckEthBalance from "@/src/hooks/useCheckEthBalance/useCheckEthBalance";
 import useInitialSwapState from "@/src/hooks/useInitialSwapState/useInitialSwapState";
@@ -376,7 +375,7 @@ const Swap = () => {
       <CoinsModal title="Choose token">
         <CoinsListModal selectCoin={handleCoinSelection} balances={balances}/>
       </CoinsModal>
-      <SuccessModal title={<TestnetLabel/>}>
+      <SuccessModal title={<></>}>
         <SwapSuccessModal swapState={swapStateForPreview.current} transactionHash={swapResult?.id}/>
       </SuccessModal>
     </>

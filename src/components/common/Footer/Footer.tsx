@@ -2,7 +2,6 @@ import Logo from "@/src/components/common/Logo/Logo";
 import {
   BlogLink,
   DiscordLink,
-  TestnetUrl,
   XLink,
 } from "@/src/utils/constants";
 
