@@ -1,7 +1,6 @@
 import styles from './FaucetClaim.module.css';
 import ActionButton from "@/src/components/common/ActionButton/ActionButton";
 import useModal from "@/src/hooks/useModal/useModal";
-import TestnetLabel from "@/src/components/common/TestnetLabel/TestnetLabel";
 import ClaimFailureModal from "@/src/components/common/FaucetClaim/components/ClaimFailureModal/ClaimFailureModal";
 import {useCallback, useEffect, useState} from "react";
 import useTwitterAuth from "@/src/hooks/useTwitterAuth/useTwitterAuth";
@@ -170,7 +169,7 @@ const FaucetClaim = () => {
           </p>
         )}
       </div>
-      <FailureModal title={<TestnetLabel/>}>
+      <FailureModal title={<></>}>
         <ClaimFailureModal
           walletConnected={Boolean(isConnected)}
           twitterConnected={Boolean(userData)}
@@ -179,7 +178,7 @@ const FaucetClaim = () => {
           closeModal={closeFailureModal}
         />
       </FailureModal>
-      <SuccessModal title={<TestnetLabel />}>
+      <SuccessModal title={<></>}>
         <ClaimSuccessModal />
       </SuccessModal>
     </>

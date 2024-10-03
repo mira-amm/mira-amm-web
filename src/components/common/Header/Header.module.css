@@ -140,10 +140,6 @@
     cursor: pointer;
   }
 
-  .testnetLabel {
-    cursor: pointer;
-  }
-
   .launchAppButton {
     min-width: 158px;
     height: 40px;

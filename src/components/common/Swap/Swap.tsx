@@ -1,5 +1,5 @@
 import {useCallback, useEffect, useRef, useState} from "react";
-import {useAccount, useConnectUI, useIsConnected} from "@fuels/react";
+import {useConnectUI, useIsConnected} from "@fuels/react";
 import {useDebounceCallback, useLocalStorage} from "usehooks-ts";
 import {clsx} from "clsx";
 
@@ -19,7 +19,6 @@ import {openNewTab} from "@/src/utils/common";
 import useBalances from "@/src/hooks/useBalances/useBalances";
 import CoinsListModal from "@/src/components/common/Swap/components/CoinsListModal/CoinsListModal";
 import SwapSuccessModal from "@/src/components/common/Swap/components/SwapSuccessModal/SwapSuccessModal";
-import TestnetLabel from "@/src/components/common/TestnetLabel/TestnetLabel";
 import SettingsModalContent from "@/src/components/common/Swap/components/SettingsModalContent/SettingsModalContent";
 import useCheckEthBalance from "@/src/hooks/useCheckEthBalance/useCheckEthBalance";
 import useInitialSwapState from "@/src/hooks/useInitialSwapState/useInitialSwapState";
@@ -49,8 +48,12 @@ const initialInputsState: InputsState = {
   },
 };
 
+export type SlippageMode = 'auto' | 'custom';
+
+export const DefaultSlippageValue = 1;
+
 const Swap = () => {
-  const [SettingsModal, openSettingsModal] = useModal();
+  const [SettingsModal, openSettingsModal, closeSettingsModal] = useModal();
   const [CoinsModal, openCoinsModal, closeCoinsModal] = useModal();
   const [SuccessModal, openSuccess] = useModal();
 
@@ -59,8 +62,9 @@ const Swap = () => {
   const [swapState, setSwapState] = useState<SwapState>(initialSwapState);
   const [inputsState, setInputsState] = useState<InputsState>(initialInputsState);
   const [lastFocusedMode, setLastFocusedMode] = useState<CurrencyBoxMode>('sell');
-  const [slippage, setSlippage] = useState<number>(1);
+  const [slippage, setSlippage] = useState<number>(DefaultSlippageValue);
   const [txCost, setTxCost] = useState<number | null>(null);
+  const [slippageMode, setSlippageMode] = useState<SlippageMode>('auto');
 
   const [swapCoins, setSwapCoins] = useLocalStorage('swapCoins', {sell: initialSwapState.sell.coin, buy: initialSwapState.buy.coin});
 
@@ -70,7 +74,6 @@ const Swap = () => {
 
   const {isConnected} = useIsConnected();
   const {connect, isConnecting} = useConnectUI();
-  const {account} = useAccount();
   const {balances, isPending, refetch} = useBalances();
 
   const isValidNetwork = useCheckActiveNetwork();
@@ -251,10 +254,10 @@ const Swap = () => {
     swapPending,
     swapState,
     fetchTxCost,
+    faucetLink,
     triggerSwap,
-    account,
     openSuccess,
-    refetch,
+    refetch
   ]);
 
   const insufficientSellBalance = parseFloat(sellValue) > sellBalanceValue;
@@ -276,7 +279,7 @@ const Swap = () => {
   }
 
   const swapDisabled =
-    !isValidNetwork || coinMissing || showInsufficientBalance || insufficientReserves;
+    !isValidNetwork || coinMissing || showInsufficientBalance || insufficientReserves || !sellValue || !buyValue;
 
   const feePercentage = 0.3;
   const exchangeRate = useExchangeRate(swapState);
@@ -291,6 +294,9 @@ const Swap = () => {
         <div className={clsx(styles.swapContainer, swapPending && styles.swapContainerLoading)}>
           <div className={styles.heading}>
             <p className={styles.title}>Swap</p>
+            <p className={styles.slippageLabel}>
+              {slippage}% slippage
+            </p>
             <IconButton onClick={openSettingsModal} className={styles.settingsButton}>
               <SettingsIcon/>
             </IconButton>
@@ -358,12 +364,18 @@ const Swap = () => {
       </div>
       {swapPending && <div className={styles.loadingOverlay}/>}
       <SettingsModal title="Settings">
-        <SettingsModalContent slippage={slippage} setSlippage={setSlippage}/>
+        <SettingsModalContent
+          slippage={slippage}
+          slippageMode={slippageMode}
+          setSlippage={setSlippage}
+          setSlippageMode={setSlippageMode}
+          closeModal={closeSettingsModal}
+        />
       </SettingsModal>
       <CoinsModal title="Choose token">
         <CoinsListModal selectCoin={handleCoinSelection} balances={balances}/>
       </CoinsModal>
-      <SuccessModal title={<TestnetLabel/>}>
+      <SuccessModal title={<></>}>
         <SwapSuccessModal swapState={swapStateForPreview.current} transactionHash={swapResult?.id}/>
       </SuccessModal>
     </>

@@ -12,7 +12,7 @@ const SwapPageLayout = () => {
     <div className={styles.swapPage}>
       <Header />
       <main className={styles.swapLayout}>
-        <BackLink />
+        <BackLink chevron />
         <Swap />
       </main>
       <Footer/>

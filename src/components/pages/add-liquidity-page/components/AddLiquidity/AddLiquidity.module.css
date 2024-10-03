@@ -20,6 +20,10 @@
   border-bottom: 1px solid var(--background-grey-light);
 }
 
+.addButton {
+  margin-top: 100px;
+}
+
 .title {
   flex: 1;
   text-align: center;
@@ -40,21 +44,58 @@
 
 .APR {
   display: flex;
+  align-items: center;
   gap: 4px;
   font-size: 12px;
   line-height: 14px;
   margin-left: 56px;
 }
 
+.APR > span {
+  font-size: 12px;
+  line-height: 14px;
+}
+
 .highlight {
   color: var(--content-positive);
 }
 
-.fee {
-  padding: 12px;
+.poolStability {
+  display: flex;
+  width: 100%;
+  gap: 8px;
+}
+
+.poolStabilityButton {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 10px 12px;
+  background-color: var(--background-secondary);
+  color: var(--content-dimmed-light);
+  border: 1px solid transparent;
   border-radius: 8px;
-  color: var(--content-dimmed-dark);
-  background-color: var(--background-grey-darker);
+  cursor: pointer;
+}
+
+.poolStabilityButtonTitle {
+  display: flex;
+  width: 100%;
+}
+
+.poolStabilityButtonTitle > p {
+  text-align: left;
+  flex: 1;
+}
+
+.poolStabilityButtonActive {
+  color: var(--content-primary);
+  border-color: var(--accent-primary);
+}
+
+.poolStabilityButtonDisabled {
+  cursor: not-allowed;
 }
 
 .prices {
@@ -106,7 +147,6 @@
 .inputPreviewRow {
   display: flex;
   justify-content: space-between;
-
 }
 
 .inputPreviewRow p {
@@ -168,6 +208,10 @@
     display: flex;
     justify-content: space-between;
   }
+
+  /*.poolStabilityButton {*/
+  /*  flex-direction: row;*/
+  /*}*/
 
   .inputPreviewRow p {
     font-size: 16px;

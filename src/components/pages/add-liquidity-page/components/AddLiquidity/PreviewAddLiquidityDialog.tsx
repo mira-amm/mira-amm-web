@@ -1,15 +1,12 @@
 import styles from "@/src/components/pages/add-liquidity-page/components/AddLiquidity/AddLiquidity.module.css";
 import CoinPair from "@/src/components/common/CoinPair/CoinPair";
-import PositionLabel from "@/src/components/pages/liquidity-page/components/Positions/PositionLabel/PositionLabel";
 import Coin from "@/src/components/common/Coin/Coin";
 import ActionButton from "@/src/components/common/ActionButton/ActionButton";
 import {CoinName} from "@/src/utils/coinsConfig";
-import {BN} from "fuels";
 import useAddLiquidity from "@/src/hooks/useAddLiquidity";
 import useModal from "@/src/hooks/useModal/useModal";
 import AddLiquiditySuccessModal
   from "@/src/components/pages/add-liquidity-page/components/AddLiquiditySuccessModal/AddLiquiditySuccessModal";
-import TestnetLabel from "@/src/components/common/TestnetLabel/TestnetLabel";
 import {useRouter} from "next/navigation";
 import {useCallback} from "react";
 import {DefaultLocale} from "@/src/utils/constants";
@@ -19,12 +16,13 @@ type AssetsData = {
   amount: string;
 };
 
-type PreviewData = {
+export type AddLiquidityPreviewData = {
   assets: AssetsData[];
+  isStablePool: boolean;
 };
 
 type Props = {
-  previewData: PreviewData;
+  previewData: AddLiquidityPreviewData;
 }
 
 const PreviewAddLiquidityDialog = ({ previewData }: Props) => {
@@ -33,10 +31,11 @@ const PreviewAddLiquidityDialog = ({ previewData }: Props) => {
   const router = useRouter();
 
   const { data, mutateAsync, isPending } = useAddLiquidity({
-    firstCoin: previewData.assets[0].coin,
-    firstCoinAmount: previewData.assets[0].amount,
-    secondCoin: previewData.assets[1].coin,
-    secondCoinAmount: previewData.assets[1].amount,
+    firstAssetName: previewData.assets[0].coin,
+    firstAssetAmount: previewData.assets[0].amount,
+    secondAssetName: previewData.assets[1].coin,
+    secondAssetAmount: previewData.assets[1].amount,
+    isPoolStable: previewData.isStablePool,
   });
 
   const coinA = previewData.assets[0].coin;
@@ -80,7 +79,7 @@ const PreviewAddLiquidityDialog = ({ previewData }: Props) => {
           </div>
         </div>
       </div>
-      <div className={styles.section}>
+      {/* <div className={styles.section}>
         <p>Selected Price</p>
         <div className={styles.sectionContent}>
           <div className={styles.previewPriceBlocks}>
@@ -127,11 +126,11 @@ const PreviewAddLiquidityDialog = ({ previewData }: Props) => {
             {coinA} per {coinB}
           </p>
         </div>
-      </div>
+      </div> */}
       <ActionButton loading={isPending} onClick={handleAddLiquidity}>
-        Add
+        Add Liquidity
       </ActionButton>
-      <SuccessModal title={<TestnetLabel />} onClose={redirectToLiquidity}>
+      <SuccessModal title={<></>} onClose={redirectToLiquidity}>
         <AddLiquiditySuccessModal coinA={coinA} coinB={coinB} firstCoinAmount={firstCoinAmount} secondCoinAmount={secondCoinAmount} transactionHash={data?.id} />
       </SuccessModal>
     </>

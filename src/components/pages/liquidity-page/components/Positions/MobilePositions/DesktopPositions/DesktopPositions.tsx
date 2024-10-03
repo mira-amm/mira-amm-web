@@ -2,7 +2,7 @@ import CoinPair from "@/src/components/common/CoinPair/CoinPair";
 
 import styles from './DesktopPositions.module.css';
 import {PoolId} from "mira-dex-ts";
-import {createPoolKey, getCoinByAssetId} from "@/src/utils/common";
+import {createPoolKey, getAssetNameByAssetId} from "@/src/utils/common";
 import {useCallback} from "react";
 import {useRouter} from "next/navigation";
 import {coinsConfig} from "@/src/utils/coinsConfig";
@@ -41,11 +41,11 @@ const DesktopPositions = ({ positions }: Props) => {
       <tbody>
       {positions.map(position => {
         const { bits: coinAAssetId } = position[0][0];
-        const coinA = getCoinByAssetId(coinAAssetId);
+        const coinA = getAssetNameByAssetId(coinAAssetId);
         const coinADecimals = coinsConfig.get(coinA)?.decimals!;
         const coinAAmount = (position[0][1].toNumber() / 10 ** coinADecimals).toLocaleString(DefaultLocale, { minimumFractionDigits: coinADecimals });
         const { bits: coinBAssetId } = position[1][0];
-        const coinB = getCoinByAssetId(coinBAssetId);
+        const coinB = getAssetNameByAssetId(coinBAssetId);
         const coinBDecimals = coinsConfig.get(coinB)?.decimals!;
         const coinBAmount = (position[1][1].toNumber() / 10 ** coinBDecimals).toLocaleString(DefaultLocale, { minimumFractionDigits: coinBDecimals });
 
