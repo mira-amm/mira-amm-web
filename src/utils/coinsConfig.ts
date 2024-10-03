@@ -4,7 +4,7 @@ import USDTIcon from "@/src/components/icons/coins/Tether/USDTIcon";
 import ETHIcon from "@/src/components/icons/coins/Ethereum/ETHIcon";
 import USDCIcon from "@/src/components/icons/coins/USDCoin/USDCIcon";
 
-export type CoinName = 'USDC' | 'USDT' | 'ETH' | null;
+export type CoinName = 'USDC' | 'USDT' | null;
 
 type CoinData = {
   name: CoinName;
@@ -17,26 +17,16 @@ type CoinData = {
 };
 
 export const coinsConfig: Map<CoinName, CoinData> = new Map([
-  [
-    'BTC',
-    {
-      name: 'BTC',
-      decimals: 8,
-      assetId: '0xce90621a26908325c42e95acbbb358ca671a9a7b36dfb6a5405b407ad1efcd30',
-      fullName: 'Bitcoin Test',
-      icon: BTCIcon,
-    },
-  ],
-  [
-    'ETH',
-    {
-      name: 'ETH',
-      decimals: 9,
-      assetId: '0xf8f8b6283d7fa5b672b530cbb84fcccb4ff8dc40f8176ef4544ddb1f1952ad07',
-      fullName: 'Ethereum',
-      icon: ETHIcon,
-    },
-  ],
+  // [
+  //   'ETH',
+  //   {
+  //     name: 'ETH',
+  //     decimals: 9,
+  //     assetId: '0xf8f8b6283d7fa5b672b530cbb84fcccb4ff8dc40f8176ef4544ddb1f1952ad07',
+  //     fullName: 'Ethereum',
+  //     icon: ETHIcon,
+  //   },
+  // ],
   [
     'USDT',
     {
