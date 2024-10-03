@@ -1,6 +1,6 @@
 import styles from './RemoveLiquidityModalContent.module.css';
 import CoinPair from "@/src/components/common/CoinPair/CoinPair";
-import InfoIcon from "@/src/components/icons/Info/InfoIcon";
+import WarningIcon from "@/src/components/icons/Warning/WarningIcon";
 import ActionButton from "@/src/components/common/ActionButton/ActionButton";
 import {
   ChangeEvent,
@@ -116,7 +116,7 @@ const RemoveLiquidityModalContent = ({coinA, coinB, currentCoinAValue, currentCo
       </div>
       <div className={styles.textBlock}>
         <p className={styles.infoBlockTitle}>
-          <InfoIcon/>
+          <WarningIcon/>
           Pay attention
         </p>
         <p className={styles.infoBlockText}>

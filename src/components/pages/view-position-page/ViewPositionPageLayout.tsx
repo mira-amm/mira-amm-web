@@ -14,12 +14,16 @@ import useModal from "@/src/hooks/useModal/useModal";
 import RemoveLiquidityModalContent
   from "@/src/components/pages/view-position-page/components/RemoveLiquidityModalContent/RemoveLiquidityModalContent";
 import usePositionData from "@/src/hooks/usePositionData";
-import {createPoolId, floorToTwoSignificantDigits, getCoinsFromKey} from "@/src/utils/common";
+import {
+  createPoolIdFromAssetNames,
+  createPoolIdFromPoolKey,
+  floorToTwoSignificantDigits,
+  getCoinsFromKey
+} from "@/src/utils/common";
 import {useCallback, useState} from "react";
 import useRemoveLiquidity from "@/src/hooks/useRemoveLiquidity";
 import {useRouter, useSearchParams} from "next/navigation";
 import {coinsConfig} from "@/src/utils/coinsConfig";
-import TestnetLabel from "@/src/components/common/TestnetLabel/TestnetLabel";
 import RemoveLiquiditySuccessModal
   from "@/src/components/pages/view-position-page/components/RemoveLiquiditySuccessModal/RemoveLiquiditySuccessModal";
 import IconButton from "@/src/components/common/IconButton/IconButton";
@@ -40,7 +44,7 @@ const ViewPositionPageLayout = () => {
   const poolKey = query.get('pool');
   // TODO: Validate poolkey
   const { coinA, coinB } = getCoinsFromKey(poolKey!);
-  const pool = createPoolId(coinA, coinB);
+  const pool = createPoolIdFromPoolKey(poolKey!);
 
   const { positionData: { assets, lpTokenBalance } } = usePositionData({ pool });
 
@@ -89,7 +93,7 @@ const ViewPositionPageLayout = () => {
   const coinBAmountToWithdraw = (coinBAmount * removeLiquidityValue / 100).toLocaleString(DefaultLocale, { minimumFractionDigits: coinBDecimals });
 
   const lpTokenAssetId = getLPAssetId(DEFAULT_AMM_CONTRACT_ID, pool);
-  const formattedLpTokenAssetId = useFormattedAddress(lpTokenAssetId.bits, false);
+  const formattedLpTokenAssetId = useFormattedAddress(lpTokenAssetId.bits);
 
   const isValidNetwork = useCheckActiveNetwork();
 
@@ -232,7 +236,7 @@ const ViewPositionPageLayout = () => {
           isValidNetwork={isValidNetwork}
         />
       </RemoveLiquidityModal>
-      <SuccessModal title={<TestnetLabel />} onClose={redirectToLiquidity}>
+      <SuccessModal title={<></>} onClose={redirectToLiquidity}>
         <RemoveLiquiditySuccessModal
           coinA={coinA}
           coinB={coinB}

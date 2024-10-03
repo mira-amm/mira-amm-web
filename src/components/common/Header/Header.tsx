@@ -8,11 +8,10 @@ import { clsx } from "clsx";
 import { usePathname } from "next/navigation";
 import ConnectButton from "@/src/components/common/ConnectButton/ConnectButton";
 import LaunchAppButton from "@/src/components/common/LaunchAppButton/LaunchAppButton";
-import TestnetLabel from "@/src/components/common/TestnetLabel/TestnetLabel";
 import DisconnectMobile from "@/src/components/common/ConnectButton/DisconnectMobile";
 import { useIsConnected } from "@fuels/react";
 import useFaucetLink from "@/src/hooks/useFaucetLink";
-import { BlogLink, TestnetUrl } from "@/src/utils/constants";
+import { BlogLink } from "@/src/utils/constants";
 import { RewardsIcon } from "../../icons/Rewards/RewardsIcon";
 
 type Props = {
@@ -60,7 +59,7 @@ const Header = ({ isHomePage }: Props) => {
               Faucet
             </a>
             <a
-              href="https://fuel.mirror.xyz/UfX-NnWGvYy56K8lq5gPfGLPI58DGD3KOHBJupHIibk"
+              href="https://app.fuel.network/earn-points"
               className={styles.link}
               target="_blank"
             >
@@ -73,7 +72,7 @@ const Header = ({ isHomePage }: Props) => {
         </div>
         <div className={clsx("mobileOnly", styles.links)}>
           <a
-            href="https://fuel.mirror.xyz/UfX-NnWGvYy56K8lq5gPfGLPI58DGD3KOHBJupHIibk"
+            href="https://app.fuel.network/earn-points"
             className={styles.link}
             target="_blank"
           >
@@ -100,7 +99,6 @@ const Header = ({ isHomePage }: Props) => {
               </a>
             </>
           )}
-          {!isHomePage && <TestnetLabel />}
           {!isHomePage && <ConnectButton className={styles.launchAppButton} />}
           {isHomePage && (
             <div className={styles.launchAppArea}>

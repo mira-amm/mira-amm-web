@@ -1,0 +1,14 @@
+.page {
+  background: #1e1e22;
+  height: 100vh;
+}
+
+.link {
+  align-self: center;
+}
+
+@media (max-width: 768px) {
+  .page {
+    padding-bottom: 40%;
+  }
+}
