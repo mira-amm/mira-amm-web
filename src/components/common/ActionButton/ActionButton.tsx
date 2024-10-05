@@ -58,7 +58,7 @@ const ActionButton = ({
       ref={buttonRef}
       type={type || 'button'}
     >
-      {loading ? <Loader/> : children}
+      {loading ? <Loader variant={variant}/> : children}
     </button>
   );
 };

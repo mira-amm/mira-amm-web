@@ -4,7 +4,7 @@ import { useCallback, useMemo, useState, useEffect } from "react";
 import {
   useAccount,
   useConnectUI,
-  useDisconnect,
+  useDisconnect, useFuel,
   useIsConnected,
 } from "@fuels/react";
 import { clsx } from "clsx";
@@ -26,10 +26,20 @@ type Props = {
 };
 
 const ConnectButton = ({ className }: Props) => {
-  const { isConnected } = useIsConnected();
+  const { isConnected  } = useIsConnected();
   const { connect, isConnecting } = useConnectUI();
   const { disconnect, isPending: disconnectLoading } = useDisconnect();
   const { account } = useAccount();
+
+  // TODO: Hack to avoid empty button when account is changed to the not connected one in wallet
+  // It is not reproducible on Fuelet, but on Fuel wallet
+  // isConnected remains `true` while account is `null` which is not correct
+  // Consider creating an issue in Fuel repo
+  useEffect(() => {
+    if (isConnected && !account) {
+      disconnect();
+    }
+  }, [account, isConnected]);
 
   const loading = isConnecting || disconnectLoading;
 
