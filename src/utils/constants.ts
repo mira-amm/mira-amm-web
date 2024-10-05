@@ -15,7 +15,7 @@ export const DiscordLink = 'https://discord.gg/6pHdTY6rYq' as const;
 export const XLink = 'https://x.com/MiraProtocol' as const;
 export const BlogLink = "https://mirror.xyz/miraly.eth" as const;
 
-export const ValidNetwork = 'mainnet' as const;
+export const ValidNetworkChainId = 9889 as const;
 export const TestnetUrl: string = process.env.PRIVATE_MAINNET_URL!;
 
 export const IndexerUrl = 'https://indexer.bigdevenergy.link/99318f9/v1/graphql' as const;
