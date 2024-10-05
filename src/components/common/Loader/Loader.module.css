@@ -9,6 +9,10 @@
   animation: rotation 1s linear infinite;
 }
 
+.outlined {
+  border: 2px solid var(--accent-primary);
+}
+
 @keyframes rotation {
   0% {
     transform: rotate(0deg);

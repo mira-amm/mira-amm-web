@@ -56,7 +56,7 @@ const Providers = ({children}: Props) => {
     ] : [
       new FueletWalletConnector(),
       new BurnerWalletConnector(),
-      // new FuelWalletConnector(),
+      new FuelWalletConnector(),
       new BakoSafeConnector(),
       new WalletConnectConnector({
         projectId: WalletConnectProjectId,
@@ -76,7 +76,6 @@ const Providers = ({children}: Props) => {
         fuelConfig={fuelConfig}
         theme="dark"
       >
-        {/* @ts-ignore */}
         {children}
       </FuelProvider>
     </QueryClientProvider>
