@@ -13,6 +13,7 @@ import { useIsConnected } from "@fuels/react";
 import useFaucetLink from "@/src/hooks/useFaucetLink";
 import { BlogLink } from "@/src/utils/constants";
 import { RewardsIcon } from "../../icons/Rewards/RewardsIcon";
+import TestnetLabel from "@/src/components/common/TestnetLabel/TestnetLabel";
 
 type Props = {
   isHomePage?: boolean;
@@ -99,6 +100,7 @@ const Header = ({ isHomePage }: Props) => {
               </a>
             </>
           )}
+          {!isHomePage && <TestnetLabel />}
           {!isHomePage && <ConnectButton className={styles.launchAppButton} />}
           {isHomePage && (
             <div className={styles.launchAppArea}>
