@@ -28,6 +28,7 @@ import useCheckActiveNetwork from "@/src/hooks/useCheckActiveNetwork";
 import useSwapPreview from "@/src/hooks/useSwapPreview";
 import usePoolsMetadata from "@/src/hooks/usePoolsMetadata";
 import PriceImpact from "@/src/components/common/Swap/components/PriceImpact/PriceImpact";
+import useUSDRate from "@/src/hooks/useUSDRate";
 
 export type CurrencyBoxMode = "buy" | "sell";
 export type CurrencyBoxState = {
@@ -369,6 +370,8 @@ const Swap = () => {
 
     return null;
   }, [swapState.buy.amount, swapState.sell.amount]);
+
+  useUSDRate(swapState.sell.coin);
 
   return (
     <>

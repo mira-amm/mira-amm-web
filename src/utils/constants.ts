@@ -27,3 +27,6 @@ export const MinEthValue = 0.001 as const;
 export const MinEthValueBN = MinEthValue * 10 ** 9;
 
 export const DefaultLocale = 'en-US' as const;
+
+// TODO: Make an env variable
+export const CryptoApisKey = 'f7c503c4795f73329056a550f5c89aeb84633b7e' as const;
