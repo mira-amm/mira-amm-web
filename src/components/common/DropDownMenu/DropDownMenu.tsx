@@ -5,12 +5,13 @@ import clsx from "clsx";
 type DropDownMenuProps = {
   buttons: { icon: React.FC; text: string; onClick: () => void; disabled?: boolean; tooltip?: string }[];
   children?: React.ReactNode;
+  className?: string;
 };
 
-export const DropDownMenu = ({ buttons, children }: DropDownMenuProps) => {
+export const DropDownMenu = ({ buttons, children, className }: DropDownMenuProps) => {
   return (
     <>
-      <ul className={styles.menuList}>
+      <ul className={clsx(styles.menuList, className)}>
         {buttons.map((button) => (
           <li key={button.text}>
             <button className={clsx(button.disabled ? styles.menuButtonDisabled : styles.menuButton)} onClick={button.onClick}>
