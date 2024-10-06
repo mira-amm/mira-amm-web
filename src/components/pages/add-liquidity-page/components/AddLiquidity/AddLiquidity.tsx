@@ -1,10 +1,7 @@
 import styles from './AddLiquidity.module.css';
-import {createPoolIdFromAssetNames, createPoolIdFromPoolKey, getCoinsFromKey} from "@/src/utils/common";
+import {createPoolIdFromPoolKey} from "@/src/utils/common";
 import {useCallback, useState} from "react";
-import PreviewAddLiquidityDialog
-  , {
-  AddLiquidityPreviewData
-} from "@/src/components/pages/add-liquidity-page/components/AddLiquidity/PreviewAddLiquidityDialog";
+import PreviewAddLiquidityDialog, {AddLiquidityPreviewData} from "@/src/components/pages/add-liquidity-page/components/AddLiquidity/PreviewAddLiquidityDialog";
 import AddLiquidityDialog from "@/src/components/pages/add-liquidity-page/components/AddLiquidity/AddLiquidityDialog";
 import BackLink from "@/src/components/common/BackLink/BackLink";
 import {useRouter} from "next/navigation";
