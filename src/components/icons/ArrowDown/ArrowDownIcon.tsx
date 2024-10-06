@@ -9,7 +9,7 @@ export const ArrowDownIcon = () => {
     >
       <path
         d="M4.1377 6.93945L10.3877 13.1895L16.6377 6.93945"
-        stroke="#6D6D6D"
+        stroke="currentColor"
         stroke-width="2"
         stroke-linecap="square"
       />

@@ -7,3 +7,19 @@
   cursor: default;
   font-weight: 400 !important;
 }
+
+.labelButton {
+  all: unset;
+  cursor: pointer;
+  position: relative;
+}
+
+.labelButton:hover {
+  opacity: 0.64;
+}
+
+.labelMenu {
+  top: 100%;
+  left: 0;
+  width: 100%;
+}

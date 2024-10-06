@@ -1,20 +1,44 @@
-import {clsx} from "clsx";
-import {memo} from "react";
+import { clsx } from "clsx";
+import { memo, useState } from "react";
+import { DropDownMenu } from "../DropDownMenu/DropDownMenu";
 
-import {FuelIcon} from "@/src/components/icons";
+import { FuelIcon } from "@/src/components/icons";
 
-import styles from './TestnetLabel.module.css';
+import styles from "./TestnetLabel.module.css";
+import { ArrowDownIcon } from "../../icons/ArrowDown/ArrowDownIcon";
+import { ArrowUpIcon } from "../../icons/ArrowUp/ArrowUpIcon";
+import { mainnetLink } from "@/src/utils/constants";
 
 type Props = {
   className?: string;
-}
+};
 
 const TestnetLabel = ({ className }: Props) => {
+  const [isMenuOpened, setIsMenuOpened] = useState(false);
+
+  const handleClick = () => {
+    setIsMenuOpened((prev) => !prev);
+  };
+
+  const menuButtons = [
+    {
+      icon: FuelIcon,
+      text: "Mainnet",
+      onClick: () => {
+        window.open(mainnetLink, "_blank");
+      },
+    },
+  ];
   return (
-    <div className={clsx(styles.testnetLabel, className)}>
-      <FuelIcon/>
-      Testnet
-    </div>
+    <button className={styles.labelButton} onClick={handleClick}>
+      <div className={clsx(styles.testnetLabel, className)}>
+        <FuelIcon />
+        Testnet {!isMenuOpened ? <ArrowDownIcon /> : <ArrowUpIcon />}
+      </div>
+      {isMenuOpened && (
+        <DropDownMenu className={styles.labelMenu} buttons={menuButtons} />
+      )}
+    </button>
   );
 };
 
