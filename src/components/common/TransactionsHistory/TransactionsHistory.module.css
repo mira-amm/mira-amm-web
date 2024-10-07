@@ -141,7 +141,7 @@
   position: relative;
 }
 
-.transactionCoins svg {
+.transactionCoins svg, .transactionCoins img {
   height: 28px;
   width: 28px;
 }
