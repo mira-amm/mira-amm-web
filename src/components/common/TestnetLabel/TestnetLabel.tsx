@@ -2,8 +2,6 @@ import { clsx } from "clsx";
 import { memo, useState } from "react";
 import { DropDownMenu } from "../DropDownMenu/DropDownMenu";
 
-import { FuelIcon } from "@/src/components/icons";
-
 import styles from "./TestnetLabel.module.css";
 import { ArrowDownIcon } from "../../icons/ArrowDown/ArrowDownIcon";
 import { ArrowUpIcon } from "../../icons/ArrowUp/ArrowUpIcon";
@@ -22,7 +20,6 @@ const TestnetLabel = ({ className }: Props) => {
 
   const menuButtons = [
     {
-      icon: FuelIcon,
       text: "Mainnet",
       onClick: () => {
         window.open(mainnetLink, "_blank");
@@ -32,7 +29,6 @@ const TestnetLabel = ({ className }: Props) => {
   return (
     <button className={styles.labelButton} onClick={handleClick}>
       <div className={clsx(styles.testnetLabel, className)}>
-        <FuelIcon />
         Testnet {!isMenuOpened ? <ArrowDownIcon /> : <ArrowUpIcon />}
       </div>
       {isMenuOpened && (

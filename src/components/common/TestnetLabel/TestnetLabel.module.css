@@ -2,20 +2,22 @@
   display: flex;
   align-items: center;
   gap: 8px;
-  padding: 7px 14px;
   border-radius: 20px;
-  cursor: default;
+  cursor: pointer;
   font-weight: 400 !important;
 }
 
 .labelButton {
   all: unset;
-  cursor: pointer;
   position: relative;
+  padding: 6px 12px;
+  background: transparent;
+  border-radius: 20px;
+  transition: .5s all ease;
 }
 
 .labelButton:hover {
-  opacity: 0.64;
+  background: var(--background-grey-light);
 }
 
 .labelMenu {

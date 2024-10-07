@@ -139,8 +139,6 @@ const ConnectButton = ({ className }: Props) => {
       >
         {isConnected && <img src="/images/avatar.png" width="24" height="24" />}
         {title}
-        {isConnected &&
-          (!isMenuOpened ? <ArrowDownIcon /> : <ArrowUpIcon />)}
       </ActionButton>
       {isMenuOpened && <DropDownMenu buttons={menuButtons} />}
       <TransactionsHistory
