@@ -371,7 +371,9 @@ const Swap = () => {
     return null;
   }, [swapState.buy.amount, swapState.sell.amount]);
 
-  useUSDRate(swapState.sell.coin);
+  const { ratesData } = useUSDRate(swapState.sell.coin, swapState.buy.coin);
+  const firstAssetRate = ratesData?.find((item) => item.asset === swapState.sell.coin)?.rate;
+  const secondAssetRate = ratesData?.find((item) => item.asset === swapState.buy.coin)?.rate;
 
   return (
     <>
@@ -399,6 +401,7 @@ const Swap = () => {
             setAmount={setAmount('sell')}
             loading={inputPreviewPending || swapPending}
             onCoinSelectorClick={handleCoinSelectorClick}
+            usdRate={firstAssetRate}
           />
           <div className={styles.splitter}>
             <IconButton onClick={swapAssets} className={styles.convertButton}>
@@ -413,6 +416,7 @@ const Swap = () => {
             setAmount={setAmount('buy')}
             loading={outputPreviewPending || swapPending}
             onCoinSelectorClick={handleCoinSelectorClick}
+            usdRate={secondAssetRate}
           />
           {swapPending && (
             <div className={styles.summary}>

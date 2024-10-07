@@ -13,9 +13,10 @@ type Props = {
   loading: boolean;
   setAmount: (amount: string) => void;
   balance: number;
+  usdRate: string | undefined;
 }
 
-const CoinInput = ({ coin, value, loading, setAmount, balance }: Props) => {
+const CoinInput = ({ coin, value, loading, setAmount, balance, usdRate }: Props) => {
   const decimals = coinsConfig.get(coin)?.decimals!;
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -34,7 +35,11 @@ const CoinInput = ({ coin, value, loading, setAmount, balance }: Props) => {
     setAmount(amount);
   }, [coin, balance, setAmount]);
 
-  const balanceValue = balance.toLocaleString(DefaultLocale, { minimumFractionDigits: decimals })
+  const balanceValue = balance.toLocaleString(DefaultLocale, { minimumFractionDigits: decimals });
+
+  const usdValue = Boolean(value) && Boolean(usdRate) ?
+    (parseFloat(value) * parseFloat(usdRate!)).toLocaleString(DefaultLocale, { minimumFractionDigits: 2, maximumFractionDigits: 2 }) :
+    null;
 
   return (
     <div className={styles.coinInput}>
@@ -49,9 +54,11 @@ const CoinInput = ({ coin, value, loading, setAmount, balance }: Props) => {
                disabled={loading}
                onChange={handleChange}
         />
-        {/*<p className={clsx(styles.balance, styles.rate)}>*/}
-        {/*  /!*$94.1*!/*/}
-        {/*</p>*/}
+        {usdValue !== null && (
+          <p className={clsx(styles.balance, styles.rate)}>
+            {`$${usdValue}`}
+          </p>
+        )}
       </div>
       <div className={clsx(styles.coinInputLine, styles.rightColumn)}>
         <Coin name={coin} className={styles.coinName} />

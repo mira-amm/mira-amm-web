@@ -27,3 +27,5 @@ export const MinEthValue = 0.001 as const;
 export const MinEthValueBN = MinEthValue * 10 ** 9;
 
 export const DefaultLocale = 'en-US' as const;
+
+export const AssetRatesApiUrl = 'https://nhnv2j1cac.execute-api.us-east-1.amazonaws.com/crypto-api/market-data/exchange-rates/by-symbols' as const;
