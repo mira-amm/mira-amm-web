@@ -35,11 +35,11 @@ const ConnectButton = ({ className }: Props) => {
   // It is not reproducible on Fuelet, but on Fuel wallet
   // isConnected remains `true` while account is `null` which is not correct
   // Consider creating an issue in Fuel repo
-  useEffect(() => {
-    if (isConnected && !account) {
-      disconnect();
-    }
-  }, [account, isConnected]);
+  // useEffect(() => {
+  //   if (isConnected && !account) {
+  //     disconnect();
+  //   }
+  // }, [account, isConnected]);
 
   const loading = isConnecting || disconnectLoading;
 

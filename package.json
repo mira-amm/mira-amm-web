@@ -9,12 +9,12 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@fuels/connectors": "^0.29.5",
-    "@fuels/react": "^0.29.5",
+    "@fuels/connectors": "^0.31.3",
+    "@fuels/react": "^0.31.3",
     "@tanstack/react-query": "^5.50.1",
     "clsx": "^2.1.1",
     "firebase": "^10.12.4",
-    "fuels": "^0.94.8",
+    "fuels": "^0.94.9",
     "graphql": "^16.9.0",
     "graphql-request": "^7.1.0",
     "mira-dex-ts": "^1.0.15",
