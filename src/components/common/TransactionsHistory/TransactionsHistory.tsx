@@ -7,6 +7,7 @@ import useFormattedAddress from "@/src/hooks/useFormattedAddress/useFormattedAdd
 import useWalletTransactions, {TransactionsData} from "@/src/hooks/useWalletTransactions";
 import {getAssetNameByAssetId} from "@/src/utils/common";
 import {coinsConfig} from "@/src/utils/coinsConfig";
+import {DefaultLocale} from "@/src/utils/constants";
 
 interface TransactionProps {
   date: string;
@@ -26,19 +27,6 @@ interface TransactionsHistoryProps {
   isOpened: boolean;
 }
 
-const groupTransactionsByDate = (transactions: TransactionProps[]) => {
-  const grouped: { [key: string]: TransactionProps[] } = {};
-
-  transactions.forEach((transaction) => {
-    if (!grouped[transaction.date]) {
-      grouped[transaction.date] = [];
-    }
-    grouped[transaction.date].push(transaction);
-  });
-
-  return grouped;
-};
-
 const transformTransactionsDataAndGroupByDate = (transactionsData: TransactionsData | undefined) => {
   const grouped: Record<string, TransactionProps[]> = {};
   if (!transactionsData) {
@@ -48,11 +36,14 @@ const transformTransactionsDataAndGroupByDate = (transactionsData: TransactionsD
   const transactions = transactionsData.Transaction.toSorted((txA, txB) => txB.block_time - txA.block_time);
 
   transactions.forEach((transaction) => {
-    const date = new Date(transaction.block_time * 1000).toLocaleDateString("en-US", {
-      month: "short",
-      day: "numeric",
-      year: "numeric",
-    });
+    const date = new Date(transaction.block_time * 1000).toLocaleDateString(
+      DefaultLocale,
+      {
+        month: "short",
+        day: "numeric",
+        year: "numeric",
+      },
+    );
     const [firstAssetId, secondAssetId] = transaction.pool_id.split("_");
     const firstCoin = getAssetNameByAssetId(firstAssetId);
     const secondCoin = getAssetNameByAssetId(secondAssetId);

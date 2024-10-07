@@ -5,8 +5,22 @@
   color: var(--content-primary);
 }
 
+.clickable {
+  border-radius: 4px;
+  padding: 4px 8px;
+  cursor: pointer;
+}
+
+.clickable:hover {
+  background-color: var(--background-grey-light);
+}
+
+.clickable:active {
+  background-color: var(--background-grey-dark);
+}
+
 .name {
   font-size: 18px;
   font-weight: 500;
-  line-height: 22px;
+  line-height: 19px;
 }
