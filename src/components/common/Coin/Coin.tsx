@@ -11,11 +11,11 @@ type Props = {
 };
 
 const Coin = ({ name, className }: Props) => {
-  const Icon = coinsConfig.get(name)?.icon;
+  const icon = coinsConfig.get(name)?.icon;
 
   return (
     <div className={styles.coin}>
-      {Icon && <Icon />}
+      {icon && <img src={icon} alt={`${name} icon`}/>}
       <p className={clsx(styles.name, className)}>{name}</p>
     </div>
   )

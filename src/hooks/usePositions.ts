@@ -19,7 +19,9 @@ const usePositions = () => {
 
   const miraExists = Boolean(mira);
 
-  const { data, isPending } = useQuery({
+  const shouldFetch = miraExists && poolsWithLp.length > 0;
+
+  const { data, isLoading } = useQuery({
     queryKey: ['positions', poolsWithLp, balances],
     queryFn: async () => {
       const positionInfoPromises = poolsWithLp.map(async (pool) => {
@@ -31,10 +33,10 @@ const usePositions = () => {
 
       return Promise.all(positionInfoPromises);
     },
-    enabled: miraExists,
+    enabled: shouldFetch,
   });
 
-  return { data, isPending };
+  return { data, isLoading };
 };
 
 export default usePositions;

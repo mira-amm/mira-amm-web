@@ -17,9 +17,9 @@ import { ArrowDownIcon } from "../../icons/ArrowDown/ArrowDownIcon";
 import { DropDownMenu } from "../DropDownMenu/DropDownMenu";
 import { ArrowUpIcon } from "../../icons/ArrowUp/ArrowUpIcon";
 import { DropDownButtons } from "@/src/utils/DropDownButtons";
-import { TransactionsHistory } from "../TransactionsHistory/TransactionsHistory";
 import { CopyNotification } from "../../common/CopyNotification/CopyNotification";
 import {openNewTab} from "@/src/utils/common";
+import TransactionsHistory from "@/src/components/common/TransactionsHistory/TransactionsHistory";
 
 type Props = {
   className?: string;

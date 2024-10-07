@@ -9,7 +9,7 @@ import ActionButton from "@/src/components/common/ActionButton/ActionButton";
 import clsx from "clsx";
 
 const Pools = () => {
-  const { data, isPending } = usePoolsData();
+  const { data, isLoading } = usePoolsData();
 
   return (
     <section className={styles.pools}>
@@ -21,7 +21,7 @@ const Pools = () => {
       </div>
       <MobilePools poolsData={data} />
       <DesktopPools poolsData={data} />
-      {isPending && (
+      {isLoading && (
         <div className={styles.loadingFallback}>
           <LoaderV2 />
           <p>Loading pools...</p>

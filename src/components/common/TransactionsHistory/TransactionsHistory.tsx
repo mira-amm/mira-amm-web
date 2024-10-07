@@ -10,8 +10,8 @@ import {coinsConfig} from "@/src/utils/coinsConfig";
 
 interface TransactionProps {
   date: string;
-  givenIcon: React.FC;
-  takenIcon: React.FC;
+  givenIcon: string;
+  takenIcon: string;
   name: string;
   givenSum: string;
   takenSum: string;
@@ -25,19 +25,6 @@ interface TransactionsHistoryProps {
   onClose: () => void;
   isOpened: boolean;
 }
-
-const groupTransactionsByDate = (transactions: TransactionProps[]) => {
-  const grouped: { [key: string]: TransactionProps[] } = {};
-
-  transactions.forEach((transaction) => {
-    if (!grouped[transaction.date]) {
-      grouped[transaction.date] = [];
-    }
-    grouped[transaction.date].push(transaction);
-  });
-
-  return grouped;
-};
 
 const transformTransactionsDataAndGroupByDate = (transactionsData: TransactionsData | undefined) => {
   const grouped: Record<string, TransactionProps[]> = {};
@@ -56,6 +43,12 @@ const transformTransactionsDataAndGroupByDate = (transactionsData: TransactionsD
     const [firstAssetId, secondAssetId] = transaction.pool_id.split("_");
     const firstCoin = getAssetNameByAssetId(firstAssetId);
     const secondCoin = getAssetNameByAssetId(secondAssetId);
+    const firstCoinExists = coinsConfig.has(firstCoin);
+    const secondCoinExists = coinsConfig.has(secondCoin);
+    if (!firstCoinExists || !secondCoinExists) {
+      return;
+    }
+
     const firstCoinIcon = coinsConfig.get(firstCoin)?.icon!;
     const secondCoinIcon = coinsConfig.get(secondCoin)?.icon!;
     const firstCoinDecimals = coinsConfig.get(firstCoin)?.decimals!;
@@ -115,7 +108,7 @@ const transformTransactionsDataAndGroupByDate = (transactionsData: TransactionsD
   return grouped;
 };
 
-export const TransactionsHistory: React.FC<TransactionsHistoryProps> = ({ onClose, isOpened }) => {
+const TransactionsHistory: React.FC<TransactionsHistoryProps> = ({ onClose, isOpened }) => {
   const { account } = useAccount();
   const { isConnected } = useIsConnected();
   const formattedAddress = useFormattedAddress(account);
@@ -172,14 +165,14 @@ export const TransactionsHistory: React.FC<TransactionsHistoryProps> = ({ onClos
                   <div className={styles.transactionInfo}>
                     <div className={styles.transactionCoins}>
                       <div className={styles.firstCoin}>
-                        <transaction.givenIcon />
+                        <img src={transaction.givenIcon} alt={`${transaction.givenCurrency} icon`} />
                       </div>
                       <div className={styles.secondCoin}>
-                        <transaction.takenIcon />
+                        <img src={transaction.takenIcon} alt={`${transaction.takenCurrency} icon`}/>
                       </div>
                     </div>
                     <div className={styles.transactionText}>
-                      <div className={styles.transactionType}>
+                    <div className={styles.transactionType}>
                         <span className={styles.transactionName}>
                           {transaction.name}
                         </span>
@@ -211,3 +204,5 @@ export const TransactionsHistory: React.FC<TransactionsHistoryProps> = ({ onClos
     </div>
   );
 };
+
+export default TransactionsHistory;
