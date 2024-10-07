@@ -2,8 +2,6 @@ import { clsx } from "clsx";
 import { memo, useState } from "react";
 import { DropDownMenu } from "../DropDownMenu/DropDownMenu";
 
-import { FuelIcon } from "@/src/components/icons";
-
 import styles from "./MainnetLabel.module.css";
 import { ArrowDownIcon } from "../../icons/ArrowDown/ArrowDownIcon";
 import { ArrowUpIcon } from "../../icons/ArrowUp/ArrowUpIcon";
@@ -26,6 +24,7 @@ const MainnetLabel = ({ className }: Props) => {
       onClick: () => {
         window.open(testnetLink, "_blank");
       },
+      className: styles.selectButton
     },
   ];
   return (
