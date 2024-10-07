@@ -7,10 +7,12 @@ button.connected {
   background-color: transparent;
   border: 1px solid var(--accent-primary);
   box-shadow: none;
+  transition: .3s ease all;
 }
 
 button.connected:hover {
   box-shadow: none;
+  color: var(--content-dimmed-light);
 }
 
 button.connected:active {

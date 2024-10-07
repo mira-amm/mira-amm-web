@@ -22,7 +22,6 @@ const MainnetLabel = ({ className }: Props) => {
 
   const menuButtons = [
     {
-      icon: FuelIcon,
       text: "Testnet",
       onClick: () => {
         window.open(testnetLink, "_blank");
@@ -32,7 +31,6 @@ const MainnetLabel = ({ className }: Props) => {
   return (
     <button className={styles.labelButton} onClick={handleClick}>
       <div className={clsx(styles.mainnetLabel, className)}>
-        <FuelIcon />
         Mainnet {!isMenuOpened ? <ArrowDownIcon /> : <ArrowUpIcon />}
       </div>
       {isMenuOpened && (
