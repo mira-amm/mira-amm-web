@@ -9,9 +9,10 @@ type Props = {
   amountString: string;
   isFirstToken: boolean;
   isStablePool: boolean;
+  fetchCondition?: boolean;
 };
 
-const usePreviewAddLiquidity = ({ firstCoin, secondCoin, amountString, isFirstToken, isStablePool }: Props) => {
+const usePreviewAddLiquidity = ({ firstCoin, secondCoin, amountString, isFirstToken, isStablePool, fetchCondition = true }: Props) => {
   const mira = useReadonlyMira();
   const miraExists = Boolean(mira);
 
@@ -26,7 +27,7 @@ const usePreviewAddLiquidity = ({ firstCoin, secondCoin, amountString, isFirstTo
   const amount = parseFloat(amountString);
   const amountToUse = !isNaN(amount) ? amount * 10 ** decimals : 0;
 
-  const shouldFetch = miraExists && amountToUse !== 0;
+  const shouldFetch = fetchCondition && miraExists && amountToUse !== 0;
 
   const { data, isFetching } = useQuery({
     queryKey: ['preview-add-liquidity', firstCoinAssetId, secondCoinAssetId, isStablePool, amountToUse, isFirstToken],

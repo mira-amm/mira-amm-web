@@ -14,9 +14,11 @@ type Props = {
   setAmount: (amount: string) => void;
   balance: number;
   usdRate: string | undefined;
+  newPool?: boolean;
+  onAssetClick?: VoidFunction;
 }
 
-const CoinInput = ({ coin, value, loading, setAmount, balance, usdRate }: Props) => {
+const CoinInput = ({ coin, value, loading, setAmount, balance, usdRate, newPool, onAssetClick }: Props) => {
   const decimals = coinsConfig.get(coin)?.decimals!;
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -61,7 +63,7 @@ const CoinInput = ({ coin, value, loading, setAmount, balance, usdRate }: Props)
         )}
       </div>
       <div className={clsx(styles.coinInputLine, styles.rightColumn)}>
-        <Coin name={coin} className={styles.coinName} />
+        <Coin name={coin} className={styles.coinName} newPool={newPool} onClick={onAssetClick} />
         {balance > 0 && (
           <span className={styles.balance}>
             Balance: {balanceValue}

@@ -11,10 +11,6 @@ import {useEffect, useRef} from "react";
 import {isPoolKeyValid} from "@/src/utils/common";
 
 const CreatePoolPageLayout = () => {
-  const router = useRouter();
-  const query = useSearchParams();
-  const poolKey = query.get('pool');
-
   const mainRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
@@ -23,16 +19,11 @@ const CreatePoolPageLayout = () => {
     }
   }, []);
 
-  if (!poolKey || !isPoolKeyValid(poolKey)) {
-    router.push('/liquidity');
-    return null;
-  }
-
   return (
     <>
       <Header/>
       <main className={styles.addLiquidityLayout} ref={mainRef}>
-        <CreatePool poolKey={poolKey} />
+        <CreatePool />
       </main>
       <Footer/>
     </>

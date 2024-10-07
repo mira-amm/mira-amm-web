@@ -4,19 +4,29 @@ import {CoinName, coinsConfig} from "@/src/utils/coinsConfig";
 
 import styles from './Coin.module.css';
 import {clsx} from "clsx";
+import ChevronDownIcon from "@/src/components/icons/ChevronDown/ChevronDownIcon";
 
 type Props = {
   name: CoinName;
   className?: string;
+  newPool?: boolean;
+  onClick?: VoidFunction;
 };
 
-const Coin = ({ name, className }: Props) => {
+const Coin = ({ name, className, newPool, onClick }: Props) => {
   const Icon = coinsConfig.get(name)?.icon;
 
+  const handleClick = () => {
+    if (onClick) {
+      onClick();
+    }
+  };
+
   return (
-    <div className={styles.coin}>
+    <div className={clsx(styles.coin, newPool && styles.clickable)} onClick={handleClick}>
       {Icon && <Icon />}
       <p className={clsx(styles.name, className)}>{name}</p>
+      {newPool && <ChevronDownIcon />}
     </div>
   )
 };

@@ -7,10 +7,11 @@ import useAddLiquidity from "@/src/hooks/useAddLiquidity";
 import useModal from "@/src/hooks/useModal/useModal";
 import CreatePoolSuccessModal
   from "../CreatePoolSuccessModal/CreatePoolSuccessModal";
-import TestnetLabel from "@/src/components/common/TestnetLabel/TestnetLabel";
 import {useRouter} from "next/navigation";
 import {useCallback} from "react";
 import {DefaultLocale} from "@/src/utils/constants";
+import useCreatePool from "@/src/hooks/useCreatePool";
+import {TransactionResult} from "fuels";
 
 type AssetsData = {
   coin: CoinName;
@@ -20,6 +21,7 @@ type AssetsData = {
 export type CreatePoolPreviewData = {
   assets: AssetsData[];
   isStablePool: boolean;
+  isNewPool: boolean;
 };
 
 type Props = {
@@ -31,12 +33,22 @@ const PreviewAddLiquidityDialog = ({ previewData }: Props) => {
 
   const router = useRouter();
 
+  const { assets, isStablePool, isNewPool } = previewData;
+
   const { data, mutateAsync, isPending } = useAddLiquidity({
-    firstAssetName: previewData.assets[0].coin,
-    firstAssetAmount: previewData.assets[0].amount,
-    secondAssetName: previewData.assets[1].coin,
-    secondAssetAmount: previewData.assets[1].amount,
-    isPoolStable: previewData.isStablePool,
+    firstAssetName: assets[0].coin,
+    firstAssetAmount: assets[0].amount,
+    secondAssetName: assets[1].coin,
+    secondAssetAmount: assets[1].amount,
+    isPoolStable: isStablePool,
+  });
+
+  const { createPoolData, createPool, isPoolCreationPending } = useCreatePool({
+    firstAssetName: assets[0].coin,
+    firstAssetAmount: assets[0].amount,
+    secondAssetName: assets[1].coin,
+    secondAssetAmount: assets[1].amount,
+    isPoolStable: isStablePool,
   });
 
   const coinA = previewData.assets[0].coin;
@@ -48,16 +60,24 @@ const PreviewAddLiquidityDialog = ({ previewData }: Props) => {
     parseFloat(firstCoinAmount) / parseFloat(secondCoinAmount)
   ).toLocaleString(DefaultLocale, { minimumFractionDigits: 2 });
 
-  const handleCreateLiquidity = async () => {
-    const data = await mutateAsync();
+  const handleCreateLiquidity = useCallback(async () => {
+    let data: TransactionResult<void> | undefined;
+    if (isNewPool) {
+      data = await createPool();
+    } else {
+      data = await mutateAsync();
+    }
+
     if (data?.id) {
       openSuccessModal();
     }
-  };
+  }, [isNewPool, createPool, mutateAsync, openSuccessModal]);
 
   const redirectToLiquidity = useCallback(() => {
     router.push('/liquidity');
   }, [router]);
+
+  const feeText = isStablePool ? '0.05%' : '0.3%';
 
   return (
     <>
@@ -76,7 +96,7 @@ const PreviewAddLiquidityDialog = ({ previewData }: Props) => {
           </div>
           <div className={styles.inputPreviewRow}>
             <p>Fee tier</p>
-            <p>0.3%</p>
+            <p>{feeText}</p>
           </div>
         </div>
       </div>
@@ -129,10 +149,10 @@ const PreviewAddLiquidityDialog = ({ previewData }: Props) => {
         </div>
       </div> */}
       <ActionButton loading={isPending} onClick={handleCreateLiquidity}>
-        Create Pool
+        {isNewPool ? 'Create Pool' : 'This pool already exists. Add Liquidity'}
       </ActionButton>
-      <SuccessModal title={<TestnetLabel />} onClose={redirectToLiquidity}>
-        <CreatePoolSuccessModal coinA={coinA} coinB={coinB} firstCoinAmount={firstCoinAmount} secondCoinAmount={secondCoinAmount} transactionHash={data?.id} />
+      <SuccessModal title={<></>} onClose={redirectToLiquidity}>
+        <CreatePoolSuccessModal coinA={coinA} coinB={coinB} firstCoinAmount={firstCoinAmount} secondCoinAmount={secondCoinAmount} transactionHash={createPoolData?.id ?? data?.id} />
       </SuccessModal>
     </>
   );

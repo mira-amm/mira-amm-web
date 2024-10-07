@@ -1,26 +1,16 @@
 import styles from '../../../add-liquidity-page/components/AddLiquidity/AddLiquidity.module.css';
-import {createPoolIdFromAssetNames, createPoolIdFromPoolKey, getCoinsFromKey} from "@/src/utils/common";
 import {useCallback, useState} from "react";
-import PreviewCreatePoolDialog
-  , {
-    CreatePoolPreviewData
-} from "@/src/components/pages/create-pool-page/components/CreatePool/PreviewCreatePoolDialog";
+import PreviewCreatePoolDialog, {CreatePoolPreviewData} from "@/src/components/pages/create-pool-page/components/CreatePool/PreviewCreatePoolDialog";
 import CreatePoolDialog from './CreatePoolDialog';
 import BackLink from "@/src/components/common/BackLink/BackLink";
 import {useRouter} from "next/navigation";
 import IconButton from "@/src/components/common/IconButton/IconButton";
 import CloseIcon from "@/src/components/icons/Close/CloseIcon";
 
-type Props = {
-  poolKey: string;
-}
-
-const CreatePool = ({ poolKey }: Props) => {
+const CreatePool = () => {
   const router = useRouter();
 
   const [previewData, setPreviewData] = useState<CreatePoolPreviewData | null>(null);
-
-  const poolId = createPoolIdFromPoolKey(poolKey);
 
   const handleBackClick = useCallback(() => {
     if (previewData) {
@@ -53,7 +43,7 @@ const CreatePool = ({ poolKey }: Props) => {
         {showPreview ? (
           <PreviewCreatePoolDialog previewData={previewData!} />
         ) : (
-          <CreatePoolDialog poolId={poolId} setPreviewData={setPreviewData} />
+          <CreatePoolDialog setPreviewData={setPreviewData} newPool />
         )}
       </section>
       {showPreview && (
