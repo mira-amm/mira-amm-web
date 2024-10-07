@@ -8,11 +8,11 @@ type Props = {
 }
 
 const CoinWithAmount = ({amount, coin}: Props) => {
-  const Icon = coinsConfig.get(coin)?.icon;
+  const icon = coinsConfig.get(coin)?.icon;
 
   return (
     <div className={styles.coinWithAmount}>
-      {Icon && <Icon />}
+      {icon && <img src={icon} alt={`${coin} icon`} />}
       <div className={styles.info}>
         <p className={styles.amount}>{amount}</p>
         <p className={styles.name}>{coin}</p>

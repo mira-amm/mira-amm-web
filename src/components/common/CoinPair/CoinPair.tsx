@@ -11,14 +11,14 @@ type Props = {
 }
 
 const CoinPair = ({ firstCoin, secondCoin, withFee, withFeeBelow }: Props) => {
-  const FirstCoinIcon = coinsConfig.get(firstCoin)?.icon;
-  const SecondCoinIcon = coinsConfig.get(secondCoin)?.icon;
+  const firstCoinIcon = coinsConfig.get(firstCoin)?.icon;
+  const secondCoinIcon = coinsConfig.get(secondCoin)?.icon;
 
   return (
     <div className={clsx(styles.coinPair, withFeeBelow && styles.coinPairAlignStart)}>
       <div className={styles.coinPairIcons}>
-        {FirstCoinIcon && <FirstCoinIcon />}
-        {SecondCoinIcon && <SecondCoinIcon />}
+        {firstCoinIcon && <img src={firstCoinIcon} alt={`${firstCoin} icon`} />}
+        {secondCoinIcon && <img src={secondCoinIcon} alt={`${secondCoin} icon`} />}
       </div>
       <div className={styles.namesAndFee}>
         <p className={styles.coinNames} data-identifier="coin-pair">

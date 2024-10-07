@@ -16,13 +16,11 @@ export const XLink = 'https://x.com/MiraProtocol' as const;
 
 export const BlogLink = "https://mirror.xyz/miraly.eth" as const;
 
+// TODO: Use env variables for values below to separate dev/prod | testnet/mainnet
 export const ValidNetworkChainId = 9889 as const;
-export const TestnetUrl: string = process.env.PRIVATE_MAINNET_URL!;
-
+export const NetworkUrl: string = process.env.PRIVATE_MAINNET_URL!;
 export const IndexerUrl = 'https://indexer.bigdevenergy.link/99318f9/v1/graphql' as const;
-
-// TODO: Use env variables for dev/prod
-export const ApiBaseUrl = 'https://dev.api.mira.ly' as const;
+export const ApiBaseUrl = 'https://prod.api.mira.ly' as const;
 
 export const MinEthValue = 0.001 as const;
 export const MinEthValueBN = MinEthValue * 10 ** 9;

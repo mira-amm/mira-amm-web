@@ -14,7 +14,7 @@ type Props = {
 };
 
 const Coin = ({ name, className, newPool, onClick }: Props) => {
-  const Icon = coinsConfig.get(name)?.icon;
+  const icon = coinsConfig.get(name)?.icon;
 
   const handleClick = () => {
     if (onClick) {
@@ -24,7 +24,7 @@ const Coin = ({ name, className, newPool, onClick }: Props) => {
 
   return (
     <div className={clsx(styles.coin, newPool && styles.clickable)} onClick={handleClick}>
-      {Icon && <Icon />}
+      {icon && <img src={icon} alt={`${name} icon`}/>}
       <p className={clsx(styles.name, className)}>{name}</p>
       {newPool && <ChevronDownIcon />}
     </div>

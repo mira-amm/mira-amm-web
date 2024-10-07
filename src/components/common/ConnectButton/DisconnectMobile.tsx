@@ -8,9 +8,9 @@ import { DropDownMenu } from "../DropDownMenu/DropDownMenu";
 import { DropDownButtons } from "@/src/utils/DropDownButtons";
 import { TouchCloseIcon } from "../../icons/DropDownClose/TouchCloseIcon";
 import { CloseIcon } from "../../icons/DropDownClose/CloseIcon";
-import { TransactionsHistory } from "../TransactionsHistory/TransactionsHistory";
 import { CopyNotification } from "../../common/CopyNotification/CopyNotification";
 import {openNewTab} from "@/src/utils/common";
+import TransactionsHistory from "@/src/components/common/TransactionsHistory/TransactionsHistory";
 
 type Props = {
   className?: string;

@@ -10,12 +10,13 @@ import { useRouter } from "next/navigation";
 import {useCallback} from "react";
 
 const Pools = () => {
-  const { data, isPending } = usePoolsData();
   const router = useRouter();
 
   const handleCreatePoolClick = useCallback(() => {
     router.push('/liquidity/create-pool')
   }, [router]);
+
+  const { data, isLoading } = usePoolsData();
 
   return (
     <section className={styles.pools}>
@@ -27,7 +28,7 @@ const Pools = () => {
       </div>
       <MobilePools poolsData={data} />
       <DesktopPools poolsData={data} />
-      {isPending && (
+      {isLoading && (
         <div className={styles.loadingFallback}>
           <LoaderV2 />
           <p>Loading pools...</p>

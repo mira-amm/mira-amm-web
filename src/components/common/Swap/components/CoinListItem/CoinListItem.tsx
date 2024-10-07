@@ -14,13 +14,13 @@ type Props = {
 const CoinListItem = ({ name, balance }: Props) => {
   const coinData = coinsConfig.get(name);
   const fullName = coinData?.fullName;
-  const Icon = coinData?.icon;
+  const icon = coinData?.icon;
   const decimals = coinData?.decimals ?? 0;
   const balanceValue = balance ? balance.amount.toNumber() / 10 ** decimals : 0;
 
   return (
     <span className={clsx(styles.coin, !fullName && styles.centered)}>
-      {Icon && <Icon />}
+      {icon && <img src={icon} alt={`${name} icon`} />}
       <div className={styles.names}>
         <p className={styles.name}>{name}</p>
         {fullName && (
