@@ -1,19 +1,11 @@
 import {useQuery} from "@tanstack/react-query";
-import {CryptoApisKey} from "@/src/utils/constants";
 
 const useUSDRate = (assetName: string | null) => {
   const { data } = useQuery({
     queryKey: ['usdRate', assetName],
     queryFn: async () => {
       const response = await fetch(
-        `https://rest.cryptoapis.io/market-data/exchange-rates/by-symbols/${assetName}/usd`,
-        {
-          method: 'GET',
-          headers: {
-            'Content-Type': 'application/json',
-            'x-api-key': CryptoApisKey,
-          },
-        },
+        `https://nhnv2j1cac.execute-api.us-east-1.amazonaws.com/crypto-api/market-data/exchange-rates/by-symbols/eth/usd`,
       );
       return await response.json();
     },
