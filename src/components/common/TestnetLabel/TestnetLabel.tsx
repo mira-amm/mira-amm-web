@@ -24,6 +24,7 @@ const TestnetLabel = ({ className }: Props) => {
       onClick: () => {
         window.open(mainnetLink, "_blank");
       },
+      className: styles.selectButton
     },
   ];
   return (

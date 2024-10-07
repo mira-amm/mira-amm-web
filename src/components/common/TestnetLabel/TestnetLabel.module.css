@@ -9,11 +9,12 @@
 
 .labelButton {
   all: unset;
+  cursor: pointer;
   position: relative;
   padding: 6px 12px;
-  background: transparent;
   border-radius: 20px;
-  transition: .5s all ease;
+  background: transparent;
+  transition: .3s all ease;
 }
 
 .labelButton:hover {
@@ -24,4 +25,22 @@
   top: 125%;
   left: 0;
   width: 100%;
+  padding: 0 10px;
 }
+
+.selectButton {
+  padding-left: 0;
+  transition: .3s ease all;
+}
+
+.selectButton > * {
+  padding: 0;
+  font-size: 18px !important;
+}
+
+.selectButton:hover {
+  background: none;
+  color: var(--content-dimmed-light);
+}
+
+
