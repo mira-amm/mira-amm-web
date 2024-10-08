@@ -10,13 +10,15 @@ type Props = {
   isStablePool: boolean;
   withFee?: boolean;
   withFeeBelow?: boolean;
+  withPoolDescription?: boolean;
 }
 
-const CoinPair = ({ firstCoin, secondCoin, isStablePool, withFee, withFeeBelow }: Props) => {
+const CoinPair = ({ firstCoin, secondCoin, isStablePool, withFee, withFeeBelow, withPoolDescription }: Props) => {
   const firstCoinIcon = coinsConfig.get(firstCoin)?.icon;
   const secondCoinIcon = coinsConfig.get(secondCoin)?.icon;
 
   const feeText = isStablePool ? '0.05%' : '0.3%';
+  const poolDescription = `${isStablePool ? 'Stable' : 'Volatile'}: ${feeText} fee`;
 
   return (
     <div className={clsx(styles.coinPair, withFeeBelow && styles.coinPairAlignStart)}>
@@ -31,6 +33,11 @@ const CoinPair = ({ firstCoin, secondCoin, isStablePool, withFee, withFeeBelow }
         {withFeeBelow && (
           <p className={styles.coinPairFee}>
             {feeText}
+          </p>
+        )}
+        {withPoolDescription && (
+          <p className={styles.poolDescription}>
+            {poolDescription}
           </p>
         )}
       </div>

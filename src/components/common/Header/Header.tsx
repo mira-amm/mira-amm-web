@@ -11,7 +11,7 @@ import LaunchAppButton from "@/src/components/common/LaunchAppButton/LaunchAppBu
 import DisconnectMobile from "@/src/components/common/ConnectButton/DisconnectMobile";
 import { useIsConnected } from "@fuels/react";
 import useFaucetLink from "@/src/hooks/useFaucetLink";
-import { BlogLink } from "@/src/utils/constants";
+import {BlogLink, FuelAppUrl} from "@/src/utils/constants";
 import { RewardsIcon } from "../../icons/Rewards/RewardsIcon";
 import TestnetLabel from "@/src/components/common/TestnetLabel/TestnetLabel";
 
@@ -60,7 +60,7 @@ const Header = ({ isHomePage }: Props) => {
               Faucet
             </a>
             <a
-              href="https://app.fuel.network/earn-points"
+              href={`${FuelAppUrl}/earn-points`}
               className={styles.link}
               target="_blank"
             >
@@ -73,7 +73,7 @@ const Header = ({ isHomePage }: Props) => {
         </div>
         <div className={clsx("mobileOnly", styles.links)}>
           <a
-            href="https://app.fuel.network/earn-points"
+            href={`${FuelAppUrl}/earn-points`}
             className={styles.link}
             target="_blank"
           >

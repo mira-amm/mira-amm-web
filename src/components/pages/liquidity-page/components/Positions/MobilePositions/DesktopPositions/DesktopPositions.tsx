@@ -55,7 +55,7 @@ const DesktopPositions = ({ positions }: Props) => {
         return (
           <tr className={styles.positionRow} key={key} onClick={() => openPosition(poolId)}>
             <td>
-              <CoinPair firstCoin={coinA} secondCoin={coinB} withFee isStablePool={poolId[2]}/>
+              <CoinPair firstCoin={coinA} secondCoin={coinB} isStablePool={poolId[2]} withPoolDescription/>
             </td>
             <td>
               {`${coinAAmount} ${coinA} <> ${coinBAmount} ${coinB}`}

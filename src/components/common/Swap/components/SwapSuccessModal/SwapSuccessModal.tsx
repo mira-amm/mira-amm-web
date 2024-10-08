@@ -4,6 +4,7 @@ import {SwapState} from "@/src/components/common/Swap/Swap";
 import ActionButton from "@/src/components/common/ActionButton/ActionButton";
 import {useCallback} from "react";
 import {openNewTab} from "@/src/utils/common";
+import {FuelAppUrl} from "@/src/utils/constants";
 
 type Props = {
   swapState: SwapState;
@@ -16,7 +17,7 @@ const SwapSuccessModal = ({ swapState, transactionHash }: Props) => {
       return;
     }
 
-    openNewTab(`https://app.fuel.network/tx/${transactionHash}/simple`);
+    openNewTab(`${FuelAppUrl}/tx/${transactionHash}/simple`);
   }, [transactionHash]);
 
   const subText = `${swapState.sell.amount} ${swapState.sell.coin} for ${swapState.buy.amount} ${swapState.buy.coin}`;

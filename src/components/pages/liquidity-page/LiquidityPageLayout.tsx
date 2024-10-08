@@ -10,6 +10,7 @@ import StarsIcon from "@/src/components/icons/Stars/StarsIcon";
 import CupIcon from "@/src/components/icons/Cup/CupIcon";
 
 import styles from './LiquidityPageLayout.module.css';
+import {FuelAppUrl} from "@/src/utils/constants";
 
 const LiquidityPageLayout = () => {
   return (
@@ -27,7 +28,7 @@ const LiquidityPageLayout = () => {
           />
           <PromoBlock icon={<CupIcon />}
                       title="Fuel Points Program"
-                      link="https://app.fuel.network/earn-points"
+                      link={`${FuelAppUrl}/earn-points`}
                       linkText="Join the Fuel Points program. Learn more"
           />
         </div>

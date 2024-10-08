@@ -20,6 +20,7 @@ import { DropDownButtons } from "@/src/utils/DropDownButtons";
 import { CopyNotification } from "../../common/CopyNotification/CopyNotification";
 import { openNewTab } from "@/src/utils/common";
 import TransactionsHistory from "@/src/components/common/TransactionsHistory/TransactionsHistory";
+import {FuelAppUrl} from "@/src/utils/constants";
 
 type Props = {
   className?: string;
@@ -89,7 +90,7 @@ const ConnectButton = ({ className }: Props) => {
   }, [account, isConnected]);
 
   const handleExplorerClick = () => {
-    openNewTab(`https://app.fuel.network/account/${account}/transactions`);
+    openNewTab(`${FuelAppUrl}/account/${account}/transactions`);
   };
 
   const handleHistoryOpen = () => {

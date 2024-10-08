@@ -22,9 +22,9 @@ const Pools = () => {
     <section className={styles.pools}>
       <div className={styles.poolsHeader}>
         <p className={styles.poolsTitle}>All Pools</p>
-        <ActionButton className={clsx("mobileOnly", styles.createButton)} onClick={handleCreatePoolClick}>
-         Create Pool
-        </ActionButton>
+        {/*<ActionButton className={clsx("mobileOnly", styles.createButton)} onClick={handleCreatePoolClick}>*/}
+        {/* Create Pool*/}
+        {/*</ActionButton>*/}
       </div>
       <MobilePools poolsData={data} />
       <DesktopPools poolsData={data} />

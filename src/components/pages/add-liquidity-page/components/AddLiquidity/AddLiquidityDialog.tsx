@@ -18,7 +18,7 @@ import {
 } from "@/src/utils/common";
 import useCheckActiveNetwork from "@/src/hooks/useCheckActiveNetwork";
 import usePoolAPR from "@/src/hooks/usePoolAPR";
-import {DefaultLocale} from "@/src/utils/constants";
+import {DefaultLocale, FuelAppUrl} from "@/src/utils/constants";
 import Info from "@/src/components/common/Info/Info";
 import {
   AddLiquidityPreviewData
@@ -124,7 +124,7 @@ const AddLiquidityDialog = ({ poolId, setPreviewData, newPool }: Props) => {
   const faucetLink = useFaucetLink();
   const handleButtonClick = useCallback(() => {
     if (!sufficientEthBalance) {
-      openNewTab(faucetLink);
+      openNewTab(`${FuelAppUrl}/bridge?from=eth&to=fuel&auto_close=true&=true`);
       return;
     }
 
@@ -164,7 +164,7 @@ const AddLiquidityDialog = ({ poolId, setPreviewData, newPool }: Props) => {
   } else if (insufficientBalance) {
     buttonTitle = 'Insufficient balance';
   } else if (!sufficientEthBalance) {
-    buttonTitle = 'Claim some ETH to pay for gas';
+    buttonTitle = 'Bridge more ETH to pay for gas';
   }
 
   const oneOfAmountsIsEmpty = !firstAmount || !secondAmount;

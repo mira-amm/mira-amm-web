@@ -1,9 +1,9 @@
-import {useQuery} from "@tanstack/react-query";
-import {CurrencyBoxMode, SwapState} from "@/src/components/common/Swap/Swap";
+import { useQuery } from "@tanstack/react-query";
+import { CurrencyBoxMode, SwapState } from "@/src/components/common/Swap/Swap";
 import useSwapData from "@/src/hooks/useAssetPair/useSwapData";
 import useReadonlyMira from "@/src/hooks/useReadonlyMira";
-import {buildPoolId, PoolId} from "mira-dex-ts";
-import {ApiBaseUrl} from "@/src/utils/constants";
+import { buildPoolId, PoolId } from "mira-dex-ts";
+import { ApiBaseUrl } from "@/src/utils/constants";
 
 type Props = {
   swapState: SwapState;
@@ -58,8 +58,8 @@ const useSwapPreview = ({ swapState, mode }: Props) => {
         }),
       });
 
-      if (!res.ok) {
-        throw new Error('Failed to fetch multihop preview');
+      if (res.status === 404) {
+        throw new Error('No route found');
       }
 
       return await res.json();
@@ -105,7 +105,14 @@ const useSwapPreview = ({ swapState, mode }: Props) => {
     };
   }
 
-  return { previewData, previewFetching: multihopPreviewFetching || fallbackPreviewFetching, previewError: multihopPreviewError || fallbackPreviewError };
+  const bothRequestsFailed = Boolean(multihopPreviewError && fallbackPreviewError);
+  const previewError = bothRequestsFailed ? multihopPreviewError || fallbackPreviewError : null;
+
+  return {
+    previewData,
+    previewFetching: multihopPreviewFetching || fallbackPreviewFetching,
+    previewError,
+  };
 };
 
 export default useSwapPreview;

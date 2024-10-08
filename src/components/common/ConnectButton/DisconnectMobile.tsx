@@ -11,6 +11,7 @@ import { CloseIcon } from "../../icons/DropDownClose/CloseIcon";
 import { CopyNotification } from "../../common/CopyNotification/CopyNotification";
 import {openNewTab} from "@/src/utils/common";
 import TransactionsHistory from "@/src/components/common/TransactionsHistory/TransactionsHistory";
+import {FuelAppUrl} from "@/src/utils/constants";
 
 type Props = {
   className?: string;
@@ -59,7 +60,7 @@ const DisconnectMobile = ({ className }: Props) => {
   }
 
   const handleExplorerClick = () => {
-    openNewTab(`https://app.fuel.network/account/${account}/transactions`);
+    openNewTab(`${FuelAppUrl}/account/${account}/transactions`);
   };
 
   const handleCopy = useCallback(async () => {

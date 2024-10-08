@@ -30,17 +30,22 @@ const MobilePoolItem = ({ poolData }: Props) => {
   const volumeValue = parseFloat(volume).toLocaleString(DefaultLocale, { maximumFractionDigits: 0 });
   const tvlValue = parseFloat(tvl).toLocaleString(DefaultLocale, { maximumFractionDigits: 0 });
 
+  const isStablePool = poolId[2];
+  const feeText = isStablePool ? '0.05%' : '0.3%';
+  const poolDescription = `${isStablePool ? 'Stable' : 'Volatile'}: ${feeText} fee`;
+
   return (
     <div className={styles.mobilePoolItem}>
       <div className={styles.infoSection}>
-        <CoinPair firstCoin={firstAssetName} secondCoin={secondAssetName} isStablePool={poolId[2]}/>
+        <CoinPair firstCoin={firstAssetName} secondCoin={secondAssetName} isStablePool={isStablePool} />
         <div className={styles.infoBlocks}>
-          <InfoBlock title="APR" value={`${aprValue}%`} type="positive" />
-          <InfoBlock title="24H Volume" value={`$${volumeValue}`} />
-          <InfoBlock title="TVL" value={`$${tvlValue}`} />
+          <InfoBlock title="APR" value={`${aprValue}%`} type="positive"/>
+          <InfoBlock title="24H Volume" value={`$${volumeValue}`}/>
+          <InfoBlock title="TVL" value={`$${tvlValue}`}/>
         </div>
+        <p className={styles.poolDescription}>{poolDescription}</p>
       </div>
-      <ActionButton className={styles.addButton} onClick={handleAddClick}>
+      <ActionButton className={styles.addButton} variant="secondary" onClick={handleAddClick} fullWidth>
         Add Liquidity
       </ActionButton>
     </div>
