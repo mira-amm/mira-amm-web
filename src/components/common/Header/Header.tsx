@@ -100,7 +100,7 @@ const Header = ({ isHomePage }: Props) => {
               </a>
             </>
           )}
-          {!isHomePage && <TestnetLabel />}
+          <TestnetLabel />
           {!isHomePage && <ConnectButton className={styles.launchAppButton} />}
           {isHomePage && (
             <div className={styles.launchAppArea}>
