@@ -37,12 +37,12 @@ const DesktopPools = ({ poolsData }: Props) => {
           <th>24H Volume</th>
           <th>TVL</th>
           <th>
-            <ActionButton
-            className={styles.createButton}
-            onClick={handleCreateClick}
-            >
-            Create Pool
-            </ActionButton>
+            {/*<ActionButton*/}
+            {/*className={styles.createButton}*/}
+            {/*onClick={handleCreateClick}*/}
+            {/*>*/}
+            {/*Create Pool*/}
+            {/*</ActionButton>*/}
           </th>
         </tr>
       </thead>
@@ -67,7 +67,7 @@ const DesktopPools = ({ poolsData }: Props) => {
           return (
             <tr key={key}>
               <td>
-                <CoinPair firstCoin={firstAssetName} secondCoin={secondAssetName} isStablePool={poolId[2]}/>
+                <CoinPair firstCoin={firstAssetName} secondCoin={secondAssetName} isStablePool={poolId[2]} withPoolDescription />
               </td>
               <td>{aprValue}%</td>
               <td>${volumeValue}</td>
@@ -75,7 +75,9 @@ const DesktopPools = ({ poolsData }: Props) => {
               <td>
                 <ActionButton
                   className={styles.addButton}
+                  variant="secondary"
                   onClick={() => handleAddClick(key)}
+                  fullWidth
                 >
                   Add Liquidity
                 </ActionButton>

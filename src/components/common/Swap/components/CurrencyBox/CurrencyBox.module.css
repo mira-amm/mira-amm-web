@@ -21,6 +21,7 @@
 .content {
   min-height: 44px;
   display: flex;
+  align-items: center;
   gap: 8px;
 }
 
@@ -103,7 +104,6 @@
   border: 1px solid rgba(255, 235, 59, 0.3);
   border-radius: 8px;
   padding: 12px;
-  margin-top: 12px;
 }
 
 .warningLabel {
@@ -112,17 +112,6 @@
   line-height: 1.4;
   font-weight: 500;
 }
-
-@media (min-width: 1024px) {
-  .warningBox {
-    padding: 16px;
-  }
-
-  .warningLabel {
-    font-size: 15px;
-  }
-}
-
 
 @media (min-width: 1024px) {
   .selector svg, .selector img {
@@ -141,5 +130,9 @@
 
   .estimateAndBalance {
     min-height: 18px;
+  }
+
+  .warningLabel {
+    font-size: 15px;
   }
 }

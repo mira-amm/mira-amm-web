@@ -23,13 +23,18 @@ const MobilePositionItem = ({ position, onClick }: Props) => {
   const coinBDecimals = coinsConfig.get(coinB)?.decimals!;
   const coinBAmount = (position[1][1].toNumber() / 10 ** coinBDecimals).toLocaleString(DefaultLocale, { minimumFractionDigits: coinBDecimals });
 
+  const isStablePool = position.isStablePool;
+  const feeText = isStablePool ? '0.05%' : '0.3%';
+  const poolDescription = `${isStablePool ? 'Stable' : 'Volatile'}: ${feeText} fee`;
+
   return (
     <div className={styles.mobilePositionItem} onClick={onClick}>
       <div className={styles.infoSection}>
-        <CoinPair firstCoin={coinA} secondCoin={coinB} isStablePool={position.isStablePool}/>
+        <CoinPair firstCoin={coinA} secondCoin={coinB} isStablePool={isStablePool}/>
         <PositionLabel />
       </div>
       <p className={styles.positionPrice}>{`Size: ${coinAAmount} ${coinA} <> ${coinBAmount} ${coinB}`}</p>
+      <p className={styles.poolDescription}>{poolDescription}</p>
     </div>
   );
 };

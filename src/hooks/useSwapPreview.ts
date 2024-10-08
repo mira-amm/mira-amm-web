@@ -45,26 +45,24 @@ const useSwapPreview = ({ swapState, mode }: Props) => {
   const { data: multihopPreviewData, error: multihopPreviewError, isFetching: multihopPreviewFetching } = useQuery({
     queryKey: ['multihopPreview', inputAssetId, outputAssetId, normalizedAmount, tradeType],
     queryFn: async () => {
+      const res = await fetch(`${ApiBaseUrl}/find_route`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          input: inputAssetId,
+          output: outputAssetId,
+          amount: normalizedAmount,
+          trade_type: tradeType,
+        }),
+      });
 
-      try {
-        const res = await fetch(`${ApiBaseUrl}/find_route`, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            input: inputAssetId,
-            output: outputAssetId,
-            amount: normalizedAmount,
-            trade_type: tradeType,
-          }),
-        });
-
-        return await res.json();
-      } catch (e) {
-        console.log('error is:', e);
-        throw new Error('Asset unavailable');
+      if (res.status === 404) {
+        throw new Error('No route found');
       }
+
+      return await res.json();
     },
     retry: 2,
     enabled: amountNonZero,
@@ -107,7 +105,14 @@ const useSwapPreview = ({ swapState, mode }: Props) => {
     };
   }
 
-  return { previewData, previewFetching: multihopPreviewFetching || fallbackPreviewFetching, previewError: multihopPreviewError || fallbackPreviewError };
+  const bothRequestsFailed = Boolean(multihopPreviewError && fallbackPreviewError);
+  const previewError = bothRequestsFailed ? multihopPreviewError || fallbackPreviewError : null;
+
+  return {
+    previewData,
+    previewFetching: multihopPreviewFetching || fallbackPreviewFetching,
+    previewError,
+  };
 };
 
 export default useSwapPreview;

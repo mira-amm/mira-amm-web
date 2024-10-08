@@ -29,6 +29,7 @@ import useSwapPreview from "@/src/hooks/useSwapPreview";
 import usePoolsMetadata from "@/src/hooks/usePoolsMetadata";
 import PriceImpact from "@/src/components/common/Swap/components/PriceImpact/PriceImpact";
 import useUSDRate from "@/src/hooks/useUSDRate";
+import {FuelAppUrl} from "@/src/utils/constants";
 
 export type CurrencyBoxMode = "buy" | "sell";
 export type CurrencyBoxState = {
@@ -244,7 +245,7 @@ const Swap = () => {
   const faucetLink = useFaucetLink();
   const handleSwapClick = useCallback(async () => {
     if (!sufficientEthBalance) {
-      openNewTab(faucetLink);
+      openNewTab(`${FuelAppUrl}/bridge?from=eth&to=fuel&auto_close=true&=true`);
       return;
     }
 
@@ -285,7 +286,7 @@ const Swap = () => {
   } else if (showInsufficientBalance) {
     swapButtonTitle = "Insufficient balance";
   } else if (!sufficientEthBalance) {
-    swapButtonTitle = "Claim some ETH to pay for gas";
+    swapButtonTitle = "Bridge more ETH to pay for gas";
   }
 
   const swapDisabled =
@@ -350,9 +351,7 @@ const Swap = () => {
   const { ratesData } = useUSDRate(swapState.sell.coin, swapState.buy.coin);
   const firstAssetRate = ratesData?.find((item) => item.asset === swapState.sell.coin)?.rate;
   const secondAssetRate = ratesData?.find((item) => item.asset === swapState.buy.coin)?.rate;
-  const shouldDisableBuy = previewError instanceof Error && previewError.message === "Asset unavailable";
-
-  console.log("should disable: ", shouldDisableBuy);
+  const swapUnavailable = previewError instanceof Error;
 
   return (
     <>
@@ -389,7 +388,7 @@ const Swap = () => {
             loading={outputPreviewPending || swapPending}
             onCoinSelectorClick={handleCoinSelectorClick}
             usdRate={secondAssetRate}
-            disabled={shouldDisableBuy}
+            swapUnavailable={swapUnavailable}
           />
           {swapPending && (
             <div className={styles.summary}>

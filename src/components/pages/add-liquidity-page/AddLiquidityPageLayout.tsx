@@ -9,6 +9,7 @@ import AddLiquidity from "@/src/components/pages/add-liquidity-page/components/A
 import {useRouter, useSearchParams} from "next/navigation";
 import {useEffect, useRef} from "react";
 import {isPoolKeyValid} from "@/src/utils/common";
+import {isMobile} from "react-device-detect";
 
 const AddLiquidityPageLayout = () => {
   const router = useRouter();
@@ -18,7 +19,7 @@ const AddLiquidityPageLayout = () => {
   const mainRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
-    if (mainRef.current) {
+    if (!isMobile && mainRef.current) {
       mainRef.current.scrollIntoView();
     }
   }, []);

@@ -4,6 +4,7 @@ import ActionButton from "@/src/components/common/ActionButton/ActionButton";
 import {useCallback} from "react";
 import {openNewTab} from "@/src/utils/common";
 import {CoinName} from "@/src/utils/coinsConfig";
+import {FuelAppUrl} from "@/src/utils/constants";
 
 type Props = {
   coinA: CoinName;
@@ -19,7 +20,7 @@ const CreatePoolSuccessModal = ({ coinA, coinB, firstCoinAmount, secondCoinAmoun
       return;
     }
 
-    openNewTab(`https://app.fuel.network/tx/${transactionHash}/simple`);
+    openNewTab(`${FuelAppUrl}/tx/${transactionHash}/simple`);
   }, [transactionHash]);
 
   const subText = `Added ${firstCoinAmount} ${coinA} and ${secondCoinAmount} ${coinB}`;

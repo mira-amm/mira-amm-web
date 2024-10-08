@@ -14,7 +14,6 @@ import useFormattedAddress from "@/src/hooks/useFormattedAddress/useFormattedAdd
 import useFirebase from "@/src/hooks/useFirebase/useFirebase";
 import useCheckEthBalance from "@/src/hooks/useCheckEthBalance/useCheckEthBalance";
 import useCheckIsFaucetAllowed from "@/src/hooks/useCheckIsFaucetAllowed/useCheckIsFaucetAllowed";
-import useIsMobile from "@/src/hooks/useIsMobile/useIsMobile";
 import useFaucetLink from "@/src/hooks/useFaucetLink";
 
 const FaucetClaim = () => {

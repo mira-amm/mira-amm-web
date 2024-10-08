@@ -22,6 +22,8 @@ export const NetworkUrl: string = 'https://mira:Qa6z0WpVlA_kYbGpQGIouw@mainnet.f
 export const IndexerUrl = 'https://indexer.bigdevenergy.link/99318f9/v1/graphql' as const;
 export const ApiBaseUrl = 'https://prod.api.mira.ly' as const;
 
+export const FuelAppUrl = 'https://app-mainnet.fuel.network' as const;
+
 export const MinEthValue = 0.001 as const;
 export const MinEthValueBN = MinEthValue * 10 ** 9;
 
