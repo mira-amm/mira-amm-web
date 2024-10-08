@@ -33,7 +33,7 @@ const usePositions = () => {
         const lpAssetId = getLPAssetId(DEFAULT_AMM_CONTRACT_ID, pool);
         const lpBalance = balances?.find(balance => balance.assetId === lpAssetId.bits)?.amount ?? new BN(0);
         const position = await mira?.getLiquidityPosition(pool, lpBalance);
-        return { ...position, lpBalance };
+        return { ...position, lpBalance, isStablePool: pool[2] };
       });
 
       return Promise.all(positionInfoPromises);

@@ -181,7 +181,7 @@ const AddLiquidityDialog = ({ poolId, setPreviewData, newPool }: Props) => {
         <p>Selected pair</p>
         <div className={styles.sectionContent}>
           <div className={styles.coinPair}>
-            <CoinPair firstCoin={firstCoin} secondCoin={secondCoin} />
+            <CoinPair firstCoin={firstCoin} secondCoin={secondCoin} isStablePool={isStablePool}/>
             {!newPool && (
               <div className={styles.APR}>
                 Estimated APR

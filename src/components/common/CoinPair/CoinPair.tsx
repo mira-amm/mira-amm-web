@@ -2,17 +2,21 @@ import {CoinName, coinsConfig} from "@/src/utils/coinsConfig";
 
 import styles from './CoinPair.module.css';
 import {clsx} from "clsx";
+import {memo} from "react";
 
 type Props = {
   firstCoin: CoinName;
   secondCoin: CoinName;
+  isStablePool: boolean;
   withFee?: boolean;
   withFeeBelow?: boolean;
 }
 
-const CoinPair = ({ firstCoin, secondCoin, withFee, withFeeBelow }: Props) => {
+const CoinPair = ({ firstCoin, secondCoin, isStablePool, withFee, withFeeBelow }: Props) => {
   const firstCoinIcon = coinsConfig.get(firstCoin)?.icon;
   const secondCoinIcon = coinsConfig.get(secondCoin)?.icon;
+
+  const feeText = isStablePool ? '0.05%' : '0.3%';
 
   return (
     <div className={clsx(styles.coinPair, withFeeBelow && styles.coinPairAlignStart)}>
@@ -26,17 +30,17 @@ const CoinPair = ({ firstCoin, secondCoin, withFee, withFeeBelow }: Props) => {
         </p>
         {withFeeBelow && (
           <p className={styles.coinPairFee}>
-            0.3%
+            {feeText}
           </p>
         )}
       </div>
       {withFee && (
         <p className={styles.coinPairFee}>
-          0.3%
+          {feeText}
         </p>
       )}
     </div>
   );
 };
 
-export default CoinPair;
+export default memo(CoinPair);

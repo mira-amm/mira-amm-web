@@ -33,7 +33,7 @@ const MobilePoolItem = ({ poolData }: Props) => {
   return (
     <div className={styles.mobilePoolItem}>
       <div className={styles.infoSection}>
-        <CoinPair firstCoin={firstAssetName} secondCoin={secondAssetName} />
+        <CoinPair firstCoin={firstAssetName} secondCoin={secondAssetName} isStablePool={poolId[2]}/>
         <div className={styles.infoBlocks}>
           <InfoBlock title="APR" value={`${aprValue}%`} type="positive" />
           <InfoBlock title="24H Volume" value={`$${volumeValue}`} />

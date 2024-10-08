@@ -67,7 +67,7 @@ const DesktopPools = ({ poolsData }: Props) => {
           return (
             <tr key={key}>
               <td>
-                <CoinPair firstCoin={firstAssetName} secondCoin={secondAssetName} />
+                <CoinPair firstCoin={firstAssetName} secondCoin={secondAssetName} isStablePool={poolId[2]}/>
               </td>
               <td>{aprValue}%</td>
               <td>${volumeValue}</td>

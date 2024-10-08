@@ -83,7 +83,7 @@ const PreviewAddLiquidityDialog = ({ previewData }: Props) => {
     <>
       <div className={styles.section}>
         <div className={styles.previewCoinPair}>
-          <CoinPair firstCoin={coinA} secondCoin={coinB}/>
+          <CoinPair firstCoin={coinA} secondCoin={coinB} isStablePool={isStablePool} />
         </div>
         <div className={styles.inputsPreview}>
           <div className={styles.inputPreviewRow}>

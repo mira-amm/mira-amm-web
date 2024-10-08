@@ -15,7 +15,6 @@ import RemoveLiquidityModalContent
   from "@/src/components/pages/view-position-page/components/RemoveLiquidityModalContent/RemoveLiquidityModalContent";
 import usePositionData from "@/src/hooks/usePositionData";
 import {
-  createPoolIdFromAssetNames,
   createPoolIdFromPoolKey,
   floorToTwoSignificantDigits,
   getCoinsFromKey
@@ -111,7 +110,7 @@ const ViewPositionPageLayout = () => {
         <BackLink showOnDesktop href="/liquidity" title="Back to Pool"/>
         <section className={clsx(styles.contentSection, 'mobileOnly')}>
           <div className={styles.coinPairAndLabel}>
-            <CoinPair firstCoin={coinA} secondCoin={coinB} withFeeBelow/>
+            <CoinPair firstCoin={coinA} secondCoin={coinB} withFeeBelow isStablePool={pool[2]}/>
             <PositionLabel/>
           </div>
           <div className={styles.infoBlock}>
@@ -165,7 +164,7 @@ const ViewPositionPageLayout = () => {
         <section className={clsx(styles.contentSection, 'desktopOnly')}>
           <div className={styles.positionHeading}>
             <div className={styles.coinPairAndLabel}>
-              <CoinPair firstCoin={coinA} secondCoin={coinB} withFeeBelow/>
+              <CoinPair firstCoin={coinA} secondCoin={coinB} withFeeBelow isStablePool={pool[2]}/>
               <PositionLabel className={styles.smallLabel} />
             </div>
             <ActionButton className={styles.withdrawButton} onClick={handleWithdrawLiquidity}>Withdraw Liquidity</ActionButton>
