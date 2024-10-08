@@ -31,7 +31,7 @@ const useAddLiquidity = ({ firstAssetName, firstAssetAmount, secondAssetName, se
     const txRequest = await mira.addLiquidity(poolId, firstCoinAmountToUse, secondCoinAmountToUse, 0, 0, MaxDeadline, DefaultTxParams);
     const gasCost = await wallet.getTransactionCost(txRequest);
     const fundedTx = await wallet.fund(txRequest, gasCost);
-    const tx = await wallet.sendTransaction(fundedTx);
+    const tx = await wallet.sendTransaction(fundedTx, { estimateTxDependencies: true });
     return await tx.waitForResult();
   }, [mira, wallet, firstAssetName, secondAssetName, isPoolStable, firstAssetAmount, secondAssetAmount]);
 

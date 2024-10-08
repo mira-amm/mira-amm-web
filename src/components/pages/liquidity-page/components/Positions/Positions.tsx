@@ -9,7 +9,7 @@ import DocumentIcon from "@/src/components/icons/Document/DocumentIcon";
 import LoaderV2 from "@/src/components/common/LoaderV2/LoaderV2";
 
 const Positions = () => {
-  const { data, isPending  } = usePositions();
+  const { data, isLoading  } = usePositions();
 
   const noPositions = data?.every(position => !position.lpBalance) ?? true;
   const filteredPositions = data?.filter(position => Boolean(position.lpBalance));
@@ -19,7 +19,7 @@ const Positions = () => {
       <p className={styles.positionsTitle}>
         Your Positions
       </p>
-      {isPending ? (
+      {isLoading ? (
         <div className={styles.positionsFallback}>
           <LoaderV2/>
           <p>Loading positions...</p>

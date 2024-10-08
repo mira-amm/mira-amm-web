@@ -28,6 +28,7 @@ import {
   APRTooltip, StablePoolTooltip,
   VolatilePoolTooltip
 } from "@/src/components/pages/add-liquidity-page/components/AddLiquidity/addLiquidityTooltips";
+import useUSDRate from "@/src/hooks/useUSDRate";
 
 type Props = {
   poolId: PoolId;
@@ -170,6 +171,10 @@ const AddLiquidityDialog = ({ poolId, setPreviewData, newPool }: Props) => {
 
   const buttonDisabled = !isValidNetwork || insufficientBalance || oneOfAmountsIsEmpty;
 
+  const { ratesData } = useUSDRate(firstCoin, secondCoin);
+  const firstAssetRate = ratesData?.find((item) => item.asset === firstCoin)?.rate;
+  const secondAssetRate = ratesData?.find((item) => item.asset === secondCoin)?.rate;
+
   return (
     <>
       <div className={styles.section}>
@@ -231,6 +236,7 @@ const AddLiquidityDialog = ({ poolId, setPreviewData, newPool }: Props) => {
             setAmount={setAmount(firstCoin)}
             balance={firstAssetBalanceValue}
             key={firstCoin}
+            usdRate={firstAssetRate}
           />
           <CoinInput
             coin={secondCoin}
@@ -239,6 +245,7 @@ const AddLiquidityDialog = ({ poolId, setPreviewData, newPool }: Props) => {
             setAmount={setAmount(secondCoin)}
             balance={secondAssetBalanceValue}
             key={secondCoin}
+            usdRate={secondAssetRate}
           />
         </div>
       </div>

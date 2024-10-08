@@ -6,7 +6,7 @@ jobs:
   mainnet_deploy:
     runs-on: ubuntu-latest
     # see https://docs.github.com/en/actions/learn-github-actions/expressions#example-matching-an-array-of-strings
-    if: github.ref == 'refs/heads/main' && contains(fromJSON('["mpoplavkov", "EVirnik", "Svvald"]'), github.event.sender.login)
+    if: contains(fromJSON('["mpoplavkov", "EVirnik", "Svvald"]'), github.event.sender.login)
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -15,6 +15,7 @@ jobs:
         with:
           aws_access_key: ${{ secrets.MIRA_AWS_ACCESS_KEY_ID }}
           aws_secret_access_key: ${{ secrets.MIRA_AWS_SECRET_ACCESS_KEY }}
+          rpc_url: ${{ secrets.PRIVATE_MAINNET_URL }}
 
       - name: Deploy static site to S3 bucket
         env:

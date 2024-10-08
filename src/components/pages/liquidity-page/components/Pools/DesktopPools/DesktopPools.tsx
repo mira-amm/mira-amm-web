@@ -20,6 +20,10 @@ const DesktopPools = ({ poolsData }: Props) => {
     router.push(`/liquidity/add?pool=${key}`);
   }, [router]);
 
+  const handleCreateClick = useCallback(() => {
+    router.push('/liquidity/create-pool')
+  }, [router]);
+
   if (!poolsData) {
     return null;
   }
@@ -33,12 +37,12 @@ const DesktopPools = ({ poolsData }: Props) => {
           <th>24H Volume</th>
           <th>TVL</th>
           <th>
-            {/*<ActionButton*/}
-            {/*  className={styles.addButton}*/}
-            {/*  onClick={() => {}}*/}
-            {/*>*/}
-            {/*  Create a pool*/}
-            {/*</ActionButton>*/}
+            <ActionButton
+            className={styles.createButton}
+            onClick={handleCreateClick}
+            >
+            Create Pool
+            </ActionButton>
           </th>
         </tr>
       </thead>

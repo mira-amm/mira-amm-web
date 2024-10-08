@@ -17,6 +17,8 @@ import {CHAIN_IDS, Provider} from "fuels";
 import {sepolia} from "@wagmi/core/chains";
 import {walletConnect} from "@wagmi/connectors";
 import {isMobile} from "react-device-detect";
+import DisclaimerWrapper from "@/src/core/providers/DisclaimerWrapper";
+import {NetworkUrl} from "@/src/utils/constants";
 
 type Props = {
   children: ReactNode;
@@ -44,23 +46,20 @@ const wagmiConfig = createConfig({
 });
 
 const NETWORKS = [
+  // TODO: Make testnet/mainnet dependent on env variables?
   {
-    chainId: CHAIN_IDS.fuel.testnet,
-    url: 'https://testnet.fuel.network/v1/graphql',
-  }, {
-    chainId: CHAIN_IDS.fuel.devnet,
-    url: 'https://devnet.fuel.network/v1/graphql',
-  }, {
     chainId: CHAIN_IDS.fuel.mainnet,
     // The URL provided here will be the one used by the hooks to
     // query the RPC it will not use the one from the Wallet.
-    url: 'https://mainnet.fuel.network/v1/graphql',
+    url: NetworkUrl,
   },
 ];
 
+const fuelProvider = Provider.create(NetworkUrl);
+
 const connectorConfig = {
-  chainId: CHAIN_IDS.fuel.testnet,
-  fuelProvider: Provider.create('https://testnet.fuel.network/v1/graphql'),
+  chainId: CHAIN_IDS.fuel.mainnet,
+  fuelProvider,
 }
 
 const Providers = ({children}: Props) => {
@@ -71,10 +70,13 @@ const Providers = ({children}: Props) => {
     if (typeof window !== 'undefined') {
       connectors = isMobile ? [
         new FueletWalletConnector(),
-        new BurnerWalletConnector(),
+        new BurnerWalletConnector({
+          fuelProvider,
+        }),
         new WalletConnectConnector({
           projectId: WalletConnectProjectId,
-          wagmiConfig: wagmiConfig as any
+          wagmiConfig: wagmiConfig as any,
+          fuelProvider,
         }),
         new SolanaConnector({
           projectId: WalletConnectProjectId,
@@ -82,12 +84,15 @@ const Providers = ({children}: Props) => {
         }),
       ] : [
         new FueletWalletConnector(),
-        new BurnerWalletConnector(),
+        new BurnerWalletConnector({
+          fuelProvider,
+        }),
         new FuelWalletConnector(),
         new BakoSafeConnector(),
         new WalletConnectConnector({
           projectId: WalletConnectProjectId,
-          wagmiConfig: wagmiConfig as any
+          wagmiConfig: wagmiConfig as any,
+          fuelProvider,
         }),
         new SolanaConnector({
           projectId: WalletConnectProjectId,
@@ -108,7 +113,9 @@ const Providers = ({children}: Props) => {
         fuelConfig={fuelConfig}
         theme="dark"
       >
-        {children}
+        <DisclaimerWrapper>
+          {children}
+        </DisclaimerWrapper>
       </FuelProvider>
     </QueryClientProvider>
   );

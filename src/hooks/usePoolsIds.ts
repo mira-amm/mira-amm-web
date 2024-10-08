@@ -10,8 +10,10 @@ const usePoolsIds = () => {
 
     for (let i = 0; i < assetIds.length; i++) {
       for (let j = i + 1; j < assetIds.length; j++) {
-        const poolId = buildPoolId(assetIds[i], assetIds[j], false);
-        poolsIds.push(poolId);
+        const volatilePoolId = buildPoolId(assetIds[i], assetIds[j], false);
+        poolsIds.push(volatilePoolId);
+        const stablePoolId = buildPoolId(assetIds[i], assetIds[j], true);
+        poolsIds.push(stablePoolId);
       }
     }
 

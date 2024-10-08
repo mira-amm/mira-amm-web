@@ -18,9 +18,10 @@ type Props = {
   setAmount: (amount: string) => void;
   loading: boolean;
   onCoinSelectorClick: (mode: CurrencyBoxMode) => void;
+  usdRate: string | undefined;
 };
 
-const CurrencyBox = ({ value, coin, mode, balance, setAmount, loading, onCoinSelectorClick }: Props) => {
+const CurrencyBox = ({ value, coin, mode, balance, setAmount, loading, onCoinSelectorClick, usdRate }: Props) => {
   const decimals = coinsConfig.get(coin)?.decimals!;
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -48,6 +49,10 @@ const CurrencyBox = ({ value, coin, mode, balance, setAmount, loading, onCoinSel
   const coinNotSelected = coin === null;
 
   const balanceValue = balance.toLocaleString(DefaultLocale, { minimumFractionDigits: decimals });
+
+  const usdValue = Boolean(value) && Boolean(usdRate) ?
+    (parseFloat(value) * parseFloat(usdRate!)).toLocaleString(DefaultLocale, { minimumFractionDigits: 2, maximumFractionDigits: 2 }) :
+    null;
 
   return (
     <>
@@ -80,7 +85,7 @@ const CurrencyBox = ({ value, coin, mode, balance, setAmount, loading, onCoinSel
         </div>
         <div className={styles.estimateAndBalance}>
           <p className={styles.estimate}>
-            {/*{!noValue && '$41 626.62'}*/}
+            {usdValue !== null && `$${usdValue}`}
           </p>
           {balance > 0 && (
             <span className={styles.balance}>
