@@ -4,6 +4,7 @@ import {useScrollLock} from "usehooks-ts";
 import {useDisconnect, useIsConnected} from "@fuels/react";
 import useSavedSignatures from "@/src/hooks/useSavedSignatures";
 import useSendSignature from "@/src/hooks/useSendSignature";
+import {DisclaimerMessage} from "@/src/utils/constants";
 
 type Props = {
   children: ReactNode;
@@ -16,8 +17,8 @@ const DisclaimerWrapper = ({ children }: Props) => {
   const { disconnectAsync, isPending: disconnectIsPending  } = useDisconnect();
 
   // TODO: Change message to the one accepted by API
-  const { signatureData: existingSignatureData, isSignatureLoading, refetchSignature } = useSavedSignatures('My text');
-  const { sign, signingIsPending } = useSendSignature('My text');
+  const { signatureData: existingSignatureData, isSignatureLoading, refetchSignature } = useSavedSignatures(DisclaimerMessage);
+  const { sign, signingIsPending } = useSendSignature(DisclaimerMessage);
 
   const handleConfirmClick = useCallback(async () => {
     await sign();
@@ -28,8 +29,7 @@ const DisclaimerWrapper = ({ children }: Props) => {
     await disconnectAsync();
   }, [disconnectAsync]);
 
-  // const showPopup = isConnected && !isSignatureLoading && !existingSignatureData;
-  const showPopup = false;
+  const showPopup = isConnected && !isSignatureLoading && !existingSignatureData;
 
   useEffect(() => {
     if (showPopup) {

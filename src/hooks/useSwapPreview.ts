@@ -45,7 +45,6 @@ const useSwapPreview = ({ swapState, mode }: Props) => {
   const { data: multihopPreviewData, error: multihopPreviewError, isFetching: multihopPreviewFetching } = useQuery({
     queryKey: ['multihopPreview', inputAssetId, outputAssetId, normalizedAmount, tradeType],
     queryFn: async () => {
-
       try {
         const res = await fetch(`${ApiBaseUrl}/find_route`, {
           method: 'POST',

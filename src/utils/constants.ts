@@ -28,3 +28,14 @@ export const MinEthValueBN = MinEthValue * 10 ** 9;
 export const DefaultLocale = 'en-US' as const;
 
 export const AssetRatesApiUrl = 'https://nhnv2j1cac.execute-api.us-east-1.amazonaws.com/crypto-api/market-data/exchange-rates/by-symbols' as const;
+
+export const DisclaimerMessage = `Disclaimer
+1. I am not a person or entity who resides in, is a citizen of, is incorporated in, or has a registered office in the United States of America or any other Prohibited Localities, as defined in the Terms of Use.
+
+2. I will not access this site or use the Mira Dex protocol while located within the United States or any Prohibited Localities.
+
+3. I am not using, and will not use in the future, a VPN or other tools to obscure my physical location from a restricted territory.
+
+4. I am lawfully permitted to access this site and use the Mira Dex protocol under the laws of the jurisdiction in which I reside and am located.
+
+5. I understand the risks associated with using decentralized protocols, including the Mira Dex protocol, as outlined in the Terms of Use and Privacy Policy.`;
