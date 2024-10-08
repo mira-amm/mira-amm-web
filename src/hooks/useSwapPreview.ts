@@ -3,6 +3,7 @@ import {CurrencyBoxMode, SwapState} from "@/src/components/common/Swap/Swap";
 import useSwapData from "@/src/hooks/useAssetPair/useSwapData";
 import useReadonlyMira from "@/src/hooks/useReadonlyMira";
 import {buildPoolId, PoolId} from "mira-dex-ts";
+import {ApiBaseUrl} from "@/src/utils/constants";
 
 type Props = {
   swapState: SwapState;
@@ -44,7 +45,7 @@ const useSwapPreview = ({ swapState, mode }: Props) => {
   const { data: multihopPreviewData, error: multihopPreviewError, isFetching: multihopPreviewFetching } = useQuery({
     queryKey: ['multihopPreview', inputAssetId, outputAssetId, normalizedAmount, tradeType],
     queryFn: async () => {
-      const res = await fetch('https://dev.api.mira.ly/find_route', {
+      const res = await fetch(`${ApiBaseUrl}/find_route`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
