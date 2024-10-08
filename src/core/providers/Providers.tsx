@@ -17,6 +17,7 @@ import {CHAIN_IDS, Provider} from "fuels";
 import {sepolia} from "@wagmi/core/chains";
 import {walletConnect} from "@wagmi/connectors";
 import {isMobile} from "react-device-detect";
+import { TestnetUrl } from '@/src/utils/constants'
 
 type Props = {
   children: ReactNode;
@@ -58,9 +59,11 @@ const NETWORKS = [
   },
 ];
 
+const testnetProvider = Provider.create(TestnetUrl); // Replace with mainnet URL for mainnet
+
 const connectorConfig = {
   chainId: CHAIN_IDS.fuel.testnet,
-  fuelProvider: Provider.create('https://testnet.fuel.network/v1/graphql'),
+  fuelProvider: testnetProvider,
 }
 
 const Providers = ({children}: Props) => {
@@ -71,10 +74,13 @@ const Providers = ({children}: Props) => {
     if (typeof window !== 'undefined') {
       connectors = isMobile ? [
         new FueletWalletConnector(),
-        new BurnerWalletConnector(),
+        new BurnerWalletConnector({
+          fuelProvider: testnetProvider,
+        }),
         new WalletConnectConnector({
           projectId: WalletConnectProjectId,
-          wagmiConfig: wagmiConfig as any
+          wagmiConfig: wagmiConfig as any,
+          fuelProvider: testnetProvider
         }),
         new SolanaConnector({
           projectId: WalletConnectProjectId,
@@ -82,12 +88,15 @@ const Providers = ({children}: Props) => {
         }),
       ] : [
         new FueletWalletConnector(),
-        new BurnerWalletConnector(),
+        new BurnerWalletConnector({
+          fuelProvider: testnetProvider
+        }),
         new FuelWalletConnector(),
         new BakoSafeConnector(),
         new WalletConnectConnector({
           projectId: WalletConnectProjectId,
-          wagmiConfig: wagmiConfig as any
+          wagmiConfig: wagmiConfig as any,
+          fuelProvider: testnetProvider
         }),
         new SolanaConnector({
           projectId: WalletConnectProjectId,
