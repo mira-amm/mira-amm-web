@@ -19,8 +19,6 @@ const PriceImpact: FC<PriceImpactProps> = ({
   const mediumPriceImpact = priceImpactValue > 1 && priceImpactValue <= 5;
   const priceImpactHidden = priceImpactValue === -1;
 
-  return null;
-
   return (
     <p className={clsx(
       styles.priceImpact,
