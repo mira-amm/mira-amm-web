@@ -55,8 +55,8 @@ const NETWORKS = [
 ];
 
 const connectorConfig = {
-  chainId: CHAIN_IDS.fuel.testnet,
-  fuelProvider: Provider.create('https://testnet.fuel.network/v1/graphql'),
+  chainId: CHAIN_IDS.fuel.mainnet,
+  fuelProvider: Provider.create('https://mainnet.fuel.network/v1/graphql'),
 }
 
 const Providers = ({children}: Props) => {
