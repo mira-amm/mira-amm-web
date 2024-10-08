@@ -18,6 +18,7 @@ import {sepolia} from "@wagmi/core/chains";
 import {walletConnect} from "@wagmi/connectors";
 import {isMobile} from "react-device-detect";
 import DisclaimerWrapper from "@/src/core/providers/DisclaimerWrapper";
+import { NetworkUrl } from "@/src/utils/constants";
 
 type Props = {
   children: ReactNode;
@@ -50,13 +51,13 @@ const NETWORKS = [
     chainId: CHAIN_IDS.fuel.mainnet,
     // The URL provided here will be the one used by the hooks to
     // query the RPC it will not use the one from the Wallet.
-    url: 'https://mainnet.fuel.network/v1/graphql',
+    url: NetworkUrl,
   },
 ];
 
 const connectorConfig = {
   chainId: CHAIN_IDS.fuel.mainnet,
-  fuelProvider: Provider.create('https://mainnet.fuel.network/v1/graphql'),
+  fuelProvider: Provider.create(NetworkUrl),
 }
 
 const Providers = ({children}: Props) => {
