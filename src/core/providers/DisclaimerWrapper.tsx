@@ -15,6 +15,7 @@ const DisclaimerWrapper = ({ children }: Props) => {
   const { isConnected } = useIsConnected();
   const { disconnectAsync, isPending: disconnectIsPending  } = useDisconnect();
 
+  // TODO: Change message to the one accepted by API
   const { signatureData: existingSignatureData, isSignatureLoading, refetchSignature } = useSavedSignatures('My text');
   const { sign, signingIsPending } = useSendSignature('My text');
 
@@ -27,7 +28,8 @@ const DisclaimerWrapper = ({ children }: Props) => {
     await disconnectAsync();
   }, [disconnectAsync]);
 
-  const showPopup = isConnected && !isSignatureLoading && !existingSignatureData;
+  // const showPopup = isConnected && !isSignatureLoading && !existingSignatureData;
+  const showPopup = false;
 
   useEffect(() => {
     if (showPopup) {
