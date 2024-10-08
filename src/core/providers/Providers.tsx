@@ -45,13 +45,8 @@ const wagmiConfig = createConfig({
 });
 
 const NETWORKS = [
+  // TODO: Make testnet/mainnet dependent on env variables?
   {
-    chainId: CHAIN_IDS.fuel.testnet,
-    url: 'https://testnet.fuel.network/v1/graphql',
-  }, {
-    chainId: CHAIN_IDS.fuel.devnet,
-    url: 'https://devnet.fuel.network/v1/graphql',
-  }, {
     chainId: CHAIN_IDS.fuel.mainnet,
     // The URL provided here will be the one used by the hooks to
     // query the RPC it will not use the one from the Wallet.
