@@ -44,6 +44,7 @@ const ViewPositionPageLayout = () => {
   // TODO: Validate poolkey
   const { coinA, coinB } = getCoinsFromKey(poolKey!);
   const pool = createPoolIdFromPoolKey(poolKey!);
+  const isStablePool = pool[2];
 
   const { positionData: { assets, lpTokenBalance } } = usePositionData({ pool });
 
@@ -110,7 +111,7 @@ const ViewPositionPageLayout = () => {
         <BackLink showOnDesktop href="/liquidity" title="Back to Pool"/>
         <section className={clsx(styles.contentSection, 'mobileOnly')}>
           <div className={styles.coinPairAndLabel}>
-            <CoinPair firstCoin={coinA} secondCoin={coinB} withFeeBelow isStablePool={pool[2]}/>
+            <CoinPair firstCoin={coinA} secondCoin={coinB} withFeeBelow isStablePool={isStablePool}/>
             <PositionLabel/>
           </div>
           <div className={styles.infoBlock}>
@@ -164,7 +165,7 @@ const ViewPositionPageLayout = () => {
         <section className={clsx(styles.contentSection, 'desktopOnly')}>
           <div className={styles.positionHeading}>
             <div className={styles.coinPairAndLabel}>
-              <CoinPair firstCoin={coinA} secondCoin={coinB} withFeeBelow isStablePool={pool[2]}/>
+              <CoinPair firstCoin={coinA} secondCoin={coinB} withFeeBelow isStablePool={isStablePool}/>
               <PositionLabel className={styles.smallLabel} />
             </div>
             <ActionButton className={styles.withdrawButton} onClick={handleWithdrawLiquidity}>Withdraw Liquidity</ActionButton>
@@ -224,6 +225,7 @@ const ViewPositionPageLayout = () => {
         <RemoveLiquidityModalContent
           coinA={coinA}
           coinB={coinB}
+          isStablePool={isStablePool}
           currentCoinAValue={currentCoinAAmount}
           currentCoinBValue={currentCoinBAmount}
           coinAValueToWithdraw={coinAAmountToWithdraw}
