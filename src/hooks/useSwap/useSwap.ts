@@ -61,7 +61,7 @@ const useSwap = ({ swapState, mode, slippage, pools }: Props) => {
 
     const txCost = await wallet.getTransactionCost(inputTx);
     const fundedTx = await wallet.fund(inputTx, txCost);
-    const tx = await wallet.sendTransaction(fundedTx);
+    const tx = await wallet.sendTransaction(fundedTx, { estimateTxDependencies: true });
     return await tx.waitForResult();
   }, [wallet]);
 
