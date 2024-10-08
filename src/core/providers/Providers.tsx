@@ -18,7 +18,7 @@ import {sepolia} from "@wagmi/core/chains";
 import {walletConnect} from "@wagmi/connectors";
 import {isMobile} from "react-device-detect";
 import DisclaimerWrapper from "@/src/core/providers/DisclaimerWrapper";
-import { NetworkUrl } from "@/src/utils/constants";
+import {NetworkUrl} from "@/src/utils/constants";
 
 type Props = {
   children: ReactNode;
@@ -55,9 +55,11 @@ const NETWORKS = [
   },
 ];
 
+const fuelProvider = Provider.create(NetworkUrl);
+
 const connectorConfig = {
   chainId: CHAIN_IDS.fuel.mainnet,
-  fuelProvider: Provider.create(NetworkUrl),
+  fuelProvider,
 }
 
 const Providers = ({children}: Props) => {
@@ -68,10 +70,13 @@ const Providers = ({children}: Props) => {
     if (typeof window !== 'undefined') {
       connectors = isMobile ? [
         new FueletWalletConnector(),
-        new BurnerWalletConnector(),
+        new BurnerWalletConnector({
+          fuelProvider,
+        }),
         new WalletConnectConnector({
           projectId: WalletConnectProjectId,
-          wagmiConfig: wagmiConfig as any
+          wagmiConfig: wagmiConfig as any,
+          fuelProvider,
         }),
         new SolanaConnector({
           projectId: WalletConnectProjectId,
@@ -79,12 +84,15 @@ const Providers = ({children}: Props) => {
         }),
       ] : [
         new FueletWalletConnector(),
-        new BurnerWalletConnector(),
+        new BurnerWalletConnector({
+          fuelProvider,
+        }),
         new FuelWalletConnector(),
         new BakoSafeConnector(),
         new WalletConnectConnector({
           projectId: WalletConnectProjectId,
-          wagmiConfig: wagmiConfig as any
+          wagmiConfig: wagmiConfig as any,
+          fuelProvider,
         }),
         new SolanaConnector({
           projectId: WalletConnectProjectId,
