@@ -17,6 +17,7 @@ import {CHAIN_IDS, Provider} from "fuels";
 import {sepolia} from "@wagmi/core/chains";
 import {walletConnect} from "@wagmi/connectors";
 import {isMobile} from "react-device-detect";
+import DisclaimerWrapper from "@/src/core/providers/DisclaimerWrapper";
 
 type Props = {
   children: ReactNode;
@@ -108,7 +109,9 @@ const Providers = ({children}: Props) => {
         fuelConfig={fuelConfig}
         theme="dark"
       >
-        {children}
+        <DisclaimerWrapper>
+          {children}
+        </DisclaimerWrapper>
       </FuelProvider>
     </QueryClientProvider>
   );

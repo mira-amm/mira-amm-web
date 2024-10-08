@@ -19,7 +19,7 @@ import { ArrowUpIcon } from "../../icons/ArrowUp/ArrowUpIcon";
 import { DropDownButtons } from "@/src/utils/DropDownButtons";
 import { TransactionsHistory } from "../TransactionsHistory/TransactionsHistory";
 import { CopyNotification } from "../../common/CopyNotification/CopyNotification";
-import {openNewTab} from "@/src/utils/common";
+import { openNewTab } from "@/src/utils/common";
 
 type Props = {
   className?: string;
@@ -139,15 +139,16 @@ const ConnectButton = ({ className }: Props) => {
       >
         {isConnected && <img src="/images/avatar.png" width="24" height="24" />}
         {title}
-        {isConnected &&
-          (!isMenuOpened ? <ArrowDownIcon /> : <ArrowUpIcon />)}
+        {isConnected && (!isMenuOpened ? <ArrowDownIcon /> : <ArrowUpIcon />)}
       </ActionButton>
       {isMenuOpened && <DropDownMenu buttons={menuButtons} />}
       <TransactionsHistory
         onClose={handleHistoryClose}
         isOpened={isHistoryOpened}
       />
-      {isAddressCopied && <CopyNotification onClose={() => setAddressCopied(false)} />}
+      {isAddressCopied && (
+        <CopyNotification onClose={() => setAddressCopied(false)} />
+      )}
     </>
   );
 };

@@ -31,6 +31,7 @@ import {
 import usePoolsMetadata from "@/src/hooks/usePoolsMetadata";
 import useModal from "@/src/hooks/useModal/useModal";
 import CoinsListModal from "@/src/components/common/Swap/components/CoinsListModal/CoinsListModal";
+import useUSDRate from "@/src/hooks/useUSDRate";
 
 type Props = {
   setPreviewData: Dispatch<SetStateAction<CreatePoolPreviewData | null>>;
@@ -211,6 +212,10 @@ const CreatePoolDialog = ({ setPreviewData, newPool }: Props) => {
     closeAssetsListModal();
   }, [firstAssetId, secondAssetId, closeAssetsListModal]);
 
+  const { ratesData } = useUSDRate(firstCoin, secondCoin);
+  const firstAssetRate = ratesData?.find((item) => item.asset === firstCoin)?.rate;
+  const secondAssetRate = ratesData?.find((item) => item.asset === secondCoin)?.rate;
+
   return (
     <>
       <div className={styles.section}>
@@ -272,6 +277,7 @@ const CreatePoolDialog = ({ setPreviewData, newPool }: Props) => {
             setAmount={setAmount(firstCoin)}
             balance={firstAssetBalanceValue}
             key={firstCoin}
+            usdRate={firstAssetRate}
             newPool
             onAssetClick={handleAssetClick(firstAssetId)}
           />
@@ -282,6 +288,7 @@ const CreatePoolDialog = ({ setPreviewData, newPool }: Props) => {
             setAmount={setAmount(secondCoin)}
             balance={secondAssetBalanceValue}
             key={secondCoin}
+            usdRate={secondAssetRate}
             newPool
             onAssetClick={handleAssetClick(secondAssetId)}
           />
