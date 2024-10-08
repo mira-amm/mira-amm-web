@@ -1,10 +1,9 @@
-import {useBalance, useWallet} from "@fuels/react";
+import {useAccount, useWallet} from "@fuels/react";
 import {useQuery} from "@tanstack/react-query";
-import {useEffect, useMemo} from "react";
-import useStableWallet from "@/src/hooks/useStableWallet";
 
 const useBalances = () => {
-  const { wallet } = useWallet();
+  const { account } = useAccount();
+  const { wallet } = useWallet({ account });
 
   const { data, isPending, refetch } = useQuery({
     queryKey: ['balances', wallet?.address],

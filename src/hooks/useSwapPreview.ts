@@ -58,6 +58,10 @@ const useSwapPreview = ({ swapState, mode }: Props) => {
         }),
       });
 
+      if (!res.ok) {
+        throw new Error('Failed to fetch multihop preview');
+      }
+
       return await res.json();
     },
     retry: 2,

@@ -5,17 +5,22 @@ import {useQuery} from "@tanstack/react-query";
 import useReadonlyMira from "@/src/hooks/useReadonlyMira";
 import useBalances from "@/src/hooks/useBalances/useBalances";
 import {BN} from "fuels";
+import {useMemo} from "react";
 
 const usePositions = () => {
   const mira = useReadonlyMira();
   const pools = usePoolsIds();
   const { balances } = useBalances();
 
-  const poolsWithLp = pools.filter(pool => {
+  const poolsWithLp = useMemo(() => pools.filter(pool => {
+    if (!balances) {
+      return [];
+    }
+
     const lpAssetId = getLPAssetId(DEFAULT_AMM_CONTRACT_ID, pool);
-    const lpBalance = balances?.find(balance => balance.assetId === lpAssetId.bits)?.amount;
+    const lpBalance = balances.find(balance => balance.assetId === lpAssetId.bits)?.amount;
     return lpBalance !== undefined && lpBalance.toNumber() > 0;
-  })
+  }), [pools, balances]);
 
   const miraExists = Boolean(mira);
 
