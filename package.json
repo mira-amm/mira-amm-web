@@ -17,7 +17,7 @@
     "fuels": "^0.94.9",
     "graphql": "^16.9.0",
     "graphql-request": "^7.1.0",
-    "mira-dex-ts": "^1.0.18",
+    "mira-dex-ts": "^1.0.20",
     "mira-faucet-ts": "^1.0.4",
     "next": "14.2.4",
     "react": "^18",

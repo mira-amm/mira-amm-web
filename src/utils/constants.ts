@@ -1,7 +1,7 @@
 import {CHAIN_IDS, TxParams} from "fuels";
 
 export const DEFAULT_AMM_CONTRACT_ID =
-  "0xe68f7269cc74edfafd10de380288b89e8d419f3b456f78ba727a8cb0d679b163" as const;
+  "0x2e40f2b244b98ed6b8204b3de0156c6961f98525c8162f80162fcf53eebd90e7" as const;
 export const FaucetContractAddress = '0xa1ada1dcab2524dc7f030bbff36c14ede24efd8becffac022a4c501e977e13c6' as const;
 
 export const DefaultTxParams: TxParams = {
