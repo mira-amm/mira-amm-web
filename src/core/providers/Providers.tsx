@@ -114,9 +114,9 @@ const Providers = ({children}: Props) => {
         uiConfig={{ suggestBridge: false }}
         theme="dark"
       >
-        <DisclaimerWrapper>
-          {children}
-        </DisclaimerWrapper>
+        {/*<DisclaimerWrapper>*/}
+        {children}
+        {/*</DisclaimerWrapper>*/}
       </FuelProvider>
     </QueryClientProvider>
   );

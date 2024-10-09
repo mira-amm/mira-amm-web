@@ -4,6 +4,7 @@ import useSwapData from "@/src/hooks/useAssetPair/useSwapData";
 import useReadonlyMira from "@/src/hooks/useReadonlyMira";
 import { buildPoolId, PoolId } from "mira-dex-ts";
 import { ApiBaseUrl } from "@/src/utils/constants";
+import { InsufficientReservesError } from "mira-dex-ts/dist/sdk/errors";
 
 type Props = {
   swapState: SwapState;
@@ -42,7 +43,7 @@ const useSwapPreview = ({ swapState, mode }: Props) => {
 
   const tradeType: TradeType = mode === 'sell' ? 'ExactInput' : 'ExactOutput';
 
-  const { data: multihopPreviewData, error: multihopPreviewError, isFetching: multihopPreviewFetching } = useQuery({
+  const { data: multihopPreviewData, error: multihopPreviewError, isFetching: multihopPreviewFetching, failureCount: multihopFailureCount } = useQuery({
     queryKey: ['multihopPreview', inputAssetId, outputAssetId, normalizedAmount, tradeType],
     queryFn: async () => {
       const res = await fetch(`${ApiBaseUrl}/find_route`, {
@@ -58,20 +59,32 @@ const useSwapPreview = ({ swapState, mode }: Props) => {
         }),
       });
 
-      if (res.status === 404) {
-        throw new Error('No route found');
+      if (!res.ok) {
+        if (res.status === 404) {
+          throw new Error('No route found');
+        }
+
+        throw new Error('An error occurred while retrieving the path');
       }
 
       return await res.json();
     },
-    retry: 2,
+    retry: (failureCount, error) => {
+      if (error.message === 'No route found') {
+        return false;
+      }
+
+      return failureCount < 1;
+    },
+    retryDelay: 1000,
     enabled: amountNonZero,
   });
 
   const miraAmm = useReadonlyMira();
   const miraExists = Boolean(miraAmm);
   const pool = buildPoolId(inputAssetId, outputAssetId, false);
-  const shouldFetchFallback = Boolean(multihopPreviewError) && miraExists && amountNonZero;
+  const shouldFetchFallback =
+    Boolean(multihopPreviewError) !== null && multihopFailureCount === 2 && miraExists && amountNonZero;
 
   const { data: fallbackPreviewData, error: fallbackPreviewError, isFetching: fallbackPreviewFetching } = useQuery({
     queryKey: ['fallbackPreview', inputAssetId, outputAssetId, normalizedAmount],
@@ -89,6 +102,14 @@ const useSwapPreview = ({ swapState, mode }: Props) => {
         );
     },
     enabled: shouldFetchFallback,
+    retry: (failureCount, error) => {
+      if (error instanceof InsufficientReservesError) {
+        return false;
+      }
+
+      return failureCount < 1;
+    },
+    retryDelay: 1000,
   });
 
   let previewData: SwapPreviewData | null = null;

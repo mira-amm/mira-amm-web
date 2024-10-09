@@ -10,7 +10,6 @@ import ConnectButton from "@/src/components/common/ConnectButton/ConnectButton";
 import LaunchAppButton from "@/src/components/common/LaunchAppButton/LaunchAppButton";
 import DisconnectMobile from "@/src/components/common/ConnectButton/DisconnectMobile";
 import { useIsConnected } from "@fuels/react";
-import useFaucetLink from "@/src/hooks/useFaucetLink";
 import {BlogLink, FuelAppUrl} from "@/src/utils/constants";
 import { RewardsIcon } from "../../icons/Rewards/RewardsIcon";
 import TestnetLabel from "@/src/components/common/TestnetLabel/TestnetLabel";
@@ -22,7 +21,6 @@ type Props = {
 const Header = ({ isHomePage }: Props) => {
   const pathname = usePathname();
   const { isConnected } = useIsConnected();
-  const faucetLink = useFaucetLink();
 
   return (
     <header className={styles.header}>
@@ -56,8 +54,8 @@ const Header = ({ isHomePage }: Props) => {
             >
               Liquidity
             </Link>
-            <a href={faucetLink} className={styles.link} target="_blank">
-              Faucet
+            <a href={`${FuelAppUrl}/bridge?from=eth&to=fuel&auto_close=true&=true`} className={styles.link} target="_blank">
+              Bridge
             </a>
             <a
               href={`${FuelAppUrl}/earn-points`}
