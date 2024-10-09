@@ -161,10 +161,10 @@ const AddLiquidityDialog = ({ poolId, setPreviewData, newPool }: Props) => {
   let buttonTitle = 'Preview';
   if (!isValidNetwork) {
     buttonTitle = 'Incorrect network';
-  } else if (insufficientBalance) {
-    buttonTitle = 'Insufficient balance';
   } else if (!sufficientEthBalance) {
     buttonTitle = 'Bridge more ETH to pay for gas';
+  } else if (insufficientBalance) {
+    buttonTitle = 'Insufficient balance';
   }
 
   const oneOfAmountsIsEmpty = !firstAmount || !secondAmount;
