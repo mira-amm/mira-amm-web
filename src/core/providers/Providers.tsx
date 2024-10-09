@@ -111,6 +111,7 @@ const Providers = ({children}: Props) => {
       <FuelProvider
         networks={NETWORKS}
         fuelConfig={fuelConfig}
+        uiConfig={{ suggestBridge: false }}
         theme="dark"
       >
         <DisclaimerWrapper>
