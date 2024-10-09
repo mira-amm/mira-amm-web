@@ -126,8 +126,7 @@ const useSwapPreview = ({ swapState, mode }: Props) => {
     };
   }
 
-  const bothRequestsFailed = Boolean(multihopPreviewError && fallbackPreviewError);
-  const previewError = bothRequestsFailed ? multihopPreviewError || fallbackPreviewError : null;
+  const previewError = !previewData ? fallbackPreviewError || multihopPreviewError : null;
 
   return {
     previewData,
