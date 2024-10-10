@@ -11,13 +11,13 @@ import {DefaultLocale} from "@/src/utils/constants";
 
 interface TransactionProps {
   date: string;
-  givenIcon: string;
-  takenIcon: string;
+  firstAssetIcon: string;
+  secondAssetIcon: string;
   name: string;
-  givenSum: string;
-  takenSum: string;
-  givenCurrency: string;
-  takenCurrency: string;
+  firstAssetAmount: string;
+  secondAssetAmount: string;
+  firstAssetName: string;
+  secondAssetName: string;
   withdrawal?: boolean;
   addLiquidity?: boolean;
 }
@@ -45,40 +45,52 @@ const transformTransactionsDataAndGroupByDate = (transactionsData: TransactionsD
       },
     );
     const [firstAssetId, secondAssetId] = transaction.pool_id.split("_");
-    const firstCoin = getAssetNameByAssetId(firstAssetId);
-    const secondCoin = getAssetNameByAssetId(secondAssetId);
-    const firstCoinExists = coinsConfig.has(firstCoin);
-    const secondCoinExists = coinsConfig.has(secondCoin);
-    if (!firstCoinExists || !secondCoinExists) {
+    const firstAssetName = getAssetNameByAssetId(firstAssetId);
+    const secondAssetName = getAssetNameByAssetId(secondAssetId);
+    const firstAssetExists = coinsConfig.has(firstAssetName);
+    const secondAssetExists = coinsConfig.has(secondAssetName);
+    if (!firstAssetExists || !secondAssetExists) {
       return;
     }
 
-    const firstCoinIcon = coinsConfig.get(firstCoin)?.icon!;
-    const secondCoinIcon = coinsConfig.get(secondCoin)?.icon!;
-    const firstCoinDecimals = coinsConfig.get(firstCoin)?.decimals!;
-    const secondCoinDecimals = coinsConfig.get(secondCoin)?.decimals!;
-    const firstAssetIn = Number(transaction.asset_0_in) / 10 ** firstCoinDecimals;
-    const firstAssetOut = Number(transaction.asset_0_out) / 10 ** firstCoinDecimals;
-    const secondAssetIn = Number(transaction.asset_1_in) / 10 ** secondCoinDecimals;
-    const secondAssetOut = Number(transaction.asset_1_out) / 10 ** secondCoinDecimals;
+    const firstAssetIcon = coinsConfig.get(firstAssetName)?.icon!;
+    const secondAssetIcon = coinsConfig.get(secondAssetName)?.icon!;
+    const firstAssetDecimals = coinsConfig.get(firstAssetName)?.decimals!;
+    const secondAssetDecimals = coinsConfig.get(secondAssetName)?.decimals!;
+    const firstAssetIn = Number(transaction.asset_0_in) / 10 ** firstAssetDecimals;
+    const firstAssetOut = Number(transaction.asset_0_out) / 10 ** firstAssetDecimals;
+    const secondAssetIn = Number(transaction.asset_1_in) / 10 ** secondAssetDecimals;
+    const secondAssetOut = Number(transaction.asset_1_out) / 10 ** secondAssetDecimals;
 
-    let givenSum;
-    let takenSum;
+    let firstAssetAmount;
+    let secondAssetAmount;
+    let firstAssetNameToUse;
+    let secondAssetNameToUse;
     if (transaction.transaction_type === "SWAP") {
-      const givenSumValue = Math.max(firstAssetOut, secondAssetOut);
-      const takenSumValue = Math.max(firstAssetIn, secondAssetIn);
-      givenSum = givenSumValue.toFixed(firstAssetOut > secondAssetOut ? firstCoinDecimals : secondCoinDecimals);
-      takenSum = takenSumValue.toFixed(firstAssetIn > secondAssetIn ? firstCoinDecimals : secondCoinDecimals);
-    } else if (transaction.transaction_type === "ADD_LIQUIDITY") {
-      const givenSumValue = firstAssetIn;
-      const takenSumValue = secondAssetIn;
-      givenSum = givenSumValue.toFixed(firstCoinDecimals);
-      takenSum = takenSumValue.toFixed(secondCoinDecimals);
+      /*
+       * As assets order is always fixed in pool_id string, as well as asset_0 and asset_1 fields, we need to determine
+       * which asset is input and which is output for swap. If asset_1_out > asset_0_out, it means that we need to reverse
+       * mapping of assets from pool id to the visual representation of the transaction.
+       */
+      const reversedAssetsOrder = secondAssetOut > firstAssetOut;
+      firstAssetNameToUse = reversedAssetsOrder ? secondAssetName : firstAssetName;
+      secondAssetNameToUse = reversedAssetsOrder ? firstAssetName : secondAssetName;
+      const firstAssetDecimals = coinsConfig.get(firstAssetNameToUse)?.decimals!;
+      const secondAssetDecimals = coinsConfig.get(secondAssetNameToUse)?.decimals!;
+      const outputValue = Math.max(firstAssetOut, secondAssetOut);
+      const inputValue = Math.max(firstAssetIn, secondAssetIn);
+      firstAssetAmount = outputValue.toFixed(firstAssetDecimals);
+      secondAssetAmount = inputValue.toFixed(secondAssetDecimals);
     } else {
-      const givenSumValue = firstAssetOut;
-      const takenSumValue = secondAssetOut;
-      givenSum = givenSumValue.toFixed(firstCoinDecimals);
-      takenSum = takenSumValue.toFixed(secondCoinDecimals);
+      firstAssetNameToUse = firstAssetName;
+      secondAssetNameToUse = secondAssetName;
+      if (transaction.transaction_type === "ADD_LIQUIDITY") {
+        firstAssetAmount = firstAssetIn.toFixed(firstAssetDecimals);
+        secondAssetAmount = secondAssetIn.toFixed(secondAssetDecimals);
+      } else {
+        firstAssetAmount = firstAssetOut.toFixed(firstAssetDecimals);
+        secondAssetAmount = secondAssetOut.toFixed(secondAssetDecimals);
+      }
     }
 
     let name: string;
@@ -92,13 +104,13 @@ const transformTransactionsDataAndGroupByDate = (transactionsData: TransactionsD
 
     const transformedTransaction: TransactionProps = {
       date,
-      givenIcon: firstCoinIcon,
-      takenIcon: secondCoinIcon,
+      firstAssetIcon,
+      secondAssetIcon,
       name,
-      givenSum,
-      takenSum,
-      givenCurrency: firstCoin,
-      takenCurrency: secondCoin,
+      firstAssetAmount,
+      secondAssetAmount,
+      firstAssetName: firstAssetNameToUse,
+      secondAssetName: secondAssetNameToUse,
       withdrawal: transaction.transaction_type === "REMOVE_LIQUIDITY",
       addLiquidity: transaction.transaction_type === "ADD_LIQUIDITY",
     };
@@ -169,10 +181,10 @@ const TransactionsHistory = forwardRef<HTMLDivElement, TransactionsHistoryProps>
                     <div className={styles.transactionInfo}>
                       <div className={styles.transactionCoins}>
                         <div className={styles.firstCoin}>
-                          <img src={transaction.givenIcon} alt={`${transaction.givenCurrency} icon`}/>
+                          <img src={transaction.firstAssetIcon} alt={`${transaction.firstAssetName} icon`}/>
                         </div>
                         <div className={styles.secondCoin}>
-                          <img src={transaction.takenIcon} alt={`${transaction.takenCurrency} icon`}/>
+                          <img src={transaction.secondAssetIcon} alt={`${transaction.secondAssetName} icon`}/>
                         </div>
                       </div>
                       <div className={styles.transactionText}>
@@ -191,9 +203,9 @@ const TransactionsHistory = forwardRef<HTMLDivElement, TransactionsHistoryProps>
                           ></div>
                         </div>
                         <span className={styles.transactionAmount}>
-                        {transaction.givenSum} {transaction.givenCurrency}
+                        {transaction.firstAssetAmount} {transaction.firstAssetName}
                           {transaction.addLiquidity || transaction.withdrawal ? " and " : " for "}
-                          {transaction.takenSum} {transaction.takenCurrency}
+                          {transaction.secondAssetAmount} {transaction.secondAssetName}
                       </span>
                       </div>
                     </div>
