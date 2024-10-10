@@ -6,6 +6,7 @@ const useProvider = () => {
   const { data } = useQuery({
     queryKey: ['provider'],
     queryFn: () => Provider.create(NetworkUrl),
+    staleTime: Infinity,
   });
 
   return data;

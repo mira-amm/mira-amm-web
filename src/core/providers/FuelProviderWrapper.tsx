@@ -1,6 +1,6 @@
 import {ReactNode, useMemo} from "react";
 import {FuelProvider} from "@fuels/react";
-import {FuelConfig, FuelConnector} from "fuels";
+import {FuelConfig, FuelConnector, Provider} from "fuels";
 import {isMobile} from "react-device-detect";
 import {
   BakoSafeConnector,
@@ -38,23 +38,45 @@ const wagmiConfig = createConfig({
   ],
 });
 
+type ConnectorConfig = Partial<{ chainId: number, fuelProvider: Provider }>;
+type Networks = Array<{ chainId: number, url: string }>;
+
 const FuelProviderWrapper = ({ children }: Props) => {
   const fuelProvider = useProvider();
 
-  const connectorConfig = useMemo(() => ({
-    chainId: fuelProvider?.getChainId(),
-    fuelProvider,
-  }), [fuelProvider]);
+  const connectorConfig: ConnectorConfig = useMemo(() => {
+    if (!fuelProvider) {
+      return {};
+    }
 
-  const networks = useMemo(() => [
-    {
+    return {
+      chainId: fuelProvider.getChainId(),
+      fuelProvider,
+    };
+  }, [fuelProvider]);
+
+  const networks: Networks = useMemo(() => {
+    if (!fuelProvider) {
+      return [];
+    }
+
+    return [
+      {
       chainId: fuelProvider?.getChainId(),
       url: fuelProvider?.url,
-    }
-  ], [fuelProvider]);
+      }
+    ];
+  }, [fuelProvider]);
 
-  const fuelConfig = useMemo(() => {
+  const fuelConfig: FuelConfig = useMemo(() => {
     let connectors: FuelConnector[] = [];
+
+    if (!fuelProvider) {
+      return {
+        connectors,
+      };
+    }
+
     if (typeof window !== 'undefined') {
       connectors = isMobile ? [
         new FueletWalletConnector(),
@@ -89,11 +111,7 @@ const FuelProviderWrapper = ({ children }: Props) => {
       ];
     }
 
-    const fuelConfig: FuelConfig = {
-      connectors,
-    };
-
-    return fuelConfig;
+    return { connectors };
   }, [fuelProvider, connectorConfig]);
 
   return (
