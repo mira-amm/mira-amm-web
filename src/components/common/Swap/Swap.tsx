@@ -64,7 +64,7 @@ const Swap = () => {
 
   const [swapState, setSwapState] = useState<SwapState>(initialSwapState);
   const [inputsState, setInputsState] = useState<InputsState>(initialInputsState);
-  const [lastFocusedMode, setLastFocusedMode] = useState<CurrencyBoxMode>("sell");
+  const [activeMode, setActiveMode] = useState<CurrencyBoxMode>("sell");
   const [slippage, setSlippage] = useState<number>(DefaultSlippageValue);
   const [txCost, setTxCost] = useState<number | null>(null);
   const [slippageMode, setSlippageMode] = useState<SlippageMode>("auto");
@@ -89,8 +89,8 @@ const Swap = () => {
   const buyBalance = balances?.find((b) => b.assetId === coinsConfig.get(swapState.buy.coin)?.assetId)?.amount.toNumber();
   const buyBalanceValue = buyBalance ? buyBalance / 10 ** coinsConfig.get(swapState.buy.coin)?.decimals! : 0;
 
-  const { previewData, previewFetching, previewError } = useSwapPreview({ swapState, mode: lastFocusedMode });
-  const anotherMode = lastFocusedMode === "sell" ? "buy" : "sell";
+  const { previewData, previewFetching, previewError } = useSwapPreview({ swapState, mode: activeMode });
+  const anotherMode = activeMode === "sell" ? "buy" : "sell";
   const decimals =
     anotherMode === "sell" ? coinsConfig.get(swapState.sell.coin)?.decimals! : coinsConfig.get(swapState.buy.coin)?.decimals!;
   const normalizedPreviewValue = previewData && previewData.previewAmount / 10 ** decimals;
@@ -114,8 +114,8 @@ const Swap = () => {
   }, [previewValueString]);
 
   const sellDecimals = coinsConfig.get(swapState.sell.coin)?.decimals!;
-  const sellValue = lastFocusedMode === "buy" ? previewValueString : inputsState.sell.amount;
-  const buyValue = lastFocusedMode === "sell" ? previewValueString : inputsState.buy.amount;
+  const sellValue = activeMode === "buy" ? previewValueString : inputsState.sell.amount;
+  const buyValue = activeMode === "sell" ? previewValueString : inputsState.buy.amount;
 
   const swapAssets = useCallback(() => {
     setSwapState((prevState) => ({
@@ -127,13 +127,22 @@ const Swap = () => {
       },
     }));
 
-    // setLastFocusedMode(lastFocusedMode === 'buy' ? 'sell' : 'buy');
+    // setActiveMode(previousMode => previousMode === 'buy' ? 'sell' : 'buy');
+
+    setInputsState({
+      buy: {
+        amount: sellValue,
+      },
+      sell: {
+        amount: buyValue,
+      },
+    });
 
     setSwapCoins((prevState) => ({
       buy: prevState.sell,
       sell: prevState.buy,
     }));
-  }, [setSwapCoins]);
+  }, [buyValue, sellValue, setSwapCoins]);
 
   const selectCoin = useCallback(
     (mode: "buy" | "sell") => {
@@ -163,7 +172,7 @@ const Swap = () => {
           [mode]: coin,
         }));
 
-        setLastFocusedMode(mode);
+        setActiveMode(mode);
       };
     },
     [inputsState, setSwapCoins, swapAssets, swapState.buy.coin, swapState.sell.coin]
@@ -212,7 +221,7 @@ const Swap = () => {
             amount,
           },
         }));
-        setLastFocusedMode(mode);
+        setActiveMode(mode);
       };
     },
     [debouncedSetState]
@@ -233,7 +242,7 @@ const Swap = () => {
 
   const { fetchTxCost, triggerSwap, swapPending, swapResult } = useSwap({
     swapState,
-    mode: lastFocusedMode,
+    mode: activeMode,
     slippage,
     pools: previewData?.pools,
   });
@@ -294,8 +303,8 @@ const Swap = () => {
   const exchangeRate = useExchangeRate(swapState);
   const feeValue = ((feePercentage / 100) * parseFloat(sellValue)).toFixed(sellDecimals);
 
-  const inputPreviewPending = previewFetching && lastFocusedMode === "buy";
-  const outputPreviewPending = previewFetching && lastFocusedMode === "sell";
+  const inputPreviewPending = previewFetching && activeMode === "buy";
+  const outputPreviewPending = previewFetching && activeMode === "sell";
 
   const { poolsMetadata } = usePoolsMetadata(previewData?.pools);
 
