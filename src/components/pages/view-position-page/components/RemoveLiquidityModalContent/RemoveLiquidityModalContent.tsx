@@ -36,7 +36,7 @@ const RemoveLiquidityModalContent = ({coinA, coinB, isStablePool, currentCoinAVa
 
   const sliderRef = useRef<HTMLInputElement>(null);
 
-  const debouncedSetValue = useDebounceCallback(setLiquidityValue, 100);
+  const debouncedSetValue = useDebounceCallback(setLiquidityValue, 500);
   const handleMouseUp = (e: MouseEvent<HTMLInputElement> | TouchEvent<HTMLInputElement>) => {
     // @ts-ignore
     debouncedSetValue(Number(e.target.value));

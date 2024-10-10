@@ -89,7 +89,7 @@ const Swap = () => {
   const buyBalance = balances?.find((b) => b.assetId === coinsConfig.get(swapState.buy.coin)?.assetId)?.amount.toNumber();
   const buyBalanceValue = buyBalance ? buyBalance / 10 ** coinsConfig.get(swapState.buy.coin)?.decimals! : 0;
 
-  const { previewData, previewFetching, previewError } = useSwapPreview({ swapState, mode: activeMode });
+  const { previewData, previewLoading, previewError } = useSwapPreview({ swapState, mode: activeMode });
   const anotherMode = activeMode === "sell" ? "buy" : "sell";
   const decimals =
     anotherMode === "sell" ? coinsConfig.get(swapState.sell.coin)?.decimals! : coinsConfig.get(swapState.buy.coin)?.decimals!;
@@ -304,8 +304,8 @@ const Swap = () => {
   const exchangeRate = useExchangeRate(swapState);
   const feeValue = ((feePercentage / 100) * parseFloat(sellValue)).toFixed(sellDecimals);
 
-  const inputPreviewPending = previewFetching && activeMode === "buy";
-  const outputPreviewPending = previewFetching && activeMode === "sell";
+  const inputPreviewLoading = previewLoading && activeMode === "buy";
+  const outputPreviewLoading = previewLoading && activeMode === "sell";
 
   const { poolsMetadata } = usePoolsMetadata(previewData?.pools);
 
@@ -377,10 +377,10 @@ const Swap = () => {
             mode="sell"
             balance={sellBalanceValue}
             setAmount={setAmount("sell")}
-            loading={inputPreviewPending || swapPending}
+            loading={inputPreviewLoading || swapPending}
             onCoinSelectorClick={handleCoinSelectorClick}
             usdRate={firstAssetRate}
-            previewError={activeMode === 'buy' && !inputPreviewPending ? previewError : null}
+            previewError={activeMode === 'buy' && !inputPreviewLoading ? previewError : null}
           />
           <div className={styles.splitter}>
             <IconButton onClick={swapAssets} className={styles.convertButton}>
@@ -393,11 +393,10 @@ const Swap = () => {
             mode="buy"
             balance={buyBalanceValue}
             setAmount={setAmount("buy")}
-            loading={outputPreviewPending || swapPending}
+            loading={outputPreviewLoading || swapPending}
             onCoinSelectorClick={handleCoinSelectorClick}
             usdRate={secondAssetRate}
-            // previewError={previewError}
-            previewError={activeMode === 'sell' && outputPreviewPending ? previewError : null}
+            previewError={activeMode === 'sell' && outputPreviewLoading ? previewError : null}
             // swapError={txCostError || swapError}
           />
           {swapPending && (

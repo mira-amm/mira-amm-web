@@ -49,7 +49,7 @@ const useSwapPreview = ({ swapState, mode }: Props) => {
 
   const tradeType: TradeType = mode === 'sell' ? 'ExactInput' : 'ExactOutput';
 
-  const { data: multihopPreviewData, error: multihopPreviewError, isFetching: multihopPreviewFetching, failureCount: multihopFailureCount } = useQuery({
+  const { data: multihopPreviewData, error: multihopPreviewError, isLoading: multihopPreviewLoading, failureCount: multihopFailureCount } = useQuery({
     queryKey: ['multihopPreview', inputAssetId, outputAssetId, normalizedAmount, tradeType],
     queryFn: async () => {
       const res = await fetch(`${ApiBaseUrl}/find_route`, {
@@ -84,6 +84,7 @@ const useSwapPreview = ({ swapState, mode }: Props) => {
     },
     retryDelay: 1000,
     enabled: amountNonZero,
+    // refetchInterval: 1000,
   });
 
   const miraAmm = useReadonlyMira();
@@ -115,7 +116,7 @@ const useSwapPreview = ({ swapState, mode }: Props) => {
     }
   }
 
-  const { data: fallbackPreviewData, error: fallbackPreviewError, isFetching: fallbackPreviewFetching } = useQuery({
+  const { data: fallbackPreviewData, error: fallbackPreviewError, isLoading: fallbackPreviewLoading } = useQuery({
     queryKey: ['fallbackPreview', inputAssetId, outputAssetId, normalizedAmount],
     queryFn: async () => {
       const fallbackPoolId = await getFallbackPoolId();
@@ -172,7 +173,7 @@ const useSwapPreview = ({ swapState, mode }: Props) => {
 
   return {
     previewData,
-    previewFetching: multihopPreviewFetching || fallbackPreviewFetching,
+    previewLoading: multihopPreviewLoading || fallbackPreviewLoading,
     previewError,
   };
 };
