@@ -5,6 +5,8 @@ import useReadonlyMira from "@/src/hooks/useReadonlyMira";
 import { buildPoolId, PoolId } from "mira-dex-ts";
 import { ApiBaseUrl } from "@/src/utils/constants";
 import { InsufficientReservesError } from "mira-dex-ts/dist/sdk/errors";
+import stringify from "fast-safe-stringify";
+import stable = stringify.stable;
 
 type Props = {
   swapState: SwapState;
@@ -82,7 +84,8 @@ const useSwapPreview = ({ swapState, mode }: Props) => {
 
   const miraAmm = useReadonlyMira();
   const miraExists = Boolean(miraAmm);
-  const pool = buildPoolId(inputAssetId, outputAssetId, false);
+  const volatilePool = buildPoolId(inputAssetId, outputAssetId, false);
+  const stablePool = buildPoolId(inputAssetId, outputAssetId, true);
   const shouldFetchFallback =
     Boolean(multihopPreviewError) !== null && multihopFailureCount === 2 && miraExists && amountNonZero;
 
@@ -93,12 +96,12 @@ const useSwapPreview = ({ swapState, mode }: Props) => {
         await miraAmm?.previewSwapExactInput(
           sellAssetIdInput,
           normalizedAmount,
-          [pool],
+          [volatilePool, stablePool],
         ) :
         await miraAmm?.previewSwapExactOutput(
           buyAssetIdInput,
           normalizedAmount,
-          [pool],
+          [volatilePool, stablePool],
         );
     },
     enabled: shouldFetchFallback,
@@ -121,7 +124,7 @@ const useSwapPreview = ({ swapState, mode }: Props) => {
     };
   } else if (fallbackPreviewData) {
     previewData = {
-      pools: [pool],
+      pools: [volatilePool, stablePool],
       previewAmount: fallbackPreviewData[1].toNumber(),
     };
   }

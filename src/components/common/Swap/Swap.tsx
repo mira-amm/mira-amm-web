@@ -127,7 +127,7 @@ const Swap = () => {
       },
     }));
 
-    // setActiveMode(previousMode => previousMode === 'buy' ? 'sell' : 'buy');
+    setActiveMode(previousMode => previousMode === 'buy' ? 'sell' : 'buy');
 
     setInputsState({
       buy: {
