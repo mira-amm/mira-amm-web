@@ -9,6 +9,8 @@ import {CoinName, coinsConfig} from "@/src/utils/coinsConfig";
 import styles from "./CurrencyBox.module.css";
 import TextButton from "@/src/components/common/TextButton/TextButton";
 import {DefaultLocale, MinEthValue} from "@/src/utils/constants";
+import { InsufficientReservesError } from "mira-dex-ts/dist/sdk/errors";
+import {NoRouteFoundError} from "@/src/hooks/useSwapPreview";
 
 type Props = {
   value: string;
@@ -19,10 +21,11 @@ type Props = {
   loading: boolean;
   onCoinSelectorClick: (mode: CurrencyBoxMode) => void;
   usdRate: string | undefined;
-  swapUnavailable?: boolean;
+  previewError?: Error | null;
+  swapError?: Error | null;
 };
 
-const CurrencyBox = ({value, coin, mode, balance, setAmount, loading, onCoinSelectorClick, usdRate, swapUnavailable}: Props) => {
+const CurrencyBox = ({ value, coin, mode, balance, setAmount, loading, onCoinSelectorClick, usdRate, previewError, swapError }: Props) => {
   const decimals = coinsConfig.get(coin)?.decimals!;
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -60,14 +63,28 @@ const CurrencyBox = ({value, coin, mode, balance, setAmount, loading, onCoinSele
     }) :
     null;
 
+  let errorMessage: string;
+  if (!previewError && !swapError) {
+    errorMessage = '';
+  } else {
+    errorMessage = 'This swap is currently unavailable';
+    if (previewError instanceof InsufficientReservesError) {
+      errorMessage = 'Insufficient reserves in pool';
+    } else if (previewError instanceof NoRouteFoundError) {
+      errorMessage = 'No pool found for this swap';
+    } else if (swapError) {
+      errorMessage = 'An error occurred on swap';
+    }
+  }
+
   return (
     <div className={styles.currencyBox}>
       <p className={styles.title}>{mode === "buy" ? "Buy" : "Sell"}</p>
       <div className={styles.content}>
-        {swapUnavailable ? (
+        {errorMessage ? (
           <div className={styles.warningBox}>
             <p className={styles.warningLabel}>
-              This swap is currently unavailable
+              {errorMessage}
             </p>
           </div>
         ) : (
