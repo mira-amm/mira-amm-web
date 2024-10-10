@@ -17,7 +17,6 @@
 
 .wrapper {
   background: #262834;
-  border-radius: 12px;
   overflow-x: hidden;
   display: flex;
   flex-direction: column;
@@ -261,5 +260,11 @@
 
   .linerVisible {
     display: none;
+  }
+}
+
+@media (min-width: 769px) {
+  .wrapper {
+    border-radius: 12px;
   }
 }

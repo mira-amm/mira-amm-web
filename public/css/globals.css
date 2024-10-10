@@ -95,13 +95,6 @@ input:focus {
   }
 }
 
-/* TODO: Dirty hack to reposition connectors list on mobile, check later */
-@media (max-width: 430px) {
-  div[data-state="open"][role="dialog"] {
-    bottom: -148px;
-  }
-}
-
 @media (min-width: 431px) {
   div[data-state="open"][role="dialog"] {
     bottom: unset;

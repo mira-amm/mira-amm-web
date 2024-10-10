@@ -23,7 +23,7 @@ const RemoveLiquiditySuccessModal = ({ coinA, coinB, firstCoinAmount, secondCoin
     openNewTab(`${FuelAppUrl}/tx/${transactionHash}/simple`);
   }, [transactionHash]);
 
-  const subText = `Withdrawn ${firstCoinAmount} ${coinA} and ${secondCoinAmount} ${coinB}`;
+  const subText = `Removed ${firstCoinAmount} ${coinA} and ${secondCoinAmount} ${coinB}`;
 
   return (
     <div className={styles.claimFailureModal}>

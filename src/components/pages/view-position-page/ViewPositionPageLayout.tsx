@@ -159,7 +159,7 @@ const ViewPositionPageLayout = () => {
             </div>
           </div>
           <div className={styles.sticky}>
-            <ActionButton onClick={handleWithdrawLiquidity} fullWidth>Withdraw Liquidity</ActionButton>
+            <ActionButton onClick={handleWithdrawLiquidity} fullWidth>Remove Liquidity</ActionButton>
           </div>
         </section>
         <section className={clsx(styles.contentSection, 'desktopOnly')}>
@@ -168,7 +168,7 @@ const ViewPositionPageLayout = () => {
               <CoinPair firstCoin={coinA} secondCoin={coinB} withFeeBelow isStablePool={isStablePool}/>
               <PositionLabel className={styles.smallLabel} />
             </div>
-            <ActionButton className={styles.withdrawButton} onClick={handleWithdrawLiquidity}>Withdraw Liquidity</ActionButton>
+            <ActionButton className={styles.withdrawButton} onClick={handleWithdrawLiquidity}>Remove Liquidity</ActionButton>
           </div>
           <div className={styles.topRow}>
             <div className={styles.miraBlock}>
@@ -221,7 +221,7 @@ const ViewPositionPageLayout = () => {
         </section>
       </main>
       <Footer/>
-      <RemoveLiquidityModal title="Withdraw Liquidity" titleClassName={styles.withdrawLiquidityTitle}>
+      <RemoveLiquidityModal title="Remove Liquidity" titleClassName={styles.withdrawLiquidityTitle}>
         <RemoveLiquidityModalContent
           coinA={coinA}
           coinB={coinB}

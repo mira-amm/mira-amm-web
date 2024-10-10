@@ -103,7 +103,7 @@ const RemoveLiquidityModalContent = ({coinA, coinB, isStablePool, currentCoinAVa
           </tr>
           <tr className={styles.lastRow}>
             <td>
-              Withdraw
+              Remove
             </td>
             <td>
               {coinAValueToWithdraw}

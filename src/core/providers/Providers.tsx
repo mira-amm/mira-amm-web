@@ -55,6 +55,7 @@ const NETWORKS = [
   },
 ];
 
+// TODO: It is promise, not Provider itself, change it to be instantiated asynchronously
 const fuelProvider = Provider.create(NetworkUrl);
 
 const connectorConfig = {
@@ -70,34 +71,34 @@ const Providers = ({children}: Props) => {
     if (typeof window !== 'undefined') {
       connectors = isMobile ? [
         new FueletWalletConnector(),
-        new BurnerWalletConnector({
-          fuelProvider,
-        }),
-        new WalletConnectConnector({
-          projectId: WalletConnectProjectId,
-          wagmiConfig: wagmiConfig as any,
-          fuelProvider,
-        }),
-        new SolanaConnector({
-          projectId: WalletConnectProjectId,
-          ...connectorConfig
-        }),
+        // new BurnerWalletConnector({
+        //   fuelProvider,
+        // }),
+        // new WalletConnectConnector({
+        //   projectId: WalletConnectProjectId,
+        //   wagmiConfig: wagmiConfig as any,
+        //   fuelProvider,
+        // }),
+        // new SolanaConnector({
+        //   projectId: WalletConnectProjectId,
+        //   ...connectorConfig
+        // }),
       ] : [
         new FueletWalletConnector(),
-        new BurnerWalletConnector({
-          fuelProvider,
-        }),
+        // new BurnerWalletConnector({
+        //   fuelProvider,
+        // }),
         new FuelWalletConnector(),
         new BakoSafeConnector(),
-        new WalletConnectConnector({
-          projectId: WalletConnectProjectId,
-          wagmiConfig: wagmiConfig as any,
-          fuelProvider,
-        }),
-        new SolanaConnector({
-          projectId: WalletConnectProjectId,
-          ...connectorConfig
-        }),
+        // new WalletConnectConnector({
+        //   projectId: WalletConnectProjectId,
+        //   wagmiConfig: wagmiConfig as any,
+        //   fuelProvider,
+        // }),
+        // new SolanaConnector({
+        //   projectId: WalletConnectProjectId,
+        //   ...connectorConfig
+        // }),
       ];
     }
     const fuelConfig: FuelConfig = {
