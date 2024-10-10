@@ -31,9 +31,10 @@ const CoinInput = ({ coin, value, loading, setAmount, balance, usdRate, newPool,
   };
 
   const handleMaxClick = useCallback(() => {
-    const amount = coin === 'ETH' ?
-      (balance - MinEthValue).toFixed(9) :
+    const amount = coin === "ETH" ?
+      (Math.max(balance - MinEthValue, balance)).toFixed(9) :
       balance.toString();
+
     setAmount(amount);
   }, [coin, balance, setAmount]);
 
