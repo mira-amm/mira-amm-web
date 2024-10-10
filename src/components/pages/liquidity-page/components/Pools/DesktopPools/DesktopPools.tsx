@@ -60,7 +60,9 @@ const DesktopPools = ({ poolsData }: Props) => {
 
           const { details: { apr, volume, tvl } } = poolData;
 
-          const aprValue = parseFloat(apr).toLocaleString(DefaultLocale, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+          const aprValue = apr ?
+            `${parseFloat(apr).toLocaleString(DefaultLocale, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}%`
+            : null;
           const volumeValue = parseFloat(volume).toLocaleString(DefaultLocale, { maximumFractionDigits: 0 });
           const tvlValue = parseFloat(tvl).toLocaleString(DefaultLocale, { maximumFractionDigits: 0 });
 
@@ -69,7 +71,7 @@ const DesktopPools = ({ poolsData }: Props) => {
               <td>
                 <CoinPair firstCoin={firstAssetName} secondCoin={secondAssetName} isStablePool={poolId[2]} withPoolDescription />
               </td>
-              <td>{aprValue}%</td>
+              <td className={clsx(!aprValue && styles.pending)}>{aprValue ?? 'Pending'}</td>
               <td>${volumeValue}</td>
               <td>${tvlValue}</td>
               <td>

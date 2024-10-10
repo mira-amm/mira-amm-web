@@ -24,6 +24,10 @@
   text-align: center;
 }
 
+.pending {
+  color: var(--content-dimmed-light);
+}
+
 button.addButton {
   padding: 12px;
   font-weight: 500;

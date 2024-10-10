@@ -11,3 +11,7 @@
 .infoBlockValuePositive {
   color: var(--content-positive);
 }
+
+.pending {
+  color: var(--content-dimmed-light);
+}

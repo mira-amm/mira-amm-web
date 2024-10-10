@@ -26,7 +26,9 @@ const MobilePoolItem = ({ poolData }: Props) => {
   const { firstAssetName, secondAssetName } = getAssetNamesFromPoolId(poolId);
   const { details: { apr, volume, tvl } } = poolData;
 
-  const aprValue = parseFloat(apr).toLocaleString(DefaultLocale, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  const aprValue = apr ?
+    `${parseFloat(apr).toLocaleString(DefaultLocale, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}%` :
+    null;
   const volumeValue = parseFloat(volume).toLocaleString(DefaultLocale, { maximumFractionDigits: 0 });
   const tvlValue = parseFloat(tvl).toLocaleString(DefaultLocale, { maximumFractionDigits: 0 });
 
@@ -39,7 +41,7 @@ const MobilePoolItem = ({ poolData }: Props) => {
       <div className={styles.infoSection}>
         <CoinPair firstCoin={firstAssetName} secondCoin={secondAssetName} isStablePool={isStablePool} />
         <div className={styles.infoBlocks}>
-          <InfoBlock title="APR" value={`${aprValue}%`} type="positive"/>
+          <InfoBlock title="APR" value={aprValue} type="positive"/>
           <InfoBlock title="24H Volume" value={`$${volumeValue}`}/>
           <InfoBlock title="TVL" value={`$${tvlValue}`}/>
         </div>

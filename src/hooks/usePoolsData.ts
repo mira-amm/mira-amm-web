@@ -9,7 +9,7 @@ export type PoolData = {
   details: {
     asset_0_symbol: CoinName;
     asset_1_symbol: CoinName;
-    apr: string;
+    apr: string | null;
     volume: string;
     tvl: string;
   };
