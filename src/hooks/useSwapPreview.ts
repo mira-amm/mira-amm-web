@@ -1,8 +1,8 @@
-import {useQuery} from "@tanstack/react-query";
+import {useQuery, useQueryClient} from "@tanstack/react-query";
 import {CurrencyBoxMode, SwapState} from "@/src/components/common/Swap/Swap";
 import useSwapData from "@/src/hooks/useAssetPair/useSwapData";
 import useReadonlyMira from "@/src/hooks/useReadonlyMira";
-import {buildPoolId, PoolId} from "mira-dex-ts";
+import {buildPoolId, PoolId, Asset} from "mira-dex-ts";
 import {ApiBaseUrl} from "@/src/utils/constants";
 import {InsufficientReservesError} from "mira-dex-ts/dist/sdk/errors";
 
@@ -23,6 +23,12 @@ type SwapPreviewData = {
   pools: PoolId[];
   previewAmount: number;
 };
+
+export class NoRouteFoundError extends Error {
+  constructor() {
+    super('No route found');
+  }
+}
 
 const useSwapPreview = ({ swapState, mode }: Props) => {
   const {
@@ -61,7 +67,7 @@ const useSwapPreview = ({ swapState, mode }: Props) => {
 
       if (!res.ok) {
         if (res.status === 404) {
-          throw new Error('No route found');
+          throw new NoRouteFoundError();
         }
 
         throw new Error('An error occurred while retrieving the path');
@@ -70,7 +76,7 @@ const useSwapPreview = ({ swapState, mode }: Props) => {
       return await res.json();
     },
     retry: (failureCount, error) => {
-      if (error.message === 'No route found') {
+      if (error instanceof NoRouteFoundError) {
         return false;
       }
 
@@ -85,7 +91,7 @@ const useSwapPreview = ({ swapState, mode }: Props) => {
   const volatilePool = buildPoolId(inputAssetId, outputAssetId, false);
   const stablePool = buildPoolId(inputAssetId, outputAssetId, true);
   const shouldFetchFallback =
-    Boolean(multihopPreviewError) !== null && multihopFailureCount === 2 && miraExists && amountNonZero;
+    Boolean(multihopPreviewError) && multihopFailureCount === 2 && miraExists && amountNonZero;
 
   async function getFallbackPoolId(): Promise<PoolId | undefined> {
     try {
@@ -115,11 +121,10 @@ const useSwapPreview = ({ swapState, mode }: Props) => {
       const fallbackPoolId = await getFallbackPoolId();
 
       if (!fallbackPoolId) {
-        // TODO: handle properly?
-        throw new Error('No fallback pool found');
+        throw new NoRouteFoundError();
       }
 
-      return mode === 'sell' ?
+      const fallbackPreviewResponse = mode === 'sell' ?
         await miraAmm?.previewSwapExactInput(
           sellAssetIdInput,
           normalizedAmount,
@@ -130,10 +135,16 @@ const useSwapPreview = ({ swapState, mode }: Props) => {
           normalizedAmount,
           [fallbackPoolId],
         );
+
+      if (!fallbackPreviewResponse) {
+        return;
+      }
+
+      return [fallbackPreviewResponse, fallbackPoolId] as [Asset, PoolId];
     },
     enabled: shouldFetchFallback,
     retry: (failureCount, error) => {
-      if (error instanceof InsufficientReservesError) {
+      if (error instanceof InsufficientReservesError || error instanceof NoRouteFoundError) {
         return false;
       }
 
@@ -150,18 +161,17 @@ const useSwapPreview = ({ swapState, mode }: Props) => {
       previewAmount: mode === 'sell' ? output_amount : input_amount,
     };
   } else if (fallbackPreviewData) {
+    const [fallbackPreviewResponse, fallbackPoolId] = fallbackPreviewData;
     previewData = {
-      pools: [volatilePool, stablePool],
-      previewAmount: fallbackPreviewData[1].toNumber(),
+      pools: [fallbackPoolId],
+      previewAmount: fallbackPreviewResponse[1].toNumber(),
     };
   }
-
-  const previewError = !previewData ? fallbackPreviewError || multihopPreviewError : null;
 
   return {
     previewData,
     previewFetching: multihopPreviewFetching || fallbackPreviewFetching,
-    previewError,
+    previewError: fallbackPreviewError || multihopPreviewError,
   };
 };
 

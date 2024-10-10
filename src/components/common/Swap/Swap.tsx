@@ -203,7 +203,8 @@ const Swap = () => {
         //     },
         //   });
         //
-        //   setLastFocusedMode(mode);
+        //   previousPreviewValue.current = '';
+        //   setActiveMode(mode);
         //
         //   return;
         // }
@@ -240,7 +241,7 @@ const Swap = () => {
     closeCoinsModal();
   };
 
-  const { fetchTxCost, triggerSwap, swapPending, swapResult } = useSwap({
+  const { fetchTxCost, triggerSwap, swapPending, swapResult, txCostError, swapError } = useSwap({
     swapState,
     mode: activeMode,
     slippage,
@@ -281,15 +282,15 @@ const Swap = () => {
   //   swapState.sell.coin === "ETH" &&
   //   balances?.find((b) => b.assetId === coinsConfig.get("ETH")?.assetId)?.amount.toNumber() === 0;
   const showInsufficientBalance = insufficientSellBalance && sufficientEthBalance;
-  const insufficientReserves = previewError instanceof InsufficientReservesError;
+  // const insufficientReserves = previewError instanceof InsufficientReservesError;
 
   let swapButtonTitle = "Swap";
   if (!isValidNetwork) {
     swapButtonTitle = "Incorrect network";
   } else if (swapPending) {
     swapButtonTitle = "Waiting for approval in wallet";
-  } else if (insufficientReserves) {
-    swapButtonTitle = "Insufficient reserves in pool";
+  // } else if (insufficientReserves) {
+  //   swapButtonTitle = "Insufficient reserves in pool";
   } else if (!sufficientEthBalance) {
     swapButtonTitle = "Bridge more ETH to pay for gas";
   } else if (showInsufficientBalance) {
@@ -297,7 +298,7 @@ const Swap = () => {
   }
 
   const swapDisabled =
-    !isValidNetwork || coinMissing || showInsufficientBalance || insufficientReserves || !sellValue || !buyValue;
+    !isValidNetwork || coinMissing || showInsufficientBalance || Boolean(previewError) || !sellValue || !buyValue;
 
   const feePercentage = 0.3;
   const exchangeRate = useExchangeRate(swapState);
@@ -358,7 +359,6 @@ const Swap = () => {
   const { ratesData } = useUSDRate(swapState.sell.coin, swapState.buy.coin);
   const firstAssetRate = ratesData?.find((item) => item.asset === swapState.sell.coin)?.rate;
   const secondAssetRate = ratesData?.find((item) => item.asset === swapState.buy.coin)?.rate;
-  const swapUnavailable = previewError instanceof Error;
 
   return (
     <>
@@ -380,6 +380,7 @@ const Swap = () => {
             loading={inputPreviewPending || swapPending}
             onCoinSelectorClick={handleCoinSelectorClick}
             usdRate={firstAssetRate}
+            previewError={activeMode === 'buy' && !inputPreviewPending ? previewError : null}
           />
           <div className={styles.splitter}>
             <IconButton onClick={swapAssets} className={styles.convertButton}>
@@ -395,7 +396,9 @@ const Swap = () => {
             loading={outputPreviewPending || swapPending}
             onCoinSelectorClick={handleCoinSelectorClick}
             usdRate={secondAssetRate}
-            swapUnavailable={swapUnavailable}
+            // previewError={previewError}
+            previewError={activeMode === 'sell' && outputPreviewPending ? previewError : null}
+            // swapError={txCostError || swapError}
           />
           {swapPending && (
             <div className={styles.summary}>

@@ -65,11 +65,11 @@ const useSwap = ({ swapState, mode, slippage, pools }: Props) => {
     return await tx.waitForResult();
   }, [wallet]);
 
-  const { mutateAsync: fetchTxCost, data: txCostData, isPending: txCostPending} = useMutation({
+  const { mutateAsync: fetchTxCost, data: txCostData, isPending: txCostPending, error: txCostError } = useMutation({
     mutationFn: getTxCost,
   });
 
-  const { mutateAsync: triggerSwap, data: swapResult, isPending: swapPending } = useMutation({
+  const { mutateAsync: triggerSwap, data: swapResult, isPending: swapPending, error: swapError } = useMutation({
     mutationFn: sendTx,
   });
 
@@ -77,9 +77,11 @@ const useSwap = ({ swapState, mode, slippage, pools }: Props) => {
     fetchTxCost,
     txCostData,
     txCostPending,
+    txCostError,
     triggerSwap,
     swapResult,
     swapPending,
+    swapError,
   };
 };
 
