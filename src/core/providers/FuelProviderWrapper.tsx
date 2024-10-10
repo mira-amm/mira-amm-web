@@ -1,6 +1,6 @@
 import {ReactNode, useMemo} from "react";
 import {FuelProvider} from "@fuels/react";
-import {FuelConfig, FuelConnector, Provider} from "fuels";
+import {CHAIN_IDS, FuelConfig, FuelConnector, Provider} from "fuels";
 import {isMobile} from "react-device-detect";
 import {
   BakoSafeConnector,
@@ -13,6 +13,7 @@ import {createConfig, http, injected} from "@wagmi/core";
 import {sepolia} from "@wagmi/core/chains";
 import {walletConnect} from "@wagmi/connectors";
 import useProvider from "@/src/hooks/useProvider/useProvider";
+import {NetworkUrl} from "@/src/utils/constants";
 
 type Props = {
   children: ReactNode;
@@ -38,44 +39,64 @@ const wagmiConfig = createConfig({
   ],
 });
 
-type ConnectorConfig = Partial<{ chainId: number, fuelProvider: Provider }>;
+type ConnectorConfig = Partial<{ chainId: number, fuelProvider: Promise<Provider> }>;
 type Networks = Array<{ chainId: number, url: string }>;
 
+const fuelProvider = Provider.create(NetworkUrl);
+
+const connectorConfig: ConnectorConfig = {
+  chainId: CHAIN_IDS.fuel.mainnet,
+  fuelProvider,
+};
+
+const networks: Networks = [
+    {
+      chainId: CHAIN_IDS.fuel.mainnet,
+      url: NetworkUrl,
+    }
+  ];
+
 const FuelProviderWrapper = ({ children }: Props) => {
-  const fuelProvider = useProvider();
+  // const fuelProvider = useProvider();
 
-  const connectorConfig: ConnectorConfig = useMemo(() => {
-    if (!fuelProvider) {
-      return {};
-    }
+  // console.log('provider', fuelProvider);
 
-    return {
-      chainId: fuelProvider.getChainId(),
-      fuelProvider,
-    };
-  }, [fuelProvider]);
+  // const connectorConfig: ConnectorConfig = useMemo(() => {
+  //   // if (!fuelProvider) {
+  //   //   return {};
+  //   // }
+  //
+  //   return {
+  //     chainId: CHAIN_IDS.fuel.mainnet,
+  //     fuelProvider,
+  //   };
+  // }, [fuelProvider]);
 
-  const networks: Networks = useMemo(() => {
-    if (!fuelProvider) {
-      return [];
-    }
+  // console.log('connector', connectorConfig);
 
-    return [
-      {
-      chainId: fuelProvider?.getChainId(),
-      url: fuelProvider?.url,
-      }
-    ];
-  }, [fuelProvider]);
+  // const networks: Networks = useMemo(() => {
+  //   // if (!fuelProvider) {
+  //   //   return [];
+  //   // }
+  //
+  //   return [
+  //     {
+  //       chainId: CHAIN_IDS.fuel.mainnet,
+  //       url: NetworkUrl,
+  //     }
+  //   ];
+  // }, [fuelProvider]);
+
+  // console.log('networks', networks);
 
   const fuelConfig: FuelConfig = useMemo(() => {
     let connectors: FuelConnector[] = [];
 
-    if (!fuelProvider) {
-      return {
-        connectors,
-      };
-    }
+    // if (!fuelProvider) {
+    //   return {
+    //     connectors,
+    //   };
+    // }
 
     if (typeof window !== 'undefined') {
       connectors = isMobile ? [
@@ -112,7 +133,7 @@ const FuelProviderWrapper = ({ children }: Props) => {
     }
 
     return { connectors };
-  }, [fuelProvider, connectorConfig]);
+  }, []);
 
   return (
     <FuelProvider

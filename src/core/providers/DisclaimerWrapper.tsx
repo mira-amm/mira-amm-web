@@ -41,7 +41,6 @@ const DisclaimerWrapper = ({ children }: Props) => {
 
   return (
     <>
-      {children}
       {showPopup && (
         <ConfirmPopup
           onConfirm={handleConfirmClick}
@@ -50,6 +49,7 @@ const DisclaimerWrapper = ({ children }: Props) => {
           disconnectIsPending={disconnectIsPending}
         />
       )}
+      {children}
     </>
   );
 };
