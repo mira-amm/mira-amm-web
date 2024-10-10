@@ -168,10 +168,12 @@ const useSwapPreview = ({ swapState, mode }: Props) => {
     };
   }
 
+  const previewError = !previewData ? fallbackPreviewError || multihopPreviewError : null;
+
   return {
     previewData,
     previewFetching: multihopPreviewFetching || fallbackPreviewFetching,
-    previewError: fallbackPreviewError || multihopPreviewError,
+    previewError,
   };
 };
 
