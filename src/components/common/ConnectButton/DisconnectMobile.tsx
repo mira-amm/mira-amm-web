@@ -23,7 +23,7 @@ const DisconnectMobile = ({ className }: Props) => {
   const { account } = useAccount();
   const { disconnect } = useDisconnect();
 
-  const { lock, unlock } = useScrollLock();
+  const { lock, unlock } = useScrollLock({ autoLock: false });
 
   const [isMenuOpened, setMenuOpened] = useState(false);
   const [isHistoryOpened, setHistoryOpened] = useState(false);

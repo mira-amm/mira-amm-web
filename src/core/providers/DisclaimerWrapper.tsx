@@ -11,7 +11,7 @@ type Props = {
 };
 
 const DisclaimerWrapper = ({ children }: Props) => {
-  const { lock, unlock } = useScrollLock();
+  const { lock, unlock } = useScrollLock({ autoLock: false });
 
   const { isConnected } = useIsConnected();
   const { disconnectAsync, isPending: disconnectIsPending  } = useDisconnect();
