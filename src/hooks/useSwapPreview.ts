@@ -1,12 +1,10 @@
-import { useQuery } from "@tanstack/react-query";
-import { CurrencyBoxMode, SwapState } from "@/src/components/common/Swap/Swap";
+import {useQuery} from "@tanstack/react-query";
+import {CurrencyBoxMode, SwapState} from "@/src/components/common/Swap/Swap";
 import useSwapData from "@/src/hooks/useAssetPair/useSwapData";
 import useReadonlyMira from "@/src/hooks/useReadonlyMira";
-import { buildPoolId, PoolId } from "mira-dex-ts";
-import { ApiBaseUrl } from "@/src/utils/constants";
-import { InsufficientReservesError } from "mira-dex-ts/dist/sdk/errors";
-import stringify from "fast-safe-stringify";
-import stable = stringify.stable;
+import {buildPoolId, PoolId} from "mira-dex-ts";
+import {ApiBaseUrl} from "@/src/utils/constants";
+import {InsufficientReservesError} from "mira-dex-ts/dist/sdk/errors";
 
 type Props = {
   swapState: SwapState;
@@ -89,19 +87,48 @@ const useSwapPreview = ({ swapState, mode }: Props) => {
   const shouldFetchFallback =
     Boolean(multihopPreviewError) !== null && multihopFailureCount === 2 && miraExists && amountNonZero;
 
+  async function getFallbackPoolId(): Promise<PoolId | undefined> {
+    try {
+      const volatileMeta = await miraAmm?.poolMetadata(volatilePool).catch(() => undefined);
+      const stableMeta = await miraAmm?.poolMetadata(stablePool).catch(() => undefined);
+
+      if (!volatileMeta && !stableMeta) {
+        return undefined;
+      }
+
+      if (!volatileMeta) return stablePool;
+      if (!stableMeta) return volatilePool;
+
+      const volatileReservesProduct = volatileMeta.reserve0.mul(volatileMeta.reserve1);
+      const stableReservesProduct = stableMeta.reserve0.mul(stableMeta.reserve1);
+
+      return volatileReservesProduct >= stableReservesProduct ? volatilePool : stablePool;
+    } catch (error) {
+      console.error('Error determining fallback pool:', error);
+      return undefined;
+    }
+  }
+
   const { data: fallbackPreviewData, error: fallbackPreviewError, isFetching: fallbackPreviewFetching } = useQuery({
     queryKey: ['fallbackPreview', inputAssetId, outputAssetId, normalizedAmount],
     queryFn: async () => {
+      const fallbackPoolId = await getFallbackPoolId();
+
+      if (!fallbackPoolId) {
+        // TODO: handle properly?
+        throw new Error('No fallback pool found');
+      }
+
       return mode === 'sell' ?
         await miraAmm?.previewSwapExactInput(
           sellAssetIdInput,
           normalizedAmount,
-          [volatilePool, stablePool],
+          [fallbackPoolId],
         ) :
         await miraAmm?.previewSwapExactOutput(
           buyAssetIdInput,
           normalizedAmount,
-          [volatilePool, stablePool],
+          [fallbackPoolId],
         );
     },
     enabled: shouldFetchFallback,
