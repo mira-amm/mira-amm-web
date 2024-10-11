@@ -30,6 +30,7 @@ import PriceImpact from "@/src/components/common/Swap/components/PriceImpact/Pri
 import useUSDRate from "@/src/hooks/useUSDRate";
 import {FuelAppUrl} from "@/src/utils/constants";
 import useReadonlyMira from "@/src/hooks/useReadonlyMira";
+import useReservesPrice from "@/src/hooks/useReservesPrice";
 
 export type CurrencyBoxMode = "buy" | "sell";
 export type CurrencyBoxState = {
@@ -308,18 +309,7 @@ const Swap = () => {
   const inputPreviewLoading = previewLoading && activeMode === "buy";
   const outputPreviewLoading = previewLoading && activeMode === "sell";
 
-  const miraAmm = useReadonlyMira();
-  const { poolsMetadata } = usePoolsMetadata(previewData?.pools);
-
-  const reservedPrice = useMemo(async () => {
-    const pools = previewData?.pools;
-    const sellAssetId = coinsConfig.get(swapState.sell.coin)?.assetId;
-    if (!pools || !miraAmm || !sellAssetId) {
-      return null;
-    }
-    const [rate, decimalsIn, decimalsOut] = await miraAmm.getCurrentRate({bits: sellAssetId}, pools);
-    return rate.toNumber() * (10 ** (decimalsIn ?? 0)) / (10 ** (decimalsOut ?? 0));
-  }, [miraAmm, poolsMetadata, swapState.sell.coin]);
+  const { reservesPrice } = useReservesPrice({ pools: previewData?.pools, sellAssetName: swapState.sell.coin });
 
   const previewPrice = useMemo(() => {
     const sellNumericValue = parseFloat(swapState.sell.amount);
@@ -329,7 +319,7 @@ const Swap = () => {
       return buyNumericValue / sellNumericValue;
     }
 
-    return null;
+    return;
   }, [swapState.buy.amount, swapState.sell.amount]);
 
   const { ratesData } = useUSDRate(swapState.sell.coin, swapState.buy.coin);
@@ -405,7 +395,7 @@ const Swap = () => {
           )}
         </div>
         <div className={styles.rates}>
-          <PriceImpact reservedPrice={reservedPrice} previewPrice={previewPrice} />
+          <PriceImpact reservesPrice={reservesPrice} previewPrice={previewPrice} />
           <ExchangeRate swapState={swapState} />
         </div>
       </div>
