@@ -152,6 +152,7 @@ const useSwapPreview = ({ swapState, mode }: Props) => {
       return failureCount < 1;
     },
     retryDelay: 1000,
+    // refetchInterval: 15000,
   });
 
   let previewData: SwapPreviewData | null = null;

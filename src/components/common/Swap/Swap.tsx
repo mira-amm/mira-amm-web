@@ -396,7 +396,7 @@ const Swap = () => {
             loading={outputPreviewLoading || swapPending}
             onCoinSelectorClick={handleCoinSelectorClick}
             usdRate={secondAssetRate}
-            previewError={activeMode === 'sell' && outputPreviewLoading ? previewError : null}
+            previewError={activeMode === 'sell' && !outputPreviewLoading ? previewError : null}
             // swapError={txCostError || swapError}
           />
           {swapPending && (
