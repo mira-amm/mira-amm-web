@@ -1,6 +1,6 @@
 import {useQuery} from "@tanstack/react-query";
 import useFaucetSDK from "@/src/hooks/useFaucetSDK/useFaucetSDK";
-import {AddressInput, IdentityInput} from "mira-faucet-ts/src/typegen/token-factory/TokenFactoryAbi";
+import {AddressInput, IdentityInput} from "mira-faucet-ts/src/typegen/token-factory/TokenFactory";
 import {coinsConfig} from "@/src/utils/coinsConfig";
 import {AssetId, Bech32Address, toB256} from "fuels";
 import {useCallback} from "react";
