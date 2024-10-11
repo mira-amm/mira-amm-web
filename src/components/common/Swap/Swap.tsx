@@ -29,6 +29,8 @@ import usePoolsMetadata from "@/src/hooks/usePoolsMetadata";
 import PriceImpact from "@/src/components/common/Swap/components/PriceImpact/PriceImpact";
 import useUSDRate from "@/src/hooks/useUSDRate";
 import {FuelAppUrl} from "@/src/utils/constants";
+import useReadonlyMira from "@/src/hooks/useReadonlyMira";
+import useReservesPrice from "@/src/hooks/useReservesPrice";
 
 export type CurrencyBoxMode = "buy" | "sell";
 export type CurrencyBoxState = {
@@ -307,53 +309,17 @@ const Swap = () => {
   const inputPreviewLoading = previewLoading && activeMode === "buy";
   const outputPreviewLoading = previewLoading && activeMode === "sell";
 
-  const { poolsMetadata } = usePoolsMetadata(previewData?.pools);
-
-  const reservedPrice = useMemo(() => {
-    if (!poolsMetadata) {
-      return null;
-    }
-
-    let previousAssetId: string | null = null;
-    const sellAssetId = coinsConfig.get(swapState.sell.coin)?.assetId;
-
-    const rates: number[] = [];
-
-    poolsMetadata.forEach((poolMetadata) => {
-      if (!poolMetadata) {
-        return;
-      }
-
-      const { poolId, reserve0, reserve1 } = poolMetadata;
-      if (!previousAssetId) {
-        previousAssetId = poolId[0].bits === sellAssetId ? poolId[0].bits : poolId[1].bits;
-      }
-
-      const previousAssetReserve = poolId[0].bits === previousAssetId ? reserve0 : reserve1;
-      const previousAsset = getAssetNameByAssetId(poolId[0].bits === previousAssetId ? poolId[0].bits : poolId[1].bits);
-      const previousAssetDecimals = coinsConfig.get(previousAsset)?.decimals;
-      const previousAssetNormalized = previousAssetReserve.toNumber() / 10 ** previousAssetDecimals!;
-
-      const nextAssetReserve = poolId[0].bits === previousAssetId ? reserve1 : reserve0;
-      const nextAsset = getAssetNameByAssetId(poolId[0].bits === previousAssetId ? poolId[1].bits : poolId[0].bits);
-      const nextAssetDecimals = coinsConfig.get(nextAsset)?.decimals;
-      const nextAssetNormalized = nextAssetReserve.toNumber() / 10 ** nextAssetDecimals!;
-
-      rates.push(previousAssetNormalized / nextAssetNormalized);
-    });
-
-    return rates.reduce((acc, rate) => acc * rate, 1);
-  }, [poolsMetadata, swapState.sell.coin]);
+  const { reservesPrice } = useReservesPrice({ pools: previewData?.pools, sellAssetName: swapState.sell.coin });
 
   const previewPrice = useMemo(() => {
     const sellNumericValue = parseFloat(swapState.sell.amount);
     const buyNumericValue = parseFloat(swapState.buy.amount);
 
     if (!isNaN(sellNumericValue) && !isNaN(buyNumericValue)) {
-      return sellNumericValue / buyNumericValue;
+      return buyNumericValue / sellNumericValue;
     }
 
-    return null;
+    return;
   }, [swapState.buy.amount, swapState.sell.amount]);
 
   const { ratesData } = useUSDRate(swapState.sell.coin, swapState.buy.coin);
@@ -429,7 +395,7 @@ const Swap = () => {
           )}
         </div>
         <div className={styles.rates}>
-          <PriceImpact reservedPrice={reservedPrice} previewPrice={previewPrice} />
+          <PriceImpact reservesPrice={reservesPrice} previewPrice={previewPrice} />
           <ExchangeRate swapState={swapState} />
         </div>
       </div>
