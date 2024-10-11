@@ -116,7 +116,7 @@ const ViewPositionPageLayout = () => {
           </div>
           <div className={styles.infoBlock}>
             <p>Liquidity</p>
-            <p className="blurredText">$3.45</p>
+            <p className={styles.pending}>Pending</p>
             <div className={styles.coinsData}>
               <CoinWithAmount coin={coinA} amount={coinAValue}/>
               <CoinWithAmount coin={coinB} amount={coinBValue}/>
@@ -188,7 +188,7 @@ const ViewPositionPageLayout = () => {
             <div className={styles.infoBlocks}>
               <div className={styles.infoBlock}>
                 <p>Liquidity</p>
-                <p className="blurredText">$3.45</p>
+                <p className={styles.pending}>Pending</p>
                 <div className={styles.coinsData}>
                   <CoinWithAmount coin={coinA} amount={coinAValue}/>
                   <CoinWithAmount coin={coinB} amount={coinBValue}/>

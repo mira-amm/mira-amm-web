@@ -31,11 +31,15 @@ const CoinInput = ({ coin, value, loading, setAmount, balance, usdRate, newPool,
   };
 
   const handleMaxClick = useCallback(() => {
-    const amount = coin === "ETH" ?
-      (Math.max(balance - MinEthValue, balance)).toFixed(9) :
-      balance.toString();
+    let amountStringToSet;
+    if (coin === "ETH") {
+      const amountWithoutGasFee = balance - MinEthValue;
+      amountStringToSet = amountWithoutGasFee > 0 ? amountWithoutGasFee.toFixed(9) : balance.toString();
+    } else {
+      amountStringToSet = balance.toString();
+    }
 
-    setAmount(amount);
+    setAmount(amountStringToSet);
   }, [coin, balance, setAmount]);
 
   const balanceValue = balance.toLocaleString(DefaultLocale, { minimumFractionDigits: decimals });

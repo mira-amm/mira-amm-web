@@ -30,6 +30,10 @@
   background-color: var(--background-grey-dark);
 }
 
+.pending {
+  color: var(--content-dimmed-dark);
+}
+
 .feesTitle {
   display: flex;
   justify-content: space-between;

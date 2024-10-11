@@ -1,4 +1,4 @@
-import {useQuery, useQueryClient} from "@tanstack/react-query";
+import {useQuery} from "@tanstack/react-query";
 import {CurrencyBoxMode, SwapState} from "@/src/components/common/Swap/Swap";
 import useSwapData from "@/src/hooks/useAssetPair/useSwapData";
 import useReadonlyMira from "@/src/hooks/useReadonlyMira";
@@ -84,7 +84,7 @@ const useSwapPreview = ({ swapState, mode }: Props) => {
     },
     retryDelay: 1000,
     enabled: amountNonZero,
-    // refetchInterval: 1000,
+    refetchInterval: 15000,
   });
 
   const miraAmm = useReadonlyMira();

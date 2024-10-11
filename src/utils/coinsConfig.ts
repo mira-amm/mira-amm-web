@@ -1,6 +1,6 @@
 import {ValidNetworkChainId} from "@/src/utils/constants";
 
-import assets from './verified-assets.json';
+import assets from './verified-assets-day-1.json';
 
 // TODO: Consider removing this type as we won't probably know the list of all coins ahead of time
 export type CoinName = 'ETH' | 'USDC' | 'USDT' | null;
