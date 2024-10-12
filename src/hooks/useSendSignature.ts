@@ -8,11 +8,12 @@ import {hasSignMessageCustomCurve} from "@fuels/connectors";
 
 const signMessage = async (wallet: Account, connector: FuelConnector | null, message: string) => {
   if (hasSignMessageCustomCurve(connector)) {
-    return connector.signMessageCustomCurve(message);
+    const result = await connector.signMessageCustomCurve(message);
+    return [result.curve, result.signature];
   } else if (connector) {
-    return wallet.signMessage(message);
+    return [null, await wallet.signMessage(message)];
   }
-  return null;
+  return [null, null];
 }
 
 const useSendSignature = (message: string) => {
@@ -26,8 +27,19 @@ const useSendSignature = (message: string) => {
     }
 
     const address = toBech32(account);
-    const signature = await signMessage(wallet, currentConnector, message);
+    const [curve, signature] = await signMessage(wallet, currentConnector, message);
     const messageHash = await calculateSHA256Hash(message);
+    let requestBody = {
+      address,
+      msg_hash: messageHash,
+      signature,
+    };
+    if (curve) {
+      requestBody = {
+        ...requestBody,
+        ...{curve},
+      };
+    }
 
     const response = await fetch(
       `${ApiBaseUrl}/signatures`,
@@ -36,11 +48,7 @@ const useSendSignature = (message: string) => {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({
-          address,
-          msg_hash: messageHash,
-          signature,
-        }),
+        body: JSON.stringify(requestBody),
       },
     );
 
