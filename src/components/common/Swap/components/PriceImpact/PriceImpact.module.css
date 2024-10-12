@@ -19,6 +19,10 @@
     color: #e56910;
   }
 
+  .positive {
+    color: var(--content-positive);
+  }
+
   .hidden {
     opacity: 0;
   }

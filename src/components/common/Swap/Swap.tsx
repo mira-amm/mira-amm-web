@@ -309,22 +309,28 @@ const Swap = () => {
   const inputPreviewLoading = previewLoading && activeMode === "buy";
   const outputPreviewLoading = previewLoading && activeMode === "sell";
 
-  const { reservesPrice } = useReservesPrice({ pools: previewData?.pools, sellAssetName: swapState.sell.coin });
-
-  const previewPrice = useMemo(() => {
-    const sellNumericValue = parseFloat(swapState.sell.amount);
-    const buyNumericValue = parseFloat(swapState.buy.amount);
-
-    if (!isNaN(sellNumericValue) && !isNaN(buyNumericValue)) {
-      return buyNumericValue / sellNumericValue;
-    }
-
-    return;
-  }, [swapState.buy.amount, swapState.sell.amount]);
+  // const { reservesPrice } = useReservesPrice({ pools: previewData?.pools, sellAssetName: swapState.sell.coin });
+  //
+  // const previewPrice = useMemo(() => {
+  //   const sellNumericValue = parseFloat(swapState.sell.amount);
+  //   const buyNumericValue = parseFloat(swapState.buy.amount);
+  //
+  //   if (!isNaN(sellNumericValue) && !isNaN(buyNumericValue)) {
+  //     return buyNumericValue / sellNumericValue;
+  //   }
+  //
+  //   return;
+  // }, [swapState.buy.amount, swapState.sell.amount]);
 
   const { ratesData } = useUSDRate(swapState.sell.coin, swapState.buy.coin);
   const firstAssetRate = ratesData?.find((item) => item.asset === swapState.sell.coin)?.rate;
   const secondAssetRate = ratesData?.find((item) => item.asset === swapState.buy.coin)?.rate;
+
+  const firstAssetNumericAmount = parseFloat(sellValue);
+  const secondAssetNumericAmount = parseFloat(buyValue);
+  const firstAssetUsdValue = firstAssetRate && !isNaN(firstAssetNumericAmount) ? firstAssetNumericAmount * parseFloat(firstAssetRate) : undefined;
+  const secondAssetUsdValue = secondAssetRate && !isNaN(secondAssetNumericAmount) ? secondAssetNumericAmount * parseFloat(secondAssetRate) : undefined;
+  const priceImpact = firstAssetUsdValue && secondAssetUsdValue ? (secondAssetUsdValue - firstAssetUsdValue) / firstAssetUsdValue * 100 : undefined;
 
   return (
     <>
@@ -395,7 +401,7 @@ const Swap = () => {
           )}
         </div>
         <div className={styles.rates}>
-          <PriceImpact reservesPrice={reservesPrice} previewPrice={previewPrice} />
+          <PriceImpact priceImpactValue={priceImpact} previewPending={inputPreviewLoading || outputPreviewLoading} previewError={previewError} />
           <ExchangeRate swapState={swapState} />
         </div>
       </div>
