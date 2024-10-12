@@ -4,7 +4,7 @@ import {useAccount, useCurrentConnector, useWallet} from "@fuels/react";
 import {useCallback} from "react";
 import {Account, FuelConnector, toBech32} from "fuels";
 import {calculateSHA256Hash} from "@/src/utils/common";
-import { hasSignMessageCustomCurve } from "@fuels/connectors";
+import {hasSignMessageCustomCurve} from "@fuels/connectors";
 
 const signMessage = async (wallet: Account, connector: FuelConnector | null, message: string) => {
   if (hasSignMessageCustomCurve(connector)) {

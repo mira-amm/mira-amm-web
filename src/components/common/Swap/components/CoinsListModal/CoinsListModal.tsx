@@ -12,7 +12,7 @@ type Props = {
 
 const coinsList = Array.from(coinsConfig.values());
 
-const priorityOrder: CoinName[] = ['ETH', 'USDC', 'USDT'];
+const priorityOrder: CoinName[] = ['USDT', 'USDC', 'ETH'];
 
 const CoinsListModal = ({ selectCoin, balances }: Props) => {
   const [value, setValue] = useState('');
@@ -48,8 +48,8 @@ const CoinsListModal = ({ selectCoin, balances }: Props) => {
       const firstAssetPriority = priorityOrder.indexOf(coinA.name);
       const secondAssetPriority = priorityOrder.indexOf(coinB.name);
 
-      if (firstAssetPriority !== -1 && secondAssetPriority !== -1) {
-        return firstAssetPriority - secondAssetPriority;
+      if (!(firstAssetPriority === -1 && secondAssetPriority === -1)) {
+        return secondAssetPriority - firstAssetPriority;
       }
 
       const aDecimals = coinsConfig.get(coinA.name)?.decimals!;

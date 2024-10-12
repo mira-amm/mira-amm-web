@@ -63,6 +63,10 @@
   color: var(--content-positive);
 }
 
+.pending {
+  color: var(--content-dimmed-dark);
+}
+
 .poolStability {
   display: flex;
   width: 100%;
