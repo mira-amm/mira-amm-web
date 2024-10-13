@@ -15,9 +15,9 @@ const Providers = ({children}: Props) => {
   return (
     <QueryClientProvider client={queryClient}>
       <FuelProviderWrapper>
-        {/*<DisclaimerWrapper>*/}
+        <DisclaimerWrapper>
           {children}
-        {/*</DisclaimerWrapper>*/}
+        </DisclaimerWrapper>
       </FuelProviderWrapper>
     </QueryClientProvider>
   );
