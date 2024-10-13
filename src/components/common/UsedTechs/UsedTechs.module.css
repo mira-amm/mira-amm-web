@@ -1,6 +1,6 @@
 .usedTechs {
   display: flex;
-  gap: 10px;
+  gap: 16px;
   font-size: 20px;
   line-height: 24px;
   font-weight: 300;
@@ -11,7 +11,7 @@
   .usedTechs {
     font-size: 16px;
     line-height: 22px;
-    gap: 6px;
+    gap: 12px;
     flex-wrap: nowrap;
     overflow: visible;
   }

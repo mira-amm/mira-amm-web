@@ -86,6 +86,18 @@ const Swap = () => {
 
   const isValidNetwork = useCheckActiveNetwork();
 
+  useEffect(() => {
+    if (!isConnected) {
+      setSwapState(initialSwapState);
+      setInputsState(initialInputsState);
+      // setActiveMode("sell");
+      // setSlippage(DefaultSlippageValue);
+      // setSlippageMode("auto");
+      // setTxCost(null);
+      previousPreviewValue.current = "";
+    }
+  }, [isConnected]);
+
   const sellBalance = balances?.find((b) => b.assetId === coinsConfig.get(swapState.sell.coin)?.assetId)?.amount.toNumber();
   const sellBalanceValue = sellBalance ? sellBalance / 10 ** coinsConfig.get(swapState.sell.coin)?.decimals! : 0;
   const buyBalance = balances?.find((b) => b.assetId === coinsConfig.get(swapState.buy.coin)?.assetId)?.amount.toNumber();
