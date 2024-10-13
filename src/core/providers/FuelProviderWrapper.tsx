@@ -12,7 +12,7 @@ import {
   WalletConnectConnector
 } from "@fuels/connectors";
 import {createConfig, http, injected} from "@wagmi/core";
-import {sepolia} from "@wagmi/core/chains";
+import {mainnet} from "@wagmi/core/chains";
 import {walletConnect} from "@wagmi/connectors";
 import {NetworkUrl} from "@/src/utils/constants";
 
@@ -31,9 +31,9 @@ const networks: Array<Network> = [
 const FUEL_CONFIG = createFuelConfig(() => {
   const WalletConnectProjectId = '35b967d8f17700b2de24f0abee77e579';
   const wagmiConfig = createConfig({
-    chains: [sepolia],
+    chains: [mainnet],
     transports: {
-      [sepolia.id]: http(),
+      [mainnet.id]: http(),
     },
     connectors: [
       injected({shimDisconnect: false}),
