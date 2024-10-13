@@ -1,11 +1,11 @@
 import {ReactNode} from "react";
 import {FuelProvider} from "@fuels/react";
-import {CHAIN_IDS, Provider, Network} from "fuels";
+import {CHAIN_IDS, Network, Provider} from "fuels";
 import {isMobile} from "react-device-detect";
 import {
-  createConfig as createFuelConfig,
   BakoSafeConnector,
   BurnerWalletConnector,
+  createConfig as createFuelConfig,
   FueletWalletConnector,
   FuelWalletConnector,
   SolanaConnector,
@@ -31,6 +31,7 @@ const networks: Array<Network> = [
 const FUEL_CONFIG = createFuelConfig(() => {
   const WalletConnectProjectId = '35b967d8f17700b2de24f0abee77e579';
   const wagmiConfig = createConfig({
+    syncConnectedChain: false,
     chains: [mainnet],
     transports: {
       [mainnet.id]: http(),
@@ -92,12 +93,12 @@ const FUEL_CONFIG = createFuelConfig(() => {
   };
 });
 
-const FuelProviderWrapper = ({ children }: Props) => {
+const FuelProviderWrapper = ({children}: Props) => {
   return (
     <FuelProvider
       networks={networks}
       fuelConfig={FUEL_CONFIG}
-      uiConfig={{ suggestBridge: false }}
+      uiConfig={{suggestBridge: false}}
       theme="dark"
     >
       {children}
