@@ -22,10 +22,9 @@ type Props = {
   onCoinSelectorClick: (mode: CurrencyBoxMode) => void;
   usdRate: string | undefined;
   previewError?: Error | null;
-  swapError?: Error | null;
 };
 
-const CurrencyBox = ({ value, coin, mode, balance, setAmount, loading, onCoinSelectorClick, usdRate, previewError, swapError }: Props) => {
+const CurrencyBox = ({ value, coin, mode, balance, setAmount, loading, onCoinSelectorClick, usdRate, previewError }: Props) => {
   const decimals = coinsConfig.get(coin)?.decimals!;
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -67,17 +66,13 @@ const CurrencyBox = ({ value, coin, mode, balance, setAmount, loading, onCoinSel
     }) :
     null;
 
-  let errorMessage: string;
-  if (!previewError && !swapError) {
-    errorMessage = '';
-  } else {
+  let errorMessage = null;
+  if (previewError) {
     errorMessage = 'This swap is currently unavailable';
     if (previewError instanceof InsufficientReservesError) {
       errorMessage = 'Insufficient reserves in pool';
     } else if (previewError instanceof NoRouteFoundError) {
       errorMessage = 'No pool found for this swap';
-    } else if (swapError) {
-      errorMessage = 'An error occurred on swap';
     }
   }
 

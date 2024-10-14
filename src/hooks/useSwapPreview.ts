@@ -49,7 +49,7 @@ const useSwapPreview = ({ swapState, mode }: Props) => {
 
   const tradeType: TradeType = mode === 'sell' ? 'ExactInput' : 'ExactOutput';
 
-  const { data: multihopPreviewData, error: multihopPreviewError, isLoading: multihopPreviewLoading, failureCount: multihopFailureCount } = useQuery({
+  const { data: multihopPreviewData, error: multihopPreviewError, isLoading: multihopPreviewLoading, failureCount: multihopFailureCount, refetch } = useQuery({
     queryKey: ['multihopPreview', inputAssetId, outputAssetId, normalizedAmount, tradeType],
     queryFn: async () => {
       const res = await fetch(`${ApiBaseUrl}/find_route`, {
@@ -152,7 +152,7 @@ const useSwapPreview = ({ swapState, mode }: Props) => {
       return failureCount < 1;
     },
     retryDelay: 1000,
-    // refetchInterval: 15000,
+    refetchInterval: 15000,
   });
 
   let previewData: SwapPreviewData | null = null;
@@ -176,6 +176,7 @@ const useSwapPreview = ({ swapState, mode }: Props) => {
     previewData,
     previewLoading: multihopPreviewLoading || fallbackPreviewLoading,
     previewError,
+    refetchPreview: refetch,
   };
 };
 

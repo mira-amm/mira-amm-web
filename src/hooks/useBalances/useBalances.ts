@@ -17,7 +17,7 @@ const useBalances = () => {
     enabled: Boolean(wallet),
   });
 
-  return { balances: data?.balances, isPending, refetch };
+  return { balances: data?.balances, balancesPending: isPending, refetchBalances: refetch };
 };
 
 export default useBalances;

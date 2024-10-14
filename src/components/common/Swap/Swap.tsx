@@ -1,4 +1,4 @@
-import {Fragment, useCallback, useEffect, useMemo, useRef, useState} from "react";
+import {useCallback, useEffect, useMemo, useRef, useState} from "react";
 import { useConnectUI, useIsConnected } from "@fuels/react";
 import { useDebounceCallback, useLocalStorage } from "usehooks-ts";
 import { clsx } from "clsx";
@@ -15,22 +15,21 @@ import useSwap from "@/src/hooks/useSwap/useSwap";
 import styles from "./Swap.module.css";
 import ExchangeRate from "@/src/components/common/Swap/components/ExchangeRate/ExchangeRate";
 import useExchangeRate from "@/src/hooks/useExchangeRate/useExchangeRate";
-import { getAssetNameByAssetId, openNewTab } from "@/src/utils/common";
+import {createPoolKey, getAssetNameByAssetId, openNewTab} from "@/src/utils/common";
 import useBalances from "@/src/hooks/useBalances/useBalances";
 import CoinsListModal from "@/src/components/common/Swap/components/CoinsListModal/CoinsListModal";
 import SwapSuccessModal from "@/src/components/common/Swap/components/SwapSuccessModal/SwapSuccessModal";
 import SettingsModalContent from "@/src/components/common/Swap/components/SettingsModalContent/SettingsModalContent";
 import useCheckEthBalance from "@/src/hooks/useCheckEthBalance/useCheckEthBalance";
 import useInitialSwapState from "@/src/hooks/useInitialSwapState/useInitialSwapState";
-import { InsufficientReservesError } from "mira-dex-ts/dist/sdk/errors";
 import useCheckActiveNetwork from "@/src/hooks/useCheckActiveNetwork";
 import useSwapPreview from "@/src/hooks/useSwapPreview";
-import usePoolsMetadata from "@/src/hooks/usePoolsMetadata";
 import PriceImpact from "@/src/components/common/Swap/components/PriceImpact/PriceImpact";
 import useUSDRate from "@/src/hooks/useUSDRate";
 import {FuelAppUrl} from "@/src/utils/constants";
-import useReadonlyMira from "@/src/hooks/useReadonlyMira";
 import useReservesPrice from "@/src/hooks/useReservesPrice";
+import SwapFailureModal from "@/src/components/common/Swap/components/SwapFailureModal/SwapFailureModal";
+import {FuelError} from "fuels";
 
 export type CurrencyBoxMode = "buy" | "sell";
 export type CurrencyBoxState = {
@@ -61,6 +60,7 @@ const Swap = () => {
   const [SettingsModal, openSettingsModal, closeSettingsModal] = useModal();
   const [CoinsModal, openCoinsModal, closeCoinsModal] = useModal();
   const [SuccessModal, openSuccess] = useModal();
+  const [FailureModal, openFailure, closeFailureModal] = useModal();
 
   const initialSwapState = useInitialSwapState();
 
@@ -82,7 +82,7 @@ const Swap = () => {
 
   const { isConnected } = useIsConnected();
   const { connect, isConnecting } = useConnectUI();
-  const { balances, isPending, refetch } = useBalances();
+  const { balances, balancesPending, refetchBalances } = useBalances();
 
   const isValidNetwork = useCheckActiveNetwork();
 
@@ -103,7 +103,15 @@ const Swap = () => {
   const buyBalance = balances?.find((b) => b.assetId === coinsConfig.get(swapState.buy.coin)?.assetId)?.amount.toNumber();
   const buyBalanceValue = buyBalance ? buyBalance / 10 ** coinsConfig.get(swapState.buy.coin)?.decimals! : 0;
 
-  const { previewData, previewLoading, previewError } = useSwapPreview({ swapState, mode: activeMode });
+  const {
+    previewData,
+    previewLoading,
+    previewError,
+    refetchPreview,
+  } = useSwapPreview({
+    swapState,
+    mode: activeMode
+  });
   const anotherMode = activeMode === "sell" ? "buy" : "sell";
   const decimals =
     anotherMode === "sell" ? coinsConfig.get(swapState.sell.coin)?.decimals! : coinsConfig.get(swapState.buy.coin)?.decimals!;
@@ -255,12 +263,28 @@ const Swap = () => {
     closeCoinsModal();
   };
 
-  const { fetchTxCost, triggerSwap, swapPending, swapResult, txCostError, swapError } = useSwap({
+  const {
+    fetchTxCost,
+    txCostPending,
+    txCostError,
+    resetTxCost,
+    triggerSwap,
+    swapPending,
+    swapResult,
+    swapError,
+    resetSwap,
+  } = useSwap({
     swapState,
     mode: activeMode,
     slippage,
     pools: previewData?.pools,
   });
+
+  const resetSwapErrors = useCallback(async () => {
+    await refetchPreview();
+    resetTxCost();
+    resetSwap();
+  }, [refetchPreview, resetSwap, resetTxCost]);
 
   const coinMissing = swapState.buy.coin === null || swapState.sell.coin === null;
   const amountMissing = swapState.buy.amount === "" || swapState.sell.amount === "";
@@ -276,35 +300,46 @@ const Swap = () => {
     }
 
     swapStateForPreview.current = swapState;
-    const txCostData = await fetchTxCost();
+    try {
+      const txCostData = await fetchTxCost();
 
-    if (txCostData?.txCost.gasPrice) {
-      setTxCost(txCostData.txCost.gasPrice.toNumber() / 10 ** 9);
-    }
+      if (txCostData?.txCost.gasPrice) {
+        setTxCost(txCostData.txCost.gasPrice.toNumber() / 10 ** 9);
+      }
 
-    if (txCostData?.tx) {
-      const swapResult = await triggerSwap(txCostData.tx);
-      if (swapResult) {
-        openSuccess();
-        await refetch();
+      if (txCostData?.tx) {
+        const swapResult = await triggerSwap(txCostData.tx);
+        if (swapResult) {
+          openSuccess();
+          await refetchBalances();
+        }
+      }
+    } catch (e) {
+      console.error(e);
+      if (e instanceof Error && !e.message.includes('User canceled sending transaction')) {
+        openFailure();
       }
     }
-  }, [sufficientEthBalance, amountMissing, swapPending, swapState, fetchTxCost, triggerSwap, openSuccess, refetch]);
+  }, [
+    sufficientEthBalance,
+    amountMissing,
+    swapPending,
+    swapState,
+    fetchTxCost,
+    triggerSwap,
+    openSuccess,
+    openFailure,
+    refetchBalances
+  ]);
 
   const insufficientSellBalance = parseFloat(sellValue) > sellBalanceValue;
-  // const ethWithZeroBalanceSelected =
-  //   swapState.sell.coin === "ETH" &&
-  //   balances?.find((b) => b.assetId === coinsConfig.get("ETH")?.assetId)?.amount.toNumber() === 0;
   const showInsufficientBalance = insufficientSellBalance && sufficientEthBalance;
-  // const insufficientReserves = previewError instanceof InsufficientReservesError;
 
   let swapButtonTitle = "Swap";
   if (!isValidNetwork) {
     swapButtonTitle = "Incorrect network";
   } else if (swapPending) {
     swapButtonTitle = "Waiting for approval in wallet";
-  // } else if (insufficientReserves) {
-  //   swapButtonTitle = "Insufficient reserves in pool";
   } else if (!sufficientEthBalance) {
     swapButtonTitle = "Bridge more ETH to pay for gas";
   } else if (showInsufficientBalance) {
@@ -380,7 +415,6 @@ const Swap = () => {
             onCoinSelectorClick={handleCoinSelectorClick}
             usdRate={secondAssetRate}
             previewError={activeMode === 'sell' && !outputPreviewLoading ? previewError : null}
-            // swapError={txCostError || swapError}
           />
           {swapPending && (
             <div className={styles.summary}>
@@ -399,9 +433,10 @@ const Swap = () => {
                     // TODO: Add fallback icon if asset icon is not found
                     const firstAssetIcon = coinsConfig.get(firstAssetName)?.icon!;
                     const secondAssetIcon = coinsConfig.get(secondAssetName)?.icon!;
+                    const poolKey = createPoolKey(pool);
 
                     return (
-                      <div className={styles.poolsFee} key={pool.toString()}>
+                      <div className={styles.poolsFee} key={poolKey}>
                         <img src={firstAssetIcon} alt={firstAssetName} />
                         <img src={secondAssetIcon} alt={secondAssetName} />
                         <p>
@@ -428,7 +463,7 @@ const Swap = () => {
             </ActionButton>
           )}
           {isConnected && (
-            <ActionButton variant="primary" disabled={swapDisabled} onClick={handleSwapClick} loading={isPending}>
+            <ActionButton variant="primary" disabled={swapDisabled} onClick={handleSwapClick} loading={balancesPending || txCostPending}>
               {swapButtonTitle}
             </ActionButton>
           )}
@@ -454,6 +489,9 @@ const Swap = () => {
       <SuccessModal title={<></>}>
         <SwapSuccessModal swapState={swapStateForPreview.current} transactionHash={swapResult?.id} />
       </SuccessModal>
+      <FailureModal title="Swap failed" onClose={resetSwapErrors}>
+        <SwapFailureModal error={txCostError || swapError} closeModal={closeFailureModal} />
+      </FailureModal>
     </>
   );
 };
