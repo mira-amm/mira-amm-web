@@ -9,19 +9,21 @@ import OttersecIcon from "@/src/components/icons/Ottersec/OttersecIcon";
 export const TechsDivider = () => {
   return (
     <Divider className={styles.techsDivider}>
-      <DividerText text="Trade with confidence" />
+      <DividerText text="Trade with confidence" dimmed/>
       <div className={styles.logosArea}>
         <div className={styles.scrollingContent}>
           <UsedTechs text="Audited by">
             <a
               className={styles.TechsDividerLink}
               href="https://docs.mira.ly/developer-guides/security-audit"
+              target="_blank"
             >
               <OttersecIcon/>
             </a>
             <a
               className={styles.TechsDividerLink}
               href="https://docs.mira.ly/developer-guides/security-audit"
+              target="_blank"
             >
               <Halborn/>
             </a>
@@ -30,6 +32,7 @@ export const TechsDivider = () => {
             <a
               className={styles.TechsDividerLink}
               href="https://fuel.network"
+              target="_blank"
             >
               <div className={styles.fuelIcon}><FuelGroup /></div>
             </a>
@@ -38,12 +41,14 @@ export const TechsDivider = () => {
             <a
               className={styles.TechsDividerLink}
               href="https://docs.mira.ly/developer-guides/security-audit"
+              target="_blank"
             >
               <OttersecIcon/>
             </a>
             <a
               className={styles.TechsDividerLink}
               href="https://docs.mira.ly/developer-guides/security-audit"
+              target="_blank"
             >
               <Halborn/>
             </a>
@@ -52,6 +57,7 @@ export const TechsDivider = () => {
             <a
               className={styles.TechsDividerLink}
               href="https://fuel.network"
+              target="_blank"
             >
               <div className={styles.fuelIcon}><FuelGroup /></div>
             </a>
@@ -60,12 +66,14 @@ export const TechsDivider = () => {
             <a
               className={styles.TechsDividerLink}
               href="https://docs.mira.ly/developer-guides/security-audit"
+              target="_blank"
             >
               <OttersecIcon/>
             </a>
             <a
               className={styles.TechsDividerLink}
               href="https://docs.mira.ly/developer-guides/security-audit"
+              target="_blank"
             >
               <Halborn/>
             </a>
@@ -74,6 +82,7 @@ export const TechsDivider = () => {
             <a
               className={styles.TechsDividerLink}
               href="https://fuel.network"
+              target="_blank"
             >
               <div className={styles.fuelIcon}><FuelGroup /></div>
             </a>
@@ -82,12 +91,14 @@ export const TechsDivider = () => {
             <a
               className={styles.TechsDividerLink}
               href="https://docs.mira.ly/developer-guides/security-audit"
+              target="_blank"
             >
               <OttersecIcon/>
             </a>
             <a
               className={styles.TechsDividerLink}
               href="https://docs.mira.ly/developer-guides/security-audit"
+              target="_blank"
             >
               <Halborn/>
             </a>
@@ -96,6 +107,7 @@ export const TechsDivider = () => {
             <a
               className={styles.TechsDividerLink}
               href="https://fuel.network"
+              target="_blank"
             >
               <div className={styles.fuelIcon}><FuelGroup /></div>
             </a>
@@ -104,12 +116,14 @@ export const TechsDivider = () => {
             <a
               className={styles.TechsDividerLink}
               href="https://docs.mira.ly/developer-guides/security-audit"
+              target="_blank"
             >
               <OttersecIcon/>
             </a>
             <a
               className={styles.TechsDividerLink}
               href="https://docs.mira.ly/developer-guides/security-audit"
+              target="_blank"
             >
               <Halborn/>
             </a>
@@ -118,6 +132,7 @@ export const TechsDivider = () => {
             <a
               className={styles.TechsDividerLink}
               href="https://fuel.network"
+              target="_blank"
             >
               <div className={styles.fuelIcon}><FuelGroup /></div>
             </a>
@@ -126,12 +141,14 @@ export const TechsDivider = () => {
             <a
               className={styles.TechsDividerLink}
               href="https://docs.mira.ly/developer-guides/security-audit"
+              target="_blank"
             >
               <OttersecIcon/>
             </a>
             <a
               className={styles.TechsDividerLink}
               href="https://docs.mira.ly/developer-guides/security-audit"
+              target="_blank"
             >
               <Halborn/>
             </a>
@@ -140,6 +157,7 @@ export const TechsDivider = () => {
             <a
               className={styles.TechsDividerLink}
               href="https://fuel.network"
+              target="_blank"
             >
               <div className={styles.fuelIcon}><FuelGroup /></div>
             </a>

@@ -140,8 +140,8 @@ const TransactionsHistory = forwardRef<HTMLDivElement, TransactionsHistoryProps>
   const groupedTransactions = transformTransactionsDataAndGroupByDate(transactions);
 
   const handleCopy = () => {
-    if (navigator.clipboard && walletAddress !== "Connect Wallet") {
-      navigator.clipboard.writeText(walletAddress).then(
+    if (navigator.clipboard && account) {
+      navigator.clipboard.writeText(account).then(
         () => {
           console.log("Address copied to clipboard!");
         },

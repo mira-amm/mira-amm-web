@@ -6,6 +6,10 @@
     font-weight: 400;
 }
 
+.dimmed {
+    color: var(--content-dimmed-light);
+}
+
 @media (max-width: 1024px) {
     .dividerText {
         font-size: 16px;

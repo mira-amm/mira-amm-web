@@ -12,7 +12,7 @@ const InfoBlock = ({ title, value, type }: Props) => {
     <div className={styles.infoBlock}>
       <p>{title}</p>
       <p className={clsx(styles.infoBlockValue, type === 'positive' && styles.infoBlockValuePositive, !value && styles.pending)}>
-        {value ?? 'Pending'}
+        {value ?? 'Awaiting data'}
       </p>
     </div>
   )

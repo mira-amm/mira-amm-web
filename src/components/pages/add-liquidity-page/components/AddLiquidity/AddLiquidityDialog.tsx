@@ -187,7 +187,7 @@ const AddLiquidityDialog = ({ poolId, setPreviewData, newPool }: Props) => {
                 Estimated APR
                 <Info tooltipText={APRTooltip} />
                 <span className={clsx(aprValue && styles.highlight, !aprValue && styles.pending)}>
-                  {aprValue ? `${aprValue}%` : 'Pending'}
+                  {aprValue ? `${aprValue}%` : 'Awaiting data'}
                 </span>
               </div>
             )}
