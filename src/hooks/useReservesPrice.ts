@@ -19,7 +19,7 @@ const useReservesPrice = ({ pools, sellAssetName }: Props) => {
     queryKey: ['reservesPrice', sellAssetId, pools],
     queryFn: async () => {
       const [rate, decimalsIs, decimalsOut] = await miraAmm!.getCurrentRate({ bits: sellAssetId! }, pools!);
-      return rate.toNumber() * (10 ** (decimalsIs ?? 0)) / (10 ** (decimalsOut ?? 0));
+      return rate * (10 ** (decimalsIs ?? 0)) / (10 ** (decimalsOut ?? 0));
     },
     enabled: shouldFetch,
   });
