@@ -60,7 +60,7 @@ const CurrencyBox = ({ value, coin, mode, balance, setAmount, loading, onCoinSel
   const balanceValue = balance.toLocaleString(DefaultLocale, {minimumFractionDigits: decimals});
 
   const numericValue = parseFloat(value);
-  const usdValue = !previewError && !isNaN(numericValue) && Boolean(usdRate) ?
+  const usdValue = !isNaN(numericValue) && Boolean(usdRate) ?
     (numericValue * parseFloat(usdRate!)).toLocaleString(DefaultLocale, {
       minimumFractionDigits: 2,
       maximumFractionDigits: 2
