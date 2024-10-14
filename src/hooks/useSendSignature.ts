@@ -7,6 +7,10 @@ import {calculateSHA256Hash} from "@/src/utils/common";
 import {hasSignMessageCustomCurve} from "@fuels/connectors";
 
 const signMessage = async (wallet: Account, connector: FuelConnector | null, message: string) => {
+  if (connector?.name === 'Bako Safe') {
+    // Temporary solution to disable message signing for Bako, while they don't support this
+    return ['bako', 'bako'];
+  }
   if (hasSignMessageCustomCurve(connector)) {
     const result = await connector.signMessageCustomCurve(message);
     return [result.curve, result.signature];
