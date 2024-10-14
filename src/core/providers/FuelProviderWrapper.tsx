@@ -16,7 +16,7 @@ import {mainnet} from "@wagmi/core/chains";
 import {walletConnect} from "@wagmi/connectors";
 import {NetworkUrl} from "@/src/utils/constants";
 
-type ConnectorConfig = Partial<{ chainId: number, fuelProvider: Promise<Provider> }>;
+type ExternalConnectorConfig = Partial<{ chainId: number, fuelProvider: Promise<Provider> }>;
 type Props = {
   children: ReactNode;
 };
@@ -52,45 +52,36 @@ const FUEL_CONFIG = createFuelConfig(() => {
 
   const fuelProvider = Provider.create(NetworkUrl);
 
-  const connectorConfig: ConnectorConfig = {
+  const externalConnectorConfig: ExternalConnectorConfig = {
     chainId: CHAIN_IDS.fuel.mainnet,
     fuelProvider,
   };
 
+  const fueletWalletConnector = new FueletWalletConnector();
+  const burnerWalletConnector = new BurnerWalletConnector({
+    fuelProvider,
+  });
+  const fuelWalletConnector = new FuelWalletConnector();
+  const bakoSafeConnector = new BakoSafeConnector();
+  const walletConnectConnector = new WalletConnectConnector({
+    projectId: WalletConnectProjectId,
+    wagmiConfig: wagmiConfig as any,
+    ...externalConnectorConfig
+  });
+  const solanaConnector = new SolanaConnector({
+    projectId: WalletConnectProjectId,
+    ...externalConnectorConfig
+  });
+
   return {
-    networks,
-    connectors: isMobile ? [
-      new FueletWalletConnector(),
-      new BurnerWalletConnector({
-        fuelProvider,
-      }),
-      new WalletConnectConnector({
-        projectId: WalletConnectProjectId,
-        wagmiConfig: wagmiConfig as any,
-        fuelProvider,
-      }),
-      new SolanaConnector({
-        projectId: WalletConnectProjectId,
-        ...connectorConfig
-      }),
-    ] : [
-      new FueletWalletConnector(),
-      new BurnerWalletConnector({
-        fuelProvider,
-      }),
-      new FuelWalletConnector(),
-      new BakoSafeConnector(),
-      new WalletConnectConnector({
-        projectId: WalletConnectProjectId,
-        wagmiConfig: wagmiConfig as any,
-        fuelProvider,
-      }),
-      new SolanaConnector({
-        projectId: WalletConnectProjectId,
-        ...connectorConfig
-      }),
+    connectors: [
+      fueletWalletConnector,
+      burnerWalletConnector,
+      walletConnectConnector,
+      solanaConnector,
+      ...(isMobile ? [] : [fuelWalletConnector, bakoSafeConnector]),
     ]
-  };
+  }
 });
 
 const FuelProviderWrapper = ({children}: Props) => {
