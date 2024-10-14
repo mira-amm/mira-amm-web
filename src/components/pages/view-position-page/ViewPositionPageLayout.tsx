@@ -19,7 +19,7 @@ import {
   floorToTwoSignificantDigits,
   getCoinsFromKey
 } from "@/src/utils/common";
-import {useCallback, useState} from "react";
+import {useCallback, useRef, useState} from "react";
 import useRemoveLiquidity from "@/src/hooks/useRemoveLiquidity";
 import {useRouter, useSearchParams} from "next/navigation";
 import {coinsConfig} from "@/src/utils/coinsConfig";
@@ -48,20 +48,27 @@ const ViewPositionPageLayout = () => {
 
   const { positionData: { assets, lpTokenBalance } } = usePositionData({ pool });
 
+  const [removeLiquidityValue, setRemoveLiquidityValue] = useState(50);
+
   const coinADecimals = coinsConfig.get(coinA)?.decimals!;
   const coinAAsset = assets?.[0];
   const coinAAmount = (coinAAsset?.[1].toNumber() ?? 0) / 10 ** coinADecimals;
+  const currentCoinAAmount = coinAAmount.toLocaleString(DefaultLocale, { minimumFractionDigits: coinADecimals });
   let coinAValue = coinAAmount
     .toLocaleString(DefaultLocale, { minimumFractionDigits: coinAAmount < 1 ? 5 : 2 });
   coinAValue = coinAValue === '0.00000' ? '<0.00001' : coinAValue;
+  const coinAAmountToWithdraw = (coinAAmount * removeLiquidityValue / 100).toLocaleString(DefaultLocale, { minimumFractionDigits: coinADecimals });
+
   const coinBDecimals = coinsConfig.get(coinB)?.decimals!;
   const coinBAsset = assets?.[1];
   const coinBAmount = (coinBAsset?.[1].toNumber() ?? 0) / 10 ** coinBDecimals;
+  const currentCoinBAmount = coinBAmount.toLocaleString(DefaultLocale, { minimumFractionDigits: coinBDecimals });
   let coinBValue = coinBAmount
     .toLocaleString(DefaultLocale, { minimumFractionDigits: coinBAmount < 1 ? 5 : 2 });
   coinBValue = coinBValue === '0.00000' ? '<0.00001' : coinBValue;
+  const coinBAmountToWithdraw = (coinBAmount * removeLiquidityValue / 100).toLocaleString(DefaultLocale, { minimumFractionDigits: coinBDecimals });
 
-  const [removeLiquidityValue, setRemoveLiquidityValue] = useState(50);
+  const confirmationModalAssetsAmounts = useRef({ firstAsset: coinAAmountToWithdraw, secondAsset: coinBAmountToWithdraw });
 
   const { data, removeLiquidity } = useRemoveLiquidity({ pool, liquidity: removeLiquidityValue, lpTokenBalance });
 
@@ -72,6 +79,7 @@ const ViewPositionPageLayout = () => {
   const handleRemoveLiquidity = useCallback(async () => {
     const result = await removeLiquidity();
     if (result) {
+      confirmationModalAssetsAmounts.current = { firstAsset: coinAAmountToWithdraw, secondAsset: coinBAmountToWithdraw };
       closeRemoveLiquidityModal();
       openSuccessModal();
     }
@@ -86,11 +94,6 @@ const ViewPositionPageLayout = () => {
     ? floorToTwoSignificantDigits(rate).toLocaleString()
     : rate.toLocaleString(DefaultLocale, { minimumFractionDigits: 2 });
   const makeRateFontSmaller = flooredRate.length > 10;
-
-  const currentCoinAAmount = coinAAmount.toLocaleString(DefaultLocale, { minimumFractionDigits: coinADecimals });
-  const currentCoinBAmount = coinBAmount.toLocaleString(DefaultLocale, { minimumFractionDigits: coinBDecimals });
-  const coinAAmountToWithdraw = (coinAAmount * removeLiquidityValue / 100).toLocaleString(DefaultLocale, { minimumFractionDigits: coinADecimals });
-  const coinBAmountToWithdraw = (coinBAmount * removeLiquidityValue / 100).toLocaleString(DefaultLocale, { minimumFractionDigits: coinBDecimals });
 
   const lpTokenAssetId = getLPAssetId(DEFAULT_AMM_CONTRACT_ID, pool);
   const formattedLpTokenAssetId = useFormattedAddress(lpTokenAssetId.bits);
@@ -241,8 +244,8 @@ const ViewPositionPageLayout = () => {
         <RemoveLiquiditySuccessModal
           coinA={coinA}
           coinB={coinB}
-          firstCoinAmount={coinAAmountToWithdraw}
-          secondCoinAmount={coinBAmountToWithdraw}
+          firstCoinAmount={confirmationModalAssetsAmounts.current.firstAsset}
+          secondCoinAmount={confirmationModalAssetsAmounts.current.secondAsset}
           transactionHash={data?.id}
         />
       </SuccessModal>

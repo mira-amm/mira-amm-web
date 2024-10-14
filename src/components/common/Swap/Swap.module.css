@@ -99,6 +99,27 @@
   justify-content: space-between;
 }
 
+.feeLine {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.poolsFee {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.poolsFee > img {
+  height: 16px;
+  width: 16px;
+}
+
+.poolsFee > img:first-child {
+  margin-right: -8px;
+}
+
 .rates {
   display: flex;
   justify-content: space-between;

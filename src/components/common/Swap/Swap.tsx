@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import {Fragment, useCallback, useEffect, useMemo, useRef, useState} from "react";
 import { useConnectUI, useIsConnected } from "@fuels/react";
 import { useDebounceCallback, useLocalStorage } from "usehooks-ts";
 import { clsx } from "clsx";
@@ -314,9 +314,14 @@ const Swap = () => {
   const swapDisabled =
     !isValidNetwork || coinMissing || showInsufficientBalance || Boolean(previewError) || !sellValue || !buyValue;
 
-  const feePercentage = 0.3;
   const exchangeRate = useExchangeRate(swapState);
-  const feeValue = ((feePercentage / 100) * parseFloat(sellValue)).toFixed(sellDecimals);
+  const feePercent = previewData?.pools.reduce((percent, pool) => {
+    const isStablePool = pool[2];
+    const poolPercent = isStablePool ? 0.05 : 0.3;
+
+    return percent + poolPercent;
+  }, 0) ?? 0;
+  const feeValue = ((feePercent / 100) * parseFloat(sellValue)).toFixed(sellDecimals);
 
   const inputPreviewLoading = previewLoading && activeMode === "buy";
   const outputPreviewLoading = previewLoading && activeMode === "sell";
@@ -390,7 +395,29 @@ const Swap = () => {
                 <p>{exchangeRate}</p>
               </div>
               <div className={styles.summaryEntry}>
-                <p>Fee ({feePercentage}%)</p>
+                <div className={styles.feeLine}>
+                  <p>Fee</p>
+                  {previewData?.pools.map((pool, index) => {
+                    const isStablePool = pool[2];
+                    const poolFeePercent = isStablePool ? 0.05 : 0.3;
+                    const firstAssetName = getAssetNameByAssetId(pool[0].bits);
+                    const secondAssetName = getAssetNameByAssetId(pool[1].bits);
+                    // TODO: Add fallback icon if asset icon is not found
+                    const firstAssetIcon = coinsConfig.get(firstAssetName)?.icon!;
+                    const secondAssetIcon = coinsConfig.get(secondAssetName)?.icon!;
+
+                    return (
+                      <div className={styles.poolsFee} key={pool.toString()}>
+                        <img src={firstAssetIcon} alt={firstAssetName} />
+                        <img src={secondAssetIcon} alt={secondAssetName} />
+                        <p>
+                          ({poolFeePercent}%)
+                          {index !== previewData.pools.length - 1 && " + "}
+                        </p>
+                      </div>
+                    );
+                  })}
+                </div>
                 <p>
                   {feeValue} {swapState.sell.coin}
                 </p>
