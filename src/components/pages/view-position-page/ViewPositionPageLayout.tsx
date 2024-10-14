@@ -104,8 +104,8 @@ const ViewPositionPageLayout = () => {
     await navigator.clipboard.writeText(lpTokenAssetId.bits);
   }, [lpTokenAssetId.bits]);
 
-  const lpTokenAmount = lpTokenBalance?.toNumber() ?? 0 / 10 ** 9;
-  const lpTokenDisplayValue = lpTokenAmount < 0.01 ? '<0.01' : lpTokenAmount.toLocaleString(DefaultLocale, { minimumFractionDigits: 2 });
+  const lpTokenAmount = (lpTokenBalance?.toNumber() ?? 0) / 10 ** 9;
+  const lpTokenDisplayValue = lpTokenAmount.toLocaleString(DefaultLocale, { minimumFractionDigits: 2 });
 
   return (
     <>
