@@ -37,6 +37,7 @@ const useSendSignature = (message: string) => {
       address,
       msg_hash: messageHash,
       signature,
+      connector: currentConnector?.name
     };
     if (curve) {
       requestBody = {
