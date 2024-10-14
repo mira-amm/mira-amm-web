@@ -1,4 +1,4 @@
-import React from "react";
+import React, {forwardRef, MutableRefObject} from "react";
 import styles from "./DropDownMenu.module.css";
 import clsx from "clsx";
 
@@ -7,10 +7,10 @@ type DropDownMenuProps = {
   children?: React.ReactNode;
 };
 
-export const DropDownMenu = ({ buttons, children }: DropDownMenuProps) => {
+const DropDownMenu = forwardRef<HTMLUListElement, DropDownMenuProps>(function DropDownMenu({ buttons, children }, ref) {
   return (
     <>
-      <ul className={styles.menuList}>
+      <ul className={styles.menuList} ref={ref}>
         {buttons.map((button) => (
           <li key={button.text}>
             <button className={clsx(button.disabled ? styles.menuButtonDisabled : styles.menuButton)} onClick={button.onClick}>
@@ -26,4 +26,6 @@ export const DropDownMenu = ({ buttons, children }: DropDownMenuProps) => {
       </ul>
     </>
   );
-};
+});
+
+export default DropDownMenu;

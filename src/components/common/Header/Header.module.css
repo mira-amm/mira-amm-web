@@ -1,7 +1,7 @@
 .header {
   position: sticky;
   top: 0;
-  z-index: 2;
+  z-index: 10;
 }
 
 .promo {
@@ -57,6 +57,7 @@
 
 @media (min-width: 1024px) {
   .header {
+    position: relative;
     font-size: 18px;
     line-height: 24px;
   }

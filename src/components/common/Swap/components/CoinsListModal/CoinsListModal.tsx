@@ -12,6 +12,8 @@ type Props = {
 
 const coinsList = Array.from(coinsConfig.values());
 
+const priorityOrder: CoinName[] = ['ETH', 'USDC', 'USDT'];
+
 const CoinsListModal = ({ selectCoin, balances }: Props) => {
   const [value, setValue] = useState('');
 
@@ -37,20 +39,38 @@ const CoinsListModal = ({ selectCoin, balances }: Props) => {
     });
   }, [value]);
 
+  // TODO: Pre-sort the list by priorityOrder and alphabet to avoid sorting each time
   const sortedCoinsList = useMemo(() => {
-    if (!balances) {
-      return filteredCoinsList;
-    }
-
     return filteredCoinsList.toSorted((coinA, coinB) => {
-      const aDecimals = coinsConfig.get(coinA.name)?.decimals!;
-      const aBalance = balances.find((b) => b.assetId === coinA.assetId)?.amount.toNumber();
-      const aBalanceValue = aBalance ? aBalance / 10 ** aDecimals : 0;
-      const bDecimals = coinsConfig.get(coinB.name)?.decimals!;
-      const bBalance = balances.find((b) => b.assetId === coinB.assetId)?.amount.toNumber();
-      const bBalanceValue = bBalance ? bBalance / 10 ** bDecimals : 0;
+      const firstAssetPriority = priorityOrder.indexOf(coinA.name);
+      const secondAssetPriority = priorityOrder.indexOf(coinB.name);
+      const bothAssetsHavePriority = firstAssetPriority !== -1 && secondAssetPriority !== -1;
+      const eitherAssetHasPriority = firstAssetPriority !== -1 || secondAssetPriority !== -1;
 
-      return bBalanceValue - aBalanceValue;
+      if (bothAssetsHavePriority) {
+        return firstAssetPriority - secondAssetPriority;
+      } else if (eitherAssetHasPriority) {
+        return firstAssetPriority !== -1 ? -1 : 1;
+      }
+
+      if (balances) {
+        const aDecimals = coinsConfig.get(coinA.name)?.decimals!;
+        const aBalance = balances.find((b) => b.assetId === coinA.assetId)?.amount.toNumber();
+        const aBalanceValue = aBalance ? aBalance / 10 ** aDecimals : 0;
+        const bDecimals = coinsConfig.get(coinB.name)?.decimals!;
+        const bBalance = balances.find((b) => b.assetId === coinB.assetId)?.amount.toNumber();
+        const bBalanceValue = bBalance ? bBalance / 10 ** bDecimals : 0;
+
+        if (bBalanceValue !== aBalanceValue) {
+          return bBalanceValue - aBalanceValue;
+        }
+      }
+
+      if (coinA.name && coinB.name) {
+        return coinA.name.localeCompare(coinB.name);
+      }
+
+      return 0;
     });
   }, [filteredCoinsList, balances]);
 

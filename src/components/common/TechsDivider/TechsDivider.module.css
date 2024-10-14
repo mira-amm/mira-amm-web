@@ -1,7 +1,7 @@
 .techsDivider {
   display: flex;
+  align-items: center;
   justify-content: center;
-  margin: 0 200px 0 141px;
   list-style: none;
   box-sizing: border-box;
   gap: 164px;
@@ -22,6 +22,7 @@
 
 .scrollingContent {
   display: flex;
+  align-items: center;
   gap: 164px;
 }
 
@@ -58,9 +59,10 @@
   }
 
   .logosArea {
-    max-height: 22px;
+    max-height: 30px;
     display: flex;
-    overflow: hidden; 
+    align-items: center;
+    overflow: hidden;
   }
 
   .scrollingContent {

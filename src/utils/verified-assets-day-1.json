@@ -1,0 +1,202 @@
+[
+  {
+    "name": "Ethereum",
+    "symbol": "ETH",
+    "icon": "https://verified-assets.fuel.network/images/eth.svg",
+    "networks": [
+      {
+        "type": "ethereum",
+        "chain": "sepolia",
+        "decimals": 18,
+        "chainId": 11155111
+      },
+      {
+        "type": "ethereum",
+        "chain": "foundry",
+        "decimals": 18,
+        "chainId": 31337
+      },
+      {
+        "type": "ethereum",
+        "chain": "mainnet",
+        "decimals": 18,
+        "chainId": 1
+      },
+      {
+        "type": "fuel",
+        "chain": "devnet",
+        "decimals": 9,
+        "assetId": "0xf8f8b6283d7fa5b672b530cbb84fcccb4ff8dc40f8176ef4544ddb1f1952ad07",
+        "chainId": 0
+      },
+      {
+        "type": "fuel",
+        "chain": "testnet",
+        "decimals": 9,
+        "assetId": "0xf8f8b6283d7fa5b672b530cbb84fcccb4ff8dc40f8176ef4544ddb1f1952ad07",
+        "chainId": 0
+      },
+      {
+        "type": "fuel",
+        "chain": "mainnet",
+        "decimals": 9,
+        "assetId": "0xf8f8b6283d7fa5b672b530cbb84fcccb4ff8dc40f8176ef4544ddb1f1952ad07",
+        "chainId": 9889
+      }
+    ]
+  },
+  {
+    "name": "Manta mBTC",
+    "symbol": "Manta mBTC",
+    "icon": "https://verified-assets.fuel.network/images/manta-mbtc.svg",
+    "networks": [
+      {
+        "type": "ethereum",
+        "chain": "mainnet",
+        "address": "0x4041381e947CFD3D483d67a25C6aa9Dc924250c5",
+        "decimals": 18,
+        "chainId": 1
+      },
+      {
+        "type": "fuel",
+        "chain": "mainnet",
+        "decimals": 9,
+        "chainId": 9889,
+        "contractId": "0x4ea6ccef1215d9479f1024dff70fc055ca538215d2c8c348beddffd54583d0e8",
+        "subId": "0xc5c6d3ed779781883a8939c2728e7418b8e805df44ac8883669b23b18c83cea5",
+        "assetId": "0xaf3111a248ff7a3238cdeea845bb2d43cf3835f1f6b8c9d28360728b55b9ce5b"
+      }
+    ]
+  },
+  {
+    "name": "Manta mETH",
+    "symbol": "Manta mETH",
+    "icon": "https://verified-assets.fuel.network/images/manta-meth.svg",
+    "networks": [
+      {
+        "type": "ethereum",
+        "chain": "mainnet",
+        "address": "0x8CdF550C04Bc9B9F10938368349C9c8051A772b6",
+        "decimals": 18,
+        "chainId": 1
+      },
+      {
+        "type": "fuel",
+        "chain": "mainnet",
+        "decimals": 9,
+        "chainId": 9889,
+        "contractId": "0x4ea6ccef1215d9479f1024dff70fc055ca538215d2c8c348beddffd54583d0e8",
+        "subId": "0x7919181cd42fb703522cf242483d5a7460c905bc0f23cf165b9db76dbf51a7b1",
+        "assetId": "0xafd219f513317b1750783c6581f55530d6cf189a5863fd18bd1b3ffcec1714b4"
+      }
+    ]
+  },
+  {
+    "name": "sDAI",
+    "symbol": "sDAI",
+    "icon": "https://verified-assets.fuel.network/images/sdai.svg",
+    "networks": [
+      {
+        "type": "ethereum",
+        "chain": "mainnet",
+        "address": "0x83f20f44975d03b1b09e64809b757c47f942beea",
+        "decimals": 18,
+        "chainId": 1
+      },
+      {
+        "type": "fuel",
+        "chain": "mainnet",
+        "decimals": 9,
+        "chainId": 9889,
+        "contractId": "0x4ea6ccef1215d9479f1024dff70fc055ca538215d2c8c348beddffd54583d0e8",
+        "subId": "0x3edc5f1ca0ef5712b655998630ae3d24382ade45735dabce3fc6a215a9dc8ab2",
+        "assetId": "0x9e46f919fbf978f3cad7cd34cca982d5613af63ff8aab6c379e4faa179552958"
+      }
+    ]
+  },
+  {
+    "name": "USDT",
+    "symbol": "USDT",
+    "icon": "https://verified-assets.fuel.network/images/usdt.svg",
+    "networks": [
+      {
+        "type": "ethereum",
+        "chain": "mainnet",
+        "address": "0xdAC17F958D2ee523a2206206994597C13D831ec7",
+        "decimals": 6,
+        "chainId": 1
+      },
+      {
+        "type": "fuel",
+        "chain": "mainnet",
+        "decimals": 6,
+        "chainId": 9889,
+        "contractId": "0x4ea6ccef1215d9479f1024dff70fc055ca538215d2c8c348beddffd54583d0e8",
+        "subId": "0x033dd0c9246b67aea1456ed2ea6aaac61253583b7a1c84cd73d968ad7d30b72d",
+        "assetId": "0xa0265fb5c32f6e8db3197af3c7eb05c48ae373605b8165b6f4a51c5b0ba4812e"
+      }
+    ]
+  },
+  {
+    "name": "USDC",
+    "symbol": "USDC",
+    "icon": "https://verified-assets.fuel.network/images/usdc.svg",
+    "networks": [
+      {
+        "type": "ethereum",
+        "chain": "mainnet",
+        "address": "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48",
+        "decimals": 6,
+        "chainId": 1
+      },
+      {
+        "type": "ethereum",
+        "chain": "sepolia",
+        "address": "0x1c7D4B196Cb0C7B01d743Fbc6116a902379C7238",
+        "decimals": 6,
+        "chainId": 11155111
+      },
+      {
+        "type": "fuel",
+        "chain": "mainnet",
+        "decimals": 6,
+        "chainId": 9889,
+        "contractId": "0x4ea6ccef1215d9479f1024dff70fc055ca538215d2c8c348beddffd54583d0e8",
+        "subId": "0xb2114fe7ae91bdf9c23145ee523b2f59fdd7a3c542b93de75c9551873d429757",
+        "assetId": "0x286c479da40dc953bddc3bb4c453b608bba2e0ac483b077bd475174115395e6b"
+      },
+      {
+        "type": "fuel",
+        "chain": "testnet",
+        "decimals": 6,
+        "chainId": 0,
+        "contractId": "0xd02112ef9c39f1cea7c8527c26242ca1f5d26bcfe8d1564bee054d3b04175471",
+        "subId": "0xfdf302563e3ce4548e774c1f85627d21d6f146d23402e20274169b43baf689dc",
+        "assetId": "0xc26c91055de37528492e7e97d91c6f4abe34aae26f2c4d25cff6bfe45b5dc9a9"
+      }
+    ]
+  },
+  {
+    "name": "ezETH",
+    "symbol": "ezETH",
+    "icon": "https://verified-assets.fuel.network/images/ezeth.webp",
+    "networks": [
+      {
+        "type": "ethereum",
+        "chain": "mainnet",
+        "address": "0xbf5495Efe5DB9ce00f80364C8B423567e58d2110",
+        "decimals": 18,
+        "chainId": 1
+      },
+      {
+        "type": "fuel",
+        "chain": "mainnet",
+        "decimals": 9,
+        "chainId": 9889,
+        "contractId": "0x4ea6ccef1215d9479f1024dff70fc055ca538215d2c8c348beddffd54583d0e8",
+        "subId": "0x30d7a65ea7c8f934b8635cff93e9c4510ed9717fa526237ba935e7411830c153",
+        "assetId": "0x91b3559edb2619cde8ffb2aa7b3c3be97efd794ea46700db7092abeee62281b0"
+      }
+    ]
+  }
+]

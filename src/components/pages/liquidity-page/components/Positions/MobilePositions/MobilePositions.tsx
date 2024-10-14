@@ -30,7 +30,7 @@ const MobilePositions = ({ positions }: Props) => {
         const { bits: coinAAssetId } = position[0][0];
         const { bits: coinBAssetId } = position[1][0];
         const key = coinAAssetId.toString() + '-' + coinBAssetId.toString();
-        const poolId = [position[0][0], position[1][0], false] as PoolId;
+        const poolId = [position[0][0], position[1][0], position.isStablePool] as PoolId;
 
         return (
           <Fragment key={key}>

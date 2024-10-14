@@ -20,6 +20,10 @@ const DesktopPools = ({ poolsData }: Props) => {
     router.push(`/liquidity/add?pool=${key}`);
   }, [router]);
 
+  const handleCreateClick = useCallback(() => {
+    router.push('/liquidity/create-pool')
+  }, [router]);
+
   if (!poolsData) {
     return null;
   }
@@ -34,10 +38,10 @@ const DesktopPools = ({ poolsData }: Props) => {
           <th>TVL</th>
           <th>
             {/*<ActionButton*/}
-            {/*  className={styles.addButton}*/}
-            {/*  onClick={() => {}}*/}
+            {/*className={styles.createButton}*/}
+            {/*onClick={handleCreateClick}*/}
             {/*>*/}
-            {/*  Create a pool*/}
+            {/*Create Pool*/}
             {/*</ActionButton>*/}
           </th>
         </tr>
@@ -56,22 +60,26 @@ const DesktopPools = ({ poolsData }: Props) => {
 
           const { details: { apr, volume, tvl } } = poolData;
 
-          const aprValue = parseFloat(apr).toLocaleString(DefaultLocale, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+          const aprValue = apr ?
+            `${parseFloat(apr).toLocaleString(DefaultLocale, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}%`
+            : null;
           const volumeValue = parseFloat(volume).toLocaleString(DefaultLocale, { maximumFractionDigits: 0 });
           const tvlValue = parseFloat(tvl).toLocaleString(DefaultLocale, { maximumFractionDigits: 0 });
 
           return (
             <tr key={key}>
               <td>
-                <CoinPair firstCoin={firstAssetName} secondCoin={secondAssetName} />
+                <CoinPair firstCoin={firstAssetName} secondCoin={secondAssetName} isStablePool={poolId[2]} withPoolDescription />
               </td>
-              <td>{aprValue}%</td>
+              <td className={clsx(!aprValue && styles.pending)}>{aprValue ?? 'Awaiting data'}</td>
               <td>${volumeValue}</td>
               <td>${tvlValue}</td>
               <td>
                 <ActionButton
                   className={styles.addButton}
+                  variant="secondary"
                   onClick={() => handleAddClick(key)}
+                  fullWidth
                 >
                   Add Liquidity
                 </ActionButton>

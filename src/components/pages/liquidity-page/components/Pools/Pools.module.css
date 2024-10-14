@@ -25,9 +25,11 @@
   align-items: center;
 }
 
-.addButton {
-  padding: 10px 20px;
+.createButton {
   font-weight: 400;
+  font-size: 16px;
+  width: 143px;
+  height: 39px;
 }
 
 .loadingFallback img {

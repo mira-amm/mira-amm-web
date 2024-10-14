@@ -15,6 +15,12 @@
   justify-content: space-between;
 }
 
+.poolDescription {
+  font-size: 12px;
+  line-height: 14px;
+  color: #D4B226;
+}
+
 button.addButton {
   font-weight: 500;
   font-size: 16px;

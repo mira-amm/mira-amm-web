@@ -1,48 +1,82 @@
-import {ReactNode} from "react";
+import {ValidNetworkChainId} from "@/src/utils/constants";
 
-import BTCIcon from "@/src/components/icons/coins/Bitcoin/BTCIcon";
-import USDTIcon from "@/src/components/icons/coins/Tether/USDTIcon";
-import ETHIcon from "@/src/components/icons/coins/Ethereum/ETHIcon";
+import assets from './verified-assets-day-1.json';
 
-export type CoinName = 'BTC' | 'USDT' | 'ETH' | null;
+// TODO: Consider removing this type as we won't probably know the list of all coins ahead of time
+export type CoinName = 'ETH' | 'USDC' | 'USDT' | null;
 
 type CoinData = {
   name: CoinName;
   assetId: string;
   decimals: number;
   fullName?: string;
-  icon?: () => ReactNode;
+  icon?: string;
+  contractId?: string;
+  subId?: string;
+  coinGeckoId?: string;
 };
 
-export const coinsConfig: Map<CoinName, CoinData> = new Map([
-  [
-    'BTC',
-    {
-      name: 'BTC',
-      decimals: 8,
-      assetId: '0xce90621a26908325c42e95acbbb358ca671a9a7b36dfb6a5405b407ad1efcd30',
-      fullName: 'Bitcoin Test',
-      icon: BTCIcon,
-    },
-  ],
-  [
-    'ETH',
-    {
-      name: 'ETH',
-      decimals: 9,
-      assetId: '0xf8f8b6283d7fa5b672b530cbb84fcccb4ff8dc40f8176ef4544ddb1f1952ad07',
-      fullName: 'Ethereum',
-      icon: ETHIcon,
-    },
-  ],
-  [
-    'USDT',
-    {
-      name: 'USDT',
-      decimals: 6,
-      assetId: '0x3f007b72f7bcb9b1e9abe2c76e63790cd574b7c34f1c91d6c2f407a5b55676b9',
-      fullName: 'USDT Test',
-      icon: USDTIcon,
-    },
-  ],
-]);
+export const assetSymbolToCoinGeckoId: { [key: string]: string } = {
+  'ETH': "ethereum",
+  'WETH': "weth",
+  'weETH': "wrapped-eeth",
+  'rsETH': "kelp-dao-restaked-eth",
+  'rETH': "rocket-pool-eth",
+  'wbETH': "wrapped-beacon-eth",
+  'rstETH': "wrapped-steth",
+  'amphrETH': "wrapped-steth",
+  'Manta mBTC': "manta-mbtc",
+  'Manta mETH': "manta-meth",
+  'Manta mUSD': "manta-musd",
+  // 'pumpBTC': "wrapped-bitcoin", // #TODO 'pumpbtc' ?
+  'FBTC': "ignition-fbtc",
+  'SolvBTC': "solv-btc",
+  'SolvBTC.BBN': "solv-protocol-solvbtc-bbn",
+  'Mantle mETH': "mantle-staked-ether",
+  'sDAI': "savings-dai",
+  'USDT': "tether",
+  'USDC': "usd-coin",
+  'USDe': "ethena-usde",
+  'sUSDe': "ethena-staked-usde",
+  'rsUSDe': "ethena-staked-usde",
+  'wstETH': "wrapped-steth",
+  'ezETH': "renzo-restaked-eth",
+  'pzETH': "renzo-restaked-lst",
+  'Re7LRT': "wrapped-steth",
+  // 'steakLRT': "wrapped-steth", // TODO steakhouse-resteaking-vault ?
+}
+
+// mapping of asset names & symbols to symbols
+export const assetHandleToSymbol: { [key: string]: string } = {};
+
+assets.forEach(asset => {
+  assetHandleToSymbol[asset.name] = asset.symbol;
+  assetHandleToSymbol[asset.symbol] = asset.symbol;
+});
+
+// TODO: Make an API call to get the coins config
+const initAssetsConfig = () => {
+  const assetsConfig: Map<CoinName, CoinData> = new Map();
+
+  assets.forEach((asset) => {
+    const currentFuelNetworkData = asset.networks.filter(network => network.type === 'fuel' && network.chainId === ValidNetworkChainId);
+    const assetData: CoinData = {
+      name: asset.symbol as CoinName,
+      assetId: currentFuelNetworkData[0].assetId!,
+      decimals: currentFuelNetworkData[0].decimals,
+      fullName: asset.name,
+      icon: asset.icon,
+      // @ts-ignore
+      contractId: currentFuelNetworkData[0].contractId,
+      // @ts-ignore
+      subId: currentFuelNetworkData[0].subId,
+      coinGeckoId: assetSymbolToCoinGeckoId[asset.symbol],
+    }
+
+    assetsConfig.set(asset.symbol as CoinName, assetData);
+  });
+
+  return assetsConfig;
+};
+
+export const coinsConfig: Map<CoinName, CoinData> = initAssetsConfig();

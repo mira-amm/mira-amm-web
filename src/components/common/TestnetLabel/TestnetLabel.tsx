@@ -13,7 +13,7 @@ const TestnetLabel = ({ className }: Props) => {
   return (
     <div className={clsx(styles.testnetLabel, className)}>
       <FuelIcon/>
-      Testnet
+      Mainnet
     </div>
   );
 };

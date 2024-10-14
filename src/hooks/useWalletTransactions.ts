@@ -40,7 +40,7 @@ const useWalletTransactions = (account: B256Address | null, fetchCondition: bool
       url: IndexerUrl,
       document: query,
       variables: {
-        owner: account,
+        owner: account?.toLowerCase(),
         limit: 200,
         offset: 0,
       },

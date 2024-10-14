@@ -18,7 +18,7 @@ import {
 } from "@/src/utils/common";
 import useCheckActiveNetwork from "@/src/hooks/useCheckActiveNetwork";
 import usePoolAPR from "@/src/hooks/usePoolAPR";
-import {DefaultLocale} from "@/src/utils/constants";
+import {DefaultLocale, FuelAppUrl} from "@/src/utils/constants";
 import Info from "@/src/components/common/Info/Info";
 import {
   AddLiquidityPreviewData
@@ -28,6 +28,7 @@ import {
   APRTooltip, StablePoolTooltip,
   VolatilePoolTooltip
 } from "@/src/components/pages/add-liquidity-page/components/AddLiquidity/addLiquidityTooltips";
+import useUSDRate from "@/src/hooks/useUSDRate";
 
 type Props = {
   poolId: PoolId;
@@ -123,7 +124,7 @@ const AddLiquidityDialog = ({ poolId, setPreviewData, newPool }: Props) => {
   const faucetLink = useFaucetLink();
   const handleButtonClick = useCallback(() => {
     if (!sufficientEthBalance) {
-      openNewTab(faucetLink);
+      openNewTab(`${FuelAppUrl}/bridge?from=eth&to=fuel&auto_close=true&=true`);
       return;
     }
 
@@ -160,15 +161,19 @@ const AddLiquidityDialog = ({ poolId, setPreviewData, newPool }: Props) => {
   let buttonTitle = 'Preview';
   if (!isValidNetwork) {
     buttonTitle = 'Incorrect network';
+  } else if (!sufficientEthBalance) {
+    buttonTitle = 'Bridge more ETH to pay for gas';
   } else if (insufficientBalance) {
     buttonTitle = 'Insufficient balance';
-  } else if (!sufficientEthBalance) {
-    buttonTitle = 'Claim some ETH to pay for gas';
   }
 
   const oneOfAmountsIsEmpty = !firstAmount || !secondAmount;
 
   const buttonDisabled = !isValidNetwork || insufficientBalance || oneOfAmountsIsEmpty;
+
+  const { ratesData } = useUSDRate(firstCoin, secondCoin);
+  const firstAssetRate = ratesData?.find((item) => item.asset === firstCoin)?.rate;
+  const secondAssetRate = ratesData?.find((item) => item.asset === secondCoin)?.rate;
 
   return (
     <>
@@ -176,12 +181,14 @@ const AddLiquidityDialog = ({ poolId, setPreviewData, newPool }: Props) => {
         <p>Selected pair</p>
         <div className={styles.sectionContent}>
           <div className={styles.coinPair}>
-            <CoinPair firstCoin={firstCoin} secondCoin={secondCoin} />
+            <CoinPair firstCoin={firstCoin} secondCoin={secondCoin} isStablePool={isStablePool}/>
             {!newPool && (
               <div className={styles.APR}>
                 Estimated APR
                 <Info tooltipText={APRTooltip} />
-                <span className={clsx(styles.highlight, !aprValue && 'blurredText')}>+{aprValue ?? '1,23'}%</span>
+                <span className={clsx(aprValue && styles.highlight, !aprValue && styles.pending)}>
+                  {aprValue ? `${aprValue}%` : 'Awaiting data'}
+                </span>
               </div>
             )}
           </div>
@@ -231,6 +238,7 @@ const AddLiquidityDialog = ({ poolId, setPreviewData, newPool }: Props) => {
             setAmount={setAmount(firstCoin)}
             balance={firstAssetBalanceValue}
             key={firstCoin}
+            usdRate={firstAssetRate}
           />
           <CoinInput
             coin={secondCoin}
@@ -239,6 +247,7 @@ const AddLiquidityDialog = ({ poolId, setPreviewData, newPool }: Props) => {
             setAmount={setAmount(secondCoin)}
             balance={secondAssetBalanceValue}
             key={secondCoin}
+            usdRate={secondAssetRate}
           />
         </div>
       </div>

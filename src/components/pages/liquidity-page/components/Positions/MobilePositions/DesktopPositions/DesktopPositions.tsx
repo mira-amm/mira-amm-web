@@ -50,12 +50,12 @@ const DesktopPositions = ({ positions }: Props) => {
         const coinBAmount = (position[1][1].toNumber() / 10 ** coinBDecimals).toLocaleString(DefaultLocale, { minimumFractionDigits: coinBDecimals });
 
         const key = coinAAssetId.toString() + '-' + coinBAssetId.toString();
-        const poolId = [position[0][0], position[1][0], false] as PoolId;
+        const poolId = [position[0][0], position[1][0], position.isStablePool] as PoolId;
 
         return (
           <tr className={styles.positionRow} key={key} onClick={() => openPosition(poolId)}>
             <td>
-              <CoinPair firstCoin={coinA} secondCoin={coinB} withFee/>
+              <CoinPair firstCoin={coinA} secondCoin={coinB} isStablePool={poolId[2]} withPoolDescription/>
             </td>
             <td>
               {`${coinAAmount} ${coinA} <> ${coinBAmount} ${coinB}`}

@@ -26,21 +26,28 @@ const MobilePoolItem = ({ poolData }: Props) => {
   const { firstAssetName, secondAssetName } = getAssetNamesFromPoolId(poolId);
   const { details: { apr, volume, tvl } } = poolData;
 
-  const aprValue = parseFloat(apr).toLocaleString(DefaultLocale, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  const aprValue = apr ?
+    `${parseFloat(apr).toLocaleString(DefaultLocale, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}%` :
+    null;
   const volumeValue = parseFloat(volume).toLocaleString(DefaultLocale, { maximumFractionDigits: 0 });
   const tvlValue = parseFloat(tvl).toLocaleString(DefaultLocale, { maximumFractionDigits: 0 });
+
+  const isStablePool = poolId[2];
+  const feeText = isStablePool ? '0.05%' : '0.3%';
+  const poolDescription = `${isStablePool ? 'Stable' : 'Volatile'}: ${feeText} fee`;
 
   return (
     <div className={styles.mobilePoolItem}>
       <div className={styles.infoSection}>
-        <CoinPair firstCoin={firstAssetName} secondCoin={secondAssetName} />
+        <CoinPair firstCoin={firstAssetName} secondCoin={secondAssetName} isStablePool={isStablePool} />
         <div className={styles.infoBlocks}>
-          <InfoBlock title="APR" value={`${aprValue}%`} type="positive" />
-          <InfoBlock title="24H Volume" value={`$${volumeValue}`} />
-          <InfoBlock title="TVL" value={`$${tvlValue}`} />
+          <InfoBlock title="APR" value={aprValue} type="positive"/>
+          <InfoBlock title="24H Volume" value={`$${volumeValue}`}/>
+          <InfoBlock title="TVL" value={`$${tvlValue}`}/>
         </div>
+        <p className={styles.poolDescription}>{poolDescription}</p>
       </div>
-      <ActionButton className={styles.addButton} onClick={handleAddClick}>
+      <ActionButton className={styles.addButton} variant="secondary" onClick={handleAddClick} fullWidth>
         Add Liquidity
       </ActionButton>
     </div>

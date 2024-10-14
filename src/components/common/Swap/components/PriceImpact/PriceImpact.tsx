@@ -3,23 +3,21 @@ import styles from "./PriceImpact.module.css";
 import {clsx} from "clsx";
 
 interface PriceImpactProps {
-  reservedPrice: number | null;
-  previewPrice: number | null;
+  reservesPrice: number | undefined;
+  previewPrice: number | undefined;
 }
 
 const PriceImpact: FC<PriceImpactProps> = ({
-  reservedPrice,
+  reservesPrice,
   previewPrice,
 }) => {
-  const priceImpactValue = reservedPrice !== null && previewPrice !== null ?
-    Math.abs(((previewPrice - reservedPrice) / reservedPrice) * 100) :
+  const priceImpactValue = reservesPrice !== undefined && previewPrice !== undefined ?
+    Math.abs(((previewPrice - reservesPrice) / reservesPrice) * 100) :
     -1;
 
   const highPriceImpact = priceImpactValue > 5;
   const mediumPriceImpact = priceImpactValue > 1 && priceImpactValue <= 5;
   const priceImpactHidden = priceImpactValue === -1;
-
-  return null;
 
   return (
     <p className={clsx(

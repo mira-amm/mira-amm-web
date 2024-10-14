@@ -24,10 +24,21 @@
   text-align: center;
 }
 
+.pending {
+  color: var(--content-dimmed-light);
+}
+
 button.addButton {
-  width: 100%;
   padding: 12px;
   font-weight: 500;
+  font-size: 16px;
+  line-height: 19px;
+}
+
+button.createButton {
+  width: 100%;
+  padding: 12px;
+  font-weight: 400;
   font-size: 16px;
   line-height: 19px;
   box-shadow: unset;

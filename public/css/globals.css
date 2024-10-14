@@ -30,6 +30,7 @@
 
 html,
 body {
+  height: 100%;
   max-width: 100vw;
   overflow-x: hidden;
 }
@@ -91,13 +92,6 @@ input:focus {
 
   .mobileOnly {
     display: none !important;
-  }
-}
-
-/* TODO: Dirty hack to reposition connectors list on mobile, check later */
-@media (max-width: 430px) {
-  div[data-state="open"][role="dialog"] {
-    bottom: -148px;
   }
 }
 

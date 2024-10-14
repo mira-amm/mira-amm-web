@@ -1,7 +1,5 @@
 import {useQuery} from "@tanstack/react-query";
-import usePoolsIds from "@/src/hooks/usePoolsIds";
 import {CoinName} from "@/src/utils/coinsConfig";
-import {arePoolIdsEqual, createPoolIdFromIdString} from "@/src/utils/common";
 import {ApiBaseUrl} from "@/src/utils/constants";
 
 export type PoolData = {
@@ -11,7 +9,7 @@ export type PoolData = {
   details: {
     asset_0_symbol: CoinName;
     asset_1_symbol: CoinName;
-    apr: string;
+    apr: string | null;
     volume: string;
     tvl: string;
   };
@@ -24,9 +22,7 @@ export type PoolsData = {
 };
 
 const usePoolsData = () => {
-  const pools = usePoolsIds();
-
-  const { data, isPending } = useQuery({
+  const { data, isLoading } = useQuery({
     queryKey: ['pools'],
     queryFn: async () => {
       const poolsDataResponse = await fetch(`${ApiBaseUrl}/pools`, {
@@ -41,14 +37,11 @@ const usePoolsData = () => {
       });
 
       const poolsData: PoolsData = await poolsDataResponse.json();
-      return poolsData.pools.filter(poolData => {
-        const poolId = createPoolIdFromIdString(poolData.id);
-        return pools.some(predefinedPoolId => arePoolIdsEqual(predefinedPoolId, poolId));
-      });
+      return poolsData.pools.filter(poolData => poolData.details !== null);
     },
   });
 
-  return { data, isPending };
+  return { data, isLoading };
 };
 
 export default usePoolsData;

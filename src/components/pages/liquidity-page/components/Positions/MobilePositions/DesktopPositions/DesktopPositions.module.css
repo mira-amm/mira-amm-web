@@ -33,8 +33,7 @@
 }
 
 .labelCell {
-  display: flex;
-  justify-content: center;
+  text-align: center !important;
   color: var(--content-positive);
 }
 

@@ -30,18 +30,20 @@ const PreviewAddLiquidityDialog = ({ previewData }: Props) => {
 
   const router = useRouter();
 
+  const { assets, isStablePool } = previewData;
+
   const { data, mutateAsync, isPending } = useAddLiquidity({
-    firstAssetName: previewData.assets[0].coin,
-    firstAssetAmount: previewData.assets[0].amount,
-    secondAssetName: previewData.assets[1].coin,
-    secondAssetAmount: previewData.assets[1].amount,
-    isPoolStable: previewData.isStablePool,
+    firstAssetName: assets[0].coin,
+    firstAssetAmount: assets[0].amount,
+    secondAssetName: assets[1].coin,
+    secondAssetAmount: assets[1].amount,
+    isPoolStable: isStablePool,
   });
 
-  const coinA = previewData.assets[0].coin;
-  const coinB = previewData.assets[1].coin;
-  const firstCoinAmount = previewData.assets[0].amount;
-  const secondCoinAmount = previewData.assets[1].amount;
+  const coinA = assets[0].coin;
+  const coinB = assets[1].coin;
+  const firstCoinAmount = assets[0].amount;
+  const secondCoinAmount = assets[1].amount;
 
   const rate = (
     parseFloat(firstCoinAmount) / parseFloat(secondCoinAmount)
@@ -58,11 +60,13 @@ const PreviewAddLiquidityDialog = ({ previewData }: Props) => {
     router.push('/liquidity');
   }, [router]);
 
+  const feeText = isStablePool ? '0.05%' : '0.3%';
+
   return (
     <>
       <div className={styles.section}>
         <div className={styles.previewCoinPair}>
-          <CoinPair firstCoin={coinA} secondCoin={coinB}/>
+          <CoinPair firstCoin={coinA} secondCoin={coinB} isStablePool={isStablePool}/>
         </div>
         <div className={styles.inputsPreview}>
           <div className={styles.inputPreviewRow}>
@@ -75,7 +79,7 @@ const PreviewAddLiquidityDialog = ({ previewData }: Props) => {
           </div>
           <div className={styles.inputPreviewRow}>
             <p>Fee tier</p>
-            <p>0.3%</p>
+            <p>{feeText}</p>
           </div>
         </div>
       </div>

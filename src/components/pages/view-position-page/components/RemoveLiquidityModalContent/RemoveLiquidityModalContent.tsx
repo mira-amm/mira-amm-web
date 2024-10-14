@@ -19,6 +19,7 @@ import {useDebounceCallback} from "usehooks-ts";
 type Props = {
   coinA: CoinName;
   coinB: CoinName;
+  isStablePool: boolean;
   currentCoinAValue: string;
   currentCoinBValue: string;
   coinAValueToWithdraw: string;
@@ -30,12 +31,12 @@ type Props = {
   isValidNetwork: boolean;
 }
 
-const RemoveLiquidityModalContent = ({coinA, coinB, currentCoinAValue, currentCoinBValue, coinAValueToWithdraw, coinBValueToWithdraw, closeModal, liquidityValue, setLiquidityValue, handleRemoveLiquidity, isValidNetwork }: Props) => {
+const RemoveLiquidityModalContent = ({coinA, coinB, isStablePool, currentCoinAValue, currentCoinBValue, coinAValueToWithdraw, coinBValueToWithdraw, closeModal, liquidityValue, setLiquidityValue, handleRemoveLiquidity, isValidNetwork }: Props) => {
   const [displayValue, setDisplayValue] = useState(liquidityValue);
 
   const sliderRef = useRef<HTMLInputElement>(null);
 
-  const debouncedSetValue = useDebounceCallback(setLiquidityValue, 100);
+  const debouncedSetValue = useDebounceCallback(setLiquidityValue, 500);
   const handleMouseUp = (e: MouseEvent<HTMLInputElement> | TouchEvent<HTMLInputElement>) => {
     // @ts-ignore
     debouncedSetValue(Number(e.target.value));
@@ -66,7 +67,7 @@ const RemoveLiquidityModalContent = ({coinA, coinB, currentCoinAValue, currentCo
 
   return (
     <div className={styles.removeLiquidityContent}>
-      <CoinPair firstCoin={coinA} secondCoin={coinB} />
+      <CoinPair firstCoin={coinA} secondCoin={coinB} isStablePool={isStablePool} />
       <div className={styles.valueAndMax}>
         <p className={styles.value}>{displayValue}%</p>
         <button className={styles.maxButton} onClick={handleMax}>Max</button>
@@ -102,7 +103,7 @@ const RemoveLiquidityModalContent = ({coinA, coinB, currentCoinAValue, currentCo
           </tr>
           <tr className={styles.lastRow}>
             <td>
-              Withdraw
+              Remove
             </td>
             <td>
               {coinAValueToWithdraw}

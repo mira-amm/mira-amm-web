@@ -26,7 +26,7 @@ const useRemoveLiquidity = ({ pool, liquidity, lpTokenBalance }: Props) => {
     const txRequest = await mira.removeLiquidity(pool, liquidityAmount, 0, 0, MaxDeadline, DefaultTxParams);
     const gasCost = await wallet.getTransactionCost(txRequest);
     const fundedTx = await wallet.fund(txRequest, gasCost);
-    const tx = await wallet.sendTransaction(fundedTx);
+    const tx = await wallet.sendTransaction(fundedTx, { estimateTxDependencies: true });
     return tx.waitForResult();
   }, [mira, wallet, pool, liquidity, lpTokenBalance]);
 

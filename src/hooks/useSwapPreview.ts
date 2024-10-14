@@ -2,7 +2,9 @@ import {useQuery} from "@tanstack/react-query";
 import {CurrencyBoxMode, SwapState} from "@/src/components/common/Swap/Swap";
 import useSwapData from "@/src/hooks/useAssetPair/useSwapData";
 import useReadonlyMira from "@/src/hooks/useReadonlyMira";
-import {buildPoolId, PoolId} from "mira-dex-ts";
+import {buildPoolId, PoolId, Asset} from "mira-dex-ts";
+import {ApiBaseUrl} from "@/src/utils/constants";
+import {InsufficientReservesError} from "mira-dex-ts/dist/sdk/errors";
 
 type Props = {
   swapState: SwapState;
@@ -21,6 +23,12 @@ type SwapPreviewData = {
   pools: PoolId[];
   previewAmount: number;
 };
+
+export class NoRouteFoundError extends Error {
+  constructor() {
+    super('No route found');
+  }
+}
 
 const useSwapPreview = ({ swapState, mode }: Props) => {
   const {
@@ -41,10 +49,10 @@ const useSwapPreview = ({ swapState, mode }: Props) => {
 
   const tradeType: TradeType = mode === 'sell' ? 'ExactInput' : 'ExactOutput';
 
-  const { data: multihopPreviewData, error: multihopPreviewError, isFetching: multihopPreviewFetching } = useQuery({
+  const { data: multihopPreviewData, error: multihopPreviewError, isLoading: multihopPreviewLoading, failureCount: multihopFailureCount, refetch } = useQuery({
     queryKey: ['multihopPreview', inputAssetId, outputAssetId, normalizedAmount, tradeType],
     queryFn: async () => {
-      const res = await fetch('https://dev.api.mira.ly/find_route', {
+      const res = await fetch(`${ApiBaseUrl}/find_route`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -57,33 +65,94 @@ const useSwapPreview = ({ swapState, mode }: Props) => {
         }),
       });
 
+      if (!res.ok) {
+        if (res.status === 404) {
+          throw new NoRouteFoundError();
+        }
+
+        throw new Error('An error occurred while retrieving the path');
+      }
+
       return await res.json();
     },
-    retry: 2,
+    retry: (failureCount, error) => {
+      if (error instanceof NoRouteFoundError) {
+        return false;
+      }
+
+      return failureCount < 1;
+    },
+    retryDelay: 1000,
     enabled: amountNonZero,
+    refetchInterval: 15000,
   });
 
   const miraAmm = useReadonlyMira();
   const miraExists = Boolean(miraAmm);
-  const pool = buildPoolId(inputAssetId, outputAssetId, false);
-  const shouldFetchFallback = Boolean(multihopPreviewError) && miraExists && amountNonZero;
+  const volatilePool = buildPoolId(inputAssetId, outputAssetId, false);
+  const stablePool = buildPoolId(inputAssetId, outputAssetId, true);
+  const shouldFetchFallback =
+    Boolean(multihopPreviewError) && multihopFailureCount === 2 && miraExists && amountNonZero;
 
-  const { data: fallbackPreviewData, error: fallbackPreviewError, isFetching: fallbackPreviewFetching } = useQuery({
+  async function getFallbackPoolId(): Promise<PoolId | undefined> {
+    try {
+      const volatileMeta = await miraAmm?.poolMetadata(volatilePool).catch(() => undefined);
+      const stableMeta = await miraAmm?.poolMetadata(stablePool).catch(() => undefined);
+
+      if (!volatileMeta && !stableMeta) {
+        return undefined;
+      }
+
+      if (!volatileMeta) return stablePool;
+      if (!stableMeta) return volatilePool;
+
+      const volatileReservesProduct = volatileMeta.reserve0.mul(volatileMeta.reserve1);
+      const stableReservesProduct = stableMeta.reserve0.mul(stableMeta.reserve1);
+
+      return volatileReservesProduct >= stableReservesProduct ? volatilePool : stablePool;
+    } catch (error) {
+      console.error('Error determining fallback pool:', error);
+      return undefined;
+    }
+  }
+
+  const { data: fallbackPreviewData, error: fallbackPreviewError, isLoading: fallbackPreviewLoading } = useQuery({
     queryKey: ['fallbackPreview', inputAssetId, outputAssetId, normalizedAmount],
     queryFn: async () => {
-      return mode === 'sell' ?
+      const fallbackPoolId = await getFallbackPoolId();
+
+      if (!fallbackPoolId) {
+        throw new NoRouteFoundError();
+      }
+
+      const fallbackPreviewResponse = mode === 'sell' ?
         await miraAmm?.previewSwapExactInput(
           sellAssetIdInput,
           normalizedAmount,
-          [pool],
+          [fallbackPoolId],
         ) :
         await miraAmm?.previewSwapExactOutput(
           buyAssetIdInput,
           normalizedAmount,
-          [pool],
+          [fallbackPoolId],
         );
+
+      if (!fallbackPreviewResponse) {
+        return;
+      }
+
+      return [fallbackPreviewResponse, fallbackPoolId] as [Asset, PoolId];
     },
     enabled: shouldFetchFallback,
+    retry: (failureCount, error) => {
+      if (error instanceof InsufficientReservesError || error instanceof NoRouteFoundError) {
+        return false;
+      }
+
+      return failureCount < 1;
+    },
+    retryDelay: 1000,
+    refetchInterval: 15000,
   });
 
   let previewData: SwapPreviewData | null = null;
@@ -94,13 +163,21 @@ const useSwapPreview = ({ swapState, mode }: Props) => {
       previewAmount: mode === 'sell' ? output_amount : input_amount,
     };
   } else if (fallbackPreviewData) {
+    const [fallbackPreviewResponse, fallbackPoolId] = fallbackPreviewData;
     previewData = {
-      pools: [pool],
-      previewAmount: fallbackPreviewData[1].toNumber(),
+      pools: [fallbackPoolId],
+      previewAmount: fallbackPreviewResponse[1].toNumber(),
     };
   }
 
-  return { previewData, previewFetching: multihopPreviewFetching || fallbackPreviewFetching, previewError: multihopPreviewError || fallbackPreviewError };
+  const previewError = !previewData ? fallbackPreviewError || multihopPreviewError : null;
+
+  return {
+    previewData,
+    previewLoading: multihopPreviewLoading || fallbackPreviewLoading,
+    previewError,
+    refetchPreview: refetch,
+  };
 };
 
 export default useSwapPreview;

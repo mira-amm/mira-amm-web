@@ -1,11 +1,12 @@
 import {Provider} from "fuels";
-import {TestnetUrl} from "@/src/utils/constants";
+import {NetworkUrl} from "@/src/utils/constants";
 import {useQuery} from "@tanstack/react-query";
 
 const useProvider = () => {
   const { data } = useQuery({
     queryKey: ['provider'],
-    queryFn: () => Provider.create(TestnetUrl),
+    queryFn: () => Provider.create(NetworkUrl),
+    staleTime: Infinity,
   });
 
   return data;

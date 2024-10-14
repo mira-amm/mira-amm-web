@@ -6,6 +6,9 @@
   gap: 24px;
   background-color: var(--background-grey-dark);
   z-index: 5;
+  width: 100%;
+  max-width: 524px;
+  margin: 0 auto;
 }
 
 .backLink {
@@ -58,6 +61,10 @@
 
 .highlight {
   color: var(--content-positive);
+}
+
+.pending {
+  color: var(--content-dimmed-dark);
 }
 
 .poolStability {

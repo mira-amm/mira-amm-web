@@ -1,3 +1,4 @@
 export interface DividerTextProps {
-    text: string
+  text: string;
+  dimmed?: boolean;
 }

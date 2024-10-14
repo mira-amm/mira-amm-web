@@ -1,4 +1,5 @@
 .coinInput {
+  min-height: 65px;
   display: flex;
   align-items: center;
   gap: 4px;
