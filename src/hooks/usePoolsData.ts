@@ -32,7 +32,7 @@ const usePoolsData = () => {
         },
         body: JSON.stringify({
           'volume_hours': 24,
-          'apr_days': 7,
+          'apr_days': 1,
         }),
       });
 
