@@ -32,6 +32,7 @@ import {DEFAULT_AMM_CONTRACT_ID, DefaultLocale} from "@/src/utils/constants";
 import useFormattedAddress from "@/src/hooks/useFormattedAddress/useFormattedAddress";
 import LogoIcon from "@/src/components/icons/Logo/LogoIcon";
 import useCheckActiveNetwork from "@/src/hooks/useCheckActiveNetwork";
+import usePoolAPR from "@/src/hooks/usePoolAPR";
 
 const ViewPositionPageLayout = () => {
   const [RemoveLiquidityModal, openRemoveLiquidityModal, closeRemoveLiquidityModal] = useModal();
@@ -47,6 +48,10 @@ const ViewPositionPageLayout = () => {
   const isStablePool = pool[2];
 
   const { positionData: { assets, lpTokenBalance } } = usePositionData({ pool });
+  const { apr } = usePoolAPR(pool);
+  const aprValue = apr ?
+    `${parseFloat(apr).toLocaleString(DefaultLocale, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}%`
+    : null;
 
   const [removeLiquidityValue, setRemoveLiquidityValue] = useState(50);
 
@@ -119,7 +124,13 @@ const ViewPositionPageLayout = () => {
           </div>
           <div className={styles.infoBlock}>
             <p>Liquidity</p>
-            <p className={styles.pending}>Awaiting data</p>
+            <p>
+              APR
+              &nbsp;
+              <span className={clsx(styles.pending, !aprValue && 'blurredText')}>
+                {aprValue ?? '33.33%'}
+              </span>
+            </p>
             <div className={styles.coinsData}>
               <CoinWithAmount coin={coinA} amount={coinAValue}/>
               <CoinWithAmount coin={coinB} amount={coinBValue}/>
@@ -191,7 +202,13 @@ const ViewPositionPageLayout = () => {
             <div className={styles.infoBlocks}>
               <div className={styles.infoBlock}>
                 <p>Liquidity</p>
-                <p className={styles.pending}>Awaiting data</p>
+                <p>
+                  APR
+                  &nbsp;
+                  <span className={clsx(styles.pending, !aprValue && 'blurredText')}>
+                    {aprValue ?? '33.33%'}
+                  </span>
+                </p>
                 <div className={styles.coinsData}>
                   <CoinWithAmount coin={coinA} amount={coinAValue}/>
                   <CoinWithAmount coin={coinB} amount={coinBValue}/>

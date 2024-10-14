@@ -31,7 +31,7 @@
 }
 
 .pending {
-  color: var(--content-dimmed-dark);
+  color: var(--content-dimmed-light);
 }
 
 .feesTitle {
