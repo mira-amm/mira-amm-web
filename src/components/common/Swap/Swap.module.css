@@ -103,7 +103,11 @@
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: 8px;
+  gap: 4px;
+}
+
+.feeLine > p:first-child {
+  margin-right: 4px;
 }
 
 .poolsFee {
@@ -136,7 +140,7 @@
     line-height: 24px;
   }
 
-  .summary {
+  .summary, .summary p {
     font-size: 13px;
     line-height: 18px;
   }

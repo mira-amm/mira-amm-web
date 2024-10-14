@@ -441,8 +441,8 @@ const Swap = () => {
                         <img src={secondAssetIcon} alt={secondAssetName} />
                         <p>
                           ({poolFeePercent}%)
-                          {index !== previewData.pools.length - 1 && " + "}
                         </p>
+                        {index !== previewData.pools.length - 1 && "+"}
                       </div>
                     );
                   })}
@@ -489,7 +489,7 @@ const Swap = () => {
       <SuccessModal title={<></>}>
         <SwapSuccessModal swapState={swapStateForPreview.current} transactionHash={swapResult?.id} />
       </SuccessModal>
-      <FailureModal title="Swap failed" onClose={resetSwapErrors}>
+      <FailureModal title={<></>} onClose={resetSwapErrors}>
         <SwapFailureModal error={txCostError || swapError} closeModal={closeFailureModal} />
       </FailureModal>
     </>
