@@ -1,4 +1,4 @@
-import {FC, memo, useMemo} from "react";
+import {FC, memo} from "react";
 import styles from "./PriceImpact.module.css";
 import {clsx} from "clsx";
 
@@ -7,13 +7,22 @@ interface PriceImpactProps {
   previewPrice: number | undefined;
 }
 
+const getPriceImpact = (reservesPrice: number | undefined, previewPrice: number | undefined) => {
+  if (reservesPrice === undefined || previewPrice === undefined || reservesPrice === 0) {
+    return -1;
+  }
+  if (reservesPrice <= previewPrice) {
+    return 0;
+  }
+  const impact = ((reservesPrice - previewPrice) / reservesPrice) * 100;
+  return Math.min(impact, 99.99);
+}
+
 const PriceImpact: FC<PriceImpactProps> = ({
   reservesPrice,
   previewPrice,
 }) => {
-  const priceImpactValue = reservesPrice !== undefined && previewPrice !== undefined ?
-    Math.abs(((previewPrice - reservesPrice) / reservesPrice) * 100) :
-    -1;
+  const priceImpactValue = getPriceImpact(reservesPrice, previewPrice);
 
   const highPriceImpact = priceImpactValue > 5;
   const mediumPriceImpact = priceImpactValue > 1 && priceImpactValue <= 5;
