@@ -19,6 +19,10 @@
     color: #e56910;
   }
 
+  .yellowText {
+    color: #D4B226;
+  }
+
   .hidden {
     opacity: 0;
   }
