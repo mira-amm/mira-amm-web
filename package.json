@@ -9,8 +9,8 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@fuels/connectors": "0.35.1",
-    "@fuels/react": "0.35.1",
+    "@fuels/connectors": "0.36.0",
+    "@fuels/react": "0.36.0",
     "@tanstack/react-query": "^5.50.1",
     "clsx": "^2.1.1",
     "fuels": "0.96.1",
