@@ -5,21 +5,21 @@ import {useQuery} from "@tanstack/react-query";
 
 type Props = {
   pools: PoolId[] | undefined;
-  sellAssetName: CoinName;
+  assetName: CoinName;
 }
 
-const useReservesPrice = ({ pools, sellAssetName }: Props) => {
+const useReservesPrice = ({pools, assetName}: Props) => {
   const miraAmm = useReadonlyMira();
 
-  const sellAssetId = coinsConfig.get(sellAssetName)?.assetId;
+  const assetId = coinsConfig.get(assetName)?.assetId;
 
-  const shouldFetch = Boolean(pools) && Boolean(miraAmm) && Boolean(sellAssetId);
+  const shouldFetch = Boolean(pools) && Boolean(miraAmm) && Boolean(assetId);
 
   const { data } = useQuery({
-    queryKey: ['reservesPrice', sellAssetId, pools],
+    queryKey: ['reservesPrice', assetId, pools],
     queryFn: async () => {
-      const [rate, decimalsIs, decimalsOut] = await miraAmm!.getCurrentRate({ bits: sellAssetId! }, pools!);
-      return rate * (10 ** (decimalsIs ?? 0)) / (10 ** (decimalsOut ?? 0));
+      const [rate, decimalsIn, decimalsOut] = await miraAmm!.getCurrentRate({ bits: assetId! }, pools!);
+      return rate * (10 ** (decimalsOut ?? 0)) / (10 ** (decimalsIn ?? 0));
     },
     enabled: shouldFetch,
   });

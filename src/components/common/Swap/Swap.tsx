@@ -361,7 +361,7 @@ const Swap = () => {
   const inputPreviewLoading = previewLoading && activeMode === "buy";
   const outputPreviewLoading = previewLoading && activeMode === "sell";
 
-  const { reservesPrice } = useReservesPrice({ pools: previewData?.pools, sellAssetName: swapState.sell.coin });
+  const { reservesPrice } = useReservesPrice({ pools: previewData?.pools, assetName: swapState.sell.coin });
 
   const previewPrice = useMemo(() => {
     const sellNumericValue = parseFloat(swapState.sell.amount);
