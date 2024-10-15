@@ -5,9 +5,10 @@ import InfoIcon from "@/src/components/icons/Info/InfoIcon";
 
 type Props = {
   tooltipText: string;
+  tooltipKey: string;
 }
 
-const Info = ({ tooltipText }: Props) => {
+const Info = ({ tooltipText, tooltipKey }: Props) => {
   const handleClick = (e: MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation();
   };
@@ -15,28 +16,27 @@ const Info = ({ tooltipText }: Props) => {
   const buttonRef = useRef<HTMLButtonElement>(null);
   const tooltipRef = useRef<HTMLDivElement>(null);
 
-  const buttonId = `${tooltipText}-button`;
-  const tooltipId = `${tooltipText}-tooltip`;
-  //
-  // useEffect(() => {
-  //   const button = buttonRef.current;
-  //   const tooltip = tooltipRef.current;
-  //
-  //   if (button && tooltip) {
-  //     button.style.setProperty('anchor-name', `--${buttonId}`);
-  //     tooltip.style.setProperty('position-anchor', `--${buttonId}`);
-  //     tooltip.style.setProperty('top', `anchor(--${buttonId} bottom)`);
-  //     tooltip.style.setProperty('left', `anchor(--${buttonId} right)`);
-  //     // button.setAttribute('popover-target', tooltipId);
-  //     // tooltip.setAttribute('popover', 'auto');
-  //     // tooltip.setAttribute('anchor', buttonId);
-  //   }
-  // }, []);
-  return null;
+  const buttonId = `${tooltipKey}-button`;
+  const tooltipId = `${tooltipKey}-tooltip`;
+
+  useEffect(() => {
+    const button = buttonRef.current;
+    const tooltip = tooltipRef.current;
+
+    if (button && tooltip) {
+      button.style.setProperty('anchor-name', `--${buttonId}`);
+      tooltip.style.setProperty('position-anchor', `--${buttonId}`);
+    }
+  }, []);
 
   return (
     <div className={styles.infoContainer}>
-      <button id={buttonId} className={styles.infoButton} onClick={handleClick} popoverTarget={tooltipId} ref={buttonRef}>
+      <button id={buttonId}
+              className={styles.infoButton}
+              onClick={handleClick}
+              popoverTarget={tooltipId}
+              ref={buttonRef}
+      >
         <InfoIcon />
       </button>
       <div className={styles.tooltip} id={tooltipId} popover="auto" ref={tooltipRef}>

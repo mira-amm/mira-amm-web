@@ -9,7 +9,7 @@
   border: none;
   color: var(--content-grey-dark);
   cursor: pointer;
-  /*anchor-name: --anchor_1;*/
+  anchor-name: --infoTooltipAnchor;
 }
 
 .infoButton:hover {
@@ -26,7 +26,10 @@
 }
 
 .tooltip {
-  /*position-anchor: --anchor_1;*/
+  position-anchor: --infoTooltipAnchor;
+  position: fixed;
+  top: anchor(50%);
+  left: anchor(50%);
   /*top: anchor(--anchor_1 bottom);*/
   /*left: anchor(--anchor_1 right);*/
   max-width: 200px;

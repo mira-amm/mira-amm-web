@@ -238,7 +238,7 @@ const CreatePoolDialog = ({ setPreviewData, newPool }: Props) => {
             >
               <div className={styles.poolStabilityButtonTitle}>
                 <p>Volatile pool</p>
-                <Info tooltipText={VolatilePoolTooltip}/>
+                <Info tooltipText={VolatilePoolTooltip} tooltipKey="volatilePool"/>
               </div>
               <p>0.30% fee tier</p>
             </div>
@@ -248,7 +248,7 @@ const CreatePoolDialog = ({ setPreviewData, newPool }: Props) => {
             >
               <div className={styles.poolStabilityButtonTitle}>
                 <p>Stable pool</p>
-                <Info tooltipText={StablePoolTooltip}/>
+                <Info tooltipText={StablePoolTooltip} tooltipKey="stablePool"/>
               </div>
               <p>0.05% fee tier</p>
             </button>

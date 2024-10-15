@@ -185,7 +185,7 @@ const AddLiquidityDialog = ({ poolId, setPreviewData, newPool }: Props) => {
             {!newPool && (
               <div className={styles.APR}>
                 Estimated APR
-                <Info tooltipText={APRTooltip} />
+                <Info tooltipText={APRTooltip} tooltipKey="apr"/>
                 <span className={clsx(aprValue && styles.highlight, !aprValue && styles.pending)}>
                   {aprValue ? `${aprValue}%` : 'Awaiting data'}
                 </span>
@@ -199,7 +199,7 @@ const AddLiquidityDialog = ({ poolId, setPreviewData, newPool }: Props) => {
             >
               <div className={styles.poolStabilityButtonTitle}>
                 <p>Volatile pool</p>
-                <Info tooltipText={VolatilePoolTooltip}/>
+                <Info tooltipText={VolatilePoolTooltip} tooltipKey="volatilePool"/>
               </div>
               <p>0.30% fee tier</p>
             </div>
@@ -209,7 +209,7 @@ const AddLiquidityDialog = ({ poolId, setPreviewData, newPool }: Props) => {
             >
               <div className={styles.poolStabilityButtonTitle}>
                 <p>Stable pool</p>
-                <Info tooltipText={StablePoolTooltip}/>
+                <Info tooltipText={StablePoolTooltip} tooltipKey="stablePool"/>
               </div>
               <p>0.05% fee tier</p>
             </button>
