@@ -25,14 +25,14 @@ const PriceImpact: FC<PriceImpactProps> = ({
   const priceImpactValue = getPriceImpact(reservesPrice, previewPrice);
 
   const highPriceImpact = priceImpactValue > 5;
-  const mediumPriceImpact = priceImpactValue > 1 && priceImpactValue <= 5;
+  const mediumPriceImpact = priceImpactValue > 2 && priceImpactValue <= 5;
   const priceImpactHidden = priceImpactValue === -1;
 
   return (
     <p className={clsx(
       styles.priceImpact,
       highPriceImpact && styles.redText,
-      mediumPriceImpact && styles.orangeText,
+      mediumPriceImpact && styles.yellowText,
       priceImpactHidden && styles.hidden,
     )}>
       Price impact: {priceImpactValue.toFixed(2)}%
