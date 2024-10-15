@@ -422,9 +422,10 @@ const Swap = () => {
                 <p>Rate</p>
                 <p>{exchangeRate}</p>
               </div>
+
               <div className={styles.summaryEntry}>
+                <p>Order routing</p>
                 <div className={styles.feeLine}>
-                  <p>Fee</p>
                   {previewData?.pools.map((pool, index) => {
                     const isStablePool = pool[2];
                     const poolFeePercent = isStablePool ? 0.05 : 0.3;
@@ -437,8 +438,8 @@ const Swap = () => {
 
                     return (
                       <div className={styles.poolsFee} key={poolKey}>
-                        <img src={firstAssetIcon} alt={firstAssetName} />
-                        <img src={secondAssetIcon} alt={secondAssetName} />
+                        <img src={firstAssetIcon} alt={firstAssetName}/>
+                        <img src={secondAssetIcon} alt={secondAssetName}/>
                         <p>
                           ({poolFeePercent}%)
                         </p>
@@ -447,10 +448,15 @@ const Swap = () => {
                     );
                   })}
                 </div>
+              </div>
+
+              <div className={styles.summaryEntry}>
+                <p>Estimated fees</p>
                 <p>
                   {feeValue} {swapState.sell.coin}
                 </p>
               </div>
+
               <div className={styles.summaryEntry}>
                 <p>Network cost</p>
                 <p>{txCost?.toFixed(9)} ETH</p>
@@ -463,17 +469,18 @@ const Swap = () => {
             </ActionButton>
           )}
           {isConnected && (
-            <ActionButton variant="primary" disabled={swapDisabled} onClick={handleSwapClick} loading={balancesPending || txCostPending}>
+            <ActionButton variant="primary" disabled={swapDisabled} onClick={handleSwapClick}
+                          loading={balancesPending || txCostPending}>
               {swapButtonTitle}
             </ActionButton>
           )}
         </div>
         <div className={styles.rates}>
-          <PriceImpact reservesPrice={reservesPrice} previewPrice={previewPrice} />
-          <ExchangeRate swapState={swapState} />
+          <PriceImpact reservesPrice={reservesPrice} previewPrice={previewPrice}/>
+          <ExchangeRate swapState={swapState}/>
         </div>
       </div>
-      {swapPending && <div className={styles.loadingOverlay} />}
+      {swapPending && <div className={styles.loadingOverlay}/>}
       <SettingsModal title="Settings">
         <SettingsModalContent
           slippage={slippage}
@@ -484,10 +491,10 @@ const Swap = () => {
         />
       </SettingsModal>
       <CoinsModal title="Choose token">
-        <CoinsListModal selectCoin={handleCoinSelection} balances={balances} />
+        <CoinsListModal selectCoin={handleCoinSelection} balances={balances}/>
       </CoinsModal>
       <SuccessModal title={<></>}>
-        <SwapSuccessModal swapState={swapStateForPreview.current} transactionHash={swapResult?.id} />
+        <SwapSuccessModal swapState={swapStateForPreview.current} transactionHash={swapResult?.id}/>
       </SuccessModal>
       <FailureModal title={<></>} onClose={resetSwapErrors}>
         <SwapFailureModal error={txCostError || swapError} closeModal={closeFailureModal} />
