@@ -62,7 +62,8 @@ const ViewPositionPageLayout = () => {
   let coinAValue = coinAAmount
     .toLocaleString(DefaultLocale, { minimumFractionDigits: coinAAmount < 1 ? 5 : 2 });
   coinAValue = coinAValue === '0.00000' ? '<0.00001' : coinAValue;
-  const coinAAmountToWithdraw = (coinAAmount * removeLiquidityValue / 100).toLocaleString(DefaultLocale, { minimumFractionDigits: coinADecimals });
+  const coinAAmountToWithdraw = coinAAmount * removeLiquidityValue / 100;
+  const coinAAmountToWithdrawStr = coinAAmountToWithdraw.toLocaleString(DefaultLocale, { minimumFractionDigits: coinADecimals });
 
   const coinBDecimals = coinsConfig.get(coinB)?.decimals!;
   const coinBAsset = assets?.[1];
@@ -71,11 +72,12 @@ const ViewPositionPageLayout = () => {
   let coinBValue = coinBAmount
     .toLocaleString(DefaultLocale, { minimumFractionDigits: coinBAmount < 1 ? 5 : 2 });
   coinBValue = coinBValue === '0.00000' ? '<0.00001' : coinBValue;
-  const coinBAmountToWithdraw = (coinBAmount * removeLiquidityValue / 100).toLocaleString(DefaultLocale, { minimumFractionDigits: coinBDecimals });
+  const coinBAmountToWithdraw = coinBAmount * removeLiquidityValue / 100;
+  const coinBAmountToWithdrawStr = coinBAmountToWithdraw.toLocaleString(DefaultLocale, { minimumFractionDigits: coinBDecimals });
 
-  const confirmationModalAssetsAmounts = useRef({ firstAsset: coinAAmountToWithdraw, secondAsset: coinBAmountToWithdraw });
+  const confirmationModalAssetsAmounts = useRef({ firstAsset: coinAAmountToWithdrawStr, secondAsset: coinBAmountToWithdrawStr });
 
-  const { data, removeLiquidity } = useRemoveLiquidity({ pool, liquidity: removeLiquidityValue, lpTokenBalance });
+  const { data, removeLiquidity } = useRemoveLiquidity({ pool, liquidity: removeLiquidityValue, lpTokenBalance, coinAAmountToWithdraw, coinBAmountToWithdraw });
 
   const handleWithdrawLiquidity = useCallback(() => {
     openRemoveLiquidityModal();
@@ -84,7 +86,7 @@ const ViewPositionPageLayout = () => {
   const handleRemoveLiquidity = useCallback(async () => {
     const result = await removeLiquidity();
     if (result) {
-      confirmationModalAssetsAmounts.current = { firstAsset: coinAAmountToWithdraw, secondAsset: coinBAmountToWithdraw };
+      confirmationModalAssetsAmounts.current = { firstAsset: coinAAmountToWithdrawStr, secondAsset: coinBAmountToWithdrawStr };
       closeRemoveLiquidityModal();
       openSuccessModal();
     }
@@ -248,8 +250,8 @@ const ViewPositionPageLayout = () => {
           isStablePool={isStablePool}
           currentCoinAValue={currentCoinAAmount}
           currentCoinBValue={currentCoinBAmount}
-          coinAValueToWithdraw={coinAAmountToWithdraw}
-          coinBValueToWithdraw={coinBAmountToWithdraw}
+          coinAValueToWithdraw={coinAAmountToWithdrawStr}
+          coinBValueToWithdraw={coinBAmountToWithdrawStr}
           closeModal={closeRemoveLiquidityModal}
           liquidityValue={removeLiquidityValue}
           setLiquidityValue={setRemoveLiquidityValue}
