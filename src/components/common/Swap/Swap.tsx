@@ -134,10 +134,20 @@ const Swap = () => {
       }));
     }
   }, [previewValueString]);
+  useEffect(() => {
+    if (previewValueString !== inputsState[anotherMode].amount) {
+      setInputsState((prevState) => ({
+        ...prevState,
+        [anotherMode]: {
+          amount: previewValueString,
+        },
+      }));
+    }
+  }, [previewValueString]);
 
   const sellDecimals = coinsConfig.get(swapState.sell.coin)?.decimals!;
-  const sellValue = activeMode === "buy" ? previewValueString : inputsState.sell.amount;
-  const buyValue = activeMode === "sell" ? previewValueString : inputsState.buy.amount;
+  const sellValue = inputsState.sell.amount;
+  const buyValue = inputsState.buy.amount;
 
   const swapAssets = useCallback(() => {
     setSwapState((prevState) => ({
@@ -149,27 +159,30 @@ const Swap = () => {
       },
     }));
 
-    setActiveMode(previousMode => previousMode === 'buy' ? 'sell' : 'buy');
+    setActiveMode('sell');
 
-    setInputsState({
+    setInputsState((prevState) => ({
       buy: {
-        amount: sellValue,
+        ...prevState.sell,
       },
       sell: {
-        amount: buyValue,
+        ...prevState.buy,
       },
-    });
+    }));
 
     setSwapCoins((prevState) => ({
       buy: prevState.sell,
       sell: prevState.buy,
     }));
-  }, [buyValue, sellValue, setSwapCoins]);
+  }, [setSwapCoins]);
 
   const selectCoin = useCallback(
     (mode: "buy" | "sell") => {
       return (coin: CoinName) => {
-        if ((mode === "buy" && swapState.sell.coin === coin) || (mode === "sell" && swapState.buy.coin === coin)) {
+        if (
+          (mode === "buy" && swapState.sell.coin === coin) ||
+          (mode === "sell" && swapState.buy.coin === coin)
+        ) {
           swapAssets();
         } else {
           const decimals = coinsConfig.get(coin)?.decimals!;
