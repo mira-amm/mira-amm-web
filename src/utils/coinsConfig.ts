@@ -3,13 +3,13 @@ import {ValidNetworkChainId} from "@/src/utils/constants";
 import assets from './verified-assets-day-1.json';
 
 // TODO: Consider removing this type as we won't probably know the list of all coins ahead of time
-export type CoinName = 'ETH' | 'USDC' | 'USDT' | null;
+export type CoinName = 'ETH' | 'USDC' | 'USDT';
 
 type CoinData = {
   name: CoinName;
   assetId: string;
   decimals: number;
-  fullName?: string;
+  fullName: string;
   icon?: string;
   contractId?: string;
   subId?: string;
@@ -47,11 +47,7 @@ export const assetSymbolToCoinGeckoId: { [key: string]: string } = {
 
 // mapping of asset names & symbols to symbols
 export const assetHandleToSymbol: { [key: string]: string } = {};
-
-assets.forEach(asset => {
-  assetHandleToSymbol[asset.name] = asset.symbol;
-  assetHandleToSymbol[asset.symbol] = asset.symbol;
-});
+export const verifiedAssetIds = new Set<string>();
 
 // TODO: Make an API call to get the coins config
 const initAssetsConfig = () => {
@@ -78,6 +74,12 @@ const initAssetsConfig = () => {
 
   additionalAssetsConfig.forEach((value, key) => {
     assetsConfig.set(key, value);
+  });
+
+  assetsConfig.values().forEach(asset => {
+    assetHandleToSymbol[asset.name] = asset.name;
+    assetHandleToSymbol[asset.fullName] = asset.name;
+    verifiedAssetIds.add(asset.assetId);
   });
 
   return assetsConfig;

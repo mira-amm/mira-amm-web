@@ -1,5 +1,5 @@
 import {useQuery} from "@tanstack/react-query";
-import {CoinName} from "@/src/utils/coinsConfig";
+import {CoinName, verifiedAssetIds} from "@/src/utils/coinsConfig";
 import {ApiBaseUrl} from "@/src/utils/constants";
 
 export type PoolData = {
@@ -37,7 +37,11 @@ const usePoolsData = () => {
       });
 
       const poolsData: PoolsData = await poolsDataResponse.json();
-      return poolsData.pools.filter(poolData => poolData.details !== null);
+      return poolsData.pools
+        .filter(poolData => {
+          const [asset0, asset1, _] = poolData.id.split('_');
+          return verifiedAssetIds.has(asset0) && verifiedAssetIds.has(asset1);
+        });
     },
   });
 
