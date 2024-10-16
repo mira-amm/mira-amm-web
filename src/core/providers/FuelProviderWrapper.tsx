@@ -76,7 +76,7 @@ const FUEL_CONFIG = createFuelConfig(() => {
   return {
     connectors: [
       fueletWalletConnector,
-      burnerWalletConnector,
+      // burnerWalletConnector,
       walletConnectConnector,
       solanaConnector,
       ...(isMobile ? [] : [fuelWalletConnector, bakoSafeConnector]),

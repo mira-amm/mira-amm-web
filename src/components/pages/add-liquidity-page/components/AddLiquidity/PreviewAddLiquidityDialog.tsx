@@ -8,8 +8,9 @@ import useModal from "@/src/hooks/useModal/useModal";
 import AddLiquiditySuccessModal
   from "@/src/components/pages/add-liquidity-page/components/AddLiquiditySuccessModal/AddLiquiditySuccessModal";
 import {useRouter} from "next/navigation";
-import {useCallback} from "react";
+import {Dispatch, SetStateAction, useCallback} from "react";
 import {DefaultLocale} from "@/src/utils/constants";
+import TransactionFailureModal from "@/src/components/common/TransactionFailureModal/TransactionFailureModal";
 
 type AssetsData = {
   coin: CoinName;
@@ -23,16 +24,18 @@ export type AddLiquidityPreviewData = {
 
 type Props = {
   previewData: AddLiquidityPreviewData;
+  setPreviewData: Dispatch<SetStateAction<AddLiquidityPreviewData | null>>;
 }
 
-const PreviewAddLiquidityDialog = ({ previewData }: Props) => {
-  const [SuccessModal, openSuccessModal, closeSuccessModal] = useModal();
+const PreviewAddLiquidityDialog = ({ previewData, setPreviewData }: Props) => {
+  const [SuccessModal, openSuccessModal] = useModal();
+  const [FailureModal, openFailureModal, closeFailureModal] = useModal();
 
   const router = useRouter();
 
   const { assets, isStablePool } = previewData;
 
-  const { data, mutateAsync, isPending } = useAddLiquidity({
+  const { data, mutateAsync, isPending, error } = useAddLiquidity({
     firstAssetName: assets[0].coin,
     firstAssetAmount: assets[0].amount,
     secondAssetName: assets[1].coin,
@@ -50,11 +53,20 @@ const PreviewAddLiquidityDialog = ({ previewData }: Props) => {
   ).toLocaleString(DefaultLocale, { minimumFractionDigits: 2 });
 
   const handleAddLiquidity = async () => {
-    const data = await mutateAsync();
-    if (data?.id) {
-      openSuccessModal();
+    try {
+      const data = await mutateAsync();
+      if (data?.id) {
+        openSuccessModal();
+      }
+    } catch (e) {
+      console.error(e);
+      openFailureModal();
     }
   };
+
+  const onFailureModalClose = useCallback(() => {
+    setPreviewData(null);
+  }, []);
 
   const redirectToLiquidity = useCallback(() => {
     router.push('/liquidity');
@@ -137,6 +149,9 @@ const PreviewAddLiquidityDialog = ({ previewData }: Props) => {
       <SuccessModal title={<></>} onClose={redirectToLiquidity}>
         <AddLiquiditySuccessModal coinA={coinA} coinB={coinB} firstCoinAmount={firstCoinAmount} secondCoinAmount={secondCoinAmount} transactionHash={data?.id} />
       </SuccessModal>
+      <FailureModal title={<></>} onClose={onFailureModalClose}>
+        <TransactionFailureModal closeModal={closeFailureModal} />
+      </FailureModal>
     </>
   );
 };

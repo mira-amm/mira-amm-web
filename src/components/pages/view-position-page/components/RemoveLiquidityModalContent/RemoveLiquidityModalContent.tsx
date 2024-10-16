@@ -11,7 +11,7 @@ import {
   SetStateAction,
   useEffect,
   useRef,
-  useState
+  useState,
 } from "react";
 import {CoinName} from "@/src/utils/coinsConfig";
 import {useDebounceCallback} from "usehooks-ts";
@@ -131,7 +131,9 @@ const RemoveLiquidityModalContent = ({coinA, coinB, isStablePool, currentCoinAVa
         >
           {buttonTitle}
         </ActionButton>
-        <ActionButton variant="outlined" onClick={closeModal}>Cancel</ActionButton>
+        <ActionButton variant="outlined" onClick={closeModal}>
+          Cancel
+        </ActionButton>
       </div>
     </div>
   );

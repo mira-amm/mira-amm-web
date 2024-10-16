@@ -33,10 +33,12 @@ import useFormattedAddress from "@/src/hooks/useFormattedAddress/useFormattedAdd
 import LogoIcon from "@/src/components/icons/Logo/LogoIcon";
 import useCheckActiveNetwork from "@/src/hooks/useCheckActiveNetwork";
 import usePoolAPR from "@/src/hooks/usePoolAPR";
+import TransactionFailureModal from "@/src/components/common/TransactionFailureModal/TransactionFailureModal";
 
 const ViewPositionPageLayout = () => {
   const [RemoveLiquidityModal, openRemoveLiquidityModal, closeRemoveLiquidityModal] = useModal();
   const [SuccessModal, openSuccessModal, closeSuccessModal] = useModal();
+  const [FailureModal, openFailureModal, closeFailureModal] = useModal();
 
   const router = useRouter();
 
@@ -77,18 +79,23 @@ const ViewPositionPageLayout = () => {
 
   const confirmationModalAssetsAmounts = useRef({ firstAsset: coinAAmountToWithdrawStr, secondAsset: coinBAmountToWithdrawStr });
 
-  const { data, removeLiquidity } = useRemoveLiquidity({ pool, liquidity: removeLiquidityValue, lpTokenBalance, coinAAmountToWithdraw, coinBAmountToWithdraw });
+  const { data, removeLiquidity, error } = useRemoveLiquidity({ pool, liquidity: removeLiquidityValue, lpTokenBalance, coinAAmountToWithdraw, coinBAmountToWithdraw });
 
   const handleWithdrawLiquidity = useCallback(() => {
     openRemoveLiquidityModal();
   }, [openRemoveLiquidityModal]);
 
   const handleRemoveLiquidity = useCallback(async () => {
-    const result = await removeLiquidity();
-    if (result) {
-      confirmationModalAssetsAmounts.current = { firstAsset: coinAAmountToWithdrawStr, secondAsset: coinBAmountToWithdrawStr };
-      closeRemoveLiquidityModal();
-      openSuccessModal();
+    try {
+      const result = await removeLiquidity();
+      if (result) {
+        confirmationModalAssetsAmounts.current = { firstAsset: coinAAmountToWithdrawStr, secondAsset: coinBAmountToWithdrawStr };
+        closeRemoveLiquidityModal();
+        openSuccessModal();
+      }
+    } catch (e) {
+      console.error(e);
+      openFailureModal();
     }
   }, [removeLiquidity, closeRemoveLiquidityModal, openSuccessModal]);
 
@@ -268,6 +275,9 @@ const ViewPositionPageLayout = () => {
           transactionHash={data?.id}
         />
       </SuccessModal>
+      <FailureModal title={<></>}>
+        <TransactionFailureModal closeModal={closeFailureModal} />
+      </FailureModal>
     </>
   );
 };

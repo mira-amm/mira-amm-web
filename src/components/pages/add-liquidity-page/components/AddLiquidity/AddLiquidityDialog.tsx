@@ -29,6 +29,8 @@ import {
   VolatilePoolTooltip
 } from "@/src/components/pages/add-liquidity-page/components/AddLiquidity/addLiquidityTooltips";
 import useUSDRate from "@/src/hooks/useUSDRate";
+import useModal from "@/src/hooks/useModal/useModal";
+import TransactionFailureModal from "@/src/components/common/TransactionFailureModal/TransactionFailureModal";
 
 type Props = {
   poolId: PoolId;
@@ -37,6 +39,8 @@ type Props = {
 }
 
 const AddLiquidityDialog = ({ poolId, setPreviewData, newPool }: Props) => {
+  const [FailureModal, openFailureModal, closeFailureModal] = useModal();
+
   const { isConnected, isPending: isConnecting } = useIsConnected();
   const { connect } = useConnectUI();
   const { balances } = useBalances();
@@ -55,13 +59,19 @@ const AddLiquidityDialog = ({ poolId, setPreviewData, newPool }: Props) => {
   const { firstAssetName: firstCoin, secondAssetName: secondCoin } = getAssetNamesFromPoolId(poolId);
   const isFirstToken = activeAssetName === firstCoin;
 
-  const { data, isFetching } = usePreviewAddLiquidity({
+  const { data, isFetching, error } = usePreviewAddLiquidity({
     firstCoin,
     secondCoin,
     amountString: isFirstToken ? firstAmount : secondAmount,
     isFirstToken,
     isStablePool,
   });
+
+  useEffect(() => {
+    if (error) {
+      openFailureModal();
+    }
+  }, [error]);
 
   const { apr } = usePoolAPR(poolId);
   const aprValue = apr
@@ -277,6 +287,9 @@ const AddLiquidityDialog = ({ poolId, setPreviewData, newPool }: Props) => {
           {buttonTitle}
         </ActionButton>
       )}
+      <FailureModal title={<></>}>
+        <TransactionFailureModal closeModal={closeFailureModal} />
+      </FailureModal>
     </>
   );
 };

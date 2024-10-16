@@ -50,11 +50,11 @@ const useAddLiquidity = ({ firstAssetName, firstAssetAmount, secondAssetName, se
     return await tx.waitForResult();
   }, [mira, wallet, firstAssetName, secondAssetName, isPoolStable, firstAssetAmount, secondAssetAmount]);
 
-  const { data, mutateAsync, isPending  } = useMutation({
+  const { data, mutateAsync, isPending, error  } = useMutation({
     mutationFn,
   });
 
-  return { data, mutateAsync, isPending };
+  return { data, mutateAsync, isPending, error };
 };
 
 export default useAddLiquidity;

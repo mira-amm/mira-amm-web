@@ -34,11 +34,11 @@ const useRemoveLiquidity = ({ pool, liquidity, lpTokenBalance, coinAAmountToWith
     return tx.waitForResult();
   }, [mira, wallet, pool, liquidity, lpTokenBalance]);
 
-  const { data, mutateAsync } = useMutation({
+  const { data, mutateAsync, error } = useMutation({
     mutationFn,
   });
 
-  return { data, removeLiquidity: mutateAsync };
+  return { data, removeLiquidity: mutateAsync, error };
 };
 
 export default useRemoveLiquidity;

@@ -48,7 +48,7 @@ const AddLiquidity = ({ poolKey }: Props) => {
           )}
         </div>
         {showPreview ? (
-          <PreviewAddLiquidityDialog previewData={previewData!} />
+          <PreviewAddLiquidityDialog previewData={previewData!} setPreviewData={setPreviewData} />
         ) : (
           <AddLiquidityDialog poolId={poolId} setPreviewData={setPreviewData} />
         )}

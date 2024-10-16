@@ -32,7 +32,9 @@ const RemoveLiquiditySuccessModal = ({ coinA, coinB, firstCoinAmount, secondCoin
       <p className={styles.subText}>
         {subText}
       </p>
-      <ActionButton onClick={handleViewTransactionClick} className={styles.viewButton}>View transaction</ActionButton>
+      <ActionButton onClick={handleViewTransactionClick} className={styles.viewButton}>
+        View transaction
+      </ActionButton>
     </div>
   );
 };

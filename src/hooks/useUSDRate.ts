@@ -35,7 +35,7 @@ import {assetHandleToSymbol, assetSymbolToCoinGeckoId} from "@/src/utils/coinsCo
 
 const useUSDRate = (firstAssetName: string | null, secondAssetName: string | null) => {
   const {data, isLoading} = useQuery({
-    queryKey: ['usdRate', firstAssetName],
+    queryKey: ['usdRate', firstAssetName, secondAssetName],
     queryFn: async () => {
       const firstAssetSymbol = firstAssetName ? assetHandleToSymbol[firstAssetName] : null;
       const secondAssetSymbol = secondAssetName ? assetHandleToSymbol[secondAssetName] : null;
