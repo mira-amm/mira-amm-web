@@ -2,19 +2,19 @@
 
 import Header from "@/src/components/common/Header/Header";
 import Footer from "@/src/components/common/Footer/Footer";
-import BackLink from "@/src/components/common/BackLink/BackLink";
 
 import styles from './AddLiquidityPageLayout.module.css';
 import AddLiquidity from "@/src/components/pages/add-liquidity-page/components/AddLiquidity/AddLiquidity";
 import {useRouter, useSearchParams} from "next/navigation";
 import {useEffect, useRef} from "react";
-import {isPoolKeyValid} from "@/src/utils/common";
+import {createPoolIdFromPoolKey, isPoolIdValid} from "@/src/utils/common";
 import {isMobile} from "react-device-detect";
 
 const AddLiquidityPageLayout = () => {
   const router = useRouter();
   const query = useSearchParams();
   const poolKey = query.get('pool');
+  const poolId = poolKey ? createPoolIdFromPoolKey(poolKey) : null;
 
   const mainRef = useRef<HTMLElement>(null);
 
@@ -24,7 +24,7 @@ const AddLiquidityPageLayout = () => {
     }
   }, []);
 
-  if (!poolKey || !isPoolKeyValid(poolKey)) {
+  if (!poolId || !isPoolIdValid(poolId)) {
     router.push('/liquidity');
     return null;
   }
@@ -33,7 +33,7 @@ const AddLiquidityPageLayout = () => {
     <>
       <Header/>
       <main className={styles.addLiquidityLayout} ref={mainRef}>
-        <AddLiquidity poolKey={poolKey} />
+        <AddLiquidity poolId={poolId} />
       </main>
       <Footer/>
     </>

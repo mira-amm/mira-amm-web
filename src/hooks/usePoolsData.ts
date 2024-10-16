@@ -1,6 +1,7 @@
 import {useQuery} from "@tanstack/react-query";
 import {CoinName} from "@/src/utils/coinsConfig";
 import {ApiBaseUrl} from "@/src/utils/constants";
+import {createPoolIdFromIdString, isPoolIdValid} from "@/src/utils/common";
 
 export type PoolData = {
   id: string;
@@ -14,11 +15,11 @@ export type PoolData = {
     tvl: string;
   };
   swap_count: number;
+  create_time: number;
 };
 
 export type PoolsData = {
   pools: PoolData[];
-  sync_timestamp: number;
 };
 
 const usePoolsData = () => {
@@ -37,7 +38,12 @@ const usePoolsData = () => {
       });
 
       const poolsData: PoolsData = await poolsDataResponse.json();
-      return poolsData.pools.filter(poolData => poolData.details !== null);
+      return poolsData.pools.filter(poolData => {
+        const poolId = createPoolIdFromIdString(poolData.id);
+        return (
+          poolData.details !== null && isPoolIdValid(poolId)
+        );
+      });
     },
   });
 
