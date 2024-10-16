@@ -31,11 +31,6 @@ export const createPoolKey = (poolId: PoolId) => {
   return `${firstAssetName}-${secondAssetName}-${poolStability}`;
 };
 
-export const getCoinsFromKey = (key: string) => {
-  const [coinA, coinB] = key.split('-') as [CoinName, CoinName];
-  return { coinA , coinB };
-};
-
 // TODO: Reconsider this function, maybe have an API call for /pools?
 export const isPoolKeyValid = (key: string) => {
   const [coinA, coinB] = key.split('-') as [CoinName, CoinName];
