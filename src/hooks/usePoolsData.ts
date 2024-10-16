@@ -39,7 +39,11 @@ const usePoolsData = () => {
       const poolsData: PoolsData = await poolsDataResponse.json();
       return poolsData.pools
         .filter(poolData => {
-          const [asset0, asset1, _] = poolData.id.split('_');
+          const idParts = poolData.id.split('_');
+          if (idParts.length !== 3) {
+            return false;
+          }
+          const [asset0, asset1, _] = idParts;
           return verifiedAssetIds.has(asset0) && verifiedAssetIds.has(asset1);
         });
     },

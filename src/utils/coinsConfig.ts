@@ -3,7 +3,7 @@ import {ValidNetworkChainId} from "@/src/utils/constants";
 import assets from './verified-assets-day-1.json';
 
 // TODO: Consider removing this type as we won't probably know the list of all coins ahead of time
-export type CoinName = 'ETH' | 'USDC' | 'USDT';
+export type CoinName = 'ETH' | 'USDC' | 'USDT' | null;
 
 type CoinData = {
   name: CoinName;
@@ -76,9 +76,11 @@ const initAssetsConfig = () => {
     assetsConfig.set(key, value);
   });
 
-  assetsConfig.values().forEach(asset => {
-    assetHandleToSymbol[asset.name] = asset.name;
-    assetHandleToSymbol[asset.fullName] = asset.name;
+  Array.from(assetsConfig.values()).forEach(asset => {
+    if (asset.name) {
+      assetHandleToSymbol[asset.name] = asset.name;
+      assetHandleToSymbol[asset.fullName] = asset.name;
+    }
     verifiedAssetIds.add(asset.assetId);
   });
 
