@@ -40,9 +40,9 @@ const CoinsListModal = ({ selectCoin, balances }: Props) => {
 
   // TODO: Pre-sort the list by priorityOrder and alphabet to avoid sorting each time
   const sortedCoinsList = useMemo(() => {
-    return filteredCoinsList.toSorted((coinA, coinB) => {
-      const firstAssetPriority = priorityOrder.indexOf(coinA.name);
-      const secondAssetPriority = priorityOrder.indexOf(coinB.name);
+    return filteredCoinsList.toSorted((firstAsset, secondAsset) => {
+      const firstAssetPriority = priorityOrder.indexOf(firstAsset.name);
+      const secondAssetPriority = priorityOrder.indexOf(secondAsset.name);
       const bothAssetsHavePriority = firstAssetPriority !== -1 && secondAssetPriority !== -1;
       const eitherAssetHasPriority = firstAssetPriority !== -1 || secondAssetPriority !== -1;
 
@@ -53,22 +53,23 @@ const CoinsListModal = ({ selectCoin, balances }: Props) => {
       }
 
       if (balances) {
-        const aBalance = balances.find((b) => b.assetId === coinA.assetId)?.amount ?? new BN(0);
-        const aDecimals = coinsConfig.get(coinA.name)?.decimals ?? 0;
-        const aDecimalsMultiplier = new BN(10).pow(aDecimals);
-        const aBalanceNormalized = aBalance.mul(aDecimalsMultiplier);
-        const bBalance = balances.find((b) => b.assetId === coinB.assetId)?.amount ?? new BN(0);
-        const bDecimals = coinsConfig.get(coinB.name)?.decimals ?? 0;
-        const bDecimalsMultiplier = new BN(10).pow(bDecimals);
-        const bBalanceNormalized = bBalance.mul(bDecimalsMultiplier);
+        const firstAssetBalance = balances.find((b) => b.assetId === firstAsset.assetId)?.amount ?? new BN(0);
+        const secondAssetBalance = balances.find((b) => b.assetId === secondAsset.assetId)?.amount ?? new BN(0);
+        const firstAssetDecimals = coinsConfig.get(firstAsset.name)?.decimals ?? 0;
+        const secondAssetDecimals = coinsConfig.get(secondAsset.name)?.decimals ?? 0;
+        const firstAssetDivisor = new BN(10).pow(firstAssetDecimals);
+        const secondAssetDivisor = new BN(10).pow(secondAssetDecimals);
+        // Dividing BN to a large value can lead to zero, we use proportion rule here: a/b = c/d => a*d = b*c
+        const firstAssetBalanceMultiplied = firstAssetBalance.mul(secondAssetDivisor);
+        const secondAssetBalanceMultiplied = secondAssetBalance.mul(firstAssetDivisor);
 
-        if (!aBalanceNormalized.eq(bBalanceNormalized)) {
-          return aBalanceNormalized.gt(bBalanceNormalized) ? -1 : 1;
+        if (!firstAssetBalanceMultiplied.eq(secondAssetBalanceMultiplied)) {
+          return firstAssetBalanceMultiplied.gt(secondAssetBalanceMultiplied) ? -1 : 1;
         }
       }
 
-      if (coinA.name && coinB.name) {
-        return coinA.name.localeCompare(coinB.name);
+      if (firstAsset.name && secondAsset.name) {
+        return firstAsset.name.localeCompare(secondAsset.name);
       }
 
       return 0;
