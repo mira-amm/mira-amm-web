@@ -12,26 +12,17 @@ import {Dispatch, SetStateAction, useCallback, useEffect, useRef, useState} from
 import {useDebounceCallback} from "usehooks-ts";
 import useCheckEthBalance from "@/src/hooks/useCheckEthBalance/useCheckEthBalance";
 import useFaucetLink from "@/src/hooks/useFaucetLink";
-import {
-  createPoolIdFromAssetNames,
-  getAssetNameByAssetId,
-  getAssetNamesFromPoolId,
-  openNewTab
-} from "@/src/utils/common";
+import {getAssetDecimalsByAssetId, getAssetNameByAssetId, openNewTab} from "@/src/utils/common";
 import useCheckActiveNetwork from "@/src/hooks/useCheckActiveNetwork";
-import usePoolAPR from "@/src/hooks/usePoolAPR";
-import {DefaultLocale} from "@/src/utils/constants";
 import Info from "@/src/components/common/Info/Info";
-import { CreatePoolPreviewData } from "./PreviewCreatePoolDialog";
-import {buildPoolId, PoolId} from "mira-dex-ts";
-import {
-  APRTooltip, StablePoolTooltip,
-  VolatilePoolTooltip
-} from "./CreatePoolTooltips";
+import {CreatePoolPreviewData} from "./PreviewCreatePoolDialog";
+import {buildPoolId} from "mira-dex-ts";
+import {StablePoolTooltip, VolatilePoolTooltip} from "./CreatePoolTooltips";
 import usePoolsMetadata from "@/src/hooks/usePoolsMetadata";
 import useModal from "@/src/hooks/useModal/useModal";
 import CoinsListModal from "@/src/components/common/Swap/components/CoinsListModal/CoinsListModal";
 import useUSDRate from "@/src/hooks/useUSDRate";
+import {bn} from "fuels";
 
 type Props = {
   setPreviewData: Dispatch<SetStateAction<CreatePoolPreviewData | null>>;
@@ -48,8 +39,10 @@ const CreatePoolDialog = ({ setPreviewData, newPool }: Props) => {
   const [firstAssetId, setFirstAssetId] = useState<string>(coinsConfig.get('ETH')?.assetId!);
   const [secondAssetId, setSecondAssetId] = useState<string>(coinsConfig.get('USDT')?.assetId!);
 
-  const { assetBalanceValue: firstAssetBalanceValue } = useAssetBalance(balances, firstAssetId);
-  const { assetBalanceValue: secondAssetBalanceValue } = useAssetBalance(balances, secondAssetId);
+  const firstAssetBalanceValue = useAssetBalance(balances, firstAssetId);
+  const secondAssetBalanceValue = useAssetBalance(balances, secondAssetId);
+  const firstAssetDecimals = getAssetDecimalsByAssetId(firstAssetId);
+  const secondAssetDecimals = getAssetDecimalsByAssetId(secondAssetId);
 
   const [firstAmount, setFirstAmount] = useState('');
   const [firstAmountInput, setFirstAmountInput] = useState('');
@@ -170,8 +163,8 @@ const CreatePoolDialog = ({ setPreviewData, newPool }: Props) => {
 
   const isValidNetwork = useCheckActiveNetwork();
 
-  const insufficientFirstBalance = parseFloat(firstAmount) > firstAssetBalanceValue;
-  const insufficientSecondBalance = parseFloat(secondAmount) > secondAssetBalanceValue;
+  const insufficientFirstBalance = bn.parseUnits(firstAmount, firstAssetDecimals) > firstAssetBalanceValue;
+  const insufficientSecondBalance = bn.parseUnits(secondAmount, secondAssetDecimals) > secondAssetBalanceValue;
   const insufficientBalance = insufficientFirstBalance || insufficientSecondBalance;
 
   let buttonTitle = 'Preview';

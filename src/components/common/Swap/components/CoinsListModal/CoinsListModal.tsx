@@ -53,8 +53,8 @@ const CoinsListModal = ({ selectCoin, balances }: Props) => {
         return firstAssetPriority !== -1 ? -1 : 1;
       }
 
-      const firstAssetLowPriority = lowPriorityOrder.indexOf(coinA.name);
-      const secondAssetLowPriority = lowPriorityOrder.indexOf(coinB.name);
+      const firstAssetLowPriority = lowPriorityOrder.indexOf(firstAsset.name);
+      const secondAssetLowPriority = lowPriorityOrder.indexOf(secondAsset.name);
       const bothAssetsHaveLowPriority = firstAssetLowPriority !== -1 && secondAssetLowPriority !== -1;
       const eitherAssetHasLowPriority = firstAssetLowPriority !== -1 || secondAssetLowPriority !== -1;
 
