@@ -4,7 +4,7 @@ import InfoBlock from "@/src/components/common/InfoBlock/InfoBlock";
 
 import styles from './MobilePoolItem.module.css';
 import {useRouter} from "next/navigation";
-import {createPoolIdFromIdString, createPoolKey, getCoinsFromKey, getAssetNamesFromPoolId} from "@/src/utils/common";
+import {createPoolIdFromIdString, createPoolKey, getAssetNamesFromPoolId} from "@/src/utils/common";
 import {PoolData} from "@/src/hooks/usePoolsData";
 import {useCallback} from "react";
 import {DefaultLocale} from "@/src/utils/constants";

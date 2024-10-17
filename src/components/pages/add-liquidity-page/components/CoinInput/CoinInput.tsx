@@ -5,14 +5,15 @@ import styles from './CoinInput.module.css';
 import {clsx} from "clsx";
 import {ChangeEvent, memo, useCallback} from "react";
 import TextButton from "@/src/components/common/TextButton/TextButton";
-import {DefaultLocale, MinEthValue} from "@/src/utils/constants";
+import {DefaultLocale, MinEthValueBN} from "@/src/utils/constants";
+import {BN} from "fuels";
 
 type Props = {
   coin: CoinName;
   value: string;
   loading: boolean;
   setAmount: (amount: string) => void;
-  balance: number;
+  balance: BN;
   usdRate: string | undefined;
   newPool?: boolean;
   onAssetClick?: VoidFunction;
@@ -20,6 +21,7 @@ type Props = {
 
 const CoinInput = ({ coin, value, loading, setAmount, balance, usdRate, newPool, onAssetClick }: Props) => {
   const decimals = coinsConfig.get(coin)?.decimals!;
+  const balanceValue = balance.formatUnits(decimals);
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const inputValue = e.target.value.replace(',', '.');
@@ -33,16 +35,16 @@ const CoinInput = ({ coin, value, loading, setAmount, balance, usdRate, newPool,
   const handleMaxClick = useCallback(() => {
     let amountStringToSet;
     if (coin === "ETH") {
-      const amountWithoutGasFee = balance - MinEthValue;
-      amountStringToSet = amountWithoutGasFee > 0 ? amountWithoutGasFee.toFixed(9) : balance.toString();
+      const amountWithoutGasFee = balance.sub(MinEthValueBN);
+      amountStringToSet = amountWithoutGasFee.gt(0)
+        ? amountWithoutGasFee.formatUnits(decimals)
+        : balanceValue;
     } else {
-      amountStringToSet = balance.toString();
+      amountStringToSet = balanceValue;
     }
 
     setAmount(amountStringToSet);
   }, [coin, balance, setAmount]);
-
-  const balanceValue = balance.toLocaleString(DefaultLocale, { minimumFractionDigits: decimals });
 
   const numericValue = parseFloat(value);
   const usdValue = !isNaN(numericValue) && Boolean(usdRate) ?
@@ -73,7 +75,7 @@ const CoinInput = ({ coin, value, loading, setAmount, balance, usdRate, newPool,
       </div>
       <div className={clsx(styles.coinInputLine, styles.rightColumn)}>
         <Coin name={coin} className={styles.coinName} newPool={newPool} onClick={onAssetClick} />
-        {balance > 0 && (
+        {balance.gt(0) && (
           <span className={styles.balance}>
             Balance: {balanceValue}
             &nbsp;

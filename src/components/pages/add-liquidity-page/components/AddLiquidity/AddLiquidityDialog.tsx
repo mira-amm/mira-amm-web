@@ -13,6 +13,7 @@ import {useDebounceCallback} from "usehooks-ts";
 import useCheckEthBalance from "@/src/hooks/useCheckEthBalance/useCheckEthBalance";
 import useFaucetLink from "@/src/hooks/useFaucetLink";
 import {
+  getAssetDecimalsByAssetId,
   getAssetNamesFromPoolId,
   openNewTab
 } from "@/src/utils/common";
@@ -31,6 +32,7 @@ import {
 import useUSDRate from "@/src/hooks/useUSDRate";
 import useModal from "@/src/hooks/useModal/useModal";
 import TransactionFailureModal from "@/src/components/common/TransactionFailureModal/TransactionFailureModal";
+import {bn} from "fuels";
 
 type Props = {
   poolId: PoolId;
@@ -45,8 +47,11 @@ const AddLiquidityDialog = ({ poolId, setPreviewData, newPool }: Props) => {
   const { connect } = useConnectUI();
   const { balances } = useBalances();
 
-  const { assetBalanceValue: firstAssetBalanceValue } = useAssetBalance(balances, poolId[0].bits);
-  const { assetBalanceValue: secondAssetBalanceValue } = useAssetBalance(balances, poolId[1].bits);
+  const firstAssetBalance = useAssetBalance(balances, poolId[0].bits);
+  const secondAssetBalance = useAssetBalance(balances, poolId[1].bits);
+
+  const firstAssetDecimals = getAssetDecimalsByAssetId(poolId[0].bits);
+  const secondAssetDecimals = getAssetDecimalsByAssetId(poolId[1].bits);
 
   const [firstAmount, setFirstAmount] = useState('');
   const [firstAmountInput, setFirstAmountInput] = useState('');
@@ -85,14 +90,14 @@ const AddLiquidityDialog = ({ poolId, setPreviewData, newPool }: Props) => {
     if (data) {
       const anotherToken = isFirstToken ? secondCoin : firstCoin;
       const anotherTokenDecimals = coinsConfig.get(anotherToken)?.decimals!;
-      const anotherTokenValue = data[1].toNumber() / 10 ** anotherTokenDecimals;
+      const anotherTokenValue = data[1].formatUnits(anotherTokenDecimals);
 
       if (isFirstToken) {
-        setSecondAmount(anotherTokenValue.toFixed(anotherTokenDecimals));
-        setSecondAmountInput(anotherTokenValue.toFixed(anotherTokenDecimals));
+        setSecondAmount(anotherTokenValue);
+        setSecondAmountInput(anotherTokenValue);
       } else {
-        setFirstAmount(anotherTokenValue.toFixed(anotherTokenDecimals));
-        setFirstAmountInput(anotherTokenValue.toFixed(anotherTokenDecimals));
+        setFirstAmount(anotherTokenValue);
+        setFirstAmountInput(anotherTokenValue);
       }
     }
   }, [data]);
@@ -164,8 +169,8 @@ const AddLiquidityDialog = ({ poolId, setPreviewData, newPool }: Props) => {
 
   const isValidNetwork = useCheckActiveNetwork();
 
-  const insufficientFirstBalance = parseFloat(firstAmount) > firstAssetBalanceValue;
-  const insufficientSecondBalance = parseFloat(secondAmount) > secondAssetBalanceValue;
+  const insufficientFirstBalance = bn.parseUnits(firstAmount, firstAssetDecimals).gt(firstAssetBalance);
+  const insufficientSecondBalance = bn.parseUnits(secondAmount, secondAssetDecimals).gt(secondAssetBalance);
   const insufficientBalance = insufficientFirstBalance || insufficientSecondBalance;
 
   let buttonTitle = 'Preview';
@@ -246,7 +251,7 @@ const AddLiquidityDialog = ({ poolId, setPreviewData, newPool }: Props) => {
             value={firstAmountInput}
             loading={!isFirstToken && isFetching}
             setAmount={setAmount(firstCoin)}
-            balance={firstAssetBalanceValue}
+            balance={firstAssetBalance}
             key={firstCoin}
             usdRate={firstAssetRate}
           />
@@ -255,7 +260,7 @@ const AddLiquidityDialog = ({ poolId, setPreviewData, newPool }: Props) => {
             value={secondAmountInput}
             loading={isFirstToken && isFetching}
             setAmount={setAmount(secondCoin)}
-            balance={secondAssetBalanceValue}
+            balance={secondAssetBalance}
             key={secondCoin}
             usdRate={secondAssetRate}
           />

@@ -1,12 +1,8 @@
-import {CoinQuantity} from "fuels";
-import {CoinName, coinsConfig} from "@/src/utils/coinsConfig";
-import {getAssetNameByAssetId} from "@/src/utils/common";
+import {BN, CoinQuantity} from "fuels";
+import {useMemo} from "react";
 
 const useAssetBalance = (balances: CoinQuantity[] | undefined, assetId: string) => {
-  const assetName = getAssetNameByAssetId(assetId);
-  const assetBalance = balances?.find(b => b.assetId === assetId)?.amount.toNumber();
-  const assetBalanceValue = assetBalance ? assetBalance / 10 ** coinsConfig.get(assetName)?.decimals! : 0;
-  return { assetBalance, assetBalanceValue };
+  return useMemo(() => balances?.find(b => b.assetId === assetId)?.amount ?? new BN(0), [balances, assetId]);
 };
 
 export default useAssetBalance;

@@ -23,8 +23,9 @@ export const ApiBaseUrl = 'https://prod.api.mira.ly' as const;
 
 export const FuelAppUrl = 'https://app.fuel.network' as const;
 
+export const EthDecimals = 9 as const;
 export const MinEthValue = 0.001 as const;
-export const MinEthValueBN = MinEthValue * 10 ** 9;
+export const MinEthValueBN = MinEthValue * 10 ** EthDecimals;
 
 export const DefaultLocale = 'en-US' as const;
 

@@ -8,15 +8,16 @@ import {CoinName, coinsConfig} from "@/src/utils/coinsConfig";
 
 import styles from "./CurrencyBox.module.css";
 import TextButton from "@/src/components/common/TextButton/TextButton";
-import {DefaultLocale, MinEthValue} from "@/src/utils/constants";
-import { InsufficientReservesError } from "mira-dex-ts/dist/sdk/errors";
+import {DefaultLocale, MinEthValueBN} from "@/src/utils/constants";
+import {InsufficientReservesError} from "mira-dex-ts/dist/sdk/errors";
 import {NoRouteFoundError} from "@/src/hooks/useSwapPreview";
+import {BN} from "fuels";
 
 type Props = {
   value: string;
   coin: CoinName;
   mode: CurrencyBoxMode;
-  balance: number;
+  balance: BN;
   setAmount: (amount: string) => void;
   loading: boolean;
   onCoinSelectorClick: (mode: CurrencyBoxMode) => void;
@@ -26,6 +27,7 @@ type Props = {
 
 const CurrencyBox = ({ value, coin, mode, balance, setAmount, loading, onCoinSelectorClick, usdRate, previewError }: Props) => {
   const decimals = coinsConfig.get(coin)?.decimals!;
+  const balanceValue = balance.formatUnits(decimals);
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const inputValue = e.target.value.replace(",", ".");
@@ -45,18 +47,18 @@ const CurrencyBox = ({ value, coin, mode, balance, setAmount, loading, onCoinSel
   const handleMaxClick = useCallback(() => {
     let amountStringToSet;
     if (coin === "ETH" && mode === "sell") {
-      const amountWithoutGasFee = balance - MinEthValue;
-      amountStringToSet = amountWithoutGasFee > 0 ? amountWithoutGasFee.toFixed(9) : balance.toString();
+      const amountWithoutGasFee = balance.sub(MinEthValueBN);
+      amountStringToSet = amountWithoutGasFee.gt(0)
+        ? amountWithoutGasFee.formatUnits(decimals)
+        : balanceValue;
     } else {
-      amountStringToSet = balance.toString();
+      amountStringToSet = balanceValue;
     }
 
     setAmount(amountStringToSet);
-  }, [coin, mode, balance, setAmount]);
+  }, [coin, mode, balance, setAmount, decimals]);
 
   const coinNotSelected = coin === null;
-
-  const balanceValue = balance.toLocaleString(DefaultLocale, {minimumFractionDigits: decimals});
 
   const numericValue = parseFloat(value);
   const usdValue = !isNaN(numericValue) && Boolean(usdRate) ?
@@ -110,7 +112,7 @@ const CurrencyBox = ({ value, coin, mode, balance, setAmount, loading, onCoinSel
       </div>
       <div className={styles.estimateAndBalance}>
         <p className={styles.estimate}>{usdValue !== null && `$${usdValue}`}</p>
-        {balance > 0 && (
+        {balance.gt(0) && (
           <span className={styles.balance}>
                 Balance: {balanceValue}
             &nbsp;

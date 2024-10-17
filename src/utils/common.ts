@@ -1,19 +1,23 @@
 import {CoinName, coinsConfig} from "@/src/utils/coinsConfig";
 import {B256Address} from "fuels";
 import {buildPoolId, PoolId} from "mira-dex-ts";
-import {AssetIdInput} from "mira-dex-ts/dist/sdk/typegen/MiraAmmContract";
 
 export const openNewTab = (url: string) => {
   window.open(url, '_blank');
 };
 
-export const getCoinsFromKey = (key: string) => {
-  const [coinA, coinB] = key.split('-') as [CoinName, CoinName];
-  return { coinA , coinB };
-};
+export const assetsList = Array.from(coinsConfig.values());
 
 export const getAssetNameByAssetId = (assetId: B256Address) => {
-  return Array.from(coinsConfig.values()).find(coin => coin.assetId === assetId)?.name!;
+  return assetsList.find(coin => coin.assetId === assetId)?.name!;
+};
+
+export const getAssetDecimalsByAssetId = (assetId: B256Address) => {
+  return assetsList.find(coin => coin.assetId === assetId)?.decimals!;
+};
+
+export const isPoolIdValid = (poolId: PoolId) => {
+  return coinsConfig.has(getAssetNameByAssetId(poolId[0].bits)) && coinsConfig.has(getAssetNameByAssetId(poolId[1].bits));
 };
 
 export const getAssetNamesFromPoolId = (poolId: PoolId) => {
@@ -41,8 +45,14 @@ export const isPoolKeyValid = (key: string) => {
 
 export const createPoolIdFromPoolKey = (key: string) => {
   const [coinA, coinB, poolStability] = key.split('-') as [CoinName, CoinName, typeof StablePoolKey | typeof VolatilePoolKey];
-  const firstCoinAssetId = coinsConfig.get(coinA)?.assetId!;
-  const secondCoinAssetId = coinsConfig.get(coinB)?.assetId!;
+  const firstCoinAssetId = coinsConfig.get(coinA)?.assetId;
+  const secondCoinAssetId = coinsConfig.get(coinB)?.assetId;
+  const poolStabilityValid = poolStability === StablePoolKey || poolStability === VolatilePoolKey;
+
+  if (!firstCoinAssetId || !secondCoinAssetId || !poolStabilityValid) {
+    return null;
+  }
+
   return buildPoolId(firstCoinAssetId, secondCoinAssetId, poolStability === StablePoolKey);
 };
 
