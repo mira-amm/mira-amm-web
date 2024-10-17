@@ -3,14 +3,13 @@ import {CoinName, coinsConfig} from "@/src/utils/coinsConfig";
 import CoinListItem from "@/src/components/common/Swap/components/CoinListItem/CoinListItem";
 import {ChangeEvent, memo, useEffect, useMemo, useRef, useState} from "react";
 import styles from "./CoinsListModal.module.css";
-import {CoinQuantity} from "fuels";
+import {BN, CoinQuantity} from "fuels";
+import {assetsList} from "@/src/utils/common";
 
 type Props = {
   selectCoin: (coin: CoinName | null) => void;
   balances: CoinQuantity[] | undefined;
 };
-
-const coinsList = Array.from(coinsConfig.values());
 
 const priorityOrder: CoinName[] = ['ETH', 'USDC', 'USDT'];
 
@@ -30,7 +29,7 @@ const CoinsListModal = ({ selectCoin, balances }: Props) => {
   };
 
   const filteredCoinsList = useMemo(() => {
-    return coinsList.filter((coin) => {
+    return assetsList.filter((coin) => {
       return (
         coin.name?.toLowerCase().includes(value.toLowerCase()) ||
         coin.fullName?.toLowerCase().includes(value.toLowerCase()) ||
@@ -54,15 +53,13 @@ const CoinsListModal = ({ selectCoin, balances }: Props) => {
       }
 
       if (balances) {
-        const aDecimals = coinsConfig.get(coinA.name)?.decimals!;
-        const aBalance = balances.find((b) => b.assetId === coinA.assetId)?.amount.toNumber();
-        const aBalanceValue = aBalance ? aBalance / 10 ** aDecimals : 0;
-        const bDecimals = coinsConfig.get(coinB.name)?.decimals!;
-        const bBalance = balances.find((b) => b.assetId === coinB.assetId)?.amount.toNumber();
-        const bBalanceValue = bBalance ? bBalance / 10 ** bDecimals : 0;
+        const aBalance = balances.find((b) => b.assetId === coinA.assetId)?.amount ?? new BN(0);
+        const bBalance = balances.find((b) => b.assetId === coinB.assetId)?.amount ?? new BN(0);
 
-        if (bBalanceValue !== aBalanceValue) {
-          return bBalanceValue - aBalanceValue;
+        const balancesDifference = aBalance.sub(bBalance);
+
+        if (!balancesDifference.eq(0)) {
+          return balancesDifference.gt(0) ? -1 : 1;
         }
       }
 

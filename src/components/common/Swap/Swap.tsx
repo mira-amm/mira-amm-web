@@ -29,7 +29,7 @@ import useUSDRate from "@/src/hooks/useUSDRate";
 import {FuelAppUrl} from "@/src/utils/constants";
 import useReservesPrice from "@/src/hooks/useReservesPrice";
 import SwapFailureModal from "@/src/components/common/Swap/components/SwapFailureModal/SwapFailureModal";
-import {BN, FuelError} from "fuels";
+import {bn, BN, FuelError} from "fuels";
 
 export type CurrencyBoxMode = "buy" | "sell";
 export type CurrencyBoxState = {
@@ -345,7 +345,7 @@ const Swap = () => {
     refetchBalances
   ]);
 
-  const insufficientSellBalance = sellBalanceValue.lt(parseFloat(sellValue));
+  const insufficientSellBalance = sellBalanceValue.lt(bn.parseUnits(sellValue, sellDecimals));
   const showInsufficientBalance = insufficientSellBalance && sufficientEthBalance;
 
   let swapButtonTitle = "Swap";

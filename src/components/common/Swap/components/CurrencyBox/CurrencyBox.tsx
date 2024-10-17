@@ -27,7 +27,7 @@ type Props = {
 
 const CurrencyBox = ({ value, coin, mode, balance, setAmount, loading, onCoinSelectorClick, usdRate, previewError }: Props) => {
   const decimals = coinsConfig.get(coin)?.decimals!;
-  const balanceValue = balance.format({ units: decimals });
+  const balanceValue = balance.formatUnits(decimals);
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const inputValue = e.target.value.replace(",", ".");
