@@ -271,7 +271,7 @@
   {
     "name": "wstETH",
     "symbol": "wstETH",
-    "icon": "https://verified-assets.fuel.network/images/wsteth.svg",
+    "icon": "https://mira-dex-resources.s3.amazonaws.com/icons/wsteth-icon.svg",
     "networks": [
       {
         "type": "ethereum",
