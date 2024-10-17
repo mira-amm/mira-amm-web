@@ -41,7 +41,7 @@ const MobilePoolItem = ({ poolData }: Props) => {
 
   const isStablePool = poolId[2];
   const feeText = isStablePool ? '0.05%' : '0.3%';
-  const poolDescription = `${isStablePool ? 'Stable' : 'Volatile'}: ${feeText} fee`;
+  const poolDescription = `${isStablePool ? 'Stable' : 'Volatile'}: ${feeText}`;
 
   return (
     <div className={styles.mobilePoolItem}>

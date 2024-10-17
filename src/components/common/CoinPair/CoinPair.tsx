@@ -18,7 +18,7 @@ const CoinPair = ({ firstCoin, secondCoin, isStablePool, withFee, withFeeBelow, 
   const secondCoinIcon = coinsConfig.get(secondCoin)?.icon;
 
   const feeText = isStablePool ? '0.05%' : '0.3%';
-  const poolDescription = `${isStablePool ? 'Stable' : 'Volatile'}: ${feeText} fee`;
+  const poolDescription = `${isStablePool ? 'Stable' : 'Volatile'}: ${feeText}`;
 
   return (
     <div className={clsx(styles.coinPair, withFeeBelow && styles.coinPairAlignStart)}>
