@@ -33,6 +33,8 @@ import useUSDRate from "@/src/hooks/useUSDRate";
 import useModal from "@/src/hooks/useModal/useModal";
 import TransactionFailureModal from "@/src/components/common/TransactionFailureModal/TransactionFailureModal";
 import {bn} from "fuels";
+import usePoolsMetadata from "@/src/hooks/usePoolsMetadata";
+import pools from "@/src/components/pages/liquidity-page/components/Pools/Pools";
 
 type Props = {
   poolId: PoolId;
@@ -64,12 +66,16 @@ const AddLiquidityDialog = ({ poolId, setPreviewData, newPool }: Props) => {
   const { firstAssetName: firstCoin, secondAssetName: secondCoin } = getAssetNamesFromPoolId(poolId);
   const isFirstToken = activeAssetName === firstCoin;
 
+  const { poolsMetadata } = usePoolsMetadata([poolId]);
+  const emptyPool = Boolean(poolsMetadata?.[0]?.reserve0.eq(0) && poolsMetadata?.[0].reserve1.eq(0));
+
   const { data, isFetching, error } = usePreviewAddLiquidity({
     firstCoin,
     secondCoin,
     amountString: isFirstToken ? firstAmount : secondAmount,
     isFirstToken,
     isStablePool,
+    fetchCondition: !emptyPool,
   });
 
   useEffect(() => {
