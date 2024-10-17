@@ -1,5 +1,5 @@
 import {useQuery} from "@tanstack/react-query";
-import {CoinName, verifiedAssetIds} from "@/src/utils/coinsConfig";
+import {CoinName} from "@/src/utils/coinsConfig";
 import {ApiBaseUrl} from "@/src/utils/constants";
 import {createPoolIdFromIdString, isPoolIdValid} from "@/src/utils/common";
 
