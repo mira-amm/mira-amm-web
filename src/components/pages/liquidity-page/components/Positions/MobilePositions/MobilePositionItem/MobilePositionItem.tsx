@@ -25,7 +25,7 @@ const MobilePositionItem = ({ position, onClick }: Props) => {
 
   const isStablePool = position.isStablePool;
   const feeText = isStablePool ? '0.05%' : '0.3%';
-  const poolDescription = `${isStablePool ? 'Stable' : 'Volatile'}: ${feeText} fee`;
+  const poolDescription = `${isStablePool ? 'Stable' : 'Volatile'}: ${feeText}`;
 
   return (
     <div className={styles.mobilePositionItem} onClick={onClick}>

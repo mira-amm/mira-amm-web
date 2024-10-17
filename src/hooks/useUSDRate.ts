@@ -41,8 +41,9 @@ const useUSDRate = (firstAssetName: string | null, secondAssetName: string | nul
       const secondAssetSymbol = secondAssetName ? assetHandleToSymbol[secondAssetName] : null;
 
       const assetIds = [firstAssetSymbol, secondAssetSymbol]
-        .filter(assetId => assetId !== null)
+        .filter(symbol => symbol !== null)
         .map(symbol => assetSymbolToCoinGeckoId[symbol!])
+        .filter(id => id !== undefined)
         .join(",")
       let rates;
       if (!assetIds) {

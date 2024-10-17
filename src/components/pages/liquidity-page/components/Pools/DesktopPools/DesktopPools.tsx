@@ -58,13 +58,22 @@ const DesktopPools = ({ poolsData }: Props) => {
           const key = createPoolKey(poolId);
           const { firstAssetName, secondAssetName } = getAssetNamesFromPoolId(poolId);
 
-          const { details: { apr, volume, tvl } } = poolData;
+          let aprValue = 'n/a';
+          let volumeValue = 'n/a';
+          let tvlValue = 'n/a';
 
-          const aprValue = apr ?
-            `${parseFloat(apr).toLocaleString(DefaultLocale, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}%`
-            : null;
-          const volumeValue = parseFloat(volume).toLocaleString(DefaultLocale, { maximumFractionDigits: 0 });
-          const tvlValue = parseFloat(tvl).toLocaleString(DefaultLocale, { maximumFractionDigits: 0 });
+          if (poolData.details) {
+            const {details: {apr, volume, tvl}} = poolData;
+
+            if (apr) {
+              aprValue = `${parseFloat(apr).toLocaleString(DefaultLocale, {
+                  minimumFractionDigits: 2,
+                  maximumFractionDigits: 2
+                })}%`;
+            }
+            volumeValue = `$${parseFloat(volume).toLocaleString(DefaultLocale, {maximumFractionDigits: 0})}`;
+            tvlValue = `$${parseFloat(tvl).toLocaleString(DefaultLocale, {maximumFractionDigits: 0})}`;
+          }
 
           return (
             <tr key={key}>
@@ -72,8 +81,8 @@ const DesktopPools = ({ poolsData }: Props) => {
                 <CoinPair firstCoin={firstAssetName} secondCoin={secondAssetName} isStablePool={poolId[2]} withPoolDescription />
               </td>
               <td className={clsx(!aprValue && styles.pending)}>{aprValue ?? 'Awaiting data'}</td>
-              <td>${volumeValue}</td>
-              <td>${tvlValue}</td>
+              <td>{volumeValue}</td>
+              <td>{tvlValue}</td>
               <td>
                 <ActionButton
                   className={styles.addButton}

@@ -9,11 +9,10 @@ type CoinData = {
   name: CoinName;
   assetId: string;
   decimals: number;
-  fullName?: string;
+  fullName: string;
   icon?: string;
   contractId?: string;
   subId?: string;
-  coinGeckoId?: string;
 };
 
 export const assetSymbolToCoinGeckoId: { [key: string]: string } = {
@@ -48,11 +47,7 @@ export const assetSymbolToCoinGeckoId: { [key: string]: string } = {
 
 // mapping of asset names & symbols to symbols
 export const assetHandleToSymbol: { [key: string]: string } = {};
-
-assets.forEach(asset => {
-  assetHandleToSymbol[asset.name] = asset.symbol;
-  assetHandleToSymbol[asset.symbol] = asset.symbol;
-});
+export const verifiedAssetIds = new Set<string>();
 
 // TODO: Make an API call to get the coins config
 const initAssetsConfig = () => {
@@ -70,13 +65,39 @@ const initAssetsConfig = () => {
       contractId: currentFuelNetworkData[0].contractId,
       // @ts-ignore
       subId: currentFuelNetworkData[0].subId,
-      coinGeckoId: assetSymbolToCoinGeckoId[asset.symbol],
     }
 
     assetsConfig.set(asset.symbol as CoinName, assetData);
   });
 
+  const additionalAssetsConfig = initAdditionalAssetsConfig();
+
+  additionalAssetsConfig.forEach((value, key) => {
+    assetsConfig.set(key, value);
+  });
+
+  Array.from(assetsConfig.values()).forEach(asset => {
+    if (asset.name) {
+      assetHandleToSymbol[asset.name] = asset.name;
+      assetHandleToSymbol[asset.fullName] = asset.name;
+    }
+    verifiedAssetIds.add(asset.assetId);
+  });
+
   return assetsConfig;
 };
+
+const initAdditionalAssetsConfig = () => {
+  const assetsConfig: Map<CoinName, CoinData> = new Map();
+
+  // place for additional assets
+  const additionalAssets: CoinData[] = [];
+
+  for (const asset of additionalAssets) {
+    assetsConfig.set(asset.name, asset);
+  }
+
+  return assetsConfig;
+}
 
 export const coinsConfig: Map<CoinName, CoinData> = initAssetsConfig();

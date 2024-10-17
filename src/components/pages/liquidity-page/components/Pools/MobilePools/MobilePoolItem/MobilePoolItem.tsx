@@ -24,17 +24,24 @@ const MobilePoolItem = ({ poolData }: Props) => {
   }, [router, poolKey]);
 
   const { firstAssetName, secondAssetName } = getAssetNamesFromPoolId(poolId);
-  const { details: { apr, volume, tvl } } = poolData;
 
-  const aprValue = apr ?
-    `${parseFloat(apr).toLocaleString(DefaultLocale, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}%` :
-    null;
-  const volumeValue = parseFloat(volume).toLocaleString(DefaultLocale, { maximumFractionDigits: 0 });
-  const tvlValue = parseFloat(tvl).toLocaleString(DefaultLocale, { maximumFractionDigits: 0 });
+  let aprValue = 'n/a';
+  let volumeValue = 'n/a';
+  let tvlValue = 'n/a';
+
+  if (poolData.details) {
+    const {details: {apr, volume, tvl}} = poolData;
+
+    if (apr) {
+      aprValue =`${parseFloat(apr).toLocaleString(DefaultLocale, {minimumFractionDigits: 2, maximumFractionDigits: 2})}%`;
+    }
+    volumeValue = `$${parseFloat(volume).toLocaleString(DefaultLocale, {maximumFractionDigits: 0})}`;
+    tvlValue = `$${parseFloat(tvl).toLocaleString(DefaultLocale, {maximumFractionDigits: 0})}`;
+  }
 
   const isStablePool = poolId[2];
   const feeText = isStablePool ? '0.05%' : '0.3%';
-  const poolDescription = `${isStablePool ? 'Stable' : 'Volatile'}: ${feeText} fee`;
+  const poolDescription = `${isStablePool ? 'Stable' : 'Volatile'}: ${feeText}`;
 
   return (
     <div className={styles.mobilePoolItem}>
@@ -42,8 +49,8 @@ const MobilePoolItem = ({ poolData }: Props) => {
         <CoinPair firstCoin={firstAssetName} secondCoin={secondAssetName} isStablePool={isStablePool} />
         <div className={styles.infoBlocks}>
           <InfoBlock title="APR" value={aprValue} type="positive"/>
-          <InfoBlock title="24H Volume" value={`$${volumeValue}`}/>
-          <InfoBlock title="TVL" value={`$${tvlValue}`}/>
+          <InfoBlock title="24H Volume" value={volumeValue}/>
+          <InfoBlock title="TVL" value={tvlValue}/>
         </div>
         <p className={styles.poolDescription}>{poolDescription}</p>
       </div>
