@@ -198,5 +198,136 @@
         "assetId": "0x91b3559edb2619cde8ffb2aa7b3c3be97efd794ea46700db7092abeee62281b0"
       }
     ]
+  },
+  {
+    "name": "pzETH",
+    "symbol": "pzETH",
+    "icon": "https://verified-assets.fuel.network/images/pzETH.webp",
+    "networks": [
+      {
+        "type": "ethereum",
+        "chain": "mainnet",
+        "address": "0x8c9532a60e0e7c6bbd2b2c1303f63ace1c3e9811",
+        "decimals": 18,
+        "chainId": 1
+      },
+      {
+        "type": "fuel",
+        "chain": "mainnet",
+        "decimals": 9,
+        "chainId": 9889,
+        "contractId": "0x4ea6ccef1215d9479f1024dff70fc055ca538215d2c8c348beddffd54583d0e8",
+        "subId": "0x0d3b3441cdfdf6035257710023d55dfb75590248a464999087fcff9a97d9b5df",
+        "assetId": "0x1493d4ec82124de8f9b625682de69dcccda79e882b89a55a8c737b12de67bd68"
+      }
+    ]
+  },
+  {
+    "name": "SolvBTC",
+    "symbol": "SolvBTC",
+    "icon": "https://verified-assets.fuel.network/images/solvBTC.webp",
+    "networks": [
+      {
+        "type": "ethereum",
+        "chain": "mainnet",
+        "address": "0x7a56e1c57c7475ccf742a1832b028f0456652f97",
+        "decimals": 18,
+        "chainId": 1
+      },
+      {
+        "type": "fuel",
+        "chain": "mainnet",
+        "decimals": 9,
+        "chainId": 9889,
+        "contractId": "0x4ea6ccef1215d9479f1024dff70fc055ca538215d2c8c348beddffd54583d0e8",
+        "subId": "0x7977feee81d70d5b859432c90c374f99dcf3a8c172fa273c43c4ca0a29c447a9",
+        "assetId": "0x1186afea9affb88809c210e13e2330b5258c2cef04bb8fff5eff372b7bd3f40f"
+      }
+    ]
+  },
+  {
+    "name": "SolvBTC.BBN",
+    "symbol": "SolvBTC.BBN",
+    "icon": "https://verified-assets.fuel.network/images/SolvBTC.BBN.png",
+    "networks": [
+      {
+        "type": "ethereum",
+        "chain": "mainnet",
+        "address": "0xd9d920aa40f578ab794426f5c90f6c731d159def",
+        "decimals": 18,
+        "chainId": 1
+      },
+      {
+        "type": "fuel",
+        "chain": "mainnet",
+        "decimals": 9,
+        "chainId": 9889,
+        "contractId": "0x4ea6ccef1215d9479f1024dff70fc055ca538215d2c8c348beddffd54583d0e8",
+        "subId": "0x044a431dfedf487d78e6aedcf70b653ddf29412754d244713a1f02e6558245c4",
+        "assetId": "0x7a4f087c957d30218223c2baaaa365355c9ca81b6ea49004cfb1590a5399216f"
+      }
+    ]
+  },
+  {
+    "name": "wstETH",
+    "symbol": "wstETH",
+    "icon": "https://verified-assets.fuel.network/images/wsteth.svg",
+    "networks": [
+      {
+        "type": "ethereum",
+        "chain": "mainnet",
+        "address": "0x7f39C581F595B53c5cb19bD0b3f8dA6c935E2Ca0",
+        "decimals": 18,
+        "chainId": 1
+      },
+      {
+        "type": "ethereum",
+        "chain": "sepolia",
+        "address": "0xB82381A3fBD3FaFA77B3a7bE693342618240067b",
+        "decimals": 18,
+        "chainId": 11155111
+      },
+      {
+        "type": "fuel",
+        "chain": "mainnet",
+        "decimals": 9,
+        "chainId": 9889,
+        "contractId": "0x4ea6ccef1215d9479f1024dff70fc055ca538215d2c8c348beddffd54583d0e8",
+        "subId": "0xa232a843105ef81cd9996efc121cd3c8455c5edd9fb9c5a0b097982e1e68d5d6",
+        "assetId": "0x1a7815cc9f75db5c24a5b0814bfb706bb9fe485333e98254015de8f48f84c67b"
+      },
+      {
+        "type": "fuel",
+        "chain": "testnet",
+        "decimals": 9,
+        "chainId": 0,
+        "contractId": "0xd02112ef9c39f1cea7c8527c26242ca1f5d26bcfe8d1564bee054d3b04175471",
+        "subId": "0xd996e6beef64f541bf5a7d76d81be6788e114d4f57da16698646149a61a3a69e",
+        "assetId": "0xb42cd9ddf61898da1701adb3a003b0cf4ca6df7b5fe490ec2c295b1ca43b33c8"
+      }
+    ]
+  },
+  {
+    "name": "weETH",
+    "symbol": "weETH",
+    "icon": "https://verified-assets.fuel.network/images/weETH.webp",
+    "networks": [
+      {
+        "type": "ethereum",
+        "chain": "mainnet",
+        "address": "0xCd5fE23C85820F7B72D0926FC9b05b43E359b7ee",
+        "decimals": 18,
+        "chainId": 1
+      },
+      {
+        "type": "fuel",
+        "chain": "mainnet",
+        "decimals": 9,
+        "chainId": 9889,
+        "contractId": "0x4ea6ccef1215d9479f1024dff70fc055ca538215d2c8c348beddffd54583d0e8",
+        "subId": "0x94cd19fd8aa593b2a2d25d6f3c9a32a958ad8cdd477d25c367de20f22207f679",
+        "assetId": "0x239ed6e12b7ce4089ee245244e3bf906999a6429c2a9a445a1e1faf56914a4ab"
+      }
+    ]
   }
 ]
