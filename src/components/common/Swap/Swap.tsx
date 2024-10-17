@@ -29,7 +29,7 @@ import useUSDRate from "@/src/hooks/useUSDRate";
 import {FuelAppUrl} from "@/src/utils/constants";
 import useReservesPrice from "@/src/hooks/useReservesPrice";
 import SwapFailureModal from "@/src/components/common/Swap/components/SwapFailureModal/SwapFailureModal";
-import {FuelError} from "fuels";
+import {BN, FuelError} from "fuels";
 
 export type CurrencyBoxMode = "buy" | "sell";
 export type CurrencyBoxState = {
@@ -98,10 +98,10 @@ const Swap = () => {
     }
   }, [isConnected]);
 
-  const sellBalance = balances?.find((b) => b.assetId === coinsConfig.get(swapState.sell.coin)?.assetId)?.amount.toNumber();
-  const sellBalanceValue = sellBalance ? sellBalance / 10 ** coinsConfig.get(swapState.sell.coin)?.decimals! : 0;
-  const buyBalance = balances?.find((b) => b.assetId === coinsConfig.get(swapState.buy.coin)?.assetId)?.amount.toNumber();
-  const buyBalanceValue = buyBalance ? buyBalance / 10 ** coinsConfig.get(swapState.buy.coin)?.decimals! : 0;
+  const sellBalance = balances?.find((b) => b.assetId === coinsConfig.get(swapState.sell.coin)?.assetId)?.amount;
+  const sellBalanceValue = sellBalance ?? new BN(0);
+  const buyBalance = balances?.find((b) => b.assetId === coinsConfig.get(swapState.buy.coin)?.assetId)?.amount;
+  const buyBalanceValue = buyBalance ?? new BN(0);
 
   const {
     previewData,
@@ -345,7 +345,7 @@ const Swap = () => {
     refetchBalances
   ]);
 
-  const insufficientSellBalance = parseFloat(sellValue) > sellBalanceValue;
+  const insufficientSellBalance = sellBalanceValue.lt(parseFloat(sellValue));
   const showInsufficientBalance = insufficientSellBalance && sufficientEthBalance;
 
   let swapButtonTitle = "Swap";
