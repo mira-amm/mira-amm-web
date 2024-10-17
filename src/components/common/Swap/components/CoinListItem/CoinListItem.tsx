@@ -1,6 +1,6 @@
 import {memo} from "react";
 import {clsx} from "clsx";
-import {CoinQuantity} from "fuels";
+import {BN, CoinQuantity} from "fuels";
 
 import {CoinName, coinsConfig} from "@/src/utils/coinsConfig";
 
@@ -16,7 +16,7 @@ const CoinListItem = ({ name, balance }: Props) => {
   const fullName = coinData?.fullName;
   const icon = coinData?.icon;
   const decimals = coinData?.decimals ?? 0;
-  const balanceValue = balance ? balance.amount.toNumber() / 10 ** decimals : 0;
+  const balanceValue = balance?.amount ?? new BN(0);
 
   return (
     <span className={clsx(styles.coin, !fullName && styles.centered)}>
@@ -27,8 +27,8 @@ const CoinListItem = ({ name, balance }: Props) => {
           <p className={styles.fullName}>{fullName}</p>
         )}
       </div>
-      {balanceValue > 0 && (
-        <p className={styles.balance}>{balanceValue}</p>
+      {balanceValue.gt(0) && (
+        <p className={styles.balance}>{balanceValue.formatUnits(decimals)}</p>
       )}
     </span>
   )

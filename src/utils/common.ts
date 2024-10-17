@@ -6,8 +6,14 @@ export const openNewTab = (url: string) => {
   window.open(url, '_blank');
 };
 
+export const assetsList = Array.from(coinsConfig.values());
+
 export const getAssetNameByAssetId = (assetId: B256Address) => {
-  return Array.from(coinsConfig.values()).find(coin => coin.assetId === assetId)?.name!;
+  return assetsList.find(coin => coin.assetId === assetId)?.name!;
+};
+
+export const getAssetDecimalsByAssetId = (assetId: B256Address) => {
+  return assetsList.find(coin => coin.assetId === assetId)?.decimals!;
 };
 
 export const isPoolIdValid = (poolId: PoolId) => {

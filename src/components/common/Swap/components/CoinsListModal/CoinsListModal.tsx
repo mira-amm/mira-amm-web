@@ -3,14 +3,13 @@ import {CoinName, coinsConfig} from "@/src/utils/coinsConfig";
 import CoinListItem from "@/src/components/common/Swap/components/CoinListItem/CoinListItem";
 import {ChangeEvent, memo, useEffect, useMemo, useRef, useState} from "react";
 import styles from "./CoinsListModal.module.css";
-import {CoinQuantity} from "fuels";
+import {BN, CoinQuantity} from "fuels";
+import {assetsList} from "@/src/utils/common";
 
 type Props = {
   selectCoin: (coin: CoinName | null) => void;
   balances: CoinQuantity[] | undefined;
 };
-
-const coinsList = Array.from(coinsConfig.values());
 
 const priorityOrder: CoinName[] = ['ETH', 'USDC', 'USDT'];
 
@@ -30,7 +29,7 @@ const CoinsListModal = ({ selectCoin, balances }: Props) => {
   };
 
   const filteredCoinsList = useMemo(() => {
-    return coinsList.filter((coin) => {
+    return assetsList.filter((coin) => {
       return (
         coin.name?.toLowerCase().includes(value.toLowerCase()) ||
         coin.fullName?.toLowerCase().includes(value.toLowerCase()) ||
@@ -41,9 +40,9 @@ const CoinsListModal = ({ selectCoin, balances }: Props) => {
 
   // TODO: Pre-sort the list by priorityOrder and alphabet to avoid sorting each time
   const sortedCoinsList = useMemo(() => {
-    return filteredCoinsList.toSorted((coinA, coinB) => {
-      const firstAssetPriority = priorityOrder.indexOf(coinA.name);
-      const secondAssetPriority = priorityOrder.indexOf(coinB.name);
+    return filteredCoinsList.toSorted((firstAsset, secondAsset) => {
+      const firstAssetPriority = priorityOrder.indexOf(firstAsset.name);
+      const secondAssetPriority = priorityOrder.indexOf(secondAsset.name);
       const bothAssetsHavePriority = firstAssetPriority !== -1 && secondAssetPriority !== -1;
       const eitherAssetHasPriority = firstAssetPriority !== -1 || secondAssetPriority !== -1;
 
@@ -54,20 +53,23 @@ const CoinsListModal = ({ selectCoin, balances }: Props) => {
       }
 
       if (balances) {
-        const aDecimals = coinsConfig.get(coinA.name)?.decimals!;
-        const aBalance = balances.find((b) => b.assetId === coinA.assetId)?.amount.toNumber();
-        const aBalanceValue = aBalance ? aBalance / 10 ** aDecimals : 0;
-        const bDecimals = coinsConfig.get(coinB.name)?.decimals!;
-        const bBalance = balances.find((b) => b.assetId === coinB.assetId)?.amount.toNumber();
-        const bBalanceValue = bBalance ? bBalance / 10 ** bDecimals : 0;
+        const firstAssetBalance = balances.find((b) => b.assetId === firstAsset.assetId)?.amount ?? new BN(0);
+        const secondAssetBalance = balances.find((b) => b.assetId === secondAsset.assetId)?.amount ?? new BN(0);
+        const firstAssetDecimals = coinsConfig.get(firstAsset.name)?.decimals ?? 0;
+        const secondAssetDecimals = coinsConfig.get(secondAsset.name)?.decimals ?? 0;
+        const firstAssetDivisor = new BN(10).pow(firstAssetDecimals);
+        const secondAssetDivisor = new BN(10).pow(secondAssetDecimals);
+        // Dividing BN to a large value can lead to zero, we use proportion rule here: a/b = c/d => a*d = b*c
+        const firstAssetBalanceMultiplied = firstAssetBalance.mul(secondAssetDivisor);
+        const secondAssetBalanceMultiplied = secondAssetBalance.mul(firstAssetDivisor);
 
-        if (bBalanceValue !== aBalanceValue) {
-          return bBalanceValue - aBalanceValue;
+        if (!firstAssetBalanceMultiplied.eq(secondAssetBalanceMultiplied)) {
+          return firstAssetBalanceMultiplied.gt(secondAssetBalanceMultiplied) ? -1 : 1;
         }
       }
 
-      if (coinA.name && coinB.name) {
-        return coinA.name.localeCompare(coinB.name);
+      if (firstAsset.name && secondAsset.name) {
+        return firstAsset.name.localeCompare(secondAsset.name);
       }
 
       return 0;
