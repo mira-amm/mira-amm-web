@@ -54,12 +54,16 @@ const CoinsListModal = ({ selectCoin, balances }: Props) => {
 
       if (balances) {
         const aBalance = balances.find((b) => b.assetId === coinA.assetId)?.amount ?? new BN(0);
+        const aDecimals = coinsConfig.get(coinA.name)?.decimals ?? 0;
+        const aDecimalsMultiplier = new BN(10).pow(aDecimals);
+        const aBalanceNormalized = aBalance.mul(aDecimalsMultiplier);
         const bBalance = balances.find((b) => b.assetId === coinB.assetId)?.amount ?? new BN(0);
+        const bDecimals = coinsConfig.get(coinB.name)?.decimals ?? 0;
+        const bDecimalsMultiplier = new BN(10).pow(bDecimals);
+        const bBalanceNormalized = bBalance.mul(bDecimalsMultiplier);
 
-        const balancesDifference = aBalance.sub(bBalance);
-
-        if (!balancesDifference.eq(0)) {
-          return balancesDifference.gt(0) ? -1 : 1;
+        if (!aBalanceNormalized.eq(bBalanceNormalized)) {
+          return aBalanceNormalized.gt(bBalanceNormalized) ? -1 : 1;
         }
       }
 
