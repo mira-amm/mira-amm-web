@@ -352,5 +352,28 @@
         "assetId": "0x962792286fbc9b1d5860b4551362a12249362c21594c77abf4b3fe2bbe8d977a"
       }
     ]
+  },
+  {
+    "name": "WETH",
+    "symbol": "WETH",
+    "icon": "https://verified-assets.fuel.network/images/weth.svg",
+    "networks": [
+      {
+        "type": "ethereum",
+        "chain": "mainnet",
+        "address": "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2",
+        "decimals": 18,
+        "chainId": 1
+      },
+      {
+        "type": "fuel",
+        "chain": "mainnet",
+        "decimals": 9,
+        "chainId": 9889,
+        "contractId": "0x4ea6ccef1215d9479f1024dff70fc055ca538215d2c8c348beddffd54583d0e8",
+        "subId": "0xd4d7948d31e97d4ed6d0182814e8bc827dfe0d8e70a010bdb9e34aae92775491",
+        "assetId": "0xa38a5a8beeb08d95744bc7f58528073f4052b254def59eba20c99c202b5acaa3"
+      }
+    ]
   }
 ]
