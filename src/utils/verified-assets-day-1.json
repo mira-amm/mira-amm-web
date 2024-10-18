@@ -329,5 +329,28 @@
         "assetId": "0x239ed6e12b7ce4089ee245244e3bf906999a6429c2a9a445a1e1faf56914a4ab"
       }
     ]
+  },
+  {
+    "name": "rstETH",
+    "symbol": "rstETH",
+    "icon": "https://verified-assets.fuel.network/images/rstETH.webp",
+    "networks": [
+      {
+        "type": "ethereum",
+        "chain": "mainnet",
+        "address": "0x7a4EffD87C2f3C55CA251080b1343b605f327E3a",
+        "decimals": 18,
+        "chainId": 1
+      },
+      {
+        "type": "fuel",
+        "chain": "mainnet",
+        "decimals": 9,
+        "chainId": 9889,
+        "contractId": "0x4ea6ccef1215d9479f1024dff70fc055ca538215d2c8c348beddffd54583d0e8",
+        "subId": "0xaa842aaa34c68ea5d166bcbd493f493b8f295c1a2c7e8e75bcdab6042eb79cc1",
+        "assetId": "0x962792286fbc9b1d5860b4551362a12249362c21594c77abf4b3fe2bbe8d977a"
+      }
+    ]
   }
 ]
