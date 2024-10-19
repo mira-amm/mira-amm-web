@@ -54,7 +54,13 @@ const MobilePoolItem = ({ poolData }: Props) => {
         </div>
         <p className={styles.poolDescription}>{poolDescription}</p>
       </div>
-      <ActionButton className={styles.addButton} variant="secondary" onClick={handleAddClick} fullWidth>
+      <ActionButton
+        className={styles.addButton}
+        variant="secondary"
+        onClick={handleAddClick}
+        fullWidth
+        disabled
+      >
         Add Liquidity
       </ActionButton>
     </div>
