@@ -7,7 +7,17 @@
 .promo {
   display: flex;
   padding: 12px 16px;
-  background-color: #507FF7;
+  background-color: #D4B226;
+  color: var(--content-inverse);
+}
+
+.promo > a {
+  text-decoration: underline;
+}
+
+.promo > a:hover {
+  text-decoration: none;
+  color: var(--content-inverse);
 }
 
 .main {
