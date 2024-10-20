@@ -45,7 +45,7 @@ const useCreatePool = ({ firstAssetName, firstAssetAmount, secondAssetName, seco
     );
     const gasCost = await wallet.getTransactionCost(txRequest);
     const fundedTx = await wallet.fund(txRequest, gasCost);
-    const tx = await wallet.sendTransaction(fundedTx);
+    const tx = await wallet.sendTransaction(fundedTx, { estimateTxDependencies: true });
     return await tx.waitForResult();
   }, [
     mira,
