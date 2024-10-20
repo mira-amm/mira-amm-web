@@ -302,11 +302,7 @@ const AddLiquidityDialog = ({ poolId, setPreviewData, newPool }: Props) => {
           Connect Wallet
         </ActionButton>
       ) : (
-        <ActionButton
-          onClick={handleButtonClick}
-          // disabled={buttonDisabled}
-          disabled
-        >
+        <ActionButton disabled={buttonDisabled} onClick={handleButtonClick}>
           {buttonTitle}
         </ActionButton>
       )}
