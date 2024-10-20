@@ -482,13 +482,8 @@ const Swap = () => {
             </ActionButton>
           )}
           {isConnected && (
-            <ActionButton
-              variant="primary"
-              onClick={handleSwapClick}
-              loading={balancesPending || txCostPending}
-              // disabled={swapDisabled}
-              disabled
-            >
+            <ActionButton variant="primary" disabled={swapDisabled} onClick={handleSwapClick}
+                          loading={balancesPending || txCostPending}>
               {swapButtonTitle}
             </ActionButton>
           )}
