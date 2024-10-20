@@ -32,6 +32,7 @@ const usePoolsData = () => {
         buildPoolId("0xf8f8b6283d7fa5b672b530cbb84fcccb4ff8dc40f8176ef4544ddb1f1952ad07", "0x91b3559edb2619cde8ffb2aa7b3c3be97efd794ea46700db7092abeee62281b0", true),
         buildPoolId("0x286c479da40dc953bddc3bb4c453b608bba2e0ac483b077bd475174115395e6b", "0x9e46f919fbf978f3cad7cd34cca982d5613af63ff8aab6c379e4faa179552958", true),
         buildPoolId("0xf8f8b6283d7fa5b672b530cbb84fcccb4ff8dc40f8176ef4544ddb1f1952ad07", "0x286c479da40dc953bddc3bb4c453b608bba2e0ac483b077bd475174115395e6b", false),
+        buildPoolId("0xa0265fb5c32f6e8db3197af3c7eb05c48ae373605b8165b6f4a51c5b0ba4812e", "0x286c479da40dc953bddc3bb4c453b608bba2e0ac483b077bd475174115395e6b", true),
       ]
       const poolsData: Promise<PoolData>[] = poolIds.map(async id => {
         const poolMeta = await miraAmm!.poolMetadata(id);
