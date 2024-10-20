@@ -40,7 +40,13 @@ const usePoolsData = () => {
           id: createPoolIdString(id),
           reserve_0: poolMeta!.reserve0.toString(),
           reserve_1: poolMeta!.reserve1.toString(),
-          details: null,
+          details: {
+            asset_0_symbol: 'A' as CoinName,
+            asset_1_symbol: 'B' as CoinName,
+            apr: null,
+            volume: '0',
+            tvl: '0',
+          },
           swap_count: 0,
           create_time: 0,
         }
