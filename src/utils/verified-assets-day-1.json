@@ -69,6 +69,29 @@
     ]
   },
   {
+    "name": "USDT",
+    "symbol": "USDT",
+    "icon": "https://verified-assets.fuel.network/images/usdt.svg",
+    "networks": [
+      {
+        "type": "ethereum",
+        "chain": "mainnet",
+        "address": "0xdAC17F958D2ee523a2206206994597C13D831ec7",
+        "decimals": 6,
+        "chainId": 1
+      },
+      {
+        "type": "fuel",
+        "chain": "mainnet",
+        "decimals": 6,
+        "chainId": 9889,
+        "contractId": "0x4ea6ccef1215d9479f1024dff70fc055ca538215d2c8c348beddffd54583d0e8",
+        "subId": "0x033dd0c9246b67aea1456ed2ea6aaac61253583b7a1c84cd73d968ad7d30b72d",
+        "assetId": "0xa0265fb5c32f6e8db3197af3c7eb05c48ae373605b8165b6f4a51c5b0ba4812e"
+      }
+    ]
+  },
+  {
     "name": "USDC",
     "symbol": "USDC",
     "icon": "https://verified-assets.fuel.network/images/usdc.svg",
