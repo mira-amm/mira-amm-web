@@ -52,6 +52,7 @@ const useSwapPreview = ({ swapState, mode }: Props) => {
   const { data: multihopPreviewData, error: multihopPreviewError, isLoading: multihopPreviewLoading, failureCount: multihopFailureCount, refetch } = useQuery({
     queryKey: ['multihopPreview', inputAssetId, outputAssetId, normalizedAmount, tradeType],
     queryFn: async () => {
+      throw new Error("Indexer is not set up for this contract");
       const res = await fetch(`${ApiBaseUrl}/find_route`, {
         method: 'POST',
         headers: {

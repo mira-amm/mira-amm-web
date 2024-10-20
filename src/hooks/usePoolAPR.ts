@@ -10,20 +10,20 @@ const usePoolAPR = (pool: PoolId) => {
   const { data, isPending } = useQuery({
     queryKey: ['poolAPR', poolIdString],
     queryFn: async () => {
-      const poolsDataResponse = await fetch(`${ApiBaseUrl}/pools`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          'volume_hours': 24,
-          'apr_days': 1,
-          "pool_id": poolIdString,
-        }),
-      });
-
-      const poolsData: PoolsData = await poolsDataResponse.json();
-      return poolsData.pools[0].details.apr;
+      // const poolsDataResponse = await fetch(`${ApiBaseUrl}/pools`, {
+      //   method: 'POST',
+      //   headers: {
+      //     'Content-Type': 'application/json',
+      //   },
+      //   body: JSON.stringify({
+      //     'volume_hours': 24,
+      //     'apr_days': 1,
+      //     "pool_id": poolIdString,
+      //   }),
+      // });
+      //
+      // const poolsData: PoolsData = await poolsDataResponse.json();
+      return null;
     },
   });
 

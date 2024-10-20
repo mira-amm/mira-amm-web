@@ -1,7 +1,7 @@
 import {CHAIN_IDS, TxParams} from "fuels";
 
 export const DEFAULT_AMM_CONTRACT_ID =
-  "0x2e40f2b244b98ed6b8204b3de0156c6961f98525c8162f80162fcf53eebd90e7" as const;
+  "0x197251b052ff32fb8cd0951b880e135c036d1c8e170da569d536c0717be6f3a1" as const;
 
 export const DefaultTxParams: TxParams = {
   gasLimit: 10_000_000,
