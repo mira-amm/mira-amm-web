@@ -41,8 +41,8 @@ const useAddLiquidity = ({ firstAssetName, firstAssetAmount, secondAssetName, se
       throw new Error('Invalid pool id or asset configs');
     }
 
-    const minAsset0Amount = asset0Amount * 0.99;
-    const minAsset1Amount = asset1Amount * 0.99;
+    const minAsset0Amount = Math.ceil(asset0Amount * 0.99);
+    const minAsset1Amount = Math.ceil(asset1Amount * 0.99);
     const txRequest = await mira.addLiquidity(poolId, asset0Amount, asset1Amount, minAsset0Amount, minAsset1Amount, MaxDeadline, DefaultTxParams);
     const gasCost = await wallet.getTransactionCost(txRequest);
     const fundedTx = await wallet.fund(txRequest, gasCost);
