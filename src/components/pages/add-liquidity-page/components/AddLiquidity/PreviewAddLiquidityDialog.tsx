@@ -35,7 +35,7 @@ const PreviewAddLiquidityDialog = ({ previewData, setPreviewData }: Props) => {
 
   const { assets, isStablePool } = previewData;
 
-  const { data, mutateAsync, isPending, error } = useAddLiquidity({
+  const { data, mutateAsync, isPending, error: addLiquidityError } = useAddLiquidity({
     firstAssetName: assets[0].coin,
     firstAssetAmount: assets[0].amount,
     secondAssetName: assets[1].coin,
@@ -150,7 +150,7 @@ const PreviewAddLiquidityDialog = ({ previewData, setPreviewData }: Props) => {
         <AddLiquiditySuccessModal coinA={coinA} coinB={coinB} firstCoinAmount={firstCoinAmount} secondCoinAmount={secondCoinAmount} transactionHash={data?.id} />
       </SuccessModal>
       <FailureModal title={<></>} onClose={onFailureModalClose}>
-        <TransactionFailureModal closeModal={closeFailureModal} />
+        <TransactionFailureModal error={addLiquidityError} closeModal={closeFailureModal} />
       </FailureModal>
     </>
   );
