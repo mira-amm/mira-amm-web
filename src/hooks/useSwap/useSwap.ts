@@ -30,8 +30,8 @@ const useSwap = ({ swapState, mode, slippage, pools }: Props) => {
     const sellAmount = Number(swapState.sell.amount) * 10 ** sellDecimals;
     const buyAmount = Number(swapState.buy.amount) * 10 ** buyDecimals;
 
-    const buyAmountWithSlippage = buyAmount * (1 - slippage / 100);
-    const sellAmountWithSlippage = sellAmount * (1 + slippage / 100);
+    const buyAmountWithSlippage = Math.ceil(buyAmount * (1 - slippage / 100));
+    const sellAmountWithSlippage = Math.floor(sellAmount * (1 + slippage / 100));
 
     const tx = mode === 'sell' ?
       await miraDex.swapExactInput(sellAmount, sellAssetIdInput, buyAmountWithSlippage, pools, MaxDeadline, DefaultTxParams) :
