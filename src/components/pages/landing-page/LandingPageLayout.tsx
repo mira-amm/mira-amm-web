@@ -97,12 +97,13 @@ const LandingPageLayout = () => {
                 logo={<RoadMapIcon text="Testnet" />}
                 title="Basic AMM with volatile and stable swaps feature complete"
                 description="July 2024"
-                done={true}
+                done
               />
               <RoadMapBlock
                 logo={<RoadMapIcon text="Mainnet" />}
                 title="Basic AMM is live on Fuel L2 Mainnet with Fuel network points"
                 description="Day one of the Fuel mainnet"
+                done
               />
               <RoadMapBlock
                 logo={<RoadMapIcon text="Mainnet" />}
@@ -207,12 +208,13 @@ const LandingPageLayout = () => {
                 logo={<RoadMapIcon text="Testnet" />}
                 title="Basic AMM with volatile and stable swaps feature complete"
                 description="July 2024"
-                done={true}
+                done
               />
               <RoadMapBlock
                 logo={<RoadMapIcon text="Mainnet" />}
                 title="Basic AMM is live on Fuel L2 Mainnet with Fuel network points"
                 description="Day one of the Fuel mainnet"
+                done
               />
               <RoadMapBlock
                 logo={<RoadMapIcon text="Mainnet" />}
