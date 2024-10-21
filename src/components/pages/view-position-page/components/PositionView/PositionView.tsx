@@ -76,7 +76,7 @@ const PositionView = ({ pool }: Props) => {
 
   const confirmationModalAssetsAmounts = useRef({ firstAsset: coinAAmountToWithdrawStr, secondAsset: coinBAmountToWithdrawStr });
 
-  const { data, removeLiquidity, error } = useRemoveLiquidity({ pool, liquidity: removeLiquidityValue, lpTokenBalance, coinAAmountToWithdraw, coinBAmountToWithdraw });
+  const { data, removeLiquidity, error } = useRemoveLiquidity({ pool, liquidity: removeLiquidityValue, lpTokenBalance, coinAAmountToWithdraw, coinBAmountToWithdraw, coinADecimals, coinBDecimals });
 
   const handleWithdrawLiquidity = useCallback(() => {
     openRemoveLiquidityModal();

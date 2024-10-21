@@ -12,9 +12,11 @@ type Props = {
   lpTokenBalance: BN | undefined;
   coinAAmountToWithdraw: number;
   coinBAmountToWithdraw: number;
+  coinADecimals: number;
+  coinBDecimals: number;
 };
 
-const useRemoveLiquidity = ({ pool, liquidity, lpTokenBalance, coinAAmountToWithdraw, coinBAmountToWithdraw }: Props) => {
+const useRemoveLiquidity = ({ pool, liquidity, lpTokenBalance, coinAAmountToWithdraw, coinBAmountToWithdraw, coinADecimals, coinBDecimals }: Props) => {
   const mira = useMiraDex();
   const { wallet } = useWallet();
 
@@ -25,8 +27,11 @@ const useRemoveLiquidity = ({ pool, liquidity, lpTokenBalance, coinAAmountToWith
 
     const liquidityAmount = lpTokenBalance.toNumber() * liquidity / 100;
 
-    const minCoinAAmount = coinAAmountToWithdraw * 0.99;
-    const minCoinBAmount = coinBAmountToWithdraw * 0.99;
+    const coinAWithDecimals = coinAAmountToWithdraw * 10 ** coinADecimals;
+    const coinBWithDecimals = coinBAmountToWithdraw * 10 ** coinBDecimals;
+    const minCoinAAmount = Math.ceil(coinAWithDecimals * 0.99);
+    const minCoinBAmount = Math.ceil(coinBWithDecimals * 0.99);
+
     const txRequest = await mira.removeLiquidity(pool, liquidityAmount, minCoinAAmount, minCoinBAmount, MaxDeadline, DefaultTxParams);
     const gasCost = await wallet.getTransactionCost(txRequest);
     const fundedTx = await wallet.fund(txRequest, gasCost);
