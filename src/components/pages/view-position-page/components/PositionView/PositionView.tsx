@@ -76,7 +76,7 @@ const PositionView = ({ pool }: Props) => {
 
   const confirmationModalAssetsAmounts = useRef({ firstAsset: coinAAmountToWithdrawStr, secondAsset: coinBAmountToWithdrawStr });
 
-  const { data, removeLiquidity, error } = useRemoveLiquidity({ pool, liquidity: removeLiquidityValue, lpTokenBalance, coinAAmountToWithdraw, coinBAmountToWithdraw });
+  const { data, removeLiquidity, error: removeLiquidityError } = useRemoveLiquidity({ pool, liquidity: removeLiquidityValue, lpTokenBalance, coinAAmountToWithdraw, coinBAmountToWithdraw });
 
   const handleWithdrawLiquidity = useCallback(() => {
     openRemoveLiquidityModal();
@@ -92,6 +92,7 @@ const PositionView = ({ pool }: Props) => {
       }
     } catch (e) {
       console.error(e);
+      closeRemoveLiquidityModal();
       openFailureModal();
     }
   }, [removeLiquidity, closeRemoveLiquidityModal, openSuccessModal]);
@@ -269,7 +270,7 @@ const PositionView = ({ pool }: Props) => {
         />
       </SuccessModal>
       <FailureModal title={<></>}>
-        <TransactionFailureModal closeModal={closeFailureModal} />
+        <TransactionFailureModal error={removeLiquidityError} closeModal={closeFailureModal} />
       </FailureModal>
     </>
   );
