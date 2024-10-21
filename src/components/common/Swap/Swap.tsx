@@ -217,32 +217,32 @@ const Swap = () => {
   const setAmount = useCallback(
     (mode: "buy" | "sell") => {
       return (amount: string) => {
-        // if (amount === '') {
-        //   debouncedSetState(prevState => ({
-        //     'sell': {
-        //       coin: prevState.sell.coin,
-        //       amount: '',
-        //     },
-        //     'buy': {
-        //       coin: prevState.buy.coin,
-        //       amount: '',
-        //     },
-        //   }));
-        //
-        //   setInputsState({
-        //     'sell': {
-        //       amount: '',
-        //     },
-        //     'buy': {
-        //       amount: '',
-        //     },
-        //   });
-        //
-        //   previousPreviewValue.current = '';
-        //   setActiveMode(mode);
-        //
-        //   return;
-        // }
+        if (amount === '') {
+          debouncedSetState(prevState => ({
+            'sell': {
+              coin: prevState.sell.coin,
+              amount: '',
+            },
+            'buy': {
+              coin: prevState.buy.coin,
+              amount: '',
+            },
+          }));
+
+          setInputsState({
+            'sell': {
+              amount: '',
+            },
+            'buy': {
+              amount: '',
+            },
+          });
+
+          previousPreviewValue.current = '';
+          setActiveMode(mode);
+
+          return;
+        }
 
         debouncedSetState((prevState) => ({
           ...prevState,

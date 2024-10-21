@@ -69,7 +69,7 @@ const AddLiquidityDialog = ({ poolId, setPreviewData, newPool }: Props) => {
   const { poolsMetadata } = usePoolsMetadata([poolId]);
   const emptyPool = Boolean(poolsMetadata?.[0]?.reserve0.eq(0) && poolsMetadata?.[0].reserve1.eq(0));
 
-  const { data, isFetching, error } = usePreviewAddLiquidity({
+  const { data, isFetching, error: previewError } = usePreviewAddLiquidity({
     firstCoin,
     secondCoin,
     amountString: isFirstToken ? firstAmount : secondAmount,
@@ -79,10 +79,10 @@ const AddLiquidityDialog = ({ poolId, setPreviewData, newPool }: Props) => {
   });
 
   useEffect(() => {
-    if (error) {
+    if (previewError) {
       openFailureModal();
     }
-  }, [error]);
+  }, [previewError]);
 
   const { apr } = usePoolAPR(poolId);
   const aprValue = apr
@@ -299,7 +299,7 @@ const AddLiquidityDialog = ({ poolId, setPreviewData, newPool }: Props) => {
         </ActionButton>
       )}
       <FailureModal title={<></>}>
-        <TransactionFailureModal closeModal={closeFailureModal} />
+        <TransactionFailureModal error={previewError} closeModal={closeFailureModal} />
       </FailureModal>
     </>
   );
