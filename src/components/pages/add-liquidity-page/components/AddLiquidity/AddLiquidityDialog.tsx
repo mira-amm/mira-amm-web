@@ -32,9 +32,8 @@ import {
 import useUSDRate from "@/src/hooks/useUSDRate";
 import useModal from "@/src/hooks/useModal/useModal";
 import TransactionFailureModal from "@/src/components/common/TransactionFailureModal/TransactionFailureModal";
-import {bn} from "fuels";
+import {BN, bn} from "fuels";
 import usePoolsMetadata from "@/src/hooks/usePoolsMetadata";
-import pools from "@/src/components/pages/liquidity-page/components/Pools/Pools";
 
 type Props = {
   poolId: PoolId;
@@ -55,9 +54,9 @@ const AddLiquidityDialog = ({ poolId, setPreviewData, newPool }: Props) => {
   const firstAssetDecimals = getAssetDecimalsByAssetId(poolId[0].bits);
   const secondAssetDecimals = getAssetDecimalsByAssetId(poolId[1].bits);
 
-  const [firstAmount, setFirstAmount] = useState('');
+  const [firstAmount, setFirstAmount] = useState(new BN(0));
   const [firstAmountInput, setFirstAmountInput] = useState('');
-  const [secondAmount, setSecondAmount] = useState('');
+  const [secondAmount, setSecondAmount] = useState(new BN(0));
   const [secondAmountInput, setSecondAmountInput] = useState('');
   const [activeAssetName, setActiveAssetName] = useState<CoinName | null>(null);
   const [isStablePool, setIsStablePool] = useState(poolId[2]);
@@ -72,7 +71,7 @@ const AddLiquidityDialog = ({ poolId, setPreviewData, newPool }: Props) => {
   const { data, isFetching, error: previewError } = usePreviewAddLiquidity({
     firstCoin,
     secondCoin,
-    amountString: isFirstToken ? firstAmount : secondAmount,
+    amount: isFirstToken ? firstAmount : secondAmount,
     isFirstToken,
     isStablePool,
     fetchCondition: !emptyPool,
@@ -96,14 +95,15 @@ const AddLiquidityDialog = ({ poolId, setPreviewData, newPool }: Props) => {
     if (data) {
       const anotherToken = isFirstToken ? secondCoin : firstCoin;
       const anotherTokenDecimals = coinsConfig.get(anotherToken)?.decimals!;
-      const anotherTokenValue = data[1].formatUnits(anotherTokenDecimals);
+      const anotherTokenValue = data[1];
+      const anotherTokenValueString = data[1].formatUnits(anotherTokenDecimals);
 
       if (isFirstToken) {
         setSecondAmount(anotherTokenValue);
-        setSecondAmountInput(anotherTokenValue);
+        setSecondAmountInput(anotherTokenValueString);
       } else {
         setFirstAmount(anotherTokenValue);
-        setFirstAmountInput(anotherTokenValue);
+        setFirstAmountInput(anotherTokenValueString);
       }
     }
   }, [data]);
@@ -119,8 +119,8 @@ const AddLiquidityDialog = ({ poolId, setPreviewData, newPool }: Props) => {
   const setAmount = useCallback((coin: CoinName) => {
     return (value: string) => {
       if (value === '') {
-        debouncedSetFirstAmount('');
-        debouncedSetSecondAmount('');
+        debouncedSetFirstAmount(new BN(0));
+        debouncedSetSecondAmount(new BN(0));
         setFirstAmountInput('');
         setSecondAmountInput('');
         setActiveAssetName(coin);
@@ -128,18 +128,30 @@ const AddLiquidityDialog = ({ poolId, setPreviewData, newPool }: Props) => {
       }
 
       if (coin === firstCoin) {
-        debouncedSetFirstAmount(value);
+        debouncedSetFirstAmount(bn.parseUnits(value, firstAssetDecimals));
         setFirstAmountInput(value);
       } else {
-        debouncedSetSecondAmount(value);
+        debouncedSetSecondAmount(bn.parseUnits(value, secondAssetDecimals));
         setSecondAmountInput(value);
       }
       setActiveAssetName(coin);
     };
-  }, [debouncedSetFirstAmount, debouncedSetSecondAmount, firstCoin]);
+  }, [
+    debouncedSetFirstAmount,
+    debouncedSetSecondAmount,
+    firstCoin,
+    firstAssetDecimals,
+    secondAssetDecimals
+  ]);
 
-  const sufficientEthBalanceForFirstCoin = useCheckEthBalance({ coin: firstCoin, amount: firstAmount });
-  const sufficientEthBalanceForSecondCoin = useCheckEthBalance({ coin: secondCoin, amount: secondAmount });
+  const sufficientEthBalanceForFirstCoin = useCheckEthBalance({
+    coin: firstCoin,
+    amount: firstAmount.formatUnits(firstAssetDecimals),
+  });
+  const sufficientEthBalanceForSecondCoin = useCheckEthBalance({
+    coin: secondCoin,
+    amount: secondAmount.formatUnits(secondAssetDecimals),
+  });
   const sufficientEthBalance = sufficientEthBalanceForFirstCoin && sufficientEthBalanceForSecondCoin;
 
   const faucetLink = useFaucetLink();
@@ -175,8 +187,8 @@ const AddLiquidityDialog = ({ poolId, setPreviewData, newPool }: Props) => {
 
   const isValidNetwork = useCheckActiveNetwork();
 
-  const insufficientFirstBalance = bn.parseUnits(firstAmount, firstAssetDecimals).gt(firstAssetBalance);
-  const insufficientSecondBalance = bn.parseUnits(secondAmount, secondAssetDecimals).gt(secondAssetBalance);
+  const insufficientFirstBalance = firstAmount.gt(firstAssetBalance);
+  const insufficientSecondBalance = secondAmount.gt(secondAssetBalance);
   const insufficientBalance = insufficientFirstBalance || insufficientSecondBalance;
 
   let buttonTitle = 'Preview';
@@ -188,7 +200,7 @@ const AddLiquidityDialog = ({ poolId, setPreviewData, newPool }: Props) => {
     buttonTitle = 'Insufficient balance';
   }
 
-  const oneOfAmountsIsEmpty = !firstAmount || !secondAmount;
+  const oneOfAmountsIsEmpty = firstAmount.eq(0) || secondAmount.eq(0);
 
   const buttonDisabled = !isValidNetwork || insufficientBalance || oneOfAmountsIsEmpty;
 

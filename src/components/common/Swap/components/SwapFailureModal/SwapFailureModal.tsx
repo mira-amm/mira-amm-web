@@ -12,7 +12,11 @@ const SwapFailureModal = ({ error, closeModal }: Props) => {
   let message = 'An error occurred. Please try again.';
   if (error instanceof FuelError) {
     message = error.message;
-    if (error.code === ErrorCode.MAX_OUTPUTS_EXCEEDED || error.code === ErrorCode.MAX_INPUTS_EXCEEDED) {
+    if (
+      error.code === ErrorCode.SCRIPT_REVERTED && (
+        error.message.includes('Insufficient output amount') || error.message.includes('Exceeding input amount')
+      )
+    ) {
       message = 'Slippage exceeds limit. Adjust settings and try again.';
     }
   }

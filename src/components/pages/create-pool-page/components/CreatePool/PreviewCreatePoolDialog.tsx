@@ -11,7 +11,7 @@ import {useRouter} from "next/navigation";
 import {useCallback} from "react";
 import {DefaultLocale} from "@/src/utils/constants";
 import useCreatePool from "@/src/hooks/useCreatePool";
-import {TransactionResult} from "fuels";
+import {BN, TransactionResult} from "fuels";
 
 type AssetsData = {
   coin: CoinName;
@@ -37,9 +37,11 @@ const PreviewAddLiquidityDialog = ({ previewData }: Props) => {
 
   const { data, mutateAsync, isPending } = useAddLiquidity({
     firstAssetName: assets[0].coin,
-    firstAssetAmount: assets[0].amount,
+    // firstAssetAmount: assets[0].amount,
+    firstAssetAmount: new BN(0),
     secondAssetName: assets[1].coin,
-    secondAssetAmount: assets[1].amount,
+    // secondAssetAmount: assets[1].amount,
+    secondAssetAmount: new BN(0),
     isPoolStable: isStablePool,
   });
 

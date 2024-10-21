@@ -5,6 +5,7 @@ import useReadonlyMira from "@/src/hooks/useReadonlyMira";
 import {buildPoolId, PoolId, Asset} from "mira-dex-ts";
 import {ApiBaseUrl} from "@/src/utils/constants";
 import {InsufficientReservesError} from "mira-dex-ts/dist/sdk/errors";
+import {BN} from "fuels";
 
 type Props = {
   swapState: SwapState;
@@ -21,7 +22,7 @@ type MultihopPreviewData = {
 
 type SwapPreviewData = {
   pools: PoolId[];
-  previewAmount: number;
+  previewAmount: BN;
 };
 
 export class NoRouteFoundError extends Error {
@@ -161,13 +162,13 @@ const useSwapPreview = ({ swapState, mode }: Props) => {
     const { path, input_amount, output_amount } = multihopPreviewData as MultihopPreviewData;
     previewData = {
       pools: path.map(([input, output, stable]) => buildPoolId(`0x${input}`, `0x${output}`, stable)),
-      previewAmount: mode === 'sell' ? output_amount : input_amount,
+      previewAmount: mode === 'sell' ? new BN(output_amount) : new BN(input_amount),
     };
   } else if (fallbackPreviewData) {
     const [fallbackPreviewResponse, fallbackPoolId] = fallbackPreviewData;
     previewData = {
       pools: [fallbackPoolId],
-      previewAmount: fallbackPreviewResponse[1].toNumber(),
+      previewAmount: fallbackPreviewResponse[1],
     };
   }
 
