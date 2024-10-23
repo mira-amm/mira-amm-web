@@ -5,12 +5,13 @@ import {createPoolIdFromAssetNames} from "@/src/utils/common";
 import {useCallback} from "react";
 import {useWallet} from "@fuels/react";
 import {DefaultTxParams, MaxDeadline} from "@/src/utils/constants";
+import {BN} from "fuels";
 
 type Props = {
   firstAssetName: CoinName;
-  firstAssetAmount: string;
+  firstAssetAmount: BN;
   secondAssetName: CoinName;
-  secondAssetAmount: string;
+  secondAssetAmount: BN;
   isPoolStable: boolean;
 };
 
@@ -27,22 +28,20 @@ const useAddLiquidity = ({ firstAssetName, firstAssetAmount, secondAssetName, se
     const firstAsset = coinsConfig.get(firstAssetName)!;
     const secondAsset = coinsConfig.get(secondAssetName)!;
 
-    const firstCoinAmountToUse = parseFloat(firstAssetAmount) * 10 ** firstAsset.decimals!;
-    const secondCoinAmountToUse = parseFloat(secondAssetAmount) * 10 ** secondAsset.decimals!;
     let asset0Amount;
     let asset1Amount;
     if (poolId[0].bits === firstAsset.assetId && poolId[1].bits === secondAsset.assetId) {
-      asset0Amount = firstCoinAmountToUse;
-      asset1Amount = secondCoinAmountToUse;
+      asset0Amount = firstAssetAmount;
+      asset1Amount = secondAssetAmount;
     } else if (poolId[0].bits === secondAsset.assetId && poolId[1].bits === firstAsset.assetId) {
-      asset0Amount = secondCoinAmountToUse;
-      asset1Amount = firstCoinAmountToUse;
+      asset0Amount = secondAssetAmount;
+      asset1Amount = firstAssetAmount;
     } else {
       throw new Error('Invalid pool id or asset configs');
     }
 
-    const minAsset0Amount = Math.ceil(asset0Amount * 0.99);
-    const minAsset1Amount = Math.ceil(asset1Amount * 0.99);
+    const minAsset0Amount = asset0Amount.mul(99).div(100);
+    const minAsset1Amount = asset1Amount.mul(99).div(100);
     const txRequest = await mira.addLiquidity(poolId, asset0Amount, asset1Amount, minAsset0Amount, minAsset1Amount, MaxDeadline, DefaultTxParams);
     const gasCost = await wallet.getTransactionCost(txRequest);
     const fundedTx = await wallet.fund(txRequest, gasCost);

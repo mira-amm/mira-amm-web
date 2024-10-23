@@ -22,7 +22,7 @@ import usePoolsMetadata from "@/src/hooks/usePoolsMetadata";
 import useModal from "@/src/hooks/useModal/useModal";
 import CoinsListModal from "@/src/components/common/Swap/components/CoinsListModal/CoinsListModal";
 import useUSDRate from "@/src/hooks/useUSDRate";
-import {bn} from "fuels";
+import {BN, bn} from "fuels";
 
 type Props = {
   setPreviewData: Dispatch<SetStateAction<CreatePoolPreviewData | null>>;
@@ -65,7 +65,8 @@ const CreatePoolDialog = ({ setPreviewData, newPool }: Props) => {
   const { data, isFetching } = usePreviewAddLiquidity({
     firstCoin,
     secondCoin,
-    amountString: isFirstToken ? firstAmount : secondAmount,
+    amount: new BN(0),
+    // amountString: isFirstToken ? firstAmount : secondAmount,
     isFirstToken,
     isStablePool,
     fetchCondition: poolExists,

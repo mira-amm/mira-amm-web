@@ -2,19 +2,19 @@ import styles from "@/src/components/pages/add-liquidity-page/components/AddLiqu
 import CoinPair from "@/src/components/common/CoinPair/CoinPair";
 import Coin from "@/src/components/common/Coin/Coin";
 import ActionButton from "@/src/components/common/ActionButton/ActionButton";
-import {CoinName} from "@/src/utils/coinsConfig";
+import {CoinName, coinsConfig} from "@/src/utils/coinsConfig";
 import useAddLiquidity from "@/src/hooks/useAddLiquidity";
 import useModal from "@/src/hooks/useModal/useModal";
 import AddLiquiditySuccessModal
   from "@/src/components/pages/add-liquidity-page/components/AddLiquiditySuccessModal/AddLiquiditySuccessModal";
 import {useRouter} from "next/navigation";
 import {Dispatch, SetStateAction, useCallback} from "react";
-import {DefaultLocale} from "@/src/utils/constants";
 import TransactionFailureModal from "@/src/components/common/TransactionFailureModal/TransactionFailureModal";
+import {BN} from "fuels";
 
 type AssetsData = {
   coin: CoinName;
-  amount: string;
+  amount: BN;
 };
 
 export type AddLiquidityPreviewData = {
@@ -35,24 +35,29 @@ const PreviewAddLiquidityDialog = ({ previewData, setPreviewData }: Props) => {
 
   const { assets, isStablePool } = previewData;
 
+  const firstAssetName = assets[0].coin;
+  const secondAssetName = assets[1].coin;
+  const firstAssetAmount = assets[0].amount;
+  const secondAssetAmount = assets[1].amount;
+
   const { data, mutateAsync, isPending, error: addLiquidityError } = useAddLiquidity({
-    firstAssetName: assets[0].coin,
-    firstAssetAmount: assets[0].amount,
-    secondAssetName: assets[1].coin,
-    secondAssetAmount: assets[1].amount,
+    firstAssetName,
+    firstAssetAmount,
+    secondAssetName,
+    secondAssetAmount,
     isPoolStable: isStablePool,
   });
 
-  const coinA = assets[0].coin;
-  const coinB = assets[1].coin;
-  const firstCoinAmount = assets[0].amount;
-  const secondCoinAmount = assets[1].amount;
+  const firstAssetDecimals = coinsConfig.get(firstAssetName)?.decimals!;
+  const secondAssetDecimals = coinsConfig.get(secondAssetName)?.decimals!;
+  const firstAssetAmountString = firstAssetAmount.formatUnits(firstAssetDecimals);
+  const secondAssetAmountString = secondAssetAmount.formatUnits(secondAssetDecimals);
 
-  const rate = (
-    parseFloat(firstCoinAmount) / parseFloat(secondCoinAmount)
-  ).toLocaleString(DefaultLocale, { minimumFractionDigits: 2 });
+  // const rate = (
+  //   parseFloat(firstCoinAmount) / parseFloat(secondCoinAmount)
+  // ).toLocaleString(DefaultLocale, { minimumFractionDigits: 2 });
 
-  const handleAddLiquidity = async () => {
+  const handleAddLiquidity = useCallback(async () => {
     try {
       const data = await mutateAsync();
       if (data?.id) {
@@ -62,11 +67,11 @@ const PreviewAddLiquidityDialog = ({ previewData, setPreviewData }: Props) => {
       console.error(e);
       openFailureModal();
     }
-  };
+  }, [mutateAsync, openFailureModal, openSuccessModal]);
 
   const onFailureModalClose = useCallback(() => {
     setPreviewData(null);
-  }, []);
+  }, [setPreviewData]);
 
   const redirectToLiquidity = useCallback(() => {
     router.push('/liquidity');
@@ -78,16 +83,16 @@ const PreviewAddLiquidityDialog = ({ previewData, setPreviewData }: Props) => {
     <>
       <div className={styles.section}>
         <div className={styles.previewCoinPair}>
-          <CoinPair firstCoin={coinA} secondCoin={coinB} isStablePool={isStablePool}/>
+          <CoinPair firstCoin={firstAssetName} secondCoin={secondAssetName} isStablePool={isStablePool}/>
         </div>
         <div className={styles.inputsPreview}>
           <div className={styles.inputPreviewRow}>
-            <Coin name={coinA} />
-            <p>{firstCoinAmount}</p>
+            <Coin name={firstAssetName} />
+            <p>{firstAssetAmountString}</p>
           </div>
           <div className={styles.inputPreviewRow}>
-            <Coin name={coinB} />
-            <p>{secondCoinAmount}</p>
+            <Coin name={secondAssetName} />
+            <p>{secondAssetAmountString}</p>
           </div>
           <div className={styles.inputPreviewRow}>
             <p>Fee tier</p>
@@ -147,7 +152,13 @@ const PreviewAddLiquidityDialog = ({ previewData, setPreviewData }: Props) => {
         Add Liquidity
       </ActionButton>
       <SuccessModal title={<></>} onClose={redirectToLiquidity}>
-        <AddLiquiditySuccessModal coinA={coinA} coinB={coinB} firstCoinAmount={firstCoinAmount} secondCoinAmount={secondCoinAmount} transactionHash={data?.id} />
+        <AddLiquiditySuccessModal
+          coinA={firstAssetName}
+          coinB={secondAssetName}
+          firstCoinAmount={firstAssetAmountString}
+          secondCoinAmount={secondAssetAmountString}
+          transactionHash={data?.id}
+        />
       </SuccessModal>
       <FailureModal title={<></>} onClose={onFailureModalClose}>
         <TransactionFailureModal error={addLiquidityError} closeModal={closeFailureModal} />

@@ -113,14 +113,14 @@ const Swap = () => {
     mode: activeMode
   });
   const anotherMode = activeMode === "sell" ? "buy" : "sell";
-  const decimals =
-    anotherMode === "sell" ? coinsConfig.get(swapState.sell.coin)?.decimals! : coinsConfig.get(swapState.buy.coin)?.decimals!;
-  const normalizedPreviewValue = previewData && previewData.previewAmount / 10 ** decimals;
+  const decimals = anotherMode === "sell"
+    ? coinsConfig.get(swapState.sell.coin)?.decimals!
+    : coinsConfig.get(swapState.buy.coin)?.decimals!;
   const previewValueString =
-    normalizedPreviewValue !== null
-      ? normalizedPreviewValue === 0
+    previewData !== null
+      ? previewData.previewAmount.eq(0)
         ? ""
-        : normalizedPreviewValue.toFixed(decimals)
+        : previewData.previewAmount.formatUnits(decimals)
       : previousPreviewValue.current;
   previousPreviewValue.current = previewValueString;
   useEffect(() => {
@@ -133,7 +133,7 @@ const Swap = () => {
         },
       }));
     }
-  }, [previewValueString]);
+  }, [previewData, previewValueString]);
   useEffect(() => {
     if (previewValueString !== inputsState[anotherMode].amount) {
       setInputsState((prevState) => ({
@@ -143,7 +143,7 @@ const Swap = () => {
         },
       }));
     }
-  }, [previewValueString]);
+  }, [previewData, previewValueString]);
 
   const sellDecimals = coinsConfig.get(swapState.sell.coin)?.decimals!;
   const sellValue = inputsState.sell.amount;
