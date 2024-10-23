@@ -13,7 +13,6 @@ import {useDebounceCallback} from "usehooks-ts";
 import useCheckEthBalance from "@/src/hooks/useCheckEthBalance/useCheckEthBalance";
 import useFaucetLink from "@/src/hooks/useFaucetLink";
 import {
-  createPoolIdString,
   getAssetDecimalsByAssetId,
   getAssetNamesFromPoolId,
   openNewTab
@@ -41,8 +40,6 @@ type Props = {
   setPreviewData: Dispatch<SetStateAction<AddLiquidityPreviewData | null>>;
   newPool?: boolean;
 }
-
-const ExcludedPoolIdString = '0x286c479da40dc953bddc3bb4c453b608bba2e0ac483b077bd475174115395e6b_0x9e46f919fbf978f3cad7cd34cca982d5613af63ff8aab6c379e4faa179552958_true';
 
 const AddLiquidityDialog = ({ poolId, setPreviewData, newPool }: Props) => {
   const [FailureModal, openFailureModal, closeFailureModal] = useModal();
@@ -205,12 +202,7 @@ const AddLiquidityDialog = ({ poolId, setPreviewData, newPool }: Props) => {
 
   const oneOfAmountsIsEmpty = firstAmount.eq(0) || secondAmount.eq(0);
 
-  const poolIdString = createPoolIdString(poolId);
-  const buttonDisabled =
-    poolIdString === ExcludedPoolIdString ||
-    !isValidNetwork ||
-    insufficientBalance ||
-    oneOfAmountsIsEmpty;
+  const buttonDisabled = !isValidNetwork || insufficientBalance || oneOfAmountsIsEmpty;
 
   const { ratesData } = useUSDRate(firstCoin, secondCoin);
   const firstAssetRate = ratesData?.find((item) => item.asset === firstCoin)?.rate;
@@ -314,11 +306,7 @@ const AddLiquidityDialog = ({ poolId, setPreviewData, newPool }: Props) => {
           Connect Wallet
         </ActionButton>
       ) : (
-        <ActionButton
-          onClick={handleButtonClick}
-          // disabled={buttonDisabled}
-          disabled
-        >
+        <ActionButton disabled={buttonDisabled} onClick={handleButtonClick}>
           {buttonTitle}
         </ActionButton>
       )}

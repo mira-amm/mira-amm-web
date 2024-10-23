@@ -89,7 +89,6 @@ const DesktopPools = ({ poolsData }: Props) => {
                   variant="secondary"
                   onClick={() => handleAddClick(key)}
                   fullWidth
-                  disabled
                 >
                   Add Liquidity
                 </ActionButton>
