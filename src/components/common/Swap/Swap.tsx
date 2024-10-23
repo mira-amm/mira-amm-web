@@ -345,8 +345,12 @@ const Swap = () => {
     refetchBalances
   ]);
 
-  const insufficientSellBalance = sellBalanceValue.lt(bn.parseUnits(sellValue, sellDecimals));
-  const showInsufficientBalance = insufficientSellBalance && sufficientEthBalance;
+  let showInsufficientBalance = true;
+  try {
+    const insufficientSellBalance = sellBalanceValue.lt(bn.parseUnits(sellValue, sellDecimals));
+    showInsufficientBalance = insufficientSellBalance && sufficientEthBalance;
+  } catch (e) {
+  }
 
   let swapButtonTitle = "Swap";
   if (!isValidNetwork) {
