@@ -91,7 +91,17 @@ const initAdditionalAssetsConfig = () => {
   const assetsConfig: Map<CoinName, CoinData> = new Map();
 
   // place for additional assets
-  const additionalAssets: CoinData[] = [];
+  const additionalAssets: CoinData[] = [
+    {
+      name: 'PSYCHO' as CoinName,
+      assetId: '0x86fa05e9fef64f76fa61c03f5906c87a03cb9148120b6171910566173d36fc9e',
+      decimals: 9,
+      fullName: 'Psycho Ducky',
+      icon: 'https://mira-dex-resources.s3.us-east-1.amazonaws.com/icons/psycho-icon.png',
+      contractId: '0x81d5964bfbb24fd994591cc7d0a4137458d746ac0eb7ececb9a9cf2ae966d942',
+      subId: '0x0000000000000000000000000000000000000000000000000000000000000031',
+    }
+  ];
 
   for (const asset of additionalAssets) {
     assetsConfig.set(asset.name, asset);
