@@ -98,8 +98,8 @@ const initAdditionalAssetsConfig = () => {
       decimals: 9,
       fullName: 'Psycho Ducky',
       icon: 'https://mira-dex-resources.s3.us-east-1.amazonaws.com/icons/psycho-icon.png',
-      contractId: '0xd2c72034938ce660e4cac0f0f24ff8a311efb1dbe03ccb8a8e3eaafa7ce47c7e',
-      subId: '0x0000000000000000000000000000000000000000000000000000000000000000',
+      contractId: '0x81d5964bfbb24fd994591cc7d0a4137458d746ac0eb7ececb9a9cf2ae966d942',
+      subId: '0x0000000000000000000000000000000000000000000000000000000000000031',
     }
   ];
 
