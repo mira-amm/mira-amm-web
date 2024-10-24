@@ -100,7 +100,16 @@ const initAdditionalAssetsConfig = () => {
       icon: 'https://mira-dex-resources.s3.us-east-1.amazonaws.com/icons/psycho-icon.png',
       contractId: '0x81d5964bfbb24fd994591cc7d0a4137458d746ac0eb7ececb9a9cf2ae966d942',
       subId: '0x0000000000000000000000000000000000000000000000000000000000000031',
-    }
+    },
+    {
+      name: '#MEOW' as CoinName,
+      assetId: '0x6ff822c3231932e232aad8ec62931f7a1f3a9653b25c75dd5609c75d03b228b7',
+      decimals: 9,
+      fullName: 'Meow Meow',
+      icon: 'https://mira-dex-resources.s3.us-east-1.amazonaws.com/icons/meow-sm.jpg',
+      contractId: '0x81d5964bfbb24fd994591cc7d0a4137458d746ac0eb7ececb9a9cf2ae966d942',
+      subId: '0x0000000000000000000000000000000000000000000000000000000000000061',
+    },
   ];
 
   for (const asset of additionalAssets) {
