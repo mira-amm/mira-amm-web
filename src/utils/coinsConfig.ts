@@ -102,7 +102,7 @@ const initAdditionalAssetsConfig = () => {
       subId: '0x0000000000000000000000000000000000000000000000000000000000000031',
     },
     {
-      name: '#MEOW' as CoinName,
+      name: 'MEOW' as CoinName,
       assetId: '0x6ff822c3231932e232aad8ec62931f7a1f3a9653b25c75dd5609c75d03b228b7',
       decimals: 9,
       fullName: 'Meow Meow',
