@@ -6,7 +6,7 @@ jobs:
   prod_deploy:
     runs-on: ubuntu-latest
     # see https://docs.github.com/en/actions/learn-github-actions/expressions#example-matching-an-array-of-strings
-    if: github.ref == 'refs/heads/main' && contains(fromJSON('["mpoplavkov", "EVirnik"]'), github.event.sender.login)
+    if: github.ref == 'refs/heads/main' && contains(fromJSON('["mpoplavkov", "dmihal"]'), github.event.sender.login)
     steps:
       - name: Checkout
         uses: actions/checkout@v4
