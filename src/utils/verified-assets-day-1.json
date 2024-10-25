@@ -177,6 +177,45 @@
     ]
   },
   {
+    "name": "wstETH",
+    "symbol": "wstETH",
+    "icon": "https://verified-assets.fuel.network/images/wsteth.svg",
+    "networks": [
+      {
+        "type": "ethereum",
+        "chain": "mainnet",
+        "address": "0x7f39C581F595B53c5cb19bD0b3f8dA6c935E2Ca0",
+        "decimals": 18,
+        "chainId": 1
+      },
+      {
+        "type": "ethereum",
+        "chain": "sepolia",
+        "address": "0xB82381A3fBD3FaFA77B3a7bE693342618240067b",
+        "decimals": 18,
+        "chainId": 11155111
+      },
+      {
+        "type": "fuel",
+        "chain": "mainnet",
+        "decimals": 9,
+        "chainId": 9889,
+        "contractId": "0x4ea6ccef1215d9479f1024dff70fc055ca538215d2c8c348beddffd54583d0e8",
+        "subId": "0xa232a843105ef81cd9996efc121cd3c8455c5edd9fb9c5a0b097982e1e68d5d6",
+        "assetId": "0x1a7815cc9f75db5c24a5b0814bfb706bb9fe485333e98254015de8f48f84c67b"
+      },
+      {
+        "type": "fuel",
+        "chain": "testnet",
+        "decimals": 9,
+        "chainId": 0,
+        "contractId": "0xd02112ef9c39f1cea7c8527c26242ca1f5d26bcfe8d1564bee054d3b04175471",
+        "subId": "0xd996e6beef64f541bf5a7d76d81be6788e114d4f57da16698646149a61a3a69e",
+        "assetId": "0xb42cd9ddf61898da1701adb3a003b0cf4ca6df7b5fe490ec2c295b1ca43b33c8"
+      }
+    ]
+  },
+  {
     "name": "ezETH",
     "symbol": "ezETH",
     "icon": "https://verified-assets.fuel.network/images/ezeth.webp",
@@ -242,6 +281,75 @@
         "contractId": "0x4ea6ccef1215d9479f1024dff70fc055ca538215d2c8c348beddffd54583d0e8",
         "subId": "0xd4d7948d31e97d4ed6d0182814e8bc827dfe0d8e70a010bdb9e34aae92775491",
         "assetId": "0xa38a5a8beeb08d95744bc7f58528073f4052b254def59eba20c99c202b5acaa3"
+      }
+    ]
+  },
+  {
+    "name": "weETH",
+    "symbol": "weETH",
+    "icon": "https://verified-assets.fuel.network/images/weETH.webp",
+    "networks": [
+      {
+        "type": "ethereum",
+        "chain": "mainnet",
+        "address": "0xCd5fE23C85820F7B72D0926FC9b05b43E359b7ee",
+        "decimals": 18,
+        "chainId": 1
+      },
+      {
+        "type": "fuel",
+        "chain": "mainnet",
+        "decimals": 9,
+        "chainId": 9889,
+        "contractId": "0x4ea6ccef1215d9479f1024dff70fc055ca538215d2c8c348beddffd54583d0e8",
+        "subId": "0x94cd19fd8aa593b2a2d25d6f3c9a32a958ad8cdd477d25c367de20f22207f679",
+        "assetId": "0x239ed6e12b7ce4089ee245244e3bf906999a6429c2a9a445a1e1faf56914a4ab"
+      }
+    ]
+  },
+  {
+    "name": "rsETH",
+    "symbol": "rsETH",
+    "icon": "https://verified-assets.fuel.network/images/rsETH.webp",
+    "networks": [
+      {
+        "type": "ethereum",
+        "chain": "mainnet",
+        "address": "0xA1290d69c65A6Fe4DF752f95823fae25cB99e5A7",
+        "decimals": 18,
+        "chainId": 1
+      },
+      {
+        "type": "fuel",
+        "chain": "mainnet",
+        "decimals": 9,
+        "chainId": 9889,
+        "contractId": "0x4ea6ccef1215d9479f1024dff70fc055ca538215d2c8c348beddffd54583d0e8",
+        "subId": "0xa7fef8780f0aaf17f250d0b2e51580a5d197bc50880f2a619ad52fe5c9c8390a",
+        "assetId": "0xbae80f7fb8aa6b90d9b01ef726ec847cc4f59419c4d5f2ea88fec785d1b0e849"
+      }
+    ]
+  },
+  {
+    "name": "rETH",
+    "symbol": "rETH",
+    "icon": "https://verified-assets.fuel.network/images/reth.svg",
+    "networks": [
+      {
+        "type": "ethereum",
+        "chain": "mainnet",
+        "address": "0xae78736cd615f374d3085123a210448e74fc6393",
+        "decimals": 18,
+        "chainId": 1
+      },
+      {
+        "type": "fuel",
+        "chain": "mainnet",
+        "decimals": 9,
+        "chainId": 9889,
+        "contractId": "0x4ea6ccef1215d9479f1024dff70fc055ca538215d2c8c348beddffd54583d0e8",
+        "subId": "0xaff801ca84960d5e8a385d92b7b98880c635b75f34d3b48e940a494d0cab4dd8",
+        "assetId": "0xf3f9a0ed0ce8eac5f89d6b83e41b3848212d5b5f56108c54a205bb228ca30c16"
       }
     ]
   }
