@@ -110,6 +110,15 @@ const initAdditionalAssetsConfig = () => {
       contractId: '0x81d5964bfbb24fd994591cc7d0a4137458d746ac0eb7ececb9a9cf2ae966d942',
       subId: '0x0000000000000000000000000000000000000000000000000000000000000061',
     },
+    {
+      name: 'FPEPE' as CoinName,
+      assetId: '0x7fb205b0048b5f17513355351b6be75eec086e26748a3a94dbe3dcca37d55814',
+      decimals: 9,
+      fullName: 'Fuel Pepe',
+      icon: 'https://mira-dex-resources.s3.us-east-1.amazonaws.com/icons/fpepe.jpg',
+      contractId: '0x81d5964bfbb24fd994591cc7d0a4137458d746ac0eb7ececb9a9cf2ae966d942',
+      subId: '0x0000000000000000000000000000000000000000000000000000000000000023',
+    },
   ];
 
   for (const asset of additionalAssets) {
