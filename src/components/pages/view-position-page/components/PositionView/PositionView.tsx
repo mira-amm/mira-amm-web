@@ -31,10 +31,20 @@ import useCheckActiveNetwork from "@/src/hooks/useCheckActiveNetwork";
 import usePoolAPR from "@/src/hooks/usePoolAPR";
 import TransactionFailureModal from "@/src/components/common/TransactionFailureModal/TransactionFailureModal";
 import { CopyIcon } from "@/src/components/icons/Copy/CopyIcon";
+import { bn, formatUnits } from "fuels";
 
 type Props = {
   pool: PoolId;
 }
+
+const formatDisplayAmount = (amount: string) => {
+  const asDecimal = parseFloat(amount);
+  if (asDecimal < 0.00001) {
+    return '<0.00001';
+  }
+
+  return asDecimal.toLocaleString(DefaultLocale, { minimumFractionDigits: 5 });
+};
 
 const PositionView = ({ pool }: Props) => {
   const [RemoveLiquidityModal, openRemoveLiquidityModal, closeRemoveLiquidityModal] = useModal();
@@ -46,37 +56,37 @@ const PositionView = ({ pool }: Props) => {
   const { firstAssetName: coinA, secondAssetName: coinB } = getAssetNamesFromPoolId(pool);
   const isStablePool = pool[2];
 
-  const { positionData: { assets, lpTokenBalance } } = usePositionData({ pool });
+  const { assets, lpTokenBalance } = usePositionData({ pool });
   const { apr } = usePoolAPR(pool);
   const aprValue = apr ?
     `${parseFloat(apr).toLocaleString(DefaultLocale, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}%`
     : null;
 
-  const [removeLiquidityValue, setRemoveLiquidityValue] = useState(50);
+  const [removeLiquidityPercentage, setRemoveLiquidityPercentage] = useState(50);
 
-  const coinADecimals = coinsConfig.get(coinA)?.decimals!;
-  const coinAAsset = assets?.[0];
-  const coinAAmount = (coinAAsset?.[1].toNumber() ?? 0) / 10 ** coinADecimals;
-  const currentCoinAAmount = coinAAmount.toLocaleString(DefaultLocale, { minimumFractionDigits: coinADecimals });
-  let coinAValue = coinAAmount
-    .toLocaleString(DefaultLocale, { minimumFractionDigits: coinAAmount < 1 ? 5 : 2 });
-  coinAValue = coinAValue === '0.00000' ? '<0.00001' : coinAValue;
-  const coinAAmountToWithdraw = coinAAmount * removeLiquidityValue / 100;
-  const coinAAmountToWithdrawStr = coinAAmountToWithdraw.toLocaleString(DefaultLocale, { minimumFractionDigits: coinADecimals });
+  const [assetA, assetB] = assets || [[pool[0], bn(0)], [pool[1], bn(0)]];
 
-  const coinBDecimals = coinsConfig.get(coinB)?.decimals!;
-  const coinBAsset = assets?.[1];
-  const coinBAmount = (coinBAsset?.[1].toNumber() ?? 0) / 10 ** coinBDecimals;
-  const currentCoinBAmount = coinBAmount.toLocaleString(DefaultLocale, { minimumFractionDigits: coinBDecimals });
-  let coinBValue = coinBAmount
-    .toLocaleString(DefaultLocale, { minimumFractionDigits: coinBAmount < 1 ? 5 : 2 });
-  coinBValue = coinBValue === '0.00000' ? '<0.00001' : coinBValue;
-  const coinBAmountToWithdraw = coinBAmount * removeLiquidityValue / 100;
-  const coinBAmountToWithdrawStr = coinBAmountToWithdraw.toLocaleString(DefaultLocale, { minimumFractionDigits: coinBDecimals });
+  const coinADecimals = coinsConfig.get(coinA)?.decimals || 0;
+  const coinAAmount = formatUnits(assetA[1], coinADecimals);
+
+  const coinAAmountToWithdraw = assetA[1].mul(bn(removeLiquidityPercentage)).div(bn(100));
+  const coinAAmountToWithdrawStr = formatUnits(coinAAmountToWithdraw, coinADecimals);
+
+  const coinBDecimals = coinsConfig.get(coinB)?.decimals || 0;
+  const coinBAmount = formatUnits(assetB[1], coinBDecimals)
+
+  const coinBAmountToWithdraw = assetB[1].mul(bn(removeLiquidityPercentage)).div(bn(100));
+  const coinBAmountToWithdrawStr = formatUnits(coinBAmountToWithdraw, coinBDecimals);
 
   const confirmationModalAssetsAmounts = useRef({ firstAsset: coinAAmountToWithdrawStr, secondAsset: coinBAmountToWithdrawStr });
 
-  const { data, removeLiquidity, error: removeLiquidityError } = useRemoveLiquidity({ pool, liquidity: removeLiquidityValue, lpTokenBalance, coinAAmountToWithdraw, coinBAmountToWithdraw, coinADecimals, coinBDecimals });
+  const { data, removeLiquidity, error: removeLiquidityError } = useRemoveLiquidity({
+    pool,
+    liquidityPercentage: removeLiquidityPercentage,
+    lpTokenBalance,
+    coinAAmountToWithdraw,
+    coinBAmountToWithdraw,
+  });
 
   const handleWithdrawLiquidity = useCallback(() => {
     openRemoveLiquidityModal();
@@ -101,7 +111,7 @@ const PositionView = ({ pool }: Props) => {
     router.push('/liquidity');
   }, [router]);
 
-  const rate = coinAAmount / coinBAmount;
+  const rate = parseFloat(coinAAmount) / parseFloat(coinBAmount);
   const flooredRate = rate < 0.01
     ? floorToTwoSignificantDigits(rate).toLocaleString()
     : rate.toLocaleString(DefaultLocale, { minimumFractionDigits: 2 });
@@ -116,8 +126,7 @@ const PositionView = ({ pool }: Props) => {
     await navigator.clipboard.writeText(lpTokenAssetId.bits);
   }, [lpTokenAssetId.bits]);
 
-  const lpTokenAmount = (lpTokenBalance?.toNumber() ?? 0) / 10 ** 9;
-  const lpTokenDisplayValue = lpTokenAmount.toLocaleString(DefaultLocale, { minimumFractionDigits: 2 });
+  const lpTokenDisplayValue = formatUnits(lpTokenBalance || '0', 9);
 
   return (
     <>
@@ -137,8 +146,8 @@ const PositionView = ({ pool }: Props) => {
             </span>
           </p>
           <div className={styles.coinsData}>
-            <CoinWithAmount coin={coinA} amount={coinAValue}/>
-            <CoinWithAmount coin={coinB} amount={coinBValue}/>
+            <CoinWithAmount coin={coinA} amount={formatDisplayAmount(coinAAmount)}/>
+            <CoinWithAmount coin={coinB} amount={formatDisplayAmount(coinBAmount)}/>
           </div>
         </div>
         <div className={styles.miraBlock}>
@@ -215,8 +224,8 @@ const PositionView = ({ pool }: Props) => {
                 </span>
               </p>
               <div className={styles.coinsData}>
-                <CoinWithAmount coin={coinA} amount={coinAValue}/>
-                <CoinWithAmount coin={coinB} amount={coinBValue}/>
+                <CoinWithAmount coin={coinA} amount={formatDisplayAmount(coinAAmount)}/>
+                <CoinWithAmount coin={coinB} amount={formatDisplayAmount(coinBAmount)}/>
               </div>
             </div>
           </div>
@@ -249,13 +258,13 @@ const PositionView = ({ pool }: Props) => {
           coinA={coinA}
           coinB={coinB}
           isStablePool={isStablePool}
-          currentCoinAValue={currentCoinAAmount}
-          currentCoinBValue={currentCoinBAmount}
+          currentCoinAValue={coinAAmount}
+          currentCoinBValue={coinBAmount}
           coinAValueToWithdraw={coinAAmountToWithdrawStr}
           coinBValueToWithdraw={coinBAmountToWithdrawStr}
           closeModal={closeRemoveLiquidityModal}
-          liquidityValue={removeLiquidityValue}
-          setLiquidityValue={setRemoveLiquidityValue}
+          liquidityValue={removeLiquidityPercentage}
+          setLiquidityValue={setRemoveLiquidityPercentage}
           handleRemoveLiquidity={handleRemoveLiquidity}
           isValidNetwork={isValidNetwork}
         />

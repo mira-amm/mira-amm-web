@@ -11,8 +11,8 @@ import LoaderV2 from "@/src/components/common/LoaderV2/LoaderV2";
 const Positions = () => {
   const { data, isLoading  } = usePositions();
 
-  const noPositions = data?.every(position => !position.lpBalance) ?? true;
-  const filteredPositions = data?.filter(position => Boolean(position.lpBalance));
+  const noPositions = data?.every(position => position.lpBalance === '0') ?? true;
+  const filteredPositions = data?.filter(position => position.lpBalance !== '0');
 
   return (
     <section className={styles.positions}>

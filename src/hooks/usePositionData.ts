@@ -3,6 +3,7 @@ import {useQuery} from "@tanstack/react-query";
 import {getLPAssetId, PoolId} from "mira-dex-ts";
 import {DEFAULT_AMM_CONTRACT_ID} from "@/src/utils/constants";
 import useBalances from "@/src/hooks/useBalances/useBalances";
+import { bn } from "fuels";
 
 type Props = {
   pool: PoolId;
@@ -13,7 +14,7 @@ const usePositionData = ({ pool }: Props) => {
   const lpTokenAssetId = getLPAssetId(DEFAULT_AMM_CONTRACT_ID, pool);
   const { balances } = useBalances();
 
-  const lpTokenBalance = balances?.find(balance => balance.assetId === lpTokenAssetId.bits)?.amount;
+  const lpTokenBalance = balances?.find(balance => balance.assetId === lpTokenAssetId.bits)?.amount || bn(0);
 
   const shouldFetch = Boolean(mira) && Boolean(lpTokenBalance);
 
@@ -23,7 +24,7 @@ const usePositionData = ({ pool }: Props) => {
     enabled: shouldFetch,
   });
 
-  return { positionData: { assets: data, lpTokenBalance } };
+  return { assets: data, lpTokenBalance };
 };
 
 export default usePositionData;
