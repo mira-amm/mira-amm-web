@@ -236,7 +236,8 @@ const AddLiquidityDialog = ({ poolId, setPreviewData, newPool }: Props) => {
               </div>
               <p>0.30% fee tier</p>
             </div>
-            <button className={clsx(styles.poolStabilityButton, isStablePool && styles.poolStabilityButtonActive, !newPool && styles.poolStabilityButtonDisabled)}
+
+            <div className={clsx(styles.poolStabilityButton, isStablePool && styles.poolStabilityButtonActive, !newPool && styles.poolStabilityButtonDisabled)}
                     onClick={() => handleStabilityChange(true)}
                     role="button"
             >
@@ -245,7 +246,7 @@ const AddLiquidityDialog = ({ poolId, setPreviewData, newPool }: Props) => {
                 <Info tooltipText={StablePoolTooltip} tooltipKey="stablePool"/>
               </div>
               <p>0.05% fee tier</p>
-            </button>
+            </div>
             {/*<button className={clsx(styles.poolStabilityButton, !isStablePool && styles.poolStabilityButtonActive, 'desktopOnly')}*/}
             {/*        onClick={() => setIsStablePool(false)}*/}
             {/*>*/}
