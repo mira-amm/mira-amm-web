@@ -11,14 +11,14 @@ export const TransactionsIcon = () => {
         <path
           d="M22.3877 7.68945H12.3877M22.3877 7.68945L17.3877 12.6895M22.3877 7.68945L17.3877 2.68945"
           stroke="var(--content-grey)"
-          stroke-width="2"
-          stroke-linecap="square"
+          strokeWidth="2"
+          strokeLinecap="square"
         />
         <path
           d="M2.3877 17.6895H12.3877M2.3877 17.6895L7.3877 12.6895M2.3877 17.6895L7.3877 22.6895"
           stroke="var(--content-grey)"
-          stroke-width="2"
-          stroke-linecap="square"
+          strokeWidth="2"
+          strokeLinecap="square"
         />
       </g>
       <defs>

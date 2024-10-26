@@ -10,8 +10,8 @@ export const TransactionsCloseIcon = () => {
       <path
         d="M4.5 5.18945L12 12.6895M12 12.6895L19.5 5.18945M12 12.6895L4.5 20.1895M12 12.6895L19.5 20.1895"
         stroke="white"
-        stroke-width="2"
-        stroke-linecap="square"
+        strokeWidth="2"
+        strokeLinecap="square"
       />
     </svg>
   );
