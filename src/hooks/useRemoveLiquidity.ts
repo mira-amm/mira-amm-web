@@ -4,19 +4,23 @@ import {useCallback} from "react";
 import {PoolId} from "mira-dex-ts";
 import {DefaultTxParams, MaxDeadline} from "@/src/utils/constants";
 import {useWallet} from "@fuels/react";
-import {BN} from "fuels";
+import {bn, BN} from "fuels";
 
 type Props = {
   pool: PoolId;
-  liquidity: number;
+  liquidityPercentage: number;
   lpTokenBalance: BN | undefined;
-  coinAAmountToWithdraw: number;
-  coinBAmountToWithdraw: number;
-  coinADecimals: number;
-  coinBDecimals: number;
+  coinAAmountToWithdraw: BN;
+  coinBAmountToWithdraw: BN;
 };
 
-const useRemoveLiquidity = ({ pool, liquidity, lpTokenBalance, coinAAmountToWithdraw, coinBAmountToWithdraw, coinADecimals, coinBDecimals }: Props) => {
+const useRemoveLiquidity = ({
+  pool,
+  liquidityPercentage,
+  lpTokenBalance,
+  coinAAmountToWithdraw,
+  coinBAmountToWithdraw,
+}: Props) => {
   const mira = useMiraDex();
   const { wallet } = useWallet();
 
@@ -25,19 +29,18 @@ const useRemoveLiquidity = ({ pool, liquidity, lpTokenBalance, coinAAmountToWith
       return;
     }
 
-    const liquidityAmount = lpTokenBalance.toNumber() * liquidity / 100;
+    const liquidityAmount = lpTokenBalance.mul(new BN(liquidityPercentage)).div(new BN(100));
 
-    const coinAWithDecimals = coinAAmountToWithdraw * 10 ** coinADecimals;
-    const coinBWithDecimals = coinBAmountToWithdraw * 10 ** coinBDecimals;
-    const minCoinAAmount = Math.ceil(coinAWithDecimals * 0.99);
-    const minCoinBAmount = Math.ceil(coinBWithDecimals * 0.99);
+    // TODO: get slippage from UI
+    const minCoinAAmount = coinAAmountToWithdraw.mul(bn(99)).div(bn(100));
+    const minCoinBAmount = coinBAmountToWithdraw.mul(bn(99)).div(bn(100));
 
     const txRequest = await mira.removeLiquidity(pool, liquidityAmount, minCoinAAmount, minCoinBAmount, MaxDeadline, DefaultTxParams);
     const gasCost = await wallet.getTransactionCost(txRequest);
     const fundedTx = await wallet.fund(txRequest, gasCost);
     const tx = await wallet.sendTransaction(fundedTx, { estimateTxDependencies: true });
     return tx.waitForResult();
-  }, [mira, wallet, pool, liquidity, lpTokenBalance]);
+  }, [mira, wallet, pool, liquidityPercentage, lpTokenBalance]);
 
   const { data, mutateAsync, error } = useMutation({
     mutationFn,

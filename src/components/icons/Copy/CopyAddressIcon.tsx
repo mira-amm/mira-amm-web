@@ -10,8 +10,8 @@ const CopyAddressIcon = () => {
       <path
         d="M18.6875 15.8198V6.81982C18.6875 5.71525 17.7921 4.81982 16.6875 4.81982H10.4375"
         stroke="var(--content-grey)"
-        stroke-width="2"
-        stroke-linecap="square"
+        strokeWidth="2"
+        strokeLinecap="square"
       />
       <rect
         x="5.8877"
@@ -20,8 +20,8 @@ const CopyAddressIcon = () => {
         height="11"
         rx="1"
         stroke="var(--content-grey)"
-        stroke-width="2"
-        stroke-linecap="square"
+        strokeWidth="2"
+        strokeLinecap="square"
       />
     </svg>
   );

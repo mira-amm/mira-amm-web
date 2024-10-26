@@ -6,7 +6,7 @@ import useBalances from "@/src/hooks/useBalances/useBalances";
 import {AssetId} from "fuels";
 import {useMemo} from "react";
 
-type PoolDataWithLpBalance = [PoolId, AssetId, number];
+type PoolDataWithLpBalance = [PoolId, AssetId, string];
 
 const usePositions = () => {
   const mira = useReadonlyMira();
@@ -25,7 +25,7 @@ const usePositions = () => {
         return accumulatedPoolsData;
       }
 
-      const poolDataWithLpBalance: PoolDataWithLpBalance = [poolData[0], poolData[1], lpBalance.toNumber()];
+      const poolDataWithLpBalance: PoolDataWithLpBalance = [poolData[0], poolData[1], lpBalance.toString()];
       return [...accumulatedPoolsData, poolDataWithLpBalance];
     }, [] as PoolDataWithLpBalance[]);
   }, [poolsData, balances]);
