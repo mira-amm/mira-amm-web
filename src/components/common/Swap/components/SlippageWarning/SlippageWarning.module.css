@@ -1,0 +1,11 @@
+.box {
+  padding: 12px 16px;
+  border-radius: 10px;
+  background-color: orange;
+}
+.warning {
+  font-weight: #996300;
+}
+.description {
+  font-size: 14px;
+}

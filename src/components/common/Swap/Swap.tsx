@@ -30,6 +30,7 @@ import {FuelAppUrl} from "@/src/utils/constants";
 import useReservesPrice from "@/src/hooks/useReservesPrice";
 import SwapFailureModal from "@/src/components/common/Swap/components/SwapFailureModal/SwapFailureModal";
 import {bn, BN, FuelError} from "fuels";
+import SlippageWarning from "./components/SlippageWarning/SlippageWarning";
 
 export type CurrencyBoxMode = "buy" | "sell";
 export type CurrencyBoxState = {
@@ -480,6 +481,9 @@ const Swap = () => {
               </div>
             </div>
           )}
+
+          <SlippageWarning reservesPrice={reservesPrice} previewPrice={previewPrice} />
+
           {!isConnected && (
             <ActionButton variant="secondary" onClick={connect} loading={isConnecting}>
               Connect Wallet
