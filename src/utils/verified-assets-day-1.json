@@ -92,6 +92,29 @@
     ]
   },
   {
+    "name": "SolvBTC",
+    "symbol": "SolvBTC",
+    "icon": "https://verified-assets.fuel.network/images/solvBTC.webp",
+    "networks": [
+      {
+        "type": "ethereum",
+        "chain": "mainnet",
+        "address": "0x7a56e1c57c7475ccf742a1832b028f0456652f97",
+        "decimals": 18,
+        "chainId": 1
+      },
+      {
+        "type": "fuel",
+        "chain": "mainnet",
+        "decimals": 9,
+        "chainId": 9889,
+        "contractId": "0x4ea6ccef1215d9479f1024dff70fc055ca538215d2c8c348beddffd54583d0e8",
+        "subId": "0x7977feee81d70d5b859432c90c374f99dcf3a8c172fa273c43c4ca0a29c447a9",
+        "assetId": "0x1186afea9affb88809c210e13e2330b5258c2cef04bb8fff5eff372b7bd3f40f"
+      }
+    ]
+  },
+  {
     "name": "sDAI",
     "symbol": "sDAI",
     "icon": "https://verified-assets.fuel.network/images/sdai.svg",
