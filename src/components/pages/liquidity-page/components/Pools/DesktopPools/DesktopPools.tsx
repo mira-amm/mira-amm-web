@@ -8,6 +8,7 @@ import { clsx } from "clsx";
 import {PoolData} from "@/src/hooks/usePoolsData";
 import {useCallback} from "react";
 import {DefaultLocale} from "@/src/utils/constants";
+import Link from "next/link";
 
 type Props = {
   poolsData: PoolData[] | undefined;
@@ -89,14 +90,15 @@ const DesktopPools = ({ poolsData }: Props) => {
               <td>{volumeValue}</td>
               <td>{tvlValue}</td>
               <td>
-                <ActionButton
-                  className={styles.addButton}
-                  variant="secondary"
-                  onClick={() => handleAddClick(key)}
-                  fullWidth
-                >
-                  Add Liquidity
-                </ActionButton>
+                <Link href={`/liquidity/add?pool=${poolData.id}`}>
+                  <ActionButton
+                    className={styles.addButton}
+                    variant="secondary"
+                    fullWidth
+                  >
+                    Add Liquidity
+                  </ActionButton>
+                </Link>
               </td>
             </tr>
           );

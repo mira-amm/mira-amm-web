@@ -14,6 +14,7 @@ import {BN} from "fuels";
 
 type AssetsData = {
   coin: CoinName;
+  assetId: string;
   amount: BN;
 };
 
@@ -41,9 +42,9 @@ const PreviewAddLiquidityDialog = ({ previewData, setPreviewData }: Props) => {
   const secondAssetAmount = assets[1].amount;
 
   const { data, mutateAsync, isPending, error: addLiquidityError } = useAddLiquidity({
-    firstAssetName,
+    firstAsset: previewData.assets[0].assetId,
     firstAssetAmount,
-    secondAssetName,
+    secondAsset: previewData.assets[1].assetId,
     secondAssetAmount,
     isPoolStable: isStablePool,
   });

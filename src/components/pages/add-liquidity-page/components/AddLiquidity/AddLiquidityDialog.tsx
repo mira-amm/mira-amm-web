@@ -69,8 +69,8 @@ const AddLiquidityDialog = ({ poolId, setPreviewData, newPool }: Props) => {
   const emptyPool = Boolean(poolsMetadata?.[0]?.reserve0.eq(0) && poolsMetadata?.[0].reserve1.eq(0));
 
   const { data, isFetching, error: previewError } = usePreviewAddLiquidity({
-    firstCoin,
-    secondCoin,
+    firstCoin: poolId[0].bits,
+    secondCoin: poolId[1].bits,
     amount: isFirstToken ? firstAmount : secondAmount,
     isFirstToken,
     isStablePool,
@@ -166,10 +166,12 @@ const AddLiquidityDialog = ({ poolId, setPreviewData, newPool }: Props) => {
         {
           coin: firstCoin,
           amount: firstAmount,
+          assetId: poolId[0].bits,
         },
         {
           coin: secondCoin,
           amount: secondAmount,
+          assetId: poolId[1].bits,
         }
       ],
       isStablePool,
