@@ -9,12 +9,13 @@ import {assetsList} from "@/src/utils/common";
 type Props = {
   selectCoin: (coin: CoinName | null) => void;
   balances: CoinQuantity[] | undefined;
+  verifiedAssetsOnly?: boolean;
 };
 
 const priorityOrder: CoinName[] = ['ETH', 'USDC', 'USDT'];
 const lowPriorityOrder: CoinName[] = ['DUCKY' as CoinName];
 
-const CoinsListModal = ({ selectCoin, balances }: Props) => {
+const CoinsListModal = ({ selectCoin, balances, verifiedAssetsOnly }: Props) => {
   const [value, setValue] = useState('');
 
   const inputRef = useRef<HTMLInputElement>(null);
@@ -30,14 +31,16 @@ const CoinsListModal = ({ selectCoin, balances }: Props) => {
   };
 
   const filteredCoinsList = useMemo(() => {
-    return assetsList.filter((coin) => {
+    // TODO: Avoid double filtering
+    const verifiedAssets = verifiedAssetsOnly ? assetsList.filter(asset => asset.isVerified) : assetsList;
+    return verifiedAssets.filter((coin) => {
       return (
         coin.name?.toLowerCase().includes(value.toLowerCase()) ||
         coin.fullName?.toLowerCase().includes(value.toLowerCase()) ||
         coin.assetId?.toLowerCase() === value.toLowerCase()
       );
     });
-  }, [value]);
+  }, [verifiedAssetsOnly, value]);
 
   // TODO: Pre-sort the list by priorityOrder and alphabet to avoid sorting each time
   const sortedCoinsList = useMemo(() => {

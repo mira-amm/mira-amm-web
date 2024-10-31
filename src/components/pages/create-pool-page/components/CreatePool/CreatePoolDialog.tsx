@@ -315,7 +315,11 @@ const CreatePoolDialog = ({ setPreviewData, newPool }: Props) => {
         </ActionButton>
       )}
       <AssetsListModal title="Choose token">
-        <CoinsListModal selectCoin={handleAssetSelection} balances={balances} />
+        <CoinsListModal
+          selectCoin={handleAssetSelection}
+          balances={balances}
+          verifiedAssetsOnly
+        />
       </AssetsListModal>
     </>
   );
