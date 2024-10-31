@@ -78,7 +78,12 @@ const DesktopPools = ({ poolsData }: Props) => {
           return (
             <tr key={key}>
               <td>
-                <CoinPair firstCoin={firstAssetName} secondCoin={secondAssetName} isStablePool={poolId[2]} withPoolDescription />
+                <CoinPair
+                  firstCoin={poolData.details.asset_0_symbol}
+                  secondCoin={poolData.details.asset_1_symbol}
+                  isStablePool={poolId[2]}
+                  withPoolDescription
+                />
               </td>
               <td className={clsx(!aprValue && styles.pending)}>{aprValue ?? 'Awaiting data'}</td>
               <td>{volumeValue}</td>
