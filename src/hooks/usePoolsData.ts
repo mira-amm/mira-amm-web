@@ -1,7 +1,8 @@
 import {useQuery} from "@tanstack/react-query";
 import {CoinName} from "@/src/utils/coinsConfig";
-import {ApiBaseUrl} from "@/src/utils/constants";
+import {ApiBaseUrl, IndexerUrl, SQDIndexerUrl} from "@/src/utils/constants";
 import {createPoolIdFromIdString, isPoolIdValid} from "@/src/utils/common";
+import request, { gql } from "graphql-request";
 
 export type PoolData = {
   id: string;
@@ -22,32 +23,55 @@ export type PoolsData = {
   pools: PoolData[];
 };
 
-const usePoolsData = () => {
-  const { data, isLoading } = useQuery({
-    queryKey: ['pools'],
-    queryFn: async () => {
-      const poolsDataResponse = await fetch(`${ApiBaseUrl}/pools`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          'volume_hours': 24,
-          'apr_days': 1,
-        }),
-      });
+export const usePoolsData = (): { data: PoolData[] | undefined, isLoading: boolean } => {
+  const query = gql`
+    query PoolQuery {
+      pools {
+        id
+        isStable
+        lpToken {
+          symbol
+          name
+        }
+        asset1 {
+          symbol
+          decimals
+        }
+        asset0 {
+          symbol
+          decimals
+        }
+      }
+    }
+  `;
 
-      const poolsData: PoolsData = await poolsDataResponse.json();
-      return poolsData.pools.filter(poolData => {
-        const poolId = createPoolIdFromIdString(poolData.id);
-        return (
-          poolData.details !== null && isPoolIdValid(poolId)
-        );
-      });
-    },
+  const { data, isLoading } = useQuery<any>({
+    queryKey: ['pools'],
+    queryFn: () => request({
+      url: SQDIndexerUrl,
+      document: query,
+    }),
+    // enabled: shouldFetch,
   });
 
-  return { data, isLoading };
+  const dataTransformed = data?.pools.map((pool: any): PoolData => {
+    return {
+      id: pool.id,
+      reserve_0: '0',
+      reserve_1: '0',
+      details: {
+        asset_0_symbol: pool.asset0.symbol as CoinName,
+        asset_1_symbol: pool.asset1.symbol as CoinName,
+        apr: null,
+        volume: '0',
+        tvl: '0',
+      },
+      swap_count: 0,
+      create_time: 0,
+    };
+  });
+
+  return { data: dataTransformed, isLoading };
 };
 
 export default usePoolsData;
