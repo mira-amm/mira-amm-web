@@ -48,11 +48,14 @@ const AddLiquidityDialog = ({ poolId, setPreviewData, newPool }: Props) => {
   const { connect } = useConnectUI();
   const { balances } = useBalances();
 
-  const firstAssetBalance = useAssetBalance(balances, poolId[0].bits);
-  const secondAssetBalance = useAssetBalance(balances, poolId[1].bits);
+  const firstAssetId = poolId[0].bits;
+  const secondAssetId = poolId[1].bits
 
-  const firstAssetDecimals = getAssetDecimalsByAssetId(poolId[0].bits);
-  const secondAssetDecimals = getAssetDecimalsByAssetId(poolId[1].bits);
+  const firstAssetBalance = useAssetBalance(balances, firstAssetId);
+  const secondAssetBalance = useAssetBalance(balances, secondAssetId);
+
+  const firstAssetDecimals = getAssetDecimalsByAssetId(firstAssetId);
+  const secondAssetDecimals = getAssetDecimalsByAssetId(secondAssetId);
 
   const [firstAmount, setFirstAmount] = useState(new BN(0));
   const [firstAmountInput, setFirstAmountInput] = useState('');
@@ -69,8 +72,8 @@ const AddLiquidityDialog = ({ poolId, setPreviewData, newPool }: Props) => {
   const emptyPool = Boolean(poolsMetadata?.[0]?.reserve0.eq(0) && poolsMetadata?.[0].reserve1.eq(0));
 
   const { data, isFetching, error: previewError } = usePreviewAddLiquidity({
-    firstCoin,
-    secondCoin,
+    firstAssetId,
+    secondAssetId,
     amount: isFirstToken ? firstAmount : secondAmount,
     isFirstToken,
     isStablePool,
@@ -266,21 +269,19 @@ const AddLiquidityDialog = ({ poolId, setPreviewData, newPool }: Props) => {
         <p>Deposit amount</p>
         <div className={styles.sectionContent}>
           <CoinInput
-            coin={firstCoin}
+            assetId={firstAssetId}
             value={firstAmountInput}
             loading={!isFirstToken && isFetching}
             setAmount={setAmount(firstCoin)}
             balance={firstAssetBalance}
-            key={firstCoin}
             usdRate={firstAssetRate}
           />
           <CoinInput
-            coin={secondCoin}
+            assetId={secondAssetId}
             value={secondAmountInput}
             loading={isFirstToken && isFetching}
             setAmount={setAmount(secondCoin)}
             balance={secondAssetBalance}
-            key={secondCoin}
             usdRate={secondAssetRate}
           />
         </div>

@@ -4,7 +4,7 @@ import {useWallet} from "@fuels/react";
 import {useCallback} from "react";
 import {CoinName, coinsConfig} from "@/src/utils/coinsConfig";
 import {DefaultTxParams, MaxDeadline} from "@/src/utils/constants";
-import {BN} from "fuels";
+import {bn, BN} from "fuels";
 
 type Props = {
   firstAssetName: CoinName;
@@ -29,8 +29,11 @@ const useCreatePool = ({ firstAssetName, firstAssetAmount, secondAssetName, seco
     const firstAssetSubId = coinsConfig.get(firstAssetName)?.subId ?? '';
     const secondAssetSubId = coinsConfig.get(secondAssetName)?.subId ?? '';
 
-    const firstCoinAmountToUse = new BN(parseFloat(firstAssetAmount)).mul(10 ** coinsConfig.get(firstAssetName)?.decimals!);
-    const secondCoinAmountToUse = new BN(parseFloat(secondAssetAmount)).mul(10 ** coinsConfig.get(secondAssetName)?.decimals!);
+    const firstAssetDecimals = coinsConfig.get(firstAssetName)?.decimals ?? 0;
+    const secondAssetDecimals = coinsConfig.get(secondAssetName)?.decimals ?? 0;
+
+    const firstCoinAmountToUse = bn.parseUnits(firstAssetAmount, firstAssetDecimals);
+    const secondCoinAmountToUse = bn.parseUnits(secondAssetAmount, secondAssetDecimals);
 
     const txRequest = await mira.createPoolAndAddLiquidity(
       firstAssetContractId,

@@ -7,12 +7,11 @@ import {CoinName, coinsConfig} from "@/src/utils/coinsConfig";
 import useBalances from "@/src/hooks/useBalances/useBalances";
 import useAssetBalance from "@/src/hooks/useAssetBalance";
 import {useConnectUI, useIsConnected} from "@fuels/react";
-import usePreviewAddLiquidity from "@/src/hooks/usePreviewAddLiquidity";
-import {Dispatch, SetStateAction, useCallback, useEffect, useRef, useState} from "react";
+import {Dispatch, SetStateAction, useCallback, useRef, useState} from "react";
 import {useDebounceCallback} from "usehooks-ts";
 import useCheckEthBalance from "@/src/hooks/useCheckEthBalance/useCheckEthBalance";
 import useFaucetLink from "@/src/hooks/useFaucetLink";
-import {getAssetDecimalsByAssetId, getAssetNameByAssetId, openNewTab} from "@/src/utils/common";
+import {createPoolKey, getAssetDecimalsByAssetId, getAssetNameByAssetId, openNewTab} from "@/src/utils/common";
 import useCheckActiveNetwork from "@/src/hooks/useCheckActiveNetwork";
 import Info from "@/src/components/common/Info/Info";
 import {CreatePoolPreviewData} from "./PreviewCreatePoolDialog";
@@ -22,22 +21,27 @@ import usePoolsMetadata from "@/src/hooks/usePoolsMetadata";
 import useModal from "@/src/hooks/useModal/useModal";
 import CoinsListModal from "@/src/components/common/Swap/components/CoinsListModal/CoinsListModal";
 import useUSDRate from "@/src/hooks/useUSDRate";
-import {BN, bn} from "fuels";
+import {bn} from "fuels";
+import SparkleIcon from "@/src/components/icons/Sparkle/SparkleIcon";
+import Link from "next/link";
+import useExchangeRate from "@/src/hooks/useExchangeRate/useExchangeRate";
+import useExchangeRateV2 from "@/src/hooks/useExchangeRate/useExchangeRateV2";
+import ExchangeIcon from "@/src/components/icons/Exchange/ExchangeIcon";
 
 type Props = {
   setPreviewData: Dispatch<SetStateAction<CreatePoolPreviewData | null>>;
-  newPool?: boolean;
 }
 
-const CreatePoolDialog = ({ setPreviewData, newPool }: Props) => {
+const CreatePoolDialog = ({ setPreviewData }: Props) => {
   const [AssetsListModal, openAssetsListModal, closeAssetsListModal] = useModal();
 
   const { isConnected, isPending: isConnecting } = useIsConnected();
   const { connect } = useConnectUI();
   const { balances } = useBalances();
 
-  const [firstAssetId, setFirstAssetId] = useState<string>(coinsConfig.get('ETH')?.assetId!);
-  const [secondAssetId, setSecondAssetId] = useState<string>(coinsConfig.get('USDT')?.assetId!);
+  const [firstAssetId, setFirstAssetId] = useState<string | null>(null);
+  const [secondAssetId, setSecondAssetId] = useState<string | null>(null);
+  const [activeAssetId, setActiveAssetId] = useState<string | null>(null);
 
   const firstAssetBalanceValue = useAssetBalance(balances, firstAssetId);
   const secondAssetBalanceValue = useAssetBalance(balances, secondAssetId);
@@ -48,7 +52,6 @@ const CreatePoolDialog = ({ setPreviewData, newPool }: Props) => {
   const [firstAmountInput, setFirstAmountInput] = useState('');
   const [secondAmount, setSecondAmount] = useState('');
   const [secondAmountInput, setSecondAmountInput] = useState('');
-  const [activeAssetName, setActiveAssetName] = useState<CoinName | null>(null);
   const [isStablePool, setIsStablePool] = useState(false);
 
   const activeAssetForAssetSelector = useRef<string | null>(null);
@@ -56,48 +59,26 @@ const CreatePoolDialog = ({ setPreviewData, newPool }: Props) => {
   // TODO: Change logic to work with asset ids only
   const firstCoin = getAssetNameByAssetId(firstAssetId);
   const secondCoin = getAssetNameByAssetId(secondAssetId);
-  const isFirstToken = activeAssetName === firstCoin;
 
-  const poolId = buildPoolId(firstAssetId, secondAssetId, isStablePool);
-  const { poolsMetadata } = usePoolsMetadata([poolId]);
-  const poolExists = Boolean(poolsMetadata) && Boolean(poolsMetadata?.[0]);
-
-  const { data, isFetching } = usePreviewAddLiquidity({
-    firstCoin,
-    secondCoin,
-    amount: new BN(0),
-    // amountString: isFirstToken ? firstAmount : secondAmount,
-    isFirstToken,
-    isStablePool,
-    fetchCondition: poolExists,
-  });
-
-  // const { apr } = usePoolAPR(poolId);
-  // const aprValue = apr
-  //   ? parseFloat(apr).toLocaleString(DefaultLocale, { minimumFractionDigits: 2, maximumFractionDigits: 2 })
-  //   : null;
+  const pools = firstAssetId && secondAssetId ? [
+    buildPoolId(firstAssetId, secondAssetId, true),
+    buildPoolId(secondAssetId, firstAssetId, false),
+  ] : undefined;
+  const { poolsMetadata } = usePoolsMetadata(pools);
+  const poolExists = Boolean(poolsMetadata) && (Boolean(poolsMetadata?.[0]) || Boolean(poolsMetadata?.[1]));
+  const existingPoolStability = poolExists ? poolsMetadata?.[0]?.poolId[2] ?? poolsMetadata?.[1]?.poolId[2] : undefined;
+  const isExistingOrNewPoolStable = existingPoolStability ?? isStablePool;
+  let existingPoolKey = '';
+  if (poolExists) {
+    // @ts-ignore
+    existingPoolKey = createPoolKey(poolsMetadata?.[0]?.poolId ?? poolsMetadata?.[1]?.poolId);
+  }
 
   const debouncedSetFirstAmount = useDebounceCallback(setFirstAmount, 500);
   const debouncedSetSecondAmount = useDebounceCallback(setSecondAmount, 500);
 
-  useEffect(() => {
-    if (data) {
-      const anotherToken = isFirstToken ? secondCoin : firstCoin;
-      const anotherTokenDecimals = coinsConfig.get(anotherToken)?.decimals!;
-      const anotherTokenValue = data[1].toNumber() / 10 ** anotherTokenDecimals;
-
-      if (isFirstToken) {
-        setSecondAmount(anotherTokenValue.toFixed(anotherTokenDecimals));
-        setSecondAmountInput(anotherTokenValue.toFixed(anotherTokenDecimals));
-      } else {
-        setFirstAmount(anotherTokenValue.toFixed(anotherTokenDecimals));
-        setFirstAmountInput(anotherTokenValue.toFixed(anotherTokenDecimals));
-      }
-    }
-  }, [data]);
-
   const handleStabilityChange = (isStable: boolean) => {
-    if (!newPool) {
+    if (poolExists) {
       return;
     }
 
@@ -111,7 +92,6 @@ const CreatePoolDialog = ({ setPreviewData, newPool }: Props) => {
         debouncedSetSecondAmount('');
         setFirstAmountInput('');
         setSecondAmountInput('');
-        setActiveAssetName(coin);
         return;
       }
 
@@ -122,7 +102,6 @@ const CreatePoolDialog = ({ setPreviewData, newPool }: Props) => {
         debouncedSetSecondAmount(value);
         setSecondAmountInput(value);
       }
-      setActiveAssetName(coin);
     };
   }, [debouncedSetFirstAmount, debouncedSetSecondAmount, firstCoin]);
 
@@ -149,7 +128,6 @@ const CreatePoolDialog = ({ setPreviewData, newPool }: Props) => {
         }
       ],
       isStablePool,
-      isNewPool: !poolExists,
     });
   }, [
     sufficientEthBalance,
@@ -167,21 +145,23 @@ const CreatePoolDialog = ({ setPreviewData, newPool }: Props) => {
   const insufficientFirstBalance = bn.parseUnits(firstAmount, firstAssetDecimals) > firstAssetBalanceValue;
   const insufficientSecondBalance = bn.parseUnits(secondAmount, secondAssetDecimals) > secondAssetBalanceValue;
   const insufficientBalance = insufficientFirstBalance || insufficientSecondBalance;
+  const oneOfAssetsIsNotSelected = firstAssetId === null || secondAssetId === null;
+  const oneOfAmountsIsEmpty = !firstAmount || !secondAmount;
 
-  let buttonTitle = 'Preview';
+  let buttonTitle = 'Preview creation';
   if (!isValidNetwork) {
     buttonTitle = 'Incorrect network';
+  } else if (oneOfAssetsIsNotSelected) {
+    buttonTitle = 'Choose assets';
   } else if (insufficientBalance) {
     buttonTitle = 'Insufficient balance';
   } else if (!sufficientEthBalance) {
     buttonTitle = 'Claim some ETH to pay for gas';
   }
 
-  const oneOfAmountsIsEmpty = !firstAmount || !secondAmount;
+  const buttonDisabled = !isValidNetwork || poolExists || oneOfAssetsIsNotSelected || oneOfAmountsIsEmpty || insufficientBalance;
 
-  const buttonDisabled = !isValidNetwork || insufficientBalance || oneOfAmountsIsEmpty;
-
-  const handleAssetClick = useCallback((assetId: string) => {
+  const handleAssetClick = useCallback((assetId: string | null) => {
     return () => {
       openAssetsListModal();
       activeAssetForAssetSelector.current = assetId;
@@ -210,23 +190,30 @@ const CreatePoolDialog = ({ setPreviewData, newPool }: Props) => {
   const firstAssetRate = ratesData?.find((item) => item.asset === firstCoin)?.rate;
   const secondAssetRate = ratesData?.find((item) => item.asset === secondCoin)?.rate;
 
+  const exchangeRate = useExchangeRateV2({
+    firstAssetId,
+    secondAssetId,
+    firstAssetAmount: firstAmount,
+    secondAssetAmount: secondAmount,
+    baseAssetId: activeAssetId,
+  });
+
+  const handleExchangeRateSwap = () => {
+    setActiveAssetId(prevActiveAssetId => prevActiveAssetId === firstAssetId ? secondAssetId : firstAssetId);
+  };
+
   return (
     <>
       <div className={styles.section}>
         <p>Selected pair</p>
         <div className={styles.sectionContent}>
           <div className={styles.coinPair}>
-            <CoinPair firstCoin={firstCoin} secondCoin={secondCoin} isStablePool={isStablePool}/>
-            {/*{!newPool && (*/}
-            {/*  <div className={styles.APR}>*/}
-            {/*    Estimated APR*/}
-            {/*    <Info tooltipText={APRTooltip} />*/}
-            {/*    <span className={clsx(styles.highlight, !aprValue && 'blurredText')}>+{aprValue ?? '1,23'}%</span>*/}
-            {/*  </div>*/}
-            {/*)}*/}
+            {!oneOfAssetsIsNotSelected && (
+              <CoinPair firstCoin={firstCoin} secondCoin={secondCoin} isStablePool={isStablePool}/>
+            )}
           </div>
           <div className={styles.poolStability}>
-            <div className={clsx(styles.poolStabilityButton, !isStablePool && styles.poolStabilityButtonActive, !newPool && styles.poolStabilityButtonDisabled)}
+            <div className={clsx(styles.poolStabilityButton, !isExistingOrNewPoolStable && styles.poolStabilityButtonActive, poolExists && styles.poolStabilityButtonDisabled)}
                  onClick={() => handleStabilityChange(false)}
                  role="button"
             >
@@ -236,7 +223,7 @@ const CreatePoolDialog = ({ setPreviewData, newPool }: Props) => {
               </div>
               <p>0.30% fee tier</p>
             </div>
-            <button className={clsx(styles.poolStabilityButton, isStablePool && styles.poolStabilityButtonActive, !newPool && styles.poolStabilityButtonDisabled)}
+            <button className={clsx(styles.poolStabilityButton, isExistingOrNewPoolStable && styles.poolStabilityButtonActive, poolExists && styles.poolStabilityButtonDisabled)}
                     onClick={() => handleStabilityChange(true)}
                     role="button"
             >
@@ -246,18 +233,6 @@ const CreatePoolDialog = ({ setPreviewData, newPool }: Props) => {
               </div>
               <p>0.05% fee tier</p>
             </button>
-            {/*<button className={clsx(styles.poolStabilityButton, !isStablePool && styles.poolStabilityButtonActive, 'desktopOnly')}*/}
-            {/*        onClick={() => setIsStablePool(false)}*/}
-            {/*>*/}
-            {/*  <p>0.30% fee tier (volatile pool)</p>*/}
-            {/*  <Info tooltipText=""/>*/}
-            {/*</button>*/}
-            {/*<button className={clsx(styles.poolStabilityButton, isStablePool && styles.poolStabilityButtonActive, 'desktopOnly')}*/}
-            {/*        onClick={() => setIsStablePool(true)}*/}
-            {/*>*/}
-            {/*  <p>0.05% fee tier (stable pool)</p>*/}
-            {/*  <Info tooltipText=""/>*/}
-            {/*</button>*/}
           </div>
         </div>
       </div>
@@ -265,42 +240,48 @@ const CreatePoolDialog = ({ setPreviewData, newPool }: Props) => {
         <p>Deposit amount</p>
         <div className={styles.sectionContent}>
           <CoinInput
-            coin={firstCoin}
+            assetId={firstAssetId}
             value={firstAmountInput}
-            loading={!isFirstToken && isFetching}
+            loading={poolExists}
             setAmount={setAmount(firstCoin)}
             balance={firstAssetBalanceValue}
-            key={firstCoin}
             usdRate={firstAssetRate}
-            newPool
             onAssetClick={handleAssetClick(firstAssetId)}
           />
           <CoinInput
-            coin={secondCoin}
+            assetId={secondAssetId}
             value={secondAmountInput}
-            loading={isFirstToken && isFetching}
+            loading={poolExists}
             setAmount={setAmount(secondCoin)}
             balance={secondAssetBalanceValue}
-            key={secondCoin}
             usdRate={secondAssetRate}
-            newPool
             onAssetClick={handleAssetClick(secondAssetId)}
           />
         </div>
       </div>
-      {/* <div className={clsx(styles.section, styles.prices)}>
-        <p>Selected Price</p>
-        <div className={clsx(styles.sectionContent, styles.priceBlocks)}>
-          <div className={styles.priceBlock}>
-            <p>Low price</p>
-            <p>0</p>
+      {poolExists && (
+        <div className={styles.existingPoolBlock}>
+          <div className={styles.sparkleIcon}>
+            <SparkleIcon />
           </div>
-          <div className={styles.priceBlock}>
-            <p>High price</p>
-            <p>∞</p>
-          </div>
+          <p className={styles.existingPoolText}>This pool already exists</p>
+          <Link href={`/liquidity/add/?pool=${existingPoolKey}`} className={styles.addLiquidityLink}>
+            Add liquidity →
+          </Link>
         </div>
-      </div> */}
+      )}
+      {!poolExists && !oneOfAssetsIsNotSelected && !oneOfAmountsIsEmpty && (
+        <div className={styles.section}>
+          <p>Starting price</p>
+          <div className={styles.priceBlock} onClick={handleExchangeRateSwap}>
+            <p>{exchangeRate}</p>
+            <ExchangeIcon />
+          </div>
+          <p className={styles.priceWarning}>
+            This is the price of the pool on inception. Always double check before deploying a pool.
+          </p>
+        </div>
+      )}
       {!isConnected ? (
         <ActionButton
           variant="secondary"

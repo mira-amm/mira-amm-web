@@ -7,20 +7,22 @@ import {ChangeEvent, memo, useCallback} from "react";
 import TextButton from "@/src/components/common/TextButton/TextButton";
 import {DefaultLocale, MinEthValueBN} from "@/src/utils/constants";
 import {BN} from "fuels";
+import {getAssetNameByAssetId} from "@/src/utils/common";
 
 type Props = {
-  coin: CoinName;
+  assetId: string | null;
   value: string;
   loading: boolean;
   setAmount: (amount: string) => void;
   balance: BN;
   usdRate: string | undefined;
-  newPool?: boolean;
   onAssetClick?: VoidFunction;
 }
 
-const CoinInput = ({ coin, value, loading, setAmount, balance, usdRate, newPool, onAssetClick }: Props) => {
-  const decimals = coinsConfig.get(coin)?.decimals!;
+const CoinInput = ({ assetId, value, loading, setAmount, balance, usdRate, onAssetClick }: Props) => {
+  const assetName = getAssetNameByAssetId(assetId);
+  const decimals = coinsConfig.get(assetName)?.decimals!;
+
   const balanceValue = balance.formatUnits(decimals);
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -34,7 +36,7 @@ const CoinInput = ({ coin, value, loading, setAmount, balance, usdRate, newPool,
 
   const handleMaxClick = useCallback(() => {
     let amountStringToSet;
-    if (coin === "ETH") {
+    if (assetName === "ETH") {
       const amountWithoutGasFee = balance.sub(MinEthValueBN);
       amountStringToSet = amountWithoutGasFee.gt(0)
         ? amountWithoutGasFee.formatUnits(decimals)
@@ -44,7 +46,7 @@ const CoinInput = ({ coin, value, loading, setAmount, balance, usdRate, newPool,
     }
 
     setAmount(amountStringToSet);
-  }, [coin, balance, setAmount]);
+  }, [assetName, balance, balanceValue, decimals, setAmount]);
 
   const numericValue = parseFloat(value);
   const usdValue = !isNaN(numericValue) && Boolean(usdRate) ?
@@ -74,7 +76,7 @@ const CoinInput = ({ coin, value, loading, setAmount, balance, usdRate, newPool,
         )}
       </div>
       <div className={clsx(styles.coinInputLine, styles.rightColumn)}>
-        <Coin name={coin} className={styles.coinName} newPool={newPool} onClick={onAssetClick} />
+        <Coin name={assetName} className={styles.coinName} onClick={onAssetClick} />
         {balance.gt(0) && (
           <span className={styles.balance}>
             Balance: {balanceValue}
