@@ -1,6 +1,6 @@
 import {ValidNetworkChainId} from "@/src/utils/constants";
 
-import assets from './verified-assets-day-1.json';
+import assets from './verified-assets.json';
 
 // TODO: Consider removing this type as we won't probably know the list of all coins ahead of time
 export type CoinName = 'ETH' | 'USDC' | 'USDT' | null;
@@ -10,62 +10,33 @@ type CoinData = {
   assetId: string;
   decimals: number;
   fullName: string;
+  isVerified: boolean;
   icon?: string;
   contractId?: string;
   subId?: string;
+  coinGeckoId?: string;
 };
 
-export const assetSymbolToCoinGeckoId: { [key: string]: string } = {
-  'ETH': "ethereum",
-  'WETH': "weth",
-  'weETH': "wrapped-eeth",
-  'rsETH': "kelp-dao-restaked-eth",
-  'rETH': "rocket-pool-eth",
-  'wbETH': "wrapped-beacon-eth",
-  'rstETH': "wrapped-steth",
-  'amphrETH': "wrapped-steth",
-  'Manta mBTC': "manta-mbtc",
-  'Manta mETH': "manta-meth",
-  'Manta mUSD': "manta-musd",
-  // 'pumpBTC': "wrapped-bitcoin", // #TODO 'pumpbtc' ?
-  'FBTC': "ignition-fbtc",
-  'SolvBTC': "solv-btc",
-  'SolvBTC.BBN': "solv-protocol-solvbtc-bbn",
-  'Mantle mETH': "mantle-staked-ether",
-  'sDAI': "savings-dai",
-  'USDT': "tether",
-  'USDC': "usd-coin",
-  'USDe': "ethena-usde",
-  'sUSDe': "ethena-staked-usde",
-  'rsUSDe': "ethena-staked-usde",
-  'wstETH': "wrapped-steth",
-  'ezETH': "renzo-restaked-eth",
-  'pzETH': "renzo-restaked-lst",
-  'Re7LRT': "wrapped-steth",
-  // 'steakLRT': "wrapped-steth", // TODO steakhouse-resteaking-vault ?
-}
-
 // mapping of asset names & symbols to symbols
-export const assetHandleToSymbol: { [key: string]: string } = {};
-export const verifiedAssetIds = new Set<string>();
+export const assetHandleToSymbol = new Map<string, string>();
 
 // TODO: Make an API call to get the coins config
 const initAssetsConfig = () => {
-  const assetsConfig: Map<CoinName, CoinData> = new Map();
+  const assetsConfig = new Map<CoinName, CoinData>();
 
   assets.forEach((asset) => {
-    const currentFuelNetworkData = asset.networks.filter(network => network.type === 'fuel' && network.chainId === ValidNetworkChainId);
+    // const currentFuelNetworkData = asset.networks.filter(network => network.type === 'fuel' && network.chainId === ValidNetworkChainId);
     const assetData: CoinData = {
       name: asset.symbol as CoinName,
-      assetId: currentFuelNetworkData[0].assetId!,
-      decimals: currentFuelNetworkData[0].decimals,
+      assetId: asset.assetId!,
+      decimals: asset.decimals,
       fullName: asset.name,
-      icon: asset.icon,
-      // @ts-ignore
-      contractId: currentFuelNetworkData[0].contractId,
-      // @ts-ignore
-      subId: currentFuelNetworkData[0].subId,
-    }
+      icon: asset.icon.default,
+      isVerified: asset.isVerified,
+      contractId: asset.contractId,
+      subId: asset.subId,
+      coinGeckoId: asset.externalIds?.coinGecko,
+    };
 
     assetsConfig.set(asset.symbol as CoinName, assetData);
   });
@@ -78,10 +49,9 @@ const initAssetsConfig = () => {
 
   Array.from(assetsConfig.values()).forEach(asset => {
     if (asset.name) {
-      assetHandleToSymbol[asset.name] = asset.name;
-      assetHandleToSymbol[asset.fullName] = asset.name;
+      assetHandleToSymbol.set(asset.name, asset.name);
+      assetHandleToSymbol.set(asset.fullName, asset.name);
     }
-    verifiedAssetIds.add(asset.assetId);
   });
 
   return assetsConfig;
@@ -100,6 +70,7 @@ const initAdditionalAssetsConfig = () => {
       icon: 'https://mira-dex-resources.s3.us-east-1.amazonaws.com/icons/psycho-icon.png',
       contractId: '0x81d5964bfbb24fd994591cc7d0a4137458d746ac0eb7ececb9a9cf2ae966d942',
       subId: '0x0000000000000000000000000000000000000000000000000000000000000031',
+      isVerified: false,
     },
     {
       name: 'MEOW' as CoinName,
@@ -109,6 +80,7 @@ const initAdditionalAssetsConfig = () => {
       icon: 'https://mira-dex-resources.s3.us-east-1.amazonaws.com/icons/meow-sm.jpg',
       contractId: '0x81d5964bfbb24fd994591cc7d0a4137458d746ac0eb7ececb9a9cf2ae966d942',
       subId: '0x0000000000000000000000000000000000000000000000000000000000000061',
+      isVerified: false,
     },
     {
       name: 'FPEPE' as CoinName,
@@ -118,6 +90,7 @@ const initAdditionalAssetsConfig = () => {
       icon: 'https://mira-dex-resources.s3.us-east-1.amazonaws.com/icons/fpepe.jpg',
       contractId: '0x81d5964bfbb24fd994591cc7d0a4137458d746ac0eb7ececb9a9cf2ae966d942',
       subId: '0x0000000000000000000000000000000000000000000000000000000000000023',
+      isVerified: false,
     },
   ];
 

@@ -1,11 +1,14 @@
 import styles from '../../../add-liquidity-page/components/AddLiquidity/AddLiquidity.module.css';
 import {useCallback, useState} from "react";
-import PreviewCreatePoolDialog, {CreatePoolPreviewData} from "@/src/components/pages/create-pool-page/components/CreatePool/PreviewCreatePoolDialog";
+import {CreatePoolPreviewData} from "@/src/components/pages/create-pool-page/components/CreatePool/PreviewCreatePoolDialog";
 import CreatePoolDialog from './CreatePoolDialog';
 import BackLink from "@/src/components/common/BackLink/BackLink";
 import {useRouter} from "next/navigation";
 import IconButton from "@/src/components/common/IconButton/IconButton";
 import CloseIcon from "@/src/components/icons/Close/CloseIcon";
+import dynamic from "next/dynamic";
+
+const PreviewCreatePoolDialog = dynamic(() => import('@/src/components/pages/create-pool-page/components/CreatePool/PreviewCreatePoolDialog'), { ssr: false });
 
 const CreatePool = () => {
   const router = useRouter();
@@ -43,7 +46,7 @@ const CreatePool = () => {
         {showPreview ? (
           <PreviewCreatePoolDialog previewData={previewData!} />
         ) : (
-          <CreatePoolDialog setPreviewData={setPreviewData} newPool />
+          <CreatePoolDialog setPreviewData={setPreviewData} />
         )}
       </section>
       {showPreview && (

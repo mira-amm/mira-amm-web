@@ -37,12 +37,12 @@ const DesktopPools = ({ poolsData }: Props) => {
           <th>24H Volume</th>
           <th>TVL</th>
           <th>
-            {/*<ActionButton*/}
-            {/*className={styles.createButton}*/}
-            {/*onClick={handleCreateClick}*/}
-            {/*>*/}
-            {/*Create Pool*/}
-            {/*</ActionButton>*/}
+            <ActionButton
+              className={styles.createButton}
+              onClick={handleCreateClick}
+            >
+              Create Pool
+            </ActionButton>
           </th>
         </tr>
       </thead>

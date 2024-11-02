@@ -38,28 +38,30 @@ import usePoolsMetadata from "@/src/hooks/usePoolsMetadata";
 type Props = {
   poolId: PoolId;
   setPreviewData: Dispatch<SetStateAction<AddLiquidityPreviewData | null>>;
-  newPool?: boolean;
 }
 
-const AddLiquidityDialog = ({ poolId, setPreviewData, newPool }: Props) => {
+const AddLiquidityDialog = ({ poolId, setPreviewData }: Props) => {
   const [FailureModal, openFailureModal, closeFailureModal] = useModal();
 
   const { isConnected, isPending: isConnecting } = useIsConnected();
   const { connect } = useConnectUI();
   const { balances } = useBalances();
 
-  const firstAssetBalance = useAssetBalance(balances, poolId[0].bits);
-  const secondAssetBalance = useAssetBalance(balances, poolId[1].bits);
+  const firstAssetId = poolId[0].bits;
+  const secondAssetId = poolId[1].bits;
+  const isStablePool = poolId[2];
 
-  const firstAssetDecimals = getAssetDecimalsByAssetId(poolId[0].bits);
-  const secondAssetDecimals = getAssetDecimalsByAssetId(poolId[1].bits);
+  const firstAssetBalance = useAssetBalance(balances, firstAssetId);
+  const secondAssetBalance = useAssetBalance(balances, secondAssetId);
+
+  const firstAssetDecimals = getAssetDecimalsByAssetId(firstAssetId);
+  const secondAssetDecimals = getAssetDecimalsByAssetId(secondAssetId);
 
   const [firstAmount, setFirstAmount] = useState(new BN(0));
   const [firstAmountInput, setFirstAmountInput] = useState('');
   const [secondAmount, setSecondAmount] = useState(new BN(0));
   const [secondAmountInput, setSecondAmountInput] = useState('');
   const [activeAssetName, setActiveAssetName] = useState<CoinName | null>(null);
-  const [isStablePool, setIsStablePool] = useState(poolId[2]);
 
   // TODO: Change logic to work with asset ids only
   const { firstAssetName: firstCoin, secondAssetName: secondCoin } = getAssetNamesFromPoolId(poolId);
@@ -69,8 +71,8 @@ const AddLiquidityDialog = ({ poolId, setPreviewData, newPool }: Props) => {
   const emptyPool = Boolean(poolsMetadata?.[0]?.reserve0.eq(0) && poolsMetadata?.[0].reserve1.eq(0));
 
   const { data, isFetching, error: previewError } = usePreviewAddLiquidity({
-    firstCoin,
-    secondCoin,
+    firstAssetId,
+    secondAssetId,
     amount: isFirstToken ? firstAmount : secondAmount,
     isFirstToken,
     isStablePool,
@@ -107,14 +109,6 @@ const AddLiquidityDialog = ({ poolId, setPreviewData, newPool }: Props) => {
       }
     }
   }, [data]);
-
-  const handleStabilityChange = (isStable: boolean) => {
-    if (!newPool) {
-      return;
-    }
-
-    setIsStablePool(isStable);
-  };
 
   const setAmount = useCallback((coin: CoinName) => {
     return (value: string) => {
@@ -215,19 +209,16 @@ const AddLiquidityDialog = ({ poolId, setPreviewData, newPool }: Props) => {
         <div className={styles.sectionContent}>
           <div className={styles.coinPair}>
             <CoinPair firstCoin={firstCoin} secondCoin={secondCoin} isStablePool={isStablePool}/>
-            {!newPool && (
-              <div className={styles.APR}>
-                Estimated APR
-                <Info tooltipText={APRTooltip} tooltipKey="apr"/>
-                <span className={clsx(aprValue && styles.highlight, !aprValue && styles.pending)}>
-                  {aprValue ? `${aprValue}%` : 'Awaiting data'}
-                </span>
-              </div>
-            )}
+            <div className={styles.APR}>
+              Estimated APR
+              <Info tooltipText={APRTooltip} tooltipKey="apr"/>
+              <span className={clsx(aprValue && styles.highlight, !aprValue && styles.pending)}>
+                {aprValue ? `${aprValue}%` : 'Awaiting data'}
+              </span>
+            </div>
           </div>
           <div className={styles.poolStability}>
-            <div className={clsx(styles.poolStabilityButton, !isStablePool && styles.poolStabilityButtonActive, !newPool && styles.poolStabilityButtonDisabled)}
-                 onClick={() => handleStabilityChange(false)}
+            <div className={clsx(styles.poolStabilityButton, !isStablePool && styles.poolStabilityButtonActive, styles.poolStabilityButtonDisabled)}
                  role="button"
             >
               <div className={styles.poolStabilityButtonTitle}>
@@ -237,8 +228,7 @@ const AddLiquidityDialog = ({ poolId, setPreviewData, newPool }: Props) => {
               <p>0.30% fee tier</p>
             </div>
 
-            <div className={clsx(styles.poolStabilityButton, isStablePool && styles.poolStabilityButtonActive, !newPool && styles.poolStabilityButtonDisabled)}
-                    onClick={() => handleStabilityChange(true)}
+            <div className={clsx(styles.poolStabilityButton, isStablePool && styles.poolStabilityButtonActive, styles.poolStabilityButtonDisabled)}
                     role="button"
             >
               <div className={styles.poolStabilityButtonTitle}>
@@ -247,18 +237,6 @@ const AddLiquidityDialog = ({ poolId, setPreviewData, newPool }: Props) => {
               </div>
               <p>0.05% fee tier</p>
             </div>
-            {/*<button className={clsx(styles.poolStabilityButton, !isStablePool && styles.poolStabilityButtonActive, 'desktopOnly')}*/}
-            {/*        onClick={() => setIsStablePool(false)}*/}
-            {/*>*/}
-            {/*  <p>0.30% fee tier (volatile pool)</p>*/}
-            {/*  <Info tooltipText=""/>*/}
-            {/*</button>*/}
-            {/*<button className={clsx(styles.poolStabilityButton, isStablePool && styles.poolStabilityButtonActive, 'desktopOnly')}*/}
-            {/*        onClick={() => setIsStablePool(true)}*/}
-            {/*>*/}
-            {/*  <p>0.05% fee tier (stable pool)</p>*/}
-            {/*  <Info tooltipText=""/>*/}
-            {/*</button>*/}
           </div>
         </div>
       </div>
@@ -266,38 +244,23 @@ const AddLiquidityDialog = ({ poolId, setPreviewData, newPool }: Props) => {
         <p>Deposit amount</p>
         <div className={styles.sectionContent}>
           <CoinInput
-            coin={firstCoin}
+            assetId={firstAssetId}
             value={firstAmountInput}
             loading={!isFirstToken && isFetching}
             setAmount={setAmount(firstCoin)}
             balance={firstAssetBalance}
-            key={firstCoin}
             usdRate={firstAssetRate}
           />
           <CoinInput
-            coin={secondCoin}
+            assetId={secondAssetId}
             value={secondAmountInput}
             loading={isFirstToken && isFetching}
             setAmount={setAmount(secondCoin)}
             balance={secondAssetBalance}
-            key={secondCoin}
             usdRate={secondAssetRate}
           />
         </div>
       </div>
-      {/* <div className={clsx(styles.section, styles.prices)}>
-        <p>Selected Price</p>
-        <div className={clsx(styles.sectionContent, styles.priceBlocks)}>
-          <div className={styles.priceBlock}>
-            <p>Low price</p>
-            <p>0</p>
-          </div>
-          <div className={styles.priceBlock}>
-            <p>High price</p>
-            <p>∞</p>
-          </div>
-        </div>
-      </div> */}
       {!isConnected ? (
         <ActionButton
           variant="secondary"

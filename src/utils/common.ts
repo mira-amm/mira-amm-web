@@ -8,11 +8,20 @@ export const openNewTab = (url: string) => {
 
 export const assetsList = Array.from(coinsConfig.values());
 
-export const getAssetNameByAssetId = (assetId: B256Address) => {
+export const getAssetNameByAssetId = (assetId: B256Address | null) => {
+  // TODO: It breaks build for now as we have CoinName type used widely, once it's fixed we can use this short circuit
+  // if (!assetId) {
+  //   return null;
+  // }
+
   return assetsList.find(coin => coin.assetId === assetId)?.name!;
 };
 
-export const getAssetDecimalsByAssetId = (assetId: B256Address) => {
+export const getAssetDecimalsByAssetId = (assetId: B256Address | null) => {
+  if (!assetId) {
+    return 0;
+  }
+
   return assetsList.find(coin => coin.assetId === assetId)?.decimals!;
 };
 

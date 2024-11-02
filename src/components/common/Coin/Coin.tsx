@@ -9,11 +9,10 @@ import ChevronDownIcon from "@/src/components/icons/ChevronDown/ChevronDownIcon"
 type Props = {
   name: CoinName;
   className?: string;
-  newPool?: boolean;
   onClick?: VoidFunction;
 };
 
-const Coin = ({ name, className, newPool, onClick }: Props) => {
+const Coin = ({ name, className, onClick }: Props) => {
   const icon = coinsConfig.get(name)?.icon;
 
   const handleClick = () => {
@@ -22,10 +21,12 @@ const Coin = ({ name, className, newPool, onClick }: Props) => {
     }
   };
 
+  const newPool = Boolean(onClick);
+
   return (
     <div className={clsx(styles.coin, newPool && styles.clickable)} onClick={handleClick}>
       {icon && <img src={icon} alt={`${name} icon`}/>}
-      <p className={clsx(styles.name, className)}>{name}</p>
+      <p className={clsx(styles.name, className)}>{name ?? 'Choose asset'}</p>
       {newPool && <ChevronDownIcon />}
     </div>
   )
