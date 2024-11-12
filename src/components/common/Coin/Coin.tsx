@@ -1,20 +1,21 @@
 import {memo} from "react";
 
-import {CoinName, coinsConfig} from "@/src/utils/coinsConfig";
-
 import styles from './Coin.module.css';
 import {clsx} from "clsx";
 import ChevronDownIcon from "@/src/components/icons/ChevronDown/ChevronDownIcon";
+import useAssetMetadata from "@/src/hooks/useAssetMetadata";
+import { useAssetImage } from "@/src/hooks/useAssetImage";
 
 type Props = {
-  name: CoinName;
+  assetId: string;
   className?: string;
   newPool?: boolean;
   onClick?: VoidFunction;
 };
 
-const Coin = ({ name, className, newPool, onClick }: Props) => {
-  const icon = coinsConfig.get(name)?.icon;
+const Coin = ({ assetId, className, newPool, onClick }: Props) => {
+  const metadata = useAssetMetadata(assetId);
+  const icon = useAssetImage(assetId);
 
   const handleClick = () => {
     if (onClick) {
@@ -24,8 +25,8 @@ const Coin = ({ name, className, newPool, onClick }: Props) => {
 
   return (
     <div className={clsx(styles.coin, newPool && styles.clickable)} onClick={handleClick}>
-      {icon && <img src={icon} alt={`${name} icon`}/>}
-      <p className={clsx(styles.name, className)}>{name}</p>
+      {icon && <img src={icon} alt={`${metadata.symbol} icon`}/>}
+      <p className={clsx(styles.name, className)}>{metadata.symbol}</p>
       {newPool && <ChevronDownIcon />}
     </div>
   )

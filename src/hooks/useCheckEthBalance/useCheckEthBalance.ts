@@ -9,15 +9,16 @@ import useAssetBalance from "@/src/hooks/useAssetBalance";
 const useCheckEthBalance = (sellCoin?: CurrencyBoxState) => {
   const {balances} = useBalances();
 
-  const ethBalance = useAssetBalance(balances, coinsConfig.get('ETH')?.assetId!);
+  const ethAssetId = coinsConfig.get('ETH')?.assetId!;
+  const ethBalance = useAssetBalance(balances, ethAssetId);
 
   return useMemo(() => {
-    const ethForSell = sellCoin?.coin === 'ETH' && sellCoin.amount
+    const ethForSell = sellCoin?.assetId === ethAssetId && sellCoin.amount
       ? bn.parseUnits(sellCoin.amount, EthDecimals)
       : new BN(0);
     const sufficientEthBalance = ethBalance.gte(ethForSell.add(MinEthValueBN));
     return Boolean(sufficientEthBalance);
-  }, [ethBalance, sellCoin?.coin, sellCoin?.amount]);
+  }, [ethBalance, sellCoin?.assetId, sellCoin?.amount]);
 };
 
 export default useCheckEthBalance;

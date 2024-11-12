@@ -32,15 +32,6 @@
   min-width: 196px;
 }
 
-.labelCell {
-  text-align: center !important;
-  color: var(--content-positive);
-}
-
-.labelCell > p {
-  width: fit-content;
-}
-
 .hideButton {
   background-color: transparent;
   border: none;
@@ -48,12 +39,4 @@
   font-size: 16px;
   line-height: 19px;
   cursor: pointer;
-}
-
-.positionRow {
-  cursor: pointer;
-}
-
-.positionRow:hover p[data-identifier="coin-pair"] {
-  text-decoration: underline;
 }

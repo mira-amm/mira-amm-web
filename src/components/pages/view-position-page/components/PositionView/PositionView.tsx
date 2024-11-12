@@ -32,6 +32,7 @@ import usePoolAPR from "@/src/hooks/usePoolAPR";
 import TransactionFailureModal from "@/src/components/common/TransactionFailureModal/TransactionFailureModal";
 import { CopyIcon } from "@/src/components/icons/Copy/CopyIcon";
 import { bn, formatUnits } from "fuels";
+import useAssetMetadata from "@/src/hooks/useAssetMetadata";
 
 type Props = {
   pool: PoolId;
@@ -52,8 +53,9 @@ const PositionView = ({ pool }: Props) => {
   const [FailureModal, openFailureModal, closeFailureModal] = useModal();
 
   const router = useRouter();
+  const assetAMetadata = useAssetMetadata(pool[0].bits);
+  const assetBMetadata = useAssetMetadata(pool[1].bits);
 
-  const { firstAssetName: coinA, secondAssetName: coinB } = getAssetNamesFromPoolId(pool);
   const isStablePool = pool[2];
 
   const { assets, lpTokenBalance } = usePositionData({ pool });
@@ -66,17 +68,15 @@ const PositionView = ({ pool }: Props) => {
 
   const [assetA, assetB] = assets || [[pool[0], bn(0)], [pool[1], bn(0)]];
 
-  const coinADecimals = coinsConfig.get(coinA)?.decimals || 0;
-  const coinAAmount = formatUnits(assetA[1], coinADecimals);
+  const coinAAmount = formatUnits(assetA[1], assetAMetadata.decimals);
 
   const coinAAmountToWithdraw = assetA[1].mul(bn(removeLiquidityPercentage)).div(bn(100));
-  const coinAAmountToWithdrawStr = formatUnits(coinAAmountToWithdraw, coinADecimals);
+  const coinAAmountToWithdrawStr = formatUnits(coinAAmountToWithdraw, assetAMetadata.decimals);
 
-  const coinBDecimals = coinsConfig.get(coinB)?.decimals || 0;
-  const coinBAmount = formatUnits(assetB[1], coinBDecimals)
+  const coinBAmount = formatUnits(assetB[1], assetBMetadata.decimals)
 
   const coinBAmountToWithdraw = assetB[1].mul(bn(removeLiquidityPercentage)).div(bn(100));
-  const coinBAmountToWithdrawStr = formatUnits(coinBAmountToWithdraw, coinBDecimals);
+  const coinBAmountToWithdrawStr = formatUnits(coinBAmountToWithdraw, assetBMetadata.decimals);
 
   const confirmationModalAssetsAmounts = useRef({ firstAsset: coinAAmountToWithdrawStr, secondAsset: coinBAmountToWithdrawStr });
 
@@ -133,7 +133,7 @@ const PositionView = ({ pool }: Props) => {
       <BackLink showOnDesktop href="/liquidity" title="Back to Pool"/>
       <section className={clsx(styles.contentSection, 'mobileOnly')}>
         <div className={styles.coinPairAndLabel}>
-          <CoinPair firstCoin={coinA} secondCoin={coinB} withFeeBelow isStablePool={isStablePool}/>
+          <CoinPair firstCoin={pool[0].bits} secondCoin={pool[1].bits} withFeeBelow isStablePool={isStablePool}/>
           <PositionLabel/>
         </div>
         <div className={styles.infoBlock}>
@@ -146,8 +146,8 @@ const PositionView = ({ pool }: Props) => {
             </span>
           </p>
           <div className={styles.coinsData}>
-            <CoinWithAmount coin={coinA} amount={formatDisplayAmount(coinAAmount)}/>
-            <CoinWithAmount coin={coinB} amount={formatDisplayAmount(coinBAmount)}/>
+            <CoinWithAmount coin={assetAMetadata.symbol || ''} amount={formatDisplayAmount(coinAAmount)}/>
+            <CoinWithAmount coin={assetBMetadata.symbol || ''} amount={formatDisplayAmount(coinBAmount)}/>
           </div>
         </div>
         <div className={styles.miraBlock}>
@@ -171,18 +171,18 @@ const PositionView = ({ pool }: Props) => {
             <p className={clsx(styles.priceBlockValue, makeRateFontSmaller && styles.priceBlockValueSmall)}>
               {flooredRate}
             </p>
-            <p className={styles.priceBlockDescription}>{coinA} per {coinB}</p>
+            <p className={styles.priceBlockDescription}>{assetAMetadata.symbol} per {assetBMetadata.symbol}</p>
           </div>
           <div className={styles.bottomPriceBlocks}>
             <div className={styles.priceBlock}>
               <p className={styles.priceBlockTitle}>Low price</p>
               <p className={styles.priceBlockValue}>0</p>
-              <p className={styles.priceBlockDescription}>${coinA} per {coinB}</p>
+              <p className={styles.priceBlockDescription}>${assetAMetadata.symbol} per {assetBMetadata.symbol}</p>
             </div>
             <div className={styles.priceBlock}>
               <p className={styles.priceBlockTitle}>High Price</p>
               <p className={styles.priceBlockValue}>∞</p>
-              <p className={styles.priceBlockDescription}>{coinA} per {coinB}</p>
+              <p className={styles.priceBlockDescription}>{assetAMetadata.symbol} per {assetBMetadata.symbol}</p>
             </div>
           </div>
         </div>
@@ -193,7 +193,7 @@ const PositionView = ({ pool }: Props) => {
       <section className={clsx(styles.contentSection, 'desktopOnly')}>
         <div className={styles.positionHeading}>
           <div className={styles.coinPairAndLabel}>
-            <CoinPair firstCoin={coinA} secondCoin={coinB} withFeeBelow isStablePool={isStablePool}/>
+            <CoinPair firstCoin={pool[0].bits} secondCoin={pool[1].bits} withFeeBelow isStablePool={isStablePool}/>
             <PositionLabel className={styles.smallLabel} />
           </div>
           <ActionButton className={styles.withdrawButton} onClick={handleWithdrawLiquidity}>Remove Liquidity</ActionButton>
@@ -224,8 +224,8 @@ const PositionView = ({ pool }: Props) => {
                 </span>
               </p>
               <div className={styles.coinsData}>
-                <CoinWithAmount coin={coinA} amount={formatDisplayAmount(coinAAmount)}/>
-                <CoinWithAmount coin={coinB} amount={formatDisplayAmount(coinBAmount)}/>
+                <CoinWithAmount coin={assetAMetadata.symbol || ''} amount={formatDisplayAmount(coinAAmount)}/>
+                <CoinWithAmount coin={assetBMetadata.symbol || ''} amount={formatDisplayAmount(coinBAmount)}/>
               </div>
             </div>
           </div>
@@ -236,27 +236,27 @@ const PositionView = ({ pool }: Props) => {
             <div className={styles.priceBlockDesktop}>
               <p className={styles.priceBlockTitle}>Low price</p>
               <p className={styles.priceBlockValue}>0</p>
-              <p className={styles.priceBlockDescription}>{coinA} per {coinB}</p>
+              <p className={styles.priceBlockDescription}>{assetAMetadata.symbol} per {assetBMetadata.symbol}</p>
             </div>
             <div className={styles.priceBlockDesktop}>
               <p className={styles.priceBlockTitle}>Current Price</p>
               <p className={clsx(styles.priceBlockValue, makeRateFontSmaller && styles.priceBlockValueSmall)}>
                 {flooredRate}
               </p>
-              <p className={styles.priceBlockDescription}>{coinA} per {coinB}</p>
+              <p className={styles.priceBlockDescription}>{assetAMetadata.symbol} per {assetBMetadata.symbol}</p>
             </div>
             <div className={styles.priceBlockDesktop}>
               <p className={styles.priceBlockTitle}>High Price</p>
               <p className={styles.priceBlockValue}>∞</p>
-              <p className={styles.priceBlockDescription}>{coinA} per {coinB}</p>
+              <p className={styles.priceBlockDescription}>{assetAMetadata.symbol} per {assetBMetadata.symbol}</p>
             </div>
           </div>
         </div>
       </section>
       <RemoveLiquidityModal title="Remove Liquidity" titleClassName={styles.withdrawLiquidityTitle}>
         <RemoveLiquidityModalContent
-          coinA={coinA}
-          coinB={coinB}
+          coinA={pool[0].bits}
+          coinB={pool[1].bits}
           isStablePool={isStablePool}
           currentCoinAValue={coinAAmount}
           currentCoinBValue={coinBAmount}
@@ -271,8 +271,8 @@ const PositionView = ({ pool }: Props) => {
       </RemoveLiquidityModal>
       <SuccessModal title={<></>} onClose={redirectToLiquidity}>
         <RemoveLiquiditySuccessModal
-          coinA={coinA}
-          coinB={coinB}
+          coinA={assetAMetadata.symbol || ''}
+          coinB={assetBMetadata.symbol || ''}
           firstCoinAmount={confirmationModalAssetsAmounts.current.firstAsset}
           secondCoinAmount={confirmationModalAssetsAmounts.current.secondAsset}
           transactionHash={data?.id}

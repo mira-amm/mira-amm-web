@@ -25,15 +25,16 @@ import useInitialSwapState from "@/src/hooks/useInitialSwapState/useInitialSwapS
 import useCheckActiveNetwork from "@/src/hooks/useCheckActiveNetwork";
 import useSwapPreview from "@/src/hooks/useSwapPreview";
 import PriceImpact from "@/src/components/common/Swap/components/PriceImpact/PriceImpact";
-import useUSDRate from "@/src/hooks/useUSDRate";
 import {FuelAppUrl} from "@/src/utils/constants";
 import useReservesPrice from "@/src/hooks/useReservesPrice";
 import SwapFailureModal from "@/src/components/common/Swap/components/SwapFailureModal/SwapFailureModal";
-import {bn, BN, FuelError} from "fuels";
+import { B256Address, bn, BN } from "fuels";
+import useAssetMetadata from "@/src/hooks/useAssetMetadata";
+import { useAssetPrice } from "@/src/hooks/useAssetPrice";
 
 export type CurrencyBoxMode = "buy" | "sell";
 export type CurrencyBoxState = {
-  coin: CoinName;
+  assetId: string | null;
   amount: string;
 };
 type InputState = {
@@ -72,9 +73,12 @@ const Swap = () => {
   const [slippageMode, setSlippageMode] = useState<SlippageMode>("auto");
 
   const [swapCoins, setSwapCoins] = useLocalStorage("swapCoins", {
-    sell: initialSwapState.sell.coin,
-    buy: initialSwapState.buy.coin,
+    sell: initialSwapState.sell.assetId,
+    buy: initialSwapState.buy.assetId,
   });
+
+  const sellMetadata = useAssetMetadata(swapState.sell.assetId);
+  const buyMetadata = useAssetMetadata(swapState.buy.assetId);
 
   const previousPreviewValue = useRef("");
   const swapStateForPreview = useRef(swapState);
@@ -98,9 +102,9 @@ const Swap = () => {
     }
   }, [isConnected]);
 
-  const sellBalance = balances?.find((b) => b.assetId === coinsConfig.get(swapState.sell.coin)?.assetId)?.amount;
+  const sellBalance = balances?.find((b) => b.assetId === swapState.sell.assetId)?.amount;
   const sellBalanceValue = sellBalance ?? new BN(0);
-  const buyBalance = balances?.find((b) => b.assetId === coinsConfig.get(swapState.buy.coin)?.assetId)?.amount;
+  const buyBalance = balances?.find((b) => b.assetId === swapState.buy.assetId)?.amount;
   const buyBalanceValue = buyBalance ?? new BN(0);
 
   const {
@@ -114,13 +118,13 @@ const Swap = () => {
   });
   const anotherMode = activeMode === "sell" ? "buy" : "sell";
   const decimals = anotherMode === "sell"
-    ? coinsConfig.get(swapState.sell.coin)?.decimals!
-    : coinsConfig.get(swapState.buy.coin)?.decimals!;
+    ? sellMetadata.decimals
+    : buyMetadata.decimals;
   const previewValueString =
     previewData !== null
       ? previewData.previewAmount.eq(0)
         ? ""
-        : previewData.previewAmount.formatUnits(decimals)
+        : previewData.previewAmount.formatUnits(decimals || 0)
       : previousPreviewValue.current;
   previousPreviewValue.current = previewValueString;
   useEffect(() => {
@@ -145,7 +149,6 @@ const Swap = () => {
     }
   }, [previewData, previewValueString]);
 
-  const sellDecimals = coinsConfig.get(swapState.sell.coin)?.decimals!;
   const sellValue = inputsState.sell.amount;
   const buyValue = inputsState.buy.amount;
 
@@ -178,20 +181,19 @@ const Swap = () => {
 
   const selectCoin = useCallback(
     (mode: "buy" | "sell") => {
-      return (coin: CoinName) => {
+      return (assetId: B256Address | null) => {
         if (
-          (mode === "buy" && swapState.sell.coin === coin) ||
-          (mode === "sell" && swapState.buy.coin === coin)
+          (mode === "buy" && swapState.sell.assetId === assetId) ||
+          (mode === "sell" && swapState.buy.assetId === assetId)
         ) {
           swapAssets();
         } else {
-          const decimals = coinsConfig.get(coin)?.decimals!;
-          const amount = inputsState[mode].amount.substring(0, inputsState[mode].amount.indexOf(".") + decimals + 1);
+          const amount = inputsState[mode].amount;
           setSwapState((prevState) => ({
             ...prevState,
             [mode]: {
               amount,
-              coin,
+              assetId,
             },
           }));
           setInputsState((prevState) => ({
@@ -204,13 +206,13 @@ const Swap = () => {
 
         setSwapCoins((prevState) => ({
           ...prevState,
-          [mode]: coin,
+          [mode]: assetId,
         }));
 
         setActiveMode(mode);
       };
     },
-    [inputsState, setSwapCoins, swapAssets, swapState.buy.coin, swapState.sell.coin]
+    [inputsState, setSwapCoins, swapAssets, swapState.buy.assetId, swapState.sell.assetId]
   );
 
   const debouncedSetState = useDebounceCallback(setSwapState, 500);
@@ -220,11 +222,11 @@ const Swap = () => {
         if (amount === '') {
           debouncedSetState(prevState => ({
             'sell': {
-              coin: prevState.sell.coin,
+              assetId: prevState.sell.assetId,
               amount: '',
             },
             'buy': {
-              coin: prevState.buy.coin,
+              assetId: prevState.buy.assetId,
               amount: '',
             },
           }));
@@ -271,8 +273,8 @@ const Swap = () => {
     [openCoinsModal]
   );
 
-  const handleCoinSelection = (coin: CoinName | null) => {
-    selectCoin(modeForCoinSelector.current)(coin);
+  const handleCoinSelection = (assetId: string | null) => {
+    selectCoin(modeForCoinSelector.current)(assetId);
     closeCoinsModal();
   };
 
@@ -299,7 +301,7 @@ const Swap = () => {
     resetSwap();
   }, [refetchPreview, resetSwap, resetTxCost]);
 
-  const coinMissing = swapState.buy.coin === null || swapState.sell.coin === null;
+  const coinMissing = swapState.buy.assetId === null || swapState.sell.assetId === null;
   const amountMissing = swapState.buy.amount === "" || swapState.sell.amount === "";
   const sufficientEthBalance = useCheckEthBalance(swapState.sell);
   const handleSwapClick = useCallback(async () => {
@@ -347,7 +349,7 @@ const Swap = () => {
 
   let showInsufficientBalance = true;
   try {
-    const insufficientSellBalance = sellBalanceValue.lt(bn.parseUnits(sellValue, sellDecimals));
+    const insufficientSellBalance = sellBalanceValue.lt(bn.parseUnits(sellValue, sellMetadata.decimals || 0));
     showInsufficientBalance = insufficientSellBalance && sufficientEthBalance;
   } catch (e) {
   }
@@ -373,12 +375,16 @@ const Swap = () => {
 
     return percent + poolPercent;
   }, 0) ?? 0;
-  const feeValue = ((feePercent / 100) * parseFloat(sellValue)).toFixed(sellDecimals);
+  const feeValue = ((feePercent / 100) * parseFloat(sellValue)).toFixed(sellMetadata.decimals || 0);
 
   const inputPreviewLoading = previewLoading && activeMode === "buy";
   const outputPreviewLoading = previewLoading && activeMode === "sell";
 
-  const { reservesPrice } = useReservesPrice({ pools: previewData?.pools, assetName: swapState.sell.coin });
+  const { reservesPrice } = useReservesPrice({
+    pools: previewData?.pools,
+    sellAssetId: swapState.sell.assetId,
+    buyAssetId: swapState.buy.assetId,
+  });
 
   const previewPrice = useMemo(() => {
     const sellNumericValue = parseFloat(swapState.sell.amount);
@@ -391,9 +397,8 @@ const Swap = () => {
     return;
   }, [swapState.buy.amount, swapState.sell.amount]);
 
-  const { ratesData } = useUSDRate(swapState.sell.coin, swapState.buy.coin);
-  const firstAssetRate = ratesData?.find((item) => item.asset === swapState.sell.coin)?.rate;
-  const secondAssetRate = ratesData?.find((item) => item.asset === swapState.buy.coin)?.rate;
+  const sellAssetPrice = useAssetPrice(swapState.sell.assetId);
+  const buyAssetPrice = useAssetPrice(swapState.buy.assetId);
 
   return (
     <>
@@ -408,13 +413,13 @@ const Swap = () => {
           </div>
           <CurrencyBox
             value={sellValue}
-            coin={swapState.sell.coin}
+            assetId={swapState.sell.assetId}
             mode="sell"
             balance={sellBalanceValue}
             setAmount={setAmount("sell")}
             loading={inputPreviewLoading || swapPending}
             onCoinSelectorClick={handleCoinSelectorClick}
-            usdRate={firstAssetRate}
+            usdRate={sellAssetPrice.price}
             previewError={activeMode === 'buy' && !inputPreviewLoading ? previewError : null}
           />
           <div className={styles.splitter}>
@@ -424,13 +429,13 @@ const Swap = () => {
           </div>
           <CurrencyBox
             value={buyValue}
-            coin={swapState.buy.coin}
+            assetId={swapState.buy.assetId}
             mode="buy"
             balance={buyBalanceValue}
             setAmount={setAmount("buy")}
             loading={outputPreviewLoading || swapPending}
             onCoinSelectorClick={handleCoinSelectorClick}
-            usdRate={secondAssetRate}
+            usdRate={buyAssetPrice.price}
             previewError={activeMode === 'sell' && !outputPreviewLoading ? previewError : null}
           />
           {swapPending && (
@@ -470,7 +475,7 @@ const Swap = () => {
               <div className={styles.summaryEntry}>
                 <p>Estimated fees</p>
                 <p>
-                  {feeValue} {swapState.sell.coin}
+                  {feeValue} {sellMetadata.symbol}
                 </p>
               </div>
 
