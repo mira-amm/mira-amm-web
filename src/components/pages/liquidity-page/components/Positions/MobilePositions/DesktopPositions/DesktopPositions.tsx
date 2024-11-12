@@ -5,23 +5,16 @@ import {PoolId} from "mira-dex-ts";
 import {createPoolKey, getAssetNameByAssetId} from "@/src/utils/common";
 import {useCallback} from "react";
 import {useRouter} from "next/navigation";
-import {coinsConfig} from "@/src/utils/coinsConfig";
 import {clsx} from "clsx";
-import {DefaultLocale} from "@/src/utils/constants";
-import { formatUnits } from "fuels";
 import { DesktopPosition } from "./DesktopPosition";
+import { Position } from "@/src/hooks/usePositions";
 
 type Props = {
-  positions: any[] | undefined;
+  positions: Position[] | undefined;
 }
 
 const DesktopPositions = ({ positions }: Props) => {
   const router = useRouter();
-
-  const openPosition = useCallback((poolId: PoolId) => {
-    const poolKey = createPoolKey(poolId);
-    router.push(`/liquidity/position?pool=${poolKey}`);
-  }, [router]);
 
   if (!positions) {
     return null;
@@ -43,12 +36,12 @@ const DesktopPositions = ({ positions }: Props) => {
       <tbody>
       {positions.map(position => (
         <DesktopPosition
-          key={position[0][0].bits + position[1][0].bits + position.isStablePool}
-          assetIdA={position[0][0].bits}
-          assetIdB={position[1][0].bits}
-          amountA={position[0][1]}
-          amountB={position[1][1]}
-          isStablePool={position.isStablePool}      
+          key={createPoolKey(position.poolId)}
+          assetIdA={position.token0Position[0].bits}
+          assetIdB={position.token1Position[0].bits}
+          amountA={position.token0Position[1].toString()}
+          amountB={position.token1Position[1].toString()}
+          isStablePool={position.isStable}
         />
       ))}
       </tbody>

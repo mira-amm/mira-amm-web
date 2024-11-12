@@ -11,9 +11,6 @@ import LoaderV2 from "@/src/components/common/LoaderV2/LoaderV2";
 const Positions = () => {
   const { data, isLoading  } = usePositions();
 
-  const noPositions = data?.every(position => position.lpBalance === '0') ?? true;
-  const filteredPositions = data?.filter(position => position.lpBalance !== '0');
-
   return (
     <section className={styles.positions}>
       <p className={styles.positionsTitle}>
@@ -24,7 +21,7 @@ const Positions = () => {
           <LoaderV2/>
           <p>Loading positions...</p>
         </div>
-      ) : noPositions ? (
+      ) : data && data.length === 0 ? (
         <div className={styles.positionsFallback}>
           <div className={styles.fallbackTop}>
             <div className={styles.icon}>
@@ -38,8 +35,8 @@ const Positions = () => {
         </div>
       ) : (
         <>
-          <MobilePositions positions={filteredPositions} />
-          <DesktopPositions positions={filteredPositions} />
+          <MobilePositions positions={data} />
+          <DesktopPositions positions={data} />
         </>
       )}
     </section>
