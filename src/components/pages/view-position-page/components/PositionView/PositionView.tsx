@@ -61,7 +61,7 @@ const PositionView = ({ pool }: Props) => {
   const { assets, lpTokenBalance } = usePositionData({ pool });
   const { apr } = usePoolAPR(pool);
   const aprValue = apr ?
-    `${parseFloat(apr).toLocaleString(DefaultLocale, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}%`
+    `${apr.toLocaleString(DefaultLocale, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}%`
     : null;
 
   const [removeLiquidityPercentage, setRemoveLiquidityPercentage] = useState(50);

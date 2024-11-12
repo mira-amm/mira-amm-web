@@ -84,7 +84,7 @@ const AddLiquidityDialog = ({ poolId, setPreviewData, newPool }: Props) => {
 
   const { apr } = usePoolAPR(poolId);
   const aprValue = apr
-    ? parseFloat(apr).toLocaleString(DefaultLocale, { minimumFractionDigits: 2, maximumFractionDigits: 2 })
+    ? apr.toLocaleString(DefaultLocale, { minimumFractionDigits: 2, maximumFractionDigits: 2 })
     : null;
 
   const debouncedSetFirstAmount = useDebounceCallback(setFirstAmount, 500);

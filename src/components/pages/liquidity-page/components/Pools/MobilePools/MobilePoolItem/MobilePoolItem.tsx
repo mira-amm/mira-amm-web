@@ -32,10 +32,10 @@ const MobilePoolItem = ({ poolData }: Props) => {
     const {details: {apr, volume, tvl}} = poolData;
 
     if (apr) {
-      aprValue =`${parseFloat(apr).toLocaleString(DefaultLocale, {minimumFractionDigits: 2, maximumFractionDigits: 2})}%`;
+      aprValue =`${apr.toLocaleString(DefaultLocale, {minimumFractionDigits: 2, maximumFractionDigits: 2})}%`;
     }
     volumeValue = `$${parseFloat(volume).toLocaleString(DefaultLocale, {maximumFractionDigits: 0})}`;
-    tvlValue = `$${parseFloat(tvl).toLocaleString(DefaultLocale, {maximumFractionDigits: 0})}`;
+    tvlValue = `$${tvl.toLocaleString(DefaultLocale, {maximumFractionDigits: 0})}`;
   }
 
   const isStablePool = poolId[2];
