@@ -1,0 +1,12 @@
+.labelCell {
+  text-align: center !important;
+  color: var(--content-positive);
+}
+
+.labelCell > p {
+  width: fit-content;
+}
+
+.positionRow:hover p[data-identifier="coin-pair"] {
+  text-decoration: underline;
+}

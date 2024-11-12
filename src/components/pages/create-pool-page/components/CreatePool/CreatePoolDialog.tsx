@@ -22,7 +22,9 @@ import usePoolsMetadata from "@/src/hooks/usePoolsMetadata";
 import useModal from "@/src/hooks/useModal/useModal";
 import CoinsListModal from "@/src/components/common/Swap/components/CoinsListModal/CoinsListModal";
 import useUSDRate from "@/src/hooks/useUSDRate";
-import {BN, bn} from "fuels";
+import {B256Address, BN, bn, formatUnits} from "fuels";
+import useAssetMetadata from "@/src/hooks/useAssetMetadata";
+import { useAssetPrice } from "@/src/hooks/useAssetPrice";
 
 type Props = {
   setPreviewData: Dispatch<SetStateAction<CreatePoolPreviewData | null>>;
@@ -48,23 +50,23 @@ const CreatePoolDialog = ({ setPreviewData, newPool }: Props) => {
   const [firstAmountInput, setFirstAmountInput] = useState('');
   const [secondAmount, setSecondAmount] = useState('');
   const [secondAmountInput, setSecondAmountInput] = useState('');
-  const [activeAssetName, setActiveAssetName] = useState<CoinName | null>(null);
+  const [activeAsset, setActiveAsset] = useState<B256Address | null>(null);
   const [isStablePool, setIsStablePool] = useState(false);
 
   const activeAssetForAssetSelector = useRef<string | null>(null);
 
-  // TODO: Change logic to work with asset ids only
-  const firstCoin = getAssetNameByAssetId(firstAssetId);
-  const secondCoin = getAssetNameByAssetId(secondAssetId);
-  const isFirstToken = activeAssetName === firstCoin;
+  const firstAssetMetadata = useAssetMetadata(firstAssetId);
+  const secondAssetMetadata = useAssetMetadata(secondAssetId);
+
+  const isFirstToken = activeAsset === firstAssetId;
 
   const poolId = buildPoolId(firstAssetId, secondAssetId, isStablePool);
   const { poolsMetadata } = usePoolsMetadata([poolId]);
   const poolExists = Boolean(poolsMetadata) && Boolean(poolsMetadata?.[0]);
 
   const { data, isFetching } = usePreviewAddLiquidity({
-    firstCoin,
-    secondCoin,
+    firstCoin: firstAssetId,
+    secondCoin: secondAssetId,
     amount: new BN(0),
     // amountString: isFirstToken ? firstAmount : secondAmount,
     isFirstToken,
@@ -82,19 +84,18 @@ const CreatePoolDialog = ({ setPreviewData, newPool }: Props) => {
 
   useEffect(() => {
     if (data) {
-      const anotherToken = isFirstToken ? secondCoin : firstCoin;
-      const anotherTokenDecimals = coinsConfig.get(anotherToken)?.decimals!;
-      const anotherTokenValue = data[1].toNumber() / 10 ** anotherTokenDecimals;
+      const anotherTokenDecimals = isFirstToken ? secondAssetMetadata.decimals : firstAssetMetadata.decimals;
+      const anotherTokenValue = formatUnits(data[1], anotherTokenDecimals || 0);
 
       if (isFirstToken) {
-        setSecondAmount(anotherTokenValue.toFixed(anotherTokenDecimals));
-        setSecondAmountInput(anotherTokenValue.toFixed(anotherTokenDecimals));
+        setSecondAmount(anotherTokenValue);
+        setSecondAmountInput(anotherTokenValue);
       } else {
-        setFirstAmount(anotherTokenValue.toFixed(anotherTokenDecimals));
-        setFirstAmountInput(anotherTokenValue.toFixed(anotherTokenDecimals));
+        setFirstAmount(anotherTokenValue);
+        setFirstAmountInput(anotherTokenValue);
       }
     }
-  }, [data]);
+  }, [data, isFirstToken, secondAssetMetadata, firstAssetMetadata]);
 
   const handleStabilityChange = (isStable: boolean) => {
     if (!newPool) {
@@ -104,30 +105,30 @@ const CreatePoolDialog = ({ setPreviewData, newPool }: Props) => {
     setIsStablePool(isStable);
   };
 
-  const setAmount = useCallback((coin: CoinName) => {
+  const setAmount = useCallback((coin: B256Address) => {
     return (value: string) => {
       if (value === '') {
         debouncedSetFirstAmount('');
         debouncedSetSecondAmount('');
         setFirstAmountInput('');
         setSecondAmountInput('');
-        setActiveAssetName(coin);
+        setActiveAsset(coin);
         return;
       }
 
-      if (coin === firstCoin) {
+      if (coin === firstAssetId) {
         debouncedSetFirstAmount(value);
         setFirstAmountInput(value);
       } else {
         debouncedSetSecondAmount(value);
         setSecondAmountInput(value);
       }
-      setActiveAssetName(coin);
+      setActiveAsset(coin);
     };
-  }, [debouncedSetFirstAmount, debouncedSetSecondAmount, firstCoin]);
+  }, [debouncedSetFirstAmount, debouncedSetSecondAmount, firstAssetId]);
 
-  const sufficientEthBalanceForFirstCoin = useCheckEthBalance({ coin: firstCoin, amount: firstAmount });
-  const sufficientEthBalanceForSecondCoin = useCheckEthBalance({ coin: secondCoin, amount: secondAmount });
+  const sufficientEthBalanceForFirstCoin = useCheckEthBalance({ assetId: firstAssetId, amount: firstAmount });
+  const sufficientEthBalanceForSecondCoin = useCheckEthBalance({ assetId: secondAssetId, amount: secondAmount });
   const sufficientEthBalance = sufficientEthBalanceForFirstCoin && sufficientEthBalanceForSecondCoin;
 
   const faucetLink = useFaucetLink();
@@ -140,11 +141,11 @@ const CreatePoolDialog = ({ setPreviewData, newPool }: Props) => {
     setPreviewData({
       assets: [
         {
-          coin: firstCoin,
+          assetId: firstAssetId,
           amount: firstAmount,
         },
         {
-          coin: secondCoin,
+          assetId: secondAssetId,
           amount: secondAmount,
         }
       ],
@@ -154,9 +155,9 @@ const CreatePoolDialog = ({ setPreviewData, newPool }: Props) => {
   }, [
     sufficientEthBalance,
     setPreviewData,
-    firstCoin,
+    firstAssetId,
     firstAmount,
-    secondCoin,
+    secondAssetId,
     secondAmount,
     isStablePool,
     faucetLink
@@ -206,9 +207,8 @@ const CreatePoolDialog = ({ setPreviewData, newPool }: Props) => {
     closeAssetsListModal();
   }, [firstAssetId, secondAssetId, closeAssetsListModal]);
 
-  const { ratesData } = useUSDRate(firstCoin, secondCoin);
-  const firstAssetRate = ratesData?.find((item) => item.asset === firstCoin)?.rate;
-  const secondAssetRate = ratesData?.find((item) => item.asset === secondCoin)?.rate;
+  const firstAssetPrice = useAssetPrice(firstAssetId);
+  const secondAssetPrice = useAssetPrice(secondAssetId);
 
   return (
     <>
@@ -216,7 +216,7 @@ const CreatePoolDialog = ({ setPreviewData, newPool }: Props) => {
         <p>Selected pair</p>
         <div className={styles.sectionContent}>
           <div className={styles.coinPair}>
-            <CoinPair firstCoin={firstCoin} secondCoin={secondCoin} isStablePool={isStablePool}/>
+            <CoinPair firstCoin={firstAssetId} secondCoin={secondAssetId} isStablePool={isStablePool}/>
             {/*{!newPool && (*/}
             {/*  <div className={styles.APR}>*/}
             {/*    Estimated APR*/}
@@ -265,24 +265,24 @@ const CreatePoolDialog = ({ setPreviewData, newPool }: Props) => {
         <p>Deposit amount</p>
         <div className={styles.sectionContent}>
           <CoinInput
-            coin={firstCoin}
+            assetId={firstAssetId}
             value={firstAmountInput}
             loading={!isFirstToken && isFetching}
-            setAmount={setAmount(firstCoin)}
+            setAmount={setAmount(firstAssetId)}
             balance={firstAssetBalanceValue}
-            key={firstCoin}
-            usdRate={firstAssetRate}
+            key={firstAssetId}
+            usdRate={firstAssetPrice.price}
             newPool
             onAssetClick={handleAssetClick(firstAssetId)}
           />
           <CoinInput
-            coin={secondCoin}
+            assetId={secondAssetId}
             value={secondAmountInput}
             loading={isFirstToken && isFetching}
-            setAmount={setAmount(secondCoin)}
+            setAmount={setAmount(secondAssetId)}
             balance={secondAssetBalanceValue}
-            key={secondCoin}
-            usdRate={secondAssetRate}
+            key={secondAssetId}
+            usdRate={secondAssetPrice.price}
             newPool
             onAssetClick={handleAssetClick(secondAssetId)}
           />

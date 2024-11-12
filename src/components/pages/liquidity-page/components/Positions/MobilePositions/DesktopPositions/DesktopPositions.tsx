@@ -9,6 +9,7 @@ import {coinsConfig} from "@/src/utils/coinsConfig";
 import {clsx} from "clsx";
 import {DefaultLocale} from "@/src/utils/constants";
 import { formatUnits } from "fuels";
+import { DesktopPosition } from "./DesktopPosition";
 
 type Props = {
   positions: any[] | undefined;
@@ -40,33 +41,16 @@ const DesktopPositions = ({ positions }: Props) => {
       </tr>
       </thead>
       <tbody>
-      {positions.map(position => {
-        const { bits: coinAAssetId } = position[0][0];
-        const coinA = getAssetNameByAssetId(coinAAssetId);
-        const coinADecimals = coinsConfig.get(coinA)?.decimals!;
-        const coinAAmount = formatUnits(position[0][1], coinADecimals);
-        const { bits: coinBAssetId } = position[1][0];
-        const coinB = getAssetNameByAssetId(coinBAssetId);
-        const coinBDecimals = coinsConfig.get(coinB)?.decimals!;
-        const coinBAmount = formatUnits(position[1][1], coinBDecimals);
-
-        const key = coinAAssetId.toString() + '-' + coinBAssetId.toString();
-        const poolId = [position[0][0], position[1][0], position.isStablePool] as PoolId;
-
-        return (
-          <tr className={styles.positionRow} key={key} onClick={() => openPosition(poolId)}>
-            <td>
-              <CoinPair firstCoin={coinA} secondCoin={coinB} isStablePool={poolId[2]} withPoolDescription/>
-            </td>
-            <td>
-              {`${coinAAmount} ${coinA} <> ${coinBAmount} ${coinB}`}
-            </td>
-            <td className={styles.labelCell}>
-              Active
-            </td>
-          </tr>
-        );
-      })}
+      {positions.map(position => (
+        <DesktopPosition
+          key={position[0][0].bits + position[1][0].bits + position.isStablePool}
+          assetIdA={position[0][0].bits}
+          assetIdB={position[1][0].bits}
+          amountA={position[0][1]}
+          amountB={position[1][1]}
+          isStablePool={position.isStablePool}      
+        />
+      ))}
       </tbody>
     </table>
   )

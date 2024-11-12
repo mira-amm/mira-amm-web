@@ -5,6 +5,7 @@ import ActionButton from "@/src/components/common/ActionButton/ActionButton";
 import {useCallback} from "react";
 import {openNewTab} from "@/src/utils/common";
 import {FuelAppUrl} from "@/src/utils/constants";
+import useAssetMetadata from "@/src/hooks/useAssetMetadata";
 
 type Props = {
   swapState: SwapState;
@@ -12,6 +13,9 @@ type Props = {
 }
 
 const SwapSuccessModal = ({ swapState, transactionHash }: Props) => {
+  const sellMetadata = useAssetMetadata(swapState.sell.assetId);
+  const buyMetadata = useAssetMetadata(swapState.buy.assetId);
+
   const handleViewTransactionClick = useCallback(() => {
     if (!transactionHash) {
       return;
@@ -20,7 +24,7 @@ const SwapSuccessModal = ({ swapState, transactionHash }: Props) => {
     openNewTab(`${FuelAppUrl}/tx/${transactionHash}/simple`);
   }, [transactionHash]);
 
-  const subText = `${swapState.sell.amount} ${swapState.sell.coin} for ${swapState.buy.amount} ${swapState.buy.coin}`;
+  const subText = `${swapState.sell.amount} ${sellMetadata.symbol} for ${swapState.buy.amount} ${buyMetadata.symbol}`;
 
   return (
     <div className={styles.claimFailureModal}>

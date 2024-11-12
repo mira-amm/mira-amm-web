@@ -15,11 +15,11 @@ const useInitialSwapState = () => {
 
     const initialSwapState: SwapState = {
       sell: {
-        coin: sellCoin,
+        assetId: swapCoins.sell,
         amount: '',
       },
       buy: {
-        coin: buyCoin,
+        assetId: swapCoins.buy,
         amount: '',
       },
     };

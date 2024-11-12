@@ -7,7 +7,7 @@ import {BN, CoinQuantity} from "fuels";
 import {assetsList} from "@/src/utils/common";
 
 type Props = {
-  selectCoin: (coin: CoinName | null) => void;
+  selectCoin: (assetId: string | null) => void;
   balances: CoinQuantity[] | undefined;
 };
 
@@ -101,15 +101,15 @@ const CoinsListModal = ({ selectCoin, balances }: Props) => {
         />
       </div>
       <div className={styles.tokenList}>
-        {sortedCoinsList.map(({ name }) => (
+        {sortedCoinsList.map(({ name, assetId }) => (
           <div
             className={styles.tokenListItem}
-            onClick={() => selectCoin(name)}
-            key={name}
+            onClick={() => selectCoin(assetId)}
+            key={assetId}
           >
             <CoinListItem
               name={name}
-              balance={balances?.find((b) => b.assetId === coinsConfig.get(name)?.assetId)}
+              balance={balances?.find((b) => b.assetId === assetId)}
             />
           </div>
         ))}

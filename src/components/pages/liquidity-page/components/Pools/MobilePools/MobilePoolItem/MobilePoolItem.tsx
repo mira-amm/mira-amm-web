@@ -8,6 +8,7 @@ import {createPoolIdFromIdString, createPoolKey, getAssetNamesFromPoolId} from "
 import {PoolData} from "@/src/hooks/usePoolsData";
 import {useCallback} from "react";
 import {DefaultLocale} from "@/src/utils/constants";
+import useAssetMetadata from "@/src/hooks/useAssetMetadata";
 
 type Props = {
   poolData: PoolData;
@@ -22,8 +23,6 @@ const MobilePoolItem = ({ poolData }: Props) => {
   const handleAddClick = useCallback(() => {
     router.push(`/liquidity/add?pool=${poolKey}`);
   }, [router, poolKey]);
-
-  const { firstAssetName, secondAssetName } = getAssetNamesFromPoolId(poolId);
 
   let aprValue = 'n/a';
   let volumeValue = 'n/a';
@@ -46,7 +45,7 @@ const MobilePoolItem = ({ poolData }: Props) => {
   return (
     <div className={styles.mobilePoolItem}>
       <div className={styles.infoSection}>
-        <CoinPair firstCoin={firstAssetName} secondCoin={secondAssetName} isStablePool={isStablePool} />
+        <CoinPair firstCoin={poolId[0].bits} secondCoin={poolId[1].bits} isStablePool={isStablePool} />
         <div className={styles.infoBlocks}>
           <InfoBlock title="APR" value={aprValue} type="positive"/>
           <InfoBlock title="24H Volume" value={volumeValue}/>
