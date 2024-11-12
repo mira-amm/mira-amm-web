@@ -21,6 +21,8 @@ export const useAssetPrice = (assetId: string | null): { price: number | null, i
 
       let l1Address: string;
       if (assetId === ETH_ASSET_ID) {
+        l1Address = '0x0000000000000000000000000000000000000000';
+      } else {
         const result = await src7Contract.functions
           .metadata({ bits: assetId }, 'bridged:address')
           .addContracts([
@@ -29,8 +31,6 @@ export const useAssetPrice = (assetId: string | null): { price: number | null, i
           ])
           .get();
         l1Address = '0x' + result.value.B256.substring(26);
-      } else {
-        l1Address = '0x0000000000000000000000000000000000000000';
       }
 
       const req = await fetch(`https://coins.llama.fi/prices/current/ethereum:${l1Address}`);
