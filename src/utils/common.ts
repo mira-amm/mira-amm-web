@@ -69,7 +69,7 @@ export const createPoolIdFromIdString = (id: string) => {
 };
 
 export const createPoolIdString = (poolId: PoolId) => {
-  return `${poolId[0].bits}_${poolId[1].bits}_${poolId[2]}`;
+  return `${poolId[0].bits}-${poolId[1].bits}-${poolId[2]}`;
 };
 
 export const arePoolIdsEqual = (firstPoolId: PoolId, secondPoolId: PoolId) => {
