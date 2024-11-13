@@ -83,7 +83,7 @@ const AddLiquidityDialog = ({ poolId, setPreviewData, newPool }: Props) => {
   }, [previewError]);
 
   const { apr } = usePoolAPR(poolId);
-  const aprValue = apr
+  const aprValue = apr !== undefined
     ? apr.toLocaleString(DefaultLocale, { minimumFractionDigits: 2, maximumFractionDigits: 2 })
     : null;
 
