@@ -5,6 +5,7 @@ import { useProvider } from "@fuels/react";
 import { useAssetMinterContract } from "./useAssetMinterContract";
 import useMiraDex from "./useMiraDex/useMiraDex";
 import { NetworkUrl } from "../utils/constants";
+import { coinsConfig } from "../utils/coinsConfig";
 
 interface AssetMetadata {
   name?: string;
@@ -17,9 +18,18 @@ const providerPromise = Provider.create(NetworkUrl);
 const useAssetMetadata = (assetId: B256Address | null): AssetMetadata => {
   const { contractId } = useAssetMinterContract(assetId);
 
-  const { data, isLoading } = useQuery({
+  const { data } = useQuery({
     queryKey: ['assetMetadata', contractId, assetId],
     queryFn: async () => {
+      const config = coinsConfig.get(assetId);
+      if (config) {
+        return {
+          name: config.name,
+          symbol: config.symbol,
+          decimals: config.decimals,
+        };
+      }
+
       const provider = await providerPromise;
       const src20Contract = new Contract(contractId!, src20Abi, provider);
 
