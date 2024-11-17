@@ -1,20 +1,20 @@
 import SearchIcon from "@/src/components/icons/Search/SearchIcon";
-import {CoinName, coinsConfig} from "@/src/utils/coinsConfig";
 import CoinListItem from "@/src/components/common/Swap/components/CoinListItem/CoinListItem";
 import {ChangeEvent, memo, useEffect, useMemo, useRef, useState} from "react";
 import styles from "./CoinsListModal.module.css";
 import {BN, CoinQuantity} from "fuels";
-import {assetsList} from "@/src/utils/common";
+import { useAssetList } from "@/src/hooks/useAssetList";
 
 type Props = {
   selectCoin: (assetId: string | null) => void;
   balances: CoinQuantity[] | undefined;
 };
 
-const priorityOrder: CoinName[] = ['ETH', 'USDC', 'USDT'];
-const lowPriorityOrder: CoinName[] = ['DUCKY' as CoinName];
+const priorityOrder: string[] = ['ETH', 'USDC', 'USDT'];
+const lowPriorityOrder: string[] = ['DUCKY'];
 
 const CoinsListModal = ({ selectCoin, balances }: Props) => {
+  const { assets, isLoading } = useAssetList();
   const [value, setValue] = useState('');
 
   const inputRef = useRef<HTMLInputElement>(null);
@@ -30,20 +30,20 @@ const CoinsListModal = ({ selectCoin, balances }: Props) => {
   };
 
   const filteredCoinsList = useMemo(() => {
-    return assetsList.filter((coin) => {
+    return (assets || []).filter((coin) => {
       return (
         coin.name?.toLowerCase().includes(value.toLowerCase()) ||
-        coin.fullName?.toLowerCase().includes(value.toLowerCase()) ||
+        coin.symbol?.toLowerCase().includes(value.toLowerCase()) ||
         coin.assetId?.toLowerCase() === value.toLowerCase()
       );
     });
-  }, [value]);
+  }, [value, assets]);
 
   // TODO: Pre-sort the list by priorityOrder and alphabet to avoid sorting each time
   const sortedCoinsList = useMemo(() => {
     return filteredCoinsList.toSorted((firstAsset, secondAsset) => {
-      const firstAssetPriority = priorityOrder.indexOf(firstAsset.name);
-      const secondAssetPriority = priorityOrder.indexOf(secondAsset.name);
+      const firstAssetPriority = priorityOrder.indexOf(firstAsset.name!);
+      const secondAssetPriority = priorityOrder.indexOf(secondAsset.name!);
       const bothAssetsHavePriority = firstAssetPriority !== -1 && secondAssetPriority !== -1;
       const eitherAssetHasPriority = firstAssetPriority !== -1 || secondAssetPriority !== -1;
 
@@ -53,8 +53,8 @@ const CoinsListModal = ({ selectCoin, balances }: Props) => {
         return firstAssetPriority !== -1 ? -1 : 1;
       }
 
-      const firstAssetLowPriority = lowPriorityOrder.indexOf(firstAsset.name);
-      const secondAssetLowPriority = lowPriorityOrder.indexOf(secondAsset.name);
+      const firstAssetLowPriority = lowPriorityOrder.indexOf(firstAsset.name!);
+      const secondAssetLowPriority = lowPriorityOrder.indexOf(secondAsset.name!);
       const bothAssetsHaveLowPriority = firstAssetLowPriority !== -1 && secondAssetLowPriority !== -1;
       const eitherAssetHasLowPriority = firstAssetLowPriority !== -1 || secondAssetLowPriority !== -1;
 
@@ -67,10 +67,8 @@ const CoinsListModal = ({ selectCoin, balances }: Props) => {
       if (balances) {
         const firstAssetBalance = balances.find((b) => b.assetId === firstAsset.assetId)?.amount ?? new BN(0);
         const secondAssetBalance = balances.find((b) => b.assetId === secondAsset.assetId)?.amount ?? new BN(0);
-        const firstAssetDecimals = coinsConfig.get(firstAsset.name)?.decimals ?? 0;
-        const secondAssetDecimals = coinsConfig.get(secondAsset.name)?.decimals ?? 0;
-        const firstAssetDivisor = new BN(10).pow(firstAssetDecimals);
-        const secondAssetDivisor = new BN(10).pow(secondAssetDecimals);
+        const firstAssetDivisor = new BN(10).pow(firstAsset.decimals);
+        const secondAssetDivisor = new BN(10).pow(secondAsset.decimals);
         // Dividing BN to a large value can lead to zero, we use proportion rule here: a/b = c/d => a*d = b*c
         const firstAssetBalanceMultiplied = firstAssetBalance.mul(secondAssetDivisor);
         const secondAssetBalanceMultiplied = secondAssetBalance.mul(firstAssetDivisor);
@@ -101,14 +99,14 @@ const CoinsListModal = ({ selectCoin, balances }: Props) => {
         />
       </div>
       <div className={styles.tokenList}>
-        {sortedCoinsList.map(({ name, assetId }) => (
+        {sortedCoinsList.map(({ assetId }) => (
           <div
             className={styles.tokenListItem}
             onClick={() => selectCoin(assetId)}
             key={assetId}
           >
             <CoinListItem
-              name={name}
+              assetId={assetId}
               balance={balances?.find((b) => b.assetId === assetId)}
             />
           </div>
