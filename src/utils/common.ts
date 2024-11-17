@@ -17,7 +17,7 @@ export const getAssetDecimalsByAssetId = (assetId: B256Address) => {
 };
 
 export const isPoolIdValid = (poolId: PoolId) => {
-  return coinsConfig.has(getAssetNameByAssetId(poolId[0].bits)) && coinsConfig.has(getAssetNameByAssetId(poolId[1].bits));
+  return poolId[0].bits.length === 66 && poolId[1].bits.length === 66;
 };
 
 export const getAssetNamesFromPoolId = (poolId: PoolId) => {
@@ -31,16 +31,15 @@ export const VolatilePoolKey = 'volatile' as const;
 
 // Entity used as query param for position/pool pages in format 'ETH-USDT-stable', mutually convertible with pool id
 export const createPoolKey = (poolId: PoolId) => {
-  const firstAssetName = getAssetNameByAssetId(poolId[0].bits);
-  const secondAssetName = getAssetNameByAssetId(poolId[1].bits);
   const poolStability = poolId[2] ? StablePoolKey : VolatilePoolKey;
-  return `${firstAssetName}-${secondAssetName}-${poolStability}`;
+  return `${poolId[0].bits}-${poolId[1].bits}-${poolStability}`;
 };
 
 // TODO: Reconsider this function, maybe have an API call for /pools?
 export const isPoolKeyValid = (key: string) => {
-  const [coinA, coinB] = key.split('-') as [CoinName, CoinName];
-  return coinsConfig.has(coinA) && coinsConfig.has(coinB);
+  const [coinA, coinB] = key.split('-') as [string, string];
+  // TODO: check isStable?
+  return coinA.length === 66 && coinB.length === 66;
 };
 
 export const createPoolIdFromPoolKey = (key: string) => {
