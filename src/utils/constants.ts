@@ -3,6 +3,9 @@ import {CHAIN_IDS, TxParams} from "fuels";
 export const DEFAULT_AMM_CONTRACT_ID =
   "0x2e40f2b244b98ed6b8204b3de0156c6961f98525c8162f80162fcf53eebd90e7" as const;
 
+export const ETH_ASSET_ID = '0xf8f8b6283d7fa5b672b530cbb84fcccb4ff8dc40f8176ef4544ddb1f1952ad07';
+export const BASE_ASSET_CONTRACT = '0x7e2becd64cd598da59b4d1064b711661898656c6b1f4918a787156b8965dc83c';
+
 export const DefaultTxParams: TxParams = {
   gasLimit: 10_000_000,
   maxFee: 1_000_000,
@@ -25,7 +28,7 @@ export const ApiBaseUrl = 'https://prod.api.mira.ly' as const;
 export const FuelAppUrl = 'https://app.fuel.network' as const;
 
 export const EthDecimals = 9 as const;
-export const MinEthValue = 0.001 as const;
+export const MinEthValue = 0.0005 as const;
 export const MinEthValueBN = MinEthValue * 10 ** EthDecimals;
 
 export const DefaultLocale = 'en-US' as const;

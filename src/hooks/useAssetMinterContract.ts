@@ -1,9 +1,7 @@
 import { useProvider } from "@fuels/react";
 import { useQuery } from "@tanstack/react-query";
 import { ZeroBytes32 } from "fuels";
-
-const BASE_ASSET_CONTRACT = '0x7e2becd64cd598da59b4d1064b711661898656c6b1f4918a787156b8965dc83c';
-const ETH_ASSET_ID = '0xf8f8b6283d7fa5b672b530cbb84fcccb4ff8dc40f8176ef4544ddb1f1952ad07';
+import { BASE_ASSET_CONTRACT, ETH_ASSET_ID } from "../utils/constants";
 
 export const useAssetMinterContract = (assetId: string | null): { contractId: string | null; subId: string | null } => {
   if (assetId && assetId.length !== 66) {
