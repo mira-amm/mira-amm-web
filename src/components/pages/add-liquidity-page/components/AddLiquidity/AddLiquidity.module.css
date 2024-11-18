@@ -109,24 +109,24 @@
   color: var(--content-dimmed-dark);
 }
 
-.priceBlocks {
-  display: flex;
-  flex-direction: row;
-  gap: 8px;
-}
+/*.priceBlocks {*/
+/*  display: flex;*/
+/*  flex-direction: row;*/
+/*  gap: 8px;*/
+/*}*/
 
-.priceBlock {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-  padding: 12px;
-  border-radius: 8px;
-  background-color: var(--background-grey-darker);
-}
+/*.priceBlock {*/
+/*  display: flex;*/
+/*  flex-direction: column;*/
+/*  gap: 4px;*/
+/*  padding: 12px;*/
+/*  border-radius: 8px;*/
+/*  background-color: var(--background-grey-darker);*/
+/*}*/
 
-.priceBlocks > div {
-  width: 50%;
-}
+/*.priceBlocks > div {*/
+/*  width: 50%;*/
+/*}*/
 
 .loadingOverlay {
   position: fixed;
@@ -208,6 +208,53 @@
 .previewCoinPair {
   display: flex;
   justify-content: space-between;
+}
+
+.existingPoolBlock {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  padding: 12px;
+  border-radius: 10px;
+  background: linear-gradient(97.15deg, #5872FC -1.13%, #6142BA 56.75%, #C41CFF 135.82%);
+}
+
+.sparkleIcon {
+  height: 20px;
+  width: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 34px;
+  background-color: var(--content-dimmed-dark);
+}
+
+.existingPoolText {
+  flex: 1;
+}
+
+.addLiquidityLink {
+  text-decoration: underline;
+}
+
+.addLiquidityLink:hover {
+  color: var(--content-secondary);
+}
+
+.priceBlock {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 16px;
+  border-radius: 8px;
+  background-color: var(--background-grey-darker);
+  cursor: pointer;
+}
+
+.priceWarning {
+  font-size: 14px;
+  line-height: 17px;
+  color: #FFB800;
 }
 
 @media (min-width: 1024px) {

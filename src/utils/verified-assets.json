@@ -2,709 +2,400 @@
   {
     "name": "Ethereum",
     "symbol": "ETH",
-    "icon": "https://verified-assets.fuel.network/images/eth.svg",
-    "networks": [
-      {
-        "type": "ethereum",
-        "chain": "sepolia",
-        "decimals": 18,
-        "chainId": 11155111
-      },
-      {
-        "type": "ethereum",
-        "chain": "foundry",
-        "decimals": 18,
-        "chainId": 31337
-      },
-      {
-        "type": "ethereum",
-        "chain": "mainnet",
-        "decimals": 18,
-        "chainId": 1
-      },
-      {
-        "type": "fuel",
-        "chain": "devnet",
-        "decimals": 9,
-        "assetId": "0xf8f8b6283d7fa5b672b530cbb84fcccb4ff8dc40f8176ef4544ddb1f1952ad07",
-        "chainId": 0
-      },
-      {
-        "type": "fuel",
-        "chain": "testnet",
-        "decimals": 9,
-        "assetId": "0xf8f8b6283d7fa5b672b530cbb84fcccb4ff8dc40f8176ef4544ddb1f1952ad07",
-        "chainId": 0
-      },
-      {
-        "type": "fuel",
-        "chain": "mainnet",
-        "decimals": 9,
-        "assetId": "0xf8f8b6283d7fa5b672b530cbb84fcccb4ff8dc40f8176ef4544ddb1f1952ad07",
-        "chainId": 9889
-      }
-    ]
+    "decimals": 9,
+    "icon": {
+      "default": "https://verified-assets.fuel.network/images/eth.svg"
+    },
+    "contractId": "0x7e2becd64cd598da59b4d1064b711661898656c6b1f4918a787156b8965dc83c",
+    "subId": "0x0000000000000000000000000000000000000000000000000000000000000000",
+    "assetId": "0xf8f8b6283d7fa5b672b530cbb84fcccb4ff8dc40f8176ef4544ddb1f1952ad07",
+    "isVerified": true,
+    "externalIds": {
+      "coinGecko": "ethereum"
+    }
   },
   {
     "name": "WETH",
     "symbol": "WETH",
-    "icon": "https://verified-assets.fuel.network/images/weth.svg",
-    "networks": [
-      {
-        "type": "ethereum",
-        "chain": "mainnet",
-        "address": "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2",
-        "decimals": 18,
-        "chainId": 1
-      },
-      {
-        "type": "fuel",
-        "chain": "mainnet",
-        "decimals": 9,
-        "chainId": 9889,
-        "contractId": "0x4ea6ccef1215d9479f1024dff70fc055ca538215d2c8c348beddffd54583d0e8",
-        "subId": "0xd4d7948d31e97d4ed6d0182814e8bc827dfe0d8e70a010bdb9e34aae92775491",
-        "assetId": "0xa38a5a8beeb08d95744bc7f58528073f4052b254def59eba20c99c202b5acaa3"
-      }
-    ]
+    "decimals": 9,
+    "icon": {
+      "default": "https://verified-assets.fuel.network/images/weth.svg"
+    },
+    "contractId": "0x4ea6ccef1215d9479f1024dff70fc055ca538215d2c8c348beddffd54583d0e8",
+    "subId": "0xd4d7948d31e97d4ed6d0182814e8bc827dfe0d8e70a010bdb9e34aae92775491",
+    "assetId": "0xa38a5a8beeb08d95744bc7f58528073f4052b254def59eba20c99c202b5acaa3",
+    "isVerified": true,
+    "externalIds": {
+      "coinGecko": "weth"
+    }
   },
   {
     "name": "weETH",
     "symbol": "weETH",
-    "icon": "https://verified-assets.fuel.network/images/weETH.webp",
-    "networks": [
-      {
-        "type": "ethereum",
-        "chain": "mainnet",
-        "address": "0xCd5fE23C85820F7B72D0926FC9b05b43E359b7ee",
-        "decimals": 18,
-        "chainId": 1
-      },
-      {
-        "type": "fuel",
-        "chain": "mainnet",
-        "decimals": 9,
-        "chainId": 9889,
-        "contractId": "0x4ea6ccef1215d9479f1024dff70fc055ca538215d2c8c348beddffd54583d0e8",
-        "subId": "0x94cd19fd8aa593b2a2d25d6f3c9a32a958ad8cdd477d25c367de20f22207f679",
-        "assetId": "0x239ed6e12b7ce4089ee245244e3bf906999a6429c2a9a445a1e1faf56914a4ab"
-      }
-    ]
+    "decimals": 9,
+    "icon": {
+      "default": "https://verified-assets.fuel.network/images/weETH.webp"
+    },
+    "contractId": "0x4ea6ccef1215d9479f1024dff70fc055ca538215d2c8c348beddffd54583d0e8",
+    "subId": "0x94cd19fd8aa593b2a2d25d6f3c9a32a958ad8cdd477d25c367de20f22207f679",
+    "assetId": "0x239ed6e12b7ce4089ee245244e3bf906999a6429c2a9a445a1e1faf56914a4ab",
+    "isVerified": true,
+    "externalIds": {
+      "coinGecko": "wrapped-eeth"
+    }
   },
   {
     "name": "rsETH",
     "symbol": "rsETH",
-    "icon": "https://verified-assets.fuel.network/images/rsETH.webp",
-    "networks": [
-      {
-        "type": "ethereum",
-        "chain": "mainnet",
-        "address": "0xA1290d69c65A6Fe4DF752f95823fae25cB99e5A7",
-        "decimals": 18,
-        "chainId": 1
-      },
-      {
-        "type": "fuel",
-        "chain": "mainnet",
-        "decimals": 9,
-        "chainId": 9889,
-        "contractId": "0x4ea6ccef1215d9479f1024dff70fc055ca538215d2c8c348beddffd54583d0e8",
-        "subId": "0xa7fef8780f0aaf17f250d0b2e51580a5d197bc50880f2a619ad52fe5c9c8390a",
-        "assetId": "0xbae80f7fb8aa6b90d9b01ef726ec847cc4f59419c4d5f2ea88fec785d1b0e849"
-      }
-    ]
+    "decimals": 9,
+    "icon": {
+      "default": "https://verified-assets.fuel.network/images/rsETH.webp"
+    },
+    "contractId": "0x4ea6ccef1215d9479f1024dff70fc055ca538215d2c8c348beddffd54583d0e8",
+    "subId": "0xa7fef8780f0aaf17f250d0b2e51580a5d197bc50880f2a619ad52fe5c9c8390a",
+    "assetId": "0xbae80f7fb8aa6b90d9b01ef726ec847cc4f59419c4d5f2ea88fec785d1b0e849",
+    "isVerified": true,
+    "externalIds": {
+      "coinGecko": "kelp-dao-restaked-eth"
+    }
   },
   {
     "name": "rETH",
     "symbol": "rETH",
-    "icon": "https://verified-assets.fuel.network/images/reth.svg",
-    "networks": [
-      {
-        "type": "ethereum",
-        "chain": "mainnet",
-        "address": "0xae78736cd615f374d3085123a210448e74fc6393",
-        "decimals": 18,
-        "chainId": 1
-      },
-      {
-        "type": "fuel",
-        "chain": "mainnet",
-        "decimals": 9,
-        "chainId": 9889,
-        "contractId": "0x4ea6ccef1215d9479f1024dff70fc055ca538215d2c8c348beddffd54583d0e8",
-        "subId": "0xaff801ca84960d5e8a385d92b7b98880c635b75f34d3b48e940a494d0cab4dd8",
-        "assetId": "0xf3f9a0ed0ce8eac5f89d6b83e41b3848212d5b5f56108c54a205bb228ca30c16"
-      }
-    ]
+    "decimals": 9,
+    "icon": {
+      "default": "https://verified-assets.fuel.network/images/reth.svg"
+    },
+    "contractId": "0x4ea6ccef1215d9479f1024dff70fc055ca538215d2c8c348beddffd54583d0e8",
+    "subId": "0xaff801ca84960d5e8a385d92b7b98880c635b75f34d3b48e940a494d0cab4dd8",
+    "assetId": "0xf3f9a0ed0ce8eac5f89d6b83e41b3848212d5b5f56108c54a205bb228ca30c16",
+    "isVerified": true,
+    "externalIds": {
+      "coinGecko": "rocket-pool-eth"
+    }
   },
   {
     "name": "wbETH",
     "symbol": "wbETH",
-    "icon": "https://verified-assets.fuel.network/images/wbeth.png",
-    "networks": [
-      {
-        "type": "ethereum",
-        "chain": "mainnet",
-        "address": "0xa2E3356610840701BDf5611a53974510Ae27E2e1",
-        "decimals": 18,
-        "chainId": 1
-      },
-      {
-        "type": "fuel",
-        "chain": "mainnet",
-        "decimals": 9,
-        "chainId": 9889,
-        "contractId": "0x4ea6ccef1215d9479f1024dff70fc055ca538215d2c8c348beddffd54583d0e8",
-        "subId": "0xc9bc2fab466d7d07c004466556c87f5b39a0f72ee48b55a460948915970147e0",
-        "assetId": "0x7843c74bef935e837f2bcf67b5d64ecb46dd53ff86375530b0caf3699e8ffafe"
-      }
-    ]
+    "decimals": 9,
+    "icon": {
+      "default": "https://verified-assets.fuel.network/images/wbeth.png"
+    },
+    "contractId": "0x4ea6ccef1215d9479f1024dff70fc055ca538215d2c8c348beddffd54583d0e8",
+    "subId": "0xc9bc2fab466d7d07c004466556c87f5b39a0f72ee48b55a460948915970147e0",
+    "assetId": "0x7843c74bef935e837f2bcf67b5d64ecb46dd53ff86375530b0caf3699e8ffafe",
+    "isVerified": true,
+    "externalIds": {
+      "coinGecko": "wrapped-beacon-eth"
+    }
   },
   {
     "name": "rstETH",
     "symbol": "rstETH",
-    "icon": "https://verified-assets.fuel.network/images/rstETH.webp",
-    "networks": [
-      {
-        "type": "ethereum",
-        "chain": "mainnet",
-        "address": "0x7a4EffD87C2f3C55CA251080b1343b605f327E3a",
-        "decimals": 18,
-        "chainId": 1
-      },
-      {
-        "type": "fuel",
-        "chain": "mainnet",
-        "decimals": 9,
-        "chainId": 9889,
-        "contractId": "0x4ea6ccef1215d9479f1024dff70fc055ca538215d2c8c348beddffd54583d0e8",
-        "subId": "0xaa842aaa34c68ea5d166bcbd493f493b8f295c1a2c7e8e75bcdab6042eb79cc1",
-        "assetId": "0x962792286fbc9b1d5860b4551362a12249362c21594c77abf4b3fe2bbe8d977a"
-      }
-    ]
+    "decimals": 9,
+    "icon": {
+      "default": "https://verified-assets.fuel.network/images/rstETH.webp"
+    },
+    "contractId": "0x4ea6ccef1215d9479f1024dff70fc055ca538215d2c8c348beddffd54583d0e8",
+    "subId": "0xaa842aaa34c68ea5d166bcbd493f493b8f295c1a2c7e8e75bcdab6042eb79cc1",
+    "assetId": "0x962792286fbc9b1d5860b4551362a12249362c21594c77abf4b3fe2bbe8d977a",
+    "isVerified": true,
+    "externalIds": {
+      "coinGecko": "wrapped-steth"
+    }
   },
   {
     "name": "amphrETH",
     "symbol": "amphrETH",
-    "icon": "https://verified-assets.fuel.network/images/amphrETH.png",
-    "networks": [
-      {
-        "type": "ethereum",
-        "chain": "mainnet",
-        "address": "0x5fD13359Ba15A84B76f7F87568309040176167cd",
-        "decimals": 18,
-        "chainId": 1
-      },
-      {
-        "type": "fuel",
-        "chain": "mainnet",
-        "decimals": 9,
-        "chainId": 9889,
-        "contractId": "0x4ea6ccef1215d9479f1024dff70fc055ca538215d2c8c348beddffd54583d0e8",
-        "subId": "0x29c4e3b6e413e97c8f11fc623030dcfbfc32e2e4132fcb1c96b6ac7bf8743729",
-        "assetId": "0x05fc623e57bd7bc1258efa8e4f62b05af5471d73df6f2c2dc11ecc81134c4f36"
-      }
-    ]
+    "decimals": 9,
+    "icon": {
+      "default": "https://verified-assets.fuel.network/images/amphrETH.png"
+    },
+    "contractId": "0x4ea6ccef1215d9479f1024dff70fc055ca538215d2c8c348beddffd54583d0e8",
+    "subId": "0x29c4e3b6e413e97c8f11fc623030dcfbfc32e2e4132fcb1c96b6ac7bf8743729",
+    "assetId": "0x05fc623e57bd7bc1258efa8e4f62b05af5471d73df6f2c2dc11ecc81134c4f36",
+    "isVerified": true,
+    "externalIds": {
+      "coinGecko": "wrapped-steth"
+    }
   },
   {
     "name": "Manta mBTC",
     "symbol": "Manta mBTC",
-    "icon": "https://verified-assets.fuel.network/images/manta-mbtc.svg",
-    "networks": [
-      {
-        "type": "ethereum",
-        "chain": "mainnet",
-        "address": "0x4041381e947CFD3D483d67a25C6aa9Dc924250c5",
-        "decimals": 18,
-        "chainId": 1
-      },
-      {
-        "type": "fuel",
-        "chain": "mainnet",
-        "decimals": 9,
-        "chainId": 9889,
-        "contractId": "0x4ea6ccef1215d9479f1024dff70fc055ca538215d2c8c348beddffd54583d0e8",
-        "subId": "0xc5c6d3ed779781883a8939c2728e7418b8e805df44ac8883669b23b18c83cea5",
-        "assetId": "0xaf3111a248ff7a3238cdeea845bb2d43cf3835f1f6b8c9d28360728b55b9ce5b"
-      }
-    ]
+    "decimals": 9,
+    "icon": {
+      "default": "https://verified-assets.fuel.network/images/manta-mbtc.svg"
+    },
+    "contractId": "0x4ea6ccef1215d9479f1024dff70fc055ca538215d2c8c348beddffd54583d0e8",
+    "subId": "0xc5c6d3ed779781883a8939c2728e7418b8e805df44ac8883669b23b18c83cea5",
+    "assetId": "0xaf3111a248ff7a3238cdeea845bb2d43cf3835f1f6b8c9d28360728b55b9ce5b",
+    "isVerified": true,
+    "externalIds": {
+      "coinGecko": "manta-mbtc"
+    }
   },
   {
     "name": "Manta mETH",
     "symbol": "Manta mETH",
-    "icon": "https://verified-assets.fuel.network/images/manta-meth.svg",
-    "networks": [
-      {
-        "type": "ethereum",
-        "chain": "mainnet",
-        "address": "0x8CdF550C04Bc9B9F10938368349C9c8051A772b6",
-        "decimals": 18,
-        "chainId": 1
-      },
-      {
-        "type": "fuel",
-        "chain": "mainnet",
-        "decimals": 9,
-        "chainId": 9889,
-        "contractId": "0x4ea6ccef1215d9479f1024dff70fc055ca538215d2c8c348beddffd54583d0e8",
-        "subId": "0x7919181cd42fb703522cf242483d5a7460c905bc0f23cf165b9db76dbf51a7b1",
-        "assetId": "0xafd219f513317b1750783c6581f55530d6cf189a5863fd18bd1b3ffcec1714b4"
-      }
-    ]
+    "decimals": 9,
+    "icon": {
+      "default": "https://verified-assets.fuel.network/images/manta-meth.svg"
+    },
+    "contractId": "0x4ea6ccef1215d9479f1024dff70fc055ca538215d2c8c348beddffd54583d0e8",
+    "subId": "0x7919181cd42fb703522cf242483d5a7460c905bc0f23cf165b9db76dbf51a7b1",
+    "assetId": "0xafd219f513317b1750783c6581f55530d6cf189a5863fd18bd1b3ffcec1714b4",
+    "isVerified": true,
+    "externalIds": {
+      "coinGecko": "manta-meth"
+    }
   },
   {
     "name": "Manta mUSD",
     "symbol": "Manta mUSD",
-    "icon": "https://verified-assets.fuel.network/images/manta-musd.svg",
-    "networks": [
-      {
-        "type": "ethereum",
-        "chain": "mainnet",
-        "address": "0x3f24E1d7a973867fC2A03fE199E5502514E0e11E",
-        "decimals": 18,
-        "chainId": 1
-      },
-      {
-        "type": "fuel",
-        "chain": "mainnet",
-        "decimals": 9,
-        "chainId": 9889,
-        "contractId": "0x4ea6ccef1215d9479f1024dff70fc055ca538215d2c8c348beddffd54583d0e8",
-        "subId": "0x3c80cce2ab0884749905babc14d2034f97902fa147c8bbc1aef73c04671010d8",
-        "assetId": "0x89cb9401e55d49c3269654dd1cdfb0e80e57823a4a7db98ba8fc5953b120fef4"
-      }
-    ]
+    "decimals": 9,
+    "icon": {
+      "default": "https://verified-assets.fuel.network/images/manta-musd.svg"
+    },
+    "contractId": "0x4ea6ccef1215d9479f1024dff70fc055ca538215d2c8c348beddffd54583d0e8",
+    "subId": "0x3c80cce2ab0884749905babc14d2034f97902fa147c8bbc1aef73c04671010d8",
+    "assetId": "0x89cb9401e55d49c3269654dd1cdfb0e80e57823a4a7db98ba8fc5953b120fef4",
+    "isVerified": true,
+    "externalIds": {
+      "coinGecko": "manta-musd"
+    }
   },
   {
     "name": "pumpBTC",
     "symbol": "pumpBTC",
-    "icon": "https://verified-assets.fuel.network/images/pumpbtc.webp",
-    "networks": [
-      {
-        "type": "ethereum",
-        "chain": "mainnet",
-        "address": "0xf469fbd2abcd6b9de8e169d128226c0fc90a012e",
-        "decimals": 8,
-        "chainId": 1
-      },
-      {
-        "type": "fuel",
-        "chain": "mainnet",
-        "decimals": 8,
-        "chainId": 9889,
-        "contractId": "0x4ea6ccef1215d9479f1024dff70fc055ca538215d2c8c348beddffd54583d0e8",
-        "subId": "0x4f04dc4800ddbed6dbff3cd8ef9270383b2783f84aa5df35730422eeeba1c3f7",
-        "assetId": "0x0aa5eb2bb97ca915288b653a2529355d4dc66de2b37533213f0e4aeee3d3421f"
-      }
-    ]
+    "decimals": 8,
+    "icon": {
+      "default": "https://verified-assets.fuel.network/images/pumpbtc.webp"
+    },
+    "contractId": "0x4ea6ccef1215d9479f1024dff70fc055ca538215d2c8c348beddffd54583d0e8",
+    "subId": "0x4f04dc4800ddbed6dbff3cd8ef9270383b2783f84aa5df35730422eeeba1c3f7",
+    "assetId": "0x0aa5eb2bb97ca915288b653a2529355d4dc66de2b37533213f0e4aeee3d3421f",
+    "isVerified": true
   },
   {
     "name": "FBTC",
     "symbol": "FBTC",
-    "icon": "https://verified-assets.fuel.network/images/fbtc.svg",
-    "networks": [
-      {
-        "type": "ethereum",
-        "chain": "mainnet",
-        "address": "0xc96de26018a54d51c097160568752c4e3bd6c364",
-        "decimals": 8,
-        "chainId": 1
-      },
-      {
-        "type": "fuel",
-        "chain": "mainnet",
-        "decimals": 8,
-        "chainId": 9889,
-        "contractId": "0x4ea6ccef1215d9479f1024dff70fc055ca538215d2c8c348beddffd54583d0e8",
-        "subId": "0x5ecf00904c88f891048f2affb621a87c6392375fdb3c051dd7129526b4b0da55",
-        "assetId": "0xb5ecb0a1e08e2abbabf624ffea089df933376855f468ade35c6375b00c33996a"
-      }
-    ]
+    "decimals": 8,
+    "icon": {
+      "default": "https://verified-assets.fuel.network/images/fbtc.svg"
+    },
+    "contractId": "0x4ea6ccef1215d9479f1024dff70fc055ca538215d2c8c348beddffd54583d0e8",
+    "subId": "0x5ecf00904c88f891048f2affb621a87c6392375fdb3c051dd7129526b4b0da55",
+    "assetId": "0xb5ecb0a1e08e2abbabf624ffea089df933376855f468ade35c6375b00c33996a",
+    "isVerified": true,
+    "externalIds": {
+      "coinGecko": "ignition-fbtc"
+    }
   },
   {
     "name": "SolvBTC",
     "symbol": "SolvBTC",
-    "icon": "https://verified-assets.fuel.network/images/solvBTC.webp",
-    "networks": [
-      {
-        "type": "ethereum",
-        "chain": "mainnet",
-        "address": "0x7a56e1c57c7475ccf742a1832b028f0456652f97",
-        "decimals": 18,
-        "chainId": 1
-      },
-      {
-        "type": "fuel",
-        "chain": "mainnet",
-        "decimals": 9,
-        "chainId": 9889,
-        "contractId": "0x4ea6ccef1215d9479f1024dff70fc055ca538215d2c8c348beddffd54583d0e8",
-        "subId": "0x7977feee81d70d5b859432c90c374f99dcf3a8c172fa273c43c4ca0a29c447a9",
-        "assetId": "0x1186afea9affb88809c210e13e2330b5258c2cef04bb8fff5eff372b7bd3f40f"
-      }
-    ]
+    "decimals": 9,
+    "icon": {
+      "default": "https://verified-assets.fuel.network/images/solvBTC.webp"
+    },
+    "contractId": "0x4ea6ccef1215d9479f1024dff70fc055ca538215d2c8c348beddffd54583d0e8",
+    "subId": "0x7977feee81d70d5b859432c90c374f99dcf3a8c172fa273c43c4ca0a29c447a9",
+    "assetId": "0x1186afea9affb88809c210e13e2330b5258c2cef04bb8fff5eff372b7bd3f40f",
+    "isVerified": true,
+    "externalIds": {
+      "coinGecko": "solv-btc"
+    }
   },
   {
     "name": "SolvBTC.BBN",
     "symbol": "SolvBTC.BBN",
-    "icon": "https://verified-assets.fuel.network/images/SolvBTC.BBN.png",
-    "networks": [
-      {
-        "type": "ethereum",
-        "chain": "mainnet",
-        "address": "0xd9d920aa40f578ab794426f5c90f6c731d159def",
-        "decimals": 18,
-        "chainId": 1
-      },
-      {
-        "type": "fuel",
-        "chain": "mainnet",
-        "decimals": 9,
-        "chainId": 9889,
-        "contractId": "0x4ea6ccef1215d9479f1024dff70fc055ca538215d2c8c348beddffd54583d0e8",
-        "subId": "0x044a431dfedf487d78e6aedcf70b653ddf29412754d244713a1f02e6558245c4",
-        "assetId": "0x7a4f087c957d30218223c2baaaa365355c9ca81b6ea49004cfb1590a5399216f"
-      }
-    ]
+    "decimals": 9,
+    "icon": {
+      "default": "https://verified-assets.fuel.network/images/SolvBTC.BBN.png"
+    },
+    "contractId": "0x4ea6ccef1215d9479f1024dff70fc055ca538215d2c8c348beddffd54583d0e8",
+    "subId": "0x044a431dfedf487d78e6aedcf70b653ddf29412754d244713a1f02e6558245c4",
+    "assetId": "0x7a4f087c957d30218223c2baaaa365355c9ca81b6ea49004cfb1590a5399216f",
+    "isVerified": true,
+    "externalIds": {
+      "coinGecko": "solv-protocol-solvbtc-bbn"
+    }
   },
   {
     "name": "Mantle mETH",
     "symbol": "Mantle mETH",
-    "icon": "https://verified-assets.fuel.network/images/mantle-meth.svg",
-    "networks": [
-      {
-        "type": "ethereum",
-        "chain": "mainnet",
-        "address": "0xd5F7838F5C461fefF7FE49ea5ebaF7728bB0ADfa",
-        "decimals": 18,
-        "chainId": 1
-      },
-      {
-        "type": "fuel",
-        "chain": "mainnet",
-        "decimals": 9,
-        "chainId": 9889,
-        "contractId": "0x4ea6ccef1215d9479f1024dff70fc055ca538215d2c8c348beddffd54583d0e8",
-        "subId": "0x73af48c4968af413794199f3837b55034d3d508b31269fef6b28a4215945283e",
-        "assetId": "0x642a5db59ec323c2f846d4d4cf3e58d78aff64accf4f8f6455ba0aa3ef000a3b"
-      }
-    ]
+    "decimals": 9,
+    "icon": {
+      "default": "https://verified-assets.fuel.network/images/mantle-meth.svg"
+    },
+    "contractId": "0x4ea6ccef1215d9479f1024dff70fc055ca538215d2c8c348beddffd54583d0e8",
+    "subId": "0x73af48c4968af413794199f3837b55034d3d508b31269fef6b28a4215945283e",
+    "assetId": "0x642a5db59ec323c2f846d4d4cf3e58d78aff64accf4f8f6455ba0aa3ef000a3b",
+    "isVerified": true,
+    "externalIds": {
+      "coinGecko": "mantle-staked-ether"
+    }
   },
   {
     "name": "sDAI",
     "symbol": "sDAI",
-    "icon": "https://verified-assets.fuel.network/images/sdai.svg",
-    "networks": [
-      {
-        "type": "ethereum",
-        "chain": "mainnet",
-        "address": "0x83f20f44975d03b1b09e64809b757c47f942beea",
-        "decimals": 18,
-        "chainId": 1
-      },
-      {
-        "type": "fuel",
-        "chain": "mainnet",
-        "decimals": 9,
-        "chainId": 9889,
-        "contractId": "0x4ea6ccef1215d9479f1024dff70fc055ca538215d2c8c348beddffd54583d0e8",
-        "subId": "0x3edc5f1ca0ef5712b655998630ae3d24382ade45735dabce3fc6a215a9dc8ab2",
-        "assetId": "0x9e46f919fbf978f3cad7cd34cca982d5613af63ff8aab6c379e4faa179552958"
-      }
-    ]
+    "decimals": 9,
+    "icon": {
+      "default": "https://verified-assets.fuel.network/images/sdai.svg"
+    },
+    "contractId": "0x4ea6ccef1215d9479f1024dff70fc055ca538215d2c8c348beddffd54583d0e8",
+    "subId": "0x3edc5f1ca0ef5712b655998630ae3d24382ade45735dabce3fc6a215a9dc8ab2",
+    "assetId": "0x9e46f919fbf978f3cad7cd34cca982d5613af63ff8aab6c379e4faa179552958",
+    "isVerified": true,
+    "externalIds": {
+      "coinGecko": "savings-dai"
+    }
   },
   {
     "name": "USDT",
     "symbol": "USDT",
-    "icon": "https://verified-assets.fuel.network/images/usdt.svg",
-    "networks": [
-      {
-        "type": "ethereum",
-        "chain": "mainnet",
-        "address": "0xdAC17F958D2ee523a2206206994597C13D831ec7",
-        "decimals": 6,
-        "chainId": 1
-      },
-      {
-        "type": "fuel",
-        "chain": "mainnet",
-        "decimals": 6,
-        "chainId": 9889,
-        "contractId": "0x4ea6ccef1215d9479f1024dff70fc055ca538215d2c8c348beddffd54583d0e8",
-        "subId": "0x033dd0c9246b67aea1456ed2ea6aaac61253583b7a1c84cd73d968ad7d30b72d",
-        "assetId": "0xa0265fb5c32f6e8db3197af3c7eb05c48ae373605b8165b6f4a51c5b0ba4812e"
-      }
-    ]
+    "decimals": 6,
+    "icon": {
+      "default": "https://verified-assets.fuel.network/images/usdt.svg"
+    },
+    "contractId": "0x4ea6ccef1215d9479f1024dff70fc055ca538215d2c8c348beddffd54583d0e8",
+    "subId": "0x033dd0c9246b67aea1456ed2ea6aaac61253583b7a1c84cd73d968ad7d30b72d",
+    "assetId": "0xa0265fb5c32f6e8db3197af3c7eb05c48ae373605b8165b6f4a51c5b0ba4812e",
+    "isVerified": true,
+    "externalIds": {
+      "coinGecko": "tether"
+    }
   },
   {
     "name": "USDC",
     "symbol": "USDC",
-    "icon": "https://verified-assets.fuel.network/images/usdc.svg",
-    "networks": [
-      {
-        "type": "ethereum",
-        "chain": "mainnet",
-        "address": "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48",
-        "decimals": 6,
-        "chainId": 1
-      },
-      {
-        "type": "ethereum",
-        "chain": "sepolia",
-        "address": "0x1c7D4B196Cb0C7B01d743Fbc6116a902379C7238",
-        "decimals": 6,
-        "chainId": 11155111
-      },
-      {
-        "type": "fuel",
-        "chain": "mainnet",
-        "decimals": 6,
-        "chainId": 9889,
-        "contractId": "0x4ea6ccef1215d9479f1024dff70fc055ca538215d2c8c348beddffd54583d0e8",
-        "subId": "0xb2114fe7ae91bdf9c23145ee523b2f59fdd7a3c542b93de75c9551873d429757",
-        "assetId": "0x286c479da40dc953bddc3bb4c453b608bba2e0ac483b077bd475174115395e6b"
-      },
-      {
-        "type": "fuel",
-        "chain": "testnet",
-        "decimals": 6,
-        "chainId": 0,
-        "contractId": "0xd02112ef9c39f1cea7c8527c26242ca1f5d26bcfe8d1564bee054d3b04175471",
-        "subId": "0xfdf302563e3ce4548e774c1f85627d21d6f146d23402e20274169b43baf689dc",
-        "assetId": "0xc26c91055de37528492e7e97d91c6f4abe34aae26f2c4d25cff6bfe45b5dc9a9"
-      }
-    ]
+    "decimals": 6,
+    "icon": {
+      "default": "https://verified-assets.fuel.network/images/usdc.svg"
+    },
+    "contractId": "0x4ea6ccef1215d9479f1024dff70fc055ca538215d2c8c348beddffd54583d0e8",
+    "subId": "0xb2114fe7ae91bdf9c23145ee523b2f59fdd7a3c542b93de75c9551873d429757",
+    "assetId": "0x286c479da40dc953bddc3bb4c453b608bba2e0ac483b077bd475174115395e6b",
+    "isVerified": true,
+    "externalIds": {
+      "coinGecko": "usd-coin"
+    }
   },
   {
     "name": "USDe",
     "symbol": "USDe",
-    "icon": "https://verified-assets.fuel.network/images/USDe.svg",
-    "networks": [
-      {
-        "type": "ethereum",
-        "chain": "mainnet",
-        "address": "0x4c9edd5852cd905f086c759e8383e09bff1e68b3",
-        "decimals": 18,
-        "chainId": 1
-      },
-      {
-        "type": "ethereum",
-        "chain": "sepolia",
-        "address": "0xc6387efad0f184a90b34f397c3d6fd63135ef790",
-        "decimals": 18,
-        "chainId": 11155111
-      },
-      {
-        "type": "fuel",
-        "chain": "mainnet",
-        "decimals": 9,
-        "chainId": 9889,
-        "contractId": "0x4ea6ccef1215d9479f1024dff70fc055ca538215d2c8c348beddffd54583d0e8",
-        "subId": "0x38f0f596b5c07712b83785ff91cf5a996a0af5594750bdce87baf3a18ce3c59f",
-        "assetId": "0xb6133b2ef9f6153eb869125d23dcf20d1e735331b5e41b15a6a7a6cec70e8651"
-      },
-      {
-        "type": "fuel",
-        "chain": "testnet",
-        "decimals": 9,
-        "chainId": 0,
-        "contractId": "0xd02112ef9c39f1cea7c8527c26242ca1f5d26bcfe8d1564bee054d3b04175471",
-        "subId": "0xb0a65a27f729b43b7044e853689e197d0ccbef92d830b1126c9af7b7a953efa6",
-        "assetId": "0x86a1beb50c844f5eff9afd21af514a13327c93f76edb89333af862f70040b107"
-      }
-    ]
+    "decimals": 9,
+    "icon": {
+      "default": "https://verified-assets.fuel.network/images/USDe.svg"
+    },
+    "contractId": "0x4ea6ccef1215d9479f1024dff70fc055ca538215d2c8c348beddffd54583d0e8",
+    "subId": "0x38f0f596b5c07712b83785ff91cf5a996a0af5594750bdce87baf3a18ce3c59f",
+    "assetId": "0xb6133b2ef9f6153eb869125d23dcf20d1e735331b5e41b15a6a7a6cec70e8651",
+    "isVerified": true,
+    "externalIds": {
+      "coinGecko": "ethena-usde"
+    }
   },
   {
     "name": "sUSDe",
     "symbol": "sUSDe",
-    "icon": "https://verified-assets.fuel.network/images/sUSDe.webp",
-    "networks": [
-      {
-        "type": "ethereum",
-        "chain": "mainnet",
-        "address": "0x9d39a5de30e57443bff2a8307a4256c8797a3497",
-        "decimals": 18,
-        "chainId": 1
-      },
-      {
-        "type": "ethereum",
-        "chain": "sepolia",
-        "address": "0xb8f4f4eafc1d2a3c0a4d519bbf1114c311cc9b1b",
-        "decimals": 18,
-        "chainId": 11155111
-      },
-      {
-        "type": "fuel",
-        "chain": "mainnet",
-        "decimals": 9,
-        "chainId": 9889,
-        "contractId": "0x4ea6ccef1215d9479f1024dff70fc055ca538215d2c8c348beddffd54583d0e8",
-        "subId": "0x5b197c416f320fdf197201a6f55786c0c5e604208d5a641b067533cba64bc04f",
-        "assetId": "0xd05563025104fc36496c15c7021ad6b31034b0e89a356f4f818045d1f48808bc"
-      },
-      {
-        "type": "fuel",
-        "chain": "testnet",
-        "decimals": 9,
-        "chainId": 0,
-        "contractId": "0xd02112ef9c39f1cea7c8527c26242ca1f5d26bcfe8d1564bee054d3b04175471",
-        "subId": "0x294b394599bd9e80a21f0eb90dfa50b73faf8d9e095c21b20d6abe7b122458ec",
-        "assetId": "0xd2886b34454e2e0de47a82d8e6314b26e1e1312519247e8e2ef137672a909aeb"
-      }
-    ]
+    "decimals": 9,
+    "icon": {
+      "default": "https://verified-assets.fuel.network/images/sUSDe.webp"
+    },
+    "contractId": "0x4ea6ccef1215d9479f1024dff70fc055ca538215d2c8c348beddffd54583d0e8",
+    "subId": "0x5b197c416f320fdf197201a6f55786c0c5e604208d5a641b067533cba64bc04f",
+    "assetId": "0xd05563025104fc36496c15c7021ad6b31034b0e89a356f4f818045d1f48808bc",
+    "isVerified": true,
+    "externalIds": {
+      "coinGecko": "ethena-staked-usde"
+    }
   },
   {
     "name": "rsUSDe",
     "symbol": "rsUSDe",
-    "icon": "https://verified-assets.fuel.network/images/rsUSDe.svg",
-    "networks": [
-      {
-        "type": "ethereum",
-        "chain": "mainnet",
-        "address": "0x82f5104b23FF2FA54C2345F821dAc9369e9E0B26",
-        "decimals": 18,
-        "chainId": 1
-      },
-      {
-        "type": "fuel",
-        "chain": "mainnet",
-        "decimals": 9,
-        "chainId": 9889,
-        "contractId": "0x4ea6ccef1215d9479f1024dff70fc055ca538215d2c8c348beddffd54583d0e8",
-        "subId": "0xaa5930e3233973da79b3f32b4f00c831fc35f18791b08bbfaae56178460916f3",
-        "assetId": "0x78d4522ec607f6e8efb66ea49439d1ee48623cf763f9688a8eada025def033d9"
-      }
-    ]
+    "decimals": 9,
+    "icon": {
+      "default": "https://verified-assets.fuel.network/images/rsUSDe.svg"
+    },
+    "contractId": "0x4ea6ccef1215d9479f1024dff70fc055ca538215d2c8c348beddffd54583d0e8",
+    "subId": "0xaa5930e3233973da79b3f32b4f00c831fc35f18791b08bbfaae56178460916f3",
+    "assetId": "0x78d4522ec607f6e8efb66ea49439d1ee48623cf763f9688a8eada025def033d9",
+    "isVerified": true,
+    "externalIds": {
+      "coinGecko": "ethena-staked-usde"
+    }
   },
   {
     "name": "wstETH",
     "symbol": "wstETH",
-    "icon": "https://verified-assets.fuel.network/images/wsteth.svg",
-    "networks": [
-      {
-        "type": "ethereum",
-        "chain": "mainnet",
-        "address": "0x7f39C581F595B53c5cb19bD0b3f8dA6c935E2Ca0",
-        "decimals": 18,
-        "chainId": 1
-      },
-      {
-        "type": "ethereum",
-        "chain": "sepolia",
-        "address": "0xB82381A3fBD3FaFA77B3a7bE693342618240067b",
-        "decimals": 18,
-        "chainId": 11155111
-      },
-      {
-        "type": "fuel",
-        "chain": "mainnet",
-        "decimals": 9,
-        "chainId": 9889,
-        "contractId": "0x4ea6ccef1215d9479f1024dff70fc055ca538215d2c8c348beddffd54583d0e8",
-        "subId": "0xa232a843105ef81cd9996efc121cd3c8455c5edd9fb9c5a0b097982e1e68d5d6",
-        "assetId": "0x1a7815cc9f75db5c24a5b0814bfb706bb9fe485333e98254015de8f48f84c67b"
-      },
-      {
-        "type": "fuel",
-        "chain": "testnet",
-        "decimals": 9,
-        "chainId": 0,
-        "contractId": "0xd02112ef9c39f1cea7c8527c26242ca1f5d26bcfe8d1564bee054d3b04175471",
-        "subId": "0xd996e6beef64f541bf5a7d76d81be6788e114d4f57da16698646149a61a3a69e",
-        "assetId": "0xb42cd9ddf61898da1701adb3a003b0cf4ca6df7b5fe490ec2c295b1ca43b33c8"
-      }
-    ]
+    "decimals": 9,
+    "icon": {
+      "default": "https://mira-dex-resources.s3.amazonaws.com/icons/wsteth-icon.svg"
+    },
+    "contractId": "0x4ea6ccef1215d9479f1024dff70fc055ca538215d2c8c348beddffd54583d0e8",
+    "subId": "0xa232a843105ef81cd9996efc121cd3c8455c5edd9fb9c5a0b097982e1e68d5d6",
+    "assetId": "0x1a7815cc9f75db5c24a5b0814bfb706bb9fe485333e98254015de8f48f84c67b",
+    "isVerified": true,
+    "externalIds": {
+      "coinGecko": "wrapped-steth"
+    }
   },
   {
     "name": "ezETH",
     "symbol": "ezETH",
-    "icon": "https://verified-assets.fuel.network/images/ezeth.webp",
-    "networks": [
-      {
-        "type": "ethereum",
-        "chain": "mainnet",
-        "address": "0xbf5495Efe5DB9ce00f80364C8B423567e58d2110",
-        "decimals": 18,
-        "chainId": 1
-      },
-      {
-        "type": "fuel",
-        "chain": "mainnet",
-        "decimals": 9,
-        "chainId": 9889,
-        "contractId": "0x4ea6ccef1215d9479f1024dff70fc055ca538215d2c8c348beddffd54583d0e8",
-        "subId": "0x30d7a65ea7c8f934b8635cff93e9c4510ed9717fa526237ba935e7411830c153",
-        "assetId": "0x91b3559edb2619cde8ffb2aa7b3c3be97efd794ea46700db7092abeee62281b0"
-      }
-    ]
+    "decimals": 9,
+    "icon": {
+      "default": "https://verified-assets.fuel.network/images/ezeth.webp"
+    },
+    "contractId": "0x4ea6ccef1215d9479f1024dff70fc055ca538215d2c8c348beddffd54583d0e8",
+    "subId": "0x30d7a65ea7c8f934b8635cff93e9c4510ed9717fa526237ba935e7411830c153",
+    "assetId": "0x91b3559edb2619cde8ffb2aa7b3c3be97efd794ea46700db7092abeee62281b0",
+    "isVerified": true,
+    "externalIds": {
+      "coinGecko": "renzo-restaked-eth"
+    }
   },
   {
     "name": "pzETH",
     "symbol": "pzETH",
-    "icon": "https://verified-assets.fuel.network/images/pzETH.webp",
-    "networks": [
-      {
-        "type": "ethereum",
-        "chain": "mainnet",
-        "address": "0x8c9532a60e0e7c6bbd2b2c1303f63ace1c3e9811",
-        "decimals": 18,
-        "chainId": 1
-      },
-      {
-        "type": "fuel",
-        "chain": "mainnet",
-        "decimals": 9,
-        "chainId": 9889,
-        "contractId": "0x4ea6ccef1215d9479f1024dff70fc055ca538215d2c8c348beddffd54583d0e8",
-        "subId": "0x0d3b3441cdfdf6035257710023d55dfb75590248a464999087fcff9a97d9b5df",
-        "assetId": "0x1493d4ec82124de8f9b625682de69dcccda79e882b89a55a8c737b12de67bd68"
-      }
-    ]
+    "decimals": 9,
+    "icon": {
+      "default": "https://verified-assets.fuel.network/images/pzETH.webp"
+    },
+    "contractId": "0x4ea6ccef1215d9479f1024dff70fc055ca538215d2c8c348beddffd54583d0e8",
+    "subId": "0x0d3b3441cdfdf6035257710023d55dfb75590248a464999087fcff9a97d9b5df",
+    "assetId": "0x1493d4ec82124de8f9b625682de69dcccda79e882b89a55a8c737b12de67bd68",
+    "isVerified": true,
+    "externalIds": {
+      "coinGecko": "renzo-restaked-lst"
+    }
   },
   {
     "name": "Re7LRT",
     "symbol": "Re7LRT",
-    "icon": "https://verified-assets.fuel.network/images/Re7LRT.png",
-    "networks": [
-      {
-        "type": "ethereum",
-        "chain": "mainnet",
-        "address": "0x84631c0d0081FDe56DeB72F6DE77abBbF6A9f93a",
-        "decimals": 18,
-        "chainId": 1
-      },
-      {
-        "type": "fuel",
-        "chain": "mainnet",
-        "decimals": 9,
-        "chainId": 9889,
-        "contractId": "0x4ea6ccef1215d9479f1024dff70fc055ca538215d2c8c348beddffd54583d0e8",
-        "subId": "0x973b866d50a6005cd332422a7c98bb2ddf5e816097d227922adeffa01f8aacd9",
-        "assetId": "0xf2fc648c23a5db24610a1cf696acc4f0f6d9a7d6028dd9944964ab23f6e35995"
-      }
-    ]
+    "decimals": 9,
+    "icon": {
+      "default": "https://verified-assets.fuel.network/images/Re7LRT.png"
+    },
+    "contractId": "0x4ea6ccef1215d9479f1024dff70fc055ca538215d2c8c348beddffd54583d0e8",
+    "subId": "0x973b866d50a6005cd332422a7c98bb2ddf5e816097d227922adeffa01f8aacd9",
+    "assetId": "0xf2fc648c23a5db24610a1cf696acc4f0f6d9a7d6028dd9944964ab23f6e35995",
+    "isVerified": true,
+    "externalIds": {
+      "coinGecko": "wrapped-steth"
+    }
   },
   {
     "name": "steakLRT",
     "symbol": "steakLRT",
-    "icon": "https://verified-assets.fuel.network/images/steakLRT.png",
-    "networks": [
-      {
-        "type": "ethereum",
-        "chain": "mainnet",
-        "address": "0xBEEF69Ac7870777598A04B2bd4771c71212E6aBc",
-        "decimals": 18,
-        "chainId": 1
-      },
-      {
-        "type": "fuel",
-        "chain": "mainnet",
-        "decimals": 9,
-        "chainId": 9889,
-        "contractId": "0x4ea6ccef1215d9479f1024dff70fc055ca538215d2c8c348beddffd54583d0e8",
-        "subId": "0x36470f078fb1e8d5922c44b01ffa7190258827f7a6de97edea790ca182503d72",
-        "assetId": "0x4fc8ac9f101df07e2c2dec4a53c8c42c439bdbe5e36ea2d863a61ff60afafc30"
-      }
-    ]
+    "decimals": 9,
+    "icon": {
+      "default": "https://verified-assets.fuel.network/images/steakLRT.png"
+    },
+    "contractId": "0x4ea6ccef1215d9479f1024dff70fc055ca538215d2c8c348beddffd54583d0e8",
+    "subId": "0x36470f078fb1e8d5922c44b01ffa7190258827f7a6de97edea790ca182503d72",
+    "assetId": "0x4fc8ac9f101df07e2c2dec4a53c8c42c439bdbe5e36ea2d863a61ff60afafc30",
+    "isVerified": true
   }
 ]

@@ -1,6 +1,6 @@
 import {useQuery} from "@tanstack/react-query";
 import {CoinGeckoApiUrl} from "@/src/utils/constants";
-import {assetHandleToSymbol, assetSymbolToCoinGeckoId} from "@/src/utils/coinsConfig";
+import {assetHandleToSymbol, CoinName, coinsConfig} from "@/src/utils/coinsConfig";
 
 // TODO: Use locally until dev server is configured to surpass cors
 // const mockData = {
@@ -37,12 +37,12 @@ const useUSDRate = (firstAssetName: string | null, secondAssetName: string | nul
   const {data, isLoading} = useQuery({
     queryKey: ['usdRate', firstAssetName, secondAssetName],
     queryFn: async () => {
-      const firstAssetSymbol = firstAssetName ? assetHandleToSymbol[firstAssetName] : null;
-      const secondAssetSymbol = secondAssetName ? assetHandleToSymbol[secondAssetName] : null;
+      const firstAssetSymbol = firstAssetName ? assetHandleToSymbol.get(firstAssetName) : null;
+      const secondAssetSymbol = secondAssetName ? assetHandleToSymbol.get(secondAssetName) : null;
 
       const assetIds = [firstAssetSymbol, secondAssetSymbol]
         .filter(symbol => symbol !== null)
-        .map(symbol => assetSymbolToCoinGeckoId[symbol!])
+        .map(symbol => coinsConfig.get(symbol as CoinName)?.coinGeckoId)
         .filter(id => id !== undefined)
         .join(",")
       let rates;
@@ -58,21 +58,23 @@ const useUSDRate = (firstAssetName: string | null, secondAssetName: string | nul
         rates = await response.json();
       }
 
+      const firstAssetGeckoId = firstAssetSymbol ? coinsConfig.get(firstAssetSymbol as CoinName)?.coinGeckoId : null;
+      const secondAssetGeckoId = secondAssetSymbol ? coinsConfig.get(secondAssetSymbol as CoinName)?.coinGeckoId : null;
+
       return [
         {
           asset: firstAssetName,
-          rate: firstAssetSymbol ? rates[assetSymbolToCoinGeckoId[firstAssetSymbol]]?.usd ?? 0 : 0
+          rate: firstAssetGeckoId ? rates[firstAssetGeckoId]?.usd ?? 0 : 0
         },
         {
           asset: secondAssetName,
-          rate: secondAssetSymbol ? rates[assetSymbolToCoinGeckoId[secondAssetSymbol]]?.usd ?? 0 : 0
+          rate: secondAssetGeckoId ? rates[secondAssetGeckoId]?.usd ?? 0 : 0
         },
       ]
     },
-    enabled: true,
   });
 
-  return {ratesData: data, ratesLoading: isLoading};
+  return { ratesData: data, ratesLoading: isLoading };
 };
 
 export default useUSDRate;

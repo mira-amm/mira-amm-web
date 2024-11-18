@@ -2,15 +2,12 @@ import styles from "@/src/components/pages/add-liquidity-page/components/AddLiqu
 import CoinPair from "@/src/components/common/CoinPair/CoinPair";
 import Coin from "@/src/components/common/Coin/Coin";
 import ActionButton from "@/src/components/common/ActionButton/ActionButton";
-import useAddLiquidity from "@/src/hooks/useAddLiquidity";
 import useModal from "@/src/hooks/useModal/useModal";
 import CreatePoolSuccessModal
   from "../CreatePoolSuccessModal/CreatePoolSuccessModal";
 import {useRouter} from "next/navigation";
 import {useCallback} from "react";
-import {DefaultLocale} from "@/src/utils/constants";
 import useCreatePool from "@/src/hooks/useCreatePool";
-import {BN, TransactionResult} from "fuels";
 import useAssetMetadata from "@/src/hooks/useAssetMetadata";
 
 type AssetsData = {
@@ -21,31 +18,20 @@ type AssetsData = {
 export type CreatePoolPreviewData = {
   assets: AssetsData[];
   isStablePool: boolean;
-  isNewPool: boolean;
 };
 
 type Props = {
   previewData: CreatePoolPreviewData;
 }
 
-const PreviewAddLiquidityDialog = ({ previewData }: Props) => {
+const PreviewCreatePoolDialog = ({ previewData }: Props) => {
   const [SuccessModal, openSuccessModal, closeSuccessModal] = useModal();
   const firstAssetMetadata = useAssetMetadata(previewData.assets[0].assetId);
   const secondAssetMetadata = useAssetMetadata(previewData.assets[1].assetId);
 
   const router = useRouter();
 
-  const { assets, isStablePool, isNewPool } = previewData;
-
-  const { data, mutateAsync, isPending } = useAddLiquidity({
-    firstAsset: assets[0].assetId,
-    // firstAssetAmount: assets[0].amount,
-    firstAssetAmount: new BN(0),
-    secondAsset: assets[1].assetId,
-    // secondAssetAmount: assets[1].amount,
-    secondAssetAmount: new BN(0),
-    isPoolStable: isStablePool,
-  });
+  const { assets, isStablePool } = previewData;
 
   const { createPoolData, createPool, isPoolCreationPending } = useCreatePool({
     firstAsset: assets[0].assetId,
@@ -58,22 +44,17 @@ const PreviewAddLiquidityDialog = ({ previewData }: Props) => {
   const firstCoinAmount = previewData.assets[0].amount;
   const secondCoinAmount = previewData.assets[1].amount;
 
-  const rate = (
-    parseFloat(firstCoinAmount) / parseFloat(secondCoinAmount)
-  ).toLocaleString(DefaultLocale, { minimumFractionDigits: 2 });
+  // const rate = (
+  //   parseFloat(firstCoinAmount) / parseFloat(secondCoinAmount)
+  // ).toLocaleString(DefaultLocale, { minimumFractionDigits: 2 });
 
   const handleCreateLiquidity = useCallback(async () => {
-    let data: TransactionResult<void> | undefined;
-    if (isNewPool) {
-      data = await createPool();
-    } else {
-      data = await mutateAsync();
-    }
+    const data = await createPool();
 
     if (data?.id) {
       openSuccessModal();
     }
-  }, [isNewPool, createPool, mutateAsync, openSuccessModal]);
+  }, [createPool, openSuccessModal]);
 
   const redirectToLiquidity = useCallback(() => {
     router.push('/liquidity');
@@ -150,8 +131,8 @@ const PreviewAddLiquidityDialog = ({ previewData }: Props) => {
           </p>
         </div>
       </div> */}
-      <ActionButton loading={isPending} onClick={handleCreateLiquidity}>
-        {isNewPool ? 'Create Pool' : 'This pool already exists. Add Liquidity'}
+      <ActionButton loading={isPoolCreationPending} onClick={handleCreateLiquidity}>
+        Create pool
       </ActionButton>
       <SuccessModal title={<></>} onClose={redirectToLiquidity}>
         <CreatePoolSuccessModal
@@ -159,11 +140,11 @@ const PreviewAddLiquidityDialog = ({ previewData }: Props) => {
           coinB={secondAssetMetadata.symbol || null}
           firstCoinAmount={firstCoinAmount}
           secondCoinAmount={secondCoinAmount}
-          transactionHash={createPoolData?.id ?? data?.id}
+          transactionHash={createPoolData?.id}
         />
       </SuccessModal>
     </>
   );
 };
 
-export default PreviewAddLiquidityDialog;
+export default PreviewCreatePoolDialog;

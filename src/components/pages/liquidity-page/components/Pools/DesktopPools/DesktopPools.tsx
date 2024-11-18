@@ -2,8 +2,9 @@ import styles from "./DesktopPools.module.css";
 import { useRouter } from "next/navigation";
 import { clsx } from "clsx";
 import {PoolData} from "@/src/hooks/usePoolsData";
-import {useCallback} from "react";
 import DesktopPoolRow from "./DesktopPoolRow";
+import ActionButton from "@/src/components/common/ActionButton/ActionButton";
+import Link from "next/link";
 
 type Props = {
   poolsData: PoolData[] | undefined;
@@ -25,12 +26,11 @@ const DesktopPools = ({ poolsData }: Props) => {
           <th>24H Volume</th>
           <th>TVL</th>
           <th>
-            {/*<ActionButton*/}
-            {/*className={styles.createButton}*/}
-            {/*onClick={handleCreateClick}*/}
-            {/*>*/}
-            {/*Create Pool*/}
-            {/*</ActionButton>*/}
+            <Link href="/liquidity/create-pool">
+              <ActionButton className={styles.createButton}>
+                Create Pool
+              </ActionButton>
+            </Link>
           </th>
         </tr>
       </thead>

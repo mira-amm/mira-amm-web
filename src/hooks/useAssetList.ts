@@ -1,7 +1,7 @@
 import request, { gql } from "graphql-request";
 import { SQDIndexerUrl } from "../utils/constants";
 import { useQuery } from "@tanstack/react-query";
-import { CoinDataWithPrice } from "../utils/coinsConfig";
+import { CoinDataWithPrice, coinsConfig } from "../utils/coinsConfig";
 
 export const useAssetList = (): { assets: CoinDataWithPrice[], isLoading: boolean } => {
   const { data, isLoading } = useQuery<any>({
@@ -34,6 +34,7 @@ export const useAssetList = (): { assets: CoinDataWithPrice[], isLoading: boolea
         icon: asset.image,
         l1Address: asset.l1Address,
         price: asset.price,
+        isVerified: coinsConfig.get(asset.id)?.isVerified || false,
       }));
 
       return assets;
