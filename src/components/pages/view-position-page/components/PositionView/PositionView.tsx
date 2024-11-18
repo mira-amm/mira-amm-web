@@ -146,8 +146,8 @@ const PositionView = ({ pool }: Props) => {
             </span>
           </p>
           <div className={styles.coinsData}>
-            <CoinWithAmount coin={assetAMetadata.symbol || ''} amount={formatDisplayAmount(coinAAmount)}/>
-            <CoinWithAmount coin={assetBMetadata.symbol || ''} amount={formatDisplayAmount(coinBAmount)}/>
+            <CoinWithAmount assetId={pool[0].bits} amount={formatDisplayAmount(coinAAmount)}/>
+            <CoinWithAmount assetId={pool[1].bits} amount={formatDisplayAmount(coinBAmount)}/>
           </div>
         </div>
         <div className={styles.miraBlock}>
@@ -224,8 +224,8 @@ const PositionView = ({ pool }: Props) => {
                 </span>
               </p>
               <div className={styles.coinsData}>
-                <CoinWithAmount coin={assetAMetadata.symbol || ''} amount={formatDisplayAmount(coinAAmount)}/>
-                <CoinWithAmount coin={assetBMetadata.symbol || ''} amount={formatDisplayAmount(coinBAmount)}/>
+                <CoinWithAmount assetId={pool[0].bits} amount={formatDisplayAmount(coinAAmount)}/>
+                <CoinWithAmount assetId={pool[1].bits} amount={formatDisplayAmount(coinBAmount)}/>
               </div>
             </div>
           </div>
