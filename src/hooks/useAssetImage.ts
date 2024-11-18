@@ -3,7 +3,7 @@ import { coinsConfig } from "../utils/coinsConfig";
 import request, { gql } from "graphql-request";
 import { SQDIndexerUrl } from "../utils/constants";
 
-export const useAssetImage = (assetId: string): string | null => {
+export const useAssetImage = (assetId: string | null): string | null => {
   const { data } = useQuery<string | null>({
     queryKey: ['assetImage', assetId],
     queryFn: async () => {
