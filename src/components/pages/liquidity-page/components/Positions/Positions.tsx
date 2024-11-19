@@ -21,7 +21,7 @@ const Positions = () => {
           <LoaderV2/>
           <p>Loading positions...</p>
         </div>
-      ) : data && data.length === 0 ? (
+      ) : data && data.length === 0 || !data ? (
         <div className={styles.positionsFallback}>
           <div className={styles.fallbackTop}>
             <div className={styles.icon}>
