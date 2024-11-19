@@ -18,6 +18,8 @@ export const useAssetList = (): { assets: CoinDataWithPrice[], isLoading: boolea
             numPools
             l1Address
             price
+            contractId
+            subId
           }
         }`;
 
@@ -33,6 +35,8 @@ export const useAssetList = (): { assets: CoinDataWithPrice[], isLoading: boolea
         decimals: asset.decimals,
         icon: asset.image,
         l1Address: asset.l1Address,
+        contractId: asset.contractId,
+        subId: asset.subId,
         price: asset.price,
       }));
 
