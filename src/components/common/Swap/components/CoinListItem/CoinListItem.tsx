@@ -2,33 +2,31 @@ import {memo} from "react";
 import {clsx} from "clsx";
 import {BN, CoinQuantity} from "fuels";
 
-import {CoinName, coinsConfig} from "@/src/utils/coinsConfig";
-
 import styles from './CoinListItem.module.css';
+import { useAssetImage } from "@/src/hooks/useAssetImage";
+import useAssetMetadata from "@/src/hooks/useAssetMetadata";
 
 type Props = {
-  name: CoinName;
+  assetId: string;
   balance?: CoinQuantity | undefined;
 };
 
-const CoinListItem = ({ name, balance }: Props) => {
-  const coinData = coinsConfig.get(name);
-  const fullName = coinData?.fullName;
-  const icon = coinData?.icon;
-  const decimals = coinData?.decimals ?? 0;
+const CoinListItem = ({ assetId, balance }: Props) => {
+  const metadata = useAssetMetadata(assetId);
   const balanceValue = balance?.amount ?? new BN(0);
+  const icon = useAssetImage(assetId);
 
   return (
-    <span className={clsx(styles.coin, !fullName && styles.centered)}>
-      {icon && <img src={icon} alt={`${name} icon`} />}
+    <span className={clsx(styles.coin, !metadata.name && styles.centered)}>
+      {icon && <img src={icon} alt={`${metadata.name} icon`} />}
       <div className={styles.names}>
-        <p className={styles.name}>{name}</p>
-        {fullName && (
-          <p className={styles.fullName}>{fullName}</p>
+        <p className={styles.name}>{metadata.name}</p>
+        {metadata.name && (
+          <p className={styles.fullName}>{metadata.name}</p>
         )}
       </div>
       {balanceValue.gt(0) && (
-        <p className={styles.balance}>{balanceValue.formatUnits(decimals)}</p>
+        <p className={styles.balance}>{balanceValue.formatUnits(metadata.decimals || 0)}</p>
       )}
     </span>
   )

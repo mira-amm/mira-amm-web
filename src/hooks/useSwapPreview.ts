@@ -6,6 +6,7 @@ import {buildPoolId, PoolId, Asset} from "mira-dex-ts";
 import {ApiBaseUrl} from "@/src/utils/constants";
 import {InsufficientReservesError} from "mira-dex-ts/dist/sdk/errors";
 import {BN} from "fuels";
+import useAssetMetadata from "./useAssetMetadata";
 
 type Props = {
   swapState: SwapState;
@@ -32,26 +33,22 @@ export class NoRouteFoundError extends Error {
 }
 
 const useSwapPreview = ({ swapState, mode }: Props) => {
-  const {
-    sellAssetIdInput,
-    buyAssetIdInput,
-    sellDecimals,
-    buyDecimals,
-  } = useSwapData(swapState);
-  const inputAssetId = sellAssetIdInput.bits;
-  const outputAssetId = buyAssetIdInput.bits;
+  const { sellAssetId, buyAssetId } = useSwapData(swapState);
+
+  const sellMetadata = useAssetMetadata(sellAssetId);
+  const buyMetadata = useAssetMetadata(buyAssetId);
 
   const amountString = mode === 'sell' ? swapState.sell.amount : swapState.buy.amount;
   const amount = parseFloat(amountString);
   const amountValid = !isNaN(amount);
-  const decimals = mode === 'sell' ? sellDecimals : buyDecimals;
+  const decimals = (mode === 'sell' ? sellMetadata.decimals : buyMetadata.decimals) || 0;
   const normalizedAmount = amountValid ? amount * 10 ** decimals : 0;
   const amountNonZero = normalizedAmount > 0;
 
   const tradeType: TradeType = mode === 'sell' ? 'ExactInput' : 'ExactOutput';
 
   const { data: multihopPreviewData, error: multihopPreviewError, isLoading: multihopPreviewLoading, failureCount: multihopFailureCount, refetch } = useQuery({
-    queryKey: ['multihopPreview', inputAssetId, outputAssetId, normalizedAmount, tradeType],
+    queryKey: ['multihopPreview', sellAssetId, buyAssetId, normalizedAmount, tradeType],
     queryFn: async () => {
       const res = await fetch(`${ApiBaseUrl}/find_route`, {
         method: 'POST',
@@ -59,8 +56,8 @@ const useSwapPreview = ({ swapState, mode }: Props) => {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          input: inputAssetId,
-          output: outputAssetId,
+          input: sellAssetId,
+          output: buyAssetId,
           amount: normalizedAmount,
           trade_type: tradeType,
         }),
@@ -90,8 +87,8 @@ const useSwapPreview = ({ swapState, mode }: Props) => {
 
   const miraAmm = useReadonlyMira();
   const miraExists = Boolean(miraAmm);
-  const volatilePool = buildPoolId(inputAssetId, outputAssetId, false);
-  const stablePool = buildPoolId(inputAssetId, outputAssetId, true);
+  const volatilePool = buildPoolId({ bits: sellAssetId }, { bits: buyAssetId }, false);
+  const stablePool = buildPoolId({ bits: sellAssetId }, { bits: buyAssetId }, true);
   const shouldFetchFallback =
     Boolean(multihopPreviewError) && multihopFailureCount === 2 && miraExists && amountNonZero;
 
@@ -118,7 +115,7 @@ const useSwapPreview = ({ swapState, mode }: Props) => {
   }
 
   const { data: fallbackPreviewData, error: fallbackPreviewError, isLoading: fallbackPreviewLoading } = useQuery({
-    queryKey: ['fallbackPreview', inputAssetId, outputAssetId, normalizedAmount],
+    queryKey: ['fallbackPreview', sellAssetId, buyAssetId, normalizedAmount],
     queryFn: async () => {
       const fallbackPoolId = await getFallbackPoolId();
 
@@ -128,12 +125,12 @@ const useSwapPreview = ({ swapState, mode }: Props) => {
 
       const fallbackPreviewResponse = mode === 'sell' ?
         await miraAmm?.previewSwapExactInput(
-          sellAssetIdInput,
+          { bits: sellAssetId },
           normalizedAmount,
           [fallbackPoolId],
         ) :
         await miraAmm?.previewSwapExactOutput(
-          buyAssetIdInput,
+          { bits: buyAssetId },
           normalizedAmount,
           [fallbackPoolId],
         );

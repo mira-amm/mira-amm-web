@@ -7,25 +7,26 @@ import {ChangeEvent, memo, useCallback} from "react";
 import TextButton from "@/src/components/common/TextButton/TextButton";
 import {DefaultLocale, MinEthValueBN} from "@/src/utils/constants";
 import {BN} from "fuels";
+import useAssetMetadata from "@/src/hooks/useAssetMetadata";
 
 type Props = {
-  coin: CoinName;
+  assetId: string;
   value: string;
   loading: boolean;
   setAmount: (amount: string) => void;
   balance: BN;
-  usdRate: string | undefined;
+  usdRate: number | null;
   newPool?: boolean;
   onAssetClick?: VoidFunction;
 }
 
-const CoinInput = ({ coin, value, loading, setAmount, balance, usdRate, newPool, onAssetClick }: Props) => {
-  const decimals = coinsConfig.get(coin)?.decimals!;
-  const balanceValue = balance.formatUnits(decimals);
+const CoinInput = ({ assetId, value, loading, setAmount, balance, usdRate, newPool, onAssetClick }: Props) => {
+  const metadata = useAssetMetadata(assetId);
+  const balanceValue = balance.formatUnits(metadata.decimals || 0);
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const inputValue = e.target.value.replace(',', '.');
-    const re = new RegExp(`^[0-9]*[.]?[0-9]{0,${decimals}}$`);
+    const re = new RegExp(`^[0-9]*[.]?[0-9]{0,${metadata.decimals || 0}}$`);
 
     if (re.test(inputValue)) {
       setAmount(inputValue);
@@ -34,21 +35,21 @@ const CoinInput = ({ coin, value, loading, setAmount, balance, usdRate, newPool,
 
   const handleMaxClick = useCallback(() => {
     let amountStringToSet;
-    if (coin === "ETH") {
+    if (metadata.symbol === "ETH") {
       const amountWithoutGasFee = balance.sub(MinEthValueBN);
       amountStringToSet = amountWithoutGasFee.gt(0)
-        ? amountWithoutGasFee.formatUnits(decimals)
+        ? amountWithoutGasFee.formatUnits(metadata.decimals || 0)
         : balanceValue;
     } else {
       amountStringToSet = balanceValue;
     }
 
     setAmount(amountStringToSet);
-  }, [coin, balance, setAmount]);
+  }, [metadata, balance, setAmount]);
 
   const numericValue = parseFloat(value);
   const usdValue = !isNaN(numericValue) && Boolean(usdRate) ?
-    (numericValue * parseFloat(usdRate!)).toLocaleString(DefaultLocale, {
+    (numericValue * usdRate!).toLocaleString(DefaultLocale, {
       minimumFractionDigits: 2,
       maximumFractionDigits: 2
     }) :
@@ -74,7 +75,7 @@ const CoinInput = ({ coin, value, loading, setAmount, balance, usdRate, newPool,
         )}
       </div>
       <div className={clsx(styles.coinInputLine, styles.rightColumn)}>
-        <Coin name={coin} className={styles.coinName} newPool={newPool} onClick={onAssetClick} />
+        <Coin assetId={assetId} className={styles.coinName} newPool={newPool} onClick={onAssetClick} />
         {balance.gt(0) && (
           <span className={styles.balance}>
             Balance: {balanceValue}

@@ -2,29 +2,31 @@ import useReadonlyMira from "@/src/hooks/useReadonlyMira";
 import {CoinName, coinsConfig} from "@/src/utils/coinsConfig";
 import {PoolId} from "mira-dex-ts";
 import {useQuery} from "@tanstack/react-query";
+import { B256Address } from "fuels";
+import useAssetMetadata from "./useAssetMetadata";
 
 type Props = {
   pools: PoolId[] | undefined;
-  assetName: CoinName;
+  sellAssetId: B256Address | null;
+  buyAssetId: B256Address | null;
 }
 
-const useReservesPrice = ({pools, assetName}: Props) => {
+const useReservesPrice = ({pools, sellAssetId, buyAssetId}: Props) => {
   const miraAmm = useReadonlyMira();
 
-  const assetId = coinsConfig.get(assetName)?.assetId;
-  const assetDecimals = coinsConfig.get(assetName)?.decimals;
+  const sellMetadata = useAssetMetadata(sellAssetId);
+  const buyMetadata = useAssetMetadata(buyAssetId);
 
-  const shouldFetch = Boolean(pools) && Boolean(miraAmm) && Boolean(assetId);
+  const shouldFetch = Boolean(pools) && Boolean(miraAmm) && Boolean(sellAssetId);
 
   const { data } = useQuery({
-    queryKey: ['reservesPrice', assetId, pools],
+    queryKey: ['reservesPrice', sellAssetId, buyAssetId, pools],
     queryFn: async () => {
       const assetInputAmount = 1000;
-      const [outputAsset, previewPrice] = await miraAmm!.previewSwapExactInput({bits: assetId!}, assetInputAmount, pools!);
-      const outputAssetDecimals = coinsConfig.values().find(v => v.assetId === outputAsset.bits)?.decimals;
-      return previewPrice.toNumber() / assetInputAmount * (10 ** (assetDecimals ?? 0)) / (10 ** (outputAssetDecimals ?? 0));
+      const [outputAsset, previewPrice] = await miraAmm!.previewSwapExactInput({bits: sellAssetId!}, assetInputAmount, pools!);
+      return previewPrice.toNumber() / assetInputAmount * (10 ** (sellMetadata.decimals ?? 0)) / (10 ** (buyMetadata.decimals ?? 0));
     },
-    enabled: shouldFetch,
+    enabled: !!pools && !!miraAmm && !!sellMetadata && !!buyMetadata,
   });
 
   return { reservesPrice: data };

@@ -11,9 +11,10 @@ import {useRouter} from "next/navigation";
 import {Dispatch, SetStateAction, useCallback} from "react";
 import TransactionFailureModal from "@/src/components/common/TransactionFailureModal/TransactionFailureModal";
 import {BN} from "fuels";
+import useAssetMetadata from "@/src/hooks/useAssetMetadata";
 
 type AssetsData = {
-  coin: CoinName;
+  assetId: string;
   amount: BN;
 };
 
@@ -35,23 +36,22 @@ const PreviewAddLiquidityDialog = ({ previewData, setPreviewData }: Props) => {
 
   const { assets, isStablePool } = previewData;
 
-  const firstAssetName = assets[0].coin;
-  const secondAssetName = assets[1].coin;
+  const firstAssetMetadata = useAssetMetadata(assets[0].assetId);
+  const secondAssetMetadata = useAssetMetadata(assets[1].assetId);
+
   const firstAssetAmount = assets[0].amount;
   const secondAssetAmount = assets[1].amount;
 
   const { data, mutateAsync, isPending, error: addLiquidityError } = useAddLiquidity({
-    firstAssetName,
+    firstAsset: previewData.assets[0].assetId,
     firstAssetAmount,
-    secondAssetName,
+    secondAsset: previewData.assets[1].assetId,
     secondAssetAmount,
     isPoolStable: isStablePool,
   });
 
-  const firstAssetDecimals = coinsConfig.get(firstAssetName)?.decimals!;
-  const secondAssetDecimals = coinsConfig.get(secondAssetName)?.decimals!;
-  const firstAssetAmountString = firstAssetAmount.formatUnits(firstAssetDecimals);
-  const secondAssetAmountString = secondAssetAmount.formatUnits(secondAssetDecimals);
+  const firstAssetAmountString = firstAssetAmount.formatUnits(firstAssetMetadata.decimals);
+  const secondAssetAmountString = secondAssetAmount.formatUnits(secondAssetMetadata.decimals);
 
   // const rate = (
   //   parseFloat(firstCoinAmount) / parseFloat(secondCoinAmount)
@@ -83,15 +83,15 @@ const PreviewAddLiquidityDialog = ({ previewData, setPreviewData }: Props) => {
     <>
       <div className={styles.section}>
         <div className={styles.previewCoinPair}>
-          <CoinPair firstCoin={firstAssetName} secondCoin={secondAssetName} isStablePool={isStablePool}/>
+          <CoinPair firstCoin={assets[0].assetId} secondCoin={assets[1].assetId} isStablePool={isStablePool}/>
         </div>
         <div className={styles.inputsPreview}>
           <div className={styles.inputPreviewRow}>
-            <Coin name={firstAssetName} />
+            <Coin assetId={assets[0].assetId} />
             <p>{firstAssetAmountString}</p>
           </div>
           <div className={styles.inputPreviewRow}>
-            <Coin name={secondAssetName} />
+            <Coin assetId={assets[1].assetId} />
             <p>{secondAssetAmountString}</p>
           </div>
           <div className={styles.inputPreviewRow}>
@@ -153,8 +153,8 @@ const PreviewAddLiquidityDialog = ({ previewData, setPreviewData }: Props) => {
       </ActionButton>
       <SuccessModal title={<></>} onClose={redirectToLiquidity}>
         <AddLiquiditySuccessModal
-          coinA={firstAssetName}
-          coinB={secondAssetName}
+          coinA={firstAssetMetadata.symbol || null}
+          coinB={secondAssetMetadata.symbol || null}
           firstCoinAmount={firstAssetAmountString}
           secondCoinAmount={secondAssetAmountString}
           transactionHash={data?.id}

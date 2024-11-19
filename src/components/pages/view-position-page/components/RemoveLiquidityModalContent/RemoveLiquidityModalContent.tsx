@@ -13,12 +13,13 @@ import {
   useRef,
   useState,
 } from "react";
-import {CoinName} from "@/src/utils/coinsConfig";
 import {useDebounceCallback} from "usehooks-ts";
+import useAssetMetadata from '@/src/hooks/useAssetMetadata';
+import { B256Address } from 'fuels';
 
 type Props = {
-  coinA: CoinName;
-  coinB: CoinName;
+  coinA: B256Address;
+  coinB: B256Address;
   isStablePool: boolean;
   currentCoinAValue: string;
   currentCoinBValue: string;
@@ -33,6 +34,8 @@ type Props = {
 
 const RemoveLiquidityModalContent = ({coinA, coinB, isStablePool, currentCoinAValue, currentCoinBValue, coinAValueToWithdraw, coinBValueToWithdraw, closeModal, liquidityValue, setLiquidityValue, handleRemoveLiquidity, isValidNetwork }: Props) => {
   const [displayValue, setDisplayValue] = useState(liquidityValue);
+  const coinAMetadata = useAssetMetadata(coinA);
+  const coinBMetadata = useAssetMetadata(coinB);
 
   const sliderRef = useRef<HTMLInputElement>(null);
 
@@ -91,8 +94,8 @@ const RemoveLiquidityModalContent = ({coinA, coinB, isStablePool, currentCoinAVa
           <thead>
           <tr>
             <th />
-            <th>{coinA}</th>
-            <th>{coinB}</th>
+            <th>{coinAMetadata.symbol}</th>
+            <th>{coinBMetadata.symbol}</th>
           </tr>
           </thead>
           <tbody>

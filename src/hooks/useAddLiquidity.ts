@@ -1,21 +1,20 @@
 import {useMutation} from "@tanstack/react-query";
 import useMiraDex from "@/src/hooks/useMiraDex/useMiraDex";
-import {CoinName, coinsConfig} from "@/src/utils/coinsConfig";
-import {createPoolIdFromAssetNames} from "@/src/utils/common";
 import {useCallback} from "react";
 import {useWallet} from "@fuels/react";
 import {DefaultTxParams, MaxDeadline} from "@/src/utils/constants";
 import {BN} from "fuels";
+import { buildPoolId } from "mira-dex-ts";
 
 type Props = {
-  firstAssetName: CoinName;
+  firstAsset: string;
   firstAssetAmount: BN;
-  secondAssetName: CoinName;
+  secondAsset: string;
   secondAssetAmount: BN;
   isPoolStable: boolean;
 };
 
-const useAddLiquidity = ({ firstAssetName, firstAssetAmount, secondAssetName, secondAssetAmount, isPoolStable }: Props) => {
+const useAddLiquidity = ({ firstAsset, firstAssetAmount, secondAsset, secondAssetAmount, isPoolStable }: Props) => {
   const mira = useMiraDex();
   const { wallet } = useWallet();
 
@@ -24,16 +23,14 @@ const useAddLiquidity = ({ firstAssetName, firstAssetAmount, secondAssetName, se
       return;
     }
 
-    const poolId = createPoolIdFromAssetNames(firstAssetName, secondAssetName, isPoolStable);
-    const firstAsset = coinsConfig.get(firstAssetName)!;
-    const secondAsset = coinsConfig.get(secondAssetName)!;
+    const poolId = buildPoolId(firstAsset, secondAsset, isPoolStable);
 
     let asset0Amount;
     let asset1Amount;
-    if (poolId[0].bits === firstAsset.assetId && poolId[1].bits === secondAsset.assetId) {
+    if (poolId[0].bits === firstAsset && poolId[1].bits === secondAsset) {
       asset0Amount = firstAssetAmount;
       asset1Amount = secondAssetAmount;
-    } else if (poolId[0].bits === secondAsset.assetId && poolId[1].bits === firstAsset.assetId) {
+    } else if (poolId[0].bits === secondAsset && poolId[1].bits === firstAsset) {
       asset0Amount = secondAssetAmount;
       asset1Amount = firstAssetAmount;
     } else {
@@ -47,7 +44,7 @@ const useAddLiquidity = ({ firstAssetName, firstAssetAmount, secondAssetName, se
     const fundedTx = await wallet.fund(txRequest, gasCost);
     const tx = await wallet.sendTransaction(fundedTx, { estimateTxDependencies: true });
     return await tx.waitForResult();
-  }, [mira, wallet, firstAssetName, secondAssetName, isPoolStable, firstAssetAmount, secondAssetAmount]);
+  }, [mira, wallet, firstAsset, secondAsset, isPoolStable, firstAssetAmount, secondAssetAmount]);
 
   const { data, mutateAsync, isPending, error  } = useMutation({
     mutationFn,

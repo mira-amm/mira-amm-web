@@ -1,12 +1,11 @@
 import {useQuery} from "@tanstack/react-query";
-import {CoinName, coinsConfig} from "@/src/utils/coinsConfig";
 import useReadonlyMira from "@/src/hooks/useReadonlyMira";
 import {buildPoolId, PoolId} from "mira-dex-ts";
 import {BN} from "fuels";
 
 type Props = {
-  firstCoin: CoinName;
-  secondCoin: CoinName;
+  firstCoin: string;
+  secondCoin: string;
   amount: BN;
   isFirstToken: boolean;
   isStablePool: boolean;
@@ -17,17 +16,14 @@ const usePreviewAddLiquidity = ({ firstCoin, secondCoin, amount, isFirstToken, i
   const mira = useReadonlyMira();
   const miraExists = Boolean(mira);
 
-  const firstCoinAssetId = coinsConfig.get(firstCoin)?.assetId!;
-  const secondCoinAssetId = coinsConfig.get(secondCoin)?.assetId!;
-
-  const pool: PoolId = buildPoolId(firstCoinAssetId, secondCoinAssetId, isStablePool);
+  const pool: PoolId = buildPoolId(firstCoin, secondCoin, isStablePool);
 
   const amountString = amount.toString();
 
   const shouldFetch = fetchCondition && miraExists && !amount.eq(0);
 
   const { data, isFetching, error } = useQuery({
-    queryKey: ['preview-add-liquidity', firstCoinAssetId, secondCoinAssetId, isStablePool, amountString, isFirstToken],
+    queryKey: ['preview-add-liquidity', firstCoin, secondCoin, isStablePool, amountString, isFirstToken],
     queryFn: () => mira?.getOtherTokenToAddLiquidity(pool, amount, isFirstToken),
     enabled: shouldFetch,
   })

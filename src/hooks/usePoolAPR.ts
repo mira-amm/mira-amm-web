@@ -1,8 +1,8 @@
 import {useQuery} from "@tanstack/react-query";
 import {PoolId} from "mira-dex-ts";
 import {createPoolIdString} from "@/src/utils/common";
-import {PoolsData} from "@/src/hooks/usePoolsData";
-import {ApiBaseUrl} from "@/src/utils/constants";
+import {SQDIndexerUrl} from "@/src/utils/constants";
+import request, { gql } from "graphql-request";
 
 const usePoolAPR = (pool: PoolId) => {
   const poolIdString = createPoolIdString(pool);
@@ -10,20 +10,27 @@ const usePoolAPR = (pool: PoolId) => {
   const { data, isPending } = useQuery({
     queryKey: ['poolAPR', poolIdString],
     queryFn: async () => {
-      const poolsDataResponse = await fetch(`${ApiBaseUrl}/pools`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          'volume_hours': 24,
-          'apr_days': 1,
-          "pool_id": poolIdString,
-        }),
+      const time24HoursAgo = Math.floor(Date.now() / 1000) - 24 * 60 * 60;
+      const query = gql`
+        query MyQuery {
+          poolById(id: "${createPoolIdString(pool)}") {
+            snapshots(where: {timestamp_gt: ${time24HoursAgo}}, orderBy: timestamp_ASC) {
+              feesUSD
+            }
+            tvlUSD
+          }
+        }
+      `;
+
+      const result = await request<any>({
+        url: SQDIndexerUrl,
+        document: query,
       });
 
-      const poolsData: PoolsData = await poolsDataResponse.json();
-      return poolsData.pools[0].details.apr;
+      const fees24h = result.poolById.snapshots.reduce((acc: number, snapshot: any) => acc + parseFloat(snapshot.feesUSD), 0);
+      const apr = fees24h / parseFloat(result.poolById.tvlUSD) * 365 * 100;
+
+      return apr;
     },
   });
 

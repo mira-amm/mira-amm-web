@@ -2,41 +2,41 @@ import useMiraDex from "@/src/hooks/useMiraDex/useMiraDex";
 import {useMutation, useQuery} from "@tanstack/react-query";
 import {useWallet} from "@fuels/react";
 import {useCallback} from "react";
-import {CoinName, coinsConfig} from "@/src/utils/coinsConfig";
+import {coinsConfig} from "@/src/utils/coinsConfig";
 import {DefaultTxParams, MaxDeadline} from "@/src/utils/constants";
-import {BN} from "fuels";
+import {bn, BN} from "fuels";
+import { useAssetMinterContract } from "./useAssetMinterContract";
+import useAssetMetadata from "./useAssetMetadata";
 
 type Props = {
-  firstAssetName: CoinName;
+  firstAsset: string;
   firstAssetAmount: string;
-  secondAssetName: CoinName;
+  secondAsset: string;
   secondAssetAmount: string;
   isPoolStable: boolean;
 };
 
-const useCreatePool = ({ firstAssetName, firstAssetAmount, secondAssetName, secondAssetAmount, isPoolStable }: Props) => {
+const useCreatePool = ({ firstAsset, firstAssetAmount, secondAsset, secondAssetAmount, isPoolStable }: Props) => {
   const mira = useMiraDex();
   const { wallet } = useWallet();
+  const firstAssetContract = useAssetMinterContract(firstAsset);
+  const secondAssetContract = useAssetMinterContract(secondAsset);
+  const firstAssetMetadata = useAssetMetadata(firstAsset);
+  const secondAssetMetadata = useAssetMetadata(secondAsset);
 
   const mutationFn = useCallback(async () => {
-    if (!mira || !wallet) {
+    if (!mira || !wallet || !firstAssetContract.contractId || !secondAssetContract.contractId || !firstAssetContract.subId || !secondAssetContract.subId) {
       return;
     }
 
-    const firstAssetContractId = coinsConfig.get(firstAssetName)?.contractId ?? '';
-    const secondAssetContractId = coinsConfig.get(secondAssetName)?.contractId ?? '';
-
-    const firstAssetSubId = coinsConfig.get(firstAssetName)?.subId ?? '';
-    const secondAssetSubId = coinsConfig.get(secondAssetName)?.subId ?? '';
-
-    const firstCoinAmountToUse = new BN(parseFloat(firstAssetAmount)).mul(10 ** coinsConfig.get(firstAssetName)?.decimals!);
-    const secondCoinAmountToUse = new BN(parseFloat(secondAssetAmount)).mul(10 ** coinsConfig.get(secondAssetName)?.decimals!);
+    const firstCoinAmountToUse = bn.parseUnits(firstAssetAmount, firstAssetMetadata.decimals || 0);
+    const secondCoinAmountToUse = bn.parseUnits(secondAssetAmount, secondAssetMetadata.decimals || 0);
 
     const txRequest = await mira.createPoolAndAddLiquidity(
-      firstAssetContractId,
-      firstAssetSubId,
-      secondAssetContractId,
-      secondAssetSubId,
+      firstAssetContract.contractId,
+      firstAssetContract.subId,
+      secondAssetContract.contractId,
+      secondAssetContract.subId,
       isPoolStable,
       firstCoinAmountToUse,
       secondCoinAmountToUse,
@@ -50,8 +50,10 @@ const useCreatePool = ({ firstAssetName, firstAssetAmount, secondAssetName, seco
   }, [
     mira,
     wallet,
-    firstAssetName,
-    secondAssetName,
+    firstAssetContract,
+    secondAssetContract,
+    firstAssetMetadata,
+    secondAssetMetadata,
     firstAssetAmount,
     secondAssetAmount,
     isPoolStable,

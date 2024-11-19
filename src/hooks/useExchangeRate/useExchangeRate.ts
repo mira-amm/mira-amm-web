@@ -3,8 +3,12 @@ import {useMemo} from "react";
 import type {CurrencyBoxMode, SwapState} from "@/src/components/common/Swap/Swap";
 import {coinsConfig} from "@/src/utils/coinsConfig";
 import {DefaultLocale} from "@/src/utils/constants";
+import useAssetMetadata from "../useAssetMetadata";
 
 const useExchangeRate = (swapState: SwapState, mode: CurrencyBoxMode = 'sell'): string | null => {
+  const sellMetadata = useAssetMetadata(swapState.sell.assetId);
+  const buyMetadata = useAssetMetadata(swapState.buy.assetId);
+
   return useMemo(() => {
     const showRate = swapState.buy.amount !== '' && swapState.sell.amount !== '';
     if (!showRate) {
@@ -18,11 +22,13 @@ const useExchangeRate = (swapState: SwapState, mode: CurrencyBoxMode = 'sell'): 
       return null;
     }
 
-    const decimals = coinsConfig.get(swapState[anotherMode].coin)?.decimals!;
+    const metadata = mode === 'sell' ? sellMetadata : buyMetadata;
+    const otherMetadata = mode === 'sell' ? buyMetadata : sellMetadata;
 
     const rate = parseFloat(swapState[anotherMode].amount) / parseFloat(swapState[mode].amount);
-    return `1 ${swapState[mode].coin} ≈ ${rate.toLocaleString(DefaultLocale, { minimumFractionDigits: decimals })} ${swapState[anotherMode].coin}`;
-  }, [swapState.buy.amount, swapState.sell.amount, swapState.buy.coin, swapState.sell.coin, mode]);
+    const priceString = rate.toLocaleString(DefaultLocale, { minimumFractionDigits: metadata.decimals || 0 });
+    return `1 ${metadata.symbol} ≈ ${priceString} ${otherMetadata.symbol}`;
+  }, [swapState.buy.amount, swapState.sell.amount, sellMetadata, buyMetadata, mode]);
 };
 
 export default useExchangeRate;

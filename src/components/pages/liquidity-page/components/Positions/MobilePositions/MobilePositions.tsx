@@ -7,9 +7,10 @@ import {Fragment, useCallback} from "react";
 import {createPoolKey} from "@/src/utils/common";
 import {useRouter} from "next/navigation";
 import {clsx} from "clsx";
+import { Position } from "@/src/hooks/usePositions";
 
 type Props = {
-  positions: any[] | undefined;
+  positions: Position[] | undefined;
 };
 
 const MobilePositions = ({ positions }: Props) => {
@@ -27,14 +28,9 @@ const MobilePositions = ({ positions }: Props) => {
   return (
     <div className={clsx(styles.mobilePositions, 'mobileOnly')}>
       {positions.map(((position, index) => {
-        const { bits: coinAAssetId } = position[0][0];
-        const { bits: coinBAssetId } = position[1][0];
-        const key = coinAAssetId.toString() + '-' + coinBAssetId.toString();
-        const poolId = [position[0][0], position[1][0], position.isStablePool] as PoolId;
-
         return (
-          <Fragment key={key}>
-            <MobilePositionItem position={position} onClick={() => openPosition(poolId)}/>
+          <Fragment key={createPoolKey(position.poolId)}>
+            <MobilePositionItem position={position} onClick={() => openPosition(position.poolId)}/>
             {index !== positions.length - 1 && (
               <div className={styles.separator} />
             )}

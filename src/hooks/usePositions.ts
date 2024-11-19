@@ -1,51 +1,73 @@
-import usePoolsIdsWithLpAssetIds from "@/src/hooks/usePoolsIdsWithLpAssetIds";
-import {PoolId} from "mira-dex-ts";
 import {useQuery} from "@tanstack/react-query";
 import useReadonlyMira from "@/src/hooks/useReadonlyMira";
 import useBalances from "@/src/hooks/useBalances/useBalances";
-import {AssetId} from "fuels";
-import {useMemo} from "react";
+import request, { gql } from "graphql-request";
+import { SQDIndexerUrl } from "../utils/constants";
+import { createPoolIdFromIdString } from "../utils/common";
+import { Asset, PoolId } from "mira-dex-ts";
 
-type PoolDataWithLpBalance = [PoolId, AssetId, string];
+export interface Position {
+  poolId: PoolId;
+  lpAssetId: string;
+  isStable: boolean;
+  token0Position: Asset;
+  token1Position: Asset;
+}
 
-const usePositions = () => {
+const usePositions = (): { data: Position[] | undefined, isLoading: boolean } => {
   const mira = useReadonlyMira();
-  const poolsData = usePoolsIdsWithLpAssetIds();
   const { balances } = useBalances();
-
-  const nonZeroLpBalancePoolsData = useMemo(() => {
-    if (!balances) {
-      return [];
-    }
-
-    return poolsData.reduce((accumulatedPoolsData, poolData) => {
-      const [, lpAssetId] = poolData;
-      const lpBalance = balances.find(balance => balance.assetId === lpAssetId.bits)?.amount;
-      if (!lpBalance) {
-        return accumulatedPoolsData;
-      }
-
-      const poolDataWithLpBalance: PoolDataWithLpBalance = [poolData[0], poolData[1], lpBalance.toString()];
-      return [...accumulatedPoolsData, poolDataWithLpBalance];
-    }, [] as PoolDataWithLpBalance[]);
-  }, [poolsData, balances]);
 
   const miraExists = Boolean(mira);
 
-  const shouldFetch = miraExists && nonZeroLpBalancePoolsData.length > 0;
-
   const { data, isLoading } = useQuery({
-    queryKey: ['positions', nonZeroLpBalancePoolsData, balances],
+    queryKey: ['positions', balances],
     queryFn: async () => {
-      const positionInfoPromises = nonZeroLpBalancePoolsData.map(async (poolDataWithBalance) => {
-        const [pool, , lpBalance] = poolDataWithBalance;
-        const position = await mira?.getLiquidityPosition(pool, lpBalance);
-        return { ...position, lpBalance, isStablePool: pool[2] };
+      const assetIds = balances?.map(balance => balance.assetId);
+
+      const query = gql`
+        query MyQuery {
+          pools(where: {
+            lpToken: {id_in: [${assetIds!.map(assetId => `"${assetId}"`).join(', ')}]}
+          }) {
+            id
+            lpToken {
+              id
+            }
+            asset0 {
+              id
+            }
+            asset1 {
+              id
+            }
+            isStable
+          }
+        }
+      `;
+
+      const result = await request<{ pools: any[] }>({
+        url: SQDIndexerUrl,
+        document: query,
       });
 
-      return Promise.all(positionInfoPromises);
+
+      const pools = await Promise.all(result.pools.map(async (pool: any) => {
+        const poolId = createPoolIdFromIdString(pool.id);
+        const lpBalance = balances!.find(balance => balance.assetId === pool.lpToken.id);
+        const [token0Position, token1Position] = await mira!.getLiquidityPosition(poolId, lpBalance!.amount.toString());
+
+        return {
+          poolId,
+          lpAssetId: pool.lpToken.id,
+          isStable: pool.isStable,
+          token0Position,
+          token1Position,
+        };
+      }));
+
+      return pools;
     },
-    enabled: shouldFetch,
+    enabled: miraExists && !!balances,
   });
 
   return { data, isLoading };

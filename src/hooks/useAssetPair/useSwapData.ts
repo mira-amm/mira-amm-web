@@ -2,7 +2,7 @@ import {useMemo} from "react";
 import {AssetIdInput} from "mira-dex-ts/dist/sdk/typegen/MiraAmmContract";
 
 import {SwapState} from "@/src/components/common/Swap/Swap";
-import {coinsConfig} from "@/src/utils/coinsConfig";
+import useAssetMetadata from "../useAssetMetadata";
 
 type SwapData = {
   sellAssetId: string;
@@ -14,32 +14,26 @@ type SwapData = {
 };
 
 const useSwapData = (swapState: SwapState): SwapData => {
+  const sellMetadata = useAssetMetadata(swapState.sell.assetId);
+  const buyMetadata = useAssetMetadata(swapState.buy.assetId);
+
   return useMemo(() => {
-    const sellCoin = swapState.sell.coin;
-    const buyCoin = swapState.buy.coin;
-
-    const sellAssetId = coinsConfig.get(sellCoin)?.assetId!;
-    const buyAssetId = coinsConfig.get(buyCoin)?.assetId!;
-
-    const sellDecimals = coinsConfig.get(sellCoin)?.decimals!;
-    const buyDecimals = coinsConfig.get(buyCoin)?.decimals!;
-
     const sellAssetIdInput: AssetIdInput = {
-      bits: sellAssetId,
+      bits: swapState.sell.assetId!,
     };
     const buyAssetIdInput: AssetIdInput = {
-      bits: buyAssetId,
+      bits: swapState.buy.assetId!,
     };
 
     return {
-      sellAssetId,
-      buyAssetId,
-      sellDecimals,
-      buyDecimals,
+      sellAssetId: swapState.sell.assetId!,
+      buyAssetId: swapState.buy.assetId!,
+      sellDecimals: sellMetadata?.decimals || 0,
+      buyDecimals: buyMetadata?.decimals || 0,
       sellAssetIdInput,
       buyAssetIdInput,
     };
-  }, [swapState.buy.coin, swapState.sell.coin]);
+  }, [swapState, sellMetadata, buyMetadata]);
 };
 
 export default useSwapData;
