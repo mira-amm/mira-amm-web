@@ -1,25 +1,27 @@
-import {CoinName, coinsConfig} from "@/src/utils/coinsConfig";
 import {SwapState} from "@/src/components/common/Swap/Swap";
 import {useMemo} from "react";
 import {useLocalStorage} from "usehooks-ts";
+import { ETH_ASSET_ID, USDC_ASSET_ID } from "@/src/utils/constants";
+
+const b256Regex = /0x[0-9a-fA-F]{64}/;
 
 const useInitialSwapState = () => {
   // TODO: Resolve hydration issue without losing the ability to set initial state
-  const [swapCoins] = useLocalStorage('swapCoins', {sell: null, buy: null});
+  const [swapCoins] = useLocalStorage<{ buy: string | null, sell: string | null }>('swapCoins', {sell: null, buy: null});
 
   return useMemo(() => {
-    const sellCoinExistsInMap = swapCoins.sell !== null && coinsConfig.has(swapCoins.sell as CoinName);
-    const buyCoinExistsInMap = swapCoins.buy !== null && coinsConfig.has(swapCoins.buy as CoinName);
-    const sellCoin = sellCoinExistsInMap ? swapCoins.sell as CoinName : 'ETH';
-    const buyCoin = buyCoinExistsInMap ? swapCoins.buy as CoinName : 'USDT';
+    const sellCoinIsValid = swapCoins.sell !== null && b256Regex.test(swapCoins.sell);
+    const buyCoinIsValid = swapCoins.buy !== null && b256Regex.test(swapCoins.buy);
+    const sellAsset = sellCoinIsValid ? swapCoins.sell : ETH_ASSET_ID;
+    const buyAsset = buyCoinIsValid ? swapCoins.buy : USDC_ASSET_ID;
 
     const initialSwapState: SwapState = {
       sell: {
-        assetId: swapCoins.sell,
+        assetId: sellAsset,
         amount: '',
       },
       buy: {
-        assetId: swapCoins.buy,
+        assetId: buyAsset,
         amount: '',
       },
     };

@@ -6,6 +6,8 @@ export const DEFAULT_AMM_CONTRACT_ID =
 export const ETH_ASSET_ID = '0xf8f8b6283d7fa5b672b530cbb84fcccb4ff8dc40f8176ef4544ddb1f1952ad07';
 export const BASE_ASSET_CONTRACT = '0x7e2becd64cd598da59b4d1064b711661898656c6b1f4918a787156b8965dc83c';
 
+export const USDC_ASSET_ID = '0x286c479da40dc953bddc3bb4c453b608bba2e0ac483b077bd475174115395e6b';
+
 export const DefaultTxParams: TxParams = {
   gasLimit: 10_000_000,
   maxFee: 1_000_000,
