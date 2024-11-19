@@ -6,7 +6,6 @@ import { DefaultLocale } from "@/src/utils/constants";
 import Link from "next/link";
 import styles from "./DesktopPools.module.css";
 import clsx from "clsx";
-import { useAssetPrice } from "@/src/hooks/useAssetPrice";
 
 export default function DesktopPoolRow({ poolData }: { poolData: PoolData }) {
   if (!poolData) {
@@ -25,16 +24,18 @@ export default function DesktopPoolRow({ poolData }: { poolData: PoolData }) {
   if (poolData.details) {
     const {details: {apr, volume, tvl}} = poolData;
 
-    if (apr) {
+    if (apr && apr > 0) {
       aprValue = `${apr.toLocaleString(DefaultLocale, {
           minimumFractionDigits: 2,
           maximumFractionDigits: 2
         })}%`;
     }
-    if (tvl) {
+    if (tvl && tvl > 0) {
       tvlValue = `$${tvl.toLocaleString(DefaultLocale, {maximumFractionDigits: 0})}`;
     }
-    volumeValue = `$${parseFloat(volume).toLocaleString(DefaultLocale, {maximumFractionDigits: 0})}`;
+    if (volume && parseFloat(volume) > 0) {
+      volumeValue = `$${parseFloat(volume).toLocaleString(DefaultLocale, {maximumFractionDigits: 0})}`;
+    }
   }
 
   return (
