@@ -706,5 +706,21 @@
         "assetId": "0x4fc8ac9f101df07e2c2dec4a53c8c42c439bdbe5e36ea2d863a61ff60afafc30"
       }
     ]
+  },
+  {
+    "name": "Fluid USD",
+    "symbol": "USDF",
+    "icon": "https://i.imgur.com/qI2cyjF.jpg",
+    "networks": [
+      {
+        "type": "fuel",
+        "chain": "mainnet",
+        "decimals": 9,
+        "chainId": 9889,
+        "assetId": "0x33a6d90877f12c7954cca6d65587c25e9214c7bed2231c188981c7114c1bdb78",
+        "contractId": "0x32deed96558e9572abce544aaf256724aee60517eeb1fabe76e86e4790c888b0",
+        "subId": "0x0000000000000000000000000000000000000000000000000000000000000000"
+      }
+    ]
   }
 ]
