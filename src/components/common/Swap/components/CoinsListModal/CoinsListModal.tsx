@@ -4,6 +4,7 @@ import {ChangeEvent, memo, useEffect, useMemo, useRef, useState} from "react";
 import styles from "./CoinsListModal.module.css";
 import {BN, CoinQuantity} from "fuels";
 import { useAssetList } from "@/src/hooks/useAssetList";
+import UnknownCoinListItem from "../UnknownCoinListItem";
 
 type Props = {
   selectCoin: (assetId: string | null) => void;
@@ -13,6 +14,8 @@ type Props = {
 
 const priorityOrder: string[] = ['ETH', 'USDC', 'USDT'];
 const lowPriorityOrder: string[] = ['DUCKY'];
+
+const assetIdRegex = /^0x[0-9a-fA-F]{64}$/;
 
 const CoinsListModal = ({ selectCoin, balances, verifiedAssetsOnly }: Props) => {
   const { assets, isLoading } = useAssetList();
@@ -104,6 +107,13 @@ const CoinsListModal = ({ selectCoin, balances, verifiedAssetsOnly }: Props) => 
         />
       </div>
       <div className={styles.tokenList}>
+        {assetIdRegex.test(value) && sortedCoinsList.length === 0 && (
+          <UnknownCoinListItem
+            assetId={value}
+            balance={balances?.find((b) => b.assetId === value)}
+            onClick={() => selectCoin(value)}
+          />
+        )}
         {sortedCoinsList.map(({ assetId }) => (
           <div
             className={styles.tokenListItem}

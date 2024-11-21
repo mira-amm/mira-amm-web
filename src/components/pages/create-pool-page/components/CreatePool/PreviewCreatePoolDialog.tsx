@@ -74,7 +74,7 @@ const PreviewCreatePoolDialog = ({ previewData }: Props) => {
             <p>{firstCoinAmount}</p>
           </div>
           <div className={styles.inputPreviewRow}>
-            <Coin assetId={previewData.assets[0].assetId} />
+            <Coin assetId={previewData.assets[1].assetId} />
             <p>{secondCoinAmount}</p>
           </div>
           <div className={styles.inputPreviewRow}>
