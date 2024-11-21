@@ -722,5 +722,21 @@
         "subId": "0x0000000000000000000000000000000000000000000000000000000000000000"
       }
     ]
+  },
+  {
+    "name": "Fluid Protocol Token",
+    "symbol": "FPT",
+    "icon": "https://4021016264-files.gitbook.io/~/files/v0/b/gitbook-x-prod.appspot.com/o/spaces%2FPqCU7YYbXS8bH6hGl2ZB%2Ficon%2F7ZuHl12SM1pfzlVdaUHh%2FLogo%20snip.png?alt=media&token=b934701f-b39f-4e7e-949a-71fae2e486a9",
+    "networks": [
+      {
+        "type": "fuel",
+        "chain": "mainnet",
+        "decimals": 9,
+        "chainId": 9889,
+        "assetId": "0x9faba055d60f126d67b7ea997a052d8fa27a422b6727f6f34603b13b889b8322",
+        "contractId": "0xa52331b990462cb94680d14a3745e0b67eb9fc8d7c1637620da9346d1cd0d7d7",
+        "subId": "0x0000000000000000000000000000000000000000000000000000000000000000"
+      }
+    ]
   }
 ]
