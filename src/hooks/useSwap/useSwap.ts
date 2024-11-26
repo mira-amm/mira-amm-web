@@ -1,5 +1,5 @@
 import {useCallback} from "react";
-import {ScriptTransactionRequest} from "fuels";
+import {bn, ScriptTransactionRequest} from "fuels";
 import {useWallet} from "@fuels/react";
 import {useMutation} from "@tanstack/react-query";
 
@@ -27,11 +27,11 @@ const useSwap = ({ swapState, mode, slippage, pools }: Props) => {
       return;
     }
 
-    const sellAmount = Number(swapState.sell.amount) * 10 ** sellDecimals;
-    const buyAmount = Number(swapState.buy.amount) * 10 ** buyDecimals;
+    const sellAmount = bn.parseUnits(swapState.sell.amount, sellDecimals);
+    const buyAmount = bn.parseUnits(swapState.buy.amount, buyDecimals);
 
-    const buyAmountWithSlippage = Math.ceil(buyAmount * (1 - slippage / 100));
-    const sellAmountWithSlippage = Math.floor(sellAmount * (1 + slippage / 100));
+    const buyAmountWithSlippage = buyAmount.mul(bn(10_000).sub(bn(slippage))).div(bn(10_000));
+    const sellAmountWithSlippage = sellAmount.mul(bn(10_000).add(bn(slippage))).div(bn(10_000));
 
     const tx = mode === 'sell' ?
       await miraDex.swapExactInput(sellAmount, sellAssetIdInput, buyAmountWithSlippage, pools, MaxDeadline, DefaultTxParams) :

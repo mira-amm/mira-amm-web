@@ -9,7 +9,6 @@ import ActionButton from "@/src/components/common/ActionButton/ActionButton";
 import ConvertIcon from "@/src/components/icons/Convert/ConvertIcon";
 import IconButton from "@/src/components/common/IconButton/IconButton";
 import useModal from "@/src/hooks/useModal/useModal";
-import { coinsConfig } from "@/src/utils/coinsConfig";
 import useSwap from "@/src/hooks/useSwap/useSwap";
 
 import styles from "./Swap.module.css";
@@ -57,7 +56,7 @@ const initialInputsState: InputsState = {
 
 export type SlippageMode = "auto" | "custom";
 
-export const DefaultSlippageValue = 1;
+export const DefaultSlippageValue = 100;
 
 function SwapRouteItem({ pool }: { pool: PoolId }) {
   const firstAssetIcon = useAssetImage(pool[0].bits);
@@ -429,7 +428,7 @@ const Swap = () => {
         <div className={clsx(styles.swapContainer, swapPending && styles.swapContainerLoading)}>
           <div className={styles.heading}>
             <p className={styles.title}>Swap</p>
-            <p className={styles.slippageLabel}>{slippage}% slippage</p>
+            <p className={styles.slippageLabel}>{slippage / 100}% slippage</p>
             <IconButton onClick={openSettingsModal} className={styles.settingsButton}>
               <SettingsIcon />
             </IconButton>
