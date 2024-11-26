@@ -1,7 +1,7 @@
 import request, { gql } from "graphql-request";
 import { SQDIndexerUrl } from "../utils/constants";
 import { useQuery } from "@tanstack/react-query";
-import { CoinDataWithPrice } from "../utils/coinsConfig";
+import { CoinDataWithPrice, coinsConfig } from "../utils/coinsConfig";
 
 export const useAssetList = (): { assets: CoinDataWithPrice[], isLoading: boolean } => {
   const { data, isLoading } = useQuery<any>({
@@ -28,17 +28,21 @@ export const useAssetList = (): { assets: CoinDataWithPrice[], isLoading: boolea
         document: query,
       });
 
-      const assets = results.assets.map((asset: any): CoinDataWithPrice => ({
-        assetId: asset.id,
-        name: asset.name,
-        symbol: asset.symbol,
-        decimals: asset.decimals,
-        icon: asset.image,
-        l1Address: asset.l1Address,
-        contractId: asset.contractId,
-        subId: asset.subId,
-        price: asset.price,
-      }));
+      const assets = results.assets.map((asset: any): CoinDataWithPrice => {
+      const config = coinsConfig.get(asset.id);
+
+        return {
+          assetId: asset.id,
+          name: config?.name || asset.name,
+          symbol:  config?.name || asset.symbol,
+          decimals: asset.decimals,
+          icon:  config?.icon || asset.image,
+          l1Address: asset.l1Address,
+          contractId: asset.contractId,
+          subId: asset.subId,
+          price: asset.price,
+        };
+      });
 
       return assets;
     },
