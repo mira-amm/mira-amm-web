@@ -20,5 +20,9 @@ export default function UnknownCoinListItem({ assetId, balance, onClick }: Props
       </div>
     )
   }
-  return null;
+  return (
+    <div style={{ padding: '8px 16px' }}>
+      Asset not found
+    </div>
+  );
 }
