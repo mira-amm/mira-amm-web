@@ -24,7 +24,7 @@ const MobilePositionItem = ({ position, onClick }: Props) => {
   return (
     <div className={styles.mobilePositionItem} onClick={onClick}>
       <div className={styles.infoSection}>
-        <CoinPair firstCoin={position.token0Position[0].bits} secondCoin={position.token0Position[0].bits} isStablePool={position.isStable}/>
+        <CoinPair firstCoin={position.token0Position[0].bits} secondCoin={position.token0Position[1].bits} isStablePool={position.isStable}/>
         <PositionLabel />
       </div>
       <p className={styles.positionPrice}>{`Size: ${coinAAmount} ${coinAMetadata.symbol} <> ${coinBAmount} ${coinBMetadata.symbol}`}</p>
