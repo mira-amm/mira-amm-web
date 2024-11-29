@@ -3,7 +3,6 @@ import CoinPair from "@/src/components/common/CoinPair/CoinPair";
 import CoinInput from "@/src/components/pages/add-liquidity-page/components/CoinInput/CoinInput";
 import {clsx} from "clsx";
 import ActionButton from "@/src/components/common/ActionButton/ActionButton";
-import {CoinName, coinsConfig} from "@/src/utils/coinsConfig";
 import useBalances from "@/src/hooks/useBalances/useBalances";
 import useAssetBalance from "@/src/hooks/useAssetBalance";
 import {useConnectUI, useIsConnected} from "@fuels/react";
@@ -11,7 +10,7 @@ import {Dispatch, SetStateAction, useCallback, useRef, useState} from "react";
 import {useDebounceCallback} from "usehooks-ts";
 import useCheckEthBalance from "@/src/hooks/useCheckEthBalance/useCheckEthBalance";
 import useFaucetLink from "@/src/hooks/useFaucetLink";
-import {createPoolKey, getAssetDecimalsByAssetId, getAssetNameByAssetId, openNewTab} from "@/src/utils/common";
+import {createPoolKey, openNewTab} from "@/src/utils/common";
 import useCheckActiveNetwork from "@/src/hooks/useCheckActiveNetwork";
 import Info from "@/src/components/common/Info/Info";
 import {CreatePoolPreviewData} from "./PreviewCreatePoolDialog";
@@ -20,7 +19,6 @@ import {StablePoolTooltip, VolatilePoolTooltip} from "./CreatePoolTooltips";
 import usePoolsMetadata from "@/src/hooks/usePoolsMetadata";
 import useModal from "@/src/hooks/useModal/useModal";
 import CoinsListModal from "@/src/components/common/Swap/components/CoinsListModal/CoinsListModal";
-import useUSDRate from "@/src/hooks/useUSDRate";
 import {B256Address, BN, bn, formatUnits} from "fuels";
 import useAssetMetadata from "@/src/hooks/useAssetMetadata";
 import { useAssetPrice } from "@/src/hooks/useAssetPrice";
@@ -46,8 +44,6 @@ const CreatePoolDialog = ({ setPreviewData }: Props) => {
 
   const firstAssetBalanceValue = useAssetBalance(balances, firstAssetId);
   const secondAssetBalanceValue = useAssetBalance(balances, secondAssetId);
-  const firstAssetDecimals = getAssetDecimalsByAssetId(firstAssetId);
-  const secondAssetDecimals = getAssetDecimalsByAssetId(secondAssetId);
 
   const [firstAmount, setFirstAmount] = useState('');
   const [firstAmountInput, setFirstAmountInput] = useState('');
@@ -149,8 +145,8 @@ const CreatePoolDialog = ({ setPreviewData }: Props) => {
 
   const isValidNetwork = useCheckActiveNetwork();
 
-  const insufficientFirstBalance = bn.parseUnits(firstAmount, firstAssetDecimals) > firstAssetBalanceValue;
-  const insufficientSecondBalance = bn.parseUnits(secondAmount, secondAssetDecimals) > secondAssetBalanceValue;
+  const insufficientFirstBalance = bn.parseUnits(firstAmount, firstAssetMetadata.decimals) > firstAssetBalanceValue;
+  const insufficientSecondBalance = bn.parseUnits(secondAmount, secondAssetMetadata.decimals) > secondAssetBalanceValue;
   const insufficientBalance = insufficientFirstBalance || insufficientSecondBalance;
   const oneOfAssetsIsNotSelected = firstAssetId === null || secondAssetId === null;
   const oneOfAmountsIsEmpty = !firstAmount || !secondAmount;

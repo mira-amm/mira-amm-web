@@ -1,9 +1,7 @@
 import {useMemo} from "react";
 
-import type {CurrencyBoxMode, SwapState} from "@/src/components/common/Swap/Swap";
-import {coinsConfig} from "@/src/utils/coinsConfig";
 import {DefaultLocale} from "@/src/utils/constants";
-import {getAssetDecimalsByAssetId, getAssetNameByAssetId} from "@/src/utils/common";
+import useAssetMetadata from "../useAssetMetadata";
 
 type Props = {
   firstAssetId: string | null;
@@ -14,6 +12,9 @@ type Props = {
 }
 
 const useExchangeRateV2 = ({ firstAssetId, secondAssetId, firstAssetAmount, secondAssetAmount, baseAssetId }: Props): string | null => {
+  const firstAssetMetadata = useAssetMetadata(firstAssetId);
+  const secondAssetMetadata = useAssetMetadata(secondAssetId);
+
   return useMemo(() => {
     const showRate = firstAssetId !== null && secondAssetId !== null && firstAssetAmount !== '' && secondAssetAmount !== '';
     if (!showRate) {
@@ -27,12 +28,10 @@ const useExchangeRateV2 = ({ firstAssetId, secondAssetId, firstAssetAmount, seco
       return null;
     }
 
-    const anotherAssetDecimals = getAssetDecimalsByAssetId(firstAssetIsBase ? secondAssetId : firstAssetId);
-    const firstAssetName = getAssetNameByAssetId(firstAssetId);
-    const secondAssetName = getAssetNameByAssetId(secondAssetId);
+    const anotherAssetDecimals = firstAssetIsBase ? secondAssetMetadata.decimals : firstAssetMetadata.decimals;
 
-    const assetNameToUseForBase = firstAssetIsBase ? firstAssetName : secondAssetName;
-    const assetNameToUseForAnother = firstAssetIsBase ? secondAssetName : firstAssetName;
+    const assetNameToUseForBase = firstAssetIsBase ? firstAssetMetadata.symbol : secondAssetMetadata.symbol;
+    const assetNameToUseForAnother = firstAssetIsBase ? secondAssetMetadata.symbol : firstAssetMetadata.symbol;
 
     const rate = parseFloat(firstAssetIsBase ? firstAssetAmount : secondAssetAmount) / parseFloat(firstAssetIsBase ? secondAssetAmount : firstAssetAmount);
     return `1 ${assetNameToUseForBase} ≈ ${rate.toLocaleString(DefaultLocale, { minimumFractionDigits: anotherAssetDecimals })} ${assetNameToUseForAnother}`;

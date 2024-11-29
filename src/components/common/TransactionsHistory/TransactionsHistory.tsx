@@ -5,7 +5,6 @@ import CopyAddressIcon from "../../icons/Copy/CopyAddressIcon";
 import {useIsConnected, useAccount} from "@fuels/react";
 import useFormattedAddress from "@/src/hooks/useFormattedAddress/useFormattedAddress";
 import useWalletTransactions, {TransactionsData} from "@/src/hooks/useWalletTransactions";
-import {getAssetNameByAssetId} from "@/src/utils/common";
 import {coinsConfig} from "@/src/utils/coinsConfig";
 import {DefaultLocale} from "@/src/utils/constants";
 
@@ -45,13 +44,13 @@ const transformTransactionsDataAndGroupByDate = (transactionsData: TransactionsD
       },
     );
     const [firstAssetId, secondAssetId] = transaction.pool_id.split("_");
-    const firstAssetName = getAssetNameByAssetId(firstAssetId);
-    const secondAssetName = getAssetNameByAssetId(secondAssetId);
-    const firstAssetExists = coinsConfig.has(firstAssetName);
-    const secondAssetExists = coinsConfig.has(secondAssetName);
+    const firstAssetExists = coinsConfig.has(firstAssetId);
+    const secondAssetExists = coinsConfig.has(secondAssetId);
     if (!firstAssetExists || !secondAssetExists) {
       return;
     }
+    const firstAssetName = coinsConfig.get(firstAssetId)?.name!;
+    const secondAssetName = coinsConfig.get(secondAssetId)?.name!;
 
     const firstAssetIcon = coinsConfig.get(firstAssetName)?.icon!;
     const secondAssetIcon = coinsConfig.get(secondAssetName)?.icon!;

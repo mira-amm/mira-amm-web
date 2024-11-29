@@ -12,10 +12,7 @@ import useModal from "@/src/hooks/useModal/useModal";
 import RemoveLiquidityModalContent
   from "@/src/components/pages/view-position-page/components/RemoveLiquidityModalContent/RemoveLiquidityModalContent";
 import usePositionData from "@/src/hooks/usePositionData";
-import {
-  floorToTwoSignificantDigits,
-  getAssetNamesFromPoolId,
-} from "@/src/utils/common";
+import { floorToTwoSignificantDigits } from "@/src/utils/common";
 import {useCallback, useRef, useState} from "react";
 import useRemoveLiquidity from "@/src/hooks/useRemoveLiquidity";
 import {useRouter} from "next/navigation";
