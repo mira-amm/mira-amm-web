@@ -151,6 +151,8 @@ const CreatePoolDialog = ({ setPreviewData }: Props) => {
     buttonTitle = 'Insufficient balance';
   } else if (!sufficientEthBalance) {
     buttonTitle = 'Claim some ETH to pay for gas';
+  } else if (oneOfAmountsIsEmpty) {
+    buttonTitle = 'Enter asset amounts';
   }
 
   const buttonDisabled = !isValidNetwork || poolExists || oneOfAssetsIsNotSelected || oneOfAmountsIsEmpty || insufficientBalance;
