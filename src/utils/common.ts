@@ -29,9 +29,7 @@ export const isPoolKeyValid = (key: string) => {
 };
 
 export const createPoolIdFromPoolKey = (key: string) => {
-  const [coinA, coinB, poolStability] = key.split('-') as [CoinName, CoinName, typeof StablePoolKey | typeof VolatilePoolKey];
-  const firstCoinAssetId = coinsConfig.get(coinA)?.assetId;
-  const secondCoinAssetId = coinsConfig.get(coinB)?.assetId;
+  const [firstCoinAssetId, secondCoinAssetId, poolStability] = key.split('-') as [B256Address, B256Address, typeof StablePoolKey | typeof VolatilePoolKey];
   const poolStabilityValid = poolStability === StablePoolKey || poolStability === VolatilePoolKey;
 
   if (!firstCoinAssetId || !secondCoinAssetId || !poolStabilityValid) {
