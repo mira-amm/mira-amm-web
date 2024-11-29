@@ -79,15 +79,6 @@ const CreatePoolDialog = ({ setPreviewData }: Props) => {
     }
 
     return (value: string) => {
-      if (value === '') {
-        debouncedSetFirstAmount('');
-        debouncedSetSecondAmount('');
-        setFirstAmountInput('');
-        setSecondAmountInput('');
-        setActiveAsset(coin);
-        return;
-      }
-
       if (coin === firstAssetId) {
         debouncedSetFirstAmount(value);
         setFirstAmountInput(value);
@@ -140,7 +131,7 @@ const CreatePoolDialog = ({ setPreviewData }: Props) => {
   const insufficientSecondBalance = bn.parseUnits(secondAmount, secondAssetMetadata.decimals) > secondAssetBalanceValue;
   const insufficientBalance = insufficientFirstBalance || insufficientSecondBalance;
   const oneOfAssetsIsNotSelected = firstAssetId === null || secondAssetId === null;
-  const oneOfAmountsIsEmpty = !firstAmount || !secondAmount;
+  const oneOfAmountsIsEmpty = !firstAmount || !secondAmount || firstAmount === '0' || secondAmount === '0';
 
   let buttonTitle = 'Preview creation';
   if (!isValidNetwork) {
