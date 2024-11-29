@@ -20,10 +20,8 @@ const CoinListItem = ({ assetId, balance }: Props) => {
     <span className={clsx(styles.coin, !metadata.name && styles.centered)}>
       {icon && <img src={icon} alt={`${metadata.name} icon`} />}
       <div className={styles.names}>
-        <p className={styles.name}>{metadata.name}</p>
-        {metadata.name && (
-          <p className={styles.fullName}>{metadata.name}</p>
-        )}
+        <p className={styles.name}>{metadata.symbol}</p>
+        <p className={styles.fullName}>{metadata.name}</p>
       </div>
       {balanceValue.gt(0) && (
         <p className={styles.balance}>{balanceValue.formatUnits(metadata.decimals || 0)}</p>

@@ -16,6 +16,7 @@
 .coinPairIcons > svg, .coinPairIcons > img {
   width: 28px;
   height: 28px;
+  border-radius: 100%;
 }
 
 .coinPairIcons > svg:nth-child(2), .coinPairIcons > img:nth-child(2) {

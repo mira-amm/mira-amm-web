@@ -12,10 +12,10 @@ type Props = {
   closeModal: VoidFunction;
 }
 
-const AutoSlippageValues = [0.1, 0.5, 1];
+const AutoSlippageValues = [10, 50, 100];
 
 const SettingsModalContent = ({ slippage, slippageMode, setSlippage, setSlippageMode, closeModal }: Props) => {
-  const [inputValue, setInputValue] = useState(`${slippage}%`);
+  const [inputValue, setInputValue] = useState(`${slippage / 100}%`);
 
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -31,7 +31,7 @@ const SettingsModalContent = ({ slippage, slippageMode, setSlippage, setSlippage
       setSlippage(DefaultSlippageValue);
       return;
     }
-    setSlippage(numericValue);
+    setSlippage(Math.floor(numericValue * 100));
   };
 
   const handleKeyDown = (event: KeyboardEvent<HTMLInputElement>) => {
@@ -108,7 +108,7 @@ const SettingsModalContent = ({ slippage, slippageMode, setSlippage, setSlippage
                 onClick={() => handleSlippageButtonClick(value)}
                 key={value}
               >
-                {value}%
+                {value / 100}%
               </button>
             ))}
           </div>

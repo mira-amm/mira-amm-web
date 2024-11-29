@@ -14,7 +14,7 @@ export interface CoinData {
   contractId?: string;
   subId?: string;
   l1Address?: string;
-  isVerified: boolean;
+  isVerified?: boolean;
   coinGeckoId?: string;
 };
 
@@ -30,7 +30,6 @@ const initAssetsConfig = () => {
   const assetsConfig: Map<string, CoinData> = new Map();
 
   assets.forEach((asset) => {
-    // const currentFuelNetworkData = asset.networks.filter(network => network.type === 'fuel' && network.chainId === ValidNetworkChainId);
     const assetData: CoinData = {
       name: asset.name,
       symbol: asset.symbol,

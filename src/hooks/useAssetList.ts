@@ -18,6 +18,8 @@ export const useAssetList = (): { assets: CoinDataWithPrice[], isLoading: boolea
             numPools
             l1Address
             price
+            contractId
+            subId
           }
         }`;
 
@@ -26,16 +28,22 @@ export const useAssetList = (): { assets: CoinDataWithPrice[], isLoading: boolea
         document: query,
       });
 
-      const assets = results.assets.map((asset: any): CoinDataWithPrice => ({
-        assetId: asset.id,
-        name: asset.name,
-        symbol: asset.symbol,
-        decimals: asset.decimals,
-        icon: asset.image,
-        l1Address: asset.l1Address,
-        price: asset.price,
-        isVerified: coinsConfig.get(asset.id)?.isVerified || false,
-      }));
+      const assets = results.assets.map((asset: any): CoinDataWithPrice => {
+      const config = coinsConfig.get(asset.id);
+
+        return {
+          assetId: asset.id,
+          name: config?.name || asset.name,
+          symbol:  config?.name || asset.symbol,
+          decimals: asset.decimals,
+          icon:  config?.icon || asset.image,
+          l1Address: asset.l1Address,
+          contractId: asset.contractId,
+          subId: asset.subId,
+          price: asset.price,
+          isVerified: config?.isVerified || false,
+        };
+      });
 
       return assets;
     },

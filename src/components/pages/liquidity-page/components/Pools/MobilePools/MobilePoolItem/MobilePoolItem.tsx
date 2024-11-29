@@ -8,6 +8,7 @@ import {createPoolIdFromIdString, createPoolKey} from "@/src/utils/common";
 import {PoolData} from "@/src/hooks/usePoolsData";
 import {useCallback} from "react";
 import {DefaultLocale} from "@/src/utils/constants";
+import useAssetMetadata from "@/src/hooks/useAssetMetadata";
 
 type Props = {
   poolData: PoolData;
