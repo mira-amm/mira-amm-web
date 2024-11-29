@@ -283,7 +283,6 @@ const CreatePoolDialog = ({ setPreviewData }: Props) => {
         <CoinsListModal
           selectCoin={handleAssetSelection}
           balances={balances}
-          verifiedAssetsOnly
         />
       </AssetsListModal>
     </>
