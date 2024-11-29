@@ -20,6 +20,15 @@ export default function UnknownCoinListItem({ assetId, balance, onClick }: Props
       </div>
     )
   }
+
+  if (metadata.isLoading) {
+    return (
+      <div style={{ padding: '8px 16px' }}>
+        Loading...
+      </div>
+    );
+  }
+
   return (
     <div style={{ padding: '8px 16px' }}>
       Asset not found
