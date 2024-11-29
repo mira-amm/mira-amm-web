@@ -9,8 +9,8 @@ export const BASE_ASSET_CONTRACT = '0x7e2becd64cd598da59b4d1064b711661898656c6b1
 export const USDC_ASSET_ID = '0x286c479da40dc953bddc3bb4c453b608bba2e0ac483b077bd475174115395e6b';
 
 export const DefaultTxParams: TxParams = {
-  gasLimit: 10_000_000,
-  maxFee: 1_000_000,
+  gasLimit: 2_000_000,
+  maxFee: 100_000,
 } as const;
 
 export const MaxDeadline = 4_294_967_295 as const;
