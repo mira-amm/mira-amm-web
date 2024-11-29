@@ -58,13 +58,10 @@ const CreatePoolDialog = ({ setPreviewData }: Props) => {
   const secondAssetMetadata = useAssetMetadata(secondAssetId);
 
   const pools = firstAssetId && secondAssetId ? [
-    buildPoolId(firstAssetId, secondAssetId, true),
-    buildPoolId(secondAssetId, firstAssetId, false),
+    buildPoolId(firstAssetId, secondAssetId, isStablePool),
   ] : undefined;
   const { poolsMetadata } = usePoolsMetadata(pools);
-  const poolExists = Boolean(poolsMetadata) && (Boolean(poolsMetadata?.[0]) || Boolean(poolsMetadata?.[1]));
-  const existingPoolStability = poolExists ? poolsMetadata?.[0]?.poolId[2] ?? poolsMetadata?.[1]?.poolId[2] : undefined;
-  const isExistingOrNewPoolStable = existingPoolStability ?? isStablePool;
+  const poolExists = Boolean(poolsMetadata && poolsMetadata?.[0]);
   let existingPoolKey = '';
   if (poolExists) {
     // @ts-ignore
@@ -74,13 +71,7 @@ const CreatePoolDialog = ({ setPreviewData }: Props) => {
   const debouncedSetFirstAmount = useDebounceCallback(setFirstAmount, 500);
   const debouncedSetSecondAmount = useDebounceCallback(setSecondAmount, 500);
 
-  const handleStabilityChange = (isStable: boolean) => {
-    if (poolExists) {
-      return;
-    }
-
-    setIsStablePool(isStable);
-  };
+  const handleStabilityChange = (isStable: boolean) => setIsStablePool(isStable);
 
   const setAmount = useCallback((coin: B256Address | null) => {
     if (!coin) {
@@ -213,7 +204,7 @@ const CreatePoolDialog = ({ setPreviewData }: Props) => {
             )}
           </div>
           <div className={styles.poolStability}>
-            <div className={clsx(styles.poolStabilityButton, !isExistingOrNewPoolStable && styles.poolStabilityButtonActive, poolExists && styles.poolStabilityButtonDisabled)}
+            <div className={clsx(styles.poolStabilityButton, !isStablePool && styles.poolStabilityButtonActive)}
                  onClick={() => handleStabilityChange(false)}
                  role="button"
             >
@@ -223,7 +214,7 @@ const CreatePoolDialog = ({ setPreviewData }: Props) => {
               </div>
               <p>0.30% fee tier</p>
             </div>
-            <button className={clsx(styles.poolStabilityButton, isExistingOrNewPoolStable && styles.poolStabilityButtonActive, poolExists && styles.poolStabilityButtonDisabled)}
+            <button className={clsx(styles.poolStabilityButton, isStablePool && styles.poolStabilityButtonActive)}
                     onClick={() => handleStabilityChange(true)}
                     role="button"
             >
