@@ -127,8 +127,8 @@ const CreatePoolDialog = ({ setPreviewData }: Props) => {
 
   const isValidNetwork = useCheckActiveNetwork();
 
-  const insufficientFirstBalance = bn.parseUnits(firstAmount, firstAssetMetadata.decimals).lt(firstAssetBalanceValue);
-  const insufficientSecondBalance = bn.parseUnits(secondAmount, secondAssetMetadata.decimals).lt(secondAssetBalanceValue);
+  const insufficientFirstBalance = bn.parseUnits(firstAmount, firstAssetMetadata.decimals).gt(firstAssetBalanceValue);
+  const insufficientSecondBalance = bn.parseUnits(secondAmount, secondAssetMetadata.decimals).gt(secondAssetBalanceValue);
   const insufficientBalance = insufficientFirstBalance || insufficientSecondBalance;
   const oneOfAssetsIsNotSelected = firstAssetId === null || secondAssetId === null;
   const oneOfAmountsIsEmpty = !firstAmount || !secondAmount || firstAmount === '0' || secondAmount === '0';
