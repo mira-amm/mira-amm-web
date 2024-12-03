@@ -24,14 +24,11 @@ const Header = ({ isHomePage }: Props) => {
 
   return (
     <header className={styles.header}>
-      {/* {isHomePage && (
-        <section className={styles.promo}>
-          Trade, Earn and get Rewards using the most efficient AMM on Fuel
-          <IconButton onClick={() => setPromoHidden(true)} className={styles.promoClose}>
-           <CloseIcon />
-          </IconButton>
-        </section>
-      )} */}
+      <section className={styles.promo}>
+        Swaps and deposits have temporarily been paused,&nbsp;
+        {/* Add link here to href attribute */}
+        <a href="">follow our Twitter</a>&nbsp;for more information
+      </section>
       <section className={styles.main}>
         <div className={styles.left}>
           <Logo />
