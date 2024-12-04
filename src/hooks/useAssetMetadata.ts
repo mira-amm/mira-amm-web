@@ -15,10 +15,10 @@ interface AssetMetadata {
 
 const providerPromise = Provider.create(NetworkUrl);
 
-const useAssetMetadata = (assetId: B256Address | null): AssetMetadata => {
-  const { contractId } = useAssetMinterContract(assetId);
+const useAssetMetadata = (assetId: B256Address | null): AssetMetadata & { isLoading: boolean } => {
+  const { contractId, isLoading: contractLoading } = useAssetMinterContract(assetId);
 
-  const { data } = useQuery({
+  const { data, isLoading: metadataLoading } = useQuery({
     queryKey: ['assetMetadata', contractId, assetId],
     queryFn: async () => {
       const config = coinsConfig.get(assetId);
@@ -54,7 +54,9 @@ const useAssetMetadata = (assetId: B256Address | null): AssetMetadata => {
     staleTime: Infinity,
   });
 
-  return data || { name: undefined, symbol: undefined, decimals: undefined };
+  const isLoading = contractLoading || metadataLoading;
+
+  return data ? { ...data, isLoading } : { name: undefined, symbol: undefined, decimals: undefined, isLoading };
 };
 
 export default useAssetMetadata;

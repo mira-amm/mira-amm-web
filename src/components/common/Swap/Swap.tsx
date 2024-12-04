@@ -14,7 +14,7 @@ import useSwap from "@/src/hooks/useSwap/useSwap";
 import styles from "./Swap.module.css";
 import ExchangeRate from "@/src/components/common/Swap/components/ExchangeRate/ExchangeRate";
 import useExchangeRate from "@/src/hooks/useExchangeRate/useExchangeRate";
-import {createPoolKey, getAssetNameByAssetId, openNewTab} from "@/src/utils/common";
+import {createPoolKey, openNewTab} from "@/src/utils/common";
 import useBalances from "@/src/hooks/useBalances/useBalances";
 import CoinsListModal from "@/src/components/common/Swap/components/CoinsListModal/CoinsListModal";
 import SwapSuccessModal from "@/src/components/common/Swap/components/SwapSuccessModal/SwapSuccessModal";

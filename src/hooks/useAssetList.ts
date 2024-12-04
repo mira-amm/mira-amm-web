@@ -41,6 +41,7 @@ export const useAssetList = (): { assets: CoinDataWithPrice[], isLoading: boolea
           contractId: asset.contractId,
           subId: asset.subId,
           price: asset.price,
+          isVerified: config?.isVerified || false,
         };
       });
 

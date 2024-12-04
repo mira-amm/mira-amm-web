@@ -1,10 +1,9 @@
 import useMiraDex from "@/src/hooks/useMiraDex/useMiraDex";
-import {useMutation, useQuery} from "@tanstack/react-query";
+import {useMutation} from "@tanstack/react-query";
 import {useWallet} from "@fuels/react";
 import {useCallback} from "react";
-import {coinsConfig} from "@/src/utils/coinsConfig";
 import {DefaultTxParams, MaxDeadline} from "@/src/utils/constants";
-import {bn, BN} from "fuels";
+import {bn} from "fuels";
 import { useAssetMinterContract } from "./useAssetMinterContract";
 import useAssetMetadata from "./useAssetMetadata";
 

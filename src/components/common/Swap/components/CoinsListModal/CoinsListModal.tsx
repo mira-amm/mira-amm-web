@@ -4,16 +4,20 @@ import {ChangeEvent, memo, useEffect, useMemo, useRef, useState} from "react";
 import styles from "./CoinsListModal.module.css";
 import {BN, CoinQuantity} from "fuels";
 import { useAssetList } from "@/src/hooks/useAssetList";
+import UnknownCoinListItem from "../UnknownCoinListItem";
 
 type Props = {
   selectCoin: (assetId: string | null) => void;
   balances: CoinQuantity[] | undefined;
+  verifiedAssetsOnly?: boolean;
 };
 
 const priorityOrder: string[] = ['ETH', 'USDC', 'USDT'];
 const lowPriorityOrder: string[] = ['DUCKY'];
 
-const CoinsListModal = ({ selectCoin, balances }: Props) => {
+const assetIdRegex = /^0x[0-9a-fA-F]{64}$/;
+
+const CoinsListModal = ({ selectCoin, balances, verifiedAssetsOnly }: Props) => {
   const { assets, isLoading } = useAssetList();
   const [value, setValue] = useState('');
 
@@ -31,13 +35,17 @@ const CoinsListModal = ({ selectCoin, balances }: Props) => {
 
   const filteredCoinsList = useMemo(() => {
     return (assets || []).filter((coin) => {
+      if (verifiedAssetsOnly && !coin.isVerified) {
+        return false;
+      }
+
       return (
         coin.name?.toLowerCase().includes(value.toLowerCase()) ||
         coin.symbol?.toLowerCase().includes(value.toLowerCase()) ||
         coin.assetId?.toLowerCase() === value.toLowerCase()
       );
     });
-  }, [value, assets]);
+  }, [verifiedAssetsOnly, value, assets]);
 
   // TODO: Pre-sort the list by priorityOrder and alphabet to avoid sorting each time
   const sortedCoinsList = useMemo(() => {
@@ -99,6 +107,13 @@ const CoinsListModal = ({ selectCoin, balances }: Props) => {
         />
       </div>
       <div className={styles.tokenList}>
+        {assetIdRegex.test(value) && sortedCoinsList.length === 0 && (
+          <UnknownCoinListItem
+            assetId={value}
+            balance={balances?.find((b) => b.assetId === value)}
+            onClick={() => selectCoin(value)}
+          />
+        )}
         {sortedCoinsList.map(({ assetId }) => (
           <div
             className={styles.tokenListItem}

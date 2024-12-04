@@ -8,22 +8,8 @@ export const openNewTab = (url: string) => {
 
 export const assetsList = Array.from(coinsConfig.values());
 
-export const getAssetNameByAssetId = (assetId: B256Address) => {
-  return assetsList.find(coin => coin.assetId === assetId)?.name!;
-};
-
-export const getAssetDecimalsByAssetId = (assetId: B256Address) => {
-  return assetsList.find(coin => coin.assetId === assetId)?.decimals!;
-};
-
 export const isPoolIdValid = (poolId: PoolId) => {
   return poolId[0].bits.length === 66 && poolId[1].bits.length === 66;
-};
-
-export const getAssetNamesFromPoolId = (poolId: PoolId) => {
-  const firstAssetName = getAssetNameByAssetId(poolId[0].bits);
-  const secondAssetName = getAssetNameByAssetId(poolId[1].bits);
-  return { firstAssetName, secondAssetName };
 };
 
 export const StablePoolKey = 'stable' as const;

@@ -1,9 +1,7 @@
 import CoinPair from "@/src/components/common/CoinPair/CoinPair";
 
 import styles from './DesktopPositions.module.css';
-import {PoolId} from "mira-dex-ts";
-import {createPoolKey, getAssetNameByAssetId} from "@/src/utils/common";
-import {useCallback} from "react";
+import {createPoolKey} from "@/src/utils/common";
 import {useRouter} from "next/navigation";
 import {clsx} from "clsx";
 import { DesktopPosition } from "./DesktopPosition";

@@ -2,6 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import { coinsConfig } from "../utils/coinsConfig";
 import request, { gql } from "graphql-request";
 import { SQDIndexerUrl } from "../utils/constants";
+import defaultImage from "@/assets/unknown-asset.svg";
 
 export const useAssetImage = (assetId: string | null): string | null => {
   const { data } = useQuery<string | null>({
@@ -35,5 +36,5 @@ export const useAssetImage = (assetId: string | null): string | null => {
     enabled: assetId !== null,
   });
 
-  return data || null;
+  return data || defaultImage.src;
 };

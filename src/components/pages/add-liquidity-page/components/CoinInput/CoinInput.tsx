@@ -10,17 +10,16 @@ import {BN} from "fuels";
 import useAssetMetadata from "@/src/hooks/useAssetMetadata";
 
 type Props = {
-  assetId: string;
+  assetId: string | null;
   value: string;
   loading: boolean;
   setAmount: (amount: string) => void;
   balance: BN;
-  usdRate: number | null;
-  newPool?: boolean;
+  usdRate: number | undefined;
   onAssetClick?: VoidFunction;
 }
 
-const CoinInput = ({ assetId, value, loading, setAmount, balance, usdRate, newPool, onAssetClick }: Props) => {
+const CoinInput = ({ assetId, value, loading, setAmount, balance, usdRate, onAssetClick }: Props) => {
   const metadata = useAssetMetadata(assetId);
   const balanceValue = balance.formatUnits(metadata.decimals || 0);
 
@@ -75,7 +74,7 @@ const CoinInput = ({ assetId, value, loading, setAmount, balance, usdRate, newPo
         )}
       </div>
       <div className={clsx(styles.coinInputLine, styles.rightColumn)}>
-        <Coin assetId={assetId} className={styles.coinName} newPool={newPool} onClick={onAssetClick} />
+        <Coin assetId={assetId} className={styles.coinName} onClick={onAssetClick} />
         {balance.gt(0) && (
           <span className={styles.balance}>
             Balance: {balanceValue}

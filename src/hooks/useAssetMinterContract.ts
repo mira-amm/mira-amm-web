@@ -1,17 +1,16 @@
-import { useProvider } from "@fuels/react";
 import { useQuery } from "@tanstack/react-query";
 import { ZeroBytes32 } from "fuels";
 import { BASE_ASSET_CONTRACT, ETH_ASSET_ID } from "../utils/constants";
 import { useAssetList } from "./useAssetList";
 
-export const useAssetMinterContract = (assetId: string | null): { contractId: string | null; subId: string | null } => {
+export const useAssetMinterContract = (assetId: string | null): { contractId: string | null; subId: string | null, isLoading: boolean } => {
   const { assets, isLoading: assetListLoading } = useAssetList();
 
   if (assetId && assetId.length !== 66) {
     throw new Error('Invalid assetId');
   }
 
-  const { data } = useQuery({
+  const { data, isLoading } = useQuery({
     queryKey: ['assetMinter', assetId],
     queryFn: async () => {
       if (assetId === ETH_ASSET_ID) {
@@ -39,5 +38,5 @@ export const useAssetMinterContract = (assetId: string | null): { contractId: st
     staleTime: Infinity,
   });
 
-  return data || { contractId: null, subId: null };
+  return data ? { ...data, isLoading } : { contractId: null, subId: null, isLoading };
 };

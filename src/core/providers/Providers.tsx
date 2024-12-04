@@ -4,6 +4,7 @@ import {ReactNode} from "react";
 import {QueryClient, QueryClientProvider} from "@tanstack/react-query";
 import FuelProviderWrapper from "@/src/core/providers/FuelProviderWrapper";
 import DisclaimerWrapper from "@/src/core/providers/DisclaimerWrapper";
+import AssetsConfigProvider from "@/src/core/providers/AssetsConfigProvider";
 
 type Props = {
   children: ReactNode;
@@ -16,7 +17,9 @@ const Providers = ({children}: Props) => {
     <QueryClientProvider client={queryClient}>
       <FuelProviderWrapper>
         <DisclaimerWrapper>
-          {children}
+          <AssetsConfigProvider>
+            {children}
+          </AssetsConfigProvider>
         </DisclaimerWrapper>
       </FuelProviderWrapper>
     </QueryClientProvider>

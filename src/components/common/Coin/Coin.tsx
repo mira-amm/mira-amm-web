@@ -7,13 +7,12 @@ import useAssetMetadata from "@/src/hooks/useAssetMetadata";
 import { useAssetImage } from "@/src/hooks/useAssetImage";
 
 type Props = {
-  assetId: string;
+  assetId: string | null;
   className?: string;
-  newPool?: boolean;
   onClick?: VoidFunction;
 };
 
-const Coin = ({ assetId, className, newPool, onClick }: Props) => {
+const Coin = ({ assetId, className, onClick }: Props) => {
   const metadata = useAssetMetadata(assetId);
   const icon = useAssetImage(assetId);
 
@@ -23,13 +22,15 @@ const Coin = ({ assetId, className, newPool, onClick }: Props) => {
     }
   };
 
+  const newPool = Boolean(onClick);
+
   return (
     <div className={clsx(styles.coin, newPool && styles.clickable)} onClick={handleClick}>
       {icon && <img src={icon} alt={`${metadata.symbol} icon`}/>}
-      <p className={clsx(styles.name, className)}>{metadata.symbol}</p>
+      <p className={clsx(styles.name, className)}>{metadata.symbol ?? 'Choose Asset'}</p>
       {newPool && <ChevronDownIcon />}
     </div>
   )
 };
 
-export default memo(Coin);
+export default Coin;
