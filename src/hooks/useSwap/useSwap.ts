@@ -8,6 +8,7 @@ import useMiraDex from "@/src/hooks/useMiraDex/useMiraDex";
 import useSwapData from "@/src/hooks/useAssetPair/useSwapData";
 import {DefaultTxParams, MaxDeadline} from "@/src/utils/constants";
 import {PoolId} from "mira-dex-ts";
+import useReadonlyMira from "../useReadonlyMira";
 
 type Props = {
   swapState: SwapState;
@@ -19,19 +20,24 @@ type Props = {
 const useSwap = ({ swapState, mode, slippage, pools }: Props) => {
   const { wallet } = useWallet();
   const miraDex = useMiraDex();
+  const readonlyMira = useReadonlyMira();
   const swapData = useSwapData(swapState);
   const { sellAssetIdInput, buyAssetIdInput, sellDecimals, buyDecimals } = swapData;
 
   const getTxCost = useCallback(async () => {
-    if (!wallet || !miraDex || !pools) {
+    if (!wallet || !miraDex || !pools || !readonlyMira) {
       return;
     }
 
     const sellAmount = bn.parseUnits(swapState.sell.amount, sellDecimals);
     const buyAmount = bn.parseUnits(swapState.buy.amount, buyDecimals);
 
-    const buyAmountWithSlippage = buyAmount.mul(bn(10_000).sub(bn(slippage))).div(bn(10_000));
-    const sellAmountWithSlippage = sellAmount.mul(bn(10_000).add(bn(slippage))).div(bn(10_000));
+    const [simulatedSellAmount, simulatedBuyAmount] = mode === 'sell' ?
+      await readonlyMira.getAmountsOut(sellAssetIdInput, sellAmount, pools) :
+      await readonlyMira.getAmountsIn(buyAssetIdInput, buyAmount, pools);
+
+    const buyAmountWithSlippage = simulatedBuyAmount[1].mul(bn(10_000).sub(bn(slippage))).div(bn(10_000));
+    const sellAmountWithSlippage = simulatedSellAmount[1].mul(bn(10_000).add(bn(slippage))).div(bn(10_000));
 
     const tx = mode === 'sell' ?
       await miraDex.swapExactInput(sellAmount, sellAssetIdInput, buyAmountWithSlippage, pools, MaxDeadline, DefaultTxParams) :

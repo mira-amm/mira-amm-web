@@ -35,6 +35,9 @@ export class NoRouteFoundError extends Error {
 const useSwapPreview = ({ swapState, mode }: Props) => {
   const { sellAssetId, buyAssetId } = useSwapData(swapState);
 
+  const miraAmm = useReadonlyMira();
+  const miraExists = Boolean(miraAmm);
+
   const sellMetadata = useAssetMetadata(sellAssetId);
   const buyMetadata = useAssetMetadata(buyAssetId);
 
@@ -47,7 +50,13 @@ const useSwapPreview = ({ swapState, mode }: Props) => {
 
   const tradeType: TradeType = mode === 'sell' ? 'ExactInput' : 'ExactOutput';
 
-  const { data: multihopPreviewData, error: multihopPreviewError, isLoading: multihopPreviewLoading, failureCount: multihopFailureCount, refetch } = useQuery({
+  const {
+    data: multihopPreviewData,
+    error: multihopPreviewError,
+    isLoading: multihopPreviewLoading,
+    failureCount: multihopFailureCount,
+    refetch,
+  } = useQuery({
     queryKey: ['multihopPreview', sellAssetId, buyAssetId, normalizedAmount, tradeType],
     queryFn: async () => {
       const res = await fetch(`${ApiBaseUrl}/find_route`, {
@@ -71,7 +80,36 @@ const useSwapPreview = ({ swapState, mode }: Props) => {
         throw new Error('An error occurred while retrieving the path');
       }
 
-      return await res.json();
+      const previewData: MultihopPreviewData = await res.json();
+
+      // API is returning unreliable data, let's re-simulate
+      if (tradeType === 'ExactInput') {
+        const previewResponse = await miraAmm?.previewSwapExactInput(
+          { bits: sellAssetId },
+          normalizedAmount,
+          previewData.path.map(([input, output, stable]) => buildPoolId(`0x${input}`, `0x${output}`, stable)),
+        );
+
+        if (!previewResponse) {
+          throw new Error('An error occurred while simulating the swap');
+        }
+
+        previewData.output_amount = previewResponse[1].toNumber();
+      } else {
+        const previewResponse = await miraAmm?.previewSwapExactOutput(
+          { bits: buyAssetId },
+          normalizedAmount,
+          previewData.path.map(([input, output, stable]) => buildPoolId(`0x${input}`, `0x${output}`, stable)),
+        );
+
+        if (!previewResponse) {
+          throw new Error('An error occurred while simulating the swap');
+        }
+
+        previewData.input_amount = previewResponse[1].toNumber();
+      }
+
+      return previewData;
     },
     retry: (failureCount, error) => {
       if (error instanceof NoRouteFoundError) {
@@ -81,12 +119,10 @@ const useSwapPreview = ({ swapState, mode }: Props) => {
       return failureCount < 1;
     },
     retryDelay: 1000,
-    enabled: amountNonZero,
+    enabled: amountNonZero && miraExists,
     refetchInterval: 15000,
   });
 
-  const miraAmm = useReadonlyMira();
-  const miraExists = Boolean(miraAmm);
   const volatilePool = buildPoolId({ bits: sellAssetId }, { bits: buyAssetId }, false);
   const stablePool = buildPoolId({ bits: sellAssetId }, { bits: buyAssetId }, true);
   const shouldFetchFallback =
