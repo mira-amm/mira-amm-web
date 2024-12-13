@@ -1,6 +1,6 @@
 "use client";
 
-import { ReactNode } from "react";
+import { ReactNode, Suspense } from "react";
 import NextAdapterApp from "next-query-params/app";
 import { QueryParamProvider } from "use-query-params";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
@@ -16,15 +16,17 @@ const queryClient = new QueryClient();
 
 const Providers = ({ children }: Props) => {
   return (
-    <QueryClientProvider client={queryClient}>
-      <QueryParamProvider adapter={NextAdapterApp}>
-        <FuelProviderWrapper>
-          <DisclaimerWrapper>
-            <AssetsConfigProvider>{children}</AssetsConfigProvider>
-          </DisclaimerWrapper>
-        </FuelProviderWrapper>
-      </QueryParamProvider>
-    </QueryClientProvider>
+    <Suspense>
+      <QueryClientProvider client={queryClient}>
+        <QueryParamProvider adapter={NextAdapterApp}>
+          <FuelProviderWrapper>
+            <DisclaimerWrapper>
+              <AssetsConfigProvider>{children}</AssetsConfigProvider>
+            </DisclaimerWrapper>
+          </FuelProviderWrapper>
+        </QueryParamProvider>
+      </QueryClientProvider>
+    </Suspense>
   );
 };
 
