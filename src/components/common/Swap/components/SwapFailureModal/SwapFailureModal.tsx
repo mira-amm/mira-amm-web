@@ -10,6 +10,8 @@ type Props = {
 
 const SwapFailureModal = ({ error, closeModal }: Props) => {
   let message = 'An error occurred. Please try again.';
+  let title = 'Swap failed';
+
   if (error instanceof FuelError) {
     message = error.message;
     if (
@@ -19,12 +21,15 @@ const SwapFailureModal = ({ error, closeModal }: Props) => {
     ) {
       message = 'Slippage exceeds limit. Adjust settings and try again.';
     }
+  } else if (error?.message === 'User rejected the transaction!') {
+    message = 'You closed your wallet before sending the transaction. Try again?';
+    title = 'Swap canceled';
   }
 
   return (
     <div className={styles.claimFailureModal}>
       <FailureIcon />
-      <p className={styles.mainText}>Swap failed</p>
+      <p className={styles.mainText}>{title}</p>
       <p className={styles.subText}>
         {message}
       </p>
