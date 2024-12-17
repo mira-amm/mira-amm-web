@@ -32,16 +32,17 @@ const useSwap = ({ swapState, mode, slippage, pools }: Props) => {
     const sellAmount = bn.parseUnits(swapState.sell.amount, sellDecimals);
     const buyAmount = bn.parseUnits(swapState.buy.amount, buyDecimals);
 
-    const [simulatedSellAmount, simulatedBuyAmount] = mode === 'sell' ?
-      await readonlyMira.getAmountsOut(sellAssetIdInput, sellAmount, pools) :
-      await readonlyMira.getAmountsIn(buyAssetIdInput, buyAmount, pools);
+    let tx: ScriptTransactionRequest;
 
-    const buyAmountWithSlippage = simulatedBuyAmount[1].mul(bn(10_000).sub(bn(slippage))).div(bn(10_000));
-    const sellAmountWithSlippage = simulatedSellAmount[1].mul(bn(10_000).add(bn(slippage))).div(bn(10_000));
-
-    const tx = mode === 'sell' ?
-      await miraDex.swapExactInput(sellAmount, sellAssetIdInput, buyAmountWithSlippage, pools, MaxDeadline, DefaultTxParams) :
-      await miraDex.swapExactOutput(buyAmount, buyAssetIdInput, sellAmountWithSlippage, pools, MaxDeadline, DefaultTxParams);
+    if (mode === 'sell') {
+      const [_buyAsset, simulatedBuyAmount] = await readonlyMira.previewSwapExactInput(sellAssetIdInput, sellAmount, [...pools]);
+      const buyAmountWithSlippage = simulatedBuyAmount.mul(bn(10_000).sub(bn(slippage))).div(bn(10_000));
+      tx = await miraDex.swapExactInput(sellAmount, sellAssetIdInput, buyAmountWithSlippage, pools, MaxDeadline, DefaultTxParams);
+    } else {
+      const [_sellAsset, simulatedSellAmount] = await readonlyMira.previewSwapExactOutput(buyAssetIdInput, buyAmount, [...pools]);
+      const sellAmountWithSlippage = simulatedSellAmount.mul(bn(10_000).add(bn(slippage))).div(bn(10_000));
+      tx = await miraDex.swapExactOutput(buyAmount, buyAssetIdInput, sellAmountWithSlippage, pools, MaxDeadline, DefaultTxParams);
+    }
 
     const txCost = await wallet.getTransactionCost(tx);
 
