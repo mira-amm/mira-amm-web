@@ -1,7 +1,7 @@
 .pools {
   display: flex;
   flex-direction: column;
-  gap: 24px;
+  gap: 14px;
 }
 
 .poolsTitle {
@@ -25,10 +25,15 @@
   align-items: center;
 }
 
+.actionButtonDiv {
+  display: flex;
+  justify-content: flex-end;
+}
+
 .createButton {
   font-weight: 400;
   font-size: 16px;
-  width: 143px;
+  width: 100%;
   height: 39px;
 }
 
@@ -49,5 +54,22 @@
 
   .addButton {
     display: none;
+  }
+}
+
+.pagination {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.pagination > p {
+  font-size: 14px;
+}
+
+@media (max-width: 1024px) {
+  .pagination {
+    justify-content: center;
+    align-items: center;
   }
 }

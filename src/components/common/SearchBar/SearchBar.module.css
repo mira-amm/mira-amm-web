@@ -1,0 +1,16 @@
+.searchBar {
+  display: flex;
+  gap: 10px;
+  padding: 14px 12px;
+  border-radius: 8px;
+  color: var(--content-grey);
+  background-color: var(--background-grey-dark);
+}
+
+.searchInput {
+  font-size: 16px;
+  flex: 1;
+  background: transparent;
+  border: none;
+  color: var(--content-primary);
+}

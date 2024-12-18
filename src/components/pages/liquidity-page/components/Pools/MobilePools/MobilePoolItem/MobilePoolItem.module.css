@@ -13,6 +13,12 @@
 .infoBlocks {
   display: flex;
   justify-content: space-between;
+  gap: 16px; 
+}
+
+.infoBlocks > .infoBlock {
+  flex: 1; 
+  max-width: 120px; 
 }
 
 .poolDescription {

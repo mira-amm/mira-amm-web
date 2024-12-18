@@ -2,10 +2,15 @@
   display: flex;
   flex-direction: column;
   gap: 4px;
+  width: 100px;
+  text-align: left;
 }
 
 .infoBlockValue {
   color: var(--content-tertiary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .infoBlockValuePositive {

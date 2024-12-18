@@ -1,58 +1,34 @@
-import ActionButton from "@/src/components/common/ActionButton/ActionButton";
+import {usePoolDetails} from "../usePoolDetails";
 import CoinPair from "@/src/components/common/CoinPair/CoinPair";
-import { PoolData } from "@/src/hooks/usePoolsData";
-import { createPoolIdFromIdString, createPoolKey } from "@/src/utils/common";
-import { DefaultLocale } from "@/src/utils/constants";
+import ActionButton from "@/src/components/common/ActionButton/ActionButton";
 import Link from "next/link";
 import styles from "./DesktopPools.module.css";
 import clsx from "clsx";
+import {PoolData} from "@/src/hooks/usePoolsData";
 
-export default function DesktopPoolRow({ poolData }: { poolData: PoolData }) {
-  if (!poolData) {
-    return null;
-  }
+type Props = {
+  poolData: PoolData;
+};
 
-  const { id } = poolData;
-
-  const poolId = createPoolIdFromIdString(id);
-  const key = createPoolKey(poolId);
-
-  let aprValue = 'n/a';
-  let volumeValue = 'n/a';
-  let tvlValue = 'n/a';
-
-  if (poolData.details) {
-    const {details: {apr, volume, tvl}} = poolData;
-
-    if (apr && apr > 0) {
-      aprValue = `${apr.toLocaleString(DefaultLocale, {
-          minimumFractionDigits: 2,
-          maximumFractionDigits: 2
-        })}%`;
-    }
-    if (tvl && tvl > 0) {
-      tvlValue = `$${tvl.toLocaleString(DefaultLocale, {maximumFractionDigits: 0})}`;
-    }
-    if (volume && parseFloat(volume) > 0) {
-      volumeValue = `$${parseFloat(volume).toLocaleString(DefaultLocale, {maximumFractionDigits: 0})}`;
-    }
-  }
+const DesktopPoolRow = ({poolData}: Props) => {
+  const {poolKey, aprValue, volumeValue, tvlValue, isStablePool, poolId} =
+    usePoolDetails(poolData);
 
   return (
-    <tr key={key}>
+    <tr key={poolKey}>
       <td>
         <CoinPair
-          firstCoin={poolData.details.asset0Id}
-          secondCoin={poolData.details.asset1Id}
-          isStablePool={poolId[2]}
+          firstCoin={poolId[0].bits}
+          secondCoin={poolId[1].bits}
+          isStablePool={isStablePool}
           withPoolDescription
         />
       </td>
-      <td className={clsx(!aprValue && styles.pending)}>{aprValue ?? 'Awaiting data'}</td>
+      <td className={clsx(!aprValue && styles.pending)}>{aprValue}</td>
       <td>{volumeValue}</td>
       <td>{tvlValue}</td>
       <td>
-        <Link href={`/liquidity/add?pool=${poolData.id}`}>
+        <Link href={`/liquidity/add?pool=${poolKey}`}>
           <ActionButton
             className={styles.addButton}
             variant="secondary"
@@ -64,4 +40,6 @@ export default function DesktopPoolRow({ poolData }: { poolData: PoolData }) {
       </td>
     </tr>
   );
-}
+};
+
+export default DesktopPoolRow;
