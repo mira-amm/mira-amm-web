@@ -23,10 +23,13 @@ type Props = {
 
 const PROMO_BANNER_STORANGE_KEY = 'fuel-promo-banner-closed';
 
+const ISSERVER = typeof window === 'undefined';
 const Header = ({ isHomePage }: Props) => {
   const pathname = usePathname();
   const { isConnected } = useIsConnected();
-  const bannerClosed = localStorage.getItem(PROMO_BANNER_STORANGE_KEY);
+  const bannerClosed = ISSERVER
+    ? false
+    : localStorage?.getItem(PROMO_BANNER_STORANGE_KEY);
   const [isPromoShown, setIsPromoShown] = useState(bannerClosed ? false : true);
 
   return (
