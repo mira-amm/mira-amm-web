@@ -8,6 +8,13 @@
   display: flex;
   padding: 12px 16px;
   background-color: #507FF7;
+
+}
+
+.promo svg {
+  margin-right: 5px;
+  width: 18px;
+  height: 18px;
 }
 
 .main {
