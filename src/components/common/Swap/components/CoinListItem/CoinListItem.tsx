@@ -13,15 +13,17 @@ import {Tooltip} from "react-tooltip";
 type Props = {
   assetId: string;
   balance?: CoinQuantity | undefined;
+  verifiedAssetData?: any;
 };
 
-const CoinListItem = ({assetId, balance}: Props) => {
+const CoinListItem = ({assetId, balance, verifiedAssetData}: Props) => {
   const metadata = useAssetMetadata(assetId);
   const balanceValue = balance?.amount ?? new BN(0);
   const icon = useAssetImage(assetId);
   const isVerified = checkIfCoinVerified({
     symbol: metadata.symbol,
     assetId: assetId,
+    verifiedAssetData,
   });
 
   return (

@@ -1,10 +1,12 @@
+"use client";
 import SearchIcon from "@/src/components/icons/Search/SearchIcon";
 import CoinListItem from "@/src/components/common/Swap/components/CoinListItem/CoinListItem";
 import {ChangeEvent, memo, useEffect, useMemo, useRef, useState} from "react";
 import styles from "./CoinsListModal.module.css";
 import {BN, CoinQuantity} from "fuels";
-import { useAssetList } from "@/src/hooks/useAssetList";
+import {useAssetList} from "@/src/hooks/useAssetList";
 import UnknownCoinListItem from "../UnknownCoinListItem";
+import {useQuery} from "@tanstack/react-query";
 
 type Props = {
   selectCoin: (assetId: string | null) => void;
@@ -12,14 +14,25 @@ type Props = {
   verifiedAssetsOnly?: boolean;
 };
 
-const priorityOrder: string[] = ['ETH', 'USDC', 'USDT'];
-const lowPriorityOrder: string[] = ['DUCKY'];
+const priorityOrder: string[] = ["ETH", "USDC", "USDT"];
+const lowPriorityOrder: string[] = ["DUCKY"];
 
 const assetIdRegex = /^0x[0-9a-fA-F]{64}$/;
 
-const CoinsListModal = ({ selectCoin, balances, verifiedAssetsOnly }: Props) => {
-  const { assets, isLoading } = useAssetList();
-  const [value, setValue] = useState('');
+const CoinsListModal = ({selectCoin, balances, verifiedAssetsOnly}: Props) => {
+  const {data: verifiedAssetData} = useQuery({
+    queryKey: ["verifiedAssets"],
+    queryFn: async () => {
+      const req = await fetch(
+        `https://verified-assets.fuel.network/assets.json`
+      );
+      const res = await req.json();
+      return res as any;
+    },
+  });
+
+  const {assets} = useAssetList();
+  const [value, setValue] = useState("");
 
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -52,8 +65,10 @@ const CoinsListModal = ({ selectCoin, balances, verifiedAssetsOnly }: Props) => 
     return filteredCoinsList.toSorted((firstAsset, secondAsset) => {
       const firstAssetPriority = priorityOrder.indexOf(firstAsset.name!);
       const secondAssetPriority = priorityOrder.indexOf(secondAsset.name!);
-      const bothAssetsHavePriority = firstAssetPriority !== -1 && secondAssetPriority !== -1;
-      const eitherAssetHasPriority = firstAssetPriority !== -1 || secondAssetPriority !== -1;
+      const bothAssetsHavePriority =
+        firstAssetPriority !== -1 && secondAssetPriority !== -1;
+      const eitherAssetHasPriority =
+        firstAssetPriority !== -1 || secondAssetPriority !== -1;
 
       if (bothAssetsHavePriority) {
         return firstAssetPriority - secondAssetPriority;
@@ -62,9 +77,13 @@ const CoinsListModal = ({ selectCoin, balances, verifiedAssetsOnly }: Props) => 
       }
 
       const firstAssetLowPriority = lowPriorityOrder.indexOf(firstAsset.name!);
-      const secondAssetLowPriority = lowPriorityOrder.indexOf(secondAsset.name!);
-      const bothAssetsHaveLowPriority = firstAssetLowPriority !== -1 && secondAssetLowPriority !== -1;
-      const eitherAssetHasLowPriority = firstAssetLowPriority !== -1 || secondAssetLowPriority !== -1;
+      const secondAssetLowPriority = lowPriorityOrder.indexOf(
+        secondAsset.name!
+      );
+      const bothAssetsHaveLowPriority =
+        firstAssetLowPriority !== -1 && secondAssetLowPriority !== -1;
+      const eitherAssetHasLowPriority =
+        firstAssetLowPriority !== -1 || secondAssetLowPriority !== -1;
 
       if (bothAssetsHaveLowPriority) {
         return firstAssetLowPriority - secondAssetLowPriority;
@@ -73,16 +92,24 @@ const CoinsListModal = ({ selectCoin, balances, verifiedAssetsOnly }: Props) => 
       }
 
       if (balances) {
-        const firstAssetBalance = balances.find((b) => b.assetId === firstAsset.assetId)?.amount ?? new BN(0);
-        const secondAssetBalance = balances.find((b) => b.assetId === secondAsset.assetId)?.amount ?? new BN(0);
+        const firstAssetBalance =
+          balances.find((b) => b.assetId === firstAsset.assetId)?.amount ??
+          new BN(0);
+        const secondAssetBalance =
+          balances.find((b) => b.assetId === secondAsset.assetId)?.amount ??
+          new BN(0);
         const firstAssetDivisor = new BN(10).pow(firstAsset.decimals);
         const secondAssetDivisor = new BN(10).pow(secondAsset.decimals);
         // Dividing BN to a large value can lead to zero, we use proportion rule here: a/b = c/d => a*d = b*c
-        const firstAssetBalanceMultiplied = firstAssetBalance.mul(secondAssetDivisor);
-        const secondAssetBalanceMultiplied = secondAssetBalance.mul(firstAssetDivisor);
+        const firstAssetBalanceMultiplied =
+          firstAssetBalance.mul(secondAssetDivisor);
+        const secondAssetBalanceMultiplied =
+          secondAssetBalance.mul(firstAssetDivisor);
 
         if (!firstAssetBalanceMultiplied.eq(secondAssetBalanceMultiplied)) {
-          return firstAssetBalanceMultiplied.gt(secondAssetBalanceMultiplied) ? -1 : 1;
+          return firstAssetBalanceMultiplied.gt(secondAssetBalanceMultiplied)
+            ? -1
+            : 1;
         }
       }
 
@@ -97,7 +124,7 @@ const CoinsListModal = ({ selectCoin, balances, verifiedAssetsOnly }: Props) => 
   return (
     <>
       <div className={styles.tokenSearch}>
-        <SearchIcon/>
+        <SearchIcon />
         <input
           className={styles.tokenSearchInput}
           type="text"
@@ -114,13 +141,14 @@ const CoinsListModal = ({ selectCoin, balances, verifiedAssetsOnly }: Props) => 
             onClick={() => selectCoin(value)}
           />
         )}
-        {sortedCoinsList.map(({ assetId }) => (
+        {sortedCoinsList.map(({assetId}) => (
           <div
             className={styles.tokenListItem}
             onClick={() => selectCoin(assetId)}
             key={assetId}
           >
             <CoinListItem
+              verifiedAssetData={verifiedAssetData}
               assetId={assetId}
               balance={balances?.find((b) => b.assetId === assetId)}
             />
