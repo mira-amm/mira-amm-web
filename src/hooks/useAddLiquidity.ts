@@ -12,9 +12,10 @@ type Props = {
   secondAsset: string;
   secondAssetAmount: BN;
   isPoolStable: boolean;
+  slippage: number;
 };
 
-const useAddLiquidity = ({ firstAsset, firstAssetAmount, secondAsset, secondAssetAmount, isPoolStable }: Props) => {
+const useAddLiquidity = ({ firstAsset, firstAssetAmount, secondAsset, secondAssetAmount, isPoolStable, slippage }: Props) => {
   const mira = useMiraDex();
   const { wallet } = useWallet();
 
@@ -37,14 +38,15 @@ const useAddLiquidity = ({ firstAsset, firstAssetAmount, secondAsset, secondAsse
       throw new Error('Invalid pool id or asset configs');
     }
 
-    const minAsset0Amount = asset0Amount.mul(99).div(100);
-    const minAsset1Amount = asset1Amount.mul(99).div(100);
+    const slippagePercentage = new BN(100 - slippage);
+    const minAsset0Amount = asset0Amount.mul(slippagePercentage).div(100);
+    const minAsset1Amount = asset1Amount.mul(slippagePercentage).div(100);
     const txRequest = await mira.addLiquidity(poolId, asset0Amount, asset1Amount, minAsset0Amount, minAsset1Amount, MaxDeadline, DefaultTxParams);
     const gasCost = await wallet.getTransactionCost(txRequest);
     const fundedTx = await wallet.fund(txRequest, gasCost);
     const tx = await wallet.sendTransaction(fundedTx, { estimateTxDependencies: true });
     return await tx.waitForResult();
-  }, [mira, wallet, firstAsset, secondAsset, isPoolStable, firstAssetAmount, secondAssetAmount]);
+  }, [mira, wallet, firstAsset, secondAsset, isPoolStable, firstAssetAmount, secondAssetAmount, slippage]);
 
   const { data, mutateAsync, isPending, error  } = useMutation({
     mutationFn,

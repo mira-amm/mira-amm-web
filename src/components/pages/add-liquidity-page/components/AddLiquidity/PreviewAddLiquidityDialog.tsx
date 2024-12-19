@@ -26,9 +26,10 @@ export type AddLiquidityPreviewData = {
 type Props = {
   previewData: AddLiquidityPreviewData;
   setPreviewData: Dispatch<SetStateAction<AddLiquidityPreviewData | null>>;
+  slippage: number;
 }
 
-const PreviewAddLiquidityDialog = ({ previewData, setPreviewData }: Props) => {
+const PreviewAddLiquidityDialog = ({ previewData, setPreviewData, slippage }: Props) => {
   const [SuccessModal, openSuccessModal] = useModal();
   const [FailureModal, openFailureModal, closeFailureModal] = useModal();
 
@@ -48,6 +49,7 @@ const PreviewAddLiquidityDialog = ({ previewData, setPreviewData }: Props) => {
     secondAsset: previewData.assets[1].assetId,
     secondAssetAmount,
     isPoolStable: isStablePool,
+    slippage
   });
 
   const firstAssetAmountString = firstAssetAmount.formatUnits(firstAssetMetadata.decimals);
