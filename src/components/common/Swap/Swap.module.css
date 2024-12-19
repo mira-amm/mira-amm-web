@@ -43,16 +43,6 @@
   color: var(--content-primary);
 }
 
-.slippageLabel {
-  padding: 4px 8px;
-  font-weight: 400;
-  font-size: 13px;
-  line-height: 16px;
-  border-radius: 8px;
-  background-color: var(--background-grey-light);
-  color: var(--content-dimmed-light);
-}
-
 .splitter {
   position: relative;
   width: 100%;
@@ -81,7 +71,7 @@
   transition: transform 0.3s;
 }
 
-.settingsButton:hover, .convertButton:hover {
+.convertButton:hover {
   color: var(--content-primary);
 }
 
