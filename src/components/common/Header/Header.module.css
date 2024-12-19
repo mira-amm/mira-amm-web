@@ -151,7 +151,7 @@
 
   .promoClose {
     position: absolute;
-    top: 16px;
+    /* top: 16px; */
     right: 16px;
     cursor: pointer;
   }
