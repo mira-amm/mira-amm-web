@@ -7,6 +7,7 @@ import {BN, CoinQuantity} from "fuels";
 import {useAssetList} from "@/src/hooks/useAssetList";
 import UnknownCoinListItem from "../UnknownCoinListItem";
 import {useQuery} from "@tanstack/react-query";
+import {VerifiedAssets} from "../CoinListItem/checkIfCoinVerified";
 
 type Props = {
   selectCoin: (assetId: string | null) => void;
@@ -27,7 +28,7 @@ const CoinsListModal = ({selectCoin, balances, verifiedAssetsOnly}: Props) => {
         `https://verified-assets.fuel.network/assets.json`
       );
       const res = await req.json();
-      return res as any;
+      return res as VerifiedAssets;
     },
   });
 

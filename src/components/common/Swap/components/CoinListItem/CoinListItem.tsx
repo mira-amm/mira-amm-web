@@ -6,25 +6,27 @@ import styles from "./CoinListItem.module.css";
 import {useAssetImage} from "@/src/hooks/useAssetImage";
 import useAssetMetadata from "@/src/hooks/useAssetMetadata";
 import SuccessIcon from "@/src/components/icons/Success/SuccessIcon";
-import {checkIfCoinVerified} from "./checkIfCoinVerified";
+import {checkIfCoinVerified, VerifiedAssets} from "./checkIfCoinVerified";
 import "react-tooltip/dist/react-tooltip.css";
 import {Tooltip} from "react-tooltip";
 
 type Props = {
   assetId: string;
   balance?: CoinQuantity | undefined;
-  verifiedAssetData?: any;
+  verifiedAssetData?: VerifiedAssets;
 };
 
 const CoinListItem = ({assetId, balance, verifiedAssetData}: Props) => {
   const metadata = useAssetMetadata(assetId);
   const balanceValue = balance?.amount ?? new BN(0);
   const icon = useAssetImage(assetId);
-  const isVerified = checkIfCoinVerified({
-    symbol: metadata.symbol,
-    assetId: assetId,
-    verifiedAssetData,
-  });
+  const isVerified = verifiedAssetData
+    ? checkIfCoinVerified({
+        symbol: metadata.symbol,
+        assetId: assetId,
+        verifiedAssetData,
+      })
+    : false;
 
   return (
     <span className={clsx(styles.coin, !metadata.name && styles.centered)}>
