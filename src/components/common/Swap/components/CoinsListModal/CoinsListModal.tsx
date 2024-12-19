@@ -15,7 +15,7 @@ type Props = {
   verifiedAssetsOnly?: boolean;
 };
 
-const priorityOrder: string[] = ["ETH", "USDC", "USDT"];
+const priorityOrder: string[] = ["ETH", "USDC", "USDT", "FUEL"];
 const lowPriorityOrder: string[] = ["DUCKY"];
 
 const assetIdRegex = /^0x[0-9a-fA-F]{64}$/;
@@ -64,8 +64,8 @@ const CoinsListModal = ({selectCoin, balances, verifiedAssetsOnly}: Props) => {
   // TODO: Pre-sort the list by priorityOrder and alphabet to avoid sorting each time
   const sortedCoinsList = useMemo(() => {
     return filteredCoinsList.toSorted((firstAsset, secondAsset) => {
-      const firstAssetPriority = priorityOrder.indexOf(firstAsset.name!);
-      const secondAssetPriority = priorityOrder.indexOf(secondAsset.name!);
+      const firstAssetPriority = priorityOrder.indexOf(firstAsset.symbol!);
+      const secondAssetPriority = priorityOrder.indexOf(secondAsset.symbol!);
       const bothAssetsHavePriority =
         firstAssetPriority !== -1 && secondAssetPriority !== -1;
       const eitherAssetHasPriority =
