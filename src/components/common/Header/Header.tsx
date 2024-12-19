@@ -31,7 +31,7 @@ const Header = ({ isHomePage }: Props) => {
 
   return (
     <header className={styles.header}>
-      {true && (
+      {isPromoShown && (
         <section className={styles.promo}>
           <div className={styles.promo_text}>
             <RewardsIcon />
