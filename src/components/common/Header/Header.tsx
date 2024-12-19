@@ -31,15 +31,17 @@ const Header = ({ isHomePage }: Props) => {
 
   return (
     <header className={styles.header}>
-      {isPromoShown && (
+      {true && (
         <section className={styles.promo}>
-          <RewardsIcon />
-          <p>
-            $FUEL is now live in MIRA,
-            <Link href='/swap'>
-              <u>Trade Now.</u>
-            </Link>
-          </p>
+          <div className={styles.promo_text}>
+            <RewardsIcon />
+            <p>
+              $FUEL is now live in MIRA,
+              <Link href='/swap'>
+                <u>Trade Now.</u>
+              </Link>
+            </p>
+          </div>
           <IconButton
             onClick={() => {
               setIsPromoShown(false);
