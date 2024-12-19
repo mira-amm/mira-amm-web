@@ -30,7 +30,7 @@ export const usePoolsData = (): { data: PoolData[] | undefined, isLoading: boole
   const timestamp24hAgo = Math.floor(Date.now() / 1000) - 24 * 60 * 60;
   const query = gql`
     query PoolQuery {
-      pools {
+      pools(orderBy: tvlUSD_DESC) {
         id
         isStable
         reserve0
