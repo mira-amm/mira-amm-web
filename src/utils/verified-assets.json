@@ -15,6 +15,18 @@
     }
   },
   {
+    "name": "Fuel",
+    "symbol": "FUEL",
+    "icon": {
+      "default": "https://verified-assets.fuel.network/images/fuel.svg"
+    },
+    "decimals": 9,
+    "contractId": "0x4ea6ccef1215d9479f1024dff70fc055ca538215d2c8c348beddffd54583d0e8",
+    "subId": "0xe81c89b8cf795c7c25e79f6c4f2f1cd233290b58e217ed4e9b6b18538badddaf",
+    "assetId": "0x1d5d97005e41cae2187a895fd8eab0506111e0e2f3331cd3912c15c24e3c1d82",
+    "isVerified": true
+  },
+  {
     "name": "WETH",
     "symbol": "WETH",
     "decimals": 9,
