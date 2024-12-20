@@ -7,11 +7,11 @@
 .promo {
   display: flex;
   padding: 12px 16px;
-  background-color: #507FF7;
+  background-color: #507ff7;
   justify-content: space-between;
 }
 
-.promo_text{
+.promo_text {
   display: flex;
 }
 
@@ -58,7 +58,12 @@
   display: inline-flex;
   align-items: center;
   text-transform: uppercase;
-  background-image: radial-gradient(114.58% 814.77% at -1.46% 26.54%, var(--accent-primary) 0%, #5872FC 49.15%, #31FE3A 100%);
+  background-image: radial-gradient(
+    114.58% 814.77% at -1.46% 26.54%,
+    var(--accent-primary) 0%,
+    #5872fc 49.15%,
+    #31fe3a 100%
+  );
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   cursor: pointer;
@@ -111,7 +116,8 @@
     transition: all 0.3s ease;
   }
 
-  .link:hover, .activeLink {
+  .link:hover,
+  .activeLink {
     padding: 6px 12px;
     border-radius: 20px;
     background: var(--background-grey-light);
@@ -133,7 +139,8 @@
     opacity: 0;
     padding: 0;
     max-width: 0;
-    transition: opacity .5s, max-width .5s, padding 0s .3s, margin-left 0s .3s;
+    transition: opacity 0.5s, max-width 0.5s, padding 0s 0.3s,
+      margin-left 0s 0.3s;
   }
 
   div:hover > .hiddenLabel {

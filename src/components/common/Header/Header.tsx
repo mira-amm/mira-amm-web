@@ -1,32 +1,32 @@
-import MobileMenu from '@/src/components/common/Header/components/MobileMenu/MobileMenu';
-import Logo from '@/src/components/common/Logo/Logo';
-import SoonLabel from '@/src/components/common/SoonLabel/SoonLabel';
+import MobileMenu from "@/src/components/common/Header/components/MobileMenu/MobileMenu";
+import Logo from "@/src/components/common/Logo/Logo";
+import SoonLabel from "@/src/components/common/SoonLabel/SoonLabel";
 
-import styles from './Header.module.css';
-import Link from 'next/link';
-import { clsx } from 'clsx';
-import { usePathname } from 'next/navigation';
-import ConnectButton from '@/src/components/common/ConnectButton/ConnectButton';
-import LaunchAppButton from '@/src/components/common/LaunchAppButton/LaunchAppButton';
-import DisconnectMobile from '@/src/components/common/ConnectButton/DisconnectMobile';
-import { useIsConnected } from '@fuels/react';
-import { BlogLink, FuelAppUrl } from '@/src/utils/constants';
-import { RewardsIcon } from '../../icons/Rewards/RewardsIcon';
-import TestnetLabel from '@/src/components/common/TestnetLabel/TestnetLabel';
-import IconButton from '../IconButton/IconButton';
-import CloseIcon from '../../icons/Close/CloseIcon';
-import { useState } from 'react';
+import styles from "./Header.module.css";
+import Link from "next/link";
+import {clsx} from "clsx";
+import {usePathname} from "next/navigation";
+import ConnectButton from "@/src/components/common/ConnectButton/ConnectButton";
+import LaunchAppButton from "@/src/components/common/LaunchAppButton/LaunchAppButton";
+import DisconnectMobile from "@/src/components/common/ConnectButton/DisconnectMobile";
+import {useIsConnected} from "@fuels/react";
+import {BlogLink, FuelAppUrl} from "@/src/utils/constants";
+import {RewardsIcon} from "../../icons/Rewards/RewardsIcon";
+import TestnetLabel from "@/src/components/common/TestnetLabel/TestnetLabel";
+import IconButton from "../IconButton/IconButton";
+import CloseIcon from "../../icons/Close/CloseIcon";
+import {useState} from "react";
 
 type Props = {
   isHomePage?: boolean;
 };
 
-const PROMO_BANNER_STORANGE_KEY = 'fuel-promo-banner-closed';
+const PROMO_BANNER_STORANGE_KEY = "fuel-promo-banner-closed";
 
-const ISSERVER = typeof window === 'undefined';
-const Header = ({ isHomePage }: Props) => {
+const ISSERVER = typeof window === "undefined";
+const Header = ({isHomePage}: Props) => {
   const pathname = usePathname();
-  const { isConnected } = useIsConnected();
+  const {isConnected} = useIsConnected();
   const bannerClosed = ISSERVER
     ? false
     : localStorage?.getItem(PROMO_BANNER_STORANGE_KEY);
@@ -40,7 +40,7 @@ const Header = ({ isHomePage }: Props) => {
             <RewardsIcon />
             <p>
               $FUEL is now live in MIRA,
-              <Link href='/swap'>
+              <Link href="/swap">
                 <u>Trade Now.</u>
               </Link>
             </p>
@@ -48,7 +48,7 @@ const Header = ({ isHomePage }: Props) => {
           <IconButton
             onClick={() => {
               setIsPromoShown(false);
-              localStorage.setItem(PROMO_BANNER_STORANGE_KEY, 'true');
+              localStorage.setItem(PROMO_BANNER_STORANGE_KEY, "true");
             }}
             className={styles.promoClose}
           >
@@ -59,21 +59,21 @@ const Header = ({ isHomePage }: Props) => {
       <section className={styles.main}>
         <div className={styles.left}>
           <Logo />
-          <div className={clsx('desktopOnly', styles.links)}>
+          <div className={clsx("desktopOnly", styles.links)}>
             <Link
-              href='/swap'
+              href="/swap"
               className={clsx(
                 styles.link,
-                pathname.includes('/swap') && styles.activeLink
+                pathname.includes("/swap") && styles.activeLink
               )}
             >
               Swap
             </Link>
             <Link
-              href='/liquidity'
+              href="/liquidity"
               className={clsx(
                 styles.link,
-                pathname.includes('/liquidity') && styles.activeLink
+                pathname.includes("/liquidity") && styles.activeLink
               )}
             >
               Liquidity
@@ -81,14 +81,14 @@ const Header = ({ isHomePage }: Props) => {
             <a
               href={`${FuelAppUrl}/bridge?from=eth&to=fuel&auto_close=true&=true`}
               className={styles.link}
-              target='_blank'
+              target="_blank"
             >
               Bridge
             </a>
             <a
               href={`${FuelAppUrl}/earn-points`}
               className={styles.link}
-              target='_blank'
+              target="_blank"
             >
               <div className={styles.rewardsLink}>
                 <RewardsIcon />
@@ -97,11 +97,11 @@ const Header = ({ isHomePage }: Props) => {
             </a>
           </div>
         </div>
-        <div className={clsx('mobileOnly', styles.links)}>
+        <div className={clsx("mobileOnly", styles.links)}>
           <a
             href={`${FuelAppUrl}/earn-points`}
             className={styles.link}
-            target='_blank'
+            target="_blank"
           >
             <div className={styles.rewardsLink}>
               <RewardsIcon />
@@ -111,17 +111,17 @@ const Header = ({ isHomePage }: Props) => {
           <DisconnectMobile className={styles.disconnectMobile} />
           <MobileMenu />
         </div>
-        <div className={clsx('desktopOnly', styles.links)}>
+        <div className={clsx("desktopOnly", styles.links)}>
           {isHomePage && (
             <>
               <a
-                href='https://docs.mira.ly'
+                href="https://docs.mira.ly"
                 className={styles.link}
-                target='_blank'
+                target="_blank"
               >
                 Docs
               </a>
-              <a href={BlogLink} className={styles.link} target='_blank'>
+              <a href={BlogLink} className={styles.link} target="_blank">
                 Blog
               </a>
             </>
