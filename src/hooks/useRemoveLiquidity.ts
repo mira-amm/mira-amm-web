@@ -40,7 +40,7 @@ const useRemoveLiquidity = ({
     const fundedTx = await wallet.fund(txRequest, gasCost);
     const tx = await wallet.sendTransaction(fundedTx, { estimateTxDependencies: true });
     return tx.waitForResult();
-  }, [mira, wallet, pool, liquidityPercentage, lpTokenBalance]);
+  }, [mira, wallet, pool, liquidityPercentage, lpTokenBalance, coinBAmountToWithdraw, coinAAmountToWithdraw]);
 
   const { data, mutateAsync, error } = useMutation({
     mutationFn,

@@ -16,7 +16,6 @@ import { floorToTwoSignificantDigits } from "@/src/utils/common";
 import {useCallback, useRef, useState} from "react";
 import useRemoveLiquidity from "@/src/hooks/useRemoveLiquidity";
 import {useRouter} from "next/navigation";
-import {coinsConfig} from "@/src/utils/coinsConfig";
 import RemoveLiquiditySuccessModal
   from "@/src/components/pages/view-position-page/components/RemoveLiquiditySuccessModal/RemoveLiquiditySuccessModal";
 import IconButton from "@/src/components/common/IconButton/IconButton";
@@ -102,7 +101,7 @@ const PositionView = ({ pool }: Props) => {
       closeRemoveLiquidityModal();
       openFailureModal();
     }
-  }, [removeLiquidity, closeRemoveLiquidityModal, openSuccessModal]);
+  }, [removeLiquidity, closeRemoveLiquidityModal, openSuccessModal, openFailureModal, coinBAmountToWithdrawStr, coinAAmountToWithdrawStr]);
 
   const redirectToLiquidity = useCallback(() => {
     router.push('/liquidity');

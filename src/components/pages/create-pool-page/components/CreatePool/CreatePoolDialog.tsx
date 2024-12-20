@@ -19,7 +19,7 @@ import {StablePoolTooltip, VolatilePoolTooltip} from "./CreatePoolTooltips";
 import usePoolsMetadata from "@/src/hooks/usePoolsMetadata";
 import useModal from "@/src/hooks/useModal/useModal";
 import CoinsListModal from "@/src/components/common/Swap/components/CoinsListModal/CoinsListModal";
-import {B256Address, BN, bn, formatUnits} from "fuels";
+import {B256Address, bn} from "fuels";
 import useAssetMetadata from "@/src/hooks/useAssetMetadata";
 import { useAssetPrice } from "@/src/hooks/useAssetPrice";
 import SparkleIcon from "@/src/components/icons/Sparkle/SparkleIcon";
@@ -64,7 +64,7 @@ const CreatePoolDialog = ({ setPreviewData }: Props) => {
   const poolExists = Boolean(poolsMetadata && poolsMetadata?.[0]);
   let existingPoolKey = '';
   if (poolExists) {
-    // @ts-ignore
+    // @ts-expect-error poolId won't be undefined, but the type checker doesn't know that
     existingPoolKey = createPoolKey(poolsMetadata?.[0]?.poolId ?? poolsMetadata?.[1]?.poolId);
   }
 

@@ -1,6 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
 import { useAssetMinterContract } from "./useAssetMinterContract";
-import useProvider from "./useProvider/useProvider";
 import src7Abi from "@/src/abis/src7-abi.json";
 import { Contract, Provider } from "fuels";
 import { NetworkUrl } from "../utils/constants";

@@ -7,7 +7,6 @@ import pageStyles from "./FueletSwapPageLayout.module.css"; // custom styles for
 import { clsx } from "clsx";
 import { useConnect } from "@fuels/react";
 import { FueletWalletConnector } from "@fuels/connectors";
-// import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 
 export const FueletSwapPageLayout = () => {

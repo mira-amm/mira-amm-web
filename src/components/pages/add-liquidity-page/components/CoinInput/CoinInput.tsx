@@ -1,6 +1,4 @@
 import Coin from "@/src/components/common/Coin/Coin";
-import {CoinName, coinsConfig} from "@/src/utils/coinsConfig";
-
 import styles from './CoinInput.module.css';
 import {clsx} from "clsx";
 import {ChangeEvent, memo, useCallback} from "react";

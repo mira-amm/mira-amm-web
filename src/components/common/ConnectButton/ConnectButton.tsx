@@ -165,7 +165,7 @@ const ConnectButton = ({ className }: Props) => {
     } else {
       unlock();
     }
-  }, [isHistoryOpened]);
+  }, [isHistoryOpened, lock, unlock]);
 
   return (
     <>
@@ -175,7 +175,7 @@ const ConnectButton = ({ className }: Props) => {
         loading={loading}
         ref={buttonRef}
       >
-        {isConnected && <img src="/images/avatar.png" width="24" height="24" />}
+        {isConnected && <img src="/images/avatar.png" width="24" height="24" alt="Connected Avatar" />}
         {title}
         {isConnected && (!isMenuOpened ? <ArrowDownIcon /> : <ArrowUpIcon />)}
       </ActionButton>

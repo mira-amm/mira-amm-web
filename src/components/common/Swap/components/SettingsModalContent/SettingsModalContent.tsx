@@ -20,12 +20,12 @@ const SettingsModalContent = ({ slippage, slippageMode, setSlippage, setSlippage
   const inputRef = useRef<HTMLInputElement>(null);
 
   const handleSlippageChange = (event: ChangeEvent<HTMLInputElement>) => {
-    let value = event.target.value.replace('%', '');
+    const value = event.target.value.replace('%', '');
     setInputValue(value + '%');
   }
 
   const handleInputBlur = (event: FocusEvent<HTMLInputElement>) => {
-    let value = event.target.value.replace('%', '');
+    const value = event.target.value.replace('%', '');
     const numericValue = parseFloat(value.replace(',', '.'));
     if (isNaN(numericValue) || numericValue <= 0 || numericValue >= 100) {
       setSlippage(DefaultSlippageValue);

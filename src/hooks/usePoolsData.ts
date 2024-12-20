@@ -1,9 +1,7 @@
 import {useQuery} from "@tanstack/react-query";
 import {CoinName} from "@/src/utils/coinsConfig";
-import {ApiBaseUrl, IndexerUrl, SQDIndexerUrl} from "@/src/utils/constants";
-import {createPoolIdFromIdString, isPoolIdValid} from "@/src/utils/common";
+import { SQDIndexerUrl} from "@/src/utils/constants";
 import request, { gql } from "graphql-request";
-import { time } from "console";
 
 export type PoolData = {
   id: string;

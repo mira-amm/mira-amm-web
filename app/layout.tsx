@@ -3,7 +3,6 @@ import Script from "next/script";
 import {ReactNode} from "react";
 import {clsx} from "clsx";
 import {Prompt, Inter} from "next/font/google";
-import localFont from "next/font/local";
 
 import "@/public/css/globals.css";
 import Providers from "@/src/core/providers/Providers";
