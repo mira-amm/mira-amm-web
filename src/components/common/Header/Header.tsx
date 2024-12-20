@@ -4,34 +4,58 @@ import SoonLabel from "@/src/components/common/SoonLabel/SoonLabel";
 
 import styles from "./Header.module.css";
 import Link from "next/link";
-import { clsx } from "clsx";
-import { usePathname } from "next/navigation";
+import {clsx} from "clsx";
+import {usePathname} from "next/navigation";
 import ConnectButton from "@/src/components/common/ConnectButton/ConnectButton";
 import LaunchAppButton from "@/src/components/common/LaunchAppButton/LaunchAppButton";
 import DisconnectMobile from "@/src/components/common/ConnectButton/DisconnectMobile";
-import { useIsConnected } from "@fuels/react";
+import {useIsConnected} from "@fuels/react";
 import {BlogLink, FuelAppUrl} from "@/src/utils/constants";
-import { RewardsIcon } from "../../icons/Rewards/RewardsIcon";
+import {RewardsIcon} from "../../icons/Rewards/RewardsIcon";
 import TestnetLabel from "@/src/components/common/TestnetLabel/TestnetLabel";
+import IconButton from "../IconButton/IconButton";
+import CloseIcon from "../../icons/Close/CloseIcon";
+import {useState} from "react";
 
 type Props = {
   isHomePage?: boolean;
 };
 
-const Header = ({ isHomePage }: Props) => {
+const PROMO_BANNER_STORANGE_KEY = "fuel-promo-banner-closed";
+
+const ISSERVER = typeof window === "undefined";
+const Header = ({isHomePage}: Props) => {
   const pathname = usePathname();
-  const { isConnected } = useIsConnected();
+  const {isConnected} = useIsConnected();
+  const bannerClosed = ISSERVER
+    ? false
+    : localStorage?.getItem(PROMO_BANNER_STORANGE_KEY);
+  const [isPromoShown, setIsPromoShown] = useState(bannerClosed ? false : true);
 
   return (
     <header className={styles.header}>
-      {/* {isHomePage && (
+      {isPromoShown && (
         <section className={styles.promo}>
-          Trade, Earn and get Rewards using the most efficient AMM on Fuel
-          <IconButton onClick={() => setPromoHidden(true)} className={styles.promoClose}>
-           <CloseIcon />
+          <div className={styles.promo_text}>
+            <RewardsIcon />
+            <p>
+              $FUEL is now live in MIRA,
+              <Link href="/swap">
+                <u>Trade Now.</u>
+              </Link>
+            </p>
+          </div>
+          <IconButton
+            onClick={() => {
+              setIsPromoShown(false);
+              localStorage.setItem(PROMO_BANNER_STORANGE_KEY, "true");
+            }}
+            className={styles.promoClose}
+          >
+            <CloseIcon />
           </IconButton>
         </section>
-      )} */}
+      )}
       <section className={styles.main}>
         <div className={styles.left}>
           <Logo />
@@ -54,7 +78,11 @@ const Header = ({ isHomePage }: Props) => {
             >
               Liquidity
             </Link>
-            <a href={`${FuelAppUrl}/bridge?from=eth&to=fuel&auto_close=true&=true`} className={styles.link} target="_blank">
+            <a
+              href={`${FuelAppUrl}/bridge?from=eth&to=fuel&auto_close=true&=true`}
+              className={styles.link}
+              target="_blank"
+            >
               Bridge
             </a>
             <a
