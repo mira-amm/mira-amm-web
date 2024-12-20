@@ -55,7 +55,7 @@ const DisconnectMobile = ({ className }: Props) => {
     } else {
       unlock();
     }
-  }, [isMenuOpened]);
+  }, [isMenuOpened, lock, unlock]);
 
   const formattedAddress = useFormattedAddress(account);
 
@@ -123,7 +123,7 @@ const DisconnectMobile = ({ className }: Props) => {
         className={clsx(className, styles.connected)}
         onClick={handleClick}
       >
-        {isConnected && <img src="/images/avatar.png" width="16" height="16" />}
+        {isConnected && <img src="/images/avatar.png" width="16" height="16" alt="Avatar" />}
         {formattedAddress}
       </ActionButton>
       {isMenuOpened && (

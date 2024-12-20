@@ -41,7 +41,7 @@ const RemoveLiquidityModalContent = ({coinA, coinB, isStablePool, currentCoinAVa
 
   const debouncedSetValue = useDebounceCallback(setLiquidityValue, 500);
   const handleMouseUp = (e: MouseEvent<HTMLInputElement> | TouchEvent<HTMLInputElement>) => {
-    // @ts-ignore
+    // @ts-expect-error Unreasonable
     debouncedSetValue(Number(e.target.value));
   };
 

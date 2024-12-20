@@ -35,7 +35,7 @@ const useExchangeRateV2 = ({ firstAssetId, secondAssetId, firstAssetAmount, seco
 
     const rate = parseFloat(firstAssetIsBase ? secondAssetAmount : firstAssetAmount) / parseFloat(firstAssetIsBase ? firstAssetAmount : secondAssetAmount);
     return `1 ${assetNameToUseForBase} ≈ ${rate.toLocaleString(DefaultLocale, { maximumFractionDigits: anotherAssetDecimals })} ${assetNameToUseForAnother}`;
-  }, [baseAssetId, firstAssetAmount, firstAssetId, secondAssetAmount, secondAssetId]);
+  }, [baseAssetId, firstAssetAmount, firstAssetId, secondAssetAmount, secondAssetId, firstAssetMetadata.decimals, firstAssetMetadata.symbol, secondAssetMetadata.decimals, secondAssetMetadata.symbol]);
 };
 
 export default useExchangeRateV2;

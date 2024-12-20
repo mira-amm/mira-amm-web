@@ -1,9 +1,7 @@
 import {useQuery} from "@tanstack/react-query";
 import { B256Address, Contract, Provider } from "fuels";
 import src20Abi from "@/src/abis/src20-abi.json";
-import { useProvider } from "@fuels/react";
 import { useAssetMinterContract } from "./useAssetMinterContract";
-import useMiraDex from "./useMiraDex/useMiraDex";
 import { NetworkUrl } from "../utils/constants";
 import { coinsConfig } from "../utils/coinsConfig";
 

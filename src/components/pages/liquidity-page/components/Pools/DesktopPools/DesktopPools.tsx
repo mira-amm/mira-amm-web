@@ -1,5 +1,4 @@
 import styles from "./DesktopPools.module.css";
-import { useRouter } from "next/navigation";
 import { clsx } from "clsx";
 import {PoolData} from "@/src/hooks/usePoolsData";
 import DesktopPoolRow from "./DesktopPoolRow";
@@ -11,8 +10,6 @@ type Props = {
 };
 
 const DesktopPools = ({ poolsData }: Props) => {
-  const router = useRouter();
-
   if (!poolsData) {
     return null;
   }

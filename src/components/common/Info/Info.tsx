@@ -27,7 +27,7 @@ const Info = ({ tooltipText, tooltipKey }: Props) => {
       button.style.setProperty('anchor-name', `--${buttonId}`);
       tooltip.style.setProperty('position-anchor', `--${buttonId}`);
     }
-  }, []);
+  }, [buttonId]);
 
   return (
     <div className={styles.infoContainer}>

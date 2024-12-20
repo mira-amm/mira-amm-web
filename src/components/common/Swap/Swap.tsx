@@ -122,7 +122,7 @@ const Swap = () => {
       // setTxCost(null);
       previousPreviewValue.current = "";
     }
-  }, [isConnected]);
+  }, [isConnected, initialSwapState]);
 
   const sellBalance = balances?.find((b) => b.assetId === swapState.sell.assetId)?.amount;
   const sellBalanceValue = sellBalance ?? new BN(0);

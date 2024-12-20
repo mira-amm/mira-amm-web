@@ -59,6 +59,7 @@ const useSwap = ({ swapState, mode, slippage, pools }: Props) => {
     sellAssetIdInput,
     buyAssetIdInput,
     pools,
+    readonlyMira
   ]);
 
   const sendTx = useCallback(async (inputTx: ScriptTransactionRequest) => {
