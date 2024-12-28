@@ -21,17 +21,6 @@ const lowPriorityOrder: string[] = ["DUCKY"];
 const assetIdRegex = /^0x[0-9a-fA-F]{64}$/;
 
 const CoinsListModal = ({selectCoin, balances, verifiedAssetsOnly}: Props) => {
-  const {data: verifiedAssetData} = useQuery({
-    queryKey: ["verifiedAssets"],
-    queryFn: async () => {
-      const req = await fetch(
-        `https://verified-assets.fuel.network/assets.json`
-      );
-      const res = await req.json();
-      return res as VerifiedAssets;
-    },
-  });
-
   const {assets} = useAssetList();
   const [value, setValue] = useState("");
 
@@ -149,7 +138,6 @@ const CoinsListModal = ({selectCoin, balances, verifiedAssetsOnly}: Props) => {
             key={assetId}
           >
             <CoinListItem
-              verifiedAssetData={verifiedAssetData}
               assetId={assetId}
               balance={balances?.find((b) => b.assetId === assetId)}
             />
