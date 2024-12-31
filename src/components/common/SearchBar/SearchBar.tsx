@@ -1,5 +1,5 @@
 import {clsx} from "clsx";
-import styles from "./searchBar.module.css";
+import styles from "./SearchBar.module.css";
 import SearchIcon from "../../icons/Search/SearchIcon";
 import {SearchBarProps} from "./SearchBarProps";
 
