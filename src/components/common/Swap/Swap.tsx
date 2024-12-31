@@ -4,7 +4,6 @@ import { useDebounceCallback, useLocalStorage } from "usehooks-ts";
 import { clsx } from "clsx";
 
 import CurrencyBox from "@/src/components/common/Swap/components/CurrencyBox/CurrencyBox";
-import SettingsIcon from "@/src/components/icons/Settings/SettingsIcon";
 import ActionButton from "@/src/components/common/ActionButton/ActionButton";
 import ConvertIcon from "@/src/components/icons/Convert/ConvertIcon";
 import IconButton from "@/src/components/common/IconButton/IconButton";
@@ -32,6 +31,7 @@ import { PoolId } from "mira-dex-ts";
 import { useAssetImage } from "@/src/hooks/useAssetImage";
 import { useAssetPrice } from "@/src/hooks/useAssetPrice";
 import useAssetMetadata from "@/src/hooks/useAssetMetadata";
+import { SlippageSetting } from "../SlippageSetting/SlippageSetting";
 
 export type CurrencyBoxMode = "buy" | "sell";
 export type CurrencyBoxState = {
@@ -428,10 +428,10 @@ const Swap = () => {
         <div className={clsx(styles.swapContainer, swapPending && styles.swapContainerLoading)}>
           <div className={styles.heading}>
             <p className={styles.title}>Swap</p>
-            <p className={styles.slippageLabel}>{slippage / 100}% slippage</p>
-            <IconButton onClick={openSettingsModal} className={styles.settingsButton}>
-              <SettingsIcon />
-            </IconButton>
+            <SlippageSetting
+              slippage={slippage}
+              openSettingsModal={openSettingsModal}
+            />
           </div>
           <CurrencyBox
             value={sellValue}

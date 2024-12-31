@@ -7,6 +7,10 @@ import {useRouter} from "next/navigation";
 import IconButton from "@/src/components/common/IconButton/IconButton";
 import CloseIcon from "@/src/components/icons/Close/CloseIcon";
 import {PoolId} from "mira-dex-ts";
+import { SlippageSetting } from '@/src/components/common/SlippageSetting/SlippageSetting';
+import SettingsModalContent from '@/src/components/common/Swap/components/SettingsModalContent/SettingsModalContent';
+import useModal from '@/src/hooks/useModal/useModal';
+import { DefaultSlippageValue, SlippageMode } from '@/src/components/common/Swap/Swap';
 
 type Props = {
   poolId: PoolId;
@@ -14,8 +18,11 @@ type Props = {
 
 const AddLiquidity = ({ poolId }: Props) => {
   const router = useRouter();
+  const [SettingsModal, openSettingsModal, closeSettingsModal] = useModal();
 
   const [previewData, setPreviewData] = useState<AddLiquidityPreviewData | null>(null);
+  const [slippage, setSlippage] = useState<number>(DefaultSlippageValue);
+  const [slippageMode, setSlippageMode] = useState<SlippageMode>("auto");
 
   const handleBackClick = useCallback(() => {
     if (previewData) {
@@ -39,6 +46,7 @@ const AddLiquidity = ({ poolId }: Props) => {
           <p className={styles.title}>
             Add Liquidity
           </p>
+          <SlippageSetting slippage={slippage} openSettingsModal={openSettingsModal} />
           {showPreview && (
             <IconButton onClick={handleCloseClick}>
               <CloseIcon />
@@ -46,7 +54,11 @@ const AddLiquidity = ({ poolId }: Props) => {
           )}
         </div>
         {showPreview ? (
-          <PreviewAddLiquidityDialog previewData={previewData!} setPreviewData={setPreviewData} />
+          <PreviewAddLiquidityDialog
+            previewData={previewData!}
+            setPreviewData={setPreviewData}
+            slippage={slippage}
+          />
         ) : (
           <AddLiquidityDialog poolId={poolId} setPreviewData={setPreviewData} />
         )}
@@ -54,6 +66,15 @@ const AddLiquidity = ({ poolId }: Props) => {
       {showPreview && (
         <div className={styles.loadingOverlay}/>
       )}
+      <SettingsModal title="Settings">
+        <SettingsModalContent
+          slippage={slippage}
+          slippageMode={slippageMode}
+          setSlippage={setSlippage}
+          setSlippageMode={setSlippageMode}
+          closeModal={closeSettingsModal}
+        />
+      </SettingsModal>
     </>
   );
 };
