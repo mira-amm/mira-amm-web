@@ -50,7 +50,7 @@ const Footer = ({ isHomePage }: Props) => {
             >
               Careers
             </a>
-            <a href="mailto:hi@mira.ly" target="_blank">
+            <a href="mailto:help@mira.ly" target="_blank">
               Contact us
             </a>
           </div>
@@ -108,7 +108,7 @@ const Footer = ({ isHomePage }: Props) => {
             >
               Careers
             </a>
-            <a className={styles.link} href="mailto:hi@mira.ly" target="_blank">
+            <a className={styles.link} href="mailto:help@mira.ly" target="_blank">
               Contact us
             </a>
           </div>
