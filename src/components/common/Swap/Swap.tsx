@@ -92,6 +92,8 @@ const Swap = () => {
   const [slippage, setSlippage] = useState<number>(DefaultSlippageValue);
   const [txCost, setTxCost] = useState<number | null>(null);
   const [slippageMode, setSlippageMode] = useState<SlippageMode>("auto");
+  const [swapButtonTitle, setSwapButtonTitle] = useState<string>("Review");
+  const [review, setReview] = useState<boolean>(false);
 
   const [swapCoins, setSwapCoins] = useLocalStorage("swapCoins", {
     sell: initialSwapState.sell.assetId,
@@ -332,38 +334,73 @@ const Swap = () => {
   const amountMissing =
     swapState.buy.amount === "" || swapState.sell.amount === "";
   const sufficientEthBalance = useCheckEthBalance(swapState.sell);
+
+  let showInsufficientBalance = true;
+
+  useEffect(() => {
+    if (!isValidNetwork) {
+      setSwapButtonTitle("Incorrect network");
+    } else if (swapPending) {
+      setSwapButtonTitle("Waiting for approval in wallet");
+    } else if (!sufficientEthBalance) {
+      setSwapButtonTitle("Bridge more ETH to pay for gas");
+    } else if (showInsufficientBalance) {
+      setSwapButtonTitle("Insufficient balance");
+    }
+  }, [
+    isValidNetwork,
+    showInsufficientBalance,
+    sufficientEthBalance,
+    swapPending,
+  ]);
+
+  const swapDisabled =
+    !isValidNetwork ||
+    coinMissing ||
+    showInsufficientBalance ||
+    Boolean(previewError) ||
+    !sellValue ||
+    !buyValue;
+
   const handleSwapClick = useCallback(async () => {
-    if (!sufficientEthBalance) {
-      openNewTab(`${FuelAppUrl}/bridge?from=eth&to=fuel&auto_close=true&=true`);
+    if (swapButtonTitle === "Review") {
+      setReview(true);
+      setSwapButtonTitle("Swap");
       return;
-    }
-
-    if (amountMissing || swapPending) {
-      return;
-    }
-
-    swapStateForPreview.current = swapState;
-    try {
-      const txCostData = await fetchTxCost();
-
-      if (txCostData?.txCost.gasPrice) {
-        setTxCost(txCostData.txCost.gasPrice.toNumber() / 10 ** 9);
+    } else {
+      if (!sufficientEthBalance) {
+        openNewTab(
+          `${FuelAppUrl}/bridge?from=eth&to=fuel&auto_close=true&=true`
+        );
+        return;
       }
 
-      if (txCostData?.tx) {
-        const swapResult = await triggerSwap(txCostData.tx);
-        if (swapResult) {
-          openSuccess();
-          await refetchBalances();
+      if (amountMissing || swapPending) {
+        return;
+      }
+      swapStateForPreview.current = swapState;
+      try {
+        const txCostData = await fetchTxCost();
+
+        if (txCostData?.txCost.gasPrice) {
+          setTxCost(txCostData.txCost.gasPrice.toNumber() / 10 ** 9);
         }
-      }
-    } catch (e) {
-      console.error(e);
-      if (
-        e instanceof Error &&
-        !e.message.includes("User canceled sending transaction")
-      ) {
-        openFailure();
+
+        if (txCostData?.tx) {
+          const swapResult = await triggerSwap(txCostData.tx);
+          if (swapResult) {
+            openSuccess();
+            await refetchBalances();
+          }
+        }
+      } catch (e) {
+        console.error(e);
+        if (
+          e instanceof Error &&
+          !e.message.includes("User canceled sending transaction")
+        ) {
+          openFailure();
+        }
       }
     }
   }, [
@@ -376,34 +413,15 @@ const Swap = () => {
     openSuccess,
     openFailure,
     refetchBalances,
+    swapButtonTitle,
   ]);
 
-  let showInsufficientBalance = true;
   try {
     const insufficientSellBalance = sellBalanceValue.lt(
       bn.parseUnits(sellValue, sellMetadata.decimals || 0)
     );
     showInsufficientBalance = insufficientSellBalance && sufficientEthBalance;
   } catch (e) {}
-
-  let swapButtonTitle = "Swap";
-  if (!isValidNetwork) {
-    swapButtonTitle = "Incorrect network";
-  } else if (swapPending) {
-    swapButtonTitle = "Waiting for approval in wallet";
-  } else if (!sufficientEthBalance) {
-    swapButtonTitle = "Bridge more ETH to pay for gas";
-  } else if (showInsufficientBalance) {
-    swapButtonTitle = "Insufficient balance";
-  }
-
-  const swapDisabled =
-    !isValidNetwork ||
-    coinMissing ||
-    showInsufficientBalance ||
-    Boolean(previewError) ||
-    !sellValue ||
-    !buyValue;
 
   const exchangeRate = useExchangeRate(swapState);
   const feePercent =
@@ -489,7 +507,7 @@ const Swap = () => {
                 : null
             }
           />
-          {swapPending && (
+          {review && (
             <div className={styles.summary}>
               <div className={styles.summaryEntry}>
                 <p>Rate</p>
