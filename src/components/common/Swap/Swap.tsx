@@ -1,7 +1,7 @@
 import {useCallback, useEffect, useMemo, useRef, useState} from "react";
-import { useConnectUI, useIsConnected } from "@fuels/react";
-import { useDebounceCallback, useLocalStorage } from "usehooks-ts";
-import { clsx } from "clsx";
+import {useConnectUI, useIsConnected} from "@fuels/react";
+import {useDebounceCallback, useLocalStorage} from "usehooks-ts";
+import {clsx} from "clsx";
 
 import CurrencyBox from "@/src/components/common/Swap/components/CurrencyBox/CurrencyBox";
 import ActionButton from "@/src/components/common/ActionButton/ActionButton";
@@ -26,12 +26,12 @@ import PriceImpact from "@/src/components/common/Swap/components/PriceImpact/Pri
 import {FuelAppUrl} from "@/src/utils/constants";
 import useReservesPrice from "@/src/hooks/useReservesPrice";
 import SwapFailureModal from "@/src/components/common/Swap/components/SwapFailureModal/SwapFailureModal";
-import { B256Address, bn, BN } from "fuels";
-import { PoolId } from "mira-dex-ts";
-import { useAssetImage } from "@/src/hooks/useAssetImage";
-import { useAssetPrice } from "@/src/hooks/useAssetPrice";
+import {B256Address, bn, BN} from "fuels";
+import {PoolId} from "mira-dex-ts";
+import {useAssetImage} from "@/src/hooks/useAssetImage";
+import {useAssetPrice} from "@/src/hooks/useAssetPrice";
 import useAssetMetadata from "@/src/hooks/useAssetMetadata";
-import { SlippageSetting } from "../SlippageSetting/SlippageSetting";
+import {SlippageSetting} from "../SlippageSetting/SlippageSetting";
 
 export type CurrencyBoxMode = "buy" | "sell";
 export type CurrencyBoxState = {
@@ -58,7 +58,7 @@ export type SlippageMode = "auto" | "custom";
 
 export const DefaultSlippageValue = 100;
 
-function SwapRouteItem({ pool }: { pool: PoolId }) {
+function SwapRouteItem({pool}: {pool: PoolId}) {
   const firstAssetIcon = useAssetImage(pool[0].bits);
   const secondAssetIcon = useAssetImage(pool[1].bits);
 
@@ -70,11 +70,9 @@ function SwapRouteItem({ pool }: { pool: PoolId }) {
 
   return (
     <>
-      <img src={firstAssetIcon || ''} alt={firstAssetMetadata.symbol}/>
-      <img src={secondAssetIcon || ''} alt={secondAssetMetadata.symbol}/>
-      <p>
-        ({poolFeePercent}%)
-      </p>
+      <img src={firstAssetIcon || ""} alt={firstAssetMetadata.symbol} />
+      <img src={secondAssetIcon || ""} alt={secondAssetMetadata.symbol} />
+      <p>({poolFeePercent}%)</p>
     </>
   );
 }
@@ -88,7 +86,8 @@ const Swap = () => {
   const initialSwapState = useInitialSwapState();
 
   const [swapState, setSwapState] = useState<SwapState>(initialSwapState);
-  const [inputsState, setInputsState] = useState<InputsState>(initialInputsState);
+  const [inputsState, setInputsState] =
+    useState<InputsState>(initialInputsState);
   const [activeMode, setActiveMode] = useState<CurrencyBoxMode>("sell");
   const [slippage, setSlippage] = useState<number>(DefaultSlippageValue);
   const [txCost, setTxCost] = useState<number | null>(null);
@@ -106,9 +105,9 @@ const Swap = () => {
   const swapStateForPreview = useRef(swapState);
   const modeForCoinSelector = useRef<CurrencyBoxMode>("sell");
 
-  const { isConnected } = useIsConnected();
-  const { connect, isConnecting } = useConnectUI();
-  const { balances, balancesPending, refetchBalances } = useBalances();
+  const {isConnected} = useIsConnected();
+  const {connect, isConnecting} = useConnectUI();
+  const {balances, balancesPending, refetchBalances} = useBalances();
 
   const isValidNetwork = useCheckActiveNetwork();
 
@@ -124,24 +123,23 @@ const Swap = () => {
     }
   }, [isConnected]);
 
-  const sellBalance = balances?.find((b) => b.assetId === swapState.sell.assetId)?.amount;
+  const sellBalance = balances?.find(
+    (b) => b.assetId === swapState.sell.assetId
+  )?.amount;
   const sellBalanceValue = sellBalance ?? new BN(0);
-  const buyBalance = balances?.find((b) => b.assetId === swapState.buy.assetId)?.amount;
+  const buyBalance = balances?.find(
+    (b) => b.assetId === swapState.buy.assetId
+  )?.amount;
   const buyBalanceValue = buyBalance ?? new BN(0);
 
-  const {
-    previewData,
-    previewLoading,
-    previewError,
-    refetchPreview,
-  } = useSwapPreview({
-    swapState,
-    mode: activeMode
-  });
+  const {previewData, previewLoading, previewError, refetchPreview} =
+    useSwapPreview({
+      swapState,
+      mode: activeMode,
+    });
   const anotherMode = activeMode === "sell" ? "buy" : "sell";
-  const decimals = anotherMode === "sell"
-    ? sellMetadata.decimals
-    : buyMetadata.decimals;
+  const decimals =
+    anotherMode === "sell" ? sellMetadata.decimals : buyMetadata.decimals;
   const previewValueString =
     previewData !== null
       ? previewData.previewAmount.eq(0)
@@ -184,7 +182,7 @@ const Swap = () => {
       },
     }));
 
-    setActiveMode('sell');
+    setActiveMode("sell");
 
     setInputsState((prevState) => ({
       buy: {
@@ -234,35 +232,41 @@ const Swap = () => {
         setActiveMode(mode);
       };
     },
-    [inputsState, setSwapCoins, swapAssets, swapState.buy.assetId, swapState.sell.assetId]
+    [
+      inputsState,
+      setSwapCoins,
+      swapAssets,
+      swapState.buy.assetId,
+      swapState.sell.assetId,
+    ]
   );
 
   const debouncedSetState = useDebounceCallback(setSwapState, 500);
   const setAmount = useCallback(
     (mode: "buy" | "sell") => {
       return (amount: string) => {
-        if (amount === '') {
-          debouncedSetState(prevState => ({
-            'sell': {
+        if (amount === "") {
+          debouncedSetState((prevState) => ({
+            sell: {
               assetId: prevState.sell.assetId,
-              amount: '',
+              amount: "",
             },
-            'buy': {
+            buy: {
               assetId: prevState.buy.assetId,
-              amount: '',
+              amount: "",
             },
           }));
 
           setInputsState({
-            'sell': {
-              amount: '',
+            sell: {
+              amount: "",
             },
-            'buy': {
-              amount: '',
+            buy: {
+              amount: "",
             },
           });
 
-          previousPreviewValue.current = '';
+          previousPreviewValue.current = "";
           setActiveMode(mode);
 
           return;
@@ -323,8 +327,10 @@ const Swap = () => {
     resetSwap();
   }, [refetchPreview, resetSwap, resetTxCost]);
 
-  const coinMissing = swapState.buy.assetId === null || swapState.sell.assetId === null;
-  const amountMissing = swapState.buy.amount === "" || swapState.sell.amount === "";
+  const coinMissing =
+    swapState.buy.assetId === null || swapState.sell.assetId === null;
+  const amountMissing =
+    swapState.buy.amount === "" || swapState.sell.amount === "";
   const sufficientEthBalance = useCheckEthBalance(swapState.sell);
   const handleSwapClick = useCallback(async () => {
     if (!sufficientEthBalance) {
@@ -353,7 +359,10 @@ const Swap = () => {
       }
     } catch (e) {
       console.error(e);
-      if (e instanceof Error && !e.message.includes('User canceled sending transaction')) {
+      if (
+        e instanceof Error &&
+        !e.message.includes("User canceled sending transaction")
+      ) {
         openFailure();
       }
     }
@@ -366,15 +375,16 @@ const Swap = () => {
     triggerSwap,
     openSuccess,
     openFailure,
-    refetchBalances
+    refetchBalances,
   ]);
 
   let showInsufficientBalance = true;
   try {
-    const insufficientSellBalance = sellBalanceValue.lt(bn.parseUnits(sellValue, sellMetadata.decimals || 0));
+    const insufficientSellBalance = sellBalanceValue.lt(
+      bn.parseUnits(sellValue, sellMetadata.decimals || 0)
+    );
     showInsufficientBalance = insufficientSellBalance && sufficientEthBalance;
-  } catch (e) {
-  }
+  } catch (e) {}
 
   let swapButtonTitle = "Swap";
   if (!isValidNetwork) {
@@ -388,21 +398,29 @@ const Swap = () => {
   }
 
   const swapDisabled =
-    !isValidNetwork || coinMissing || showInsufficientBalance || Boolean(previewError) || !sellValue || !buyValue;
+    !isValidNetwork ||
+    coinMissing ||
+    showInsufficientBalance ||
+    Boolean(previewError) ||
+    !sellValue ||
+    !buyValue;
 
   const exchangeRate = useExchangeRate(swapState);
-  const feePercent = previewData?.pools.reduce((percent, pool) => {
-    const isStablePool = pool[2];
-    const poolPercent = isStablePool ? 0.05 : 0.3;
+  const feePercent =
+    previewData?.pools.reduce((percent, pool) => {
+      const isStablePool = pool[2];
+      const poolPercent = isStablePool ? 0.05 : 0.3;
 
-    return percent + poolPercent;
-  }, 0) ?? 0;
-  const feeValue = ((feePercent / 100) * parseFloat(sellValue)).toFixed(sellMetadata.decimals || 0);
+      return percent + poolPercent;
+    }, 0) ?? 0;
+  const feeValue = ((feePercent / 100) * parseFloat(sellValue)).toFixed(
+    sellMetadata.decimals || 0
+  );
 
   const inputPreviewLoading = previewLoading && activeMode === "buy";
   const outputPreviewLoading = previewLoading && activeMode === "sell";
 
-  const { reservesPrice } = useReservesPrice({
+  const {reservesPrice} = useReservesPrice({
     pools: previewData?.pools,
     sellAssetId: swapState.sell.assetId,
     buyAssetId: swapState.buy.assetId,
@@ -425,7 +443,12 @@ const Swap = () => {
   return (
     <>
       <div className={styles.swapAndRate}>
-        <div className={clsx(styles.swapContainer, swapPending && styles.swapContainerLoading)}>
+        <div
+          className={clsx(
+            styles.swapContainer,
+            swapPending && styles.swapContainerLoading
+          )}
+        >
           <div className={styles.heading}>
             <p className={styles.title}>Swap</p>
             <SlippageSetting
@@ -442,7 +465,9 @@ const Swap = () => {
             loading={inputPreviewLoading || swapPending}
             onCoinSelectorClick={handleCoinSelectorClick}
             usdRate={sellAssetPrice.price}
-            previewError={activeMode === 'buy' && !inputPreviewLoading ? previewError : null}
+            previewError={
+              activeMode === "buy" && !inputPreviewLoading ? previewError : null
+            }
           />
           <div className={styles.splitter}>
             <IconButton onClick={swapAssets} className={styles.convertButton}>
@@ -458,7 +483,11 @@ const Swap = () => {
             loading={outputPreviewLoading || swapPending}
             onCoinSelectorClick={handleCoinSelectorClick}
             usdRate={buyAssetPrice.price}
-            previewError={activeMode === 'sell' && !outputPreviewLoading ? previewError : null}
+            previewError={
+              activeMode === "sell" && !outputPreviewLoading
+                ? previewError
+                : null
+            }
           />
           {swapPending && (
             <div className={styles.summary}>
@@ -497,23 +526,34 @@ const Swap = () => {
             </div>
           )}
           {!isConnected && (
-            <ActionButton variant="secondary" onClick={connect} loading={isConnecting}>
+            <ActionButton
+              variant="secondary"
+              onClick={connect}
+              loading={isConnecting}
+            >
               Connect Wallet
             </ActionButton>
           )}
           {isConnected && (
-            <ActionButton variant="primary" disabled={swapDisabled} onClick={handleSwapClick}
-                          loading={balancesPending || txCostPending}>
+            <ActionButton
+              variant="primary"
+              disabled={swapDisabled}
+              onClick={handleSwapClick}
+              loading={balancesPending || txCostPending}
+            >
               {swapButtonTitle}
             </ActionButton>
           )}
         </div>
         <div className={styles.rates}>
-          <PriceImpact reservesPrice={reservesPrice} previewPrice={previewPrice}/>
-          <ExchangeRate swapState={swapState}/>
+          <PriceImpact
+            reservesPrice={reservesPrice}
+            previewPrice={previewPrice}
+          />
+          <ExchangeRate swapState={swapState} />
         </div>
       </div>
-      {swapPending && <div className={styles.loadingOverlay}/>}
+      {swapPending && <div className={styles.loadingOverlay} />}
       <SettingsModal title="Settings">
         <SettingsModalContent
           slippage={slippage}
@@ -524,13 +564,19 @@ const Swap = () => {
         />
       </SettingsModal>
       <CoinsModal title="Choose token">
-        <CoinsListModal selectCoin={handleCoinSelection} balances={balances}/>
+        <CoinsListModal selectCoin={handleCoinSelection} balances={balances} />
       </CoinsModal>
       <SuccessModal title={<></>}>
-        <SwapSuccessModal swapState={swapStateForPreview.current} transactionHash={swapResult?.id}/>
+        <SwapSuccessModal
+          swapState={swapStateForPreview.current}
+          transactionHash={swapResult?.id}
+        />
       </SuccessModal>
       <FailureModal title={<></>} onClose={resetSwapErrors}>
-        <SwapFailureModal error={txCostError || swapError} closeModal={closeFailureModal} />
+        <SwapFailureModal
+          error={txCostError || swapError}
+          closeModal={closeFailureModal}
+        />
       </FailureModal>
     </>
   );
