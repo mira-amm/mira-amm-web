@@ -346,21 +346,18 @@ const Swap = () => {
       setSwapButtonTitle("Bridge more ETH to pay for gas");
     } else if (showInsufficientBalance) {
       setSwapButtonTitle("Insufficient balance");
+    } else if (!review) {
+      setSwapButtonTitle("Review");
+    } else {
+      setSwapButtonTitle("Swap");
     }
   }, [
     isValidNetwork,
     showInsufficientBalance,
     sufficientEthBalance,
     swapPending,
+    review,
   ]);
-
-  const swapDisabled =
-    !isValidNetwork ||
-    coinMissing ||
-    showInsufficientBalance ||
-    Boolean(previewError) ||
-    !sellValue ||
-    !buyValue;
 
   const handleSwapClick = useCallback(async () => {
     if (swapButtonTitle === "Review") {
@@ -422,6 +419,23 @@ const Swap = () => {
     );
     showInsufficientBalance = insufficientSellBalance && sufficientEthBalance;
   } catch (e) {}
+
+  const swapDisabled =
+    !isValidNetwork ||
+    coinMissing ||
+    showInsufficientBalance ||
+    Boolean(previewError) ||
+    !sellValue ||
+    !buyValue;
+
+  //Enable review button when user changes buy/sell values
+  useEffect(() => {
+    if (swapButtonTitle === "Swap") {
+      setSwapButtonTitle("Review");
+      setReview(false);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [sellValue, buyValue]);
 
   const exchangeRate = useExchangeRate(swapState);
   const feePercent =
