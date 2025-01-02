@@ -34,15 +34,17 @@
   background-color: #3b3b4e;
 }
 
+@media (max-width: 390px) {
+  .paginationButton {
+    padding: 6px 8px;
+    font-size: 12px;
+  }
+}
+
 /* Responsive styles for mobile */
 @media (max-width: 600px) {
   .pagination {
     gap: 4px;
-  }
-
-  .paginationButton {
-    padding: 6px 8px;
-    font-size: 12px;
   }
 
   .paginationButton.previous,
