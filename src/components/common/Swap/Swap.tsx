@@ -32,6 +32,7 @@ import {useAssetImage} from "@/src/hooks/useAssetImage";
 import {useAssetPrice} from "@/src/hooks/useAssetPrice";
 import useAssetMetadata from "@/src/hooks/useAssetMetadata";
 import {SlippageSetting} from "../SlippageSetting/SlippageSetting";
+import Loader from "@/src/components/common/Loader/Loader";
 
 export type CurrencyBoxMode = "buy" | "sell";
 export type CurrencyBoxState = {
@@ -94,6 +95,7 @@ const Swap = () => {
   const [slippageMode, setSlippageMode] = useState<SlippageMode>("auto");
   const [swapButtonTitle, setSwapButtonTitle] = useState<string>("Review");
   const [review, setReview] = useState<boolean>(false);
+  const [showInsufficientBalance, setShowInsufficientBalance] = useState(true);
 
   const [swapCoins, setSwapCoins] = useLocalStorage("swapCoins", {
     sell: initialSwapState.sell.assetId,
@@ -335,8 +337,6 @@ const Swap = () => {
     swapState.buy.amount === "" || swapState.sell.amount === "";
   const sufficientEthBalance = useCheckEthBalance(swapState.sell);
 
-  let showInsufficientBalance = true;
-
   useEffect(() => {
     if (!isValidNetwork) {
       setSwapButtonTitle("Incorrect network");
@@ -413,12 +413,16 @@ const Swap = () => {
     swapButtonTitle,
   ]);
 
-  try {
-    const insufficientSellBalance = sellBalanceValue.lt(
-      bn.parseUnits(sellValue, sellMetadata.decimals || 0)
-    );
-    showInsufficientBalance = insufficientSellBalance && sufficientEthBalance;
-  } catch (e) {}
+  useEffect(() => {
+    try {
+      const insufficientSellBalance = sellBalanceValue.lt(
+        bn.parseUnits(sellValue, sellMetadata.decimals || 0)
+      );
+      setShowInsufficientBalance(
+        insufficientSellBalance && sufficientEthBalance
+      );
+    } catch (e) {}
+  }, [sellValue, sellMetadata, sufficientEthBalance]);
 
   const swapDisabled =
     !isValidNetwork ||
@@ -426,16 +430,8 @@ const Swap = () => {
     showInsufficientBalance ||
     Boolean(previewError) ||
     !sellValue ||
-    !buyValue;
-
-  //Enable review button when user changes buy/sell values
-  useEffect(() => {
-    if (swapButtonTitle === "Swap") {
-      setSwapButtonTitle("Review");
-      setReview(false);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [sellValue, buyValue]);
+    !buyValue ||
+    previewLoading;
 
   const exchangeRate = useExchangeRate(swapState);
   const feePercent =
@@ -525,38 +521,47 @@ const Swap = () => {
             <div className={styles.summary}>
               <div className={styles.summaryEntry}>
                 <p>Rate</p>
-                <p>{exchangeRate}</p>
+                {previewLoading ? <Loader /> : <p>{exchangeRate}</p>}
               </div>
 
               <div className={styles.summaryEntry}>
                 <p>Order routing</p>
                 <div className={styles.feeLine}>
-                  {previewData?.pools.map((pool, index) => {
-                    const poolKey = createPoolKey(pool);
+                  {previewLoading ? (
+                    <Loader />
+                  ) : (
+                    previewData?.pools.map((pool, index) => {
+                      const poolKey = createPoolKey(pool);
 
-                    return (
-                      <div className={styles.poolsFee} key={poolKey}>
-                        <SwapRouteItem pool={pool} />
-                        {index !== previewData.pools.length - 1 && "+"}
-                      </div>
-                    );
-                  })}
+                      return (
+                        <div className={styles.poolsFee} key={poolKey}>
+                          <SwapRouteItem pool={pool} />
+                          {index !== previewData.pools.length - 1 && "+"}
+                        </div>
+                      );
+                    })
+                  )}
                 </div>
               </div>
 
               <div className={styles.summaryEntry}>
                 <p>Estimated fees</p>
-                <p>
-                  {feeValue} {sellMetadata.symbol}
-                </p>
+                {previewLoading ? (
+                  <Loader />
+                ) : (
+                  <p>
+                    {feeValue} {sellMetadata.symbol}
+                  </p>
+                )}
               </div>
 
               <div className={styles.summaryEntry}>
                 <p>Network cost</p>
-                <p>{txCost?.toFixed(9)} ETH</p>
+                {previewLoading ? <Loader /> : <p>{txCost?.toFixed(9)} ETH</p>}
               </div>
             </div>
           )}
+
           {!isConnected && (
             <ActionButton
               variant="secondary"
@@ -571,7 +576,7 @@ const Swap = () => {
               variant="primary"
               disabled={swapDisabled}
               onClick={handleSwapClick}
-              loading={balancesPending || txCostPending}
+              loading={balancesPending || txCostPending || previewLoading}
             >
               {swapButtonTitle}
             </ActionButton>
