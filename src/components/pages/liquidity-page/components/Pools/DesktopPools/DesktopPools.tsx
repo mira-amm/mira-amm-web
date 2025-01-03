@@ -26,12 +26,13 @@ const DesktopPools = ({poolsData, orderBy, handleSort}: Props) => {
         <tr>
           <th>Pools</th>
           <th>APR</th>
-          <SortableColumn
+          <th>24H Volume</th>
+          {/* <SortableColumn
             title="24H Volume"
             columnKey="volumeUSD"
             orderBy={orderBy}
             onSort={handleSort}
-          />
+          /> */}
           <SortableColumn
             title="TVL"
             columnKey="tvlUSD"

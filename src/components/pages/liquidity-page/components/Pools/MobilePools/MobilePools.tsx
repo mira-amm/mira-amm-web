@@ -23,12 +23,12 @@ const MobilePools = ({poolsData, orderBy, handleSort}: Props) => {
         <thead>
           <tr>
             <th>SORT BY:</th>
-            <SortableColumn
+            {/* <SortableColumn
               title="24H Volume"
               columnKey="volumeUSD"
               orderBy={orderBy}
               onSort={handleSort}
-            />
+            /> */}
             <SortableColumn
               title="TVL"
               columnKey="tvlUSD"
