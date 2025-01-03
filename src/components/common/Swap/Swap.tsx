@@ -422,7 +422,7 @@ const Swap = () => {
         insufficientSellBalance && sufficientEthBalance
       );
     } catch (e) {}
-  }, [sellValue, sellMetadata, sufficientEthBalance]);
+  }, [sellValue, sellMetadata, sufficientEthBalance, sellBalanceValue]);
 
   const swapDisabled =
     !isValidNetwork ||
