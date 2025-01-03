@@ -20,3 +20,15 @@
 .pending {
   color: var(--content-dimmed-light);
 }
+
+.flexContainer {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.iconContainer {
+  display: flex;
+  align-items: center;
+  padding-top: 2px;
+}
