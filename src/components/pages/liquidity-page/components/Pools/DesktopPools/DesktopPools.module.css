@@ -65,3 +65,15 @@ button.createButton {
 .desktopPools th:nth-child(5) {
   width: 20%; /* Width for the "Create Pool" column */
 }
+
+.flexContainer {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.iconContainer {
+  display: flex;
+  align-items: center;
+  padding-top: 2px;
+}
