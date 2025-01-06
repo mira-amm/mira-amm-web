@@ -359,10 +359,52 @@ const Swap = () => {
     review,
   ]);
 
+  const fetchCost = async () => {
+    try {
+      const txCostData = await fetchTxCost();
+      if (txCostData?.txCost.gasPrice) {
+        setTxCost(txCostData.txCost.gasPrice.toNumber() / 10 ** 9);
+      }
+    } catch (error) {
+      setTxCost(null);
+    }
+  };
+
+  //Calculate txCost dynamically
+  /*  useEffect(() => {
+    if (!amountMissing && !coinMissing && isValidNetwork) {
+      const fetchCost = async () => {
+        try {
+          const txCostData = await fetchTxCost();
+          if (txCostData?.txCost.gasPrice) {
+            setTxCost(txCostData.txCost.gasPrice.toNumber() / 10 ** 9);
+          }
+        } catch (error) {
+          setTxCost(null);
+        }
+      };
+      // Debounce the function to prevent excessive calls
+      const debounceFetch = setTimeout(fetchCost, 300);
+
+      return () => clearTimeout(debounceFetch);
+    } else {
+      setTxCost(null);
+    }
+  }, [
+    inputsState,
+    swapState,
+    activeMode,
+    isValidNetwork,
+    fetchTxCost,
+    amountMissing,
+    coinMissing,
+  ]); */
+
   const handleSwapClick = useCallback(async () => {
     if (swapButtonTitle === "Review") {
       setReview(true);
       setSwapButtonTitle("Swap");
+      fetchCost();
       return;
     } else {
       if (!sufficientEthBalance) {
@@ -468,6 +510,8 @@ const Swap = () => {
   const sellAssetPrice = useAssetPrice(swapState.sell.assetId);
   const buyAssetPrice = useAssetPrice(swapState.buy.assetId);
 
+  console.log(swapState.sell.assetId);
+
   return (
     <>
       <div className={styles.swapAndRate}>
@@ -557,7 +601,11 @@ const Swap = () => {
 
               <div className={styles.summaryEntry}>
                 <p>Network cost</p>
-                {previewLoading ? <Loader /> : <p>{txCost?.toFixed(9)} ETH</p>}
+                {previewLoading || txCostPending ? (
+                  <Loader />
+                ) : (
+                  <p>{txCost?.toFixed(9)} ETH</p>
+                )}
               </div>
             </div>
           )}
@@ -576,7 +624,7 @@ const Swap = () => {
               variant="primary"
               disabled={swapDisabled}
               onClick={handleSwapClick}
-              loading={balancesPending || txCostPending || previewLoading}
+              loading={balancesPending || previewLoading}
             >
               {swapButtonTitle}
             </ActionButton>
