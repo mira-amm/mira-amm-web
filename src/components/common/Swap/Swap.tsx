@@ -359,7 +359,7 @@ const Swap = () => {
     review,
   ]);
 
-  const fetchCost = async () => {
+  const fetchCost = useCallback(async () => {
     try {
       const txCostData = await fetchTxCost();
       if (txCostData?.txCost.gasPrice) {
@@ -368,7 +368,7 @@ const Swap = () => {
     } catch (error) {
       setTxCost(null);
     }
-  };
+  }, [fetchTxCost, setTxCost]);
 
   //Calculate txCost dynamically
   /*  useEffect(() => {
@@ -453,6 +453,7 @@ const Swap = () => {
     openFailure,
     refetchBalances,
     swapButtonTitle,
+    fetchCost,
   ]);
 
   useEffect(() => {
