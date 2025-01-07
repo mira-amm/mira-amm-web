@@ -34,3 +34,48 @@
   font-size: 16px;
   font-weight: 400;
 }
+
+.learnMore {
+  display: inline-flex;
+  align-items: center;
+  font-size: 16px;
+  font-weight: 500;
+  color: white;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  text-decoration: none;
+  position: relative;
+  transition: color 0.3s ease;
+}
+
+.learnMore:hover {
+  color: #e0e0e0;
+}
+
+.learnMore::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -2px;
+  width: 100%;
+  height: 2px;
+  background-color: white;
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.3s ease;
+}
+
+.learnMore:hover::after {
+  transform: scaleX(1);
+}
+
+.arrow {
+  margin-left: 4px;
+  font-size: 18px;
+  transition: margin-left 0.3s ease;
+}
+
+.learnMore:hover .arrow {
+  margin-left: 8px;
+}

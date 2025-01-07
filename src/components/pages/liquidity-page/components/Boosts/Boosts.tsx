@@ -6,13 +6,15 @@ const Boosts = () => {
     <section className={styles.boosts}>
       <div className={styles.banner}>
         <BoostsIcon />
-        <p className={styles.header}>Introducting Boosts</p>
+        <p className={styles.header}>Introducing Boosts</p>
         <div className={styles.bottomArea}>
           <p className={styles.subHeader}>
             Earn $FUEL by providing liquidity on selected pools. Look for the
             boost on the pools.
           </p>
-          <button>Learn more</button>
+          <button className={styles.learnMore}>
+            Learn more <span className={styles.arrow}>&rarr;</span>
+          </button>
         </div>
       </div>
     </section>
