@@ -11,7 +11,6 @@
     #6142ba 56.75%,
     #c41cff 135.82%
   );
-  height: 133px;
   padding: 25px;
   gap: 10px;
   border-radius: 10px;
@@ -28,11 +27,16 @@
 .bottomArea {
   display: flex;
   justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
 }
 
 .subHeader {
   font-size: 16px;
   font-weight: 400;
+  color: white;
+  flex: 1 1 auto;
+  margin-right: 8px;
 }
 
 .learnMore {
@@ -78,4 +82,38 @@
 
 .learnMore:hover .arrow {
   margin-left: 8px;
+}
+
+@media (max-width: 768px) {
+  .header {
+    font-size: 20px;
+  }
+
+  .bottomArea {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .subHeader {
+    font-size: 14px;
+    text-align: left;
+  }
+
+  .learnMore {
+    align-self: flex-start;
+  }
+}
+
+@media (max-width: 480px) {
+  .header {
+    font-size: 18px;
+  }
+
+  .subHeader {
+    font-size: 14px;
+  }
+
+  .learnMore {
+    font-size: 14px;
+  }
 }
