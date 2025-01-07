@@ -1,0 +1,36 @@
+.boosts {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.banner {
+  background: linear-gradient(
+    97.15deg,
+    #5872fc -1.13%,
+    #6142ba 56.75%,
+    #c41cff 135.82%
+  );
+  height: 133px;
+  padding: 25px;
+  gap: 10px;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.header {
+  font-size: 24px;
+  font-weight: 400;
+}
+
+.bottomArea {
+  display: flex;
+  justify-content: space-between;
+}
+
+.subHeader {
+  font-size: 16px;
+  font-weight: 400;
+}

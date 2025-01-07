@@ -11,6 +11,7 @@ import CupIcon from "@/src/components/icons/Cup/CupIcon";
 
 import styles from './LiquidityPageLayout.module.css';
 import {FuelAppUrl} from "@/src/utils/constants";
+import Boosts from "./components/Boosts/Boosts";
 
 const LiquidityPageLayout = () => {
   return (
@@ -18,6 +19,7 @@ const LiquidityPageLayout = () => {
       <Header />
       <main className={styles.liquidityPageLayout}>
         <BackLink />
+        <Boosts />
         <Positions />
         <Pools />
         <div className={styles.promoBlocks}>
