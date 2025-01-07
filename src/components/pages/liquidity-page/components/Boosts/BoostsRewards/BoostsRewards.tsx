@@ -4,6 +4,7 @@ import ActionButton from "@/src/components/common/ActionButton/ActionButton";
 import Info from "@/src/components/common/Info/Info";
 import {RewardsIcon} from "@/src/components/icons/Rewards/RewardsIcon";
 import BoostsRewardsIcon from "@/src/components/icons/Boosts/BoostsRewardsIcon";
+import {LearnMoreUrl} from "@/src/utils/constants";
 
 const rewardsTooltip =
   "These are the total Fuel tokens earned that will be distributed at the end of the epoch. The exact dollar amount will change based on Fuel’s current price. ";
@@ -19,7 +20,7 @@ const BoostsRewards = () => {
           <BoostsRewardsIcon />
           <p>Boost rewards</p>
         </div>
-        <Link href={`/swap`}>
+        <Link href={LearnMoreUrl} target="_blank">
           <ActionButton
             className={styles.learnMoreButton}
             variant="secondary"

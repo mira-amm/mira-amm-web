@@ -1,5 +1,7 @@
 import BoostsIcon from "@/src/components/icons/Boosts/BoostsIcon";
 import styles from "./BoostsBanner.module.css";
+import Link from "next/link";
+import {LearnMoreUrl} from "@/src/utils/constants";
 
 const BoostsBanner = () => {
   return (
@@ -11,9 +13,11 @@ const BoostsBanner = () => {
           Earn $FUEL by providing liquidity on selected pools. Look for the
           boost on the pools.
         </p>
-        <button className={styles.learnMore}>
-          Learn more <span className={styles.arrow}>&rarr;</span>
-        </button>
+        <Link href={LearnMoreUrl} target="_blank">
+          <button className={styles.learnMore}>
+            Learn more <span className={styles.arrow}>&rarr;</span>
+          </button>
+        </Link>
       </div>
     </div>
   );
