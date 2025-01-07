@@ -1,3 +1,9 @@
+.boosts {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
 .boostsHeader {
   display: flex;
   justify-content: space-between;
@@ -14,4 +20,57 @@
   font-weight: 500;
   height: 40px;
   padding: 12px 24px !important;
+}
+
+.boostsFallback {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  border-radius: 16px;
+  padding: 28px 16px;
+  background: linear-gradient(
+    97.15deg,
+    #5872fc -1.13%,
+    #6142ba 56.75%,
+    #c41cff 135.82%
+  );
+}
+
+.rewardsSection {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+}
+
+.rewardsItem {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  flex: 1;
+}
+
+.rewardsLabel {
+  font-size: 16px;
+  font-weight: 400;
+  color: #ffffffb8;
+  display: flex;
+  gap: 5px;
+}
+
+.rewardsValue {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.rewardsValue p {
+  font-size: 26px;
+  font-weight: 400;
+}
+
+.rewardsValue span {
+  font-size: 15px;
+  font-weight: 400;
+  color: #c3c3c7;
 }

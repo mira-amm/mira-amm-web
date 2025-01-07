@@ -6,9 +6,10 @@ import InfoIcon from "@/src/components/icons/Info/InfoIcon";
 type Props = {
   tooltipText: string;
   tooltipKey: string;
+  color?: string;
 };
 
-const Info = ({tooltipText, tooltipKey}: Props) => {
+const Info = ({tooltipText, tooltipKey, color}: Props) => {
   const handleClick = (e: MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation();
   };
@@ -41,7 +42,7 @@ const Info = ({tooltipText, tooltipKey}: Props) => {
         popoverTarget={tooltipId}
         ref={buttonRef}
       >
-        <InfoIcon />
+        <InfoIcon color={color} />
       </button>
       <div
         className={styles.tooltip}
