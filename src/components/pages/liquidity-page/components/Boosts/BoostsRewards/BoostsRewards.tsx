@@ -4,15 +4,13 @@ import ActionButton from "@/src/components/common/ActionButton/ActionButton";
 import Info from "@/src/components/common/Info/Info";
 import {RewardsIcon} from "@/src/components/icons/Rewards/RewardsIcon";
 import BoostsRewardsIcon from "@/src/components/icons/Boosts/BoostsRewardsIcon";
-import {BoostsLearnMoreUrl} from "@/src/utils/constants";
+import {
+  boostsEpochTooltip,
+  BoostsLearnMoreUrl,
+  BoostsRewardsTooltip,
+} from "@/src/utils/constants";
 import {useEffect, useState} from "react";
 import {calculateEpochDuration, calculateUsdValue} from "@/src/utils/common";
-
-const rewardsTooltip =
-  "These are the total Fuel tokens earned that will be distributed at the end of the epoch. The exact dollar amount will change based on Fuel’s current price. ";
-
-const epochTooltip =
-  "Current epoch lasts for 45 days total. All rewards wll be distributed at the end of the epoch. ";
 
 const fuelAmount = 23000;
 const fuelToUsdRate = 0.056057;
@@ -59,7 +57,7 @@ const BoostsRewards = () => {
           <div className={styles.rewardsLabel}>
             <p>Rewards earned</p>
             <Info
-              tooltipText={rewardsTooltip}
+              tooltipText={BoostsRewardsTooltip}
               tooltipKey="rewards"
               color="#D1D4F9"
             />
@@ -77,7 +75,7 @@ const BoostsRewards = () => {
             <div className={styles.rewardsLabel}>
               <p>Epoch duration</p>
               <Info
-                tooltipText={epochTooltip}
+                tooltipText={boostsEpochTooltip}
                 tooltipKey="epoch"
                 color="#D1D4F9"
               />
