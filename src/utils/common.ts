@@ -82,6 +82,14 @@ export const calculateSHA256Hash = async (message: string) => {
   return Array.from(byteArray).map(byte => byte.toString(16).padStart(2, '0')).join('');
 };
 
+export const calculateUsdValue = (
+  fuelAmount: number,
+  fuelToUsdRate: number = 0.056057,
+): string => {
+  const usdValue = fuelAmount * fuelToUsdRate;
+  return `~$${usdValue.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
+};
+
 export const calculateEpochDuration = (endDate: string): string => {
   const now = new Date().getTime(); 
   const end = new Date(endDate).getTime(); 

@@ -6,13 +6,16 @@ import {RewardsIcon} from "@/src/components/icons/Rewards/RewardsIcon";
 import BoostsRewardsIcon from "@/src/components/icons/Boosts/BoostsRewardsIcon";
 import {BoostsLearnMoreUrl} from "@/src/utils/constants";
 import {useEffect, useState} from "react";
-import {calculateEpochDuration} from "@/src/utils/common";
+import {calculateEpochDuration, calculateUsdValue} from "@/src/utils/common";
 
 const rewardsTooltip =
   "These are the total Fuel tokens earned that will be distributed at the end of the epoch. The exact dollar amount will change based on Fuel’s current price. ";
 
 const epochTooltip =
   "Current epoch lasts for 45 days total. All rewards wll be distributed at the end of the epoch. ";
+
+const fuelAmount = 23000;
+const fuelToUsdRate = 0.056057;
 
 const BoostsRewards = () => {
   const [duration, setDuration] = useState("");
@@ -29,6 +32,9 @@ const BoostsRewards = () => {
 
     return () => clearInterval(interval);
   }, [endDate]);
+
+  const usdValue = calculateUsdValue(fuelAmount, fuelToUsdRate);
+
   return (
     <div className={styles.boosts}>
       <div className={styles.boostsHeader}>
@@ -61,8 +67,8 @@ const BoostsRewards = () => {
 
           <div className={styles.rewardsValue}>
             <RewardsIcon />
-            <p>23,000 FUEL</p>
-            <span>~ $2,000 </span>
+            <p>{fuelAmount.toLocaleString()} FUEL</p>
+            <span>{usdValue}</span>
           </div>
         </div>
         <div className={styles.epochSection}>
