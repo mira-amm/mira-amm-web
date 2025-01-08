@@ -53,4 +53,4 @@ export const DisclaimerMessage = `Disclaimer
 
 5. I understand the risks associated with using decentralized protocols, including the Mira Dex protocol, as outlined in the Terms of Use and Privacy Policy.`;
 
-export const LearnMoreUrl = "https://app.fuel.network/earn-points" as const;
+export const BoostsLearnMoreUrl = "https://app.fuel.network/earn-points" as const;
