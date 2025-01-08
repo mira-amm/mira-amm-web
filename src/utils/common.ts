@@ -81,3 +81,17 @@ export const calculateSHA256Hash = async (message: string) => {
   const byteArray = new Uint8Array(hashBuffer);
   return Array.from(byteArray).map(byte => byte.toString(16).padStart(2, '0')).join('');
 };
+
+export const calculateEpochDuration = (endDate: string): string => {
+  const now = new Date().getTime(); 
+  const end = new Date(endDate).getTime(); 
+  const diff = end - now; 
+
+  if (diff <= 0) return "Epoch has ended";
+
+  const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+  const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+  const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+
+  return `${days} days, ${hours} hours, ${minutes} min`;
+};
