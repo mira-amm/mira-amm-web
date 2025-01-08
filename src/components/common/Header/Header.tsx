@@ -64,7 +64,7 @@ const Header = ({isHomePage}: Props) => {
               href="/swap"
               className={clsx(
                 styles.link,
-                pathname.includes("/swap") && styles.activeLink
+                pathname.includes("/swap") && styles.activeLink,
               )}
             >
               Swap
@@ -73,7 +73,7 @@ const Header = ({isHomePage}: Props) => {
               href="/liquidity"
               className={clsx(
                 styles.link,
-                pathname.includes("/liquidity") && styles.activeLink
+                pathname.includes("/liquidity") && styles.activeLink,
               )}
             >
               Liquidity
@@ -85,29 +85,9 @@ const Header = ({isHomePage}: Props) => {
             >
               Bridge
             </a>
-            <a
-              href={`${FuelAppUrl}/earn-points`}
-              className={styles.link}
-              target="_blank"
-            >
-              <div className={styles.rewardsLink}>
-                <RewardsIcon />
-                Points
-              </div>
-            </a>
           </div>
         </div>
         <div className={clsx("mobileOnly", styles.links)}>
-          <a
-            href={`${FuelAppUrl}/earn-points`}
-            className={styles.link}
-            target="_blank"
-          >
-            <div className={styles.rewardsLink}>
-              <RewardsIcon />
-              Points
-            </div>
-          </a>
           <DisconnectMobile className={styles.disconnectMobile} />
           <MobileMenu />
         </div>
