@@ -95,3 +95,75 @@
   font-size: 20px;
   font-weight: 400;
 }
+
+/* Media Queries */
+@media (max-width: 768px) {
+  .rewardsLabel {
+    font-size: 14px;
+    align-items: start;
+  }
+
+  .rewardsValue p {
+    font-size: 20px;
+  }
+
+  .rewardsValue span {
+    font-size: 12px;
+  }
+
+  .epochDuration {
+    font-size: 18px;
+  }
+
+  .epochItem {
+    margin-right: 0px;
+  }
+}
+
+@media (max-width: 564px) {
+  .rewardsValue p {
+    font-size: 14px;
+  }
+
+  .epochDuration {
+    font-size: 14px;
+  }
+}
+
+@media (max-width: 480px) {
+  .boostsFallback {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .rewardsValue p {
+    font-size: 18px;
+  }
+
+  .rewardsValue span {
+    font-size: 10px;
+  }
+
+  .learnMoreButton {
+    font-size: 14px;
+    height: 36px;
+    padding: 10px 20px !important;
+  }
+
+  .epochDuration {
+    font-size: 16px;
+  }
+
+  .boosts {
+    gap: 16px;
+  }
+
+  .boostsFallback {
+    gap: 12px;
+    padding: 20px 12px;
+  }
+
+  .divider {
+    display: none;
+  }
+}
