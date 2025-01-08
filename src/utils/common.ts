@@ -12,8 +12,8 @@ export const isPoolIdValid = (poolId: PoolId) => {
   return poolId[0].bits.length === 66 && poolId[1].bits.length === 66;
 };
 
-export const StablePoolKey = 'stable' as const;
-export const VolatilePoolKey = 'volatile' as const;
+export const StablePoolKey = "true" as const;
+export const VolatilePoolKey = "false" as const;
 
 // Entity used as query param for position/pool pages in format 'ETH-USDT-stable', mutually convertible with pool id
 export const createPoolKey = (poolId: PoolId) => {
