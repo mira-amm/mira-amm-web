@@ -1,10 +1,7 @@
 import {
   SentioJSONCampaignService,
-  JSONEpochConfigService,
-  // MockJSONCampaignService,
+  JSONEpochConfigService
 } from "@/src/models/campaigns/Campaign";
-import { CampaignsResponse } from "@/src/models/campaigns/interfaces";
-import { NextApiRequest, NextApiResponse } from "next";
 import { NextRequest, NextResponse } from "next/server";
 
 // TEST VALUES

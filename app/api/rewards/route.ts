@@ -1,5 +1,4 @@
-import { MockJSONUserRewardsService, UserRewardsResponse } from "@/src/models/rewards/UserRewards";
-import { NextApiRequest, NextApiResponse } from "next";
+import { MockJSONUserRewardsService } from "@/src/models/rewards/UserRewards";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(request: NextRequest) {
