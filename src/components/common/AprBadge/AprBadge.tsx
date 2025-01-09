@@ -2,20 +2,25 @@ import React, {useState, useEffect} from "react";
 import styles from "./AprBadge.module.css";
 import WhiteStarIcon from "@/src/components/icons/Stars/WhiteStar";
 import {clsx} from "clsx";
+import {getBoostReward} from "@/src/utils/common";
 
 interface AprBadgeProps {
   aprValue: string | null;
   small: boolean;
   leftAlignValue?: string;
+  poolKey: string;
 }
 
 const AprBadge: React.FC<AprBadgeProps> = ({
   aprValue,
   small,
   leftAlignValue,
+  poolKey,
 }) => {
   const [isHovered, setIsHovered] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
+
+  const boostReward = poolKey ? getBoostReward(poolKey, []) : 0;
 
   useEffect(() => {
     // Determine if the screen size is mobile
@@ -72,7 +77,10 @@ const AprBadge: React.FC<AprBadgeProps> = ({
             small ? styles.smallFont : styles.largeFont
           )}
         >
-          {aprValue}
+          {aprValue && !isNaN(parseFloat(aprValue.replace("%", "")))
+            ? (parseFloat(aprValue.replace("%", "")) + boostReward).toFixed(2)
+            : boostReward}
+          %
         </span>
         {/*  UI on hover */}
         {isHovered && (
@@ -89,7 +97,7 @@ const AprBadge: React.FC<AprBadgeProps> = ({
               <div>
                 <div className={styles.row}>
                   <span className={styles.label}>Boost rewards ($FUEL)</span>
-                  <span className={styles.value}>10%</span>
+                  <span className={styles.value}>{boostReward}%</span>
                 </div>
                 <p className={styles.subtext}>
                   1,000 $FUEL per day distributed among LPs in pool
@@ -100,8 +108,10 @@ const AprBadge: React.FC<AprBadgeProps> = ({
                 <span className={styles.label}>Total rewards</span>
                 <span className={styles.value}>
                   {aprValue && !isNaN(parseFloat(aprValue.replace("%", "")))
-                    ? (parseFloat(aprValue.replace("%", "")) + 10).toFixed(2)
-                    : "10"}
+                    ? (
+                        parseFloat(aprValue.replace("%", "")) + boostReward
+                      ).toFixed(2)
+                    : boostReward}
                   %
                 </span>
               </div>

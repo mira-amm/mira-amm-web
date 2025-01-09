@@ -6,14 +6,15 @@ type Props = {
   title: string;
   value: string | null;
   type?: "positive" | "negative";
+  poolKey?: string;
 };
 
-const InfoBlock = ({title, value, type}: Props) => {
+const InfoBlock = ({title, value, type, poolKey}: Props) => {
   return (
     <div className={styles.infoBlock}>
       <p>{title}</p>
       {title === "APR" ? (
-        <AprBadge small={true} aprValue={value} />
+        <AprBadge small={true} aprValue={value} poolKey={poolKey || ""} />
       ) : (
         <p
           className={clsx(

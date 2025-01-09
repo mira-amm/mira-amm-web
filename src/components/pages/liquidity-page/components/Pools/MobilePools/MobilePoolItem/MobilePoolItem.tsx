@@ -35,7 +35,12 @@ const MobilePoolItem = ({poolData}: Props) => {
           isStablePool={isStablePool}
         />
         <div className={styles.infoBlocks}>
-          <InfoBlock title="APR" value={aprValue} type="positive" />
+          <InfoBlock
+            title="APR"
+            value={aprValue}
+            type="positive"
+            poolKey={poolKey}
+          />
           <InfoBlock title="24H Volume" value={volumeValue} />
           <InfoBlock title="TVL" value={tvlValue} />
         </div>

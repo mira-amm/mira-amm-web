@@ -40,9 +40,10 @@ import AprBadge from "@/src/components/common/AprBadge/AprBadge";
 type Props = {
   poolId: PoolId;
   setPreviewData: Dispatch<SetStateAction<AddLiquidityPreviewData | null>>;
+  poolKey: string;
 };
 
-const AddLiquidityDialog = ({poolId, setPreviewData}: Props) => {
+const AddLiquidityDialog = ({poolId, setPreviewData, poolKey}: Props) => {
   const [FailureModal, openFailureModal, closeFailureModal] = useModal();
 
   const {isConnected, isPending: isConnecting} = useIsConnected();
@@ -92,6 +93,7 @@ const AddLiquidityDialog = ({poolId, setPreviewData}: Props) => {
   }, [previewError]);
 
   const {apr} = usePoolAPR(poolId);
+  console.log(poolId);
   const aprValue =
     apr !== undefined
       ? apr.toLocaleString(DefaultLocale, {
@@ -247,6 +249,7 @@ const AddLiquidityDialog = ({poolId, setPreviewData}: Props) => {
                 }
                 small={true}
                 leftAlignValue={"-190px"}
+                poolKey={poolKey}
               />
             </div>
           </div>
