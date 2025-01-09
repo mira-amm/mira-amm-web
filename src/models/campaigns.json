@@ -1,0 +1,21 @@
+[
+    {
+        "startDate": "2025-01-01",
+        "endDate": "2025-01-08",
+        "number": 1,
+        "campaigns": [
+            {
+                "pool": {
+                    "id": "1",
+                    "lpToken": "0x1"
+                },
+                "rewards": [
+                    {
+                        "amount": 1000,
+                        "assetId": "0x2"
+                    }
+                ]
+            }
+        ]
+    }
+]
