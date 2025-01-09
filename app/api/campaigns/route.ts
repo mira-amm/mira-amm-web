@@ -15,8 +15,9 @@ export async function GET(request: NextRequest) {
 
   // Get campaign by ID
   const searchParams = request.nextUrl.searchParams
-  const epochNumbers = searchParams.get('epochNumbers')
-  const poolIds = searchParams.get('poolIds')
+  const epochNumbers = searchParams.get('epochNumbers');
+  const poolIds = searchParams.get('poolIds');
+  const includeAPR = searchParams.get('includeAPR');
   const owner = "fuellabs";
   const slug = "mira-mainnet";
   const url = `https://app.sentio.xyz/api/v1/analytics/${owner}/${slug}/sql/execute`;
@@ -32,6 +33,7 @@ export async function GET(request: NextRequest) {
       ? (epochNumbers as string).split(",").map(Number)
       : undefined,
     poolIds: poolIds ? (poolIds as string).split(",") : undefined,
+    includeAPR: includeAPR === "true"
   });
 
   return new NextResponse(JSON.stringify(campaigns), {

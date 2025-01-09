@@ -32,9 +32,9 @@ export class SentioJSONCampaignService implements CampaignService {
 
   async getCampaigns(params?: CampaignQueryParams): Promise<Campaign[]> {
     try {
-      // if (!process.env.SENTIO_API_KEY) {
-      //   throw new Error("No Sentio API key provided");
-      // }
+      if (!process.env.SENTIO_API_KEY) {
+        throw new Error("No Sentio API key provided");
+      }
 
       const epochConfig = this.epochConfigService.getEpochs(
         params?.epochNumbers ? params.epochNumbers : undefined
@@ -67,35 +67,35 @@ export class SentioJSONCampaignService implements CampaignService {
         });
 
       if (params?.includeAPR) {
-        // TODO: implement
         // get each campaign from sentio
-        // const options = {
-        //   method: 'POST',
-        //   headers: {
-        //     accept: 'application/json',
-        //     'content-type': 'application/json',
-        //     'api-key': process.env.SENTIO_API_KEY
-        //   },
-        //   body: JSON.stringify({
-        //     sqlQuery: {
-        //       sql: 'select 1'
-        //     }
-        //   })
-        // };
-        // try {
-        //   const response = await fetch(this.apiUrl, options);
-        //   const json = await response.json();
-        //   const campaigns = campaignsWithoutApr.map((campaign) => {
-        //     return {
-        //       ...campaign,
-        //       currentAPR: json.apr,
-        //     }
-        //    });
-        //   return campaigns;
-        // } catch (err) {
-        //   console.error(err);
-        // }
-        return campaignsWithoutApr;
+        const options = {
+          method: 'POST',
+          headers: {
+            accept: 'application/json',
+            'content-type': 'application/json',
+            'api-key': process.env.SENTIO_API_KEY
+          },
+          body: JSON.stringify({
+            sqlQuery: {
+              sql: 'select 1'
+            }
+          })
+        };
+        try {
+          const campaigns = campaignsWithoutApr;
+          for (const campaign of campaigns) {
+            const response = await fetch(this.apiUrl, options);
+            const json = await response.json();
+            const currentAPR = json.result.rows[0]["1"];
+            campaign.currentAPR = currentAPR;
+          }
+          return campaigns;
+        } catch (error) {
+          if (axios.isAxiosError(error)) {
+            throw new Error(`Failed to fetch campaigns: ${error.message}`);
+          }
+          throw error;
+        }
       } else {
         return campaignsWithoutApr;
       }
