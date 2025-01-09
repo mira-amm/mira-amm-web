@@ -18,7 +18,7 @@ const fuelToUsdRate = 0.056057;
 const BoostsRewards = () => {
   const [duration, setDuration] = useState("");
 
-  const endDate = "2025-01-15T23:59:59";
+  const endDate = "2025-03-01T23:59:59"; // March 1, 2025
 
   useEffect(() => {
     const updateDuration = () => {
