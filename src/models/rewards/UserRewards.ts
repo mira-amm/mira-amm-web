@@ -6,10 +6,12 @@ export interface UserRewardsResponse {
   rewardsAmount: number;
   // Dollar value of tokens
   rewardsUSD: number;
-  // epoch numbers
+  // epoch numbers included in response
   epochNumbers: number[];
-  // pool ids
+  // pool ids include in response
   poolIds: string[];
+  // wallet address of user
+  userId: string;
 }
 
 export class MockJSONUserRewardsService implements UserRewardsService {

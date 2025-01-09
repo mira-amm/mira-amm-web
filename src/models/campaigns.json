@@ -6,7 +6,7 @@
         "campaigns": [
             {
                 "pool": {
-                    "id": "1",
+                    "id": "0x1",
                     "lpToken": "0x6cae200e72709a4be568a816348d02a91e74b059f6fcbc069438981bd30cfbd1"
                 },
                 "rewards": [
