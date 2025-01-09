@@ -6,6 +6,7 @@
   gap: 5px;
   border-radius: 10px;
   position: relative;
+  cursor: pointer;
 }
 
 .badgeIcon {
@@ -42,7 +43,6 @@
 .hoverUI {
   position: absolute;
   top: 140%;
-  left: 0;
   width: 292px;
   border-radius: 10px;
   padding: 25px;

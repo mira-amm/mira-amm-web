@@ -13,7 +13,7 @@ const InfoBlock = ({title, value, type}: Props) => {
     <div className={styles.infoBlock}>
       <p>{title}</p>
       {title === "APR" ? (
-        <AprBadge small={true} aprValue={value} shouldHover={true} />
+        <AprBadge small={true} aprValue={value} />
       ) : (
         <p
           className={clsx(

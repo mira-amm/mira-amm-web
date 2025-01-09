@@ -51,11 +51,16 @@
 
 .APR {
   display: flex;
-  align-items: center;
+  flex-direction: column;
   gap: 4px;
   font-size: 12px;
   line-height: 14px;
-  margin-left: 56px;
+}
+
+.aprText {
+  display: flex;
+  align-items: center;
+  gap: 3px;
 }
 
 .APR > span {
@@ -271,16 +276,19 @@
   line-height: 17px;
   color: #ffb800;
 }
+.coinPair {
+  display: flex;
+  justify-content: space-between;
+}
 
 @media (min-width: 1024px) {
-  .coinPair {
-    display: flex;
-    justify-content: space-between;
-  }
-
   /*.poolStabilityButton {*/
   /*  flex-direction: row;*/
   /*}*/
+
+  .APR {
+    flex-direction: row;
+  }
 
   .inputPreviewRow p {
     font-size: 16px;
@@ -303,8 +311,4 @@
   .previewPriceBlockDescription {
     line-height: 18px;
   }
-}
-
-.apr {
-  margin-left: 8px;
 }

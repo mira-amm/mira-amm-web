@@ -6,14 +6,32 @@ import {clsx} from "clsx";
 interface AprBadgeProps {
   aprValue: string | null;
   small: boolean;
-  shouldHover?: boolean;
+  leftAlignValue?: string;
 }
 
-const AprBadge: React.FC<AprBadgeProps> = ({aprValue, small, shouldHover}) => {
+const AprBadge: React.FC<AprBadgeProps> = ({
+  aprValue,
+  small,
+  leftAlignValue,
+}) => {
   const [isHovered, setIsHovered] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
-    if (small && isHovered) {
+    // Determine if the screen size is mobile
+    const mediaQuery = window.matchMedia("(max-width: 800px)");
+    const updateIsMobile = () => setIsMobile(mediaQuery.matches);
+
+    updateIsMobile(); // Initial check
+    mediaQuery.addEventListener("change", updateIsMobile);
+
+    return () => {
+      mediaQuery.removeEventListener("change", updateIsMobile);
+    };
+  }, []);
+
+  useEffect(() => {
+    if (small && isHovered && isMobile) {
       const handleClickOutside = () => setIsHovered(false);
 
       document.addEventListener("click", handleClickOutside);
@@ -22,20 +40,20 @@ const AprBadge: React.FC<AprBadgeProps> = ({aprValue, small, shouldHover}) => {
         document.removeEventListener("click", handleClickOutside);
       };
     }
-  }, [small, isHovered]);
+  }, [small, isHovered, isMobile]);
 
   const iconWidth = small ? 15 : 20;
   const iconHeight = small ? 15 : 18;
   return (
     <div
       onMouseEnter={() => {
-        if (!small) setIsHovered(true); // Desktop
+        if (!isMobile) setIsHovered(true); // Desktop hover
       }}
       onMouseLeave={() => {
-        if (!small) setIsHovered(false); // Desktop
+        if (!isMobile) setIsHovered(false); // Desktop hover
       }}
       onClick={() => {
-        if (small) setIsHovered((prev) => !prev); // Mobile
+        if (isMobile) setIsHovered((prev) => !prev); // Mobile click
       }}
       className={clsx(styles.badgeWrapper)}
     >
@@ -57,8 +75,12 @@ const AprBadge: React.FC<AprBadgeProps> = ({aprValue, small, shouldHover}) => {
           {aprValue}
         </span>
         {/*  UI on hover */}
-        {isHovered && shouldHover && (
-          <div onClick={() => setIsHovered(false)} className={styles.hoverUI}>
+        {isHovered && (
+          <div
+            onClick={() => setIsHovered(false)}
+            className={clsx(styles.hoverUI)}
+            style={{left: leftAlignValue ? leftAlignValue : 0}}
+          >
             <div className={styles.columns}>
               <div className={styles.row}>
                 <span className={styles.label}>Swap fees</span>
