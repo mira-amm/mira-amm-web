@@ -12,8 +12,8 @@ export const isPoolIdValid = (poolId: PoolId) => {
   return poolId[0].bits.length === 66 && poolId[1].bits.length === 66;
 };
 
-export const StablePoolKey = "stable" as const;
-export const VolatilePoolKey = "volatile" as const;
+export const StablePoolKey = "true" as const;
+export const VolatilePoolKey = "false" as const;
 
 // Entity used as query param for position/pool pages in format 'ETH-USDT-stable', mutually convertible with pool id
 export const createPoolKey = (poolId: PoolId) => {
@@ -30,11 +30,11 @@ export const isPoolKeyValid = (key: string) => {
 
 export const createPoolIdFromPoolKey = (key: string) => {
   const [firstCoinAssetId, secondCoinAssetId, poolStability] = key.split(
-    "-"
+    "-",
   ) as [
     B256Address,
     B256Address,
-    typeof StablePoolKey | typeof VolatilePoolKey
+    typeof StablePoolKey | typeof VolatilePoolKey,
   ];
   const poolStabilityValid =
     poolStability === StablePoolKey || poolStability === VolatilePoolKey;
@@ -46,14 +46,14 @@ export const createPoolIdFromPoolKey = (key: string) => {
   return buildPoolId(
     firstCoinAssetId,
     secondCoinAssetId,
-    poolStability === StablePoolKey
+    poolStability === StablePoolKey,
   );
 };
 
 export const createPoolIdFromAssetNames = (
   firstAssetName: CoinName,
   secondAssetName: CoinName,
-  isStablePool: boolean
+  isStablePool: boolean,
 ) => {
   const firstCoinAssetId = coinsConfig.get(firstAssetName)?.assetId!;
   const secondCoinAssetId = coinsConfig.get(secondAssetName)?.assetId!;
@@ -79,7 +79,7 @@ export const arePoolIdsEqual = (firstPoolId: PoolId, secondPoolId: PoolId) => {
 };
 
 export const floorToTwoSignificantDigits = (
-  value: number | null | undefined
+  value: number | null | undefined,
 ) => {
   if (!value) {
     return 0;
@@ -103,7 +103,7 @@ export const calculateSHA256Hash = async (message: string) => {
 
 export const getBoostReward = (
   poolKey: string,
-  data: Array<{id: string; boosterValue: number}>
+  data: Array<{id: string; boosterValue: number}>,
 ) => {
   // Find the item in the data array where the id matches poolKey
   //pool key is different from the actual id from the data, so it will need to be modified before passing in
@@ -122,9 +122,9 @@ export const calculateUsdValue = (
 };
 
 export const calculateEpochDuration = (endDate: string): string => {
-  const now = new Date().getTime(); 
-  const end = new Date(endDate).getTime(); 
-  const diff = end - now; 
+  const now = new Date().getTime();
+  const end = new Date(endDate).getTime();
+  const diff = end - now;
 
   if (diff <= 0) return "Epoch has ended";
 
