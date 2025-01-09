@@ -20,35 +20,6 @@ export class JSONEpochConfigService implements EpochConfigService {
   }
 }
 
-// export class MockJSONCampaignService implements CampaignService {
-//   private readonly campaignsPath: string;
-
-//   constructor(campaignPath: string) {
-//     this.campaignsPath = campaignPath;
-//   }
-
-//   async getCampaigns(params?: CampaignQueryParams): Promise<Campaign[]> {
-//     // load from json file
-//     let campaigns: Campaign[] = JSON.parse(
-//       fs.readFileSync(this.campaignsPath, "utf8")
-//     );
-
-//     if (params && params.epochNumbers) {
-//       campaigns = campaigns.filter((campaign) => params?.epochNumbers?.includes(campaign.epoch.number));
-//     }
-
-//     if (params && params.poolIds) {
-//       campaigns = campaigns.filter((campaign) => params?.poolIds?.includes(campaign.pool.id));
-//     }
-
-//     if (params && params.includeAPR) {
-//       // do something
-//     }
-
-//     return campaigns;
-//   }
-// }
-
 // Specific implementation for Sentio
 export class SentioJSONCampaignService implements CampaignService {
   private readonly apiUrl: string;
