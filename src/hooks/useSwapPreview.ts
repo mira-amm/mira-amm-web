@@ -11,14 +11,14 @@ import useAssetMetadata from "./useAssetMetadata";
 type Props = {
   swapState: SwapState;
   mode: CurrencyBoxMode;
-}
+};
 
-type TradeType = 'ExactInput' | 'ExactOutput';
+type TradeType = "ExactInput" | "ExactOutput";
 
 type MultihopPreviewData = {
   path: [string, string, boolean][];
-  input_amount: number;
-  output_amount: number;
+  input_amount: BigInt;
+  output_amount: BigInt;
 };
 
 type SwapPreviewData = {
@@ -28,12 +28,12 @@ type SwapPreviewData = {
 
 export class NoRouteFoundError extends Error {
   constructor() {
-    super('No route found');
+    super("No route found");
   }
 }
 
-const useSwapPreview = ({ swapState, mode }: Props) => {
-  const { sellAssetId, buyAssetId } = useSwapData(swapState);
+const useSwapPreview = ({swapState, mode}: Props) => {
+  const {sellAssetId, buyAssetId} = useSwapData(swapState);
 
   const miraAmm = useReadonlyMira();
   const miraExists = Boolean(miraAmm);
@@ -41,14 +41,16 @@ const useSwapPreview = ({ swapState, mode }: Props) => {
   const sellMetadata = useAssetMetadata(sellAssetId);
   const buyMetadata = useAssetMetadata(buyAssetId);
 
-  const amountString = mode === 'sell' ? swapState.sell.amount : swapState.buy.amount;
+  const amountString =
+    mode === "sell" ? swapState.sell.amount : swapState.buy.amount;
   const amount = parseFloat(amountString);
   const amountValid = !isNaN(amount);
-  const decimals = (mode === 'sell' ? sellMetadata.decimals : buyMetadata.decimals) || 0;
+  const decimals =
+    (mode === "sell" ? sellMetadata.decimals : buyMetadata.decimals) || 0;
   const normalizedAmount = amountValid ? amount * 10 ** decimals : 0;
   const amountNonZero = normalizedAmount > 0;
 
-  const tradeType: TradeType = mode === 'sell' ? 'ExactInput' : 'ExactOutput';
+  const tradeType: TradeType = mode === "sell" ? "ExactInput" : "ExactOutput";
 
   const {
     data: multihopPreviewData,
@@ -57,12 +59,18 @@ const useSwapPreview = ({ swapState, mode }: Props) => {
     failureCount: multihopFailureCount,
     refetch,
   } = useQuery({
-    queryKey: ['multihopPreview', sellAssetId, buyAssetId, normalizedAmount, tradeType],
+    queryKey: [
+      "multihopPreview",
+      sellAssetId,
+      buyAssetId,
+      normalizedAmount,
+      tradeType,
+    ],
     queryFn: async () => {
       const res = await fetch(`${ApiBaseUrl}/find_route`, {
-        method: 'POST',
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify({
           input: sellAssetId,
@@ -77,36 +85,40 @@ const useSwapPreview = ({ swapState, mode }: Props) => {
           throw new NoRouteFoundError();
         }
 
-        throw new Error('An error occurred while retrieving the path');
+        throw new Error("An error occurred while retrieving the path");
       }
 
       const previewData: MultihopPreviewData = await res.json();
 
       // API is returning unreliable data, let's re-simulate
-      if (tradeType === 'ExactInput') {
+      if (tradeType === "ExactInput") {
         const previewResponse = await miraAmm?.previewSwapExactInput(
-          { bits: sellAssetId },
+          {bits: sellAssetId},
           normalizedAmount,
-          previewData.path.map(([input, output, stable]) => buildPoolId(`0x${input}`, `0x${output}`, stable)),
+          previewData.path.map(([input, output, stable]) =>
+            buildPoolId(`0x${input}`, `0x${output}`, stable)
+          )
         );
 
         if (!previewResponse) {
-          throw new Error('An error occurred while simulating the swap');
+          throw new Error("An error occurred while simulating the swap");
         }
 
-        previewData.output_amount = previewResponse[1].toNumber();
+        previewData.output_amount = BigInt(previewResponse[1].toString());
       } else {
         const previewResponse = await miraAmm?.previewSwapExactOutput(
-          { bits: buyAssetId },
+          {bits: buyAssetId},
           normalizedAmount,
-          previewData.path.map(([input, output, stable]) => buildPoolId(`0x${input}`, `0x${output}`, stable)),
+          previewData.path.map(([input, output, stable]) =>
+            buildPoolId(`0x${input}`, `0x${output}`, stable)
+          )
         );
 
         if (!previewResponse) {
-          throw new Error('An error occurred while simulating the swap');
+          throw new Error("An error occurred while simulating the swap");
         }
 
-        previewData.input_amount = previewResponse[1].toNumber();
+        previewData.input_amount = BigInt(previewResponse[1].toString());
       }
 
       return previewData;
@@ -123,15 +135,26 @@ const useSwapPreview = ({ swapState, mode }: Props) => {
     refetchInterval: 15000,
   });
 
-  const volatilePool = buildPoolId({ bits: sellAssetId }, { bits: buyAssetId }, false);
-  const stablePool = buildPoolId({ bits: sellAssetId }, { bits: buyAssetId }, true);
+  const volatilePool = buildPoolId(
+    {bits: sellAssetId},
+    {bits: buyAssetId},
+    false
+  );
+  const stablePool = buildPoolId({bits: sellAssetId}, {bits: buyAssetId}, true);
   const shouldFetchFallback =
-    Boolean(multihopPreviewError) && multihopFailureCount === 2 && miraExists && amountNonZero;
+    Boolean(multihopPreviewError) &&
+    multihopFailureCount === 2 &&
+    miraExists &&
+    amountNonZero;
 
   async function getFallbackPoolId(): Promise<PoolId | undefined> {
     try {
-      const volatileMeta = await miraAmm?.poolMetadata(volatilePool).catch(() => undefined);
-      const stableMeta = await miraAmm?.poolMetadata(stablePool).catch(() => undefined);
+      const volatileMeta = await miraAmm
+        ?.poolMetadata(volatilePool)
+        .catch(() => undefined);
+      const stableMeta = await miraAmm
+        ?.poolMetadata(stablePool)
+        .catch(() => undefined);
 
       if (!volatileMeta && !stableMeta) {
         return undefined;
@@ -140,18 +163,28 @@ const useSwapPreview = ({ swapState, mode }: Props) => {
       if (!volatileMeta) return stablePool;
       if (!stableMeta) return volatilePool;
 
-      const volatileReservesProduct = volatileMeta.reserve0.mul(volatileMeta.reserve1);
-      const stableReservesProduct = stableMeta.reserve0.mul(stableMeta.reserve1);
+      const volatileReservesProduct = volatileMeta.reserve0.mul(
+        volatileMeta.reserve1
+      );
+      const stableReservesProduct = stableMeta.reserve0.mul(
+        stableMeta.reserve1
+      );
 
-      return volatileReservesProduct >= stableReservesProduct ? volatilePool : stablePool;
+      return volatileReservesProduct >= stableReservesProduct
+        ? volatilePool
+        : stablePool;
     } catch (error) {
-      console.error('Error determining fallback pool:', error);
+      console.error("Error determining fallback pool:", error);
       return undefined;
     }
   }
 
-  const { data: fallbackPreviewData, error: fallbackPreviewError, isLoading: fallbackPreviewLoading } = useQuery({
-    queryKey: ['fallbackPreview', sellAssetId, buyAssetId, normalizedAmount],
+  const {
+    data: fallbackPreviewData,
+    error: fallbackPreviewError,
+    isLoading: fallbackPreviewLoading,
+  } = useQuery({
+    queryKey: ["fallbackPreview", sellAssetId, buyAssetId, normalizedAmount],
     queryFn: async () => {
       const fallbackPoolId = await getFallbackPoolId();
 
@@ -159,17 +192,18 @@ const useSwapPreview = ({ swapState, mode }: Props) => {
         throw new NoRouteFoundError();
       }
 
-      const fallbackPreviewResponse = mode === 'sell' ?
-        await miraAmm?.previewSwapExactInput(
-          { bits: sellAssetId },
-          normalizedAmount,
-          [fallbackPoolId],
-        ) :
-        await miraAmm?.previewSwapExactOutput(
-          { bits: buyAssetId },
-          normalizedAmount,
-          [fallbackPoolId],
-        );
+      const fallbackPreviewResponse =
+        mode === "sell"
+          ? await miraAmm?.previewSwapExactInput(
+              {bits: sellAssetId},
+              normalizedAmount,
+              [fallbackPoolId]
+            )
+          : await miraAmm?.previewSwapExactOutput(
+              {bits: buyAssetId},
+              normalizedAmount,
+              [fallbackPoolId]
+            );
 
       if (!fallbackPreviewResponse) {
         return;
@@ -179,7 +213,10 @@ const useSwapPreview = ({ swapState, mode }: Props) => {
     },
     enabled: shouldFetchFallback,
     retry: (failureCount, error) => {
-      if (error instanceof InsufficientReservesError || error instanceof NoRouteFoundError) {
+      if (
+        error instanceof InsufficientReservesError ||
+        error instanceof NoRouteFoundError
+      ) {
         return false;
       }
 
@@ -191,10 +228,16 @@ const useSwapPreview = ({ swapState, mode }: Props) => {
 
   let previewData: SwapPreviewData | null = null;
   if (multihopPreviewData) {
-    const { path, input_amount, output_amount } = multihopPreviewData as MultihopPreviewData;
+    const {path, input_amount, output_amount} =
+      multihopPreviewData as MultihopPreviewData;
     previewData = {
-      pools: path.map(([input, output, stable]) => buildPoolId(`0x${input}`, `0x${output}`, stable)),
-      previewAmount: mode === 'sell' ? new BN(output_amount.toString()) : new BN(input_amount.toString()),
+      pools: path.map(([input, output, stable]) =>
+        buildPoolId(`0x${input}`, `0x${output}`, stable)
+      ),
+      previewAmount:
+        mode === "sell"
+          ? new BN(output_amount.toString())
+          : new BN(input_amount.toString()),
     };
   } else if (fallbackPreviewData) {
     const [fallbackPreviewResponse, fallbackPoolId] = fallbackPreviewData;
@@ -204,7 +247,9 @@ const useSwapPreview = ({ swapState, mode }: Props) => {
     };
   }
 
-  const previewError = !previewData ? fallbackPreviewError || multihopPreviewError : null;
+  const previewError = !previewData
+    ? fallbackPreviewError || multihopPreviewError
+    : null;
 
   return {
     previewData,
