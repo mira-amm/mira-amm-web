@@ -1,0 +1,6 @@
+{
+    "rewardsAmount": 1000,
+    "rewardsUSD": 1000,
+    "epochNumbers": [1],
+    "poolIds": ["0x1"]
+}

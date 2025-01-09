@@ -1,6 +1,7 @@
 import {
   SentioJSONCampaignService,
   JSONEpochConfigService,
+  // MockJSONCampaignService,
 } from "@/src/models/campaigns/Campaign";
 import {CampaignsResponse} from "@/src/models/campaigns/interfaces";
 import {NextApiRequest, NextApiResponse} from "next";
@@ -16,7 +17,8 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<CampaignsResponse | {error: string}>
 ) {
-  const {method} = req;
+  const { method } = req;
+  console.log("hit campaigns api");
 
   try {
     switch (method) {
@@ -28,8 +30,9 @@ export default async function handler(
           // TODO: change to env variable and modify to real value
           "https://fake-sentio-api.com/v1/campaigns",
           // TODO: complete
-          new JSONEpochConfigService()
+          new JSONEpochConfigService("src/models/campaigns.json")
         );
+        // const campaignService = new MockJSONCampaignService("src/models/campaigns.json");
 
         const campaigns = await campaignService.getCampaigns({
           epochNumbers: epochNumbers

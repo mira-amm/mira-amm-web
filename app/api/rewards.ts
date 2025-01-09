@@ -1,21 +1,26 @@
-import {NextRequest, NextResponse} from "next/server";
+import { MockJSONUserRewardsService, UserRewardsResponse } from "@/src/models/rewards/UserRewards";
+import { NextApiRequest, NextApiResponse } from "next";
 
-export async function GET(request: NextRequest) {
-  try {
-        // TODO: Add your reward fetching logic here
-    switch (method) {
+export default async function handler(
+    req: NextApiRequest,
+    res: NextApiResponse<UserRewardsResponse | {error: string}>
+  ) {
+    const {method} = req;
+
+    try {
+      switch (method) {
         case "GET":
-            const rewards = [
-            {id: 1, name: "Reward 1", points: 100},
-            {id: 2, name: "Reward 2", points: 200},
-            ];
+          const userRewardsService = new MockJSONUserRewardsService("src/models/userRewards.json");
 
-            return NextResponse.json({rewards}, {status: 200});
-    
+          const rewards = await userRewardsService.getRewards();
+
+          return res.status(200).json(rewards);
+
         default:
-            res.setHeader("Allow", ["GET"]);
-            return res.status(405).end(`Method ${method} Not Allowed`);
-  } catch (error) {
-    return NextResponse.json({error: "Failed to fetch rewards"}, {status: 500});
+          res.setHeader("Allow", ["GET"]);
+          return res.status(405).end(`Method ${method} Not Allowed`);
+      }
+    } catch (error) {
+      return res.status(500).json({ error: "Failed to fetch rewards"});
+    }
   }
-}
