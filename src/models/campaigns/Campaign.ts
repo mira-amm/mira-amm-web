@@ -84,6 +84,9 @@ export class SentioJSONCampaignService implements CampaignService {
         try {
           const campaigns = campaignsWithoutApr;
           for (const campaign of campaigns) {
+            // pass:
+            // campaignRewardsAmount
+            // poolId
             const response = await fetch(this.apiUrl, options);
             const json = await response.json();
             const currentAPR = json.result.rows[0]["1"];
