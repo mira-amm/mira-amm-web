@@ -115,7 +115,7 @@ export const getBoostReward = (
 
 export const calculateUsdValue = (
   fuelAmount: number,
-  fuelToUsdRate: number = 0.056057,
+  fuelToUsdRate: number,
 ): string => {
   const usdValue = fuelAmount * fuelToUsdRate;
   return `~$${usdValue.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;

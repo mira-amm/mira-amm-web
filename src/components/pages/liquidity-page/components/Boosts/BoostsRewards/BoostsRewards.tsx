@@ -11,14 +11,17 @@ import {
 } from "@/src/utils/constants";
 import {useEffect, useState} from "react";
 import {calculateEpochDuration, calculateUsdValue} from "@/src/utils/common";
+import {useFuelPrice} from "@/src/hooks/useFuelPrice";
 
 const fuelAmount = 23000;
-const fuelToUsdRate = 0.056057;
 
 const BoostsRewards = () => {
   const [duration, setDuration] = useState("");
 
   const endDate = "2025-03-01T23:59:59"; // March 1, 2025
+
+  const fuelPrice = useFuelPrice();
+  const fuelToUsdRate = fuelPrice ? parseFloat(fuelPrice) : 0;
 
   useEffect(() => {
     const updateDuration = () => {
