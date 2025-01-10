@@ -12,16 +12,17 @@ import {
 import {useEffect, useState} from "react";
 import {calculateEpochDuration, calculateUsdValue} from "@/src/utils/common";
 import {useFuelPrice} from "@/src/hooks/useFuelPrice";
+import Loader from "@/src/components/common/Loader/Loader";
 
-const fuelAmount = 23000;
+const fuelAmount = 25000;
 
 const BoostsRewards = () => {
   const [duration, setDuration] = useState("");
 
   const endDate = "2025-03-01T23:59:59"; // March 1, 2025
 
-  const fuelPrice = useFuelPrice();
-  const fuelToUsdRate = fuelPrice ? parseFloat(fuelPrice) : 0;
+  const {price, isLoading} = useFuelPrice();
+  const fuelToUsdRate = price ? parseFloat(price) : 0;
 
   useEffect(() => {
     const updateDuration = () => {
@@ -69,7 +70,7 @@ const BoostsRewards = () => {
           <div className={styles.rewardsValue}>
             <RewardsIcon />
             <p>{fuelAmount.toLocaleString()} FUEL</p>
-            <span>{usdValue}</span>
+            <span>{isLoading ? <Loader /> : usdValue}</span>
           </div>
         </div>
         <div className={styles.epochSection}>
