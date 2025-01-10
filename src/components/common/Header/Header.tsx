@@ -61,10 +61,11 @@ const Header = ({isHomePage}: Props) => {
           <Logo />
           <div className={clsx("desktopOnly", styles.links)}>
             <Link
-              href="/swap"
+              //TEMPORARY ROUTING SINCE LANDING PAGE IS DISABLED
+              href="/"
               className={clsx(
                 styles.link,
-                pathname.includes("/swap") && styles.activeLink
+                pathname === "/" && styles.activeLink,
               )}
             >
               Swap
@@ -73,7 +74,7 @@ const Header = ({isHomePage}: Props) => {
               href="/liquidity"
               className={clsx(
                 styles.link,
-                pathname.includes("/liquidity") && styles.activeLink
+                pathname.includes("/liquidity") && styles.activeLink,
               )}
             >
               Liquidity
