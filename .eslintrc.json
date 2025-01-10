@@ -1,3 +1,40 @@
 {
-  "extends": "next/core-web-vitals"
+  "plugins": ["prettier"],
+  "extends": [
+    "next/core-web-vitals",
+    "plugin:@typescript-eslint/recommended",
+    "plugin:prettier/recommended"
+  ],
+  "env": {
+    "es6": true,
+    "browser": true,
+    "jest": true,
+    "node": true
+  },
+  "rules": {
+    "prettier/prettier": "warn",
+    "no-unused-vars": "off",
+    "@typescript-eslint/no-explicit-any": "error", // prevents use of 'any' keyword
+    "@typescript-eslint/explicit-module-boundary-types": "warn", // explicit return types for functions/methods
+    "@typescript-eslint/no-unused-vars": [
+      "warn",
+      {
+        "vars": "all",
+        "args": "after-used",
+        "ignoreRestSiblings": false,
+        "argsIgnorePattern": "^_",
+        "varsIgnorePattern": "^_"
+      }
+    ],
+    "prefer-const": "error",
+    "no-var": "error",
+    "no-console": "warn",
+    "no-debugger": "warn",
+    "no-eval": "error"
+
+    // Formatting-related rules
+    // "comma-dangle": ["error", "always-multiline"], // Enforces trailing commas for multiline statements
+    // "semi": ["error", "always"], // Enforces semicolons
+    // "indent": ["error", 2] // Enforces 2-space indentation
+  }
 }
