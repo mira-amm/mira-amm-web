@@ -1,13 +1,13 @@
 [
     {
-        "startDate": "2025-01-01",
-        "endDate": "2025-01-08",
+        "startDate": "2025-01-01T00:00:00.000Z",
+        "endDate": "2025-01-08T00:00:00.000Z",
         "number": 1,
         "campaigns": [
             {
                 "pool": {
-                    "id": "1",
-                    "lpToken": "0x1"
+                    "id": "0x1",
+                    "lpToken": "0x6cae200e72709a4be568a816348d02a91e74b059f6fcbc069438981bd30cfbd1"
                 },
                 "rewards": [
                     {

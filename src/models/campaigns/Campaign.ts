@@ -32,6 +32,10 @@ export class SentioJSONCampaignService implements CampaignService {
 
   async getCampaigns(params?: CampaignQueryParams): Promise<Campaign[]> {
     try {
+      // if (!process.env.SENTIO_API_KEY) {
+      //   throw new Error("No Sentio API key provided");
+      // }
+
       const epochConfig = this.epochConfigService.getEpochs(
         params?.epochNumbers ? params.epochNumbers : undefined
       );
@@ -45,22 +49,53 @@ export class SentioJSONCampaignService implements CampaignService {
         })
         .flatMap((epoch) => {
           // flatten the epoch to just the campaigns
-          return epoch.campaigns.map((campaign) => ({
+          return epoch.campaigns
+            .filter(campaign => {
+              // return true if no poolIds are provided
+              return (
+                !params?.poolIds || params?.poolIds.includes(campaign.pool.id)
+              );
+            }).map((campaign) => ({
             epoch: {
               startDate: epoch.startDate,
               endDate: epoch.endDate,
               number: epoch.number,
             },
             ...campaign,
+            status: "inprogress",
           }));
         });
 
       if (params?.includeAPR) {
         // TODO: implement
         // get each campaign from sentio
-        //   const response = await axios.get(url);
-        const campaigns = campaignsWithoutApr;
-        return campaigns;
+        // const options = {
+        //   method: 'POST',
+        //   headers: {
+        //     accept: 'application/json',
+        //     'content-type': 'application/json',
+        //     'api-key': process.env.SENTIO_API_KEY
+        //   },
+        //   body: JSON.stringify({
+        //     sqlQuery: {
+        //       sql: 'select 1'
+        //     }
+        //   })
+        // };
+        // try {
+        //   const response = await fetch(this.apiUrl, options);
+        //   const json = await response.json();
+        //   const campaigns = campaignsWithoutApr.map((campaign) => {
+        //     return {
+        //       ...campaign,
+        //       currentAPR: json.apr,
+        //     }
+        //    });
+        //   return campaigns;
+        // } catch (err) {
+        //   console.error(err);
+        // }
+        return campaignsWithoutApr;
       } else {
         return campaignsWithoutApr;
       }

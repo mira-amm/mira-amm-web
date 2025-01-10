@@ -34,7 +34,7 @@ export interface Campaign {
   rewards: CampaignReward[];
   epoch: Epoch;
   currentAPR?: number;
-  status: "active" | "inactive" | "completed";
+  status: "inprogress" | "planned" | "completed";
 }
 
 export interface Pool {
