@@ -67,26 +67,37 @@ export class SentioJSONCampaignService implements CampaignService {
         });
 
       if (params?.includeAPR) {
+        const sql = fs.readFileSync("src/queries/CampaignsAPR.sql", 'utf8');
+
         // get each campaign from sentio
-        const options = {
-          method: 'POST',
-          headers: {
-            accept: 'application/json',
-            'content-type': 'application/json',
-            'api-key': process.env.SENTIO_API_KEY
-          },
-          body: JSON.stringify({
-            sqlQuery: {
-              sql: 'select 1'
-            }
-          })
-        };
         try {
           const campaigns = campaignsWithoutApr;
           for (const campaign of campaigns) {
             // pass:
             // campaignRewardsAmount
             // poolId
+            const options = {
+              method: 'POST',
+              headers: {
+                accept: 'application/json',
+                'content-type': 'application/json',
+                'api-key': process.env.SENTIO_API_KEY
+              },
+              body: JSON.stringify({
+                sqlQuery: {
+                  parameters: {
+                    fields: {
+                      epochStart: { timestampValue: campaign.epoch.startDate },
+                      epochEnd: { timestampValue: campaign.epoch.endDate },
+                      poolId: { stringValue: campaign.pool.id },
+                      // Do we assume the amount is already in USDC or do we need to convert it?
+                      amount: { intValue: campaign.rewards.amount }
+                    }
+                  },
+                  sql: sql
+                }
+              })
+            };
             const response = await fetch(this.apiUrl, options);
             const json = await response.json();
             const currentAPR = json.result.rows[0]["1"];
