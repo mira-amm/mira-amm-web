@@ -48,6 +48,15 @@ export class SentioJSONCampaignService implements CampaignService {
           );
         })
         .flatMap((epoch) => {
+          let status: "inprogress" | "planned" | "completed";
+          const currentTime = new Date();
+          if (currentTime >= new Date(epoch.startDate) && currentTime <= new Date(epoch.endDate)) {
+            status = "inprogress";
+          } else if (currentTime < new Date(epoch.startDate)) {
+            status = "planned";
+          } else {
+            status = "completed";
+          }
           // flatten the epoch to just the campaigns
           return epoch.campaigns
             .filter(campaign => {
@@ -62,7 +71,7 @@ export class SentioJSONCampaignService implements CampaignService {
               number: epoch.number,
             },
             ...campaign,
-            status: "inprogress",
+            status: status,
           }));
         });
 
@@ -73,9 +82,6 @@ export class SentioJSONCampaignService implements CampaignService {
         try {
           const campaigns = campaignsWithoutApr;
           for (const campaign of campaigns) {
-            // pass:
-            // campaignRewardsAmount
-            // poolId
             const options = {
               method: 'POST',
               headers: {
@@ -90,8 +96,13 @@ export class SentioJSONCampaignService implements CampaignService {
                       epochStart: { timestampValue: campaign.epoch.startDate },
                       epochEnd: { timestampValue: campaign.epoch.endDate },
                       poolId: { stringValue: campaign.pool.id },
-                      // Do we assume the amount is already in USDC or do we need to convert it?
-                      amount: { intValue: campaign.rewards.amount }
+                      // even though each campaign has a list of rewards
+                      // there will always be a single element and the assetId will correspond to FUEL
+                      // the amount is in FUEL and needs to be converted to USDC
+                      // VerifiedAsset does not have FUEL so we cannot derive fuel symbol from assetId
+                      // therefore we hardcode it
+                      campaignRewardsAmount: { intValue: campaign.rewards[0].amount },
+                      campaignRewardToken: { stringValue: "fuel" }
                     }
                   },
                   sql: sql
@@ -100,7 +111,10 @@ export class SentioJSONCampaignService implements CampaignService {
             };
             const response = await fetch(this.apiUrl, options);
             const json = await response.json();
-            const currentAPR = json.result.rows[0]["1"];
+            if (json.result.rows.length == 0) {
+              throw new Error(`Failed to fetch APR for campaign ${campaign.pool.id}`);
+            }
+            const currentAPR = json.result.rows[0].APR;
             campaign.currentAPR = currentAPR;
           }
           return campaigns;

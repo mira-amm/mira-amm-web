@@ -1,15 +1,3 @@
--- Pool ID: 0x1d5d97005e41cae2187a895fd8eab0506111e0e2f3331cd3912c15c24e3c1d82-0xf8f8b6283d7fa5b672b530cbb84fcccb4ff8dc40f8176ef4544ddb1f1952ad07-false
-
--- Parameters
--- Campaign rewards amount
--- epoch start and end dates
--- poolId
--- ALL
-
--- CALCULATE TVL
--- SUM of
---  reserve0 * 10^-reverve0Decimal * asset0Price
---  reserve1 * 10^-reserve1Decimal * asset1Price
 WITH
   pools AS (
     SELECT
@@ -107,27 +95,24 @@ WITH
     WHERE
       hps.lpTokenSupply > 0
   ),
--- CALCULATE CampaignRewardsUSD
--- FUEL price * campaign rewards amount
-TotalValueLocked as (
-    select
-        total_value as tvlUSD
-    from hourly_pool_snapshot_priced
-    where p.id = '${poolId}'
-    order by hour desc
-    limit 1
+TotalValueLocked AS (
+    SELECT
+        total_value AS tvlUSD
+    FROM hourly_pool_snapshot_priced
+    WHERE p.id = '${poolId}'
+    ORDER BY hour DESC
+    LIMIT 1
 ),
 CampaignRewardsUSD as (
-    select
-        argMax(price, time) as campaignRewardsUSD
-    from token.prices
-    where symbol = 'fuel'
-),
--- Epoch rate of return (ERR) = rewardsUSD/tvlUSD
-EpochRateOfReturn as (
     SELECT
-        campaignRewardsUSD / tvlUSD as ERR
-    from TotalValueLocked, CampaignRewardsUSD
+        ${campaignRewardsAmount} * argMax(price, time) AS campaignRewardsUSD
+    FROM token.prices
+    WHERE symbol = '${campaignRewardToken}'
+),
+EpochRateOfReturn AS (
+    SELECT
+        campaignRewardsUSD / tvlUSD AS ERR
+    FROM TotalValueLocked, CampaignRewardsUSD
 ),
 EpochDays as (
     SELECT DATEDIFF(day,
@@ -135,8 +120,6 @@ EpochDays as (
         ${epochEnd}::timestamp
     ) AS days_between
 )
--- APR = ERR * 365/epochDays
-select
-    ERR * 365 / (select * from EpochDays) as APR
-from EpochRateOfReturn
-
+SELECT
+    ERR * 365 / (SELECT * FROM EpochDays) AS APR
+FROM EpochRateOfReturn
