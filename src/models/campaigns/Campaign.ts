@@ -1,6 +1,6 @@
 import axios from "axios";
 import fs from "fs";
-import {Campaign, CampaignQueryParams, CampaignService} from "./interfaces";
+import {Campaign, CampaignQueryParams, CampaignService, CampaignsResponse} from "./interfaces";
 import {EpochConfig, EpochConfigService} from "./interfaces";
 
 export class JSONEpochConfigService implements EpochConfigService {
@@ -23,19 +23,17 @@ export class JSONEpochConfigService implements EpochConfigService {
 // Specific implementation for Sentio
 export class SentioJSONCampaignService implements CampaignService {
   private readonly apiUrl: string;
+  private readonly apiKey: string;
   private readonly epochConfigService: EpochConfigService;
 
-  constructor(apiUrl: string, epochConfigService: EpochConfigService) {
+  constructor(apiUrl: string, apiKey: string, epochConfigService: EpochConfigService) {
     this.apiUrl = apiUrl;
+    this.apiKey = apiKey;
     this.epochConfigService = epochConfigService;
   }
 
-  async getCampaigns(params?: CampaignQueryParams): Promise<Campaign[]> {
+  async getCampaigns(params?: CampaignQueryParams): Promise<CampaignsResponse> {
     try {
-      if (!process.env.SENTIO_API_KEY) {
-        throw new Error("No Sentio API key provided");
-      }
-
       const epochConfig = this.epochConfigService.getEpochs(
         params?.epochNumbers ? params.epochNumbers : undefined
       );
@@ -87,7 +85,7 @@ export class SentioJSONCampaignService implements CampaignService {
               headers: {
                 accept: 'application/json',
                 'content-type': 'application/json',
-                'api-key': process.env.SENTIO_API_KEY
+                'api-key': this.apiKey
               },
               body: JSON.stringify({
                 sqlQuery: {
@@ -114,10 +112,11 @@ export class SentioJSONCampaignService implements CampaignService {
             if (json.result.rows.length == 0) {
               throw new Error(`Failed to fetch APR for campaign ${campaign.pool.id}`);
             }
-            const currentAPR = json.result.rows[0].APR;
-            campaign.currentAPR = currentAPR;
+            campaign.currentAPR = json.result.rows[0].APR;
           }
-          return campaigns;
+          return {
+            campaigns: campaigns
+          };
         } catch (error) {
           if (axios.isAxiosError(error)) {
             throw new Error(`Failed to fetch campaigns: ${error.message}`);
@@ -125,7 +124,9 @@ export class SentioJSONCampaignService implements CampaignService {
           throw error;
         }
       } else {
-        return campaignsWithoutApr;
+        return {
+          campaigns: campaignsWithoutApr
+        };
       }
     } catch (error) {
       if (axios.isAxiosError(error)) {

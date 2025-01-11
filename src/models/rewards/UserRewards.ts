@@ -1,38 +1,22 @@
-import { UserRewardsService } from "./interfaces";
+import { UserRewardsQueryParams, UserRewardsResponse, UserRewardsService } from "./interfaces";
 import fs from "fs";
 
-export interface UserRewardsResponse {
-  // amount of tokens
-  rewardsAmount: number;
-  // Dollar value of tokens
-  rewardsUSD: number;
-  // epoch numbers included in response
-  epochNumbers: number[];
-  // pool ids include in response
-  poolIds: string[];
-  // wallet address of user
-  userId: string;
-}
-
-export interface UserRewardsQueryParams {
-  epochStart: Date;
-  epochEnd: Date;
-  lpToken: string;
-  userId: string;
-  amount: number;
+export class NotFoundError extends Error {
+  constructor(message: string) {
+    super(message);
+    this.name = "NotFoundError";
+  }
 }
 
 export class SentioJSONUserRewardsService implements UserRewardsService {
   private readonly apiUrl: string;
+  private readonly apiKey: string;
 
-  constructor(apiUrl: string) {
+  constructor(apiUrl: string, apiKey: string) {
     this.apiUrl = apiUrl;
+    this.apiKey = apiKey;
   }
   async getRewards(params: UserRewardsQueryParams): Promise<UserRewardsResponse> {
-    if (!process.env.SENTIO_API_KEY) {
-      throw new Error("No Sentio API key provided");
-    }
-
     const { epochStart, epochEnd, lpToken, userId, amount } = params;
 
     const sql = fs.readFileSync("src/queries/UserPoolRewards.sql", 'utf8');
@@ -42,7 +26,7 @@ export class SentioJSONUserRewardsService implements UserRewardsService {
       headers: {
         accept: 'application/json',
         'content-type': 'application/json',
-        'api-key': process.env.SENTIO_API_KEY
+        'api-key': this.apiKey
       },
       body: JSON.stringify({
         sqlQuery: {
@@ -62,7 +46,15 @@ export class SentioJSONUserRewardsService implements UserRewardsService {
 
     const response = await fetch(this.apiUrl, options);
     const json = await response.json();
-    const rewards = json.result.rows[0]["ComputedValue"];
+    if (json.result.rows.length == 0) {
+      console.log(`Failed to fetch ${lpToken} rewards for user ${userId} in epoch ${epochStart} to ${epochEnd}`);
+      throw new NotFoundError(`Failed to fetch ${lpToken} rewards for user ${userId} in epoch ${epochStart} to ${epochEnd}`);
+    }
+    const rewards = json.result.rows[0].ComputedValue;
+    if (!rewards) {
+      console.log(`Failed to fetch ${lpToken} rewards for user ${userId} in epoch ${epochStart} to ${epochEnd}`);
+      throw new NotFoundError(`Failed to fetch ${lpToken} rewards for user ${userId} in epoch ${epochStart} to ${epochEnd}`);
+    }
     return rewards;
   }
 }

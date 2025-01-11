@@ -54,5 +54,5 @@ export interface EpochConfigService {
 
 // Define the interface for any campaign service
 export interface CampaignService {
-  getCampaigns(params?: CampaignQueryParams): Promise<Campaign[]>;
+  getCampaigns(params?: CampaignQueryParams): Promise<CampaignsResponse>;
 }
