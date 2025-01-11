@@ -99,7 +99,7 @@ TotalValueLocked AS (
     SELECT
         total_value AS tvlUSD
     FROM hourly_pool_snapshot_priced
-    WHERE p.id = '${poolId}'
+    WHERE p.id = '${poolId}' and total_value > 0 -- workaround for bug
     ORDER BY hour DESC
     LIMIT 1
 ),
