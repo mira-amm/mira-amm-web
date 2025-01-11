@@ -34,6 +34,10 @@ export class SentioJSONCampaignService implements CampaignService {
 
   async getCampaigns(params?: CampaignQueryParams): Promise<CampaignsResponse> {
     try {
+      // if (!process.env.SENTIO_API_KEY) {
+      //   throw new Error("No Sentio API key provided");
+      // }
+
       const epochConfig = this.epochConfigService.getEpochs(
         params?.epochNumbers ? params.epochNumbers : undefined
       );
@@ -56,6 +60,13 @@ export class SentioJSONCampaignService implements CampaignService {
             status = "completed";
           }
           // flatten the epoch to just the campaigns
+          return epoch.campaigns
+            .filter(campaign => {
+              // return true if no poolIds are provided
+              return (
+                !params?.poolIds || params?.poolIds.includes(campaign.pool.id)
+              );
+            }).map((campaign) => ({
           return epoch.campaigns
             .filter(campaign => {
               // return true if no poolIds are provided
