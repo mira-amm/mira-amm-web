@@ -28,8 +28,8 @@
     ],
     "prefer-const": "error",
     "no-var": "error",
-    "no-console": "warn", // warn in development
-    "no-debugger": "warn", // warn in development
+    "no-console": "warn",
+    "no-debugger": "warn",
     "no-eval": "error"
 
     // Formatting-related rules
