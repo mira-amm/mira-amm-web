@@ -32,12 +32,17 @@ export class SentioJSONCampaignService implements CampaignService {
     this.epochConfigService = epochConfigService;
   }
 
+  /**
+   *
+   *
+   * @param epochNumbers - Optional. If specified only returns campaigns for the specified epochNumbers
+   * @param poolIds - Optional. If specified only returns campaigns for the specified poolIds
+   * @param includeAPR - Optional. If true, includes the current APR for each campaign
+   * @returns CampaignsResponse - A list of campaigns
+   *
+   */
   async getCampaigns(params?: CampaignQueryParams): Promise<CampaignsResponse> {
     try {
-      // if (!process.env.SENTIO_API_KEY) {
-      //   throw new Error("No Sentio API key provided");
-      // }
-
       const epochConfig = this.epochConfigService.getEpochs(
         params?.epochNumbers ? params.epochNumbers : undefined
       );
@@ -60,13 +65,6 @@ export class SentioJSONCampaignService implements CampaignService {
             status = "completed";
           }
           // flatten the epoch to just the campaigns
-          return epoch.campaigns
-            .filter(campaign => {
-              // return true if no poolIds are provided
-              return (
-                !params?.poolIds || params?.poolIds.includes(campaign.pool.id)
-              );
-            }).map((campaign) => ({
           return epoch.campaigns
             .filter(campaign => {
               // return true if no poolIds are provided
@@ -121,6 +119,9 @@ export class SentioJSONCampaignService implements CampaignService {
             const response = await fetch(this.apiUrl, options);
             const json = await response.json();
             if (json.result.rows.length == 0) {
+              throw new Error(`Failed to fetch APR for campaign ${campaign.pool.id}`);
+            }
+            if (!json.result.rows[0].APR) {
               throw new Error(`Failed to fetch APR for campaign ${campaign.pool.id}`);
             }
             campaign.currentAPR = json.result.rows[0].APR;

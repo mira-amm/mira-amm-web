@@ -16,6 +16,17 @@ export class SentioJSONUserRewardsService implements UserRewardsService {
     this.apiUrl = apiUrl;
     this.apiKey = apiKey;
   }
+  /**
+   * Rewards are calculated weighted average of percentage (num relative to total) of lp that a user provides over the epoch period
+   *
+   * @param epochStart - Start of epoch
+   * @param epochEnd - End of epoch
+   * @param lpToken - e.g. lpUSDETH
+   * @param userId - Identifies a wallet
+   * @param amount - amount of LP tokens the user owns
+   * @returns UserRewardsResponse - Rewards for the user
+   *
+   */
   async getRewards(params: UserRewardsQueryParams): Promise<UserRewardsResponse> {
     const { epochStart, epochEnd, lpToken, userId, amount } = params;
 
@@ -36,7 +47,8 @@ export class SentioJSONUserRewardsService implements UserRewardsService {
               epochEnd: { timestampValue: epochEnd },
               userId: { stringValue: userId },
               lpToken: { stringValue: lpToken },
-              amount: { intValue: amount }
+              lpTokenAmount: { intValue: amount },
+              campaignRewardToken: { stringValue: "fuel" }
             }
           },
           sql: sql
@@ -50,11 +62,19 @@ export class SentioJSONUserRewardsService implements UserRewardsService {
       console.log(`Failed to fetch ${lpToken} rewards for user ${userId} in epoch ${epochStart} to ${epochEnd}`);
       throw new NotFoundError(`Failed to fetch ${lpToken} rewards for user ${userId} in epoch ${epochStart} to ${epochEnd}`);
     }
-    const rewards = json.result.rows[0].ComputedValue;
-    if (!rewards) {
+    const fuelRewards = json.result.rows[0].FuelRewards;
+    const usdRewards = json.result.rows[0].USDRewards;
+    if (!fuelRewards || !usdRewards) {
       console.log(`Failed to fetch ${lpToken} rewards for user ${userId} in epoch ${epochStart} to ${epochEnd}`);
       throw new NotFoundError(`Failed to fetch ${lpToken} rewards for user ${userId} in epoch ${epochStart} to ${epochEnd}`);
     }
-    return rewards;
+
+    return {
+      rewardsAmount: fuelRewards,
+      userId: userId,
+      epochNumbers: [],
+      poolIds: [],
+      rewardsUSD: usdRewards
+    };
   }
 }
