@@ -38,7 +38,7 @@ export class SentioJSONCampaignService implements CampaignService {
    * @param epochNumbers - Optional. If specified only returns campaigns for the specified epochNumbers
    * @param poolIds - Optional. If specified only returns campaigns for the specified poolIds
    * @param includeAPR - Optional. If true, includes the current APR for each campaign
-   * @returns CampaignsResponse - A list of campaigns
+   * @returns CampaignsResponse - A list of campaigns and the current APR for each as a fraction (multiply by 100 for percentage)
    *
    */
   async getCampaigns(params?: CampaignQueryParams): Promise<CampaignsResponse> {
