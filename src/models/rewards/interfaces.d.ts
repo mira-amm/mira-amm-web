@@ -19,8 +19,8 @@ export interface UserRewardsResponse {
 }
 
 export interface UserRewardsQueryParams {
-    epochStart: Date;
-    epochEnd: Date;
+    epochStart: string;
+    epochEnd: string;
     lpToken: string;
     userId: string;
     amount: number;

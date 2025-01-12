@@ -34,8 +34,8 @@ export async function GET(request: NextRequest) {
       process.env.SENTIO_API_KEY
     );
     const rewards = await userRewardsService.getRewards({
-      epochStart: new Date(epochStart),
-      epochEnd: new Date(epochEnd),
+      epochStart: epochStart,
+      epochEnd: epochEnd,
       lpToken: lpToken,
       userId: userId,
       amount: Number(amount)

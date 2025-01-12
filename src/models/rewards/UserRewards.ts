@@ -8,6 +8,8 @@ import { UserRewardsQueryParams, UserRewardsResponse, UserRewardsService } from 
 import { NotFoundError } from "@/src/utils/errors";
 
 const userPoolRewardsQuery = loadFile("src/queries/UserPoolRewards.sql");
+const addressPattern: RegExp = /^0x[a-fA-F0-9]{64}$/;
+const timestampPattern: RegExp = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}Z$/;
 
 export class SentioJSONUserRewardsService implements UserRewardsService {
   private readonly apiUrl: string;
@@ -30,6 +32,27 @@ export class SentioJSONUserRewardsService implements UserRewardsService {
    */
   async getRewards(params: UserRewardsQueryParams): Promise<UserRewardsResponse> {
     const { epochStart, epochEnd, lpToken, userId, amount } = params;
+
+    if (!addressPattern.test(userId)) {
+      console.log(`Invalid wallet address: ${userId}`);
+      throw new Error(`Invalid wallet address: ${userId}`);
+    }
+
+    if (!addressPattern.test(lpToken)) {
+      console.log(`Invalid lp token: ${lpToken}`);
+      throw new Error(`Invalid lp token: ${lpToken}`);
+    }
+
+    if (!timestampPattern.test(epochStart)) {
+      console.log(`Invalid epoch start time: ${epochStart}`);
+      throw new Error(`Invalid epoch start time: ${epochStart}`);
+    }
+
+    if (!timestampPattern.test(epochEnd)) {
+      console.log(`Invalid epoch start time: ${epochStart}`);
+      throw new Error(`Invalid epoch start time: ${epochStart}`);
+    }
+
     const options = {
       method: 'POST',
       headers: {
