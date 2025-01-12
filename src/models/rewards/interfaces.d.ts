@@ -1,4 +1,6 @@
-// Define the interface for any user rewards service
+/*
+ * This file contains the interfaces for the user rewards module.
+ */
 export interface UserRewardsService {
     getRewards(params?: UserRewardsQueryParams): Promise<UserRewardsResponse>;
 }

@@ -1,3 +1,6 @@
+/**
+ * @api {get} /campaigns Get list of epochs and their campaigns
+ */
 import {
   SentioJSONCampaignService,
   JSONEpochConfigService

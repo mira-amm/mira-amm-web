@@ -1,3 +1,6 @@
+/*
+ * This file contains the interfaces for the campaigns module.
+ */
 export interface CampaignsResponse {
   campaigns: Campaign[];
 }

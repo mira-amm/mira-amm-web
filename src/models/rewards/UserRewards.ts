@@ -1,6 +1,7 @@
 /**
  * lpTokens entitle users to rewards
- *
+ * For a given epoch, we want to determine the amount of FUEL/USDC rewards a user received
+ * based on the amount of LP tokens they own
  */
 import { loadFile } from "@/src/utils/fileLoader";
 import { UserRewardsQueryParams, UserRewardsResponse, UserRewardsService } from "./interfaces";

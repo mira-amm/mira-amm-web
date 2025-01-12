@@ -1,3 +1,6 @@
+/**
+ * @api {get} /api/rewards Get rewards for a given user and epoch based on their LP tokens
+ */
 import { SentioJSONUserRewardsService } from "@/src/models/rewards/UserRewards";
 import { NotFoundError } from "@/src/utils/errors";
 import { NextRequest, NextResponse } from "next/server";

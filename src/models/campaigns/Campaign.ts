@@ -1,6 +1,6 @@
-/**
- * lpTokens entitle users to rewards
- *
+/*
+ * Campaigns are a collection of pools that are incentivized for a given epoch.
+ * For a given epoch, we want to determine the current APR for each campaign
  */
 import { loadFile } from "@/src/utils/fileLoader";
 import axios from "axios";
@@ -38,7 +38,6 @@ export class SentioJSONCampaignService implements CampaignService {
   }
 
   /**
-   *
    *
    * @param epochNumbers - Optional. If specified only returns campaigns for the specified epochNumbers
    * @param poolIds - Optional. If specified only returns campaigns for the specified poolIds
