@@ -1,19 +1,21 @@
+/**
+ * lpTokens entitle users to rewards
+ *
+ */
+import { loadFile } from "@/src/utils/fileLoader";
 import axios from "axios";
-import {Campaign, CampaignQueryParams, CampaignService, CampaignsResponse} from "./interfaces";
-import {EpochConfig, EpochConfigService} from "./interfaces";
-import { loadSqlFile } from "@/src/utils/sqlLoader";
-import fs from "fs";
+import { Campaign, CampaignQueryParams, CampaignService, CampaignsResponse, EpochConfig, EpochConfigService } from "./interfaces";
 
-const campaignsQuery = loadSqlFile("src/queries/CampaignsAPR.sql");
+const campaignsQuery = loadFile("src/queries/CampaignsAPR.sql");
+const campaignsJSON = loadFile("src/models/campaigns.json");
+const epochs: EpochConfig[] = JSON.parse(
+  campaignsJSON
+);
 
 export class JSONEpochConfigService implements EpochConfigService {
-  constructor(private readonly epochConfigPath: string) {}
+  constructor(private readonly epochConfigPath: string) { }
 
   getEpochs(epochNumbers?: number[]): EpochConfig[] {
-    // load from json file
-    const epochs: EpochConfig[] = JSON.parse(
-      fs.readFileSync(this.epochConfigPath, "utf8")
-    );
 
     if (epochNumbers) {
       return epochs.filter((epoch) => epochNumbers.includes(epoch.number));
@@ -75,14 +77,14 @@ export class SentioJSONCampaignService implements CampaignService {
                 !params?.poolIds || params?.poolIds.includes(campaign.pool.id)
               );
             }).map((campaign) => ({
-            epoch: {
-              startDate: epoch.startDate,
-              endDate: epoch.endDate,
-              number: epoch.number,
-            },
-            ...campaign,
-            status,
-          }));
+              epoch: {
+                startDate: epoch.startDate,
+                endDate: epoch.endDate,
+                number: epoch.number,
+              },
+              ...campaign,
+              status,
+            }));
         });
 
       if (params?.includeAPR) {

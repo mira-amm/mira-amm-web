@@ -1,14 +1,12 @@
-import { loadSqlFile } from "@/src/utils/sqlLoader";
+/**
+ * lpTokens entitle users to rewards
+ *
+ */
+import { loadFile } from "@/src/utils/fileLoader";
 import { UserRewardsQueryParams, UserRewardsResponse, UserRewardsService } from "./interfaces";
+import { NotFoundError } from "@/src/utils/errors";
 
-const userPoolRewardsQuery = loadSqlFile("src/queries/UserPoolRewards.sql");
-
-export class NotFoundError extends Error {
-  constructor(message: string) {
-    super(message);
-    this.name = "NotFoundError";
-  }
-}
+const userPoolRewardsQuery = loadFile("src/queries/UserPoolRewards.sql");
 
 export class SentioJSONUserRewardsService implements UserRewardsService {
   private readonly apiUrl: string;

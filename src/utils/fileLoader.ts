@@ -1,5 +1,5 @@
 const fs = require('fs');
 
-export function loadSqlFile(filepath: string) {
+export function loadFile(filepath: string) {
     return fs.readFileSync(filepath, 'utf8');
 }

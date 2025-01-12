@@ -1,4 +1,5 @@
-import { NotFoundError, SentioJSONUserRewardsService } from "@/src/models/rewards/UserRewards";
+import { SentioJSONUserRewardsService } from "@/src/models/rewards/UserRewards";
+import { NotFoundError } from "@/src/utils/errors";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(request: NextRequest) {
