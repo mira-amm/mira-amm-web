@@ -1,5 +1,7 @@
+import { loadSqlFile } from "@/src/utils/sqlLoader";
 import { UserRewardsQueryParams, UserRewardsResponse, UserRewardsService } from "./interfaces";
-import fs from "fs";
+
+const userPoolRewardsQuery = loadSqlFile("src/queries/UserPoolRewards.sql");
 
 export class NotFoundError extends Error {
   constructor(message: string) {
@@ -29,9 +31,6 @@ export class SentioJSONUserRewardsService implements UserRewardsService {
    */
   async getRewards(params: UserRewardsQueryParams): Promise<UserRewardsResponse> {
     const { epochStart, epochEnd, lpToken, userId, amount } = params;
-
-    const sql = fs.readFileSync("src/queries/UserPoolRewards.sql", 'utf8');
-
     const options = {
       method: 'POST',
       headers: {
@@ -51,13 +50,17 @@ export class SentioJSONUserRewardsService implements UserRewardsService {
               campaignRewardToken: { stringValue: "fuel" }
             }
           },
-          sql: sql
+          sql: userPoolRewardsQuery
         }
       })
     };
 
     const response = await fetch(this.apiUrl, options);
     const json = await response.json();
+    if (json.code === 16) {
+      console.log(json.message);
+      throw new Error(json.message);
+    }
     if (json.result.rows.length == 0) {
       console.log(`Failed to fetch ${lpToken} rewards for user ${userId} in epoch ${epochStart} to ${epochEnd}`);
       throw new NotFoundError(`Failed to fetch ${lpToken} rewards for user ${userId} in epoch ${epochStart} to ${epochEnd}`);

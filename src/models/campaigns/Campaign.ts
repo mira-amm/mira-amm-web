@@ -1,7 +1,10 @@
 import axios from "axios";
-import fs from "fs";
 import {Campaign, CampaignQueryParams, CampaignService, CampaignsResponse} from "./interfaces";
 import {EpochConfig, EpochConfigService} from "./interfaces";
+import { loadSqlFile } from "@/src/utils/sqlLoader";
+import fs from "fs";
+
+const campaignsQuery = loadSqlFile("src/queries/CampaignsAPR.sql");
 
 export class JSONEpochConfigService implements EpochConfigService {
   constructor(private readonly epochConfigPath: string) {}
@@ -78,17 +81,14 @@ export class SentioJSONCampaignService implements CampaignService {
               number: epoch.number,
             },
             ...campaign,
-            status: status,
+            status,
           }));
         });
 
       if (params?.includeAPR) {
-        const sql = fs.readFileSync("src/queries/CampaignsAPR.sql", 'utf8');
-
         // get each campaign from sentio
         try {
-          const campaigns = campaignsWithoutApr;
-          for (const campaign of campaigns) {
+          const campaignPromises = campaignsWithoutApr.map(async (campaign) => {
             const options = {
               method: 'POST',
               headers: {
@@ -112,23 +112,44 @@ export class SentioJSONCampaignService implements CampaignService {
                       campaignRewardToken: { stringValue: "fuel" }
                     }
                   },
-                  sql: sql
+                  sql: campaignsQuery
                 }
               })
             };
-            const response = await fetch(this.apiUrl, options);
-            const json = await response.json();
-            if (json.result.rows.length == 0) {
-              throw new Error(`Failed to fetch APR for campaign ${campaign.pool.id}`);
+
+            try {
+              const response = await fetch(this.apiUrl, options);
+              const json = await response.json();
+              if (json.code === 16) {
+                console.log(json.message);
+                throw new Error(json.message);
+              }
+
+              if (json.result.rows.length === 0) {
+                throw new Error(`Failed to fetch APR for campaign ${campaign.pool.id}`);
+              }
+
+              if (!json.result.rows[0].APR) {
+                throw new Error(`Failed to fetch APR for campaign ${campaign.pool.id}`);
+              }
+
+              campaign.currentAPR = json.result.rows[0].APR;
+            } catch (error) {
+              // Handle any errors that occur during fetch or processing
+              console.error(`Error fetching APR for campaign ${campaign.pool.id}:`, error);
             }
-            if (!json.result.rows[0].APR) {
-              throw new Error(`Failed to fetch APR for campaign ${campaign.pool.id}`);
-            }
-            campaign.currentAPR = json.result.rows[0].APR;
-          }
+            return campaign;
+          });
+
+          const settledCampaigns = await Promise.allSettled(campaignPromises);
+          const successfulCampaigns = settledCampaigns
+            .filter(result => result.status === 'fulfilled')
+            .map(result => result.value);
+
           return {
-            campaigns: campaigns
+            campaigns: successfulCampaigns
           };
+
         } catch (error) {
           if (axios.isAxiosError(error)) {
             throw new Error(`Failed to fetch campaigns: ${error.message}`);
