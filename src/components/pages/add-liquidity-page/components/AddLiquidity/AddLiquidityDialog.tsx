@@ -93,14 +93,17 @@ const AddLiquidityDialog = ({poolId, setPreviewData, poolKey}: Props) => {
   }, [previewError]);
 
   const {apr} = usePoolAPR(poolId);
-  console.log(poolId);
+  console.log(apr);
+
   const aprValue =
     apr !== undefined
-      ? apr.toLocaleString(DefaultLocale, {
+      ? apr.apr.toLocaleString(DefaultLocale, {
           minimumFractionDigits: 2,
           maximumFractionDigits: 2,
         })
       : null;
+
+  const tvlValue = apr?.tvlUSD;
 
   const debouncedSetFirstAmount = useDebounceCallback(setFirstAmount, 500);
   const debouncedSetSecondAmount = useDebounceCallback(setSecondAmount, 500);
@@ -250,6 +253,7 @@ const AddLiquidityDialog = ({poolId, setPreviewData, poolKey}: Props) => {
                 small={true}
                 leftAlignValue={"-200px"}
                 poolKey={poolKey}
+                tvlValue={tvlValue}
               />
             </div>
           </div>

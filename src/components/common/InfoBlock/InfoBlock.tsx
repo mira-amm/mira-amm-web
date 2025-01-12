@@ -7,14 +7,23 @@ type Props = {
   value: string | null;
   type?: "positive" | "negative";
   poolKey?: string;
+  tvlValue?: string;
 };
 
-const InfoBlock = ({title, value, type, poolKey}: Props) => {
+const InfoBlock = ({title, value, type, poolKey, tvlValue}: Props) => {
+  const tvlActual = tvlValue
+    ? parseInt(tvlValue?.replace(/[^0-9]+/g, ""), 10)
+    : 0;
   return (
     <div className={styles.infoBlock}>
       <p>{title}</p>
       {title === "APR" ? (
-        <AprBadge small={true} aprValue={value} poolKey={poolKey || ""} />
+        <AprBadge
+          small={true}
+          aprValue={value}
+          poolKey={poolKey || ""}
+          tvlValue={tvlActual}
+        />
       ) : (
         <p
           className={clsx(

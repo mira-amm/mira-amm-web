@@ -61,3 +61,7 @@ export const BoostsRewardsTooltip =
 
 export const boostsEpochTooltip =
   "Current epoch lasts for 45 days total. All rewards wll be distributed at the end of the epoch. ";
+
+//Start and end date for booster rewards program
+export const startDate = "2025-01-15T00:00:00"; // January 15, 2025
+export const endDate = "2025-03-01T23:59:59"; // March 1, 2025

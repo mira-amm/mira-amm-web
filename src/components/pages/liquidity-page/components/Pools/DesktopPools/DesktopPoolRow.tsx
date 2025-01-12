@@ -14,7 +14,8 @@ type Props = {
 const DesktopPoolRow = ({poolData}: Props) => {
   const {poolKey, aprValue, volumeValue, tvlValue, isStablePool, poolId} =
     usePoolDetails(poolData);
-  console.log(poolKey);
+
+  const tvlActual = parseInt(tvlValue?.replace(/[^0-9]+/g, ""), 10);
 
   return (
     <tr key={poolKey}>
@@ -27,7 +28,12 @@ const DesktopPoolRow = ({poolData}: Props) => {
         />
       </td>
       <td className={styles.aprTd}>
-        <AprBadge aprValue={aprValue} small={false} poolKey={poolKey} />
+        <AprBadge
+          aprValue={aprValue}
+          small={false}
+          poolKey={poolKey}
+          tvlValue={tvlActual}
+        />
       </td>
 
       <td>{volumeValue}</td>

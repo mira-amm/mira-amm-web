@@ -2,13 +2,14 @@ import React, {useState, useEffect} from "react";
 import styles from "./AprBadge.module.css";
 import WhiteStarIcon from "@/src/components/icons/Stars/WhiteStar";
 import {clsx} from "clsx";
-import {getBoostReward} from "@/src/utils/common";
+import useBoostedApr from "@/src/hooks/useBoostedApr";
 
 interface AprBadgeProps {
   aprValue: string | null;
   small: boolean;
   leftAlignValue?: string;
   poolKey: string;
+  tvlValue: number;
 }
 
 const AprBadge: React.FC<AprBadgeProps> = ({
@@ -16,11 +17,12 @@ const AprBadge: React.FC<AprBadgeProps> = ({
   small,
   leftAlignValue,
   poolKey,
+  tvlValue,
 }) => {
   const [isHovered, setIsHovered] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
 
-  const boostReward = poolKey ? getBoostReward(poolKey, []) : 0;
+  const {boostedApr, boostReward} = useBoostedApr(poolKey, tvlValue);
 
   useEffect(() => {
     // Determine if the screen size is mobile
@@ -77,10 +79,7 @@ const AprBadge: React.FC<AprBadgeProps> = ({
             small ? styles.smallFont : styles.largeFont
           )}
         >
-          {aprValue && !isNaN(parseFloat(aprValue.replace("%", "")))
-            ? (parseFloat(aprValue.replace("%", "")) + boostReward).toFixed(2)
-            : boostReward}
-          %
+          {boostedApr}%
         </span>
         {/*  UI on hover */}
         {isHovered && (
@@ -97,7 +96,7 @@ const AprBadge: React.FC<AprBadgeProps> = ({
               <div>
                 <div className={styles.row}>
                   <span className={styles.label}>Boost rewards ($FUEL)</span>
-                  <span className={styles.value}>{boostReward}%</span>
+                  <span className={styles.value}>{boostReward}</span>
                 </div>
                 <p className={styles.subtext}>
                   1,000 $FUEL per day distributed among LPs in pool
@@ -106,14 +105,7 @@ const AprBadge: React.FC<AprBadgeProps> = ({
               <div className={styles.divider}></div>
               <div className={styles.row}>
                 <span className={styles.label}>Total rewards</span>
-                <span className={styles.value}>
-                  {aprValue && !isNaN(parseFloat(aprValue.replace("%", "")))
-                    ? (
-                        parseFloat(aprValue.replace("%", "")) + boostReward
-                      ).toFixed(2)
-                    : boostReward}
-                  %
-                </span>
+                <span className={styles.value}>{boostedApr}%</span>
               </div>
             </div>
           </div>
