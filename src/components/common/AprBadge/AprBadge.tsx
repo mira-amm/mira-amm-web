@@ -103,7 +103,7 @@ const AprBadge: React.FC<AprBadgeProps> = ({
               <div>
                 <div className={styles.row}>
                   <span className={styles.label}>Boost rewards ($FUEL)</span>
-                  <span className={styles.value}>{boostedApr}</span>
+                  <span className={styles.value}>{boostedApr}%</span>
                 </div>
                 <p className={styles.subtext}>
                   1,000 $FUEL per day distributed among LPs in pool
