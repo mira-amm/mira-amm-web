@@ -94,8 +94,8 @@ export class SentioJSONCampaignService implements CampaignService {
             })
             .map((campaign) => ({
               epoch: {
-                startDate: epoch.startDate,
-                endDate: epoch.endDate,
+                startDate: new Date(epoch.startDate),
+                endDate: new Date(epoch.endDate),
                 number: epoch.number,
               },
               ...campaign,
