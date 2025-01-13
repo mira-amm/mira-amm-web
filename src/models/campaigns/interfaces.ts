@@ -6,8 +6,8 @@ export interface CampaignsResponse {
 }
 
 export interface EpochConfig {
-  startDate: Date;
-  endDate: Date;
+  startDate: string;
+  endDate: string;
   number: number;
   campaigns: {
     pool: {

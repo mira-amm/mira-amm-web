@@ -3,9 +3,10 @@
  */
 import {
   SentioJSONCampaignService,
-  JSONEpochConfigService
+  JSONEpochConfigService,
 } from "@/src/models/campaigns/Campaign";
-import { NextRequest, NextResponse } from "next/server";
+import {NextRequest, NextResponse} from "next/server";
+import path from "path";
 
 export async function GET(request: NextRequest) {
   try {
@@ -17,14 +18,16 @@ export async function GET(request: NextRequest) {
     }
 
     // Get campaign by ID
-    const searchParams = request.nextUrl.searchParams
-    const epochNumbers = searchParams.get('epochNumbers');
-    const poolIds = searchParams.get('poolIds');
-    const includeAPR = searchParams.get('includeAPR');
+    const searchParams = request.nextUrl.searchParams;
+    const epochNumbers = searchParams.get("epochNumbers");
+    const poolIds = searchParams.get("poolIds");
+    const includeAPR = searchParams.get("includeAPR");
     const campaignService = new SentioJSONCampaignService(
       process.env.SENTIO_API_URL,
       process.env.SENTIO_API_KEY,
-      new JSONEpochConfigService("src/models/campaigns.json")
+      new JSONEpochConfigService(
+        path.join(process.cwd(), "src", "models", "campaigns.json")
+      )
     );
 
     const campaigns = await campaignService.getCampaigns({
@@ -32,22 +35,21 @@ export async function GET(request: NextRequest) {
         ? (epochNumbers as string).split(",").map(Number)
         : undefined,
       poolIds: poolIds ? (poolIds as string).split(",") : undefined,
-      includeAPR: includeAPR === "true"
+      includeAPR: includeAPR === "true",
     });
 
     return new NextResponse(JSON.stringify(campaigns), {
       status: 200,
       headers: {
-        'Content-Type': 'application/json'
-      }
+        "Content-Type": "application/json",
+      },
     });
-
-    } catch (e) {
-      return new NextResponse(JSON.stringify({ message: (e as Error).message }), {
-        status: 500,
-        headers: {
-          'Content-Type': 'application/json'
-        }
-      });
-    }
+  } catch (e) {
+    return new NextResponse(JSON.stringify({message: (e as Error).message}), {
+      status: 500,
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+  }
 }
