@@ -217,7 +217,7 @@ const useSwapPreview = ({ swapState, mode }: Props) => {
   if (multihopPreviewData) {
     const { path, input_amount, output_amount } = multihopPreviewData as MultihopPreviewData;
     previewData = {
-      pools: path.map(([input, output, stable]) => buildPoolId(`0x${input}`, `0x${output}`, stable)),
+      pools: path.map(([input, output, stable]) => buildPoolId(input, output, stable)),
       previewAmount: mode === 'sell' ? new BN(output_amount.toString()) : new BN(input_amount.toString()),
     };
   } else if (fallbackPreviewData) {
