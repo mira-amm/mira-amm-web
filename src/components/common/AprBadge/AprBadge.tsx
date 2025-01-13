@@ -49,6 +49,10 @@ const AprBadge: React.FC<AprBadgeProps> = ({
     }
   }, [small, isHovered, isMobile]);
 
+  const aprValueInNumber = aprValue
+    ? parseFloat(aprValue.match(/[0-9.]+/)?.[0] || "0")
+    : 0;
+
   const iconWidth = small ? 15 : 20;
   const iconHeight = small ? 15 : 18;
   return (
@@ -79,7 +83,7 @@ const AprBadge: React.FC<AprBadgeProps> = ({
             small ? styles.smallFont : styles.largeFont,
           )}
         >
-          {boostedApr}%
+          {aprValue ? boostedApr + aprValueInNumber : boostedApr}%
         </span>
         {/*  UI on hover */}
         {isHovered && (
@@ -96,7 +100,7 @@ const AprBadge: React.FC<AprBadgeProps> = ({
               <div>
                 <div className={styles.row}>
                   <span className={styles.label}>Boost rewards ($FUEL)</span>
-                  <span className={styles.value}>{boostReward}</span>
+                  <span className={styles.value}>{boostedApr}</span>
                 </div>
                 <p className={styles.subtext}>
                   1,000 $FUEL per day distributed among LPs in pool
@@ -105,7 +109,9 @@ const AprBadge: React.FC<AprBadgeProps> = ({
               <div className={styles.divider}></div>
               <div className={styles.row}>
                 <span className={styles.label}>Total rewards</span>
-                <span className={styles.value}>{boostedApr}%</span>
+                <span className={styles.value}>
+                  {aprValue ? boostedApr + aprValueInNumber : boostedApr}%
+                </span>
               </div>
             </div>
           </div>
