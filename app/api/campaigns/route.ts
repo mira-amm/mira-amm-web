@@ -8,6 +8,8 @@ import {
 import {NextRequest, NextResponse} from "next/server";
 import path from "path";
 
+// Example query
+// http://${url}/api/campaigns/?includeAPR=true
 export async function GET(request: NextRequest) {
   try {
     if (!process.env.SENTIO_API_KEY) {

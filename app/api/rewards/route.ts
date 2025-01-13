@@ -7,6 +7,8 @@ import {NotFoundError} from "@/src/utils/errors";
 import {NextRequest, NextResponse} from "next/server";
 import path from "path";
 
+// Example query
+// http://${url}/api/rewards/?userId=0x69e6223f2adf576dfefb21873b78e31ba228b094d05f74f59ea60cbd1bf87d0d&amount=1000&epochNumber=1&poolId=286c479da40dc953bddc3bb4c453b608bba2e0ac483b077bd475174115395e6b-f8f8b6283d7fa5b672b530cbb84fcccb4ff8dc40f8176ef4544ddb1f1952ad07-false
 export async function GET(request: NextRequest) {
   try {
     if (!process.env.SENTIO_API_KEY) {
