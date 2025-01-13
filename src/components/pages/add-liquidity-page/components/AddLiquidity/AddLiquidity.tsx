@@ -22,7 +22,7 @@ type Props = {
   poolKey: string;
 };
 
-const AddLiquidity = ({poolId, poolKey}: Props) => {
+const AddLiquidity = ({poolId, poolKey}: Props): JSX.Element => {
   const router = useRouter();
   const [SettingsModal, openSettingsModal, closeSettingsModal] = useModal();
 

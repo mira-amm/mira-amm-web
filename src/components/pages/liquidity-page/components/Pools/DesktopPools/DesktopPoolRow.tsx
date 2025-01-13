@@ -39,7 +39,6 @@ const DesktopPoolRow = ({poolData}: Props): JSX.Element => {
         <td className={styles.aprTd}>
           <AprBadge
             aprValue={aprValue}
-            small={false}
             poolKey={poolKey}
             tvlValue={tvlActual}
           />

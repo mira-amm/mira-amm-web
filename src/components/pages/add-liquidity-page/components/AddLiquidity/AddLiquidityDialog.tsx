@@ -104,7 +104,6 @@ const AddLiquidityDialog = ({
   }, [previewError]);
 
   const {apr} = usePoolAPR(poolId);
-  console.log(apr);
 
   const aprValue =
     apr !== undefined
@@ -253,19 +252,21 @@ const AddLiquidityDialog = ({
                 <Info tooltipText={APRTooltip} tooltipKey="apr" />
               </div>
               {isMatching ? (
-                <AprBadge
-                  aprValue={
-                    aprValue === "NaN"
-                      ? "n/a"
-                      : aprValue
-                        ? `${aprValue}%`
-                        : "pending"
-                  }
-                  small={true}
-                  leftAlignValue={"-200px"}
-                  poolKey={poolKey}
-                  tvlValue={tvlValue}
-                />
+                <div className={styles.aprDiv}>
+                  <AprBadge
+                    aprValue={
+                      aprValue === "NaN"
+                        ? "n/a"
+                        : aprValue
+                          ? `${aprValue}%`
+                          : "pending"
+                    }
+                    small={true}
+                    leftAlignValue={"-200px"}
+                    poolKey={poolKey}
+                    tvlValue={tvlValue}
+                  />
+                </div>
               ) : (
                 <span
                   className={clsx(

@@ -34,32 +34,28 @@ const useBoostedApr = (
   const usdValue = calculateUsdValue(fuelAmount, fuelToUsdRate);
 
   useEffect(() => {
-    const calculateApr = async () => {
-      try {
-        setLoading(true);
-        // Calculate the program length (difference between start and end dates)
-        const programLength = calculateDateDifference(startDate, endDate);
+    const calculateApr = () => {
+      setLoading(true);
 
-        const boostReward = poolKey ? getBoostReward(poolKey, rewardsData) : 0;
-        setBoostReward(boostReward);
+      // Calculate the program length (difference between start and end dates)
+      const programLength = calculateDateDifference(startDate, endDate);
 
-        const fuelPrice = parseFloat(usdValue.replace(/[^0-9.-]+/g, ""));
+      const boostReward = poolKey ? getBoostReward(poolKey, rewardsData) : 0;
+      setBoostReward(boostReward);
 
-        // Calculate APR per program length
-        const aprPerProgramLength = boostReward
-          ? (fuelPrice * boostReward) / (programLength * 365)
-          : 0;
+      const fuelPrice = parseFloat(usdValue.replace(/[^0-9.-]+/g, ""));
 
-        // Calculate the actual APR (APR divided by TVL)
-        const aprActualCalculated =
-          tvlValue > 0 ? aprPerProgramLength / tvlValue : 0;
+      // Calculate APR per program length
+      const aprPerProgramLength = boostReward
+        ? (fuelPrice * boostReward) / (programLength * 365)
+        : 0;
 
-        setBoostedApr(parseFloat(aprActualCalculated.toFixed(2)));
-      } catch (error) {
-        setBoostedApr(0);
-      } finally {
-        setLoading(false);
-      }
+      // Calculate the actual APR (APR divided by TVL)
+      const aprActualCalculated =
+        tvlValue > 0 ? aprPerProgramLength / tvlValue : 0;
+
+      setBoostedApr(parseFloat(aprActualCalculated.toFixed(2)));
+      setLoading(false);
     };
 
     calculateApr();

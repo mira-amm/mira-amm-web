@@ -3,10 +3,11 @@ import styles from "./AprBadge.module.css";
 import WhiteStarIcon from "@/src/components/icons/Stars/WhiteStar";
 import {clsx} from "clsx";
 import useBoostedApr from "@/src/hooks/useBoostedApr";
+import {isMobile} from "react-device-detect";
 
 interface AprBadgeProps {
   aprValue: string | null;
-  small: boolean;
+  small?: boolean;
   leftAlignValue?: string;
   poolKey: string;
   tvlValue: number;
@@ -20,22 +21,8 @@ const AprBadge: React.FC<AprBadgeProps> = ({
   tvlValue,
 }) => {
   const [isHovered, setIsHovered] = useState(false);
-  const [isMobile, setIsMobile] = useState(false);
 
   const {boostedApr, boostReward} = useBoostedApr(poolKey, tvlValue);
-
-  useEffect(() => {
-    // Determine if the screen size is mobile
-    const mediaQuery = window.matchMedia("(max-width: 800px)");
-    const updateIsMobile = () => setIsMobile(mediaQuery.matches);
-
-    updateIsMobile(); // Initial check
-    mediaQuery.addEventListener("change", updateIsMobile);
-
-    return () => {
-      mediaQuery.removeEventListener("change", updateIsMobile);
-    };
-  }, []);
 
   useEffect(() => {
     if (small && isHovered && isMobile) {
@@ -47,7 +34,7 @@ const AprBadge: React.FC<AprBadgeProps> = ({
         document.removeEventListener("click", handleClickOutside);
       };
     }
-  }, [small, isHovered, isMobile]);
+  }, [small, isHovered]);
 
   const aprValueInNumber = aprValue
     ? parseFloat(aprValue.match(/[0-9.]+/)?.[0] || "0")

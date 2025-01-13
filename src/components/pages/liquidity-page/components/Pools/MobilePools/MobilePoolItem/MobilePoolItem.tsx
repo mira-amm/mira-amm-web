@@ -5,6 +5,9 @@ import InfoBlock from "@/src/components/common/InfoBlock/InfoBlock";
 import {useRouter} from "next/navigation";
 import styles from "./MobilePoolItem.module.css";
 import {PoolData} from "@/src/hooks/usePoolsData";
+import AprBadge from "@/src/components/common/AprBadge/AprBadge";
+import useAssetMetadata from "@/src/hooks/useAssetMetadata";
+import {pairsWithRewards} from "@/src/utils/constants";
 
 type Props = {
   poolData: PoolData;
@@ -25,6 +28,16 @@ const MobilePoolItem = ({poolData}: Props): JSX.Element => {
   const handleAddClick = () => {
     router.push(`/liquidity/add?pool=${poolKey}`);
   };
+  const tvlActual = tvlValue
+    ? parseInt(tvlValue?.replace(/[^0-9]+/g, ""), 10)
+    : 0;
+
+  const {symbol: firstSymbol} = useAssetMetadata(poolId[0].bits);
+
+  const {symbol: secondSymbol} = useAssetMetadata(poolId[1].bits);
+
+  const poolName = `${firstSymbol}/${secondSymbol}`;
+  const isMatching = pairsWithRewards.some((pair) => pair === poolName);
 
   return (
     <div className={styles.mobilePoolItem}>
@@ -35,16 +48,22 @@ const MobilePoolItem = ({poolData}: Props): JSX.Element => {
           isStablePool={isStablePool}
         />
         <div className={styles.infoBlocks}>
-          <InfoBlock
-            title="APR"
-            value={aprValue}
-            type="positive"
-            poolKey={poolKey}
-            tvlValue={tvlValue}
-            poolId={poolId}
-          />
-          <InfoBlock poolId={poolId} title="24H Volume" value={volumeValue} />
-          <InfoBlock poolId={poolId} title="TVL" value={tvlValue} />
+          {isMatching ? (
+            <div>
+              <p>{"APR"}</p>
+              <AprBadge
+                small={true}
+                aprValue={aprValue}
+                poolKey={poolKey || ""}
+                tvlValue={tvlActual}
+              />
+            </div>
+          ) : (
+            <InfoBlock title="APR" value={aprValue} type="positive" />
+          )}
+
+          <InfoBlock title="24H Volume" value={volumeValue} />
+          <InfoBlock title="TVL" value={tvlValue} />
         </div>
         <p className={styles.poolDescription}>{poolDescription}</p>
       </div>
