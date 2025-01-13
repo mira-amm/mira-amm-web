@@ -8,6 +8,7 @@ import {
   boostsEpochTooltip,
   BoostsLearnMoreUrl,
   BoostsRewardsTooltip,
+  endDate,
 } from "@/src/utils/constants";
 import {useEffect, useState} from "react";
 import {calculateEpochDuration, calculateUsdValue} from "@/src/utils/common";
@@ -18,8 +19,6 @@ const fuelAmount = 25000;
 
 const BoostsRewards = () => {
   const [duration, setDuration] = useState("");
-
-  const endDate = "2025-03-01T23:59:59"; // March 1, 2025
 
   const {price, isLoading} = useFuelPrice();
   const fuelToUsdRate = price ? parseFloat(price) : 0;
@@ -33,7 +32,7 @@ const BoostsRewards = () => {
     const interval = setInterval(updateDuration, 60000);
 
     return () => clearInterval(interval);
-  }, [endDate]);
+  }, []);
 
   const usdValue = calculateUsdValue(fuelAmount, fuelToUsdRate);
 
@@ -77,7 +76,7 @@ const BoostsRewards = () => {
           <div className={styles.divider}></div>
           <div className={styles.epochItem}>
             <div className={styles.rewardsLabel}>
-              <p>Epoch duration</p>
+              <p>Seasons duration</p>
               <Info
                 tooltipText={boostsEpochTooltip}
                 tooltipKey="epoch"
