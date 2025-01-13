@@ -44,7 +44,11 @@ type Props = {
   poolKey: string;
 };
 
-const AddLiquidityDialog = ({poolId, setPreviewData, poolKey}: Props) => {
+const AddLiquidityDialog = ({
+  poolId,
+  setPreviewData,
+  poolKey,
+}: Props): JSX.Element => {
   const [FailureModal, openFailureModal, closeFailureModal] = useModal();
 
   const {isConnected, isPending: isConnecting} = useIsConnected();

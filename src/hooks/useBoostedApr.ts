@@ -13,7 +13,10 @@ import {
   calculateUsdValue,
 } from "../utils/common";
 
-const useBoostedApr = (poolKey: string, tvlValue: number) => {
+const useBoostedApr = (
+  poolKey: string,
+  tvlValue: number,
+): {boostedApr: number; loading: boolean; boostReward: number | undefined} => {
   const [boostedApr, setBoostedApr] = useState<number>(0);
   const [boostReward, setBoostReward] = useState<number | undefined>(0);
   const [loading, setLoading] = useState<boolean>(true);
@@ -53,7 +56,6 @@ const useBoostedApr = (poolKey: string, tvlValue: number) => {
 
         setBoostedApr(parseFloat(aprActualCalculated.toFixed(2)));
       } catch (error) {
-        console.error("Error calculating aprActual:", error);
         setBoostedApr(0);
       } finally {
         setLoading(false);
@@ -61,7 +63,7 @@ const useBoostedApr = (poolKey: string, tvlValue: number) => {
     };
 
     calculateApr();
-  }, [startDate, endDate, poolKey, usdValue, tvlValue, rewardsData]);
+  }, [poolKey, usdValue, tvlValue, rewardsData]);
 
   return {boostedApr, loading, boostReward};
 };

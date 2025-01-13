@@ -11,18 +11,23 @@ type Props = {
   type?: "positive" | "negative";
   poolKey?: string;
   tvlValue?: string;
-  poolId?: PoolId;
+  poolId: PoolId;
 };
 
-const InfoBlock = ({title, value, type, poolKey, tvlValue, poolId}: Props) => {
+const InfoBlock = ({
+  title,
+  value,
+  type,
+  poolKey,
+  tvlValue,
+  poolId,
+}: Props): JSX.Element => {
   const tvlActual = tvlValue
     ? parseInt(tvlValue?.replace(/[^0-9]+/g, ""), 10)
     : 0;
-  const {symbol: firstSymbol} =
-    (poolId && useAssetMetadata(poolId[0].bits)) ?? {};
+  const {symbol: firstSymbol} = useAssetMetadata(poolId[0].bits);
 
-  const {symbol: secondSymbol} =
-    (poolId && useAssetMetadata(poolId[1].bits)) ?? {};
+  const {symbol: secondSymbol} = useAssetMetadata(poolId[1].bits);
 
   const poolName = `${firstSymbol}/${secondSymbol}`;
   const isMatching = pairsWithRewards.some((pair) => pair === poolName);

@@ -13,7 +13,7 @@ type Props = {
   poolData: PoolData;
 };
 
-const DesktopPoolRow = ({poolData}: Props) => {
+const DesktopPoolRow = ({poolData}: Props): JSX.Element => {
   const {poolKey, aprValue, volumeValue, tvlValue, isStablePool, poolId} =
     usePoolDetails(poolData);
 

@@ -10,7 +10,7 @@ type Props = {
   poolData: PoolData;
 };
 
-const MobilePoolItem = ({poolData}: Props) => {
+const MobilePoolItem = ({poolData}: Props): JSX.Element => {
   const router = useRouter();
   const {
     poolKey,
@@ -43,8 +43,8 @@ const MobilePoolItem = ({poolData}: Props) => {
             tvlValue={tvlValue}
             poolId={poolId}
           />
-          <InfoBlock title="24H Volume" value={volumeValue} />
-          <InfoBlock title="TVL" value={tvlValue} />
+          <InfoBlock poolId={poolId} title="24H Volume" value={volumeValue} />
+          <InfoBlock poolId={poolId} title="TVL" value={tvlValue} />
         </div>
         <p className={styles.poolDescription}>{poolDescription}</p>
       </div>
