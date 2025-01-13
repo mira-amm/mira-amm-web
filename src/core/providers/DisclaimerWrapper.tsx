@@ -1,10 +1,7 @@
 import {ReactNode, useCallback, useEffect} from "react";
 import {ConfirmPopup} from "@/src/components/common/ConfirmPopup/ConfirmPopup";
-import {useScrollLock} from "usehooks-ts";
+import {useLocalStorage, useScrollLock} from "usehooks-ts";
 import {useDisconnect, useIsConnected} from "@fuels/react";
-import useSavedSignatures from "@/src/hooks/useSavedSignatures";
-import useSendSignature from "@/src/hooks/useSendSignature";
-import {DisclaimerMessage} from "@/src/utils/constants";
 
 type Props = {
   children: ReactNode;
@@ -16,20 +13,17 @@ const DisclaimerWrapper = ({ children }: Props) => {
   const { isConnected } = useIsConnected();
   const { disconnectAsync, isPending: disconnectIsPending  } = useDisconnect();
 
-  // TODO: Change message to the one accepted by API
-  const { signatureData: existingSignatureData, isSignatureLoading, refetchSignature } = useSavedSignatures(DisclaimerMessage);
-  const { sign, signingIsPending } = useSendSignature(DisclaimerMessage);
+  const [accepted, setAccepted] = useLocalStorage('isDisclaimerAccepted', false);
 
-  const handleConfirmClick = useCallback(async () => {
-    await sign();
-    await refetchSignature();
-  }, [sign]);
+  const handleConfirmClick = useCallback(() => {
+    setAccepted(true);
+  }, []);
 
   const handleDenyClick = useCallback(async () => {
     await disconnectAsync();
   }, [disconnectAsync]);
 
-  const showPopup = isConnected && !isSignatureLoading && !existingSignatureData;
+  const showPopup = isConnected && !accepted;
 
   useEffect(() => {
     if (showPopup) {
@@ -45,7 +39,6 @@ const DisclaimerWrapper = ({ children }: Props) => {
         <ConfirmPopup
           onConfirm={handleConfirmClick}
           onDeny={handleDenyClick}
-          signIsPending={signingIsPending}
           disconnectIsPending={disconnectIsPending}
         />
       )}

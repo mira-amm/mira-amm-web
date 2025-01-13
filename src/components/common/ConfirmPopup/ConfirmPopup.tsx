@@ -6,11 +6,10 @@ import clsx from "clsx";
 type ConfirmPopupProps = {
   onConfirm: VoidFunction;
   onDeny: VoidFunction;
-  signIsPending: boolean;
   disconnectIsPending: boolean;
 };
 
-export const ConfirmPopup: FC<ConfirmPopupProps> = ({onConfirm, onDeny, signIsPending, disconnectIsPending}) => {
+export const ConfirmPopup: FC<ConfirmPopupProps> = ({onConfirm, onDeny, disconnectIsPending}) => {
   return (
     <section className={styles.popupOverlay}>
       <form className={styles.popupForm}>
@@ -73,8 +72,8 @@ export const ConfirmPopup: FC<ConfirmPopupProps> = ({onConfirm, onDeny, signIsPe
           <ActionButton className={clsx(styles.popupButton, styles.buttonDeny)} variant="outlined" onClick={onDeny} loading={disconnectIsPending}>
             Deny and Disconnect
           </ActionButton>
-          <ActionButton className={styles.popupButton} onClick={onConfirm} loading={signIsPending}>
-            Sign and Сonfirm
+          <ActionButton className={styles.popupButton} onClick={onConfirm}>
+            Sign and Confirm
           </ActionButton>
         </div>
       </form>
