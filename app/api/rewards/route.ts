@@ -9,10 +9,14 @@ import path from "path";
 
 // Example query
 // Key consideration, poolId does not include the hex prefix '0x'
-// http://${url}/api/rewards/? \
-// userId=0x69e6223f2adf576dfefb21873b78e31ba228b094d05f74f59ea60cbd1bf87d0d& \
-// epochNumbers=1& \
-// poolIds=286c479da40dc953bddc3bb4c453b608bba2e0ac483b077bd475174115395e6b-f8f8b6283d7fa5b672b530cbb84fcccb4ff8dc40f8176ef4544ddb1f1952ad07-false
+// curl --request GET \
+//   --url 'http://localhost:3000/api/rewards/?\
+//  poolIds=286c479da40dc953bddc3bb4c453b608bba2e0ac483b077bd475174115395e6b-f8f8b6283d7fa5b672b530cbb84fcccb4ff8dc40f8176ef4544ddb1f1952ad07-false&\
+//  epochNumbers=1&\
+//  userId=0x69e6223f2adf576dfefb21873b78e31ba228b094d05f74f59ea60cbd1bf87d0d'
+
+// poolIds and epochNumbers are comma separated,
+// eg: epochNumbers=1,2,3&...
 export async function GET(request: NextRequest) {
   try {
     if (!process.env.SENTIO_API_KEY) {
