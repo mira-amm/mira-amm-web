@@ -1,6 +1,5 @@
 import MobileMenu from "@/src/components/common/Header/components/MobileMenu/MobileMenu";
 import Logo from "@/src/components/common/Logo/Logo";
-import SoonLabel from "@/src/components/common/SoonLabel/SoonLabel";
 
 import styles from "./Header.module.css";
 import Link from "next/link";
@@ -15,22 +14,32 @@ import {RewardsIcon} from "../../icons/Rewards/RewardsIcon";
 import TestnetLabel from "@/src/components/common/TestnetLabel/TestnetLabel";
 import IconButton from "../IconButton/IconButton";
 import CloseIcon from "../../icons/Close/CloseIcon";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 
 type Props = {
   isHomePage?: boolean;
 };
 
-const PROMO_BANNER_STORANGE_KEY = "fuel-promo-banner-closed";
+const PROMO_BANNER_STORAGE_KEY = "fuel-promo-banner-closed";
 
 const ISSERVER = typeof window === "undefined";
 const Header = ({isHomePage}: Props) => {
   const pathname = usePathname();
   const {isConnected} = useIsConnected();
-  const bannerClosed = ISSERVER
-    ? false
-    : localStorage?.getItem(PROMO_BANNER_STORANGE_KEY);
-  const [isPromoShown, setIsPromoShown] = useState(bannerClosed ? false : true);
+
+  const [isPromoShown, setIsPromoShown] = useState(false);
+
+  useEffect(() => {
+    if (!ISSERVER) {
+      const bannerClosed = localStorage.getItem(PROMO_BANNER_STORAGE_KEY);
+      setIsPromoShown(!bannerClosed);
+    }
+  }, []);
+
+  const handleCloseBanner = () => {
+    setIsPromoShown(false);
+    localStorage.setItem(PROMO_BANNER_STORAGE_KEY, "true");
+  };
 
   return (
     <header className={styles.header}>
@@ -45,13 +54,7 @@ const Header = ({isHomePage}: Props) => {
               </Link>
             </p>
           </div>
-          <IconButton
-            onClick={() => {
-              setIsPromoShown(false);
-              localStorage.setItem(PROMO_BANNER_STORANGE_KEY, "true");
-            }}
-            className={styles.promoClose}
-          >
+          <IconButton onClick={handleCloseBanner} className={styles.promoClose}>
             <CloseIcon />
           </IconButton>
         </section>
@@ -61,10 +64,11 @@ const Header = ({isHomePage}: Props) => {
           <Logo />
           <div className={clsx("desktopOnly", styles.links)}>
             <Link
-              href="/swap"
+              //TEMPORARY ROUTING SINCE LANDING PAGE IS DISABLED
+              href="/"
               className={clsx(
                 styles.link,
-                pathname.includes("/swap") && styles.activeLink,
+                pathname === "/" && styles.activeLink,
               )}
             >
               Swap
