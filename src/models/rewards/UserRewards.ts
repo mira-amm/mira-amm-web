@@ -181,16 +181,17 @@ export class SentioJSONUserRewardsService implements UserRewardsService {
       return fuelRewards;
     });
 
-    const rewards = await Promise.all(rewardsPromises).catch((error) => {
-      console.error(error);
-      throw new Error(error);
-    });
+    const rewards: number[] = await Promise.all(rewardsPromises).catch(
+      (error) => {
+        console.error(error);
+        throw new Error(error);
+      }
+    );
 
     // sum up the rewards
-    const fuelRewards = rewards.reduce(
-      (acc, reward) => acc + reward.fuelRewards,
-      0
-    );
+    const fuelRewards = rewards.reduce((acc, reward) => acc + reward, 0);
+
+    console.log({fuelRewards});
 
     return {
       rewardsAmount: fuelRewards,
