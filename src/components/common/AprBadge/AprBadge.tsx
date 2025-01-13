@@ -83,7 +83,10 @@ const AprBadge: React.FC<AprBadgeProps> = ({
             small ? styles.smallFont : styles.largeFont,
           )}
         >
-          {aprValue ? boostedApr + aprValueInNumber : boostedApr}%
+          {aprValue
+            ? (boostedApr + aprValueInNumber).toFixed(2)
+            : boostedApr.toFixed(2)}
+          %
         </span>
         {/*  UI on hover */}
         {isHovered && (
@@ -110,7 +113,10 @@ const AprBadge: React.FC<AprBadgeProps> = ({
               <div className={styles.row}>
                 <span className={styles.label}>Total rewards</span>
                 <span className={styles.value}>
-                  {aprValue ? boostedApr + aprValueInNumber : boostedApr}%
+                  {aprValue
+                    ? (boostedApr + aprValueInNumber).toFixed(2)
+                    : boostedApr.toFixed(2)}
+                  %
                 </span>
               </div>
             </div>
