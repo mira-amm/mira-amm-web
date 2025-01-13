@@ -36,15 +36,7 @@ UserFuelRewards AS (
         ) AS ComputedValue
     FROM AssetBalancesAndTotalSupply
     WHERE distinct_id = '${userId}'
-),
--- get the latest fuel to USD price
-LatestUSDPrice as (
-    SELECT
-        argMax(price, time) AS LatestUSDPrice
-    FROM token.prices
-    WHERE symbol = '${campaignRewardToken}'
 )
 SELECT
-    ComputedValue AS FuelRewards,
-    ComputedValue * (SELECT LatestUSDPrice FROM LatestUSDPrice) AS USDRewards
-FROM UserFuelRewards
+    ComputedValue AS FuelRewards
+FROM UserFuelRewards;
