@@ -1,3 +1,6 @@
+/*
+ * This file contains the interfaces for the campaigns module.
+ */
 export interface CampaignsResponse {
   campaigns: Campaign[];
 }
@@ -54,5 +57,5 @@ export interface EpochConfigService {
 
 // Define the interface for any campaign service
 export interface CampaignService {
-  getCampaigns(params?: CampaignQueryParams): Promise<Campaign[]>;
+  getCampaigns(params?: CampaignQueryParams): Promise<CampaignsResponse>;
 }

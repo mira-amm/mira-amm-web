@@ -1,43 +1,53 @@
+/**
+ * @api {get} /campaigns Get list of epochs and their campaigns
+ */
 import {
   SentioJSONCampaignService,
   JSONEpochConfigService
 } from "@/src/models/campaigns/Campaign";
 import { NextRequest, NextResponse } from "next/server";
 
-// TEST VALUES
-// amount = 1000;
-// epoch END = 2025-01-08T00:00:00.000Z
-// epoch START = 2025-01-01T00:00:00.000Z
-// lpToken = 0x6cae200e72709a4be568a816348d02a91e74b059f6fcbc069438981bd30cfbd1
-// userId = 0x69e6223f2adf576dfefb21873b78e31ba228b094d05f74f59ea60cbd1bf87d0d
-
 export async function GET(request: NextRequest) {
-
-  // Get campaign by ID
-  const searchParams = request.nextUrl.searchParams
-  const epochNumbers = searchParams.get('epochNumbers')
-  const poolIds = searchParams.get('poolIds')
-  const owner = "fuellabs";
-  const slug = "mira-mainnet";
-  const url = `https://app.sentio.xyz/api/v1/analytics/${owner}/${slug}/sql/execute`;
-  const campaignService = new SentioJSONCampaignService(
-    // TODO: change to env variable and modify to real value
-    url,
-    // TODO: complete
-    new JSONEpochConfigService("src/models/campaigns.json")
-  );
-
-  const campaigns = await campaignService.getCampaigns({
-    epochNumbers: epochNumbers
-      ? (epochNumbers as string).split(",").map(Number)
-      : undefined,
-    poolIds: poolIds ? (poolIds as string).split(",") : undefined,
-  });
-
-  return new NextResponse(JSON.stringify(campaigns), {
-    status: 200,
-    headers: {
-      'Content-Type': 'application/json'
+  try {
+    if (!process.env.SENTIO_API_KEY) {
+      throw new Error("No Sentio API key provided");
     }
-  })
+    if (!process.env.SENTIO_API_URL) {
+      throw new Error("No Sentio API URL provided");
+    }
+
+    // Get campaign by ID
+    const searchParams = request.nextUrl.searchParams
+    const epochNumbers = searchParams.get('epochNumbers');
+    const poolIds = searchParams.get('poolIds');
+    const includeAPR = searchParams.get('includeAPR');
+    const campaignService = new SentioJSONCampaignService(
+      process.env.SENTIO_API_URL,
+      process.env.SENTIO_API_KEY,
+      new JSONEpochConfigService("src/models/campaigns.json")
+    );
+
+    const campaigns = await campaignService.getCampaigns({
+      epochNumbers: epochNumbers
+        ? (epochNumbers as string).split(",").map(Number)
+        : undefined,
+      poolIds: poolIds ? (poolIds as string).split(",") : undefined,
+      includeAPR: includeAPR === "true"
+    });
+
+    return new NextResponse(JSON.stringify(campaigns), {
+      status: 200,
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    });
+
+    } catch (e) {
+      return new NextResponse(JSON.stringify({ message: (e as Error).message }), {
+        status: 500,
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      });
+    }
 }
