@@ -5,9 +5,10 @@
 import { loadFile } from "@/src/utils/fileLoader";
 import axios from "axios";
 import { Campaign, CampaignQueryParams, CampaignService, CampaignsResponse, EpochConfig, EpochConfigService } from "./interfaces";
+import path from "path";
 
-const campaignsQuery = loadFile("src/queries/CampaignsAPR.sql");
-const campaignsJSON = loadFile("src/models/campaigns.json");
+const campaignsQuery = loadFile(path.join(process.cwd(), "src", "queries", "CampaignsAPR.sql"));
+const campaignsJSON = loadFile(path.join(process.cwd(), "src", "models", "campaigns.json"));
 const epochs: EpochConfig[] = JSON.parse(
   campaignsJSON
 );

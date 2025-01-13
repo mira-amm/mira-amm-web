@@ -6,8 +6,9 @@
 import { loadFile } from "@/src/utils/fileLoader";
 import { UserRewardsQueryParams, UserRewardsResponse, UserRewardsService } from "./interfaces";
 import { NotFoundError } from "@/src/utils/errors";
+import path from "path";
 
-const userPoolRewardsQuery = loadFile("src/queries/UserPoolRewards.sql");
+const userPoolRewardsQuery = loadFile(path.join(process.cwd(), "src", "queries", "UserPoolRewards.sql"));
 const addressPattern: RegExp = /^0x[a-fA-F0-9]{64}$/;
 const timestampPattern: RegExp = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}Z$/;
 
