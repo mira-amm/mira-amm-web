@@ -36,6 +36,7 @@ import usePoolsMetadata from "@/src/hooks/usePoolsMetadata";
 import useAssetMetadata from "@/src/hooks/useAssetMetadata";
 import {useAssetPrice} from "@/src/hooks/useAssetPrice";
 import AprBadge from "@/src/components/common/AprBadge/AprBadge";
+import {pairsWithRewards} from "@/src/utils/constants";
 
 type Props = {
   poolId: PoolId;
@@ -70,8 +71,14 @@ const AddLiquidityDialog = ({poolId, setPreviewData, poolKey}: Props) => {
 
   const {poolsMetadata} = usePoolsMetadata([poolId]);
   const emptyPool = Boolean(
-    poolsMetadata?.[0]?.reserve0.eq(0) && poolsMetadata?.[0].reserve1.eq(0)
+    poolsMetadata?.[0]?.reserve0.eq(0) && poolsMetadata?.[0].reserve1.eq(0),
   );
+
+  const {symbol: firstSymbol} = useAssetMetadata(poolId[0].bits);
+  const {symbol: secondSymbol} = useAssetMetadata(poolId[1].bits);
+
+  const poolName = `${firstSymbol}/${secondSymbol}`;
+  const isMatching = pairsWithRewards.some((pair) => pair === poolName);
 
   const {
     data,
@@ -140,12 +147,12 @@ const AddLiquidityDialog = ({poolId, setPreviewData, poolKey}: Props) => {
 
         if (coin === poolId[0].bits) {
           debouncedSetFirstAmount(
-            bn.parseUnits(value, asset0Metadata.decimals)
+            bn.parseUnits(value, asset0Metadata.decimals),
           );
           setFirstAmountInput(value);
         } else {
           debouncedSetSecondAmount(
-            bn.parseUnits(value, asset1Metadata.decimals)
+            bn.parseUnits(value, asset1Metadata.decimals),
           );
           setSecondAmountInput(value);
         }
@@ -158,7 +165,7 @@ const AddLiquidityDialog = ({poolId, setPreviewData, poolKey}: Props) => {
       poolId,
       asset0Metadata,
       asset1Metadata,
-    ]
+    ],
   );
 
   const sufficientEthBalanceForFirstCoin = useCheckEthBalance({
@@ -241,20 +248,30 @@ const AddLiquidityDialog = ({poolId, setPreviewData, poolKey}: Props) => {
                 <p>Estimated APR</p>
                 <Info tooltipText={APRTooltip} tooltipKey="apr" />
               </div>
-
-              <AprBadge
-                aprValue={
-                  aprValue === "NaN"
-                    ? "n/a"
-                    : aprValue
-                    ? `${aprValue}%`
-                    : "pending"
-                }
-                small={true}
-                leftAlignValue={"-200px"}
-                poolKey={poolKey}
-                tvlValue={tvlValue}
-              />
+              {isMatching ? (
+                <AprBadge
+                  aprValue={
+                    aprValue === "NaN"
+                      ? "n/a"
+                      : aprValue
+                        ? `${aprValue}%`
+                        : "pending"
+                  }
+                  small={true}
+                  leftAlignValue={"-200px"}
+                  poolKey={poolKey}
+                  tvlValue={tvlValue}
+                />
+              ) : (
+                <span
+                  className={clsx(
+                    aprValue && styles.highlight,
+                    !aprValue && styles.pending,
+                  )}
+                >
+                  {aprValue ? `${aprValue}%` : "Awaiting data"}
+                </span>
+              )}
             </div>
           </div>
           <div className={styles.poolStability}>
@@ -262,7 +279,7 @@ const AddLiquidityDialog = ({poolId, setPreviewData, poolKey}: Props) => {
               className={clsx(
                 styles.poolStabilityButton,
                 !isStablePool && styles.poolStabilityButtonActive,
-                styles.poolStabilityButtonDisabled
+                styles.poolStabilityButtonDisabled,
               )}
               role="button"
             >
@@ -280,7 +297,7 @@ const AddLiquidityDialog = ({poolId, setPreviewData, poolKey}: Props) => {
               className={clsx(
                 styles.poolStabilityButton,
                 isStablePool && styles.poolStabilityButtonActive,
-                styles.poolStabilityButtonDisabled
+                styles.poolStabilityButtonDisabled,
               )}
               role="button"
             >

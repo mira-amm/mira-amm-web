@@ -41,6 +41,7 @@ const MobilePoolItem = ({poolData}: Props) => {
             type="positive"
             poolKey={poolKey}
             tvlValue={tvlValue}
+            poolId={poolId}
           />
           <InfoBlock title="24H Volume" value={volumeValue} />
           <InfoBlock title="TVL" value={tvlValue} />

@@ -65,3 +65,6 @@ export const boostsEpochTooltip =
 //Start and end date for booster rewards program
 export const startDate = "2025-01-15T00:00:00"; // January 15, 2025
 export const endDate = "2025-03-01T23:59:59"; // March 1, 2025
+
+//pairs with booster rewards
+export const pairsWithRewards = ["USDC/ETH", "FUEL/ETH", "USDC/USDT"];

@@ -67,7 +67,7 @@ const AprBadge: React.FC<AprBadgeProps> = ({
       <div
         className={clsx(
           styles.customBadge,
-          small ? styles.small : styles.large
+          small ? styles.small : styles.large,
         )}
       >
         <span className={styles.badgeIcon}>
@@ -76,7 +76,7 @@ const AprBadge: React.FC<AprBadgeProps> = ({
         <span
           className={clsx(
             styles.badgeText,
-            small ? styles.smallFont : styles.largeFont
+            small ? styles.smallFont : styles.largeFont,
           )}
         >
           {boostedApr}%

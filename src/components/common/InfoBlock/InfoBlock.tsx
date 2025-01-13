@@ -1,6 +1,9 @@
 import styles from "./InfoBlock.module.css";
 import {clsx} from "clsx";
 import AprBadge from "../AprBadge/AprBadge";
+import useAssetMetadata from "@/src/hooks/useAssetMetadata";
+import {PoolId} from "mira-dex-ts";
+import {pairsWithRewards} from "@/src/utils/constants";
 
 type Props = {
   title: string;
@@ -8,16 +11,26 @@ type Props = {
   type?: "positive" | "negative";
   poolKey?: string;
   tvlValue?: string;
+  poolId?: PoolId;
 };
 
-const InfoBlock = ({title, value, type, poolKey, tvlValue}: Props) => {
+const InfoBlock = ({title, value, type, poolKey, tvlValue, poolId}: Props) => {
   const tvlActual = tvlValue
     ? parseInt(tvlValue?.replace(/[^0-9]+/g, ""), 10)
     : 0;
+  const {symbol: firstSymbol} =
+    (poolId && useAssetMetadata(poolId[0].bits)) ?? {};
+
+  const {symbol: secondSymbol} =
+    (poolId && useAssetMetadata(poolId[1].bits)) ?? {};
+
+  const poolName = `${firstSymbol}/${secondSymbol}`;
+  const isMatching = pairsWithRewards.some((pair) => pair === poolName);
+
   return (
     <div className={styles.infoBlock}>
       <p>{title}</p>
-      {title === "APR" ? (
+      {title === "APR" && isMatching ? (
         <AprBadge
           small={true}
           aprValue={value}
@@ -29,7 +42,7 @@ const InfoBlock = ({title, value, type, poolKey, tvlValue}: Props) => {
           className={clsx(
             styles.infoBlockValue,
             type === "positive" && styles.infoBlockValuePositive,
-            !value && styles.pending
+            !value && styles.pending,
           )}
         >
           {value ?? "Awaiting data"}

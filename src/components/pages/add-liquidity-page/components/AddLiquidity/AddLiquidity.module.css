@@ -54,14 +54,17 @@
   flex-direction: column;
   align-items: end;
   gap: 4px;
-  font-size: 12px;
   line-height: 14px;
+  padding-bottom: 4px;
 }
 
 .aprText {
   display: flex;
   align-items: center;
   gap: 3px;
+}
+.aprText > p {
+  font-size: 12px;
 }
 
 .APR > span {
@@ -71,6 +74,7 @@
 
 .highlight {
   color: var(--content-positive);
+  padding-bottom: 2px;
 }
 
 .pending {

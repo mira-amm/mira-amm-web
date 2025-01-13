@@ -19,16 +19,15 @@
 }
 
 .large {
-  /* width: 76px; */
-  /*   padding: 7px; */
-  padding: 10px;
+  width: 96px;
+  padding: 7px;
   margin-left: 35px;
 }
 
 .small {
-  /* width: 76px; */
-  /*   padding: 5px 0; */
-  padding: 5px;
+  width: 76px;
+  padding: 5px 0;
+
   height: 26px;
 }
 
