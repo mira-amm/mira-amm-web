@@ -32,13 +32,13 @@ const DesktopPoolRow = ({poolData}: Props): JSX.Element => {
         />
       </td>
       {isMatching ? (
-        <td className={styles.aprTd}>
+        <div className={styles.aprTd}>
           <AprBadge
             aprValue={aprValue}
             poolKey={poolKey}
             tvlValue={tvlActual}
           />
-        </td>
+        </div>
       ) : (
         <td className={clsx(!aprValue && styles.pending)}>{aprValue}</td>
       )}

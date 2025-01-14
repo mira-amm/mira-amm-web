@@ -41,4 +41,13 @@
   color: var(--content-dimmed-dark);
   border: none;
   border-radius: 8px;
+  visibility: hidden;
+  transition:
+    opacity 0.2s ease-in-out,
+    visibility 0.2s ease-in-out;
+}
+
+.infoContainer:hover .tooltip {
+  visibility: visible; /* Show tooltip on hover */
+  opacity: 1; /* Fully visible */
 }
