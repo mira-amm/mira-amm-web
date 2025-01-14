@@ -1,12 +1,8 @@
 import {useState, useEffect} from "react";
 import mockRewards from "@/src/utils/pool-rewards.json";
 import {useFuelPrice} from "./useFuelPrice";
-import {startDate, endDate, fuelAmount} from "../utils/constants";
-import {
-  calculateDateDifference,
-  getBoostReward,
-  calculateUsdValue,
-} from "../utils/common";
+import {startDate, endDate} from "../utils/constants";
+import {calculateDateDifference, getBoostReward} from "../utils/common";
 
 interface RewardPool {
   id: string;

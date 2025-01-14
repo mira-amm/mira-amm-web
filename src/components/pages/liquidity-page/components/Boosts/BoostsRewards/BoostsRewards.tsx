@@ -28,7 +28,7 @@ import {useAccount} from "@fuels/react";
 //   "286c479da40dc953bddc3bb4c453b608bba2e0ac483b077bd475174115395e6b-f8f8b6283d7fa5b672b530cbb84fcccb4ff8dc40f8176ef4544ddb1f1952ad07-false";
 const epochNumbers = 1;
 
-const BoostsRewards = () => {
+const BoostsRewards = (): JSX.Element => {
   const {account} = useAccount();
 
   const [duration, setDuration] = useState("");

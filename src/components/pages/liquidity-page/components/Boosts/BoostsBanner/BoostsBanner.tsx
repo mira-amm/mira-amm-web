@@ -3,7 +3,7 @@ import styles from "./BoostsBanner.module.css";
 import Link from "next/link";
 import {BoostsLearnMoreUrl} from "@/src/utils/constants";
 
-const BoostsBanner = () => {
+const BoostsBanner = (): JSX.Element => {
   return (
     <div className={styles.banner}>
       <BoostsIcon />
