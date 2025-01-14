@@ -57,10 +57,10 @@ export const BoostsLearnMoreUrl =
   "https://app.fuel.network/earn-points" as const;
 
 export const BoostsRewardsTooltip =
-  "These are the total Fuel tokens earned that will be distributed at the end of the epoch. The exact dollar amount will change based on Fuel’s current price. ";
+  "These are the total Fuel tokens earned that will be distributed at the end of the season. The exact dollar amount will change based on Fuel’s current price. ";
 
 export const boostsEpochTooltip =
-  "Current epoch lasts for 45 days total. All rewards wll be distributed at the end of the epoch. ";
+  "Current season lasts for 45 days total. All rewards wll be distributed at the end of the season. ";
 
 //Start and end date for booster rewards program
 export const startDate = "2025-01-15T00:00:00"; // January 15, 2025
