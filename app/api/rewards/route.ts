@@ -7,6 +7,10 @@ import {NotFoundError} from "@/src/utils/errors";
 import {NextRequest, NextResponse} from "next/server";
 import path from "path";
 
+// Cache header settings
+const CACHE_DURATION = 120;
+const CACHE_STALE_WHILE_REVALIDATE = 60;
+
 // Example query
 // Key consideration, poolId does not include the hex prefix '0x'
 // curl --request GET \
@@ -44,6 +48,7 @@ export async function GET(request: NextRequest) {
           status: 400,
           headers: {
             "Content-Type": "application/json",
+            "Cache-Control": `public, max-age=${CACHE_DURATION}, stale-while-revalidate=${CACHE_STALE_WHILE_REVALIDATE}`,
           },
         }
       );
@@ -66,6 +71,7 @@ export async function GET(request: NextRequest) {
       status: 200,
       headers: {
         "Content-Type": "application/json",
+        "Cache-Control": `public, max-age=${CACHE_DURATION}, stale-while-revalidate=${CACHE_STALE_WHILE_REVALIDATE}`,
       },
     });
   } catch (e) {
@@ -75,6 +81,7 @@ export async function GET(request: NextRequest) {
         status: 200,
         headers: {
           "Content-Type": "application/json",
+          "Cache-Control": `public, max-age=${CACHE_DURATION}, stale-while-revalidate=${CACHE_STALE_WHILE_REVALIDATE}`,
         },
       });
     } else {
@@ -82,6 +89,7 @@ export async function GET(request: NextRequest) {
         status: 500,
         headers: {
           "Content-Type": "application/json",
+          "Cache-Control": `public, max-age=${CACHE_DURATION}, stale-while-revalidate=${CACHE_STALE_WHILE_REVALIDATE}`,
         },
       });
     }

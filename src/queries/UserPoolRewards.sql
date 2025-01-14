@@ -27,13 +27,17 @@ SnapshotsCount AS (
 -- returns the number of fuel tokens the user has earned
 UserFuelRewards AS (
     SELECT
-        (SUM(amount / totalSupply) / (SELECT TotalSnapshots FROM SnapshotsCount))
-        * ${lpTokenAmount} *
-        ((SELECT SelectedTimestamp FROM EarliestEpochEndOrNow) -  toUnixTimestamp(toDateTime64(${epochStart}, 3, 'UTC'))) /
-        (
-            toUnixTimestamp(toDateTime64(${epochEnd}, 3, 'UTC')) -
-            toUnixTimestamp(toDateTime64(${epochStart}, 3, 'UTC'))
-        ) AS ComputedValue
+        CASE
+            WHEN (SELECT TotalSnapshots FROM SnapshotsCount) = 0 THEN 0
+            ELSE
+                (SUM(amount / totalSupply) / (SELECT TotalSnapshots FROM SnapshotsCount))
+                * ${lpTokenAmount} *
+                ((SELECT SelectedTimestamp FROM EarliestEpochEndOrNow) -  toUnixTimestamp(toDateTime64(${epochStart}, 3, 'UTC'))) /
+                (
+                    toUnixTimestamp(toDateTime64(${epochEnd}, 3, 'UTC')) -
+                    toUnixTimestamp(toDateTime64(${epochStart}, 3, 'UTC'))
+                )
+            END AS ComputedValue
     FROM AssetBalancesAndTotalSupply
     WHERE distinct_id = '${userId}'
 )

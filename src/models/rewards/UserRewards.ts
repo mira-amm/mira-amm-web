@@ -14,7 +14,7 @@ import path from "path";
 import {Campaign, EpochConfigService} from "../campaigns/interfaces";
 
 const userPoolRewardsQuery = loadFile(
-  path.join(process.cwd(), "src", "queries", "UserPoolRewards.sql")
+  path.join(process.cwd(), "src", "queries", "UserPoolRewards.sql"),
 );
 const addressPattern: RegExp = /^0x[a-fA-F0-9]{64}$/;
 const timestampPattern: RegExp =
@@ -27,7 +27,7 @@ const getQueryOptions = (
   userId: string,
   lpToken: string,
   lpTokenAmount: number,
-  campaignRewardToken: string
+  campaignRewardToken: string,
 ) => {
   return {
     method: "POST",
@@ -62,7 +62,7 @@ export class SentioJSONUserRewardsService implements UserRewardsService {
   constructor(
     apiUrl: string,
     apiKey: string,
-    epochConfigService: EpochConfigService
+    epochConfigService: EpochConfigService,
   ) {
     this.apiUrl = apiUrl;
     this.apiKey = apiKey;
@@ -78,9 +78,11 @@ export class SentioJSONUserRewardsService implements UserRewardsService {
    *
    */
   async getRewards(
-    params: UserRewardsQueryParams
+    params: UserRewardsQueryParams,
   ): Promise<UserRewardsResponse> {
-    const {epochNumbers, poolIds, userId} = params;
+    const {epochNumbers, poolIds} = params;
+
+    const userId = params.userId.toLowerCase();
 
     if (!addressPattern.test(userId)) {
       console.log(`Invalid wallet address: ${userId}`);
@@ -93,7 +95,7 @@ export class SentioJSONUserRewardsService implements UserRewardsService {
     if (epochs.length === 0) {
       console.error(`No epoch found for epoch numbers ${epochNumbers}`);
       throw new NotFoundError(
-        `No epoch found for epoch numbers ${epochNumbers}`
+        `No epoch found for epoch numbers ${epochNumbers}`,
       );
     }
 
@@ -102,28 +104,28 @@ export class SentioJSONUserRewardsService implements UserRewardsService {
         poolIds.map((poolId) => ({
           epoch,
           campaign: epoch.campaigns.find(
-            (campaign) => campaign.pool.id === poolId
+            (campaign) => campaign.pool.id === poolId,
           ),
-        }))
+        })),
       )
       .filter(
         (item): item is {epoch: typeof item.epoch; campaign: Campaign} =>
-          item.campaign !== undefined
+          item.campaign !== undefined,
       );
 
     if (matchingCampaigns.length === 0) {
       console.error(
-        `No campaign found for poolId ${poolIds} and epoch numbers ${epochNumbers}`
+        `No campaign found for poolId ${poolIds} and epoch numbers ${epochNumbers}`,
       );
       throw new NotFoundError(
-        `No campaign found for poolId ${poolIds} and epoch numbers ${epochNumbers}`
+        `No campaign found for poolId ${poolIds} and epoch numbers ${epochNumbers}`,
       );
     }
 
     const rewardsPromises = matchingCampaigns.map(async ({epoch, campaign}) => {
       const {startDate: epochStart, endDate: epochEnd} = epoch;
 
-      const lpToken = campaign.pool.lpToken;
+      const lpToken = campaign.pool.lpToken.toLowerCase();
 
       // check the validity of the json data
 
@@ -149,7 +151,7 @@ export class SentioJSONUserRewardsService implements UserRewardsService {
         userId,
         lpToken,
         campaign.rewards[0].amount,
-        "fuel"
+        "fuel",
       );
 
       const response = await fetch(this.apiUrl, options);
@@ -162,19 +164,19 @@ export class SentioJSONUserRewardsService implements UserRewardsService {
       }
       if (json.result.rows.length == 0) {
         console.log(
-          `Failed to fetch ${lpToken} rewards for user ${userId} in epoch ${epochStart} to ${epochEnd}`
+          `Failed to fetch ${lpToken} rewards for user ${userId} in epoch ${epochStart} to ${epochEnd}`,
         );
         throw new NotFoundError(
-          `Failed to fetch ${lpToken} rewards for user ${userId} in epoch ${epochStart} to ${epochEnd}`
+          `Failed to fetch ${lpToken} rewards for user ${userId} in epoch ${epochStart} to ${epochEnd}`,
         );
       }
       const fuelRewards = json.result.rows[0].FuelRewards;
-      if (!fuelRewards) {
+      if (fuelRewards == null) {
         console.log(
-          `Failed to fetch ${lpToken} rewards for user ${userId} in epoch ${epochStart} to ${epochEnd}`
+          `Failed to fetch ${lpToken} rewards for user ${userId} in epoch ${epochStart} to ${epochEnd}`,
         );
         throw new NotFoundError(
-          `Failed to fetch ${lpToken} rewards for user ${userId} in epoch ${epochStart} to ${epochEnd}`
+          `Failed to fetch ${lpToken} rewards for user ${userId} in epoch ${epochStart} to ${epochEnd}`,
         );
       }
 
@@ -185,13 +187,11 @@ export class SentioJSONUserRewardsService implements UserRewardsService {
       (error) => {
         console.error(error);
         throw new Error(error);
-      }
+      },
     );
 
     // sum up the rewards
     const fuelRewards = rewards.reduce((acc, reward) => acc + reward, 0);
-
-    console.log({fuelRewards});
 
     return {
       rewardsAmount: fuelRewards,
