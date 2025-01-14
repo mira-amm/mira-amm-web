@@ -10,7 +10,7 @@ interface RewardsResponse {
 }
 
 interface UseRewardsParams {
-  userId: string;
+  userId: string | null;
   epochNumbers: number;
   poolIds: string;
 }
