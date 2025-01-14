@@ -21,7 +21,7 @@ import {useFuelPrice} from "@/src/hooks/useFuelPrice";
 import Loader from "@/src/components/common/Loader/Loader";
 import {useRewards} from "@/src/hooks/useRewards";
 import {useAccount} from "@fuels/react";
-import mockRewards from "@/src/models/campaigns.json";
+import boostRewards from "@/src/models/campaigns.json";
 
 // const userId =
 //   "0x69e6223f2adf576dfefb21873b78e31ba228b094d05f74f59ea60cbd1bf87d0d";
@@ -35,7 +35,7 @@ const BoostsRewards = (): JSX.Element => {
 
   const {price: fuelToUsdRate, isLoading} = useFuelPrice();
 
-  const rewardsData = mockRewards[0].campaigns;
+  const rewardsData = boostRewards[0].campaigns;
   const rewardsPoolsId = getRewardsPoolsId(rewardsData);
 
   const {rewardsAmount, isLoading: isRewardsAmountLoading} = useRewards({

@@ -1,5 +1,5 @@
 import useAssetMetadata from "@/src/hooks/useAssetMetadata";
-import mockRewards from "@/src/models/campaigns.json";
+import boostRewards from "@/src/models/campaigns.json";
 import {PoolId} from "mira-dex-ts";
 
 type Campaign = {
@@ -20,7 +20,7 @@ const usePoolNameAndMatch = (poolId: PoolId): {isMatching: boolean} => {
   const {symbol: firstSymbol} = useAssetMetadata(poolId[0]?.bits);
   const {symbol: secondSymbol} = useAssetMetadata(poolId[1]?.bits);
 
-  const rewardsData = mockRewards[0].campaigns;
+  const rewardsData = boostRewards[0].campaigns;
   const poolName = `${firstSymbol}/${secondSymbol}`;
   const pairsWithRewards = getPairsWithRewards(rewardsData);
 
