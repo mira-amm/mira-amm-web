@@ -111,6 +111,16 @@ export const getBoostReward = (
   return item?.boosterValue || 0;
 };
 
+export const getRewardsPoolsId = (
+  pools: {
+    id: string;
+    boosterValue: number;
+    name: string;
+  }[],
+): string => {
+  return pools.map((pool) => pool.id.replace(/0x/g, "")).join(",");
+};
+
 export const calculateUsdValue = (
   fuelAmount: number,
   fuelToUsdRate: number,

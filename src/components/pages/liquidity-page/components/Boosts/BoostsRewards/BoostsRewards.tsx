@@ -9,23 +9,23 @@ import {
   BoostsLearnMoreUrl,
   BoostsRewardsTooltip,
   endDate,
-  RewardsPoolsId,
 } from "@/src/utils/constants";
 import {useEffect, useState} from "react";
 import {
   calculateEpochDuration,
   calculateFuelAmount,
   calculateUsdValue,
+  getRewardsPoolsId,
 } from "@/src/utils/common";
 import {useFuelPrice} from "@/src/hooks/useFuelPrice";
 import Loader from "@/src/components/common/Loader/Loader";
 import {useRewards} from "@/src/hooks/useRewards";
 import {useAccount} from "@fuels/react";
+import mockRewards from "@/src/utils/pool-rewards.json";
 
 // const userId =
 //   "0x69e6223f2adf576dfefb21873b78e31ba228b094d05f74f59ea60cbd1bf87d0d";
-// const poolIds =
-//   "286c479da40dc953bddc3bb4c453b608bba2e0ac483b077bd475174115395e6b-f8f8b6283d7fa5b672b530cbb84fcccb4ff8dc40f8176ef4544ddb1f1952ad07-false";
+
 const epochNumbers = 1;
 
 const BoostsRewards = (): JSX.Element => {
@@ -35,10 +35,13 @@ const BoostsRewards = (): JSX.Element => {
 
   const {price: fuelToUsdRate, isLoading} = useFuelPrice();
 
+  const rewardsData = mockRewards.data.pools;
+  const rewardsPoolsId = getRewardsPoolsId(rewardsData);
+
   const {rewardsAmount, isLoading: isRewardsAmountLoading} = useRewards({
     userId: account,
     epochNumbers,
-    poolIds: RewardsPoolsId,
+    poolIds: rewardsPoolsId,
   });
 
   useEffect(() => {
