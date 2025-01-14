@@ -36,7 +36,7 @@ import usePoolsMetadata from "@/src/hooks/usePoolsMetadata";
 import useAssetMetadata from "@/src/hooks/useAssetMetadata";
 import {useAssetPrice} from "@/src/hooks/useAssetPrice";
 import AprBadge from "@/src/components/common/AprBadge/AprBadge";
-import {pairsWithRewards} from "@/src/utils/constants";
+import usePoolNameAndMatch from "@/src/hooks/usePoolNameAndMatch";
 
 type Props = {
   poolId: PoolId;
@@ -78,11 +78,8 @@ const AddLiquidityDialog = ({
     poolsMetadata?.[0]?.reserve0.eq(0) && poolsMetadata?.[0].reserve1.eq(0),
   );
 
-  const {symbol: firstSymbol} = useAssetMetadata(poolId[0].bits);
-  const {symbol: secondSymbol} = useAssetMetadata(poolId[1].bits);
-
-  const poolName = `${firstSymbol}/${secondSymbol}`;
-  const isMatching = pairsWithRewards.some((pair) => pair === poolName);
+  //Checks if the pool with rewards matches the current pool
+  const {isMatching} = usePoolNameAndMatch(poolId);
 
   const {
     data,

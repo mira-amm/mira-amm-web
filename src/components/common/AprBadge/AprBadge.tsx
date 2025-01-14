@@ -40,19 +40,18 @@ const AprBadge: React.FC<AprBadgeProps> = ({
     ? parseFloat(aprValue.match(/[0-9.]+/)?.[0] || "0")
     : 0;
 
+  const handleMouseEnter = () => !isMobile && setIsHovered(true);
+  const handleMouseLeave = () => !isMobile && setIsHovered(false);
+  const handleClick = () => isMobile && setIsHovered((prev) => !prev);
+
   const iconWidth = small ? 15 : 20;
   const iconHeight = small ? 15 : 18;
+
   return (
     <div
-      onMouseEnter={() => {
-        if (!isMobile) setIsHovered(true); // Desktop hover
-      }}
-      onMouseLeave={() => {
-        if (!isMobile) setIsHovered(false); // Desktop hover
-      }}
-      onClick={() => {
-        if (isMobile) setIsHovered((prev) => !prev); // Mobile click
-      }}
+      onMouseEnter={handleMouseEnter} // Desktop hover
+      onMouseLeave={handleMouseLeave} // Desktop hover
+      onClick={handleClick} // Mobile click
       className={clsx(styles.badgeWrapper)}
     >
       <div

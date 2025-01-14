@@ -6,8 +6,7 @@ import styles from "./DesktopPools.module.css";
 import clsx from "clsx";
 import {PoolData} from "@/src/hooks/usePoolsData";
 import AprBadge from "@/src/components/common/AprBadge/AprBadge";
-import useAssetMetadata from "@/src/hooks/useAssetMetadata";
-import {pairsWithRewards} from "@/src/utils/constants";
+import usePoolNameAndMatch from "@/src/hooks/usePoolNameAndMatch";
 
 type Props = {
   poolData: PoolData;
@@ -19,11 +18,8 @@ const DesktopPoolRow = ({poolData}: Props): JSX.Element => {
 
   const tvlActual = parseInt(tvlValue?.replace(/[^0-9]+/g, ""), 10);
 
-  const {symbol: firstSymbol} = useAssetMetadata(poolId[0].bits);
-  const {symbol: secondSymbol} = useAssetMetadata(poolId[1].bits);
-
-  const poolName = `${firstSymbol}/${secondSymbol}`;
-  const isMatching = pairsWithRewards.some((pair) => pair === poolName);
+  //Checks if the pool with rewards matches the current pool
+  const {isMatching} = usePoolNameAndMatch(poolId);
 
   return (
     <tr key={poolKey}>
