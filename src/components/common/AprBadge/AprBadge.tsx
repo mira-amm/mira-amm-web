@@ -4,6 +4,7 @@ import WhiteStarIcon from "@/src/components/icons/Stars/WhiteStar";
 import {clsx} from "clsx";
 import useBoostedApr from "@/src/hooks/useBoostedApr";
 import {isMobile} from "react-device-detect";
+import Loader from "../Loader/Loader";
 
 interface AprBadgeProps {
   aprValue: string | null;
@@ -47,6 +48,12 @@ const AprBadge: React.FC<AprBadgeProps> = ({
   const iconWidth = small ? 15 : 20;
   const iconHeight = small ? 15 : 18;
 
+  const showApr = aprValue
+    ? (boostedApr + aprValueInNumber).toFixed(2)
+    : boostedApr.toFixed(2);
+
+  const apr = boostedApr ? <>{showApr}%</> : <Loader />;
+
   return (
     <div
       onMouseEnter={handleMouseEnter} // Desktop hover
@@ -69,10 +76,7 @@ const AprBadge: React.FC<AprBadgeProps> = ({
             small ? styles.smallFont : styles.largeFont,
           )}
         >
-          {aprValue
-            ? (boostedApr + aprValueInNumber).toFixed(2)
-            : boostedApr.toFixed(2)}
-          %
+          {apr}
         </span>
         {/*  UI on hover */}
         {isHovered && (
@@ -99,12 +103,7 @@ const AprBadge: React.FC<AprBadgeProps> = ({
               <div className={styles.divider}></div>
               <div className={styles.row}>
                 <span className={styles.label}>Total rewards</span>
-                <span className={styles.value}>
-                  {aprValue
-                    ? (boostedApr + aprValueInNumber).toFixed(2)
-                    : boostedApr.toFixed(2)}
-                  %
-                </span>
+                <span className={styles.value}>{apr}</span>
               </div>
             </div>
           </div>
