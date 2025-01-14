@@ -169,7 +169,7 @@ export class SentioJSONUserRewardsService implements UserRewardsService {
         );
       }
       const fuelRewards = json.result.rows[0].FuelRewards;
-      if (!fuelRewards) {
+      if (fuelRewards == null) {
         console.log(
           `Failed to fetch ${lpToken} rewards for user ${userId} in epoch ${epochStart} to ${epochEnd}`
         );
