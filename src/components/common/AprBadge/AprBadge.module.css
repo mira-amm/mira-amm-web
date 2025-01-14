@@ -16,23 +16,28 @@
 
 .badgeText {
   color: white;
+  display: inline-block;
+  word-wrap: break-word;
+  white-space: normal;
+  overflow-wrap: anywhere;
 }
 
 .large {
-  width: 96px;
-  padding: 7px;
-  margin-left: 35px;
+  min-width: 96px;
+  max-width: 90%;
+  min-height: 48px;
+  max-height: auto;
 }
 
 .small {
-  width: 76px;
+  min-width: 76px;
+  max-width: 100%;
   padding: 5px 0;
-
   height: 26px;
 }
 
 .largeFont {
-  font-size: 16px;
+  font-size: 18px;
   line-height: 19.36px;
 }
 
