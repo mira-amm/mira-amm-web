@@ -33,7 +33,7 @@
   align-items: center;
   gap: 16px;
   border-radius: 10px;
-  padding: 28px 16px;
+  padding: 16px;
   background: linear-gradient(
     97.15deg,
     #5872fc -1.13%,
@@ -161,7 +161,7 @@
 
   .boostsFallback {
     gap: 12px;
-    padding: 20px 16px;
+    padding: 16px;
   }
 
   .divider {
