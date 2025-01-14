@@ -1,18 +1,17 @@
 import {useState, useEffect} from "react";
 import mockRewards from "@/src/utils/pool-rewards.json";
 import {useFuelPrice} from "./useFuelPrice";
-import {startDate, endDate} from "../utils/constants";
-import {fuelAmount} from "../utils/constants";
-interface RewardPool {
-  id: string;
-  boosterValue: number;
-}
-
+import {startDate, endDate, fuelAmount} from "../utils/constants";
 import {
   calculateDateDifference,
   getBoostReward,
   calculateUsdValue,
 } from "../utils/common";
+
+interface RewardPool {
+  id: string;
+  boosterValue: number;
+}
 
 const useBoostedApr = (
   poolKey: string,
@@ -28,8 +27,7 @@ const useBoostedApr = (
 
   const rewardsData = getRewardsData();
 
-  const {price} = useFuelPrice();
-  const fuelToUsdRate = price ? parseFloat(price) : 0;
+  const {price: fuelToUsdRate} = useFuelPrice();
 
   const usdValue = calculateUsdValue(fuelAmount, fuelToUsdRate);
 

@@ -29,12 +29,11 @@ import {useAccount} from "@fuels/react";
 const epochNumbers = 1;
 
 const BoostsRewards = () => {
+  const {account} = useAccount();
+
   const [duration, setDuration] = useState("");
 
-  const {price, isLoading} = useFuelPrice();
-  const fuelToUsdRate = price ? parseFloat(price) : 0;
-
-  const {account} = useAccount();
+  const {price: fuelToUsdRate, isLoading} = useFuelPrice();
 
   const {rewardsAmount, isLoading: isRewardsAmountLoading} = useRewards({
     userId: account,
