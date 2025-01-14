@@ -104,11 +104,11 @@ export const calculateSHA256Hash = async (message: string) => {
 export const getBoostReward = (
   poolKey: string,
   data: Array<{id: string; boosterValue: number}>,
-) => {
+): number => {
   // Find the item in the data array where the id matches poolKey
   const item = data.find((item) => item.id === poolKey);
 
-  return item?.boosterValue;
+  return item?.boosterValue || 0;
 };
 
 export const calculateUsdValue = (
@@ -143,21 +143,3 @@ export const calculateEpochDuration = (endDate: string): string => {
 
   return `${days} days, ${hours} hours, ${minutes} min`;
 };
-
-//To calculate the numbers remaining from booster rewards start date and end
-export function calculateDateDifference(
-  startDate: string,
-  endDate: string,
-): number {
-  const start: Date = new Date(startDate);
-  const end: Date = new Date(endDate);
-
-  // Calculate the difference in milliseconds
-  const differenceInMilliseconds: number = end.getTime() - start.getTime();
-
-  // Convert milliseconds to days
-  const differenceInDays: number =
-    differenceInMilliseconds / (1000 * 60 * 60 * 24);
-
-  return parseFloat(differenceInDays.toFixed(0));
-}
