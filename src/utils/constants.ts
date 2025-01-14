@@ -68,3 +68,5 @@ export const endDate = "2025-03-01T23:59:59"; // March 1, 2025
 
 //pairs with booster rewards
 export const pairsWithRewards = ["USDC/ETH", "FUEL/ETH", "USDC/USDT"];
+
+export const fuelAmount = 25000;
