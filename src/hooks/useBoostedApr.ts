@@ -2,6 +2,7 @@ import {useState, useEffect} from "react";
 import mockRewards from "@/src/utils/pool-rewards.json";
 import {useFuelPrice} from "./useFuelPrice";
 import {startDate, endDate} from "../utils/constants";
+import {fuelAmount} from "../utils/constants";
 interface RewardPool {
   id: string;
   boosterValue: number;
@@ -27,7 +28,6 @@ const useBoostedApr = (
 
   const rewardsData = getRewardsData();
 
-  const fuelAmount = 25000;
   const {price} = useFuelPrice();
   const fuelToUsdRate = price ? parseFloat(price) : 0;
 
@@ -45,9 +45,11 @@ const useBoostedApr = (
 
       const fuelPrice = parseFloat(usdValue.replace(/[^0-9.-]+/g, ""));
 
+      const fuelPricePerUnit = fuelPrice / fuelAmount;
+
       // Calculate APR per program length
       const aprPerProgramLength = boostReward
-        ? (fuelPrice * boostReward) / (programLength * 365)
+        ? (fuelPricePerUnit * boostReward) / (programLength * 365)
         : 0;
 
       // Calculate the actual APR (APR divided by TVL)
