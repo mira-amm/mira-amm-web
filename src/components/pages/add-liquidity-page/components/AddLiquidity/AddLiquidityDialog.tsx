@@ -79,7 +79,7 @@ const AddLiquidityDialog = ({
   );
 
   //Checks if the pool with rewards matches the current pool
-  const {isMatching} = usePoolNameAndMatch(poolId);
+  const {isMatching} = usePoolNameAndMatch(poolKey);
 
   const {
     data,

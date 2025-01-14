@@ -19,7 +19,7 @@ const DesktopPoolRow = ({poolData}: Props): JSX.Element => {
   const tvlActual = parseInt(tvlValue?.replace(/[^0-9]+/g, ""), 10);
 
   //Checks if the pool with rewards matches the current pool
-  const {isMatching} = usePoolNameAndMatch(poolId);
+  const {isMatching} = usePoolNameAndMatch(poolKey);
 
   return (
     <tr key={poolKey}>

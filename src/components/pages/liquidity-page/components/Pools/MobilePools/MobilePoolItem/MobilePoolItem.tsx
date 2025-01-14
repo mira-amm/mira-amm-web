@@ -32,7 +32,7 @@ const MobilePoolItem = ({poolData}: Props): JSX.Element => {
     : 0;
 
   //Checks if the pool with rewards matches the current pool
-  const {isMatching} = usePoolNameAndMatch(poolId);
+  const {isMatching} = usePoolNameAndMatch(poolKey);
 
   return (
     <div className={styles.mobilePoolItem}>
