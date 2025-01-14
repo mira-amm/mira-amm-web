@@ -52,6 +52,7 @@ const Info = ({tooltipText, tooltipKey, color}: Props) => {
         //@ts-ignore
         popover="auto"
         ref={tooltipRef}
+        style={{color: color}}
       >
         {tooltipText}
       </div>
