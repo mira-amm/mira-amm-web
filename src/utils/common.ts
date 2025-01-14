@@ -30,11 +30,11 @@ export const isPoolKeyValid = (key: string) => {
 
 export const createPoolIdFromPoolKey = (key: string) => {
   const [firstCoinAssetId, secondCoinAssetId, poolStability] = key.split(
-    "-"
+    "-",
   ) as [
     B256Address,
     B256Address,
-    typeof StablePoolKey | typeof VolatilePoolKey
+    typeof StablePoolKey | typeof VolatilePoolKey,
   ];
   const poolStabilityValid =
     poolStability === StablePoolKey || poolStability === VolatilePoolKey;
@@ -46,14 +46,14 @@ export const createPoolIdFromPoolKey = (key: string) => {
   return buildPoolId(
     firstCoinAssetId,
     secondCoinAssetId,
-    poolStability === StablePoolKey
+    poolStability === StablePoolKey,
   );
 };
 
 export const createPoolIdFromAssetNames = (
   firstAssetName: CoinName,
   secondAssetName: CoinName,
-  isStablePool: boolean
+  isStablePool: boolean,
 ) => {
   const firstCoinAssetId = coinsConfig.get(firstAssetName)?.assetId!;
   const secondCoinAssetId = coinsConfig.get(secondAssetName)?.assetId!;
@@ -79,7 +79,7 @@ export const arePoolIdsEqual = (firstPoolId: PoolId, secondPoolId: PoolId) => {
 };
 
 export const floorToTwoSignificantDigits = (
-  value: number | null | undefined
+  value: number | null | undefined,
 ) => {
   if (!value) {
     return 0;
@@ -103,7 +103,7 @@ export const calculateSHA256Hash = async (message: string) => {
 
 export const getBoostReward = (
   poolKey: string,
-  data: Array<{id: string; boosterValue: number}>
+  data: Array<{id: string; boosterValue: number}>,
 ) => {
   // Find the item in the data array where the id matches poolKey
   const item = data.find((item) => item.id === poolKey);
@@ -113,13 +113,21 @@ export const getBoostReward = (
 
 export const calculateUsdValue = (
   fuelAmount: number,
-  fuelToUsdRate: number
+  fuelToUsdRate: number,
 ): string => {
   const usdValue = fuelAmount * fuelToUsdRate;
   return `~$${usdValue.toLocaleString(undefined, {
     minimumFractionDigits: 2,
     maximumFractionDigits: 2,
   })}`;
+};
+
+export const calculateFuelAmount = (
+  rewardsAmount: number,
+  fuelToUsdRate: number,
+): number => {
+  const fuelAmount = rewardsAmount / fuelToUsdRate;
+  return parseFloat(fuelAmount.toFixed(2));
 };
 
 export const calculateEpochDuration = (endDate: string): string => {
@@ -139,7 +147,7 @@ export const calculateEpochDuration = (endDate: string): string => {
 //To calculate the numbers remaining from booster rewards start date and end
 export function calculateDateDifference(
   startDate: string,
-  endDate: string
+  endDate: string,
 ): number {
   const start: Date = new Date(startDate);
   const end: Date = new Date(endDate);
