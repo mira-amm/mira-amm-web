@@ -88,15 +88,17 @@ const BoostsRewards = () => {
             />
           </div>
 
-          {loading ? (
-            <Loader />
-          ) : (
-            <div className={styles.rewardsValue}>
-              <RewardsIcon />
-              <p>{fuelCount} FUEL</p>
-              <span>{usdValue}</span>
-            </div>
-          )}
+          <div className={styles.rewardsValue}>
+            {loading ? (
+              <Loader />
+            ) : (
+              <>
+                <RewardsIcon />
+                <p>{fuelCount} FUEL</p>
+                <span>{usdValue}</span>
+              </>
+            )}
+          </div>
         </div>
         <div className={styles.epochSection}>
           <div className={styles.divider}></div>
