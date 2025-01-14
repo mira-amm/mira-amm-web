@@ -48,13 +48,11 @@ const AprBadge: React.FC<AprBadgeProps> = ({
   const iconHeight = small ? 15 : 18;
 
   return (
-    <div
-      onMouseEnter={handleMouseEnter} // Desktop hover
-      onMouseLeave={handleMouseLeave} // Desktop hover
-      onClick={handleClick} // Mobile click
-      className={clsx(styles.badgeWrapper)}
-    >
+    <div className={clsx(styles.badgeWrapper)}>
       <div
+        onMouseEnter={handleMouseEnter} // Desktop hover
+        onMouseLeave={handleMouseLeave} // Desktop hover
+        onClick={handleClick} // Mobile click
         className={clsx(
           styles.customBadge,
           small ? styles.small : styles.large,
