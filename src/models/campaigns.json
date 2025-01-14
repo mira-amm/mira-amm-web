@@ -1,0 +1,59 @@
+[
+    {
+        "startDate": "2025-01-01T00:00:00.000Z",
+        "endDate": "2025-01-08T00:00:00.000Z",
+        "number": 1,
+        "campaigns": [
+            {
+                "pool": {
+                    "id": "286c479da40dc953bddc3bb4c453b608bba2e0ac483b077bd475174115395e6b-f8f8b6283d7fa5b672b530cbb84fcccb4ff8dc40f8176ef4544ddb1f1952ad07-false",
+                    "lpToken": "0x6cae200e72709a4be568a816348d02a91e74b059f6fcbc069438981bd30cfbd1"
+                },
+                "rewards": [
+                    {
+                        "amount": 1000,
+                        "assetId": "0x2"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "startDate": "2025-01-08T00:00:00.000Z",
+        "endDate": "2025-01-15T00:00:00.000Z",
+        "number": 2,
+        "campaigns": [
+            {
+                "pool": {
+                    "id": "286c479da40dc953bddc3bb4c453b608bba2e0ac483b077bd475174115395e6b-f8f8b6283d7fa5b672b530cbb84fcccb4ff8dc40f8176ef4544ddb1f1952ad07-false",
+                    "lpToken": "0x6cae200e72709a4be568a816348d02a91e74b059f6fcbc069438981bd30cfbd1"
+                },
+                "rewards": [
+                    {
+                        "amount": 1000,
+                        "assetId": "0x2"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "startDate": "2025-01-15T00:00:00.000Z",
+        "endDate": "2025-01-22T00:00:00.000Z",
+        "number": 3,
+        "campaigns": [
+            {
+                "pool": {
+                    "id": "286c479da40dc953bddc3bb4c453b608bba2e0ac483b077bd475174115395e6b-f8f8b6283d7fa5b672b530cbb84fcccb4ff8dc40f8176ef4544ddb1f1952ad07-false",
+                    "lpToken": "0x6cae200e72709a4be568a816348d02a91e74b059f6fcbc069438981bd30cfbd1"
+                },
+                "rewards": [
+                    {
+                        "amount": 1000,
+                        "assetId": "0x2"
+                    }
+                ]
+            }
+        ]
+    }
+]
