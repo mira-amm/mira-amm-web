@@ -78,9 +78,11 @@ export class SentioJSONUserRewardsService implements UserRewardsService {
    *
    */
   async getRewards(
-    params: UserRewardsQueryParams
+    params: UserRewardsQueryParams,
   ): Promise<UserRewardsResponse> {
-    const {epochNumbers, poolIds, userId} = params;
+    const {epochNumbers, poolIds} = params;
+
+    const userId = params.userId.toLowerCase();
 
     if (!addressPattern.test(userId)) {
       console.log(`Invalid wallet address: ${userId}`);
@@ -102,28 +104,28 @@ export class SentioJSONUserRewardsService implements UserRewardsService {
         poolIds.map((poolId) => ({
           epoch,
           campaign: epoch.campaigns.find(
-            (campaign) => campaign.pool.id === poolId
+            (campaign) => campaign.pool.id === poolId,
           ),
-        }))
+        })),
       )
       .filter(
         (item): item is {epoch: typeof item.epoch; campaign: Campaign} =>
-          item.campaign !== undefined
+          item.campaign !== undefined,
       );
 
     if (matchingCampaigns.length === 0) {
       console.error(
-        `No campaign found for poolId ${poolIds} and epoch numbers ${epochNumbers}`
+        `No campaign found for poolId ${poolIds} and epoch numbers ${epochNumbers}`,
       );
       throw new NotFoundError(
-        `No campaign found for poolId ${poolIds} and epoch numbers ${epochNumbers}`
+        `No campaign found for poolId ${poolIds} and epoch numbers ${epochNumbers}`,
       );
     }
 
     const rewardsPromises = matchingCampaigns.map(async ({epoch, campaign}) => {
       const {startDate: epochStart, endDate: epochEnd} = epoch;
 
-      const lpToken = campaign.pool.lpToken;
+      const lpToken = campaign.pool.lpToken.toLowerCase();
 
       // check the validity of the json data
 
