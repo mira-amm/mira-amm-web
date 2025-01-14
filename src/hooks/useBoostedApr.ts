@@ -1,4 +1,4 @@
-import mockRewards from "@/src/utils/pool-rewards.json";
+import mockRewards from "@/src/models/campaigns.json";
 import {useFuelPrice} from "./useFuelPrice";
 import {getBoostReward} from "../utils/common";
 
@@ -6,7 +6,7 @@ const useBoostedApr = (
   poolKey: string,
   tvlValue: number,
 ): {boostedApr: number; boostReward: number} => {
-  const rewardsData = mockRewards.data.pools;
+  const rewardsData = mockRewards[0].campaigns;
 
   const {price: fuelToUsdRate} = useFuelPrice();
   const boostReward = getBoostReward(poolKey, rewardsData);

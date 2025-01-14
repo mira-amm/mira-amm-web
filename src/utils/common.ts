@@ -103,22 +103,26 @@ export const calculateSHA256Hash = async (message: string) => {
 
 export const getBoostReward = (
   poolKey: string,
-  data: Array<{id: string; boosterValue: number}>,
+  data: {
+    pool: {
+      id: string;
+    };
+    rewards: {
+      amount: number;
+    }[];
+  }[],
 ): number => {
-  // Find the item in the data array where the id matches poolKey
-  const item = data.find((item) => item.id === poolKey);
+  const item = data.find((item) => item.pool.id === poolKey.replace(/0x/g, ""));
 
-  return item?.boosterValue || 0;
+  return item?.rewards[0].amount || 0;
 };
 
 export const getRewardsPoolsId = (
   pools: {
-    id: string;
-    boosterValue: number;
-    name: string;
+    pool: {id: string};
   }[],
 ): string => {
-  return pools.map((pool) => pool.id.replace(/0x/g, "")).join(",");
+  return pools.map((pool) => pool.pool.id.replace(/0x/g, "")).join(",");
 };
 
 export const calculateUsdValue = (
