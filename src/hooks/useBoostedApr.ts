@@ -37,12 +37,12 @@ const useBoostedApr = (
 
       // Calculate APR per program length
       const aprPerProgramLength = boostReward
-        ? (fuelToUsdRate * boostReward) / (programLength * 365)
+        ? fuelToUsdRate * boostReward * 365
         : 0;
 
       // Calculate the actual APR (APR divided by TVL)
       const aprActualCalculated =
-        tvlValue > 0 ? aprPerProgramLength / tvlValue : 0;
+        tvlValue > 0 ? (aprPerProgramLength / tvlValue) * 100 : 0;
 
       setBoostedApr(parseFloat(aprActualCalculated.toFixed(2)));
       setLoading(false);
