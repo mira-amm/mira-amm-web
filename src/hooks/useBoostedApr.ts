@@ -29,8 +29,6 @@ const useBoostedApr = (
 
   const {price: fuelToUsdRate} = useFuelPrice();
 
-  const usdValue = calculateUsdValue(fuelAmount, fuelToUsdRate);
-
   useEffect(() => {
     const calculateApr = () => {
       setLoading(true);
@@ -41,13 +39,9 @@ const useBoostedApr = (
       const boostReward = poolKey ? getBoostReward(poolKey, rewardsData) : 0;
       setBoostReward(boostReward);
 
-      const fuelPrice = parseFloat(usdValue.replace(/[^0-9.-]+/g, ""));
-
-      const fuelPricePerUnit = fuelPrice / fuelAmount;
-
       // Calculate APR per program length
       const aprPerProgramLength = boostReward
-        ? (fuelPricePerUnit * boostReward) / (programLength * 365)
+        ? (fuelToUsdRate * boostReward) / (programLength * 365)
         : 0;
 
       // Calculate the actual APR (APR divided by TVL)
@@ -59,7 +53,7 @@ const useBoostedApr = (
     };
 
     calculateApr();
-  }, [poolKey, usdValue, tvlValue, rewardsData]);
+  }, [poolKey, fuelToUsdRate, tvlValue, rewardsData]);
 
   return {boostedApr, loading, boostReward};
 };
