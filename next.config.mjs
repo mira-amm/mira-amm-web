@@ -5,15 +5,6 @@ const nextConfig = {
   },
   trailingSlash: true,
   output: "export",
-  async redirects() {
-    return [
-      {
-        source: "/swap",
-        destination: "/",
-        permanent: false,
-      },
-    ];
-  },
 };
 
 export default nextConfig;
