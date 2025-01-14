@@ -26,9 +26,9 @@ const BoostsRewardsIcon = () => {
           y2="9.40018"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stop-color="#5872FC" />
-          <stop offset="0.422601" stop-color="#6142BA" />
-          <stop offset="1" stop-color="#C41CFF" />
+          <stop stopColor="#5872FC" />
+          <stop offset="0.422601" stopColor="#6142BA" />
+          <stop offset="1" stopColor="#C41CFF" />
         </linearGradient>
       </defs>
     </svg>
