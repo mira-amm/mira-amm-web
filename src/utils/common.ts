@@ -144,16 +144,35 @@ export const calculateFuelAmount = (
   return parseFloat(fuelAmount.toFixed(2));
 };
 
-export const calculateEpochDuration = (endDate: string): string => {
+export const calculateEpochDuration = (
+  startDate: string,
+  endDate: string,
+): string => {
   const now = new Date().getTime();
+  const start = new Date(startDate).getTime();
   const end = new Date(endDate).getTime();
-  const diff = end - now;
 
-  if (diff <= 0) return "Season has ended";
-
-  const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-  const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-  const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-
-  return `${days} days, ${hours} hours, ${minutes} min`;
+  if (now < start) {
+    // Before the start date
+    const startDateFormatted = new Date(startDate).toLocaleString("en-US", {
+      timeZone: "UTC",
+      weekday: "short",
+      month: "short",
+      day: "numeric",
+      year: "numeric",
+      hour: "2-digit",
+      minute: "2-digit",
+    });
+    return `Starts at ${startDateFormatted} UTC`;
+  } else if (now >= start && now <= end) {
+    // Between start date and end date
+    const diff = end - now;
+    const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+    const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+    return `${days} days, ${hours} hours, ${minutes} min`;
+  } else {
+    // After the end date
+    return "Season has ended";
+  }
 };
