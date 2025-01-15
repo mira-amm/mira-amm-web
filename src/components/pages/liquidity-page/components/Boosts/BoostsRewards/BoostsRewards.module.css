@@ -98,13 +98,14 @@
 }
 
 .disclaimer {
-  display: flex;
+  display: inline;
   font-size: 10px;
   color: #ffffffb8;
+  line-height: 12px;
 }
 
 .disclaimer u {
-  margin-left: 5px;
+  margin-left: 3px;
 }
 
 /* Media Queries */

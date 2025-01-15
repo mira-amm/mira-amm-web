@@ -103,7 +103,7 @@ const BoostsRewards = (): JSX.Element => {
             )}
           </div>
           <p className={styles.disclaimer}>
-            Rewards are estimates and final rewards can be slightly different
+            Rewards are estimates and final rewards can be slightly different.
             <Link href={BoostsLearnMoreUrl} target="_blank">
               <u>Learn more.</u>
             </Link>

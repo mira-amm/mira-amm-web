@@ -9,7 +9,7 @@ import ConnectButton from "@/src/components/common/ConnectButton/ConnectButton";
 import LaunchAppButton from "@/src/components/common/LaunchAppButton/LaunchAppButton";
 import DisconnectMobile from "@/src/components/common/ConnectButton/DisconnectMobile";
 import {useIsConnected} from "@fuels/react";
-import {BlogLink, FuelAppUrl} from "@/src/utils/constants";
+import {BlogLink, BoostsLearnMoreUrl, FuelAppUrl} from "@/src/utils/constants";
 import {RewardsIcon} from "../../icons/Rewards/RewardsIcon";
 import TestnetLabel from "@/src/components/common/TestnetLabel/TestnetLabel";
 import IconButton from "../IconButton/IconButton";
@@ -50,7 +50,7 @@ const Header = ({isHomePage}: Props): JSX.Element => {
             <RewardsIcon />
             <p>
               {boosterBannerTitle}
-              <Link href="/">
+              <Link href={BoostsLearnMoreUrl} target="_blank">
                 <u>Learn More</u>
               </Link>
             </p>
