@@ -34,6 +34,7 @@ const BoostsRewards = (): JSX.Element => {
 
   const {price: fuelToUsdRate, isLoading} = useFuelPrice();
 
+  const startDate = boostRewards[0].startDate;
   const endDate = boostRewards[0].endDate;
   const rewardsData = boostRewards[0].campaigns;
   const rewardsPoolsId = getRewardsPoolsId(rewardsData);
@@ -46,14 +47,14 @@ const BoostsRewards = (): JSX.Element => {
 
   useEffect(() => {
     const updateDuration = () => {
-      setDuration(calculateEpochDuration(endDate));
+      setDuration(calculateEpochDuration(startDate, endDate));
     };
 
     updateDuration();
     const interval = setInterval(updateDuration, 60000);
 
     return () => clearInterval(interval);
-  }, [endDate]);
+  }, [startDate, endDate]);
 
   const fuelCount = calculateFuelAmount(rewardsAmount, fuelToUsdRate);
   const usdValue = calculateUsdValue(fuelCount, fuelToUsdRate);
