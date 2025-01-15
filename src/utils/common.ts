@@ -3,7 +3,7 @@ import {B256Address} from "fuels";
 import {buildPoolId, PoolId} from "mira-dex-ts";
 
 export const openNewTab = (url: string) => {
-  window.open(url, '_blank');
+  window.open(url, "_blank");
 };
 
 export const assetsList = Array.from(coinsConfig.values());
@@ -23,23 +23,38 @@ export const createPoolKey = (poolId: PoolId) => {
 
 // TODO: Reconsider this function, maybe have an API call for /pools?
 export const isPoolKeyValid = (key: string) => {
-  const [coinA, coinB] = key.split('-') as [string, string];
+  const [coinA, coinB] = key.split("-") as [string, string];
   // TODO: check isStable?
   return coinA.length === 66 && coinB.length === 66;
 };
 
 export const createPoolIdFromPoolKey = (key: string) => {
-  const [firstCoinAssetId, secondCoinAssetId, poolStability] = key.split('-') as [B256Address, B256Address, typeof StablePoolKey | typeof VolatilePoolKey];
-  const poolStabilityValid = poolStability === StablePoolKey || poolStability === VolatilePoolKey;
+  const [firstCoinAssetId, secondCoinAssetId, poolStability] = key.split(
+    "-",
+  ) as [
+    B256Address,
+    B256Address,
+    typeof StablePoolKey | typeof VolatilePoolKey,
+  ];
+  const poolStabilityValid =
+    poolStability === StablePoolKey || poolStability === VolatilePoolKey;
 
   if (!firstCoinAssetId || !secondCoinAssetId || !poolStabilityValid) {
     return null;
   }
 
-  return buildPoolId(firstCoinAssetId, secondCoinAssetId, poolStability === StablePoolKey);
+  return buildPoolId(
+    firstCoinAssetId,
+    secondCoinAssetId,
+    poolStability === StablePoolKey,
+  );
 };
 
-export const createPoolIdFromAssetNames = (firstAssetName: CoinName, secondAssetName: CoinName, isStablePool: boolean) => {
+export const createPoolIdFromAssetNames = (
+  firstAssetName: CoinName,
+  secondAssetName: CoinName,
+  isStablePool: boolean,
+) => {
   const firstCoinAssetId = coinsConfig.get(firstAssetName)?.assetId!;
   const secondCoinAssetId = coinsConfig.get(secondAssetName)?.assetId!;
   return buildPoolId(firstCoinAssetId, secondCoinAssetId, isStablePool);
@@ -47,8 +62,8 @@ export const createPoolIdFromAssetNames = (firstAssetName: CoinName, secondAsset
 
 // Mira API returns pool id as string '0x3f007b72f7bcb9b1e9abe2c76e63790cd574b7c34f1c91d6c2f407a5b55676b9_0xce90621a26908325c42e95acbbb358ca671a9a7b36dfb6a5405b407ad1efcd30_false'
 export const createPoolIdFromIdString = (id: string) => {
-  const [firstAssetId, secondAssetId, isStable] = id.split('-');
-  return buildPoolId(firstAssetId, secondAssetId, isStable === 'true');
+  const [firstAssetId, secondAssetId, isStable] = id.split("-");
+  return buildPoolId(firstAssetId, secondAssetId, isStable === "true");
 };
 
 export const createPoolIdString = (poolId: PoolId) => {
@@ -63,7 +78,9 @@ export const arePoolIdsEqual = (firstPoolId: PoolId, secondPoolId: PoolId) => {
   );
 };
 
-export const floorToTwoSignificantDigits = (value: number | null | undefined) => {
+export const floorToTwoSignificantDigits = (
+  value: number | null | undefined,
+) => {
   if (!value) {
     return 0;
   }
@@ -77,7 +94,83 @@ export const floorToTwoSignificantDigits = (value: number | null | undefined) =>
 export const calculateSHA256Hash = async (message: string) => {
   const encoder = new TextEncoder();
   const data = encoder.encode(message);
-  const hashBuffer = await crypto.subtle.digest('SHA-256', data);
+  const hashBuffer = await crypto.subtle.digest("SHA-256", data);
   const byteArray = new Uint8Array(hashBuffer);
-  return Array.from(byteArray).map(byte => byte.toString(16).padStart(2, '0')).join('');
+  return Array.from(byteArray)
+    .map((byte) => byte.toString(16).padStart(2, "0"))
+    .join("");
+};
+
+export const getBoostReward = (
+  poolKey: string,
+  data: {
+    pool: {
+      id: string;
+    };
+    rewards: {
+      amount: number;
+    }[];
+  }[],
+): number => {
+  const item = data.find((item) => item.pool.id === poolKey.replace(/0x/g, ""));
+
+  return item?.rewards[0].amount || 0;
+};
+
+export const getRewardsPoolsId = (
+  pools: {
+    pool: {id: string};
+  }[],
+): string => {
+  return pools.map((pool) => pool.pool.id.replace(/0x/g, "")).join(",");
+};
+
+export const calculateUsdValue = (
+  fuelAmount: number,
+  fuelToUsdRate: number,
+): string => {
+  const usdValue = fuelAmount * fuelToUsdRate;
+  return `~$${usdValue.toLocaleString(undefined, {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+  })}`;
+};
+
+export const calculateFuelAmount = (
+  rewardsAmount: number,
+  fuelToUsdRate: number,
+): number => {
+  const fuelAmount = rewardsAmount / fuelToUsdRate;
+  return parseFloat(fuelAmount.toFixed(2));
+};
+
+export const calculateEpochDuration = (
+  startDate: string,
+  endDate: string,
+): string => {
+  const now = new Date().getTime();
+  const start = new Date(startDate).getTime();
+  const end = new Date(endDate).getTime();
+
+  if (now < start) {
+    // Before the start date
+    const startDateFormatted = new Date(startDate).toLocaleString("en-US", {
+      timeZone: "UTC",
+      month: "short",
+      day: "numeric",
+      hour: "2-digit",
+      minute: "2-digit",
+    });
+    return `Starts at ${startDateFormatted} UTC`;
+  } else if (now >= start && now <= end) {
+    // Between start date and end date
+    const diff = end - now;
+    const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+    const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+    return `${days} days, ${hours} hours, ${minutes} min`;
+  } else {
+    // After the end date
+    return "Season has ended";
+  }
 };

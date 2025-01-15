@@ -9,21 +9,22 @@ import ConnectButton from "@/src/components/common/ConnectButton/ConnectButton";
 import LaunchAppButton from "@/src/components/common/LaunchAppButton/LaunchAppButton";
 import DisconnectMobile from "@/src/components/common/ConnectButton/DisconnectMobile";
 import {useIsConnected} from "@fuels/react";
-import {BlogLink, FuelAppUrl} from "@/src/utils/constants";
+import {BlogLink, BoostsLearnMoreUrl, FuelAppUrl} from "@/src/utils/constants";
 import {RewardsIcon} from "../../icons/Rewards/RewardsIcon";
 import TestnetLabel from "@/src/components/common/TestnetLabel/TestnetLabel";
 import IconButton from "../IconButton/IconButton";
 import CloseIcon from "../../icons/Close/CloseIcon";
 import {useEffect, useState} from "react";
+import {boosterBannerTitle} from "@/src/utils/constants";
 
 type Props = {
   isHomePage?: boolean;
 };
 
-const PROMO_BANNER_STORAGE_KEY = "fuel-promo-banner-closed";
+const PROMO_BANNER_STORAGE_KEY = "fuel-boost-program-promo-banner-closed";
 
 const ISSERVER = typeof window === "undefined";
-const Header = ({isHomePage}: Props) => {
+const Header = ({isHomePage}: Props): JSX.Element => {
   const pathname = usePathname();
   const {isConnected} = useIsConnected();
 
@@ -48,9 +49,9 @@ const Header = ({isHomePage}: Props) => {
           <div className={styles.promo_text}>
             <RewardsIcon />
             <p>
-              $FUEL is now live in MIRA,
-              <Link href="/swap">
-                <u>Trade Now.</u>
+              {boosterBannerTitle}
+              <Link href={BoostsLearnMoreUrl} target="_blank">
+                <u>Learn More</u>
               </Link>
             </p>
           </div>
@@ -89,29 +90,9 @@ const Header = ({isHomePage}: Props) => {
             >
               Bridge
             </a>
-            <a
-              href={`${FuelAppUrl}/earn-points`}
-              className={styles.link}
-              target="_blank"
-            >
-              <div className={styles.rewardsLink}>
-                <RewardsIcon />
-                Points
-              </div>
-            </a>
           </div>
         </div>
         <div className={clsx("mobileOnly", styles.links)}>
-          <a
-            href={`${FuelAppUrl}/earn-points`}
-            className={styles.link}
-            target="_blank"
-          >
-            <div className={styles.rewardsLink}>
-              <RewardsIcon />
-              Points
-            </div>
-          </a>
           <DisconnectMobile className={styles.disconnectMobile} />
           <MobileMenu />
         </div>

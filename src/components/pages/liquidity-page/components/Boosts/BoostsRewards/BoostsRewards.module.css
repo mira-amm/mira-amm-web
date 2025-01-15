@@ -1,0 +1,181 @@
+.boosts {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.boostsHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.boostsTitle {
+  display: flex;
+  gap: 10px;
+}
+
+.boostsTitle p {
+  font-size: 20px;
+  line-height: 24px;
+}
+
+.learnMoreButton {
+  font-size: 16px;
+  font-weight: 500;
+  height: 40px;
+  padding: 12px 24px !important;
+}
+
+.boostsFallback {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  border-radius: 10px;
+  padding: 16px;
+  background: linear-gradient(
+    97.15deg,
+    #5872fc -1.13%,
+    #6142ba 56.75%,
+    #c41cff 135.82%
+  );
+}
+
+.rewardsItem {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.rewardsLabel {
+  font-size: 16px;
+  font-weight: 400;
+  color: #ffffffb8;
+  display: flex;
+  gap: 5px;
+}
+
+.rewardsValue {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  height: 25px;
+}
+
+.rewardsValue p {
+  font-size: 26px;
+  font-weight: 400;
+}
+
+.rewardsValue span {
+  font-size: 15px;
+  font-weight: 400;
+  color: #ffffffb8;
+  margin-top: 6px;
+}
+
+.epochSection {
+  display: flex;
+  gap: 35px;
+}
+
+.epochItem {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-right: 30px;
+}
+
+.divider {
+  width: 1px;
+  background-color: #d8c8f0;
+}
+
+.epochDuration {
+  font-size: 20px;
+  font-weight: 400;
+}
+
+.disclaimer {
+  display: inline;
+  font-size: 10px;
+  color: #ffffffb8;
+  line-height: 12px;
+}
+
+.disclaimer u {
+  margin-left: 3px;
+}
+
+/* Media Queries */
+@media (max-width: 768px) {
+  .rewardsLabel {
+    font-size: 14px;
+    align-items: start;
+  }
+
+  .rewardsValue p {
+    font-size: 20px;
+  }
+
+  .rewardsValue span {
+    font-size: 12px;
+  }
+
+  .epochDuration {
+    font-size: 18px;
+  }
+
+  .epochItem {
+    margin-right: 0px;
+  }
+}
+
+@media (max-width: 564px) {
+  .rewardsValue p {
+    font-size: 14px;
+  }
+
+  .epochDuration {
+    font-size: 14px;
+  }
+}
+
+@media (max-width: 480px) {
+  .boostsFallback {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .rewardsValue p {
+    font-size: 18px;
+  }
+
+  .rewardsValue span {
+    font-size: 10px;
+  }
+
+  .learnMoreButton {
+    font-size: 14px;
+    height: 36px;
+    padding: 10px 20px !important;
+  }
+
+  .epochDuration {
+    font-size: 16px;
+  }
+
+  .boosts {
+    gap: 16px;
+  }
+
+  .boostsFallback {
+    gap: 12px;
+    padding: 16px;
+  }
+
+  .divider {
+    display: none;
+  }
+}

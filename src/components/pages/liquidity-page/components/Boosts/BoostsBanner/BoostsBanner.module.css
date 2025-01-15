@@ -1,0 +1,122 @@
+.banner {
+  background: linear-gradient(
+    97.15deg,
+    #5872fc -1.13%,
+    #6142ba 56.75%,
+    #c41cff 135.82%
+  );
+  padding: 16px;
+  gap: 10px;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.header {
+  font-size: 24px;
+  font-weight: 400;
+}
+
+.bottomArea {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.subHeader {
+  font-size: 16px;
+  font-weight: 400;
+  color: white;
+  flex: 1 1 auto;
+  margin-right: 8px;
+}
+
+.learnMore {
+  display: inline-flex;
+  align-items: center;
+  font-size: 16px;
+  font-weight: 500;
+  color: white;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  text-decoration: none;
+  position: relative;
+  transition: color 0.3s ease;
+}
+
+.learnMore:hover {
+  color: #e0e0e0;
+}
+
+.learnMore::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -2px;
+  width: 100%;
+  height: 2px;
+  background-color: white;
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.3s ease;
+}
+
+.learnMore:hover::after {
+  transform: scaleX(1);
+}
+
+.arrow {
+  margin-left: 4px;
+  font-size: 18px;
+  transition: margin-left 0.3s ease;
+}
+
+.learnMore:hover .arrow {
+  margin-left: 8px;
+}
+
+@media (max-width: 768px) {
+  .banner {
+    padding: 20px 12px;
+    gap: 8px;
+  }
+
+  .header {
+    font-size: 20px;
+  }
+
+  .bottomArea {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .subHeader {
+    font-size: 14px;
+    text-align: left;
+  }
+
+  .learnMore {
+    align-self: flex-start;
+  }
+}
+
+@media (max-width: 480px) {
+  .banner {
+    gap: 6px;
+  }
+
+  .header {
+    font-size: 18px;
+  }
+
+  .subHeader {
+    font-size: 14px;
+  }
+
+  .learnMore {
+    font-size: 14px;
+  }
+}

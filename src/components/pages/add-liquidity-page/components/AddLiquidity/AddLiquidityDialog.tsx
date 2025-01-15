@@ -7,41 +7,53 @@ import useBalances from "@/src/hooks/useBalances/useBalances";
 import useAssetBalance from "@/src/hooks/useAssetBalance";
 import {useConnectUI, useIsConnected} from "@fuels/react";
 import usePreviewAddLiquidity from "@/src/hooks/usePreviewAddLiquidity";
-import {Dispatch, SetStateAction, useCallback, useEffect, useState} from "react";
+import {
+  Dispatch,
+  SetStateAction,
+  useCallback,
+  useEffect,
+  useState,
+} from "react";
 import {useDebounceCallback} from "usehooks-ts";
 import useCheckEthBalance from "@/src/hooks/useCheckEthBalance/useCheckEthBalance";
 import useFaucetLink from "@/src/hooks/useFaucetLink";
-import { openNewTab } from "@/src/utils/common";
+import {openNewTab} from "@/src/utils/common";
 import useCheckActiveNetwork from "@/src/hooks/useCheckActiveNetwork";
 import usePoolAPR from "@/src/hooks/usePoolAPR";
 import {DefaultLocale, FuelAppUrl} from "@/src/utils/constants";
 import Info from "@/src/components/common/Info/Info";
-import {
-  AddLiquidityPreviewData
-} from "@/src/components/pages/add-liquidity-page/components/AddLiquidity/PreviewAddLiquidityDialog";
+import {AddLiquidityPreviewData} from "@/src/components/pages/add-liquidity-page/components/AddLiquidity/PreviewAddLiquidityDialog";
 import {PoolId} from "mira-dex-ts";
 import {
-  APRTooltip, StablePoolTooltip,
-  VolatilePoolTooltip
+  APRTooltip,
+  StablePoolTooltip,
+  VolatilePoolTooltip,
 } from "@/src/components/pages/add-liquidity-page/components/AddLiquidity/addLiquidityTooltips";
 import useModal from "@/src/hooks/useModal/useModal";
 import TransactionFailureModal from "@/src/components/common/TransactionFailureModal/TransactionFailureModal";
 import {BN, bn} from "fuels";
 import usePoolsMetadata from "@/src/hooks/usePoolsMetadata";
 import useAssetMetadata from "@/src/hooks/useAssetMetadata";
-import { useAssetPrice } from "@/src/hooks/useAssetPrice";
+import {useAssetPrice} from "@/src/hooks/useAssetPrice";
+import AprBadge from "@/src/components/common/AprBadge/AprBadge";
+import usePoolNameAndMatch from "@/src/hooks/usePoolNameAndMatch";
 
 type Props = {
   poolId: PoolId;
   setPreviewData: Dispatch<SetStateAction<AddLiquidityPreviewData | null>>;
-}
+  poolKey: string;
+};
 
-const AddLiquidityDialog = ({ poolId, setPreviewData }: Props) => {
+const AddLiquidityDialog = ({
+  poolId,
+  setPreviewData,
+  poolKey,
+}: Props): JSX.Element => {
   const [FailureModal, openFailureModal, closeFailureModal] = useModal();
 
-  const { isConnected, isPending: isConnecting } = useIsConnected();
-  const { connect } = useConnectUI();
-  const { balances } = useBalances();
+  const {isConnected, isPending: isConnecting} = useIsConnected();
+  const {connect} = useConnectUI();
+  const {balances} = useBalances();
 
   const firstAssetId = poolId[0].bits;
   const secondAssetId = poolId[1].bits;
@@ -50,9 +62,9 @@ const AddLiquidityDialog = ({ poolId, setPreviewData }: Props) => {
   const secondAssetBalance = useAssetBalance(balances, secondAssetId);
 
   const [firstAmount, setFirstAmount] = useState(new BN(0));
-  const [firstAmountInput, setFirstAmountInput] = useState('');
+  const [firstAmountInput, setFirstAmountInput] = useState("");
   const [secondAmount, setSecondAmount] = useState(new BN(0));
-  const [secondAmountInput, setSecondAmountInput] = useState('');
+  const [secondAmountInput, setSecondAmountInput] = useState("");
   const [activeAsset, setActiveAsset] = useState<string | null>(null);
   const [isStablePool, setIsStablePool] = useState(poolId[2]);
 
@@ -61,10 +73,19 @@ const AddLiquidityDialog = ({ poolId, setPreviewData }: Props) => {
 
   const isFirstToken = activeAsset === poolId[0].bits;
 
-  const { poolsMetadata } = usePoolsMetadata([poolId]);
-  const emptyPool = Boolean(poolsMetadata?.[0]?.reserve0.eq(0) && poolsMetadata?.[0].reserve1.eq(0));
+  const {poolsMetadata} = usePoolsMetadata([poolId]);
+  const emptyPool = Boolean(
+    poolsMetadata?.[0]?.reserve0.eq(0) && poolsMetadata?.[0].reserve1.eq(0),
+  );
 
-  const { data, isFetching, error: previewError } = usePreviewAddLiquidity({
+  //Checks if the pool with rewards matches the current pool
+  const {isMatching} = usePoolNameAndMatch(poolKey);
+
+  const {
+    data,
+    isFetching,
+    error: previewError,
+  } = usePreviewAddLiquidity({
     firstAssetId,
     secondAssetId,
     amount: isFirstToken ? firstAmount : secondAmount,
@@ -79,17 +100,26 @@ const AddLiquidityDialog = ({ poolId, setPreviewData }: Props) => {
     }
   }, [previewError]);
 
-  const { apr } = usePoolAPR(poolId);
-  const aprValue = apr !== undefined
-    ? apr.toLocaleString(DefaultLocale, { minimumFractionDigits: 2, maximumFractionDigits: 2 })
-    : null;
+  const {apr} = usePoolAPR(poolId);
+
+  const aprValue =
+    apr !== undefined
+      ? apr.apr.toLocaleString(DefaultLocale, {
+          minimumFractionDigits: 2,
+          maximumFractionDigits: 2,
+        })
+      : null;
+
+  const tvlValue = apr?.tvlUSD;
 
   const debouncedSetFirstAmount = useDebounceCallback(setFirstAmount, 500);
   const debouncedSetSecondAmount = useDebounceCallback(setSecondAmount, 500);
 
   useEffect(() => {
     if (data) {
-      const anotherTokenDecimals = isFirstToken ? asset1Metadata.decimals : asset0Metadata.decimals;
+      const anotherTokenDecimals = isFirstToken
+        ? asset1Metadata.decimals
+        : asset0Metadata.decimals;
       const anotherTokenValue = data[1];
       const anotherTokenValueString = data[1].formatUnits(anotherTokenDecimals);
 
@@ -103,33 +133,40 @@ const AddLiquidityDialog = ({ poolId, setPreviewData }: Props) => {
     }
   }, [data]);
 
-  const setAmount = useCallback((coin: string) => {
-    return (value: string) => {
-      if (value === '') {
-        debouncedSetFirstAmount(new BN(0));
-        debouncedSetSecondAmount(new BN(0));
-        setFirstAmountInput('');
-        setSecondAmountInput('');
-        setActiveAsset(coin);
-        return;
-      }
+  const setAmount = useCallback(
+    (coin: string) => {
+      return (value: string) => {
+        if (value === "") {
+          debouncedSetFirstAmount(new BN(0));
+          debouncedSetSecondAmount(new BN(0));
+          setFirstAmountInput("");
+          setSecondAmountInput("");
+          setActiveAsset(coin);
+          return;
+        }
 
-      if (coin === poolId[0].bits) {
-        debouncedSetFirstAmount(bn.parseUnits(value, asset0Metadata.decimals));
-        setFirstAmountInput(value);
-      } else {
-        debouncedSetSecondAmount(bn.parseUnits(value, asset1Metadata.decimals));
-        setSecondAmountInput(value);
-      }
-      setActiveAsset(coin);
-    };
-  }, [
-    debouncedSetFirstAmount,
-    debouncedSetSecondAmount,
-    poolId,
-    asset0Metadata,
-    asset1Metadata
-  ]);
+        if (coin === poolId[0].bits) {
+          debouncedSetFirstAmount(
+            bn.parseUnits(value, asset0Metadata.decimals),
+          );
+          setFirstAmountInput(value);
+        } else {
+          debouncedSetSecondAmount(
+            bn.parseUnits(value, asset1Metadata.decimals),
+          );
+          setSecondAmountInput(value);
+        }
+        setActiveAsset(coin);
+      };
+    },
+    [
+      debouncedSetFirstAmount,
+      debouncedSetSecondAmount,
+      poolId,
+      asset0Metadata,
+      asset1Metadata,
+    ],
+  );
 
   const sufficientEthBalanceForFirstCoin = useCheckEthBalance({
     assetId: poolId[0].bits,
@@ -139,7 +176,8 @@ const AddLiquidityDialog = ({ poolId, setPreviewData }: Props) => {
     assetId: poolId[1].bits,
     amount: secondAmount.formatUnits(asset1Metadata.decimals),
   });
-  const sufficientEthBalance = sufficientEthBalanceForFirstCoin && sufficientEthBalanceForSecondCoin;
+  const sufficientEthBalance =
+    sufficientEthBalanceForFirstCoin && sufficientEthBalanceForSecondCoin;
 
   const faucetLink = useFaucetLink();
   const handleButtonClick = useCallback(() => {
@@ -157,7 +195,7 @@ const AddLiquidityDialog = ({ poolId, setPreviewData }: Props) => {
         {
           amount: secondAmount,
           assetId: poolId[1].bits,
-        }
+        },
       ],
       isStablePool,
     });
@@ -167,30 +205,32 @@ const AddLiquidityDialog = ({ poolId, setPreviewData }: Props) => {
     firstAmount,
     secondAmount,
     isStablePool,
-    faucetLink
+    faucetLink,
   ]);
 
   const isValidNetwork = useCheckActiveNetwork();
 
   const insufficientFirstBalance = firstAmount.gt(firstAssetBalance);
   const insufficientSecondBalance = secondAmount.gt(secondAssetBalance);
-  const insufficientBalance = insufficientFirstBalance || insufficientSecondBalance;
+  const insufficientBalance =
+    insufficientFirstBalance || insufficientSecondBalance;
 
-  let buttonTitle = 'Preview';
+  let buttonTitle = "Preview";
   if (!isValidNetwork) {
-    buttonTitle = 'Incorrect network';
+    buttonTitle = "Incorrect network";
   } else if (!sufficientEthBalance) {
-    buttonTitle = 'Bridge more ETH to pay for gas';
+    buttonTitle = "Bridge more ETH to pay for gas";
   } else if (insufficientBalance) {
-    buttonTitle = 'Insufficient balance';
+    buttonTitle = "Insufficient balance";
   }
 
   const oneOfAmountsIsEmpty = firstAmount.eq(0) || secondAmount.eq(0);
 
-  const buttonDisabled = !isValidNetwork || insufficientBalance || oneOfAmountsIsEmpty;
+  const buttonDisabled =
+    !isValidNetwork || insufficientBalance || oneOfAmountsIsEmpty;
 
-  const { price: asset0Price } = useAssetPrice(poolId[0].bits);
-  const { price: asset1Price } = useAssetPrice(poolId[1].bits);
+  const {price: asset0Price} = useAssetPrice(poolId[0].bits);
+  const {price: asset1Price} = useAssetPrice(poolId[1].bits);
 
   return (
     <>
@@ -198,32 +238,74 @@ const AddLiquidityDialog = ({ poolId, setPreviewData }: Props) => {
         <p>Selected pair</p>
         <div className={styles.sectionContent}>
           <div className={styles.coinPair}>
-            <CoinPair firstCoin={firstAssetId} secondCoin={secondAssetId} isStablePool={isStablePool}/>
+            <CoinPair
+              firstCoin={firstAssetId}
+              secondCoin={secondAssetId}
+              isStablePool={isStablePool}
+            />
             <div className={styles.APR}>
-              Estimated APR
-              <Info tooltipText={APRTooltip} tooltipKey="apr"/>
-              <span className={clsx(aprValue && styles.highlight, !aprValue && styles.pending)}>
-                {aprValue ? `${aprValue}%` : 'Awaiting data'}
-              </span>
+              <div className={styles.aprText}>
+                <p>Estimated APR</p>
+                <Info tooltipText={APRTooltip} tooltipKey="apr" />
+              </div>
+              {isMatching ? (
+                <div className={styles.aprDiv}>
+                  <AprBadge
+                    aprValue={
+                      aprValue === "NaN"
+                        ? "n/a"
+                        : aprValue
+                          ? `${aprValue}%`
+                          : "pending"
+                    }
+                    small={true}
+                    leftAlignValue={"-200px"}
+                    poolKey={poolKey}
+                    tvlValue={tvlValue}
+                  />
+                </div>
+              ) : (
+                <span
+                  className={clsx(
+                    aprValue && styles.highlight,
+                    !aprValue && styles.pending,
+                  )}
+                >
+                  {aprValue ? `${aprValue}%` : "Awaiting data"}
+                </span>
+              )}
             </div>
           </div>
           <div className={styles.poolStability}>
-            <div className={clsx(styles.poolStabilityButton, !isStablePool && styles.poolStabilityButtonActive, styles.poolStabilityButtonDisabled)}
-                 role="button"
+            <div
+              className={clsx(
+                styles.poolStabilityButton,
+                !isStablePool && styles.poolStabilityButtonActive,
+                styles.poolStabilityButtonDisabled,
+              )}
+              role="button"
             >
               <div className={styles.poolStabilityButtonTitle}>
                 <p>Volatile pool</p>
-                <Info tooltipText={VolatilePoolTooltip} tooltipKey="volatilePool"/>
+                <Info
+                  tooltipText={VolatilePoolTooltip}
+                  tooltipKey="volatilePool"
+                />
               </div>
               <p>0.30% fee tier</p>
             </div>
 
-            <div className={clsx(styles.poolStabilityButton, isStablePool && styles.poolStabilityButtonActive, styles.poolStabilityButtonDisabled)}
-                    role="button"
+            <div
+              className={clsx(
+                styles.poolStabilityButton,
+                isStablePool && styles.poolStabilityButtonActive,
+                styles.poolStabilityButtonDisabled,
+              )}
+              role="button"
             >
               <div className={styles.poolStabilityButtonTitle}>
                 <p>Stable pool</p>
-                <Info tooltipText={StablePoolTooltip} tooltipKey="stablePool"/>
+                <Info tooltipText={StablePoolTooltip} tooltipKey="stablePool" />
               </div>
               <p>0.05% fee tier</p>
             </div>
@@ -265,7 +347,10 @@ const AddLiquidityDialog = ({ poolId, setPreviewData }: Props) => {
         </ActionButton>
       )}
       <FailureModal title={<></>}>
-        <TransactionFailureModal error={previewError} closeModal={closeFailureModal} />
+        <TransactionFailureModal
+          error={previewError}
+          closeModal={closeFailureModal}
+        />
       </FailureModal>
     </>
   );
