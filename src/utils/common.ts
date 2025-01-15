@@ -156,10 +156,8 @@ export const calculateEpochDuration = (
     // Before the start date
     const startDateFormatted = new Date(startDate).toLocaleString("en-US", {
       timeZone: "UTC",
-      weekday: "short",
       month: "short",
       day: "numeric",
-      year: "numeric",
       hour: "2-digit",
       minute: "2-digit",
     });
