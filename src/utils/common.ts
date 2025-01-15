@@ -149,7 +149,7 @@ export const calculateEpochDuration = (endDate: string): string => {
   const end = new Date(endDate).getTime();
   const diff = end - now;
 
-  if (diff <= 0) return "Epoch has ended";
+  if (diff <= 0) return "Season has ended";
 
   const days = Math.floor(diff / (1000 * 60 * 60 * 24));
   const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));

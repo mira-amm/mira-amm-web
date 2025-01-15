@@ -62,6 +62,4 @@ export const BoostsRewardsTooltip =
 export const boostsEpochTooltip =
   "Current season lasts for 45 days total. All rewards wll be distributed at the end of the season. ";
 
-export const endDate = "2025-03-01T23:59:59"; // March 1, 2025
-
 export const RewardsApiUrl = "/api/rewards" as const;

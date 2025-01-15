@@ -8,7 +8,6 @@ import {
   boostsEpochTooltip,
   BoostsLearnMoreUrl,
   BoostsRewardsTooltip,
-  endDate,
 } from "@/src/utils/constants";
 import {useEffect, useState} from "react";
 import {
@@ -35,6 +34,7 @@ const BoostsRewards = (): JSX.Element => {
 
   const {price: fuelToUsdRate, isLoading} = useFuelPrice();
 
+  const endDate = boostRewards[0].endDate;
   const rewardsData = boostRewards[0].campaigns;
   const rewardsPoolsId = getRewardsPoolsId(rewardsData);
 
