@@ -54,7 +54,7 @@ export const DisclaimerMessage = `Disclaimer
 5. I understand the risks associated with using decentralized protocols, including the Mira Dex protocol, as outlined in the Terms of Use and Privacy Policy.`;
 
 export const BoostsLearnMoreUrl =
-  "https://app.fuel.network/earn-points" as const;
+  "https://mirror.xyz/miraly.eth/kPWlmOIY_HhHQmZMkDb2dU4Sv_GxqgnIt4cQ7TwGZk4" as const;
 
 export const BoostsRewardsTooltip =
   "These are the total Fuel tokens earned that will be distributed at the end of the season. The exact dollar amount will change based on Fuel’s current price. The exact token amount might change.";
