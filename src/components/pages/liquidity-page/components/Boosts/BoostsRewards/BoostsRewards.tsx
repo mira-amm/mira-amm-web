@@ -53,7 +53,7 @@ const BoostsRewards = (): JSX.Element => {
     const interval = setInterval(updateDuration, 60000);
 
     return () => clearInterval(interval);
-  }, []);
+  }, [endDate]);
 
   const fuelCount = calculateFuelAmount(rewardsAmount, fuelToUsdRate);
   const usdValue = calculateUsdValue(fuelCount, fuelToUsdRate);
