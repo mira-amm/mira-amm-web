@@ -10,8 +10,7 @@ const BoostsBanner = (): JSX.Element => {
       <p className={styles.header}>Introducing Boosts</p>
       <div className={styles.bottomArea}>
         <p className={styles.subHeader}>
-          Earn $FUEL by providing liquidity on selected pools. Look for the
-          boost on the pools.
+          Earn $FUEL by providing liquidity to the highlighted pools.
         </p>
         <Link href={BoostsLearnMoreUrl} target="_blank">
           <button className={styles.learnMore}>
