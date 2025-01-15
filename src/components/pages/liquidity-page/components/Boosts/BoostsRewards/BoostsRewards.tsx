@@ -102,6 +102,12 @@ const BoostsRewards = (): JSX.Element => {
               </>
             )}
           </div>
+          <p className={styles.disclaimer}>
+            Rewards are estimates and final rewards can be slightly different
+            <Link href={BoostsLearnMoreUrl} target="_blank">
+              <u>Learn more.</u>
+            </Link>
+          </p>
         </div>
         <div className={styles.epochSection}>
           <div className={styles.divider}></div>

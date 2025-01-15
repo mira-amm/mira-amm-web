@@ -97,6 +97,16 @@
   font-weight: 400;
 }
 
+.disclaimer {
+  display: flex;
+  font-size: 10px;
+  color: #ffffffb8;
+}
+
+.disclaimer u {
+  margin-left: 5px;
+}
+
 /* Media Queries */
 @media (max-width: 768px) {
   .rewardsLabel {
