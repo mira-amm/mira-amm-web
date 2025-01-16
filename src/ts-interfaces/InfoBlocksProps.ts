@@ -1,4 +1,4 @@
 export interface InfoBlocksProps {
-    title?: string;
-    children?: React.ReactNode
+  title?: string;
+  children?: React.ReactNode;
 }

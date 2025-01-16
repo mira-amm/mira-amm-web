@@ -1,3 +1,3 @@
 export interface RoadMapIconProps {
-    text: string
+  text: string;
 }

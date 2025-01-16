@@ -26,7 +26,17 @@ type Props = {
   previewError?: Error | null;
 };
 
-const CurrencyBox = ({ value, assetId, mode, balance, setAmount, loading, onCoinSelectorClick, usdRate, previewError }: Props) => {
+const CurrencyBox = ({
+  value,
+  assetId,
+  mode,
+  balance,
+  setAmount,
+  loading,
+  onCoinSelectorClick,
+  usdRate,
+  previewError,
+}: Props) => {
   const metadata = useAssetMetadata(assetId);
   const balanceValue = balance.formatUnits(metadata.decimals || 0);
 
@@ -63,20 +73,21 @@ const CurrencyBox = ({ value, assetId, mode, balance, setAmount, loading, onCoin
   const coinNotSelected = assetId === null;
 
   const numericValue = parseFloat(value);
-  const usdValue = !isNaN(numericValue) && Boolean(usdRate) ?
-    (numericValue * usdRate!).toLocaleString(DefaultLocale, {
-      minimumFractionDigits: 2,
-      maximumFractionDigits: 2
-    }) :
-    null;
+  const usdValue =
+    !isNaN(numericValue) && Boolean(usdRate)
+      ? (numericValue * usdRate!).toLocaleString(DefaultLocale, {
+          minimumFractionDigits: 2,
+          maximumFractionDigits: 2,
+        })
+      : null;
 
   let errorMessage = null;
   if (previewError) {
-    errorMessage = 'This swap is currently unavailable';
+    errorMessage = "This swap is currently unavailable";
     if (previewError instanceof InsufficientReservesError) {
-      errorMessage = 'Insufficient reserves in pool';
+      errorMessage = "Insufficient reserves in pool";
     } else if (previewError instanceof NoRouteFoundError) {
-      errorMessage = 'No pool found for this swap';
+      errorMessage = "No pool found for this swap";
     }
   }
 
@@ -86,37 +97,43 @@ const CurrencyBox = ({ value, assetId, mode, balance, setAmount, loading, onCoin
       <div className={styles.content}>
         {errorMessage ? (
           <div className={styles.warningBox}>
-            <p className={styles.warningLabel}>
-              {errorMessage}
-            </p>
+            <p className={styles.warningLabel}>{errorMessage}</p>
           </div>
         ) : (
-          <input className={styles.input}
-                 type="text"
-                 inputMode="decimal"
-                 pattern="^[0-9]*[.,]?[0-9]*$"
-                 placeholder="0"
-                 minLength={1}
-                 value={value}
-                 disabled={coinNotSelected || loading}
-                 onChange={handleChange}
+          <input
+            className={styles.input}
+            type="text"
+            inputMode="decimal"
+            pattern="^[0-9]*[.,]?[0-9]*$"
+            placeholder="0"
+            minLength={1}
+            value={value}
+            disabled={coinNotSelected || loading}
+            onChange={handleChange}
           />
         )}
 
         <button
-          className={clsx(styles.selector, coinNotSelected && styles.selectorHighlighted)}
+          className={clsx(
+            styles.selector,
+            coinNotSelected && styles.selectorHighlighted,
+          )}
           onClick={handleCoinSelectorClick}
           disabled={loading}
         >
-          {coinNotSelected ? <p className={styles.chooseCoin}>Choose coin</p> : <Coin assetId={assetId}/>}
-          <ChevronDownIcon/>
+          {coinNotSelected ? (
+            <p className={styles.chooseCoin}>Choose coin</p>
+          ) : (
+            <Coin assetId={assetId} />
+          )}
+          <ChevronDownIcon />
         </button>
       </div>
       <div className={styles.estimateAndBalance}>
         <p className={styles.estimate}>{usdValue !== null && `$${usdValue}`}</p>
         {balance.gt(0) && (
           <span className={styles.balance}>
-                Balance: {balanceValue}
+            Balance: {balanceValue}
             &nbsp;
             <TextButton onClick={handleMaxClick}>Max</TextButton>
           </span>

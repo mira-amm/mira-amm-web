@@ -4,7 +4,9 @@ import {TransactionsCloseIcon} from "../../icons/Close/TransactionsCloseIcon";
 import CopyAddressIcon from "../../icons/Copy/CopyAddressIcon";
 import {useIsConnected, useAccount} from "@fuels/react";
 import useFormattedAddress from "@/src/hooks/useFormattedAddress/useFormattedAddress";
-import useWalletTransactions, {TransactionsData} from "@/src/hooks/useWalletTransactions";
+import useWalletTransactions, {
+  TransactionsData,
+} from "@/src/hooks/useWalletTransactions";
 import {coinsConfig} from "@/src/utils/coinsConfig";
 import {DefaultLocale} from "@/src/utils/constants";
 
@@ -26,13 +28,17 @@ interface TransactionsHistoryProps {
   isOpened: boolean;
 }
 
-const transformTransactionsDataAndGroupByDate = (transactionsData: TransactionsData | undefined) => {
+const transformTransactionsDataAndGroupByDate = (
+  transactionsData: TransactionsData | undefined,
+) => {
   const grouped: Record<string, TransactionProps[]> = {};
   if (!transactionsData) {
     return grouped;
   }
 
-  const transactions = transactionsData.Transaction.toSorted((txA, txB) => txB.block_time - txA.block_time);
+  const transactions = transactionsData.Transaction.toSorted(
+    (txA, txB) => txB.block_time - txA.block_time,
+  );
 
   transactions.forEach((transaction) => {
     const date = new Date(transaction.block_time * 1000).toLocaleDateString(
@@ -56,10 +62,14 @@ const transformTransactionsDataAndGroupByDate = (transactionsData: TransactionsD
     const secondAssetIcon = coinsConfig.get(secondAssetName)?.icon!;
     const firstAssetDecimals = coinsConfig.get(firstAssetName)?.decimals!;
     const secondAssetDecimals = coinsConfig.get(secondAssetName)?.decimals!;
-    const firstAssetIn = Number(transaction.asset_0_in) / 10 ** firstAssetDecimals;
-    const firstAssetOut = Number(transaction.asset_0_out) / 10 ** firstAssetDecimals;
-    const secondAssetIn = Number(transaction.asset_1_in) / 10 ** secondAssetDecimals;
-    const secondAssetOut = Number(transaction.asset_1_out) / 10 ** secondAssetDecimals;
+    const firstAssetIn =
+      Number(transaction.asset_0_in) / 10 ** firstAssetDecimals;
+    const firstAssetOut =
+      Number(transaction.asset_0_out) / 10 ** firstAssetDecimals;
+    const secondAssetIn =
+      Number(transaction.asset_1_in) / 10 ** secondAssetDecimals;
+    const secondAssetOut =
+      Number(transaction.asset_1_out) / 10 ** secondAssetDecimals;
 
     let firstAssetAmount;
     let secondAssetAmount;
@@ -72,10 +82,16 @@ const transformTransactionsDataAndGroupByDate = (transactionsData: TransactionsD
        * mapping of assets from pool id to the visual representation of the transaction.
        */
       const reversedAssetsOrder = secondAssetOut > firstAssetOut;
-      firstAssetNameToUse = reversedAssetsOrder ? secondAssetName : firstAssetName;
-      secondAssetNameToUse = reversedAssetsOrder ? firstAssetName : secondAssetName;
-      const firstAssetDecimals = coinsConfig.get(firstAssetNameToUse)?.decimals!;
-      const secondAssetDecimals = coinsConfig.get(secondAssetNameToUse)?.decimals!;
+      firstAssetNameToUse = reversedAssetsOrder
+        ? secondAssetName
+        : firstAssetName;
+      secondAssetNameToUse = reversedAssetsOrder
+        ? firstAssetName
+        : secondAssetName;
+      const firstAssetDecimals =
+        coinsConfig.get(firstAssetNameToUse)?.decimals!;
+      const secondAssetDecimals =
+        coinsConfig.get(secondAssetNameToUse)?.decimals!;
       const outputValue = Math.max(firstAssetOut, secondAssetOut);
       const inputValue = Math.max(firstAssetIn, secondAssetIn);
       firstAssetAmount = outputValue.toFixed(firstAssetDecimals);
@@ -123,7 +139,10 @@ const transformTransactionsDataAndGroupByDate = (transactionsData: TransactionsD
   return grouped;
 };
 
-const TransactionsHistory = forwardRef<HTMLDivElement, TransactionsHistoryProps>(function TransactionsHistory({onClose, isOpened}, ref) {
+const TransactionsHistory = forwardRef<
+  HTMLDivElement,
+  TransactionsHistoryProps
+>(function TransactionsHistory({onClose, isOpened}, ref) {
   const {account} = useAccount();
   const {isConnected} = useIsConnected();
   const formattedAddress = useFormattedAddress(account);
@@ -136,7 +155,8 @@ const TransactionsHistory = forwardRef<HTMLDivElement, TransactionsHistoryProps>
   }, [isConnected, formattedAddress]);
 
   const {transactions} = useWalletTransactions(account, isOpened);
-  const groupedTransactions = transformTransactionsDataAndGroupByDate(transactions);
+  const groupedTransactions =
+    transformTransactionsDataAndGroupByDate(transactions);
 
   const handleCopy = () => {
     if (navigator.clipboard && account) {
@@ -146,26 +166,37 @@ const TransactionsHistory = forwardRef<HTMLDivElement, TransactionsHistoryProps>
         },
         (err) => {
           console.error("Failed to copy address: ", err);
-        }
+        },
       );
     }
   };
 
   return (
     <div className={isOpened ? styles.overlayOpened : styles.overlayClosed}>
-      <div className={`${styles.wrapper} ${isOpened ? styles.open : styles.close}`} ref={ref}>
+      <div
+        className={`${styles.wrapper} ${isOpened ? styles.open : styles.close}`}
+        ref={ref}
+      >
         <div className={styles.header}>
           <h2 className={styles.title}>Transactions History</h2>
-          <button type="button" className={styles.transactionCloseButton} onClick={onClose}>
-            <TransactionsCloseIcon/>
+          <button
+            type="button"
+            className={styles.transactionCloseButton}
+            onClick={onClose}
+          >
+            <TransactionsCloseIcon />
           </button>
         </div>
         <div className={styles.accountInfo}>
           <div className={styles.accountUserInfo}>
-            <img className={styles.accountAvatar} src="/images/avatar.png"/>
+            <img className={styles.accountAvatar} src="/images/avatar.png" />
             <span className={styles.accountWallet}>{walletAddress}</span>
-            <button className={styles.copyButton} type="button" onClick={handleCopy}>
-              <CopyAddressIcon/>
+            <button
+              className={styles.copyButton}
+              type="button"
+              onClick={handleCopy}
+            >
+              <CopyAddressIcon />
             </button>
           </div>
           {/*<span className={styles.accountBalance}>$4,789.06</span>*/}
@@ -180,17 +211,23 @@ const TransactionsHistory = forwardRef<HTMLDivElement, TransactionsHistoryProps>
                     <div className={styles.transactionInfo}>
                       <div className={styles.transactionCoins}>
                         <div className={styles.firstCoin}>
-                          <img src={transaction.firstAssetIcon} alt={`${transaction.firstAssetName} icon`}/>
+                          <img
+                            src={transaction.firstAssetIcon}
+                            alt={`${transaction.firstAssetName} icon`}
+                          />
                         </div>
                         <div className={styles.secondCoin}>
-                          <img src={transaction.secondAssetIcon} alt={`${transaction.secondAssetName} icon`}/>
+                          <img
+                            src={transaction.secondAssetIcon}
+                            alt={`${transaction.secondAssetName} icon`}
+                          />
                         </div>
                       </div>
                       <div className={styles.transactionText}>
                         <div className={styles.transactionType}>
-                        <span className={styles.transactionName}>
-                          {transaction.name}
-                        </span>
+                          <span className={styles.transactionName}>
+                            {transaction.name}
+                          </span>
                           <div
                             className={`${styles.typeCircle} ${
                               transaction.withdrawal
@@ -202,10 +239,14 @@ const TransactionsHistory = forwardRef<HTMLDivElement, TransactionsHistoryProps>
                           ></div>
                         </div>
                         <span className={styles.transactionAmount}>
-                        {transaction.firstAssetAmount} {transaction.firstAssetName}
-                          {transaction.addLiquidity || transaction.withdrawal ? " and " : " for "}
-                          {transaction.secondAssetAmount} {transaction.secondAssetName}
-                      </span>
+                          {transaction.firstAssetAmount}{" "}
+                          {transaction.firstAssetName}
+                          {transaction.addLiquidity || transaction.withdrawal
+                            ? " and "
+                            : " for "}
+                          {transaction.secondAssetAmount}{" "}
+                          {transaction.secondAssetName}
+                        </span>
                       </div>
                     </div>
                   </li>
@@ -215,7 +256,9 @@ const TransactionsHistory = forwardRef<HTMLDivElement, TransactionsHistoryProps>
           ))}
         </ul>
       </div>
-      <div className={isOpened ? styles.linerVisible : styles.linerHidden}></div>
+      <div
+        className={isOpened ? styles.linerVisible : styles.linerHidden}
+      ></div>
     </div>
   );
 });

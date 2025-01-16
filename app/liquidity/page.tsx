@@ -2,6 +2,6 @@ import LiquidityPageLayout from "@/src/components/pages/liquidity-page/Liquidity
 
 const LiqudityPage = () => {
   return <LiquidityPageLayout />;
-}
+};
 
 export default LiqudityPage;

@@ -5,12 +5,14 @@ import InfoBlock from "@/src/components/common/InfoBlock/InfoBlock";
 import {useRouter} from "next/navigation";
 import styles from "./MobilePoolItem.module.css";
 import {PoolData} from "@/src/hooks/usePoolsData";
+import AprBadge from "@/src/components/common/AprBadge/AprBadge";
+import usePoolNameAndMatch from "@/src/hooks/usePoolNameAndMatch";
 
 type Props = {
   poolData: PoolData;
 };
 
-const MobilePoolItem = ({poolData}: Props) => {
+const MobilePoolItem = ({poolData}: Props): JSX.Element => {
   const router = useRouter();
   const {
     poolKey,
@@ -25,6 +27,12 @@ const MobilePoolItem = ({poolData}: Props) => {
   const handleAddClick = () => {
     router.push(`/liquidity/add?pool=${poolKey}`);
   };
+  const tvlActual = tvlValue
+    ? parseInt(tvlValue?.replace(/[^0-9]+/g, ""), 10)
+    : 0;
+
+  //Checks if the pool with rewards matches the current pool
+  const {isMatching} = usePoolNameAndMatch(poolKey);
 
   return (
     <div className={styles.mobilePoolItem}>
@@ -35,7 +43,20 @@ const MobilePoolItem = ({poolData}: Props) => {
           isStablePool={isStablePool}
         />
         <div className={styles.infoBlocks}>
-          <InfoBlock title="APR" value={aprValue} type="positive" />
+          {isMatching ? (
+            <div>
+              <p>{"APR"}</p>
+              <AprBadge
+                small={true}
+                aprValue={aprValue}
+                poolKey={poolKey || ""}
+                tvlValue={tvlActual}
+              />
+            </div>
+          ) : (
+            <InfoBlock title="APR" value={aprValue} type="positive" />
+          )}
+
           <InfoBlock title="24H Volume" value={volumeValue} />
           <InfoBlock title="TVL" value={tvlValue} />
         </div>

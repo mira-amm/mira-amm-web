@@ -6,10 +6,14 @@ import {Account, FuelConnector, toBech32} from "fuels";
 import {calculateSHA256Hash} from "@/src/utils/common";
 import {hasSignMessageCustomCurve} from "@fuels/connectors";
 
-const signMessage = async (wallet: Account, connector: FuelConnector | null, message: string) => {
-  if (connector?.name === 'Bako Safe') {
+const signMessage = async (
+  wallet: Account,
+  connector: FuelConnector | null,
+  message: string,
+) => {
+  if (connector?.name === "Bako Safe") {
     // Temporary solution to disable message signing for Bako, while they don't support this
-    return ['bako', 'bako'];
+    return ["bako", "bako"];
   }
   if (hasSignMessageCustomCurve(connector)) {
     const result = await connector.signMessageCustomCurve(message);
@@ -18,12 +22,12 @@ const signMessage = async (wallet: Account, connector: FuelConnector | null, mes
     return [null, await wallet.signMessage(message)];
   }
   return [null, null];
-}
+};
 
 const useSendSignature = (message: string) => {
-  const { account } = useAccount();
-  const { wallet } = useWallet({ account });
-  const { currentConnector } = useCurrentConnector();
+  const {account} = useAccount();
+  const {wallet} = useWallet({account});
+  const {currentConnector} = useCurrentConnector();
 
   const mutationFn = useCallback(async () => {
     if (!account || !wallet) {
@@ -31,13 +35,17 @@ const useSendSignature = (message: string) => {
     }
 
     const address = toBech32(account);
-    const [curve, signature] = await signMessage(wallet, currentConnector, message);
+    const [curve, signature] = await signMessage(
+      wallet,
+      currentConnector,
+      message,
+    );
     const messageHash = await calculateSHA256Hash(message);
     let requestBody = {
       address,
       msg_hash: messageHash,
       signature,
-      connector: currentConnector?.name
+      connector: currentConnector?.name,
     };
     if (curve) {
       requestBody = {
@@ -46,25 +54,22 @@ const useSendSignature = (message: string) => {
       };
     }
 
-    const response = await fetch(
-      `${ApiBaseUrl}/signatures`,
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(requestBody),
+    const response = await fetch(`${ApiBaseUrl}/signatures`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
       },
-    );
+      body: JSON.stringify(requestBody),
+    });
 
     return response.ok;
   }, [account, currentConnector, message, wallet]);
 
-  const { data, mutateAsync, isPending } = useMutation({
+  const {data, mutateAsync, isPending} = useMutation({
     mutationFn,
   });
 
-  return { signatureData: data, sign: mutateAsync, signingIsPending: isPending };
+  return {signatureData: data, sign: mutateAsync, signingIsPending: isPending};
 };
 
 export default useSendSignature;

@@ -9,14 +9,17 @@ import {
   FueletWalletConnector,
   FuelWalletConnector,
   SolanaConnector,
-  WalletConnectConnector
+  WalletConnectConnector,
 } from "@fuels/connectors";
 import {createConfig, http, injected} from "@wagmi/core";
 import {mainnet} from "@wagmi/core/chains";
 import {walletConnect} from "@wagmi/connectors";
 import {NetworkUrl} from "@/src/utils/constants";
 
-type ExternalConnectorConfig = Partial<{ chainId: number, fuelProvider: Promise<Provider> }>;
+type ExternalConnectorConfig = Partial<{
+  chainId: number;
+  fuelProvider: Promise<Provider>;
+}>;
 type Props = {
   children: ReactNode;
 };
@@ -24,12 +27,12 @@ const networks: Array<Network> = [
   {
     chainId: CHAIN_IDS.fuel.mainnet,
     url: NetworkUrl,
-  }
+  },
 ];
 
 // Creates a protection for SRR
 const FUEL_CONFIG = createFuelConfig(() => {
-  const WalletConnectProjectId = '35b967d8f17700b2de24f0abee77e579';
+  const WalletConnectProjectId = "35b967d8f17700b2de24f0abee77e579";
   const wagmiConfig = createConfig({
     syncConnectedChain: false,
     chains: [mainnet],
@@ -66,11 +69,11 @@ const FUEL_CONFIG = createFuelConfig(() => {
   const walletConnectConnector = new WalletConnectConnector({
     projectId: WalletConnectProjectId,
     wagmiConfig: wagmiConfig as any,
-    ...externalConnectorConfig
+    ...externalConnectorConfig,
   });
   const solanaConnector = new SolanaConnector({
     projectId: WalletConnectProjectId,
-    ...externalConnectorConfig
+    ...externalConnectorConfig,
   });
 
   return {
@@ -80,8 +83,8 @@ const FUEL_CONFIG = createFuelConfig(() => {
       walletConnectConnector,
       solanaConnector,
       ...(isMobile ? [] : [fuelWalletConnector, bakoSafeConnector]),
-    ]
-  }
+    ],
+  };
 });
 
 const FuelProviderWrapper = ({children}: Props) => {

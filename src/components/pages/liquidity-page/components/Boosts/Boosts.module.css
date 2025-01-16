@@ -1,0 +1,10 @@
+.boosts {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.boostsTitle {
+  font-size: 20px;
+  line-height: 24px;
+}

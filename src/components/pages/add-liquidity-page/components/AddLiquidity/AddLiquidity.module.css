@@ -51,11 +51,20 @@
 
 .APR {
   display: flex;
-  align-items: center;
+  flex-direction: column;
+  align-items: end;
   gap: 4px;
-  font-size: 12px;
   line-height: 14px;
-  margin-left: 56px;
+  padding-bottom: 4px;
+}
+
+.aprText {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+}
+.aprText > p {
+  font-size: 12px;
 }
 
 .APR > span {
@@ -65,6 +74,7 @@
 
 .highlight {
   color: var(--content-positive);
+  padding-bottom: 2px;
 }
 
 .pending {
@@ -143,7 +153,9 @@
   pointer-events: auto;
 }
 
-.inputsPreview, .previewPriceBlock, .previewCurrentPriceBlock {
+.inputsPreview,
+.previewPriceBlock,
+.previewCurrentPriceBlock {
   display: flex;
   flex-direction: column;
   padding: 12px;
@@ -166,7 +178,8 @@
   font-weight: 500;
 }
 
-.inputPreviewRow svg, .inputPreviewRow img {
+.inputPreviewRow svg,
+.inputPreviewRow img {
   width: 20px;
   height: 20px;
 }
@@ -192,12 +205,15 @@
   align-items: center;
 }
 
-.previewPriceBlockTitle, .previewPriceBlockExchange, .previewPriceBlockDescription {
+.previewPriceBlockTitle,
+.previewPriceBlockExchange,
+.previewPriceBlockDescription {
   font-size: 12px;
   line-height: 16px;
 }
 
-.previewPriceBlockTitle, .previewPriceBlockExchange {
+.previewPriceBlockTitle,
+.previewPriceBlockExchange {
   color: var(--content-tertiary);
 }
 
@@ -220,7 +236,12 @@
   align-items: center;
   padding: 12px;
   border-radius: 10px;
-  background: linear-gradient(97.15deg, #5872FC -1.13%, #6142BA 56.75%, #C41CFF 135.82%);
+  background: linear-gradient(
+    97.15deg,
+    #5872fc -1.13%,
+    #6142ba 56.75%,
+    #c41cff 135.82%
+  );
 }
 
 .sparkleIcon {
@@ -258,34 +279,41 @@
 .priceWarning {
   font-size: 14px;
   line-height: 17px;
-  color: #FFB800;
+  color: #ffb800;
+}
+.coinPair {
+  display: flex;
+  justify-content: space-between;
 }
 
 @media (min-width: 1024px) {
-  .coinPair {
-    display: flex;
-    justify-content: space-between;
-  }
-
   /*.poolStabilityButton {*/
   /*  flex-direction: row;*/
   /*}*/
+
+  .APR {
+    flex-direction: row;
+  }
 
   .inputPreviewRow p {
     font-size: 16px;
     line-height: 19px;
   }
 
-  .inputPreviewRow svg, .inputPreviewRow img {
+  .inputPreviewRow svg,
+  .inputPreviewRow img {
     width: 24px;
     height: 24px;
   }
 
-  .previewPriceBlock, .previewCurrentPriceBlock {
+  .previewPriceBlock,
+  .previewCurrentPriceBlock {
     padding: 8px 16px;
   }
 
-  .previewPriceBlockTitle, .previewPriceBlockExchange, .previewPriceBlockDescription {
+  .previewPriceBlockTitle,
+  .previewPriceBlockExchange,
+  .previewPriceBlockDescription {
     line-height: 18px;
   }
 }

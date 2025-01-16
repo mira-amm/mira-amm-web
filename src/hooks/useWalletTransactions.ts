@@ -1,4 +1,4 @@
-import {gql, request} from 'graphql-request'
+import {gql, request} from "graphql-request";
 import {useQuery} from "@tanstack/react-query";
 import {B256Address} from "fuels";
 import {IndexerUrl} from "@/src/utils/constants";
@@ -15,12 +15,19 @@ export type TransactionsData = {
     pool_id: string;
     transaction_type: "ADD_LIQUIDITY" | "REMOVE_LIQUIDITY" | "SWAP";
   }[];
-}
+};
 
-const useWalletTransactions = (account: B256Address | null, fetchCondition: boolean) => {
+const useWalletTransactions = (
+  account: B256Address | null,
+  fetchCondition: boolean,
+) => {
   const query = gql`
-    query Transactions($owner:String, $offset:Int, $limit:Int) {
-      Transaction(where: { initiator: { _eq: $owner } }, offset:$offset, limit:$limit) {
+    query Transactions($owner: String, $offset: Int, $limit: Int) {
+      Transaction(
+        where: {initiator: {_eq: $owner}}
+        offset: $offset
+        limit: $limit
+      ) {
         asset_0_in
         asset_0_out
         asset_1_in
@@ -34,21 +41,22 @@ const useWalletTransactions = (account: B256Address | null, fetchCondition: bool
 
   const shouldFetch = Boolean(account) && Boolean(fetchCondition);
 
-  const { data } = useQuery({
-    queryKey: ['transactions', account],
-    queryFn: () => request({
-      url: IndexerUrl,
-      document: query,
-      variables: {
-        owner: account?.toLowerCase(),
-        limit: 200,
-        offset: 0,
-      },
-    }),
+  const {data} = useQuery({
+    queryKey: ["transactions", account],
+    queryFn: () =>
+      request({
+        url: IndexerUrl,
+        document: query,
+        variables: {
+          owner: account?.toLowerCase(),
+          limit: 200,
+          offset: 0,
+        },
+      }),
     enabled: shouldFetch,
   });
 
-  return { transactions: data as TransactionsData | undefined };
+  return {transactions: data as TransactionsData | undefined};
 };
 
 export default useWalletTransactions;

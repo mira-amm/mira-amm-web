@@ -1,4 +1,4 @@
-import styles from './RemoveLiquidityModalContent.module.css';
+import styles from "./RemoveLiquidityModalContent.module.css";
 import CoinPair from "@/src/components/common/CoinPair/CoinPair";
 import WarningIcon from "@/src/components/icons/Warning/WarningIcon";
 import ActionButton from "@/src/components/common/ActionButton/ActionButton";
@@ -14,8 +14,8 @@ import {
   useState,
 } from "react";
 import {useDebounceCallback} from "usehooks-ts";
-import useAssetMetadata from '@/src/hooks/useAssetMetadata';
-import { B256Address } from 'fuels';
+import useAssetMetadata from "@/src/hooks/useAssetMetadata";
+import {B256Address} from "fuels";
 
 type Props = {
   coinA: B256Address;
@@ -26,13 +26,26 @@ type Props = {
   coinAValueToWithdraw: string;
   coinBValueToWithdraw: string;
   liquidityValue: number;
-  setLiquidityValue: Dispatch<SetStateAction<number>>
+  setLiquidityValue: Dispatch<SetStateAction<number>>;
   closeModal: VoidFunction;
   handleRemoveLiquidity: VoidFunction;
   isValidNetwork: boolean;
-}
+};
 
-const RemoveLiquidityModalContent = ({coinA, coinB, isStablePool, currentCoinAValue, currentCoinBValue, coinAValueToWithdraw, coinBValueToWithdraw, closeModal, liquidityValue, setLiquidityValue, handleRemoveLiquidity, isValidNetwork }: Props) => {
+const RemoveLiquidityModalContent = ({
+  coinA,
+  coinB,
+  isStablePool,
+  currentCoinAValue,
+  currentCoinBValue,
+  coinAValueToWithdraw,
+  coinBValueToWithdraw,
+  closeModal,
+  liquidityValue,
+  setLiquidityValue,
+  handleRemoveLiquidity,
+  isValidNetwork,
+}: Props) => {
   const [displayValue, setDisplayValue] = useState(liquidityValue);
   const coinAMetadata = useAssetMetadata(coinA);
   const coinBMetadata = useAssetMetadata(coinB);
@@ -40,50 +53,62 @@ const RemoveLiquidityModalContent = ({coinA, coinB, isStablePool, currentCoinAVa
   const sliderRef = useRef<HTMLInputElement>(null);
 
   const debouncedSetValue = useDebounceCallback(setLiquidityValue, 500);
-  const handleMouseUp = (e: MouseEvent<HTMLInputElement> | TouchEvent<HTMLInputElement>) => {
+  const handleMouseUp = (
+    e: MouseEvent<HTMLInputElement> | TouchEvent<HTMLInputElement>,
+  ) => {
     // @ts-ignore
     debouncedSetValue(Number(e.target.value));
   };
 
   useEffect(() => {
     if (sliderRef.current) {
-      document.documentElement.style.setProperty('--value', `${sliderRef.current.value}%`);
+      document.documentElement.style.setProperty(
+        "--value",
+        `${sliderRef.current.value}%`,
+      );
     }
   }, []);
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     setDisplayValue(Number(e.target.value));
-    document.documentElement.style.setProperty('--value', `${e.target.value}%`);
+    document.documentElement.style.setProperty("--value", `${e.target.value}%`);
   };
 
   const handleMax = () => {
     debouncedSetValue(100);
-    document.documentElement.style.setProperty('--value', '100%');
+    document.documentElement.style.setProperty("--value", "100%");
   };
 
-  let buttonTitle = 'Confirm';
+  let buttonTitle = "Confirm";
   if (!isValidNetwork) {
-    buttonTitle = 'Incorrect network';
+    buttonTitle = "Incorrect network";
   }
 
   const withdrawalDisabled = !isValidNetwork;
 
   return (
     <div className={styles.removeLiquidityContent}>
-      <CoinPair firstCoin={coinA} secondCoin={coinB} isStablePool={isStablePool} />
+      <CoinPair
+        firstCoin={coinA}
+        secondCoin={coinB}
+        isStablePool={isStablePool}
+      />
       <div className={styles.valueAndMax}>
         <p className={styles.value}>{displayValue}%</p>
-        <button className={styles.maxButton} onClick={handleMax}>Max</button>
+        <button className={styles.maxButton} onClick={handleMax}>
+          Max
+        </button>
       </div>
-      <input type="range"
-             className={styles.slider}
-             min={0}
-             max={100}
-             defaultValue={liquidityValue}
-             onMouseUp={handleMouseUp}
-             onTouchEnd={handleMouseUp}
-             onChange={handleChange}
-             ref={sliderRef}
+      <input
+        type="range"
+        className={styles.slider}
+        min={0}
+        max={100}
+        defaultValue={liquidityValue}
+        onMouseUp={handleMouseUp}
+        onTouchEnd={handleMouseUp}
+        onChange={handleChange}
+        ref={sliderRef}
       />
       {/*<div className={styles.someText}>*/}
       {/*  <p className={styles.dimmed}>Withdraw fees only</p>*/}
@@ -92,45 +117,41 @@ const RemoveLiquidityModalContent = ({coinA, coinB, isStablePool, currentCoinAVa
       <div className={styles.tableWrapper}>
         <table className={styles.liquidityTable}>
           <thead>
-          <tr>
-            <th />
-            <th>{coinAMetadata.symbol}</th>
-            <th>{coinBMetadata.symbol}</th>
-          </tr>
+            <tr>
+              <th />
+              <th>{coinAMetadata.symbol}</th>
+              <th>{coinBMetadata.symbol}</th>
+            </tr>
           </thead>
           <tbody>
-          <tr>
-            <td>Current position</td>
-            <td>{currentCoinAValue}</td>
-            <td>{currentCoinBValue}</td>
-          </tr>
-          <tr className={styles.lastRow}>
-            <td>
-              Remove
-            </td>
-            <td>
-              {coinAValueToWithdraw}
-            </td>
-            <td>
-              {coinBValueToWithdraw}
-            </td>
-          </tr>
+            <tr>
+              <td>Current position</td>
+              <td>{currentCoinAValue}</td>
+              <td>{currentCoinBValue}</td>
+            </tr>
+            <tr className={styles.lastRow}>
+              <td>Remove</td>
+              <td>{coinAValueToWithdraw}</td>
+              <td>{coinBValueToWithdraw}</td>
+            </tr>
           </tbody>
         </table>
       </div>
       <div className={styles.textBlock}>
         <p className={styles.infoBlockTitle}>
-          <WarningIcon/>
+          <WarningIcon />
           Pay attention
         </p>
         <p className={styles.infoBlockText}>
-          This based on the current price of the pool. Your fees earned will always increase,
-          but the principal amount may change with the price of the pool
+          This based on the current price of the pool. Your fees earned will
+          always increase, but the principal amount may change with the price of
+          the pool
         </p>
       </div>
       <div className={styles.buttons}>
-        <ActionButton onClick={handleRemoveLiquidity}
-                      disabled={withdrawalDisabled}
+        <ActionButton
+          onClick={handleRemoveLiquidity}
+          disabled={withdrawalDisabled}
         >
           {buttonTitle}
         </ActionButton>

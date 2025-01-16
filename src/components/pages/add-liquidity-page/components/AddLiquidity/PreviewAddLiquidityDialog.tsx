@@ -5,8 +5,7 @@ import ActionButton from "@/src/components/common/ActionButton/ActionButton";
 import {CoinName, coinsConfig} from "@/src/utils/coinsConfig";
 import useAddLiquidity from "@/src/hooks/useAddLiquidity";
 import useModal from "@/src/hooks/useModal/useModal";
-import AddLiquiditySuccessModal
-  from "@/src/components/pages/add-liquidity-page/components/AddLiquiditySuccessModal/AddLiquiditySuccessModal";
+import AddLiquiditySuccessModal from "@/src/components/pages/add-liquidity-page/components/AddLiquiditySuccessModal/AddLiquiditySuccessModal";
 import {useRouter} from "next/navigation";
 import {Dispatch, SetStateAction, useCallback} from "react";
 import TransactionFailureModal from "@/src/components/common/TransactionFailureModal/TransactionFailureModal";
@@ -27,15 +26,19 @@ type Props = {
   previewData: AddLiquidityPreviewData;
   setPreviewData: Dispatch<SetStateAction<AddLiquidityPreviewData | null>>;
   slippage: number;
-}
+};
 
-const PreviewAddLiquidityDialog = ({ previewData, setPreviewData, slippage }: Props) => {
+const PreviewAddLiquidityDialog = ({
+  previewData,
+  setPreviewData,
+  slippage,
+}: Props) => {
   const [SuccessModal, openSuccessModal] = useModal();
   const [FailureModal, openFailureModal, closeFailureModal] = useModal();
 
   const router = useRouter();
 
-  const { assets, isStablePool } = previewData;
+  const {assets, isStablePool} = previewData;
 
   const firstAssetMetadata = useAssetMetadata(assets[0].assetId);
   const secondAssetMetadata = useAssetMetadata(assets[1].assetId);
@@ -43,17 +46,26 @@ const PreviewAddLiquidityDialog = ({ previewData, setPreviewData, slippage }: Pr
   const firstAssetAmount = assets[0].amount;
   const secondAssetAmount = assets[1].amount;
 
-  const { data, mutateAsync, isPending, error: addLiquidityError } = useAddLiquidity({
+  const {
+    data,
+    mutateAsync,
+    isPending,
+    error: addLiquidityError,
+  } = useAddLiquidity({
     firstAsset: previewData.assets[0].assetId,
     firstAssetAmount,
     secondAsset: previewData.assets[1].assetId,
     secondAssetAmount,
     isPoolStable: isStablePool,
-    slippage
+    slippage,
   });
 
-  const firstAssetAmountString = firstAssetAmount.formatUnits(firstAssetMetadata.decimals);
-  const secondAssetAmountString = secondAssetAmount.formatUnits(secondAssetMetadata.decimals);
+  const firstAssetAmountString = firstAssetAmount.formatUnits(
+    firstAssetMetadata.decimals,
+  );
+  const secondAssetAmountString = secondAssetAmount.formatUnits(
+    secondAssetMetadata.decimals,
+  );
 
   // const rate = (
   //   parseFloat(firstCoinAmount) / parseFloat(secondCoinAmount)
@@ -76,16 +88,20 @@ const PreviewAddLiquidityDialog = ({ previewData, setPreviewData, slippage }: Pr
   }, [setPreviewData]);
 
   const redirectToLiquidity = useCallback(() => {
-    router.push('/liquidity');
+    router.push("/liquidity");
   }, [router]);
 
-  const feeText = isStablePool ? '0.05%' : '0.3%';
+  const feeText = isStablePool ? "0.05%" : "0.3%";
 
   return (
     <>
       <div className={styles.section}>
         <div className={styles.previewCoinPair}>
-          <CoinPair firstCoin={assets[0].assetId} secondCoin={assets[1].assetId} isStablePool={isStablePool}/>
+          <CoinPair
+            firstCoin={assets[0].assetId}
+            secondCoin={assets[1].assetId}
+            isStablePool={isStablePool}
+          />
         </div>
         <div className={styles.inputsPreview}>
           <div className={styles.inputPreviewRow}>
@@ -163,7 +179,10 @@ const PreviewAddLiquidityDialog = ({ previewData, setPreviewData, slippage }: Pr
         />
       </SuccessModal>
       <FailureModal title={<></>} onClose={onFailureModalClose}>
-        <TransactionFailureModal error={addLiquidityError} closeModal={closeFailureModal} />
+        <TransactionFailureModal
+          error={addLiquidityError}
+          closeModal={closeFailureModal}
+        />
       </FailureModal>
     </>
   );

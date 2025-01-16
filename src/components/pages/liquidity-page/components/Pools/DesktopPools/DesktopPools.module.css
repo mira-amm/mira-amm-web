@@ -54,7 +54,7 @@ button.createButton {
 }
 
 .desktopPools th:nth-child(2) {
-  width: 15%; /* Width for the "APR" column */
+  width: 20%; /* Width for the "APR" column */
 }
 
 .desktopPools th:nth-child(3),
@@ -64,4 +64,12 @@ button.createButton {
 
 .desktopPools th:nth-child(5) {
   width: 20%; /* Width for the "Create Pool" column */
+}
+
+.aprTd {
+  overflow: visible !important;
+  margin-top: 26px;
+  display: flex;
+  justify-content: center;
+  align-content: center;
 }

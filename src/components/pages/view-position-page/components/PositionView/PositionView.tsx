@@ -1,24 +1,21 @@
-'use client';
+"use client";
 
 import BackLink from "@/src/components/common/BackLink/BackLink";
 
-import styles from './PositionView.module.css';
+import styles from "./PositionView.module.css";
 import CoinPair from "@/src/components/common/CoinPair/CoinPair";
 import PositionLabel from "@/src/components/pages/liquidity-page/components/Positions/PositionLabel/PositionLabel";
 import CoinWithAmount from "@/src/components/common/CoinWithAmount/CoinWithAmount";
 import {clsx} from "clsx";
 import ActionButton from "@/src/components/common/ActionButton/ActionButton";
 import useModal from "@/src/hooks/useModal/useModal";
-import RemoveLiquidityModalContent
-  from "@/src/components/pages/view-position-page/components/RemoveLiquidityModalContent/RemoveLiquidityModalContent";
+import RemoveLiquidityModalContent from "@/src/components/pages/view-position-page/components/RemoveLiquidityModalContent/RemoveLiquidityModalContent";
 import usePositionData from "@/src/hooks/usePositionData";
-import { floorToTwoSignificantDigits } from "@/src/utils/common";
+import {floorToTwoSignificantDigits, createPoolKey} from "@/src/utils/common";
 import {useCallback, useRef, useState} from "react";
 import useRemoveLiquidity from "@/src/hooks/useRemoveLiquidity";
 import {useRouter} from "next/navigation";
-import {coinsConfig} from "@/src/utils/coinsConfig";
-import RemoveLiquiditySuccessModal
-  from "@/src/components/pages/view-position-page/components/RemoveLiquiditySuccessModal/RemoveLiquiditySuccessModal";
+import RemoveLiquiditySuccessModal from "@/src/components/pages/view-position-page/components/RemoveLiquiditySuccessModal/RemoveLiquiditySuccessModal";
 import IconButton from "@/src/components/common/IconButton/IconButton";
 import {getLPAssetId, PoolId} from "mira-dex-ts";
 import {DEFAULT_AMM_CONTRACT_ID, DefaultLocale} from "@/src/utils/constants";
@@ -27,25 +24,31 @@ import LogoIcon from "@/src/components/icons/Logo/LogoIcon";
 import useCheckActiveNetwork from "@/src/hooks/useCheckActiveNetwork";
 import usePoolAPR from "@/src/hooks/usePoolAPR";
 import TransactionFailureModal from "@/src/components/common/TransactionFailureModal/TransactionFailureModal";
-import { CopyIcon } from "@/src/components/icons/Copy/CopyIcon";
-import { bn, formatUnits } from "fuels";
+import {CopyIcon} from "@/src/components/icons/Copy/CopyIcon";
+import {bn, formatUnits} from "fuels";
 import useAssetMetadata from "@/src/hooks/useAssetMetadata";
+import AprBadge from "@/src/components/common/AprBadge/AprBadge";
+import usePoolNameAndMatch from "@/src/hooks/usePoolNameAndMatch";
 
 type Props = {
   pool: PoolId;
-}
+};
 
 const formatDisplayAmount = (amount: string) => {
   const asDecimal = parseFloat(amount);
   if (asDecimal < 0.00001) {
-    return '<0.00001';
+    return "<0.00001";
   }
 
-  return asDecimal.toLocaleString(DefaultLocale, { minimumFractionDigits: 5 });
+  return asDecimal.toLocaleString(DefaultLocale, {minimumFractionDigits: 5});
 };
 
-const PositionView = ({ pool }: Props) => {
-  const [RemoveLiquidityModal, openRemoveLiquidityModal, closeRemoveLiquidityModal] = useModal();
+const PositionView = ({pool}: Props) => {
+  const [
+    RemoveLiquidityModal,
+    openRemoveLiquidityModal,
+    closeRemoveLiquidityModal,
+  ] = useModal();
   const [SuccessModal, openSuccessModal, closeSuccessModal] = useModal();
   const [FailureModal, openFailureModal, closeFailureModal] = useModal();
 
@@ -55,29 +58,59 @@ const PositionView = ({ pool }: Props) => {
 
   const isStablePool = pool[2];
 
-  const { assets, lpTokenBalance } = usePositionData({ pool });
-  const { apr } = usePoolAPR(pool);
-  const aprValue = apr ?
-    `${apr.toLocaleString(DefaultLocale, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}%`
+  const {assets, lpTokenBalance} = usePositionData({pool});
+  const {apr} = usePoolAPR(pool);
+  const aprValue = apr
+    ? `${apr.apr.toLocaleString(DefaultLocale, {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2,
+      })}%`
     : null;
 
-  const [removeLiquidityPercentage, setRemoveLiquidityPercentage] = useState(50);
+  const tvlValue = apr?.tvlUSD;
+  const poolKey = createPoolKey(pool);
 
-  const [assetA, assetB] = assets || [[pool[0], bn(0)], [pool[1], bn(0)]];
+  //Checks if the pool with rewards matches the current pool
+  const {isMatching} = usePoolNameAndMatch(poolKey);
+
+  const [removeLiquidityPercentage, setRemoveLiquidityPercentage] =
+    useState(50);
+
+  const [assetA, assetB] = assets || [
+    [pool[0], bn(0)],
+    [pool[1], bn(0)],
+  ];
 
   const coinAAmount = formatUnits(assetA[1], assetAMetadata.decimals);
 
-  const coinAAmountToWithdraw = assetA[1].mul(bn(removeLiquidityPercentage)).div(bn(100));
-  const coinAAmountToWithdrawStr = formatUnits(coinAAmountToWithdraw, assetAMetadata.decimals);
+  const coinAAmountToWithdraw = assetA[1]
+    .mul(bn(removeLiquidityPercentage))
+    .div(bn(100));
+  const coinAAmountToWithdrawStr = formatUnits(
+    coinAAmountToWithdraw,
+    assetAMetadata.decimals,
+  );
 
-  const coinBAmount = formatUnits(assetB[1], assetBMetadata.decimals)
+  const coinBAmount = formatUnits(assetB[1], assetBMetadata.decimals);
 
-  const coinBAmountToWithdraw = assetB[1].mul(bn(removeLiquidityPercentage)).div(bn(100));
-  const coinBAmountToWithdrawStr = formatUnits(coinBAmountToWithdraw, assetBMetadata.decimals);
+  const coinBAmountToWithdraw = assetB[1]
+    .mul(bn(removeLiquidityPercentage))
+    .div(bn(100));
+  const coinBAmountToWithdrawStr = formatUnits(
+    coinBAmountToWithdraw,
+    assetBMetadata.decimals,
+  );
 
-  const confirmationModalAssetsAmounts = useRef({ firstAsset: coinAAmountToWithdrawStr, secondAsset: coinBAmountToWithdrawStr });
+  const confirmationModalAssetsAmounts = useRef({
+    firstAsset: coinAAmountToWithdrawStr,
+    secondAsset: coinBAmountToWithdrawStr,
+  });
 
-  const { data, removeLiquidity, error: removeLiquidityError } = useRemoveLiquidity({
+  const {
+    data,
+    removeLiquidity,
+    error: removeLiquidityError,
+  } = useRemoveLiquidity({
     pool,
     liquidityPercentage: removeLiquidityPercentage,
     lpTokenBalance,
@@ -93,7 +126,10 @@ const PositionView = ({ pool }: Props) => {
     try {
       const result = await removeLiquidity();
       if (result) {
-        confirmationModalAssetsAmounts.current = { firstAsset: coinAAmountToWithdrawStr, secondAsset: coinBAmountToWithdrawStr };
+        confirmationModalAssetsAmounts.current = {
+          firstAsset: coinAAmountToWithdrawStr,
+          secondAsset: coinBAmountToWithdrawStr,
+        };
         closeRemoveLiquidityModal();
         openSuccessModal();
       }
@@ -105,13 +141,14 @@ const PositionView = ({ pool }: Props) => {
   }, [removeLiquidity, closeRemoveLiquidityModal, openSuccessModal]);
 
   const redirectToLiquidity = useCallback(() => {
-    router.push('/liquidity');
+    router.push("/liquidity");
   }, [router]);
 
   const rate = parseFloat(coinAAmount) / parseFloat(coinBAmount);
-  const flooredRate = rate < 0.01
-    ? floorToTwoSignificantDigits(rate).toLocaleString()
-    : rate.toLocaleString(DefaultLocale, { minimumFractionDigits: 2 });
+  const flooredRate =
+    rate < 0.01
+      ? floorToTwoSignificantDigits(rate).toLocaleString()
+      : rate.toLocaleString(DefaultLocale, {minimumFractionDigits: 2});
   const makeRateFontSmaller = flooredRate.length > 10;
 
   const lpTokenAssetId = getLPAssetId(DEFAULT_AMM_CONTRACT_ID, pool);
@@ -123,28 +160,52 @@ const PositionView = ({ pool }: Props) => {
     await navigator.clipboard.writeText(lpTokenAssetId.bits);
   }, [lpTokenAssetId.bits]);
 
-  const lpTokenDisplayValue = formatUnits(lpTokenBalance || '0', 9);
+  const lpTokenDisplayValue = formatUnits(lpTokenBalance || "0", 9);
 
   return (
     <>
-      <BackLink showOnDesktop href="/liquidity" title="Back to Pool"/>
-      <section className={clsx(styles.contentSection, 'mobileOnly')}>
+      <BackLink showOnDesktop href="/liquidity" title="Back to Pool" />
+      <section className={clsx(styles.contentSection, "mobileOnly")}>
         <div className={styles.coinPairAndLabel}>
-          <CoinPair firstCoin={pool[0].bits} secondCoin={pool[1].bits} withFeeBelow isStablePool={isStablePool}/>
-          <PositionLabel/>
+          <CoinPair
+            firstCoin={pool[0].bits}
+            secondCoin={pool[1].bits}
+            withFeeBelow
+            isStablePool={isStablePool}
+          />
+          <PositionLabel />
         </div>
         <div className={styles.infoBlock}>
           <p>Liquidity</p>
-          <p>
-            APR
-            &nbsp;
-            <span className={clsx(styles.pending, !aprValue && 'blurredText')}>
-              {aprValue ?? '33.33%'}
-            </span>
-          </p>
+          {isMatching ? (
+            <div className={styles.aprBadge}>
+              <p>APR &nbsp;</p>
+              <AprBadge
+                aprValue={aprValue}
+                poolKey={poolKey}
+                tvlValue={tvlValue}
+                small={true}
+              />
+            </div>
+          ) : (
+            <p>
+              APR &nbsp;
+              <span
+                className={clsx(styles.pending, !aprValue && "blurredText")}
+              >
+                {aprValue ?? "33.33%"}
+              </span>
+            </p>
+          )}
           <div className={styles.coinsData}>
-            <CoinWithAmount assetId={pool[0].bits} amount={formatDisplayAmount(coinAAmount)}/>
-            <CoinWithAmount assetId={pool[1].bits} amount={formatDisplayAmount(coinBAmount)}/>
+            <CoinWithAmount
+              assetId={pool[0].bits}
+              amount={formatDisplayAmount(coinAAmount)}
+            />
+            <CoinWithAmount
+              assetId={pool[1].bits}
+              amount={formatDisplayAmount(coinBAmount)}
+            />
           </div>
         </div>
         <div className={styles.miraBlock}>
@@ -165,35 +226,58 @@ const PositionView = ({ pool }: Props) => {
           <p>Selected Price</p>
           <div className={clsx(styles.priceBlock, styles.priceBlockTop)}>
             <p className={styles.priceBlockTitle}>Current Price</p>
-            <p className={clsx(styles.priceBlockValue, makeRateFontSmaller && styles.priceBlockValueSmall)}>
+            <p
+              className={clsx(
+                styles.priceBlockValue,
+                makeRateFontSmaller && styles.priceBlockValueSmall,
+              )}
+            >
               {flooredRate}
             </p>
-            <p className={styles.priceBlockDescription}>{assetAMetadata.symbol} per {assetBMetadata.symbol}</p>
+            <p className={styles.priceBlockDescription}>
+              {assetAMetadata.symbol} per {assetBMetadata.symbol}
+            </p>
           </div>
           <div className={styles.bottomPriceBlocks}>
             <div className={styles.priceBlock}>
               <p className={styles.priceBlockTitle}>Low price</p>
               <p className={styles.priceBlockValue}>0</p>
-              <p className={styles.priceBlockDescription}>${assetAMetadata.symbol} per {assetBMetadata.symbol}</p>
+              <p className={styles.priceBlockDescription}>
+                ${assetAMetadata.symbol} per {assetBMetadata.symbol}
+              </p>
             </div>
             <div className={styles.priceBlock}>
               <p className={styles.priceBlockTitle}>High Price</p>
               <p className={styles.priceBlockValue}>∞</p>
-              <p className={styles.priceBlockDescription}>{assetAMetadata.symbol} per {assetBMetadata.symbol}</p>
+              <p className={styles.priceBlockDescription}>
+                {assetAMetadata.symbol} per {assetBMetadata.symbol}
+              </p>
             </div>
           </div>
         </div>
         <div className={styles.sticky}>
-          <ActionButton onClick={handleWithdrawLiquidity} fullWidth>Remove Liquidity</ActionButton>
+          <ActionButton onClick={handleWithdrawLiquidity} fullWidth>
+            Remove Liquidity
+          </ActionButton>
         </div>
       </section>
-      <section className={clsx(styles.contentSection, 'desktopOnly')}>
+      <section className={clsx(styles.contentSection, "desktopOnly")}>
         <div className={styles.positionHeading}>
           <div className={styles.coinPairAndLabel}>
-            <CoinPair firstCoin={pool[0].bits} secondCoin={pool[1].bits} withFeeBelow isStablePool={isStablePool}/>
+            <CoinPair
+              firstCoin={pool[0].bits}
+              secondCoin={pool[1].bits}
+              withFeeBelow
+              isStablePool={isStablePool}
+            />
             <PositionLabel className={styles.smallLabel} />
           </div>
-          <ActionButton className={styles.withdrawButton} onClick={handleWithdrawLiquidity}>Remove Liquidity</ActionButton>
+          <ActionButton
+            className={styles.withdrawButton}
+            onClick={handleWithdrawLiquidity}
+          >
+            Remove Liquidity
+          </ActionButton>
         </div>
         <div className={styles.topRow}>
           <div className={styles.miraBlock}>
@@ -213,16 +297,36 @@ const PositionView = ({ pool }: Props) => {
           <div className={styles.infoBlocks}>
             <div className={styles.infoBlock}>
               <p>Liquidity</p>
-              <p>
-                APR
-                &nbsp;
-                <span className={clsx(styles.pending, !aprValue && 'blurredText')}>
-                  {aprValue ?? '33.33%'}
-                </span>
-              </p>
+              {isMatching ? (
+                <div className={styles.aprBadge}>
+                  <p>APR &nbsp;</p>
+                  <AprBadge
+                    aprValue={aprValue}
+                    poolKey={poolKey}
+                    tvlValue={tvlValue}
+                    small={true}
+                  />
+                </div>
+              ) : (
+                <p>
+                  APR &nbsp;
+                  <span
+                    className={clsx(styles.pending, !aprValue && "blurredText")}
+                  >
+                    {aprValue ?? "33.33%"}
+                  </span>
+                </p>
+              )}
+
               <div className={styles.coinsData}>
-                <CoinWithAmount assetId={pool[0].bits} amount={formatDisplayAmount(coinAAmount)}/>
-                <CoinWithAmount assetId={pool[1].bits} amount={formatDisplayAmount(coinBAmount)}/>
+                <CoinWithAmount
+                  assetId={pool[0].bits}
+                  amount={formatDisplayAmount(coinAAmount)}
+                />
+                <CoinWithAmount
+                  assetId={pool[1].bits}
+                  amount={formatDisplayAmount(coinBAmount)}
+                />
               </div>
             </div>
           </div>
@@ -233,24 +337,38 @@ const PositionView = ({ pool }: Props) => {
             <div className={styles.priceBlockDesktop}>
               <p className={styles.priceBlockTitle}>Low price</p>
               <p className={styles.priceBlockValue}>0</p>
-              <p className={styles.priceBlockDescription}>{assetAMetadata.symbol} per {assetBMetadata.symbol}</p>
+              <p className={styles.priceBlockDescription}>
+                {assetAMetadata.symbol} per {assetBMetadata.symbol}
+              </p>
             </div>
             <div className={styles.priceBlockDesktop}>
               <p className={styles.priceBlockTitle}>Current Price</p>
-              <p className={clsx(styles.priceBlockValue, makeRateFontSmaller && styles.priceBlockValueSmall)}>
+              <p
+                className={clsx(
+                  styles.priceBlockValue,
+                  makeRateFontSmaller && styles.priceBlockValueSmall,
+                )}
+              >
                 {flooredRate}
               </p>
-              <p className={styles.priceBlockDescription}>{assetAMetadata.symbol} per {assetBMetadata.symbol}</p>
+              <p className={styles.priceBlockDescription}>
+                {assetAMetadata.symbol} per {assetBMetadata.symbol}
+              </p>
             </div>
             <div className={styles.priceBlockDesktop}>
               <p className={styles.priceBlockTitle}>High Price</p>
               <p className={styles.priceBlockValue}>∞</p>
-              <p className={styles.priceBlockDescription}>{assetAMetadata.symbol} per {assetBMetadata.symbol}</p>
+              <p className={styles.priceBlockDescription}>
+                {assetAMetadata.symbol} per {assetBMetadata.symbol}
+              </p>
             </div>
           </div>
         </div>
       </section>
-      <RemoveLiquidityModal title="Remove Liquidity" titleClassName={styles.withdrawLiquidityTitle}>
+      <RemoveLiquidityModal
+        title="Remove Liquidity"
+        titleClassName={styles.withdrawLiquidityTitle}
+      >
         <RemoveLiquidityModalContent
           coinA={pool[0].bits}
           coinB={pool[1].bits}
@@ -268,15 +386,18 @@ const PositionView = ({ pool }: Props) => {
       </RemoveLiquidityModal>
       <SuccessModal title={<></>} onClose={redirectToLiquidity}>
         <RemoveLiquiditySuccessModal
-          coinA={assetAMetadata.symbol || ''}
-          coinB={assetBMetadata.symbol || ''}
+          coinA={assetAMetadata.symbol || ""}
+          coinB={assetBMetadata.symbol || ""}
           firstCoinAmount={confirmationModalAssetsAmounts.current.firstAsset}
           secondCoinAmount={confirmationModalAssetsAmounts.current.secondAsset}
           transactionHash={data?.id}
         />
       </SuccessModal>
       <FailureModal title={<></>}>
-        <TransactionFailureModal error={removeLiquidityError} closeModal={closeFailureModal} />
+        <TransactionFailureModal
+          error={removeLiquidityError}
+          closeModal={closeFailureModal}
+        />
       </FailureModal>
     </>
   );

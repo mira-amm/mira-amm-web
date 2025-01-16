@@ -2,11 +2,11 @@ import {useAccount, useWallet} from "@fuels/react";
 import {useQuery} from "@tanstack/react-query";
 
 const useBalances = () => {
-  const { account } = useAccount();
-  const { wallet } = useWallet({ account });
+  const {account} = useAccount();
+  const {wallet} = useWallet({account});
 
-  const { data, isPending, refetch } = useQuery({
-    queryKey: ['balances', wallet?.address],
+  const {data, isPending, refetch} = useQuery({
+    queryKey: ["balances", wallet?.address],
     queryFn: async () => {
       if (!wallet) {
         return null;
@@ -17,7 +17,11 @@ const useBalances = () => {
     enabled: Boolean(wallet),
   });
 
-  return { balances: data?.balances, balancesPending: isPending, refetchBalances: refetch };
+  return {
+    balances: data?.balances,
+    balancesPending: isPending,
+    refetchBalances: refetch,
+  };
 };
 
 export default useBalances;

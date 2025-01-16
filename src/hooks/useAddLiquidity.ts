@@ -63,7 +63,7 @@ const useAddLiquidity = ({
       minAsset0Amount,
       minAsset1Amount,
       MaxDeadline,
-      DefaultTxParams
+      DefaultTxParams,
     );
     const gasCost = await wallet.getTransactionCost(txRequest);
     const fundedTx = await wallet.fund(txRequest, gasCost);
