@@ -150,7 +150,7 @@ export class SentioJSONUserRewardsService implements UserRewardsService {
         (new Date(epochEnd).getTime() - new Date(epochStart).getTime()) /
         (1000 * 60 * 60 * 24);
       const campaignRewardAmount =
-        campaign.rewards[0].amount * epochDurationDays;
+        campaign.rewards[0].dailyAmount * epochDurationDays;
 
       const options = getQueryOptions(
         this.apiKey,

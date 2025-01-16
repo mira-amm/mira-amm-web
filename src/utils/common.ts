@@ -108,13 +108,13 @@ export const getBoostReward = (
       id: string;
     };
     rewards: {
-      amount: number;
+      dailyAmount: number;
     }[];
   }[],
 ): number => {
   const item = data.find((item) => item.pool.id === poolKey.replace(/0x/g, ""));
 
-  return item?.rewards[0].amount || 0;
+  return item?.rewards[0].dailyAmount || 0;
 };
 
 export const getRewardsPoolsId = (
