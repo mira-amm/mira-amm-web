@@ -12,6 +12,7 @@ import {
 import {NotFoundError} from "@/src/utils/errors";
 import path from "path";
 import {Campaign, EpochConfigService} from "../campaigns/interfaces";
+import {convertDailyRewardsToTotalRewards} from "@/src/utils/common";
 
 const userPoolRewardsQuery = loadFile(
   path.join(process.cwd(), "src", "queries", "UserPoolRewards.sql"),
@@ -144,13 +145,11 @@ export class SentioJSONUserRewardsService implements UserRewardsService {
         throw new Error(`Invalid epoch end time: ${epochEnd}`);
       }
 
-      // Amount represents daily rewards than total epoch rewards
-      // We have to adjust the amount based on the number of days in the epoch
-      const epochDurationDays =
-        (new Date(epochEnd).getTime() - new Date(epochStart).getTime()) /
-        (1000 * 60 * 60 * 24);
-      const campaignRewardAmount =
-        campaign.rewards[0].dailyAmount * epochDurationDays;
+      const campaignRewardAmount = convertDailyRewardsToTotalRewards(
+        campaign.rewards[0].dailyAmount,
+        epochStart,
+        epochEnd,
+      );
 
       const options = getQueryOptions(
         this.apiKey,

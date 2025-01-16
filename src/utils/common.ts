@@ -174,3 +174,14 @@ export const calculateEpochDuration = (
     return "Season has ended";
   }
 };
+
+export const convertDailyRewardsToTotalRewards = (
+  dailyRewards: number,
+  epochStart: string,
+  epochEnd: string,
+) => {
+  const epochDurationDays =
+    (new Date(epochEnd).getTime() - new Date(epochStart).getTime()) /
+    (1000 * 60 * 60 * 24);
+  return dailyRewards * epochDurationDays;
+};
