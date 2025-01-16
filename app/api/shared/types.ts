@@ -1,5 +1,7 @@
 // api/types/index.ts
 
+import {GeckoTerminalTypes, SQDIndexerTypes} from "./constants";
+
 // SQDIndexer responses
 export namespace SQDIndexerResponses {
   // used to get block number of latest block
@@ -27,7 +29,9 @@ export namespace SQDIndexerResponses {
     amount0In: string;
     reserves0After: string;
     reserves1After: string;
-    type: "SWAP" | "JOIN_EXIT";
+    type:
+      | SQDIndexerTypes.ActionTypes.SWAP
+      | SQDIndexerTypes.ActionTypes.JOIN_EXIT;
     transaction: string;
     timestamp: number;
     blockNumber: number;
@@ -64,7 +68,9 @@ export namespace GeckoTerminalQueryResponses {
   }
 
   export interface JoinExitEvent {
-    eventType: "join" | "exit";
+    eventType:
+      | GeckoTerminalTypes.EventTypes.JOIN
+      | GeckoTerminalTypes.EventTypes.EXIT;
     txnId: string;
     txnIndex: number;
     eventIndex: number;

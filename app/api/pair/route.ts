@@ -1,6 +1,6 @@
 import {NextResponse} from "next/server";
 import {request, gql} from "graphql-request";
-import {SQDIndexerUrl} from "@/src/utils/constants"; // Replace with your actual GraphQL endpoint
+import {SQDIndexerUrl} from "@/src/utils/constants";
 
 // Define the structure for the Pool and related assets
 interface Asset {

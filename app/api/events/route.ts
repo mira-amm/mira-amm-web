@@ -1,159 +1,3 @@
-// import {NextResponse} from "next/server";
-// import {request, gql} from "graphql-request";
-// import {SQDIndexerUrl} from "@/src/utils/constants";
-
-// // Define the Block interface
-// interface Block {
-//   blockNumber: number;
-//   blockTimestamp: number;
-// }
-
-// // Define the structure for reserves
-// interface Reserves {
-//   asset0: string;
-//   asset1: string;
-// }
-
-// // Define the structure for JoinExitEvent
-// interface JoinExitEvent {
-//   eventType: "join";
-//   txnId: string;
-//   txnIndex: number;
-//   eventIndex: number;
-//   maker: string;
-//   pairId: string;
-//   amount0: string;
-//   amount1: string;
-//   reserves: Reserves;
-// }
-
-// // Define the structure for SwapEvent
-// interface SwapEvent {
-//   eventType: "swap";
-//   txnId: string;
-//   txnIndex: number;
-//   eventIndex: number;
-//   maker: string;
-//   pairId: string;
-//   asset0In: string;
-//   asset1Out: string;
-//   priceNative: string;
-//   reserves: Reserves;
-// }
-
-// // Define the schema for the events response
-// interface EventsResponse {
-//   actions: Array<{
-//     pool: {id: string};
-//     amount0In: string;
-//     amount1In: string;
-//     amount0Out: string;
-//     amount1Out: string;
-//     reserves0After: string;
-//     reserves1After: string;
-//     type: string;
-//     transaction: string;
-//     timestamp: number;
-//     blockNumber: number;
-//   }>;
-// }
-
-// // Handle GET requests for /api/events
-// export async function GET(req: Request) {
-//   try {
-//     // Extract query parameters from the request URL
-//     const url = new URL(req.url);
-//     const fromBlock = parseInt(url.searchParams.get("fromBlock") || "0", 10);
-//     const toBlock = parseInt(url.searchParams.get("toBlock") || "0", 10);
-
-//     // Return a 400 error if fromBlock or toBlock is not provided
-//     if (!fromBlock || !toBlock) {
-//       return NextResponse.json(
-//         {error: "Both 'fromBlock' and 'toBlock' are required"},
-//         {status: 400},
-//       );
-//     }
-
-//     // Define the GraphQL query to fetch actions within the given block range
-//     const query = gql`
-//       query GetActions($fromBlock: Int!, $toBlock: Int!) {
-//         actions(where: {blockNumber_gt: $fromBlock, blockNumber_lt: $toBlock}) {
-//           pool {
-//             id
-//           }
-//           amount1Out
-//           amount1In
-//           amount0Out
-//           amount0In
-//           reserves0After
-//           reserves1After
-//           type
-//           transaction
-//           timestamp
-//           blockNumber
-//         }
-//       }
-//     `;
-
-//     // Send the GraphQL request to the indexer server to fetch actions
-//     const data = await request<EventsResponse>({
-//       url: SQDIndexerUrl,
-//       document: query,
-//       variables: {fromBlock, toBlock},
-//     });
-
-//     // Reformat the data to match your expected output
-//     const events = data.actions.map((action) => {
-//       const block: Block = {
-//         blockNumber: action.blockNumber,
-//         blockTimestamp: action.timestamp,
-//       };
-
-//       // Identify the event type based on action type
-//       const isJoinExitEvent = action.type === "JOIN_EXIT";
-//       const isSwapEvent = action.type === "SWAP";
-
-//       const eventData: JoinExitEvent | SwapEvent = {
-//         txnId: action.transaction,
-//         txnIndex: 0, // Assuming the index values are not present; setting as 0 for now
-//         eventIndex: 0, // Assuming the index values are not present; setting as 0 for now
-//         maker: action.pool.id, // Using pool ID as maker for this example
-//         pairId: action.pool.id, // Using pool ID as pairId
-//         reserves: {
-//           asset0: action.reserves0After,
-//           asset1: action.reserves1After,
-//         },
-//         eventType: isJoinExitEvent ? "join" : "swap", // Mapping event type
-//         amount0: isJoinExitEvent ? action.amount0In : action.amount0Out,
-//         amount1: isJoinExitEvent ? action.amount1In : action.amount1Out,
-//         asset0In: isSwapEvent ? action.amount0In : "0",
-//         asset1Out: isSwapEvent ? action.amount1Out : "0",
-//         priceNative: isSwapEvent
-//           ? (
-//               parseFloat(action.amount0In) / parseFloat(action.amount1Out)
-//             ).toString()
-//           : "0",
-//       };
-
-//       return {
-//         block,
-//         ...eventData,
-//       };
-//     });
-
-//     // Return the reformatted events data
-//     return NextResponse.json({events});
-//   } catch (error) {
-//     console.error("Error fetching events:", error);
-
-//     // Return an error response if the request fails
-//     return NextResponse.json(
-//       {error: "Failed to fetch events data"},
-//       {status: 500},
-//     );
-//   }
-// }
-
 import {NextResponse} from "next/server";
 import {request, gql} from "graphql-request";
 import {SQDIndexerUrl} from "@/src/utils/constants";
@@ -161,6 +5,8 @@ import {
   GeckoTerminalQueryResponses,
   SQDIndexerResponses,
 } from "../shared/types";
+import {GeckoTerminalTypes, SQDIndexerTypes} from "../shared/constants";
+import {decimalize} from "../shared/math";
 
 interface FetchEventsParams {
   fromBlock: number;
@@ -172,9 +18,28 @@ async function fetchEventsForBlockRange({
   fromBlock,
   toBlock,
 }: FetchEventsParams): Promise<SQDIndexerResponses.Actions> {
+  /*********************************************
+   * QUERY CHANGE REQUIRED:
+   * This query returns correctly for swap, but need to confirm for JOIN_EXIT instead of ADD_LIQUIDITY
+   * (SQD has three options- ADD_LIQUIDITY REMOVE_LIQUIDITY and SWAP)
+   *********************************************/
+
   const query = gql`
     query GetActions($fromBlock: Int!, $toBlock: Int!) {
-      actions(where: {blockNumber_gt: $fromBlock, blockNumber_lt: $toBlock}) {
+      actions(
+        where: {
+          blockNumber_gt: $fromBlock
+          blockNumber_lt: $toBlock
+          type_eq: SWAP
+          OR: [
+            {
+              blockNumber_gt: $fromBlock
+              blockNumber_lt: $toBlock
+              type_eq: ADD_LIQUIDITY
+            }
+          ]
+        }
+      ) {
         pool {
           id
         }
@@ -264,7 +129,12 @@ function createEventDataForJoinExitEvent(
       asset0: action.reserves0After,
       asset1: action.reserves1After,
     },
-    eventType: "join",
+    /*********************************************
+     * QUESTION 1:
+     * Currently just hardcoding JOIN
+     * How to handle JOIN and EXIT separately ,maybe with FUEL API (need to check)
+     *********************************************/
+    eventType: GeckoTerminalTypes.EventTypes.JOIN,
     amount0: action.amount0In,
     amount1: action.amount1In,
   };
@@ -287,17 +157,26 @@ function createEventDataForSwapEvent(
     priceNative: parseFloat(action.amount0In) / parseFloat(action.amount1Out),
   } as GeckoTerminalQueryResponses.SwapEvent;
 
+  console.log(action);
+  console.log(action.asset1);
+  /*********************************************
+   * HARDCODED DECIMALIZE TO 6 : (need fix)
+   *********************************************/
+  let asset0Decimals = 6;
+  let asset1Decimals = 6;
+
+  // not adding "0" value to the output as per the Gecko Terminal spec( only one pair should be present at any given)
   if (action.amount0In != "0" && action.amount1Out != "0") {
     event = {
       ...event,
-      asset0In: action.amount0In,
-      asset1Out: action.amount1Out,
+      asset0In: decimalize(action.amount0In, asset0Decimals),
+      asset1Out: decimalize(action.amount1Out, asset1Decimals),
     };
   } else if (action.amount1In != "0" && action.amount0Out != "0") {
     event = {
       ...event,
-      asset1In: action.amount1In,
-      asset0Out: action.amount0Out,
+      asset1In: decimalize(action.amount1In, asset1Decimals),
+      asset0Out: decimalize(action.amount0Out, asset0Decimals),
     };
   } else {
     throw new Error(`Invalid swap event data: ${JSON.stringify(action)}`);
@@ -330,6 +209,7 @@ export async function GET(req: Request) {
     }
 
     // Process the fetched events and map them to the expected format
+    console.log(eventsData.actions);
     const events = eventsData.actions.map(
       (action: SQDIndexerResponses.Action) => {
         const block: GeckoTerminalQueryResponses.Block = {

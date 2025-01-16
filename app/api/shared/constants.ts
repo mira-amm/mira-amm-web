@@ -7,7 +7,8 @@ export namespace SQDIndexerTypes {
 
 export namespace GeckoTerminalTypes {
   export enum EventTypes {
-    JOIN_EXIT = "join",
+    JOIN = "join",
+    EXIT = "exit",
     SWAP = "swap",
   }
 }
