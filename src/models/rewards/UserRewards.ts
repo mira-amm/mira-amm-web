@@ -46,7 +46,7 @@ const getQueryOptions = (
             epochEnd: {timestampValue: epochEnd},
             userId: {stringValue: userId},
             lpToken: {stringValue: lpToken},
-            lpTokenAmount: {intValue: lpTokenAmount},
+            rewardsAmount: {intValue: lpTokenAmount},
             campaignRewardToken: {stringValue: campaignRewardToken},
           },
         },
