@@ -11,6 +11,24 @@ export namespace SQDIndexerResponses {
 
   export interface Pool {
     id: string;
+    asset0: Asset;
+    asset1: Asset;
+    feesUSD: string;
+    asset0Id: string;
+    asset1Id: string;
+    createdAtBlockNumber: number;
+    createdAtBlockTimestamp: number;
+    createdAtTxnId: string;
+    creator?: string;
+    feeBps?: number;
+    pool?: {
+      id: string;
+      name: string;
+      assetIds: string[];
+      pairIds: string[];
+      metadata?: Record<string, string>;
+    };
+    metadata?: Record<string, string>;
   }
 
   export interface Action {
@@ -40,6 +58,15 @@ export namespace SQDIndexerResponses {
   // events api response (have to move to Fuel API asap)
   export interface Actions {
     actions: Array<Action>;
+  }
+
+  // following models are used for querying pair/pool data
+  export interface Asset {
+    id: string;
+  }
+
+  export interface PairResponse {
+    pair: Pool;
   }
 }
 
