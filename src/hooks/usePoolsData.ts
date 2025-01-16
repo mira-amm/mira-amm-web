@@ -130,7 +130,7 @@ export const usePoolsData = () => {
   });
 
   const totalPages = Math.ceil(
-    data?.poolsConnection?.totalCount / ITEMS_IN_PAGE
+    data?.poolsConnection?.totalCount / ITEMS_IN_PAGE,
   );
 
   const dataTransformed = data?.poolsConnection?.edges.map(
@@ -139,7 +139,7 @@ export const usePoolsData = () => {
       // const volume24h = pool.snapshots.reduce((acc: number, snapshot: any) => acc + parseFloat(snapshot.volumeUSD), 0);
       const fees24h = pool.snapshots.reduce(
         (acc: number, snapshot: any) => acc + parseFloat(snapshot.feesUSD),
-        0
+        0,
       );
       const apr = (fees24h / parseFloat(pool.tvlUSD)) * 365 * 100;
 
@@ -156,14 +156,14 @@ export const usePoolsData = () => {
           volume: pool.snapshots.reduce(
             (acc: number, snapshot: any) =>
               acc + parseFloat(snapshot.volumeUSD),
-            0
+            0,
           ),
           tvl: parseFloat(pool.tvlUSD),
         },
         swap_count: 0,
         create_time: 0,
       };
-    }
+    },
   );
 
   const totalCount = data?.poolsConnection?.totalCount || 0;

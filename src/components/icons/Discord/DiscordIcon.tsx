@@ -1,7 +1,7 @@
 import {memo} from "react";
 import {clsx} from "clsx";
 
-const DiscordIcon = ({ className }: IconProps) => {
+const DiscordIcon = ({className}: IconProps) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"

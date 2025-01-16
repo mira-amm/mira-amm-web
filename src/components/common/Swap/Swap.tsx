@@ -133,11 +133,11 @@ const Swap = () => {
   }, [isConnected]);
 
   const sellBalance = balances?.find(
-    (b) => b.assetId === swapState.sell.assetId
+    (b) => b.assetId === swapState.sell.assetId,
   )?.amount;
   const sellBalanceValue = sellBalance ?? new BN(0);
   const buyBalance = balances?.find(
-    (b) => b.assetId === swapState.buy.assetId
+    (b) => b.assetId === swapState.buy.assetId,
   )?.amount;
   const buyBalanceValue = buyBalance ?? new BN(0);
 
@@ -247,7 +247,7 @@ const Swap = () => {
       swapAssets,
       swapState.buy.assetId,
       swapState.sell.assetId,
-    ]
+    ],
   );
 
   const debouncedSetState = useDebounceCallback(setSwapState, 500);
@@ -297,7 +297,7 @@ const Swap = () => {
         setActiveMode(mode);
       };
     },
-    [debouncedSetState]
+    [debouncedSetState],
   );
 
   const handleCoinSelectorClick = useCallback(
@@ -305,7 +305,7 @@ const Swap = () => {
       openCoinsModal();
       modeForCoinSelector.current = mode;
     },
-    [openCoinsModal]
+    [openCoinsModal],
   );
 
   const handleCoinSelection = (assetId: string | null) => {
@@ -393,7 +393,7 @@ const Swap = () => {
     } else {
       if (!sufficientEthBalance) {
         openNewTab(
-          `${FuelAppUrl}/bridge?from=eth&to=fuel&auto_close=true&=true`
+          `${FuelAppUrl}/bridge?from=eth&to=fuel&auto_close=true&=true`,
         );
         return;
       }
@@ -439,10 +439,10 @@ const Swap = () => {
   useEffect(() => {
     try {
       const insufficientSellBalance = sellBalanceValue.lt(
-        bn.parseUnits(sellValue, sellMetadata.decimals || 0)
+        bn.parseUnits(sellValue, sellMetadata.decimals || 0),
       );
       setShowInsufficientBalance(
-        insufficientSellBalance && sufficientEthBalance
+        insufficientSellBalance && sufficientEthBalance,
       );
     } catch (e) {}
   }, [sellValue, sellMetadata, sufficientEthBalance, sellBalanceValue]);
@@ -465,7 +465,7 @@ const Swap = () => {
       return percent + poolPercent;
     }, 0) ?? 0;
   const feeValue = ((feePercent / 100) * parseFloat(sellValue)).toFixed(
-    sellMetadata.decimals || 0
+    sellMetadata.decimals || 0,
   );
 
   const inputPreviewLoading = previewLoading && activeMode === "buy";
@@ -497,7 +497,7 @@ const Swap = () => {
         <div
           className={clsx(
             styles.swapContainer,
-            swapPending && styles.swapContainerLoading
+            swapPending && styles.swapContainerLoading,
           )}
         >
           <div className={styles.heading}>

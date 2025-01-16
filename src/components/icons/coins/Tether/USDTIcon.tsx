@@ -7,7 +7,7 @@ const USDTIcon = () => {
       viewBox="0 0 40 40"
       fill="none"
     >
-      <rect width={40} height={40} fill="#1BA27A" rx={20}/>
+      <rect width={40} height={40} fill="#1BA27A" rx={20} />
       <path
         fill="#1BA27A"
         d="M36 20c0 8.837-7.163 16-16 16-8.836 0-16-7.163-16-16S11.164 4 20 4c8.837 0 16 7.163 16 16Z"

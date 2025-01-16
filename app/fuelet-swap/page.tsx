@@ -1,7 +1,7 @@
-import { FueletSwapPageLayout } from "@/src/components/pages/fuelet-swap-page/FueletSwapPageLayout"
+import {FueletSwapPageLayout} from "@/src/components/pages/fuelet-swap-page/FueletSwapPageLayout";
 
 const FueletSwap = () => {
-    return <FueletSwapPageLayout />
-}
+  return <FueletSwapPageLayout />;
+};
 
 export default FueletSwap;

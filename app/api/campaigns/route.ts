@@ -33,8 +33,8 @@ export async function GET(request: NextRequest) {
       process.env.SENTIO_API_URL,
       process.env.SENTIO_API_KEY,
       new JSONEpochConfigService(
-        path.join(process.cwd(), "src", "models", "campaigns.json")
-      )
+        path.join(process.cwd(), "src", "models", "campaigns.json"),
+      ),
     );
 
     const campaigns = await campaignService.getCampaigns({

@@ -11,10 +11,10 @@ type Props = {
   className?: string;
 };
 
-const DisconnectDesktop = ({ className }: Props) => {
-  const { isConnected } = useIsConnected();
-  const { account } = useAccount();
-  const { disconnect } = useDisconnect();
+const DisconnectDesktop = ({className}: Props) => {
+  const {isConnected} = useIsConnected();
+  const {account} = useAccount();
+  const {disconnect} = useDisconnect();
 
   const formattedAddress = useFormattedAddress(account);
 
@@ -23,15 +23,14 @@ const DisconnectDesktop = ({ className }: Props) => {
   }
 
   return (
-    <ActionButton className={clsx(className, styles.connected)} onClick={disconnect}>
-      {isConnected && (
-        <img src="/images/avatar.png" width="24" height="24" />
-      )}
+    <ActionButton
+      className={clsx(className, styles.connected)}
+      onClick={disconnect}
+    >
+      {isConnected && <img src="/images/avatar.png" width="24" height="24" />}
       {formattedAddress}
       {isConnected && (
-        <span className={styles.disconnectLabel}>
-          Disconnect
-        </span>
+        <span className={styles.disconnectLabel}>Disconnect</span>
       )}
     </ActionButton>
   );
