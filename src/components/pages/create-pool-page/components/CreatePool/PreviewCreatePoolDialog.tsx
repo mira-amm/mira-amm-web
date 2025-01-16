@@ -3,8 +3,7 @@ import CoinPair from "@/src/components/common/CoinPair/CoinPair";
 import Coin from "@/src/components/common/Coin/Coin";
 import ActionButton from "@/src/components/common/ActionButton/ActionButton";
 import useModal from "@/src/hooks/useModal/useModal";
-import CreatePoolSuccessModal
-  from "../CreatePoolSuccessModal/CreatePoolSuccessModal";
+import CreatePoolSuccessModal from "../CreatePoolSuccessModal/CreatePoolSuccessModal";
 import {useRouter} from "next/navigation";
 import {useCallback} from "react";
 import useCreatePool from "@/src/hooks/useCreatePool";
@@ -22,18 +21,18 @@ export type CreatePoolPreviewData = {
 
 type Props = {
   previewData: CreatePoolPreviewData;
-}
+};
 
-const PreviewCreatePoolDialog = ({ previewData }: Props) => {
+const PreviewCreatePoolDialog = ({previewData}: Props) => {
   const [SuccessModal, openSuccessModal, closeSuccessModal] = useModal();
   const firstAssetMetadata = useAssetMetadata(previewData.assets[0].assetId);
   const secondAssetMetadata = useAssetMetadata(previewData.assets[1].assetId);
 
   const router = useRouter();
 
-  const { assets, isStablePool } = previewData;
+  const {assets, isStablePool} = previewData;
 
-  const { createPoolData, createPool, isPoolCreationPending } = useCreatePool({
+  const {createPoolData, createPool, isPoolCreationPending} = useCreatePool({
     firstAsset: assets[0].assetId,
     firstAssetAmount: assets[0].amount,
     secondAsset: assets[1].assetId,
@@ -57,16 +56,20 @@ const PreviewCreatePoolDialog = ({ previewData }: Props) => {
   }, [createPool, openSuccessModal]);
 
   const redirectToLiquidity = useCallback(() => {
-    router.push('/liquidity');
+    router.push("/liquidity");
   }, [router]);
 
-  const feeText = isStablePool ? '0.05%' : '0.3%';
+  const feeText = isStablePool ? "0.05%" : "0.3%";
 
   return (
     <>
       <div className={styles.section}>
         <div className={styles.previewCoinPair}>
-          <CoinPair firstCoin={previewData.assets[0].assetId} secondCoin={previewData.assets[1].assetId} isStablePool={isStablePool} />
+          <CoinPair
+            firstCoin={previewData.assets[0].assetId}
+            secondCoin={previewData.assets[1].assetId}
+            isStablePool={isStablePool}
+          />
         </div>
         <div className={styles.inputsPreview}>
           <div className={styles.inputPreviewRow}>
@@ -131,7 +134,10 @@ const PreviewCreatePoolDialog = ({ previewData }: Props) => {
           </p>
         </div>
       </div> */}
-      <ActionButton loading={isPoolCreationPending} onClick={handleCreateLiquidity}>
+      <ActionButton
+        loading={isPoolCreationPending}
+        onClick={handleCreateLiquidity}
+      >
         Create pool
       </ActionButton>
       <SuccessModal title={<></>} onClose={redirectToLiquidity}>

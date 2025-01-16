@@ -10,15 +10,17 @@ type SignatureData = {
 };
 
 const useSavedSignatures = (message: string) => {
-  const { account } = useAccount();
+  const {account} = useAccount();
 
   const address = account !== null ? toBech32(account) : null;
-  const { hash } = useSHA256Hash(message);
+  const {hash} = useSHA256Hash(message);
 
-  const { data, isLoading, refetch } = useQuery({
+  const {data, isLoading, refetch} = useQuery({
     queryKey: ["signatures", address],
     queryFn: async () => {
-      const response = await fetch(`${ApiBaseUrl}/signature?address=${address}&msg_hash=${hash}`);
+      const response = await fetch(
+        `${ApiBaseUrl}/signature?address=${address}&msg_hash=${hash}`,
+      );
       if (response.status === 404) {
         return null;
       }
@@ -29,7 +31,11 @@ const useSavedSignatures = (message: string) => {
     enabled: Boolean(address),
   });
 
-  return { signatureData: data, isSignatureLoading: isLoading, refetchSignature: refetch };
+  return {
+    signatureData: data,
+    isSignatureLoading: isLoading,
+    refetchSignature: refetch,
+  };
 };
 
 export default useSavedSignatures;

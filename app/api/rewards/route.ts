@@ -50,7 +50,7 @@ export async function GET(request: NextRequest) {
             "Content-Type": "application/json",
             "Cache-Control": `public, max-age=${CACHE_DURATION}, stale-while-revalidate=${CACHE_STALE_WHILE_REVALIDATE}`,
           },
-        }
+        },
       );
     }
 
@@ -58,8 +58,8 @@ export async function GET(request: NextRequest) {
       process.env.SENTIO_API_URL,
       process.env.SENTIO_API_KEY,
       new JSONEpochConfigService(
-        path.join(process.cwd(), "src", "models", "campaigns.json")
-      )
+        path.join(process.cwd(), "src", "models", "campaigns.json"),
+      ),
     );
     const rewards = await userRewardsService.getRewards({
       epochNumbers: epochNumbers!.split(",").map(Number),

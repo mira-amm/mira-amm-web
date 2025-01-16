@@ -81,7 +81,7 @@ const PositionView = ({pool}: Props) => {
     .div(bn(100));
   const coinAAmountToWithdrawStr = formatUnits(
     coinAAmountToWithdraw,
-    assetAMetadata.decimals
+    assetAMetadata.decimals,
   );
 
   const coinBAmount = formatUnits(assetB[1], assetBMetadata.decimals);
@@ -91,7 +91,7 @@ const PositionView = ({pool}: Props) => {
     .div(bn(100));
   const coinBAmountToWithdrawStr = formatUnits(
     coinBAmountToWithdraw,
-    assetBMetadata.decimals
+    assetBMetadata.decimals,
   );
 
   const confirmationModalAssetsAmounts = useRef({
@@ -208,7 +208,7 @@ const PositionView = ({pool}: Props) => {
             <p
               className={clsx(
                 styles.priceBlockValue,
-                makeRateFontSmaller && styles.priceBlockValueSmall
+                makeRateFontSmaller && styles.priceBlockValueSmall,
               )}
             >
               {flooredRate}
@@ -312,7 +312,7 @@ const PositionView = ({pool}: Props) => {
               <p
                 className={clsx(
                   styles.priceBlockValue,
-                  makeRateFontSmaller && styles.priceBlockValueSmall
+                  makeRateFontSmaller && styles.priceBlockValueSmall,
                 )}
               >
                 {flooredRate}

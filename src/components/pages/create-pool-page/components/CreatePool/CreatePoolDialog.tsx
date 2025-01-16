@@ -21,7 +21,7 @@ import useModal from "@/src/hooks/useModal/useModal";
 import CoinsListModal from "@/src/components/common/Swap/components/CoinsListModal/CoinsListModal";
 import {B256Address, BN, bn, formatUnits} from "fuels";
 import useAssetMetadata from "@/src/hooks/useAssetMetadata";
-import { useAssetPrice } from "@/src/hooks/useAssetPrice";
+import {useAssetPrice} from "@/src/hooks/useAssetPrice";
 import SparkleIcon from "@/src/components/icons/Sparkle/SparkleIcon";
 import Link from "next/link";
 import useExchangeRateV2 from "@/src/hooks/useExchangeRate/useExchangeRateV2";
@@ -29,14 +29,15 @@ import ExchangeIcon from "@/src/components/icons/Exchange/ExchangeIcon";
 
 type Props = {
   setPreviewData: Dispatch<SetStateAction<CreatePoolPreviewData | null>>;
-}
+};
 
-const CreatePoolDialog = ({ setPreviewData }: Props) => {
-  const [AssetsListModal, openAssetsListModal, closeAssetsListModal] = useModal();
+const CreatePoolDialog = ({setPreviewData}: Props) => {
+  const [AssetsListModal, openAssetsListModal, closeAssetsListModal] =
+    useModal();
 
-  const { isConnected, isPending: isConnecting } = useIsConnected();
-  const { connect } = useConnectUI();
-  const { balances } = useBalances();
+  const {isConnected, isPending: isConnecting} = useIsConnected();
+  const {connect} = useConnectUI();
+  const {balances} = useBalances();
 
   const [firstAssetId, setFirstAssetId] = useState<string | null>(null);
   const [secondAssetId, setSecondAssetId] = useState<string | null>(null);
@@ -45,10 +46,10 @@ const CreatePoolDialog = ({ setPreviewData }: Props) => {
   const firstAssetBalanceValue = useAssetBalance(balances, firstAssetId);
   const secondAssetBalanceValue = useAssetBalance(balances, secondAssetId);
 
-  const [firstAmount, setFirstAmount] = useState('');
-  const [firstAmountInput, setFirstAmountInput] = useState('');
-  const [secondAmount, setSecondAmount] = useState('');
-  const [secondAmountInput, setSecondAmountInput] = useState('');
+  const [firstAmount, setFirstAmount] = useState("");
+  const [firstAmountInput, setFirstAmountInput] = useState("");
+  const [secondAmount, setSecondAmount] = useState("");
+  const [secondAmountInput, setSecondAmountInput] = useState("");
   const [activeAsset, setActiveAsset] = useState<B256Address | null>(null);
   const [isStablePool, setIsStablePool] = useState(false);
 
@@ -57,42 +58,56 @@ const CreatePoolDialog = ({ setPreviewData }: Props) => {
   const firstAssetMetadata = useAssetMetadata(firstAssetId);
   const secondAssetMetadata = useAssetMetadata(secondAssetId);
 
-  const pools = firstAssetId && secondAssetId ? [
-    buildPoolId(firstAssetId, secondAssetId, isStablePool),
-  ] : undefined;
-  const { poolsMetadata } = usePoolsMetadata(pools);
+  const pools =
+    firstAssetId && secondAssetId
+      ? [buildPoolId(firstAssetId, secondAssetId, isStablePool)]
+      : undefined;
+  const {poolsMetadata} = usePoolsMetadata(pools);
   const poolExists = Boolean(poolsMetadata && poolsMetadata?.[0]);
-  let existingPoolKey = '';
+  let existingPoolKey = "";
   if (poolExists) {
     // @ts-ignore
-    existingPoolKey = createPoolKey(poolsMetadata?.[0]?.poolId ?? poolsMetadata?.[1]?.poolId);
+    existingPoolKey = createPoolKey(
+      poolsMetadata?.[0]?.poolId ?? poolsMetadata?.[1]?.poolId,
+    );
   }
 
   const debouncedSetFirstAmount = useDebounceCallback(setFirstAmount, 500);
   const debouncedSetSecondAmount = useDebounceCallback(setSecondAmount, 500);
 
-  const handleStabilityChange = (isStable: boolean) => setIsStablePool(isStable);
+  const handleStabilityChange = (isStable: boolean) =>
+    setIsStablePool(isStable);
 
-  const setAmount = useCallback((coin: B256Address | null) => {
-    if (!coin) {
-      return () => void 0;
-    }
-
-    return (value: string) => {
-      if (coin === firstAssetId) {
-        debouncedSetFirstAmount(value);
-        setFirstAmountInput(value);
-      } else {
-        debouncedSetSecondAmount(value);
-        setSecondAmountInput(value);
+  const setAmount = useCallback(
+    (coin: B256Address | null) => {
+      if (!coin) {
+        return () => void 0;
       }
-      setActiveAsset(coin);
-    };
-  }, [debouncedSetFirstAmount, debouncedSetSecondAmount, firstAssetId]);
 
-  const sufficientEthBalanceForFirstCoin = useCheckEthBalance({ assetId: firstAssetId, amount: firstAmount });
-  const sufficientEthBalanceForSecondCoin = useCheckEthBalance({ assetId: secondAssetId, amount: secondAmount });
-  const sufficientEthBalance = sufficientEthBalanceForFirstCoin && sufficientEthBalanceForSecondCoin;
+      return (value: string) => {
+        if (coin === firstAssetId) {
+          debouncedSetFirstAmount(value);
+          setFirstAmountInput(value);
+        } else {
+          debouncedSetSecondAmount(value);
+          setSecondAmountInput(value);
+        }
+        setActiveAsset(coin);
+      };
+    },
+    [debouncedSetFirstAmount, debouncedSetSecondAmount, firstAssetId],
+  );
+
+  const sufficientEthBalanceForFirstCoin = useCheckEthBalance({
+    assetId: firstAssetId,
+    amount: firstAmount,
+  });
+  const sufficientEthBalanceForSecondCoin = useCheckEthBalance({
+    assetId: secondAssetId,
+    amount: secondAmount,
+  });
+  const sufficientEthBalance =
+    sufficientEthBalanceForFirstCoin && sufficientEthBalanceForSecondCoin;
 
   const faucetLink = useFaucetLink();
   const handleButtonClick = useCallback(() => {
@@ -101,19 +116,23 @@ const CreatePoolDialog = ({ setPreviewData }: Props) => {
       return;
     }
 
-    setPreviewData(firstAssetId && secondAssetId ? {
-      assets: [
-        {
-          assetId: firstAssetId,
-          amount: firstAmount,
-        },
-        {
-          assetId: secondAssetId,
-          amount: secondAmount,
-        }
-      ],
-      isStablePool,
-    } : null);
+    setPreviewData(
+      firstAssetId && secondAssetId
+        ? {
+            assets: [
+              {
+                assetId: firstAssetId,
+                amount: firstAmount,
+              },
+              {
+                assetId: secondAssetId,
+                amount: secondAmount,
+              },
+            ],
+            isStablePool,
+          }
+        : null,
+    );
   }, [
     sufficientEthBalance,
     setPreviewData,
@@ -122,54 +141,75 @@ const CreatePoolDialog = ({ setPreviewData }: Props) => {
     secondAssetId,
     secondAmount,
     isStablePool,
-    faucetLink
+    faucetLink,
   ]);
 
   const isValidNetwork = useCheckActiveNetwork();
 
-  const insufficientFirstBalance = bn.parseUnits(firstAmount, firstAssetMetadata.decimals).gt(firstAssetBalanceValue);
-  const insufficientSecondBalance = bn.parseUnits(secondAmount, secondAssetMetadata.decimals).gt(secondAssetBalanceValue);
-  const insufficientBalance = insufficientFirstBalance || insufficientSecondBalance;
-  const oneOfAssetsIsNotSelected = firstAssetId === null || secondAssetId === null;
-  const oneOfAmountsIsEmpty = !firstAmount || !secondAmount || firstAmount === '0' || secondAmount === '0';
+  const insufficientFirstBalance = bn
+    .parseUnits(firstAmount, firstAssetMetadata.decimals)
+    .gt(firstAssetBalanceValue);
+  const insufficientSecondBalance = bn
+    .parseUnits(secondAmount, secondAssetMetadata.decimals)
+    .gt(secondAssetBalanceValue);
+  const insufficientBalance =
+    insufficientFirstBalance || insufficientSecondBalance;
+  const oneOfAssetsIsNotSelected =
+    firstAssetId === null || secondAssetId === null;
+  const oneOfAmountsIsEmpty =
+    !firstAmount ||
+    !secondAmount ||
+    firstAmount === "0" ||
+    secondAmount === "0";
 
-  let buttonTitle = 'Preview creation';
+  let buttonTitle = "Preview creation";
   if (!isValidNetwork) {
-    buttonTitle = 'Incorrect network';
+    buttonTitle = "Incorrect network";
   } else if (oneOfAssetsIsNotSelected) {
-    buttonTitle = 'Choose assets';
+    buttonTitle = "Choose assets";
   } else if (insufficientBalance) {
-    buttonTitle = 'Insufficient balance';
+    buttonTitle = "Insufficient balance";
   } else if (!sufficientEthBalance) {
-    buttonTitle = 'Claim some ETH to pay for gas';
+    buttonTitle = "Claim some ETH to pay for gas";
   } else if (oneOfAmountsIsEmpty) {
-    buttonTitle = 'Enter asset amounts';
+    buttonTitle = "Enter asset amounts";
   }
 
-  const buttonDisabled = !isValidNetwork || poolExists || oneOfAssetsIsNotSelected || oneOfAmountsIsEmpty || insufficientBalance;
+  const buttonDisabled =
+    !isValidNetwork ||
+    poolExists ||
+    oneOfAssetsIsNotSelected ||
+    oneOfAmountsIsEmpty ||
+    insufficientBalance;
 
-  const handleAssetClick = useCallback((assetId: string | null) => {
-    return () => {
-      openAssetsListModal();
-      activeAssetForAssetSelector.current = assetId;
-    };
-  }, [openAssetsListModal]);
+  const handleAssetClick = useCallback(
+    (assetId: string | null) => {
+      return () => {
+        openAssetsListModal();
+        activeAssetForAssetSelector.current = assetId;
+      };
+    },
+    [openAssetsListModal],
+  );
 
-  const handleAssetSelection = useCallback((selectedAssetId: B256Address | null) => {
-    if (activeAssetForAssetSelector.current === firstAssetId) {
-      if (selectedAssetId === secondAssetId) {
-        setSecondAssetId(firstAssetId);
+  const handleAssetSelection = useCallback(
+    (selectedAssetId: B256Address | null) => {
+      if (activeAssetForAssetSelector.current === firstAssetId) {
+        if (selectedAssetId === secondAssetId) {
+          setSecondAssetId(firstAssetId);
+        }
+        setFirstAssetId(selectedAssetId);
+      } else {
+        if (selectedAssetId === firstAssetId) {
+          setFirstAssetId(secondAssetId);
+        }
+        setSecondAssetId(selectedAssetId);
       }
-      setFirstAssetId(selectedAssetId);
-    } else {
-      if (selectedAssetId === firstAssetId) {
-        setFirstAssetId(secondAssetId);
-      }
-      setSecondAssetId(selectedAssetId);
-    }
 
-    closeAssetsListModal();
-  }, [firstAssetId, secondAssetId, closeAssetsListModal]);
+      closeAssetsListModal();
+    },
+    [firstAssetId, secondAssetId, closeAssetsListModal],
+  );
 
   const firstAssetPrice = useAssetPrice(firstAssetId);
   const secondAssetPrice = useAssetPrice(secondAssetId);
@@ -183,7 +223,9 @@ const CreatePoolDialog = ({ setPreviewData }: Props) => {
   });
 
   const handleExchangeRateSwap = () => {
-    setActiveAssetId(prevActiveAssetId => prevActiveAssetId === firstAssetId ? secondAssetId : firstAssetId);
+    setActiveAssetId((prevActiveAssetId) =>
+      prevActiveAssetId === firstAssetId ? secondAssetId : firstAssetId,
+    );
   };
 
   return (
@@ -193,27 +235,42 @@ const CreatePoolDialog = ({ setPreviewData }: Props) => {
         <div className={styles.sectionContent}>
           <div className={styles.coinPair}>
             {!oneOfAssetsIsNotSelected && (
-              <CoinPair firstCoin={firstAssetId} secondCoin={secondAssetId} isStablePool={isStablePool}/>
+              <CoinPair
+                firstCoin={firstAssetId}
+                secondCoin={secondAssetId}
+                isStablePool={isStablePool}
+              />
             )}
           </div>
           <div className={styles.poolStability}>
-            <div className={clsx(styles.poolStabilityButton, !isStablePool && styles.poolStabilityButtonActive)}
-                 onClick={() => handleStabilityChange(false)}
-                 role="button"
+            <div
+              className={clsx(
+                styles.poolStabilityButton,
+                !isStablePool && styles.poolStabilityButtonActive,
+              )}
+              onClick={() => handleStabilityChange(false)}
+              role="button"
             >
               <div className={styles.poolStabilityButtonTitle}>
                 <p>Volatile pool</p>
-                <Info tooltipText={VolatilePoolTooltip} tooltipKey="volatilePool"/>
+                <Info
+                  tooltipText={VolatilePoolTooltip}
+                  tooltipKey="volatilePool"
+                />
               </div>
               <p>0.30% fee tier</p>
             </div>
-            <button className={clsx(styles.poolStabilityButton, isStablePool && styles.poolStabilityButtonActive)}
-                    onClick={() => handleStabilityChange(true)}
-                    role="button"
+            <button
+              className={clsx(
+                styles.poolStabilityButton,
+                isStablePool && styles.poolStabilityButtonActive,
+              )}
+              onClick={() => handleStabilityChange(true)}
+              role="button"
             >
               <div className={styles.poolStabilityButtonTitle}>
                 <p>Stable pool</p>
-                <Info tooltipText={StablePoolTooltip} tooltipKey="stablePool"/>
+                <Info tooltipText={StablePoolTooltip} tooltipKey="stablePool" />
               </div>
               <p>0.05% fee tier</p>
             </button>
@@ -249,7 +306,10 @@ const CreatePoolDialog = ({ setPreviewData }: Props) => {
             <SparkleIcon />
           </div>
           <p className={styles.existingPoolText}>This pool already exists</p>
-          <Link href={`/liquidity/add/?pool=${existingPoolKey}`} className={styles.addLiquidityLink}>
+          <Link
+            href={`/liquidity/add/?pool=${existingPoolKey}`}
+            className={styles.addLiquidityLink}
+          >
             Add liquidity →
           </Link>
         </div>
@@ -262,7 +322,8 @@ const CreatePoolDialog = ({ setPreviewData }: Props) => {
             <ExchangeIcon />
           </div>
           <p className={styles.priceWarning}>
-            This is the price of the pool on inception. Always double check before deploying a pool.
+            This is the price of the pool on inception. Always double check
+            before deploying a pool.
           </p>
         </div>
       )}
@@ -280,10 +341,7 @@ const CreatePoolDialog = ({ setPreviewData }: Props) => {
         </ActionButton>
       )}
       <AssetsListModal title="Choose token">
-        <CoinsListModal
-          selectCoin={handleAssetSelection}
-          balances={balances}
-        />
+        <CoinsListModal selectCoin={handleAssetSelection} balances={balances} />
       </AssetsListModal>
     </>
   );

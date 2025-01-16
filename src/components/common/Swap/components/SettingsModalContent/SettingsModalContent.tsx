@@ -1,32 +1,50 @@
 import WarningIcon from "@/src/components/icons/Warning/WarningIcon";
-import styles from './SettingsModalContent.module.css';
-import {ChangeEvent, Dispatch, memo, SetStateAction, useState, KeyboardEvent, FocusEvent, useRef} from "react";
+import styles from "./SettingsModalContent.module.css";
+import {
+  ChangeEvent,
+  Dispatch,
+  memo,
+  SetStateAction,
+  useState,
+  KeyboardEvent,
+  FocusEvent,
+  useRef,
+} from "react";
 import {clsx} from "clsx";
-import {DefaultSlippageValue, SlippageMode} from "@/src/components/common/Swap/Swap";
+import {
+  DefaultSlippageValue,
+  SlippageMode,
+} from "@/src/components/common/Swap/Swap";
 
 type Props = {
   slippage: number;
   slippageMode: SlippageMode;
-  setSlippage: Dispatch<SetStateAction<number>>
+  setSlippage: Dispatch<SetStateAction<number>>;
   setSlippageMode: Dispatch<SetStateAction<SlippageMode>>;
   closeModal: VoidFunction;
-}
+};
 
 const AutoSlippageValues = [10, 50, 100];
 
-const SettingsModalContent = ({ slippage, slippageMode, setSlippage, setSlippageMode, closeModal }: Props) => {
+const SettingsModalContent = ({
+  slippage,
+  slippageMode,
+  setSlippage,
+  setSlippageMode,
+  closeModal,
+}: Props) => {
   const [inputValue, setInputValue] = useState(`${slippage / 100}%`);
 
   const inputRef = useRef<HTMLInputElement>(null);
 
   const handleSlippageChange = (event: ChangeEvent<HTMLInputElement>) => {
-    let value = event.target.value.replace('%', '');
-    setInputValue(value + '%');
-  }
+    const value = event.target.value.replace("%", "");
+    setInputValue(value + "%");
+  };
 
   const handleInputBlur = (event: FocusEvent<HTMLInputElement>) => {
-    let value = event.target.value.replace('%', '');
-    const numericValue = parseFloat(value.replace(',', '.'));
+    const value = event.target.value.replace("%", "");
+    const numericValue = parseFloat(value.replace(",", "."));
     if (isNaN(numericValue) || numericValue <= 0 || numericValue >= 100) {
       setSlippage(DefaultSlippageValue);
       return;
@@ -35,14 +53,14 @@ const SettingsModalContent = ({ slippage, slippageMode, setSlippage, setSlippage
   };
 
   const handleKeyDown = (event: KeyboardEvent<HTMLInputElement>) => {
-    if (event.key === 'Backspace') {
-      let value = inputValue.replace('%', '');
+    if (event.key === "Backspace") {
+      let value = inputValue.replace("%", "");
       value = value.slice(0, -1);
-      setInputValue(value + '%');
+      setInputValue(value + "%");
       event.preventDefault();
     }
 
-    if (event.key === 'Enter') {
+    if (event.key === "Enter") {
       inputRef.current?.blur();
     }
   };
@@ -54,34 +72,39 @@ const SettingsModalContent = ({ slippage, slippageMode, setSlippage, setSlippage
 
   const handleSlippageModeChange = (mode: SlippageMode) => {
     setSlippageMode(mode);
-    if (mode === 'auto' && !AutoSlippageValues.includes(slippage)) {
+    if (mode === "auto" && !AutoSlippageValues.includes(slippage)) {
       setSlippage(DefaultSlippageValue);
     }
   };
 
-  const isAutoMode = slippageMode === 'auto';
-  const isCustomMode = slippageMode === 'custom';
+  const isAutoMode = slippageMode === "auto";
+  const isCustomMode = slippageMode === "custom";
 
   return (
     <div className={styles.settingsContainer}>
       <div className={styles.settingsSection}>
         <p>Slippage Tolerance</p>
         <p className={styles.settingsText}>
-          The amount the price can change unfavorably before the trade
-          reverts
+          The amount the price can change unfavorably before the trade reverts
         </p>
       </div>
       <div className={styles.settingsSection}>
         <div className={styles.slippageButtons}>
           <button
-            className={clsx(styles.slippageButton, isAutoMode && styles.slippageButtonActive)}
-            onClick={() => handleSlippageModeChange('auto')}
+            className={clsx(
+              styles.slippageButton,
+              isAutoMode && styles.slippageButtonActive,
+            )}
+            onClick={() => handleSlippageModeChange("auto")}
           >
             Auto
           </button>
           <button
-            className={clsx(styles.slippageButton, isCustomMode && styles.slippageButtonActive)}
-            onClick={() => handleSlippageModeChange('custom')}
+            className={clsx(
+              styles.slippageButton,
+              isCustomMode && styles.slippageButtonActive,
+            )}
+            onClick={() => handleSlippageModeChange("custom")}
           >
             Custom
           </button>
@@ -104,7 +127,10 @@ const SettingsModalContent = ({ slippage, slippageMode, setSlippage, setSlippage
           <div className={styles.slippageButtons}>
             {AutoSlippageValues.map((value) => (
               <button
-                className={clsx(styles.slippageButton, slippage === value && styles.slippageButtonActive)}
+                className={clsx(
+                  styles.slippageButton,
+                  slippage === value && styles.slippageButtonActive,
+                )}
                 onClick={() => handleSlippageButtonClick(value)}
                 key={value}
               >
@@ -117,7 +143,7 @@ const SettingsModalContent = ({ slippage, slippageMode, setSlippage, setSlippage
       {isCustomMode && (
         <div className={styles.settingsSection}>
           <p className={styles.infoHeading}>
-            <WarningIcon/>
+            <WarningIcon />
             Pay attention
           </p>
           <p className={styles.settingsText}>

@@ -1,7 +1,7 @@
 import ChevronLeft from "@/src/components/icons/ChevronLeft/ChevronLeft";
 import Link from "next/link";
 
-import styles from './BackLink.module.css';
+import styles from "./BackLink.module.css";
 import {isMobile} from "react-device-detect";
 import {clsx} from "clsx";
 
@@ -11,16 +11,23 @@ type Props = {
   title?: string;
   onClick?: () => void;
   className?: string;
-  chevron?: boolean
+  chevron?: boolean;
 };
 
-const BackLink = ({ href, showOnDesktop, title, onClick, className, chevron }: Props) => {
+const BackLink = ({
+  href,
+  showOnDesktop,
+  title,
+  onClick,
+  className,
+  chevron,
+}: Props) => {
   if (!isMobile && !showOnDesktop) {
     return null;
   }
 
-  const hrefToUse = href || '/';
-  const titleToUse = title || 'Back';
+  const hrefToUse = href || "/";
+  const titleToUse = title || "Back";
 
   if (onClick) {
     return (

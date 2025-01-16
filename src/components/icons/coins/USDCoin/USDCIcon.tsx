@@ -18,7 +18,7 @@ const USDCIcon = () => {
           maskType: "alpha",
         }}
       >
-        <path fill="#fff" d="M.5.816h32v32H.5v-32Z"/>
+        <path fill="#fff" d="M.5.816h32v32H.5v-32Z" />
       </mask>
       <g mask="url(#a)">
         <path

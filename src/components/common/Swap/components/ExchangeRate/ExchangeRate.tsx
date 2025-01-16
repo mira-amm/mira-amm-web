@@ -3,17 +3,17 @@ import {CurrencyBoxMode, SwapState} from "@/src/components/common/Swap/Swap";
 import ExchangeIcon from "@/src/components/icons/Exchange/ExchangeIcon";
 import useExchangeRate from "@/src/hooks/useExchangeRate/useExchangeRate";
 
-import styles from './ExchangeRate.module.css';
+import styles from "./ExchangeRate.module.css";
 
 type Props = {
   swapState: SwapState;
 };
 
-const ExchangeRate = ({ swapState }: Props) => {
-  const [mode, setMode] = useState<CurrencyBoxMode>('sell');
+const ExchangeRate = ({swapState}: Props) => {
+  const [mode, setMode] = useState<CurrencyBoxMode>("sell");
 
   const handleClick = () => {
-    setMode(prevMode => prevMode === 'sell' ? 'buy' : 'sell');
+    setMode((prevMode) => (prevMode === "sell" ? "buy" : "sell"));
   };
 
   const rate = useExchangeRate(swapState, mode);
@@ -25,7 +25,7 @@ const ExchangeRate = ({ swapState }: Props) => {
   return (
     <button className={styles.exchangeRate} onClick={handleClick}>
       {rate}
-      <ExchangeIcon/>
+      <ExchangeIcon />
     </button>
   );
 };

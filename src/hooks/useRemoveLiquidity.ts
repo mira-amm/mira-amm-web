@@ -22,31 +22,42 @@ const useRemoveLiquidity = ({
   coinBAmountToWithdraw,
 }: Props) => {
   const mira = useMiraDex();
-  const { wallet } = useWallet();
+  const {wallet} = useWallet();
 
   const mutationFn = useCallback(async () => {
     if (!mira || !wallet || !lpTokenBalance) {
       return;
     }
 
-    const liquidityAmount = lpTokenBalance.mul(new BN(liquidityPercentage)).div(new BN(100));
+    const liquidityAmount = lpTokenBalance
+      .mul(new BN(liquidityPercentage))
+      .div(new BN(100));
 
     // TODO: get slippage from UI
     const minCoinAAmount = coinAAmountToWithdraw.mul(bn(99)).div(bn(100));
     const minCoinBAmount = coinBAmountToWithdraw.mul(bn(99)).div(bn(100));
 
-    const txRequest = await mira.removeLiquidity(pool, liquidityAmount, minCoinAAmount, minCoinBAmount, MaxDeadline, DefaultTxParams);
+    const txRequest = await mira.removeLiquidity(
+      pool,
+      liquidityAmount,
+      minCoinAAmount,
+      minCoinBAmount,
+      MaxDeadline,
+      DefaultTxParams,
+    );
     const gasCost = await wallet.getTransactionCost(txRequest);
     const fundedTx = await wallet.fund(txRequest, gasCost);
-    const tx = await wallet.sendTransaction(fundedTx, { estimateTxDependencies: true });
+    const tx = await wallet.sendTransaction(fundedTx, {
+      estimateTxDependencies: true,
+    });
     return tx.waitForResult();
   }, [mira, wallet, pool, liquidityPercentage, lpTokenBalance]);
 
-  const { data, mutateAsync, error } = useMutation({
+  const {data, mutateAsync, error} = useMutation({
     mutationFn,
   });
 
-  return { data, removeLiquidity: mutateAsync, error };
+  return {data, removeLiquidity: mutateAsync, error};
 };
 
 export default useRemoveLiquidity;

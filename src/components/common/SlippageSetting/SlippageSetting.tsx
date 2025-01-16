@@ -7,7 +7,7 @@ type Props = {
   openSettingsModal: () => void;
 };
 
-export const SlippageSetting = ({ slippage, openSettingsModal }: Props) => {
+export const SlippageSetting = ({slippage, openSettingsModal}: Props) => {
   return (
     <>
       <p className={styles.slippageLabel}>{slippage / 100}% slippage</p>

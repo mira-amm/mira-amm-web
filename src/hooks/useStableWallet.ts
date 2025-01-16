@@ -4,7 +4,7 @@ import {useEffect, useMemo, useRef} from "react";
 import {Account} from "fuels";
 
 const useStableWallet = () => {
-  const { wallet } = useWallet();
+  const {wallet} = useWallet();
   const walletToReturn = useRef<Account | null>(null);
   // let walletToReturn = wallet;
 

@@ -7,8 +7,15 @@ interface PriceImpactProps {
   previewPrice: number | undefined;
 }
 
-const getPriceImpact = (reservesPrice: number | undefined, previewPrice: number | undefined) => {
-  if (reservesPrice === undefined || previewPrice === undefined || reservesPrice === 0) {
+const getPriceImpact = (
+  reservesPrice: number | undefined,
+  previewPrice: number | undefined,
+) => {
+  if (
+    reservesPrice === undefined ||
+    previewPrice === undefined ||
+    reservesPrice === 0
+  ) {
     return -1;
   }
   if (reservesPrice <= previewPrice) {
@@ -16,12 +23,9 @@ const getPriceImpact = (reservesPrice: number | undefined, previewPrice: number 
   }
   const impact = ((reservesPrice - previewPrice) / reservesPrice) * 100;
   return Math.min(impact, 99.99);
-}
+};
 
-const PriceImpact: FC<PriceImpactProps> = ({
-  reservesPrice,
-  previewPrice,
-}) => {
+const PriceImpact: FC<PriceImpactProps> = ({reservesPrice, previewPrice}) => {
   const priceImpactValue = getPriceImpact(reservesPrice, previewPrice);
 
   const highPriceImpact = priceImpactValue > 5;
@@ -29,12 +33,14 @@ const PriceImpact: FC<PriceImpactProps> = ({
   const priceImpactHidden = priceImpactValue === -1;
 
   return (
-    <p className={clsx(
-      styles.priceImpact,
-      highPriceImpact && styles.redText,
-      mediumPriceImpact && styles.yellowText,
-      priceImpactHidden && styles.hidden,
-    )}>
+    <p
+      className={clsx(
+        styles.priceImpact,
+        highPriceImpact && styles.redText,
+        mediumPriceImpact && styles.yellowText,
+        priceImpactHidden && styles.hidden,
+      )}
+    >
       Price impact: {priceImpactValue.toFixed(2)}%
     </p>
   );

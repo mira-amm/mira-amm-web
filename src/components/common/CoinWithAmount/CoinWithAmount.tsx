@@ -1,14 +1,14 @@
 import {CoinName, coinsConfig} from "@/src/utils/coinsConfig";
 
-import styles from './CoinWithAmount.module.css';
-import { B256Address } from "fuels";
-import { useAssetImage } from "@/src/hooks/useAssetImage";
+import styles from "./CoinWithAmount.module.css";
+import {B256Address} from "fuels";
+import {useAssetImage} from "@/src/hooks/useAssetImage";
 import useAssetMetadata from "@/src/hooks/useAssetMetadata";
 
 type Props = {
   amount: string;
   assetId: B256Address;
-}
+};
 
 const CoinWithAmount = ({amount, assetId}: Props) => {
   const icon = useAssetImage(assetId);
