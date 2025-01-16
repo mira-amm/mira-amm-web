@@ -82,22 +82,6 @@ export namespace GeckoTerminalQueryResponses {
     metadata?: Record<string, string>;
   }
 
-  // export interface SwapEvent {
-  //   eventType: "swap";
-  //   txnId: string;
-  //   txnIndex: number;
-  //   eventIndex: number;
-  //   maker: string;
-  //   pairId: string;
-  //   asset0In?: number | string;
-  //   asset1In?: number | string;
-  //   asset0Out?: number | string;
-  //   asset1Out?: number | string;
-  //   priceNative: number;
-  //   reserves: Reserves;
-  //   metadata?: Record<string, string>;
-  // }
-
   export type SwapEvent = {
     eventType: "swap";
     txnId: string;

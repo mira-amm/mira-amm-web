@@ -23,7 +23,6 @@ async function fetchEventsForBlockRange({
    * This query returns correctly for swap, but need to confirm for JOIN_EXIT instead of ADD_LIQUIDITY
    * (SQD has three options- ADD_LIQUIDITY REMOVE_LIQUIDITY and SWAP)
    *********************************************/
-
   const query = gql`
     query GetActions($fromBlock: Int!, $toBlock: Int!) {
       actions(
@@ -42,6 +41,14 @@ async function fetchEventsForBlockRange({
       ) {
         pool {
           id
+        }
+        asset0 {
+          id
+          decimals
+        }
+        asset1 {
+          id
+          decimals
         }
         amount1Out
         amount1In
@@ -77,48 +84,45 @@ async function fetchEventsForBlockRange({
   }
 }
 
-// Helper function to fetch and process events data for a single block
-export async function fetchEventsForBlock(
-  blockNumber: number,
-): Promise<SQDIndexerResponses.Actions> {
-  const query = gql`
-    query GetActions($blockNumber: Int!) {
-      actions(where: {blockNumber_eq: $blockNumber}) {
-        pool {
-          id
-        }
-        amount1Out
-        amount1In
-        amount0Out
-        amount0In
-        reserves0After
-        reserves1After
-        type
-        transaction
-        timestamp
-        blockNumber
-      }
-    }
-  `;
-
-  try {
-    // Send the GraphQL request to fetch events
-    const data = await request<SQDIndexerResponses.Actions>({
-      url: SQDIndexerUrl,
-      document: query,
-      variables: {blockNumber},
-    });
-
-    return data; // Return the data with events
-  } catch (error) {
-    console.error(`Error fetching events for block ${blockNumber}:`, error);
-    throw new Error(`Error fetching events for block ${blockNumber}:`);
-  }
-}
-
 function createEventDataForJoinExitEvent(
   action: SQDIndexerResponses.Action,
 ): GeckoTerminalQueryResponses.JoinExitEvent {
+  let asset0Decimals = action.asset0.decimals;
+  let asset1Decimals = action.asset1.decimals;
+  //decimalizing based on asset's decimals
+  const decimalizedReserves0After = decimalize(
+    action.reserves0After,
+    asset0Decimals,
+  );
+  const decimalizedReserves1After = decimalize(
+    action.reserves1After,
+    asset1Decimals,
+  );
+  let _amount0: number | string;
+  let _amount1: number | string;
+
+  //calculating amount0
+  if (action.amount0In && action.amount0In != "0") {
+    _amount0 = action.amount0In;
+  } else if (action.amount0Out && action.amount0Out != "0") {
+    _amount0 = action.amount0Out;
+  } else {
+    throw new Error(`Invalid swap event data: ${JSON.stringify(action)}`);
+  }
+
+  // calculation amount1
+  if (action.amount1In && action.amount1In != "0") {
+    _amount1 = action.amount0In;
+  } else if (action.amount1Out && action.amount1Out != "0") {
+    _amount1 = action.amount1Out;
+  } else {
+    throw new Error(`Invalid swap event data: ${JSON.stringify(action)}`);
+  }
+
+  //decimalizing based on asset's decimals
+  const decimalizedAmount0 = decimalize(_amount0, asset1Decimals);
+  const decimalizedAmount1 = decimalize(_amount1, asset1Decimals);
+
   return {
     txnId: action.transaction,
     txnIndex: 0,
@@ -126,8 +130,8 @@ function createEventDataForJoinExitEvent(
     maker: action.pool.id,
     pairId: action.pool.id,
     reserves: {
-      asset0: action.reserves0After,
-      asset1: action.reserves1After,
+      asset0: decimalizedReserves0After,
+      asset1: decimalizedReserves1After,
     },
     /*********************************************
      * QUESTION 1:
@@ -135,8 +139,8 @@ function createEventDataForJoinExitEvent(
      * How to handle JOIN and EXIT separately ,maybe with FUEL API (need to check)
      *********************************************/
     eventType: GeckoTerminalTypes.EventTypes.JOIN,
-    amount0: action.amount0In,
-    amount1: action.amount1In,
+    amount0: decimalizedAmount0,
+    amount1: decimalizedAmount1,
   };
 }
 
@@ -162,17 +166,30 @@ function createEventDataForSwapEvent(
   /*********************************************
    * HARDCODED DECIMALIZE TO 6 : (need fix)
    *********************************************/
-  let asset0Decimals = 6;
-  let asset1Decimals = 6;
+  // let asset0Decimals = 6;
+  // let asset1Decimals = 6;
+
+  let asset0Decimals = action.asset0.decimals;
+  let asset1Decimals = action.asset1.decimals;
 
   // not adding "0" value to the output as per the Gecko Terminal spec( only one pair should be present at any given)
-  if (action.amount0In != "0" && action.amount1Out != "0") {
+  if (
+    action.amount0In &&
+    action.amount0In != "0" &&
+    action.amount1Out &&
+    action.amount1Out != "0"
+  ) {
     event = {
       ...event,
       asset0In: decimalize(action.amount0In, asset0Decimals),
       asset1Out: decimalize(action.amount1Out, asset1Decimals),
     };
-  } else if (action.amount1In != "0" && action.amount0Out != "0") {
+  } else if (
+    action.amount1In &&
+    action.amount1In != "0" &&
+    action.amount0Out &&
+    action.amount0Out != "0"
+  ) {
     event = {
       ...event,
       asset1In: decimalize(action.amount1In, asset1Decimals),
