@@ -144,13 +144,21 @@ export class SentioJSONUserRewardsService implements UserRewardsService {
         throw new Error(`Invalid epoch end time: ${epochEnd}`);
       }
 
+      // Amount represents daily rewards than total epoch rewards
+      // We have to adjust the amount based on the number of days in the epoch
+      const epochDurationDays =
+        (new Date(epochEnd).getTime() - new Date(epochStart).getTime()) /
+        (1000 * 60 * 60 * 24);
+      const campaignRewardAmount =
+        campaign.rewards[0].amount * epochDurationDays;
+
       const options = getQueryOptions(
         this.apiKey,
         epochStart,
         epochEnd,
         userId,
         lpToken,
-        campaign.rewards[0].amount,
+        campaignRewardAmount,
         "fuel",
       );
 
