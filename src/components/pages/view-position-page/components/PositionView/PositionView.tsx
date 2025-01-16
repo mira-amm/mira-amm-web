@@ -11,11 +11,10 @@ import ActionButton from "@/src/components/common/ActionButton/ActionButton";
 import useModal from "@/src/hooks/useModal/useModal";
 import RemoveLiquidityModalContent from "@/src/components/pages/view-position-page/components/RemoveLiquidityModalContent/RemoveLiquidityModalContent";
 import usePositionData from "@/src/hooks/usePositionData";
-import {floorToTwoSignificantDigits} from "@/src/utils/common";
+import {floorToTwoSignificantDigits, createPoolKey} from "@/src/utils/common";
 import {useCallback, useRef, useState} from "react";
 import useRemoveLiquidity from "@/src/hooks/useRemoveLiquidity";
 import {useRouter} from "next/navigation";
-import {coinsConfig} from "@/src/utils/coinsConfig";
 import RemoveLiquiditySuccessModal from "@/src/components/pages/view-position-page/components/RemoveLiquiditySuccessModal/RemoveLiquiditySuccessModal";
 import IconButton from "@/src/components/common/IconButton/IconButton";
 import {getLPAssetId, PoolId} from "mira-dex-ts";
@@ -28,6 +27,8 @@ import TransactionFailureModal from "@/src/components/common/TransactionFailureM
 import {CopyIcon} from "@/src/components/icons/Copy/CopyIcon";
 import {bn, formatUnits} from "fuels";
 import useAssetMetadata from "@/src/hooks/useAssetMetadata";
+import AprBadge from "@/src/components/common/AprBadge/AprBadge";
+import usePoolNameAndMatch from "@/src/hooks/usePoolNameAndMatch";
 
 type Props = {
   pool: PoolId;
@@ -65,6 +66,12 @@ const PositionView = ({pool}: Props) => {
         maximumFractionDigits: 2,
       })}%`
     : null;
+
+  const tvlValue = apr?.tvlUSD;
+  const poolKey = createPoolKey(pool);
+
+  //Checks if the pool with rewards matches the current pool
+  const {isMatching} = usePoolNameAndMatch(poolKey);
 
   const [removeLiquidityPercentage, setRemoveLiquidityPercentage] =
     useState(50);
@@ -170,12 +177,26 @@ const PositionView = ({pool}: Props) => {
         </div>
         <div className={styles.infoBlock}>
           <p>Liquidity</p>
-          <p>
-            APR &nbsp;
-            <span className={clsx(styles.pending, !aprValue && "blurredText")}>
-              {aprValue ?? "33.33%"}
-            </span>
-          </p>
+          {isMatching ? (
+            <div className={styles.aprBadge}>
+              <p>APR &nbsp;</p>
+              <AprBadge
+                aprValue={aprValue}
+                poolKey={poolKey}
+                tvlValue={tvlValue}
+                small={true}
+              />
+            </div>
+          ) : (
+            <p>
+              APR &nbsp;
+              <span
+                className={clsx(styles.pending, !aprValue && "blurredText")}
+              >
+                {aprValue ?? "33.33%"}
+              </span>
+            </p>
+          )}
           <div className={styles.coinsData}>
             <CoinWithAmount
               assetId={pool[0].bits}
@@ -276,14 +297,27 @@ const PositionView = ({pool}: Props) => {
           <div className={styles.infoBlocks}>
             <div className={styles.infoBlock}>
               <p>Liquidity</p>
-              <p>
-                APR &nbsp;
-                <span
-                  className={clsx(styles.pending, !aprValue && "blurredText")}
-                >
-                  {aprValue ?? "33.33%"}
-                </span>
-              </p>
+              {isMatching ? (
+                <div className={styles.aprBadge}>
+                  <p>APR &nbsp;</p>
+                  <AprBadge
+                    aprValue={aprValue}
+                    poolKey={poolKey}
+                    tvlValue={tvlValue}
+                    small={true}
+                  />
+                </div>
+              ) : (
+                <p>
+                  APR &nbsp;
+                  <span
+                    className={clsx(styles.pending, !aprValue && "blurredText")}
+                  >
+                    {aprValue ?? "33.33%"}
+                  </span>
+                </p>
+              )}
+
               <div className={styles.coinsData}>
                 <CoinWithAmount
                   assetId={pool[0].bits}
