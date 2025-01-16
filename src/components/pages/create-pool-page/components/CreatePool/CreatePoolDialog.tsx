@@ -66,10 +66,10 @@ const CreatePoolDialog = ({setPreviewData}: Props) => {
   const poolExists = Boolean(poolsMetadata && poolsMetadata?.[0]);
   let existingPoolKey = "";
   if (poolExists) {
-    // @ts-ignore
-    existingPoolKey = createPoolKey(
-      poolsMetadata?.[0]?.poolId ?? poolsMetadata?.[1]?.poolId,
-    );
+    const poolId = poolsMetadata?.[0]?.poolId || poolsMetadata?.[1]?.poolId;
+    if (poolId) {
+      existingPoolKey = createPoolKey(poolId);
+    }
   }
 
   const debouncedSetFirstAmount = useDebounceCallback(setFirstAmount, 500);
