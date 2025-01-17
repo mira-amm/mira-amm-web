@@ -1,33 +1,14 @@
-// library imports
+/**
+ * @api {get} /asset Get details of an asset by id
+ */
 import {NextResponse} from "next/server";
 import {request, gql} from "graphql-request";
 import {ethers} from "ethers";
-
-// local imports
 import {NetworkUrl, SQDIndexerUrl} from "@/src/utils/constants";
-
-// interfaces
-interface AssetIndexerResponse {
-  l1Address: string;
-  name: string;
-  symbol: string;
-  decimals: number;
-  supply: string | number;
-  circulatingSupply?: string | number;
-  coinGeckoId?: string;
-  coinMarketCapId?: string;
-  metadata?: Record<string, string>;
-}
-
-interface Asset {
-  asset: {
-    id: string; // This would be `l1Address` (string type)
-    name: string;
-    symbol: string;
-    decimals: number;
-    totalSupply: string | number; // Assuming totalSupply could be string or number
-  };
-}
+import {
+  GeckoTerminalQueryResponses,
+  SQDIndexerResponses,
+} from "../shared/types";
 
 // Helper function to determine if the address is EVM-compatible
 function isEVMAddress(address: string): boolean {
@@ -90,14 +71,13 @@ export async function GET(req: Request) {
         and I am not aware of the GQL schema to query
      *  Would appreciate any help/insights!
 
-     *  QUESTION 4:
-     *  is l1Address the asset address or something else. Some cases , l1Address is coming as null
      *********************************************/
 
     // GraphQL query to fetch asset details
     const query = gql`
       query GetAsset($id: String!) {
         assetById(id: $id) {
+          id
           l1Address
           decimals
           name
@@ -108,7 +88,7 @@ export async function GET(req: Request) {
     `;
 
     // Send the GraphQL request to the indexer server
-    const data = await request<{assetById: AssetIndexerResponse}>({
+    const data = await request<{assetById: SQDIndexerResponses.Asset}>({
       url: SQDIndexerUrl,
       document: query,
       variables: {id: assetId}, // Use 'id' as a query variable
@@ -123,27 +103,34 @@ export async function GET(req: Request) {
     }
 
     // Ensure the asset ID (contract address) is valid
-    const isValidAddress = validateAddress(asset.l1Address);
+    // const isValidAddress = validateAddress(asset.l1Address);
 
-    if (!isValidAddress) {
-      return NextResponse.json(
-        {error: "L1 Address is invalid for the requested asset"},
-        {status: 422},
-      );
-    }
+    // if (!isValidAddress) {
+    //   return NextResponse.json(
+    //     {error: "L1 Address is invalid for the requested asset"},
+    //     {status: 422},
+    //   );
+    // }
 
     // Transforming to desired format for Gecko Terminal
-    const transformedAsset: Asset = {
-      asset: {
-        id: asset.l1Address,
-        name: asset.name,
-        symbol: asset.symbol,
-        decimals: asset.decimals,
-        totalSupply: asset.supply, // Rename supply to totalSupply
-      },
+    const transformedAsset: GeckoTerminalQueryResponses.Asset = {
+      /*****************
+       *  QUESTION 4:
+       *  is id or l1Address the asset id, (Some cases , l1Address is coming as null)
+       * also mapped supply to totalSupply (assumption made)
+       ******************/
+      id: asset.id,
+      name: asset.name,
+      symbol: asset.symbol,
+      decimals: asset.decimals,
+      totalSupply: asset.supply, // Rename supply to totalSupply
     };
 
-    return NextResponse.json(transformedAsset);
+    const assetResponse: GeckoTerminalQueryResponses.AssetResponse = {
+      asset: transformedAsset,
+    };
+
+    return NextResponse.json(assetResponse);
   } catch (error) {
     console.error("Error fetching asset data:", error);
     return NextResponse.json(

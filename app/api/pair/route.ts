@@ -1,7 +1,63 @@
+/**
+ * @api {get} /pair Get pair details by id
+ */
 import {NextResponse} from "next/server";
 import {request, gql} from "graphql-request";
 import {SQDIndexerUrl} from "@/src/utils/constants";
-import {SQDIndexerResponses} from "../shared/types";
+import {
+  SQDIndexerResponses,
+  GeckoTerminalQueryResponses,
+} from "../shared/types";
+
+// Function to fetch pool details by ID
+async function fetchPoolById(
+  poolId: string,
+): Promise<SQDIndexerResponses.Pool> {
+  // Define the GraphQL query to fetch pool details by the given id
+  const query = gql`
+    query GetPairById($id: String!) {
+      poolById(id: $id) {
+        id
+        asset0 {
+          id
+        }
+        asset1 {
+          id
+        }
+      }
+    }
+  `;
+
+  // Send the GraphQL request to the indexer server to fetch the pool data
+  const response = await request<{
+    poolById: SQDIndexerResponses.Pool;
+  }>({
+    url: SQDIndexerUrl,
+    document: query,
+    variables: {id: poolId},
+  });
+  // return pool/pair data
+  return response.poolById;
+}
+
+function createPairFromPool(
+  pool: SQDIndexerResponses.Pool,
+): GeckoTerminalQueryResponses.Pair {
+  /*********************************************
+   * HARDCODED - dexKey, createdAtBlockNumber,createdAtBlockTimestamp, createdAtTxnId:
+   *********************************************/
+  const pair: GeckoTerminalQueryResponses.Pair = {
+    id: pool.id,
+    dexKey: "uniswap",
+    asset0Id: pool.asset0.id,
+    asset1Id: pool.asset1.id,
+    createdAtBlockNumber: 123,
+    createdAtBlockTimestamp: 123,
+    createdAtTxnId: "DUMMY_ID",
+  };
+
+  return pair;
+}
 
 // Handle GET requests for /api/pair
 export async function GET(req: Request) {
@@ -17,35 +73,14 @@ export async function GET(req: Request) {
       );
     }
 
-    // Define the GraphQL query to fetch pool details by the given id
-    const query = gql`
-      query GetPairById($id: String!) {
-        poolById(id: $id) {
-          asset0 {
-            id
-          }
-          asset1 {
-            id
-          }
-          feesUSD
-        }
-      }
-    `;
-
-    // Send the GraphQL request to the indexer server to fetch the pool data
-    const data = await request<{
-      poolById: SQDIndexerResponses.Pool;
-    }>({
-      url: SQDIndexerUrl,
-      document: query,
-      variables: {id: poolId},
-    });
-
-    // hardcoded some fields
-    const queryResponse = {...data.poolById, dexType: "uniswap"};
-
+    // Fetch the pool details using the helper function
+    const pool = await fetchPoolById(poolId);
+    const pair = createPairFromPool(pool);
+    const pairResponse: GeckoTerminalQueryResponses.PairResponse = {
+      pair,
+    };
     // Return the fetched pool(pair) data
-    return NextResponse.json({pair: queryResponse});
+    return NextResponse.json(pairResponse);
   } catch (error) {
     console.error("Error fetching pair data:", error);
 

@@ -1,4 +1,7 @@
-import {NextResponse} from "next/server";
+/**
+ * @api {get} /events Get all available events from one block to another (including all in between)
+ */
+import {NextRequest, NextResponse} from "next/server";
 import {request, gql} from "graphql-request";
 import {SQDIndexerUrl} from "@/src/utils/constants";
 import {
@@ -65,14 +68,14 @@ async function fetchEventsForBlockRange({
   `;
 
   try {
-    // Send the GraphQL request to fetch events
-    const data = await request<SQDIndexerResponses.Actions>({
+    // Send the GraphQL request to fetch actions
+    const actionsData = await request<SQDIndexerResponses.Actions>({
       url: SQDIndexerUrl,
       document: query,
       variables: {fromBlock, toBlock},
     });
 
-    return data; // Return the data with events
+    return actionsData;
   } catch (error) {
     console.error(
       `Error fetching events for block range ${fromBlock} - ${toBlock}:`,
@@ -202,7 +205,7 @@ function createEventDataForSwapEvent(
 }
 
 // Handle GET requests for /api/events
-export async function GET(req: Request) {
+export async function GET(req: NextRequest) {
   try {
     // Extract query parameters from the request URL
     const url = new URL(req.url);
@@ -218,16 +221,17 @@ export async function GET(req: Request) {
     }
 
     // Fetch events data for the given block range
-    const eventsData = await fetchEventsForBlockRange({fromBlock, toBlock});
+    const actionsData = await fetchEventsForBlockRange({fromBlock, toBlock});
 
     // If no actions are found, return empty events list
-    if (eventsData.actions.length === 0) {
+    if (actionsData.actions.length === 0) {
       return NextResponse.json({events: []});
     }
 
     // Process the fetched events and map them to the expected format
-    const events = eventsData.actions.map(
-      (action: SQDIndexerResponses.Action) => {
+    const events = actionsData.actions
+      .map((action: SQDIndexerResponses.Action) => {
+        // Create block from actions object
         const block: GeckoTerminalQueryResponses.Block = {
           blockNumber: action.blockNumber,
           blockTimestamp: action.timestamp,
@@ -249,13 +253,10 @@ export async function GET(req: Request) {
 
         // Return null when eventData is not created
         if (!eventData) {
-          if (!eventData) {
-            console.warn(`Unknown event type: ${action.type}. Possible reasons: 
+          console.warn(`Unknown event type: ${action.type}. Possible reasons: 
               1. Malformed data (e.g., missing properties: ${JSON.stringify(action)}) 
               2. Unexpected event type (action.type is not 'JOIN_EXIT' or 'SWAP')
               3. Issue with event creation functions.`);
-            return;
-          }
           return null;
         }
 
@@ -263,11 +264,16 @@ export async function GET(req: Request) {
           block,
           ...eventData,
         };
-      },
-    );
+      })
+      // filtering out null items in the events list
+      .filter((event): event is Exclude<typeof event, null> => event !== null);
+
+    const eventsResponse: GeckoTerminalQueryResponses.EventsResponse = {
+      events,
+    };
 
     // Return the formatted events data
-    return NextResponse.json({events});
+    return NextResponse.json(eventsResponse);
   } catch (error) {
     console.error("Error fetching events:", error);
     return NextResponse.json(

@@ -1,5 +1,3 @@
-// api/types/index.ts
-
 import {GeckoTerminalTypes, SQDIndexerTypes} from "./constants";
 
 // SQDIndexer responses
@@ -63,10 +61,15 @@ export namespace SQDIndexerResponses {
   // following models are used for querying pair/pool data
   export interface Asset {
     id: string;
-  }
-
-  export interface PairResponse {
-    pair: Pool;
+    l1Address: string;
+    name: string;
+    symbol: string;
+    decimals: number;
+    supply: string | number;
+    circulatingSupply?: string | number;
+    coinGeckoId?: string;
+    coinMarketCapId?: string;
+    metadata?: Record<string, string>;
   }
 }
 
@@ -132,12 +135,56 @@ export namespace GeckoTerminalQueryResponses {
       }
   );
 
+  interface FetchEventsParams {
+    fromBlock: number;
+    toBlock: number;
+  }
+
+  export interface Pair {
+    readonly id: string;
+    readonly dexKey: string;
+    readonly asset0Id: string;
+    readonly asset1Id: string;
+    readonly createdAtBlockNumber: number;
+    readonly createdAtBlockTimestamp: number;
+    readonly createdAtTxnId: string;
+    readonly creator?: string;
+    readonly feeBps?: number;
+    readonly pool?: {
+      readonly id: string;
+      readonly name: string;
+      readonly assetIds: string[];
+      readonly pairIds: string[];
+      readonly metadata?: Record<string, string>;
+    };
+    readonly metadata?: Record<string, string>;
+  }
+
+  export interface Asset {
+    id: string;
+    name: string;
+    symbol: string;
+    decimals: number;
+    totalSupply?: string | number;
+    circulatingSupply?: string | number;
+    coinGeckoId?: string;
+    coinMarketCapId?: string;
+    metadata?: Record<string, string>;
+  }
+
+  export interface LatestBlockResponse {
+    block: Block;
+  }
+
+  export interface AssetResponse {
+    asset: Asset;
+  }
+
   export interface EventsResponse {
     events: Array<{block: Block} & (SwapEvent | JoinExitEvent)>;
   }
 
-  interface FetchEventsParams {
-    fromBlock: number;
-    toBlock: number;
+  export interface PairResponse {
+    pair: Pair;
   }
 }

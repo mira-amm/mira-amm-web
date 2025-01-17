@@ -1,3 +1,6 @@
+/**
+ * @api {get} /latest-block Get latest block data (only if events data available for the block)
+ */
 // library
 import {NextResponse} from "next/server";
 import {request, gql} from "graphql-request";
@@ -112,8 +115,13 @@ export async function GET(req: Request) {
       blockTimestamp: unixSeconds, // Timestamp from the block header
     };
 
+    const latestBlockResponse: GeckoTerminalQueryResponses.LatestBlockResponse =
+      {
+        block,
+      };
+
     // Return the block data
-    return NextResponse.json({block});
+    return NextResponse.json(latestBlockResponse);
   } catch (error) {
     console.error("Error fetching block and events:", error);
 
