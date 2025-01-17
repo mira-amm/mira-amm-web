@@ -1,6 +1,7 @@
 import {CoinName, coinsConfig} from "@/src/utils/coinsConfig";
 import {B256Address} from "fuels";
 import {buildPoolId, PoolId} from "mira-dex-ts";
+import {DefaultLocale} from "./constants";
 
 export const openNewTab = (url: string) => {
   window.open(url, "_blank");
@@ -130,18 +131,7 @@ export const calculateUsdValue = (
   fuelToUsdRate: number,
 ): string => {
   const usdValue = fuelAmount * fuelToUsdRate;
-  return `~$${usdValue.toLocaleString(undefined, {
-    minimumFractionDigits: 2,
-    maximumFractionDigits: 2,
-  })}`;
-};
-
-export const calculateFuelAmount = (
-  rewardsAmount: number,
-  fuelToUsdRate: number,
-): number => {
-  const fuelAmount = rewardsAmount / fuelToUsdRate;
-  return parseFloat(fuelAmount.toFixed(2));
+  return `~${usdValue.toLocaleString(DefaultLocale, {style: "currency", currency: "USD"})}`;
 };
 
 export const calculateEpochDuration = (

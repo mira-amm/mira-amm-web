@@ -12,7 +12,6 @@ import {
 import {useEffect, useState} from "react";
 import {
   calculateEpochDuration,
-  calculateFuelAmount,
   calculateUsdValue,
   getRewardsPoolsId,
 } from "@/src/utils/common";
