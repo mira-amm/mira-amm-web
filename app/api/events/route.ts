@@ -147,6 +147,17 @@ function createEventDataForJoinExitEvent(
 function createEventDataForSwapEvent(
   action: SQDIndexerResponses.Action,
 ): GeckoTerminalQueryResponses.SwapEvent {
+  let asset0Decimals = action.asset0.decimals;
+  let asset1Decimals = action.asset1.decimals;
+
+  const decimalizedReserves0After = decimalize(
+    action.reserves0After,
+    asset0Decimals,
+  );
+  const decimalizedReserves1After = decimalize(
+    action.reserves1After,
+    asset1Decimals,
+  );
   let event = {
     txnId: action.transaction,
     txnIndex: 0,
@@ -154,23 +165,12 @@ function createEventDataForSwapEvent(
     maker: action.pool.id,
     pairId: action.pool.id,
     reserves: {
-      asset0: action.reserves0After,
-      asset1: action.reserves1After,
+      asset0: decimalizedReserves0After,
+      asset1: decimalizedReserves1After,
     },
     eventType: "swap",
     priceNative: parseFloat(action.amount0In) / parseFloat(action.amount1Out),
   } as GeckoTerminalQueryResponses.SwapEvent;
-
-  console.log(action);
-  console.log(action.asset1);
-  /*********************************************
-   * HARDCODED DECIMALIZE TO 6 : (need fix)
-   *********************************************/
-  // let asset0Decimals = 6;
-  // let asset1Decimals = 6;
-
-  let asset0Decimals = action.asset0.decimals;
-  let asset1Decimals = action.asset1.decimals;
 
   // not adding "0" value to the output as per the Gecko Terminal spec( only one pair should be present at any given)
   if (
