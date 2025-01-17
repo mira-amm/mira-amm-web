@@ -23,7 +23,7 @@ async function fetchEventsForBlockRange({
 }: FetchEventsParams): Promise<SQDIndexerResponses.Actions> {
   /*********************************************
    * QUERY CHANGE REQUIRED:
-   * This query returns correctly for swap, but need to confirm for JOIN_EXIT instead of ADD_LIQUIDITY
+   * This query returns correctly for swap, but need to confirm for JOIN or EXIT instead of ADD_LIQUIDITY
    * (SQD has three options- ADD_LIQUIDITY REMOVE_LIQUIDITY and SWAP)
    *********************************************/
   const query = gql`
@@ -238,7 +238,8 @@ export async function GET(req: NextRequest) {
         };
 
         // Identify event type
-        const isJoinExitEvent = action.type === "JOIN_EXIT";
+        const isJoinExitEvent =
+          action.type === "JOIN" || action.type === "EXIT";
         const isSwapEvent = action.type === "SWAP";
         let eventData:
           | GeckoTerminalQueryResponses.JoinExitEvent
@@ -255,7 +256,7 @@ export async function GET(req: NextRequest) {
         if (!eventData) {
           console.warn(`Unknown event type: ${action.type}. Possible reasons: 
               1. Malformed data (e.g., missing properties: ${JSON.stringify(action)}) 
-              2. Unexpected event type (action.type is not 'JOIN_EXIT' or 'SWAP')
+              2. Unexpected event type (action.type is not 'JOIN or EXIT' or 'SWAP')
               3. Issue with event creation functions.`);
           return null;
         }

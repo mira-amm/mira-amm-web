@@ -1,6 +1,7 @@
 export namespace SQDIndexerTypes {
   export enum ActionTypes {
-    JOIN_EXIT = "JOIN_EXIT",
+    JOIN = "JOIN",
+    EXIT = "EXIT",
     SWAP = "SWAP",
   }
 }

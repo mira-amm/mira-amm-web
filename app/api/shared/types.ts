@@ -47,7 +47,8 @@ export namespace SQDIndexerResponses {
     reserves1After: string;
     type:
       | SQDIndexerTypes.ActionTypes.SWAP
-      | SQDIndexerTypes.ActionTypes.JOIN_EXIT;
+      | SQDIndexerTypes.ActionTypes.JOIN
+      | SQDIndexerTypes.ActionTypes.EXIT;
     transaction: string;
     timestamp: number;
     blockNumber: number;

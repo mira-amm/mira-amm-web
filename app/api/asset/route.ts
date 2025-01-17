@@ -55,22 +55,13 @@ export async function GET(req: Request) {
     /*********************************************
     
      *  QUESTION 1:
-     *  The following fields are not included in the Next response:
-     *    - circulatingSupply?: string | number;
-          - coinGeckoId?: string;
-          - coinMarketCapId?: string;
-          - metadata?: Record<string, string>;
-     *  commented out code for now , will add once clear on the schema
-
-     *  QUESTION 2:
      *  Do we need to do checksum or backend/indexer already does it (also if yes, suggest library to do that; currently trying ethers)
      *  commented out code for now
      
-     *  QUESTION 3:
+     *  QUESTION 2:
      *  Here querying SQDIndexer endpoint since networkUrl schema has coin/coins as opposed to assets 
         and I am not aware of the GQL schema to query
      *  Would appreciate any help/insights!
-
      *********************************************/
 
     // GraphQL query to fetch asset details
