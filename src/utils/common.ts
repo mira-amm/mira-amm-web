@@ -1,6 +1,7 @@
 import {CoinName, coinsConfig} from "@/src/utils/coinsConfig";
 import {B256Address} from "fuels";
 import {buildPoolId, PoolId} from "mira-dex-ts";
+import {DefaultLocale} from "./constants";
 
 export const openNewTab = (url: string) => {
   window.open(url, "_blank");
@@ -108,13 +109,13 @@ export const getBoostReward = (
       id: string;
     };
     rewards: {
-      amount: number;
+      dailyAmount: number;
     }[];
   }[],
 ): number => {
   const item = data.find((item) => item.pool.id === poolKey.replace(/0x/g, ""));
 
-  return item?.rewards[0].amount || 0;
+  return item?.rewards[0].dailyAmount || 0;
 };
 
 export const getRewardsPoolsId = (
@@ -130,18 +131,7 @@ export const calculateUsdValue = (
   fuelToUsdRate: number,
 ): string => {
   const usdValue = fuelAmount * fuelToUsdRate;
-  return `~$${usdValue.toLocaleString(undefined, {
-    minimumFractionDigits: 2,
-    maximumFractionDigits: 2,
-  })}`;
-};
-
-export const calculateFuelAmount = (
-  rewardsAmount: number,
-  fuelToUsdRate: number,
-): number => {
-  const fuelAmount = rewardsAmount / fuelToUsdRate;
-  return parseFloat(fuelAmount.toFixed(2));
+  return `~${usdValue.toLocaleString(DefaultLocale, {style: "currency", currency: "USD"})}`;
 };
 
 export const calculateEpochDuration = (
@@ -173,4 +163,15 @@ export const calculateEpochDuration = (
     // After the end date
     return "Season has ended";
   }
+};
+
+export const convertDailyRewardsToTotalRewards = (
+  dailyRewards: number,
+  epochStart: string,
+  epochEnd: string,
+) => {
+  const epochDurationDays =
+    (new Date(epochEnd).getTime() - new Date(epochStart).getTime()) /
+    (1000 * 60 * 60 * 24);
+  return dailyRewards * epochDurationDays;
 };
