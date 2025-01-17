@@ -46,17 +46,14 @@ function validateAddress(address: string): string {
   if (isEVMAddress(address)) {
     try {
       // If it's an EVM address, return the checksummed version
-      console.log("is EVM address");
       return ethers.getAddress(address);
     } catch (e) {
       return address; // Return the original address if it can't be checksummed
     }
   } else if (isHash(address)) {
     // If it's a hash (64 characters long), return it as-is
-    console.log("isHash");
     return address;
   } else {
-    console.log("neiither evmaddress nor hash");
     // If the address doesn't match either format, return it as-is
     return address;
   }

@@ -226,7 +226,6 @@ export async function GET(req: Request) {
     }
 
     // Process the fetched events and map them to the expected format
-    console.log(eventsData.actions);
     const events = eventsData.actions.map(
       (action: SQDIndexerResponses.Action) => {
         const block: GeckoTerminalQueryResponses.Block = {
