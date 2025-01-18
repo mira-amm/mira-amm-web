@@ -2,7 +2,7 @@
  * @api {get} /latest-block Get latest block data (only if events data available for the block)
  */
 // library
-import {NextResponse} from "next/server";
+import {NextRequest, NextResponse} from "next/server";
 import {request, gql} from "graphql-request";
 
 // local imports
@@ -79,7 +79,7 @@ function convertNanosecondsToUnixSeconds(nsTimestamp: number): number {
 }
 
 // Handle GET requests for /api/latest-block
-export async function GET(req: Request) {
+export async function GET(req: NextRequest) {
   try {
     // Fetch the squid status to get the current height (latest block)
     const squidStatus = await fetchSquidStatus(SQDIndexerUrl);

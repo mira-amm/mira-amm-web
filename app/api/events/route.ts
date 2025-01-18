@@ -89,6 +89,9 @@ async function fetchEventsForBlockRange({
 
 function createEventDataForJoinExitEvent(
   action: SQDIndexerResponses.Action,
+  actionType:
+    | SQDIndexerTypes.ActionTypes.JOIN
+    | SQDIndexerTypes.ActionTypes.EXIT,
 ): GeckoTerminalQueryResponses.JoinExitEvent {
   let asset0Decimals = action.asset0.decimals;
   let asset1Decimals = action.asset1.decimals;
@@ -126,6 +129,11 @@ function createEventDataForJoinExitEvent(
   const decimalizedAmount0 = decimalize(_amount0, asset1Decimals);
   const decimalizedAmount1 = decimalize(_amount1, asset1Decimals);
 
+  const eventType =
+    actionType == SQDIndexerTypes.ActionTypes.JOIN
+      ? GeckoTerminalTypes.EventTypes.JOIN
+      : GeckoTerminalTypes.EventTypes.EXIT;
+
   return {
     txnId: action.transaction,
     txnIndex: 0,
@@ -136,12 +144,7 @@ function createEventDataForJoinExitEvent(
       asset0: decimalizedReserves0After,
       asset1: decimalizedReserves1After,
     },
-    /*********************************************
-     * QUESTION 1:
-     * Currently just hardcoding JOIN
-     * How to handle JOIN and EXIT separately ,maybe with FUEL API (need to check)
-     *********************************************/
-    eventType: GeckoTerminalTypes.EventTypes.JOIN,
+    eventType: eventType,
     amount0: decimalizedAmount0,
     amount1: decimalizedAmount1,
   };
@@ -239,15 +242,21 @@ export async function GET(req: NextRequest) {
 
         // Identify event type
         const isJoinExitEvent =
-          action.type === "JOIN" || action.type === "EXIT";
-        const isSwapEvent = action.type === "SWAP";
+          action.type === SQDIndexerTypes.ActionTypes.JOIN ||
+          action.type === SQDIndexerTypes.ActionTypes.EXIT;
+        const isSwapEvent = action.type === SQDIndexerTypes.ActionTypes.SWAP;
         let eventData:
           | GeckoTerminalQueryResponses.JoinExitEvent
           | GeckoTerminalQueryResponses.SwapEvent
           | null = null;
         // Extracting necessary data from action and creating respective event(join/swap)
         if (isJoinExitEvent) {
-          eventData = createEventDataForJoinExitEvent(action);
+          eventData = createEventDataForJoinExitEvent(
+            action,
+            action.type as
+              | SQDIndexerTypes.ActionTypes.JOIN
+              | SQDIndexerTypes.ActionTypes.EXIT,
+          );
         } else if (isSwapEvent) {
           eventData = createEventDataForSwapEvent(action);
         }

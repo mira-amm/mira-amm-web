@@ -1,7 +1,7 @@
 /**
  * @api {get} /pair Get pair details by id
  */
-import {NextResponse} from "next/server";
+import {NextRequest, NextResponse} from "next/server";
 import {request, gql} from "graphql-request";
 import {SQDIndexerUrl} from "@/src/utils/constants";
 import {
@@ -60,7 +60,7 @@ function createPairFromPool(
 }
 
 // Handle GET requests for /api/pair
-export async function GET(req: Request) {
+export async function GET(req: NextRequest) {
   try {
     const url = new URL(req.url);
     const poolId = url.searchParams.get("id");
@@ -86,7 +86,7 @@ export async function GET(req: Request) {
 
     // Return an error response if the request fails
     return NextResponse.json(
-      {error: "Failed to fetch pool data"},
+      {error: "Failed to fetch pair data"},
       {status: 500},
     );
   }

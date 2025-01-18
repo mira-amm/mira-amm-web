@@ -1,7 +1,7 @@
 /**
  * @api {get} /asset Get details of an asset by id
  */
-import {NextResponse} from "next/server";
+import {NextRequest, NextResponse} from "next/server";
 import {request, gql} from "graphql-request";
 import {ethers} from "ethers";
 import {NetworkUrl, SQDIndexerUrl} from "@/src/utils/constants";
@@ -41,7 +41,7 @@ function validateAddress(address: string): string {
 }
 
 // Handle GET requests for /api/asset
-export async function GET(req: Request) {
+export async function GET(req: NextRequest) {
   // Extract the 'id' query parameter from the URL
   const url = new URL(req.url);
   const assetId = url.searchParams.get("id");
