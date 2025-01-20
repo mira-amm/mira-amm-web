@@ -15,7 +15,7 @@ export interface EpochConfig {
       lpToken: string;
     };
     rewards: {
-      amount: number;
+      dailyAmount: number;
       assetId: string;
     }[];
   }[];
@@ -23,7 +23,7 @@ export interface EpochConfig {
 
 export interface CampaignReward {
   assetId: string;
-  amount: number;
+  dailyAmount: number;
 }
 
 export interface Epoch {

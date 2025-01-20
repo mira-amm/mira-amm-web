@@ -13,6 +13,7 @@ import {
   EpochConfigService,
 } from "./interfaces";
 import path from "path";
+import {convertDailyRewardsToTotalRewards} from "@/src/utils/common";
 
 const campaignsQuery = loadFile(
   path.join(process.cwd(), "src", "queries", "CampaignsAPR.sql"),
@@ -103,6 +104,9 @@ export class SentioJSONCampaignService implements CampaignService {
             }));
         });
 
+      // Amount represents daily rewards than total epoch rewards
+      // We have to adjust the amount based on the number of days in the epoch
+
       if (params?.includeAPR) {
         // get each campaign from sentio
         try {
@@ -127,7 +131,11 @@ export class SentioJSONCampaignService implements CampaignService {
                       // VerifiedAsset does not have FUEL so we cannot derive fuel symbol from assetId
                       // therefore we hardcode it
                       campaignRewardsAmount: {
-                        intValue: campaign.rewards[0].amount,
+                        intValue: convertDailyRewardsToTotalRewards(
+                          campaign.rewards[0].dailyAmount,
+                          campaign.epoch.startDate.toISOString(),
+                          campaign.epoch.endDate.toISOString(),
+                        ),
                       },
                       campaignRewardToken: {stringValue: "fuel"},
                     },

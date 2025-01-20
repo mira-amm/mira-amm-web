@@ -343,7 +343,7 @@
     "symbol": "wstETH",
     "decimals": 9,
     "icon": {
-      "default": "https://mira-dex-resources.s3.amazonaws.com/icons/wsteth-icon.svg"
+      "default": "https://verified-assets.fuel.network/images/wsteth.svg"
     },
     "contractId": "0x4ea6ccef1215d9479f1024dff70fc055ca538215d2c8c348beddffd54583d0e8",
     "subId": "0xa232a843105ef81cd9996efc121cd3c8455c5edd9fb9c5a0b097982e1e68d5d6",
