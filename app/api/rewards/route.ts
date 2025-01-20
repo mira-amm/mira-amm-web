@@ -8,8 +8,8 @@ import {NextRequest, NextResponse} from "next/server";
 import path from "path";
 
 // Cache header settings
-const CACHE_DURATION = 120;
-const CACHE_STALE_WHILE_REVALIDATE = 60;
+const CACHE_DURATION = 3600; // 60 minutes
+const CACHE_STALE_WHILE_REVALIDATE = 1800;
 
 // Example query
 // Key consideration, poolId does not include the hex prefix '0x'

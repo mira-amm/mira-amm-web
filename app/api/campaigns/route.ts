@@ -8,6 +8,9 @@ import {
 import {NextRequest, NextResponse} from "next/server";
 import path from "path";
 
+// Cache header settings
+const CACHE_DURATION = 300; // 5 minutes
+
 // Example query
 //   --url 'http://localhost:3000/api/campaigns/'
 // if you want to filter for poolIds, or epochNumbers, you can add them as query params
@@ -49,6 +52,7 @@ export async function GET(request: NextRequest) {
       status: 200,
       headers: {
         "Content-Type": "application/json",
+        "Cache-Control": `public, max-age=${CACHE_DURATION}`,
       },
     });
   } catch (e) {
@@ -56,6 +60,7 @@ export async function GET(request: NextRequest) {
       status: 500,
       headers: {
         "Content-Type": "application/json",
+        "Cache-Control": `public, max-age=${CACHE_DURATION}`,
       },
     });
   }
