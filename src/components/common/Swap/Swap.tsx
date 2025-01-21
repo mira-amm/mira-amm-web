@@ -569,14 +569,18 @@ const Swap = () => {
             <div className={styles.summary}>
               <div className={styles.summaryEntry}>
                 <p>Rate</p>
-                {previewLoading ? <Loader /> : <p>{exchangeRate}</p>}
+                {previewLoading ? (
+                  <Loader color="gray" />
+                ) : (
+                  <p>{exchangeRate}</p>
+                )}
               </div>
 
               <div className={styles.summaryEntry}>
                 <p>Order routing</p>
                 <div className={styles.feeLine}>
                   {previewLoading ? (
-                    <Loader />
+                    <Loader color="gray" />
                   ) : (
                     previewData?.pools.map((pool, index) => {
                       const poolKey = createPoolKey(pool);
@@ -595,7 +599,7 @@ const Swap = () => {
               <div className={styles.summaryEntry}>
                 <p>Estimated fees</p>
                 {previewLoading ? (
-                  <Loader />
+                  <Loader color="gray" />
                 ) : (
                   <p>
                     {feeValue} {sellMetadata.symbol}
@@ -605,7 +609,11 @@ const Swap = () => {
 
               <div className={styles.summaryEntry}>
                 <p>Network cost</p>
-                {txCostPending ? <Loader /> : <p>{txCost?.toFixed(9)} ETH</p>}
+                {txCostPending ? (
+                  <Loader color="gray" />
+                ) : (
+                  <p>{txCost?.toFixed(9)} ETH</p>
+                )}
               </div>
             </div>
           )}

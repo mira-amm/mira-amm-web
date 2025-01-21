@@ -1,16 +1,22 @@
 .loader {
   display: inline-block;
-  width: 17px;
-  height: 17px;
   border: 2px solid var(--background-primary);
   border-bottom-color: transparent;
   border-radius: 50%;
   box-sizing: border-box;
   animation: rotation 1s linear infinite;
+  width: 17px;
+  height: 17px;
 }
 
 .outlined {
   border: 2px solid var(--accent-primary);
+}
+
+.gray {
+  border: 2px solid var(--content-tertiary);
+  border-bottom-color: transparent;
+  animation: rotation 1s linear infinite;
 }
 
 @keyframes rotation {
