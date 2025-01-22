@@ -1,7 +1,7 @@
 import {GET} from "./route";
 import {NextRequest} from "next/server";
 
-describe("Integration test for /api/asset", () => {
+describe("test for GET /api/asset", () => {
   const mockMainnetUrl = "https://mainnet-explorer.fuel.network";
   const mockAssetId = "123456";
   const mockAssetData = {
@@ -46,7 +46,9 @@ describe("Integration test for /api/asset", () => {
 
     expect(res.status).toBe(404);
     const jsonResponse = await res.json();
-    expect(jsonResponse).toEqual({error: "Asset not found"});
+    expect(jsonResponse).toEqual({
+      error: `Asset with ID: ${mockAssetId} not found`,
+    });
   });
 
   it("should return 500 if there is an error fetching asset data", async () => {

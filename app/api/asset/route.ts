@@ -10,10 +10,8 @@ export async function GET(req: NextRequest) {
   // Extract the 'id' query parameter from the URL
   const url = new URL(req.url);
   const assetId = url.searchParams.get("id");
-  console.log("before");
   // Return a 400 error if no 'id' is provided
   if (!assetId) {
-    console.log("yes");
     return NextResponse.json({error: "Asset ID is required"}, {status: 400});
   }
 
@@ -26,13 +24,15 @@ export async function GET(req: NextRequest) {
     // Handle non-OK HTTP responses
     if (!response.ok) {
       if (response.status === 404) {
-        return NextResponse.json({error: "Asset not found"}, {status: 404});
+        return NextResponse.json(
+          {error: `Asset with ID: ${assetId} not found`},
+          {status: 404},
+        );
       }
       throw new Error(`Failed to fetch asset data: ${response.statusText}`);
     }
 
     const asset = await response.json();
-    console.log(asset);
 
     // Transforming to desired format for Gecko Terminal
     const transformedAsset: GeckoTerminalQueryResponses.Asset = {

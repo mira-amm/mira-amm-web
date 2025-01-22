@@ -1,8 +1,6 @@
 import {NextRequest} from "next/server";
 import {request} from "graphql-request";
-import {GET} from "../latest-block/route"; // Adjust the import path as needed
-import {SQDIndexerUrl, NetworkUrl} from "@/src/utils/constants";
-import {DateTime} from "fuels";
+import {GET} from "./route";
 
 jest.mock("@/src/utils/constants", () => ({
   SQDIndexerUrl: "https://mock-squid-indexer.com",
@@ -22,7 +20,7 @@ jest.mock("fuels", () => ({
   },
 }));
 
-describe("/api/latest-block", () => {
+describe("test for GET /api/latest-block", () => {
   const mockSquidStatus = {squidStatus: {finalizedHeight: 123}};
   const mockBlockData = {
     block: {
@@ -64,10 +62,6 @@ describe("/api/latest-block", () => {
   });
 
   it("returns 500 if fetchSquidStatus fails", async () => {
-    (request as jest.Mock).mockRejectedValueOnce(
-      new Error("Failed to fetch squid status"),
-    );
-
     const req = new NextRequest("https://mock-api.com/api/latest-block");
     const res = await GET(req);
 
@@ -80,7 +74,7 @@ describe("/api/latest-block", () => {
 
   it("returns 500 if fetchBlockByHeight fails", async () => {
     (request as jest.Mock)
-      .mockResolvedValueOnce(mockSquidStatus) // Mock for fetchSquidStatus
+      .mockRejectedValueOnce(mockSquidStatus) // Mock for fetchSquidStatus
       .mockRejectedValueOnce(new Error("Failed to fetch block data")); // Mock for fetchBlockByHeight
 
     const req = new NextRequest("https://mock-api.com/api/latest-block");

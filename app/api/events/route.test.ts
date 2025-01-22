@@ -1,6 +1,6 @@
-import {GET} from "../events/route";
+import {GET} from "./route";
 import {NextRequest} from "next/server";
-import {gql, request} from "graphql-request";
+import {request} from "graphql-request";
 import {SQDIndexerUrl} from "@/src/utils/constants";
 
 jest.mock("@/src/utils/constants", () => ({
@@ -16,7 +16,7 @@ jest.mock("@/app/api/shared/math", () => ({
   decimalize: jest.fn((amount, assetDecimals) => 123.0),
 }));
 
-describe("GET /api/events", () => {
+describe("test for GET /api/events", () => {
   const mockRequest = request as jest.Mock;
 
   afterEach(() => {
@@ -34,7 +34,7 @@ describe("GET /api/events", () => {
     });
   });
 
-  it("should return events for the given block range", async () => {
+  it("should return 200 with events for the given block range", async () => {
     const req = new NextRequest(
       "http://localhost/api/events?fromBlock=100&toBlock=200",
     );

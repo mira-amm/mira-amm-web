@@ -14,9 +14,9 @@ export namespace SQDIndexerResponses {
     feesUSD: string;
     asset0Id: string;
     asset1Id: string;
-    createdAtBlockNumber: number;
-    createdAtBlockTimestamp: number;
-    createdAtTxnId: string;
+    creationBlock: number;
+    creationTime: number;
+    creationTx: string;
     creator?: string;
     feeBps?: number;
     pool?: {

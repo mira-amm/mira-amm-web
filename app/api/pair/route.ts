@@ -8,14 +8,15 @@ import {
   SQDIndexerResponses,
   GeckoTerminalQueryResponses,
 } from "../shared/types";
+import {NotFoundError} from "../shared/error";
 
 // Function to fetch pool details by ID
-async function fetchPoolById(
+export async function fetchPoolById(
   poolId: string,
 ): Promise<SQDIndexerResponses.Pool> {
   // Define the GraphQL query to fetch pool details by the given id
   const query = gql`
-    query GetPairById($id: String!) {
+    query GetPoolById($id: String!) {
       poolById(id: $id) {
         id
         asset0 {
@@ -24,6 +25,9 @@ async function fetchPoolById(
         asset1 {
           id
         }
+        creationBlock
+        creationTime
+        creationTx
       }
     }
   `;
@@ -36,6 +40,12 @@ async function fetchPoolById(
     document: query,
     variables: {id: poolId},
   });
+
+  // throw error if pool is not found
+  if (!response.poolById) {
+    throw new NotFoundError(`Pool with ID: ${poolId} not found`);
+  }
+
   // return pool/pair data
   return response.poolById;
 }
@@ -48,9 +58,9 @@ function createPairFromPool(
     dexKey: "uniswap",
     asset0Id: pool.asset0.id,
     asset1Id: pool.asset1.id,
-    createdAtBlockNumber: 123,
-    createdAtBlockTimestamp: 123,
-    createdAtTxnId: "DUMMY_ID",
+    createdAtBlockNumber: pool.creationBlock,
+    createdAtBlockTimestamp: pool.creationTime,
+    createdAtTxnId: pool.creationTx,
   };
 
   return pair;
@@ -70,8 +80,9 @@ export async function GET(req: NextRequest) {
       );
     }
 
-    // Fetch the pool details using the helper function
+    // Fetch the pool details
     const pool = await fetchPoolById(poolId);
+    // Format pool data (pair and pool are synonymous) according to Gecko spec
     const pair = createPairFromPool(pool);
     const pairResponse: GeckoTerminalQueryResponses.PairResponse = {
       pair,
@@ -81,9 +92,12 @@ export async function GET(req: NextRequest) {
   } catch (error) {
     console.error("Error fetching pair data:", error);
 
-    // Return an error response if the request fails
+    if (error instanceof NotFoundError) {
+      return NextResponse.json({error: error.message}, {status: 404});
+    }
+
     return NextResponse.json(
-      {error: "Failed to fetch pair data"},
+      {error: "An unexpected error occurred while fetching pair data"},
       {status: 500},
     );
   }

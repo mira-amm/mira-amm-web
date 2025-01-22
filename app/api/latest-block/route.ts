@@ -41,7 +41,7 @@ async function fetchSquidStatus(
     return response.squidStatus;
   } catch (error) {
     console.error("Error fetching squid status:", error);
-    throw new Error("Failed to fetch squid status");
+    throw error;
   }
 }
 
@@ -69,8 +69,8 @@ async function fetchBlockByHeight(
 
     return response.block;
   } catch (error) {
-    console.error("Error fetching block data:", error);
-    throw new Error("Failed to fetch block data");
+    console.error("Error fetching block by height:", error);
+    throw error;
   }
 }
 
@@ -111,10 +111,9 @@ export async function GET(req: NextRequest) {
     // Return the block data
     return NextResponse.json(latestBlockResponse);
   } catch (error) {
-    console.error("Error fetching block and events:", error);
-
+    console.error("error fetching latest block:", error);
     return NextResponse.json(
-      {error: "Failed to fetch block and events"},
+      {error: "An unexpected error occurred while fetching latest block"},
       {status: 500},
     );
   }
