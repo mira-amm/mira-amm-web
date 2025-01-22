@@ -15,7 +15,7 @@
                 },
                 "rewards": [
                     {
-                        "amount": 15000,
+                        "dailyAmount": 15000,
                         "assetId": "0x1d5d97005e41cae2187a895fd8eab0506111e0e2f3331cd3912c15c24e3c1d82"
                     }
                 ]
@@ -31,7 +31,7 @@
                 },
                 "rewards": [
                     {
-                        "amount": 30000,
+                        "dailyAmount": 30000,
                         "assetId": "0x1d5d97005e41cae2187a895fd8eab0506111e0e2f3331cd3912c15c24e3c1d82"
                     }
                 ]
@@ -47,7 +47,7 @@
                 },
                 "rewards": [
                     {
-                        "amount": 50000,
+                        "dailyAmount": 50000,
                         "assetId": "0x1d5d97005e41cae2187a895fd8eab0506111e0e2f3331cd3912c15c24e3c1d82"
                     }
                 ]
