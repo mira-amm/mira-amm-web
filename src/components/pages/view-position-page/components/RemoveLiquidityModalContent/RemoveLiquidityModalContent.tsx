@@ -16,6 +16,7 @@ import {
 import {useDebounceCallback} from "usehooks-ts";
 import useAssetMetadata from "@/src/hooks/useAssetMetadata";
 import {B256Address} from "fuels";
+import LoaderV2 from "@/src/components/common/LoaderV2/LoaderV2";
 
 type Props = {
   coinA: B256Address;
@@ -30,6 +31,7 @@ type Props = {
   closeModal: VoidFunction;
   handleRemoveLiquidity: VoidFunction;
   isValidNetwork: boolean;
+  isLoading: boolean;
 };
 
 const RemoveLiquidityModalContent = ({
@@ -45,6 +47,7 @@ const RemoveLiquidityModalContent = ({
   setLiquidityValue,
   handleRemoveLiquidity,
   isValidNetwork,
+  isLoading,
 }: Props) => {
   const [displayValue, setDisplayValue] = useState(liquidityValue);
   const coinAMetadata = useAssetMetadata(coinA);
@@ -79,12 +82,12 @@ const RemoveLiquidityModalContent = ({
     document.documentElement.style.setProperty("--value", "100%");
   };
 
+  const withdrawalDisabled = !isValidNetwork;
+
   let buttonTitle = "Confirm";
-  if (!isValidNetwork) {
+  if (withdrawalDisabled) {
     buttonTitle = "Incorrect network";
   }
-
-  const withdrawalDisabled = !isValidNetwork;
 
   return (
     <div className={styles.removeLiquidityContent}>
@@ -152,10 +155,15 @@ const RemoveLiquidityModalContent = ({
         <ActionButton
           onClick={handleRemoveLiquidity}
           disabled={withdrawalDisabled}
+          loading={isLoading}
         >
           {buttonTitle}
         </ActionButton>
-        <ActionButton variant="outlined" onClick={closeModal}>
+        <ActionButton
+          variant="outlined"
+          onClick={closeModal}
+          disabled={isLoading}
+        >
           Cancel
         </ActionButton>
       </div>
