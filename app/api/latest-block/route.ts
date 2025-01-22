@@ -4,6 +4,11 @@
 // library
 import {NextRequest, NextResponse} from "next/server";
 import {request, gql} from "graphql-request";
+import {DateTime} from "fuels";
+import {
+  convertTAI64StringToUnixSeconds,
+  convertUnixMillisecondsToUnixSeconds,
+} from "../shared/math";
 
 // local imports
 import {SQDIndexerUrl, NetworkUrl} from "@/src/utils/constants";
@@ -20,18 +25,20 @@ async function fetchSquidStatus(
   const query = gql`
     query GetSquidStatus {
       squidStatus {
-        height
+        finalizedHeight
       }
     }
   `;
 
   try {
-    const data = await request<{squidStatus: SQDIndexerResponses.SquidStatus}>({
+    const response = await request<{
+      squidStatus: SQDIndexerResponses.SquidStatus;
+    }>({
       url,
       document: query,
     });
 
-    return data.squidStatus;
+    return response.squidStatus;
   } catch (error) {
     console.error("Error fetching squid status:", error);
     throw new Error("Failed to fetch squid status");
@@ -54,28 +61,17 @@ async function fetchBlockByHeight(
   `;
 
   try {
-    const data = await request<{block: FuelAPIResponses.BlockByHeight}>({
+    const response = await request<{block: FuelAPIResponses.BlockByHeight}>({
       url,
       document: query,
       variables: {height},
     });
 
-    return data.block;
+    return response.block;
   } catch (error) {
     console.error("Error fetching block data:", error);
     throw new Error("Failed to fetch block data");
   }
-}
-
-function convertNanosecondsToUnixSeconds(nsTimestamp: number): number {
-  /*********************************************
-   *  QUESTION 1:
-   *  here I have taken out milliseconds as per requirement using Math.floor which will take the second part even if decimal part is above .5
-   * for example: 4611686020.890 will be treated as 4611686020
-   *********************************************/
-
-  // Convert nanoseconds to seconds by dividing by 1 billion
-  return Math.floor(nsTimestamp / 1e9);
 }
 
 // Handle GET requests for /api/latest-block
@@ -83,22 +79,8 @@ export async function GET(req: NextRequest) {
   try {
     // Fetch the squid status to get the current height (latest block)
     const squidStatus = await fetchSquidStatus(SQDIndexerUrl);
-    const blockNumber = squidStatus.height; // Latest block number
 
-    /*********************************************
-     *  QUESTION 2:
-     *  How to retrieve the events for a single block (for events api we need two params - toBlock & fromBlock)
-     *  commented out code for now
-     *  Would appreciate any insights! 🙏
-     *********************************************/
-
-    // Fetch events for the latest block
-    // const eventsData = await fetchEventsForBlock(blockNumber);
-
-    // If no events are found for the block, return null
-    // if (eventsData.actions.length === 0) {
-    //   return NextResponse.json({block: null});
-    // }
+    const blockNumber = squidStatus.finalizedHeight; // Latest block number
 
     // Fetch the block data (timestamp) using the block number
     const blockData = await fetchBlockByHeight(
@@ -106,13 +88,19 @@ export async function GET(req: NextRequest) {
       blockNumber.toString(),
     );
 
-    const nanoseconds = blockData.header.time;
-    const unixSeconds = convertNanosecondsToUnixSeconds(nanoseconds);
+    let tai64TimeString = blockData.header.time.toString();
+
+    // converting TAI64 string to normal datetime
+    const tai64: DateTime = convertTAI64StringToUnixSeconds(tai64TimeString);
+
+    const blockTimeStampInSeconds = convertUnixMillisecondsToUnixSeconds(
+      tai64.getTime(),
+    );
 
     // Combine block number (height) and block timestamp
     const block: GeckoTerminalQueryResponses.Block = {
       blockNumber,
-      blockTimestamp: unixSeconds, // Timestamp from the block header
+      blockTimestamp: blockTimeStampInSeconds,
     };
 
     const latestBlockResponse: GeckoTerminalQueryResponses.LatestBlockResponse =

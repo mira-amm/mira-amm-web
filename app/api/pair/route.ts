@@ -43,9 +43,6 @@ async function fetchPoolById(
 function createPairFromPool(
   pool: SQDIndexerResponses.Pool,
 ): GeckoTerminalQueryResponses.Pair {
-  /*********************************************
-   * HARDCODED - dexKey, createdAtBlockNumber,createdAtBlockTimestamp, createdAtTxnId:
-   *********************************************/
   const pair: GeckoTerminalQueryResponses.Pair = {
     id: pool.id,
     dexKey: "uniswap",

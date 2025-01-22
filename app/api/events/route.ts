@@ -21,27 +21,9 @@ async function fetchEventsForBlockRange({
   fromBlock,
   toBlock,
 }: FetchEventsParams): Promise<SQDIndexerResponses.Actions> {
-  /*********************************************
-   * QUERY CHANGE REQUIRED:
-   * This query returns correctly for swap, but need to confirm for JOIN or EXIT instead of ADD_LIQUIDITY
-   * (SQD has three options- ADD_LIQUIDITY REMOVE_LIQUIDITY and SWAP)
-   *********************************************/
   const query = gql`
     query GetActions($fromBlock: Int!, $toBlock: Int!) {
-      actions(
-        where: {
-          blockNumber_gt: $fromBlock
-          blockNumber_lt: $toBlock
-          type_eq: SWAP
-          OR: [
-            {
-              blockNumber_gt: $fromBlock
-              blockNumber_lt: $toBlock
-              type_eq: ADD_LIQUIDITY
-            }
-          ]
-        }
-      ) {
+      actions(where: {blockNumber_gt: $fromBlock, blockNumber_lt: $toBlock}) {
         pool {
           id
         }
@@ -118,7 +100,7 @@ function createEventDataForJoinExitEvent(
 
   // calculation amount1
   if (action.amount1In && action.amount1In != "0") {
-    _amount1 = action.amount0In;
+    _amount1 = action.amount1In;
   } else if (action.amount1Out && action.amount1Out != "0") {
     _amount1 = action.amount1Out;
   } else {
@@ -225,7 +207,6 @@ export async function GET(req: NextRequest) {
 
     // Fetch events data for the given block range
     const actionsData = await fetchEventsForBlockRange({fromBlock, toBlock});
-
     // If no actions are found, return empty events list
     if (actionsData.actions.length === 0) {
       return NextResponse.json({events: []});

@@ -3,25 +3,22 @@
  */
 import {NextRequest, NextResponse} from "next/server";
 import {GeckoTerminalQueryResponses} from "../shared/types";
+import {MainnetUrl} from "@/src/utils/constants";
 
 // Handle GET requests for /api/asset
 export async function GET(req: NextRequest) {
   // Extract the 'id' query parameter from the URL
   const url = new URL(req.url);
   const assetId = url.searchParams.get("id");
-
+  console.log("before");
   // Return a 400 error if no 'id' is provided
   if (!assetId) {
+    console.log("yes");
     return NextResponse.json({error: "Asset ID is required"}, {status: 400});
   }
 
   try {
-    /***********************************
-     * Question 1: This Url is given in the API spec. Have kept it here instead of constants file which 
-     * already has NetworkUrl but is slightly different,  what should be this name and how
-     different is this from NetworkUrl given in constants file which is v1
-     */
-    const assetUrl = `https://mainnet-explorer.fuel.network/assets/${assetId}`;
+    const assetUrl = `${MainnetUrl}/assets/${assetId}`;
 
     // Fetch asset details
     const response = await fetch(assetUrl);
@@ -35,14 +32,16 @@ export async function GET(req: NextRequest) {
     }
 
     const asset = await response.json();
+    console.log(asset);
 
     // Transforming to desired format for Gecko Terminal
     const transformedAsset: GeckoTerminalQueryResponses.Asset = {
-      id: asset.id,
+      id: asset.assetId,
       name: asset.name,
       symbol: asset.symbol,
       decimals: asset.decimals,
-      totalSupply: asset.supply,
+      totalSupply: asset.totalSupply,
+      circulatingSupply: asset.circulatingSupply,
     };
 
     const assetResponse: GeckoTerminalQueryResponses.AssetResponse = {

@@ -4,7 +4,7 @@ import {GeckoTerminalTypes, SQDIndexerTypes} from "./constants";
 export namespace SQDIndexerResponses {
   // used to get block number of latest block
   export interface SquidStatus {
-    height: number;
+    finalizedHeight: number;
   }
 
   export interface Pool {
