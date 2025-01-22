@@ -4,7 +4,7 @@ import {useWallet} from "@fuels/react";
 import {useCallback} from "react";
 import {DefaultTxParams, MaxDeadline} from "@/src/utils/constants";
 import {bn} from "fuels";
-import { useAssetMinterContract } from "./useAssetMinterContract";
+import {useAssetMinterContract} from "./useAssetMinterContract";
 import useAssetMetadata from "./useAssetMetadata";
 
 type Props = {
@@ -15,21 +15,40 @@ type Props = {
   isPoolStable: boolean;
 };
 
-const useCreatePool = ({ firstAsset, firstAssetAmount, secondAsset, secondAssetAmount, isPoolStable }: Props) => {
+const useCreatePool = ({
+  firstAsset,
+  firstAssetAmount,
+  secondAsset,
+  secondAssetAmount,
+  isPoolStable,
+}: Props) => {
   const mira = useMiraDex();
-  const { wallet } = useWallet();
+  const {wallet} = useWallet();
   const firstAssetContract = useAssetMinterContract(firstAsset);
   const secondAssetContract = useAssetMinterContract(secondAsset);
   const firstAssetMetadata = useAssetMetadata(firstAsset);
   const secondAssetMetadata = useAssetMetadata(secondAsset);
 
   const mutationFn = useCallback(async () => {
-    if (!mira || !wallet || !firstAssetContract.contractId || !secondAssetContract.contractId || !firstAssetContract.subId || !secondAssetContract.subId) {
+    if (
+      !mira ||
+      !wallet ||
+      !firstAssetContract.contractId ||
+      !secondAssetContract.contractId ||
+      !firstAssetContract.subId ||
+      !secondAssetContract.subId
+    ) {
       return;
     }
 
-    const firstCoinAmountToUse = bn.parseUnits(firstAssetAmount, firstAssetMetadata.decimals || 0);
-    const secondCoinAmountToUse = bn.parseUnits(secondAssetAmount, secondAssetMetadata.decimals || 0);
+    const firstCoinAmountToUse = bn.parseUnits(
+      firstAssetAmount,
+      firstAssetMetadata.decimals || 0,
+    );
+    const secondCoinAmountToUse = bn.parseUnits(
+      secondAssetAmount,
+      secondAssetMetadata.decimals || 0,
+    );
 
     const txRequest = await mira.createPoolAndAddLiquidity(
       firstAssetContract.contractId,
@@ -58,11 +77,15 @@ const useCreatePool = ({ firstAsset, firstAssetAmount, secondAsset, secondAssetA
     isPoolStable,
   ]);
 
-  const { data, mutateAsync, isPending } = useMutation({
+  const {data, mutateAsync, isPending} = useMutation({
     mutationFn,
   });
 
-  return { createPoolData: data, createPool: mutateAsync, isPoolCreationPending: isPending };
+  return {
+    createPoolData: data,
+    createPool: mutateAsync,
+    isPoolCreationPending: isPending,
+  };
 };
 
 export default useCreatePool;

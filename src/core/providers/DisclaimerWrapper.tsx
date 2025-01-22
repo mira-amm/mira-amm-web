@@ -7,13 +7,16 @@ type Props = {
   children: ReactNode;
 };
 
-const DisclaimerWrapper = ({ children }: Props) => {
-  const { lock, unlock } = useScrollLock({ autoLock: false });
+const DisclaimerWrapper = ({children}: Props) => {
+  const {lock, unlock} = useScrollLock({autoLock: false});
 
-  const { isConnected } = useIsConnected();
-  const { disconnectAsync, isPending: disconnectIsPending  } = useDisconnect();
+  const {isConnected} = useIsConnected();
+  const {disconnectAsync, isPending: disconnectIsPending} = useDisconnect();
 
-  const [accepted, setAccepted] = useLocalStorage('isDisclaimerAccepted', false);
+  const [accepted, setAccepted] = useLocalStorage(
+    "isDisclaimerAccepted",
+    false,
+  );
 
   const handleConfirmClick = useCallback(() => {
     setAccepted(true);

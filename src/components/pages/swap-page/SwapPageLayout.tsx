@@ -1,11 +1,11 @@
-'use client';
+"use client";
 
 import Header from "@/src/components/common/Header/Header";
 import Footer from "@/src/components/common/Footer/Footer";
 import Swap from "@/src/components/common/Swap/Swap";
 import BackLink from "@/src/components/common/BackLink/BackLink";
 
-import styles from './SwapPageLayout.module.css';
+import styles from "./SwapPageLayout.module.css";
 
 const SwapPageLayout = () => {
   return (
@@ -15,7 +15,7 @@ const SwapPageLayout = () => {
         <BackLink chevron />
         <Swap />
       </main>
-      <Footer/>
+      <Footer />
     </div>
   );
 };

@@ -8,23 +8,23 @@ import XIcon from "@/src/components/icons/X/XIcon";
 import Footer from "@/src/components/common/Footer/Footer";
 
 import styles from "./LandingPageLayout.module.css";
-import { clsx } from "clsx";
+import {clsx} from "clsx";
 import LaunchAppButton from "@/src/components/common/LaunchAppButton/LaunchAppButton";
-import { DiscordLink, XLink } from "@/src/utils/constants";
-import { TechsDivider } from "../../common/TechsDivider/TechsDivider";
-import { AchievementsDivider } from "../../common/AchievementsDivider/AchievementsDivider";
-import { MainInfo } from "../../common/MainInfo/MainInfo";
-import { InfoBlocks } from "../../common/InfoBlocks/InfoBlocks";
-import { StepsBlock } from "../../common/StepsBlock/StepsBlock";
+import {DiscordLink, XLink} from "@/src/utils/constants";
+import {TechsDivider} from "../../common/TechsDivider/TechsDivider";
+import {AchievementsDivider} from "../../common/AchievementsDivider/AchievementsDivider";
+import {MainInfo} from "../../common/MainInfo/MainInfo";
+import {InfoBlocks} from "../../common/InfoBlocks/InfoBlocks";
+import {StepsBlock} from "../../common/StepsBlock/StepsBlock";
 import LockIcon from "../../icons/LockIcon/LockIcon";
 import VoteIcon from "../../icons/VoteIcon/VoteIcon";
 import EarnIcon from "../../icons/EarnIcon/EarnIcon";
-import { RoadMapBlock } from "../../common/RoadMapBlock/RoadMapBlock";
-import { RoadMapIcon } from "../../common/RoadMapIcons/RoadMapIcon";
+import {RoadMapBlock} from "../../common/RoadMapBlock/RoadMapBlock";
+import {RoadMapIcon} from "../../common/RoadMapIcons/RoadMapIcon";
 import RoadmapDesktop from "../../icons/Roadmap/RoadmapDesktopIcon";
-import { MiraApp } from "../../common/MiraApp/MiraApp";
-import { LearnMoreButton } from "../../common/LearnMoreButton/LearnMoreButton";
-import { StepsIcon } from "../../common/StepsIcon/StepsIcon";
+import {MiraApp} from "../../common/MiraApp/MiraApp";
+import {LearnMoreButton} from "../../common/LearnMoreButton/LearnMoreButton";
+import {StepsIcon} from "../../common/StepsIcon/StepsIcon";
 import RoadmapMobile from "../../icons/Roadmap/RoadmapMobileIcon";
 
 const LandingPageLayout = () => {
@@ -39,7 +39,8 @@ const LandingPageLayout = () => {
           </h2>
           <div className={styles.buttonsArea}>
             <LaunchAppButton className={styles.launchAppButton} />
-            <a className={styles.learnMoreLink}
+            <a
+              className={styles.learnMoreLink}
               href="https://mirror.xyz/miraly.eth/gIYyYWmf4_ofBY3mb9-AwcnwIfe4-1iK6kdUlJMjfn8
 "
               target="_blank"

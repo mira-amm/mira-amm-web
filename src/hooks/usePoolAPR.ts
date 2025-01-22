@@ -28,7 +28,7 @@ const usePoolAPR = (pool: PoolId) => {
       });
       const fees24h = result.poolById.snapshots.reduce(
         (acc: number, snapshot: any) => acc + parseFloat(snapshot.feesUSD),
-        0
+        0,
       );
       const apr = (fees24h / parseFloat(result.poolById.tvlUSD)) * 365 * 100;
 

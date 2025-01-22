@@ -21,7 +21,7 @@ const WarningIcon = () => {
         strokeWidth={2}
         d="M12.422 17.121v-6"
       />
-      <circle cx={12.422} cy={7.371} r={1.25} fill="currentColor"/>
+      <circle cx={12.422} cy={7.371} r={1.25} fill="currentColor" />
     </svg>
   );
 };

@@ -6,7 +6,7 @@ export const useVerifiedAssets = () => {
     queryKey: ["verifiedAssets"],
     queryFn: async () => {
       const req = await fetch(
-        `https://verified-assets.fuel.network/assets.json`
+        `https://verified-assets.fuel.network/assets.json`,
       );
       const res = await req.json();
       return res as VerifiedAssets;

@@ -58,7 +58,7 @@
   justify-content: flex-end;
   padding: 16px;
   border-radius: 16px;
-  background: linear-gradient(359.71deg, #8350FD -1.52%, #B2EA12 121.21%);
+  background: linear-gradient(359.71deg, #8350fd -1.52%, #b2ea12 121.21%);
 }
 
 .miraLogo {
@@ -67,7 +67,8 @@
   margin-bottom: 12px;
 }
 
-.tokenDisplayValue, .numberAndCopy {
+.tokenDisplayValue,
+.numberAndCopy {
   font-size: 14px;
 }
 
@@ -110,7 +111,8 @@
   width: 100%;
 }
 
-.priceBlockTitle, .priceBlockDescription {
+.priceBlockTitle,
+.priceBlockDescription {
   font-size: 14px;
   line-height: 16px;
   color: var(--content-dimmed-light);
@@ -147,6 +149,11 @@
   text-align: center;
 }
 
+.aprBadge {
+  display: flex;
+  align-items: center;
+}
+
 @media (min-width: 1024px) {
   .viewPositionLayout {
     /* min-height: calc(100vh - 157px); */
@@ -154,7 +161,6 @@
     max-width: 716px;
     margin: 0 auto;
     padding: 32px 16px;
-
   }
 
   .positionHeading {

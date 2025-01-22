@@ -9,7 +9,11 @@ type ConfirmPopupProps = {
   disconnectIsPending: boolean;
 };
 
-export const ConfirmPopup: FC<ConfirmPopupProps> = ({onConfirm, onDeny, disconnectIsPending}) => {
+export const ConfirmPopup: FC<ConfirmPopupProps> = ({
+  onConfirm,
+  onDeny,
+  disconnectIsPending,
+}) => {
   return (
     <section className={styles.popupOverlay}>
       <form className={styles.popupForm}>
@@ -21,10 +25,9 @@ export const ConfirmPopup: FC<ConfirmPopupProps> = ({onConfirm, onDeny, disconne
         </p>
         <ul className={styles.popupList}>
           <li className={styles.popupListItem}>
-            I am not a person or entity who resides in, is a citizen
-            of, is incorporated in, or has a registered office in the United
-            States of America or any other Prohibited Localities, as defined in
-            the{" "}
+            I am not a person or entity who resides in, is a citizen of, is
+            incorporated in, or has a registered office in the United States of
+            America or any other Prohibited Localities, as defined in the{" "}
             <a
               className={styles.popupLink}
               href="https://docs.mira.ly/resources/terms-and-conditions"
@@ -69,7 +72,12 @@ export const ConfirmPopup: FC<ConfirmPopupProps> = ({onConfirm, onDeny, disconne
           </li>
         </ul>
         <div className={styles.buttonWrapper}>
-          <ActionButton className={clsx(styles.popupButton, styles.buttonDeny)} variant="outlined" onClick={onDeny} loading={disconnectIsPending}>
+          <ActionButton
+            className={clsx(styles.popupButton, styles.buttonDeny)}
+            variant="outlined"
+            onClick={onDeny}
+            loading={disconnectIsPending}
+          >
             Deny and Disconnect
           </ActionButton>
           <ActionButton className={styles.popupButton} onClick={onConfirm}>

@@ -7,18 +7,18 @@ import {
   useDisconnect,
   useIsConnected,
 } from "@fuels/react";
-import { clsx } from "clsx";
+import {clsx} from "clsx";
 
 import styles from "./ConnectButton.module.css";
 
 import ActionButton from "@/src/components/common/ActionButton/ActionButton";
 import useFormattedAddress from "@/src/hooks/useFormattedAddress/useFormattedAddress";
-import { ArrowDownIcon } from "../../icons/ArrowDown/ArrowDownIcon";
+import {ArrowDownIcon} from "../../icons/ArrowDown/ArrowDownIcon";
 import DropDownMenu from "../DropDownMenu/DropDownMenu";
-import { ArrowUpIcon } from "../../icons/ArrowUp/ArrowUpIcon";
-import { DropDownButtons } from "@/src/utils/DropDownButtons";
-import { CopyNotification } from "../../common/CopyNotification/CopyNotification";
-import { openNewTab } from "@/src/utils/common";
+import {ArrowUpIcon} from "../../icons/ArrowUp/ArrowUpIcon";
+import {DropDownButtons} from "@/src/utils/DropDownButtons";
+import {CopyNotification} from "../../common/CopyNotification/CopyNotification";
+import {openNewTab} from "@/src/utils/common";
 import TransactionsHistory from "@/src/components/common/TransactionsHistory/TransactionsHistory";
 import {FuelAppUrl} from "@/src/utils/constants";
 import {useScrollLock} from "usehooks-ts";
@@ -27,13 +27,13 @@ type Props = {
   className?: string;
 };
 
-const ConnectButton = ({ className }: Props) => {
-  const { isConnected } = useIsConnected();
-  const { connect, isConnecting } = useConnectUI();
-  const { disconnect, isPending: disconnectLoading } = useDisconnect();
-  const { account } = useAccount();
+const ConnectButton = ({className}: Props) => {
+  const {isConnected} = useIsConnected();
+  const {connect, isConnecting} = useConnectUI();
+  const {disconnect, isPending: disconnectLoading} = useDisconnect();
+  const {account} = useAccount();
 
-  const { lock, unlock } = useScrollLock({ autoLock: false });
+  const {lock, unlock} = useScrollLock({autoLock: false});
 
   // TODO: Hack to avoid empty button when account is changed to the not connected one in wallet
   // It is not reproducible on Fuelet, but on Fuel wallet
@@ -58,16 +58,23 @@ const ConnectButton = ({ className }: Props) => {
   // TODO: Ugly, rewrite all modals/dropdowns/notifications/sidenavs to the separate logic layer
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      if (menuRef.current && !menuRef.current.contains(event.target as Node) && !buttonRef?.current?.contains(event.target as Node)) {
+      if (
+        menuRef.current &&
+        !menuRef.current.contains(event.target as Node) &&
+        !buttonRef?.current?.contains(event.target as Node)
+      ) {
         setMenuOpened(false);
       }
     };
 
     const handleClickOutsideTransactions = (event: MouseEvent) => {
-      if (transactionsRef.current && !transactionsRef.current.contains(event.target as Node)) {
+      if (
+        transactionsRef.current &&
+        !transactionsRef.current.contains(event.target as Node)
+      ) {
         setHistoryOpened(false);
       }
-    }
+    };
 
     if (isMenuOpened) {
       document.addEventListener("mousedown", handleClickOutside);
@@ -149,12 +156,12 @@ const ConnectButton = ({ className }: Props) => {
           button.text === "Disconnect"
             ? handleDisconnect
             : button.text === "Transaction History"
-            ? handleHistoryOpen
-            : button.text === "Copy Address"
-            ? handleCopy
-            : button.text === "View in Explorer"
-            ? handleExplorerClick
-            : button.onClick,
+              ? handleHistoryOpen
+              : button.text === "Copy Address"
+                ? handleCopy
+                : button.text === "View in Explorer"
+                  ? handleExplorerClick
+                  : button.onClick,
       };
     });
   }, [handleDisconnect, handleCopy, handleExplorerClick]);

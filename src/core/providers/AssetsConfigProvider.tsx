@@ -5,14 +5,10 @@ type Props = {
   children: ReactNode;
 };
 
-const AssetsConfigProvider = ({ children }: Props) => {
+const AssetsConfigProvider = ({children}: Props) => {
   useAssetsConfig();
 
-  return (
-    <>
-      {children}
-    </>
-  );
+  return <>{children}</>;
 };
 
 export default AssetsConfigProvider;

@@ -1,9 +1,5 @@
 import Logo from "@/src/components/common/Logo/Logo";
-import {
-  BlogLink,
-  DiscordLink,
-  XLink,
-} from "@/src/utils/constants";
+import {BlogLink, DiscordLink, XLink} from "@/src/utils/constants";
 
 import styles from "./Footer.module.css";
 import GithubIcon from "../../icons/Github/GithubIcon";
@@ -15,7 +11,7 @@ type Props = {
   isHomePage?: boolean;
 };
 
-const Footer = ({ isHomePage }: Props) => {
+const Footer = ({isHomePage}: Props) => {
   const currentYear = new Date().getFullYear();
 
   return (
@@ -44,10 +40,7 @@ const Footer = ({ isHomePage }: Props) => {
             <a href={BlogLink} target="_blank">
               Blog
             </a>
-            <a
-              href="https://docs.mira.ly/resources/careers"
-              target="_blank"
-            >
+            <a href="https://docs.mira.ly/resources/careers" target="_blank">
               Careers
             </a>
             <a href="mailto:help@mira.ly" target="_blank">
@@ -102,13 +95,18 @@ const Footer = ({ isHomePage }: Props) => {
             <a className={styles.link} href={BlogLink} target="_blank">
               Blog
             </a>
-            <a className={styles.link}
+            <a
+              className={styles.link}
               href="https://docs.mira.ly/resources/careers"
               target="_blank"
             >
               Careers
             </a>
-            <a className={styles.link} href="mailto:help@mira.ly" target="_blank">
+            <a
+              className={styles.link}
+              href="mailto:help@mira.ly"
+              target="_blank"
+            >
               Contact us
             </a>
           </div>

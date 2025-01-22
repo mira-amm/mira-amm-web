@@ -1,7 +1,7 @@
 import {clsx} from "clsx";
 import {memo} from "react";
 
-const XIcon = ({ className }: IconProps) => {
+const XIcon = ({className}: IconProps) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"

@@ -12,9 +12,10 @@ const useCheckEthBalance = (sellCoin?: CurrencyBoxState) => {
   const ethBalance = useAssetBalance(balances, ETH_ASSET_ID);
 
   return useMemo(() => {
-    const ethForSell = sellCoin?.assetId === ETH_ASSET_ID && sellCoin.amount
-      ? bn.parseUnits(sellCoin.amount, EthDecimals)
-      : new BN(0);
+    const ethForSell =
+      sellCoin?.assetId === ETH_ASSET_ID && sellCoin.amount
+        ? bn.parseUnits(sellCoin.amount, EthDecimals)
+        : new BN(0);
     const sufficientEthBalance = ethBalance.gte(ethForSell.add(MinEthValueBN));
     return Boolean(sufficientEthBalance);
   }, [ethBalance, sellCoin?.assetId, sellCoin?.amount]);

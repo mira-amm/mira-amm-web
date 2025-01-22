@@ -1,10 +1,10 @@
 import useAssetMetadata from "@/src/hooks/useAssetMetadata";
-import { B256Address, formatUnits } from "fuels";
-import { buildPoolId, PoolId } from "mira-dex-ts";
+import {B256Address, formatUnits} from "fuels";
+import {buildPoolId, PoolId} from "mira-dex-ts";
 import styles from "./DesktopPosition.module.css";
 import CoinPair from "@/src/components/common/CoinPair/CoinPair";
 import Link from "next/link";
-import { createPoolKey } from "@/src/utils/common";
+import {createPoolKey} from "@/src/utils/common";
 
 interface Props {
   assetIdA: B256Address;
@@ -14,7 +14,13 @@ interface Props {
   isStablePool: boolean;
 }
 
-export const DesktopPosition = ({ assetIdA, assetIdB, amountA, amountB, isStablePool }: Props) => {
+export const DesktopPosition = ({
+  assetIdA,
+  assetIdB,
+  amountA,
+  amountB,
+  isStablePool,
+}: Props) => {
   const assetAMetadata = useAssetMetadata(assetIdA);
   const assetBMetadata = useAssetMetadata(assetIdB);
 
@@ -29,7 +35,12 @@ export const DesktopPosition = ({ assetIdA, assetIdB, amountA, amountB, isStable
     <tr className={styles.positionRow}>
       <td>
         <Link href={positionPath}>
-          <CoinPair firstCoin={assetIdA} secondCoin={assetIdB} isStablePool={poolId[2]} withPoolDescription/>
+          <CoinPair
+            firstCoin={assetIdA}
+            secondCoin={assetIdB}
+            isStablePool={poolId[2]}
+            withPoolDescription
+          />
         </Link>
       </td>
       <td>
@@ -38,10 +49,8 @@ export const DesktopPosition = ({ assetIdA, assetIdB, amountA, amountB, isStable
         </Link>
       </td>
       <td className={styles.labelCell}>
-        <Link href={positionPath}>
-          Active
-        </Link>
+        <Link href={positionPath}>Active</Link>
       </td>
     </tr>
   );
-}
+};

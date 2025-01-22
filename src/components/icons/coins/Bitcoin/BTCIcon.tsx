@@ -7,7 +7,7 @@ const BTCIcon = () => {
       viewBox="0 0 40 40"
       fill="none"
     >
-      <rect width={40} height={40} fill="#F89E32" rx={20}/>
+      <rect width={40} height={40} fill="#F89E32" rx={20} />
       <path
         fill="#fff"
         fillRule="evenodd"

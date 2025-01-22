@@ -1,6 +1,10 @@
 import {useQuery} from "@tanstack/react-query";
 import {CoinGeckoApiUrl} from "@/src/utils/constants";
-import {assetHandleToSymbol, CoinName, coinsConfig} from "@/src/utils/coinsConfig";
+import {
+  assetHandleToSymbol,
+  CoinName,
+  coinsConfig,
+} from "@/src/utils/coinsConfig";
 
 // TODO: Use locally until dev server is configured to surpass cors
 // const mockData = {
@@ -33,48 +37,62 @@ import {assetHandleToSymbol, CoinName, coinsConfig} from "@/src/utils/coinsConfi
 //   },
 // };
 
-const useUSDRate = (firstAssetName: string | null, secondAssetName: string | null) => {
+const useUSDRate = (
+  firstAssetName: string | null,
+  secondAssetName: string | null,
+) => {
   const {data, isLoading} = useQuery({
-    queryKey: ['usdRate', firstAssetName, secondAssetName],
+    queryKey: ["usdRate", firstAssetName, secondAssetName],
     queryFn: async () => {
-      const firstAssetSymbol = firstAssetName ? assetHandleToSymbol.get(firstAssetName) : null;
-      const secondAssetSymbol = secondAssetName ? assetHandleToSymbol.get(secondAssetName) : null;
+      const firstAssetSymbol = firstAssetName
+        ? assetHandleToSymbol.get(firstAssetName)
+        : null;
+      const secondAssetSymbol = secondAssetName
+        ? assetHandleToSymbol.get(secondAssetName)
+        : null;
 
       const assetIds = [firstAssetSymbol, secondAssetSymbol]
-        .filter(symbol => symbol !== null)
-        .map(symbol => coinsConfig.get(symbol as CoinName)?.coinGeckoId)
-        .filter(id => id !== undefined)
-        .join(",")
+        .filter((symbol) => symbol !== null)
+        .map((symbol) => coinsConfig.get(symbol as CoinName)?.coinGeckoId)
+        .filter((id) => id !== undefined)
+        .join(",");
       let rates;
       if (!assetIds) {
         rates = {};
       } else {
-        const response = await fetch(`${CoinGeckoApiUrl}/simple/price?ids=${assetIds}&vs_currencies=usd`, {
-          method: 'GET',
-          headers: {
-            'x-cg-pro-api-key': 'CG-stXXB53Rkr4yZcZ2Je5MNt4F',
+        const response = await fetch(
+          `${CoinGeckoApiUrl}/simple/price?ids=${assetIds}&vs_currencies=usd`,
+          {
+            method: "GET",
+            headers: {
+              "x-cg-pro-api-key": "CG-stXXB53Rkr4yZcZ2Je5MNt4F",
+            },
           },
-        })
+        );
         rates = await response.json();
       }
 
-      const firstAssetGeckoId = firstAssetSymbol ? coinsConfig.get(firstAssetSymbol as CoinName)?.coinGeckoId : null;
-      const secondAssetGeckoId = secondAssetSymbol ? coinsConfig.get(secondAssetSymbol as CoinName)?.coinGeckoId : null;
+      const firstAssetGeckoId = firstAssetSymbol
+        ? coinsConfig.get(firstAssetSymbol as CoinName)?.coinGeckoId
+        : null;
+      const secondAssetGeckoId = secondAssetSymbol
+        ? coinsConfig.get(secondAssetSymbol as CoinName)?.coinGeckoId
+        : null;
 
       return [
         {
           asset: firstAssetName,
-          rate: firstAssetGeckoId ? rates[firstAssetGeckoId]?.usd ?? 0 : 0
+          rate: firstAssetGeckoId ? (rates[firstAssetGeckoId]?.usd ?? 0) : 0,
         },
         {
           asset: secondAssetName,
-          rate: secondAssetGeckoId ? rates[secondAssetGeckoId]?.usd ?? 0 : 0
+          rate: secondAssetGeckoId ? (rates[secondAssetGeckoId]?.usd ?? 0) : 0,
         },
-      ]
+      ];
     },
   });
 
-  return { ratesData: data, ratesLoading: isLoading };
+  return {ratesData: data, ratesLoading: isLoading};
 };
 
 export default useUSDRate;
