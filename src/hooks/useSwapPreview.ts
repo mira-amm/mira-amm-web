@@ -3,9 +3,9 @@ import {CurrencyBoxMode, SwapState} from "@/src/components/common/Swap/Swap";
 import useSwapData from "@/src/hooks/useAssetPair/useSwapData";
 import useReadonlyMira from "@/src/hooks/useReadonlyMira";
 import {buildPoolId, PoolId, Asset} from "mira-dex-ts";
-import {BASE_ASSETS} from "@/src/utils/constants";
+import {BASE_ASSETS, MAX_U256} from "@/src/utils/constants";
 import {InsufficientReservesError} from "mira-dex-ts/dist/sdk/errors";
-import {BN} from "fuels";
+import {bn, BN} from "fuels";
 import useAssetMetadata from "./useAssetMetadata";
 
 type Props = {
@@ -17,8 +17,8 @@ type TradeType = "ExactInput" | "ExactOutput";
 
 type MultihopPreviewData = {
   path: [string, string, boolean][];
-  input_amount: number;
-  output_amount: number;
+  input_amount: BN;
+  output_amount: BN;
 };
 
 type SwapPreviewData = {
@@ -47,8 +47,10 @@ const useSwapPreview = ({swapState, mode}: Props) => {
   const amountValid = !isNaN(amount);
   const decimals =
     (mode === "sell" ? sellMetadata.decimals : buyMetadata.decimals) || 0;
-  const normalizedAmount = amountValid ? amount * 10 ** decimals : 0;
-  const amountNonZero = normalizedAmount > 0;
+  const normalizedAmount = amountValid
+    ? bn.parseUnits(amountString, decimals)
+    : bn(0);
+  const amountNonZero = normalizedAmount.gt(0);
 
   const tradeType: TradeType = mode === "sell" ? "ExactInput" : "ExactOutput";
 
@@ -98,8 +100,8 @@ const useSwapPreview = ({swapState, mode}: Props) => {
 
       const previewData: MultihopPreviewData = {
         path: [],
-        input_amount: Infinity,
-        output_amount: 0,
+        input_amount: MAX_U256,
+        output_amount: bn(0),
       };
 
       // API is returning unreliable data, let's re-simulate
@@ -125,9 +127,9 @@ const useSwapPreview = ({swapState, mode}: Props) => {
 
         for (let i = 0; i < previews.length; i++) {
           const preview = previews[i];
-          if (preview && previewData.output_amount < preview[1].toNumber()) {
+          if (preview && previewData.output_amount.lt(preview[1])) {
             previewData.path = potentialRoutes[i];
-            previewData.output_amount = preview[1].toNumber();
+            previewData.output_amount = preview[1];
           }
         }
       } else {
@@ -149,9 +151,9 @@ const useSwapPreview = ({swapState, mode}: Props) => {
 
         for (let i = 0; i < previews.length; i++) {
           const preview = previews[i];
-          if (preview && previewData.input_amount > preview[1].toNumber()) {
+          if (preview && previewData.input_amount.gt(preview[1])) {
             previewData.path = potentialRoutes[i];
-            previewData.input_amount = preview[1].toNumber();
+            previewData.input_amount = preview[1];
           }
         }
       }

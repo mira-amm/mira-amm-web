@@ -4,7 +4,7 @@ WITH AssetBalancesAndTotalSupply AS (
         hb.amount,
         hb.timestamp,
         hb.distinct_id,
-        SUM(hb.amount) OVER (PARTITION BY hb.timestamp, hb.asset_id) AS totalSupply
+        SUM(hb.amount) OVER (PARTITION BY hb.timestamp, hb.asset_id) AS total_supply
     FROM `fuel.hourly_balances` hb
     WHERE hb.timestamp BETWEEN ${epochStart}
                 AND ${epochEnd}
@@ -19,28 +19,28 @@ EarliestEpochEndOrNow AS (
         END AS SelectedTimestamp
 ),
 -- returns the number time periods
-SnapshotsCount AS (
-    SELECT count(*) AS TotalSnapshots
+Hours AS (
+    SELECT 
+        TIMESTAMPDIFF(HOUR, toDateTime64(${epochStart}, 1, 'UTC'), toDateTime64(${epochEnd}, 1, 'UTC')) AS hours_duration
+),
+-- get the amount of rewards distributed per hour
+Supply AS (
+    SELECT
+        ${rewardsAmount} / (SELECT hours_duration FROM Hours) as hourly_supply
+),
+-- get share of distributed supply per hour for the user
+UserRewardsIntermediary AS (
+    SELECT
+        toFloat64(amount) / toFloat64(total_supply) AS user_share
     FROM AssetBalancesAndTotalSupply
     WHERE distinct_id = '${userId}'
 ),
--- returns the number of fuel tokens the user has earned
-UserFuelRewards AS (
+-- get the total rewards for the user
+UserRewards AS (
     SELECT
-        CASE
-            WHEN (SELECT TotalSnapshots FROM SnapshotsCount) = 0 THEN 0
-            ELSE
-                (SUM(amount / totalSupply) / (SELECT TotalSnapshots FROM SnapshotsCount))
-                * ${lpTokenAmount} *
-                ((SELECT SelectedTimestamp FROM EarliestEpochEndOrNow) -  toUnixTimestamp(toDateTime64(${epochStart}, 3, 'UTC'))) /
-                (
-                    toUnixTimestamp(toDateTime64(${epochEnd}, 3, 'UTC')) -
-                    toUnixTimestamp(toDateTime64(${epochStart}, 3, 'UTC'))
-                )
-            END AS ComputedValue
-    FROM AssetBalancesAndTotalSupply
-    WHERE distinct_id = '${userId}'
+        SUM(user_share  * (SELECT hourly_supply FROM Supply)) as user_rewards
+    FROM 
+        UserRewardsIntermediary
 )
-SELECT
-    ComputedValue AS FuelRewards
-FROM UserFuelRewards;
+
+SELECT user_rewards as FuelRewards from UserRewards;
