@@ -110,6 +110,7 @@ const PositionView = ({pool}: Props) => {
     data,
     removeLiquidity,
     error: removeLiquidityError,
+    isPending,
   } = useRemoveLiquidity({
     pool,
     liquidityPercentage: removeLiquidityPercentage,
@@ -138,7 +139,14 @@ const PositionView = ({pool}: Props) => {
       closeRemoveLiquidityModal();
       openFailureModal();
     }
-  }, [removeLiquidity, closeRemoveLiquidityModal, openSuccessModal]);
+  }, [
+    removeLiquidity,
+    closeRemoveLiquidityModal,
+    openSuccessModal,
+    openFailureModal,
+    coinAAmountToWithdrawStr,
+    coinBAmountToWithdrawStr,
+  ]);
 
   const redirectToLiquidity = useCallback(() => {
     router.push("/liquidity");
@@ -382,6 +390,7 @@ const PositionView = ({pool}: Props) => {
           setLiquidityValue={setRemoveLiquidityPercentage}
           handleRemoveLiquidity={handleRemoveLiquidity}
           isValidNetwork={isValidNetwork}
+          isLoading={isPending}
         />
       </RemoveLiquidityModal>
       <SuccessModal title={<></>} onClose={redirectToLiquidity}>
