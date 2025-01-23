@@ -2,7 +2,7 @@ import {GET} from "./route";
 import {NextRequest} from "next/server";
 
 describe("test for GET /api/asset", () => {
-  const mockMainnetUrl = "https://mainnet-explorer.fuel.network";
+  const mockMainnetUrl = "https://mock-mainnet-explorer.fuel.network";
   const mockAssetId = "123456";
   const mockAssetData = {
     assetId: mockAssetId,
