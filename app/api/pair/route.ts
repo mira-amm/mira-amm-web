@@ -8,7 +8,7 @@ import {
   SQDIndexerResponses,
   GeckoTerminalQueryResponses,
 } from "../shared/types";
-import {NotFoundError} from "../shared/error";
+import {NotFoundError} from "@/src/utils/errors";
 
 // Function to fetch pool details by ID
 export async function fetchPoolById(

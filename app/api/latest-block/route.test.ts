@@ -67,22 +67,26 @@ describe("test for GET /api/latest-block", () => {
 
     expect(res.status).toBe(500);
     const jsonResponse = await res.json();
-    expect(jsonResponse).toEqual({error: "Failed to fetch block and events"});
+    expect(jsonResponse).toEqual({
+      error: "An unexpected error occurred while fetching latest block",
+    });
 
     expect(request).toHaveBeenCalledTimes(1); // Only fetchSquidStatus should be called
   });
 
   it("returns 500 if fetchBlockByHeight fails", async () => {
     (request as jest.Mock)
-      .mockRejectedValueOnce(mockSquidStatus) // Mock for fetchSquidStatus
-      .mockRejectedValueOnce(new Error("Failed to fetch block data")); // Mock for fetchBlockByHeight
+      .mockResolvedValueOnce(mockSquidStatus)
+      .mockRejectedValueOnce(new Error("Failed to fetch block data"));
 
     const req = new NextRequest("https://mock-api.com/api/latest-block");
     const res = await GET(req);
 
     expect(res.status).toBe(500);
     const jsonResponse = await res.json();
-    expect(jsonResponse).toEqual({error: "Failed to fetch block and events"});
+    expect(jsonResponse).toEqual({
+      error: "An unexpected error occurred while fetching latest block",
+    });
 
     expect(request).toHaveBeenCalledTimes(2); // Both functions should be called
   });
