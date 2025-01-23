@@ -11,7 +11,7 @@ import {
 import {NotFoundError} from "@/src/utils/errors";
 
 // Function to fetch pool details by ID
-export async function fetchPoolById(
+async function fetchPoolById(
   poolId: string,
 ): Promise<SQDIndexerResponses.Pool> {
   // Define the GraphQL query to fetch pool details by the given id
