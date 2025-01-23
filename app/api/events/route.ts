@@ -157,7 +157,6 @@ function createEventDataForSwapEvent(
       asset1: decimalizedReserves1After,
     },
     eventType: "swap",
-    priceNative: parseFloat(action.amount0In) / parseFloat(action.amount1Out),
   } as GeckoTerminalQueryResponses.SwapEvent;
 
   // not adding "0" value to the output as per the Gecko Terminal spec( only one pair should be present at any given)
@@ -171,6 +170,7 @@ function createEventDataForSwapEvent(
       ...event,
       asset0In: decimalize(action.amount0In, asset0Decimals),
       asset1Out: decimalize(action.amount1Out, asset1Decimals),
+      priceNative: parseFloat(action.amount0In) / parseFloat(action.amount1Out),
     };
   } else if (
     action.amount1In &&
@@ -182,6 +182,7 @@ function createEventDataForSwapEvent(
       ...event,
       asset1In: decimalize(action.amount1In, asset1Decimals),
       asset0Out: decimalize(action.amount0Out, asset0Decimals),
+      priceNative: parseFloat(action.amount1In) / parseFloat(action.amount0Out),
     };
   } else {
     throw new Error(`Invalid swap event data: ${JSON.stringify(action)}`);
