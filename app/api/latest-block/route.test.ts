@@ -9,7 +9,7 @@ jest.mock("@/src/utils/constants", () => ({
 
 jest.mock("graphql-request", () => ({
   request: jest.fn(),
-  gql: jest.fn((query) => {}),
+  gql: jest.fn(() => {}),
 }));
 
 jest.mock("fuels", () => ({

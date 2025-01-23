@@ -88,7 +88,7 @@ export async function GET(req: NextRequest) {
       blockNumber.toString(),
     );
 
-    let tai64TimeString = blockData.header.time.toString();
+    const tai64TimeString = blockData.header.time.toString();
 
     // converting TAI64 string to normal datetime
     const tai64: DateTime = convertTAI64StringToUnixSeconds(tai64TimeString);

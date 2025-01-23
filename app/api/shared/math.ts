@@ -7,7 +7,7 @@ export function decimalize(
 ): string {
   amount = parseFloat(amount.toString()) / 10 ** assetDecimals;
   const units = bn.parseUnits(amount.toString());
-  let decimalizedVal = units.formatUnits();
+  const decimalizedVal = units.formatUnits();
   return decimalizedVal;
 }
 

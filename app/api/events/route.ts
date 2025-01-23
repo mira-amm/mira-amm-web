@@ -75,8 +75,8 @@ function createEventDataForJoinExitEvent(
     | SQDIndexerTypes.ActionTypes.JOIN
     | SQDIndexerTypes.ActionTypes.EXIT,
 ): GeckoTerminalQueryResponses.JoinExitEvent {
-  let asset0Decimals = action.asset0.decimals;
-  let asset1Decimals = action.asset1.decimals;
+  const asset0Decimals = action.asset0.decimals;
+  const asset1Decimals = action.asset1.decimals;
   //decimalizing based on asset's decimals
   const decimalizedReserves0After = decimalize(
     action.reserves0After,
@@ -135,8 +135,8 @@ function createEventDataForJoinExitEvent(
 function createEventDataForSwapEvent(
   action: SQDIndexerResponses.Action,
 ): GeckoTerminalQueryResponses.SwapEvent {
-  let asset0Decimals = action.asset0.decimals;
-  let asset1Decimals = action.asset1.decimals;
+  const asset0Decimals = action.asset0.decimals;
+  const asset1Decimals = action.asset1.decimals;
 
   const decimalizedReserves0After = decimalize(
     action.reserves0After,

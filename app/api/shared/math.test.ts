@@ -12,7 +12,7 @@ jest.mock("fuels", () => ({
     })),
   },
   DateTime: {
-    fromTai64: jest.fn((tai64String: string) => ({
+    fromTai64: jest.fn(() => ({
       getTime: () => 1672531200000, // Mocked timestamp for TAI64
     })),
   },
