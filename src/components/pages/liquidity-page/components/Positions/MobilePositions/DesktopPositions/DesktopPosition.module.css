@@ -10,3 +10,15 @@
 .positionRow:hover p[data-identifier="coin-pair"] {
   text-decoration: underline;
 }
+
+.aprBadge {
+  display: flex;
+  justify-content: center;
+}
+
+.addButton {
+  padding: 12px;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 19px;
+}

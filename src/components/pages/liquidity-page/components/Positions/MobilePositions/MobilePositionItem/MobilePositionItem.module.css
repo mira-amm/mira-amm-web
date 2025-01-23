@@ -18,5 +18,11 @@
 .poolDescription {
   font-size: 12px;
   line-height: 14px;
-  color: #D4B226;
+  color: #d4b226;
+}
+
+.addButton {
+  height: 40px;
+  font-weight: 500;
+  font-size: 16px;
 }

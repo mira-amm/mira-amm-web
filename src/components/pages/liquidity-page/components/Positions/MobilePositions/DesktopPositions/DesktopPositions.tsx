@@ -1,8 +1,5 @@
-import CoinPair from "@/src/components/common/CoinPair/CoinPair";
-
 import styles from "./DesktopPositions.module.css";
 import {createPoolKey} from "@/src/utils/common";
-import {useRouter} from "next/navigation";
 import {clsx} from "clsx";
 import {DesktopPosition} from "./DesktopPosition";
 import {Position} from "@/src/hooks/usePositions";
@@ -11,24 +8,19 @@ type Props = {
   positions: Position[] | undefined;
 };
 
-const DesktopPositions = ({positions}: Props) => {
-  const router = useRouter();
-
+const DesktopPositions = ({positions}: Props): JSX.Element => {
   if (!positions) {
-    return null;
+    return <></>;
   }
 
   return (
     <table className={clsx(styles.desktopPositions, "desktopOnly")}>
       <thead>
         <tr>
-          <th>Positions</th>
-          <th>Size</th>
-          <th>
-            {/*<button className={styles.hideButton}>*/}
-            {/*  Hide closed positions*/}
-            {/*</button>*/}
-          </th>
+          <th>Pools</th>
+          <th>APR</th>
+          <th>Position size</th>
+          <th></th>
         </tr>
       </thead>
       <tbody>

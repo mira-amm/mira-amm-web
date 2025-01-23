@@ -6,7 +6,7 @@ import usePositions from "@/src/hooks/usePositions";
 import DocumentIcon from "@/src/components/icons/Document/DocumentIcon";
 import LoaderV2 from "@/src/components/common/LoaderV2/LoaderV2";
 
-const Positions = () => {
+const Positions = (): JSX.Element => {
   const {data, isLoading} = usePositions();
 
   return (

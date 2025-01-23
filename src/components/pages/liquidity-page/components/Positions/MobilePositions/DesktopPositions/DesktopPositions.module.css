@@ -14,22 +14,34 @@
   border-bottom: 1px solid var(--background-grey-darker);
 }
 
-.desktopPositions td, .desktopPositions th {
+.desktopPositions td,
+.desktopPositions th {
   padding: 16px 24px;
 }
 
-.desktopPositions td:first-child, .desktopPositions th:first-child {
+.desktopPositions td:first-child,
+.desktopPositions th:first-child {
   text-align: left;
+  min-width: 350px;
 }
 
-.desktopPositions td:nth-child(2), .desktopPositions th:nth-child(2) {
+.desktopPositions td:nth-child(2),
+.desktopPositions th:nth-child(2) {
   text-align: center;
   color: var(--content-tertiary);
+  min-width: 225px;
 }
 
-.desktopPositions td:last-child, .desktopPositions th:last-child {
+.desktopPositions td:nth-child(3),
+.desktopPositions th:nth-child(3) {
+  text-align: center;
+  color: var(--content-tertiary);
+  min-width: 225px;
+}
+
+.desktopPositions td:last-child,
+.desktopPositions th:last-child {
   text-align: right;
-  min-width: 196px;
 }
 
 .hideButton {
