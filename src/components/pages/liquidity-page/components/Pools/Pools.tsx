@@ -32,11 +32,17 @@ const Pools = () => {
     router.push("/liquidity/create-pool");
   }, [router]);
 
+  // Initialize query variables on component mount
+  useEffect(() => {
+    setQueryVariables({page: page || DEFAULT_PAGE});
+  }, [page, setQueryVariables]);
+
   // Update search query when debounced value changes
   useEffect(() => {
-    setQueryVariables({search: debouncedSearchTerm, page: DEFAULT_PAGE});
-    // reset page when search text changes
-  }, [debouncedSearchTerm, setQueryVariables]);
+    if (search !== debouncedSearchTerm) {
+      setQueryVariables({search: debouncedSearchTerm, page: DEFAULT_PAGE});
+    }
+  }, [debouncedSearchTerm, setQueryVariables, search]);
 
   // Handle search input changes
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
