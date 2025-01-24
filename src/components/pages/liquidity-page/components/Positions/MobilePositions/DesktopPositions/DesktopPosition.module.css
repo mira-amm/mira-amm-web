@@ -1,14 +1,6 @@
 .labelCell {
-  text-align: center !important;
-  color: var(--content-positive);
-}
-
-.labelCell > p {
-  width: fit-content;
-}
-
-.positionRow:hover p[data-identifier="coin-pair"] {
-  text-decoration: underline;
+  text-align: center;
+  color: var(--content-primary) !important;
 }
 
 .aprBadge {
@@ -21,4 +13,5 @@
   font-weight: 500;
   font-size: 16px;
   line-height: 19px;
+  min-width: 160px;
 }

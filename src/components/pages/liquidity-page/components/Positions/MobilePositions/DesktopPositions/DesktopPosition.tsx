@@ -50,18 +50,16 @@ export const DesktopPosition = ({
   const {isMatching} = usePoolNameAndMatch(poolKey);
 
   return (
-    <tr className={styles.positionRow}>
+    <tr>
       <td>
-        <Link href={positionPath}>
-          <CoinPair
-            firstCoin={assetIdA}
-            secondCoin={assetIdB}
-            isStablePool={poolId[2]}
-            withPoolDescription
-          />
-        </Link>
+        <CoinPair
+          firstCoin={assetIdA}
+          secondCoin={assetIdB}
+          isStablePool={poolId[2]}
+          withPoolDescription
+        />
       </td>
-      <td className={styles.cell}>
+      <td className={styles.labelCell}>
         {isMatching ? (
           <div className={styles.aprBadge}>
             <AprBadge
@@ -74,9 +72,7 @@ export const DesktopPosition = ({
           <p>{aprValue}</p>
         )}
       </td>
-      <td>
-        <Link href={positionPath}>${totalSize}</Link>
-      </td>
+      <td className={styles.labelCell}>${totalSize}</td>
       <td className={styles.labelCell}>
         <Link href={positionPath}>
           <ActionButton className={styles.addButton} variant="secondary">

@@ -29,14 +29,14 @@
 .desktopPositions th:nth-child(2) {
   text-align: center;
   color: var(--content-tertiary);
-  min-width: 225px;
+  min-width: 215px;
 }
 
 .desktopPositions td:nth-child(3),
 .desktopPositions th:nth-child(3) {
   text-align: center;
   color: var(--content-tertiary);
-  min-width: 225px;
+  min-width: 215px;
 }
 
 .desktopPositions td:last-child,
