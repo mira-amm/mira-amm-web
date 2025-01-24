@@ -10,6 +10,7 @@ import AprBadge from "@/src/components/common/AprBadge/AprBadge";
 import usePoolNameAndMatch from "@/src/hooks/usePoolNameAndMatch";
 import {DefaultLocale} from "@/src/utils/constants";
 import ActionButton from "@/src/components/common/ActionButton/ActionButton";
+import {useAssetPrice} from "@/src/hooks/useAssetPrice";
 
 interface Props {
   assetIdA: B256Address;
@@ -29,10 +30,17 @@ export const DesktopPosition = ({
   const assetAMetadata = useAssetMetadata(assetIdA);
   const assetBMetadata = useAssetMetadata(assetIdB);
 
+  const amountInUsdA = useAssetPrice(assetIdA)?.price;
+  const amountInUsdB = useAssetPrice(assetIdB)?.price;
+
   const coinAAmount = formatUnits(amountA, assetAMetadata.decimals);
   const coinBAmount = formatUnits(amountB, assetBMetadata.decimals);
 
-  const totalSize = parseFloat(coinAAmount + coinBAmount).toFixed(2);
+  const size =
+    amountInUsdA &&
+    amountInUsdB &&
+    parseFloat(coinAAmount) * amountInUsdA +
+      parseFloat(coinBAmount) * amountInUsdB;
 
   const poolId = buildPoolId(assetIdA, assetIdB, isStablePool);
   const poolKey = createPoolKey(poolId);
@@ -72,7 +80,7 @@ export const DesktopPosition = ({
           <p>{aprValue}</p>
         )}
       </td>
-      <td className={styles.labelCell}>${totalSize}</td>
+      <td className={styles.labelCell}>${size?.toFixed(2)}</td>
       <td className={styles.labelCell}>
         <Link href={positionPath}>
           <ActionButton className={styles.addButton} variant="secondary">

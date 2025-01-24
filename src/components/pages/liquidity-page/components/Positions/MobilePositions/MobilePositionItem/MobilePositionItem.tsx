@@ -11,6 +11,7 @@ import {DefaultLocale} from "@/src/utils/constants";
 import {createPoolKey} from "@/src/utils/common";
 import AprBadge from "@/src/components/common/AprBadge/AprBadge";
 import ActionButton from "@/src/components/common/ActionButton/ActionButton";
+import {useAssetPrice} from "@/src/hooks/useAssetPrice";
 
 type Props = {
   position: Position;
@@ -21,6 +22,9 @@ const MobilePositionItem = ({position, onClick}: Props): JSX.Element => {
   const coinAMetadata = useAssetMetadata(position.token0Position[0].bits);
   const coinBMetadata = useAssetMetadata(position.token1Position[0].bits);
 
+  const amountInUsdA = useAssetPrice(position.token0Position[0].bits)?.price;
+  const amountInUsdB = useAssetPrice(position.token1Position[0].bits)?.price;
+
   const coinAAmount = formatUnits(
     position.token0Position[1],
     coinAMetadata.decimals,
@@ -30,7 +34,11 @@ const MobilePositionItem = ({position, onClick}: Props): JSX.Element => {
     coinBMetadata.decimals,
   );
 
-  const totalSize = parseFloat(coinAAmount + coinBAmount).toFixed(2);
+  const size =
+    amountInUsdA &&
+    amountInUsdB &&
+    parseFloat(coinAAmount) * amountInUsdA +
+      parseFloat(coinBAmount) * amountInUsdB;
 
   const poolId = buildPoolId(
     position.token0Position[0].bits,
@@ -61,20 +69,21 @@ const MobilePositionItem = ({position, onClick}: Props): JSX.Element => {
           secondCoin={position.token1Position[0].bits}
           isStablePool={position.isStable}
         />
-        {isMatching ? (
+      </div>
+      {isMatching ? (
+        <div className={styles.aprDiv}>
+          <p className={styles.aprTitle}>APR:</p>
           <AprBadge
             aprValue={aprValue}
             tvlValue={tvlValue}
             poolKey={poolKey}
             small={true}
-            leftAlignValue={"-210px"}
           />
-        ) : (
-          <p>{`APR: ${aprValue}`}</p>
-        )}
-      </div>
-
-      <p className={styles.positionPrice}>{`Size: ${totalSize} `}</p>
+        </div>
+      ) : (
+        <p className={styles.aprTitle}>{`APR: ${aprValue}`}</p>
+      )}
+      <p className={styles.positionPrice}>{`Size: $${size?.toFixed(2)} `}</p>
       <p className={styles.poolDescription}>{poolDescription}</p>
       <ActionButton
         onClick={onClick}
