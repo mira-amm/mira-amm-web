@@ -294,10 +294,14 @@ const Swap = () => {
             amount,
           },
         }));
-        setActiveMode(mode);
+
+        if (mode !== activeMode) {
+          setActiveMode(mode);
+          previousPreviewValue.current = "";
+        }
       };
     },
-    [debouncedSetState],
+    [debouncedSetState, activeMode],
   );
 
   const handleCoinSelectorClick = useCallback(
