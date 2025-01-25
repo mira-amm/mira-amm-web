@@ -80,7 +80,13 @@ export const DesktopPosition = ({
           <p>{aprValue}</p>
         )}
       </td>
-      <td className={styles.labelCell}>${size?.toFixed(2)}</td>
+      <td className={styles.labelCell}>
+        {size ? (
+          `$ ${size.toFixed(2)}`
+        ) : (
+          <p className={styles.loadingText}>{"checking..."}</p>
+        )}
+      </td>
       <td className={styles.labelCell}>
         <Link href={positionPath}>
           <ActionButton className={styles.addButton} variant="secondary">

@@ -16,9 +16,13 @@
 }
 
 .poolDescription {
-  font-size: 12px;
-  line-height: 14px;
+  font-size: 15px;
+  line-height: 17px;
   color: #d4b226;
+}
+
+.poolValue {
+  font-size: 14px;
 }
 
 .addButton {
@@ -29,11 +33,47 @@
 
 .aprDiv {
   display: flex;
-  align-items: center;
-  gap: 5px;
+  flex-direction: column;
 }
 
-.aprTitle {
+.title {
+  color: var(--content-primary);
+  font-size: 15px;
+}
+
+.value {
+  font-size: 14px;
   color: var(--content-tertiary);
-  font-size: 14px !important;
+}
+
+.aprValue {
+  color: var(--content-positive);
+}
+
+.content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 0;
+}
+
+.subContent {
+  display: flex;
+  flex-direction: column;
+  line-height: 20px;
+}
+
+@keyframes fade {
+  0% {
+    opacity: 0.5;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+.loadingText {
+  color: var(--content-primary);
+  font-size: 14px;
+  animation: fade 0.5s linear infinite alternate;
 }

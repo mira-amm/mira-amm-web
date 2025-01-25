@@ -12,6 +12,7 @@ import {createPoolKey} from "@/src/utils/common";
 import AprBadge from "@/src/components/common/AprBadge/AprBadge";
 import ActionButton from "@/src/components/common/ActionButton/ActionButton";
 import {useAssetPrice} from "@/src/hooks/useAssetPrice";
+import clsx from "clsx";
 
 type Props = {
   position: Position;
@@ -59,7 +60,11 @@ const MobilePositionItem = ({position, onClick}: Props): JSX.Element => {
   const {isMatching} = usePoolNameAndMatch(poolKey);
 
   const feeText = position.isStable ? "0.05%" : "0.3%";
-  const poolDescription = `${position.isStable ? "Stable" : "Volatile"}: ${feeText}`;
+  const poolTitle = position.isStable ? (
+    <p className={styles.poolDescription}>{"Stable"}</p>
+  ) : (
+    <p className={styles.poolDescription}>{"Volatile"}</p>
+  );
 
   return (
     <div className={styles.mobilePositionItem}>
@@ -70,21 +75,41 @@ const MobilePositionItem = ({position, onClick}: Props): JSX.Element => {
           isStablePool={position.isStable}
         />
       </div>
-      {isMatching ? (
-        <div className={styles.aprDiv}>
-          <p className={styles.aprTitle}>APR:</p>
-          <AprBadge
-            aprValue={aprValue}
-            tvlValue={tvlValue}
-            poolKey={poolKey}
-            small={true}
-          />
+      <div className={styles.content}>
+        {isMatching ? (
+          <div className={styles.aprDiv}>
+            <p className={styles.title}>APR</p>
+            <AprBadge
+              aprValue={aprValue}
+              tvlValue={tvlValue}
+              poolKey={poolKey}
+              small={true}
+            />
+          </div>
+        ) : (
+          <div className={styles.subContent}>
+            <p className={styles.title}>{"APR"}</p>
+            <p className={styles.aprValue}>{aprValue}</p>
+          </div>
+        )}
+        <p className={styles.positionPrice}>
+          {size ? (
+            <div className={styles.subContent}>
+              <p className={styles.title}>{"Position size"}</p>
+              <p className={styles.value}>${size?.toFixed(2)}</p>
+            </div>
+          ) : (
+            <p className={styles.loadingText}>{"checking..."}</p>
+          )}
+        </p>
+        <div className={styles.subContent}>
+          {poolTitle}
+          <p className={clsx(styles.poolDescription, styles.poolValue)}>
+            {feeText}
+          </p>
         </div>
-      ) : (
-        <p className={styles.aprTitle}>{`APR: ${aprValue}`}</p>
-      )}
-      <p className={styles.positionPrice}>{`Size: $${size?.toFixed(2)} `}</p>
-      <p className={styles.poolDescription}>{poolDescription}</p>
+      </div>
+
       <ActionButton
         onClick={onClick}
         fullWidth
