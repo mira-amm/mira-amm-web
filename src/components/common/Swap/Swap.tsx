@@ -506,13 +506,11 @@ const Swap = () => {
 
   const sellAssetPrice = useAssetPrice(swapState.sell.assetId);
   const buyAssetPrice = useAssetPrice(swapState.buy.assetId);
+  const isInsufficientSellAmount = new BN(swapState.sell.amount || 0).gt(sellBalanceValue);
 
   const isActionDisabled =
-    swapDisabled &&
-    !previewLoading &&
-    !balancesPending &&
-    (txCostPending || amountMissing);
-
+  isInsufficientSellAmount || coinMissing || amountMissing || swapPending || !isValidNetwork || !sufficientEthBalance
+  
   //If amount is missing txCostPending is irrelevant
   //If in sufficient fund, previewLoading is irrelevant
   const isActionLoading =
