@@ -10,7 +10,6 @@ import AprBadge from "@/src/components/common/AprBadge/AprBadge";
 import usePoolNameAndMatch from "@/src/hooks/usePoolNameAndMatch";
 import {DefaultLocale} from "@/src/utils/constants";
 import ActionButton from "@/src/components/common/ActionButton/ActionButton";
-import {useAssetPrice} from "@/src/hooks/useAssetPrice";
 
 interface Props {
   assetIdA: B256Address;
@@ -18,6 +17,8 @@ interface Props {
   amountA: string;
   amountB: string;
   isStablePool: boolean;
+  priceA: number;
+  priceB: number;
 }
 
 export const DesktopPosition = ({
@@ -26,21 +27,21 @@ export const DesktopPosition = ({
   amountA,
   amountB,
   isStablePool,
+  priceA,
+  priceB,
 }: Props): JSX.Element => {
   const assetAMetadata = useAssetMetadata(assetIdA);
   const assetBMetadata = useAssetMetadata(assetIdB);
 
-  const amountInUsdA = useAssetPrice(assetIdA)?.price;
-  const amountInUsdB = useAssetPrice(assetIdB)?.price;
+  const amountInUsdA = priceA;
+  const amountInUsdB = priceB;
 
   const coinAAmount = formatUnits(amountA, assetAMetadata.decimals);
   const coinBAmount = formatUnits(amountB, assetBMetadata.decimals);
 
   const size =
-    amountInUsdA &&
-    amountInUsdB &&
     parseFloat(coinAAmount) * amountInUsdA +
-      parseFloat(coinBAmount) * amountInUsdB;
+    parseFloat(coinBAmount) * amountInUsdB;
 
   const poolId = buildPoolId(assetIdA, assetIdB, isStablePool);
   const poolKey = createPoolKey(poolId);

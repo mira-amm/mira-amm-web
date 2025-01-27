@@ -27,11 +27,13 @@ const DesktopPositions = ({positions}: Props): JSX.Element => {
         {positions.map((position) => (
           <DesktopPosition
             key={createPoolKey(position.poolId)}
-            assetIdA={position.token0Position[0].bits}
-            assetIdB={position.token1Position[0].bits}
-            amountA={position.token0Position[1].toString()}
-            amountB={position.token1Position[1].toString()}
+            assetIdA={position.token0Item.token0Position[0].bits}
+            assetIdB={position.token1Item.token1Position[0].bits}
+            amountA={position.token0Item.token0Position[1].toString()}
+            amountB={position.token1Item.token1Position[1].toString()}
             isStablePool={position.isStable}
+            priceA={position.token0Item.price}
+            priceB={position.token1Item.price}
           />
         ))}
       </tbody>

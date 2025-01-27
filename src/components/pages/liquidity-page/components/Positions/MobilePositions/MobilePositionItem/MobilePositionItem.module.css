@@ -34,6 +34,7 @@
 .aprDiv {
   display: flex;
   flex-direction: column;
+  width: 80px;
 }
 
 .title {

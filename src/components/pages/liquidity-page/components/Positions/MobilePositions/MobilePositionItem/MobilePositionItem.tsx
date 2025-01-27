@@ -11,7 +11,6 @@ import {DefaultLocale} from "@/src/utils/constants";
 import {createPoolKey} from "@/src/utils/common";
 import AprBadge from "@/src/components/common/AprBadge/AprBadge";
 import ActionButton from "@/src/components/common/ActionButton/ActionButton";
-import {useAssetPrice} from "@/src/hooks/useAssetPrice";
 import clsx from "clsx";
 
 type Props = {
@@ -20,30 +19,32 @@ type Props = {
 };
 
 const MobilePositionItem = ({position, onClick}: Props): JSX.Element => {
-  const coinAMetadata = useAssetMetadata(position.token0Position[0].bits);
-  const coinBMetadata = useAssetMetadata(position.token1Position[0].bits);
+  const coinAMetadata = useAssetMetadata(
+    position.token0Item.token0Position[0].bits,
+  );
+  const coinBMetadata = useAssetMetadata(
+    position.token1Item.token1Position[0].bits,
+  );
 
-  const amountInUsdA = useAssetPrice(position.token0Position[0].bits)?.price;
-  const amountInUsdB = useAssetPrice(position.token1Position[0].bits)?.price;
+  const amountInUsdA = position.token0Item.price;
+  const amountInUsdB = position.token1Item.price;
 
   const coinAAmount = formatUnits(
-    position.token0Position[1],
+    position.token0Item.token0Position[1],
     coinAMetadata.decimals,
   );
   const coinBAmount = formatUnits(
-    position.token1Position[1],
+    position.token1Item.token1Position[1],
     coinBMetadata.decimals,
   );
 
   const size =
-    amountInUsdA &&
-    amountInUsdB &&
     parseFloat(coinAAmount) * amountInUsdA +
-      parseFloat(coinBAmount) * amountInUsdB;
+    parseFloat(coinBAmount) * amountInUsdB;
 
   const poolId = buildPoolId(
-    position.token0Position[0].bits,
-    position.token1Position[0].bits,
+    position.token0Item.token0Position[0].bits,
+    position.token1Item.token1Position[0].bits,
     position.isStable,
   );
   const poolKey = createPoolKey(poolId);
@@ -70,14 +71,14 @@ const MobilePositionItem = ({position, onClick}: Props): JSX.Element => {
     <div className={styles.mobilePositionItem}>
       <div className={styles.infoSection}>
         <CoinPair
-          firstCoin={position.token0Position[0].bits}
-          secondCoin={position.token1Position[0].bits}
+          firstCoin={position.token0Item.token0Position[0].bits}
+          secondCoin={position.token1Item.token1Position[0].bits}
           isStablePool={position.isStable}
         />
       </div>
       <div className={styles.content}>
         {isMatching ? (
-          <div className={styles.aprDiv}>
+          <div>
             <p className={styles.title}>APR</p>
             <AprBadge
               aprValue={aprValue}
@@ -87,7 +88,7 @@ const MobilePositionItem = ({position, onClick}: Props): JSX.Element => {
             />
           </div>
         ) : (
-          <div className={styles.subContent}>
+          <div className={clsx(styles.subContent, styles.aprDiv)}>
             <p className={styles.title}>{"APR"}</p>
             <p className={styles.aprValue}>{aprValue}</p>
           </div>
