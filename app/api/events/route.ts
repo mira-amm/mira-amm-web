@@ -9,7 +9,7 @@ import {
   SQDIndexerResponses,
 } from "../shared/types";
 import {GeckoTerminalTypes, SQDIndexerTypes} from "../shared/constants";
-import {decimalize} from "../shared/math";
+import {formatUnits} from "fuels";
 
 interface FetchEventsParams {
   fromBlock: number;
@@ -30,10 +30,12 @@ async function fetchEventsForBlockRange({
         asset0 {
           id
           decimals
+          price
         }
         asset1 {
           id
           decimals
+          price
         }
         amount1Out
         amount1In
@@ -78,11 +80,12 @@ function createEventDataForJoinExitEvent(
   const asset0Decimals = action.asset0.decimals;
   const asset1Decimals = action.asset1.decimals;
   //decimalizing based on asset's decimals
-  const decimalizedReserves0After = decimalize(
+
+  const decimalizedReserves0After = formatUnits(
     action.reserves0After,
     asset0Decimals,
   );
-  const decimalizedReserves1After = decimalize(
+  const decimalizedReserves1After = formatUnits(
     action.reserves1After,
     asset1Decimals,
   );
@@ -108,8 +111,8 @@ function createEventDataForJoinExitEvent(
   }
 
   //decimalizing based on asset's decimals
-  const decimalizedAmount0 = decimalize(_amount0, asset1Decimals);
-  const decimalizedAmount1 = decimalize(_amount1, asset1Decimals);
+  const decimalizedAmount0 = formatUnits(_amount0, asset0Decimals);
+  const decimalizedAmount1 = formatUnits(_amount1, asset1Decimals);
 
   const eventType =
     actionType == SQDIndexerTypes.ActionTypes.JOIN
@@ -138,11 +141,11 @@ function createEventDataForSwapEvent(
   const asset0Decimals = action.asset0.decimals;
   const asset1Decimals = action.asset1.decimals;
 
-  const decimalizedReserves0After = decimalize(
+  const decimalizedReserves0After = formatUnits(
     action.reserves0After,
     asset0Decimals,
   );
-  const decimalizedReserves1After = decimalize(
+  const decimalizedReserves1After = formatUnits(
     action.reserves1After,
     asset1Decimals,
   );
@@ -168,9 +171,10 @@ function createEventDataForSwapEvent(
   ) {
     event = {
       ...event,
-      asset0In: decimalize(action.amount0In, asset0Decimals),
-      asset1Out: decimalize(action.amount1Out, asset1Decimals),
-      priceNative: parseFloat(action.amount0In) / parseFloat(action.amount1Out),
+      asset0In: formatUnits(action.amount0In, asset0Decimals),
+      asset1Out: formatUnits(action.amount1Out, asset1Decimals),
+      priceNative:
+        parseFloat(action.asset0.price) / parseFloat(action.asset1.price),
     };
   } else if (
     action.amount1In &&
@@ -180,9 +184,10 @@ function createEventDataForSwapEvent(
   ) {
     event = {
       ...event,
-      asset1In: decimalize(action.amount1In, asset1Decimals),
-      asset0Out: decimalize(action.amount0Out, asset0Decimals),
-      priceNative: parseFloat(action.amount1In) / parseFloat(action.amount0Out),
+      asset1In: formatUnits(action.amount1In, asset1Decimals),
+      asset0Out: formatUnits(action.amount0Out, asset0Decimals),
+      priceNative:
+        parseFloat(action.asset1.price) / parseFloat(action.asset0.price),
     };
   } else {
     throw new Error(`Invalid swap event data: ${JSON.stringify(action)}`);

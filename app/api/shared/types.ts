@@ -34,10 +34,12 @@ export namespace SQDIndexerResponses {
     asset0: {
       id: string;
       decimals: number;
+      price: string;
     };
     asset1: {
       id: string;
       decimals: number;
+      price: string;
     };
     amount1Out: string;
     amount1In: string;
@@ -120,7 +122,7 @@ export namespace GeckoTerminalQueryResponses {
     eventIndex: number;
     maker: string;
     pairId: string;
-    priceNative: number;
+    priceNative: number | string;
     reserves: Reserves;
     metadata?: Record<string, string>;
   } & (

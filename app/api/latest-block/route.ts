@@ -5,10 +5,6 @@
 import {NextRequest, NextResponse} from "next/server";
 import {request, gql} from "graphql-request";
 import {DateTime} from "fuels";
-import {
-  convertTAI64StringToUnixSeconds,
-  convertUnixMillisecondsToUnixSeconds,
-} from "../shared/math";
 
 // local imports
 import {SQDIndexerUrl, NetworkUrl} from "@/src/utils/constants";
@@ -91,11 +87,8 @@ export async function GET(req: NextRequest) {
     const tai64TimeString = blockData.header.time.toString();
 
     // converting TAI64 string to normal datetime
-    const tai64: DateTime = convertTAI64StringToUnixSeconds(tai64TimeString);
-
-    const blockTimeStampInSeconds = convertUnixMillisecondsToUnixSeconds(
-      tai64.getTime(),
-    );
+    const blockDateTime: DateTime = DateTime.fromTai64(tai64TimeString);
+    const blockTimeStampInSeconds = blockDateTime.toUnixSeconds();
 
     // Combine block number (height) and block timestamp
     const block: GeckoTerminalQueryResponses.Block = {

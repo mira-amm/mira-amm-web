@@ -16,6 +16,7 @@ jest.mock("fuels", () => ({
   DateTime: {
     fromTai64: jest.fn().mockImplementation(() => ({
       getTime: jest.fn().mockReturnValue(1633036800000), // Mock Unix milliseconds
+      toUnixSeconds: jest.fn().mockReturnValue(1633036800), // Mock Unix timestamp in seconds
     })),
   },
 }));

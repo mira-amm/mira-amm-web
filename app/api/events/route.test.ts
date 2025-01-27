@@ -12,10 +12,6 @@ jest.mock("graphql-request", () => ({
   gql: jest.fn((query) => "dummy_query"),
 }));
 
-jest.mock("@/app/api/shared/math", () => ({
-  decimalize: jest.fn((amount, assetDecimals) => 123.0),
-}));
-
 describe("test for GET /api/events", () => {
   const mockRequest = request as jest.Mock;
 
@@ -43,8 +39,8 @@ describe("test for GET /api/events", () => {
       actions: [
         {
           pool: {id: "pool1"},
-          asset0: {id: "asset0", decimals: 6},
-          asset1: {id: "asset1", decimals: 9},
+          asset0: {id: "asset0", decimals: 6, price: 100},
+          asset1: {id: "asset1", decimals: 9, price: 12},
           amount1Out: "1000",
           amount1In: "0",
           amount0Out: "0",
@@ -58,8 +54,8 @@ describe("test for GET /api/events", () => {
         },
         {
           pool: {id: "pool2"},
-          asset0: {id: "asset0", decimals: 9},
-          asset1: {id: "asset1", decimals: 9},
+          asset0: {id: "asset0", decimals: 9, price: 123},
+          asset1: {id: "asset1", decimals: 9, price: 140},
           amount1Out: "1001",
           amount1In: "0",
           amount0Out: "0",
@@ -77,9 +73,9 @@ describe("test for GET /api/events", () => {
     mockRequest.mockResolvedValueOnce(mockActions);
 
     const response = await GET(req);
-
     expect(response.status).toBe(200);
     const jsonResponse = await response.json();
+
     expect(jsonResponse).toEqual({
       events: [
         {
@@ -93,12 +89,12 @@ describe("test for GET /api/events", () => {
           maker: "pool1",
           pairId: "pool1",
           reserves: {
-            asset0: expect.any(Number),
-            asset1: expect.any(Number),
+            asset0: "0.001000",
+            asset1: "0.000002001",
           },
           eventType: "join",
-          amount0: expect.any(Number),
-          amount1: expect.any(Number),
+          amount0: "0.000500",
+          amount1: "0.000001000",
         },
         {
           block: {
@@ -111,13 +107,13 @@ describe("test for GET /api/events", () => {
           maker: "pool2",
           pairId: "pool2",
           reserves: {
-            asset0: 123,
-            asset1: 123,
+            asset0: "0.000002000",
+            asset1: "0.000004000",
           },
           eventType: "swap",
-          asset0In: 123,
-          asset1Out: 123,
-          priceNative: 0.2997002997002997, // dividing amount0In by amount1Out
+          asset0In: "0.000000300",
+          asset1Out: "0.000001001",
+          priceNative: 0.8785714285714286,
         },
       ],
     });
