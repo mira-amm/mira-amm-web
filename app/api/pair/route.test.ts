@@ -32,7 +32,7 @@ describe("test for GET /api/pair", () => {
   const mockPairData = {
     pair: {
       id: mockPoolId,
-      dexKey: "uniswap",
+      dexKey: "mira",
       asset0Id: mockPoolData.asset0.id,
       asset1Id: mockPoolData.asset1.id,
       createdAtBlockNumber: mockPoolData.creationBlock,

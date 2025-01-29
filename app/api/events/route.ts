@@ -45,6 +45,7 @@ async function fetchEventsForBlockRange({
         reserves1After
         type
         transaction
+        recipient
         timestamp
         blockNumber
       }
@@ -120,16 +121,16 @@ function createEventDataForJoinExitEvent(
       : GeckoTerminalTypes.EventTypes.EXIT;
 
   return {
+    eventType: eventType,
     txnId: action.transaction,
     txnIndex: 0,
     eventIndex: 0,
-    maker: action.pool.id,
+    maker: action.recipient,
     pairId: action.pool.id,
     reserves: {
       asset0: decimalizedReserves0After,
       asset1: decimalizedReserves1After,
     },
-    eventType: eventType,
     amount0: decimalizedAmount0,
     amount1: decimalizedAmount1,
   };
@@ -150,16 +151,16 @@ function createEventDataForSwapEvent(
     asset1Decimals,
   );
   let event = {
+    eventType: "swap",
     txnId: action.transaction,
     txnIndex: 0,
     eventIndex: 0,
-    maker: action.pool.id,
+    maker: action.recipient,
     pairId: action.pool.id,
     reserves: {
       asset0: decimalizedReserves0After,
       asset1: decimalizedReserves1After,
     },
-    eventType: "swap",
   } as GeckoTerminalQueryResponses.SwapEvent;
 
   // not adding "0" value to the output as per the Gecko Terminal spec( only one pair should be present at any given)

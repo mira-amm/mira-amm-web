@@ -49,6 +49,7 @@ describe("test for GET /api/events", () => {
           reserves1After: "2001",
           type: "ADD_LIQUIDITY",
           transaction: "txn1",
+          recipient: "recipient_address1",
           timestamp: 1234567890,
           blockNumber: 1,
         },
@@ -64,6 +65,7 @@ describe("test for GET /api/events", () => {
           reserves1After: "4000",
           type: "SWAP",
           transaction: "txn2",
+          recipient: "recipient_address2",
           timestamp: 1234567891,
           blockNumber: 2,
         },
@@ -86,7 +88,7 @@ describe("test for GET /api/events", () => {
           txnId: "txn1",
           txnIndex: 0,
           eventIndex: 0,
-          maker: "pool1",
+          maker: "recipient_address1",
           pairId: "pool1",
           reserves: {
             asset0: "0.001000",
@@ -104,7 +106,7 @@ describe("test for GET /api/events", () => {
           txnId: "txn2",
           txnIndex: 0,
           eventIndex: 0,
-          maker: "pool2",
+          maker: "recipient_address2",
           pairId: "pool2",
           reserves: {
             asset0: "0.000002000",

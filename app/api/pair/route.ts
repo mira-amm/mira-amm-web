@@ -55,7 +55,7 @@ function createPairFromPool(
 ): GeckoTerminalQueryResponses.Pair {
   const pair: GeckoTerminalQueryResponses.Pair = {
     id: pool.id,
-    dexKey: "uniswap",
+    dexKey: "mira",
     asset0Id: pool.asset0.id,
     asset1Id: pool.asset1.id,
     createdAtBlockNumber: pool.creationBlock,

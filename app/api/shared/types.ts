@@ -31,6 +31,7 @@ export namespace SQDIndexerResponses {
 
   export interface Action {
     pool: Pool;
+    recipient: string;
     asset0: {
       id: string;
       decimals: number;
