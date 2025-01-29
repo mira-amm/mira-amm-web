@@ -2,11 +2,10 @@ import styles from "./PositionLabel.module.css";
 import {clsx} from "clsx";
 
 type Props = {
-  status?: "active" | "inactive";
   className?: string;
 };
 
-const PositionLabel = ({status, className}: Props) => {
+const PositionLabel = ({className}: Props): JSX.Element => {
   return <p className={clsx(styles.positionLabel, className)}>Active</p>;
 };
 

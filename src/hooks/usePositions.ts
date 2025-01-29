@@ -10,8 +10,14 @@ export interface Position {
   poolId: PoolId;
   lpAssetId: string;
   isStable: boolean;
-  token0Position: Asset;
-  token1Position: Asset;
+  token0Item: {
+    token0Position: Asset;
+    price: number;
+  };
+  token1Item: {
+    token1Position: Asset;
+    price: number;
+  };
 }
 
 const usePositions = (): {data: Position[] | undefined; isLoading: boolean} => {
@@ -36,9 +42,11 @@ const usePositions = (): {data: Position[] | undefined; isLoading: boolean} => {
             }
             asset0 {
               id
+              price
             }
             asset1 {
               id
+              price
             }
             isStable
           }
@@ -62,12 +70,27 @@ const usePositions = (): {data: Position[] | undefined; isLoading: boolean} => {
               lpBalance!.amount.toString(),
             );
 
+          const price1 = pool.asset0.price;
+          const price2 = pool.asset1.price;
+
+          const token0Price = parseFloat(parseFloat(price1).toFixed(2));
+          const token1Price = parseFloat(parseFloat(price2).toFixed(2));
+
+          const token0Item = {
+            token0Position: token0Position,
+            price: token0Price,
+          };
+          const token1Item = {
+            token1Position: token1Position,
+            price: token1Price,
+          };
+
           return {
             poolId,
             lpAssetId: pool.lpToken.id,
             isStable: pool.isStable,
-            token0Position,
-            token1Position,
+            token0Item,
+            token1Item,
           };
         }),
       );
