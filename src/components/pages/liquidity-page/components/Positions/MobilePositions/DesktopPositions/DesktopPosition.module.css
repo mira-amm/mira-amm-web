@@ -1,12 +1,32 @@
 .labelCell {
-  text-align: center !important;
-  color: var(--content-positive);
+  text-align: center;
+  color: var(--content-primary) !important;
 }
 
-.labelCell > p {
-  width: fit-content;
+.aprBadge {
+  display: flex;
+  justify-content: center;
 }
 
-.positionRow:hover p[data-identifier="coin-pair"] {
-  text-decoration: underline;
+.addButton {
+  padding: 12px;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 19px;
+  min-width: 160px;
+}
+
+@keyframes fade {
+  0% {
+    opacity: 0.5;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+.loadingText {
+  color: var(--content-primary);
+  font-size: 14px;
+  animation: fade 0.5s linear infinite alternate;
 }

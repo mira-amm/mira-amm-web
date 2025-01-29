@@ -52,7 +52,7 @@ const AprBadge: React.FC<AprBadgeProps> = ({
     ? (boostedApr + aprValueInNumber).toFixed(2)
     : boostedApr.toFixed(2);
 
-  const apr = boostedApr ? <>{showApr}%</> : <Loader />;
+  const apr = boostedApr ? <>{showApr}%</> : <Loader color="gray" />;
 
   return (
     <div className={clsx(styles.badgeWrapper)}>
