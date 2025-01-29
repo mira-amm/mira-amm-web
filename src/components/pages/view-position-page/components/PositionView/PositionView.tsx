@@ -18,7 +18,7 @@ import {useRouter} from "next/navigation";
 import RemoveLiquiditySuccessModal from "@/src/components/pages/view-position-page/components/RemoveLiquiditySuccessModal/RemoveLiquiditySuccessModal";
 import IconButton from "@/src/components/common/IconButton/IconButton";
 import {getLPAssetId, PoolId} from "mira-dex-ts";
-import {DEFAULT_AMM_CONTRACT_ID, DefaultLocale} from "@/src/utils/constants";
+import {DefaultLocale} from "@/src/utils/constants";
 import useFormattedAddress from "@/src/hooks/useFormattedAddress/useFormattedAddress";
 import LogoIcon from "@/src/components/icons/Logo/LogoIcon";
 import useCheckActiveNetwork from "@/src/hooks/useCheckActiveNetwork";
@@ -29,6 +29,7 @@ import {bn, formatUnits} from "fuels";
 import useAssetMetadata from "@/src/hooks/useAssetMetadata";
 import AprBadge from "@/src/components/common/AprBadge/AprBadge";
 import usePoolNameAndMatch from "@/src/hooks/usePoolNameAndMatch";
+import useContractId from "@/src/hooks/useContractId";
 
 type Props = {
   pool: PoolId;
@@ -159,7 +160,9 @@ const PositionView = ({pool}: Props) => {
       : rate.toLocaleString(DefaultLocale, {minimumFractionDigits: 2});
   const makeRateFontSmaller = flooredRate.length > 10;
 
-  const lpTokenAssetId = getLPAssetId(DEFAULT_AMM_CONTRACT_ID, pool);
+  const contractId = useContractId();
+  const lpTokenAssetId = getLPAssetId(contractId!, pool);
+
   const formattedLpTokenAssetId = useFormattedAddress(lpTokenAssetId.bits);
 
   const isValidNetwork = useCheckActiveNetwork();

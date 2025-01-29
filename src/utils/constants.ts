@@ -1,7 +1,15 @@
 import {bn, CHAIN_IDS, TxParams} from "fuels";
 
-export const DEFAULT_AMM_CONTRACT_ID =
-  "0x2e40f2b244b98ed6b8204b3de0156c6961f98525c8162f80162fcf53eebd90e7" as const;
+export const SMART_CONTRACT_MAP: ReadonlyMap<number, string> = new Map([
+  [
+    CHAIN_IDS.fuel.mainnet,
+    "0x2e40f2b244b98ed6b8204b3de0156c6961f98525c8162f80162fcf53eebd90e7",
+  ],
+  [
+    CHAIN_IDS.fuel.testnet,
+    "0xd5a716d967a9137222219657d7877bd8c79c64e1edb5de9f2901c98ebe74da80",
+  ],
+]);
 
 export const ETH_ASSET_ID =
   "0xf8f8b6283d7fa5b672b530cbb84fcccb4ff8dc40f8176ef4544ddb1f1952ad07";
@@ -26,6 +34,7 @@ export const BlogLink = "https://mirror.xyz/miraly.eth" as const;
 // TODO: Use env variables for values below to separate dev/prod | testnet/mainnet
 export const ValidNetworkChainId = CHAIN_IDS.fuel.mainnet;
 export const NetworkUrl: string = "https://mainnet.fuel.network/v1/graphql";
+export const TestNetworkUrl: string = "https://testnet.fuel.network/v1/graphql";
 export const IndexerUrl =
   "https://indexer.bigdevenergy.link/755fa3e/v1/graphql" as const;
 export const SQDIndexerUrl =

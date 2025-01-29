@@ -1,9 +1,9 @@
 import useReadonlyMira from "@/src/hooks/useReadonlyMira";
 import {useQuery} from "@tanstack/react-query";
 import {getLPAssetId, PoolId} from "mira-dex-ts";
-import {DEFAULT_AMM_CONTRACT_ID} from "@/src/utils/constants";
 import useBalances from "@/src/hooks/useBalances/useBalances";
 import {bn} from "fuels";
+import useContractId from "./useContractId";
 
 type Props = {
   pool: PoolId;
@@ -11,8 +11,10 @@ type Props = {
 
 const usePositionData = ({pool}: Props) => {
   const mira = useReadonlyMira();
-  const lpTokenAssetId = getLPAssetId(DEFAULT_AMM_CONTRACT_ID, pool);
   const {balances} = useBalances();
+  const contractId = useContractId();
+
+  const lpTokenAssetId = getLPAssetId(contractId, pool);
 
   const lpTokenBalance =
     balances?.find((balance) => balance.assetId === lpTokenAssetId.bits)

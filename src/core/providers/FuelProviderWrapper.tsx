@@ -12,9 +12,9 @@ import {
   WalletConnectConnector,
 } from "@fuels/connectors";
 import {createConfig, http, injected} from "@wagmi/core";
-import {mainnet} from "@wagmi/core/chains";
+import {mainnet, sepolia} from "@wagmi/core/chains";
 import {walletConnect} from "@wagmi/connectors";
-import {NetworkUrl} from "@/src/utils/constants";
+import {NetworkUrl, TestNetworkUrl} from "@/src/utils/constants";
 
 type ExternalConnectorConfig = Partial<{
   chainId: number;
@@ -28,6 +28,10 @@ const networks: Array<Network> = [
     chainId: CHAIN_IDS.fuel.mainnet,
     url: NetworkUrl,
   },
+  {
+    chainId: CHAIN_IDS.fuel.testnet,
+    url: TestNetworkUrl,
+  },
 ];
 
 // Creates a protection for SRR
@@ -35,9 +39,10 @@ const FUEL_CONFIG = createFuelConfig(() => {
   const WalletConnectProjectId = "35b967d8f17700b2de24f0abee77e579";
   const wagmiConfig = createConfig({
     syncConnectedChain: false,
-    chains: [mainnet],
+    chains: [mainnet, sepolia],
     transports: {
       [mainnet.id]: http(),
+      [sepolia.id]: http(),
     },
     connectors: [
       injected({shimDisconnect: false}),
