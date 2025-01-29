@@ -448,6 +448,15 @@ const Swap = () => {
           sellMetadata.decimals || 0,
         );
 
+  const swapDisabled =
+    !isValidNetwork ||
+    coinMissing ||
+    showInsufficientBalance ||
+    Boolean(previewError) ||
+    !sellValue ||
+    !buyValue ||
+    previewLoading;
+
   useEffect(() => {
     if (!isValidNetwork) {
       setSwapButtonTitle("Incorrect network");
@@ -497,17 +506,12 @@ const Swap = () => {
 
   const sellAssetPrice = useAssetPrice(swapState.sell.assetId);
   const buyAssetPrice = useAssetPrice(swapState.buy.assetId);
-  const isInsufficientSellAmount = new BN(swapState.sell.amount || 0).gt(
-    sellBalanceValue,
-  );
 
   const isActionDisabled =
-    isInsufficientSellAmount ||
-    coinMissing ||
-    amountMissing ||
-    swapPending ||
-    !isValidNetwork ||
-    !sufficientEthBalance;
+    swapDisabled &&
+    !previewLoading &&
+    !balancesPending &&
+    (txCostPending || amountMissing);
 
   //If amount is missing txCostPending is irrelevant
   //If in sufficient fund, previewLoading is irrelevant
