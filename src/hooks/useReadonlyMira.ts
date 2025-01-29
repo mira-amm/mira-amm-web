@@ -1,10 +1,10 @@
 import {useMemo} from "react";
 import {ReadonlyMiraAmm} from "mira-dex-ts";
-import useProvider from "@/src/hooks/useProvider/useProvider";
+import {useProvider} from "@fuels/react";
 import useContractId from "./useContractId";
 
 const useReadonlyMira = () => {
-  const provider = useProvider();
+  const {provider} = useProvider();
   const contractId = useContractId();
 
   return useMemo(() => {

@@ -1,10 +1,8 @@
 import {useQuery} from "@tanstack/react-query";
-import {B256Address, Contract, Provider} from "fuels";
+import {B256Address, Contract} from "fuels";
 import src20Abi from "@/src/abis/src20-abi.json";
 import {useProvider} from "@fuels/react";
 import {useAssetMinterContract} from "./useAssetMinterContract";
-import useMiraDex from "./useMiraDex/useMiraDex";
-import {NetworkUrl} from "../utils/constants";
 import {coinsConfig} from "../utils/coinsConfig";
 
 interface AssetMetadata {
@@ -13,11 +11,11 @@ interface AssetMetadata {
   decimals?: number;
 }
 
-const providerPromise = Provider.create(NetworkUrl);
-
 const useAssetMetadata = (
   assetId: B256Address | null,
 ): AssetMetadata & {isLoading: boolean} => {
+  const {provider} = useProvider();
+
   const {contractId, isLoading: contractLoading} =
     useAssetMinterContract(assetId);
 
@@ -33,8 +31,7 @@ const useAssetMetadata = (
         };
       }
 
-      const provider = await providerPromise;
-      const src20Contract = new Contract(contractId!, src20Abi, provider);
+      const src20Contract = new Contract(contractId!, src20Abi, provider!);
 
       const result = await src20Contract
         .multiCall([
