@@ -47,9 +47,18 @@ const useSwapPreview = ({swapState, mode}: Props) => {
   const amountValid = !isNaN(amount);
   const decimals =
     (mode === "sell" ? sellMetadata.decimals : buyMetadata.decimals) || 0;
-  const normalizedAmount = amountValid
-    ? bn.parseUnits(amountString, decimals)
-    : bn(0);
+
+  let normalizedAmount;
+
+  try {
+    normalizedAmount = amountValid
+      ? bn.parseUnits(amountString, decimals)
+      : bn(0);
+  } catch (error) {
+    console.error("Error parsing units:", error);
+    normalizedAmount = bn(0);
+  }
+
   const amountNonZero = normalizedAmount.gt(0);
 
   const tradeType: TradeType = mode === "sell" ? "ExactInput" : "ExactOutput";
