@@ -646,7 +646,7 @@ const Swap = () => {
           {isConnected && (
             <ActionButton
               variant="primary"
-              disabled={isActionDisabled}
+              disabled={!sufficientEthBalance ? false : isActionDisabled}
               onClick={handleSwapClick}
               loading={isActionLoading}
             >
