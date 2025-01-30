@@ -31,10 +31,14 @@ export const XLink = "https://x.com/MiraProtocol" as const;
 
 export const BlogLink = "https://mirror.xyz/miraly.eth" as const;
 
-// TODO: Use env variables for values below to separate dev/prod | testnet/mainnet
-export const ValidNetworkChainId = CHAIN_IDS.fuel.mainnet;
+export const ValidNetworkChainIds = [
+  CHAIN_IDS.fuel.mainnet,
+  CHAIN_IDS.fuel.testnet,
+];
+
 export const NetworkUrl: string = "https://mainnet.fuel.network/v1/graphql";
 export const TestNetworkUrl: string = "https://testnet.fuel.network/v1/graphql";
+
 export const IndexerUrl =
   "https://indexer.bigdevenergy.link/755fa3e/v1/graphql" as const;
 export const SQDIndexerUrl =
