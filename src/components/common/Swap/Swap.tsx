@@ -23,7 +23,6 @@ import useInitialSwapState from "@/src/hooks/useInitialSwapState/useInitialSwapS
 import useCheckActiveNetwork from "@/src/hooks/useCheckActiveNetwork";
 import usePreviewV2 from "@/src/hooks/useSwapPreviewV2";
 import PriceImpact from "@/src/components/common/Swap/components/PriceImpact/PriceImpact";
-import {FuelAppUrl} from "@/src/utils/constants";
 import useReservesPrice from "@/src/hooks/useReservesPrice";
 import SwapFailureModal from "@/src/components/common/Swap/components/SwapFailureModal/SwapFailureModal";
 import {B256Address, bn, BN} from "fuels";
@@ -35,6 +34,7 @@ import {SlippageSetting} from "../SlippageSetting/SlippageSetting";
 import Loader from "@/src/components/common/Loader/Loader";
 import {ScriptTransactionRequest, TransactionCost} from "fuels";
 import {TradeState} from "@/src/hooks/useSwapRouter";
+import useAppUrl from "@/src/hooks/useAppUrl";
 
 export type CurrencyBoxMode = "buy" | "sell";
 export type CurrencyBoxState = {
@@ -87,6 +87,8 @@ const Swap = () => {
   const [FailureModal, openFailure, closeFailureModal] = useModal();
 
   const initialSwapState = useInitialSwapState();
+
+  const appUrl = useAppUrl();
 
   const [swapState, setSwapState] = useState<SwapState>(initialSwapState);
   const [inputsState, setInputsState] =
@@ -396,9 +398,7 @@ const Swap = () => {
       return;
     } else {
       if (!sufficientEthBalance) {
-        openNewTab(
-          `${FuelAppUrl}/bridge?from=eth&to=fuel&auto_close=true&=true`,
-        );
+        openNewTab(`${appUrl}/bridge?from=eth&to=fuel&auto_close=true&=true`);
         return;
       }
 

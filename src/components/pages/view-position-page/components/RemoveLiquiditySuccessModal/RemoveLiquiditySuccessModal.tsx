@@ -4,7 +4,7 @@ import ActionButton from "@/src/components/common/ActionButton/ActionButton";
 import {useCallback} from "react";
 import {openNewTab} from "@/src/utils/common";
 import {CoinName} from "@/src/utils/coinsConfig";
-import {FuelAppUrl} from "@/src/utils/constants";
+import useAppUrl from "@/src/hooks/useAppUrl";
 
 type Props = {
   coinA: CoinName;
@@ -21,13 +21,15 @@ const RemoveLiquiditySuccessModal = ({
   secondCoinAmount,
   transactionHash,
 }: Props) => {
+  const appUrl = useAppUrl();
+
   const handleViewTransactionClick = useCallback(() => {
     if (!transactionHash) {
       return;
     }
 
-    openNewTab(`${FuelAppUrl}/tx/${transactionHash}/simple`);
-  }, [transactionHash]);
+    openNewTab(`${appUrl}/tx/${transactionHash}/simple`);
+  }, [appUrl, transactionHash]);
 
   const subText = `Removed ${firstCoinAmount} ${coinA} and ${secondCoinAmount} ${coinB}`;
 

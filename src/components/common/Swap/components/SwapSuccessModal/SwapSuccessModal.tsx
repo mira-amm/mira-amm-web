@@ -4,8 +4,8 @@ import {SwapState} from "@/src/components/common/Swap/Swap";
 import ActionButton from "@/src/components/common/ActionButton/ActionButton";
 import {useCallback} from "react";
 import {openNewTab} from "@/src/utils/common";
-import {FuelAppUrl} from "@/src/utils/constants";
 import useAssetMetadata from "@/src/hooks/useAssetMetadata";
+import useAppUrl from "@/src/hooks/useAppUrl";
 
 type Props = {
   swapState: SwapState;
@@ -16,13 +16,15 @@ const SwapSuccessModal = ({swapState, transactionHash}: Props) => {
   const sellMetadata = useAssetMetadata(swapState.sell.assetId);
   const buyMetadata = useAssetMetadata(swapState.buy.assetId);
 
+  const appUrl = useAppUrl();
+
   const handleViewTransactionClick = useCallback(() => {
     if (!transactionHash) {
       return;
     }
 
-    openNewTab(`${FuelAppUrl}/tx/${transactionHash}/simple`);
-  }, [transactionHash]);
+    openNewTab(`${appUrl}/tx/${transactionHash}/simple`);
+  }, [transactionHash, appUrl]);
 
   const subText = `${swapState.sell.amount} ${sellMetadata.symbol} for ${swapState.buy.amount} ${buyMetadata.symbol}`;
 

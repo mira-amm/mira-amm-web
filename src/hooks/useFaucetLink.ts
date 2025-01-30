@@ -1,14 +1,16 @@
 import {useAccount} from "@fuels/react";
 import {useMemo} from "react";
 import {useIsClient} from "usehooks-ts";
-import {FuelAppUrl} from "@/src/utils/constants";
+import useAppUrl from "./useAppUrl";
 
 const useFaucetLink = () => {
   const {account} = useAccount();
   const isBrowser = useIsClient();
 
+  const appUrl = useAppUrl();
+
   return useMemo(() => {
-    let faucetUrl = FuelAppUrl;
+    let faucetUrl = appUrl;
 
     const urlParams = new URLSearchParams();
 
@@ -28,7 +30,7 @@ const useFaucetLink = () => {
     }
 
     return faucetUrl;
-  }, [account, isBrowser]);
+  }, [account, appUrl, isBrowser]);
 };
 
 export default useFaucetLink;

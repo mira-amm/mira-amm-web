@@ -11,8 +11,8 @@ import {CloseIcon} from "../../icons/DropDownClose/CloseIcon";
 import {CopyNotification} from "../../common/CopyNotification/CopyNotification";
 import {openNewTab} from "@/src/utils/common";
 import TransactionsHistory from "@/src/components/common/TransactionsHistory/TransactionsHistory";
-import {FuelAppUrl} from "@/src/utils/constants";
 import {useScrollLock} from "usehooks-ts";
+import useAppUrl from "@/src/hooks/useAppUrl";
 
 type Props = {
   className?: string;
@@ -24,6 +24,8 @@ const DisconnectMobile = ({className}: Props) => {
   const {disconnect} = useDisconnect();
 
   const {lock, unlock} = useScrollLock({autoLock: false});
+
+  const appUrl = useAppUrl();
 
   const [isMenuOpened, setMenuOpened] = useState(false);
   const [isHistoryOpened, setHistoryOpened] = useState(false);
@@ -79,9 +81,9 @@ const DisconnectMobile = ({className}: Props) => {
     setHistoryOpened(false);
   };
 
-  const handleExplorerClick = () => {
-    openNewTab(`${FuelAppUrl}/account/${account}/transactions`);
-  };
+  const handleExplorerClick = useCallback(() => {
+    openNewTab(`${appUrl}/account/${account}/transactions`);
+  }, [appUrl, account]);
 
   const handleCopy = useCallback(async () => {
     if (isConnected && account) {

@@ -20,7 +20,7 @@ import useFaucetLink from "@/src/hooks/useFaucetLink";
 import {openNewTab} from "@/src/utils/common";
 import useCheckActiveNetwork from "@/src/hooks/useCheckActiveNetwork";
 import usePoolAPR from "@/src/hooks/usePoolAPR";
-import {DefaultLocale, FuelAppUrl} from "@/src/utils/constants";
+import {DefaultLocale} from "@/src/utils/constants";
 import Info from "@/src/components/common/Info/Info";
 import {AddLiquidityPreviewData} from "@/src/components/pages/add-liquidity-page/components/AddLiquidity/PreviewAddLiquidityDialog";
 import {PoolId} from "mira-dex-ts";
@@ -37,6 +37,7 @@ import useAssetMetadata from "@/src/hooks/useAssetMetadata";
 import {useAssetPrice} from "@/src/hooks/useAssetPrice";
 import AprBadge from "@/src/components/common/AprBadge/AprBadge";
 import usePoolNameAndMatch from "@/src/hooks/usePoolNameAndMatch";
+import useAppUrl from "@/src/hooks/useAppUrl";
 
 type Props = {
   poolId: PoolId;
@@ -57,6 +58,8 @@ const AddLiquidityDialog = ({
 
   const firstAssetId = poolId[0].bits;
   const secondAssetId = poolId[1].bits;
+
+  const appUrl = useAppUrl();
 
   const firstAssetBalance = useAssetBalance(balances, firstAssetId);
   const secondAssetBalance = useAssetBalance(balances, secondAssetId);
@@ -182,7 +185,7 @@ const AddLiquidityDialog = ({
   const faucetLink = useFaucetLink();
   const handleButtonClick = useCallback(() => {
     if (!sufficientEthBalance) {
-      openNewTab(`${FuelAppUrl}/bridge?from=eth&to=fuel&auto_close=true&=true`);
+      openNewTab(`${appUrl}/bridge?from=eth&to=fuel&auto_close=true&=true`);
       return;
     }
 

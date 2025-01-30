@@ -9,13 +9,14 @@ import ConnectButton from "@/src/components/common/ConnectButton/ConnectButton";
 import LaunchAppButton from "@/src/components/common/LaunchAppButton/LaunchAppButton";
 import DisconnectMobile from "@/src/components/common/ConnectButton/DisconnectMobile";
 import {useIsConnected} from "@fuels/react";
-import {BlogLink, BoostsLearnMoreUrl, FuelAppUrl} from "@/src/utils/constants";
+import {BlogLink, BoostsLearnMoreUrl} from "@/src/utils/constants";
 import {RewardsIcon} from "../../icons/Rewards/RewardsIcon";
 import TestnetLabel from "@/src/components/common/TestnetLabel/TestnetLabel";
 import IconButton from "../IconButton/IconButton";
 import CloseIcon from "../../icons/Close/CloseIcon";
 import {useEffect, useState} from "react";
 import {boosterBannerTitle} from "@/src/utils/constants";
+import useAppUrl from "@/src/hooks/useAppUrl";
 
 type Props = {
   isHomePage?: boolean;
@@ -27,6 +28,8 @@ const ISSERVER = typeof window === "undefined";
 const Header = ({isHomePage}: Props): JSX.Element => {
   const pathname = usePathname();
   const {isConnected} = useIsConnected();
+
+  const appUrl = useAppUrl();
 
   const [isPromoShown, setIsPromoShown] = useState(false);
 
@@ -84,7 +87,7 @@ const Header = ({isHomePage}: Props): JSX.Element => {
               Liquidity
             </Link>
             <a
-              href={`${FuelAppUrl}/bridge?from=eth&to=fuel&auto_close=true&=true`}
+              href={`${appUrl}/bridge?from=eth&to=fuel&auto_close=true&=true`}
               className={styles.link}
               target="_blank"
             >
