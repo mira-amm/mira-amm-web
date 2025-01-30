@@ -4,7 +4,7 @@ import {ValidNetworkChainIds} from "@/src/utils/constants";
 const useCheckActiveNetwork = () => {
   const {wallet} = useWallet();
 
-  if (wallet?.provider.getChainId() === undefined) return;
+  if (wallet?.provider.getChainId() === undefined) return false;
 
   return ValidNetworkChainIds.includes(wallet.provider.getChainId());
 };
