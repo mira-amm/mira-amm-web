@@ -519,11 +519,11 @@ const Swap = () => {
   const buyAssetPrice = useAssetPrice(swapState.buy.assetId);
 
   const isActionDisabled =
-    swapDisabled &&
-    !previewLoading &&
-    !balancesPending &&
-    !showInsufficientBalance &&
-    (txCostPending || amountMissing);
+    (swapDisabled &&
+      !previewLoading &&
+      !balancesPending &&
+      (txCostPending || amountMissing)) ||
+    showInsufficientBalance;
 
   //If amount is missing txCostPending is irrelevant
   //If in sufficient fund, previewLoading is irrelevant
@@ -646,7 +646,7 @@ const Swap = () => {
           {isConnected && (
             <ActionButton
               variant="primary"
-              disabled={!sufficientEthBalance ? false : isActionDisabled}
+              disabled={isActionDisabled}
               onClick={handleSwapClick}
               loading={isActionLoading}
             >
