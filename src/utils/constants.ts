@@ -36,8 +36,8 @@ export const ValidNetworkChainIds = [
   CHAIN_IDS.fuel.testnet,
 ];
 
-export const NetworkUrl: string = "https://mainnet.fuel.network/v1/graphql";
-export const TestNetworkUrl: string = "https://testnet.fuel.network/v1/graphql";
+export const MainnetNetworkUrl = "https://mainnet.fuel.network/v1/graphql";
+export const TestnetNetworkUrl = "https://testnet.fuel.network/v1/graphql";
 
 export const IndexerUrl =
   "https://indexer.bigdevenergy.link/755fa3e/v1/graphql" as const;

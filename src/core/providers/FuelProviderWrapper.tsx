@@ -14,7 +14,7 @@ import {
 import {createConfig, http, injected} from "@wagmi/core";
 import {mainnet, sepolia} from "@wagmi/core/chains";
 import {walletConnect} from "@wagmi/connectors";
-import {NetworkUrl, TestNetworkUrl} from "@/src/utils/constants";
+import {MainnetNetworkUrl, TestnetNetworkUrl} from "@/src/utils/constants";
 
 type ExternalConnectorConfig = Partial<{
   chainId: number;
@@ -26,11 +26,11 @@ type Props = {
 const networks: Array<Network> = [
   {
     chainId: CHAIN_IDS.fuel.mainnet,
-    url: NetworkUrl,
+    url: MainnetNetworkUrl,
   },
   {
     chainId: CHAIN_IDS.fuel.testnet,
-    url: TestNetworkUrl,
+    url: TestnetNetworkUrl,
   },
 ];
 
@@ -58,7 +58,7 @@ const FUEL_CONFIG = createFuelConfig(() => {
     ],
   });
 
-  const fuelProvider = Provider.create(NetworkUrl);
+  const fuelProvider = Provider.create(MainnetNetworkUrl);
 
   const externalConnectorConfig: ExternalConnectorConfig = {
     chainId: CHAIN_IDS.fuel.mainnet,
