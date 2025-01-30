@@ -1,16 +1,18 @@
 import {useWallet} from "@fuels/react";
 import {MiraAmm} from "mira-dex-ts";
 import {useMemo} from "react";
-import {DEFAULT_AMM_CONTRACT_ID} from "@/src/utils/constants";
+
+import useContractId from "../useContractId";
 
 const useMiraDex = () => {
   const {wallet} = useWallet();
+  const contractId = useContractId();
 
   return useMemo(() => {
-    if (wallet) {
-      return new MiraAmm(wallet, DEFAULT_AMM_CONTRACT_ID);
+    if (wallet && contractId) {
+      return new MiraAmm(wallet, contractId);
     }
-  }, [wallet]);
+  }, [contractId, wallet]);
 };
 
 export default useMiraDex;
