@@ -1,0 +1,17 @@
+{
+    "campaigns": [
+        {
+            "asset0Symbol": "USDC",
+            "asset1Symbol": "USDT",
+            "lpToken": "0x5a5d495efc4a4a3bf2f0fda8ceb5453cf4630a407430df1c548d213dc58f31d1",
+            "poolId": "286c479da40dc953bddc3bb4c453b608bba2e0ac483b077bd475174115395e6b-a0265fb5c32f6e8db3197af3c7eb05c48ae373605b8165b6f4a51c5b0ba4812e-true",
+            "rewardAssetId": "0x1d5d97005e41cae2187a895fd8eab0506111e0e2f3331cd3912c15c24e3c1d82",
+            "owner": "0x..",
+            "claimedRewards": 0,
+            "pendingRewards": 1000,
+            "allocatedRewards": 0,
+            "startTime": "2025-01-15T19:00:00.000Z",
+            "endTime": "2025-03-01T19:00:00.000Z"
+        }
+    ]
+}

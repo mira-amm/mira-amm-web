@@ -49,6 +49,7 @@ export interface CampaignQueryParams {
   epochNumbers?: number[];
   poolIds?: string[];
   includeAPR?: boolean;
+  owner?: string;
 }
 
 export interface EpochConfigService {

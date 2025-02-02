@@ -33,6 +33,7 @@ export async function GET(request: NextRequest) {
     const epochNumbers = searchParams.get("epochNumbers");
     const poolIds = searchParams.get("poolIds");
     const includeAPR = searchParams.get("includeAPR");
+    const owner = searchParams.get("owner");
     const campaignService = new SentioJSONCampaignService(
       process.env.SENTIO_API_URL,
       process.env.SENTIO_API_KEY,
@@ -47,6 +48,7 @@ export async function GET(request: NextRequest) {
         : undefined,
       poolIds: poolIds ? (poolIds as string).split(",") : undefined,
       includeAPR: includeAPR === "true",
+      owner: owner,
     });
 
     return new NextResponse(JSON.stringify(campaigns), {
