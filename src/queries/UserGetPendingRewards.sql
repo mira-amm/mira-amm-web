@@ -8,14 +8,13 @@ WITH a AS (
 ), b AS (
     SELECT
         end_time,
-        start_time,
         reward_rate,
         id AS campaign_id
     FROM Campaign c
 ), c AS (
     SELECT
         positionToken,
-        (b.end_time - b.start_time) * b.reward_rate * a.amount_deposited AS pending_reward
+        (b.end_time - current_timestamp()) * b.reward_rate * a.amount_deposited AS pending_reward
     FROM a
     JOIN b
         ON a.campaign_id = b.campaign_id
