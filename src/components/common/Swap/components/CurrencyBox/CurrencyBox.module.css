@@ -18,6 +18,13 @@
   color: var(--content-tertiary);
 }
 
+.estimate {
+  max-width: 50%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
 .content {
   min-height: 44px;
   display: flex;
