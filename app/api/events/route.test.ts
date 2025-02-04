@@ -39,8 +39,8 @@ describe("test for GET /api/events", () => {
       actions: [
         {
           pool: {id: "pool1"},
-          asset0: {id: "asset0", decimals: 6, price: 100},
-          asset1: {id: "asset1", decimals: 9, price: 12},
+          asset0: {id: "asset0", decimals: 6},
+          asset1: {id: "asset1", decimals: 9},
           amount1Out: "1000",
           amount1In: "0",
           amount0Out: "0",
@@ -55,8 +55,8 @@ describe("test for GET /api/events", () => {
         },
         {
           pool: {id: "pool2"},
-          asset0: {id: "asset0", decimals: 9, price: 123},
-          asset1: {id: "asset1", decimals: 9, price: 140},
+          asset0: {id: "asset0", decimals: 9},
+          asset1: {id: "asset1", decimals: 9},
           amount1Out: "1001",
           amount1In: "0",
           amount0Out: "0",
@@ -115,7 +115,7 @@ describe("test for GET /api/events", () => {
           eventType: "swap",
           asset0In: "0.000000300",
           asset1Out: "0.000001001",
-          priceNative: 0.8785714285714286,
+          priceNative: 0.29970029970029965,
         },
       ],
     });

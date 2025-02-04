@@ -35,12 +35,10 @@ export namespace SQDIndexerResponses {
     asset0: {
       id: string;
       decimals: number;
-      price: string;
     };
     asset1: {
       id: string;
       decimals: number;
-      price: string;
     };
     amount1Out: string;
     amount1In: string;

@@ -30,12 +30,10 @@ async function fetchEventsForBlockRange({
         asset0 {
           id
           decimals
-          price
         }
         asset1 {
           id
           decimals
-          price
         }
         amount1Out
         amount1In
@@ -175,7 +173,7 @@ function createEventDataForSwapEvent(
       asset0In: formatUnits(action.amount0In, asset0Decimals),
       asset1Out: formatUnits(action.amount1Out, asset1Decimals),
       priceNative:
-        parseFloat(action.asset0.price) / parseFloat(action.asset1.price),
+      parseFloat(formatUnits(action.amount0In, asset0Decimals)) / parseFloat(formatUnits(action.amount1Out, asset1Decimals))
     };
   } else if (
     action.amount1In &&
@@ -188,7 +186,7 @@ function createEventDataForSwapEvent(
       asset1In: formatUnits(action.amount1In, asset1Decimals),
       asset0Out: formatUnits(action.amount0Out, asset0Decimals),
       priceNative:
-        parseFloat(action.asset1.price) / parseFloat(action.asset0.price),
+      parseFloat(formatUnits(action.amount1In, asset1Decimals)) / parseFloat(formatUnits(action.amount0Out, asset0Decimals)),
     };
   } else {
     throw new Error(`Invalid swap event data: ${JSON.stringify(action)}`);
