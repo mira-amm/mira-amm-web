@@ -8,6 +8,7 @@ import {useAssetList} from "@/src/hooks/useAssetList";
 import UnknownCoinListItem from "../UnknownCoinListItem";
 import {useQuery} from "@tanstack/react-query";
 import {VerifiedAssets} from "../CoinListItem/checkIfCoinVerified";
+import EmptySearchResults from "../EmptySearchResults";
 
 type Props = {
   selectCoin: (assetId: string | null) => void;
@@ -110,7 +111,6 @@ const CoinsListModal = ({selectCoin, balances, verifiedAssetsOnly}: Props) => {
       return 0;
     });
   }, [filteredCoinsList, balances]);
-
   return (
     <>
       <div className={styles.tokenSearch}>
@@ -124,12 +124,18 @@ const CoinsListModal = ({selectCoin, balances, verifiedAssetsOnly}: Props) => {
         />
       </div>
       <div className={styles.tokenList}>
-        {assetIdRegex.test(value) && sortedCoinsList.length === 0 && (
-          <UnknownCoinListItem
-            assetId={value}
-            balance={balances?.find((b) => b.assetId === value)}
-            onClick={() => selectCoin(value)}
-          />
+        {sortedCoinsList.length === 0 && value !== "" && (
+          <>
+            {assetIdRegex.test(value) ? (
+              <UnknownCoinListItem
+                assetId={value}
+                balance={balances?.find((b) => b.assetId === value)}
+                onClick={() => selectCoin(value)}
+              />
+            ) : (
+              <EmptySearchResults value={value} />
+            )}
+          </>
         )}
         {sortedCoinsList.map(({assetId}) => (
           <div

@@ -101,7 +101,7 @@ const CurrencyBox = ({
           </div>
         ) : (
           <input
-            className={styles.input}
+            className={clsx(styles.input, loading && "blurredTextLight")}
             type="text"
             inputMode="decimal"
             pattern="^[0-9]*[.,]?[0-9]*$"

@@ -112,3 +112,9 @@ input:focus {
   pointer-events: none;
   user-select: none;
 }
+
+.blurredTextLight {
+  filter: blur(2px);
+  pointer-events: none;
+  user-select: none;
+}
