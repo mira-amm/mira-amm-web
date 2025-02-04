@@ -28,14 +28,12 @@ type Props = {
 };
 
 const ConnectButton = ({className}: Props) => {
-  const {isConnected, isFetching, isPending} = useIsConnected();
+  const {isConnected, isFetching} = useIsConnected();
   const {connect, isConnecting} = useConnectUI();
   const {disconnect, isPending: disconnectLoading} = useDisconnect();
   const {account} = useAccount();
 
   const {lock, unlock} = useScrollLock({autoLock: false});
-
-  console.log(isFetching, isPending);
 
   // TODO: Hack to avoid empty button when account is changed to the not connected one in wallet
   // It is not reproducible on Fuelet, but on Fuel wallet
