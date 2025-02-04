@@ -167,6 +167,11 @@ const useSwapPreview = ({swapState, mode}: Props) => {
         }
       }
 
+      // Handle the case where input_amount is MAX_U256
+      if (previewData.input_amount.eq(MAX_U256)) {
+        throw new Error("Routing failed");
+      }
+
       return previewData;
     },
     retry: (failureCount, error) => {
