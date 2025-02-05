@@ -156,8 +156,9 @@ const Swap = () => {
         : previewData.previewAmount.formatUnits(decimals || 0)
       : previousPreviewValue.current;
   previousPreviewValue.current = previewValueString;
+
   useEffect(() => {
-    if (previewValueString !== swapState[anotherMode].amount) {
+    if (previewValueString !== swapState[anotherMode].amount && previewData) {
       setSwapState((prevState) => ({
         ...prevState,
         [anotherMode]: {
@@ -168,7 +169,7 @@ const Swap = () => {
     }
   }, [previewData, previewValueString]);
   useEffect(() => {
-    if (previewValueString !== inputsState[anotherMode].amount) {
+    if (previewValueString !== inputsState[anotherMode].amount && previewData) {
       setInputsState((prevState) => ({
         ...prevState,
         [anotherMode]: {
@@ -393,6 +394,10 @@ const Swap = () => {
         if (txCostData?.tx) {
           const swapResult = await triggerSwap(txCostData.tx);
           if (swapResult) {
+            // reset swap form on success
+            setSwapState(initialSwapState);
+            setInputsState(initialInputsState);
+            setReview(false);
             openSuccess();
             await refetchBalances();
           }
