@@ -28,7 +28,7 @@ type Props = {
 };
 
 const ConnectButton = ({className}: Props) => {
-  const {isConnected} = useIsConnected();
+  const {isConnected, isFetching} = useIsConnected();
   const {connect, isConnecting} = useConnectUI();
   const {disconnect, isPending: disconnectLoading} = useDisconnect();
   const {account} = useAccount();
@@ -45,7 +45,7 @@ const ConnectButton = ({className}: Props) => {
   //   }
   // }, [account, isConnected]);
 
-  const loading = isConnecting || disconnectLoading;
+  const loading = isConnecting || disconnectLoading || isFetching;
 
   const [isMenuOpened, setMenuOpened] = useState(false);
   const [isHistoryOpened, setHistoryOpened] = useState(false);
