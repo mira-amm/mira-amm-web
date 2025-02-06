@@ -1,126 +1,125 @@
 .popupOverlay {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    background: #00000059;
-    backdrop-filter: blur(8px);
-    position: absolute;
-    top: 0;
-    left: 0;
-    height: 100vh;
-    width: 100vw;
-    z-index: 47;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background: #00000059;
+  backdrop-filter: blur(8px);
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  width: 100vw;
+  z-index: 47;
 }
 
 .popupForm {
-    display: flex;
-    flex-direction: column;
-    background: #262834;
-    border-radius: 16px;
-    position: relative;
-    z-index: 48;
-    width: 500px;
-    height: 450px;
-    overflow-y: scroll;
-    overflow-x: hidden;
-    font-size: 16px;
-    line-height: 24px;
-    font-weight: 300;
+  display: flex;
+  flex-direction: column;
+  background: #262834;
+  border-radius: 16px;
+  position: relative;
+  z-index: 48;
+  width: 500px;
+  height: 450px;
+  overflow-y: scroll;
+  overflow-x: hidden;
+  font-size: 16px;
+  line-height: 24px;
+  font-weight: 300;
 }
 
 .popupButton {
-    width: 100%;
-    height: 48px;
-    box-shadow: none;
+  width: 100%;
+  height: 48px;
+  box-shadow: none;
 }
 
 .buttonWrapper {
-    background: #262834;
-    position: sticky;
-    z-index: 48;
-    width: 100%;
-    bottom: 0;
-    left: 0;
-    padding: 24px 28px;
-    box-shadow: 1px 0px 2px 0px #FAF8F830;
-    display: flex;
-    gap: 12px;
+  background: #262834;
+  position: sticky;
+  z-index: 48;
+  width: 100%;
+  bottom: 0;
+  left: 0;
+  padding: 24px 28px;
+  box-shadow: 1px 0px 2px 0px #faf8f830;
+  display: flex;
+  gap: 12px;
 }
 
 .popupHeader {
-    position: sticky;
-    top: 0;
-    left: 0;
-    z-index: 48;
-    background: #262834;
-    padding: 20px 28px 16px 28px;
-    width: 100%;
-    box-sizing: border-box;
-    box-shadow: 1px 0px 2px 0px #FAF8F830;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+  position: sticky;
+  top: 0;
+  left: 0;
+  z-index: 48;
+  background: #262834;
+  padding: 20px 28px 16px 28px;
+  width: 100%;
+  box-sizing: border-box;
+  box-shadow: 1px 0px 2px 0px #faf8f830;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .popupCloseButton {
-    all: unset;
-    cursor: pointer;
-    transition: 0.3s ease all;
+  all: unset;
+  cursor: pointer;
+  transition: 0.3s ease all;
 }
 
 .popupCloseButton:hover {
-    transition: 0.3s ease all;
-    opacity: 0.64;
+  transition: 0.3s ease all;
+  opacity: 0.64;
 }
 
 .popupTitle {
-    font-size: 24px;
-    line-height: 32px;
-    font-weight: 400;
+  font-size: 24px;
+  line-height: 32px;
+  font-weight: 400;
 }
 
 .popupTitleScroll {
-    box-shadow: 1px 0px 2px 0px #FAF8F840;
+  box-shadow: 1px 0px 2px 0px #faf8f840;
 }
 
 .popupButtonScroll {
-    box-shadow: 1px 0px 2px 0px #FAF8F840;
+  box-shadow: 1px 0px 2px 0px #faf8f840;
 }
 
 .popupDescription {
-    padding: 12px 28px 16px 28px;
+  padding: 12px 28px 16px 28px;
 }
 
 .popupList {
-    padding: 0 28px 0 45px;
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
+  padding: 0 28px 0 45px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
 }
 
 .popupLink {
-    color: var(--content-dimmed-light);
+  color: var(--content-dimmed-light);
 }
 
 .popupLink:hover {
-    color: var(--content-primary);
+  color: var(--content-primary);
 }
 
 .buttonDeny {
-    background: none;
-    color: var(--accent-primary);
+  background: none;
+  color: var(--accent-primary);
 }
 
 @media (max-width: 768px) {
-    .popupForm {
-        width: 343px;
-        height: 525px;
-    }
+  .popupForm {
+    width: 343px;
+    height: 525px;
+  }
 
-    .popupTitle {
-        font-size: 22px;
-        line-height: 28px;
-    }
+  .popupTitle {
+    font-size: 22px;
+    line-height: 28px;
+  }
 }
-

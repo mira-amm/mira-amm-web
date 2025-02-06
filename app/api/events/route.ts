@@ -173,7 +173,8 @@ function createEventDataForSwapEvent(
       asset0In: formatUnits(action.amount0In, asset0Decimals),
       asset1Out: formatUnits(action.amount1Out, asset1Decimals),
       priceNative:
-      parseFloat(formatUnits(action.amount0In, asset0Decimals)) / parseFloat(formatUnits(action.amount1Out, asset1Decimals))
+        parseFloat(formatUnits(action.amount0In, asset0Decimals)) /
+        parseFloat(formatUnits(action.amount1Out, asset1Decimals)),
     };
   } else if (
     action.amount1In &&
@@ -186,7 +187,8 @@ function createEventDataForSwapEvent(
       asset1In: formatUnits(action.amount1In, asset1Decimals),
       asset0Out: formatUnits(action.amount0Out, asset0Decimals),
       priceNative:
-      parseFloat(formatUnits(action.amount1In, asset1Decimals)) / parseFloat(formatUnits(action.amount0Out, asset0Decimals)),
+        parseFloat(formatUnits(action.amount1In, asset1Decimals)) /
+        parseFloat(formatUnits(action.amount0Out, asset0Decimals)),
     };
   } else {
     throw new Error(`Invalid swap event data: ${JSON.stringify(action)}`);

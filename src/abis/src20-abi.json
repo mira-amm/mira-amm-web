@@ -110,9 +110,7 @@
           "typeId": 3
         }
       ],
-      "typeParameters": [
-        3
-      ]
+      "typeParameters": [3]
     },
     {
       "type": "generic T",
@@ -288,27 +286,19 @@
       "attributes": [
         {
           "name": "doc-comment",
-          "arguments": [
-            " Returns the number of decimals the asset uses."
-          ]
+          "arguments": [" Returns the number of decimals the asset uses."]
         },
         {
           "name": "doc-comment",
-          "arguments": [
-            ""
-          ]
+          "arguments": [""]
         },
         {
           "name": "doc-comment",
-          "arguments": [
-            " # Arguments"
-          ]
+          "arguments": [" # Arguments"]
         },
         {
           "name": "doc-comment",
-          "arguments": [
-            ""
-          ]
+          "arguments": [""]
         },
         {
           "name": "doc-comment",
@@ -318,21 +308,15 @@
         },
         {
           "name": "doc-comment",
-          "arguments": [
-            ""
-          ]
+          "arguments": [""]
         },
         {
           "name": "doc-comment",
-          "arguments": [
-            " # Returns"
-          ]
+          "arguments": [" # Returns"]
         },
         {
           "name": "doc-comment",
-          "arguments": [
-            ""
-          ]
+          "arguments": [""]
         },
         {
           "name": "doc-comment",
@@ -342,57 +326,39 @@
         },
         {
           "name": "doc-comment",
-          "arguments": [
-            ""
-          ]
+          "arguments": [""]
         },
         {
           "name": "doc-comment",
-          "arguments": [
-            " # Examples"
-          ]
+          "arguments": [" # Examples"]
         },
         {
           "name": "doc-comment",
-          "arguments": [
-            ""
-          ]
+          "arguments": [""]
         },
         {
           "name": "doc-comment",
-          "arguments": [
-            " ```sway"
-          ]
+          "arguments": [" ```sway"]
         },
         {
           "name": "doc-comment",
-          "arguments": [
-            " use src20::SRC20;"
-          ]
+          "arguments": [" use src20::SRC20;"]
         },
         {
           "name": "doc-comment",
-          "arguments": [
-            " use std::constants::DEFAULT_SUB_ID;"
-          ]
+          "arguments": [" use std::constants::DEFAULT_SUB_ID;"]
         },
         {
           "name": "doc-comment",
-          "arguments": [
-            ""
-          ]
+          "arguments": [""]
         },
         {
           "name": "doc-comment",
-          "arguments": [
-            " fn foo(contract_id: ContractId) {"
-          ]
+          "arguments": [" fn foo(contract_id: ContractId) {"]
         },
         {
           "name": "doc-comment",
-          "arguments": [
-            "     let src_20_abi = abi(SRC20, contract_id);"
-          ]
+          "arguments": ["     let src_20_abi = abi(SRC20, contract_id);"]
         },
         {
           "name": "doc-comment",
@@ -402,27 +368,19 @@
         },
         {
           "name": "doc-comment",
-          "arguments": [
-            "     assert(decimals.unwrap() == 9u8);"
-          ]
+          "arguments": ["     assert(decimals.unwrap() == 9u8);"]
         },
         {
           "name": "doc-comment",
-          "arguments": [
-            " }"
-          ]
+          "arguments": [" }"]
         },
         {
           "name": "doc-comment",
-          "arguments": [
-            " ```"
-          ]
+          "arguments": [" ```"]
         },
         {
           "name": "storage",
-          "arguments": [
-            "read"
-          ]
+          "arguments": ["read"]
         }
       ]
     },
@@ -438,27 +396,19 @@
       "attributes": [
         {
           "name": "doc-comment",
-          "arguments": [
-            " Returns the name of the asset."
-          ]
+          "arguments": [" Returns the name of the asset."]
         },
         {
           "name": "doc-comment",
-          "arguments": [
-            ""
-          ]
+          "arguments": [""]
         },
         {
           "name": "doc-comment",
-          "arguments": [
-            " # Arguments"
-          ]
+          "arguments": [" # Arguments"]
         },
         {
           "name": "doc-comment",
-          "arguments": [
-            ""
-          ]
+          "arguments": [""]
         },
         {
           "name": "doc-comment",
@@ -468,111 +418,75 @@
         },
         {
           "name": "doc-comment",
-          "arguments": [
-            ""
-          ]
+          "arguments": [""]
         },
         {
           "name": "doc-comment",
-          "arguments": [
-            " # Returns"
-          ]
+          "arguments": [" # Returns"]
         },
         {
           "name": "doc-comment",
-          "arguments": [
-            ""
-          ]
+          "arguments": [""]
         },
         {
           "name": "doc-comment",
-          "arguments": [
-            " * [Option<String>] - The name of `asset`."
-          ]
+          "arguments": [" * [Option<String>] - The name of `asset`."]
         },
         {
           "name": "doc-comment",
-          "arguments": [
-            ""
-          ]
+          "arguments": [""]
         },
         {
           "name": "doc-comment",
-          "arguments": [
-            " # Examples"
-          ]
+          "arguments": [" # Examples"]
         },
         {
           "name": "doc-comment",
-          "arguments": [
-            ""
-          ]
+          "arguments": [""]
         },
         {
           "name": "doc-comment",
-          "arguments": [
-            " ```sway"
-          ]
+          "arguments": [" ```sway"]
         },
         {
           "name": "doc-comment",
-          "arguments": [
-            " use src20::SRC20;"
-          ]
+          "arguments": [" use src20::SRC20;"]
         },
         {
           "name": "doc-comment",
-          "arguments": [
-            " use std::constants::DEFAULT_SUB_ID;"
-          ]
+          "arguments": [" use std::constants::DEFAULT_SUB_ID;"]
         },
         {
           "name": "doc-comment",
-          "arguments": [
-            ""
-          ]
+          "arguments": [""]
         },
         {
           "name": "doc-comment",
-          "arguments": [
-            " fn foo(contract_id: ContractId) {"
-          ]
+          "arguments": [" fn foo(contract_id: ContractId) {"]
         },
         {
           "name": "doc-comment",
-          "arguments": [
-            "     let src_20_abi = abi(SRC20, contract_id);"
-          ]
+          "arguments": ["     let src_20_abi = abi(SRC20, contract_id);"]
         },
         {
           "name": "doc-comment",
-          "arguments": [
-            "     let name = src_20_abi.name(DEFAULT_SUB_ID);"
-          ]
+          "arguments": ["     let name = src_20_abi.name(DEFAULT_SUB_ID);"]
         },
         {
           "name": "doc-comment",
-          "arguments": [
-            "     assert(name.is_some());"
-          ]
+          "arguments": ["     assert(name.is_some());"]
         },
         {
           "name": "doc-comment",
-          "arguments": [
-            " }"
-          ]
+          "arguments": [" }"]
         },
         {
           "name": "doc-comment",
-          "arguments": [
-            " ```"
-          ]
+          "arguments": [" ```"]
         },
         {
           "name": "storage",
-          "arguments": [
-            "read"
-          ]
+          "arguments": ["read"]
         }
       ]
     },
@@ -588,27 +502,19 @@
       "attributes": [
         {
           "name": "doc-comment",
-          "arguments": [
-            " Returns the symbol of the asset."
-          ]
+          "arguments": [" Returns the symbol of the asset."]
         },
         {
           "name": "doc-comment",
-          "arguments": [
-            ""
-          ]
+          "arguments": [""]
         },
         {
           "name": "doc-comment",
-          "arguments": [
-            " # Arguments"
-          ]
+          "arguments": [" # Arguments"]
         },
         {
           "name": "doc-comment",
-          "arguments": [
-            ""
-          ]
+          "arguments": [""]
         },
         {
           "name": "doc-comment",
@@ -618,111 +524,75 @@
         },
         {
           "name": "doc-comment",
-          "arguments": [
-            ""
-          ]
+          "arguments": [""]
         },
         {
           "name": "doc-comment",
-          "arguments": [
-            " # Returns"
-          ]
+          "arguments": [" # Returns"]
         },
         {
           "name": "doc-comment",
-          "arguments": [
-            ""
-          ]
+          "arguments": [""]
         },
         {
           "name": "doc-comment",
-          "arguments": [
-            " * [Option<String>] - The symbol of `asset`."
-          ]
+          "arguments": [" * [Option<String>] - The symbol of `asset`."]
         },
         {
           "name": "doc-comment",
-          "arguments": [
-            ""
-          ]
+          "arguments": [""]
         },
         {
           "name": "doc-comment",
-          "arguments": [
-            " # Examples"
-          ]
+          "arguments": [" # Examples"]
         },
         {
           "name": "doc-comment",
-          "arguments": [
-            ""
-          ]
+          "arguments": [""]
         },
         {
           "name": "doc-comment",
-          "arguments": [
-            " ```sway"
-          ]
+          "arguments": [" ```sway"]
         },
         {
           "name": "doc-comment",
-          "arguments": [
-            " use src20::SRC20;"
-          ]
+          "arguments": [" use src20::SRC20;"]
         },
         {
           "name": "doc-comment",
-          "arguments": [
-            " use std::constants::DEFAULT_SUB_ID;"
-          ]
+          "arguments": [" use std::constants::DEFAULT_SUB_ID;"]
         },
         {
           "name": "doc-comment",
-          "arguments": [
-            ""
-          ]
+          "arguments": [""]
         },
         {
           "name": "doc-comment",
-          "arguments": [
-            " fn foo(contract_id: ContractId) {"
-          ]
+          "arguments": [" fn foo(contract_id: ContractId) {"]
         },
         {
           "name": "doc-comment",
-          "arguments": [
-            "     let src_20_abi = abi(SRC20, contract_id);"
-          ]
+          "arguments": ["     let src_20_abi = abi(SRC20, contract_id);"]
         },
         {
           "name": "doc-comment",
-          "arguments": [
-            "     let symbol = src_20_abi.symbol(DEFAULT_SUB_ID);"
-          ]
+          "arguments": ["     let symbol = src_20_abi.symbol(DEFAULT_SUB_ID);"]
         },
         {
           "name": "doc-comment",
-          "arguments": [
-            "     assert(symbol.is_some());"
-          ]
+          "arguments": ["     assert(symbol.is_some());"]
         },
         {
           "name": "doc-comment",
-          "arguments": [
-            " }"
-          ]
+          "arguments": [" }"]
         },
         {
           "name": "doc-comment",
-          "arguments": [
-            " ```"
-          ]
+          "arguments": [" ```"]
         },
         {
           "name": "storage",
-          "arguments": [
-            "read"
-          ]
+          "arguments": ["read"]
         }
       ]
     },
@@ -739,45 +609,31 @@
         },
         {
           "name": "doc-comment",
-          "arguments": [
-            ""
-          ]
+          "arguments": [""]
         },
         {
           "name": "doc-comment",
-          "arguments": [
-            " # Additional Information"
-          ]
+          "arguments": [" # Additional Information"]
         },
         {
           "name": "doc-comment",
-          "arguments": [
-            ""
-          ]
+          "arguments": [""]
         },
         {
           "name": "doc-comment",
-          "arguments": [
-            " For this single asset contract, this is always one."
-          ]
+          "arguments": [" For this single asset contract, this is always one."]
         },
         {
           "name": "doc-comment",
-          "arguments": [
-            ""
-          ]
+          "arguments": [""]
         },
         {
           "name": "doc-comment",
-          "arguments": [
-            " # Returns"
-          ]
+          "arguments": [" # Returns"]
         },
         {
           "name": "doc-comment",
-          "arguments": [
-            ""
-          ]
+          "arguments": [""]
         },
         {
           "name": "doc-comment",
@@ -787,81 +643,55 @@
         },
         {
           "name": "doc-comment",
-          "arguments": [
-            ""
-          ]
+          "arguments": [""]
         },
         {
           "name": "doc-comment",
-          "arguments": [
-            " # Examples"
-          ]
+          "arguments": [" # Examples"]
         },
         {
           "name": "doc-comment",
-          "arguments": [
-            ""
-          ]
+          "arguments": [""]
         },
         {
           "name": "doc-comment",
-          "arguments": [
-            " ```sway"
-          ]
+          "arguments": [" ```sway"]
         },
         {
           "name": "doc-comment",
-          "arguments": [
-            " use src20::SRC20;"
-          ]
+          "arguments": [" use src20::SRC20;"]
         },
         {
           "name": "doc-comment",
-          "arguments": [
-            ""
-          ]
+          "arguments": [""]
         },
         {
           "name": "doc-comment",
-          "arguments": [
-            " fn foo(contract_id: ContractId) {"
-          ]
+          "arguments": [" fn foo(contract_id: ContractId) {"]
         },
         {
           "name": "doc-comment",
-          "arguments": [
-            "     let src_20_abi = abi(SRC20, contract_id);"
-          ]
+          "arguments": ["     let src_20_abi = abi(SRC20, contract_id);"]
         },
         {
           "name": "doc-comment",
-          "arguments": [
-            "     let assets = src_20_abi.total_assets();"
-          ]
+          "arguments": ["     let assets = src_20_abi.total_assets();"]
         },
         {
           "name": "doc-comment",
-          "arguments": [
-            "     assert(assets == 1);"
-          ]
+          "arguments": ["     assert(assets == 1);"]
         },
         {
           "name": "doc-comment",
-          "arguments": [
-            " }"
-          ]
+          "arguments": [" }"]
         },
         {
           "name": "doc-comment",
-          "arguments": [
-            " ```"
-          ]
+          "arguments": [" ```"]
         },
         {
           "name": "storage",
-          "arguments": [
-            "read"
-          ]
+          "arguments": ["read"]
         }
       ]
     },
@@ -877,27 +707,19 @@
       "attributes": [
         {
           "name": "doc-comment",
-          "arguments": [
-            " Returns the total supply of coins for the asset."
-          ]
+          "arguments": [" Returns the total supply of coins for the asset."]
         },
         {
           "name": "doc-comment",
-          "arguments": [
-            ""
-          ]
+          "arguments": [""]
         },
         {
           "name": "doc-comment",
-          "arguments": [
-            " # Arguments"
-          ]
+          "arguments": [" # Arguments"]
         },
         {
           "name": "doc-comment",
-          "arguments": [
-            ""
-          ]
+          "arguments": [""]
         },
         {
           "name": "doc-comment",
@@ -907,81 +729,55 @@
         },
         {
           "name": "doc-comment",
-          "arguments": [
-            ""
-          ]
+          "arguments": [""]
         },
         {
           "name": "doc-comment",
-          "arguments": [
-            " # Returns"
-          ]
+          "arguments": [" # Returns"]
         },
         {
           "name": "doc-comment",
-          "arguments": [
-            ""
-          ]
+          "arguments": [""]
         },
         {
           "name": "doc-comment",
-          "arguments": [
-            " * [Option<u64>] - The total supply of an `asset`."
-          ]
+          "arguments": [" * [Option<u64>] - The total supply of an `asset`."]
         },
         {
           "name": "doc-comment",
-          "arguments": [
-            ""
-          ]
+          "arguments": [""]
         },
         {
           "name": "doc-comment",
-          "arguments": [
-            " # Examples"
-          ]
+          "arguments": [" # Examples"]
         },
         {
           "name": "doc-comment",
-          "arguments": [
-            ""
-          ]
+          "arguments": [""]
         },
         {
           "name": "doc-comment",
-          "arguments": [
-            " ```sway"
-          ]
+          "arguments": [" ```sway"]
         },
         {
           "name": "doc-comment",
-          "arguments": [
-            " use src20::SRC20;"
-          ]
+          "arguments": [" use src20::SRC20;"]
         },
         {
           "name": "doc-comment",
-          "arguments": [
-            " use std::constants::DEFAULT_SUB_ID;"
-          ]
+          "arguments": [" use std::constants::DEFAULT_SUB_ID;"]
         },
         {
           "name": "doc-comment",
-          "arguments": [
-            ""
-          ]
+          "arguments": [""]
         },
         {
           "name": "doc-comment",
-          "arguments": [
-            " fn foo(contract_id: ContractId) {"
-          ]
+          "arguments": [" fn foo(contract_id: ContractId) {"]
         },
         {
           "name": "doc-comment",
-          "arguments": [
-            "     let src_20_abi = abi(SRC20, contract_id);"
-          ]
+          "arguments": ["     let src_20_abi = abi(SRC20, contract_id);"]
         },
         {
           "name": "doc-comment",
@@ -991,27 +787,19 @@
         },
         {
           "name": "doc-comment",
-          "arguments": [
-            "     assert(supply.unwrap() != 0);"
-          ]
+          "arguments": ["     assert(supply.unwrap() != 0);"]
         },
         {
           "name": "doc-comment",
-          "arguments": [
-            " }"
-          ]
+          "arguments": [" }"]
         },
         {
           "name": "doc-comment",
-          "arguments": [
-            " ```"
-          ]
+          "arguments": [" ```"]
         },
         {
           "name": "storage",
-          "arguments": [
-            "read"
-          ]
+          "arguments": ["read"]
         }
       ]
     },

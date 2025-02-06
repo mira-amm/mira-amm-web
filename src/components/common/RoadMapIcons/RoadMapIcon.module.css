@@ -1,19 +1,19 @@
 .background {
-    min-width: 112px;
-    height: 40px;
-    background: linear-gradient(132.04deg, #262F5F 11.87%, #C41CFF 176.88%);
-    border-radius: 40px;
-    color: var(--content-primary);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 8px 25.5px;
-    box-sizing: border-box;
+  min-width: 112px;
+  height: 40px;
+  background: linear-gradient(132.04deg, #262f5f 11.87%, #c41cff 176.88%);
+  border-radius: 40px;
+  color: var(--content-primary);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 8px 25.5px;
+  box-sizing: border-box;
 }
 
 .text {
-    font-weight: 500;
-    font-size: 16px;
-    line-height: 24px;
-    text-align: center;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 24px;
+  text-align: center;
 }

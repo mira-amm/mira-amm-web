@@ -3,10 +3,10 @@ description: Common steps for app initialization
 
 inputs:
   aws_access_key:
-    description: 'CICD user AWS Access Key Id'
+    description: "CICD user AWS Access Key Id"
     required: true
   aws_secret_access_key:
-    description: 'CICD user AWS Secret Access Key'
+    description: "CICD user AWS Secret Access Key"
     required: true
 
 runs:

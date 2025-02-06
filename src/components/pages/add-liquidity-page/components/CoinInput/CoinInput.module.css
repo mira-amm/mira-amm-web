@@ -27,7 +27,8 @@
   color: var(--content-dimmed-dark);
 }
 
-.leftColumn, .rightColumn {
+.leftColumn,
+.rightColumn {
   display: flex;
   flex-direction: column;
   gap: 4px;
@@ -45,7 +46,8 @@
   flex: 1;
 }
 
-.rightColumn svg, .rightColumn img {
+.rightColumn svg,
+.rightColumn img {
   width: 16px;
   height: 16px;
 }
@@ -68,7 +70,8 @@
 }
 
 @media (min-width: 1024px) {
-  .balance, .rate {
+  .balance,
+  .rate {
     font-size: 13px;
     line-height: 18px;
   }
@@ -77,7 +80,8 @@
     min-height: 18px;
   }
 
-  .coinName, .input {
+  .coinName,
+  .input {
     font-size: 16px;
     line-height: 19px;
   }

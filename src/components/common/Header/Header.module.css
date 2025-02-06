@@ -133,7 +133,10 @@
     opacity: 0;
     padding: 0;
     max-width: 0;
-    transition: opacity 0.5s, max-width 0.5s, padding 0s 0.3s,
+    transition:
+      opacity 0.5s,
+      max-width 0.5s,
+      padding 0s 0.3s,
       margin-left 0s 0.3s;
   }
 

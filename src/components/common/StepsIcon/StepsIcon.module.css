@@ -1,12 +1,12 @@
 .iconBackground {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    background: linear-gradient(132.04deg, #262F5F 11.87%, #C41CFF 176.88%);
-    border-radius: 10px;
-    width: 64px;
-    height: 64px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(132.04deg, #262f5f 11.87%, #c41cff 176.88%);
+  border-radius: 10px;
+  width: 64px;
+  height: 64px;
 }
 
 /* @media (max-width: 500px) {
