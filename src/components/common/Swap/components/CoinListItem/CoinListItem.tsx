@@ -1,4 +1,4 @@
-import {memo} from "react";
+import {memo, useEffect} from "react";
 import {clsx} from "clsx";
 import {BN, CoinQuantity} from "fuels";
 
@@ -10,13 +10,17 @@ import {checkIfCoinVerified} from "./checkIfCoinVerified";
 import "react-tooltip/dist/react-tooltip.css";
 import {Tooltip} from "react-tooltip";
 import {useVerifiedAssets} from "@/src/hooks/useVerifiedAssets";
+import Skeleton from "@/src/components/common/Skeleton/Skeleton";
+import {useLocalStorage} from "usehooks-ts";
 
 type Props = {
   assetId: string;
   balance?: CoinQuantity | undefined;
+  coinsLoaded: boolean;
+  onLoad?: (assetId: string) => void;
 };
 
-const CoinListItem = ({assetId, balance}: Props) => {
+const CoinListItem = ({assetId, balance, onLoad}: Props) => {
   const verifiedAssetData = useVerifiedAssets();
   const metadata = useAssetMetadata(assetId);
   const balanceValue = balance?.amount ?? new BN(0);
@@ -28,8 +32,16 @@ const CoinListItem = ({assetId, balance}: Props) => {
         verifiedAssetData,
       })
     : false;
+  const [coinsLoaded] = useLocalStorage("coinsLoaded", false);
 
-  return (
+  // Ensuring that onLoad runs only once
+  useEffect(() => {
+    if (!coinsLoaded && metadata.name && icon) {
+      onLoad?.(assetId);
+    }
+  }, [metadata.name, icon, assetId, onLoad]);
+
+  return coinsLoaded ? (
     <span className={clsx(styles.coin, !metadata.name && styles.centered)}>
       <Tooltip id="verified-tooltip" />
       {icon && <img src={icon} alt={`${metadata.name} icon`} />}
@@ -53,6 +65,8 @@ const CoinListItem = ({assetId, balance}: Props) => {
         </p>
       )}
     </span>
+  ) : (
+    <Skeleton />
   );
 };
 

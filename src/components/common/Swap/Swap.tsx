@@ -121,6 +121,18 @@ const Swap = () => {
   const isValidNetwork = useCheckActiveNetwork();
 
   useEffect(() => {
+    const handleBeforeUnload = () => {
+      localStorage.removeItem("coinsLoaded");
+    };
+
+    window.addEventListener("beforeunload", handleBeforeUnload);
+
+    return () => {
+      window.removeEventListener("beforeunload", handleBeforeUnload);
+    };
+  }, []);
+
+  useEffect(() => {
     if (!isConnected) {
       setSwapState(initialSwapState);
       setInputsState(initialInputsState);

@@ -9,6 +9,8 @@ import UnknownCoinListItem from "../UnknownCoinListItem";
 import {useQuery} from "@tanstack/react-query";
 import {VerifiedAssets} from "../CoinListItem/checkIfCoinVerified";
 import EmptySearchResults from "../EmptySearchResults";
+import {useLocalStorage} from "usehooks-ts";
+import {clsx} from "clsx";
 
 type Props = {
   selectCoin: (assetId: string | null) => void;
@@ -25,7 +27,10 @@ const CoinsListModal = ({selectCoin, balances, verifiedAssetsOnly}: Props) => {
   const {assets} = useAssetList();
   const [value, setValue] = useState("");
 
+  const loadedAssetsRef = useRef(new Set<string>());
   const inputRef = useRef<HTMLInputElement>(null);
+
+  const [coinsLoaded, setCoinsLoaded] = useLocalStorage("coinsLoaded", false);
 
   useEffect(() => {
     if (inputRef.current) {
@@ -111,6 +116,20 @@ const CoinsListModal = ({selectCoin, balances, verifiedAssetsOnly}: Props) => {
       return 0;
     });
   }, [filteredCoinsList, balances]);
+
+  // Callback when an asset/coin is fully loaded
+  const handleAssetLoad = (assetId: string) => {
+    if (!loadedAssetsRef.current.has(assetId)) {
+      loadedAssetsRef.current.add(assetId);
+    }
+    const _coinsLoaded = sortedCoinsList.every(({assetId}) =>
+      loadedAssetsRef.current.has(assetId),
+    );
+    if (_coinsLoaded) {
+      setCoinsLoaded(true);
+    }
+  };
+
   return (
     <>
       <div className={styles.tokenSearch}>
@@ -121,15 +140,23 @@ const CoinsListModal = ({selectCoin, balances, verifiedAssetsOnly}: Props) => {
           placeholder="Search by token or paste address"
           onChange={handleChange}
           ref={inputRef}
+          disabled={!coinsLoaded}
         />
       </div>
-      <div className={styles.tokenList}>
+
+      <div
+        className={clsx(styles.tokenList, {
+          [styles.lockScroll]: !coinsLoaded,
+        })}
+      >
         {sortedCoinsList.length === 0 && value !== "" && (
           <>
             {assetIdRegex.test(value) ? (
               <UnknownCoinListItem
                 assetId={value}
                 balance={balances?.find((b) => b.assetId === value)}
+                coinsLoaded={coinsLoaded}
+                onLoad={handleAssetLoad}
                 onClick={() => selectCoin(value)}
               />
             ) : (
@@ -139,13 +166,17 @@ const CoinsListModal = ({selectCoin, balances, verifiedAssetsOnly}: Props) => {
         )}
         {sortedCoinsList.map(({assetId}) => (
           <div
-            className={styles.tokenListItem}
+            className={clsx(styles.tokenListItem, {
+              [styles.disableHover]: !coinsLoaded,
+            })}
             onClick={() => selectCoin(assetId)}
             key={assetId}
           >
             <CoinListItem
               assetId={assetId}
               balance={balances?.find((b) => b.assetId === assetId)}
+              coinsLoaded={coinsLoaded}
+              onLoad={handleAssetLoad}
             />
           </div>
         ))}

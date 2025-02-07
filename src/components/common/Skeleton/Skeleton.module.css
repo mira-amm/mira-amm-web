@@ -1,0 +1,16 @@
+.skeleton {
+  width: 100%;
+  height: 50px;
+  background: #3d3c3c;
+  border-radius: 4px;
+  animation: fadeEffect 2s infinite alternate;
+}
+
+@keyframes fadeEffect {
+  0% {
+    opacity: 0.2;
+  }
+  100% {
+    opacity: 0.6;
+  }
+}

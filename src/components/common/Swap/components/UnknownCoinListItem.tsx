@@ -6,12 +6,16 @@ import styles from "./CoinsListModal/CoinsListModal.module.css";
 interface Props {
   assetId: string;
   balance: CoinQuantity | undefined;
+  coinsLoaded: boolean;
+  onLoad?: (assetId: string) => void;
   onClick: () => void;
 }
 
 export default function UnknownCoinListItem({
   assetId,
   balance,
+  coinsLoaded,
+  onLoad,
   onClick,
 }: Props) {
   const metadata = useAssetMetadata(assetId);
@@ -19,7 +23,12 @@ export default function UnknownCoinListItem({
   if (metadata.symbol) {
     return (
       <div className={styles.tokenListItem} onClick={onClick}>
-        <CoinListItem assetId={assetId} balance={balance} />
+        <CoinListItem
+          assetId={assetId}
+          balance={balance}
+          coinsLoaded={coinsLoaded}
+          onLoad={onLoad}
+        />
       </div>
     );
   }
