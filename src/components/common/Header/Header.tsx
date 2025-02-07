@@ -43,11 +43,10 @@ const Header = ({isHomePage}: Props): JSX.Element => {
   };
 
   return (
-    <header className={styles.header}>
-      {isPromoShown && (
-        <section className={styles.promo}>
+    <header className={styles.header}>{isPromoShown && (       <section className={styles.promo}>
           <div className={styles.promo_text}>
             <RewardsIcon />
+
             <p>
               {boosterBannerTitle}
               <Link href={BoostsLearnMoreUrl} target="_blank">
@@ -55,14 +54,11 @@ const Header = ({isHomePage}: Props): JSX.Element => {
               </Link>
             </p>
           </div>
-          <IconButton onClick={handleCloseBanner} className={styles.promoClose}>
-            <CloseIcon />
-          </IconButton>
-        </section>
-      )}
-      <section className={styles.main}>
-        <div className={styles.left}>
-          <Logo />
+
+          <IconButton onClick={handleCloseBanner} className={styles.promoClose}>            <CloseIcon />
+          </IconButton>        </section>
+      )}      <section className={styles.main}>
+        <div className={styles.left}>          <Logo />
           <div className={clsx("desktopOnly", styles.links)}>
             <Link
               //TEMPORARY ROUTING SINCE LANDING PAGE IS DISABLED
@@ -73,8 +69,7 @@ const Header = ({isHomePage}: Props): JSX.Element => {
               )}
             >
               Swap
-            </Link>
-            <Link
+            </Link>            <Link
               href="/liquidity"
               className={clsx(
                 styles.link,
