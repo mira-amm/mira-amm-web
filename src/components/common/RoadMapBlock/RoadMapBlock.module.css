@@ -1,58 +1,58 @@
 .roadMapBlock {
-    background-color: #262934;
-    border-radius: 16px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 40px;
-    padding: 32px 16px 24px 16px;
-    width: 259px;
-    margin-bottom: 12px;
-    margin-top: -32px;
-    font-family: var(--font-inter);
+  background-color: #262934;
+  border-radius: 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 40px;
+  padding: 32px 16px 24px 16px;
+  width: 259px;
+  margin-bottom: 12px;
+  margin-top: -32px;
+  font-family: var(--font-inter);
 }
 
 .title {
-    font-size: 24px;
-    line-height: 30px;
-    font-weight: 500;
-    text-align: center;
-    min-height: 120px;
-    font-family: var(--font-inter);
+  font-size: 24px;
+  line-height: 30px;
+  font-weight: 500;
+  text-align: center;
+  min-height: 120px;
+  font-family: var(--font-inter);
 }
 
 .done {
-    font-size: 14px;
-    color: var(--content-positive);
-    font-weight: 500;
-    line-height: 22px;
-    text-align: center;
+  font-size: 14px;
+  color: var(--content-positive);
+  font-weight: 500;
+  line-height: 22px;
+  text-align: center;
 }
 
 .description {
-    font-size: 14px;
-    color: var(--content-grey);
-    font-weight: 500;
-    line-height: 22px;
-    text-align: center;
-    text-wrap: nowrap;
+  font-size: 14px;
+  color: var(--content-grey);
+  font-weight: 500;
+  line-height: 22px;
+  text-align: center;
+  text-wrap: nowrap;
 }
 
 .checkboxArea {
-    display: flex;
-    align-items: center;
-    justify-self: flex-end;
-    gap: 8px;
-    padding-top: 8px;
+  display: flex;
+  align-items: center;
+  justify-self: flex-end;
+  gap: 8px;
+  padding-top: 8px;
 }
 
 @media (max-width: 1024px) {
-    .roadMapBlock {
-        width: 100%;
-        margin: 0;
-    }
+  .roadMapBlock {
+    width: 100%;
+    margin: 0;
+  }
 
-    .title {
-        min-height: 0;
-    }
+  .title {
+    min-height: 0;
+  }
 }

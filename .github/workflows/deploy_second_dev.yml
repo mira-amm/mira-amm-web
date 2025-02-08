@@ -16,7 +16,7 @@ jobs:
 
       - name: Deploy static site to S3 bucket
         env:
-          BUCKET_NAME: 'miraly-dev-second-website'
+          BUCKET_NAME: "miraly-dev-second-website"
         run: aws s3 sync ./out/ s3://${{ env.BUCKET_NAME }} --delete
 
       - name: Invalidate CloudFront

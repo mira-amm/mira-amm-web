@@ -1,34 +1,34 @@
 .infoBlocks {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .title {
-    font-weight: 400;
-    font-size: 26px;
-    line-height: 32px;
-    text-align: center;
-    margin: 20px 0 12px 0;
-    font-family: var(--font-inter);
+  font-weight: 400;
+  font-size: 26px;
+  line-height: 32px;
+  text-align: center;
+  margin: 20px 0 12px 0;
+  font-family: var(--font-inter);
 }
 
 .blocksList {
-    list-style: none;
-    padding: 0;
-    display: flex;
-    gap: 16px;
+  list-style: none;
+  padding: 0;
+  display: flex;
+  gap: 16px;
 }
 
 @media (max-width: 1024px) {
-    .title {
-        font-size: 24px;
-        line-height: 30px;
-    }
+  .title {
+    font-size: 24px;
+    line-height: 30px;
+  }
 
-    .blocksList {
-        flex-direction: column;
-        width: 100%;
-        gap: 16px;
-    }
+  .blocksList {
+    flex-direction: column;
+    width: 100%;
+    gap: 16px;
+  }
 }

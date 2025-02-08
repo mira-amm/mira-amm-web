@@ -400,7 +400,7 @@
   },
   {
     "name": "steakLRT",
-    "symbol": "steakLRT", 
+    "symbol": "steakLRT",
     "decimals": 9,
     "icon": {
       "default": "https://verified-assets.fuel.network/images/steakLRT.png"
@@ -444,7 +444,7 @@
     "icon": {
       "default": "https://i.imgur.com/KWvzDVh.jpg"
     },
-    "contractId": "0x755d385dc65f34e24743cb88714b0fcaa83e9ec4c5673f3497f90bd03bb114da", 
+    "contractId": "0x755d385dc65f34e24743cb88714b0fcaa83e9ec4c5673f3497f90bd03bb114da",
     "subId": "0x0000000000000000000000000000000000000000000000000000000000000000",
     "assetId": "0x2afcfa14b2eb778f08a0cb00995ee91a72e172e005596481e79bcab8b465ee78",
     "isVerified": true

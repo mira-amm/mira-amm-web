@@ -13,13 +13,15 @@
   align-items: center;
 }
 
-.coinPairIcons > svg, .coinPairIcons > img {
+.coinPairIcons > svg,
+.coinPairIcons > img {
   width: 28px;
   height: 28px;
   border-radius: 100%;
 }
 
-.coinPairIcons > svg:nth-child(2), .coinPairIcons > img:nth-child(2) {
+.coinPairIcons > svg:nth-child(2),
+.coinPairIcons > img:nth-child(2) {
   margin-left: -8px;
 }
 
@@ -44,7 +46,7 @@
 .poolDescription {
   font-size: 12px;
   line-height: 14px;
-  color: #D4B226;
+  color: #d4b226;
 }
 
 @media (min-width: 1024px) {

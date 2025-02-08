@@ -1,6 +1,6 @@
 .divider {
-    display: flex;
-    justify-content: center;
-    list-style: none;
-    box-sizing: border-box;
+  display: flex;
+  justify-content: center;
+  list-style: none;
+  box-sizing: border-box;
 }

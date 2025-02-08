@@ -5,7 +5,8 @@
   padding: 84px 16px 56px;
 }
 
-.topBlock, .bottomBlock {
+.topBlock,
+.bottomBlock {
   display: flex;
   flex-direction: column;
   gap: 16px;
@@ -72,7 +73,7 @@
 }
 
 .discordBlock {
-  background-color: #32389F;
+  background-color: #32389f;
 }
 
 .xBlock {
@@ -80,7 +81,7 @@
 }
 
 .divider {
-  background-color: #1B2749;
+  background-color: #1b2749;
   width: 100vw;
   align-self: center;
 }

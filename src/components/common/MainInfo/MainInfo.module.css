@@ -1,36 +1,36 @@
 .title {
-    font-size: 44px;
-    margin: 0;
-    line-height: 52px;
-    text-align: center;
-    font-family: var(--font-prompt);
+  font-size: 44px;
+  margin: 0;
+  line-height: 52px;
+  text-align: center;
+  font-family: var(--font-prompt);
 }
 
 .description {
-    font-size: 20px;
-    margin: 0;
-    line-height: 28px;
-    text-align: center;
-    font-weight: 400;
-    color: var(--content-dimmed-light);
-    max-width: 624px;
+  font-size: 20px;
+  margin: 0;
+  line-height: 28px;
+  text-align: center;
+  font-weight: 400;
+  color: var(--content-dimmed-light);
+  max-width: 624px;
 }
 
 .link {
-    color: var(--accent-primary);
-    text-decoration: underline;
+  color: var(--accent-primary);
+  text-decoration: underline;
 }
 
 @media (max-width: 1024px) {
-    .title {
-        font-size: 32px;
-        line-height: 40px;
-        margin-bottom: 16px;
-    }
+  .title {
+    font-size: 32px;
+    line-height: 40px;
+    margin-bottom: 16px;
+  }
 
-    .description {
-        font-size: 18px;
-        line-height: 24px;
-        margin-bottom: 28px;
-    }
+  .description {
+    font-size: 18px;
+    line-height: 24px;
+    margin-bottom: 28px;
+  }
 }

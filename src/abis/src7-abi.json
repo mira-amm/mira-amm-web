@@ -162,9 +162,7 @@
           "typeId": 4
         }
       ],
-      "typeParameters": [
-        4
-      ]
+      "typeParameters": [4]
     },
     {
       "type": "generic T",
@@ -378,21 +376,15 @@
         },
         {
           "name": "doc-comment",
-          "arguments": [
-            ""
-          ]
+          "arguments": [""]
         },
         {
           "name": "doc-comment",
-          "arguments": [
-            " # Arguments"
-          ]
+          "arguments": [" # Arguments"]
         },
         {
           "name": "doc-comment",
-          "arguments": [
-            ""
-          ]
+          "arguments": [""]
         },
         {
           "name": "doc-comment",
@@ -408,21 +400,15 @@
         },
         {
           "name": "doc-comment",
-          "arguments": [
-            ""
-          ]
+          "arguments": [""]
         },
         {
           "name": "doc-comment",
-          "arguments": [
-            " # Returns"
-          ]
+          "arguments": [" # Returns"]
         },
         {
           "name": "doc-comment",
-          "arguments": [
-            ""
-          ]
+          "arguments": [""]
         },
         {
           "name": "doc-comment",
@@ -432,21 +418,15 @@
         },
         {
           "name": "doc-comment",
-          "arguments": [
-            ""
-          ]
+          "arguments": [""]
         },
         {
           "name": "doc-comment",
-          "arguments": [
-            " # Reverts"
-          ]
+          "arguments": [" # Reverts"]
         },
         {
           "name": "doc-comment",
-          "arguments": [
-            ""
-          ]
+          "arguments": [""]
         },
         {
           "name": "doc-comment",
@@ -456,69 +436,47 @@
         },
         {
           "name": "doc-comment",
-          "arguments": [
-            ""
-          ]
+          "arguments": [""]
         },
         {
           "name": "doc-comment",
-          "arguments": [
-            " # Examples"
-          ]
+          "arguments": [" # Examples"]
         },
         {
           "name": "doc-comment",
-          "arguments": [
-            ""
-          ]
+          "arguments": [""]
         },
         {
           "name": "doc-comment",
-          "arguments": [
-            " ```sway"
-          ]
+          "arguments": [" ```sway"]
         },
         {
           "name": "doc-comment",
-          "arguments": [
-            " use src7::{SRC7, Metadata};"
-          ]
+          "arguments": [" use src7::{SRC7, Metadata};"]
         },
         {
           "name": "doc-comment",
-          "arguments": [
-            " use std::string::String;"
-          ]
+          "arguments": [" use std::string::String;"]
         },
         {
           "name": "doc-comment",
-          "arguments": [
-            ""
-          ]
+          "arguments": [""]
         },
         {
           "name": "doc-comment",
-          "arguments": [
-            " fn foo(contract_id: ContractId, asset: AssetId) {"
-          ]
+          "arguments": [" fn foo(contract_id: ContractId, asset: AssetId) {"]
         },
         {
           "name": "doc-comment",
-          "arguments": [
-            "     let contract_abi = abi(SRC7, contract_id);"
-          ]
+          "arguments": ["     let contract_abi = abi(SRC7, contract_id);"]
         },
         {
           "name": "doc-comment",
-          "arguments": [
-            "     let key = String::from_ascii_str(\"social:x\");"
-          ]
+          "arguments": ["     let key = String::from_ascii_str(\"social:x\");"]
         },
         {
           "name": "doc-comment",
-          "arguments": [
-            "     let data = contract_abi.metadata(asset, key);"
-          ]
+          "arguments": ["     let data = contract_abi.metadata(asset, key);"]
         },
         {
           "name": "doc-comment",
@@ -528,21 +486,15 @@
         },
         {
           "name": "doc-comment",
-          "arguments": [
-            " }"
-          ]
+          "arguments": [" }"]
         },
         {
           "name": "doc-comment",
-          "arguments": [
-            " ```"
-          ]
+          "arguments": [" ```"]
         },
         {
           "name": "storage",
-          "arguments": [
-            "read"
-          ]
+          "arguments": ["read"]
         }
       ]
     },
@@ -564,9 +516,7 @@
       "attributes": [
         {
           "name": "storage",
-          "arguments": [
-            "read"
-          ]
+          "arguments": ["read"]
         }
       ]
     },
@@ -582,9 +532,7 @@
       "attributes": [
         {
           "name": "storage",
-          "arguments": [
-            "read"
-          ]
+          "arguments": ["read"]
         }
       ]
     },
@@ -600,9 +548,7 @@
       "attributes": [
         {
           "name": "storage",
-          "arguments": [
-            "read"
-          ]
+          "arguments": ["read"]
         }
       ]
     },
@@ -613,9 +559,7 @@
       "attributes": [
         {
           "name": "storage",
-          "arguments": [
-            "read"
-          ]
+          "arguments": ["read"]
         }
       ]
     },
@@ -631,9 +575,7 @@
       "attributes": [
         {
           "name": "storage",
-          "arguments": [
-            "read"
-          ]
+          "arguments": ["read"]
         }
       ]
     },

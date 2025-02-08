@@ -70,11 +70,11 @@
 }
 
 .menuButtonDisabled span {
-    font-weight: 400;
-    font-size: 15px;
-    line-height: 24px;
-    text-wrap: nowrap;
-  }
+  font-weight: 400;
+  font-size: 15px;
+  line-height: 24px;
+  text-wrap: nowrap;
+}
 
 .menuButton:hover {
   background: var(--background-grey-dark);
