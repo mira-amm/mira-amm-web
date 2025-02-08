@@ -2,7 +2,7 @@ import {useMemo} from "react";
 import {CoinData} from "../utils/coinsConfig";
 import {useAllAssetsCombination} from "./useAllAssetsCombination";
 import {buildPoolId, PoolId} from "mira-dex-ts";
-import useGetPools from "./useMultiPools";
+import useGetPoolsWithReserve from "./useGetPoolsWithReserve";
 
 const useRoutablePools = (assetIn?: CoinData, assetOut?: CoinData) => {
   const allAssetsCombination = useAllAssetsCombination(assetIn, assetOut);
@@ -27,7 +27,10 @@ const useRoutablePools = (assetIn?: CoinData, assetOut?: CoinData) => {
       [allAssetsCombination],
     );
 
-  useGetPools(allAssetsPairsWithPoolId);
+  const shouldFetchPools =
+    !!assetIn && !!assetOut && !!allAssetsPairsWithPoolId.length;
+
+  useGetPoolsWithReserve(allAssetsPairsWithPoolId, shouldFetchPools);
 };
 
 export default useRoutablePools;
