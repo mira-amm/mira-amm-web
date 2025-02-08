@@ -10,11 +10,19 @@ type PoolReserveData = {
   reserve1: string;
 };
 
-type Pool = {
+export type Pool = {
   assetA: CoinData;
   assetB: CoinData;
   poolId: PoolId;
 } & PoolReserveData;
+
+// export type Route = [Pool[], CoinData, CoinData];
+
+export type Route = {
+  pools: Pool[];
+  assetIn: CoinData;
+  assetOut: CoinData;
+};
 
 const useGetPoolsWithReserve = (
   poolKeys: [CoinData, CoinData, PoolId, boolean][],
@@ -76,7 +84,7 @@ const useGetPoolsWithReserve = (
   );
 
   return {
-    data: poolsWithReserve,
+    pools: poolsWithReserve,
     isLoading,
     isRefetching,
     refetch,
