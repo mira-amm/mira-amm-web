@@ -61,7 +61,7 @@ const useRoutablePools = (
   assetIn?: CoinData,
   assetOut?: CoinData,
   shouldFetchPools = false,
-): {routes: Route[]; isLoading: boolean} => {
+) => {
   const allAssetsCombination = useAllAssetsCombination(assetIn, assetOut);
 
   const allAssetsPairsWithPoolId: [CoinData, CoinData, PoolId, boolean][] =
@@ -72,26 +72,25 @@ const useRoutablePools = (
             assetA,
             assetB,
             buildPoolId(assetA.assetId, assetB.assetId, true),
-            true, // specifies stable pool or not
+            true, // stable pool
           ],
           [
             assetA,
             assetB,
             buildPoolId(assetA.assetId, assetB.assetId, false),
-            false, // specifies stable pool or not
+            false, // volatile pool
           ],
         ]),
       [allAssetsCombination],
     );
 
-  const {pools, isLoading: poolsLoading} = useGetPoolsWithReserve(
+  const {pools, isLoading, isRefetching, refetch} = useGetPoolsWithReserve(
     allAssetsPairsWithPoolId,
     shouldFetchPools,
   );
 
-  return useMemo(() => {
-    if (poolsLoading || !pools || !assetIn || !assetOut)
-      return {isLoading: true, routes: []};
+  const routes = useMemo(() => {
+    if (!pools || !assetIn || !assetOut) return [];
 
     const routes = computeAllRoutes(
       assetIn,
@@ -103,8 +102,15 @@ const useRoutablePools = (
       2,
     );
 
-    return {isLoading: false, routes};
-  }, [assetIn, assetOut, pools, poolsLoading]);
+    return routes;
+  }, [assetIn, assetOut, pools]);
+
+  return {
+    isRefetching,
+    refetch,
+    routes,
+    isLoading,
+  };
 };
 
 export default useRoutablePools;

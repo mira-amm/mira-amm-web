@@ -62,6 +62,7 @@ const useGetPoolsWithReserve = (
             document: gqlQuery,
           })
       : skipToken,
+    refetchInterval: 10 * 1000, // 10 seconds
   });
 
   // create all possible pools by excluding pools without liquidity (null) from indexer
