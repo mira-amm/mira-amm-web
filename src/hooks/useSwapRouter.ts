@@ -20,7 +20,7 @@ export enum TradeType {
   EXACT_OUT = "EXACT_OUT",
 }
 
-type OptimialRoute = {
+type OptimialTrade = {
   bestRoute: null | Route;
   amountIn: null | BN;
   amountOut: null | BN;
@@ -28,7 +28,7 @@ type OptimialRoute = {
 
 type SwapPreviewState = {
   tradeState: TradeState;
-  trade: OptimialRoute | undefined;
+  trade: OptimialTrade | undefined;
 };
 
 const getSwapQuotes = (
@@ -37,9 +37,19 @@ const getSwapQuotes = (
   route: Route,
   miraAmm: ReadonlyMiraAmm,
 ) => {
-  return miraAmm.previewSwapExactInput(
+  if (tradeType === TradeType.EXACT_IN)
+    return miraAmm.previewSwapExactInput(
+      {
+        bits: route.assetIn.assetId,
+      },
+      inputAmount,
+      route.pools.map((pool) => pool.poolId),
+    );
+
+  // exact out
+  return miraAmm.previewSwapExactOutput(
     {
-      bits: route.assetIn.assetId,
+      bits: route.assetOut.assetId,
     },
     inputAmount,
     route.pools.map((pool) => pool.poolId),
@@ -62,28 +72,6 @@ const useSwapRouter = (
     isRefetching: isRoutesRefetching,
     refetch: refetchRoute,
   } = useRoutablePools(assetIn, assetOut, shouldFetchPools);
-
-  // TESTING EFFECT , has to be removed
-  //   useEffect(() => {
-  //     const getSwapQuote = async () => {
-  //       if (!miraAmm || !assetIn || !rawAmountIn || !routes.length) return;
-  //       console.log(routes, "routes");
-  //       const [route] = routes;
-  //       try {
-  //         const data = await miraAmm.previewSwapExactInput(
-  //           {bits: route.assetIn.assetId},
-  //           rawAmountIn,
-  //           route.pools.map((pool) => pool.poolId),
-  //         );
-
-  //         console.log(data.toString(), "data");
-  //       } catch (err) {
-  //         console.log(err);
-  //       }
-  //     };
-
-  //     getSwapQuote();
-  //   }, [routes]);
 
   const {
     data: quoteResults,
@@ -122,9 +110,16 @@ const useSwapRouter = (
         trade: undefined,
       };
 
-    if (!assetIn || !assetOut || !quoteResults.length)
+    if (!assetIn || !assetOut)
       return {
         tradeState: TradeState.INVALID,
+        trade: undefined,
+      };
+
+    // This can also happen when query throws an error
+    if (!quoteResults.length)
+      return {
+        tradeState: TradeState.NO_ROUTE_FOUND,
         trade: undefined,
       };
 
@@ -135,16 +130,28 @@ const useSwapRouter = (
     }>(
       (currentBest, quote) => {
         if (!quote) return currentBest;
-        // TODO: currently only handled the exactInput case
-        if (
-          currentBest.amountOut === null ||
-          currentBest.amountOut.lt(quote.amountOut)
-        )
-          return {
-            bestRoute: quote.route,
-            amountIn: amountSpecified,
-            amountOut: quote.amountOut,
-          };
+        if (tradeType === TradeType.EXACT_IN) {
+          if (
+            currentBest.amountOut === null ||
+            currentBest.amountOut.lt(quote.amountOut)
+          )
+            return {
+              bestRoute: quote.route,
+              amountIn: amountSpecified,
+              amountOut: quote.amountOut,
+            };
+        } else {
+          if (
+            currentBest.amountIn === null ||
+            currentBest.amountIn.gt(quote.amountOut)
+          ) {
+            return {
+              bestRoute: quote.route,
+              amountIn: quote.amountOut,
+              amountOut: amountSpecified,
+            };
+          }
+        }
         return currentBest;
       },
       {
@@ -154,12 +161,14 @@ const useSwapRouter = (
       },
     );
 
+    // Situation of no liquidity
     if (!bestRoute || !amountIn || !amountOut)
       return {
-        tradeState: TradeState.NO_ROUTE_FOUND,
+        tradeState: TradeState.INVALID,
         trade: undefined,
       };
 
+    // When refetching, return the previous route
     if (isRefetching || isRoutesRefetching)
       return {
         tradeState: TradeState.REEFETCHING,
@@ -179,13 +188,14 @@ const useSwapRouter = (
       },
     };
   }, [
+    isLoading,
+    isRoutesLoading,
     assetIn,
     assetOut,
-    isLoading,
-    isRefetching,
-    isRoutesLoading,
-    isRoutesRefetching,
     quoteResults,
+    isRefetching,
+    isRoutesRefetching,
+    tradeType,
     amountSpecified,
   ]);
 };

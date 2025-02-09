@@ -11,7 +11,7 @@ const useSwapPreview = (swapState: SwapState, mode: CurrencyBoxMode) => {
   const {asset: assetIn} = useAsset(sellAssetId);
   const {asset: assetOut} = useAsset(buyAssetId);
 
-  const tradeType = mode === "buy" ? TradeType.EXACT_IN : TradeType.EXACT_OUT;
+  const tradeType = mode === "buy" ? TradeType.EXACT_OUT : TradeType.EXACT_IN;
 
   const rawUserInputAmount = useMemo(() => {
     const amountString =
@@ -38,7 +38,18 @@ const useSwapPreview = (swapState: SwapState, mode: CurrencyBoxMode) => {
     tradeType,
   ]);
 
-  useSwapRouter(tradeType, rawUserInputAmount, assetIn, assetOut);
+  const {trade} = useSwapRouter(
+    tradeType,
+    rawUserInputAmount,
+    assetIn,
+    assetOut,
+  );
+
+  console.log(
+    trade?.amountIn?.toString(),
+    trade?.amountOut?.toString(),
+    "preview",
+  );
 };
 
 export default useSwapPreview;
