@@ -38,18 +38,17 @@ const useSwapPreview = (swapState: SwapState, mode: CurrencyBoxMode) => {
     tradeType,
   ]);
 
-  const {trade} = useSwapRouter(
+  const {trade, tradeState} = useSwapRouter(
     tradeType,
     rawUserInputAmount,
     assetIn,
     assetOut,
   );
 
-  console.log(
-    trade?.amountIn?.toString(),
-    trade?.amountOut?.toString(),
-    "preview",
-  );
+  return {
+    trade,
+    tradeState,
+  };
 };
 
 export default useSwapPreview;

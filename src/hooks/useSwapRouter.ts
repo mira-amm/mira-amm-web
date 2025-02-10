@@ -70,7 +70,7 @@ const useSwapRouter = (
     isLoading: isRoutesLoading,
     routes,
     isRefetching: isRoutesRefetching,
-    refetch: refetchRoute,
+    // refetch: refetchRoute,
   } = useRoutablePools(assetIn, assetOut, shouldFetchPools);
 
   const {

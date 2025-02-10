@@ -22,6 +22,7 @@ import useCheckEthBalance from "@/src/hooks/useCheckEthBalance/useCheckEthBalanc
 import useInitialSwapState from "@/src/hooks/useInitialSwapState/useInitialSwapState";
 import useCheckActiveNetwork from "@/src/hooks/useCheckActiveNetwork";
 import useSwapPreview from "@/src/hooks/useSwapPreview";
+import usePreviewV2 from "@/src/hooks/useSwapPreviewV2";
 import PriceImpact from "@/src/components/common/Swap/components/PriceImpact/PriceImpact";
 import {FuelAppUrl} from "@/src/utils/constants";
 import useReservesPrice from "@/src/hooks/useReservesPrice";
@@ -34,6 +35,7 @@ import useAssetMetadata from "@/src/hooks/useAssetMetadata";
 import {SlippageSetting} from "../SlippageSetting/SlippageSetting";
 import Loader from "@/src/components/common/Loader/Loader";
 import {ScriptTransactionRequest, TransactionCost} from "fuels";
+import {TradeState} from "@/src/hooks/useSwapRouter";
 
 export type CurrencyBoxMode = "buy" | "sell";
 export type CurrencyBoxState = {
@@ -146,38 +148,48 @@ const Swap = () => {
       swapState,
       mode: activeMode,
     });
+
+  const {trade, tradeState} = usePreviewV2(swapState, activeMode);
+
   const anotherMode = activeMode === "sell" ? "buy" : "sell";
   const decimals =
     anotherMode === "sell" ? sellMetadata.decimals : buyMetadata.decimals;
-  const previewValueString =
-    previewData !== null
-      ? previewData.previewAmount.eq(0)
-        ? ""
-        : previewData.previewAmount.formatUnits(decimals || 0)
-      : previousPreviewValue.current;
-  previousPreviewValue.current = previewValueString;
+
+  const previewValueString2 =
+    !trade ||
+    tradeState === TradeState.INVALID ||
+    tradeState === TradeState.NO_ROUTE_FOUND ||
+    !trade?.amountIn ||
+    trade?.amountIn?.eq(0) ||
+    !trade?.amountOut ||
+    trade?.amountOut?.eq(0) ||
+    !decimals
+      ? ""
+      : activeMode === "sell"
+        ? trade.amountOut.formatUnits(decimals)
+        : trade.amountIn.formatUnits(decimals);
 
   useEffect(() => {
-    if (previewValueString !== swapState[anotherMode].amount && previewData) {
+    if (previewValueString2 !== swapState[anotherMode].amount) {
       setSwapState((prevState) => ({
         ...prevState,
         [anotherMode]: {
           ...prevState[anotherMode],
-          amount: previewValueString,
+          amount: previewValueString2,
         },
       }));
     }
-  }, [previewData, previewValueString]);
+  }, [trade, previewValueString2]);
   useEffect(() => {
-    if (previewValueString !== inputsState[anotherMode].amount && previewData) {
+    if (previewValueString2 !== inputsState[anotherMode].amount) {
       setInputsState((prevState) => ({
         ...prevState,
         [anotherMode]: {
-          amount: previewValueString,
+          amount: previewValueString2,
         },
       }));
     }
-  }, [previewData, previewValueString]);
+  }, [trade, previewValueString2]);
 
   const sellValue = inputsState.sell.amount;
   const buyValue = inputsState.buy.amount;
@@ -332,7 +344,7 @@ const Swap = () => {
     swapState,
     mode: activeMode,
     slippage,
-    pools: previewData?.pools,
+    pools: trade?.bestRoute?.pools.map((pool) => pool.poolId),
   });
 
   const resetSwapErrors = useCallback(async () => {
