@@ -27,6 +27,11 @@
   z-index: 11;
 }
 
+.modalWindow::-webkit-scrollbar {
+  width: 0px;
+  height: 0px;
+}
+
 .modalHeading {
   display: flex;
   justify-content: space-between;
