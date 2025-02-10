@@ -1,7 +1,7 @@
 import styles from "./Skeleton.module.css";
 import clsx from "clsx";
 
-const Skeleton = ({className}: {className?: string}): JSX.Element => {
+const Skeleton = ({className}: {className?: string}) => {
   return <div className={clsx(styles.skeleton, className)} />;
 };
 
