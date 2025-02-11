@@ -6,8 +6,6 @@ import styles from "./CoinsListModal.module.css";
 import {BN, CoinQuantity} from "fuels";
 import {useAssetList} from "@/src/hooks/useAssetList";
 import UnknownCoinListItem from "../UnknownCoinListItem";
-import {useQuery} from "@tanstack/react-query";
-import {VerifiedAssets} from "../CoinListItem/checkIfCoinVerified";
 import EmptySearchResults from "../EmptySearchResults";
 import {useLocalStorage} from "usehooks-ts";
 import {clsx} from "clsx";
@@ -177,6 +175,7 @@ const CoinsListModal = ({selectCoin, balances, verifiedAssetsOnly}: Props) => {
               balance={balances?.find((b) => b.assetId === assetId)}
               coinsLoaded={coinsLoaded}
               onLoad={handleAssetLoad}
+              icon={assets?.find((asset) => asset.assetId === assetId)?.icon}
             />
           </div>
         ))}

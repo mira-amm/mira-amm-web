@@ -50,6 +50,16 @@
   color: var(--content-dimmed-dark);
 }
 
+.skeletonIcon {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background-color: var(--background-grey-light);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 @media (min-width: 1024px) {
   /*.name {*/
   /*  font-size: 18px;*/

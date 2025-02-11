@@ -15,9 +15,6 @@
   color: var(--content-primary);
 }
 
-.tokenList {
-}
-
 .tokenListItem {
   padding: 8px 16px;
   border-radius: 8px;

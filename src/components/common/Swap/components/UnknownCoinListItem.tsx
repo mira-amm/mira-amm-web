@@ -2,6 +2,7 @@ import useAssetMetadata from "@/src/hooks/useAssetMetadata";
 import CoinListItem from "./CoinListItem/CoinListItem";
 import {CoinQuantity} from "fuels";
 import styles from "./CoinsListModal/CoinsListModal.module.css";
+import {useAssetList} from "@/src/hooks/useAssetList";
 
 interface Props {
   assetId: string;
@@ -17,9 +18,9 @@ export default function UnknownCoinListItem({
   coinsLoaded,
   onLoad,
   onClick,
-}: Props) {
+}: Props): JSX.Element {
   const metadata = useAssetMetadata(assetId);
-
+  const {assets} = useAssetList();
   if (metadata.symbol) {
     return (
       <div className={styles.tokenListItem} onClick={onClick}>
@@ -28,6 +29,7 @@ export default function UnknownCoinListItem({
           balance={balance}
           coinsLoaded={coinsLoaded}
           onLoad={onLoad}
+          icon={assets?.find((asset) => asset.assetId === assetId)?.icon}
         />
       </div>
     );

@@ -3,7 +3,6 @@ import {clsx} from "clsx";
 import {BN, CoinQuantity} from "fuels";
 
 import styles from "./CoinListItem.module.css";
-import {useAssetImage} from "@/src/hooks/useAssetImage";
 import useAssetMetadata from "@/src/hooks/useAssetMetadata";
 import SuccessIcon from "@/src/components/icons/Success/SuccessIcon";
 import {checkIfCoinVerified} from "./checkIfCoinVerified";
@@ -18,13 +17,14 @@ type Props = {
   balance?: CoinQuantity | undefined;
   coinsLoaded: boolean;
   onLoad?: (assetId: string) => void;
+  icon: string | undefined;
 };
 
-const CoinListItem = ({assetId, balance, onLoad}: Props) => {
+const CoinListItem = ({assetId, balance, onLoad, icon}: Props) => {
   const verifiedAssetData = useVerifiedAssets();
   const metadata = useAssetMetadata(assetId);
   const balanceValue = balance?.amount ?? new BN(0);
-  const icon = useAssetImage(assetId);
+
   const isVerified = verifiedAssetData
     ? checkIfCoinVerified({
         symbol: metadata.symbol,
@@ -36,7 +36,7 @@ const CoinListItem = ({assetId, balance, onLoad}: Props) => {
 
   // Ensuring that onLoad runs only once
   useEffect(() => {
-    if (!coinsLoaded && metadata.name && icon) {
+    if (!coinsLoaded && metadata.name) {
       onLoad?.(assetId);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -45,7 +45,21 @@ const CoinListItem = ({assetId, balance, onLoad}: Props) => {
   return coinsLoaded ? (
     <span className={clsx(styles.coin, !metadata.name && styles.centered)}>
       <Tooltip id="verified-tooltip" />
-      {icon && <img src={icon} alt={`${metadata.name} icon`} />}
+      {icon ? (
+        <picture>
+          <source srcSet={icon} type="image/avif" />
+          <img
+            src={icon}
+            width={32}
+            height={32}
+            alt={`${metadata.name} icon`}
+          />
+        </picture>
+      ) : (
+        <div className={styles.skeletonIcon}>
+          {metadata.name?.slice(0, 2).toUpperCase() || "--"}
+        </div>
+      )}
       <div className={styles.names}>
         <div className={styles.name_container}>
           <p className={styles.name}>{metadata.symbol}</p>
