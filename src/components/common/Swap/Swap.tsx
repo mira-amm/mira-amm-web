@@ -540,13 +540,19 @@ const Swap = () => {
   const buyAssetPrice = useAssetPrice(swapState.buy.assetId);
 
   const isActionDisabled =
-    (swapDisabled && !balancesPending && (txCostPending || amountMissing)) ||
+    (swapDisabled &&
+      // added previewLoading and refetch loading as swapDisabled contains those checks and to avoid disabled effect on button
+      !previewLoading &&
+      tradeState !== TradeState.REEFETCHING &&
+      !balancesPending &&
+      (txCostPending || amountMissing)) ||
     showInsufficientBalance;
 
   //If amount is missing txCostPending is irrelevant
   //If in sufficient fund, previewLoading is irrelevant
   const isActionLoading =
     balancesPending ||
+    tradeState === TradeState.REEFETCHING ||
     (previewLoading && swapButtonTitle !== "Insufficient balance") ||
     (!amountMissing && !showInsufficientBalance && txCostPending);
 

@@ -84,7 +84,14 @@ const useSwapRouter = (
         ? routes.map((route) => ({
             queryFn: () =>
               getSwapQuotes(amountSpecified, tradeType, route, miraAmm),
-            queryKey: ["swap-route-quote", route, tradeType],
+            queryKey: [
+              "swap-route-quote",
+              route,
+              tradeType,
+              amountSpecified.toString(),
+              assetIn.assetId,
+              assetOut.assetId,
+            ],
           }))
         : [],
     combine: (results) => ({
