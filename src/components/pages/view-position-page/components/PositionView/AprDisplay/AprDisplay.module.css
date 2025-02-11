@@ -1,0 +1,14 @@
+.pending {
+  color: var(--content-dimmed-light);
+}
+
+.subheading {
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 19px;
+}
+
+.aprBadge {
+  display: flex;
+  align-items: center;
+}

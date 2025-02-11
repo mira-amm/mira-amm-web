@@ -12,6 +12,7 @@ import Loader from "@/src/components/common/Loader/Loader";
 import {usePointsRank} from "@/src/hooks/usePoints/usePoints";
 import pointsStyles from "@/src/components/pages/points-page/PointsStyles.module.css";
 import PointsIcon from "@/src/components/icons/Points/PointsIcon";
+
 const BoostsRewards = (): JSX.Element => {
   const {data: pointsRankArray, isLoading, error} = usePointsRank();
 
