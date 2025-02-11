@@ -29,6 +29,7 @@ type OptimialTrade = {
 type SwapPreviewState = {
   tradeState: TradeState;
   trade: OptimialTrade | undefined;
+  error: string | null;
 };
 
 const getSwapQuotes = (
@@ -108,12 +109,14 @@ const useSwapRouter = (
       return {
         tradeState: TradeState.LOADING,
         trade: undefined,
+        error: null,
       };
 
     if (!assetIn || !assetOut)
       return {
         tradeState: TradeState.INVALID,
         trade: undefined,
+        error: null,
       };
 
     // This can also happen when query throws an error
@@ -121,6 +124,7 @@ const useSwapRouter = (
       return {
         tradeState: TradeState.NO_ROUTE_FOUND,
         trade: undefined,
+        error: amountSpecified.gt(0) ? "No route found for this trade" : null,
       };
 
     const {bestRoute, amountIn, amountOut} = quoteResults.reduce<{
@@ -166,6 +170,7 @@ const useSwapRouter = (
       return {
         tradeState: TradeState.INVALID,
         trade: undefined,
+        error: "Insufficient reserves in pool",
       };
 
     // When refetching, return the previous route
@@ -177,6 +182,7 @@ const useSwapRouter = (
           amountIn,
           amountOut,
         },
+        error: null,
       };
 
     return {
@@ -186,6 +192,7 @@ const useSwapRouter = (
         amountIn,
         amountOut,
       },
+      error: null,
     };
   }, [
     isLoading,

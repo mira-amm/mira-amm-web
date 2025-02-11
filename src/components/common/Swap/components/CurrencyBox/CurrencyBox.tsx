@@ -23,7 +23,7 @@ type Props = {
   loading: boolean;
   onCoinSelectorClick: (mode: CurrencyBoxMode) => void;
   usdRate: number | null;
-  previewError?: Error | null;
+  previewError?: string | null;
 };
 
 const CurrencyBox = ({
@@ -81,23 +81,13 @@ const CurrencyBox = ({
         })
       : null;
 
-  let errorMessage = null;
-  if (previewError) {
-    errorMessage = "This swap is currently unavailable";
-    if (previewError instanceof InsufficientReservesError) {
-      errorMessage = "Insufficient reserves in pool";
-    } else if (previewError instanceof NoRouteFoundError) {
-      errorMessage = "No pool found for this swap";
-    }
-  }
-
   return (
     <div className={styles.currencyBox}>
       <p className={styles.title}>{mode === "buy" ? "Buy" : "Sell"}</p>
       <div className={styles.content}>
-        {errorMessage ? (
+        {previewError ? (
           <div className={styles.warningBox}>
-            <p className={styles.warningLabel}>{errorMessage}</p>
+            <p className={styles.warningLabel}>{previewError}</p>
           </div>
         ) : (
           <input

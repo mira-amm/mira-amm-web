@@ -38,17 +38,7 @@ const useSwapPreview = (swapState: SwapState, mode: CurrencyBoxMode) => {
     tradeType,
   ]);
 
-  const {trade, tradeState} = useSwapRouter(
-    tradeType,
-    rawUserInputAmount,
-    assetIn,
-    assetOut,
-  );
-
-  return {
-    trade,
-    tradeState,
-  };
+  return useSwapRouter(tradeType, rawUserInputAmount, assetIn, assetOut);
 };
 
 export default useSwapPreview;

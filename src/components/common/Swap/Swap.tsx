@@ -21,7 +21,6 @@ import SettingsModalContent from "@/src/components/common/Swap/components/Settin
 import useCheckEthBalance from "@/src/hooks/useCheckEthBalance/useCheckEthBalance";
 import useInitialSwapState from "@/src/hooks/useInitialSwapState/useInitialSwapState";
 import useCheckActiveNetwork from "@/src/hooks/useCheckActiveNetwork";
-import useSwapPreview from "@/src/hooks/useSwapPreview";
 import usePreviewV2 from "@/src/hooks/useSwapPreviewV2";
 import PriceImpact from "@/src/components/common/Swap/components/PriceImpact/PriceImpact";
 import {FuelAppUrl} from "@/src/utils/constants";
@@ -143,13 +142,19 @@ const Swap = () => {
   )?.amount;
   const buyBalanceValue = buyBalance ?? new BN(0);
 
-  const {previewData, previewLoading, previewError, refetchPreview} =
-    useSwapPreview({
-      swapState,
-      mode: activeMode,
-    });
+  // const {previewData, previewLoading, previewError, refetchPreview} =
+  //   useSwapPreview({
+  //     swapState,
+  //     mode: activeMode,
+  //   });
 
-  const {trade, tradeState} = usePreviewV2(swapState, activeMode);
+  const {
+    trade,
+    tradeState,
+    error: previewError,
+  } = usePreviewV2(swapState, activeMode);
+
+  const pools = trade?.bestRoute?.pools.map((pool) => pool.poolId);
 
   const anotherMode = activeMode === "sell" ? "buy" : "sell";
   const decimals =
@@ -344,14 +349,14 @@ const Swap = () => {
     swapState,
     mode: activeMode,
     slippage,
-    pools: trade?.bestRoute?.pools.map((pool) => pool.poolId),
+    pools,
   });
 
   const resetSwapErrors = useCallback(async () => {
-    await refetchPreview();
+    // await refetchPreview();
     resetTxCost();
     resetSwap();
-  }, [refetchPreview, resetSwap, resetTxCost]);
+  }, [resetSwap, resetTxCost]);
 
   const coinMissing =
     swapState.buy.assetId === null || swapState.sell.assetId === null;
@@ -452,8 +457,8 @@ const Swap = () => {
   }, [sellValue, sellMetadata, sellBalanceValue]);
 
   const feePercent =
-    previewData?.pools.reduce((percent, pool) => {
-      const isStablePool = pool[2];
+    trade?.bestRoute?.pools.reduce((percent, {poolId}) => {
+      const isStablePool = poolId[2];
       const poolPercent = isStablePool ? 0.05 : 0.3;
 
       return percent + poolPercent;
@@ -470,12 +475,10 @@ const Swap = () => {
     !isValidNetwork ||
     coinMissing ||
     showInsufficientBalance ||
-    Boolean(previewError) ||
     !sellValue ||
     !buyValue ||
-    previewLoading ||
-    swapButtonTitle === "Input amounts";
-
+    swapButtonTitle === "Input amounts" ||
+    tradeState !== TradeState.VALID;
   useEffect(() => {
     let newSwapButtonTitle = "";
 
@@ -512,11 +515,12 @@ const Swap = () => {
     }
   }, [amountMissing, showInsufficientBalance]);
 
+  const previewLoading = tradeState === TradeState.LOADING;
   const inputPreviewLoading = previewLoading && activeMode === "buy";
   const outputPreviewLoading = previewLoading && activeMode === "sell";
 
   const {reservesPrice} = useReservesPrice({
-    pools: previewData?.pools,
+    pools,
     sellAssetId: swapState.sell.assetId,
     buyAssetId: swapState.buy.assetId,
   });
@@ -536,10 +540,7 @@ const Swap = () => {
   const buyAssetPrice = useAssetPrice(swapState.buy.assetId);
 
   const isActionDisabled =
-    (swapDisabled &&
-      !previewLoading &&
-      !balancesPending &&
-      (txCostPending || amountMissing)) ||
+    (swapDisabled && !balancesPending && (txCostPending || amountMissing)) ||
     showInsufficientBalance;
 
   //If amount is missing txCostPending is irrelevant
@@ -602,7 +603,7 @@ const Swap = () => {
             <div className={styles.summary}>
               <div className={styles.summaryEntry}>
                 <p>Rate</p>
-                {previewLoading ? (
+                {previewLoading || tradeState === TradeState.REEFETCHING ? (
                   <Loader color="gray" />
                 ) : (
                   <p>{exchangeRate}</p>
@@ -612,16 +613,16 @@ const Swap = () => {
               <div className={styles.summaryEntry}>
                 <p>Order routing</p>
                 <div className={styles.feeLine}>
-                  {previewLoading ? (
+                  {previewLoading || tradeState === TradeState.REEFETCHING ? (
                     <Loader color="gray" />
                   ) : (
-                    previewData?.pools.map((pool, index) => {
+                    pools?.map((pool, index) => {
                       const poolKey = createPoolKey(pool);
 
                       return (
                         <div className={styles.poolsFee} key={poolKey}>
                           <SwapRouteItem pool={pool} />
-                          {index !== previewData.pools.length - 1 && "+"}
+                          {index !== pools.length - 1 && "+"}
                         </div>
                       );
                     })
@@ -631,7 +632,7 @@ const Swap = () => {
 
               <div className={styles.summaryEntry}>
                 <p>Estimated fees</p>
-                {previewLoading ? (
+                {previewLoading || tradeState === TradeState.REEFETCHING ? (
                   <Loader color="gray" />
                 ) : (
                   <p>
