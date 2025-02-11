@@ -47,7 +47,6 @@ const CoinListItem = ({assetId, balance, onLoad, icon}: Props) => {
       <Tooltip id="verified-tooltip" />
       {icon ? (
         <picture>
-          <source srcSet={icon} type="image/avif" />
           <img
             src={icon}
             width={32}
