@@ -175,3 +175,20 @@ export const convertDailyRewardsToTotalRewards = (
     (1000 * 60 * 60 * 24);
   return dailyRewards * epochDurationDays;
 };
+
+export const formatDisplayAmount = (amount: string | number) => {
+  const asDecimal = typeof amount === "string" ? parseFloat(amount) : amount;
+  if (asDecimal < 0.00001) {
+    return "<0.00001";
+  }
+
+  return asDecimal.toLocaleString(DefaultLocale, {minimumFractionDigits: 5});
+};
+
+export const formatAprValue = (apr?: {apr: number}): string | null => {
+  if (!apr) return null;
+  return `${apr.apr.toLocaleString(DefaultLocale, {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+  })}%`;
+};
