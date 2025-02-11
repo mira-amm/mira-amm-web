@@ -39,6 +39,7 @@ const CoinListItem = ({assetId, balance, onLoad}: Props) => {
     if (!coinsLoaded && metadata.name && icon) {
       onLoad?.(assetId);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [metadata.name, icon, assetId, onLoad]);
 
   return coinsLoaded ? (
