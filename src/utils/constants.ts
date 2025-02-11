@@ -1,5 +1,10 @@
 import {bn, CHAIN_IDS, TxParams} from "fuels";
 
+export const EXPLORER_BASE_URL_MAP: ReadonlyMap<number, string> = new Map([
+  [CHAIN_IDS.fuel.mainnet, "https://mainnet-explorer.fuel.network"],
+  [CHAIN_IDS.fuel.testnet, "https://testnet-explorer.fuel.network"],
+]);
+
 export const SMART_CONTRACT_MAP: ReadonlyMap<number, string> = new Map([
   [
     CHAIN_IDS.fuel.mainnet,
