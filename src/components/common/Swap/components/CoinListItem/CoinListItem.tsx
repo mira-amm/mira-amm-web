@@ -10,7 +10,7 @@ import {checkIfCoinVerified} from "./checkIfCoinVerified";
 import "react-tooltip/dist/react-tooltip.css";
 import {Tooltip} from "react-tooltip";
 import {useVerifiedAssets} from "@/src/hooks/useVerifiedAssets";
-import Skeleton from "@/src/components/common/Skeleton/Skeleton";
+import Skeleton from "@/src/components/common/Swap/components/CoinListItem/Skeleton/Skeleton";
 import {useLocalStorage} from "usehooks-ts";
 
 type Props = {
