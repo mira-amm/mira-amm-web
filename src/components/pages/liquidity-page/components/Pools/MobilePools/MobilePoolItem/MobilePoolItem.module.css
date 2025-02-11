@@ -13,18 +13,18 @@
 .infoBlocks {
   display: flex;
   justify-content: space-between;
-  gap: 16px; 
+  gap: 16px;
 }
 
 .infoBlocks > .infoBlock {
-  flex: 1; 
-  max-width: 120px; 
+  flex: 1;
+  max-width: 120px;
 }
 
 .poolDescription {
   font-size: 12px;
   line-height: 14px;
-  color: #D4B226;
+  color: #d4b226;
 }
 
 button.addButton {

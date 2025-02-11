@@ -26,7 +26,7 @@
   line-height: 22px;
   display: flex;
   align-items: flex-start;
-  color: var(--content-primary)A3;
+  color: var(--content-primary) A3;
   font-weight: 400;
   flex-direction: column;
   gap: 12px;

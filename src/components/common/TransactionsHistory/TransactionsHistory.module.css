@@ -121,7 +121,7 @@
 }
 
 .transactionDate {
-  color: var(--content-primary)a3;
+  color: var(--content-primary) a3;
   font-weight: 400;
   font-size: 16px;
   line-height: 22px;
@@ -140,7 +140,8 @@
   position: relative;
 }
 
-.transactionCoins svg, .transactionCoins img {
+.transactionCoins svg,
+.transactionCoins img {
   height: 28px;
   width: 28px;
 }
@@ -166,7 +167,7 @@
 }
 
 .transactionAmount {
-  color: var(--content-primary)a3;
+  color: var(--content-primary) a3;
 }
 
 .transactions {
@@ -206,10 +207,11 @@
     to bottom,
     rgba(38, 40, 52, 0) 0%,
     rgba(38, 40, 52, 0.2) 15%,
-    rgba(38, 40, 52, 0.5) 25%, /* Прозрачный цвет в начале */
-    rgba(38, 40, 52, 0.5) 50%,
-    rgba(38, 40, 52, 0.5) 75%, /* Полупрозрачный основной цвет */
-    rgba(38, 40, 52, 0.8) 100% /* Прозрачный цвет в конце */
+    rgba(38, 40, 52, 0.5) 25%,
+    /* Прозрачный цвет в начале */ rgba(38, 40, 52, 0.5) 50%,
+    rgba(38, 40, 52, 0.5) 75%,
+    /* Полупрозрачный основной цвет */ rgba(38, 40, 52, 0.8) 100%
+      /* Прозрачный цвет в конце */
   );
   height: 10%;
   width: 100%;
@@ -235,7 +237,9 @@
     width: 100%;
     max-width: 800px;
     pointer-events: none;
-    transition: transform 0.3s ease, opacity 0.3s ease;
+    transition:
+      transform 0.3s ease,
+      opacity 0.3s ease;
   }
 
   .wrapper.open {

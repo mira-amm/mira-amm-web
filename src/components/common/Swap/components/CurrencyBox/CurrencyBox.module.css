@@ -12,7 +12,9 @@
   border-color: var(--accent-secondary);
 }
 
-.title, .estimate, .balance {
+.title,
+.estimate,
+.balance {
   font-size: 12px;
   line-height: 16px;
   color: var(--content-tertiary);
@@ -52,7 +54,8 @@
   color: var(--content-grey);
 }
 
-.selector svg, .selector img {
+.selector svg,
+.selector img {
   width: 20px;
   height: 20px;
 }
@@ -115,7 +118,8 @@
 }
 
 @media (min-width: 1024px) {
-  .selector svg, .selector img {
+  .selector svg,
+  .selector img {
     width: 24px;
     height: 24px;
   }
@@ -124,7 +128,8 @@
     padding: 12px 16px;
   }
 
-  .title, .balance {
+  .title,
+  .balance {
     font-size: 13px;
     line-height: 18px;
   }

@@ -130,7 +130,8 @@
     line-height: 24px;
   }
 
-  .summary, .summary p {
+  .summary,
+  .summary p {
     font-size: 13px;
     line-height: 18px;
   }

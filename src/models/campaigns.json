@@ -1,57 +1,48 @@
 [
-    {
-        "startDate": "2025-01-15T19:00:00.000Z",
-        "endDate": "2025-03-01T19:00:00.000Z",
-        "number": 1,
-        "campaigns": [
-            {
-                "pool": {
-                    "symbols": [
-                        "USDC",
-                        "USDT"
-                    ],
-                    "id": "286c479da40dc953bddc3bb4c453b608bba2e0ac483b077bd475174115395e6b-a0265fb5c32f6e8db3197af3c7eb05c48ae373605b8165b6f4a51c5b0ba4812e-true",
-                    "lpToken": "0x5a5d495efc4a4a3bf2f0fda8ceb5453cf4630a407430df1c548d213dc58f31d1"
-                },
-                "rewards": [
-                    {
-                        "dailyAmount": 15000,
-                        "assetId": "0x1d5d97005e41cae2187a895fd8eab0506111e0e2f3331cd3912c15c24e3c1d82"
-                    }
-                ]
-            },
-            {
-                "pool": {
-                    "symbols": [
-                        "USDC",
-                        "ETH"
-                    ],
-                    "id": "286c479da40dc953bddc3bb4c453b608bba2e0ac483b077bd475174115395e6b-f8f8b6283d7fa5b672b530cbb84fcccb4ff8dc40f8176ef4544ddb1f1952ad07-false",
-                    "lpToken": "0xeb4287b73f6f3374760be1389a5cf8868e607b2e4de90da6bfa9135c76974f61"
-                },
-                "rewards": [
-                    {
-                        "dailyAmount": 30000,
-                        "assetId": "0x1d5d97005e41cae2187a895fd8eab0506111e0e2f3331cd3912c15c24e3c1d82"
-                    }
-                ]
-            },
-            {
-                "pool": {
-                    "symbols": [
-                        "FUEL",
-                        "ETH"
-                    ],
-                    "id": "1d5d97005e41cae2187a895fd8eab0506111e0e2f3331cd3912c15c24e3c1d82-f8f8b6283d7fa5b672b530cbb84fcccb4ff8dc40f8176ef4544ddb1f1952ad07-false",
-                    "lpToken": "0x98a7587d5dc27bd1eea624e8a403d8e1664a8d06f9b78e9b5476c2468a9c47da"
-                },
-                "rewards": [
-                    {
-                        "dailyAmount": 50000,
-                        "assetId": "0x1d5d97005e41cae2187a895fd8eab0506111e0e2f3331cd3912c15c24e3c1d82"
-                    }
-                ]
-            }
+  {
+    "startDate": "2025-01-15T19:00:00.000Z",
+    "endDate": "2025-03-01T19:00:00.000Z",
+    "number": 1,
+    "campaigns": [
+      {
+        "pool": {
+          "symbols": ["USDC", "USDT"],
+          "id": "286c479da40dc953bddc3bb4c453b608bba2e0ac483b077bd475174115395e6b-a0265fb5c32f6e8db3197af3c7eb05c48ae373605b8165b6f4a51c5b0ba4812e-true",
+          "lpToken": "0x5a5d495efc4a4a3bf2f0fda8ceb5453cf4630a407430df1c548d213dc58f31d1"
+        },
+        "rewards": [
+          {
+            "dailyAmount": 15000,
+            "assetId": "0x1d5d97005e41cae2187a895fd8eab0506111e0e2f3331cd3912c15c24e3c1d82"
+          }
         ]
-    }
+      },
+      {
+        "pool": {
+          "symbols": ["USDC", "ETH"],
+          "id": "286c479da40dc953bddc3bb4c453b608bba2e0ac483b077bd475174115395e6b-f8f8b6283d7fa5b672b530cbb84fcccb4ff8dc40f8176ef4544ddb1f1952ad07-false",
+          "lpToken": "0xeb4287b73f6f3374760be1389a5cf8868e607b2e4de90da6bfa9135c76974f61"
+        },
+        "rewards": [
+          {
+            "dailyAmount": 30000,
+            "assetId": "0x1d5d97005e41cae2187a895fd8eab0506111e0e2f3331cd3912c15c24e3c1d82"
+          }
+        ]
+      },
+      {
+        "pool": {
+          "symbols": ["FUEL", "ETH"],
+          "id": "1d5d97005e41cae2187a895fd8eab0506111e0e2f3331cd3912c15c24e3c1d82-f8f8b6283d7fa5b672b530cbb84fcccb4ff8dc40f8176ef4544ddb1f1952ad07-false",
+          "lpToken": "0x98a7587d5dc27bd1eea624e8a403d8e1664a8d06f9b78e9b5476c2468a9c47da"
+        },
+        "rewards": [
+          {
+            "dailyAmount": 50000,
+            "assetId": "0x1d5d97005e41cae2187a895fd8eab0506111e0e2f3331cd3912c15c24e3c1d82"
+          }
+        ]
+      }
+    ]
+  }
 ]

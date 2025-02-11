@@ -1,45 +1,45 @@
 .stepsBlock {
-    background-color: #262934;
-    border-radius: 16px;
-    width: 350px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 16px;
-    padding: 28px 24px 40px 24px;
-    box-sizing: border-box;
+  background-color: #262934;
+  border-radius: 16px;
+  width: 350px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  padding: 28px 24px 40px 24px;
+  box-sizing: border-box;
 }
 
 .title {
-    font-weight: 500;
-    font-size: 26px;
-    line-height: 32px;
-    text-align: center;
-    margin: 22px 0 0 0;
-    font-family: var(--font-inter);
+  font-weight: 500;
+  font-size: 26px;
+  line-height: 32px;
+  text-align: center;
+  margin: 22px 0 0 0;
+  font-family: var(--font-inter);
 }
 
 .description {
-    font-weight: 400;
-    color: var(--content-dimmed-light);
-    font-size: 16px;
-    line-height: 24px;
-    text-align: center;
+  font-weight: 400;
+  color: var(--content-dimmed-light);
+  font-size: 16px;
+  line-height: 24px;
+  text-align: center;
 }
 
 @media (max-width: 1024px) {
-    .stepsBlock {
-        width: 100%;
-        padding: 28px 24px 32px 24px;
-    }
+  .stepsBlock {
+    width: 100%;
+    padding: 28px 24px 32px 24px;
+  }
 
-    .title {
-        font-size: 24px;
-        line-height: 30px;
-    }
+  .title {
+    font-size: 24px;
+    line-height: 30px;
+  }
 
-    .description {
-        font-size: 16px;
-        line-height: 24px;
-    }
+  .description {
+    font-size: 16px;
+    line-height: 24px;
+  }
 }

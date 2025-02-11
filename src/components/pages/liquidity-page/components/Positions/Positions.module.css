@@ -39,7 +39,12 @@
   justify-content: center;
   border-radius: 40px;
   color: var(--content-primary);
-  background: linear-gradient(96.75deg, #BEFA15 -106.79%, #5872FC 48.13%, #C41CFF 168.79%);
+  background: linear-gradient(
+    96.75deg,
+    #befa15 -106.79%,
+    #5872fc 48.13%,
+    #c41cff 168.79%
+  );
 }
 
 .viewArchivedButton {
@@ -48,7 +53,6 @@
   border: none;
   cursor: pointer;
 }
-
 
 @media (min-width: 1024px) {
   .positionsFallback img {
