@@ -2,9 +2,9 @@ import {useQuery} from "@tanstack/react-query";
 import useReadonlyMira from "@/src/hooks/useReadonlyMira";
 import useBalances from "@/src/hooks/useBalances/useBalances";
 import request, {gql} from "graphql-request";
-import {SQDIndexerUrl} from "../utils/constants";
 import {createPoolIdFromIdString} from "../utils/common";
 import {Asset, PoolId} from "mira-dex-ts";
+import useSQDIndexerUrl from "./useSQDIndexerUrl";
 
 export interface Position {
   poolId: PoolId;
@@ -23,6 +23,8 @@ export interface Position {
 const usePositions = (): {data: Position[] | undefined; isLoading: boolean} => {
   const mira = useReadonlyMira();
   const {balances} = useBalances();
+
+  const sqdIndexerUrl = useSQDIndexerUrl();
 
   const miraExists = Boolean(mira);
 
@@ -54,7 +56,7 @@ const usePositions = (): {data: Position[] | undefined; isLoading: boolean} => {
       `;
 
       const result = await request<{pools: any[]}>({
-        url: SQDIndexerUrl,
+        url: sqdIndexerUrl,
         document: query,
       });
 

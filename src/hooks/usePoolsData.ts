@@ -1,6 +1,5 @@
 import {useQuery} from "@tanstack/react-query";
 import {CoinName} from "@/src/utils/coinsConfig";
-import {SQDIndexerUrl} from "@/src/utils/constants";
 import request, {gql} from "graphql-request";
 import {
   NumberParam,
@@ -8,6 +7,7 @@ import {
   useQueryParams,
   withDefault,
 } from "use-query-params";
+import useSQDIndexerUrl from "./useSQDIndexerUrl";
 
 export type PoolData = {
   id: string;
@@ -51,6 +51,8 @@ export const usePoolsData = () => {
     search: withDefault(StringParam, DEFAULT_SEARCH),
     orderBy: withDefault(StringParam, DEFAULT_ORDER_BY),
   });
+
+  const sqdIndexerUrl = useSQDIndexerUrl();
 
   const {page, search, orderBy} = queryVariables;
 
@@ -111,7 +113,7 @@ export const usePoolsData = () => {
     queryKey: ["pools", page, orderBy, search],
     queryFn: () =>
       request({
-        url: SQDIndexerUrl,
+        url: sqdIndexerUrl,
         document: query,
         variables: {
           first: ITEMS_IN_PAGE,

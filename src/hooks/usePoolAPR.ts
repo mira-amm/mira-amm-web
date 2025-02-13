@@ -1,11 +1,12 @@
 import {useQuery} from "@tanstack/react-query";
 import {PoolId} from "mira-dex-ts";
 import {createPoolIdString} from "@/src/utils/common";
-import {SQDIndexerUrl} from "@/src/utils/constants";
 import request, {gql} from "graphql-request";
+import useSQDIndexerUrl from "./useSQDIndexerUrl";
 
 const usePoolAPR = (pool: PoolId) => {
   const poolIdString = createPoolIdString(pool);
+  const sqdIndexerUrl = useSQDIndexerUrl();
 
   const {data, isPending} = useQuery({
     queryKey: ["poolAPR", poolIdString],
@@ -23,7 +24,7 @@ const usePoolAPR = (pool: PoolId) => {
       `;
 
       const result = await request<any>({
-        url: SQDIndexerUrl,
+        url: sqdIndexerUrl,
         document: query,
       });
       const fees24h = result.poolById.snapshots.reduce(

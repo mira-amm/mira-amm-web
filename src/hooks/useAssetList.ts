@@ -1,12 +1,14 @@
 import request, {gql} from "graphql-request";
-import {SQDIndexerUrl} from "../utils/constants";
 import {useQuery} from "@tanstack/react-query";
 import {CoinDataWithPrice, coinsConfig} from "../utils/coinsConfig";
+import useSQDIndexerUrl from "./useSQDIndexerUrl";
 
 export const useAssetList = (): {
   assets: CoinDataWithPrice[];
   isLoading: boolean;
 } => {
+  const sqdIndexerUrl = useSQDIndexerUrl();
+
   const {data, isLoading} = useQuery<any>({
     queryKey: ["assets"],
     queryFn: async () => {
@@ -28,7 +30,7 @@ export const useAssetList = (): {
       `;
 
       const results = await request<{assets: any}>({
-        url: SQDIndexerUrl,
+        url: sqdIndexerUrl,
         document: query,
       });
 

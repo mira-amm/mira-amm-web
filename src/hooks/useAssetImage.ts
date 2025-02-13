@@ -1,10 +1,12 @@
 import {useQuery} from "@tanstack/react-query";
 import {coinsConfig} from "../utils/coinsConfig";
 import request, {gql} from "graphql-request";
-import {SQDIndexerUrl} from "../utils/constants";
 import defaultImage from "@/assets/unknown-asset.svg";
+import useSQDIndexerUrl from "./useSQDIndexerUrl";
 
 export const useAssetImage = (assetId: string | null): string | null => {
+  const sqdIndexerUrl = useSQDIndexerUrl();
+
   const {data} = useQuery<string | null>({
     queryKey: ["assetImage", assetId],
     queryFn: async () => {
@@ -23,7 +25,7 @@ export const useAssetImage = (assetId: string | null): string | null => {
 
       const results = await request<{assetById: any}>({
         document: query,
-        url: SQDIndexerUrl,
+        url: sqdIndexerUrl,
       });
 
       if (results.assetById.image) {

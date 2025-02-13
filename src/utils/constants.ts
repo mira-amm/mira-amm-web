@@ -49,6 +49,16 @@ export const IndexerUrl =
 export const SQDIndexerUrl =
   "https://mira-dex.squids.live/mira-indexer@v3/api/graphql" as const;
 export const MainnetUrl = "https://mainnet-explorer.fuel.network";
+export const SQDIndexerUrlMainnet =
+  "https://mira-dex.squids.live/mira-indexer@v3/api/graphql" as const;
+export const SQDIndexerUrlTestnet =
+  "https://mira-dex.squids.live/mira-testnet-indexer@v1/api/graphql" as const;
+
+export const SQD_INDEXER_URL_MAP: ReadonlyMap<number, string> = new Map([
+  [CHAIN_IDS.fuel.mainnet, SQDIndexerUrlMainnet],
+  [CHAIN_IDS.fuel.testnet, SQDIndexerUrlTestnet],
+]);
+
 export const ApiBaseUrl = "https://prod.api.mira.ly" as const;
 
 const FuelAppUrlMainnet = "https://app.fuel.network" as const;

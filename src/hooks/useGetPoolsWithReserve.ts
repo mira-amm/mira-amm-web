@@ -2,8 +2,8 @@ import {PoolId} from "mira-dex-ts";
 import {CoinData} from "../utils/coinsConfig";
 import {skipToken, useQuery} from "@tanstack/react-query";
 import request, {gql} from "graphql-request";
-import {SQDIndexerUrl} from "../utils/constants";
 import {useMemo} from "react";
+import useSQDIndexerUrl from "./useSQDIndexerUrl";
 
 type PoolReserveData = {
   reserve0: string;
@@ -28,6 +28,8 @@ const useGetPoolsWithReserve = (
   poolKeys: [CoinData, CoinData, PoolId, boolean][],
   shouldFetchPools: boolean,
 ) => {
+  const sqdIndexerUrl = useSQDIndexerUrl();
+
   const poolQueries = poolKeys
     .map(([, , [assetA, assetB], stable], idx) => {
       const poolId = `${assetA.bits}-${assetB.bits}-${stable}`;
@@ -58,7 +60,7 @@ const useGetPoolsWithReserve = (
     queryFn: shouldFetchPools
       ? () =>
           request({
-            url: SQDIndexerUrl,
+            url: sqdIndexerUrl,
             document: gqlQuery,
           })
       : skipToken,

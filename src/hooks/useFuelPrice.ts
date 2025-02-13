@@ -1,8 +1,10 @@
 import {useQuery} from "@tanstack/react-query";
 import request, {gql} from "graphql-request";
-import {SQDIndexerUrl} from "../utils/constants";
+import useSQDIndexerUrl from "./useSQDIndexerUrl";
 
 export const useFuelPrice = (): {price: number; isLoading: boolean} => {
+  const sqdIndexerUrl = useSQDIndexerUrl();
+
   const {data, isLoading} = useQuery<{fuel: {price: string} | null}>({
     queryKey: ["fuelPrice"],
     queryFn: async () => {
@@ -17,7 +19,7 @@ export const useFuelPrice = (): {price: number; isLoading: boolean} => {
       `;
       const response = await request<{fuel: {price: string} | null}>({
         document: query,
-        url: SQDIndexerUrl,
+        url: sqdIndexerUrl,
       });
       return response;
     },
