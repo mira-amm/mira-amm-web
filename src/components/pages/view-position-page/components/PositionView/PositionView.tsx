@@ -29,7 +29,7 @@ import {bn, formatUnits} from "fuels";
 import useAssetMetadata from "@/src/hooks/useAssetMetadata";
 import AprBadge from "@/src/components/common/AprBadge/AprBadge";
 import usePoolNameAndMatch from "@/src/hooks/usePoolNameAndMatch";
-import useContractId from "@/src/hooks/useContractId";
+import useContractId from "@/src/hooks/network/useContractId";
 
 type Props = {
   pool: PoolId;

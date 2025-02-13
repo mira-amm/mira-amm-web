@@ -5,7 +5,7 @@ import ActionButton from "@/src/components/common/ActionButton/ActionButton";
 import {useCallback} from "react";
 import {openNewTab} from "@/src/utils/common";
 import useAssetMetadata from "@/src/hooks/useAssetMetadata";
-import useAppUrl from "@/src/hooks/useAppUrl";
+import useAppUrl from "@/src/hooks/network/useAppUrl";
 
 type Props = {
   swapState: SwapState;

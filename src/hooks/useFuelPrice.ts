@@ -1,6 +1,6 @@
 import {useQuery} from "@tanstack/react-query";
 import request, {gql} from "graphql-request";
-import useSQDIndexerUrl from "./useSQDIndexerUrl";
+import useSQDIndexerUrl from "./network/useSQDIndexerUrl";
 
 export const useFuelPrice = (): {price: number; isLoading: boolean} => {
   const sqdIndexerUrl = useSQDIndexerUrl();

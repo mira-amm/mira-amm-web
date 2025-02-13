@@ -7,7 +7,7 @@ import {
   useQueryParams,
   withDefault,
 } from "use-query-params";
-import useSQDIndexerUrl from "./useSQDIndexerUrl";
+import useSQDIndexerUrl from "./network/useSQDIndexerUrl";
 
 export type PoolData = {
   id: string;

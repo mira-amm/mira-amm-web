@@ -16,7 +16,7 @@ import IconButton from "../IconButton/IconButton";
 import CloseIcon from "../../icons/Close/CloseIcon";
 import {useEffect, useState} from "react";
 import {boosterBannerTitle} from "@/src/utils/constants";
-import useAppUrl from "@/src/hooks/useAppUrl";
+import useAppUrl from "@/src/hooks/network/useAppUrl";
 
 type Props = {
   isHomePage?: boolean;

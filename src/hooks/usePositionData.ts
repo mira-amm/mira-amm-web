@@ -3,7 +3,7 @@ import {useQuery} from "@tanstack/react-query";
 import {getLPAssetId, PoolId} from "mira-dex-ts";
 import useBalances from "@/src/hooks/useBalances/useBalances";
 import {bn} from "fuels";
-import useContractId from "./useContractId";
+import useContractId from "./network/useContractId";
 
 type Props = {
   pool: PoolId;

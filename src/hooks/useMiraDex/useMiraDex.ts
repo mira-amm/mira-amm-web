@@ -2,7 +2,7 @@ import {useWallet} from "@fuels/react";
 import {MiraAmm} from "mira-dex-ts";
 import {useMemo} from "react";
 
-import useContractId from "../useContractId";
+import useContractId from "../network/useContractId";
 
 const useMiraDex = () => {
   const {wallet} = useWallet();

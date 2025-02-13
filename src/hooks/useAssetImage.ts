@@ -2,7 +2,7 @@ import {useQuery} from "@tanstack/react-query";
 import {coinsConfig} from "../utils/coinsConfig";
 import request, {gql} from "graphql-request";
 import defaultImage from "@/assets/unknown-asset.svg";
-import useSQDIndexerUrl from "./useSQDIndexerUrl";
+import useSQDIndexerUrl from "./network/useSQDIndexerUrl";
 
 export const useAssetImage = (assetId: string | null): string | null => {
   const sqdIndexerUrl = useSQDIndexerUrl();

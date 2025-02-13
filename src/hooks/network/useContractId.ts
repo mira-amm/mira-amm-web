@@ -1,7 +1,7 @@
 import {CHAIN_IDS} from "fuels";
 import {useProvider} from "@fuels/react";
 
-import {SMART_CONTRACT_MAP} from "../utils/constants";
+import {SMART_CONTRACT_MAP} from "../../utils/constants";
 
 const defaultValue = SMART_CONTRACT_MAP.get(CHAIN_IDS.fuel.mainnet) ?? "";
 

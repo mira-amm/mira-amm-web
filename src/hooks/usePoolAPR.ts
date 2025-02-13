@@ -2,7 +2,7 @@ import {useQuery} from "@tanstack/react-query";
 import {PoolId} from "mira-dex-ts";
 import {createPoolIdString} from "@/src/utils/common";
 import request, {gql} from "graphql-request";
-import useSQDIndexerUrl from "./useSQDIndexerUrl";
+import useSQDIndexerUrl from "./network/useSQDIndexerUrl";
 
 const usePoolAPR = (pool: PoolId) => {
   const poolIdString = createPoolIdString(pool);

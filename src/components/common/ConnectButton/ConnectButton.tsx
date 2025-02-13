@@ -16,7 +16,7 @@ import {CopyNotification} from "../../common/CopyNotification/CopyNotification";
 import {ArrowDownIcon} from "../../icons/ArrowDown/ArrowDownIcon";
 import {ArrowUpIcon} from "../../icons/ArrowUp/ArrowUpIcon";
 import DropDownMenu from "../DropDownMenu/DropDownMenu";
-import useAppUrl from "@/src/hooks/useAppUrl";
+import useAppUrl from "@/src/hooks/network/useAppUrl";
 
 type Props = {
   className?: string;

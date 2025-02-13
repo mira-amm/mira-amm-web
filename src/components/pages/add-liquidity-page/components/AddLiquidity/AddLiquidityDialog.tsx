@@ -37,7 +37,7 @@ import useAssetMetadata from "@/src/hooks/useAssetMetadata";
 import {useAssetPrice} from "@/src/hooks/useAssetPrice";
 import AprBadge from "@/src/components/common/AprBadge/AprBadge";
 import usePoolNameAndMatch from "@/src/hooks/usePoolNameAndMatch";
-import useAppUrl from "@/src/hooks/useAppUrl";
+import useAppUrl from "@/src/hooks/network/useAppUrl";
 
 type Props = {
   poolId: PoolId;

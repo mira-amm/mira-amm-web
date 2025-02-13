@@ -1,7 +1,7 @@
 import request, {gql} from "graphql-request";
 import {useQuery} from "@tanstack/react-query";
 import {CoinDataWithPrice, coinsConfig} from "../utils/coinsConfig";
-import useSQDIndexerUrl from "./useSQDIndexerUrl";
+import useSQDIndexerUrl from "./network/useSQDIndexerUrl";
 
 export const useAssetList = (): {
   assets: CoinDataWithPrice[];

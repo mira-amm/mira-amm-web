@@ -4,7 +4,7 @@ import useBalances from "@/src/hooks/useBalances/useBalances";
 import request, {gql} from "graphql-request";
 import {createPoolIdFromIdString} from "../utils/common";
 import {Asset, PoolId} from "mira-dex-ts";
-import useSQDIndexerUrl from "./useSQDIndexerUrl";
+import useSQDIndexerUrl from "./network/useSQDIndexerUrl";
 
 export interface Position {
   poolId: PoolId;

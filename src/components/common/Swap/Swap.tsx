@@ -34,7 +34,7 @@ import {SlippageSetting} from "../SlippageSetting/SlippageSetting";
 import Loader from "@/src/components/common/Loader/Loader";
 import {ScriptTransactionRequest, TransactionCost} from "fuels";
 import {TradeState} from "@/src/hooks/useSwapRouter";
-import useAppUrl from "@/src/hooks/useAppUrl";
+import useAppUrl from "@/src/hooks/network/useAppUrl";
 
 export type CurrencyBoxMode = "buy" | "sell";
 export type CurrencyBoxState = {

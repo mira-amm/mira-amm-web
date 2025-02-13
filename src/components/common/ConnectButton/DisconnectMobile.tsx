@@ -12,7 +12,7 @@ import {CopyNotification} from "../../common/CopyNotification/CopyNotification";
 import {openNewTab} from "@/src/utils/common";
 import TransactionsHistory from "@/src/components/common/TransactionsHistory/TransactionsHistory";
 import {useScrollLock} from "usehooks-ts";
-import useAppUrl from "@/src/hooks/useAppUrl";
+import useAppUrl from "@/src/hooks/network/useAppUrl";
 
 type Props = {
   className?: string;

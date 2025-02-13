@@ -1,7 +1,7 @@
 import {useAccount} from "@fuels/react";
 import {useMemo} from "react";
 import {useIsClient} from "usehooks-ts";
-import useAppUrl from "./useAppUrl";
+import useAppUrl from "./network/useAppUrl";
 
 const useFaucetLink = () => {
   const {account} = useAccount();

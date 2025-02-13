@@ -2,7 +2,7 @@ import {useQuery} from "@tanstack/react-query";
 import {ZeroBytes32} from "fuels";
 import {BASE_ASSET_CONTRACT, ETH_ASSET_ID} from "../utils/constants";
 import {useAssetList} from "./useAssetList";
-import useExplorerBaseUrl from "./useExplorerBaseUrl";
+import useExplorerBaseUrl from "./network/useExplorerBaseUrl";
 
 export const useAssetMinterContract = (
   assetId: string | null,
