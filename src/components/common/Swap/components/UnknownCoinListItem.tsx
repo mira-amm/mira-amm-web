@@ -2,6 +2,7 @@ import useAssetMetadata from "@/src/hooks/useAssetMetadata";
 import CoinListItem from "./CoinListItem/CoinListItem";
 import {CoinQuantity} from "fuels";
 import styles from "./CoinsListModal/CoinsListModal.module.css";
+import SkeletonLoader from "./SkeletonLoader/SkeletonLoader";
 
 interface Props {
   assetId: string;
@@ -25,7 +26,7 @@ export default function UnknownCoinListItem({
   }
 
   if (metadata.isLoading) {
-    return <div style={{padding: "8px 16px"}}>Loading...</div>;
+    return <SkeletonLoader isLoading={true} count={1} textLines={1} />;
   }
 
   return <div style={{padding: "8px 16px"}}>Asset not found</div>;
