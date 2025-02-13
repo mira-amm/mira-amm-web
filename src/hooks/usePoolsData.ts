@@ -110,7 +110,7 @@ export const usePoolsData = () => {
   `;
 
   const {data, isLoading} = useQuery<any>({
-    queryKey: ["pools", page, orderBy, search],
+    queryKey: ["pools", page, orderBy, search, sqdIndexerUrl],
     queryFn: () =>
       request({
         url: sqdIndexerUrl,
