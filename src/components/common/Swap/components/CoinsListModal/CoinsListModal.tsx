@@ -124,9 +124,6 @@ const CoinsListModal = ({selectCoin, balances, verifiedAssetsOnly}: Props) => {
     });
   }, [filteredCoinsList, balances]);
 
-  console.log("sortedCoinsList", sortedCoinsList);
-  console.log("filteredCoinsList", filteredCoinsList);
-
   return (
     <>
       <div className={styles.tokenSearch}>
