@@ -1,3 +1,4 @@
+import {useMemo} from "react";
 import {CHAIN_IDS} from "fuels";
 import {useProvider} from "@fuels/react";
 
@@ -8,7 +9,11 @@ const defaultValue = SMART_CONTRACT_MAP.get(CHAIN_IDS.fuel.mainnet) ?? "";
 export default function useContractId(): string {
   const {provider} = useProvider();
 
-  if (!provider) return defaultValue;
+  const contractId = useMemo(() => {
+    if (!provider) return defaultValue;
 
-  return SMART_CONTRACT_MAP.get(provider.getChainId()) ?? defaultValue;
+    return SMART_CONTRACT_MAP.get(provider.getChainId()) ?? defaultValue;
+  }, [provider]);
+
+  return contractId;
 }

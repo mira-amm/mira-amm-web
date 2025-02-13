@@ -1,3 +1,4 @@
+import {useMemo} from "react";
 import {CHAIN_IDS} from "fuels";
 import {useProvider} from "@fuels/react";
 
@@ -8,7 +9,11 @@ const defaultValue = EXPLORER_BASE_URL_MAP.get(CHAIN_IDS.fuel.mainnet) ?? "";
 export default function useExplorerBaseUrl(): string {
   const {provider} = useProvider();
 
-  if (!provider) return defaultValue;
+  const explorerBaseUrl = useMemo(() => {
+    if (!provider) return defaultValue;
 
-  return EXPLORER_BASE_URL_MAP.get(provider.getChainId()) ?? defaultValue;
+    return EXPLORER_BASE_URL_MAP.get(provider.getChainId()) ?? defaultValue;
+  }, [provider]);
+
+  return explorerBaseUrl;
 }

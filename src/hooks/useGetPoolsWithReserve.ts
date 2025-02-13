@@ -3,7 +3,7 @@ import {CoinData} from "../utils/coinsConfig";
 import {skipToken, useQuery} from "@tanstack/react-query";
 import request, {gql} from "graphql-request";
 import {useMemo} from "react";
-import useSQDIndexerUrl from "./useSQDIndexerUrl";
+import useSQDIndexerUrl from "./network/useSQDIndexerUrl";
 
 type PoolReserveData = {
   reserve0: string;
