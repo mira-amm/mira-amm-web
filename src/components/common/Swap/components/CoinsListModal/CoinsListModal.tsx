@@ -49,8 +49,8 @@ const CoinsListModal = ({selectCoin, balances, verifiedAssetsOnly}: Props) => {
     return (
       coin.name?.toLowerCase().includes(lowerCaseValue) ||
       coin.symbol?.toLowerCase().includes(lowerCaseValue) ||
-      coin.assetId?.toLowerCase() === value ||
-      coin.l1Address?.toLowerCase() === value
+      coin.assetId?.toLowerCase() === lowerCaseValue ||
+      coin.l1Address?.toLowerCase() === lowerCaseValue
     );
   };
 
@@ -123,6 +123,9 @@ const CoinsListModal = ({selectCoin, balances, verifiedAssetsOnly}: Props) => {
       return 0;
     });
   }, [filteredCoinsList, balances]);
+
+  console.log("sortedCoinsList", sortedCoinsList);
+  console.log("filteredCoinsList", filteredCoinsList);
 
   return (
     <>
