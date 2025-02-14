@@ -21,17 +21,22 @@ import {CopyNotification} from "../../common/CopyNotification/CopyNotification";
 import {openNewTab} from "@/src/utils/common";
 import TransactionsHistory from "@/src/components/common/TransactionsHistory/TransactionsHistory";
 import {FuelAppUrl} from "@/src/utils/constants";
-import {useScrollLock} from "usehooks-ts";
+import {useDebounceValue, useScrollLock} from "usehooks-ts";
 
 type Props = {
   className?: string;
 };
 
 const ConnectButton = ({className}: Props) => {
-  const {isConnected, isFetching} = useIsConnected();
+  const {
+    isConnected,
+    // todo: find the root cause of the value flickering in the useIsConnected hook from fuel
+    isFetching: isFetchingFlickering,
+  } = useIsConnected();
   const {connect, isConnecting} = useConnectUI();
   const {disconnect, isPending: disconnectLoading} = useDisconnect();
   const {account} = useAccount();
+  const [isFetching] = useDebounceValue(isFetchingFlickering, 300);
 
   const {lock, unlock} = useScrollLock({autoLock: false});
 
