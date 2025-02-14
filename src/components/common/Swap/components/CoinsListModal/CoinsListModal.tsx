@@ -10,6 +10,7 @@ import {useQuery} from "@tanstack/react-query";
 import {VerifiedAssets} from "../CoinListItem/checkIfCoinVerified";
 import EmptySearchResults from "../EmptySearchResults";
 import {CoinDataWithPrice} from "@/src/utils/coinsConfig";
+import SkeletonLoader from "../SkeletonLoader/SkeletonLoader";
 
 type Props = {
   selectCoin: (assetId: string | null) => void;
@@ -23,7 +24,7 @@ const lowPriorityOrder: string[] = ["DUCKY"];
 const assetIdRegex = /^0x[0-9a-fA-F]{64}$/;
 
 const CoinsListModal = ({selectCoin, balances, verifiedAssetsOnly}: Props) => {
-  const {assets} = useAssetList();
+  const {assets, isLoading} = useAssetList();
   const [value, setValue] = useState("");
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -136,33 +137,39 @@ const CoinsListModal = ({selectCoin, balances, verifiedAssetsOnly}: Props) => {
           ref={inputRef}
         />
       </div>
-      <div className={styles.tokenList}>
-        {sortedCoinsList.length === 0 && value !== "" && (
-          <>
-            {assetIdRegex.test(value) ? (
-              <UnknownCoinListItem
-                assetId={value}
-                balance={balances?.find((b) => b.assetId === value)}
-                onClick={() => selectCoin(value)}
+      <SkeletonLoader
+        isLoading={isLoading && assets !== undefined}
+        count={8}
+        textLines={2}
+      >
+        <div className={styles.tokenList}>
+          {sortedCoinsList.length === 0 && value !== "" && (
+            <>
+              {assetIdRegex.test(value) ? (
+                <UnknownCoinListItem
+                  assetId={value}
+                  balance={balances?.find((b) => b.assetId === value)}
+                  onClick={() => selectCoin(value)}
+                />
+              ) : (
+                <EmptySearchResults value={value} />
+              )}
+            </>
+          )}
+          {sortedCoinsList.map(({assetId}) => (
+            <div
+              className={styles.tokenListItem}
+              onClick={() => selectCoin(assetId)}
+              key={assetId}
+            >
+              <CoinListItem
+                assetId={assetId}
+                balance={balances?.find((b) => b.assetId === assetId)}
               />
-            ) : (
-              <EmptySearchResults value={value} />
-            )}
-          </>
-        )}
-        {sortedCoinsList.map(({assetId}) => (
-          <div
-            className={styles.tokenListItem}
-            onClick={() => selectCoin(assetId)}
-            key={assetId}
-          >
-            <CoinListItem
-              assetId={assetId}
-              balance={balances?.find((b) => b.assetId === assetId)}
-            />
-          </div>
-        ))}
-      </div>
+            </div>
+          ))}
+        </div>
+      </SkeletonLoader>
     </>
   );
 };
