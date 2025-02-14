@@ -31,12 +31,14 @@ const ConnectButton = ({className}: Props) => {
   const {
     isConnected,
     // todo: find the root cause of the value flickering in the useIsConnected hook from fuel
-    isFetching: isFetchingFlickering,
+    isFetching,
+    isFetchedAfterMount,
   } = useIsConnected();
   const {connect, isConnecting} = useConnectUI();
   const {disconnect, isPending: disconnectLoading} = useDisconnect();
   const {account} = useAccount();
-  const [isFetching] = useDebounceValue(isFetchingFlickering, 300);
+
+  const isFetchingInitConnectionStatus = isFetching && !isFetchedAfterMount;
 
   const {lock, unlock} = useScrollLock({autoLock: false});
 
@@ -50,7 +52,8 @@ const ConnectButton = ({className}: Props) => {
   //   }
   // }, [account, isConnected]);
 
-  const loading = isConnecting || disconnectLoading || isFetching;
+  const loading =
+    isConnecting || disconnectLoading || isFetchingInitConnectionStatus;
 
   const [isMenuOpened, setMenuOpened] = useState(false);
   const [isHistoryOpened, setHistoryOpened] = useState(false);
