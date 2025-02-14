@@ -9,6 +9,7 @@ import UnknownCoinListItem from "../UnknownCoinListItem";
 import {useQuery} from "@tanstack/react-query";
 import {VerifiedAssets} from "../CoinListItem/checkIfCoinVerified";
 import EmptySearchResults from "../EmptySearchResults";
+import {CoinDataWithPrice} from "@/src/utils/coinsConfig";
 
 type Props = {
   selectCoin: (assetId: string | null) => void;
@@ -24,7 +25,6 @@ const assetIdRegex = /^0x[0-9a-fA-F]{64}$/;
 const CoinsListModal = ({selectCoin, balances, verifiedAssetsOnly}: Props) => {
   const {assets} = useAssetList();
   const [value, setValue] = useState("");
-
   const inputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
@@ -37,19 +37,31 @@ const CoinsListModal = ({selectCoin, balances, verifiedAssetsOnly}: Props) => {
     setValue(e.target.value);
   };
 
+  const filterByVerification = (
+    coin: CoinDataWithPrice,
+    verifiedAssetsOnly?: boolean,
+  ) => {
+    return !verifiedAssetsOnly || coin.isVerified;
+  };
+
+  const filterBySearchValue = (coin: CoinDataWithPrice, value: string) => {
+    const lowerCaseValue = value.toLowerCase();
+    return (
+      coin.name?.toLowerCase().includes(lowerCaseValue) ||
+      coin.symbol?.toLowerCase().includes(lowerCaseValue) ||
+      coin.assetId?.toLowerCase() === lowerCaseValue ||
+      coin.l1Address?.toLowerCase() === lowerCaseValue
+    );
+  };
+
   const filteredCoinsList = useMemo(() => {
     return (assets || []).filter((coin) => {
-      if (verifiedAssetsOnly && !coin.isVerified) {
-        return false;
-      }
-
       return (
-        coin.name?.toLowerCase().includes(value.toLowerCase()) ||
-        coin.symbol?.toLowerCase().includes(value.toLowerCase()) ||
-        coin.assetId?.toLowerCase() === value.toLowerCase()
+        filterByVerification(coin, verifiedAssetsOnly) &&
+        filterBySearchValue(coin, value)
       );
     });
-  }, [verifiedAssetsOnly, value, assets]);
+  }, [assets, verifiedAssetsOnly, value]);
 
   // TODO: Pre-sort the list by priorityOrder and alphabet to avoid sorting each time
   const sortedCoinsList = useMemo(() => {
@@ -111,6 +123,7 @@ const CoinsListModal = ({selectCoin, balances, verifiedAssetsOnly}: Props) => {
       return 0;
     });
   }, [filteredCoinsList, balances]);
+
   return (
     <>
       <div className={styles.tokenSearch}>
