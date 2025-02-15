@@ -25,9 +25,10 @@ import {useScrollLock} from "usehooks-ts";
 
 type Props = {
   className?: string;
+  isWidget?: boolean;
 };
 
-const ConnectButton = ({className}: Props) => {
+const ConnectButton = ({className, isWidget}: Props) => {
   const {isConnected} = useIsConnected();
   const {connect, isConnecting} = useConnectUI();
   const {disconnect, isPending: disconnectLoading} = useDisconnect();
@@ -149,22 +150,22 @@ const ConnectButton = ({className}: Props) => {
   };
 
   const menuButtons = useMemo(() => {
-    return DropDownButtons.map((button) => {
-      return {
-        ...button,
-        onClick:
-          button.text === "Disconnect"
-            ? handleDisconnect
-            : button.text === "Transaction History"
-              ? handleHistoryOpen
-              : button.text === "Copy Address"
-                ? handleCopy
-                : button.text === "View in Explorer"
-                  ? handleExplorerClick
-                  : button.onClick,
-      };
-    });
-  }, [handleDisconnect, handleCopy, handleExplorerClick]);
+    return DropDownButtons.filter(
+      ({text}) => !isWidget || text === "Disconnect" || text === "Copy Address",
+    ).map((button) => ({
+      ...button,
+      onClick:
+        button.text === "Disconnect"
+          ? handleDisconnect
+          : button.text === "Transaction History"
+            ? handleHistoryOpen
+            : button.text === "Copy Address"
+              ? handleCopy
+              : button.text === "View in Explorer"
+                ? handleExplorerClick
+                : button.onClick,
+    }));
+  }, [handleDisconnect, handleCopy, handleExplorerClick, isWidget]);
 
   useEffect(() => {
     if (isHistoryOpened) {
@@ -176,25 +177,29 @@ const ConnectButton = ({className}: Props) => {
 
   return (
     <>
-      <ActionButton
-        className={clsx(className, isConnected && styles.connected)}
-        onClick={handleClick}
-        loading={loading}
-        ref={buttonRef}
-      >
-        {isConnected && <img src="/images/avatar.png" width="24" height="24" />}
-        {title}
-        {isConnected && (!isMenuOpened ? <ArrowDownIcon /> : <ArrowUpIcon />)}
-      </ActionButton>
-      {isMenuOpened && <DropDownMenu buttons={menuButtons} ref={menuRef} />}
-      <TransactionsHistory
-        onClose={handleHistoryClose}
-        isOpened={isHistoryOpened}
-        ref={transactionsRef}
-      />
-      {isAddressCopied && (
-        <CopyNotification onClose={() => setAddressCopied(false)} />
-      )}
+      <div style={{position: "relative"}}>
+        <ActionButton
+          className={clsx(className, isConnected && styles.connected)}
+          onClick={handleClick}
+          loading={loading}
+          ref={buttonRef}
+        >
+          {isConnected && (
+            <img src="/images/avatar.png" width="24" height="24" />
+          )}
+          {title}
+          {isConnected && (!isMenuOpened ? <ArrowDownIcon /> : <ArrowUpIcon />)}
+        </ActionButton>
+        {isMenuOpened && <DropDownMenu buttons={menuButtons} ref={menuRef} />}
+        <TransactionsHistory
+          onClose={handleHistoryClose}
+          isOpened={isHistoryOpened}
+          ref={transactionsRef}
+        />
+        {isAddressCopied && (
+          <CopyNotification onClose={() => setAddressCopied(false)} />
+        )}
+      </div>
     </>
   );
 };

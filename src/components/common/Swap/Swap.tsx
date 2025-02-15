@@ -2,6 +2,7 @@ import {useCallback, useEffect, useMemo, useRef, useState} from "react";
 import {useConnectUI, useIsConnected} from "@fuels/react";
 import {useDebounceCallback, useLocalStorage} from "usehooks-ts";
 import {clsx} from "clsx";
+import Logo from "@/src/components/common/Logo/Logo";
 
 import CurrencyBox from "@/src/components/common/Swap/components/CurrencyBox/CurrencyBox";
 import ActionButton from "@/src/components/common/ActionButton/ActionButton";
@@ -11,6 +12,7 @@ import useModal from "@/src/hooks/useModal/useModal";
 import useSwap from "@/src/hooks/useSwap/useSwap";
 
 import styles from "./Swap.module.css";
+
 import ExchangeRate from "@/src/components/common/Swap/components/ExchangeRate/ExchangeRate";
 import useExchangeRate from "@/src/hooks/useExchangeRate/useExchangeRate";
 import {createPoolKey, openNewTab} from "@/src/utils/common";
@@ -19,7 +21,9 @@ import CoinsListModal from "@/src/components/common/Swap/components/CoinsListMod
 import SwapSuccessModal from "@/src/components/common/Swap/components/SwapSuccessModal/SwapSuccessModal";
 import SettingsModalContent from "@/src/components/common/Swap/components/SettingsModalContent/SettingsModalContent";
 import useCheckEthBalance from "@/src/hooks/useCheckEthBalance/useCheckEthBalance";
-import useInitialSwapState from "@/src/hooks/useInitialSwapState/useInitialSwapState";
+import useInitialSwapState, {
+  SWAP_ASSETS_KEYS,
+} from "@/src/hooks/useInitialSwapState/useInitialSwapState";
 import useCheckActiveNetwork from "@/src/hooks/useCheckActiveNetwork";
 import usePreviewV2 from "@/src/hooks/useSwapPreviewV2";
 import PriceImpact from "@/src/components/common/Swap/components/PriceImpact/PriceImpact";
@@ -33,8 +37,11 @@ import {useAssetPrice} from "@/src/hooks/useAssetPrice";
 import useAssetMetadata from "@/src/hooks/useAssetMetadata";
 import {SlippageSetting} from "../SlippageSetting/SlippageSetting";
 import Loader from "@/src/components/common/Loader/Loader";
+import ConnectButton from "@/src/components/common/ConnectButton/ConnectButton";
 import {ScriptTransactionRequest, TransactionCost} from "fuels";
 import {TradeState} from "@/src/hooks/useSwapRouter";
+import {usePathname, useSearchParams} from "next/navigation";
+import {useRouter} from "next/navigation";
 
 export type CurrencyBoxMode = "buy" | "sell";
 export type CurrencyBoxState = {
@@ -80,13 +87,17 @@ function SwapRouteItem({pool}: {pool: PoolId}) {
   );
 }
 
-const Swap = () => {
+const Swap = ({isWidget}: {isWidget?: boolean}) => {
   const [SettingsModal, openSettingsModal, closeSettingsModal] = useModal();
   const [CoinsModal, openCoinsModal, closeCoinsModal] = useModal();
   const [SuccessModal, openSuccess] = useModal();
   const [FailureModal, openFailure, closeFailureModal] = useModal();
 
-  const initialSwapState = useInitialSwapState();
+  const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+
+  const initialSwapState = useInitialSwapState(isWidget);
 
   const [swapState, setSwapState] = useState<SwapState>(initialSwapState);
   const [inputsState, setInputsState] =
@@ -103,7 +114,7 @@ const Swap = () => {
   const [showInsufficientBalance, setShowInsufficientBalance] = useState(true);
   const [customErrorTitle, setCustomErrorTitle] = useState<string>("");
 
-  const [swapCoins, setSwapCoins] = useLocalStorage("swapCoins", {
+  const [, setSwapCoins] = useLocalStorage("swapCoins", {
     sell: initialSwapState.sell.assetId,
     buy: initialSwapState.buy.assetId,
   });
@@ -220,11 +231,30 @@ const Swap = () => {
       },
     }));
 
+    if (isWidget) {
+      const params = new URLSearchParams(searchParams.toString());
+
+      if (swapState.buy?.assetId)
+        params.set(SWAP_ASSETS_KEYS.ASSET_IN, swapState.buy.assetId);
+      if (swapState.sell?.assetId)
+        params.set(SWAP_ASSETS_KEYS.ASSET_OUT, swapState.sell.assetId);
+
+      return router.push(`${pathname}?${params.toString()}`);
+    }
+
     setSwapCoins((prevState) => ({
       buy: prevState.sell,
       sell: prevState.buy,
     }));
-  }, [setSwapCoins]);
+  }, [
+    isWidget,
+    pathname,
+    router,
+    searchParams,
+    setSwapCoins,
+    swapState.buy.assetId,
+    swapState.sell.assetId,
+  ]);
 
   const selectCoin = useCallback(
     (mode: "buy" | "sell") => {
@@ -249,18 +279,33 @@ const Swap = () => {
               amount,
             },
           }));
+
+          if (isWidget) {
+            if (!assetId) return;
+            const params = new URLSearchParams(searchParams.toString());
+            params.set(
+              mode === "sell"
+                ? SWAP_ASSETS_KEYS.ASSET_IN
+                : SWAP_ASSETS_KEYS.ASSET_OUT,
+              assetId,
+            );
+            return router.push(`${pathname}?${params.toString()}`);
+          }
+          setSwapCoins((prevState) => ({
+            ...prevState,
+            [mode]: assetId,
+          }));
+
+          setActiveMode(mode);
         }
-
-        setSwapCoins((prevState) => ({
-          ...prevState,
-          [mode]: assetId,
-        }));
-
-        setActiveMode(mode);
       };
     },
     [
       inputsState,
+      isWidget,
+      pathname,
+      router,
+      searchParams,
       setSwapCoins,
       swapAssets,
       swapState.buy.assetId,
@@ -566,11 +611,16 @@ const Swap = () => {
           )}
         >
           <div className={styles.heading}>
-            <p className={styles.title}>Swap</p>
+            <div className={styles.title}>
+              {isWidget ? <Logo /> : <p>Swap</p>}
+            </div>
             <SlippageSetting
               slippage={slippage}
               openSettingsModal={openSettingsModal}
             />
+            {isWidget && (
+              <ConnectButton className={styles.connectWallet} isWidget />
+            )}
           </div>
           <CurrencyBox
             value={sellValue}
