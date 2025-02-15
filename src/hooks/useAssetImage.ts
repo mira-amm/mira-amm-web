@@ -8,7 +8,7 @@ export const useAssetImage = (assetId: string | null): string | null => {
   const sqdIndexerUrl = useSQDIndexerUrl();
 
   const {data} = useQuery<string | null>({
-    queryKey: ["assetImage", assetId],
+    queryKey: ["assetImage", assetId, sqdIndexerUrl],
     queryFn: async () => {
       const configImg = coinsConfig.get(assetId);
       if (configImg?.icon) {
@@ -36,6 +36,7 @@ export const useAssetImage = (assetId: string | null): string | null => {
       return null;
     },
     enabled: assetId !== null,
+    staleTime: Infinity,
   });
 
   return data || defaultImage.src;

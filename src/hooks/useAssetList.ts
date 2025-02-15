@@ -10,7 +10,7 @@ export const useAssetList = (): {
   const sqdIndexerUrl = useSQDIndexerUrl();
 
   const {data, isLoading} = useQuery<any>({
-    queryKey: ["assets"],
+    queryKey: ["assets", sqdIndexerUrl],
     queryFn: async () => {
       const query = gql`
         query MyQuery {
@@ -34,7 +34,7 @@ export const useAssetList = (): {
         document: query,
       });
 
-      const assets = results.assets.map((asset: any): CoinDataWithPrice => {
+      return results.assets.map((asset: any): CoinDataWithPrice => {
         const config = coinsConfig.get(asset.id);
 
         return {
@@ -50,10 +50,9 @@ export const useAssetList = (): {
           isVerified: config?.isVerified || false,
         };
       });
-
-      return assets;
     },
+    staleTime: 5000,
   });
 
-  return {assets: data, isLoading};
+  return {assets: data ?? [], isLoading};
 };
