@@ -4,7 +4,7 @@ import {GET} from "./route";
 
 jest.mock("@/src/utils/constants", () => ({
   SQDIndexerUrl: "https://mock-squid-indexer.com",
-  NetworkUrl: "https://mock-network-url.com",
+  MainnetNetworkUrl: "https://mock-network-url.com",
 }));
 
 jest.mock("graphql-request", () => ({

@@ -7,7 +7,7 @@ import {request, gql} from "graphql-request";
 import {DateTime} from "fuels";
 
 // local imports
-import {SQDIndexerUrl, NetworkUrl} from "@/src/utils/constants";
+import {SQDIndexerUrl, MainnetNetworkUrl} from "@/src/utils/constants";
 import {
   FuelAPIResponses,
   GeckoTerminalQueryResponses,
@@ -80,7 +80,7 @@ export async function GET(req: NextRequest) {
 
     // Fetch the block data (timestamp) using the block number
     const blockData = await fetchBlockByHeight(
-      NetworkUrl,
+      MainnetNetworkUrl,
       blockNumber.toString(),
     );
 
