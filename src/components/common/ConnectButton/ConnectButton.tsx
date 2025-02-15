@@ -1,27 +1,22 @@
 "use client";
 
-import {useCallback, useMemo, useState, useEffect, useRef} from "react";
-import {
-  useAccount,
-  useConnectUI,
-  useDisconnect,
-  useIsConnected,
-} from "@fuels/react";
 import {clsx} from "clsx";
+import {useCallback, useEffect, useMemo, useRef, useState} from "react";
 
 import styles from "./ConnectButton.module.css";
 
 import ActionButton from "@/src/components/common/ActionButton/ActionButton";
-import useFormattedAddress from "@/src/hooks/useFormattedAddress/useFormattedAddress";
-import {ArrowDownIcon} from "../../icons/ArrowDown/ArrowDownIcon";
-import DropDownMenu from "../DropDownMenu/DropDownMenu";
-import {ArrowUpIcon} from "../../icons/ArrowUp/ArrowUpIcon";
-import {DropDownButtons} from "@/src/utils/DropDownButtons";
-import {CopyNotification} from "../../common/CopyNotification/CopyNotification";
-import {openNewTab} from "@/src/utils/common";
 import TransactionsHistory from "@/src/components/common/TransactionsHistory/TransactionsHistory";
+import useFormattedAddress from "@/src/hooks/useFormattedAddress/useFormattedAddress";
+import useWeb3React from "@/src/hooks/useWeb3Connection";
+import {openNewTab} from "@/src/utils/common";
 import {FuelAppUrl} from "@/src/utils/constants";
+import {DropDownButtons} from "@/src/utils/DropDownButtons";
 import {useScrollLock} from "usehooks-ts";
+import {CopyNotification} from "../../common/CopyNotification/CopyNotification";
+import {ArrowDownIcon} from "../../icons/ArrowDown/ArrowDownIcon";
+import {ArrowUpIcon} from "../../icons/ArrowUp/ArrowUpIcon";
+import DropDownMenu from "../DropDownMenu/DropDownMenu";
 
 type Props = {
   className?: string;
@@ -29,10 +24,8 @@ type Props = {
 };
 
 const ConnectButton = ({className, isWidget}: Props) => {
-  const {isConnected} = useIsConnected();
-  const {connect, isConnecting} = useConnectUI();
-  const {disconnect, isPending: disconnectLoading} = useDisconnect();
-  const {account} = useAccount();
+  const {account, connect, disconnect, isConnected, isWalletLoading} =
+    useWeb3React();
 
   const {lock, unlock} = useScrollLock({autoLock: false});
 
@@ -45,8 +38,6 @@ const ConnectButton = ({className, isWidget}: Props) => {
   //     disconnect();
   //   }
   // }, [account, isConnected]);
-
-  const loading = isConnecting || disconnectLoading;
 
   const [isMenuOpened, setMenuOpened] = useState(false);
   const [isHistoryOpened, setHistoryOpened] = useState(false);
@@ -176,31 +167,27 @@ const ConnectButton = ({className, isWidget}: Props) => {
   }, [isHistoryOpened]);
 
   return (
-    <>
-      <div style={{position: "relative"}}>
-        <ActionButton
-          className={clsx(className, isConnected && styles.connected)}
-          onClick={handleClick}
-          loading={loading}
-          ref={buttonRef}
-        >
-          {isConnected && (
-            <img src="/images/avatar.png" width="24" height="24" />
-          )}
-          {title}
-          {isConnected && (!isMenuOpened ? <ArrowDownIcon /> : <ArrowUpIcon />)}
-        </ActionButton>
-        {isMenuOpened && <DropDownMenu buttons={menuButtons} ref={menuRef} />}
-        <TransactionsHistory
-          onClose={handleHistoryClose}
-          isOpened={isHistoryOpened}
-          ref={transactionsRef}
-        />
-        {isAddressCopied && (
-          <CopyNotification onClose={() => setAddressCopied(false)} />
-        )}
-      </div>
-    </>
+    <div style={{position: "relative"}}>
+      <ActionButton
+        className={clsx(className, isConnected && styles.connected)}
+        onClick={handleClick}
+        loading={isWalletLoading}
+        ref={buttonRef}
+      >
+        {isConnected && <img src="/images/avatar.png" width="24" height="24" />}
+        {title}
+        {isConnected && (!isMenuOpened ? <ArrowDownIcon /> : <ArrowUpIcon />)}
+      </ActionButton>
+      {isMenuOpened && <DropDownMenu buttons={menuButtons} ref={menuRef} />}
+      <TransactionsHistory
+        onClose={handleHistoryClose}
+        isOpened={isHistoryOpened}
+        ref={transactionsRef}
+      />
+      {isAddressCopied && (
+        <CopyNotification onClose={() => setAddressCopied(false)} />
+      )}
+    </div>
   );
 };
 
