@@ -8,6 +8,7 @@ import TextButton from "@/src/components/common/TextButton/TextButton";
 import {DefaultLocale, MinEthValueBN} from "@/src/utils/constants";
 import {BN} from "fuels";
 import useAssetMetadata from "@/src/hooks/useAssetMetadata";
+import abbreviateNumber from "@/src/utils/abbreviateNumber";
 
 type Props = {
   assetId: string | null;
@@ -57,10 +58,7 @@ const CoinInput = ({
   const numericValue = parseFloat(value);
   const usdValue =
     !isNaN(numericValue) && Boolean(usdRate)
-      ? (numericValue * usdRate!).toLocaleString(DefaultLocale, {
-          minimumFractionDigits: 2,
-          maximumFractionDigits: 2,
-        })
+      ? abbreviateNumber(numericValue * usdRate!)
       : null;
 
   return (
