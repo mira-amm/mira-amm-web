@@ -6,7 +6,14 @@ import ActionButton from "@/src/components/common/ActionButton/ActionButton";
 import useBalances from "@/src/hooks/useBalances/useBalances";
 import useAssetBalance from "@/src/hooks/useAssetBalance";
 import {useConnectUI, useIsConnected} from "@fuels/react";
-import {Dispatch, SetStateAction, useCallback, useRef, useState} from "react";
+import {
+  Dispatch,
+  SetStateAction,
+  useCallback,
+  useRef,
+  useState,
+  useMemo,
+} from "react";
 import {useDebounceCallback} from "usehooks-ts";
 import useCheckEthBalance from "@/src/hooks/useCheckEthBalance/useCheckEthBalance";
 import useFaucetLink from "@/src/hooks/useFaucetLink";
@@ -63,7 +70,10 @@ const CreatePoolDialog = ({setPreviewData}: Props) => {
       ? [buildPoolId(firstAssetId, secondAssetId, isStablePool)]
       : undefined;
   const {poolsMetadata} = usePoolsMetadata(pools);
-  const poolExists = Boolean(poolsMetadata && poolsMetadata?.[0]);
+  const poolExists = useMemo(
+    () => Boolean(poolsMetadata && poolsMetadata?.[0]),
+    [poolsMetadata],
+  );
   let existingPoolKey = "";
   if (poolExists) {
     const poolId = poolsMetadata?.[0]?.poolId || poolsMetadata?.[1]?.poolId;
@@ -146,41 +156,59 @@ const CreatePoolDialog = ({setPreviewData}: Props) => {
 
   const isValidNetwork = useCheckActiveNetwork();
 
-  const insufficientFirstBalance = bn
-    .parseUnits(firstAmount, firstAssetMetadata.decimals)
-    .gt(firstAssetBalanceValue);
-  const insufficientSecondBalance = bn
-    .parseUnits(secondAmount, secondAssetMetadata.decimals)
-    .gt(secondAssetBalanceValue);
-  const insufficientBalance =
-    insufficientFirstBalance || insufficientSecondBalance;
-  const oneOfAssetsIsNotSelected =
-    firstAssetId === null || secondAssetId === null;
-  const oneOfAmountsIsEmpty =
-    !firstAmount ||
-    !secondAmount ||
-    firstAmount === "0" ||
-    secondAmount === "0";
+  const buttonState = useMemo(() => {
+    const insufficientFirstBalance = bn
+      .parseUnits(firstAmount, firstAssetMetadata.decimals)
+      .gt(firstAssetBalanceValue);
+    const insufficientSecondBalance = bn
+      .parseUnits(secondAmount, secondAssetMetadata.decimals)
+      .gt(secondAssetBalanceValue);
+    const insufficientBalance =
+      insufficientFirstBalance || insufficientSecondBalance;
+    const oneOfAssetsIsNotSelected =
+      firstAssetId === null || secondAssetId === null;
+    const oneOfAmountsIsEmpty =
+      !firstAmount ||
+      !secondAmount ||
+      firstAmount === "0" ||
+      secondAmount === "0";
+
+    return {
+      insufficientBalance,
+      oneOfAssetsIsNotSelected,
+      oneOfAmountsIsEmpty,
+      buttonDisabled:
+        !isValidNetwork ||
+        poolExists ||
+        oneOfAssetsIsNotSelected ||
+        oneOfAmountsIsEmpty ||
+        insufficientBalance,
+    };
+  }, [
+    firstAmount,
+    secondAmount,
+    firstAssetMetadata.decimals,
+    secondAssetMetadata.decimals,
+    firstAssetBalanceValue,
+    secondAssetBalanceValue,
+    firstAssetId,
+    secondAssetId,
+    isValidNetwork,
+    poolExists,
+  ]);
 
   let buttonTitle = "Preview creation";
   if (!isValidNetwork) {
     buttonTitle = "Incorrect network";
-  } else if (oneOfAssetsIsNotSelected) {
+  } else if (buttonState.oneOfAssetsIsNotSelected) {
     buttonTitle = "Choose assets";
-  } else if (insufficientBalance) {
+  } else if (buttonState.insufficientBalance) {
     buttonTitle = "Insufficient balance";
   } else if (!sufficientEthBalance) {
     buttonTitle = "Claim some ETH to pay for gas";
-  } else if (oneOfAmountsIsEmpty) {
+  } else if (buttonState.oneOfAmountsIsEmpty) {
     buttonTitle = "Enter asset amounts";
   }
-
-  const buttonDisabled =
-    !isValidNetwork ||
-    poolExists ||
-    oneOfAssetsIsNotSelected ||
-    oneOfAmountsIsEmpty ||
-    insufficientBalance;
 
   const handleAssetClick = useCallback(
     (assetId: string | null) => {
@@ -214,19 +242,24 @@ const CreatePoolDialog = ({setPreviewData}: Props) => {
   const firstAssetPrice = useAssetPrice(firstAssetId);
   const secondAssetPrice = useAssetPrice(secondAssetId);
 
-  const exchangeRate = useExchangeRateV2({
-    firstAssetId,
-    secondAssetId,
-    firstAssetAmount: firstAmount,
-    secondAssetAmount: secondAmount,
-    baseAssetId: activeAssetId,
-  });
+  const exchangeRateParams = useMemo(
+    () => ({
+      firstAssetId,
+      secondAssetId,
+      firstAssetAmount: firstAmount,
+      secondAssetAmount: secondAmount,
+      baseAssetId: activeAssetId,
+    }),
+    [firstAssetId, secondAssetId, firstAmount, secondAmount, activeAssetId],
+  );
 
-  const handleExchangeRateSwap = () => {
+  const exchangeRate = useExchangeRateV2(exchangeRateParams);
+
+  const handleExchangeRateSwap = useCallback(() => {
     setActiveAssetId((prevActiveAssetId) =>
       prevActiveAssetId === firstAssetId ? secondAssetId : firstAssetId,
     );
-  };
+  }, [firstAssetId, secondAssetId]);
 
   return (
     <>
@@ -234,10 +267,11 @@ const CreatePoolDialog = ({setPreviewData}: Props) => {
         <p>Selected pair</p>
         <div className={styles.sectionContent}>
           <div className={styles.coinPair}>
-            {!oneOfAssetsIsNotSelected && (
+            {!buttonState.oneOfAssetsIsNotSelected && (
               <CoinPair
-                firstCoin={firstAssetId}
-                secondCoin={secondAssetId}
+                // Null assertion is safe here because we already checked that the assets are not null
+                firstCoin={firstAssetId!}
+                secondCoin={secondAssetId!}
                 isStablePool={isStablePool}
               />
             )}
@@ -314,19 +348,21 @@ const CreatePoolDialog = ({setPreviewData}: Props) => {
           </Link>
         </div>
       )}
-      {!poolExists && !oneOfAssetsIsNotSelected && !oneOfAmountsIsEmpty && (
-        <div className={styles.section}>
-          <p>Starting price</p>
-          <div className={styles.priceBlock} onClick={handleExchangeRateSwap}>
-            <p>{exchangeRate}</p>
-            <ExchangeIcon />
+      {!poolExists &&
+        !buttonState.oneOfAssetsIsNotSelected &&
+        !buttonState.oneOfAmountsIsEmpty && (
+          <div className={styles.section}>
+            <p>Starting price</p>
+            <div className={styles.priceBlock} onClick={handleExchangeRateSwap}>
+              <p>{exchangeRate}</p>
+              <ExchangeIcon />
+            </div>
+            <p className={styles.priceWarning}>
+              This is the price of the pool on inception. Always double check
+              before deploying a pool.
+            </p>
           </div>
-          <p className={styles.priceWarning}>
-            This is the price of the pool on inception. Always double check
-            before deploying a pool.
-          </p>
-        </div>
-      )}
+        )}
       {!isConnected ? (
         <ActionButton
           variant="secondary"
@@ -336,7 +372,10 @@ const CreatePoolDialog = ({setPreviewData}: Props) => {
           Connect Wallet
         </ActionButton>
       ) : (
-        <ActionButton disabled={buttonDisabled} onClick={handleButtonClick}>
+        <ActionButton
+          disabled={buttonState.buttonDisabled}
+          onClick={handleButtonClick}
+        >
           {buttonTitle}
         </ActionButton>
       )}
