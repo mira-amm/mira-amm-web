@@ -17,10 +17,16 @@ export default function UnknownCoinListItem({
 }: Props) {
   const {asset: metadata, isLoading} = useAssetMetadata(assetId);
 
-  if (metadata?.symbol) {
+  const assetData = metadata && {
+    ...metadata,
+    userBalance: balance,
+    isVerified: false, // setting is verified to false as the asset is imported by address
+  };
+
+  if (assetData) {
     return (
       <div className={styles.tokenListItem} onClick={onClick}>
-        <CoinListItem assetId={assetId} balance={balance} />
+        <CoinListItem assetData={assetData} />
       </div>
     );
   }
