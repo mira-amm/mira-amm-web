@@ -13,7 +13,6 @@ const useAssetMetadata = (
 ): {asset: CoinData | undefined; isLoading: boolean} => {
   const {contractId, isLoading: contractLoading} =
     useAssetMinterContract(assetId);
-
   const icon = useAssetImage(assetId);
 
   const {data, isLoading: metadataLoading} = useQuery<{
@@ -21,7 +20,7 @@ const useAssetMetadata = (
     decimals: number;
     symbol: string;
   }>({
-    queryKey: ["assetMetadata", contractId, assetId],
+    queryKey: ["assetMetadata", assetId],
     queryFn: async () => {
       const config = coinsConfig.get(assetId);
       if (config) {
@@ -64,7 +63,14 @@ const useAssetMetadata = (
   const isLoading = contractLoading || metadataLoading;
 
   return {
-    asset: data && assetId ? {...data, assetId, icon} : undefined,
+    asset:
+      data && assetId
+        ? {
+            ...data,
+            assetId,
+            icon,
+          }
+        : undefined,
     isLoading,
   };
 

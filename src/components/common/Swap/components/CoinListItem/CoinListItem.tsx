@@ -20,6 +20,7 @@ const CoinListItem = ({assetId, balance}: Props) => {
   const [loading, setLoading] = useState(true);
   const verifiedAssetData = useVerifiedAssets();
   const {asset: metadata} = useAssetMetadata(assetId);
+
   const balanceValue = balance?.amount ?? new BN(0);
   const isVerified = verifiedAssetData
     ? checkIfCoinVerified({
