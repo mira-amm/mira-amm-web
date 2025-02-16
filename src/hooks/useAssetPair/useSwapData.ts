@@ -14,8 +14,8 @@ type SwapData = {
 };
 
 const useSwapData = (swapState: SwapState): SwapData => {
-  const sellMetadata = useAssetMetadata(swapState.sell.assetId);
-  const buyMetadata = useAssetMetadata(swapState.buy.assetId);
+  const {asset: sellMetadata} = useAssetMetadata(swapState.sell.assetId);
+  const {asset: buyMetadata} = useAssetMetadata(swapState.buy.assetId);
 
   return useMemo(() => {
     const sellAssetIdInput: AssetIdInput = {

@@ -14,8 +14,8 @@ type Props = {
 const useReservesPrice = ({pools, sellAssetId, buyAssetId}: Props) => {
   const miraAmm = useReadonlyMira();
 
-  const sellMetadata = useAssetMetadata(sellAssetId);
-  const buyMetadata = useAssetMetadata(buyAssetId);
+  const {asset: sellMetadata} = useAssetMetadata(sellAssetId);
+  const {asset: buyMetadata} = useAssetMetadata(buyAssetId);
 
   const shouldFetch =
     Boolean(pools) && Boolean(miraAmm) && Boolean(sellAssetId);
@@ -31,8 +31,8 @@ const useReservesPrice = ({pools, sellAssetId, buyAssetId}: Props) => {
       );
       return (
         ((previewPrice.toNumber() / assetInputAmount) *
-          10 ** (sellMetadata.decimals ?? 0)) /
-        10 ** (buyMetadata.decimals ?? 0)
+          10 ** (sellMetadata?.decimals ?? 0)) /
+        10 ** (buyMetadata?.decimals ?? 0)
       );
     },
     enabled: !!pools && !!miraAmm && !!sellMetadata && !!buyMetadata,

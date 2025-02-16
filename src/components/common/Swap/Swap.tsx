@@ -28,7 +28,6 @@ import useReservesPrice from "@/src/hooks/useReservesPrice";
 import SwapFailureModal from "@/src/components/common/Swap/components/SwapFailureModal/SwapFailureModal";
 import {B256Address, bn, BN} from "fuels";
 import {PoolId} from "mira-dex-ts";
-import {useAssetImage} from "@/src/hooks/useAssetImage";
 import {useAssetPrice} from "@/src/hooks/useAssetPrice";
 import useAssetMetadata from "@/src/hooks/useAssetMetadata";
 import {SlippageSetting} from "../SlippageSetting/SlippageSetting";
@@ -62,19 +61,22 @@ export type SlippageMode = "auto" | "custom";
 export const DefaultSlippageValue = 100;
 
 function SwapRouteItem({pool}: {pool: PoolId}) {
-  const firstAssetIcon = useAssetImage(pool[0].bits);
-  const secondAssetIcon = useAssetImage(pool[1].bits);
-
-  const firstAssetMetadata = useAssetMetadata(pool[0].bits);
-  const secondAssetMetadata = useAssetMetadata(pool[1].bits);
+  const {asset: firstAssetMetadata} = useAssetMetadata(pool[0].bits);
+  const {asset: secondAssetMetadata} = useAssetMetadata(pool[1].bits);
 
   const isStablePool = pool[2];
   const poolFeePercent = isStablePool ? 0.05 : 0.3;
 
   return (
     <>
-      <img src={firstAssetIcon || ""} alt={firstAssetMetadata.symbol} />
-      <img src={secondAssetIcon || ""} alt={secondAssetMetadata.symbol} />
+      <img
+        src={firstAssetMetadata?.icon || ""}
+        alt={firstAssetMetadata?.symbol}
+      />
+      <img
+        src={secondAssetMetadata?.icon || ""}
+        alt={secondAssetMetadata?.symbol}
+      />
       <p>({poolFeePercent}%)</p>
     </>
   );
@@ -108,8 +110,8 @@ const Swap = () => {
     buy: initialSwapState.buy.assetId,
   });
 
-  const sellMetadata = useAssetMetadata(swapState.sell.assetId);
-  const buyMetadata = useAssetMetadata(swapState.buy.assetId);
+  const {asset: sellMetadata} = useAssetMetadata(swapState.sell.assetId);
+  const {asset: buyMetadata} = useAssetMetadata(swapState.buy.assetId);
 
   const previousPreviewValue = useRef("");
   const swapStateForPreview = useRef(swapState);
@@ -158,7 +160,7 @@ const Swap = () => {
 
   const anotherMode = activeMode === "sell" ? "buy" : "sell";
   const decimals =
-    anotherMode === "sell" ? sellMetadata.decimals : buyMetadata.decimals;
+    anotherMode === "sell" ? sellMetadata?.decimals : buyMetadata?.decimals;
 
   const previewValueString2 =
     !trade ||
@@ -450,7 +452,7 @@ const Swap = () => {
   useEffect(() => {
     try {
       const insufficientSellBalance = sellBalanceValue.lt(
-        bn.parseUnits(sellValue, sellMetadata.decimals || 0),
+        bn.parseUnits(sellValue, sellMetadata?.decimals || 0),
       );
       setShowInsufficientBalance(insufficientSellBalance);
     } catch (e) {}
@@ -468,7 +470,7 @@ const Swap = () => {
     sellValue === ""
       ? 0
       : ((feePercent / 100) * parseFloat(sellValue)).toFixed(
-          sellMetadata.decimals || 0,
+          sellMetadata?.decimals || 0,
         );
 
   const swapDisabled =
@@ -642,7 +644,7 @@ const Swap = () => {
                   <Loader color="gray" />
                 ) : (
                   <p>
-                    {feeValue} {sellMetadata.symbol}
+                    {feeValue} {sellMetadata?.symbol}
                   </p>
                 )}
               </div>

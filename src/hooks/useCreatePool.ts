@@ -26,8 +26,8 @@ const useCreatePool = ({
   const {wallet} = useWallet();
   const firstAssetContract = useAssetMinterContract(firstAsset);
   const secondAssetContract = useAssetMinterContract(secondAsset);
-  const firstAssetMetadata = useAssetMetadata(firstAsset);
-  const secondAssetMetadata = useAssetMetadata(secondAsset);
+  const {asset: firstAssetMetadata} = useAssetMetadata(firstAsset);
+  const {asset: secondAssetMetadata} = useAssetMetadata(secondAsset);
 
   const mutationFn = useCallback(async () => {
     if (
@@ -43,11 +43,11 @@ const useCreatePool = ({
 
     const firstCoinAmountToUse = bn.parseUnits(
       firstAssetAmount,
-      firstAssetMetadata.decimals || 0,
+      firstAssetMetadata?.decimals || 0,
     );
     const secondCoinAmountToUse = bn.parseUnits(
       secondAssetAmount,
-      secondAssetMetadata.decimals || 0,
+      secondAssetMetadata?.decimals || 0,
     );
 
     const txRequest = await mira.createPoolAndAddLiquidity(

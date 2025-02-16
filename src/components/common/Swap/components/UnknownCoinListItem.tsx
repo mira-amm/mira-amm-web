@@ -15,9 +15,9 @@ export default function UnknownCoinListItem({
   balance,
   onClick,
 }: Props) {
-  const metadata = useAssetMetadata(assetId);
+  const {asset: metadata, isLoading} = useAssetMetadata(assetId);
 
-  if (metadata.symbol) {
+  if (metadata?.symbol) {
     return (
       <div className={styles.tokenListItem} onClick={onClick}>
         <CoinListItem assetId={assetId} balance={balance} />
@@ -25,7 +25,7 @@ export default function UnknownCoinListItem({
     );
   }
 
-  if (metadata.isLoading) {
+  if (isLoading) {
     return <SkeletonLoader isLoading={true} count={1} textLines={1} />;
   }
 

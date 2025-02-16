@@ -13,8 +13,8 @@ type Props = {
 };
 
 const SwapSuccessModal = ({swapState, transactionHash}: Props) => {
-  const sellMetadata = useAssetMetadata(swapState.sell.assetId);
-  const buyMetadata = useAssetMetadata(swapState.buy.assetId);
+  const {asset: sellMetadata} = useAssetMetadata(swapState.sell.assetId);
+  const {asset: buyMetadata} = useAssetMetadata(swapState.buy.assetId);
 
   const handleViewTransactionClick = useCallback(() => {
     if (!transactionHash) {
@@ -24,7 +24,7 @@ const SwapSuccessModal = ({swapState, transactionHash}: Props) => {
     openNewTab(`${FuelAppUrl}/tx/${transactionHash}/simple`);
   }, [transactionHash]);
 
-  const subText = `${swapState.sell.amount} ${sellMetadata.symbol} for ${swapState.buy.amount} ${buyMetadata.symbol}`;
+  const subText = `${swapState.sell.amount} ${sellMetadata?.symbol} for ${swapState.buy.amount} ${buyMetadata?.symbol}`;
 
   return (
     <div className={styles.claimFailureModal}>

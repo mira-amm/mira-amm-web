@@ -50,8 +50,8 @@ const RemoveLiquidityModalContent = ({
   isLoading,
 }: Props) => {
   const [displayValue, setDisplayValue] = useState(liquidityValue);
-  const coinAMetadata = useAssetMetadata(coinA);
-  const coinBMetadata = useAssetMetadata(coinB);
+  const {asset: coinAMetadata} = useAssetMetadata(coinA);
+  const {asset: coinBMetadata} = useAssetMetadata(coinB);
 
   const sliderRef = useRef<HTMLInputElement>(null);
 
@@ -122,8 +122,8 @@ const RemoveLiquidityModalContent = ({
           <thead>
             <tr>
               <th />
-              <th>{coinAMetadata.symbol}</th>
-              <th>{coinBMetadata.symbol}</th>
+              <th>{coinAMetadata?.symbol}</th>
+              <th>{coinBMetadata?.symbol}</th>
             </tr>
           </thead>
           <tbody>

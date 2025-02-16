@@ -37,12 +37,12 @@ const CurrencyBox = ({
   usdRate,
   previewError,
 }: Props) => {
-  const metadata = useAssetMetadata(assetId);
-  const balanceValue = balance.formatUnits(metadata.decimals || 0);
+  const {asset: metadata} = useAssetMetadata(assetId);
+  const balanceValue = balance.formatUnits(metadata?.decimals || 0);
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const inputValue = e.target.value.replace(",", ".");
-    const re = new RegExp(`^[0-9]*[.]?[0-9]{0,${metadata.decimals || 0}}$`);
+    const re = new RegExp(`^[0-9]*[.]?[0-9]{0,${metadata?.decimals || 0}}$`);
 
     if (re.test(inputValue)) {
       setAmount(inputValue);
@@ -58,10 +58,10 @@ const CurrencyBox = ({
   const handleMaxClick = useCallback(() => {
     let amountStringToSet;
     // TODO ETH AssetId
-    if (metadata.symbol === "ETH" && mode === "sell") {
+    if (metadata?.symbol === "ETH" && mode === "sell") {
       const amountWithoutGasFee = balance.sub(MinEthValueBN);
       amountStringToSet = amountWithoutGasFee.gt(0)
-        ? amountWithoutGasFee.formatUnits(metadata.decimals || 0)
+        ? amountWithoutGasFee.formatUnits(metadata?.decimals || 0)
         : balanceValue;
     } else {
       amountStringToSet = balanceValue;

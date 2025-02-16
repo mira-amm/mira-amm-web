@@ -36,15 +36,15 @@ const useSwapPreview = ({swapState, mode}: Props) => {
   const miraAmm = useReadonlyMira();
   const miraExists = Boolean(miraAmm);
 
-  const sellMetadata = useAssetMetadata(sellAssetId);
-  const buyMetadata = useAssetMetadata(buyAssetId);
+  const {asset: sellMetadata} = useAssetMetadata(sellAssetId);
+  const {asset: buyMetadata} = useAssetMetadata(buyAssetId);
 
   const amountString =
     mode === "sell" ? swapState.sell.amount : swapState.buy.amount;
   const amount = parseFloat(amountString);
   const amountValid = !isNaN(amount);
   const decimals =
-    (mode === "sell" ? sellMetadata.decimals : buyMetadata.decimals) || 0;
+    (mode === "sell" ? sellMetadata?.decimals : buyMetadata?.decimals) || 0;
 
   let normalizedAmount;
 

@@ -68,8 +68,8 @@ const AddLiquidityDialog = ({
   const [activeAsset, setActiveAsset] = useState<string | null>(null);
   const [isStablePool, setIsStablePool] = useState(poolId[2]);
 
-  const asset0Metadata = useAssetMetadata(poolId[0].bits);
-  const asset1Metadata = useAssetMetadata(poolId[1].bits);
+  const {asset: asset0Metadata} = useAssetMetadata(poolId[0].bits);
+  const {asset: asset1Metadata} = useAssetMetadata(poolId[1].bits);
 
   const isFirstToken = activeAsset === poolId[0].bits;
 
@@ -118,8 +118,8 @@ const AddLiquidityDialog = ({
   useEffect(() => {
     if (data) {
       const anotherTokenDecimals = isFirstToken
-        ? asset1Metadata.decimals
-        : asset0Metadata.decimals;
+        ? asset1Metadata?.decimals
+        : asset0Metadata?.decimals;
       const anotherTokenValue = data[1];
       const anotherTokenValueString = data[1].formatUnits(anotherTokenDecimals);
 
@@ -147,12 +147,12 @@ const AddLiquidityDialog = ({
 
         if (coin === poolId[0].bits) {
           debouncedSetFirstAmount(
-            bn.parseUnits(value, asset0Metadata.decimals),
+            bn.parseUnits(value, asset0Metadata?.decimals),
           );
           setFirstAmountInput(value);
         } else {
           debouncedSetSecondAmount(
-            bn.parseUnits(value, asset1Metadata.decimals),
+            bn.parseUnits(value, asset1Metadata?.decimals),
           );
           setSecondAmountInput(value);
         }
@@ -170,11 +170,11 @@ const AddLiquidityDialog = ({
 
   const sufficientEthBalanceForFirstCoin = useCheckEthBalance({
     assetId: poolId[0].bits,
-    amount: firstAmount.formatUnits(asset0Metadata.decimals),
+    amount: firstAmount.formatUnits(asset0Metadata?.decimals),
   });
   const sufficientEthBalanceForSecondCoin = useCheckEthBalance({
     assetId: poolId[1].bits,
-    amount: secondAmount.formatUnits(asset1Metadata.decimals),
+    amount: secondAmount.formatUnits(asset1Metadata?.decimals),
   });
   const sufficientEthBalance =
     sufficientEthBalanceForFirstCoin && sufficientEthBalanceForSecondCoin;

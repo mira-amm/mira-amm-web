@@ -1,7 +1,6 @@
 import styles from "./CoinPair.module.css";
 import {clsx} from "clsx";
 import {memo} from "react";
-import {useAssetImage} from "@/src/hooks/useAssetImage";
 import {B256Address} from "fuels";
 import useAssetMetadata from "@/src/hooks/useAssetMetadata";
 
@@ -22,10 +21,8 @@ const CoinPair = ({
   withFeeBelow,
   withPoolDescription,
 }: Props) => {
-  const firstCoinIcon = useAssetImage(firstCoin);
-  const secondCoinIcon = useAssetImage(secondCoin);
-  const {symbol: firstSymbol} = useAssetMetadata(firstCoin);
-  const {symbol: secondSymbol} = useAssetMetadata(secondCoin);
+  const {asset: assetA} = useAssetMetadata(firstCoin);
+  const {asset: assetB} = useAssetMetadata(secondCoin);
 
   const feeText = isStablePool ? "0.05%" : "0.3%";
   const poolDescription = `${isStablePool ? "Stable" : "Volatile"}: ${feeText}`;
@@ -38,16 +35,16 @@ const CoinPair = ({
       )}
     >
       <div className={styles.coinPairIcons}>
-        {firstCoinIcon && (
-          <img src={firstCoinIcon} alt={`${firstSymbol} icon`} />
+        {assetA?.icon && (
+          <img src={assetA.icon} alt={`${assetA?.symbol} icon`} />
         )}
-        {secondCoinIcon && (
-          <img src={secondCoinIcon} alt={`${secondSymbol} icon`} />
+        {assetB?.icon && (
+          <img src={assetB.icon} alt={`${assetB.symbol} icon`} />
         )}
       </div>
       <div className={styles.namesAndFee}>
         <p className={styles.coinNames} data-identifier="coin-pair">
-          {firstSymbol}/{secondSymbol}
+          {assetA?.symbol}/{assetB?.symbol}
         </p>
         {withFeeBelow && <p className={styles.coinPairFee}>{feeText}</p>}
         {withPoolDescription && (

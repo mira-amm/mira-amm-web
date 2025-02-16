@@ -30,14 +30,14 @@ export const DesktopPosition = ({
   priceA,
   priceB,
 }: Props): JSX.Element => {
-  const assetAMetadata = useAssetMetadata(assetIdA);
-  const assetBMetadata = useAssetMetadata(assetIdB);
+  const {asset: assetAMetadata} = useAssetMetadata(assetIdA);
+  const {asset: assetBMetadata} = useAssetMetadata(assetIdB);
 
   const amountInUsdA = priceA;
   const amountInUsdB = priceB;
 
-  const coinAAmount = formatUnits(amountA, assetAMetadata.decimals);
-  const coinBAmount = formatUnits(amountB, assetBMetadata.decimals);
+  const coinAAmount = formatUnits(amountA, assetAMetadata?.decimals);
+  const coinBAmount = formatUnits(amountB, assetBMetadata?.decimals);
 
   const size =
     parseFloat(coinAAmount) * amountInUsdA +
