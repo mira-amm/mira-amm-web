@@ -26,7 +26,7 @@ import {StablePoolTooltip, VolatilePoolTooltip} from "./CreatePoolTooltips";
 import usePoolsMetadata from "@/src/hooks/usePoolsMetadata";
 import useModal from "@/src/hooks/useModal/useModal";
 import CoinsListModal from "@/src/components/common/Swap/components/CoinsListModal/CoinsListModal";
-import {B256Address, BN, bn, formatUnits} from "fuels";
+import {B256Address, bn} from "fuels";
 import useAssetMetadata from "@/src/hooks/useAssetMetadata";
 import {useAssetPrice} from "@/src/hooks/useAssetPrice";
 import SparkleIcon from "@/src/components/icons/Sparkle/SparkleIcon";
@@ -57,7 +57,7 @@ const CreatePoolDialog = ({setPreviewData}: Props) => {
   const [firstAmountInput, setFirstAmountInput] = useState("");
   const [secondAmount, setSecondAmount] = useState("");
   const [secondAmountInput, setSecondAmountInput] = useState("");
-  const [activeAsset, setActiveAsset] = useState<B256Address | null>(null);
+  const [_, setActiveAsset] = useState<B256Address | null>(null);
   const [isStablePool, setIsStablePool] = useState(false);
 
   const activeAssetForAssetSelector = useRef<string | null>(null);
