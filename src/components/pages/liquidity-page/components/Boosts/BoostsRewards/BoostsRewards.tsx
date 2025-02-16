@@ -111,6 +111,9 @@ const BoostsRewards = (): JSX.Element => {
               <u>Learn more.</u>
             </Link>
           </p>
+          <p className={styles.disclaimer}>
+            Note: Rewards for the first 30 days have already been distributed.
+          </p>
         </div>
         <div className={styles.epochSection}>
           <div className={styles.divider}></div>
