@@ -1,10 +1,8 @@
 /**
  * @api {get} /campaigns Get list of epochs and their campaigns
  */
-import {
-  SentioJSONCampaignService,
-  JSONEpochConfigService,
-} from "@/src/models/campaigns/Campaign";
+import {SentioJSONCampaignService} from "@/src/models/campaigns/Campaign";
+import {JSONEpochConfigService} from "@/src/models/campaigns/JSONEpochConfigService";
 import {NextRequest, NextResponse} from "next/server";
 import path from "path";
 
