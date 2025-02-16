@@ -44,7 +44,7 @@ const BoostsRewards = (): JSX.Element => {
 
   const {rewardsAmount, isLoading: isRewardsAmountLoading} = useRewards({
     userId: account,
-    epochNumber: epochNumber,
+    epochNumbers: epochNumber,
     poolIds: rewardsPoolsId,
   });
 
