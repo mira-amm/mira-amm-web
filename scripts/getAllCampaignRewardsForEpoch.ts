@@ -44,7 +44,7 @@ async function main() {
   const csvFilePath = path.join(
     process.cwd(),
     "generated",
-    `${CSV_PREFIX}-${epochNumber}`,
+    `${CSV_PREFIX}-${epochNumber}.csv`,
   );
 
   const epochConfigService = new JSONEpochConfigService(
@@ -220,10 +220,7 @@ function aggregateRewardsByAddressAndWriteToFile(
   inputCsvFilePath: string,
   outputCsvFilePath: string,
 ) {
-  const unaggregatedCsvData = readFileSync(
-    inputCsvFilePath.replace(".csv", UNAGGREGATED_CSV_SUFFIX),
-    "utf8",
-  );
+  const unaggregatedCsvData = readFileSync(inputCsvFilePath, "utf8");
 
   const csvDataLines = unaggregatedCsvData.split("\n");
   const csvDataLinesWithoutHeader = csvDataLines;
