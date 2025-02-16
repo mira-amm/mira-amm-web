@@ -11,7 +11,7 @@ interface RewardsResponse {
 
 interface UseRewardsParams {
   userId: string | null;
-  epochNumbers: number;
+  epochNumber: number;
   poolIds: string;
 }
 
@@ -22,16 +22,16 @@ interface UseRewardsReturn {
 
 export const useRewards = ({
   userId,
-  epochNumbers,
+  epochNumber: epochNumber,
   poolIds,
 }: UseRewardsParams): UseRewardsReturn => {
-  const queryKey = ["rewards", userId, epochNumbers, poolIds];
+  const queryKey = ["rewards", userId, epochNumber, poolIds];
 
   const fetchRewards = async (): Promise<RewardsResponse> => {
     const response = await axios.get<RewardsResponse>(RewardsApiUrl, {
       params: {
         userId,
-        epochNumbers,
+        epochNumber,
         poolIds,
       },
     });
