@@ -13,7 +13,7 @@ import {InsufficientReservesError} from "mira-dex-ts/dist/sdk/errors";
 import {NoRouteFoundError} from "@/src/hooks/useSwapPreview";
 import {B256Address, BN} from "fuels";
 import useAssetMetadata from "@/src/hooks/useAssetMetadata";
-
+import abbreviateNumber from "@/src/utils/abbreviateNumber";
 type Props = {
   value: string;
   assetId: B256Address | null;
@@ -75,10 +75,7 @@ const CurrencyBox = ({
   const numericValue = parseFloat(value);
   const usdValue =
     !isNaN(numericValue) && Boolean(usdRate)
-      ? (numericValue * usdRate!).toLocaleString(DefaultLocale, {
-          minimumFractionDigits: 2,
-          maximumFractionDigits: 2,
-        })
+      ? abbreviateNumber(numericValue * usdRate!)
       : null;
 
   return (
