@@ -18,8 +18,8 @@ const useExchangeRateV2 = ({
   secondAssetAmount,
   baseAssetId,
 }: Props): string | null => {
-  const firstAssetMetadata = useAssetMetadata(firstAssetId);
-  const secondAssetMetadata = useAssetMetadata(secondAssetId);
+  const {asset: firstAssetMetadata} = useAssetMetadata(firstAssetId);
+  const {asset: secondAssetMetadata} = useAssetMetadata(secondAssetId);
 
   return useMemo(() => {
     const showRate =
@@ -41,15 +41,15 @@ const useExchangeRateV2 = ({
     }
 
     const anotherAssetDecimals = firstAssetIsBase
-      ? secondAssetMetadata.decimals
-      : firstAssetMetadata.decimals;
+      ? secondAssetMetadata?.decimals
+      : firstAssetMetadata?.decimals;
 
     const assetNameToUseForBase = firstAssetIsBase
-      ? firstAssetMetadata.symbol
-      : secondAssetMetadata.symbol;
+      ? firstAssetMetadata?.symbol
+      : secondAssetMetadata?.symbol;
     const assetNameToUseForAnother = firstAssetIsBase
-      ? secondAssetMetadata.symbol
-      : firstAssetMetadata.symbol;
+      ? secondAssetMetadata?.symbol
+      : firstAssetMetadata?.symbol;
 
     const rate =
       parseFloat(firstAssetIsBase ? secondAssetAmount : firstAssetAmount) /

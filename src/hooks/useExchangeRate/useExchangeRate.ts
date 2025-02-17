@@ -12,8 +12,8 @@ const useExchangeRate = (
   swapState: SwapState,
   mode: CurrencyBoxMode = "sell",
 ): string | null => {
-  const sellMetadata = useAssetMetadata(swapState.sell.assetId);
-  const buyMetadata = useAssetMetadata(swapState.buy.assetId);
+  const {asset: sellMetadata} = useAssetMetadata(swapState.sell.assetId);
+  const {asset: buyMetadata} = useAssetMetadata(swapState.buy.assetId);
 
   return useMemo(() => {
     const showRate =
@@ -36,9 +36,9 @@ const useExchangeRate = (
       parseFloat(swapState[anotherMode].amount) /
       parseFloat(swapState[mode].amount);
     const priceString = rate.toLocaleString(DefaultLocale, {
-      minimumFractionDigits: metadata.decimals || 0,
+      minimumFractionDigits: metadata?.decimals || 0,
     });
-    return `1 ${metadata.symbol} ≈ ${priceString} ${otherMetadata.symbol}`;
+    return `1 ${metadata?.symbol} ≈ ${priceString} ${otherMetadata?.symbol}`;
   }, [
     swapState.buy.amount,
     swapState.sell.amount,

@@ -53,8 +53,8 @@ const PositionView = ({pool}: Props) => {
   const [FailureModal, openFailureModal, closeFailureModal] = useModal();
 
   const router = useRouter();
-  const assetAMetadata = useAssetMetadata(pool[0].bits);
-  const assetBMetadata = useAssetMetadata(pool[1].bits);
+  const {asset: assetAMetadata} = useAssetMetadata(pool[0].bits);
+  const {asset: assetBMetadata} = useAssetMetadata(pool[1].bits);
 
   const isStablePool = pool[2];
 
@@ -81,24 +81,24 @@ const PositionView = ({pool}: Props) => {
     [pool[1], bn(0)],
   ];
 
-  const coinAAmount = formatUnits(assetA[1], assetAMetadata.decimals);
+  const coinAAmount = formatUnits(assetA[1], assetAMetadata?.decimals);
 
   const coinAAmountToWithdraw = assetA[1]
     .mul(bn(removeLiquidityPercentage))
     .div(bn(100));
   const coinAAmountToWithdrawStr = formatUnits(
     coinAAmountToWithdraw,
-    assetAMetadata.decimals,
+    assetAMetadata?.decimals,
   );
 
-  const coinBAmount = formatUnits(assetB[1], assetBMetadata.decimals);
+  const coinBAmount = formatUnits(assetB[1], assetBMetadata?.decimals);
 
   const coinBAmountToWithdraw = assetB[1]
     .mul(bn(removeLiquidityPercentage))
     .div(bn(100));
   const coinBAmountToWithdrawStr = formatUnits(
     coinBAmountToWithdraw,
-    assetBMetadata.decimals,
+    assetBMetadata?.decimals,
   );
 
   const confirmationModalAssetsAmounts = useRef({
@@ -243,7 +243,7 @@ const PositionView = ({pool}: Props) => {
               {flooredRate}
             </p>
             <p className={styles.priceBlockDescription}>
-              {assetAMetadata.symbol} per {assetBMetadata.symbol}
+              {assetAMetadata?.symbol} per {assetBMetadata?.symbol}
             </p>
           </div>
           <div className={styles.bottomPriceBlocks}>
@@ -251,14 +251,14 @@ const PositionView = ({pool}: Props) => {
               <p className={styles.priceBlockTitle}>Low price</p>
               <p className={styles.priceBlockValue}>0</p>
               <p className={styles.priceBlockDescription}>
-                ${assetAMetadata.symbol} per {assetBMetadata.symbol}
+                ${assetAMetadata?.symbol} per {assetBMetadata?.symbol}
               </p>
             </div>
             <div className={styles.priceBlock}>
               <p className={styles.priceBlockTitle}>High Price</p>
               <p className={styles.priceBlockValue}>∞</p>
               <p className={styles.priceBlockDescription}>
-                {assetAMetadata.symbol} per {assetBMetadata.symbol}
+                {assetAMetadata?.symbol} per {assetBMetadata?.symbol}
               </p>
             </div>
           </div>
@@ -346,7 +346,7 @@ const PositionView = ({pool}: Props) => {
               <p className={styles.priceBlockTitle}>Low price</p>
               <p className={styles.priceBlockValue}>0</p>
               <p className={styles.priceBlockDescription}>
-                {assetAMetadata.symbol} per {assetBMetadata.symbol}
+                {assetAMetadata?.symbol} per {assetBMetadata?.symbol}
               </p>
             </div>
             <div className={styles.priceBlockDesktop}>
@@ -360,14 +360,14 @@ const PositionView = ({pool}: Props) => {
                 {flooredRate}
               </p>
               <p className={styles.priceBlockDescription}>
-                {assetAMetadata.symbol} per {assetBMetadata.symbol}
+                {assetAMetadata?.symbol} per {assetBMetadata?.symbol}
               </p>
             </div>
             <div className={styles.priceBlockDesktop}>
               <p className={styles.priceBlockTitle}>High Price</p>
               <p className={styles.priceBlockValue}>∞</p>
               <p className={styles.priceBlockDescription}>
-                {assetAMetadata.symbol} per {assetBMetadata.symbol}
+                {assetAMetadata?.symbol} per {assetBMetadata?.symbol}
               </p>
             </div>
           </div>
@@ -395,8 +395,8 @@ const PositionView = ({pool}: Props) => {
       </RemoveLiquidityModal>
       <SuccessModal title={<></>} onClose={redirectToLiquidity}>
         <RemoveLiquiditySuccessModal
-          coinA={assetAMetadata.symbol || ""}
-          coinB={assetBMetadata.symbol || ""}
+          coinA={assetAMetadata?.symbol || ""}
+          coinB={assetBMetadata?.symbol || ""}
           firstCoinAmount={confirmationModalAssetsAmounts.current.firstAsset}
           secondCoinAmount={confirmationModalAssetsAmounts.current.secondAsset}
           transactionHash={data?.id}

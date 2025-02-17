@@ -19,10 +19,10 @@ type Props = {
 };
 
 const MobilePositionItem = ({position, onClick}: Props): JSX.Element => {
-  const coinAMetadata = useAssetMetadata(
+  const {asset: coinAMetadata} = useAssetMetadata(
     position.token0Item.token0Position[0].bits,
   );
-  const coinBMetadata = useAssetMetadata(
+  const {asset: coinBMetadata} = useAssetMetadata(
     position.token1Item.token1Position[0].bits,
   );
 
@@ -31,11 +31,11 @@ const MobilePositionItem = ({position, onClick}: Props): JSX.Element => {
 
   const coinAAmount = formatUnits(
     position.token0Item.token0Position[1],
-    coinAMetadata.decimals,
+    coinAMetadata?.decimals,
   );
   const coinBAmount = formatUnits(
     position.token1Item.token1Position[1],
-    coinBMetadata.decimals,
+    coinBMetadata?.decimals,
   );
 
   const size =

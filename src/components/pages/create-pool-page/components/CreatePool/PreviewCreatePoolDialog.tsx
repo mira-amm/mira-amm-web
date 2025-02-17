@@ -25,8 +25,12 @@ type Props = {
 
 const PreviewCreatePoolDialog = ({previewData}: Props) => {
   const [SuccessModal, openSuccessModal, closeSuccessModal] = useModal();
-  const firstAssetMetadata = useAssetMetadata(previewData.assets[0].assetId);
-  const secondAssetMetadata = useAssetMetadata(previewData.assets[1].assetId);
+  const {asset: firstAssetMetadata} = useAssetMetadata(
+    previewData.assets[0].assetId,
+  );
+  const {asset: secondAssetMetadata} = useAssetMetadata(
+    previewData.assets[1].assetId,
+  );
 
   const router = useRouter();
 
@@ -142,8 +146,8 @@ const PreviewCreatePoolDialog = ({previewData}: Props) => {
       </ActionButton>
       <SuccessModal title={<></>} onClose={redirectToLiquidity}>
         <CreatePoolSuccessModal
-          coinA={firstAssetMetadata.symbol || null}
-          coinB={secondAssetMetadata.symbol || null}
+          coinA={firstAssetMetadata?.symbol || null}
+          coinB={secondAssetMetadata?.symbol || null}
           firstCoinAmount={firstCoinAmount}
           secondCoinAmount={secondCoinAmount}
           transactionHash={createPoolData?.id}

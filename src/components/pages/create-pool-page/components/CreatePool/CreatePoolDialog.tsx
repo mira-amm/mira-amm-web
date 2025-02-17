@@ -55,8 +55,8 @@ const CreatePoolDialog = ({setPreviewData}: Props) => {
 
   const activeAssetForAssetSelector = useRef<string | null>(null);
 
-  const firstAssetMetadata = useAssetMetadata(firstAssetId);
-  const secondAssetMetadata = useAssetMetadata(secondAssetId);
+  const {asset: firstAssetMetadata} = useAssetMetadata(firstAssetId);
+  const {asset: secondAssetMetadata} = useAssetMetadata(secondAssetId);
 
   const pools =
     firstAssetId && secondAssetId
@@ -147,10 +147,10 @@ const CreatePoolDialog = ({setPreviewData}: Props) => {
   const isValidNetwork = useCheckActiveNetwork();
 
   const insufficientFirstBalance = bn
-    .parseUnits(firstAmount, firstAssetMetadata.decimals)
+    .parseUnits(firstAmount, firstAssetMetadata?.decimals)
     .gt(firstAssetBalanceValue);
   const insufficientSecondBalance = bn
-    .parseUnits(secondAmount, secondAssetMetadata.decimals)
+    .parseUnits(secondAmount, secondAssetMetadata?.decimals)
     .gt(secondAssetBalanceValue);
   const insufficientBalance =
     insufficientFirstBalance || insufficientSecondBalance;

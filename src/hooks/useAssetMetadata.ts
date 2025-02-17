@@ -1,28 +1,26 @@
 import {useQuery} from "@tanstack/react-query";
 import {B256Address, Contract, Provider} from "fuels";
 import src20Abi from "@/src/abis/src20-abi.json";
-import {useProvider} from "@fuels/react";
 import {useAssetMinterContract} from "./useAssetMinterContract";
-import useMiraDex from "./useMiraDex/useMiraDex";
 import {NetworkUrl} from "../utils/constants";
-import {coinsConfig} from "../utils/coinsConfig";
-
-interface AssetMetadata {
-  name?: string;
-  symbol?: string;
-  decimals?: number;
-}
+import {CoinData, coinsConfig} from "../utils/coinsConfig";
+import {useAssetImage} from "./useAssetImage";
 
 const providerPromise = Provider.create(NetworkUrl);
 
 const useAssetMetadata = (
   assetId: B256Address | null,
-): AssetMetadata & {isLoading: boolean} => {
+): {asset: CoinData | undefined; isLoading: boolean} => {
   const {contractId, isLoading: contractLoading} =
     useAssetMinterContract(assetId);
+  const icon = useAssetImage(assetId);
 
-  const {data, isLoading: metadataLoading} = useQuery({
-    queryKey: ["assetMetadata", contractId, assetId],
+  const {data, isLoading: metadataLoading} = useQuery<{
+    name: string;
+    decimals: number;
+    symbol: string;
+  }>({
+    queryKey: ["assetMetadata", assetId],
     queryFn: async () => {
       const config = coinsConfig.get(assetId);
       if (config) {
@@ -64,9 +62,21 @@ const useAssetMetadata = (
 
   const isLoading = contractLoading || metadataLoading;
 
-  return data
-    ? {...data, isLoading}
-    : {name: undefined, symbol: undefined, decimals: undefined, isLoading};
+  return {
+    asset:
+      data && assetId
+        ? {
+            ...data,
+            assetId,
+            icon,
+          }
+        : undefined,
+    isLoading,
+  };
+
+  // return data
+  //   ? {...data, isLoading}
+  //   : {name: undefined, symbol: undefined, decimals: undefined, isLoading};
 };
 
 export default useAssetMetadata;

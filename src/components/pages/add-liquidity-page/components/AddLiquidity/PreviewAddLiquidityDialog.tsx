@@ -40,8 +40,8 @@ const PreviewAddLiquidityDialog = ({
 
   const {assets, isStablePool} = previewData;
 
-  const firstAssetMetadata = useAssetMetadata(assets[0].assetId);
-  const secondAssetMetadata = useAssetMetadata(assets[1].assetId);
+  const {asset: firstAssetMetadata} = useAssetMetadata(assets[0].assetId);
+  const {asset: secondAssetMetadata} = useAssetMetadata(assets[1].assetId);
 
   const firstAssetAmount = assets[0].amount;
   const secondAssetAmount = assets[1].amount;
@@ -61,10 +61,10 @@ const PreviewAddLiquidityDialog = ({
   });
 
   const firstAssetAmountString = firstAssetAmount.formatUnits(
-    firstAssetMetadata.decimals,
+    firstAssetMetadata?.decimals,
   );
   const secondAssetAmountString = secondAssetAmount.formatUnits(
-    secondAssetMetadata.decimals,
+    secondAssetMetadata?.decimals,
   );
 
   // const rate = (
@@ -171,8 +171,8 @@ const PreviewAddLiquidityDialog = ({
       </ActionButton>
       <SuccessModal title={<></>} onClose={redirectToLiquidity}>
         <AddLiquiditySuccessModal
-          coinA={firstAssetMetadata.symbol || null}
-          coinB={secondAssetMetadata.symbol || null}
+          coinA={firstAssetMetadata?.symbol || null}
+          coinB={secondAssetMetadata?.symbol || null}
           firstCoinAmount={firstAssetAmountString}
           secondCoinAmount={secondAssetAmountString}
           transactionHash={data?.id}

@@ -15,17 +15,23 @@ export default function UnknownCoinListItem({
   balance,
   onClick,
 }: Props) {
-  const metadata = useAssetMetadata(assetId);
+  const {asset: metadata, isLoading} = useAssetMetadata(assetId);
 
-  if (metadata.symbol) {
+  const assetData = metadata && {
+    ...metadata,
+    userBalance: balance,
+    isVerified: false, // setting is verified to false as the asset is imported by address
+  };
+
+  if (assetData) {
     return (
       <div className={styles.tokenListItem} onClick={onClick}>
-        <CoinListItem assetId={assetId} balance={balance} />
+        <CoinListItem assetData={assetData} />
       </div>
     );
   }
 
-  if (metadata.isLoading) {
+  if (isLoading) {
     return <SkeletonLoader isLoading={true} count={1} textLines={1} />;
   }
 
