@@ -1,7 +1,7 @@
 /*
  *   File loader to load data once at build time.
  */
-const fs = require("fs");
+import fs from "fs";
 
 export function loadFile(filepath: string) {
   return fs.readFileSync(filepath, "utf8");

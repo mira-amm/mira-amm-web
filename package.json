@@ -11,7 +11,8 @@
     "lint:fix": "next lint --fix",
     "test": "jest",
     "test:watch": "jest --watch",
-    "fix:formatting": "npx prettier --write ."
+    "fix:formatting": "npx prettier --write .",
+    "rewards": "tsx scripts/getAllCampaignRewardsForEpoch.ts"
   },
   "dependencies": {
     "@fuels/connectors": "0.36.0",
@@ -34,12 +35,15 @@
   },
   "devDependencies": {
     "@next/eslint-plugin-next": "^14.2.23",
+    "@types/decimal.js": "^7.4.3",
     "@types/jest": "^29.5.14",
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",
     "@typescript-eslint/eslint-plugin": "^8.18.1",
     "@typescript-eslint/parser": "^8.18.1",
+    "decimal.js": "^10.5.0",
+    "dotenv": "^16.4.7",
     "eslint": "^8",
     "eslint-config-next": "14.2.4",
     "eslint-config-prettier": "^9.1.0",
@@ -48,7 +52,8 @@
     "prettier": "^3.4.2",
     "ts-jest": "^29.2.5",
     "ts-node": "^10.9.2",
-    "typescript": "^5.6.2"
+    "tsx": "^4.19.2",
+    "typescript": "^5.7.3"
   },
   "packageManager": "yarn@1.22.22+sha512.a6b2f7906b721bba3d67d4aff083df04dad64c399707841b7acf00f6b133b7ac24255f2652fa22ae3534329dc6180534e98d17432037ff6fd140556e2bb3137e"
 }
