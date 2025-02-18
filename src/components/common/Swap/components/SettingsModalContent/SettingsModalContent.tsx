@@ -49,7 +49,10 @@ const SettingsModalContent = ({
       setSlippage(DefaultSlippageValue);
       return;
     }
-    setSlippage(Math.floor(numericValue * 100));
+    const formattedValue = numericValue * 100;
+    const fixedToTwo = formattedValue.toFixed(2);
+    const flooredValue = Math.floor(Number(fixedToTwo));
+    setSlippage(flooredValue);
   };
 
   const handleKeyDown = (event: KeyboardEvent<HTMLInputElement>) => {
