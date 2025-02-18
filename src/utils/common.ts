@@ -60,7 +60,9 @@ export const createPoolIdFromAssetNames = (
   const secondCoinAsset = coinsConfig.get(secondAssetName)?.assetId;
 
   if (!firstCoinAsset || !secondCoinAsset) {
-    throw new Error(`Invalid asset configuration for ${firstAssetName} or ${secondAssetName}`);
+    throw new Error(
+      `Invalid asset configuration for ${firstAssetName} or ${secondAssetName}`,
+    );
   }
 
   return buildPoolId(firstCoinAsset, secondCoinAsset, isStablePool);
