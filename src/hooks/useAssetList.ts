@@ -38,7 +38,7 @@ export const useAssetList = (): {
         return {
           assetId: asset.id,
           name: config?.name || asset.name,
-          symbol: config?.name || asset.symbol,
+          symbol: config?.symbol || asset.symbol,
           decimals: asset.decimals,
           icon: config?.icon || asset.image,
           l1Address: asset.l1Address,
