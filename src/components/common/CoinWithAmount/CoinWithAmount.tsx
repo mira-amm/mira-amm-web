@@ -12,7 +12,9 @@ const CoinWithAmount = ({amount, assetId}: Props) => {
 
   return (
     <div className={styles.coinWithAmount}>
-      {metadata?.icon && <img src={icon} alt={`${metadata?.symbol} icon`} />}
+      {metadata?.icon && (
+        <img src={metadata.icon} alt={`${metadata?.symbol} icon`} />
+      )}
       <div className={styles.info}>
         <p className={styles.amount}>{amount}</p>
         <p className={styles.name}>{metadata?.symbol}</p>
