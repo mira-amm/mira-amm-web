@@ -15,11 +15,12 @@ import {
   calculateUsdValue,
   getRewardsPoolsId,
 } from "@/src/utils/common";
-import {useFuelPrice} from "@/src/hooks/useFuelPrice";
+import {useAssetPriceFromIndexer} from "@/src/hooks/useAssetPriceFromIndexer";
 import Loader from "@/src/components/common/Loader/Loader";
 import {useRewards} from "@/src/hooks/useRewards";
 import {useAccount} from "@fuels/react";
 import boostRewards from "@/src/models/campaigns.json";
+import {fuelAssetId} from "@/src/utils/constants";
 
 const epochNumber = 2;
 
@@ -28,7 +29,8 @@ const BoostsRewards = (): JSX.Element => {
 
   const [duration, setDuration] = useState("");
 
-  const {price: fuelToUsdRate, isLoading} = useFuelPrice();
+  const {price: fuelToUsdRate, isLoading} =
+    useAssetPriceFromIndexer(fuelAssetId);
 
   // look up the epoch start and end date from epochNumbers
   const epoch = useMemo(
