@@ -1,4 +1,11 @@
-import {ReactNode, ReactPortal, useCallback, useEffect, useState} from "react";
+import {
+  ReactNode,
+  ReactPortal,
+  useCallback,
+  useEffect,
+  useMemo,
+  useState,
+} from "react";
 import {createPortal} from "react-dom";
 
 import styles from "./Modal.module.css";
@@ -45,47 +52,42 @@ const useModal = (): [ReturnType, () => void, () => void] => {
     unlock();
   }, [unlock]);
 
-  const Modal = ({
-    title,
-    titleClassName,
-    children,
-    className,
-    onClose,
-  }: ModalProps) =>
-    isOpen
-      ? createPortal(
-          <>
-            <div
-              className={styles.modalBackdrop}
-              onClick={() => {
-                if (onClose) {
-                  onClose();
-                }
-                closeModal();
-              }}
-            />
-            <div className={clsx(styles.modalWindow, className)}>
-              <div className={styles.modalHeading}>
-                <div className={clsx(styles.modalTitle, titleClassName)}>
-                  {title}
-                </div>
-                <IconButton
-                  onClick={() => {
-                    if (onClose) {
-                      onClose();
-                    }
-                    closeModal();
-                  }}
-                >
-                  <CloseIcon />
-                </IconButton>
+  const Modal = useMemo(() => {
+    const ModalComponent = ({
+      title,
+      titleClassName,
+      children,
+      className,
+      onClose,
+    }: ModalProps) => {
+      const handleClose = useCallback(() => {
+        onClose?.();
+        closeModal();
+      }, [onClose]);
+
+      if (!isOpen) return null;
+
+      return createPortal(
+        <>
+          <div className={styles.modalBackdrop} onClick={handleClose} />
+          <div className={clsx(styles.modalWindow, className)}>
+            <div className={styles.modalHeading}>
+              <div className={clsx(styles.modalTitle, titleClassName)}>
+                {title}
               </div>
-              {children}
+              <IconButton onClick={handleClose}>
+                <CloseIcon />
+              </IconButton>
             </div>
-          </>,
-          document.body,
-        )
-      : null;
+            {children}
+          </div>
+        </>,
+        document.body,
+      );
+    };
+
+    return ModalComponent;
+  }, [isOpen, closeModal]);
 
   return [Modal, openModal, closeModal];
 };
