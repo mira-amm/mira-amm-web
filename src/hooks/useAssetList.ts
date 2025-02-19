@@ -51,6 +51,7 @@ export const useAssetList = (): {
 
       return assets;
     },
+    staleTime: Infinity,
   });
 
   return {assets: data, isLoading};
