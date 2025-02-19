@@ -9,7 +9,6 @@ import {
   CampaignQueryParams,
   CampaignService,
   CampaignsResponse,
-  EpochConfig,
   EpochConfigService,
 } from "./interfaces";
 import path from "path";
@@ -18,22 +17,6 @@ import {convertDailyRewardsToTotalRewards} from "@/src/utils/common";
 const campaignsQuery = loadFile(
   path.join(process.cwd(), "src", "queries", "CampaignsAPR.sql"),
 );
-
-export class JSONEpochConfigService implements EpochConfigService {
-  private readonly epochs: EpochConfig[];
-
-  constructor(epochConfigPath: string) {
-    this.epochs = JSON.parse(loadFile(epochConfigPath));
-  }
-
-  getEpochs(epochNumbers?: number[]): EpochConfig[] {
-    if (epochNumbers) {
-      return this.epochs.filter((epoch) => epochNumbers.includes(epoch.number));
-    }
-
-    return this.epochs;
-  }
-}
 
 // Specific implementation for Sentio
 export class SentioJSONCampaignService implements CampaignService {
