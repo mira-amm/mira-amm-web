@@ -140,23 +140,59 @@ const ConnectButton = ({className, isWidget}: Props) => {
     setHistoryOpened(false);
   };
 
+  // const menuButtons = useMemo(() => {
+  //   return DropDownButtons.filter(
+  //     ({text}) => !isWidget || text === "Disconnect" || text === "Copy Address",
+  //   ).map((button) => ({
+  //     ...button,
+  //     onClick:
+  //       button.text === "Disconnect"
+  //         ? handleDisconnect
+  //         : button.text === "Transaction History"
+  //           ? handleHistoryOpen
+  //           : button.text === "Copy Address"
+  //             ? handleCopy
+  //             : button.text === "View in Explorer"
+  //               ? handleExplorerClick
+  //               : button.onClick,
+  //   }));
+  // }, [handleDisconnect, handleCopy, handleExplorerClick, isWidget]);
+
+  const getOnClickHandler = useCallback(
+    (text: string) => {
+      switch (text) {
+        case "Disconnect":
+          return handleDisconnect;
+        case "Transaction History":
+          return handleHistoryOpen;
+        case "Copy Address":
+          return handleCopy;
+        case "View in Explorer":
+          return handleExplorerClick;
+        default:
+          return () => {};
+      }
+    },
+    [handleCopy, handleDisconnect, handleExplorerClick],
+  );
+
+  const filterButtons = useCallback(
+    (button: {text: string}) => {
+      return (
+        !isWidget ||
+        button.text === "Disconnect" ||
+        button.text === "Copy Address"
+      );
+    },
+    [isWidget],
+  );
+
   const menuButtons = useMemo(() => {
-    return DropDownButtons.filter(
-      ({text}) => !isWidget || text === "Disconnect" || text === "Copy Address",
-    ).map((button) => ({
+    return DropDownButtons.filter(filterButtons).map((button) => ({
       ...button,
-      onClick:
-        button.text === "Disconnect"
-          ? handleDisconnect
-          : button.text === "Transaction History"
-            ? handleHistoryOpen
-            : button.text === "Copy Address"
-              ? handleCopy
-              : button.text === "View in Explorer"
-                ? handleExplorerClick
-                : button.onClick,
+      onClick: getOnClickHandler(button.text),
     }));
-  }, [handleDisconnect, handleCopy, handleExplorerClick, isWidget]);
+  }, [filterButtons, getOnClickHandler]);
 
   useEffect(() => {
     if (isHistoryOpened) {
@@ -167,27 +203,31 @@ const ConnectButton = ({className, isWidget}: Props) => {
   }, [isHistoryOpened]);
 
   return (
-    <div style={{position: "relative"}}>
-      <ActionButton
-        className={clsx(className, isConnected && styles.connected)}
-        onClick={handleClick}
-        loading={isWalletLoading}
-        ref={buttonRef}
-      >
-        {isConnected && <img src="/images/avatar.png" width="24" height="24" />}
-        {title}
-        {isConnected && (!isMenuOpened ? <ArrowDownIcon /> : <ArrowUpIcon />)}
-      </ActionButton>
-      {isMenuOpened && <DropDownMenu buttons={menuButtons} ref={menuRef} />}
-      <TransactionsHistory
-        onClose={handleHistoryClose}
-        isOpened={isHistoryOpened}
-        ref={transactionsRef}
-      />
+    <>
+      <div style={{position: "relative"}}>
+        <ActionButton
+          className={clsx(className, isConnected && styles.connected)}
+          onClick={handleClick}
+          loading={isWalletLoading}
+          ref={buttonRef}
+        >
+          {isConnected && (
+            <img src="/images/avatar.png" width="24" height="24" />
+          )}
+          {title}
+          {isConnected && (!isMenuOpened ? <ArrowDownIcon /> : <ArrowUpIcon />)}
+        </ActionButton>
+        {isMenuOpened && <DropDownMenu buttons={menuButtons} ref={menuRef} />}
+        <TransactionsHistory
+          onClose={handleHistoryClose}
+          isOpened={isHistoryOpened}
+          ref={transactionsRef}
+        />
+      </div>
       {isAddressCopied && (
         <CopyNotification onClose={() => setAddressCopied(false)} />
       )}
-    </div>
+    </>
   );
 };
 
