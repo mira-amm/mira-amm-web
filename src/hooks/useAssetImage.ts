@@ -4,7 +4,7 @@ import request, {gql} from "graphql-request";
 import {SQDIndexerUrl} from "../utils/constants";
 import defaultImage from "@/assets/unknown-asset.svg";
 
-export const useAssetImage = (assetId: string | null): string | null => {
+export const useAssetImage = (assetId: string | null): string => {
   const {data} = useQuery<string | null>({
     queryKey: ["assetImage", assetId],
     queryFn: async () => {
@@ -33,6 +33,7 @@ export const useAssetImage = (assetId: string | null): string | null => {
       // TODO: get images from L1 address
       return null;
     },
+    staleTime: Infinity,
     enabled: assetId !== null,
   });
 
