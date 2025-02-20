@@ -232,29 +232,14 @@ const Swap = ({isWidget}: {isWidget?: boolean}) => {
     }));
 
     if (isWidget) {
-      const params = new URLSearchParams(searchParams.toString());
-
-      if (swapState.buy?.assetId)
-        params.set(SWAP_ASSETS_KEYS.ASSET_IN, swapState.buy.assetId);
-      if (swapState.sell?.assetId)
-        params.set(SWAP_ASSETS_KEYS.ASSET_OUT, swapState.sell.assetId);
-
-      return router.push(`${pathname}?${params.toString()}`);
+      return;
     }
 
     setSwapCoins((prevState) => ({
       buy: prevState.sell,
       sell: prevState.buy,
     }));
-  }, [
-    isWidget,
-    pathname,
-    router,
-    searchParams,
-    setSwapCoins,
-    swapState.buy.assetId,
-    swapState.sell.assetId,
-  ]);
+  }, [isWidget, setSwapCoins]);
 
   const selectCoin = useCallback(
     (mode: "buy" | "sell") => {
@@ -281,15 +266,7 @@ const Swap = ({isWidget}: {isWidget?: boolean}) => {
           }));
 
           if (isWidget) {
-            if (!assetId) return;
-            const params = new URLSearchParams(searchParams.toString());
-            params.set(
-              mode === "sell"
-                ? SWAP_ASSETS_KEYS.ASSET_IN
-                : SWAP_ASSETS_KEYS.ASSET_OUT,
-              assetId,
-            );
-            return router.push(`${pathname}?${params.toString()}`);
+            return;
           }
           setSwapCoins((prevState) => ({
             ...prevState,
@@ -303,9 +280,6 @@ const Swap = ({isWidget}: {isWidget?: boolean}) => {
     [
       inputsState,
       isWidget,
-      pathname,
-      router,
-      searchParams,
       setSwapCoins,
       swapAssets,
       swapState.buy.assetId,
