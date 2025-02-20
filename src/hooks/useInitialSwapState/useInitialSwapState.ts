@@ -1,9 +1,8 @@
 import {SwapState} from "@/src/components/common/Swap/Swap";
-import {useEffect, useMemo} from "react";
-import {useLocalStorage} from "usehooks-ts";
 import {ETH_ASSET_ID, USDC_ASSET_ID} from "@/src/utils/constants";
-import {usePathname, useSearchParams} from "next/navigation";
-import {useRouter} from "next/navigation";
+import {useSearchParams} from "next/navigation";
+import {useMemo} from "react";
+import {useLocalStorage} from "usehooks-ts";
 
 const b256Regex = /0x[0-9a-fA-F]{64}/;
 
@@ -19,24 +18,11 @@ const useInitialSwapState = (isWidget?: boolean): SwapState => {
     sell: string | null;
   }>("swapCoins", {sell: null, buy: null});
 
-  const router = useRouter();
-  const pathname = usePathname();
   const searchParams = useSearchParams();
   const [assetIn, assetOut] = [
     searchParams.get(SWAP_ASSETS_KEYS.ASSET_IN),
     searchParams.get(SWAP_ASSETS_KEYS.ASSET_OUT),
   ];
-
-  useEffect(() => {
-    if (isWidget && (!assetIn || !assetOut)) {
-      const params = new URLSearchParams(searchParams.toString());
-
-      if (!assetIn) params.set(SWAP_ASSETS_KEYS.ASSET_IN, ETH_ASSET_ID);
-      if (!assetOut) params.set(SWAP_ASSETS_KEYS.ASSET_OUT, USDC_ASSET_ID);
-
-      return router.push(`${pathname}?${params.toString()}`);
-    }
-  }, [isWidget, assetIn, assetOut, searchParams, router, pathname]);
 
   return useMemo(() => {
     const getValidAsset = (asset: string | null, defaultAsset: string) =>
