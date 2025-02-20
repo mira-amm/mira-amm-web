@@ -140,24 +140,6 @@ const ConnectButton = ({className, isWidget}: Props) => {
     setHistoryOpened(false);
   };
 
-  // const menuButtons = useMemo(() => {
-  //   return DropDownButtons.filter(
-  //     ({text}) => !isWidget || text === "Disconnect" || text === "Copy Address",
-  //   ).map((button) => ({
-  //     ...button,
-  //     onClick:
-  //       button.text === "Disconnect"
-  //         ? handleDisconnect
-  //         : button.text === "Transaction History"
-  //           ? handleHistoryOpen
-  //           : button.text === "Copy Address"
-  //             ? handleCopy
-  //             : button.text === "View in Explorer"
-  //               ? handleExplorerClick
-  //               : button.onClick,
-  //   }));
-  // }, [handleDisconnect, handleCopy, handleExplorerClick, isWidget]);
-
   const getOnClickHandler = useCallback(
     (text: string) => {
       switch (text) {
