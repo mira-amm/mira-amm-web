@@ -11,7 +11,7 @@ import {useAssetImage} from "@/src/hooks/useAssetImage";
 
 type Props = {
   assetData: Omit<CoinDataWithPrice, "price"> & {
-    userBalance: CoinQuantity | undefined;
+    userBalance?: CoinQuantity;
   };
 };
 
