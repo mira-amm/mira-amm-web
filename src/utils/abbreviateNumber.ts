@@ -7,21 +7,24 @@ const abbreviateNumber = (num: number): string => {
     {value: 1e6, suffix: "M"},
   ];
 
+  const formatter = new Intl.NumberFormat('en-US', {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+  });
+
   for (const {value, suffix} of units) {
     if (num >= value) {
-      return (num / value).toFixed(2) + suffix;
+      return formatter.format(num / value) + suffix;
     }
   }
 
-  // If the number is in thousands, format with toLocaleString
+  // If the number is in thousands, format with Intl.NumberFormat
   if (num >= 1000) {
-    return num.toLocaleString(undefined, {
-      minimumFractionDigits: 2,
-      maximumFractionDigits: 2,
-    });
+    return formatter.format(num);
   }
 
-  return num.toFixed(2);
+  // For numbers below 1,000, use locale formatting
+  return formatter.format(num);
 };
 
 export default abbreviateNumber;
