@@ -18,10 +18,6 @@ const abbreviateNumber = (num: number): string => {
     }
   }
 
-  // If the number is in thousands, format with Intl.NumberFormat
-  if (num >= 1000) {
-    return formatter.format(num);
-  }
 
   // For numbers below 1,000, use locale formatting
   return formatter.format(num);
