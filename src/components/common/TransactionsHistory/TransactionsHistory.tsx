@@ -21,6 +21,7 @@ interface TransactionProps {
   secondAssetName: string;
   withdrawal?: boolean;
   addLiquidity?: boolean;
+  tx_id: string;
 }
 
 interface TransactionsHistoryProps {
@@ -50,18 +51,18 @@ const transformTransactionsDataAndGroupByDate = (
       },
     );
     const [firstAssetId, secondAssetId] = transaction.pool_id.split("_");
-    const firstAssetExists = coinsConfig.has(firstAssetId);
-    const secondAssetExists = coinsConfig.has(secondAssetId);
-    if (!firstAssetExists || !secondAssetExists) {
+    const firstAsset = coinsConfig.get(firstAssetId);
+    const secondAsset = coinsConfig.get(secondAssetId);
+    if (!firstAsset || !secondAsset) {
       return;
     }
-    const firstAssetName = coinsConfig.get(firstAssetId)?.name!;
-    const secondAssetName = coinsConfig.get(secondAssetId)?.name!;
+    const firstAssetName = firstAsset.name!;
+    const secondAssetName = secondAsset.name!;
 
-    const firstAssetIcon = coinsConfig.get(firstAssetName)?.icon!;
-    const secondAssetIcon = coinsConfig.get(secondAssetName)?.icon!;
-    const firstAssetDecimals = coinsConfig.get(firstAssetName)?.decimals!;
-    const secondAssetDecimals = coinsConfig.get(secondAssetName)?.decimals!;
+    const firstAssetIcon = firstAsset.icon!;
+    const secondAssetIcon = secondAsset.icon!;
+    const firstAssetDecimals = firstAsset.decimals!;
+    const secondAssetDecimals = secondAsset.decimals!;
     const firstAssetIn =
       Number(transaction.asset_0_in) / 10 ** firstAssetDecimals;
     const firstAssetOut =
@@ -81,21 +82,19 @@ const transformTransactionsDataAndGroupByDate = (
        * which asset is input and which is output for swap. If asset_1_out > asset_0_out, it means that we need to reverse
        * mapping of assets from pool id to the visual representation of the transaction.
        */
-      const reversedAssetsOrder = secondAssetOut > firstAssetOut;
-      firstAssetNameToUse = reversedAssetsOrder
-        ? secondAssetName
-        : firstAssetName;
-      secondAssetNameToUse = reversedAssetsOrder
-        ? firstAssetName
-        : secondAssetName;
-      const firstAssetDecimals =
-        coinsConfig.get(firstAssetNameToUse)?.decimals!;
-      const secondAssetDecimals =
-        coinsConfig.get(secondAssetNameToUse)?.decimals!;
-      const outputValue = Math.max(firstAssetOut, secondAssetOut);
-      const inputValue = Math.max(firstAssetIn, secondAssetIn);
-      firstAssetAmount = outputValue.toFixed(firstAssetDecimals);
-      secondAssetAmount = inputValue.toFixed(secondAssetDecimals);
+      const reversedAssetsOrder = transaction.asset_0_in == '0' && transaction.asset_1_out == '0';
+
+      const fromAsset = reversedAssetsOrder ? secondAsset : firstAsset;
+      const toAsset = reversedAssetsOrder ? firstAsset : secondAsset;
+
+      const fromAssetDecimals = fromAsset.decimals!;
+      const toAssetDecimals = toAsset.decimals!;
+
+      firstAssetNameToUse = fromAsset.name!;
+      secondAssetNameToUse = toAsset.name!;
+      // Format number and Remove trailing zeros
+      firstAssetAmount = (reversedAssetsOrder ? secondAssetIn : firstAssetIn).toFixed(fromAssetDecimals).replace(/\.?0+$/, ""); 
+      secondAssetAmount = (reversedAssetsOrder ? firstAssetOut : secondAssetOut).toFixed(toAssetDecimals).replace(/\.?0+$/, "");
     } else {
       firstAssetNameToUse = firstAssetName;
       secondAssetNameToUse = secondAssetName;
@@ -128,6 +127,7 @@ const transformTransactionsDataAndGroupByDate = (
       secondAssetName: secondAssetNameToUse,
       withdrawal: transaction.transaction_type === "REMOVE_LIQUIDITY",
       addLiquidity: transaction.transaction_type === "ADD_LIQUIDITY",
+      tx_id: transaction.tx_id,
     };
 
     if (!grouped[date]) {
@@ -157,6 +157,7 @@ const TransactionsHistory = forwardRef<
   const {transactions} = useWalletTransactions(account, isOpened);
   const groupedTransactions =
     transformTransactionsDataAndGroupByDate(transactions);
+  console.log("groupedTransactions", groupedTransactions);
 
   const handleCopy = () => {
     if (navigator.clipboard && account) {
@@ -225,9 +226,11 @@ const TransactionsHistory = forwardRef<
                       </div>
                       <div className={styles.transactionText}>
                         <div className={styles.transactionType}>
-                          <span className={styles.transactionName}>
-                            {transaction.name}
-                          </span>
+                          <a href={`https://app.fuel.network/tx/${transaction.tx_id}`} target="_blank" rel="noopener noreferrer">
+                            <span className={styles.transactionName}>
+                              {transaction.name}
+                            </span>
+                          </a>
                           <div
                             className={`${styles.typeCircle} ${
                               transaction.withdrawal
