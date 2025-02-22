@@ -1,4 +1,4 @@
-import {bn, CHAIN_IDS, TxParams} from "fuels";
+import { bn, CHAIN_IDS, TxParams } from "fuels";
 
 export const DEFAULT_AMM_CONTRACT_ID =
   "0x2e40f2b244b98ed6b8204b3de0156c6961f98525c8162f80162fcf53eebd90e7" as const;
@@ -26,8 +26,9 @@ export const BlogLink = "https://mirror.xyz/miraly.eth" as const;
 // TODO: Use env variables for values below to separate dev/prod | testnet/mainnet
 export const ValidNetworkChainId = CHAIN_IDS.fuel.mainnet;
 export const NetworkUrl: string = "https://mainnet.fuel.network/v1/graphql";
+// Source: https://envio.dev/app/mira-amm/mira-indexer-mainnet
 export const IndexerUrl =
-  "https://indexer.bigdevenergy.link/755fa3e/v1/graphql" as const;
+  "https://indexer.hyperindex.xyz/755fa3e/v1/graphql" as const;
 export const SQDIndexerUrl =
   "https://mira-dex.squids.live/mira-indexer@v3/api/graphql" as const;
 export const MainnetUrl = "https://mainnet-explorer.fuel.network";
