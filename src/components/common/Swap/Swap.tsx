@@ -160,7 +160,7 @@ const Swap = () => {
   const decimals =
     anotherMode === "sell" ? sellMetadata.decimals : buyMetadata.decimals;
 
-  const previewValueString2 =
+  const previewValueString =
     !trade ||
     tradeState === TradeState.INVALID ||
     tradeState === TradeState.NO_ROUTE_FOUND ||
@@ -175,26 +175,26 @@ const Swap = () => {
         : trade.amountIn.formatUnits(decimals);
 
   useEffect(() => {
-    if (previewValueString2 !== swapState[anotherMode].amount) {
+    if (previewValueString !== swapState[anotherMode].amount) {
       setSwapState((prevState) => ({
         ...prevState,
         [anotherMode]: {
           ...prevState[anotherMode],
-          amount: previewValueString2,
+          amount: previewValueString,
         },
       }));
     }
-  }, [trade, previewValueString2]);
+  }, [trade, previewValueString]);
   useEffect(() => {
-    if (previewValueString2 !== inputsState[anotherMode].amount) {
+    if (previewValueString !== inputsState[anotherMode].amount) {
       setInputsState((prevState) => ({
         ...prevState,
         [anotherMode]: {
-          amount: previewValueString2,
+          amount: previewValueString,
         },
       }));
     }
-  }, [trade, previewValueString2]);
+  }, [trade, previewValueString]);
 
   const sellValue = inputsState.sell.amount;
   const buyValue = inputsState.buy.amount;
@@ -255,8 +255,6 @@ const Swap = () => {
           ...prevState,
           [mode]: assetId,
         }));
-
-        setActiveMode(mode);
       };
     },
     [
