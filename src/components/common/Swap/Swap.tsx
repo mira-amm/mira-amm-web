@@ -184,7 +184,7 @@ const Swap = () => {
         },
       }));
     }
-  }, [trade, previewValueString]);
+  }, [trade, previewValueString, swapState]);
   useEffect(() => {
     if (previewValueString !== inputsState[anotherMode].amount) {
       setInputsState((prevState) => ({
@@ -194,7 +194,7 @@ const Swap = () => {
         },
       }));
     }
-  }, [trade, previewValueString]);
+  }, [trade, previewValueString, inputsState]);
 
   const sellValue = inputsState.sell.amount;
   const buyValue = inputsState.buy.amount;
@@ -479,8 +479,8 @@ const Swap = () => {
     tradeState !== TradeState.VALID;
   useEffect(() => {
     let newSwapButtonTitle = "";
-
-    if (!isValidNetwork) {
+    if (previewError) newSwapButtonTitle = previewError;
+    else if (!isValidNetwork) {
       newSwapButtonTitle = "Incorrect network";
     } else if (swapPending) {
       newSwapButtonTitle = "Waiting for approval in wallet";
@@ -500,6 +500,7 @@ const Swap = () => {
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
+    previewError,
     isValidNetwork,
     amountMissing,
     swapPending,
@@ -579,9 +580,6 @@ const Swap = () => {
             loading={inputPreviewLoading || swapPending}
             onCoinSelectorClick={handleCoinSelectorClick}
             usdRate={sellAssetPrice.price}
-            previewError={
-              activeMode === "buy" && !inputPreviewLoading ? previewError : null
-            }
           />
           <div className={styles.splitter}>
             <IconButton onClick={swapAssets} className={styles.convertButton}>
@@ -597,11 +595,6 @@ const Swap = () => {
             loading={outputPreviewLoading || swapPending}
             onCoinSelectorClick={handleCoinSelectorClick}
             usdRate={buyAssetPrice.price}
-            previewError={
-              activeMode === "sell" && !outputPreviewLoading
-                ? previewError
-                : null
-            }
           />
           {review && (
             <div className={styles.summary}>
