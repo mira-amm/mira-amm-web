@@ -18,7 +18,6 @@
     "@fuels/connectors": "0.36.0",
     "@fuels/react": "0.36.0",
     "@tanstack/react-query": "^5.50.1",
-    "@tanstack/react-query-devtools": "^5.66.9",
     "axios": "^1.7.9",
     "clsx": "^2.1.1",
     "fuels": "0.96.1",
@@ -36,6 +35,7 @@
   },
   "devDependencies": {
     "@next/eslint-plugin-next": "^14.2.23",
+    "@tanstack/react-query-devtools": "^5.66.9",
     "@types/decimal.js": "^7.4.3",
     "@types/jest": "^29.5.14",
     "@types/node": "^20",
