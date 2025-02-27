@@ -1,6 +1,6 @@
 import {useCallback, useEffect, useMemo, useRef, useState} from "react";
 import {useConnectUI, useIsConnected} from "@fuels/react";
-import {useDebounceCallback, useLocalStorage} from "usehooks-ts";
+import {useLocalStorage} from "usehooks-ts";
 import {clsx} from "clsx";
 
 import CurrencyBox from "@/src/components/common/Swap/components/CurrencyBox/CurrencyBox";
@@ -21,7 +21,7 @@ import SettingsModalContent from "@/src/components/common/Swap/components/Settin
 import useCheckEthBalance from "@/src/hooks/useCheckEthBalance/useCheckEthBalance";
 import useInitialSwapState from "@/src/hooks/useInitialSwapState/useInitialSwapState";
 import useCheckActiveNetwork from "@/src/hooks/useCheckActiveNetwork";
-import usePreviewV2 from "@/src/hooks/useSwapPreviewV2";
+import usePreview from "@/src/hooks/useSwapPreviewV2";
 import PriceImpact from "@/src/components/common/Swap/components/PriceImpact/PriceImpact";
 import {FuelAppUrl} from "@/src/utils/constants";
 import useReservesPrice from "@/src/hooks/useReservesPrice";
@@ -142,17 +142,11 @@ const Swap = () => {
   )?.amount;
   const buyBalanceValue = buyBalance ?? new BN(0);
 
-  // const {previewData, previewLoading, previewError, refetchPreview} =
-  //   useSwapPreview({
-  //     swapState,
-  //     mode: activeMode,
-  //   });
-
   const {
     trade,
     tradeState,
     error: previewError,
-  } = usePreviewV2(swapState, activeMode);
+  } = usePreview(swapState, activeMode);
 
   const pools = trade?.bestRoute?.pools.map((pool) => pool.poolId);
 
@@ -266,12 +260,11 @@ const Swap = () => {
     ],
   );
 
-  const debouncedSetState = useDebounceCallback(setSwapState, 500);
   const setAmount = useCallback(
     (mode: "buy" | "sell") => {
       return (amount: string) => {
         if (amount === "") {
-          debouncedSetState((prevState) => ({
+          setSwapState((prevState) => ({
             sell: {
               assetId: prevState.sell.assetId,
               amount: "",
@@ -297,17 +290,27 @@ const Swap = () => {
           return;
         }
 
-        debouncedSetState((prevState) => ({
+        const otherMode = mode === "buy" ? "sell" : "buy";
+
+        // resetting other mode's amounts as on user's input, the other mode amount will be recalculated
+        setSwapState((prevState) => ({
           ...prevState,
           [mode]: {
             ...prevState[mode],
             amount,
+          },
+          [otherMode]: {
+            ...prevState[otherMode],
+            amount: "",
           },
         }));
         setInputsState((prevState) => ({
           ...prevState,
           [mode]: {
             amount,
+          },
+          [otherMode]: {
+            amount: "",
           },
         }));
 
@@ -317,7 +320,7 @@ const Swap = () => {
         }
       };
     },
-    [debouncedSetState, activeMode],
+    [setSwapState, activeMode],
   );
 
   const handleCoinSelectorClick = useCallback(
@@ -363,6 +366,7 @@ const Swap = () => {
     swapState.sell.amount === "" ||
     Number(swapState.buy.amount) <= 0 ||
     Number(swapState.sell.amount) <= 0;
+
   const sufficientEthBalance = useCheckEthBalance(swapState.sell);
   const exchangeRate = useExchangeRate(swapState);
 
@@ -480,7 +484,9 @@ const Swap = () => {
   useEffect(() => {
     let newSwapButtonTitle = "";
     if (previewError) newSwapButtonTitle = previewError;
-    else if (!isValidNetwork) {
+    else if (amountMissing) {
+      newSwapButtonTitle = "Input amounts";
+    } else if (!isValidNetwork) {
       newSwapButtonTitle = "Incorrect network";
     } else if (swapPending) {
       newSwapButtonTitle = "Waiting for approval in wallet";
@@ -490,8 +496,6 @@ const Swap = () => {
       newSwapButtonTitle = "Bridge more ETH to pay for gas";
     } else if (!review && !amountMissing) {
       newSwapButtonTitle = "Review";
-    } else if (amountMissing) {
-      newSwapButtonTitle = "Input amounts";
     } else {
       newSwapButtonTitle = swapButtonTitle; // Default to previous title
     }
