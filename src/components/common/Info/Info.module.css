@@ -45,6 +45,7 @@
   transition:
     opacity 0.2s ease-in-out,
     visibility 0.2s ease-in-out;
+  z-index: 1000;
 }
 
 .infoContainer:hover .tooltip {
