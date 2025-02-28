@@ -1,5 +1,3 @@
-import {ValidNetworkChainId} from "@/src/utils/constants";
-
 import assets from "./verified-assets.json";
 
 // TODO: Consider removing this type as we won't probably know the list of all coins ahead of time
