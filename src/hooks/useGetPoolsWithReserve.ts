@@ -26,7 +26,9 @@ export type Route = {
 
 const useGetPoolsWithReserve = (
   poolKeys: [CoinData, CoinData, PoolId, boolean][],
-  shouldFetchPools: boolean,
+  assetIn?: CoinData,
+  assetOut?: CoinData,
+  shouldFetchPools: boolean = false,
 ) => {
   const poolQueries = poolKeys
     .map(([, , [assetA, assetB], stable], idx) => {
@@ -54,7 +56,12 @@ const useGetPoolsWithReserve = (
     isRefetching,
     refetch,
   } = useQuery<Record<string, PoolReserveData | null>>({
-    queryKey: ["routable-pools", shouldFetchPools],
+    queryKey: [
+      "routable-pools",
+      shouldFetchPools,
+      assetIn?.assetId,
+      assetOut?.assetId,
+    ],
     queryFn: shouldFetchPools
       ? () =>
           request({

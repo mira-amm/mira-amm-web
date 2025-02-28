@@ -8,7 +8,7 @@ import ActionButton from "@/src/components/common/ActionButton/ActionButton";
 import Pagination from "@/src/components/common/Pagination/Pagination";
 import {SearchBar} from "@/src/components/common/SearchBar/SearchBar";
 import usePoolsData, {DEFAULT_PAGE} from "@/src/hooks/usePoolsData";
-import {useDebounce} from "@/src/hooks/useDebounce";
+import useDebounce from "@/src/hooks/useDebounce";
 
 import clsx from "clsx";
 import styles from "./Pools.module.css";

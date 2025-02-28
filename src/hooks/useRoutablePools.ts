@@ -86,6 +86,8 @@ const useRoutablePools = (
 
   const {pools, isLoading, isRefetching, refetch} = useGetPoolsWithReserve(
     allAssetsPairsWithPoolId,
+    assetIn,
+    assetOut,
     shouldFetchPools,
   );
 
