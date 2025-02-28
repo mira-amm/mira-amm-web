@@ -7,7 +7,7 @@ const abbreviateNumber = (num: number): string => {
     {value: 1e6, suffix: "M"},
   ];
 
-  const formatter = new Intl.NumberFormat('en-US', {
+  const formatter = new Intl.NumberFormat("en-US", {
     minimumFractionDigits: 2,
     maximumFractionDigits: 2,
   });
@@ -17,7 +17,6 @@ const abbreviateNumber = (num: number): string => {
       return formatter.format(num / value) + suffix;
     }
   }
-
 
   // For numbers below 1,000, use locale formatting
   return formatter.format(num);
