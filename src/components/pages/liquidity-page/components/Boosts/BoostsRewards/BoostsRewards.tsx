@@ -8,6 +8,7 @@ import {
   boostsEpochTooltip,
   BoostsLearnMoreUrl,
   BoostsRewardsTooltip,
+  EPOCH_NUMBER,
 } from "@/src/utils/constants";
 import {useEffect, useState, useMemo} from "react";
 import {
@@ -21,8 +22,6 @@ import {useRewards} from "@/src/hooks/useRewards";
 import {useAccount} from "@fuels/react";
 import boostRewards from "@/src/models/campaigns.json";
 
-const epochNumber = 2;
-
 const BoostsRewards = (): JSX.Element => {
   const {account} = useAccount();
 
@@ -32,7 +31,7 @@ const BoostsRewards = (): JSX.Element => {
 
   // look up the epoch start and end date from epochNumbers
   const epoch = useMemo(
-    () => boostRewards.find((epoch) => epoch.number === epochNumber),
+    () => boostRewards.find((epoch) => epoch.number === EPOCH_NUMBER),
     [],
   );
 
@@ -44,7 +43,7 @@ const BoostsRewards = (): JSX.Element => {
 
   const {rewardsAmount, isLoading: isRewardsAmountLoading} = useRewards({
     userId: account,
-    epochNumbers: epochNumber,
+    epochNumbers: EPOCH_NUMBER,
     poolIds: rewardsPoolsId,
   });
 
@@ -112,7 +111,7 @@ const BoostsRewards = (): JSX.Element => {
             </Link>
           </p>
           <p className={styles.disclaimer}>
-            Note: Rewards for the first 30 days have already been distributed.
+            Rewards for the first 45 days have already been distributed.
           </p>
         </div>
         <div className={styles.epochSection}>

@@ -71,9 +71,11 @@ export const BoostsRewardsTooltip =
   "These are the total Fuel tokens earned that will be distributed at the end of the season. The exact dollar amount will change based on Fuel’s current price. The exact token amount might change.";
 
 export const boostsEpochTooltip =
-  "Current season lasts for 45 days total. All rewards will be distributed at the end of the season. ";
+  "The current season has been extended by 7 days. All remaining rewards will be distributed at the end of the season.";
 
 export const RewardsApiUrl = "/api/rewards" as const;
 
 export const boosterBannerTitle =
   " Introducing Boost Rewards, earn $FUEL by providing liquidity.";
+
+export const EPOCH_NUMBER = 3 as const;
