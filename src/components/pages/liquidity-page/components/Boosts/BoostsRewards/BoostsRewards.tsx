@@ -111,7 +111,8 @@ const BoostsRewards = (): JSX.Element => {
             </Link>
           </p>
           <p className={styles.disclaimer}>
-            Rewards for the first 45 days have already been distributed.
+            Fuel Season 1 is over, and rewards have been sent to
+            participants&apos; wallets.
           </p>
         </div>
         <div className={styles.epochSection}>
