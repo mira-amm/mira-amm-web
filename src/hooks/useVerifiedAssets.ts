@@ -2,7 +2,7 @@ import {useQuery} from "@tanstack/react-query";
 import {VerifiedAssets} from "../components/common/Swap/components/CoinListItem/checkIfCoinVerified";
 
 export const useVerifiedAssets = () => {
-  const {data: verifiedAssetData} = useQuery({
+  const {data: verifiedAssetData, isLoading} = useQuery({
     queryKey: ["verifiedAssets"],
     queryFn: async () => {
       const req = await fetch(
@@ -11,7 +11,8 @@ export const useVerifiedAssets = () => {
       const res = await req.json();
       return res as VerifiedAssets;
     },
+    staleTime: Infinity,
   });
 
-  return verifiedAssetData;
+  return {verifiedAssetData, isLoading};
 };
