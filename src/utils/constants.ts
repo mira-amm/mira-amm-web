@@ -1,7 +1,20 @@
 import {bn, CHAIN_IDS, TxParams} from "fuels";
 
-export const DEFAULT_AMM_CONTRACT_ID =
-  "0x2e40f2b244b98ed6b8204b3de0156c6961f98525c8162f80162fcf53eebd90e7" as const;
+export const EXPLORER_BASE_URL_MAP: ReadonlyMap<number, string> = new Map([
+  [CHAIN_IDS.fuel.mainnet, "https://mainnet-explorer.fuel.network"],
+  [CHAIN_IDS.fuel.testnet, "https://testnet-explorer.fuel.network"],
+]);
+
+export const SMART_CONTRACT_MAP: ReadonlyMap<number, string> = new Map([
+  [
+    CHAIN_IDS.fuel.mainnet,
+    "0x2e40f2b244b98ed6b8204b3de0156c6961f98525c8162f80162fcf53eebd90e7",
+  ],
+  [
+    CHAIN_IDS.fuel.testnet,
+    "0xd5a716d967a9137222219657d7877bd8c79c64e1edb5de9f2901c98ebe74da80",
+  ],
+]);
 
 export const ETH_ASSET_ID =
   "0xf8f8b6283d7fa5b672b530cbb84fcccb4ff8dc40f8176ef4544ddb1f1952ad07";
@@ -23,17 +36,38 @@ export const XLink = "https://x.com/MiraProtocol" as const;
 
 export const BlogLink = "https://mirror.xyz/miraly.eth" as const;
 
-// TODO: Use env variables for values below to separate dev/prod | testnet/mainnet
-export const ValidNetworkChainId = CHAIN_IDS.fuel.mainnet;
-export const NetworkUrl: string = "https://mainnet.fuel.network/v1/graphql";
+export const ValidNetworkChainIds = [
+  CHAIN_IDS.fuel.mainnet,
+  CHAIN_IDS.fuel.testnet,
+];
+
+export const MainnetNetworkUrl = "https://mainnet.fuel.network/v1/graphql";
+export const TestnetNetworkUrl = "https://testnet.fuel.network/v1/graphql";
+
 export const IndexerUrl =
   "https://indexer.bigdevenergy.link/755fa3e/v1/graphql" as const;
 export const SQDIndexerUrl =
   "https://mira-dex.squids.live/mira-indexer@v3/api/graphql" as const;
 export const MainnetUrl = "https://mainnet-explorer.fuel.network";
+export const SQDIndexerUrlMainnet =
+  "https://mira-dex.squids.live/mira-indexer@v3/api/graphql" as const;
+export const SQDIndexerUrlTestnet =
+  "https://mira-dex.squids.live/mira-testnet-indexer@v1/api/graphql" as const;
+
+export const SQD_INDEXER_URL_MAP: ReadonlyMap<number, string> = new Map([
+  [CHAIN_IDS.fuel.mainnet, SQDIndexerUrlMainnet],
+  [CHAIN_IDS.fuel.testnet, SQDIndexerUrlTestnet],
+]);
+
 export const ApiBaseUrl = "https://prod.api.mira.ly" as const;
 
-export const FuelAppUrl = "https://app.fuel.network" as const;
+const FuelAppUrlMainnet = "https://app.fuel.network" as const;
+const FuelAppUrlTestnet = "https://app-testnet.fuel.network/" as const;
+
+export const FUEL_APP_URL_MAP: ReadonlyMap<number, string> = new Map([
+  [CHAIN_IDS.fuel.mainnet, FuelAppUrlMainnet],
+  [CHAIN_IDS.fuel.testnet, FuelAppUrlTestnet],
+]);
 
 export const FuelAssetPriceUrl =
   " https://explorer-indexer-mainnet.fuel.network/assets" as const;
