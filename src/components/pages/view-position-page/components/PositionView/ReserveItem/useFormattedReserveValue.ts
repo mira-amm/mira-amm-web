@@ -1,7 +1,7 @@
 import {useAssetPriceFromIndexer} from "@/src/hooks/useAssetPriceFromIndexer";
 import {formatDisplayAmount} from "@/src/utils/common";
 
-export const useFormattedReserveValues = (
+export const useFormattedReserveValue = (
   assetId: string,
   amount: string,
   reserve: number | undefined,

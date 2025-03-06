@@ -192,6 +192,8 @@ export const formatDisplayAmount = (amount: string | number) => {
   return asDecimal.toLocaleString(DefaultLocale, {minimumFractionDigits: 5});
 };
 
+// Formats the APR value into a string with two decimal places and a percentage sign.
+// The `apr` value represents percentage points (e.g., 1 represents 1%, not 100%).
 export const formatAprValue = (apr?: {apr: number}): string | null => {
   if (!apr) return null;
   return `${apr.apr.toLocaleString(DefaultLocale, {

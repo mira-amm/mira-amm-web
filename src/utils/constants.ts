@@ -78,7 +78,7 @@ export const RewardsApiUrl = "/api/rewards" as const;
 export const boosterBannerTitle =
   " Introducing Boost Rewards, earn $FUEL by providing liquidity.";
 
-export const fuelAssetId =
+export const FUEL_ASSET_ID =
   "0x1d5d97005e41cae2187a895fd8eab0506111e0e2f3331cd3912c15c24e3c1d82";
 
 export const EPOCH_NUMBER = 3 as const;

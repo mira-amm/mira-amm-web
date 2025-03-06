@@ -22,33 +22,33 @@ interface AssetMetadata {
   decimals?: number;
 }
 
+interface AssetData {
+  amount: string;
+  metadata: AssetMetadata & {isLoading: boolean};
+  reserve?: number;
+}
+
 interface MobilePositionViewProps {
   pool: PoolId;
   isStablePool: boolean;
-  handleWithdrawLiquidity: () => void;
-  coinAAmount: string;
-  coinBAmount: string;
   formattedTvlValue: string;
-  assetAMetadata: AssetMetadata & {isLoading: boolean};
-  assetBMetadata: AssetMetadata & {isLoading: boolean};
   positionPath: string;
-  coinReserveA: number | undefined;
-  coinReserveB: number | undefined;
+  assetA: AssetData;
+  assetB: AssetData;
+  handleWithdrawLiquidity: () => void;
 }
+
 const MobilePositionView = ({
   pool,
   isStablePool,
-  handleWithdrawLiquidity,
-  coinAAmount,
-  coinBAmount,
   formattedTvlValue,
-  assetAMetadata,
-  assetBMetadata,
   positionPath,
-  coinReserveA,
-  coinReserveB,
+  assetA,
+  assetB,
+  handleWithdrawLiquidity,
 }: MobilePositionViewProps): JSX.Element => {
   const loading = <Loader variant="outlined" color="gray" />;
+
   return (
     <section className={clsx(styles.contentSection, "mobileOnly")}>
       <div className={styles.coinPairAndLabel}>
@@ -66,11 +66,11 @@ const MobilePositionView = ({
         <div className={styles.coinsData}>
           <CoinWithAmount
             assetId={pool[0].bits}
-            amount={formatDisplayAmount(coinAAmount)}
+            amount={formatDisplayAmount(assetA.amount)}
           />
           <CoinWithAmount
             assetId={pool[1].bits}
-            amount={formatDisplayAmount(coinBAmount)}
+            amount={formatDisplayAmount(assetB.amount)}
           />
         </div>
       </div>
@@ -80,14 +80,14 @@ const MobilePositionView = ({
       <div className={styles.priceBlocks}>
         <p className={styles.subheading}>Pool reserves</p>
         <ReserveItem
-          reserve={coinReserveA}
+          reserve={assetA.reserve}
           assetId={pool[0].bits}
-          amount={coinAAmount}
+          amount={assetA.amount}
         />
         <ReserveItem
-          reserve={coinReserveB}
+          reserve={assetB.reserve}
           assetId={pool[1].bits}
-          amount={coinAAmount}
+          amount={assetB.amount}
         />
 
         <div className={styles.divider}></div>
@@ -96,10 +96,10 @@ const MobilePositionView = ({
           {formattedTvlValue ? <p>${formattedTvlValue}</p> : loading}
         </div>
         <ExchangeRate
-          assetBMetadata={assetBMetadata}
-          assetAMetadata={assetAMetadata}
-          coinAAmount={coinAAmount}
-          coinBAmount={coinBAmount}
+          assetBMetadata={assetB.metadata}
+          assetAMetadata={assetA.metadata}
+          coinAAmount={assetA.amount}
+          coinBAmount={assetB.amount}
         />
       </div>
 

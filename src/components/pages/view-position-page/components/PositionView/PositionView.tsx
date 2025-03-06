@@ -142,28 +142,36 @@ const PositionView = ({pool}: Props): JSX.Element => {
       <MobilePositionView
         pool={pool}
         isStablePool={isStablePool}
-        handleWithdrawLiquidity={handleWithdrawLiquidity}
-        coinAAmount={coinAAmount}
-        coinBAmount={coinBAmount}
         formattedTvlValue={formattedTvlValue}
-        assetAMetadata={assetAMetadata}
-        assetBMetadata={assetBMetadata}
         positionPath={positionPath}
-        coinReserveA={coinReserveA}
-        coinReserveB={coinReserveB}
+        assetA={{
+          amount: coinAAmount,
+          metadata: assetAMetadata,
+          reserve: coinReserveA,
+        }}
+        assetB={{
+          amount: coinBAmount,
+          metadata: assetBMetadata,
+          reserve: coinReserveB,
+        }}
+        handleWithdrawLiquidity={handleWithdrawLiquidity}
       />
       <DesktopPositionView
         pool={pool}
         isStablePool={isStablePool}
-        handleWithdrawLiquidity={handleWithdrawLiquidity}
-        coinAAmount={coinAAmount}
-        coinBAmount={coinBAmount}
         formattedTvlValue={formattedTvlValue}
-        assetAMetadata={assetAMetadata}
-        assetBMetadata={assetBMetadata}
         positionPath={positionPath}
-        coinReserveA={coinReserveA}
-        coinReserveB={coinReserveB}
+        assetA={{
+          amount: coinAAmount,
+          metadata: assetAMetadata,
+          reserve: coinReserveA,
+        }}
+        assetB={{
+          amount: coinBAmount,
+          metadata: assetBMetadata,
+          reserve: coinReserveB,
+        }}
+        handleWithdrawLiquidity={handleWithdrawLiquidity}
       />
 
       <RemoveLiquidityModal

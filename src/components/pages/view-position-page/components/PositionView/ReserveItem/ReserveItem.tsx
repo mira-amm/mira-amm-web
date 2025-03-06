@@ -1,7 +1,7 @@
 import React from "react";
 import CoinWithAmount from "@/src/components/common/CoinWithAmount/CoinWithAmount";
 import styles from "./ReserveItem.module.css";
-import {useFormattedReserveValues} from "./useFormattedReserveValues";
+import {useFormattedReserveValue} from "./useFormattedReserveValue";
 import Loader from "@/src/components/common/Loader/Loader";
 
 interface ReserveItemsProps {
@@ -15,7 +15,7 @@ const ReserveItem = ({
   amount,
   reserve,
 }: ReserveItemsProps): JSX.Element => {
-  const {usdValue, coinAmount} = useFormattedReserveValues(
+  const {usdValue, coinAmount} = useFormattedReserveValue(
     assetId,
     amount,
     reserve,

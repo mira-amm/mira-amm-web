@@ -1,7 +1,7 @@
 import boostRewards from "@/src/models/campaigns.json";
 import {useAssetPriceFromIndexer} from "./useAssetPriceFromIndexer";
 import {getBoostReward} from "../utils/common";
-import {fuelAssetId} from "../utils/constants";
+import {FUEL_ASSET_ID} from "../utils/constants";
 
 const useBoostedApr = (
   poolKey: string,
@@ -10,7 +10,7 @@ const useBoostedApr = (
 ): {boostedApr: number; boostReward: number} => {
   const boostEpoch = boostRewards.find((epoch) => epoch.number === epochNumber);
   const rewardsData = boostEpoch?.campaigns;
-  const {price: fuelToUsdRate} = useAssetPriceFromIndexer(fuelAssetId);
+  const {price: fuelToUsdRate} = useAssetPriceFromIndexer(FUEL_ASSET_ID);
 
   if (!rewardsData) {
     console.error("No epoch found matching the given epoch number");

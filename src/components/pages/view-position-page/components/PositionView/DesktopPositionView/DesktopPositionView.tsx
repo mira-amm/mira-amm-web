@@ -19,33 +19,30 @@ interface AssetMetadata {
   symbol?: string;
   decimals?: number;
 }
+interface AssetData {
+  amount: string;
+  metadata: AssetMetadata & {isLoading: boolean};
+  reserve?: number;
+}
 
 interface DesktopPositionViewProps {
   pool: PoolId;
   isStablePool: boolean;
-  handleWithdrawLiquidity: () => void;
-  coinAAmount: string;
-  coinBAmount: string;
   formattedTvlValue: string;
-  assetAMetadata: AssetMetadata & {isLoading: boolean};
-  assetBMetadata: AssetMetadata & {isLoading: boolean};
   positionPath: string;
-  coinReserveA: number | undefined;
-  coinReserveB: number | undefined;
+  assetA: AssetData;
+  assetB: AssetData;
+  handleWithdrawLiquidity: () => void;
 }
 
 const DesktopPositionView = ({
   pool,
   isStablePool,
-  handleWithdrawLiquidity,
-  coinAAmount,
-  coinBAmount,
   formattedTvlValue,
-  assetAMetadata,
-  assetBMetadata,
   positionPath,
-  coinReserveA,
-  coinReserveB,
+  assetA,
+  assetB,
+  handleWithdrawLiquidity,
 }: DesktopPositionViewProps): JSX.Element => {
   return (
     <section className={clsx(styles.contentSection, "desktopOnly")}>
@@ -83,11 +80,11 @@ const DesktopPositionView = ({
             <div className={styles.coinsData}>
               <CoinWithAmount
                 assetId={pool[0].bits}
-                amount={formatDisplayAmount(coinAAmount)}
+                amount={formatDisplayAmount(assetA.amount)}
               />
               <CoinWithAmount
                 assetId={pool[1].bits}
-                amount={formatDisplayAmount(coinBAmount)}
+                amount={formatDisplayAmount(assetB.amount)}
               />
             </div>
           </div>
@@ -98,13 +95,13 @@ const DesktopPositionView = ({
         <p className={styles.subheading}>Pool reserves</p>
         <ReserveItem
           assetId={pool[0].bits}
-          amount={coinAAmount}
-          reserve={coinReserveA}
+          amount={assetA.amount}
+          reserve={assetA.reserve}
         />
         <ReserveItem
           assetId={pool[1].bits}
-          amount={coinBAmount}
-          reserve={coinReserveB}
+          amount={assetB.amount}
+          reserve={assetB.reserve}
         />
         {formattedTvlValue && <div className={clsx(styles.divider)}></div>}
         <div className={styles.footer}>
@@ -113,10 +110,10 @@ const DesktopPositionView = ({
             {formattedTvlValue && <p>${formattedTvlValue}</p>}
           </div>
           <ExchangeRate
-            assetBMetadata={assetBMetadata}
-            assetAMetadata={assetAMetadata}
-            coinAAmount={coinAAmount}
-            coinBAmount={coinBAmount}
+            assetBMetadata={assetB.metadata}
+            assetAMetadata={assetA.metadata}
+            coinAAmount={assetA.amount}
+            coinBAmount={assetB.amount}
           />
         </div>
       </div>
