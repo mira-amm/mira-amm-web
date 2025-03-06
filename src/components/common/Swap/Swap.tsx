@@ -1,40 +1,48 @@
-import {useCallback, useEffect, useMemo, useRef, useState} from "react";
+import Logo from "@/src/components/common/Logo/Logo";
 import {useConnectUI, useIsConnected} from "@fuels/react";
-import {useDebounceCallback, useLocalStorage} from "usehooks-ts";
 import {clsx} from "clsx";
+import {useCallback, useEffect, useMemo, useRef, useState} from "react";
+import {useDebounceCallback, useLocalStorage} from "usehooks-ts";
 
-import CurrencyBox from "@/src/components/common/Swap/components/CurrencyBox/CurrencyBox";
 import ActionButton from "@/src/components/common/ActionButton/ActionButton";
-import ConvertIcon from "@/src/components/icons/Convert/ConvertIcon";
 import IconButton from "@/src/components/common/IconButton/IconButton";
+import CurrencyBox from "@/src/components/common/Swap/components/CurrencyBox/CurrencyBox";
+import ConvertIcon from "@/src/components/icons/Convert/ConvertIcon";
 import useModal from "@/src/hooks/useModal/useModal";
 import useSwap from "@/src/hooks/useSwap/useSwap";
 
 import styles from "./Swap.module.css";
-import ExchangeRate from "@/src/components/common/Swap/components/ExchangeRate/ExchangeRate";
-import useExchangeRate from "@/src/hooks/useExchangeRate/useExchangeRate";
-import {createPoolKey, openNewTab} from "@/src/utils/common";
-import useBalances from "@/src/hooks/useBalances/useBalances";
-import CoinsListModal from "@/src/components/common/Swap/components/CoinsListModal/CoinsListModal";
-import SwapSuccessModal from "@/src/components/common/Swap/components/SwapSuccessModal/SwapSuccessModal";
-import SettingsModalContent from "@/src/components/common/Swap/components/SettingsModalContent/SettingsModalContent";
-import useCheckEthBalance from "@/src/hooks/useCheckEthBalance/useCheckEthBalance";
-import useInitialSwapState from "@/src/hooks/useInitialSwapState/useInitialSwapState";
-import useCheckActiveNetwork from "@/src/hooks/useCheckActiveNetwork";
-import usePreviewV2 from "@/src/hooks/useSwapPreviewV2";
-import PriceImpact from "@/src/components/common/Swap/components/PriceImpact/PriceImpact";
-import {FuelAppUrl} from "@/src/utils/constants";
-import useReservesPrice from "@/src/hooks/useReservesPrice";
-import SwapFailureModal from "@/src/components/common/Swap/components/SwapFailureModal/SwapFailureModal";
-import {B256Address, bn, BN} from "fuels";
-import {PoolId} from "mira-dex-ts";
-import {useAssetImage} from "@/src/hooks/useAssetImage";
-import {useAssetPrice} from "@/src/hooks/useAssetPrice";
-import useAssetMetadata from "@/src/hooks/useAssetMetadata";
-import {SlippageSetting} from "../SlippageSetting/SlippageSetting";
+
+import ConnectButton from "@/src/components/common/ConnectButton/ConnectButton";
 import Loader from "@/src/components/common/Loader/Loader";
-import {ScriptTransactionRequest, TransactionCost} from "fuels";
+import CoinsListModal from "@/src/components/common/Swap/components/CoinsListModal/CoinsListModal";
+import ExchangeRate from "@/src/components/common/Swap/components/ExchangeRate/ExchangeRate";
+import PriceImpact from "@/src/components/common/Swap/components/PriceImpact/PriceImpact";
+import SettingsModalContent from "@/src/components/common/Swap/components/SettingsModalContent/SettingsModalContent";
+import SwapFailureModal from "@/src/components/common/Swap/components/SwapFailureModal/SwapFailureModal";
+import SwapSuccessModal from "@/src/components/common/Swap/components/SwapSuccessModal/SwapSuccessModal";
+import {useAssetImage} from "@/src/hooks/useAssetImage";
+import useAssetMetadata from "@/src/hooks/useAssetMetadata";
+import {useAssetPrice} from "@/src/hooks/useAssetPrice";
+import useBalances from "@/src/hooks/useBalances/useBalances";
+import useCheckActiveNetwork from "@/src/hooks/useCheckActiveNetwork";
+import useCheckEthBalance from "@/src/hooks/useCheckEthBalance/useCheckEthBalance";
+import useExchangeRate from "@/src/hooks/useExchangeRate/useExchangeRate";
+import useInitialSwapState from "@/src/hooks/useInitialSwapState/useInitialSwapState";
+import useReservesPrice from "@/src/hooks/useReservesPrice";
+import usePreviewV2 from "@/src/hooks/useSwapPreviewV2";
 import {TradeState} from "@/src/hooks/useSwapRouter";
+import {createPoolKey, openNewTab} from "@/src/utils/common";
+import {FuelAppUrl} from "@/src/utils/constants";
+import {
+  B256Address,
+  bn,
+  BN,
+  ScriptTransactionRequest,
+  TransactionCost,
+} from "fuels";
+import {PoolId} from "mira-dex-ts";
+import {SlippageSetting} from "../SlippageSetting/SlippageSetting";
 
 export type CurrencyBoxMode = "buy" | "sell";
 export type CurrencyBoxState = {
@@ -80,13 +88,13 @@ function SwapRouteItem({pool}: {pool: PoolId}) {
   );
 }
 
-const Swap = () => {
+const Swap = ({isWidget}: {isWidget?: boolean}) => {
   const [SettingsModal, openSettingsModal, closeSettingsModal] = useModal();
   const [CoinsModal, openCoinsModal, closeCoinsModal] = useModal();
   const [SuccessModal, openSuccess] = useModal();
   const [FailureModal, openFailure, closeFailureModal] = useModal();
 
-  const initialSwapState = useInitialSwapState();
+  const initialSwapState = useInitialSwapState(isWidget);
 
   const [swapState, setSwapState] = useState<SwapState>(initialSwapState);
   const [inputsState, setInputsState] =
@@ -103,7 +111,7 @@ const Swap = () => {
   const [showInsufficientBalance, setShowInsufficientBalance] = useState(true);
   const [customErrorTitle, setCustomErrorTitle] = useState<string>("");
 
-  const [swapCoins, setSwapCoins] = useLocalStorage("swapCoins", {
+  const [, setSwapCoins] = useLocalStorage("swapCoins", {
     sell: initialSwapState.sell.assetId,
     buy: initialSwapState.buy.assetId,
   });
@@ -220,11 +228,15 @@ const Swap = () => {
       },
     }));
 
+    if (isWidget) {
+      return;
+    }
+
     setSwapCoins((prevState) => ({
       buy: prevState.sell,
       sell: prevState.buy,
     }));
-  }, [setSwapCoins]);
+  }, [isWidget, setSwapCoins]);
 
   const selectCoin = useCallback(
     (mode: "buy" | "sell") => {
@@ -249,18 +261,22 @@ const Swap = () => {
               amount,
             },
           }));
+
+          if (isWidget) {
+            return;
+          }
+          setSwapCoins((prevState) => ({
+            ...prevState,
+            [mode]: assetId,
+          }));
+
+          setActiveMode(mode);
         }
-
-        setSwapCoins((prevState) => ({
-          ...prevState,
-          [mode]: assetId,
-        }));
-
-        setActiveMode(mode);
       };
     },
     [
       inputsState,
+      isWidget,
       setSwapCoins,
       swapAssets,
       swapState.buy.assetId,
@@ -566,11 +582,16 @@ const Swap = () => {
           )}
         >
           <div className={styles.heading}>
-            <p className={styles.title}>Swap</p>
+            <div className={styles.title}>
+              {isWidget ? <Logo /> : <p>Swap</p>}
+            </div>
             <SlippageSetting
               slippage={slippage}
               openSettingsModal={openSettingsModal}
             />
+            {isWidget && (
+              <ConnectButton className={styles.connectWallet} isWidget />
+            )}
           </div>
           <CurrencyBox
             value={sellValue}
