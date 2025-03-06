@@ -75,12 +75,12 @@
   margin-top: 6px;
 }
 
-.epochSection {
+.rankSection {
   display: flex;
   gap: 35px;
 }
 
-.epochItem {
+.rankItem {
   display: flex;
   flex-direction: column;
   gap: 8px;
@@ -92,7 +92,7 @@
   background-color: #d8c8f0;
 }
 
-.epochDuration {
+.rank {
   font-size: 20px;
   font-weight: 400;
 }

@@ -82,3 +82,17 @@ export const boosterBannerTitle =
   " Introducing Boost Rewards, earn $FUEL by providing liquidity.";
 
 export const EPOCH_NUMBER = 3 as const;
+
+export const POINTS_TOOLTIP =
+  "Your points are calculated based on the amount of liquidity you provide and the number of transactions you make.";
+
+export const POINTS_RANK_TOOLTIP =
+  "Your rank is determined by the amount of points you have accumulated.";
+
+// TODO: Add the url for the points learn more
+export const POINTS_LEARN_MORE_URL = "";
+
+export const POINTS_BANNER_TITLE = "Introducing Points";
+
+export const POINTS_BANNER_SUBHEADER =
+  "Earn MIRA points by providing liquidity and engaging in activities.";
