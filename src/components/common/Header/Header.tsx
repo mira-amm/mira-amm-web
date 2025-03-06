@@ -83,6 +83,15 @@ const Header = ({isHomePage}: Props): JSX.Element => {
             >
               Liquidity
             </Link>
+            <Link
+              href="/points"
+              className={clsx(
+                styles.link,
+                pathname.includes("/points") && styles.activeLink,
+              )}
+            >
+              Points
+            </Link>
             <a
               href={`${FuelAppUrl}/bridge?from=eth&to=fuel&auto_close=true&=true`}
               className={styles.link}

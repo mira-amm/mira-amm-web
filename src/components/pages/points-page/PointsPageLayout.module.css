@@ -1,0 +1,31 @@
+.pointsPageLayout {
+  display: flex;
+  flex-direction: column;
+  padding: 16px;
+  min-height: calc(100vh - 200px);
+  background-color: var(--background-primary);
+}
+
+.container {
+  max-width: 1200px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 24px 0;
+}
+
+.title {
+  font-size: 32px;
+  font-weight: 700;
+  margin-bottom: 24px;
+  color: var(--content-primary);
+}
+
+@media (min-width: 1024px) {
+  .pointsPageLayout {
+    padding: 24px 40px;
+  }
+
+  .title {
+    font-size: 40px;
+  }
+}
