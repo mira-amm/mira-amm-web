@@ -73,10 +73,10 @@ export const LIQUIDITY_PROVIDING_DOC_URL =
 export const BoostsRewardsTooltip =
   "These are the total Fuel tokens earned that will be distributed at the end of the season. The exact dollar amount will change based on Fuel’s current price. The exact token amount might change.";
 
-export const boostsEpochTooltip =
+export const BOOSTS_EPOCH_TOOLTIP =
   "The current season is 7 days long. All remaining rewards will be distributed at the end of the season.";
 
-export const RewardsApiUrl = "/api/rewards" as const;
+export const Rewards_Api_Url = "/api/rewards" as const;
 
 export const boosterBannerTitle =
   " Introducing Boost Rewards, earn $FUEL by providing liquidity.";

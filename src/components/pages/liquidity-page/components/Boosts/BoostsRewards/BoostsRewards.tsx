@@ -5,7 +5,7 @@ import Info from "@/src/components/common/Info/Info";
 import {RewardsIcon} from "@/src/components/icons/Rewards/RewardsIcon";
 import BoostsRewardsIcon from "@/src/components/icons/Boosts/BoostsRewardsIcon";
 import {
-  boostsEpochTooltip,
+  BOOSTS_EPOCH_TOOLTIP,
   BoostsLearnMoreUrl,
   BoostsRewardsTooltip,
   EPOCH_NUMBER,
@@ -121,7 +121,7 @@ const BoostsRewards = (): JSX.Element => {
             <div className={styles.rewardsLabel}>
               <p>Seasons duration</p>
               <Info
-                tooltipText={boostsEpochTooltip}
+                tooltipText={BOOSTS_EPOCH_TOOLTIP}
                 tooltipKey="epoch"
                 color="#D1D4F9"
               />
