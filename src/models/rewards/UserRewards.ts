@@ -165,7 +165,7 @@ export class SentioJSONUserRewardsService implements UserRewardsService {
 
       const json = await response.json();
 
-      if (json.code === 16) {
+      if (json.code) {
         console.log(json.message);
         throw new Error(json.message);
       }

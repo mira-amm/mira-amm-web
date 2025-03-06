@@ -35,6 +35,9 @@ export const ApiBaseUrl = "https://prod.api.mira.ly" as const;
 
 export const FuelAppUrl = "https://app.fuel.network" as const;
 
+export const FuelAssetPriceUrl =
+  " https://explorer-indexer-mainnet.fuel.network/assets" as const;
+
 export const EthDecimals = 9 as const;
 export const MinEthValue = 0.0001 as const;
 export const MinEthValueBN = MinEthValue * 10 ** EthDecimals;
@@ -62,13 +65,13 @@ export const DisclaimerMessage = `Disclaimer
 5. I understand the risks associated with using decentralized protocols, including the Mira Dex protocol, as outlined in the Terms of Use and Privacy Policy.`;
 
 export const BoostsLearnMoreUrl =
-  "https://mirror.xyz/miraly.eth/kPWlmOIY_HhHQmZMkDb2dU4Sv_GxqgnIt4cQ7TwGZk4" as const;
+  "https://mirror.xyz/miraly.eth/X-80QWbrq4f17L67Yy8QyQBdE5y2okxTzcfJIL-SHCQ" as const;
 
 export const BoostsRewardsTooltip =
   "These are the total Fuel tokens earned that will be distributed at the end of the season. The exact dollar amount will change based on Fuel’s current price. The exact token amount might change.";
 
 export const boostsEpochTooltip =
-  "Current season lasts for 45 days total. All rewards will be distributed at the end of the season. ";
+  "The current season is 7 days long. All remaining rewards will be distributed at the end of the season.";
 
 export const RewardsApiUrl = "/api/rewards" as const;
 
@@ -77,3 +80,5 @@ export const boosterBannerTitle =
 
 export const fuelAssetId =
   "0x1d5d97005e41cae2187a895fd8eab0506111e0e2f3331cd3912c15c24e3c1d82";
+
+export const EPOCH_NUMBER = 3 as const;

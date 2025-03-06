@@ -8,8 +8,9 @@ import {
   boostsEpochTooltip,
   BoostsLearnMoreUrl,
   BoostsRewardsTooltip,
+  EPOCH_NUMBER,
 } from "@/src/utils/constants";
-import {useEffect, useState} from "react";
+import {useEffect, useState, useMemo} from "react";
 import {
   calculateEpochDuration,
   calculateUsdValue,
@@ -22,11 +23,6 @@ import {useAccount} from "@fuels/react";
 import boostRewards from "@/src/models/campaigns.json";
 import {fuelAssetId} from "@/src/utils/constants";
 
-// const userId =
-//   "0x69e6223f2adf576dfefb21873b78e31ba228b094d05f74f59ea60cbd1bf87d0d";
-
-const epochNumbers = 1;
-
 const BoostsRewards = (): JSX.Element => {
   const {account} = useAccount();
 
@@ -35,14 +31,21 @@ const BoostsRewards = (): JSX.Element => {
   const {price: fuelToUsdRate, isLoading} =
     useAssetPriceFromIndexer(fuelAssetId);
 
-  const startDate = boostRewards[0].startDate;
-  const endDate = boostRewards[0].endDate;
-  const rewardsData = boostRewards[0].campaigns;
+  // look up the epoch start and end date from epochNumbers
+  const epoch = useMemo(
+    () => boostRewards.find((epoch) => epoch.number === EPOCH_NUMBER),
+    [],
+  );
+
+  // if epoch is not found default to the first epoch
+  const startDate = epoch?.startDate || boostRewards[0].startDate;
+  const endDate = epoch?.endDate || boostRewards[0].endDate;
+  const rewardsData = epoch?.campaigns || boostRewards[0].campaigns;
   const rewardsPoolsId = getRewardsPoolsId(rewardsData);
 
   const {rewardsAmount, isLoading: isRewardsAmountLoading} = useRewards({
     userId: account,
-    epochNumbers,
+    epochNumbers: EPOCH_NUMBER,
     poolIds: rewardsPoolsId,
   });
 
@@ -108,6 +111,10 @@ const BoostsRewards = (): JSX.Element => {
             <Link href={BoostsLearnMoreUrl} target="_blank">
               <u>Learn more.</u>
             </Link>
+          </p>
+          <p className={styles.disclaimer}>
+            Fuel Season 1 is over, and rewards have been sent to
+            participants&apos; wallets.
           </p>
         </div>
         <div className={styles.epochSection}>

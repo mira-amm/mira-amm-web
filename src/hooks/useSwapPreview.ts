@@ -7,7 +7,6 @@ import {BASE_ASSETS, MAX_U256} from "@/src/utils/constants";
 import {InsufficientReservesError} from "mira-dex-ts/dist/sdk/errors";
 import {bn, BN} from "fuels";
 import useAssetMetadata from "./useAssetMetadata";
-
 type Props = {
   swapState: SwapState;
   mode: CurrencyBoxMode;
@@ -34,7 +33,6 @@ export class NoRouteFoundError extends Error {
 
 const useSwapPreview = ({swapState, mode}: Props) => {
   const {sellAssetId, buyAssetId} = useSwapData(swapState);
-
   const miraAmm = useReadonlyMira();
   const miraExists = Boolean(miraAmm);
 

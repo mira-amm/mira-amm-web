@@ -6,10 +6,17 @@ import {fuelAssetId} from "../utils/constants";
 const useBoostedApr = (
   poolKey: string,
   tvlValue: number,
+  epochNumber: number,
 ): {boostedApr: number; boostReward: number} => {
-  const rewardsData = boostRewards[0].campaigns;
-
+  const boostEpoch = boostRewards.find((epoch) => epoch.number === epochNumber);
+  const rewardsData = boostEpoch?.campaigns;
   const {price: fuelToUsdRate} = useAssetPriceFromIndexer(fuelAssetId);
+
+  if (!rewardsData) {
+    console.error("No epoch found matching the given epoch number");
+    return {boostedApr: 0, boostReward: 0};
+  }
+
   const boostReward = getBoostReward(poolKey, rewardsData);
   const usdPerYear = fuelToUsdRate * boostReward * 365;
   const boostedApr = (usdPerYear / tvlValue) * 100;
