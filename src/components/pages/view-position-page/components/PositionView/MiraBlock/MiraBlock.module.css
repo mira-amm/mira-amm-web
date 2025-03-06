@@ -1,0 +1,35 @@
+.miraBlock {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 16px;
+  border-radius: 16px;
+  background: linear-gradient(
+    97.15deg,
+    #5872fc -1.13%,
+    #6142ba 56.75%,
+    #c41cff 135.82%
+  );
+}
+
+.miraLogo {
+  width: 64px;
+  height: 32px;
+  margin-bottom: 12px;
+}
+
+.tokenDisplayValue,
+.numberAndCopy {
+  font-size: 16px;
+}
+
+.numberAndCopy {
+  display: flex;
+  justify-content: space-between;
+}
+
+.numberAndCopy svg {
+  width: 16px;
+  height: 16px;
+}
