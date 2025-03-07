@@ -2,7 +2,7 @@ import React, {useState, useEffect} from "react";
 import styles from "./AprBadge.module.css";
 import WhiteStarIcon from "@/src/components/icons/Stars/WhiteStar";
 import {clsx} from "clsx";
-import useBoostedApr from "@/src/hooks/useBoostedApr";
+import useBoostedApr, {RewardsToken} from "@/src/hooks/useBoostedApr";
 import {isMobile} from "react-device-detect";
 import Loader from "../Loader/Loader";
 import {EPOCH_NUMBER} from "@/src/utils/constants";
@@ -24,7 +24,7 @@ const AprBadge: React.FC<AprBadgeProps> = ({
 }) => {
   const [isHovered, setIsHovered] = useState(false);
 
-  const {boostedApr, boostReward} = useBoostedApr(
+  const {boostedApr, boostReward, rewardsToken} = useBoostedApr(
     poolKey,
     tvlValue,
     EPOCH_NUMBER,
@@ -57,7 +57,11 @@ const AprBadge: React.FC<AprBadgeProps> = ({
     ? (boostedApr + aprValueInNumber).toFixed(2)
     : boostedApr.toFixed(2);
 
-  const apr = boostedApr ? <>{showApr}%</> : <Loader color="gray" />;
+  let aprElement = <>{showApr}%</>;
+
+  if (rewardsToken === "$FUEL") {
+    aprElement = boostedApr ? <>{showApr}%</> : <Loader color="gray" />;
+  }
 
   return (
     <div className={clsx(styles.badgeWrapper)}>
@@ -79,7 +83,7 @@ const AprBadge: React.FC<AprBadgeProps> = ({
             small ? styles.smallFont : styles.largeFont,
           )}
         >
-          {apr}
+          {aprElement}
         </span>
         {/*  UI on hover */}
         {isHovered && (
@@ -88,27 +92,13 @@ const AprBadge: React.FC<AprBadgeProps> = ({
             className={clsx(styles.hoverUI)}
             style={{left: leftAlignValue ? leftAlignValue : 0}}
           >
-            <div className={styles.columns}>
-              <div className={styles.row}>
-                <span className={styles.label}>Swap fees</span>
-                <span className={styles.value}>{aprValue}</span>
-              </div>
-              <div>
-                <div className={styles.row}>
-                  <span className={styles.label}>Boost rewards ($FUEL)</span>
-                  <span className={styles.value}>{boostedApr}%</span>
-                </div>
-                <p className={styles.subtext}>
-                  {boostReward && boostReward.toLocaleString()} $FUEL per day
-                  distributed among LPs in pool
-                </p>
-              </div>
-              <div className={styles.divider}></div>
-              <div className={styles.row}>
-                <span className={styles.label}>Total rewards</span>
-                <span className={styles.value}>{apr}</span>
-              </div>
-            </div>
+            <AprLabel
+              rewardsToken={rewardsToken}
+              boostedApr={boostedApr}
+              boostReward={boostReward}
+              baseApr={aprValue || "0"}
+              aprElement={aprElement}
+            />
           </div>
         )}
       </div>
@@ -117,3 +107,67 @@ const AprBadge: React.FC<AprBadgeProps> = ({
 };
 
 export default AprBadge;
+
+type RewardsEnhancementLabel = {
+  label: string;
+  description: string;
+};
+
+const LabelMap: Record<
+  Exclude<RewardsToken, undefined>,
+  RewardsEnhancementLabel
+> = {
+  $FUEL: {
+    label: "Boost Rewards ($FUEL)",
+    description: "Boost rewards ($FUEL) per day distributed among LPs in pool",
+  },
+  Points: {
+    label: "Mira Points",
+    description: "distributed amount LPs in pool per day",
+  },
+};
+
+const AprLabel: React.FC<{
+  rewardsToken: RewardsToken;
+  boostedApr: number;
+  boostReward: number;
+  baseApr: string;
+  aprElement: React.ReactNode;
+}> = ({rewardsToken, boostedApr, boostReward, baseApr, aprElement}) => {
+  if (!rewardsToken) {
+    return null;
+  }
+
+  const {label, description} = LabelMap[rewardsToken];
+
+  return (
+    <div className={styles.columns}>
+      <div className={styles.row}>
+        <span className={styles.label}>Swap fees</span>
+        <span className={styles.value}>{baseApr}</span>
+      </div>
+      <div>
+        <div className={styles.row}>
+          <span className={styles.label}>{label}</span>
+          {boostedApr === 0 ? (
+            <span className={styles.value}>{boostReward.toLocaleString()}</span>
+          ) : (
+            <span className={styles.value}>{boostedApr}%</span>
+          )}
+        </div>
+        <p className={styles.subtext}>
+          {boostReward && boostReward.toLocaleString()} {description}
+        </p>
+      </div>
+      {boostedApr !== 0 && (
+        <>
+          <div className={styles.divider}></div>
+          <div className={styles.row}>
+            <span className={styles.label}>Total rewards</span>
+            <span className={styles.value}>{aprElement}</span>
+          </div>
+        </>
+      )}
+    </div>
+  );
+};
