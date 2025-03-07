@@ -4,6 +4,8 @@ import {EPOCH_NUMBER} from "@/src/utils/constants";
 import {useMemo} from "react";
 import {getRewardsPoolsId} from "@/src/utils/common";
 import {useRewards} from "../useRewards";
+import {useQuery} from "@tanstack/react-query";
+import {PointsResponse} from "@/src/models/points/interfaces";
 
 export const usePoints = (): {
   rewardsAmount: number;
@@ -35,6 +37,23 @@ export const usePoints = (): {
     isLoading: isRewardsAmountLoading,
     error,
   };
+};
+
+export const usePointsRanks = (page: number, pageSize: number) => {
+  const offset = (page - 1) * pageSize;
+
+  return useQuery({
+    queryKey: ["points-ranks", page, pageSize],
+    queryFn: async () => {
+      const response = await fetch(
+        `/api/points?limit=${pageSize}&offset=${offset}`,
+      );
+      if (!response.ok) {
+        throw new Error("Failed to fetch points ranks");
+      }
+      return response.json() as Promise<PointsResponse[]>;
+    },
+  });
 };
 
 export const usePointsRank = () => {

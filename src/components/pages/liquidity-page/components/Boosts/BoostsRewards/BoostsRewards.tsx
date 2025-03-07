@@ -8,13 +8,25 @@ import {
   POINTS_LEARN_MORE_URL,
 } from "@/src/utils/constants";
 import Loader from "@/src/components/common/Loader/Loader";
-import {usePoints, usePointsRank} from "@/src/hooks/usePoints/usePoints";
+import {usePointsRank} from "@/src/hooks/usePoints/usePoints";
 import BoostsIcon from "@/src/components/icons/Boosts/BoostsIcon";
 
 const BoostsRewards = (): JSX.Element => {
-  const {rewardsAmount, isLoading, error} = usePoints();
+  const {data: pointsRankArray, isLoading, error} = usePointsRank();
 
-  const {rank} = usePointsRank();
+  if (isLoading) {
+    return <Loader />;
+  }
+
+  if (error) {
+    return <div>Error: {error.message}</div>;
+  }
+
+  if (!pointsRankArray || pointsRankArray.length === 0) {
+    return <div>No data</div>;
+  }
+
+  const pointsRank = pointsRankArray[0];
 
   return (
     <div className={styles.boosts}>
@@ -50,7 +62,7 @@ const BoostsRewards = (): JSX.Element => {
             ) : (
               <>
                 <BoostsIcon />
-                <p>{rewardsAmount}</p>
+                <p>{pointsRank?.points}</p>
               </>
             )}
           </div>
@@ -66,7 +78,7 @@ const BoostsRewards = (): JSX.Element => {
                 color="#D1D4F9"
               />
             </div>
-            <p className={styles.rank}>{rank}</p>
+            <p className={styles.rank}>{pointsRank?.rank}</p>
           </div>
         </div>
       </div>

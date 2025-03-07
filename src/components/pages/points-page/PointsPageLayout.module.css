@@ -4,19 +4,33 @@
   padding: 16px;
   min-height: calc(100vh - 200px);
   background-color: var(--background-primary);
+  align-items: center;
 }
 
-.container {
+.boostsSection {
   max-width: 1200px;
   width: 100%;
-  margin: 0 auto;
-  padding: 24px 0;
+  margin: 32px auto 0;
 }
 
 .title {
   font-size: 32px;
   font-weight: 700;
   margin-bottom: 24px;
+  color: var(--content-primary);
+}
+
+.tableSection {
+  max-width: 1200px;
+  width: 100%;
+  margin: 32px auto 0;
+  padding: 0 16px;
+}
+
+.tableTitle {
+  font-size: 24px;
+  font-weight: 700;
+  margin-bottom: 16px;
   color: var(--content-primary);
 }
 
@@ -27,5 +41,13 @@
 
   .title {
     font-size: 40px;
+  }
+
+  .tableTitle {
+    font-size: 32px;
+  }
+
+  .tableSection {
+    padding: 0;
   }
 }

@@ -7,6 +7,7 @@ import {
 import fs from "fs/promises";
 import {loadFile} from "@/src/utils/fileLoader";
 import path from "path";
+import {log} from "console";
 
 const pointsPerUserQuery = loadFile(
   path.join(process.cwd(), "src", "queries", "PointsPerUser.sql"),
@@ -63,34 +64,113 @@ export class TmpFilePointsPerUserService implements PointsPerUserService {
   }
 
   private async fetchLatestPoints(): Promise<PointsResponse[]> {
-    const epoch = this.epochConfigService.getCurrentEpochs()[0];
+    try {
+      console.log("Starting fetchLatestPoints...");
+      const epoch = this.epochConfigService.getCurrentEpochs()[0];
+      console.log("Current epoch:", {
+        startDate: epoch.startDate,
+        endDate: epoch.endDate,
+        campaignsCount: epoch.campaigns.length,
+      });
 
-    const epochStart = epoch.startDate;
-    const epochEnd = epoch.endDate;
+      const epochStart = epoch.startDate;
+      const epochEnd = epoch.endDate;
 
-    const lpTokens = epoch.campaigns.map((campaign) => campaign.pool.lpToken);
-    const rewardRates = epoch.campaigns.map(
-      (campaign) => campaign.rewards[0].dailyAmount,
-    );
+      const lpTokens = epoch.campaigns.map((campaign) => campaign.pool.lpToken);
+      const rewardRates = epoch.campaigns.map(
+        (campaign) => campaign.rewards[0].dailyAmount,
+      );
 
-    const options = this.getQueryOptions(
-      this.apiKey,
-      epochStart,
-      epochEnd,
-      lpTokens,
-      rewardRates,
-    );
+      const options = this.getQueryOptions(
+        this.apiKey,
+        epochStart,
+        epochEnd,
+        lpTokens,
+        rewardRates,
+      );
 
-    const response = await fetch(this.apiUrl, options);
+      console.log(
+        "Sending request to Sentio API (this may take up to a minute)...",
+      );
 
-    const json = await response.json();
+      // Set a longer timeout for the fetch request
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 120000); // 2 minute timeout
 
-    if (json.code) {
-      console.log(json.message);
-      throw new Error(json.message);
+      try {
+        const response = await fetch(this.apiUrl, {
+          ...options,
+          signal: controller.signal,
+        });
+
+        console.log("Sentio API response status:", response.status);
+
+        if (!response.ok) {
+          throw new Error(
+            `Sentio API request failed with status ${response.status}: ${response.statusText}`,
+          );
+        }
+
+        // Get the full response text
+        const responseText = await response.text();
+        console.log("Response received, length:", responseText.length);
+
+        if (!responseText) {
+          throw new Error("Received empty response from Sentio API");
+        }
+
+        let json;
+        try {
+          json = JSON.parse(responseText);
+        } catch (e) {
+          console.error("Failed to parse JSON response:", e);
+          console.error("Response preview:", responseText.substring(0, 500));
+          throw new Error("Failed to parse JSON response from Sentio API");
+        }
+
+        if (json.error) {
+          console.error("Sentio API error:", json.error);
+          throw new Error(`Sentio API error: ${json.error}`);
+        }
+
+        // Check for result.rows structure instead of data
+        if (json.result && json.result.rows) {
+          console.log(
+            `Successfully retrieved ${json.result.rows.length} records`,
+          );
+
+          // Transform the rows into the expected PointsResponse format
+          const columns = json.result.columns;
+          const points = json.result.rows.map((row) => {
+            const point: any = {};
+            columns.forEach((column: string, index: number) => {
+              point[column] = row[index];
+            });
+
+            // Map to expected PointsResponse format
+            return {
+              address: point.distinct_id,
+              points: point.total_points,
+              rank: point.row_num,
+            };
+          });
+
+          return points;
+        }
+
+        console.error("Unexpected response format:", json);
+        throw new Error("Sentio API returned unexpected data format");
+      } finally {
+        clearTimeout(timeoutId); // Clear the timeout if the request completes
+      }
+    } catch (error) {
+      if (error instanceof Error && error.name === "AbortError") {
+        console.error("Request timed out after 2 minutes");
+        throw new Error("Sentio API request timed out after 2 minutes");
+      }
+      console.error("Error in fetchLatestPoints:", error);
+      throw error;
     }
-
-    return json.data;
   }
 
   private getQueryOptions(
@@ -100,9 +180,32 @@ export class TmpFilePointsPerUserService implements PointsPerUserService {
     lpTokens: string[],
     rewardRates: number[],
   ) {
-    // convert the reward rates to an array string
-    const rewardRatesString = `[${rewardRates.join(",")}]`;
-    const lpTokensString = `['${lpTokens.join("','")}']`;
+    console.log({
+      rewardRates,
+      lpTokens,
+    });
+
+    // Let's examine the SQL query to see what it expects
+    console.log("SQL Query:", pointsPerUserQuery);
+
+    // Create a modified SQL query with the variables directly replaced
+    let modifiedQuery = pointsPerUserQuery;
+
+    // Format the arrays for SQL
+    const lpTokensFormatted = lpTokens.map((token) => `'${token}'`).join(",");
+    const rewardRatesFormatted = rewardRates.join(",");
+
+    // Replace the template variables in the SQL query
+    modifiedQuery = modifiedQuery.replace(
+      "${lpTokens}",
+      `[${lpTokensFormatted}]`,
+    );
+    modifiedQuery = modifiedQuery.replace(
+      "${rewardRates}",
+      `[${rewardRatesFormatted}]`,
+    );
+
+    console.log("Modified SQL Query:", modifiedQuery);
 
     return {
       method: "POST",
@@ -113,16 +216,15 @@ export class TmpFilePointsPerUserService implements PointsPerUserService {
       },
       body: JSON.stringify({
         sqlQuery: {
-          sql: pointsPerUserQuery,
+          sql: modifiedQuery,
           parameters: {
             fields: {
               epochStart: {timestampValue: epochStart},
               epochEnd: {timestampValue: epochEnd},
-              lpTokens: {stringArrayValue: lpTokensString},
-              rewardRates: {stringArrayValue: rewardRatesString},
             },
           },
         },
+        size: 10000,
       }),
     };
   }

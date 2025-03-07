@@ -81,8 +81,8 @@ PointsPerUser AS (
 )
 
 SELECT
-    distinct_id,
-    total_points,
-    row_number() OVER () AS row_num
+    distinct_id as address,
+    total_points as points,
+    row_number() OVER () AS rank
 FROM
     PointsPerUser
