@@ -5,8 +5,9 @@ import {NotFoundError} from "@/src/utils/errors";
 import {TmpFilePointsPerUserService} from "@/src/models/points/Points";
 
 // Cache header settings
-const CACHE_DURATION = 3600; // 60 minutes
-const CACHE_STALE_WHILE_REVALIDATE = 1800;
+// These are set low as we are cacheing in a server side file
+const CACHE_DURATION = 60; // 1 minute
+const CACHE_STALE_WHILE_REVALIDATE = 60; // 1 minute
 
 // Cache control headers
 // The response is not permissioned and should yield the same results no matter who is requesting it
