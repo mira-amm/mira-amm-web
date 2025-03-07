@@ -59,10 +59,11 @@ export const usePointsRanks = (page: number, pageSize: number) => {
 export const usePointsRank = () => {
   const {account} = useAccount();
 
-  return {
-    // TODO: add the function to get the rank
-    rank: 1,
-    isLoading: false,
-    error: undefined,
-  };
+  return useQuery({
+    queryKey: ["points-rank", account],
+    queryFn: async () => {
+      const response = await fetch(`/api/points?address=${account}`);
+      return response.json() as Promise<PointsResponse[]>;
+    },
+  });
 };

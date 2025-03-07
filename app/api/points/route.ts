@@ -8,6 +8,12 @@ import {TmpFilePointsPerUserService} from "@/src/models/points/Points";
 const CACHE_DURATION = 3600; // 60 minutes
 const CACHE_STALE_WHILE_REVALIDATE = 1800;
 
+// Cache control headers
+// The response is not permissioned and should yield the same results no matter who is requesting it
+const cacheControlHeaders = {
+  "Cache-Control": `public, s-maxage=${CACHE_DURATION}, stale-while-revalidate=${CACHE_STALE_WHILE_REVALIDATE}`,
+};
+
 export async function POST(_request: NextRequest): Promise<NextResponse> {
   try {
     if (!process.env.SENTIO_API_KEY || !process.env.SENTIO_API_URL) {
@@ -35,28 +41,19 @@ export async function POST(_request: NextRequest): Promise<NextResponse> {
 
     return new NextResponse(JSON.stringify(points), {
       status: 200,
-      headers: {
-        "Content-Type": "application/json",
-        "Cache-Control": `public, max-age=${CACHE_DURATION}, stale-while-revalidate=${CACHE_STALE_WHILE_REVALIDATE}`,
-      },
+      headers: cacheControlHeaders,
     });
   } catch (e) {
     if (e instanceof NotFoundError) {
       // return empty value
       return new NextResponse(JSON.stringify({}), {
         status: 200,
-        headers: {
-          "Content-Type": "application/json",
-          "Cache-Control": `public, max-age=${CACHE_DURATION}, stale-while-revalidate=${CACHE_STALE_WHILE_REVALIDATE}`,
-        },
+        headers: cacheControlHeaders,
       });
     } else {
       return new NextResponse(JSON.stringify({message: (e as Error).message}), {
         status: 500,
-        headers: {
-          "Content-Type": "application/json",
-          "Cache-Control": `public, max-age=${CACHE_DURATION}, stale-while-revalidate=${CACHE_STALE_WHILE_REVALIDATE}`,
-        },
+        headers: cacheControlHeaders,
       });
     }
   }
@@ -88,9 +85,6 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
 
   return new NextResponse(JSON.stringify(points), {
     status: 200,
-    headers: {
-      "Content-Type": "application/json",
-      "Cache-Control": `public, max-age=${CACHE_DURATION}, stale-while-revalidate=${CACHE_STALE_WHILE_REVALIDATE}`,
-    },
+    headers: cacheControlHeaders,
   });
 }

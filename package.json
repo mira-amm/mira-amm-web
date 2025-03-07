@@ -12,7 +12,8 @@
     "test": "jest",
     "test:watch": "jest --watch",
     "fix:formatting": "npx prettier --write .",
-    "rewards": "tsx scripts/getAllCampaignRewardsForEpoch.ts"
+    "rewards": "tsx scripts/getAllCampaignRewardsForEpoch.ts",
+    "post-deploy": "curl -X POST https://$VERCEL_URL/api/points -H 'Content-Type: application/json' -d '{}'"
   },
   "dependencies": {
     "@fuels/connectors": "0.36.0",

@@ -7,7 +7,6 @@ import {
 import fs from "fs/promises";
 import {loadFile} from "@/src/utils/fileLoader";
 import path from "path";
-import {log} from "console";
 
 const pointsPerUserQuery = loadFile(
   path.join(process.cwd(), "src", "queries", "PointsPerUser.sql"),
@@ -48,7 +47,8 @@ export class TmpFilePointsPerUserService implements PointsPerUserService {
 
     if (queryParams.address) {
       parsedPoints = parsedPoints.filter(
-        (point: PointsResponse) => point.address === queryParams.address,
+        (point: PointsResponse) =>
+          point.address.toLowerCase() === queryParams.address?.toLowerCase(),
       );
     }
 
@@ -140,22 +140,7 @@ export class TmpFilePointsPerUserService implements PointsPerUserService {
           );
 
           // Transform the rows into the expected PointsResponse format
-          const columns = json.result.columns;
-          const points = json.result.rows.map((row) => {
-            const point: any = {};
-            columns.forEach((column: string, index: number) => {
-              point[column] = row[index];
-            });
-
-            // Map to expected PointsResponse format
-            return {
-              address: point.distinct_id,
-              points: point.total_points,
-              rank: point.row_num,
-            };
-          });
-
-          return points;
+          return json.result.rows;
         }
 
         console.error("Unexpected response format:", json);

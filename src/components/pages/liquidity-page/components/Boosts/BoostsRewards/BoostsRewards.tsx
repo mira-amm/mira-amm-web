@@ -22,11 +22,15 @@ const BoostsRewards = (): JSX.Element => {
     return <div>Error: {error.message}</div>;
   }
 
-  if (!pointsRankArray || pointsRankArray.length === 0) {
-    return <div>No data</div>;
-  }
+  let pointsRank = {
+    points: 0,
+    rank: 0,
+    address: "",
+  };
 
-  const pointsRank = pointsRankArray[0];
+  if (pointsRankArray && pointsRankArray.length > 0) {
+    pointsRank = pointsRankArray[0];
+  }
 
   return (
     <div className={styles.boosts}>
