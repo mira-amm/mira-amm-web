@@ -27,10 +27,25 @@
 
 .main {
   display: flex;
+  align-items: center;
   justify-content: space-between;
   padding: 16px;
   gap: 16px;
   background-color: var(--background-primary);
+}
+
+.left {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.center {
+  display: none;
+}
+
+.right {
+  display: none;
 }
 
 .links {
@@ -58,12 +73,10 @@
   display: inline-flex;
   align-items: center;
   text-transform: uppercase;
-  background-image: radial-gradient(
-    114.58% 814.77% at -1.46% 26.54%,
-    var(--accent-primary) 0%,
-    #5872fc 49.15%,
-    #31fe3a 100%
-  );
+  background-image: radial-gradient(114.58% 814.77% at -1.46% 26.54%,
+      var(--accent-primary) 0%,
+      #5872fc 49.15%,
+      #31fe3a 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   cursor: pointer;
@@ -76,12 +89,6 @@
     line-height: 24px;
   }
 
-  .launchAppArea {
-    display: flex;
-    gap: 24px;
-    align-items: center;
-  }
-
   .promo {
     font-size: 18px;
     line-height: 22px;
@@ -91,15 +98,26 @@
 
   .main {
     padding: 16px 40px;
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    align-items: center;
   }
 
   .left {
     display: flex;
-    gap: 38px;
     align-items: center;
+    gap: 24px;
   }
 
-  .links {
+  .center {
+    display: flex;
+    justify-content: center;
+    gap: 24px;
+  }
+
+  .right {
+    display: flex;
+    align-items: center;
     gap: 24px;
   }
 
@@ -107,19 +125,25 @@
     display: inline-flex;
     position: relative;
     align-items: center;
-    transition: all 0.3s ease;
-  }
-
-  .link:hover,
-  .activeLink {
     padding: 6px 12px;
     border-radius: 20px;
-    background: var(--background-grey-light);
+    transition: all 0.3s ease;
+    color: var(--content-primary);
+  }
+
+  .activeLink {
+    background: var(--content-primary);
+    color: var(--background-white);
   }
 
   .link:hover:not(.activeLink) {
-    margin: -6px -12px;
-    color: var(--content-primary) !important;
+    background: var(--background-grey-light);
+    color: var(--content-primary);
+  }
+
+  .activeLink:hover {
+    opacity: 0.9;
+    color: var(--background-white);
   }
 
   .linkAlike {
@@ -140,7 +164,7 @@
       margin-left 0s 0.3s;
   }
 
-  div:hover > .hiddenLabel {
+  div:hover>.hiddenLabel {
     opacity: 1;
     max-width: 200px;
     padding: 2px 8px 3px;

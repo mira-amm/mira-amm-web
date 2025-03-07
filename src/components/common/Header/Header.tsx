@@ -3,19 +3,19 @@ import Logo from "@/src/components/common/Logo/Logo";
 
 import styles from "./Header.module.css";
 import Link from "next/link";
-import {clsx} from "clsx";
-import {usePathname} from "next/navigation";
+import { clsx } from "clsx";
+import { usePathname } from "next/navigation";
 import ConnectButton from "@/src/components/common/ConnectButton/ConnectButton";
 import LaunchAppButton from "@/src/components/common/LaunchAppButton/LaunchAppButton";
 import DisconnectMobile from "@/src/components/common/ConnectButton/DisconnectMobile";
-import {useIsConnected} from "@fuels/react";
-import {BlogLink, BoostsLearnMoreUrl, FuelAppUrl} from "@/src/utils/constants";
-import {RewardsIcon} from "../../icons/Rewards/RewardsIcon";
+import { useIsConnected } from "@fuels/react";
+import { BlogLink, BoostsLearnMoreUrl, FuelAppUrl } from "@/src/utils/constants";
+import { RewardsIcon } from "../../icons/Rewards/RewardsIcon";
 import TestnetLabel from "@/src/components/common/TestnetLabel/TestnetLabel";
 import IconButton from "../IconButton/IconButton";
 import CloseIcon from "../../icons/Close/CloseIcon";
-import {useEffect, useState} from "react";
-import {boosterBannerTitle} from "@/src/utils/constants";
+import { useEffect, useState } from "react";
+import { boosterBannerTitle } from "@/src/utils/constants";
 
 type Props = {
   isHomePage?: boolean;
@@ -24,9 +24,9 @@ type Props = {
 const PROMO_BANNER_STORAGE_KEY = "fuel-boost-program-promo-banner-closed";
 
 const ISSERVER = typeof window === "undefined";
-const Header = ({isHomePage}: Props): JSX.Element => {
+const Header = ({ isHomePage }: Props): JSX.Element => {
   const pathname = usePathname();
-  const {isConnected} = useIsConnected();
+  const { isConnected } = useIsConnected();
 
   const [isPromoShown, setIsPromoShown] = useState(false);
 
@@ -63,6 +63,9 @@ const Header = ({isHomePage}: Props): JSX.Element => {
       <section className={styles.main}>
         <div className={styles.left}>
           <Logo />
+        </div>
+
+        <div className={styles.center}>
           <div className={clsx("desktopOnly", styles.links)}>
             <Link
               //TEMPORARY ROUTING SINCE LANDING PAGE IS DISABLED
@@ -92,11 +95,8 @@ const Header = ({isHomePage}: Props): JSX.Element => {
             </a>
           </div>
         </div>
-        <div className={clsx("mobileOnly", styles.links)}>
-          <DisconnectMobile className={styles.disconnectMobile} />
-          <MobileMenu />
-        </div>
-        <div className={clsx("desktopOnly", styles.links)}>
+
+        <div className={clsx("desktopOnly", styles.right)}>
           {isHomePage && (
             <>
               <a
@@ -122,6 +122,11 @@ const Header = ({isHomePage}: Props): JSX.Element => {
               )}
             </div>
           )}
+        </div>
+
+        <div className={clsx("mobileOnly", styles.links)}>
+          <DisconnectMobile className={styles.disconnectMobile} />
+          <MobileMenu />
         </div>
       </section>
     </header>
