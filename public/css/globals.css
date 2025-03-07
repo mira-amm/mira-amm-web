@@ -2,23 +2,54 @@
   --font-inter: 'Inter';
   --font-prompt: 'Prompt';
 
-  --background-primary: #0E111E;
-  --background-secondary: #1B1C23;
+  --mc-white: #FDFDFD;
+
+  --mc-grey-1: #F5F5F5;
+  --mc-grey-2: #ECEDF0;
+  --mc-grey-3: #E0E2E7;
+  --mc-grey-4: #8A8B8E;
+
+  --mc-black: #0E111E;
+  --mc-black-1: rgba(14, 17, 30, 0.63);
+
+  --mc-green: #01EC97;
+  --mc-green-2: #19BD82;
+  --mc-green-3: #015537;
+
+  --mc-red: #F95465;
+  --mc-blue: #72A2FF;
+
+  --background-white: #FFFFFF;
+  --background-primary: var(--mc-white);
+  --background-secondary: var(--mc-grey-1);
+  --background-tertiary: var(--mc-grey-2);
+  --background-grey-light: var(--mc-grey-3);
+  --background-grey-dark: var(--mc-grey-2);
+
+  --background-dimmer: rgba(14, 17, 30, 0.63);
+  --border-dark: var(--mc-grey-4);
   --background-grey-darker: rgba(255, 255, 255, 0.05);
-  --background-grey-dark: rgba(255, 255, 255, 0.1);
-  --background-grey-light: rgba(255, 255, 255, 0.2);
-  --content-primary: #FFFFFF;
-  --content-secondary: rgba(255, 255, 255, 0.8);
-  --content-tertiary: rgba(255, 255, 255, 0.72);
-  --content-dimmed-light: rgba(255, 255, 255, 0.64);
+
+
+
+  --content-primary: var(--mc-black);
+  --content-secondary: var(--mc-grey-4);
+  --content-tertiary: var(--mc-grey-4);
+
+  --content-dimmed-light: var(--mc-grey-4);
   --content-dimmed-dark: rgba(255, 255, 255, 0.4);
+
   --content-grey: #9D9D9D;
   --content-grey-dark: #6D6D6D;
+
   --content-inverse: #28282F;
+
+  --button-primary: var(--mc-green);
+
   --accent-primary: #AEED0D;
   --accent-secondary: rgba(174, 237, 13, 0.4);
   --accent-dimmed: rgba(174, 237, 13, 0.1);
-  --accent-warning: #F55353;
+  --accent-warning: var(--mc-red);
   --accent-alert: #d4b226;
   --content-positive: #46CC44;
   --points-gradient: linear-gradient(170deg, #262f5f 35%, #c41cff 100%);
@@ -46,7 +77,8 @@ body {
   background-color: var(--background-primary);
 }
 
-h1, h3 {
+h1,
+h3 {
   font-family: var(--font-prompt), sans-serif;
   font-weight: 700;
   font-size: 44px;
@@ -87,7 +119,8 @@ input:focus {
     letter-spacing: 0.005em;
   }
 
-  p, span {
+  p,
+  span {
     font-size: 16px;
     line-height: 19px;
   }

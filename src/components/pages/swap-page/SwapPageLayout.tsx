@@ -9,8 +9,10 @@ const SwapPageLayout = () => {
   return (
     <div className={styles.swapPage}>
       <Header />
-      <main className={styles.swapLayout}>
-        <Swap />
+      <main className={styles.swapLayoutWrapper}>
+        <div className={styles.swapLayout}>
+          <Swap />
+        </div>
       </main>
       <Footer />
     </div>

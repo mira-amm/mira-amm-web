@@ -1,7 +1,7 @@
 .menuList {
   list-style: none;
   padding: 10px;
-  background: #262834;
+  background: var(--background-secondary);
   border-radius: 12px;
   display: flex;
   flex-direction: column;
@@ -34,7 +34,7 @@
   padding: 8px 10px;
   width: 100%;
   cursor: default;
-  background: #262834;
+  background: var(--background-secondary);
   color: var(--content-grey);
 }
 
