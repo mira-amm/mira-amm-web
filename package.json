@@ -19,6 +19,7 @@
     "@fuels/connectors": "0.36.0",
     "@fuels/react": "0.36.0",
     "@tanstack/react-query": "^5.50.1",
+    "@wagmi/core": "^2.16.5",
     "axios": "^1.7.9",
     "clsx": "^2.1.1",
     "fuels": "0.96.1",
