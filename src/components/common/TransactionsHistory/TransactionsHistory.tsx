@@ -8,6 +8,7 @@ import {forwardRef, useMemo} from "react";
 import {TransactionsCloseIcon} from "../../icons/Close/TransactionsCloseIcon";
 import CopyAddressIcon from "../../icons/Copy/CopyAddressIcon";
 import styles from "./TransactionsHistory.module.css";
+import SkeletonLoader from "../Swap/components/SkeletonLoader/SkeletonLoader";
 
 interface TransactionsHistoryProps {
   onClose: () => void;
@@ -29,7 +30,7 @@ const TransactionsHistory = forwardRef<
     return "Connect Wallet";
   }, [isConnected, formattedAddress]);
 
-  const {transactions} = useWalletTransactions(account, isOpened);
+  const {transactions, isLoading} = useWalletTransactions(account, isOpened);
 
   const handleCopy = () => {
     if (navigator.clipboard && account) {
@@ -81,72 +82,76 @@ const TransactionsHistory = forwardRef<
           </div>
           {/*<span className={styles.accountBalance}>$4,789.06</span>*/}
         </div>
-        <ul className={styles.transactionsList}>
-          {Object.entries(transactions).map(([date, transactions]) => (
-            <li key={date} className={styles.transactionGroup}>
-              <span className={styles.transactionDate}>{date}</span>
-              <ul className={styles.transactions}>
-                {transactions.map((transaction, index) => (
-                  <li key={index} className={styles.transaction}>
-                    <div className={styles.transactionInfo}>
-                      <div className={styles.transactionCoins}>
-                        <div className={styles.firstCoin}>
-                          <Image
-                            src={transaction.firstAsset?.icon || defaultImage}
-                            alt={`${transaction.firstAsset.symbol} icon`}
-                            priority
-                            width={40}
-                            height={40}
-                          />
+        <SkeletonLoader isLoading={isLoading} count={6} textLines={2}>
+          <ul className={styles.transactionsList}>
+            {Object.entries(transactions).map(([date, transactions]) => (
+              <li key={date} className={styles.transactionGroup}>
+                <span className={styles.transactionDate}>{date}</span>
+                <ul className={styles.transactions}>
+                  {transactions.map((transaction, index) => (
+                    <li key={index} className={styles.transaction}>
+                      <div className={styles.transactionInfo}>
+                        <div className={styles.transactionCoins}>
+                          <div className={styles.firstCoin}>
+                            <Image
+                              src={transaction.firstAsset?.icon || defaultImage}
+                              alt={`${transaction.firstAsset.symbol} icon`}
+                              priority
+                              width={40}
+                              height={40}
+                            />
+                          </div>
+                          <div className={styles.secondCoin}>
+                            <Image
+                              src={
+                                transaction.secondAsset?.icon || defaultImage
+                              }
+                              alt={`${transaction.secondAsset.name} icon`}
+                              priority
+                              width={40}
+                              height={40}
+                            />
+                          </div>
                         </div>
-                        <div className={styles.secondCoin}>
-                          <Image
-                            src={transaction.secondAsset?.icon || defaultImage}
-                            alt={`${transaction.secondAsset.name} icon`}
-                            priority
-                            width={40}
-                            height={40}
-                          />
+                        <div className={styles.transactionText}>
+                          <div className={styles.transactionType}>
+                            <a
+                              href={`${FuelAppUrl}/tx/${transaction.tx_id}`}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                            >
+                              <span className={styles.transactionName}>
+                                {transaction.name}
+                              </span>
+                            </a>
+                            <div
+                              className={`${styles.typeCircle} ${
+                                transaction.withdrawal
+                                  ? styles.withdrawal
+                                  : transaction.addLiquidity
+                                    ? styles.added
+                                    : ""
+                              }`}
+                            ></div>
+                          </div>
+                          <span className={styles.transactionAmount}>
+                            {transaction.firstAssetAmount}{" "}
+                            {transaction.firstAsset.name}
+                            {transaction.addLiquidity || transaction.withdrawal
+                              ? " and "
+                              : " for "}
+                            {transaction.secondAssetAmount}{" "}
+                            {transaction.secondAsset.name}
+                          </span>
                         </div>
                       </div>
-                      <div className={styles.transactionText}>
-                        <div className={styles.transactionType}>
-                          <a
-                            href={`${FuelAppUrl}/tx/${transaction.tx_id}`}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                          >
-                            <span className={styles.transactionName}>
-                              {transaction.name}
-                            </span>
-                          </a>
-                          <div
-                            className={`${styles.typeCircle} ${
-                              transaction.withdrawal
-                                ? styles.withdrawal
-                                : transaction.addLiquidity
-                                  ? styles.added
-                                  : ""
-                            }`}
-                          ></div>
-                        </div>
-                        <span className={styles.transactionAmount}>
-                          {transaction.firstAssetAmount}{" "}
-                          {transaction.firstAsset.name}
-                          {transaction.addLiquidity || transaction.withdrawal
-                            ? " and "
-                            : " for "}
-                          {transaction.secondAssetAmount}{" "}
-                          {transaction.secondAsset.name}
-                        </span>
-                      </div>
-                    </div>
-                  </li>
-                ))}
-              </ul>
-            </li>
-          ))}
-        </ul>
+                    </li>
+                  ))}
+                </ul>
+              </li>
+            ))}
+          </ul>
+        </SkeletonLoader>
       </div>
       <div
         className={isOpened ? styles.linerVisible : styles.linerHidden}
