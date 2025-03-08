@@ -8,8 +8,6 @@
   font-weight: 600;
   font-size: 18px;
   line-height: 22px;
-  color: var(--content-inverse);
-  background-color: var(--button-primary);
   border: none;
   border-radius: var(--border-radius);
   text-decoration: none;
@@ -17,8 +15,9 @@
   transition: opacity 0.2s ease;
 }
 
+
 .btn:hover {
-  text-decoration: none;
+  /* text-decoration: none; */
   opacity: 0.9;
 }
 
@@ -27,30 +26,30 @@
 }
 
 .btn.loading:hover {
-  color: var(--content-inverse);
-  background-color: var(--button-primary);
-  cursor: default;
+  /* color: var(--button-content-primary);
+  background-color: var(--button-primary); */
+  /* cursor: default; */
 }
 
 .btn:disabled {
-  background-color: var(--background-secondary);
-  color: var(--content-dimmed-dark);
+  cursor: default;
   pointer-events: none;
 }
 
-.secondary {
-  border: none;
-  background: var(--mc-green-3);
+.primary {
+  color: var(--button-content-primary);
+  background-color: var(--button-primary);
+}
+
+.primary:disabled {
+  background-color: var(--mc-green-3);
   color: var(--mc-green-2);
 }
 
-.secondary:hover {
-  background: var(--mc-green-3);
-  opacity: 0.9;
-}
-
-.secondary:active {
-  opacity: 0.8;
+.secondary {
+  border: 1px solid var(--border-dark);
+  background: var(--background-secondary);
+  color: var(--content-primary);
 }
 
 .outlined {
