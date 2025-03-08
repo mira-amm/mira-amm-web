@@ -11,8 +11,8 @@ import CupIcon from "@/src/components/icons/Cup/CupIcon";
 
 import styles from "./LiquidityPageLayout.module.css";
 import {
-  BoostsLearnMoreUrl,
   LIQUIDITY_PROVIDING_DOC_URL,
+  POINTS_LEARN_MORE_URL,
 } from "@/src/utils/constants";
 import Boosts from "./components/Boosts/Boosts";
 
@@ -34,9 +34,9 @@ const LiquidityPageLayout = (): JSX.Element => {
           />
           <PromoBlock
             icon={<CupIcon />}
-            title="Fuel Boosts Program"
-            link={BoostsLearnMoreUrl}
-            linkText="Learn about boost rewards"
+            title="Mira Points Program"
+            link={POINTS_LEARN_MORE_URL}
+            linkText="Learn about Mira Points"
           />
         </div>
       </main>

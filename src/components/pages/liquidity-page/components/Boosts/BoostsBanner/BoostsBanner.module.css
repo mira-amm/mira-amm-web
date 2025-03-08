@@ -1,10 +1,5 @@
 .banner {
-  background: linear-gradient(
-    97.15deg,
-    #5872fc -1.13%,
-    #6142ba 56.75%,
-    #c41cff 135.82%
-  );
+  background: var(--points-gradient);
   padding: 16px;
   gap: 10px;
   border-radius: 10px;

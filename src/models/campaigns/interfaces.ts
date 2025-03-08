@@ -53,6 +53,7 @@ export interface CampaignQueryParams {
 
 export interface EpochConfigService {
   getEpochs(epochNumbers?: number[]): EpochConfig[];
+  getCurrentEpochs(): EpochConfig[];
 }
 
 // Define the interface for any campaign service
