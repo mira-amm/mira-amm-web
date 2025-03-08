@@ -1,0 +1,14 @@
+{
+    "crons": [
+        {
+            "path": "/api/points",
+            "method": "POST",
+            "schedule": "*/30 * * * *"
+        }
+    ],
+    "functions": {
+        "app/api/points/**": {
+            "maxDuration": 60
+        }
+    }
+}
