@@ -28,8 +28,8 @@ const BoostsRewards = (): JSX.Element => {
     address: "",
   };
 
-  if (pointsRankArray && pointsRankArray.length > 0) {
-    pointsRank = pointsRankArray[0];
+  if (pointsRankArray && pointsRankArray.data.length > 0) {
+    pointsRank = pointsRankArray.data[0];
   }
 
   return (
@@ -64,7 +64,7 @@ const BoostsRewards = (): JSX.Element => {
             ) : (
               <>
                 <BoostsIcon />
-                <p>{pointsRank?.points}</p>
+                <p>{pointsRank?.points.toFixed(0).toLocaleString()}</p>
               </>
             )}
           </div>

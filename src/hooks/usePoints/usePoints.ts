@@ -66,7 +66,10 @@ export const usePointsRank = () => {
     queryKey: ["points-rank", account],
     queryFn: async () => {
       const response = await fetch(`/api/points?address=${account}`);
-      return response.json() as Promise<PointsResponse[]>;
+      return response.json() as Promise<{
+        data: PointsResponse[];
+        totalCount: number;
+      }>;
     },
   });
 };
