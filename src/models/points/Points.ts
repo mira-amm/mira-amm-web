@@ -13,6 +13,7 @@ const pointsPerUserQuery = loadFile(
 );
 
 const FILE_PATH = "/tmp/latestPoints.json";
+const POINTS_CACHE_EXPIRATION = 0.5 * 60 * 60 * 1000; // 30 minutes
 
 // A service that fetches the latest points from the sentio API and saves them to a temporary file
 // This is used to avoid configuring vercel kv or postgres
@@ -28,7 +29,7 @@ export class TmpFilePointsPerUserService implements PointsPerUserService {
 
     // add a timestamp to the overall object
     const pointsCache = {
-      timestamp: new Date().toISOString(),
+      expiresAt: new Date(Date.now() + POINTS_CACHE_EXPIRATION).toISOString(),
       points,
     };
 
@@ -47,10 +48,9 @@ export class TmpFilePointsPerUserService implements PointsPerUserService {
       const points = await fs.readFile(FILE_PATH, "utf8");
       const pointsCache = JSON.parse(points);
       parsedPoints = pointsCache.points;
-      const oneHourAgo = new Date(Date.now() - 1 * 60 * 60 * 1000);
       if (
-        !pointsCache.timestamp ||
-        new Date(pointsCache.timestamp) < oneHourAgo
+        !pointsCache.expiresAt ||
+        new Date(pointsCache.expiresAt) < new Date(Date.now())
       ) {
         console.log(
           "Points cache is older than one hour, updating in the background...",
