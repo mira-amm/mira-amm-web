@@ -15,51 +15,6 @@ const cacheControlHeaders = {
   "Cache-Control": `public, s-maxage=${CACHE_DURATION}, stale-while-revalidate=${CACHE_STALE_WHILE_REVALIDATE}`,
 };
 
-export async function POST(_request: NextRequest): Promise<NextResponse> {
-  try {
-    if (!process.env.SENTIO_API_KEY || !process.env.SENTIO_API_URL) {
-      throw new Error("SENTIO_API_KEY and SENTIO_API_URL must be set");
-    }
-
-    const pointsService = new TmpFilePointsPerUserService(
-      process.env.SENTIO_API_KEY,
-      process.env.SENTIO_API_URL,
-      new JSONEpochConfigService(
-        path.join(process.cwd(), "src", "models", "campaigns.json"),
-      ),
-    );
-
-    const points = await pointsService.updateLatestPoints();
-
-    if (!points) {
-      return new NextResponse(JSON.stringify({}), {
-        status: 500,
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-    }
-
-    return new NextResponse(JSON.stringify(points), {
-      status: 200,
-      headers: cacheControlHeaders,
-    });
-  } catch (e) {
-    if (e instanceof NotFoundError) {
-      // return empty value
-      return new NextResponse(JSON.stringify({}), {
-        status: 200,
-        headers: cacheControlHeaders,
-      });
-    } else {
-      return new NextResponse(JSON.stringify({message: (e as Error).message}), {
-        status: 500,
-        headers: cacheControlHeaders,
-      });
-    }
-  }
-}
-
 export async function GET(request: NextRequest): Promise<NextResponse> {
   if (!process.env.SENTIO_API_KEY || !process.env.SENTIO_API_URL) {
     throw new Error("SENTIO_API_KEY and SENTIO_API_URL must be set");
