@@ -1,143 +1,18 @@
-import React, {forwardRef, useMemo} from "react";
-import styles from "./TransactionsHistory.module.css";
+import defaultImage from "@/assets/unknown-asset.svg";
+import useFormattedAddress from "@/src/hooks/useFormattedAddress/useFormattedAddress";
+import useWalletTransactions from "@/src/hooks/useWalletTransactions";
+import {FuelAppUrl} from "@/src/utils/constants";
+import {useAccount, useIsConnected} from "@fuels/react";
+import Image from "next/image";
+import {forwardRef, useMemo} from "react";
 import {TransactionsCloseIcon} from "../../icons/Close/TransactionsCloseIcon";
 import CopyAddressIcon from "../../icons/Copy/CopyAddressIcon";
-import {useIsConnected, useAccount} from "@fuels/react";
-import useFormattedAddress from "@/src/hooks/useFormattedAddress/useFormattedAddress";
-import useWalletTransactions, {
-  TransactionsData,
-} from "@/src/hooks/useWalletTransactions";
-import {coinsConfig} from "@/src/utils/coinsConfig";
-import {DefaultLocale} from "@/src/utils/constants";
-
-interface TransactionProps {
-  date: string;
-  firstAssetIcon: string;
-  secondAssetIcon: string;
-  name: string;
-  firstAssetAmount: string;
-  secondAssetAmount: string;
-  firstAssetName: string;
-  secondAssetName: string;
-  withdrawal?: boolean;
-  addLiquidity?: boolean;
-  tx_id: string;
-}
+import styles from "./TransactionsHistory.module.css";
 
 interface TransactionsHistoryProps {
   onClose: () => void;
   isOpened: boolean;
 }
-
-const transformTransactionsDataAndGroupByDate = (
-  transactionsData: TransactionsData | undefined,
-) => {
-  const grouped: Record<string, TransactionProps[]> = {};
-  if (!transactionsData) {
-    return grouped;
-  }
-
-  const transactions = transactionsData.Transaction.toSorted(
-    (txA, txB) => txB.block_time - txA.block_time,
-  );
-
-  transactions.forEach((transaction) => {
-    const date = new Date(transaction.block_time * 1000).toLocaleDateString(
-      DefaultLocale,
-      {
-        month: "short",
-        day: "numeric",
-        year: "numeric",
-      },
-    );
-    const [firstAssetId, secondAssetId] = transaction.pool_id.split("_");
-    const firstAsset = coinsConfig.get(firstAssetId);
-    const secondAsset = coinsConfig.get(secondAssetId);
-    if (!firstAsset || !secondAsset) {
-      return;
-    }
-    const firstAssetName = firstAsset.name!;
-    const secondAssetName = secondAsset.name!;
-
-    const firstAssetIcon = firstAsset.icon!;
-    const secondAssetIcon = secondAsset.icon!;
-    const firstAssetDecimals = firstAsset.decimals!;
-    const secondAssetDecimals = secondAsset.decimals!;
-    const firstAssetIn =
-      Number(transaction.asset_0_in) / 10 ** firstAssetDecimals;
-    const firstAssetOut =
-      Number(transaction.asset_0_out) / 10 ** firstAssetDecimals;
-    const secondAssetIn =
-      Number(transaction.asset_1_in) / 10 ** secondAssetDecimals;
-    const secondAssetOut =
-      Number(transaction.asset_1_out) / 10 ** secondAssetDecimals;
-
-    let firstAssetAmount;
-    let secondAssetAmount;
-    let firstAssetNameToUse;
-    let secondAssetNameToUse;
-    if (transaction.transaction_type === "SWAP") {
-      /*
-       * As assets order is always fixed in pool_id string, as well as asset_0 and asset_1 fields, we need to determine
-       * which asset is input and which is output for swap. If asset_1_out > asset_0_out, it means that we need to reverse
-       * mapping of assets from pool id to the visual representation of the transaction.
-       */
-      const reversedAssetsOrder = transaction.asset_0_in == '0' && transaction.asset_1_out == '0';
-
-      const fromAsset = reversedAssetsOrder ? secondAsset : firstAsset;
-      const toAsset = reversedAssetsOrder ? firstAsset : secondAsset;
-
-      const fromAssetDecimals = fromAsset.decimals!;
-      const toAssetDecimals = toAsset.decimals!;
-
-      firstAssetNameToUse = fromAsset.name!;
-      secondAssetNameToUse = toAsset.name!;
-      // Format number and Remove trailing zeros
-      firstAssetAmount = (reversedAssetsOrder ? secondAssetIn : firstAssetIn).toFixed(fromAssetDecimals).replace(/\.?0+$/, ""); 
-      secondAssetAmount = (reversedAssetsOrder ? firstAssetOut : secondAssetOut).toFixed(toAssetDecimals).replace(/\.?0+$/, "");
-    } else {
-      firstAssetNameToUse = firstAssetName;
-      secondAssetNameToUse = secondAssetName;
-      if (transaction.transaction_type === "ADD_LIQUIDITY") {
-        firstAssetAmount = firstAssetIn.toFixed(firstAssetDecimals);
-        secondAssetAmount = secondAssetIn.toFixed(secondAssetDecimals);
-      } else {
-        firstAssetAmount = firstAssetOut.toFixed(firstAssetDecimals);
-        secondAssetAmount = secondAssetOut.toFixed(secondAssetDecimals);
-      }
-    }
-
-    let name: string;
-    if (transaction.transaction_type === "ADD_LIQUIDITY") {
-      name = "Added liquidity";
-    } else if (transaction.transaction_type === "REMOVE_LIQUIDITY") {
-      name = "Removed liquidity";
-    } else {
-      name = "Swap";
-    }
-
-    const transformedTransaction: TransactionProps = {
-      date,
-      firstAssetIcon,
-      secondAssetIcon,
-      name,
-      firstAssetAmount,
-      secondAssetAmount,
-      firstAssetName: firstAssetNameToUse,
-      secondAssetName: secondAssetNameToUse,
-      withdrawal: transaction.transaction_type === "REMOVE_LIQUIDITY",
-      addLiquidity: transaction.transaction_type === "ADD_LIQUIDITY",
-      tx_id: transaction.tx_id,
-    };
-
-    if (!grouped[date]) {
-      grouped[date] = [];
-    }
-    grouped[date].push(transformedTransaction);
-  });
-
-  return grouped;
-};
 
 const TransactionsHistory = forwardRef<
   HTMLDivElement,
@@ -155,9 +30,6 @@ const TransactionsHistory = forwardRef<
   }, [isConnected, formattedAddress]);
 
   const {transactions} = useWalletTransactions(account, isOpened);
-  const groupedTransactions =
-    transformTransactionsDataAndGroupByDate(transactions);
-  console.log("groupedTransactions", groupedTransactions);
 
   const handleCopy = () => {
     if (navigator.clipboard && account) {
@@ -190,7 +62,14 @@ const TransactionsHistory = forwardRef<
         </div>
         <div className={styles.accountInfo}>
           <div className={styles.accountUserInfo}>
-            <img className={styles.accountAvatar} src="/images/avatar.png" />
+            <Image
+              className={styles.accountAvatar}
+              src="/images/avatar.png"
+              priority
+              alt="avatar"
+              width={40}
+              height={40}
+            />
             <span className={styles.accountWallet}>{walletAddress}</span>
             <button
               className={styles.copyButton}
@@ -203,7 +82,7 @@ const TransactionsHistory = forwardRef<
           {/*<span className={styles.accountBalance}>$4,789.06</span>*/}
         </div>
         <ul className={styles.transactionsList}>
-          {Object.entries(groupedTransactions).map(([date, transactions]) => (
+          {Object.entries(transactions).map(([date, transactions]) => (
             <li key={date} className={styles.transactionGroup}>
               <span className={styles.transactionDate}>{date}</span>
               <ul className={styles.transactions}>
@@ -212,21 +91,31 @@ const TransactionsHistory = forwardRef<
                     <div className={styles.transactionInfo}>
                       <div className={styles.transactionCoins}>
                         <div className={styles.firstCoin}>
-                          <img
-                            src={transaction.firstAssetIcon}
-                            alt={`${transaction.firstAssetName} icon`}
+                          <Image
+                            src={transaction.firstAsset?.icon || defaultImage}
+                            alt={`${transaction.firstAsset.symbol} icon`}
+                            priority
+                            width={40}
+                            height={40}
                           />
                         </div>
                         <div className={styles.secondCoin}>
-                          <img
-                            src={transaction.secondAssetIcon}
-                            alt={`${transaction.secondAssetName} icon`}
+                          <Image
+                            src={transaction.secondAsset?.icon || defaultImage}
+                            alt={`${transaction.secondAsset.name} icon`}
+                            priority
+                            width={40}
+                            height={40}
                           />
                         </div>
                       </div>
                       <div className={styles.transactionText}>
                         <div className={styles.transactionType}>
-                          <a href={`https://app.fuel.network/tx/${transaction.tx_id}`} target="_blank" rel="noopener noreferrer">
+                          <a
+                            href={`${FuelAppUrl}/tx/${transaction.tx_id}`}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                          >
                             <span className={styles.transactionName}>
                               {transaction.name}
                             </span>
@@ -243,12 +132,12 @@ const TransactionsHistory = forwardRef<
                         </div>
                         <span className={styles.transactionAmount}>
                           {transaction.firstAssetAmount}{" "}
-                          {transaction.firstAssetName}
+                          {transaction.firstAsset.name}
                           {transaction.addLiquidity || transaction.withdrawal
                             ? " and "
                             : " for "}
                           {transaction.secondAssetAmount}{" "}
-                          {transaction.secondAssetName}
+                          {transaction.secondAsset.name}
                         </span>
                       </div>
                     </div>
