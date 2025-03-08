@@ -655,7 +655,7 @@ const Swap = () => {
 
           {!isConnected && (
             <ActionButton
-              variant="secondary"
+              variant="primary"
               onClick={connect}
               loading={isConnecting}
             >
