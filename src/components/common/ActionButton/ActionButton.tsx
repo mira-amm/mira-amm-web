@@ -49,6 +49,7 @@ const ActionButton = forwardRef<HTMLButtonElement, Props>(function ActionButton(
     <button
       className={clsx(
         styles.btn,
+        variant !== "secondary" && variant !== "outlined" && styles.primary,
         variant === "secondary" && styles.secondary,
         variant === "outlined" && styles.outlined,
         loading && styles.loading,

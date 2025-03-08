@@ -18,7 +18,7 @@ const Footer = ({isHomePage}: Props) => {
     <>
       <footer className={clsx("mobileOnly", styles.footer)}>
         <div className={styles.content}>
-          <Logo />
+          <Logo isFooter={true} />
           <div className={styles.fuelWrapper}>
             {isHomePage && (
               <p className={styles.fuelText}>
@@ -59,14 +59,14 @@ const Footer = ({isHomePage}: Props) => {
             </a>
           </div>
         </div>
-        <div className={styles.copywright}>
+        <div className={styles.copyright}>
           <p className="desktopOnly">&copy; {currentYear} Mira Finance</p>
         </div>
         <p className="mobileOnly">&copy; {currentYear} Mira Finance</p>
       </footer>
       <footer className={clsx("desktopOnly", styles.footer)}>
         <div className={styles.content}>
-          <Logo />
+          <Logo isFooter={true} />
           <div className={styles.links}>
             <a className={styles.link} href={DiscordLink}>
               Support
@@ -126,7 +126,7 @@ const Footer = ({isHomePage}: Props) => {
             </a>
           </div>
         </div>
-        <div className={styles.copywright}>
+        <div className={styles.copyright}>
           <div className={styles.fuelWrapper}>
             {isHomePage && (
               <p className={styles.fuelText}>

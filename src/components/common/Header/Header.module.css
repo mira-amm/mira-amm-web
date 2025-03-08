@@ -97,7 +97,7 @@
   }
 
   .main {
-    padding: 16px 40px;
+    padding: 25px 27px;
     display: grid;
     grid-template-columns: auto 1fr auto;
     align-items: center;
@@ -128,7 +128,7 @@
     padding: 6px 12px;
     border-radius: 20px;
     transition: all 0.3s ease;
-    color: var(--content-primary);
+    color: var(--content-secondary);
   }
 
   .activeLink {
@@ -138,7 +138,7 @@
 
   .link:hover:not(.activeLink) {
     background: var(--background-grey-light);
-    color: var(--content-primary);
+    color: var(--content-secondary);
   }
 
   .activeLink:hover {

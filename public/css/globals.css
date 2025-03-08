@@ -45,6 +45,7 @@
   --content-inverse: #28282F;
 
   --button-primary: var(--mc-green);
+  --button-content-primary: var(--mc-black);
 
   --accent-primary: #AEED0D;
   --accent-secondary: rgba(174, 237, 13, 0.4);
