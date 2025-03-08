@@ -7,12 +7,6 @@
   align-items: center;
 }
 
-.boostsSection {
-  max-width: 1200px;
-  width: 100%;
-  margin: 32px auto 0;
-}
-
 .title {
   font-size: 32px;
   font-weight: 700;
@@ -20,7 +14,7 @@
   color: var(--content-primary);
 }
 
-.tableSection {
+.container {
   max-width: 1200px;
   width: 100%;
   margin: 32px auto 0;

@@ -10,7 +10,7 @@ import {
 import Loader from "@/src/components/common/Loader/Loader";
 import {usePointsRank} from "@/src/hooks/usePoints/usePoints";
 import BoostsIcon from "@/src/components/icons/Boosts/BoostsIcon";
-
+import pointsStyles from "@/src/components/pages/points-page/PointsStyles.module.css";
 const BoostsRewards = (): JSX.Element => {
   const {data: pointsRankArray, isLoading, error} = usePointsRank();
 
@@ -35,9 +35,7 @@ const BoostsRewards = (): JSX.Element => {
   return (
     <div className={styles.boosts}>
       <div className={styles.boostsHeader}>
-        <div className={styles.boostsTitle}>
-          <p>Points Program</p>
-        </div>
+        <h2 className={pointsStyles.pointsTitle}>Points Program</h2>
         <Link href={POINTS_LEARN_MORE_URL} target="_blank">
           <ActionButton
             className={styles.learnMoreButton}

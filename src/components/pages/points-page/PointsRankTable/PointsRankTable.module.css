@@ -15,7 +15,7 @@
 .tableHeader {
   padding: 16px;
   text-align: left;
-  font-weight: 600;
+  font-weight: 400;
   font-size: 16px;
   color: #8b8b9d;
   border-bottom: 1px solid #2a2b35;
@@ -38,25 +38,13 @@
 .pointsCell {
   display: flex;
   align-items: center;
-  justify-content: flex-end;
+  justify-content: flex-start;
 }
 
-.starIcon {
-  color: #ffd700;
+.pointsIcon {
+  color: #aeed0d;
   margin-right: 8px;
   font-size: 18px;
-}
-
-/* Align the rank column to the left */
-.table th:first-child,
-.table td:first-child {
-  text-align: left;
-}
-
-/* Align the points column to the right */
-.table th:last-child,
-.table td:last-child {
-  text-align: right;
 }
 
 /* Truncate long addresses */
