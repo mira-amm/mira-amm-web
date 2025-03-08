@@ -72,13 +72,7 @@ export class TmpFilePointsPerUserService implements PointsPerUserService {
 
   private async fetchLatestPoints(): Promise<PointsResponse[]> {
     try {
-      console.log("Starting fetchLatestPoints...");
       const epoch = this.epochConfigService.getCurrentEpochs()[0];
-      console.log("Current epoch:", {
-        startDate: epoch.startDate,
-        endDate: epoch.endDate,
-        campaignsCount: epoch.campaigns.length,
-      });
 
       const epochStart = epoch.startDate;
       const epochEnd = epoch.endDate;
@@ -97,7 +91,7 @@ export class TmpFilePointsPerUserService implements PointsPerUserService {
       );
 
       console.log(
-        "Sending request to Sentio API (this may take up to a minute)...",
+        "Sending request to Sentio API for latest points (this may take up to a minute)...",
       );
 
       // Set a longer timeout for the fetch request
@@ -110,8 +104,6 @@ export class TmpFilePointsPerUserService implements PointsPerUserService {
           signal: controller.signal,
         });
 
-        console.log("Sentio API response status:", response.status);
-
         if (!response.ok) {
           throw new Error(
             `Sentio API request failed with status ${response.status}: ${response.statusText}`,
@@ -120,7 +112,6 @@ export class TmpFilePointsPerUserService implements PointsPerUserService {
 
         // Get the full response text
         const responseText = await response.text();
-        console.log("Response received, length:", responseText.length);
 
         if (!responseText) {
           throw new Error("Received empty response from Sentio API");
@@ -172,11 +163,6 @@ export class TmpFilePointsPerUserService implements PointsPerUserService {
     lpTokens: string[],
     rewardRates: number[],
   ) {
-    console.log({
-      rewardRates,
-      lpTokens,
-    });
-
     // Let's examine the SQL query to see what it expects
     console.log("SQL Query:", pointsPerUserQuery);
 
@@ -196,8 +182,6 @@ export class TmpFilePointsPerUserService implements PointsPerUserService {
       "${rewardRates}",
       `[${rewardRatesFormatted}]`,
     );
-
-    console.log("Modified SQL Query:", modifiedQuery);
 
     return {
       method: "POST",

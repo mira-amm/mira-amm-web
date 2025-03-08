@@ -66,7 +66,9 @@ export default function PointsRankTable() {
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
     manualPagination: true, // We're handling pagination on the server
-    pageCount: response?.totalCount || 10, // You might want to get this from the API response
+    pageCount: response?.totalCount
+      ? Math.ceil(response.totalCount / pageSize)
+      : 10,
     state: {
       pagination,
     },
