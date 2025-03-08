@@ -26,7 +26,13 @@ export class TmpFilePointsPerUserService implements PointsPerUserService {
   async updateLatestPoints(): Promise<PointsResponse[]> {
     const points = await this.fetchLatestPoints();
 
-    await fs.writeFile(FILE_PATH, JSON.stringify(points));
+    // add a timestamp to the overall object
+    const pointsCache = {
+      timestamp: new Date().toISOString(),
+      points,
+    };
+
+    await fs.writeFile(FILE_PATH, JSON.stringify(pointsCache));
 
     return points;
   }
@@ -39,7 +45,21 @@ export class TmpFilePointsPerUserService implements PointsPerUserService {
 
     try {
       const points = await fs.readFile(FILE_PATH, "utf8");
-      parsedPoints = JSON.parse(points);
+      const pointsCache = JSON.parse(points);
+      parsedPoints = pointsCache.points;
+      const oneHourAgo = new Date(Date.now() - 1 * 60 * 60 * 1000);
+      if (
+        !pointsCache.timestamp ||
+        new Date(pointsCache.timestamp) < oneHourAgo
+      ) {
+        console.log(
+          "Points cache is older than one hour, updating in the background...",
+        );
+        // update the points cache non-blocking
+        Promise.resolve().then(async () => {
+          this.updateLatestPoints();
+        });
+      }
       totalCount = parsedPoints.length;
     } catch (e) {
       // If file doesn't exist or can't be read, fetch and save the latest points
