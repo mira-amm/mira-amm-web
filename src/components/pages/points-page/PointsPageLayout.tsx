@@ -5,7 +5,6 @@ import Footer from "@/src/components/common/Footer/Footer";
 import styles from "./PointsPageLayout.module.css";
 import PointsRankTable from "./PointsRankTable/PointsRankTable";
 import Boosts from "../liquidity-page/components/Boosts/Boosts";
-import pointsStyles from "./PointsStyles.module.css";
 
 const PointsPageLayout = (): JSX.Element => {
   return (
@@ -13,13 +12,13 @@ const PointsPageLayout = (): JSX.Element => {
       <Header />
       <main className={styles.pointsPageLayout}>
         <Boosts />
-        <div>
-          <p className={pointsStyles.pointsTitle}>Leaderboard</p>
-          <div className={pointsStyles.pointsSubsection}>
-            <p className={pointsStyles.pointsSubtitle}>
+        <div className={styles.titleSection}>
+          <p className={styles.title}>Leaderboard</p>
+          <div className={styles.subsection}>
+            <p className={styles.subtitle}>
               See the top participants of the points program.{" "}
             </p>
-            <p className={pointsStyles.pointsWarning}>
+            <p className={styles.pointsWarning}>
               The leaderboard is updated every hour.
             </p>
           </div>

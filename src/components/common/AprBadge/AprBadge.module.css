@@ -2,7 +2,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background: linear-gradient(90deg, #5872fc 0%, #6142ba 50%, #c41cff 100%);
+  background: var(--points-gradient);
   gap: 5px;
   border-radius: 10px;
   position: relative;
@@ -54,7 +54,7 @@
   border-radius: 10px;
   padding: 25px;
   gap: 10px;
-  background: linear-gradient(90deg, #5872fc 0%, #6142ba 50%, #c41cff 100%);
+  background: var(--points-gradient);
   color: white;
   text-align: center;
   box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
