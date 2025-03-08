@@ -12,5 +12,7 @@ export interface PointsQueryParams {
 
 export interface PointsPerUserService {
   updateLatestPoints(): Promise<PointsResponse[]>;
-  getPoints(queryParams: PointsQueryParams): Promise<PointsResponse[]>;
+  getPoints(
+    queryParams: PointsQueryParams,
+  ): Promise<{data: PointsResponse[]; totalCount: number}>;
 }

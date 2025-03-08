@@ -51,7 +51,10 @@ export const usePointsRanks = (page: number, pageSize: number) => {
       if (!response.ok) {
         throw new Error("Failed to fetch points ranks");
       }
-      return response.json() as Promise<PointsResponse[]>;
+      return response.json() as Promise<{
+        data: PointsResponse[];
+        totalCount: number;
+      }>;
     },
   });
 };

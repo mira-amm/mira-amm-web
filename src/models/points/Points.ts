@@ -31,12 +31,16 @@ export class TmpFilePointsPerUserService implements PointsPerUserService {
     return points;
   }
 
-  async getPoints(queryParams: PointsQueryParams): Promise<PointsResponse[]> {
+  async getPoints(
+    queryParams: PointsQueryParams,
+  ): Promise<{data: PointsResponse[]; totalCount: number}> {
+    let totalCount;
     let parsedPoints;
 
     try {
       const points = await fs.readFile(FILE_PATH, "utf8");
       parsedPoints = JSON.parse(points);
+      totalCount = parsedPoints.length;
     } catch (e) {
       // If file doesn't exist or can't be read, fetch and save the latest points
       console.log(
@@ -60,7 +64,10 @@ export class TmpFilePointsPerUserService implements PointsPerUserService {
       parsedPoints = parsedPoints.slice(0, queryParams.limit);
     }
 
-    return parsedPoints;
+    return {
+      data: parsedPoints,
+      totalCount,
+    };
   }
 
   private async fetchLatestPoints(): Promise<PointsResponse[]> {
