@@ -1,7 +1,0 @@
-[
-  {
-    "path": "/api/points",
-    "schedule": "*/30 * * * *",
-    "method": "POST"
-  }
-]
