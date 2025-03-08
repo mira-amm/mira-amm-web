@@ -2,14 +2,14 @@
   width: 100%;
   overflow-x: auto;
   border-radius: 12px;
-  background-color: #1a1b23;
+  background-color: var(--background-secondary);
   margin-top: 24px;
 }
 
 .table {
   width: 100%;
   border-collapse: collapse;
-  color: #fff;
+  color: var(--content-primary);
 }
 
 .tableHeader {
@@ -17,8 +17,8 @@
   text-align: left;
   font-weight: 400;
   font-size: 16px;
-  color: #8b8b9d;
-  border-bottom: 1px solid #2a2b35;
+  color: var(--content-dimmed-dark);
+  border-bottom: 1px solid var(--background-grey-darker);
 }
 
 .tableRow {
@@ -26,13 +26,14 @@
 }
 
 .tableRow:hover {
-  background-color: #23242f;
+  background-color: var(--background-grey-darker);
 }
 
 .tableCell {
   padding: 16px;
   font-size: 16px;
-  border-bottom: 1px solid #2a2b35;
+  border-bottom: 1px solid var(--background-grey-darker);
+  text-align: left;
 }
 
 .pointsCell {
@@ -42,7 +43,7 @@
 }
 
 .pointsIcon {
-  color: #aeed0d;
+  color: var(--accent-primary);
   margin-right: 8px;
   font-size: 18px;
 }

@@ -28,7 +28,7 @@
 .subHeader {
   font-size: 16px;
   font-weight: 400;
-  color: white;
+  color: var(--content-primary);
   flex: 1 1 auto;
   margin-right: 8px;
 }
@@ -38,7 +38,7 @@
   align-items: center;
   font-size: 16px;
   font-weight: 500;
-  color: white;
+  color: var(--content-primary);
   background: transparent;
   border: none;
   cursor: pointer;
@@ -48,7 +48,7 @@
 }
 
 .learnMore:hover {
-  color: #e0e0e0;
+  color: var(--content-secondary);
 }
 
 .learnMore::after {
@@ -58,7 +58,7 @@
   bottom: -2px;
   width: 100%;
   height: 2px;
-  background-color: white;
+  background-color: var(--content-primary);
   transform: scaleX(0);
   transform-origin: left;
   transition: transform 0.3s ease;

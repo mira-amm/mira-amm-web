@@ -19,6 +19,7 @@
   --accent-secondary: rgba(174, 237, 13, 0.4);
   --accent-dimmed: rgba(174, 237, 13, 0.1);
   --accent-warning: #F55353;
+  --accent-alert: #d4b226;
   --content-positive: #46CC44;
 }
 

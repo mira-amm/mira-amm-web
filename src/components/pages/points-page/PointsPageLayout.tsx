@@ -6,7 +6,6 @@ import styles from "./PointsPageLayout.module.css";
 import PointsRankTable from "./PointsRankTable/PointsRankTable";
 import Boosts from "../liquidity-page/components/Boosts/Boosts";
 import pointsStyles from "./PointsStyles.module.css";
-import {POINTS_BANNER_TITLE} from "@/src/utils/constants";
 const PointsPageLayout = (): JSX.Element => {
   return (
     <>
@@ -22,7 +21,7 @@ const PointsPageLayout = (): JSX.Element => {
               See the top participants of the points program. Points are updated
               every hour.
             </p>
-            <p className={pointsStyles.pointsWarning}>
+            <p className={pointsStyles.pointsAlert}>
               The leaderboard is updated every hour.
             </p>
           </div>

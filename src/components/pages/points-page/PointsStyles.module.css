@@ -2,7 +2,7 @@
   font-size: 1.5rem;
   font-weight: 400;
   margin-bottom: 0.5rem;
-  color: #ffffff;
+  color: var(--content-primary);
 }
 
 .pointsSubsection {
@@ -19,12 +19,12 @@
 
 .pointsSubtitle {
   font-size: 1rem;
-  color: rgba(255, 255, 255, 0.7);
+  color: var(--content-dimmed-light);
   margin-bottom: 1.5rem;
 }
 
-.pointsWarning {
+.pointsAlert {
   font-size: 1rem;
-  color: #d4b226;
+  color: var(--accent-alert);
   margin-bottom: 1.5rem;
 }
