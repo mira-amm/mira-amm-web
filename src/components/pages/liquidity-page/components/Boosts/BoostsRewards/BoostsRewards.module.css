@@ -36,12 +36,7 @@
   padding: 16px;
   min-height: 110px;
   padding: 24px;
-  background: linear-gradient(
-    97.15deg,
-    #5872fc -1.13%,
-    #6142ba 56.75%,
-    #c41cff 135.82%
-  );
+  background: var(--points-gradient);
 }
 
 .rewardsItem {
@@ -135,10 +130,6 @@
 }
 
 @media (max-width: 564px) {
-  .rewardsValue p {
-    font-size: 14px;
-  }
-
   .epochDuration {
     font-size: 14px;
   }
@@ -148,10 +139,6 @@
   .boostsFallback {
     flex-direction: column;
     align-items: stretch;
-  }
-
-  .rewardsValue p {
-    font-size: 18px;
   }
 
   .rewardsValue span {

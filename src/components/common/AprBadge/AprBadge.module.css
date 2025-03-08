@@ -97,3 +97,10 @@
   background: linear-gradient(90deg, #5872fc 0%, #6142ba 50%, #c41cff 100%);
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
 }
+
+.badgeWrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+}

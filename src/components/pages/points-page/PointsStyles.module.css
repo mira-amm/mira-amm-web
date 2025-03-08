@@ -1,5 +1,5 @@
 .pointsTitle {
-  font-size: 1.5rem;
+  font-size: 24px;
   font-weight: 400;
   margin-bottom: 0.5rem;
   color: #ffffff;
@@ -18,13 +18,13 @@
 }
 
 .pointsSubtitle {
-  font-size: 1rem;
+  font-size: 16px;
   color: rgba(255, 255, 255, 0.7);
   margin-bottom: 1.5rem;
 }
 
 .pointsWarning {
-  font-size: 1rem;
+  font-size: 16px;
   color: #d4b226;
   margin-bottom: 1.5rem;
 }

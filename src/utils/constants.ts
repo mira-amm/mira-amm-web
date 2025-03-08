@@ -84,6 +84,9 @@ export const RewardsApiUrl = "/api/rewards" as const;
 export const boosterBannerTitle =
   " Introducing Boost Rewards, earn $FUEL by providing liquidity.";
 
+export const POINTS_PROMO_TITLE =
+  "Introducing Mira Points, earn points by providing liquidity and engaging in activities.";
+
 export const EPOCH_NUMBER = 4 as const;
 
 export const POINTS_TOOLTIP =

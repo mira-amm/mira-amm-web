@@ -1,15 +1,25 @@
+.loadingFallback {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  padding: 28px 16px;
+  border-radius: 16px;
+  background-color: var(--background-grey-dark);
+}
+
 .tableContainer {
   width: 100%;
   overflow-x: auto;
   border-radius: 12px;
   background-color: var(--background-grey-dark);
-  margin-top: 24px;
+  padding: 16px;
 }
 
 .table {
   width: 100%;
   border-collapse: collapse;
-  color: #fff;
+  color: var(--content-primary);
 }
 
 .tableHeader {
@@ -42,9 +52,10 @@
 }
 
 .pointsIcon {
-  color: #aeed0d;
+  color: var(--accent-primary);
   margin-right: 8px;
-  font-size: 18px;
+  display: flex;
+  align-items: center;
 }
 
 /* Truncate long addresses */
@@ -87,4 +98,83 @@
 .paginationText {
   color: #fff;
   font-size: 14px;
+}
+
+/* Make the first column take minimal width */
+.table th:nth-child(1),
+.table td:nth-child(1) {
+  width: 1%; /* Minimal width */
+  white-space: nowrap;
+}
+
+/* Make the second column expand to fill available space */
+.table th:nth-child(2),
+.table td:nth-child(2) {
+  width: auto; /* Take remaining space */
+}
+
+/* Make the points column take minimal width */
+.table th:nth-child(3),
+.table td:nth-child(3) {
+  width: 1%; /* Minimal width */
+  white-space: nowrap; /* Prevent wrapping */
+}
+
+/* Add these new classes for responsive address display */
+.desktopAddress {
+  display: inline;
+}
+
+.mobileAddress {
+  display: none;
+}
+
+/* Make the table more mobile-friendly */
+@media (max-width: 768px) {
+  .tableContainer {
+    overflow-x: hidden; /* Prevent horizontal scrolling on mobile */
+  }
+
+  .desktopAddress {
+    display: none;
+  }
+
+  .mobileAddress {
+    display: inline;
+  }
+
+  /* Adjust column widths for mobile */
+  .table th:nth-child(1),
+  .table td:nth-child(1) {
+    width: 15%;
+    padding-left: 10px;
+    padding-right: 5px;
+  }
+
+  .table th:nth-child(2),
+  .table td:nth-child(2) {
+    width: 45%;
+    padding-left: 5px;
+    padding-right: 5px;
+  }
+
+  .table th:nth-child(3),
+  .table td:nth-child(3) {
+    width: 40%;
+    padding-left: 5px;
+    padding-right: 10px;
+  }
+
+  /* Reduce font size on mobile */
+  .tableHeader,
+  .tableCell {
+    font-size: 14px;
+    padding: 12px 8px;
+  }
+
+  /* Make sure the points icon is appropriately sized */
+  .pointsIcon svg {
+    width: 16px;
+    height: 16px;
+  }
 }

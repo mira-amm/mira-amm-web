@@ -6,11 +6,12 @@ import {
   POINTS_TOOLTIP,
   POINTS_RANK_TOOLTIP,
   POINTS_LEARN_MORE_URL,
+  DefaultLocale,
 } from "@/src/utils/constants";
 import Loader from "@/src/components/common/Loader/Loader";
 import {usePointsRank} from "@/src/hooks/usePoints/usePoints";
-import BoostsIcon from "@/src/components/icons/Boosts/BoostsIcon";
 import pointsStyles from "@/src/components/pages/points-page/PointsStyles.module.css";
+import PointsIcon from "@/src/components/icons/Points/PointsIcon";
 const BoostsRewards = (): JSX.Element => {
   const {data: pointsRankArray, isLoading, error} = usePointsRank();
 
@@ -35,7 +36,7 @@ const BoostsRewards = (): JSX.Element => {
   return (
     <div className={styles.boosts}>
       <div className={styles.boostsHeader}>
-        <h2 className={pointsStyles.pointsTitle}>Points Program</h2>
+        <p className={pointsStyles.pointsTitle}>Points Program</p>
         <Link href={POINTS_LEARN_MORE_URL} target="_blank">
           <ActionButton
             className={styles.learnMoreButton}
@@ -63,8 +64,12 @@ const BoostsRewards = (): JSX.Element => {
               <Loader />
             ) : (
               <>
-                <BoostsIcon />
-                <p>{pointsRank?.points.toFixed(0).toLocaleString()}</p>
+                <PointsIcon />
+                <p>
+                  {pointsRank?.points.toLocaleString(DefaultLocale, {
+                    maximumFractionDigits: 0,
+                  })}
+                </p>
               </>
             )}
           </div>

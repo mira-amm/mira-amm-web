@@ -5,44 +5,11 @@
   padding: 0 16px 72px;
 }
 
-.title {
-  font-size: 32px;
-  font-weight: 700;
-  margin-bottom: 24px;
-  color: var(--content-primary);
-}
-
-.container {
-  max-width: 1200px;
-  width: 100%;
-  margin: 32px auto 0;
-  padding: 0 16px;
-}
-
-.tableTitle {
-  font-size: 24px;
-  font-weight: 700;
-  margin-bottom: 16px;
-  color: var(--content-primary);
-}
-
 @media (min-width: 1024px) {
   .pointsPageLayout {
     max-width: 1084px;
     margin: 0 auto;
     min-height: 100vh;
     padding: 32px 16px;
-  }
-
-  .title {
-    font-size: 40px;
-  }
-
-  .tableTitle {
-    font-size: 32px;
-  }
-
-  .tableSection {
-    padding: 0;
   }
 }

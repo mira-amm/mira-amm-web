@@ -183,10 +183,6 @@ export class TmpFilePointsPerUserService implements PointsPerUserService {
     lpTokens: string[],
     rewardRates: number[],
   ) {
-    // Let's examine the SQL query to see what it expects
-    console.log("SQL Query:", pointsPerUserQuery);
-
-    // Create a modified SQL query with the variables directly replaced
     let modifiedQuery = pointsPerUserQuery;
 
     // Format the arrays for SQL
@@ -194,6 +190,7 @@ export class TmpFilePointsPerUserService implements PointsPerUserService {
     const rewardRatesFormatted = rewardRates.join(",");
 
     // Replace the template variables in the SQL query
+    // Using parameters for these fields did not work with sentio queries
     modifiedQuery = modifiedQuery.replace(
       "${lpTokens}",
       `[${lpTokensFormatted}]`,

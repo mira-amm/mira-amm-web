@@ -1,11 +1,11 @@
 import React, {useState, useEffect} from "react";
 import styles from "./AprBadge.module.css";
-import WhiteStarIcon from "@/src/components/icons/Stars/WhiteStar";
 import {clsx} from "clsx";
 import useBoostedApr, {RewardsToken} from "@/src/hooks/useBoostedApr";
 import {isMobile} from "react-device-detect";
 import Loader from "../Loader/Loader";
 import {EPOCH_NUMBER} from "@/src/utils/constants";
+import PointsIconSimple from "../../icons/Points/PointsIconSimple";
 
 interface AprBadgeProps {
   aprValue: string | null;
@@ -75,7 +75,7 @@ const AprBadge: React.FC<AprBadgeProps> = ({
         )}
       >
         <span className={styles.badgeIcon}>
-          <WhiteStarIcon width={iconWidth} height={iconHeight} />
+          <PointsIconSimple width={iconWidth} height={iconHeight} />
         </span>
         <span
           className={clsx(

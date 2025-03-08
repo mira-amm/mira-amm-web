@@ -10,8 +10,9 @@ import {
 } from "@tanstack/react-table";
 import styles from "./PointsRankTable.module.css";
 import {usePointsRanks} from "@/src/hooks/usePoints/usePoints";
-import Skeleton, {SkeletonTheme} from "react-loading-skeleton";
-import "react-loading-skeleton/dist/skeleton.css";
+import LoaderV2 from "@/src/components/common/LoaderV2/LoaderV2";
+import PointsIconSimple from "@/src/components/icons/Points/PointsIconSimple";
+import {DefaultLocale} from "@/src/utils/constants";
 
 // Define the data type for our table
 type PointsRankData = {
@@ -20,11 +21,18 @@ type PointsRankData = {
   points: number;
 };
 
-export default function PointsRankTable() {
+// Add this helper function inside the component or outside as a utility
+const truncateAddress = (address: string) => {
+  if (!address) return "";
+  if (address.length <= 10) return address;
+  return `${address.slice(0, 6)}...${address.slice(-4)}`;
+};
+
+export default function PointsRankTable(): JSX.Element {
   // State for pagination
   const [pagination, setPagination] = useState({
     pageIndex: 0, // 0-based index
-    pageSize: 10,
+    pageSize: 50,
   });
 
   // Calculate API parameters from pagination state
@@ -33,8 +41,6 @@ export default function PointsRankTable() {
 
   // Fetch data with pagination parameters
   const {data: response, isLoading, error} = usePointsRanks(page, pageSize);
-
-  console.log(response);
 
   // Column definitions
   const columnHelper = createColumnHelper<PointsRankData>();
@@ -46,14 +52,28 @@ export default function PointsRankTable() {
     }),
     columnHelper.accessor("address", {
       header: "Address",
-      cell: (info) => info.getValue(),
+      cell: (info) => {
+        const address = info.getValue();
+        return (
+          <>
+            <span className={styles.desktopAddress}>{address}</span>
+            <span className={styles.mobileAddress}>
+              {truncateAddress(address)}
+            </span>
+          </>
+        );
+      },
     }),
     columnHelper.accessor("points", {
       header: "Points",
       cell: (info) => (
         <div className={styles.pointsCell}>
-          <span className={styles.pointsIcon}>♦</span>
-          {info.getValue().toFixed(0).toLocaleString()}
+          <span className={styles.pointsIcon}>
+            <PointsIconSimple />
+          </span>
+          {info.getValue().toLocaleString(DefaultLocale, {
+            maximumFractionDigits: 0,
+          })}
         </div>
       ),
     }),
@@ -75,106 +95,50 @@ export default function PointsRankTable() {
     onPaginationChange: setPagination,
   });
 
-  // Create skeleton rows when loading
-  const renderSkeletonRows = () => {
-    return Array(pageSize)
-      .fill(0)
-      .map((_, index) => (
-        <tr key={`skeleton-${index}`} className={styles.tableRow}>
-          <td className={styles.tableCell}>
-            <Skeleton width={20} />
-          </td>
-          <td className={styles.tableCell}>
-            <Skeleton width="100%" />
-          </td>
-          <td className={styles.tableCell}>
-            <Skeleton width={80} />
-          </td>
-        </tr>
-      ));
-  };
-
   if (error) {
     return <div>Error: {error.message}</div>;
   }
 
+  if (isLoading) {
+    return (
+      <div className={styles.loadingFallback}>
+        <LoaderV2 />
+        <p>Loading points leaderboard...</p>
+      </div>
+    );
+  }
+
   return (
     <div className={styles.tableContainer}>
-      <SkeletonTheme baseColor="#e0e0e0" highlightColor="#f5f5f5">
-        <table className={styles.table}>
-          <thead>
-            {table.getHeaderGroups().map((headerGroup) => (
-              <tr key={headerGroup.id}>
-                {headerGroup.headers.map((header) => (
-                  <th key={header.id} className={styles.tableHeader}>
-                    {header.isPlaceholder
-                      ? null
-                      : flexRender(
-                          header.column.columnDef.header,
-                          header.getContext(),
-                        )}
-                  </th>
-                ))}
-              </tr>
-            ))}
-          </thead>
-          <tbody>
-            {isLoading
-              ? renderSkeletonRows()
-              : table.getRowModel().rows.map((row) => (
-                  <tr key={row.id} className={styles.tableRow}>
-                    {row.getVisibleCells().map((cell) => (
-                      <td key={cell.id} className={styles.tableCell}>
-                        {flexRender(
-                          cell.column.columnDef.cell,
-                          cell.getContext(),
-                        )}
-                      </td>
-                    ))}
-                  </tr>
-                ))}
-          </tbody>
-        </table>
-      </SkeletonTheme>
-
-      {/* Pagination Controls */}
-      <div className={styles.pagination}>
-        <button
-          className={styles.paginationButton}
-          onClick={() => table.setPageIndex(0)}
-          disabled={!table.getCanPreviousPage()}
-        >
-          {"<<"}
-        </button>
-        <button
-          className={styles.paginationButton}
-          onClick={() => table.previousPage()}
-          disabled={!table.getCanPreviousPage()}
-        >
-          {"<"}
-        </button>
-        <span className={styles.paginationText}>
-          Page{" "}
-          <strong>
-            {table.getState().pagination.pageIndex + 1} of{" "}
-            {table.getPageCount()}
-          </strong>
-        </span>
-        <button
-          className={styles.paginationButton}
-          onClick={() => table.nextPage()}
-          disabled={!table.getCanNextPage()}
-        >
-          {">"}
-        </button>
-        <button
-          className={styles.paginationButton}
-          onClick={() => table.setPageIndex(table.getPageCount() - 1)}
-          disabled={!table.getCanNextPage()}
-        >
-          {">>"}
-        </button>
-      </div>
+      <table className={styles.table}>
+        <thead>
+          {table.getHeaderGroups().map((headerGroup) => (
+            <tr key={headerGroup.id}>
+              {headerGroup.headers.map((header) => (
+                <th key={header.id} className={styles.tableHeader}>
+                  {header.isPlaceholder
+                    ? null
+                    : flexRender(
+                        header.column.columnDef.header,
+                        header.getContext(),
+                      )}
+                </th>
+              ))}
+            </tr>
+          ))}
+        </thead>
+        <tbody>
+          {table.getRowModel().rows.map((row) => (
+            <tr key={row.id} className={styles.tableRow}>
+              {row.getVisibleCells().map((cell) => (
+                <td key={cell.id} className={styles.tableCell}>
+                  {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                </td>
+              ))}
+            </tr>
+          ))}
+        </tbody>
+      </table>
     </div>
   );
 }
