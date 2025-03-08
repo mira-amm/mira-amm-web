@@ -9,8 +9,9 @@
   flex-direction: column;
   gap: 16px;
   padding: 16px 16px 18px;
+  border: 11px solid var(--background-tertiary);
   border-radius: 16px;
-  background-color: var(--background-grey-dark);
+  background-color: var(--background-secondary);
 }
 
 .swapContainerLoading {
@@ -35,7 +36,7 @@
   font-weight: 500;
   font-size: 16px;
   line-height: 19px;
-  color: var(--content-grey);
+  color: var(--content-primary);
 }
 
 .title {
@@ -46,8 +47,8 @@
 .splitter {
   position: relative;
   width: 100%;
-  height: 1px;
-  background-color: var(--background-grey-dark);
+  height: 40px;
+  /* background-color: var(--background-secondary); */
   margin: 16px 0;
 }
 
@@ -55,24 +56,24 @@
   position: absolute;
   top: calc(50% - 16px);
   left: calc(50% - 16px);
-  width: 32px;
-  height: 32px;
+  width: 40px;
+  height: 40px;
   display: flex;
   justify-content: center;
   align-items: center;
   border: none;
   border-radius: 40px;
-  color: var(--content-grey);
-  background-color: var(--background-primary) !important;
+  color: var(--background-primary);
+  background-color: var(--content-primary) !important;
 }
 
-.convertButton:hover > svg {
+.convertButton:hover>svg {
   transform: rotate(180deg);
   transition: transform 0.3s;
 }
 
 .convertButton:hover {
-  color: var(--content-primary);
+  /* color: var(--content-primary); */
 }
 
 .summary {
@@ -96,7 +97,7 @@
   gap: 4px;
 }
 
-.feeLine > p:first-child {
+.feeLine>p:first-child {
   margin-right: 4px;
 }
 
@@ -106,12 +107,12 @@
   gap: 4px;
 }
 
-.poolsFee > img {
+.poolsFee>img {
   height: 16px;
   width: 16px;
 }
 
-.poolsFee > img:first-child {
+.poolsFee>img:first-child {
   margin-right: -8px;
 }
 

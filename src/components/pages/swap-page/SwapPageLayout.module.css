@@ -1,17 +1,26 @@
-.swapLayout {
+.swapPage {
   display: flex;
   flex-direction: column;
+  min-height: 100vh;
+}
+
+.swapLayoutWrapper {
+  flex: 1;
+  display: flex;
   justify-content: center;
   padding: 16px;
+}
+
+.swapLayout {
+  width: 100%;
+  max-width: 500px;
+  display: flex;
+  flex-direction: column;
   gap: 16px;
 }
 
 @media (min-width: 1024px) {
-  .swapLayout {
-    justify-content: flex-start;
-    min-height: 100vh;
-    max-width: 500px;
-    margin: 0 auto;
+  .swapLayoutWrapper {
     padding: 84px 16px 48px;
   }
 }

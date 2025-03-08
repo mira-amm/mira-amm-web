@@ -5,11 +5,11 @@
   padding: 12px;
   border-radius: 10px;
   border: 1px solid transparent;
-  background-color: var(--background-secondary);
+  background-color: var(--background-tertiary);
 }
 
 .currencyBox:focus-within {
-  border-color: var(--accent-secondary);
+  border-color: var(--border-dark);
 }
 
 .title,
@@ -74,7 +74,7 @@
 }
 
 .selector:hover {
-  background-color: var(--background-grey-dark);
+  background-color: var(--background-grey-light);
   cursor: pointer;
 }
 
@@ -118,6 +118,7 @@
 }
 
 @media (min-width: 1024px) {
+
   .selector svg,
   .selector img {
     width: 24px;
