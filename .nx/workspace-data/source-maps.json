@@ -1,0 +1,208 @@
+{
+  ".": {
+    "root": [
+      "next.config.mjs",
+      "@nx/next/plugin"
+    ],
+    "targets": [
+      ".eslintrc.json",
+      "@nx/eslint/plugin"
+    ],
+    "targets.eslint:lint": [
+      ".eslintrc.json",
+      "@nx/eslint/plugin"
+    ],
+    "targets.eslint:lint.cache": [
+      ".eslintrc.json",
+      "@nx/eslint/plugin"
+    ],
+    "targets.eslint:lint.options": [
+      ".eslintrc.json",
+      "@nx/eslint/plugin"
+    ],
+    "targets.eslint:lint.inputs": [
+      ".eslintrc.json",
+      "@nx/eslint/plugin"
+    ],
+    "targets.eslint:lint.outputs": [
+      ".eslintrc.json",
+      "@nx/eslint/plugin"
+    ],
+    "targets.eslint:lint.metadata": [
+      ".eslintrc.json",
+      "@nx/eslint/plugin"
+    ],
+    "targets.eslint:lint.executor": [
+      ".eslintrc.json",
+      "@nx/eslint/plugin"
+    ],
+    "targets.eslint:lint.options.cwd": [
+      ".eslintrc.json",
+      "@nx/eslint/plugin"
+    ],
+    "targets.eslint:lint.options.command": [
+      ".eslintrc.json",
+      "@nx/eslint/plugin"
+    ],
+    "targets.eslint:lint.metadata.technologies": [
+      ".eslintrc.json",
+      "@nx/eslint/plugin"
+    ],
+    "targets.eslint:lint.metadata.technologies.0": [
+      ".eslintrc.json",
+      "@nx/eslint/plugin"
+    ],
+    "targets.eslint:lint.metadata.description": [
+      ".eslintrc.json",
+      "@nx/eslint/plugin"
+    ],
+    "targets.eslint:lint.metadata.help": [
+      ".eslintrc.json",
+      "@nx/eslint/plugin"
+    ],
+    "targets.eslint:lint.metadata.help.command": [
+      ".eslintrc.json",
+      "@nx/eslint/plugin"
+    ],
+    "targets.eslint:lint.metadata.help.example": [
+      ".eslintrc.json",
+      "@nx/eslint/plugin"
+    ],
+    "targets.next:build": [
+      "next.config.mjs",
+      "@nx/next/plugin"
+    ],
+    "targets.next:build.options": [
+      "next.config.mjs",
+      "@nx/next/plugin"
+    ],
+    "targets.next:build.dependsOn": [
+      "next.config.mjs",
+      "@nx/next/plugin"
+    ],
+    "targets.next:build.cache": [
+      "next.config.mjs",
+      "@nx/next/plugin"
+    ],
+    "targets.next:build.inputs": [
+      "next.config.mjs",
+      "@nx/next/plugin"
+    ],
+    "targets.next:build.outputs": [
+      "next.config.mjs",
+      "@nx/next/plugin"
+    ],
+    "targets.next:build.executor": [
+      "next.config.mjs",
+      "@nx/next/plugin"
+    ],
+    "targets.next:build.options.cwd": [
+      "next.config.mjs",
+      "@nx/next/plugin"
+    ],
+    "targets.next:build.options.tty": [
+      "next.config.mjs",
+      "@nx/next/plugin"
+    ],
+    "targets.next:build.options.command": [
+      "next.config.mjs",
+      "@nx/next/plugin"
+    ],
+    "targets.next:dev": [
+      "next.config.mjs",
+      "@nx/next/plugin"
+    ],
+    "targets.next:dev.options": [
+      "next.config.mjs",
+      "@nx/next/plugin"
+    ],
+    "targets.next:dev.executor": [
+      "next.config.mjs",
+      "@nx/next/plugin"
+    ],
+    "targets.next:dev.options.cwd": [
+      "next.config.mjs",
+      "@nx/next/plugin"
+    ],
+    "targets.next:dev.options.command": [
+      "next.config.mjs",
+      "@nx/next/plugin"
+    ],
+    "targets.next:start": [
+      "next.config.mjs",
+      "@nx/next/plugin"
+    ],
+    "targets.next:start.options": [
+      "next.config.mjs",
+      "@nx/next/plugin"
+    ],
+    "targets.next:start.dependsOn": [
+      "next.config.mjs",
+      "@nx/next/plugin"
+    ],
+    "targets.next:start.executor": [
+      "next.config.mjs",
+      "@nx/next/plugin"
+    ],
+    "targets.next:start.options.cwd": [
+      "next.config.mjs",
+      "@nx/next/plugin"
+    ],
+    "targets.next:start.options.command": [
+      "next.config.mjs",
+      "@nx/next/plugin"
+    ],
+    "targets.serve-static": [
+      "next.config.mjs",
+      "@nx/next/plugin"
+    ],
+    "targets.serve-static.options": [
+      "next.config.mjs",
+      "@nx/next/plugin"
+    ],
+    "targets.serve-static.dependsOn": [
+      "next.config.mjs",
+      "@nx/next/plugin"
+    ],
+    "targets.serve-static.executor": [
+      "next.config.mjs",
+      "@nx/next/plugin"
+    ],
+    "targets.serve-static.options.cwd": [
+      "next.config.mjs",
+      "@nx/next/plugin"
+    ],
+    "targets.serve-static.options.command": [
+      "next.config.mjs",
+      "@nx/next/plugin"
+    ],
+    "targets.build-deps": [
+      "next.config.mjs",
+      "@nx/next/plugin"
+    ],
+    "targets.build-deps.dependsOn": [
+      "next.config.mjs",
+      "@nx/next/plugin"
+    ],
+    "targets.watch-deps": [
+      "next.config.mjs",
+      "@nx/next/plugin"
+    ],
+    "targets.watch-deps.dependsOn": [
+      "next.config.mjs",
+      "@nx/next/plugin"
+    ],
+    "targets.watch-deps.executor": [
+      "next.config.mjs",
+      "@nx/next/plugin"
+    ],
+    "targets.watch-deps.options": [
+      "next.config.mjs",
+      "@nx/next/plugin"
+    ],
+    "targets.watch-deps.options.command": [
+      "next.config.mjs",
+      "@nx/next/plugin"
+    ]
+  }
+}
