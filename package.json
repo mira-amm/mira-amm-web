@@ -63,7 +63,11 @@
     "ts-jest": "^29.2.5",
     "ts-node": "^10.9.2",
     "tsx": "^4.19.2",
-    "typescript": "^5.7.3"
+    "typescript": "^5.7.3",
+    "nx": "20.5.0",
+    "@nx/eslint": "20.5.0",
+    "@nx/next": "20.5.0"
   },
-  "packageManager": "pnpm@10.6.1"
+  "packageManager": "pnpm@10.6.1",
+  "nx": {}
 }
