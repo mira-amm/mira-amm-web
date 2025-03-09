@@ -1,0 +1,2356 @@
+{
+  "version": "6.0",
+  "nxVersion": "20.5.0",
+  "pathMappings": {},
+  "nxJsonPlugins": [
+    {
+      "name": "@nx/eslint/plugin",
+      "options": {
+        "targetName": "eslint:lint"
+      }
+    },
+    {
+      "name": "@nx/next/plugin",
+      "options": {
+        "startTargetName": "next:start",
+        "buildTargetName": "next:build",
+        "devTargetName": "next:dev",
+        "serveStaticTargetName": "serve-static",
+        "buildDepsTargetName": "build-deps",
+        "watchDepsTargetName": "watch-deps"
+      }
+    }
+  ],
+  "fileMap": {
+    "nonProjectFiles": [],
+    "projectFileMap": {
+      "mira-amm": [
+        {
+          "file": ".editorconfig",
+          "hash": "5443105041930014821"
+        },
+        {
+          "file": ".eslintignore",
+          "hash": "7407203971823348061"
+        },
+        {
+          "file": ".eslintrc.json",
+          "hash": "1958453614524503651"
+        },
+        {
+          "file": ".github/actions/initialize/action.yaml",
+          "hash": "8490141326449266445"
+        },
+        {
+          "file": ".github/workflows/deploy_dev.yml",
+          "hash": "15247398628921232746"
+        },
+        {
+          "file": ".github/workflows/deploy_mirror.yml",
+          "hash": "650470192704503186"
+        },
+        {
+          "file": ".github/workflows/deploy_prod.yml",
+          "hash": "13380093839490773635"
+        },
+        {
+          "file": ".github/workflows/deploy_second_dev.yml",
+          "hash": "14800434016018306032"
+        },
+        {
+          "file": ".github/workflows/lint.yml",
+          "hash": "12441197483755482425"
+        },
+        {
+          "file": ".github/workflows/specs_test.yml",
+          "hash": "1343092428807096764"
+        },
+        {
+          "file": ".gitignore",
+          "hash": "11366282707387513423"
+        },
+        {
+          "file": ".prettierignore",
+          "hash": "16049674509361695565"
+        },
+        {
+          "file": ".prettierrc",
+          "hash": "16924064515537538575"
+        },
+        {
+          "file": ".vscode/settings.json",
+          "hash": "2480852900057900580"
+        },
+        {
+          "file": "README.md",
+          "hash": "7886050020192030619"
+        },
+        {
+          "file": "app/api/asset/route.test.ts",
+          "hash": "2929282109953045782",
+          "deps": [
+            "npm:next"
+          ]
+        },
+        {
+          "file": "app/api/asset/route.ts",
+          "hash": "458836904399768580",
+          "deps": [
+            "npm:next"
+          ]
+        },
+        {
+          "file": "app/api/campaigns/route.ts",
+          "hash": "5424890709903073644",
+          "deps": [
+            "npm:next"
+          ]
+        },
+        {
+          "file": "app/api/events/route.test.ts",
+          "hash": "16292908520642414674",
+          "deps": [
+            "npm:next",
+            "npm:graphql-request"
+          ]
+        },
+        {
+          "file": "app/api/events/route.ts",
+          "hash": "17152386871722444331",
+          "deps": [
+            "npm:next",
+            "npm:graphql-request",
+            "npm:fuels"
+          ]
+        },
+        {
+          "file": "app/api/latest-block/route.test.ts",
+          "hash": "5811740741634438967",
+          "deps": [
+            "npm:next",
+            "npm:graphql-request"
+          ]
+        },
+        {
+          "file": "app/api/latest-block/route.ts",
+          "hash": "13003263007950974151",
+          "deps": [
+            "npm:next",
+            "npm:graphql-request",
+            "npm:fuels"
+          ]
+        },
+        {
+          "file": "app/api/pair/route.test.ts",
+          "hash": "2009068683888856110",
+          "deps": [
+            "npm:next",
+            "npm:graphql-request"
+          ]
+        },
+        {
+          "file": "app/api/pair/route.ts",
+          "hash": "1364477550831175065",
+          "deps": [
+            "npm:next",
+            "npm:graphql-request"
+          ]
+        },
+        {
+          "file": "app/api/rewards/route.ts",
+          "hash": "15465050770216196494",
+          "deps": [
+            "npm:next"
+          ]
+        },
+        {
+          "file": "app/api/shared/constants.ts",
+          "hash": "379212866622391328"
+        },
+        {
+          "file": "app/api/shared/types.ts",
+          "hash": "12641378094512882369"
+        },
+        {
+          "file": "app/fuelet-swap/page.tsx",
+          "hash": "6443889950055062379"
+        },
+        {
+          "file": "app/global-error.tsx",
+          "hash": "5663214389945563551",
+          "deps": [
+            "npm:@sentry/nextjs",
+            "npm:next",
+            "npm:react"
+          ]
+        },
+        {
+          "file": "app/landing/layout.tsx",
+          "hash": "9367050676724134085",
+          "deps": [
+            "npm:next",
+            "npm:react"
+          ]
+        },
+        {
+          "file": "app/landing/page.tsx",
+          "hash": "17167788955409070166"
+        },
+        {
+          "file": "app/layout.tsx",
+          "hash": "10355471781601871904",
+          "deps": [
+            "npm:next",
+            "npm:react",
+            "npm:clsx"
+          ]
+        },
+        {
+          "file": "app/liquidity/add/page.tsx",
+          "hash": "3210639796122057791",
+          "deps": [
+            "npm:react"
+          ]
+        },
+        {
+          "file": "app/liquidity/create-pool/page.tsx",
+          "hash": "15426314415019378841",
+          "deps": [
+            "npm:react"
+          ]
+        },
+        {
+          "file": "app/liquidity/layout.tsx",
+          "hash": "3807742348511589226",
+          "deps": [
+            "npm:react",
+            "npm:next"
+          ]
+        },
+        {
+          "file": "app/liquidity/page.tsx",
+          "hash": "17943936294274064025"
+        },
+        {
+          "file": "app/liquidity/position/page.tsx",
+          "hash": "720694849073450126",
+          "deps": [
+            "npm:react"
+          ]
+        },
+        {
+          "file": "app/page.tsx",
+          "hash": "16940693450616588854"
+        },
+        {
+          "file": "app/swap/layout.tsx",
+          "hash": "3072126127193611960",
+          "deps": [
+            "npm:react",
+            "npm:next"
+          ]
+        },
+        {
+          "file": "app/swap/page.tsx",
+          "hash": "6269254248578334222"
+        },
+        {
+          "file": "apps/web-e2e/src/index.spec.ts",
+          "hash": "16588692580785482975",
+          "deps": [
+            "npm:@serenity-js/playwright-test",
+            "npm:@serenity-js/web",
+            "npm:@serenity-js/assertions"
+          ]
+        },
+        {
+          "file": "assets/unknown-asset.svg",
+          "hash": "18289987094341436869"
+        },
+        {
+          "file": "instrumentation.ts",
+          "hash": "8674015033822579619",
+          "deps": [
+            "npm:@sentry/nextjs"
+          ]
+        },
+        {
+          "file": "jest.config.ts",
+          "hash": "12094701199915069237",
+          "deps": [
+            "npm:jest"
+          ]
+        },
+        {
+          "file": "jest.setup.ts",
+          "hash": "12979660107540805453"
+        },
+        {
+          "file": "next.config.mjs",
+          "hash": "4027666829258228455",
+          "deps": [
+            "npm:@sentry/nextjs"
+          ]
+        },
+        {
+          "file": "nx.json",
+          "hash": "10346343402672745954"
+        },
+        {
+          "file": "package-lock.json",
+          "hash": "11861028351113177074"
+        },
+        {
+          "file": "package.json",
+          "hash": "8363841343791459625",
+          "deps": [
+            "npm:@next/eslint-plugin-next",
+            "npm:@nx/eslint",
+            "npm:@nx/next",
+            "npm:@nx/playwright",
+            "npm:@playwright/test",
+            "npm:@serenity-js/assertions",
+            "npm:@serenity-js/console-reporter",
+            "npm:@serenity-js/core",
+            "npm:@serenity-js/playwright",
+            "npm:@serenity-js/playwright-test",
+            "npm:@serenity-js/rest",
+            "npm:@serenity-js/serenity-bdd",
+            "npm:@serenity-js/web",
+            "npm:@types/decimal.js",
+            "npm:@types/jest",
+            "npm:@types/node",
+            "npm:@types/react",
+            "npm:@types/react-dom",
+            "npm:@typescript-eslint/eslint-plugin",
+            "npm:@typescript-eslint/parser",
+            "npm:@wagmi/connectors",
+            "npm:@wagmi/core",
+            "npm:decimal.js",
+            "npm:dotenv",
+            "npm:eslint",
+            "npm:eslint-config-next",
+            "npm:eslint-config-prettier",
+            "npm:eslint-plugin-prettier",
+            "npm:jest",
+            "npm:likec4",
+            "npm:nx",
+            "npm:playwright",
+            "npm:prettier",
+            "npm:ts-jest",
+            "npm:ts-node",
+            "npm:tsx",
+            "npm:typescript",
+            "npm:@fuels/connectors",
+            "npm:@fuels/react",
+            "npm:@sentry/nextjs",
+            "npm:@tanstack/react-query",
+            "npm:axios",
+            "npm:clsx",
+            "npm:fuels",
+            "npm:graphql",
+            "npm:graphql-request",
+            "npm:mira-dex-ts",
+            "npm:next",
+            "npm:next-query-params",
+            "npm:react",
+            "npm:react-device-detect",
+            "npm:react-dom",
+            "npm:react-tooltip",
+            "npm:use-query-params",
+            "npm:usehooks-ts"
+          ]
+        },
+        {
+          "file": "playwright.config.ts",
+          "hash": "1508349076297302215",
+          "deps": [
+            "npm:@serenity-js/playwright-test",
+            "npm:@playwright/test"
+          ]
+        },
+        {
+          "file": "pnpm-lock.yaml",
+          "hash": "13740409626171891537"
+        },
+        {
+          "file": "public/css/globals.css",
+          "hash": "9955882823572935101"
+        },
+        {
+          "file": "public/images/avatar.png",
+          "hash": "14982922927625671020"
+        },
+        {
+          "file": "public/images/favicon.png",
+          "hash": "3043320756650982131"
+        },
+        {
+          "file": "public/images/lizard.png",
+          "hash": "7214587052428027018"
+        },
+        {
+          "file": "public/images/loader.webp",
+          "hash": "17220453425271917182"
+        },
+        {
+          "file": "public/images/mimic.webp",
+          "hash": "10764228312169169724"
+        },
+        {
+          "file": "public/images/preview.png",
+          "hash": "8332136276642689534"
+        },
+        {
+          "file": "scripts/getAllCampaignRewardsForEpoch.ts",
+          "hash": "13649445750888538369",
+          "deps": [
+            "npm:dotenv",
+            "npm:decimal.js"
+          ]
+        },
+        {
+          "file": "sentry.client.config.ts",
+          "hash": "10801025953932115005",
+          "deps": [
+            "npm:@sentry/nextjs"
+          ]
+        },
+        {
+          "file": "sentry.edge.config.ts",
+          "hash": "4810835280363397924",
+          "deps": [
+            "npm:@sentry/nextjs"
+          ]
+        },
+        {
+          "file": "sentry.server.config.ts",
+          "hash": "2629961475313078289",
+          "deps": [
+            "npm:@sentry/nextjs"
+          ]
+        },
+        {
+          "file": "src/abis/src20-abi.json",
+          "hash": "13184581729735344086"
+        },
+        {
+          "file": "src/abis/src7-abi.json",
+          "hash": "7643720636985952894"
+        },
+        {
+          "file": "src/components/common/AchievementsDivider/AchievementsDivider.module.css",
+          "hash": "15205001617392133179"
+        },
+        {
+          "file": "src/components/common/AchievementsDivider/AchievementsDivider.tsx",
+          "hash": "17729309868386490146"
+        },
+        {
+          "file": "src/components/common/ActionButton/ActionButton.module.css",
+          "hash": "4053868779406547791"
+        },
+        {
+          "file": "src/components/common/ActionButton/ActionButton.tsx",
+          "hash": "6985769367338507601",
+          "deps": [
+            "npm:clsx",
+            "npm:react"
+          ]
+        },
+        {
+          "file": "src/components/common/AprBadge/AprBadge.module.css",
+          "hash": "16288877865006921786"
+        },
+        {
+          "file": "src/components/common/AprBadge/AprBadge.tsx",
+          "hash": "10516388349491326929",
+          "deps": [
+            "npm:react",
+            "npm:clsx",
+            "npm:react-device-detect"
+          ]
+        },
+        {
+          "file": "src/components/common/BackLink/BackLink.module.css",
+          "hash": "623253511786118296"
+        },
+        {
+          "file": "src/components/common/BackLink/BackLink.tsx",
+          "hash": "9602914476023899782",
+          "deps": [
+            "npm:next",
+            "npm:react-device-detect",
+            "npm:clsx"
+          ]
+        },
+        {
+          "file": "src/components/common/Coin/Coin.module.css",
+          "hash": "4265206536092604422"
+        },
+        {
+          "file": "src/components/common/Coin/Coin.tsx",
+          "hash": "11384094371569473878",
+          "deps": [
+            "npm:react",
+            "npm:clsx"
+          ]
+        },
+        {
+          "file": "src/components/common/CoinPair/CoinPair.module.css",
+          "hash": "15357823625950326598"
+        },
+        {
+          "file": "src/components/common/CoinPair/CoinPair.tsx",
+          "hash": "7205783764250062486",
+          "deps": [
+            "npm:clsx",
+            "npm:react",
+            "npm:fuels"
+          ]
+        },
+        {
+          "file": "src/components/common/CoinWithAmount/CoinWithAmount.module.css",
+          "hash": "9470730662124191963"
+        },
+        {
+          "file": "src/components/common/CoinWithAmount/CoinWithAmount.tsx",
+          "hash": "4358532895922908918",
+          "deps": [
+            "npm:fuels"
+          ]
+        },
+        {
+          "file": "src/components/common/ConfirmPopup/ConfirmPopup.module.css",
+          "hash": "15858824640054724443"
+        },
+        {
+          "file": "src/components/common/ConfirmPopup/ConfirmPopup.tsx",
+          "hash": "5715931857380655347",
+          "deps": [
+            "npm:react",
+            "npm:clsx"
+          ]
+        },
+        {
+          "file": "src/components/common/ConnectButton/ConnectButton.module.css",
+          "hash": "6406815802434912364"
+        },
+        {
+          "file": "src/components/common/ConnectButton/ConnectButton.tsx",
+          "hash": "15084049940837537701",
+          "deps": [
+            "npm:clsx",
+            "npm:react",
+            "npm:usehooks-ts"
+          ]
+        },
+        {
+          "file": "src/components/common/ConnectButton/DisconnectDesktop.tsx",
+          "hash": "13721330689119395408",
+          "deps": [
+            "npm:@fuels/react",
+            "npm:clsx",
+            "npm:react"
+          ]
+        },
+        {
+          "file": "src/components/common/ConnectButton/DisconnectMobile.tsx",
+          "hash": "4445137776989612908",
+          "deps": [
+            "npm:@fuels/react",
+            "npm:clsx",
+            "npm:react",
+            "npm:usehooks-ts"
+          ]
+        },
+        {
+          "file": "src/components/common/CopyNotification/CopyNotification.module.css",
+          "hash": "5006907981198838693"
+        },
+        {
+          "file": "src/components/common/CopyNotification/CopyNotification.tsx",
+          "hash": "4664563904856633820"
+        },
+        {
+          "file": "src/components/common/Divider/Divider.module.css",
+          "hash": "1749152823346470936"
+        },
+        {
+          "file": "src/components/common/Divider/Divider.tsx",
+          "hash": "702004770862824445"
+        },
+        {
+          "file": "src/components/common/Divider/DividerProps.ts",
+          "hash": "1020212161333673228"
+        },
+        {
+          "file": "src/components/common/DividerText/DividerTextProps.ts",
+          "hash": "15421021302333946666"
+        },
+        {
+          "file": "src/components/common/DividerText/dividerText.module.css",
+          "hash": "13760398406080886676"
+        },
+        {
+          "file": "src/components/common/DividerText/dividerText.tsx",
+          "hash": "16144309965748552601",
+          "deps": [
+            "npm:clsx"
+          ]
+        },
+        {
+          "file": "src/components/common/DropDownMenu/DropDownMenu.module.css",
+          "hash": "5419089629220456145"
+        },
+        {
+          "file": "src/components/common/DropDownMenu/DropDownMenu.tsx",
+          "hash": "15622355802221001081",
+          "deps": [
+            "npm:react",
+            "npm:clsx"
+          ]
+        },
+        {
+          "file": "src/components/common/Footer/Footer.module.css",
+          "hash": "11969511925735317908"
+        },
+        {
+          "file": "src/components/common/Footer/Footer.tsx",
+          "hash": "16256118791026605862",
+          "deps": [
+            "npm:clsx"
+          ]
+        },
+        {
+          "file": "src/components/common/Header/Header.module.css",
+          "hash": "1422116140946712054"
+        },
+        {
+          "file": "src/components/common/Header/Header.tsx",
+          "hash": "17019653143630920133",
+          "deps": [
+            "npm:next",
+            "npm:clsx",
+            "npm:@fuels/react",
+            "npm:react"
+          ]
+        },
+        {
+          "file": "src/components/common/Header/components/MobileMenu/MobileMenu.module.css",
+          "hash": "9447174264975496435"
+        },
+        {
+          "file": "src/components/common/Header/components/MobileMenu/MobileMenu.tsx",
+          "hash": "7910672648070613637",
+          "deps": [
+            "npm:react",
+            "npm:usehooks-ts"
+          ]
+        },
+        {
+          "file": "src/components/common/Header/components/MobileMenu/components/MobileMenuContent/MobileMenuContent.module.css",
+          "hash": "1334975407844759570"
+        },
+        {
+          "file": "src/components/common/Header/components/MobileMenu/components/MobileMenuContent/MobileMenuContent.tsx",
+          "hash": "7261711603362590348",
+          "deps": [
+            "npm:react",
+            "npm:react-dom",
+            "npm:usehooks-ts",
+            "npm:clsx",
+            "npm:next"
+          ]
+        },
+        {
+          "file": "src/components/common/IconButton/IconButton.module.css",
+          "hash": "14676805022417203706"
+        },
+        {
+          "file": "src/components/common/IconButton/IconButton.tsx",
+          "hash": "4972787986411053890",
+          "deps": [
+            "npm:react",
+            "npm:clsx"
+          ]
+        },
+        {
+          "file": "src/components/common/Info/Info.module.css",
+          "hash": "12514164007117618254"
+        },
+        {
+          "file": "src/components/common/Info/Info.tsx",
+          "hash": "8113227212620418557",
+          "deps": [
+            "npm:react"
+          ]
+        },
+        {
+          "file": "src/components/common/InfoBlock/InfoBlock.module.css",
+          "hash": "13881270692285809637"
+        },
+        {
+          "file": "src/components/common/InfoBlock/InfoBlock.tsx",
+          "hash": "15922086366402414002",
+          "deps": [
+            "npm:clsx"
+          ]
+        },
+        {
+          "file": "src/components/common/InfoBlocks/InfoBlocks.module.css",
+          "hash": "15604167901471631678"
+        },
+        {
+          "file": "src/components/common/InfoBlocks/InfoBlocks.tsx",
+          "hash": "16495178909219128426"
+        },
+        {
+          "file": "src/components/common/LaunchAppButton/LaunchAppButton.tsx",
+          "hash": "15567229448333888741",
+          "deps": [
+            "npm:next"
+          ]
+        },
+        {
+          "file": "src/components/common/LearnMoreButton/LearnMoreButton.module.css",
+          "hash": "13313442898624899518"
+        },
+        {
+          "file": "src/components/common/LearnMoreButton/LearnMoreButton.tsx",
+          "hash": "4624082121122687916"
+        },
+        {
+          "file": "src/components/common/Loader/Loader.module.css",
+          "hash": "7233057753917302182"
+        },
+        {
+          "file": "src/components/common/Loader/Loader.tsx",
+          "hash": "2475458569400019990",
+          "deps": [
+            "npm:clsx"
+          ]
+        },
+        {
+          "file": "src/components/common/LoaderV2/LoaderV2.module.css",
+          "hash": "17932836143171690064"
+        },
+        {
+          "file": "src/components/common/LoaderV2/LoaderV2.tsx",
+          "hash": "10711114404338318349"
+        },
+        {
+          "file": "src/components/common/Logo/Logo.module.css",
+          "hash": "18338431134501092662"
+        },
+        {
+          "file": "src/components/common/Logo/Logo.tsx",
+          "hash": "2515300677096097264",
+          "deps": [
+            "npm:react",
+            "npm:next"
+          ]
+        },
+        {
+          "file": "src/components/common/MainInfo/MainInfo.module.css",
+          "hash": "18094482767450161274"
+        },
+        {
+          "file": "src/components/common/MainInfo/MainInfo.tsx",
+          "hash": "14270633409863993137"
+        },
+        {
+          "file": "src/components/common/MiraApp/MiraApp.module.css",
+          "hash": "17012160751030711437"
+        },
+        {
+          "file": "src/components/common/MiraApp/MiraApp.tsx",
+          "hash": "5435861531056108719"
+        },
+        {
+          "file": "src/components/common/Pagination/Pagination.module.css",
+          "hash": "9298351592083670854"
+        },
+        {
+          "file": "src/components/common/Pagination/Pagination.tsx",
+          "hash": "14954050499147944576"
+        },
+        {
+          "file": "src/components/common/RoadMapBlock/RoadMapBlock.module.css",
+          "hash": "11108480012259995208"
+        },
+        {
+          "file": "src/components/common/RoadMapBlock/RoadMapBlock.tsx",
+          "hash": "3996668824278066473"
+        },
+        {
+          "file": "src/components/common/RoadMapIcons/RoadMapIcon.module.css",
+          "hash": "60389864216415277"
+        },
+        {
+          "file": "src/components/common/RoadMapIcons/RoadMapIcon.tsx",
+          "hash": "8902833004303716218"
+        },
+        {
+          "file": "src/components/common/SearchBar/SearchBar.module.css",
+          "hash": "1682592876627808577"
+        },
+        {
+          "file": "src/components/common/SearchBar/SearchBar.tsx",
+          "hash": "8685236616866800977",
+          "deps": [
+            "npm:clsx"
+          ]
+        },
+        {
+          "file": "src/components/common/SearchBar/SearchBarProps.ts",
+          "hash": "12724051928550752531",
+          "deps": [
+            "npm:react"
+          ]
+        },
+        {
+          "file": "src/components/common/SlippageSetting/SlippageSetting.module.css",
+          "hash": "1405131960315041410"
+        },
+        {
+          "file": "src/components/common/SlippageSetting/SlippageSetting.tsx",
+          "hash": "16528118660943503532"
+        },
+        {
+          "file": "src/components/common/SoonLabel/SoonLabel.module.css",
+          "hash": "2272322390229144557"
+        },
+        {
+          "file": "src/components/common/SoonLabel/SoonLabel.tsx",
+          "hash": "5336493892741569267",
+          "deps": [
+            "npm:react",
+            "npm:clsx"
+          ]
+        },
+        {
+          "file": "src/components/common/SortableColumn/SortableColumn.module.css",
+          "hash": "15012161203764503621"
+        },
+        {
+          "file": "src/components/common/SortableColumn/SortableColumn.tsx",
+          "hash": "17373731216314887949"
+        },
+        {
+          "file": "src/components/common/StepsBlock/StepsBlock.module.css",
+          "hash": "13397710027326644798"
+        },
+        {
+          "file": "src/components/common/StepsBlock/StepsBlock.tsx",
+          "hash": "7984468430843132674"
+        },
+        {
+          "file": "src/components/common/StepsIcon/StepsIcon.module.css",
+          "hash": "16196774984472915982"
+        },
+        {
+          "file": "src/components/common/StepsIcon/StepsIcon.tsx",
+          "hash": "10368145677073573371"
+        },
+        {
+          "file": "src/components/common/Swap/Swap.module.css",
+          "hash": "17377418691139962877"
+        },
+        {
+          "file": "src/components/common/Swap/Swap.tsx",
+          "hash": "9447420724986236341",
+          "deps": [
+            "npm:react",
+            "npm:@fuels/react",
+            "npm:usehooks-ts",
+            "npm:clsx",
+            "npm:fuels",
+            "npm:mira-dex-ts"
+          ]
+        },
+        {
+          "file": "src/components/common/Swap/components/CoinListItem/CoinListItem.module.css",
+          "hash": "6327651914388172051"
+        },
+        {
+          "file": "src/components/common/Swap/components/CoinListItem/CoinListItem.tsx",
+          "hash": "16100031898618002791",
+          "deps": [
+            "npm:clsx",
+            "npm:fuels",
+            "npm:react",
+            "npm:react-tooltip",
+            "npm:next"
+          ]
+        },
+        {
+          "file": "src/components/common/Swap/components/CoinListItem/checkIfCoinVerified.ts",
+          "hash": "10851767348173234631"
+        },
+        {
+          "file": "src/components/common/Swap/components/CoinsListModal/CoinsListModal.module.css",
+          "hash": "16071296233483460611"
+        },
+        {
+          "file": "src/components/common/Swap/components/CoinsListModal/CoinsListModal.tsx",
+          "hash": "4472215099913292641",
+          "deps": [
+            "npm:fuels",
+            "npm:react"
+          ]
+        },
+        {
+          "file": "src/components/common/Swap/components/CurrencyBox/CurrencyBox.module.css",
+          "hash": "5226504476365902621"
+        },
+        {
+          "file": "src/components/common/Swap/components/CurrencyBox/CurrencyBox.tsx",
+          "hash": "10090866344074646595",
+          "deps": [
+            "npm:react",
+            "npm:clsx",
+            "npm:mira-dex-ts",
+            "npm:fuels"
+          ]
+        },
+        {
+          "file": "src/components/common/Swap/components/EmptySearchResults.tsx",
+          "hash": "4130124500404383203",
+          "deps": [
+            "npm:react"
+          ]
+        },
+        {
+          "file": "src/components/common/Swap/components/ExchangeRate/ExchangeRate.module.css",
+          "hash": "11945240532189836455"
+        },
+        {
+          "file": "src/components/common/Swap/components/ExchangeRate/ExchangeRate.tsx",
+          "hash": "11646592348886359019",
+          "deps": [
+            "npm:react"
+          ]
+        },
+        {
+          "file": "src/components/common/Swap/components/PriceImpact/PriceImpact.module.css",
+          "hash": "1359696567440655725"
+        },
+        {
+          "file": "src/components/common/Swap/components/PriceImpact/PriceImpact.tsx",
+          "hash": "4089353957740900113",
+          "deps": [
+            "npm:react",
+            "npm:clsx"
+          ]
+        },
+        {
+          "file": "src/components/common/Swap/components/SettingsModalContent/SettingsModalContent.module.css",
+          "hash": "2341593287072380261"
+        },
+        {
+          "file": "src/components/common/Swap/components/SettingsModalContent/SettingsModalContent.tsx",
+          "hash": "17264602863996026911",
+          "deps": [
+            "npm:react",
+            "npm:clsx"
+          ]
+        },
+        {
+          "file": "src/components/common/Swap/components/SkeletonLoader/SkeletonLoader.css",
+          "hash": "10505820128875455742"
+        },
+        {
+          "file": "src/components/common/Swap/components/SkeletonLoader/SkeletonLoader.tsx",
+          "hash": "10510143669179069689",
+          "deps": [
+            "npm:react"
+          ]
+        },
+        {
+          "file": "src/components/common/Swap/components/SwapFailureModal/SwapFailureModal.module.css",
+          "hash": "16169247673530738231"
+        },
+        {
+          "file": "src/components/common/Swap/components/SwapFailureModal/SwapFailureModal.tsx",
+          "hash": "17625130629639541225",
+          "deps": [
+            "npm:fuels"
+          ]
+        },
+        {
+          "file": "src/components/common/Swap/components/SwapSuccessModal/SwapSuccessModal.module.css",
+          "hash": "16169247673530738231"
+        },
+        {
+          "file": "src/components/common/Swap/components/SwapSuccessModal/SwapSuccessModal.tsx",
+          "hash": "14426541781595424432",
+          "deps": [
+            "npm:react"
+          ]
+        },
+        {
+          "file": "src/components/common/Swap/components/UnknownCoinListItem.tsx",
+          "hash": "12640580753530206386",
+          "deps": [
+            "npm:fuels"
+          ]
+        },
+        {
+          "file": "src/components/common/TechsDivider/TechsDivider.module.css",
+          "hash": "14090678691941041113"
+        },
+        {
+          "file": "src/components/common/TechsDivider/TechsDivider.tsx",
+          "hash": "14269553311475379341"
+        },
+        {
+          "file": "src/components/common/TestnetLabel/TestnetLabel.module.css",
+          "hash": "3141516983071155838"
+        },
+        {
+          "file": "src/components/common/TestnetLabel/TestnetLabel.tsx",
+          "hash": "12035966658392278766",
+          "deps": [
+            "npm:clsx",
+            "npm:react"
+          ]
+        },
+        {
+          "file": "src/components/common/TextButton/TextButton.module.css",
+          "hash": "16371616776581305932"
+        },
+        {
+          "file": "src/components/common/TextButton/TextButton.tsx",
+          "hash": "6081293034459068503",
+          "deps": [
+            "npm:react"
+          ]
+        },
+        {
+          "file": "src/components/common/TransactionFailureModal/TransactionFailureModal.module.css",
+          "hash": "16169247673530738231"
+        },
+        {
+          "file": "src/components/common/TransactionFailureModal/TransactionFailureModal.tsx",
+          "hash": "8161362001080332220",
+          "deps": [
+            "npm:fuels"
+          ]
+        },
+        {
+          "file": "src/components/common/TransactionsHistory/TransactionsHistory.module.css",
+          "hash": "4842710195992913311"
+        },
+        {
+          "file": "src/components/common/TransactionsHistory/TransactionsHistory.tsx",
+          "hash": "14027653091708803056",
+          "deps": [
+            "npm:react",
+            "npm:@fuels/react"
+          ]
+        },
+        {
+          "file": "src/components/common/UsedTechs/UsedTechs.module.css",
+          "hash": "5410278769952655239"
+        },
+        {
+          "file": "src/components/common/UsedTechs/UsedTechs.tsx",
+          "hash": "17403625662421527296",
+          "deps": [
+            "npm:react",
+            "npm:clsx"
+          ]
+        },
+        {
+          "file": "src/components/common/UsedTechs/UsedTechsProps.ts",
+          "hash": "2738325491085296173"
+        },
+        {
+          "file": "src/components/icons/ArrowDown/ArrowDownIcon.tsx",
+          "hash": "9731077021251166755"
+        },
+        {
+          "file": "src/components/icons/ArrowDown/ArrowDownSmallIcon.tsx",
+          "hash": "4452880248333006199"
+        },
+        {
+          "file": "src/components/icons/ArrowLeft/ArrowLeftIcon.tsx",
+          "hash": "14597891059068333140"
+        },
+        {
+          "file": "src/components/icons/ArrowRight/ArrowRightIcon.tsx",
+          "hash": "7374387861647688432"
+        },
+        {
+          "file": "src/components/icons/ArrowUp/ArrowUpIcon.tsx",
+          "hash": "8047370523538466048"
+        },
+        {
+          "file": "src/components/icons/ArrowUp/ArrowUpSmallIcon.tsx",
+          "hash": "12985196560104574185"
+        },
+        {
+          "file": "src/components/icons/Boosts/BoostsIcon.tsx",
+          "hash": "17741734558068186875"
+        },
+        {
+          "file": "src/components/icons/Boosts/BoostsRewardsIcon.tsx",
+          "hash": "18143339299413218946"
+        },
+        {
+          "file": "src/components/icons/Checkbox/CheckboxIcon.tsx",
+          "hash": "13222173305648382734"
+        },
+        {
+          "file": "src/components/icons/Checkbox/NotificationCheckboxIcon.tsx",
+          "hash": "8052779470657582782"
+        },
+        {
+          "file": "src/components/icons/Checkmark/CheckmarkIcon.tsx",
+          "hash": "3678400600029590138"
+        },
+        {
+          "file": "src/components/icons/ChevronDown/ChevronDownIcon.tsx",
+          "hash": "1649198592097320807"
+        },
+        {
+          "file": "src/components/icons/ChevronLeft/ChevronLeft.tsx",
+          "hash": "17985499570879698130"
+        },
+        {
+          "file": "src/components/icons/Close/CloseIcon.tsx",
+          "hash": "6667256374198175239"
+        },
+        {
+          "file": "src/components/icons/Close/TransactionsCloseIcon.tsx",
+          "hash": "18443708227995578995"
+        },
+        {
+          "file": "src/components/icons/Convert/ConvertIcon.tsx",
+          "hash": "11119667116457711529"
+        },
+        {
+          "file": "src/components/icons/Copy/CopyAddressIcon.tsx",
+          "hash": "998198830316238786"
+        },
+        {
+          "file": "src/components/icons/Copy/CopyIcon.tsx",
+          "hash": "4525131687754808777"
+        },
+        {
+          "file": "src/components/icons/Cup/CupIcon.tsx",
+          "hash": "9051093485347720512"
+        },
+        {
+          "file": "src/components/icons/Discord/DiscordIcon.tsx",
+          "hash": "12672631526096133609",
+          "deps": [
+            "npm:react",
+            "npm:clsx"
+          ]
+        },
+        {
+          "file": "src/components/icons/DiscordIcon/DiscordIcon.tsx",
+          "hash": "4330920050842658052"
+        },
+        {
+          "file": "src/components/icons/Document/DocumentIcon.tsx",
+          "hash": "18184541085532081314"
+        },
+        {
+          "file": "src/components/icons/DropDownClose/CloseIcon.tsx",
+          "hash": "2322366210363044038"
+        },
+        {
+          "file": "src/components/icons/DropDownClose/TouchCloseIcon.tsx",
+          "hash": "9223558751522557104"
+        },
+        {
+          "file": "src/components/icons/EarnIcon/EarnIcon.tsx",
+          "hash": "14218148830490877935"
+        },
+        {
+          "file": "src/components/icons/Exchange/ExchangeIcon.tsx",
+          "hash": "12250846187584421439"
+        },
+        {
+          "file": "src/components/icons/Explorer/ExplorerIcon.tsx",
+          "hash": "86651300344767656"
+        },
+        {
+          "file": "src/components/icons/Failure/FailureIcon.tsx",
+          "hash": "2392955496448757807"
+        },
+        {
+          "file": "src/components/icons/Fuel/FuelIcon.tsx",
+          "hash": "16373333200917836314"
+        },
+        {
+          "file": "src/components/icons/FuelGroup/FuelGroup.tsx",
+          "hash": "3257740979177221477"
+        },
+        {
+          "file": "src/components/icons/Github/GithubIcon.tsx",
+          "hash": "1202802456464931839"
+        },
+        {
+          "file": "src/components/icons/Halborn/HalbornIcon.tsx",
+          "hash": "10931919709653580519"
+        },
+        {
+          "file": "src/components/icons/Info/InfoIcon.tsx",
+          "hash": "9583980017968117301"
+        },
+        {
+          "file": "src/components/icons/Link/LinkIcon.tsx",
+          "hash": "15937570996631550025"
+        },
+        {
+          "file": "src/components/icons/LockIcon/LockIcon.tsx",
+          "hash": "2435799349802485319"
+        },
+        {
+          "file": "src/components/icons/LogOut/LogOutIcon.tsx",
+          "hash": "3472146312839315739"
+        },
+        {
+          "file": "src/components/icons/Logo/LogoIcon.tsx",
+          "hash": "9784175652037375618"
+        },
+        {
+          "file": "src/components/icons/Menu/MenuIcon.tsx",
+          "hash": "15777191802466861992"
+        },
+        {
+          "file": "src/components/icons/MiraLogo.png",
+          "hash": "17013551748217943475"
+        },
+        {
+          "file": "src/components/icons/Ottersec/OttersecIcon.tsx",
+          "hash": "14840332621440503988"
+        },
+        {
+          "file": "src/components/icons/Retweet/RetweetIcon.tsx",
+          "hash": "11320170367181460941"
+        },
+        {
+          "file": "src/components/icons/Rewards/RewardsIcon.tsx",
+          "hash": "6569772569231042747"
+        },
+        {
+          "file": "src/components/icons/Roadmap/RoadmapDesktopIcon.tsx",
+          "hash": "1812364907486563267"
+        },
+        {
+          "file": "src/components/icons/Roadmap/RoadmapMobileIcon.tsx",
+          "hash": "3385916323663092350"
+        },
+        {
+          "file": "src/components/icons/Search/SearchIcon.tsx",
+          "hash": "13073680789362063899"
+        },
+        {
+          "file": "src/components/icons/Settings/SettingsIcon.tsx",
+          "hash": "7986556499403780378"
+        },
+        {
+          "file": "src/components/icons/Sparkle/SparkleIcon.tsx",
+          "hash": "17349430767954901704"
+        },
+        {
+          "file": "src/components/icons/Stars/StarsIcon.tsx",
+          "hash": "3355002390933322468"
+        },
+        {
+          "file": "src/components/icons/Stars/WhiteStar.tsx",
+          "hash": "17371178235069827010"
+        },
+        {
+          "file": "src/components/icons/Subscribe/SubscribeIcon.tsx",
+          "hash": "13602309385761514738"
+        },
+        {
+          "file": "src/components/icons/Success/SuccessIcon.tsx",
+          "hash": "4565799387765593688"
+        },
+        {
+          "file": "src/components/icons/TransactionCoins/EthIcon.tsx",
+          "hash": "7372777774657066054"
+        },
+        {
+          "file": "src/components/icons/TransactionCoins/UsdtIcon.tsx",
+          "hash": "7151861339191919856"
+        },
+        {
+          "file": "src/components/icons/Transactions/TransactionsIcon.tsx",
+          "hash": "16262119060206582495"
+        },
+        {
+          "file": "src/components/icons/VoteIcon/VoteIcon.tsx",
+          "hash": "16493129528792509126"
+        },
+        {
+          "file": "src/components/icons/Warning/WarningIcon.tsx",
+          "hash": "12557064671133737682"
+        },
+        {
+          "file": "src/components/icons/X/XIcon.tsx",
+          "hash": "6055512217221537282",
+          "deps": [
+            "npm:clsx",
+            "npm:react"
+          ]
+        },
+        {
+          "file": "src/components/icons/X/XSocialIcon.tsx",
+          "hash": "2188643801099140813"
+        },
+        {
+          "file": "src/components/icons/coins/Bitcoin/BTCIcon.tsx",
+          "hash": "9614938769448522420"
+        },
+        {
+          "file": "src/components/icons/coins/DAI/DAIIcon.tsx",
+          "hash": "12297091101988433957"
+        },
+        {
+          "file": "src/components/icons/coins/Ethereum/ETHIcon.tsx",
+          "hash": "16125694840076666420"
+        },
+        {
+          "file": "src/components/icons/coins/Mimic/MimicIcon.tsx",
+          "hash": "11726139174675495842"
+        },
+        {
+          "file": "src/components/icons/coins/Tether/USDTIcon.tsx",
+          "hash": "15698952410812205189"
+        },
+        {
+          "file": "src/components/icons/coins/USDCoin/USDCIcon.tsx",
+          "hash": "8059560067440122745"
+        },
+        {
+          "file": "src/components/icons/coins/Uniswap/UNIIcon.tsx",
+          "hash": "10398706354814324845"
+        },
+        {
+          "file": "src/components/icons/index.ts",
+          "hash": "1469900996794155328"
+        },
+        {
+          "file": "src/components/icons/types.d.ts",
+          "hash": "10461993992903250780"
+        },
+        {
+          "file": "src/components/pages/add-liquidity-page/AddLiquidityPageLayout.module.css",
+          "hash": "9481465519013798765"
+        },
+        {
+          "file": "src/components/pages/add-liquidity-page/AddLiquidityPageLayout.tsx",
+          "hash": "7142427343901598422",
+          "deps": [
+            "npm:next",
+            "npm:react",
+            "npm:react-device-detect"
+          ]
+        },
+        {
+          "file": "src/components/pages/add-liquidity-page/components/AddLiquidity/AddLiquidity.module.css",
+          "hash": "8972074496491877387"
+        },
+        {
+          "file": "src/components/pages/add-liquidity-page/components/AddLiquidity/AddLiquidity.tsx",
+          "hash": "10698416834688424664",
+          "deps": [
+            "npm:react",
+            "npm:next",
+            "npm:mira-dex-ts"
+          ]
+        },
+        {
+          "file": "src/components/pages/add-liquidity-page/components/AddLiquidity/AddLiquidityDialog.tsx",
+          "hash": "14407074544485659761",
+          "deps": [
+            "npm:clsx",
+            "npm:@fuels/react",
+            "npm:react",
+            "npm:usehooks-ts",
+            "npm:mira-dex-ts",
+            "npm:fuels"
+          ]
+        },
+        {
+          "file": "src/components/pages/add-liquidity-page/components/AddLiquidity/PreviewAddLiquidityDialog.tsx",
+          "hash": "17703215952952119855",
+          "deps": [
+            "npm:next",
+            "npm:react",
+            "npm:fuels"
+          ]
+        },
+        {
+          "file": "src/components/pages/add-liquidity-page/components/AddLiquidity/addLiquidityTooltips.ts",
+          "hash": "9069292851417734612"
+        },
+        {
+          "file": "src/components/pages/add-liquidity-page/components/AddLiquiditySuccessModal/AddLiquiditySuccessModal.module.css",
+          "hash": "16169247673530738231"
+        },
+        {
+          "file": "src/components/pages/add-liquidity-page/components/AddLiquiditySuccessModal/AddLiquiditySuccessModal.tsx",
+          "hash": "280301625072386928",
+          "deps": [
+            "npm:react"
+          ]
+        },
+        {
+          "file": "src/components/pages/add-liquidity-page/components/CoinInput/CoinInput.module.css",
+          "hash": "5918031215476953445"
+        },
+        {
+          "file": "src/components/pages/add-liquidity-page/components/CoinInput/CoinInput.tsx",
+          "hash": "17130205203642909325",
+          "deps": [
+            "npm:clsx",
+            "npm:react",
+            "npm:fuels"
+          ]
+        },
+        {
+          "file": "src/components/pages/create-pool-page/CreatePoolPageLayout.tsx",
+          "hash": "5596449131148156868",
+          "deps": [
+            "npm:next",
+            "npm:react"
+          ]
+        },
+        {
+          "file": "src/components/pages/create-pool-page/components/CreatePool/CreatePool.tsx",
+          "hash": "3929753188859487182",
+          "deps": [
+            "npm:react",
+            "npm:next"
+          ]
+        },
+        {
+          "file": "src/components/pages/create-pool-page/components/CreatePool/CreatePoolDialog.tsx",
+          "hash": "17070296126801558266",
+          "deps": [
+            "npm:clsx",
+            "npm:@fuels/react",
+            "npm:react",
+            "npm:usehooks-ts",
+            "npm:mira-dex-ts",
+            "npm:fuels",
+            "npm:next"
+          ]
+        },
+        {
+          "file": "src/components/pages/create-pool-page/components/CreatePool/CreatePoolTooltips.ts",
+          "hash": "9069292851417734612"
+        },
+        {
+          "file": "src/components/pages/create-pool-page/components/CreatePool/PreviewCreatePoolDialog.tsx",
+          "hash": "11908778429223673500",
+          "deps": [
+            "npm:next",
+            "npm:react"
+          ]
+        },
+        {
+          "file": "src/components/pages/create-pool-page/components/CreatePoolSuccessModal/CreatePoolSuccessModal.module.css",
+          "hash": "3244421341483603138"
+        },
+        {
+          "file": "src/components/pages/create-pool-page/components/CreatePoolSuccessModal/CreatePoolSuccessModal.tsx",
+          "hash": "11954013287908578914",
+          "deps": [
+            "npm:react"
+          ]
+        },
+        {
+          "file": "src/components/pages/fuelet-swap-page/FueletSwapPageLayout.module.css",
+          "hash": "14384857595282657588"
+        },
+        {
+          "file": "src/components/pages/fuelet-swap-page/FueletSwapPageLayout.tsx",
+          "hash": "9031713302808578507",
+          "deps": [
+            "npm:clsx",
+            "npm:@fuels/react",
+            "npm:@fuels/connectors",
+            "npm:react"
+          ]
+        },
+        {
+          "file": "src/components/pages/landing-page/LandingPageLayout.module.css",
+          "hash": "5782332443474740638"
+        },
+        {
+          "file": "src/components/pages/landing-page/LandingPageLayout.tsx",
+          "hash": "10110127631491809413",
+          "deps": [
+            "npm:clsx"
+          ]
+        },
+        {
+          "file": "src/components/pages/liquidity-page/LiquidityPageLayout.module.css",
+          "hash": "17654857485965578801"
+        },
+        {
+          "file": "src/components/pages/liquidity-page/LiquidityPageLayout.tsx",
+          "hash": "13538481231685761874"
+        },
+        {
+          "file": "src/components/pages/liquidity-page/components/Boosts/Boosts.module.css",
+          "hash": "12872392603328141204"
+        },
+        {
+          "file": "src/components/pages/liquidity-page/components/Boosts/Boosts.tsx",
+          "hash": "2776163031928412241",
+          "deps": [
+            "npm:@fuels/react"
+          ]
+        },
+        {
+          "file": "src/components/pages/liquidity-page/components/Boosts/BoostsBanner/BoostsBanner.module.css",
+          "hash": "10239407438013543263"
+        },
+        {
+          "file": "src/components/pages/liquidity-page/components/Boosts/BoostsBanner/BoostsBanner.tsx",
+          "hash": "9638427983880009052",
+          "deps": [
+            "npm:next"
+          ]
+        },
+        {
+          "file": "src/components/pages/liquidity-page/components/Boosts/BoostsRewards/BoostsRewards.module.css",
+          "hash": "16644424369454627135"
+        },
+        {
+          "file": "src/components/pages/liquidity-page/components/Boosts/BoostsRewards/BoostsRewards.tsx",
+          "hash": "2332536316210082275",
+          "deps": [
+            "npm:next",
+            "npm:react",
+            "npm:@fuels/react"
+          ]
+        },
+        {
+          "file": "src/components/pages/liquidity-page/components/Pools/DesktopPools/DesktopPoolRow.module.css",
+          "hash": "12261729367338005560"
+        },
+        {
+          "file": "src/components/pages/liquidity-page/components/Pools/DesktopPools/DesktopPoolRow.tsx",
+          "hash": "6487346115493375335",
+          "deps": [
+            "npm:next",
+            "npm:clsx"
+          ]
+        },
+        {
+          "file": "src/components/pages/liquidity-page/components/Pools/DesktopPools/DesktopPools.module.css",
+          "hash": "2982558546580090946"
+        },
+        {
+          "file": "src/components/pages/liquidity-page/components/Pools/DesktopPools/DesktopPools.tsx",
+          "hash": "12344455146961084292",
+          "deps": [
+            "npm:next",
+            "npm:clsx"
+          ]
+        },
+        {
+          "file": "src/components/pages/liquidity-page/components/Pools/MobilePools/MobilePoolItem/MobilePoolItem.module.css",
+          "hash": "10012016496050038461"
+        },
+        {
+          "file": "src/components/pages/liquidity-page/components/Pools/MobilePools/MobilePoolItem/MobilePoolItem.tsx",
+          "hash": "17287299044747696902",
+          "deps": [
+            "npm:next"
+          ]
+        },
+        {
+          "file": "src/components/pages/liquidity-page/components/Pools/MobilePools/MobilePools.module.css",
+          "hash": "17789865668871715896"
+        },
+        {
+          "file": "src/components/pages/liquidity-page/components/Pools/MobilePools/MobilePools.tsx",
+          "hash": "12812952934167686442",
+          "deps": [
+            "npm:react",
+            "npm:clsx"
+          ]
+        },
+        {
+          "file": "src/components/pages/liquidity-page/components/Pools/Pools.module.css",
+          "hash": "14593983299557749740"
+        },
+        {
+          "file": "src/components/pages/liquidity-page/components/Pools/Pools.tsx",
+          "hash": "3648735920053680208",
+          "deps": [
+            "npm:react",
+            "npm:next",
+            "npm:clsx"
+          ]
+        },
+        {
+          "file": "src/components/pages/liquidity-page/components/Pools/usePoolDetails.ts",
+          "hash": "9789604322545290566",
+          "deps": [
+            "npm:react"
+          ]
+        },
+        {
+          "file": "src/components/pages/liquidity-page/components/Positions/MobilePositions/DesktopPositions/DesktopPosition.module.css",
+          "hash": "16120291246281592448"
+        },
+        {
+          "file": "src/components/pages/liquidity-page/components/Positions/MobilePositions/DesktopPositions/DesktopPosition.tsx",
+          "hash": "6027734292553521521",
+          "deps": [
+            "npm:fuels",
+            "npm:mira-dex-ts",
+            "npm:next"
+          ]
+        },
+        {
+          "file": "src/components/pages/liquidity-page/components/Positions/MobilePositions/DesktopPositions/DesktopPositions.module.css",
+          "hash": "17172556550803822455"
+        },
+        {
+          "file": "src/components/pages/liquidity-page/components/Positions/MobilePositions/DesktopPositions/DesktopPositions.tsx",
+          "hash": "4104247560575681363",
+          "deps": [
+            "npm:clsx"
+          ]
+        },
+        {
+          "file": "src/components/pages/liquidity-page/components/Positions/MobilePositions/MobilePositionItem/MobilePositionItem.module.css",
+          "hash": "17301061971158675308"
+        },
+        {
+          "file": "src/components/pages/liquidity-page/components/Positions/MobilePositions/MobilePositionItem/MobilePositionItem.tsx",
+          "hash": "16506803456646777411",
+          "deps": [
+            "npm:fuels",
+            "npm:mira-dex-ts",
+            "npm:clsx"
+          ]
+        },
+        {
+          "file": "src/components/pages/liquidity-page/components/Positions/MobilePositions/MobilePositions.module.css",
+          "hash": "2923203093284532163"
+        },
+        {
+          "file": "src/components/pages/liquidity-page/components/Positions/MobilePositions/MobilePositions.tsx",
+          "hash": "12039273587856297515",
+          "deps": [
+            "npm:mira-dex-ts",
+            "npm:react",
+            "npm:next",
+            "npm:clsx"
+          ]
+        },
+        {
+          "file": "src/components/pages/liquidity-page/components/Positions/PositionLabel/PositionLabel.module.css",
+          "hash": "5486991702361220382"
+        },
+        {
+          "file": "src/components/pages/liquidity-page/components/Positions/PositionLabel/PositionLabel.tsx",
+          "hash": "3423924236426453831",
+          "deps": [
+            "npm:clsx"
+          ]
+        },
+        {
+          "file": "src/components/pages/liquidity-page/components/Positions/Positions.module.css",
+          "hash": "2852801260403428971"
+        },
+        {
+          "file": "src/components/pages/liquidity-page/components/Positions/Positions.tsx",
+          "hash": "1056345542599135218"
+        },
+        {
+          "file": "src/components/pages/liquidity-page/components/PromoBlock/PromoBlock.module.css",
+          "hash": "11662565693812416969"
+        },
+        {
+          "file": "src/components/pages/liquidity-page/components/PromoBlock/PromoBlock.tsx",
+          "hash": "5270327235573049065",
+          "deps": [
+            "npm:react"
+          ]
+        },
+        {
+          "file": "src/components/pages/swap-page/SwapPageLayout.module.css",
+          "hash": "734188708978659733"
+        },
+        {
+          "file": "src/components/pages/swap-page/SwapPageLayout.tsx",
+          "hash": "15158394227351724174"
+        },
+        {
+          "file": "src/components/pages/view-position-page/ViewPositionPageLayout.module.css",
+          "hash": "16758287712312205126"
+        },
+        {
+          "file": "src/components/pages/view-position-page/ViewPositionPageLayout.tsx",
+          "hash": "3358649556720007549",
+          "deps": [
+            "npm:next"
+          ]
+        },
+        {
+          "file": "src/components/pages/view-position-page/components/PositionView/PositionView.module.css",
+          "hash": "17261013973159007452"
+        },
+        {
+          "file": "src/components/pages/view-position-page/components/PositionView/PositionView.tsx",
+          "hash": "6793593642968495943",
+          "deps": [
+            "npm:clsx",
+            "npm:react",
+            "npm:next",
+            "npm:mira-dex-ts",
+            "npm:fuels"
+          ]
+        },
+        {
+          "file": "src/components/pages/view-position-page/components/RemoveLiquidityModalContent/RemoveLiquidityModalContent.module.css",
+          "hash": "16660713533422538679"
+        },
+        {
+          "file": "src/components/pages/view-position-page/components/RemoveLiquidityModalContent/RemoveLiquidityModalContent.tsx",
+          "hash": "9218808967248186431",
+          "deps": [
+            "npm:react",
+            "npm:usehooks-ts",
+            "npm:fuels"
+          ]
+        },
+        {
+          "file": "src/components/pages/view-position-page/components/RemoveLiquiditySuccessModal/RemoveLiquiditySuccessModal.module.css",
+          "hash": "16169247673530738231"
+        },
+        {
+          "file": "src/components/pages/view-position-page/components/RemoveLiquiditySuccessModal/RemoveLiquiditySuccessModal.tsx",
+          "hash": "16638383945707619766",
+          "deps": [
+            "npm:react"
+          ]
+        },
+        {
+          "file": "src/core/providers/AssetsConfigProvider.tsx",
+          "hash": "5059244040247269967",
+          "deps": [
+            "npm:react"
+          ]
+        },
+        {
+          "file": "src/core/providers/DisclaimerWrapper.tsx",
+          "hash": "3895346005124206512",
+          "deps": [
+            "npm:react",
+            "npm:usehooks-ts",
+            "npm:@fuels/react"
+          ]
+        },
+        {
+          "file": "src/core/providers/FuelProviderWrapper.tsx",
+          "hash": "7522159995598326142",
+          "deps": [
+            "npm:react",
+            "npm:@fuels/react",
+            "npm:fuels",
+            "npm:react-device-detect",
+            "npm:@fuels/connectors",
+            "npm:@wagmi/core",
+            "npm:@wagmi/connectors"
+          ]
+        },
+        {
+          "file": "src/core/providers/Providers.tsx",
+          "hash": "9097057144893221730",
+          "deps": [
+            "npm:react",
+            "npm:next-query-params",
+            "npm:use-query-params",
+            "npm:@tanstack/react-query"
+          ]
+        },
+        {
+          "file": "src/hooks/useAddLiquidity.ts",
+          "hash": "1627309970396981089",
+          "deps": [
+            "npm:@tanstack/react-query",
+            "npm:react",
+            "npm:@fuels/react",
+            "npm:fuels",
+            "npm:mira-dex-ts"
+          ]
+        },
+        {
+          "file": "src/hooks/useAllAssetsCombination.ts",
+          "hash": "3602271006367646322",
+          "deps": [
+            "npm:react"
+          ]
+        },
+        {
+          "file": "src/hooks/useAsset.ts",
+          "hash": "2916395921360949366"
+        },
+        {
+          "file": "src/hooks/useAssetBalance.ts",
+          "hash": "545102100597186109",
+          "deps": [
+            "npm:fuels",
+            "npm:react"
+          ]
+        },
+        {
+          "file": "src/hooks/useAssetImage.ts",
+          "hash": "14112386842579001598",
+          "deps": [
+            "npm:@tanstack/react-query",
+            "npm:graphql-request"
+          ]
+        },
+        {
+          "file": "src/hooks/useAssetList.ts",
+          "hash": "11785085322071452311",
+          "deps": [
+            "npm:graphql-request",
+            "npm:@tanstack/react-query"
+          ]
+        },
+        {
+          "file": "src/hooks/useAssetMetadata.ts",
+          "hash": "148617249323484309",
+          "deps": [
+            "npm:@tanstack/react-query",
+            "npm:fuels",
+            "npm:@fuels/react"
+          ]
+        },
+        {
+          "file": "src/hooks/useAssetMinterContract.ts",
+          "hash": "12345719043302252215",
+          "deps": [
+            "npm:@tanstack/react-query",
+            "npm:fuels"
+          ]
+        },
+        {
+          "file": "src/hooks/useAssetPair/useSwapData.ts",
+          "hash": "5249183856842170480",
+          "deps": [
+            "npm:react",
+            "npm:mira-dex-ts"
+          ]
+        },
+        {
+          "file": "src/hooks/useAssetPrice.ts",
+          "hash": "10245932710781338656",
+          "deps": [
+            "npm:@tanstack/react-query"
+          ]
+        },
+        {
+          "file": "src/hooks/useAssetsConfig.ts",
+          "hash": "18230756577725811619",
+          "deps": [
+            "npm:@tanstack/react-query"
+          ]
+        },
+        {
+          "file": "src/hooks/useBalances/useBalances.ts",
+          "hash": "12858665883108545263",
+          "deps": [
+            "npm:@fuels/react",
+            "npm:@tanstack/react-query"
+          ]
+        },
+        {
+          "file": "src/hooks/useBoostedApr.ts",
+          "hash": "13474366894203057158"
+        },
+        {
+          "file": "src/hooks/useCheckActiveNetwork.ts",
+          "hash": "17024165639582410883",
+          "deps": [
+            "npm:@fuels/react"
+          ]
+        },
+        {
+          "file": "src/hooks/useCheckEthBalance/useCheckEthBalance.ts",
+          "hash": "8226808531697972605",
+          "deps": [
+            "npm:react",
+            "npm:fuels"
+          ]
+        },
+        {
+          "file": "src/hooks/useCheckPoolExists.ts",
+          "hash": "5701475357388861184",
+          "deps": [
+            "npm:@tanstack/react-query"
+          ]
+        },
+        {
+          "file": "src/hooks/useCoinListModal.ts",
+          "hash": "4066776621110001991",
+          "deps": [
+            "npm:react",
+            "npm:fuels"
+          ]
+        },
+        {
+          "file": "src/hooks/useCreatePool.ts",
+          "hash": "18342257392281737806",
+          "deps": [
+            "npm:@tanstack/react-query",
+            "npm:@fuels/react",
+            "npm:react",
+            "npm:fuels"
+          ]
+        },
+        {
+          "file": "src/hooks/useDebounce.ts",
+          "hash": "6724853243868953232",
+          "deps": [
+            "npm:react"
+          ]
+        },
+        {
+          "file": "src/hooks/useDidUpdate.ts",
+          "hash": "17792383866271749457",
+          "deps": [
+            "npm:react"
+          ]
+        },
+        {
+          "file": "src/hooks/useExactInputPreview/useExactInputPreview.ts",
+          "hash": "9918482736091755768",
+          "deps": [
+            "npm:@tanstack/react-query",
+            "npm:mira-dex-ts"
+          ]
+        },
+        {
+          "file": "src/hooks/useExactOutputPreview/useExactOutputPreview.ts",
+          "hash": "10241751173293150078",
+          "deps": [
+            "npm:@tanstack/react-query",
+            "npm:mira-dex-ts"
+          ]
+        },
+        {
+          "file": "src/hooks/useExchangeRate/useExchangeRate.ts",
+          "hash": "771523433360405307",
+          "deps": [
+            "npm:react"
+          ]
+        },
+        {
+          "file": "src/hooks/useExchangeRate/useExchangeRateV2.ts",
+          "hash": "933818756635222978",
+          "deps": [
+            "npm:react"
+          ]
+        },
+        {
+          "file": "src/hooks/useFaucetLink.ts",
+          "hash": "17553730688961246132",
+          "deps": [
+            "npm:@fuels/react",
+            "npm:react",
+            "npm:usehooks-ts"
+          ]
+        },
+        {
+          "file": "src/hooks/useFormattedAddress/useFormattedAddress.ts",
+          "hash": "12504809447957173843",
+          "deps": [
+            "npm:react",
+            "npm:fuels"
+          ]
+        },
+        {
+          "file": "src/hooks/useFuelPrice.ts",
+          "hash": "4545306769861096362",
+          "deps": [
+            "npm:@tanstack/react-query",
+            "npm:graphql-request"
+          ]
+        },
+        {
+          "file": "src/hooks/useGetPoolsWithReserve.ts",
+          "hash": "8283293450028974388",
+          "deps": [
+            "npm:mira-dex-ts",
+            "npm:@tanstack/react-query",
+            "npm:graphql-request",
+            "npm:react"
+          ]
+        },
+        {
+          "file": "src/hooks/useInitialSwapState/useInitialSwapState.ts",
+          "hash": "4821740396255378791",
+          "deps": [
+            "npm:react",
+            "npm:usehooks-ts"
+          ]
+        },
+        {
+          "file": "src/hooks/useMiraDex/useMiraDex.ts",
+          "hash": "537029817436593594",
+          "deps": [
+            "npm:@fuels/react",
+            "npm:mira-dex-ts",
+            "npm:react"
+          ]
+        },
+        {
+          "file": "src/hooks/useModal/Modal.module.css",
+          "hash": "3359076057872388690"
+        },
+        {
+          "file": "src/hooks/useModal/useModal.tsx",
+          "hash": "5381138724733906579",
+          "deps": [
+            "npm:react",
+            "npm:react-dom",
+            "npm:clsx",
+            "npm:usehooks-ts"
+          ]
+        },
+        {
+          "file": "src/hooks/usePoolAPR.ts",
+          "hash": "9270065629357585664",
+          "deps": [
+            "npm:@tanstack/react-query",
+            "npm:mira-dex-ts",
+            "npm:graphql-request"
+          ]
+        },
+        {
+          "file": "src/hooks/usePoolNameAndMatch.ts",
+          "hash": "12764804425903096629"
+        },
+        {
+          "file": "src/hooks/usePoolsData.ts",
+          "hash": "5838578428162067845",
+          "deps": [
+            "npm:@tanstack/react-query",
+            "npm:graphql-request",
+            "npm:use-query-params"
+          ]
+        },
+        {
+          "file": "src/hooks/usePoolsMetadata.ts",
+          "hash": "14751667921719304945",
+          "deps": [
+            "npm:@tanstack/react-query",
+            "npm:mira-dex-ts"
+          ]
+        },
+        {
+          "file": "src/hooks/usePositionData.ts",
+          "hash": "7126078860184575624",
+          "deps": [
+            "npm:@tanstack/react-query",
+            "npm:mira-dex-ts",
+            "npm:fuels"
+          ]
+        },
+        {
+          "file": "src/hooks/usePositions.ts",
+          "hash": "2734405231076601282",
+          "deps": [
+            "npm:@tanstack/react-query",
+            "npm:graphql-request",
+            "npm:mira-dex-ts"
+          ]
+        },
+        {
+          "file": "src/hooks/usePreviewAddLiquidity.ts",
+          "hash": "7578960157920185421",
+          "deps": [
+            "npm:@tanstack/react-query",
+            "npm:mira-dex-ts",
+            "npm:fuels"
+          ]
+        },
+        {
+          "file": "src/hooks/useProvider/useProvider.ts",
+          "hash": "1861350530144191979",
+          "deps": [
+            "npm:fuels",
+            "npm:@tanstack/react-query"
+          ]
+        },
+        {
+          "file": "src/hooks/useReadonlyMira.ts",
+          "hash": "8839964331674789088",
+          "deps": [
+            "npm:react",
+            "npm:mira-dex-ts"
+          ]
+        },
+        {
+          "file": "src/hooks/useRemoveLiquidity.ts",
+          "hash": "4139842532163275133",
+          "deps": [
+            "npm:@tanstack/react-query",
+            "npm:react",
+            "npm:mira-dex-ts",
+            "npm:@fuels/react",
+            "npm:fuels"
+          ]
+        },
+        {
+          "file": "src/hooks/useReservesPrice.ts",
+          "hash": "18017415814412841892",
+          "deps": [
+            "npm:mira-dex-ts",
+            "npm:@tanstack/react-query",
+            "npm:fuels"
+          ]
+        },
+        {
+          "file": "src/hooks/useRewards.ts",
+          "hash": "5882428247832423074",
+          "deps": [
+            "npm:@tanstack/react-query",
+            "npm:axios"
+          ]
+        },
+        {
+          "file": "src/hooks/useRoutablePools.ts",
+          "hash": "14924238249090178076",
+          "deps": [
+            "npm:react",
+            "npm:mira-dex-ts"
+          ]
+        },
+        {
+          "file": "src/hooks/useSHA256Hash.ts",
+          "hash": "2400702345453866883",
+          "deps": [
+            "npm:@tanstack/react-query"
+          ]
+        },
+        {
+          "file": "src/hooks/useSavedSignatures.ts",
+          "hash": "8393651126115770874",
+          "deps": [
+            "npm:@tanstack/react-query",
+            "npm:@fuels/react",
+            "npm:fuels"
+          ]
+        },
+        {
+          "file": "src/hooks/useSendSignature.ts",
+          "hash": "16511481975361024732",
+          "deps": [
+            "npm:@tanstack/react-query",
+            "npm:@fuels/react",
+            "npm:react",
+            "npm:fuels",
+            "npm:@fuels/connectors"
+          ]
+        },
+        {
+          "file": "src/hooks/useStableWallet.ts",
+          "hash": "13266455027503281651",
+          "deps": [
+            "npm:@fuels/react",
+            "npm:@tanstack/react-query",
+            "npm:react",
+            "npm:fuels"
+          ]
+        },
+        {
+          "file": "src/hooks/useSwap/useSwap.ts",
+          "hash": "14142324701655537824",
+          "deps": [
+            "npm:react",
+            "npm:fuels",
+            "npm:@fuels/react",
+            "npm:@tanstack/react-query",
+            "npm:mira-dex-ts"
+          ]
+        },
+        {
+          "file": "src/hooks/useSwapPreview.ts",
+          "hash": "6379945821367965076",
+          "deps": [
+            "npm:@tanstack/react-query",
+            "npm:mira-dex-ts",
+            "npm:fuels"
+          ]
+        },
+        {
+          "file": "src/hooks/useSwapPreviewV2.ts",
+          "hash": "9245752780674063578",
+          "deps": [
+            "npm:react",
+            "npm:fuels"
+          ]
+        },
+        {
+          "file": "src/hooks/useSwapRouter.ts",
+          "hash": "6243227353309722631",
+          "deps": [
+            "npm:@tanstack/react-query",
+            "npm:fuels",
+            "npm:react",
+            "npm:mira-dex-ts"
+          ]
+        },
+        {
+          "file": "src/hooks/useUSDRate.ts",
+          "hash": "9001814924920691382",
+          "deps": [
+            "npm:@tanstack/react-query"
+          ]
+        },
+        {
+          "file": "src/hooks/useVerifiedAssets.ts",
+          "hash": "784900173353384642",
+          "deps": [
+            "npm:@tanstack/react-query"
+          ]
+        },
+        {
+          "file": "src/hooks/useWalletTransactions.ts",
+          "hash": "13878644058846023388",
+          "deps": [
+            "npm:graphql-request",
+            "npm:@tanstack/react-query",
+            "npm:fuels"
+          ]
+        },
+        {
+          "file": "src/hooks/useWeb3Connection.ts",
+          "hash": "10187038834390664345",
+          "deps": [
+            "npm:@fuels/react",
+            "npm:react"
+          ]
+        },
+        {
+          "file": "src/models/campaigns.json",
+          "hash": "2236274122649379425"
+        },
+        {
+          "file": "src/models/campaigns/Campaign.ts",
+          "hash": "10117237499967065956",
+          "deps": [
+            "npm:axios"
+          ]
+        },
+        {
+          "file": "src/models/campaigns/JSONEpochConfigService.ts",
+          "hash": "8709644569432984192"
+        },
+        {
+          "file": "src/models/campaigns/interfaces.ts",
+          "hash": "7168692900568955469"
+        },
+        {
+          "file": "src/models/rewards/UserRewards.ts",
+          "hash": "14065909953777019076"
+        },
+        {
+          "file": "src/models/rewards/interfaces.d.ts",
+          "hash": "17113829746411254739"
+        },
+        {
+          "file": "src/models/userRewards.json",
+          "hash": "2106632656337845620"
+        },
+        {
+          "file": "src/queries/CampaignPoolRewardsPerUserPerHour.sql",
+          "hash": "7703309455172024022"
+        },
+        {
+          "file": "src/queries/CampaignsAPR.sql",
+          "hash": "13855013619945829024"
+        },
+        {
+          "file": "src/queries/UserPoolRewards.sql",
+          "hash": "14476418138836783885"
+        },
+        {
+          "file": "src/ts-interfaces/InfoBlockProps.ts",
+          "hash": "5093441435138440046"
+        },
+        {
+          "file": "src/ts-interfaces/InfoBlocksProps.ts",
+          "hash": "6756446924808667268"
+        },
+        {
+          "file": "src/ts-interfaces/MainInfoProps.ts",
+          "hash": "17666164318850673982"
+        },
+        {
+          "file": "src/ts-interfaces/RoadMapIconProps.ts",
+          "hash": "8249890170980802604"
+        },
+        {
+          "file": "src/ts-interfaces/StepsIconProps.ts",
+          "hash": "275060924207974939"
+        },
+        {
+          "file": "src/utils/DropDownButtons.ts",
+          "hash": "13847037731356085859"
+        },
+        {
+          "file": "src/utils/coinsConfig.ts",
+          "hash": "17599187029061975782"
+        },
+        {
+          "file": "src/utils/common.ts",
+          "hash": "3820726943403980525",
+          "deps": [
+            "npm:fuels",
+            "npm:mira-dex-ts"
+          ]
+        },
+        {
+          "file": "src/utils/constants.ts",
+          "hash": "9279513072274264414",
+          "deps": [
+            "npm:fuels"
+          ]
+        },
+        {
+          "file": "src/utils/errors.ts",
+          "hash": "1779957026408270885"
+        },
+        {
+          "file": "src/utils/fileLoader.ts",
+          "hash": "17467763516347773686"
+        },
+        {
+          "file": "src/utils/verified-assets.json",
+          "hash": "10764542139457772708"
+        },
+        {
+          "file": "tsconfig.base.json",
+          "hash": "3181988345620495190"
+        },
+        {
+          "file": "tsconfig.json",
+          "hash": "1474981051247920838"
+        }
+      ]
+    }
+  }
+}
