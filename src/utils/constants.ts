@@ -26,7 +26,9 @@ export const BlogLink = "https://mirror.xyz/miraly.eth" as const;
 // TODO: Use env variables for values below to separate dev/prod | testnet/mainnet
 export const ValidNetworkChainId = CHAIN_IDS.fuel.mainnet;
 export const NetworkUrl: string = "https://mainnet.fuel.network/v1/graphql";
+
 // Source: https://envio.dev/app/mira-amm/mira-indexer-mainnet
+// playground: https://envio.dev/app/mira-amm/mira-indexer-mainnet/1b905cc/playground
 export const IndexerUrl =
   "https://indexer.hyperindex.xyz/755fa3e/v1/graphql" as const;
 export const SQDIndexerUrl =
