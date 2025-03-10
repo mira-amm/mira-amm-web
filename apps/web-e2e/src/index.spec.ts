@@ -1,6 +1,6 @@
 import {describe, it} from "@serenity-js/playwright-test";
-import {Navigate, PageElement, By} from "@serenity-js/web";
-import {Ensure, equals} from "@serenity-js/assertions";
+import {Navigate, PageElement, By, PageElements} from "@serenity-js/web";
+import {Ensure, equals, isPresent} from "@serenity-js/assertions";
 import {isVisible} from "@serenity-js/web";
 
 describe("Header", () => {
@@ -63,6 +63,49 @@ describe("Header", () => {
     await actor.attemptsTo(
       Navigate.to("/"),
       Ensure.that(headerConnectWalletButton(), isVisible()),
+    );
+  });
+});
+
+describe("Footer", () => {
+  // TODO: Improve locators during front-end refactor
+  const footer = () =>
+    PageElement.located(By.css("footer.desktopOnly.Footer_footer__12mlR"));
+  const footerLogo = () =>
+    PageElement.located(
+      By.css("div.Footer_content__BowRn>a.Logo_logo__J4dc0"),
+    ).of(footer());
+  const footerSupportLink = () =>
+    PageElement.located(By.cssContainingText("a", "Support"));
+  const footerMediaKitLink = () =>
+    PageElement.located(By.cssContainingText("a", "Media Kit"));
+
+  it("footer is visible", async ({actor}) => {
+    console.log(footer());
+    await actor.attemptsTo(
+      Navigate.to("/"),
+      Ensure.that(footer(), isPresent()),
+    );
+  });
+
+  it.skip("logo in footer is visible", async ({actor}) => {
+    await actor.attemptsTo(
+      Navigate.to("/"),
+      Ensure.that(footerLogo(), isPresent()),
+    );
+  });
+
+  it("'Support' link is visible", async ({actor}) => {
+    await actor.attemptsTo(
+      Navigate.to("/"),
+      Ensure.that(footerSupportLink(), isPresent()),
+    );
+  });
+
+  it("'Media Kit' link is visible", async ({actor}) => {
+    await actor.attemptsTo(
+      Navigate.to("/"),
+      Ensure.that(footerMediaKitLink(), isPresent()),
     );
   });
 });
