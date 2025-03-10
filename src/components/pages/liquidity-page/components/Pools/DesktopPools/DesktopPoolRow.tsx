@@ -47,7 +47,7 @@ const DesktopPoolRow = ({poolData}: Props): JSX.Element => {
       <td>
         <Link href={`/liquidity/add?pool=${poolKey}`}>
           <ActionButton
-            className={styles.addButton}
+            className={styles.createButton}
             variant="secondary"
             fullWidth
           >

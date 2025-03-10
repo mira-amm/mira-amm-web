@@ -11,7 +11,7 @@
   gap: 12px;
 }
 
-.contentSection > div:not:last-child {
+.contentSection>div:not:last-child {
   flex: 1;
 }
 
@@ -134,7 +134,7 @@
   gap: 8px;
 }
 
-.bottomPriceBlocks > div {
+.bottomPriceBlocks>div {
   width: 50%;
 }
 
@@ -213,11 +213,12 @@
   .priceBlockLargeDesktop {
     width: 100%;
     padding: 16px;
-    border-radius: 12px;
     display: flex;
     flex-direction: column;
     gap: 16px;
-    background-color: var(--background-grey-dark);
+    border: var(--border-style-secondary);
+    border-radius: 12px;
+    background-color: var(--background-secondary);
   }
 
   .priceBlockDesktop {

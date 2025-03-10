@@ -1,6 +1,7 @@
 .desktopPools {
+  border: var(--border-style-secondary);
   border-radius: 16px;
-  background-color: var(--background-grey-dark);
+  background-color: var(--background-secondary);
   border-collapse: collapse;
   width: 100%;
   table-layout: fixed;
@@ -39,6 +40,7 @@ button.createButton {
   font-size: 16px;
   line-height: 19px;
   box-shadow: unset;
+  height: 40px;
 }
 
 .noData {
@@ -54,16 +56,19 @@ button.createButton {
 }
 
 .desktopPools th:nth-child(2) {
-  width: 20%; /* Width for the "APR" column */
+  width: 20%;
+  /* Width for the "APR" column */
 }
 
 .desktopPools th:nth-child(3),
 .desktopPools th:nth-child(4) {
-  width: 15%; /* Width for "24H Volume" and "TVL" columns */
+  width: 15%;
+  /* Width for "24H Volume" and "TVL" columns */
 }
 
 .desktopPools th:nth-child(5) {
-  width: 20%; /* Width for the "Create Pool" column */
+  width: 20%;
+  /* Width for the "Create Pool" column */
 }
 
 .aprTd {

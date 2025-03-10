@@ -54,6 +54,9 @@
   --accent-alert: #d4b226;
   --content-positive: #46CC44;
   --points-gradient: linear-gradient(170deg, #262f5f 35%, #c41cff 100%);
+
+  --button-border-radius: 8px;
+  --border-style-secondary: 11px solid var(--background-tertiary);
 }
 
 * {
@@ -71,7 +74,7 @@ body {
 
 body {
   min-height: 100vh;
-  font-weight: 300;
+  font-weight: 400;
   font-size: 16px;
   line-height: 22px;
   color: var(--content-primary);

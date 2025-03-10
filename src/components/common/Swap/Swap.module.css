@@ -9,7 +9,7 @@
   flex-direction: column;
   gap: 16px;
   padding: 16px 16px 18px;
-  border: 11px solid var(--background-tertiary);
+  border: var(--border-style-secondary);
   border-radius: 16px;
   background-color: var(--background-secondary);
 }

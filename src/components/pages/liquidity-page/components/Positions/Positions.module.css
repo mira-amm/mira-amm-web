@@ -14,14 +14,19 @@
   flex-direction: column;
   align-items: center;
   gap: 8px;
-  border-radius: 16px;
   padding: 28px 16px;
-  background-color: var(--background-grey-dark);
+  border: var(--border-style-secondary);
+  border-radius: 16px;
+  background-color: var(--background-secondary);
 }
 
 .positionsFallback img {
   width: 36px;
   height: 36px;
+}
+
+.fallbackText {
+  color: var(--content-secondary) !important;
 }
 
 .fallbackTop {
@@ -38,7 +43,7 @@
   align-items: center;
   justify-content: center;
   border-radius: 40px;
-  color: var(--content-primary);
+  color: var(--background-white);
   background: linear-gradient(
     96.75deg,
     #befa15 -106.79%,
