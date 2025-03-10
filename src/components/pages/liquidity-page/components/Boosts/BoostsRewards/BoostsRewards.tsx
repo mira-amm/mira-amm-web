@@ -9,6 +9,7 @@ import {
   BoostsLearnMoreUrl,
   BoostsRewardsTooltip,
   EPOCH_NUMBER,
+  FUEL_ASSET_ID,
 } from "@/src/utils/constants";
 import {useEffect, useState, useMemo} from "react";
 import {
@@ -16,7 +17,7 @@ import {
   calculateUsdValue,
   getRewardsPoolsId,
 } from "@/src/utils/common";
-import {useFuelPrice} from "@/src/hooks/useFuelPrice";
+import {useAssetPriceFromIndexer} from "@/src/hooks/useAssetPriceFromIndexer";
 import Loader from "@/src/components/common/Loader/Loader";
 import {useRewards} from "@/src/hooks/useRewards";
 import {useAccount} from "@fuels/react";
@@ -27,7 +28,8 @@ const BoostsRewards = (): JSX.Element => {
 
   const [duration, setDuration] = useState("");
 
-  const {price: fuelToUsdRate, isLoading} = useFuelPrice();
+  const {price: fuelToUsdRate, isLoading} =
+    useAssetPriceFromIndexer(FUEL_ASSET_ID);
 
   // look up the epoch start and end date from epochNumbers
   const epoch = useMemo(
