@@ -66,3 +66,43 @@ describe("Header", () => {
     );
   });
 });
+
+describe("Footer", () => {
+  const footer = () => PageElement.located(By.tagName("footer desktopOnly"));
+  const footerLogo = () =>
+    PageElement.located(By.css("footer desktopOnly a svg"));
+  const footerSupportLink = () =>
+    PageElement.located(By.cssContainingText("footer.desktopOnly", "Support"));
+  const footerMediaKitLink = () =>
+    PageElement.located(
+      By.cssContainingText("footer.desktopOnly", "Media Kit"),
+    );
+
+  it("footer is visible", async ({actor}) => {
+    await actor.attemptsTo(
+      Navigate.to("/"),
+      Ensure.that(footer(), isVisible()),
+    );
+  });
+
+  it("logo in footer is visible", async ({actor}) => {
+    await actor.attemptsTo(
+      Navigate.to("/"),
+      Ensure.that(footerLogo(), isVisible()),
+    );
+  });
+
+  it("'Support' link is visible", async ({actor}) => {
+    await actor.attemptsTo(
+      Navigate.to("/"),
+      Ensure.that(footerSupportLink(), isVisible()),
+    );
+  });
+
+  it("'Media Kit' link is visible", async ({actor}) => {
+    await actor.attemptsTo(
+      Navigate.to("/"),
+      Ensure.that(footerMediaKitLink(), isVisible()),
+    );
+  });
+});
