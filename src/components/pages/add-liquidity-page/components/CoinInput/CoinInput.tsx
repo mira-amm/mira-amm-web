@@ -8,7 +8,7 @@ import TextButton from "@/src/components/common/TextButton/TextButton";
 import {DefaultLocale, MinEthValueBN} from "@/src/utils/constants";
 import {BN} from "fuels";
 import useAssetMetadata from "@/src/hooks/useAssetMetadata";
-import abbreviateNumber from "@/src/utils/abbreviateNumber";
+import fiatValueFormatter from "@/src/utils/abbreviateNumber";
 
 type Props = {
   assetId: string | null;
@@ -58,7 +58,7 @@ const CoinInput = ({
   const numericValue = parseFloat(value);
   const usdValue =
     !isNaN(numericValue) && Boolean(usdRate)
-      ? abbreviateNumber(numericValue * usdRate!)
+      ? fiatValueFormatter(numericValue * usdRate!)
       : null;
 
   return (
@@ -76,7 +76,7 @@ const CoinInput = ({
           onChange={handleChange}
         />
         {usdValue !== null && (
-          <p className={clsx(styles.balance, styles.rate)}>{`$${usdValue}`}</p>
+          <p className={clsx(styles.balance, styles.rate)}>{usdValue}</p>
         )}
       </div>
       <div className={clsx(styles.coinInputLine, styles.rightColumn)}>
