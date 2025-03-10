@@ -65,15 +65,20 @@ export const DisclaimerMessage = `Disclaimer
 5. I understand the risks associated with using decentralized protocols, including the Mira Dex protocol, as outlined in the Terms of Use and Privacy Policy.`;
 
 export const BoostsLearnMoreUrl =
-  "https://mirror.xyz/miraly.eth/kPWlmOIY_HhHQmZMkDb2dU4Sv_GxqgnIt4cQ7TwGZk4" as const;
+  "https://mirror.xyz/miraly.eth/X-80QWbrq4f17L67Yy8QyQBdE5y2okxTzcfJIL-SHCQ" as const;
+
+export const LIQUIDITY_PROVIDING_DOC_URL =
+  "https://docs.mira.ly/user-guides/how-to-add-liquidity" as const;
 
 export const BoostsRewardsTooltip =
   "These are the total Fuel tokens earned that will be distributed at the end of the season. The exact dollar amount will change based on Fuel’s current price. The exact token amount might change.";
 
 export const boostsEpochTooltip =
-  "Current season lasts for 45 days total. All rewards will be distributed at the end of the season. ";
+  "The current season is 7 days long. All remaining rewards will be distributed at the end of the season.";
 
 export const RewardsApiUrl = "/api/rewards" as const;
 
 export const boosterBannerTitle =
   " Introducing Boost Rewards, earn $FUEL by providing liquidity.";
+
+export const EPOCH_NUMBER = 3 as const;

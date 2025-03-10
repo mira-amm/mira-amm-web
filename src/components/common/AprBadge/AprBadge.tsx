@@ -5,6 +5,7 @@ import {clsx} from "clsx";
 import useBoostedApr from "@/src/hooks/useBoostedApr";
 import {isMobile} from "react-device-detect";
 import Loader from "../Loader/Loader";
+import {EPOCH_NUMBER} from "@/src/utils/constants";
 
 interface AprBadgeProps {
   aprValue: string | null;
@@ -23,7 +24,11 @@ const AprBadge: React.FC<AprBadgeProps> = ({
 }) => {
   const [isHovered, setIsHovered] = useState(false);
 
-  const {boostedApr, boostReward} = useBoostedApr(poolKey, tvlValue);
+  const {boostedApr, boostReward} = useBoostedApr(
+    poolKey,
+    tvlValue,
+    EPOCH_NUMBER,
+  );
 
   useEffect(() => {
     if (small && isHovered && isMobile) {
