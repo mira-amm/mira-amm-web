@@ -15,7 +15,7 @@ import TestnetLabel from "@/src/components/common/TestnetLabel/TestnetLabel";
 import IconButton from "../IconButton/IconButton";
 import CloseIcon from "../../icons/Close/CloseIcon";
 import {useEffect, useState} from "react";
-import {boosterBannerTitle} from "@/src/utils/constants";
+import {BOOSTER_BANNER_TITLE} from "@/src/utils/constants";
 
 type Props = {
   isHomePage?: boolean;
@@ -49,7 +49,7 @@ const Header = ({isHomePage}: Props): JSX.Element => {
           <div className={styles.promo_text}>
             <RewardsIcon />
             <p>
-              {boosterBannerTitle}
+              {BOOSTER_BANNER_TITLE}
               <Link href={BoostsLearnMoreUrl} target="_blank">
                 <u>Learn More</u>
               </Link>

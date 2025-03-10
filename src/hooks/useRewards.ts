@@ -1,6 +1,6 @@
 import {useQuery} from "@tanstack/react-query";
 import axios from "axios";
-import {Rewards_Api_Url} from "../utils/constants";
+import {REWARDS_API_URL} from "../utils/constants";
 
 interface RewardsResponse {
   rewardsAmount: number;
@@ -28,7 +28,7 @@ export const useRewards = ({
   const queryKey = ["rewards", userId, epochNumbers, poolIds];
 
   const fetchRewards = async (): Promise<RewardsResponse> => {
-    const response = await axios.get<RewardsResponse>(Rewards_Api_Url, {
+    const response = await axios.get<RewardsResponse>(REWARDS_API_URL, {
       params: {
         userId,
         epochNumbers,
