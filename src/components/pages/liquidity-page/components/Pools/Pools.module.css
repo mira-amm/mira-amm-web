@@ -15,8 +15,9 @@
   align-items: center;
   gap: 16px;
   padding: 28px 16px;
+  background-color: var(--background-secondary);
   border-radius: 16px;
-  background-color: var(--background-grey-dark);
+  border: 11px solid var(--background-tertiary);
 }
 
 .poolsHeader {

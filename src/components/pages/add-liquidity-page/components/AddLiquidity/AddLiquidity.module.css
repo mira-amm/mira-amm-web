@@ -1,10 +1,11 @@
 .addLiquidity {
   display: flex;
   flex-direction: column;
-  padding: 16px;
+  padding: 20px;
   border-radius: 16px;
   gap: 24px;
-  background-color: var(--background-grey-dark);
+  background-color: var(--background-secondary);
+  border: 11px solid var(--background-tertiary);
   z-index: 5;
   width: 100%;
   max-width: 524px;

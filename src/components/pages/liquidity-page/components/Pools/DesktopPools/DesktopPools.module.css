@@ -1,11 +1,9 @@
 .desktopPools {
-  border: var(--border-style-secondary);
-  border-radius: 16px;
   background-color: var(--background-secondary);
-  border-collapse: collapse;
+  border-radius: 16px;
+  border: 11px solid var(--background-tertiary);
   width: 100%;
   table-layout: fixed;
-  border-collapse: collapse;
 }
 
 .desktopPools th {

@@ -11,7 +11,7 @@
   gap: 12px;
 }
 
-.contentSection>div:not:last-child {
+.contentSection > div:not:last-child {
   flex: 1;
 }
 
@@ -26,8 +26,9 @@
   flex-direction: column;
   gap: 16px;
   padding: 12px;
+  background-color: var(--background-secondary);
   border-radius: 16px;
-  background-color: var(--background-grey-dark);
+  border: 11px solid var(--background-tertiary);
 }
 
 .pending {
@@ -134,7 +135,7 @@
   gap: 8px;
 }
 
-.bottomPriceBlocks>div {
+.bottomPriceBlocks > div {
   width: 50%;
 }
 

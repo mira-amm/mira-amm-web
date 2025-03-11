@@ -1,8 +1,8 @@
 .desktopPositions {
   width: 100%;
-  border-radius: 24px;
-  border-collapse: collapse;
-  background-color: var(--background-grey-dark);
+  background-color: var(--background-secondary);
+  border-radius: 16px;
+  border: 11px solid var(--background-tertiary);
 }
 
 .desktopPositions th {
