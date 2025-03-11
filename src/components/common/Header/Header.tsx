@@ -9,13 +9,17 @@ import ConnectButton from "@/src/components/common/ConnectButton/ConnectButton";
 import LaunchAppButton from "@/src/components/common/LaunchAppButton/LaunchAppButton";
 import DisconnectMobile from "@/src/components/common/ConnectButton/DisconnectMobile";
 import {useIsConnected} from "@fuels/react";
-import {BlogLink, BoostsLearnMoreUrl, FuelAppUrl} from "@/src/utils/constants";
-import {RewardsIcon} from "../../icons/Rewards/RewardsIcon";
+import {
+  BlogLink,
+  FuelAppUrl,
+  POINTS_LEARN_MORE_URL,
+  POINTS_PROMO_TITLE,
+} from "@/src/utils/constants";
 import TestnetLabel from "@/src/components/common/TestnetLabel/TestnetLabel";
 import IconButton from "../IconButton/IconButton";
 import CloseIcon from "../../icons/Close/CloseIcon";
 import {useEffect, useState} from "react";
-import {BOOSTER_BANNER_TITLE} from "@/src/utils/constants";
+import PointsIcon from "../../icons/Points/PointsIcon";
 
 type Props = {
   isHomePage?: boolean;
@@ -47,10 +51,10 @@ const Header = ({isHomePage}: Props): JSX.Element => {
       {isPromoShown && (
         <section className={styles.promo}>
           <div className={styles.promo_text}>
-            <RewardsIcon />
+            <PointsIcon />
             <p>
-              {BOOSTER_BANNER_TITLE}
-              <Link href={BoostsLearnMoreUrl} target="_blank">
+              {POINTS_PROMO_TITLE}
+              <Link href={POINTS_LEARN_MORE_URL} target="_blank">
                 <u>Learn More</u>
               </Link>
             </p>
@@ -82,6 +86,15 @@ const Header = ({isHomePage}: Props): JSX.Element => {
               )}
             >
               Liquidity
+            </Link>
+            <Link
+              href="/points"
+              className={clsx(
+                styles.link,
+                pathname.includes("/points") && styles.activeLink,
+              )}
+            >
+              Points
             </Link>
             <a
               href={`${FuelAppUrl}/bridge?from=eth&to=fuel&auto_close=true&=true`}

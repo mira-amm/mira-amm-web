@@ -2,75 +2,43 @@ import styles from "./BoostsRewards.module.css";
 import Link from "next/link";
 import ActionButton from "@/src/components/common/ActionButton/ActionButton";
 import Info from "@/src/components/common/Info/Info";
-import {RewardsIcon} from "@/src/components/icons/Rewards/RewardsIcon";
-import BoostsRewardsIcon from "@/src/components/icons/Boosts/BoostsRewardsIcon";
 import {
-  BOOSTS_EPOCH_TOOLTIP,
-  BoostsLearnMoreUrl,
-  BoostsRewardsTooltip,
-  EPOCH_NUMBER,
+  POINTS_TOOLTIP,
+  POINTS_RANK_TOOLTIP,
+  POINTS_LEARN_MORE_URL,
+  DefaultLocale,
 } from "@/src/utils/constants";
-import {useEffect, useState, useMemo} from "react";
-import {
-  calculateEpochDuration,
-  calculateUsdValue,
-  getRewardsPoolsId,
-} from "@/src/utils/common";
-import {useFuelPrice} from "@/src/hooks/useFuelPrice";
 import Loader from "@/src/components/common/Loader/Loader";
-import {useRewards} from "@/src/hooks/useRewards";
-import {useAccount} from "@fuels/react";
-import boostRewards from "@/src/models/campaigns.json";
+import {usePointsRank} from "@/src/hooks/usePoints/usePoints";
+import pointsStyles from "@/src/components/pages/points-page/PointsStyles.module.css";
+import PointsIcon from "@/src/components/icons/Points/PointsIcon";
 
 const BoostsRewards = (): JSX.Element => {
-  const {account} = useAccount();
+  const {data: pointsRankArray, isLoading, error} = usePointsRank();
 
-  const [duration, setDuration] = useState("");
+  if (isLoading) {
+    return <Loader />;
+  }
 
-  const {price: fuelToUsdRate, isLoading} = useFuelPrice();
+  if (error) {
+    return <div>Error: {error.message}</div>;
+  }
 
-  // look up the epoch start and end date from epochNumbers
-  const epoch = useMemo(
-    () => boostRewards.find((epoch) => epoch.number === EPOCH_NUMBER),
-    [],
-  );
+  let pointsRank = {
+    points: 0,
+    rank: 0,
+    address: "",
+  };
 
-  // if epoch is not found default to the first epoch
-  const startDate = epoch?.startDate || boostRewards[0].startDate;
-  const endDate = epoch?.endDate || boostRewards[0].endDate;
-  const rewardsData = epoch?.campaigns || boostRewards[0].campaigns;
-  const rewardsPoolsId = getRewardsPoolsId(rewardsData);
-
-  const {rewardsAmount, isLoading: isRewardsAmountLoading} = useRewards({
-    userId: account,
-    epochNumbers: EPOCH_NUMBER,
-    poolIds: rewardsPoolsId,
-  });
-
-  useEffect(() => {
-    const updateDuration = () => {
-      setDuration(calculateEpochDuration(startDate, endDate));
-    };
-
-    updateDuration();
-    const interval = setInterval(updateDuration, 60000);
-
-    return () => clearInterval(interval);
-  }, [startDate, endDate]);
-
-  const fuelCount = parseFloat(rewardsAmount.toFixed(2));
-  const usdValue = calculateUsdValue(fuelCount, fuelToUsdRate);
-
-  const loading = isLoading || isRewardsAmountLoading;
+  if (pointsRankArray && pointsRankArray.data.length > 0) {
+    pointsRank = pointsRankArray.data[0];
+  }
 
   return (
     <div className={styles.boosts}>
       <div className={styles.boostsHeader}>
-        <div className={styles.boostsTitle}>
-          <BoostsRewardsIcon />
-          <p>Boost rewards</p>
-        </div>
-        <Link href={BoostsLearnMoreUrl} target="_blank">
+        <p className={pointsStyles.pointsTitle}>Points Program</p>
+        <Link href={POINTS_LEARN_MORE_URL} target="_blank">
           <ActionButton
             className={styles.learnMoreButton}
             variant="secondary"
@@ -85,48 +53,40 @@ const BoostsRewards = (): JSX.Element => {
       <div className={styles.boostsFallback}>
         <div className={styles.rewardsItem}>
           <div className={styles.rewardsLabel}>
-            <p>Rewards earned</p>
+            <p>Your Points</p>
             <Info
-              tooltipText={BoostsRewardsTooltip}
-              tooltipKey="rewards"
+              tooltipText={POINTS_TOOLTIP}
+              tooltipKey="points"
               color="#D1D4F9"
             />
           </div>
-
           <div className={styles.rewardsValue}>
-            {loading ? (
+            {isLoading ? (
               <Loader />
             ) : (
               <>
-                <RewardsIcon />
-                <p>{fuelCount} FUEL</p>
-                <span>{usdValue}</span>
+                <PointsIcon />
+                <p>
+                  {pointsRank?.points.toLocaleString(DefaultLocale, {
+                    maximumFractionDigits: 0,
+                  })}
+                </p>
               </>
             )}
           </div>
-          <p className={styles.disclaimer}>
-            Rewards are estimates and final rewards can be slightly different.
-            <Link href={BoostsLearnMoreUrl} target="_blank">
-              <u>Learn more.</u>
-            </Link>
-          </p>
-          <p className={styles.disclaimer}>
-            Fuel Season 1 is over, and rewards have been sent to
-            participants&apos; wallets.
-          </p>
         </div>
-        <div className={styles.epochSection}>
+        <div className={styles.rankSection}>
           <div className={styles.divider}></div>
-          <div className={styles.epochItem}>
+          <div className={styles.rankItem}>
             <div className={styles.rewardsLabel}>
-              <p>Seasons duration</p>
+              <p>Your rank</p>
               <Info
-                tooltipText={BOOSTS_EPOCH_TOOLTIP}
-                tooltipKey="epoch"
+                tooltipText={POINTS_RANK_TOOLTIP}
+                tooltipKey="rank"
                 color="#D1D4F9"
               />
             </div>
-            <p className={styles.epochDuration}>{duration}</p>
+            <p className={styles.rank}>{pointsRank?.rank}</p>
           </div>
         </div>
       </div>
