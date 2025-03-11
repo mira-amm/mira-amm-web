@@ -23,22 +23,24 @@ const useBoostedApr = (
     return {boostedApr: 0, boostReward: 0, rewardsToken: undefined};
   }
 
-  const boostReward = getBoostReward(poolKey, rewardsData);
+  const {dailyAmount, assetId} = getBoostReward(poolKey, rewardsData);
 
-  const rewardsInfo = rewardsData?.[0]?.rewards[0];
-
-  if (rewardsInfo?.assetId !== FUEL_ASSET_ID) {
+  if (assetId !== FUEL_ASSET_ID) {
     return {
       boostedApr: 0,
-      boostReward: rewardsInfo?.dailyAmount,
+      boostReward: dailyAmount,
       rewardsToken: "Points",
     };
   }
 
-  const usdPerYear = fuelToUsdRate * boostReward * 365;
+  const usdPerYear = fuelToUsdRate * dailyAmount * 365;
   const boostedApr = (usdPerYear / tvlValue) * 100;
   const boostedAprRounded = Math.round(boostedApr * 100) / 100;
-  return {boostedApr: boostedAprRounded, boostReward, rewardsToken: "$FUEL"};
+  return {
+    boostedApr: boostedAprRounded,
+    boostReward: dailyAmount,
+    rewardsToken: "$FUEL",
+  };
 };
 
 export default useBoostedApr;
