@@ -17,13 +17,13 @@ const SwapPageLayout = () => {
         <div className={styles.swapLayout}>
           <Swap />
         </div>
-        {isConnected && (
-          <img
-            src={swapConnectedBg.src}
-            alt="connected-bg-gradient"
-            className={styles.gradientBackground}
-          />
-        )}
+        <img
+          src={swapConnectedBg.src}
+          alt="connected-bg-gradient"
+          className={`${styles.gradientBackground} ${
+            isConnected ? styles.visible : styles.hidden
+          }`}
+        />
       </main>
       <Footer />
     </div>

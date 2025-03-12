@@ -29,6 +29,16 @@
   width: 100%;
   max-width: 800px;
   z-index: 0;
+  opacity: 0;
+  transition: opacity 0.5s ease-in-out;
+}
+
+.gradientBackground.visible {
+  opacity: 1;
+}
+
+.gradientBackground.hidden {
+  opacity: 0;
 }
 
 @media (min-width: 1024px) {
