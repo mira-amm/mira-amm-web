@@ -9,6 +9,7 @@
   display: flex;
   justify-content: center;
   padding: 16px;
+  position: relative;
 }
 
 .swapLayout {
@@ -17,6 +18,17 @@
   display: flex;
   flex-direction: column;
   gap: 16px;
+  z-index: 1;
+}
+
+.gradientBackground {
+  position: absolute;
+  bottom: 3%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100%;
+  max-width: 800px;
+  z-index: 0;
 }
 
 @media (min-width: 1024px) {
