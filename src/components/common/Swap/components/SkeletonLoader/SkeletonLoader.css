@@ -17,7 +17,7 @@
   width: 40px;
   height: 40px;
   border-radius: 50%;
-  background: linear-gradient(90deg, #262834 25%, #2d3142 50%, #262834 75%);
+  background: linear-gradient(90deg, #d9d9d9 25%, #e5e5e5 50%, #d9d9d9 75%);
   background-size: 200% 100%;
   animation: shimmer 1.5s infinite linear;
 }
@@ -34,7 +34,7 @@
 .skeleton-line {
   height: 12px;
   border-radius: 4px;
-  background: linear-gradient(90deg, #262834 25%, #2d3142 50%, #262834 75%);
+  background: linear-gradient(90deg, #d9d9d9 25%, #e5e5e5 50%, #d9d9d9 75%);
   background-size: 200% 100%;
   animation: shimmer 1.5s infinite linear;
 }
