@@ -59,18 +59,19 @@
   justify-content: flex-end;
   padding: 16px;
   border-radius: 16px;
-  background: linear-gradient(359.71deg, #8350fd -1.52%, #b2ea12 121.21%);
+  background-image: url("../../../../../../assets/mira-block-bg.png");
+  background-size: cover;
 }
 
 .miraLogo {
   width: 64px;
   height: 32px;
-  margin-bottom: 12px;
 }
 
 .tokenDisplayValue,
 .numberAndCopy {
   font-size: 14px;
+  color: var(--background-white);
 }
 
 .numberAndCopy {

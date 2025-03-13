@@ -36,7 +36,8 @@
   padding: 16px;
   min-height: 110px;
   padding: 24px;
-  background: var(--points-gradient);
+  background-image: url("../../../../../../../assets/rewards-banner.png");
+  background-size: cover;
 }
 
 .rewardsItem {
@@ -58,6 +59,7 @@
   align-items: center;
   gap: 8px;
   height: 25px;
+  color: var(--background-white);
 }
 
 .rewardsValue p {
@@ -92,6 +94,7 @@
 .rank {
   font-size: 20px;
   font-weight: 400;
+  color: var(--background-white);
 }
 
 .disclaimer {

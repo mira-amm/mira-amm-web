@@ -20,7 +20,6 @@ import IconButton from "@/src/components/common/IconButton/IconButton";
 import {getLPAssetId, PoolId} from "mira-dex-ts";
 import {DEFAULT_AMM_CONTRACT_ID, DefaultLocale} from "@/src/utils/constants";
 import useFormattedAddress from "@/src/hooks/useFormattedAddress/useFormattedAddress";
-import LogoIcon from "@/src/components/icons/Logo/LogoIcon";
 import useCheckActiveNetwork from "@/src/hooks/useCheckActiveNetwork";
 import usePoolAPR from "@/src/hooks/usePoolAPR";
 import TransactionFailureModal from "@/src/components/common/TransactionFailureModal/TransactionFailureModal";
@@ -29,6 +28,7 @@ import {bn, formatUnits} from "fuels";
 import useAssetMetadata from "@/src/hooks/useAssetMetadata";
 import AprBadge from "@/src/components/common/AprBadge/AprBadge";
 import usePoolNameAndMatch from "@/src/hooks/usePoolNameAndMatch";
+import MiraTextLogo from "@/src/components/icons/Logo/MiraTextLogo";
 
 type Props = {
   pool: PoolId;
@@ -218,7 +218,7 @@ const PositionView = ({pool}: Props) => {
         </div>
         <div className={styles.miraBlock}>
           <div className={styles.miraLogo}>
-            <LogoIcon />
+            <MiraTextLogo />
           </div>
           <p className={styles.tokenDisplayValue}>
             {lpTokenDisplayValue} LP tokens
@@ -290,7 +290,7 @@ const PositionView = ({pool}: Props) => {
         <div className={styles.topRow}>
           <div className={styles.miraBlock}>
             <div className={styles.miraLogo}>
-              <LogoIcon />
+              <MiraTextLogo />
             </div>
             <p className={styles.tokenDisplayValue}>
               {lpTokenDisplayValue} LP tokens

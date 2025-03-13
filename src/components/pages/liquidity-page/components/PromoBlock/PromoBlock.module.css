@@ -16,12 +16,8 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background: linear-gradient(
-    96.75deg,
-    #befa15 -106.79%,
-    #5872fc 48.13%,
-    #c41cff 168.79%
-  );
+  background-image: url("../../../../../../assets/lp-icon-bg.jpg");
+  background-size: cover;
   width: 44px;
   height: 44px;
   border-radius: 4px;

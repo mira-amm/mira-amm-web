@@ -23,8 +23,8 @@
 
 .gradientBackground {
   position: absolute;
-  bottom: 3%;
-  left: 50%;
+  margin-top: 300px;
+  margin-left: 800px;
   transform: translateX(-50%);
   width: 100%;
   max-width: 800px;
