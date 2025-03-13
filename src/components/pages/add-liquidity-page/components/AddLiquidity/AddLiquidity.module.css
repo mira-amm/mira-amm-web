@@ -8,7 +8,7 @@
   border: 11px solid var(--background-tertiary);
   z-index: 5;
   width: 100%;
-  max-width: 524px;
+  max-width: 600px;
   margin: 0 auto;
 }
 
@@ -85,36 +85,47 @@
 .poolStability {
   display: flex;
   width: 100%;
-  gap: 8px;
 }
 
 .poolStabilityButton {
   width: 100%;
   display: flex;
-  flex-direction: column;
-  gap: 10px;
   padding: 10px 12px;
   background-color: var(--background-secondary);
-  color: var(--content-dimmed-light);
-  border: 1px solid transparent;
-  border-radius: 8px;
+  border: 1px solid var(--content-primary);
+  font-size: 14px !important;
   cursor: pointer;
-  align-items: flex-start;
+  align-items: center;
 }
 
-.poolStabilityButtonTitle {
+.poolStabilityButtonContent {
   display: flex;
+  align-items: center;
+  justify-content: center;
   width: 100%;
+  gap: 8px;
+  white-space: nowrap;
 }
 
-.poolStabilityButtonTitle > p {
-  text-align: left;
-  flex: 1;
+.poolStabilityButtonText {
+  font-size: 14px !important;
 }
 
 .poolStabilityButtonActive {
-  color: var(--content-primary);
-  border-color: var(--accent-primary);
+  background-color: var(--content-primary);
+  color: var(--background-primary);
+}
+
+/* Round only the left corners of the first button */
+.poolStabilityButton:first-child {
+  border-top-left-radius: 8px;
+  border-bottom-left-radius: 8px;
+}
+
+/* Round only the right corners of the second button */
+.poolStabilityButton:last-child {
+  border-top-right-radius: 8px;
+  border-bottom-right-radius: 8px;
 }
 
 .poolStabilityButtonDisabled {
@@ -274,7 +285,7 @@
   justify-content: space-between;
   padding: 12px 16px;
   border-radius: 8px;
-  background-color: var(--background-grey-darker);
+  background-color: var(--background-tertiary);
   cursor: pointer;
 }
 

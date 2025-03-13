@@ -172,7 +172,7 @@ const PositionView = ({pool}: Props) => {
 
   return (
     <>
-      <BackLink showOnDesktop href="/liquidity" chevron />
+      <BackLink showOnDesktop href="/liquidity" chevron title="Back to Pool" />
       <section className={clsx(styles.contentSection, "mobileOnly")}>
         <div className={styles.coinPairAndLabel}>
           <CoinPair

@@ -257,7 +257,7 @@ const TransactionsHistory = forwardRef<
         </ul>
       </div>
       <div
-        className={isOpened ? styles.linerVisible : styles.linerHidden}
+      // className={isOpened ? styles.linerVisible : styles.linerHidden}
       ></div>
     </div>
   );

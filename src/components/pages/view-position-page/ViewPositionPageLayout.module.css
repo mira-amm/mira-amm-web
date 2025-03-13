@@ -11,7 +11,7 @@
   gap: 12px;
 }
 
-.contentSection>div:not:last-child {
+.contentSection > div:not:last-child {
   flex: 1;
 }
 
@@ -134,7 +134,7 @@
   gap: 8px;
 }
 
-.bottomPriceBlocks>div {
+.bottomPriceBlocks > div {
   width: 50%;
 }
 
