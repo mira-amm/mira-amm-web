@@ -5,18 +5,27 @@
   color: var(--content-primary);
 }
 
+.selectable {
+  background-color: var(--mc-black);
+  color: var(--mc-white);
+}
+
 .clickable {
-  border-radius: 4px;
-  padding: 4px 8px;
+  border-radius: var(--button-border-radius);
+  padding: 10px;
   cursor: pointer;
 }
 
 .clickable:hover {
-  background-color: var(--background-grey-light);
+  background-color: var(--mc-grey-3);
 }
 
 .clickable:active {
-  background-color: var(--background-grey-dark);
+  background-color: var(--mc-grey-4);
+}
+
+.selectable:hover {
+  background-color: var(--mc-black-1);
 }
 
 .name {
