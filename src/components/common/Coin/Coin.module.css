@@ -12,7 +12,7 @@
 
 .clickable {
   border-radius: var(--button-border-radius);
-  padding: 10px;
+  padding: 6px 10px;
   cursor: pointer;
 }
 
@@ -32,4 +32,8 @@
   font-size: 18px;
   font-weight: 500;
   line-height: 19px;
+}
+
+.chooseCoin {
+  font-size: 16px;
 }

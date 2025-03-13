@@ -14,7 +14,7 @@
 
 .swapLayout {
   width: 100%;
-  max-width: 500px;
+  max-width: 522px;
   display: flex;
   flex-direction: column;
   gap: 16px;

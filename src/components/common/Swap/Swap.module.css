@@ -42,6 +42,8 @@
 .title {
   flex: 1;
   color: var(--content-primary);
+  font-weight: 500;
+  font-size: 18px;
 }
 
 .splitter {
@@ -49,7 +51,7 @@
   width: 100%;
   height: 40px;
   /* background-color: var(--background-secondary); */
-  margin: 16px 0;
+  margin: 8px 0;
 }
 
 .convertButton {

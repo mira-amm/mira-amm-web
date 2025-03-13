@@ -8,7 +8,7 @@ const ChevronDownIcon = () => {
       fill="none"
     >
       <path
-        stroke="currentColor"
+        stroke="#8A8B8E"
         strokeLinecap="square"
         strokeWidth={2}
         d="m2.055 2.138 5 5 5-5"

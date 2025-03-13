@@ -28,11 +28,11 @@ const Coin = ({assetId, className, onClick}: Props) => {
       className={clsx(
         styles.coin,
         newPool && styles.clickable,
-        !assetId && styles.selectable,
+        (!assetId || !metadata.symbol) && styles.selectable,
       )}
       onClick={handleClick}
     >
-      {!!assetId && !!icon ? (
+      {!!assetId && !!icon && !!metadata.symbol ? (
         <Image
           src={icon}
           alt={`${metadata.symbol} icon`}
@@ -41,7 +41,11 @@ const Coin = ({assetId, className, onClick}: Props) => {
           priority
         />
       ) : null}
-      <p className={clsx(styles.name, className)}>
+      <p
+        className={clsx(styles.name, className, {
+          [styles.chooseCoin]: !metadata.symbol,
+        })}
+      >
         {metadata.symbol ?? "Choose Coin"}
       </p>
       {newPool && <ChevronDownIcon />}
