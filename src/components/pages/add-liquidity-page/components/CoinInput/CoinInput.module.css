@@ -24,7 +24,7 @@
 }
 
 .input:disabled {
-  color: var(--content-dimmed-dark);
+  color: var(--mc-grey-4);
 }
 
 .leftColumn,
