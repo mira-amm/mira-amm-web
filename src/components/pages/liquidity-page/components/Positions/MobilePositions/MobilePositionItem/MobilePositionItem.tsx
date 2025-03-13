@@ -1,14 +1,14 @@
 import CoinPair from "@/src/components/common/CoinPair/CoinPair";
 
 import styles from "./MobilePositionItem.module.css";
-import {formatUnits} from "fuels";
+import { formatUnits } from "fuels";
 import useAssetMetadata from "@/src/hooks/useAssetMetadata";
-import {Position} from "@/src/hooks/usePositions";
+import { Position } from "@/src/hooks/usePositions";
 import usePoolAPR from "@/src/hooks/usePoolAPR";
-import {buildPoolId} from "mira-dex-ts";
+import { buildPoolId } from "mira-dex-ts";
 import usePoolNameAndMatch from "@/src/hooks/usePoolNameAndMatch";
-import {DefaultLocale} from "@/src/utils/constants";
-import {createPoolKey} from "@/src/utils/common";
+import { DefaultLocale } from "@/src/utils/constants";
+import { createPoolKey } from "@/src/utils/common";
 import AprBadge from "@/src/components/common/AprBadge/AprBadge";
 import ActionButton from "@/src/components/common/ActionButton/ActionButton";
 import clsx from "clsx";
@@ -18,7 +18,7 @@ type Props = {
   onClick: VoidFunction;
 };
 
-const MobilePositionItem = ({position, onClick}: Props): JSX.Element => {
+const MobilePositionItem = ({ position, onClick }: Props): JSX.Element => {
   const coinAMetadata = useAssetMetadata(
     position.token0Item.token0Position[0].bits,
   );
@@ -49,16 +49,16 @@ const MobilePositionItem = ({position, onClick}: Props): JSX.Element => {
   );
   const poolKey = createPoolKey(poolId);
 
-  const {apr} = usePoolAPR(poolId);
+  const { apr } = usePoolAPR(poolId);
   const aprValue = apr
     ? `${apr.apr.toLocaleString(DefaultLocale, {
-        minimumFractionDigits: 2,
-        maximumFractionDigits: 2,
-      })}%`
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2,
+    })}%`
     : null;
   const tvlValue = apr?.tvlUSD;
   //Checks if the pool with rewards matches the current pool
-  const {isMatching} = usePoolNameAndMatch(poolKey);
+  const { isMatching } = usePoolNameAndMatch(poolKey);
 
   const feeText = position.isStable ? "0.05%" : "0.3%";
   const poolTitle = position.isStable ? (
@@ -93,7 +93,7 @@ const MobilePositionItem = ({position, onClick}: Props): JSX.Element => {
             <p className={styles.aprValue}>{aprValue}</p>
           </div>
         )}
-        <p className={styles.positionPrice}>
+        <div className={styles.positionPrice}>
           {size ? (
             <div className={styles.subContent}>
               <p className={styles.title}>{"Position size"}</p>
@@ -102,7 +102,7 @@ const MobilePositionItem = ({position, onClick}: Props): JSX.Element => {
           ) : (
             <p className={styles.loadingText}>{"checking..."}</p>
           )}
-        </p>
+        </div>
         <div className={styles.subContent}>
           {poolTitle}
           <p className={clsx(styles.poolDescription, styles.poolValue)}>
