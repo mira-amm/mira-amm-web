@@ -69,7 +69,7 @@
   background-color: var(--content-primary) !important;
 }
 
-.convertButton:hover>svg {
+.convertButton:hover > svg {
   transform: rotate(180deg);
   transition: transform 0.3s;
 }
@@ -78,49 +78,9 @@
   /* color: var(--content-primary); */
 }
 
-.summary {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  color: var(--content-tertiary);
-  font-size: 12px;
-  line-height: 16px;
-}
-
-.summaryEntry {
-  display: flex;
-  justify-content: space-between;
-}
-
-.feeLine {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 4px;
-}
-
-.feeLine>p:first-child {
-  margin-right: 4px;
-}
-
-.poolsFee {
-  display: flex;
-  align-items: center;
-  gap: 4px;
-}
-
-.poolsFee>img {
-  height: 16px;
-  width: 16px;
-}
-
-.poolsFee>img:first-child {
-  margin-right: -8px;
-}
-
 .rates {
   display: flex;
-  justify-content: space-between;
+  justify-content: end;
 }
 
 @media (min-width: 1024px) {
@@ -131,11 +91,5 @@
   .heading {
     font-size: 20px;
     line-height: 24px;
-  }
-
-  .summary,
-  .summary p {
-    font-size: 13px;
-    line-height: 18px;
   }
 }

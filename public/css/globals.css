@@ -159,3 +159,9 @@ input:focus {
   pointer-events: none;
   user-select: none;
 }
+
+@font-face {
+  font-family: "EllographCF"; 
+  src: local("EllographCF-Regular"),
+    url("../../src/fonts/EllographCF-Regular.ttf") format("truetype");
+}

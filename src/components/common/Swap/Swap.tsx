@@ -13,7 +13,7 @@ import useSwap from "@/src/hooks/useSwap/useSwap";
 import styles from "./Swap.module.css";
 import ExchangeRate from "@/src/components/common/Swap/components/ExchangeRate/ExchangeRate";
 import useExchangeRate from "@/src/hooks/useExchangeRate/useExchangeRate";
-import {createPoolKey, openNewTab} from "@/src/utils/common";
+import {openNewTab} from "@/src/utils/common";
 import useBalances from "@/src/hooks/useBalances/useBalances";
 import CoinsListModal from "@/src/components/common/Swap/components/CoinsListModal/CoinsListModal";
 import SwapSuccessModal from "@/src/components/common/Swap/components/SwapSuccessModal/SwapSuccessModal";
@@ -27,14 +27,12 @@ import {FuelAppUrl} from "@/src/utils/constants";
 import useReservesPrice from "@/src/hooks/useReservesPrice";
 import SwapFailureModal from "@/src/components/common/Swap/components/SwapFailureModal/SwapFailureModal";
 import {B256Address, bn, BN} from "fuels";
-import {PoolId} from "mira-dex-ts";
-import {useAssetImage} from "@/src/hooks/useAssetImage";
 import {useAssetPrice} from "@/src/hooks/useAssetPrice";
 import useAssetMetadata from "@/src/hooks/useAssetMetadata";
 import {SlippageSetting} from "../SlippageSetting/SlippageSetting";
-import Loader from "@/src/components/common/Loader/Loader";
 import {ScriptTransactionRequest, TransactionCost} from "fuels";
 import {TradeState} from "@/src/hooks/useSwapRouter";
+import ReviewSwap from "./components/ReviewSwap/ReviewSwap";
 
 export type CurrencyBoxMode = "buy" | "sell";
 export type CurrencyBoxState = {
@@ -60,25 +58,6 @@ const initialInputsState: InputsState = {
 export type SlippageMode = "auto" | "custom";
 
 export const DefaultSlippageValue = 100;
-
-function SwapRouteItem({pool}: {pool: PoolId}) {
-  const firstAssetIcon = useAssetImage(pool[0].bits);
-  const secondAssetIcon = useAssetImage(pool[1].bits);
-
-  const firstAssetMetadata = useAssetMetadata(pool[0].bits);
-  const secondAssetMetadata = useAssetMetadata(pool[1].bits);
-
-  const isStablePool = pool[2];
-  const poolFeePercent = isStablePool ? 0.05 : 0.3;
-
-  return (
-    <>
-      <img src={firstAssetIcon || ""} alt={firstAssetMetadata.symbol} />
-      <img src={secondAssetIcon || ""} alt={secondAssetMetadata.symbol} />
-      <p>({poolFeePercent}%)</p>
-    </>
-  );
-}
 
 const Swap = () => {
   const [SettingsModal, openSettingsModal, closeSettingsModal] = useModal();
@@ -601,56 +580,17 @@ const Swap = () => {
             usdRate={buyAssetPrice.price}
           />
           {review && (
-            <div className={styles.summary}>
-              <div className={styles.summaryEntry}>
-                <p>Rate</p>
-                {previewLoading || tradeState === TradeState.REEFETCHING ? (
-                  <Loader color="gray" />
-                ) : (
-                  <p>{exchangeRate}</p>
-                )}
-              </div>
-
-              <div className={styles.summaryEntry}>
-                <p>Order routing</p>
-                <div className={styles.feeLine}>
-                  {previewLoading || tradeState === TradeState.REEFETCHING ? (
-                    <Loader color="gray" />
-                  ) : (
-                    pools?.map((pool, index) => {
-                      const poolKey = createPoolKey(pool);
-
-                      return (
-                        <div className={styles.poolsFee} key={poolKey}>
-                          <SwapRouteItem pool={pool} />
-                          {index !== pools.length - 1 && "+"}
-                        </div>
-                      );
-                    })
-                  )}
-                </div>
-              </div>
-
-              <div className={styles.summaryEntry}>
-                <p>Estimated fees</p>
-                {previewLoading || tradeState === TradeState.REEFETCHING ? (
-                  <Loader color="gray" />
-                ) : (
-                  <p>
-                    {feeValue} {sellMetadata.symbol}
-                  </p>
-                )}
-              </div>
-
-              <div className={styles.summaryEntry}>
-                <p>Network cost</p>
-                {txCostPending ? (
-                  <Loader color="gray" />
-                ) : (
-                  <p>{txCost?.toFixed(9)} ETH</p>
-                )}
-              </div>
-            </div>
+            <ReviewSwap
+              tradeState={tradeState}
+              exchangeRate={exchangeRate}
+              pools={pools}
+              feeValue={feeValue}
+              sellMetadataSymbol={sellMetadata.symbol}
+              txCostPending={txCostPending}
+              txCost={txCost}
+              reservesPrice={reservesPrice}
+              previewPrice={previewPrice}
+            />
           )}
 
           {!isConnected && (
@@ -674,10 +614,6 @@ const Swap = () => {
           )}
         </div>
         <div className={styles.rates}>
-          <PriceImpact
-            reservesPrice={reservesPrice}
-            previewPrice={previewPrice}
-          />
           <ExchangeRate swapState={swapState} />
         </div>
       </div>
