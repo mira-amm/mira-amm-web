@@ -3,11 +3,11 @@ import CoinPair from "@/src/components/common/CoinPair/CoinPair";
 import Coin from "@/src/components/common/Coin/Coin";
 import ActionButton from "@/src/components/common/ActionButton/ActionButton";
 import useModal from "@/src/hooks/useModal/useModal";
-import CreatePoolSuccessModal from "../CreatePoolSuccessModal/CreatePoolSuccessModal";
 import {useRouter} from "next/navigation";
 import {useCallback} from "react";
 import useCreatePool from "@/src/hooks/useCreatePool";
 import useAssetMetadata from "@/src/hooks/useAssetMetadata";
+import StatusModal, {ModalType} from "@/src/components/common/StatusModal";
 
 type AssetsData = {
   assetId: string;
@@ -24,7 +24,8 @@ type Props = {
 };
 
 const PreviewCreatePoolDialog = ({previewData}: Props) => {
-  const [SuccessModal, openSuccessModal, closeSuccessModal] = useModal();
+  const [SuccessModal, openSuccessModal] = useModal();
+
   const firstAssetMetadata = useAssetMetadata(previewData.assets[0].assetId);
   const secondAssetMetadata = useAssetMetadata(previewData.assets[1].assetId);
 
@@ -48,10 +49,14 @@ const PreviewCreatePoolDialog = ({previewData}: Props) => {
   // ).toLocaleString(DefaultLocale, { minimumFractionDigits: 2 });
 
   const handleCreateLiquidity = useCallback(async () => {
-    const data = await createPool();
+    try {
+      const data = await createPool();
 
-    if (data?.id) {
-      openSuccessModal();
+      if (data?.id) {
+        openSuccessModal();
+      }
+    } catch (e) {
+      console.error(e);
     }
   }, [createPool, openSuccessModal]);
 
@@ -60,6 +65,8 @@ const PreviewCreatePoolDialog = ({previewData}: Props) => {
   }, [router]);
 
   const feeText = isStablePool ? "0.05%" : "0.3%";
+
+  const successModalSubtitle = `Added ${firstCoinAmount} ${firstAssetMetadata.symbol} and ${secondCoinAmount} ${secondAssetMetadata.symbol}`;
 
   return (
     <>
@@ -141,11 +148,10 @@ const PreviewCreatePoolDialog = ({previewData}: Props) => {
         Create pool
       </ActionButton>
       <SuccessModal title={<></>} onClose={redirectToLiquidity}>
-        <CreatePoolSuccessModal
-          coinA={firstAssetMetadata.symbol || null}
-          coinB={secondAssetMetadata.symbol || null}
-          firstCoinAmount={firstCoinAmount}
-          secondCoinAmount={secondCoinAmount}
+        <StatusModal
+          type={ModalType.SUCCESS}
+          subTitle={successModalSubtitle}
+          title="Liquidity created successfully"
           transactionHash={createPoolData?.id}
         />
       </SuccessModal>

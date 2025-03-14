@@ -2,33 +2,32 @@
 
 import BackLink from "@/src/components/common/BackLink/BackLink";
 
-import styles from "./PositionView.module.css";
-import CoinPair from "@/src/components/common/CoinPair/CoinPair";
-import PositionLabel from "@/src/components/pages/liquidity-page/components/Positions/PositionLabel/PositionLabel";
-import CoinWithAmount from "@/src/components/common/CoinWithAmount/CoinWithAmount";
-import {clsx} from "clsx";
 import ActionButton from "@/src/components/common/ActionButton/ActionButton";
-import useModal from "@/src/hooks/useModal/useModal";
-import RemoveLiquidityModalContent from "@/src/components/pages/view-position-page/components/RemoveLiquidityModalContent/RemoveLiquidityModalContent";
-import usePositionData from "@/src/hooks/usePositionData";
-import {floorToTwoSignificantDigits, createPoolKey} from "@/src/utils/common";
-import {useCallback, useRef, useState} from "react";
-import useRemoveLiquidity from "@/src/hooks/useRemoveLiquidity";
-import {useRouter} from "next/navigation";
-import RemoveLiquiditySuccessModal from "@/src/components/pages/view-position-page/components/RemoveLiquiditySuccessModal/RemoveLiquiditySuccessModal";
-import IconButton from "@/src/components/common/IconButton/IconButton";
-import {getLPAssetId, PoolId} from "mira-dex-ts";
-import {DEFAULT_AMM_CONTRACT_ID, DefaultLocale} from "@/src/utils/constants";
-import useFormattedAddress from "@/src/hooks/useFormattedAddress/useFormattedAddress";
-import useCheckActiveNetwork from "@/src/hooks/useCheckActiveNetwork";
-import usePoolAPR from "@/src/hooks/usePoolAPR";
-import TransactionFailureModal from "@/src/components/common/TransactionFailureModal/TransactionFailureModal";
-import {CopyIcon} from "@/src/components/icons/Copy/CopyIcon";
-import {bn, formatUnits} from "fuels";
-import useAssetMetadata from "@/src/hooks/useAssetMetadata";
 import AprBadge from "@/src/components/common/AprBadge/AprBadge";
-import usePoolNameAndMatch from "@/src/hooks/usePoolNameAndMatch";
+import CoinPair from "@/src/components/common/CoinPair/CoinPair";
+import CoinWithAmount from "@/src/components/common/CoinWithAmount/CoinWithAmount";
+import IconButton from "@/src/components/common/IconButton/IconButton";
+import StatusModal, {ModalType} from "@/src/components/common/StatusModal";
+import {CopyIcon} from "@/src/components/icons/Copy/CopyIcon";
 import MiraTextLogo from "@/src/components/icons/Logo/MiraTextLogo";
+import PositionLabel from "@/src/components/pages/liquidity-page/components/Positions/PositionLabel/PositionLabel";
+import RemoveLiquidityModalContent from "@/src/components/pages/view-position-page/components/RemoveLiquidityModalContent/RemoveLiquidityModalContent";
+import useAssetMetadata from "@/src/hooks/useAssetMetadata";
+import useCheckActiveNetwork from "@/src/hooks/useCheckActiveNetwork";
+import useFormattedAddress from "@/src/hooks/useFormattedAddress/useFormattedAddress";
+import useModal from "@/src/hooks/useModal/useModal";
+import usePoolAPR from "@/src/hooks/usePoolAPR";
+import usePoolNameAndMatch from "@/src/hooks/usePoolNameAndMatch";
+import usePositionData from "@/src/hooks/usePositionData";
+import useRemoveLiquidity from "@/src/hooks/useRemoveLiquidity";
+import {createPoolKey, floorToTwoSignificantDigits} from "@/src/utils/common";
+import {DEFAULT_AMM_CONTRACT_ID, DefaultLocale} from "@/src/utils/constants";
+import {clsx} from "clsx";
+import {bn, formatUnits, FuelError} from "fuels";
+import {getLPAssetId, PoolId} from "mira-dex-ts";
+import {useRouter} from "next/navigation";
+import {useCallback, useMemo, useRef, useState} from "react";
+import styles from "./PositionView.module.css";
 
 type Props = {
   pool: PoolId;
@@ -169,6 +168,22 @@ const PositionView = ({pool}: Props) => {
   }, [lpTokenAssetId.bits]);
 
   const lpTokenDisplayValue = formatUnits(lpTokenBalance || "0", 9);
+
+  const calculateMessages = () => {
+    const successMessage = `Removed ${confirmationModalAssetsAmounts.current.firstAsset} ${assetAMetadata.symbol} and ${confirmationModalAssetsAmounts.current.secondAsset} ${assetBMetadata.symbol} from your position`;
+
+    let errorMessage: string;
+    if (removeLiquidityError instanceof FuelError) {
+      errorMessage = removeLiquidityError.message;
+    } else {
+      errorMessage =
+        "An error occurred while processing your request. Please try again or contact support if the issue persists.";
+    }
+
+    return [successMessage, errorMessage];
+  };
+
+  const [successModalSubtitle, errorModalSubtitle] = calculateMessages();
 
   return (
     <>
@@ -394,18 +409,18 @@ const PositionView = ({pool}: Props) => {
         />
       </RemoveLiquidityModal>
       <SuccessModal title={<></>} onClose={redirectToLiquidity}>
-        <RemoveLiquiditySuccessModal
-          coinA={assetAMetadata.symbol || ""}
-          coinB={assetBMetadata.symbol || ""}
-          firstCoinAmount={confirmationModalAssetsAmounts.current.firstAsset}
-          secondCoinAmount={confirmationModalAssetsAmounts.current.secondAsset}
+        <StatusModal
+          type={ModalType.SUCCESS}
           transactionHash={data?.id}
+          subTitle={successModalSubtitle}
+          title="Removed liquidity successfully"
         />
       </SuccessModal>
       <FailureModal title={<></>}>
-        <TransactionFailureModal
-          error={removeLiquidityError}
-          closeModal={closeFailureModal}
+        <StatusModal
+          type={ModalType.ERROR}
+          subTitle={errorModalSubtitle}
+          title="Failed to remove liquidity"
         />
       </FailureModal>
     </>

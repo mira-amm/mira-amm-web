@@ -12,10 +12,7 @@ import {PoolId} from "mira-dex-ts";
 import {SlippageSetting} from "@/src/components/common/SlippageSetting/SlippageSetting";
 import SettingsModalContent from "@/src/components/common/Swap/components/SettingsModalContent/SettingsModalContent";
 import useModal from "@/src/hooks/useModal/useModal";
-import {
-  DefaultSlippageValue,
-  SlippageMode,
-} from "@/src/components/common/Swap/Swap";
+import {DefaultSlippageValue} from "@/src/components/common/Swap/Swap";
 
 type Props = {
   poolId: PoolId;
@@ -29,7 +26,6 @@ const AddLiquidity = ({poolId, poolKey}: Props): JSX.Element => {
   const [previewData, setPreviewData] =
     useState<AddLiquidityPreviewData | null>(null);
   const [slippage, setSlippage] = useState<number>(DefaultSlippageValue);
-  const [slippageMode, setSlippageMode] = useState<SlippageMode>("auto");
 
   const handleBackClick = useCallback(() => {
     if (previewData) {
@@ -81,13 +77,7 @@ const AddLiquidity = ({poolId, poolKey}: Props): JSX.Element => {
       </section>
       {showPreview && <div className={styles.loadingOverlay} />}
       <SettingsModal title="Settings">
-        <SettingsModalContent
-          slippage={slippage}
-          slippageMode={slippageMode}
-          setSlippage={setSlippage}
-          setSlippageMode={setSlippageMode}
-          closeModal={closeSettingsModal}
-        />
+        <SettingsModalContent slippage={slippage} setSlippage={setSlippage} />
       </SettingsModal>
     </>
   );

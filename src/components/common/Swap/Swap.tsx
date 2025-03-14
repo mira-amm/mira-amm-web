@@ -1,22 +1,17 @@
-import {useCallback, useEffect, useMemo, useRef, useState} from "react";
 import {useConnectUI, useIsConnected} from "@fuels/react";
-import {useLocalStorage} from "usehooks-ts";
 import {clsx} from "clsx";
+import {useCallback, useEffect, useMemo, useRef, useState} from "react";
+import {useDebounceCallback, useLocalStorage} from "usehooks-ts";
 
-import CurrencyBox from "@/src/components/common/Swap/components/CurrencyBox/CurrencyBox";
 import ActionButton from "@/src/components/common/ActionButton/ActionButton";
-import ConvertIcon from "@/src/components/icons/Convert/ConvertIcon";
 import IconButton from "@/src/components/common/IconButton/IconButton";
+import CurrencyBox from "@/src/components/common/Swap/components/CurrencyBox/CurrencyBox";
+import ConvertIcon from "@/src/components/icons/Convert/ConvertIcon";
 import useModal from "@/src/hooks/useModal/useModal";
 import useSwap from "@/src/hooks/useSwap/useSwap";
 
-import styles from "./Swap.module.css";
-import ExchangeRate from "@/src/components/common/Swap/components/ExchangeRate/ExchangeRate";
-import useExchangeRate from "@/src/hooks/useExchangeRate/useExchangeRate";
-import {openNewTab} from "@/src/utils/common";
-import useBalances from "@/src/hooks/useBalances/useBalances";
 import CoinsListModal from "@/src/components/common/Swap/components/CoinsListModal/CoinsListModal";
-import SwapSuccessModal from "@/src/components/common/Swap/components/SwapSuccessModal/SwapSuccessModal";
+import ExchangeRate from "@/src/components/common/Swap/components/ExchangeRate/ExchangeRate";
 import SettingsModalContent from "@/src/components/common/Swap/components/SettingsModalContent/SettingsModalContent";
 import useCheckEthBalance from "@/src/hooks/useCheckEthBalance/useCheckEthBalance";
 import useInitialSwapState from "@/src/hooks/useInitialSwapState/useInitialSwapState";
@@ -26,13 +21,25 @@ import PriceImpact from "@/src/components/common/Swap/components/PriceImpact/Pri
 import {FuelAppUrl} from "@/src/utils/constants";
 import useReservesPrice from "@/src/hooks/useReservesPrice";
 import SwapFailureModal from "@/src/components/common/Swap/components/SwapFailureModal/SwapFailureModal";
-import {B256Address, bn, BN} from "fuels";
 import {useAssetPrice} from "@/src/hooks/useAssetPrice";
 import useAssetMetadata from "@/src/hooks/useAssetMetadata";
-import {SlippageSetting} from "../SlippageSetting/SlippageSetting";
-import {ScriptTransactionRequest, TransactionCost} from "fuels";
+import useBalances from "@/src/hooks/useBalances/useBalances";
+import useExchangeRate from "@/src/hooks/useExchangeRate/useExchangeRate";
 import {TradeState} from "@/src/hooks/useSwapRouter";
+import {openNewTab} from "@/src/utils/common";
+import {
+  B256Address,
+  bn,
+  BN,
+  ErrorCode,
+  FuelError,
+  ScriptTransactionRequest,
+  TransactionCost,
+} from "fuels";
+import {SlippageSetting} from "../SlippageSetting/SlippageSetting";
+import StatusModal, {ModalType} from "../StatusModal";
 import ReviewSwap from "./components/ReviewSwap/ReviewSwap";
+import styles from "./Swap.module.css";
 
 export type CurrencyBoxMode = "buy" | "sell";
 export type CurrencyBoxState = {
@@ -76,7 +83,6 @@ const Swap = () => {
     {tx: ScriptTransactionRequest; txCost: TransactionCost} | undefined
   >();
   const [txCost, setTxCost] = useState<number | null>(null);
-  const [slippageMode, setSlippageMode] = useState<SlippageMode>("auto");
   const [swapButtonTitle, setSwapButtonTitle] = useState<string>("Review");
   const [review, setReview] = useState<boolean>(false);
   const [showInsufficientBalance, setShowInsufficientBalance] = useState(true);
@@ -538,6 +544,32 @@ const Swap = () => {
     (previewLoading && swapButtonTitle !== "Insufficient balance") ||
     (!amountMissing && !showInsufficientBalance && txCostPending);
 
+  // Swap succcess and failure error message for the modal
+  const calculateModalContent = () => {
+    const currentState = swapStateForPreview.current;
+    const successModalSubtitle = `${currentState.sell.amount} ${sellMetadata.symbol} for ${currentState.buy.amount} ${buyMetadata.symbol}`;
+
+    let errorMessage = "An error occurred. Please try again.";
+    const error = txCostError || swapError;
+    if (error instanceof FuelError) {
+      errorMessage = error.message;
+      if (
+        error.code === ErrorCode.SCRIPT_REVERTED &&
+        (error.message.includes("Insufficient output amount") ||
+          error.message.includes("Exceeding input amount"))
+      ) {
+        errorMessage = "Slippage exceeds limit. Adjust settings and try again.";
+      }
+    } else if (error?.message === "User rejected the transaction!") {
+      errorMessage =
+        "You closed your wallet before sending the transaction. Try again?";
+    }
+
+    return [successModalSubtitle, errorMessage];
+  };
+
+  const [successModalSubtitle, errorMessage] = calculateModalContent();
+
   return (
     <>
       <div className={styles.swapAndRate}>
@@ -619,29 +651,25 @@ const Swap = () => {
         </div>
       </div>
       {swapPending && <div className={styles.loadingOverlay} />}
-      <SettingsModal title="Settings">
-        <SettingsModalContent
-          slippage={slippage}
-          slippageMode={slippageMode}
-          setSlippage={setSlippage}
-          setSlippageMode={setSlippageMode}
-          closeModal={closeSettingsModal}
-        />
+      <SettingsModal title={`Slippage tolerance: ${slippage / 100}%`}>
+        <SettingsModalContent slippage={slippage} setSlippage={setSlippage} />
       </SettingsModal>
       <CoinsModal title="Choose token">
         <CoinsListModal selectCoin={handleCoinSelection} balances={balances} />
       </CoinsModal>
       <SuccessModal title={<></>}>
-        <SwapSuccessModal
-          swapState={swapStateForPreview.current}
+        <StatusModal
+          subTitle={successModalSubtitle}
+          type={ModalType.SUCCESS}
+          title="Swap success"
           transactionHash={swapResult?.id}
         />
       </SuccessModal>
       <FailureModal title={<></>} onClose={resetSwapErrors}>
-        <SwapFailureModal
-          error={txCostError || swapError}
-          closeModal={closeFailureModal}
-          customTitle={customErrorTitle}
+        <StatusModal
+          subTitle={errorMessage}
+          type={ModalType.ERROR}
+          title="Swap failure"
         />
       </FailureModal>
     </>

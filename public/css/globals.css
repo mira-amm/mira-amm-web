@@ -54,6 +54,8 @@
   --accent-alert: #d4b226;
   --content-positive: #46CC44;
   --points-gradient: linear-gradient(170deg, #262f5f 35%, #c41cff 100%);
+  --primary-card-gradient: linear-gradient(97.15deg, #5872FC -1.13%, #6142BA 56.75%, #C41CFF 135.82%);
+
 
   --button-border-radius: 8px;
   --border-style-secondary: 11px solid var(--background-tertiary);

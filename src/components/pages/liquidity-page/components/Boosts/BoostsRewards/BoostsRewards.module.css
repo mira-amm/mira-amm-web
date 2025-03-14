@@ -36,8 +36,8 @@
   padding: 16px;
   min-height: 110px;
   padding: 24px;
-  background-image: url("../../../../../../../assets/rewards-banner.png");
   background-size: cover;
+  background: var(--primary-card-gradient);
 }
 
 .rewardsItem {

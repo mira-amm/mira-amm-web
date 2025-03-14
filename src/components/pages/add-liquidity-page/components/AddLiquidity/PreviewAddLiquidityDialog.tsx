@@ -1,16 +1,14 @@
-import styles from "@/src/components/pages/add-liquidity-page/components/AddLiquidity/AddLiquidity.module.css";
-import CoinPair from "@/src/components/common/CoinPair/CoinPair";
-import Coin from "@/src/components/common/Coin/Coin";
 import ActionButton from "@/src/components/common/ActionButton/ActionButton";
-import {CoinName, coinsConfig} from "@/src/utils/coinsConfig";
+import Coin from "@/src/components/common/Coin/Coin";
+import CoinPair from "@/src/components/common/CoinPair/CoinPair";
+import StatusModal, {ModalType} from "@/src/components/common/StatusModal";
+import styles from "@/src/components/pages/add-liquidity-page/components/AddLiquidity/AddLiquidity.module.css";
 import useAddLiquidity from "@/src/hooks/useAddLiquidity";
-import useModal from "@/src/hooks/useModal/useModal";
-import AddLiquiditySuccessModal from "@/src/components/pages/add-liquidity-page/components/AddLiquiditySuccessModal/AddLiquiditySuccessModal";
-import {useRouter} from "next/navigation";
-import {Dispatch, SetStateAction, useCallback} from "react";
-import TransactionFailureModal from "@/src/components/common/TransactionFailureModal/TransactionFailureModal";
-import {BN} from "fuels";
 import useAssetMetadata from "@/src/hooks/useAssetMetadata";
+import useModal from "@/src/hooks/useModal/useModal";
+import {BN, FuelError} from "fuels";
+import {useRouter} from "next/navigation";
+import {Dispatch, SetStateAction, useCallback, useMemo} from "react";
 
 type AssetsData = {
   assetId: string;
@@ -93,6 +91,22 @@ const PreviewAddLiquidityDialog = ({
 
   const feeText = isStablePool ? "0.05%" : "0.3%";
 
+  const calculateMessages = () => {
+    const successMessage = `Added ${firstAssetAmountString} ${firstAssetMetadata.symbol} and ${secondAssetAmountString} ${secondAssetMetadata.symbol}`;
+
+    let errorMessage: string;
+    if (addLiquidityError instanceof FuelError) {
+      errorMessage = addLiquidityError.message;
+    } else {
+      errorMessage =
+        "An error occurred while processing your request. Please try again or contact support if the issue persists.";
+    }
+
+    return [successMessage, errorMessage];
+  };
+
+  const [successModalSubtitle, errorModalSubtitle] = calculateMessages();
+
   return (
     <>
       <div className={styles.section}>
@@ -170,18 +184,18 @@ const PreviewAddLiquidityDialog = ({
         Add Liquidity
       </ActionButton>
       <SuccessModal title={<></>} onClose={redirectToLiquidity}>
-        <AddLiquiditySuccessModal
-          coinA={firstAssetMetadata.symbol || null}
-          coinB={secondAssetMetadata.symbol || null}
-          firstCoinAmount={firstAssetAmountString}
-          secondCoinAmount={secondAssetAmountString}
+        <StatusModal
+          type={ModalType.SUCCESS}
+          title="Liquidity added successfully"
+          subTitle={successModalSubtitle}
           transactionHash={data?.id}
         />
       </SuccessModal>
       <FailureModal title={<></>} onClose={onFailureModalClose}>
-        <TransactionFailureModal
-          error={addLiquidityError}
-          closeModal={closeFailureModal}
+        <StatusModal
+          type={ModalType.ERROR}
+          title="Failed to add liquidity"
+          subTitle={errorModalSubtitle}
         />
       </FailureModal>
     </>
