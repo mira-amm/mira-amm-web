@@ -41,6 +41,7 @@
   },
   "devDependencies": {
     "@next/eslint-plugin-next": "^14.2.23",
+    "@tanstack/react-query-devtools": "^5.66.9",
     "@types/decimal.js": "^7.4.3",
     "@types/jest": "^29.5.14",
     "@types/node": "^20",

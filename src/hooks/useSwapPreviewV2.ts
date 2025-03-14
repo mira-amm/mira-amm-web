@@ -4,6 +4,7 @@ import useAsset from "./useAsset";
 import {useMemo} from "react";
 import {bn} from "fuels";
 import useSwapRouter, {TradeType} from "./useSwapRouter";
+import useDebounce from "./useDebounce";
 
 const useSwapPreview = (swapState: SwapState, mode: CurrencyBoxMode) => {
   const {sellAssetId, buyAssetId} = useSwapData(swapState);
@@ -38,7 +39,10 @@ const useSwapPreview = (swapState: SwapState, mode: CurrencyBoxMode) => {
     tradeType,
   ]);
 
-  return useSwapRouter(tradeType, rawUserInputAmount, assetIn, assetOut);
+  // passing as bn causes infinite render
+  const debouncedValue = useDebounce(rawUserInputAmount.toString(), 500);
+
+  return useSwapRouter(tradeType, bn(debouncedValue), assetIn, assetOut);
 };
 
 export default useSwapPreview;
