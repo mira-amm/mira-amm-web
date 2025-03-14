@@ -24,10 +24,6 @@
   opacity: 0.8;
 }
 
-.btn.loading {
-  min-height: 54px;
-}
-
 .btn.loading:hover {
   /* color: var(--button-content-primary);
   background-color: var(--button-primary); */

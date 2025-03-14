@@ -608,6 +608,7 @@ const Swap = () => {
               disabled={isActionDisabled}
               onClick={handleSwapClick}
               loading={isActionLoading}
+              className={clsx(isActionLoading && styles.btnLoading)}
             >
               {swapButtonTitle}
             </ActionButton>

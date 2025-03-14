@@ -83,6 +83,10 @@
   justify-content: end;
 }
 
+.btnLoading {
+  min-height: 54px;
+}
+
 @media (min-width: 1024px) {
   .swapAndRate {
     gap: 16px;
