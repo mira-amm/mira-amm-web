@@ -11,6 +11,9 @@ export const BASE_ASSET_CONTRACT =
 export const USDC_ASSET_ID =
   "0x286c479da40dc953bddc3bb4c453b608bba2e0ac483b077bd475174115395e6b";
 
+export const FUEL_ASSET_ID =
+  "0x1d5d97005e41cae2187a895fd8eab0506111e0e2f3331cd3912c15c24e3c1d82";
+
 export const DefaultTxParams: TxParams = {
   gasLimit: 2_000_000,
   maxFee: 100_000,
@@ -65,15 +68,38 @@ export const DisclaimerMessage = `Disclaimer
 5. I understand the risks associated with using decentralized protocols, including the Mira Dex protocol, as outlined in the Terms of Use and Privacy Policy.`;
 
 export const BoostsLearnMoreUrl =
-  "https://mirror.xyz/miraly.eth/kPWlmOIY_HhHQmZMkDb2dU4Sv_GxqgnIt4cQ7TwGZk4" as const;
+  "https://mirror.xyz/miraly.eth/X-80QWbrq4f17L67Yy8QyQBdE5y2okxTzcfJIL-SHCQ" as const;
+
+export const LIQUIDITY_PROVIDING_DOC_URL =
+  "https://docs.mira.ly/user-guides/how-to-add-liquidity" as const;
 
 export const BoostsRewardsTooltip =
   "These are the total Fuel tokens earned that will be distributed at the end of the season. The exact dollar amount will change based on Fuel’s current price. The exact token amount might change.";
 
 export const boostsEpochTooltip =
-  "Current season lasts for 45 days total. All rewards will be distributed at the end of the season. ";
+  "The current season is 7 days long. All remaining rewards will be distributed at the end of the season.";
 
 export const RewardsApiUrl = "/api/rewards" as const;
 
 export const boosterBannerTitle =
   " Introducing Boost Rewards, earn $FUEL by providing liquidity.";
+
+export const POINTS_PROMO_TITLE =
+  "Introducing Mira Points, earn points by providing liquidity and engaging in activities.";
+
+export const EPOCH_NUMBER = 4 as const;
+
+export const POINTS_TOOLTIP =
+  "Your points are calculated based on the amount of liquidity you provide and the number of transactions you make.";
+
+export const POINTS_RANK_TOOLTIP =
+  "Your rank is determined by the amount of points you have accumulated.";
+
+// TODO: Add the url for the points learn more
+export const POINTS_LEARN_MORE_URL =
+  "https://mirror.xyz/miraly.eth/W2W1Zv8jKS-70OY64cF-qneyPgLngG4ItRv9PMmxHeY";
+
+export const POINTS_BANNER_TITLE = "Introducing Points";
+
+export const POINTS_BANNER_SUBHEADER =
+  "Earn MIRA points by providing liquidity and engaging in activities.";

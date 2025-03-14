@@ -15,4 +15,14 @@ export class JSONEpochConfigService implements EpochConfigService {
 
     return this.epochs;
   }
+
+  getCurrentEpochs(): EpochConfig[] {
+    // current time is within startDate and endDate
+    const currentTime = new Date();
+    return this.epochs.filter((epoch) => {
+      const startDate = new Date(epoch.startDate);
+      const endDate = new Date(epoch.endDate);
+      return currentTime >= startDate && currentTime <= endDate;
+    });
+  }
 }

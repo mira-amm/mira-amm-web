@@ -10,7 +10,10 @@ import StarsIcon from "@/src/components/icons/Stars/StarsIcon";
 import CupIcon from "@/src/components/icons/Cup/CupIcon";
 
 import styles from "./LiquidityPageLayout.module.css";
-import {BoostsLearnMoreUrl} from "@/src/utils/constants";
+import {
+  LIQUIDITY_PROVIDING_DOC_URL,
+  POINTS_LEARN_MORE_URL,
+} from "@/src/utils/constants";
 import Boosts from "./components/Boosts/Boosts";
 
 const LiquidityPageLayout = (): JSX.Element => {
@@ -26,14 +29,14 @@ const LiquidityPageLayout = (): JSX.Element => {
           <PromoBlock
             icon={<StarsIcon />}
             title="Learn about providing liquidity"
-            link="https://mirror.xyz/miraly.eth"
+            link={LIQUIDITY_PROVIDING_DOC_URL}
             linkText="Click here to see the guide"
           />
           <PromoBlock
             icon={<CupIcon />}
-            title="Fuel Boosts Program"
-            link={BoostsLearnMoreUrl}
-            linkText="Learn about boost rewards"
+            title="Mira Points Program"
+            link={POINTS_LEARN_MORE_URL}
+            linkText="Learn about Mira Points"
           />
         </div>
       </main>

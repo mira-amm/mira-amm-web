@@ -17,7 +17,11 @@
   "dependencies": {
     "@fuels/connectors": "0.36.0",
     "@fuels/react": "0.36.0",
+    "@sentry/nextjs": "^9",
     "@tanstack/react-query": "^5.50.1",
+    "@tanstack/react-table": "^8.21.2",
+    "@wagmi/connectors": "^5.7.8",
+    "@wagmi/core": "^2.16.5",
     "axios": "^1.7.9",
     "clsx": "^2.1.1",
     "fuels": "0.96.1",
@@ -26,9 +30,11 @@
     "mira-dex-ts": "^1.0.42",
     "next": "14.2.15",
     "next-query-params": "^5.0.1",
+    "pino-pretty": "^13.0.0",
     "react": "^18",
     "react-device-detect": "^2.2.3",
     "react-dom": "^18",
+    "react-loading-skeleton": "^3.5.0",
     "react-tooltip": "^5.28.0",
     "use-query-params": "^2.2.1",
     "usehooks-ts": "^3.1.0"
@@ -43,6 +49,8 @@
     "@types/react-dom": "^18",
     "@typescript-eslint/eslint-plugin": "^8.18.1",
     "@typescript-eslint/parser": "^8.18.1",
+    "@wagmi/connectors": "^5.7.8",
+    "@wagmi/core": "^2.16.5",
     "decimal.js": "^10.5.0",
     "dotenv": "^16.4.7",
     "eslint": "^8",
@@ -56,5 +64,5 @@
     "tsx": "^4.19.2",
     "typescript": "^5.7.3"
   },
-  "packageManager": "yarn@1.22.22+sha512.a6b2f7906b721bba3d67d4aff083df04dad64c399707841b7acf00f6b133b7ac24255f2652fa22ae3534329dc6180534e98d17432037ff6fd140556e2bb3137e"
+  "packageManager": "pnpm@10.6.1"
 }
