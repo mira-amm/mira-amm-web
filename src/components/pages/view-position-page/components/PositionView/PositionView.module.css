@@ -26,8 +26,9 @@
   flex-direction: column;
   gap: 16px;
   padding: 12px;
+  background-color: var(--background-secondary);
   border-radius: 16px;
-  background-color: var(--background-grey-dark);
+  border: 11px solid var(--background-tertiary);
 }
 
 .pending {
@@ -58,18 +59,19 @@
   justify-content: flex-end;
   padding: 16px;
   border-radius: 16px;
-  background: linear-gradient(359.71deg, #8350fd -1.52%, #b2ea12 121.21%);
+  background-image: url("../../../../../../assets/mira-block-bg.png");
+  background-size: cover;
 }
 
 .miraLogo {
   width: 64px;
   height: 32px;
-  margin-bottom: 12px;
 }
 
 .tokenDisplayValue,
 .numberAndCopy {
   font-size: 14px;
+  color: var(--background-white);
 }
 
 .numberAndCopy {
@@ -213,11 +215,12 @@
   .priceBlockLargeDesktop {
     width: 100%;
     padding: 16px;
-    border-radius: 12px;
     display: flex;
     flex-direction: column;
     gap: 16px;
-    background-color: var(--background-grey-dark);
+    border: var(--border-style-secondary);
+    border-radius: 12px;
+    background-color: var(--background-secondary);
   }
 
   .priceBlockDesktop {

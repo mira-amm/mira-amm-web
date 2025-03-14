@@ -1,14 +1,13 @@
 .priceImpact {
-  width: fit-content;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  font-size: 12px;
-  line-height: 18px;
   color: #ffffffa3;
-  background: transparent;
-  border: none;
-  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+}
+
+.priceImpactEntry {
+  display: flex;
+  justify-content: space-between;
 }
 
 .redText {
@@ -28,7 +27,8 @@
 }
 
 @media (min-width: 1024px) {
-  .priceImpact {
-    font-size: 13px;
+  .priceImpact p {
+    font-size: 14px;
+    line-height: 19px;
   }
 }

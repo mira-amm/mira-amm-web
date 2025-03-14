@@ -9,8 +9,9 @@
   flex-direction: column;
   gap: 16px;
   padding: 16px 16px 18px;
+  border: var(--border-style-secondary);
   border-radius: 16px;
-  background-color: var(--background-grey-dark);
+  background-color: var(--background-secondary);
 }
 
 .swapContainerLoading {
@@ -35,35 +36,37 @@
   font-weight: 500;
   font-size: 16px;
   line-height: 19px;
-  color: var(--content-grey);
+  color: var(--content-primary);
 }
 
 .title {
   flex: 1;
   color: var(--content-primary);
+  font-weight: 500;
+  font-size: 18px;
 }
 
 .splitter {
   position: relative;
   width: 100%;
-  height: 1px;
-  background-color: var(--background-grey-dark);
-  margin: 16px 0;
+  height: 40px;
+  /* background-color: var(--background-secondary); */
+  margin: 8px 0;
 }
 
 .convertButton {
   position: absolute;
   top: calc(50% - 16px);
   left: calc(50% - 16px);
-  width: 32px;
-  height: 32px;
+  width: 40px;
+  height: 40px;
   display: flex;
   justify-content: center;
   align-items: center;
   border: none;
   border-radius: 40px;
-  color: var(--content-grey);
-  background-color: var(--background-primary) !important;
+  color: var(--background-primary);
+  background-color: var(--content-primary) !important;
 }
 
 .convertButton:hover > svg {
@@ -72,52 +75,16 @@
 }
 
 .convertButton:hover {
-  color: var(--content-primary);
-}
-
-.summary {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  color: var(--content-tertiary);
-  font-size: 12px;
-  line-height: 16px;
-}
-
-.summaryEntry {
-  display: flex;
-  justify-content: space-between;
-}
-
-.feeLine {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 4px;
-}
-
-.feeLine > p:first-child {
-  margin-right: 4px;
-}
-
-.poolsFee {
-  display: flex;
-  align-items: center;
-  gap: 4px;
-}
-
-.poolsFee > img {
-  height: 16px;
-  width: 16px;
-}
-
-.poolsFee > img:first-child {
-  margin-right: -8px;
+  /* color: var(--content-primary); */
 }
 
 .rates {
   display: flex;
-  justify-content: space-between;
+  justify-content: end;
+}
+
+.btnLoading {
+  min-height: 54px;
 }
 
 @media (min-width: 1024px) {
@@ -128,11 +95,5 @@
   .heading {
     font-size: 20px;
     line-height: 24px;
-  }
-
-  .summary,
-  .summary p {
-    font-size: 13px;
-    line-height: 18px;
   }
 }

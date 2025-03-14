@@ -2,7 +2,8 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background: var(--points-gradient);
+  background-image: url("../../../../assets/apr-bg.jpg");
+  background-size: cover;
   gap: 5px;
   border-radius: 10px;
   position: relative;
@@ -54,7 +55,8 @@
   border-radius: 10px;
   padding: 25px;
   gap: 10px;
-  background: var(--points-gradient);
+  background-image: url("../../../../assets/apr-bg.jpg");
+  background-size: cover;
   color: white;
   text-align: center;
   box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);

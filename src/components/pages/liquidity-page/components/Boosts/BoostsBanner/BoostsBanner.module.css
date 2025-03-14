@@ -1,5 +1,6 @@
 .banner {
-  background: var(--points-gradient);
+  background-image: url("../../../../../../../assets/boost-banner.png");
+  background-size: cover;
   padding: 16px;
   gap: 10px;
   border-radius: 10px;

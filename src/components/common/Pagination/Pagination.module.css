@@ -9,7 +9,7 @@
 
 .paginationButton {
   padding: 8px 12px;
-  background-color: #2a2a3c;
+  background-color: var(--content-primary);
   border: none;
   color: #ffffff;
   font-size: 14px;
@@ -22,8 +22,9 @@
 }
 
 .paginationButton.active {
-  background-color: var(--accent-dimmed);
-  color: var(--accent-primary);
+  background-color: var(--background-tertiary);
+  color: var(--content-primary);
+  cursor: default;
   font-weight: bold;
 }
 
@@ -33,7 +34,7 @@
 }
 
 .paginationButton:hover:not(:disabled) {
-  background-color: #3b3b4e;
+  opacity: 0.8;
 }
 
 @media (max-width: 390px) {

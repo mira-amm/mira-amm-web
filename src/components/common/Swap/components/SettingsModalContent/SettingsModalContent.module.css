@@ -11,7 +11,15 @@
 }
 
 .settingsText {
-  color: var(--content-dimmed-light);
+  font-size: 16px;
+  font-weight: 400;
+  color: var(--mc-grey-4);
+}
+
+.inputWrapper {
+  display: flex;
+  gap: 16px;
+  align-items: center;
 }
 
 .slippageButtons {
@@ -54,15 +62,12 @@
 .slippageInput {
   width: 100%;
   padding: 14px 12px;
-  border: 1px solid transparent;
+  border: 1px solid var(--mc-black-1);
   border-radius: 8px;
-  color: var(--content-dimmed-light);
-  background-color: var(--background-grey-dark);
 }
 
 .slippageInput:focus {
-  color: var(--content-primary);
-  border-color: var(--accent-primary);
+  border-color: var(--mc-black);
 }
 
 .infoHeading {

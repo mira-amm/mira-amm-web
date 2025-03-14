@@ -7,9 +7,8 @@
 
 @media (min-width: 1024px) {
   .addLiquidityLayout {
-    /* min-height: calc(100vh - 157px); */
     min-height: 100vh;
-    max-width: 524px;
+    max-width: 600px;
     margin: 0 auto;
     padding: 32px 16px;
   }

@@ -1,0 +1,48 @@
+.statusModal {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  margin: 30px 0px;
+}
+
+.statusContent {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+}
+
+.mainText {
+  font-weight: 500;
+  font-size: 22px;
+  line-height: 26px;
+  text-align: center;
+}
+
+.subText {
+  font-size: 14px;
+  line-height: 16px;
+  color: var(--mc-grey-4);
+  text-align: center;
+}
+
+.viewButton {
+  width: 100%;
+}
+
+.statusModal > svg {
+  width: 80px;
+  height: 80px;
+}
+
+@media (min-width: 1024px) {
+  .statusModal {
+    gap: 24px;
+  }
+
+  .claimFailureModal > svg {
+    width: 80px;
+    height: 80px;
+  }
+}

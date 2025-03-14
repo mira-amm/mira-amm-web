@@ -7,7 +7,7 @@
   padding: 16px 20px;
   position: absolute;
   top: calc(100vh - 112%);
-  right: calc(100vw - 37%);
+  left: 20px;
   z-index: 1000;
   align-items: center;
 }
@@ -36,25 +36,25 @@
   .wrapper {
     width: 347px;
     top: calc(100vh - 140%);
-    right: calc(100vw - 92%);
+    left: 20px;
     z-index: 500;
   }
 }
 
 @media (max-width: 375px) {
   .wrapper {
-    right: calc(100vw - 96%);
+    left: 20px;
   }
 }
 
 @media (min-width: 1400px) {
   .wrapper {
-    right: calc(100vw - 34%);
+    left: 20px;
   }
 }
 
 @media (min-width: 1500px) {
   .wrapper {
-    right: calc(100vw - 33%);
+    left: 20px;
   }
 }

@@ -23,7 +23,9 @@ const Positions = (): JSX.Element => {
             <div className={styles.icon}>
               <DocumentIcon />
             </div>
-            <p>Your liquidity will appear here</p>
+            <p className={styles.fallbackText}>
+              Your liquidity will appear here
+            </p>
           </div>
           {/*<button className={styles.viewArchivedButton}>*/}
           {/*  View archive positions*/}

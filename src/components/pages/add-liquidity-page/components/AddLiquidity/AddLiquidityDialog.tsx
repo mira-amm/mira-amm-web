@@ -285,16 +285,16 @@ const AddLiquidityDialog = ({
               )}
               role="button"
             >
-              <div className={styles.poolStabilityButtonTitle}>
-                <p>Volatile pool</p>
-                <Info
+              <div className={styles.poolStabilityButtonContent}>
+                <span className={styles.poolStabilityButtonText}>
+                  0.30% fee tier (Volatile pool)
+                </span>
+                {/* <Info
                   tooltipText={VolatilePoolTooltip}
                   tooltipKey="volatilePool"
-                />
+                /> */}
               </div>
-              <p>0.30% fee tier</p>
             </div>
-
             <div
               className={clsx(
                 styles.poolStabilityButton,
@@ -303,11 +303,12 @@ const AddLiquidityDialog = ({
               )}
               role="button"
             >
-              <div className={styles.poolStabilityButtonTitle}>
-                <p>Stable pool</p>
-                <Info tooltipText={StablePoolTooltip} tooltipKey="stablePool" />
+              <div className={styles.poolStabilityButtonContent}>
+                <span className={styles.poolStabilityButtonText}>
+                  0.05% fee tier (Stable pool)
+                </span>
+                {/* <Info tooltipText={StablePoolTooltip} tooltipKey="stablePool" /> */}
               </div>
-              <p>0.05% fee tier</p>
             </div>
           </div>
         </div>
