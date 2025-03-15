@@ -13,6 +13,7 @@ type ModalProps = {
   children: ReactNode;
   className?: string;
   onClose?: VoidFunction;
+  size?: "small" | "medium" | "large" | "fullWidth";
 };
 
 type ReturnType = (props: ModalProps) => ReactPortal | null;
@@ -51,6 +52,7 @@ const useModal = (): [ReturnType, () => void, () => void] => {
     children,
     className,
     onClose,
+    size = "medium",
   }: ModalProps) =>
     isOpen
       ? createPortal(
@@ -64,7 +66,15 @@ const useModal = (): [ReturnType, () => void, () => void] => {
                 closeModal();
               }}
             />
-            <div className={clsx(styles.modalWindow, className)}>
+            <div
+              className={clsx(
+                styles.modalWindow,
+                styles[
+                  `modalSize${size.charAt(0).toUpperCase() + size.slice(1)}`
+                ],
+                className,
+              )}
+            >
               <div className={styles.modalHeading}>
                 <div className={clsx(styles.modalTitle, titleClassName)}>
                   {title}

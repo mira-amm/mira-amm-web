@@ -10,13 +10,15 @@
 }
 
 .modalWindow {
+  border: var(--border-style-secondary);
+  border-radius: 16px;
   position: fixed;
   top: 50%;
   left: 50%;
   display: flex;
   flex-direction: column;
-  gap: 16px;
-  padding: 16px;
+  gap: 22px;
+  padding: 26px 24px;
   transform: translate(-50%, -50%);
   background: var(--background-secondary);
   width: 90%;
@@ -35,11 +37,28 @@
   line-height: 22px;
 }
 
-@media (min-width: 1024px) {
-  .modalWindow {
-    max-width: 460px;
-  }
+/* Size variants */
+.modalSizeSmall {
+  width: 90%;
+  max-width: 360px;
+}
 
+.modalSizeMedium {
+  width: 90%;
+  max-width: 460px;
+}
+
+.modalSizeLarge {
+  width: 90%;
+  max-width: 640px;
+}
+
+.modalSizeFullWidth {
+  width: 95%;
+  max-width: 1200px;
+}
+
+@media (min-width: 1024px) {
   .modalHeading {
     font-size: 20px;
     line-height: 24px;
