@@ -1,6 +1,7 @@
 .viewPositionLayout {
   display: flex;
   flex-direction: column;
+  flex: 1;
   padding: 16px;
   gap: 16px;
 }
@@ -152,7 +153,6 @@
 @media (min-width: 1024px) {
   .viewPositionLayout {
     /* min-height: calc(100vh - 157px); */
-    min-height: 100vh;
     max-width: 716px;
     margin: 0 auto;
     padding: 32px 16px;

@@ -11,7 +11,7 @@ const SwapPageLayout = () => {
   const {isConnected} = useIsConnected();
 
   return (
-    <div className={styles.swapPage}>
+    <>
       <Header />
       <main className={styles.swapLayoutWrapper}>
         <div className={styles.swapLayout}>
@@ -26,7 +26,7 @@ const SwapPageLayout = () => {
         />
       </main>
       <Footer />
-    </div>
+    </>
   );
 };
 

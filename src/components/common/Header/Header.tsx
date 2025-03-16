@@ -124,7 +124,7 @@ const Header = ({isHomePage}: Props): JSX.Element => {
               </a>
             </>
           )}
-          {!isHomePage && <TestnetLabel />}
+          {/* {!isHomePage && <TestnetLabel />} */}
           {!isHomePage && <ConnectButton className={styles.launchAppButton} />}
           {isHomePage && (
             <div className={styles.launchAppArea}>
