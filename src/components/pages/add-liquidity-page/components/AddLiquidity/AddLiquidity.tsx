@@ -48,7 +48,7 @@ const AddLiquidity = ({poolId, poolKey}: Props): JSX.Element => {
         onClick={handleBackClick}
         className={styles.backLink}
       />
-      <section className={styles.addLiquidity}>
+      <section className="liquidity-action-container">
         <div className={styles.addLiquidityHeading}>
           <p className={styles.title}>Add Liquidity</p>
           <SlippageSetting
