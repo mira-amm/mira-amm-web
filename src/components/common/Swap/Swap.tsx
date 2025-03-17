@@ -1,8 +1,8 @@
 import Logo from "@/src/components/common/Logo/Logo";
 import {useConnectUI, useIsConnected} from "@fuels/react";
+import {useLocalStorage} from "usehooks-ts";
 import {clsx} from "clsx";
 import {useCallback, useEffect, useMemo, useRef, useState} from "react";
-import {useDebounceCallback, useLocalStorage} from "usehooks-ts";
 
 import ActionButton from "@/src/components/common/ActionButton/ActionButton";
 import IconButton from "@/src/components/common/IconButton/IconButton";
@@ -12,28 +12,23 @@ import useModal from "@/src/hooks/useModal/useModal";
 import useSwap from "@/src/hooks/useSwap/useSwap";
 
 import styles from "./Swap.module.css";
-
 import ConnectButton from "@/src/components/common/ConnectButton/ConnectButton";
-import Loader from "@/src/components/common/Loader/Loader";
-import CoinsListModal from "@/src/components/common/Swap/components/CoinsListModal/CoinsListModal";
+
 import ExchangeRate from "@/src/components/common/Swap/components/ExchangeRate/ExchangeRate";
-import PriceImpact from "@/src/components/common/Swap/components/PriceImpact/PriceImpact";
-import SettingsModalContent from "@/src/components/common/Swap/components/SettingsModalContent/SettingsModalContent";
-import SwapFailureModal from "@/src/components/common/Swap/components/SwapFailureModal/SwapFailureModal";
-import SwapSuccessModal from "@/src/components/common/Swap/components/SwapSuccessModal/SwapSuccessModal";
-import {useAssetImage} from "@/src/hooks/useAssetImage";
-import useAssetMetadata from "@/src/hooks/useAssetMetadata";
-import {useAssetPrice} from "@/src/hooks/useAssetPrice";
-import useBalances from "@/src/hooks/useBalances/useBalances";
-import useCheckActiveNetwork from "@/src/hooks/useCheckActiveNetwork";
-import useCheckEthBalance from "@/src/hooks/useCheckEthBalance/useCheckEthBalance";
 import useExchangeRate from "@/src/hooks/useExchangeRate/useExchangeRate";
-import useInitialSwapState from "@/src/hooks/useInitialSwapState/useInitialSwapState";
-import useReservesPrice from "@/src/hooks/useReservesPrice";
-import usePreviewV2 from "@/src/hooks/useSwapPreviewV2";
-import {TradeState} from "@/src/hooks/useSwapRouter";
 import {createPoolKey, openNewTab} from "@/src/utils/common";
+import useBalances from "@/src/hooks/useBalances/useBalances";
+import CoinsListModal from "@/src/components/common/Swap/components/CoinsListModal/CoinsListModal";
+import SwapSuccessModal from "@/src/components/common/Swap/components/SwapSuccessModal/SwapSuccessModal";
+import SettingsModalContent from "@/src/components/common/Swap/components/SettingsModalContent/SettingsModalContent";
+import useCheckEthBalance from "@/src/hooks/useCheckEthBalance/useCheckEthBalance";
+import useInitialSwapState from "@/src/hooks/useInitialSwapState/useInitialSwapState";
+import useCheckActiveNetwork from "@/src/hooks/useCheckActiveNetwork";
+import usePreview from "@/src/hooks/useSwapPreviewV2";
+import PriceImpact from "@/src/components/common/Swap/components/PriceImpact/PriceImpact";
 import {FuelAppUrl} from "@/src/utils/constants";
+import useReservesPrice from "@/src/hooks/useReservesPrice";
+import SwapFailureModal from "@/src/components/common/Swap/components/SwapFailureModal/SwapFailureModal";
 import {
   B256Address,
   bn,
@@ -42,7 +37,13 @@ import {
   TransactionCost,
 } from "fuels";
 import {PoolId} from "mira-dex-ts";
+import {useAssetImage} from "@/src/hooks/useAssetImage";
+import {useAssetPrice} from "@/src/hooks/useAssetPrice";
+import useAssetMetadata from "@/src/hooks/useAssetMetadata";
 import {SlippageSetting} from "../SlippageSetting/SlippageSetting";
+import Loader from "@/src/components/common/Loader/Loader";
+
+import {TradeState} from "@/src/hooks/useSwapRouter";
 
 export type CurrencyBoxMode = "buy" | "sell";
 export type CurrencyBoxState = {
@@ -150,17 +151,11 @@ const Swap = ({isWidget}: {isWidget?: boolean}) => {
   )?.amount;
   const buyBalanceValue = buyBalance ?? new BN(0);
 
-  // const {previewData, previewLoading, previewError, refetchPreview} =
-  //   useSwapPreview({
-  //     swapState,
-  //     mode: activeMode,
-  //   });
-
   const {
     trade,
     tradeState,
     error: previewError,
-  } = usePreviewV2(swapState, activeMode);
+  } = usePreview(swapState, activeMode);
 
   const pools = trade?.bestRoute?.pools.map((pool) => pool.poolId);
 
@@ -168,7 +163,7 @@ const Swap = ({isWidget}: {isWidget?: boolean}) => {
   const decimals =
     anotherMode === "sell" ? sellMetadata.decimals : buyMetadata.decimals;
 
-  const previewValueString2 =
+  const previewValueString =
     !trade ||
     tradeState === TradeState.INVALID ||
     tradeState === TradeState.NO_ROUTE_FOUND ||
@@ -183,26 +178,26 @@ const Swap = ({isWidget}: {isWidget?: boolean}) => {
         : trade.amountIn.formatUnits(decimals);
 
   useEffect(() => {
-    if (previewValueString2 !== swapState[anotherMode].amount) {
+    if (previewValueString !== swapState[anotherMode].amount) {
       setSwapState((prevState) => ({
         ...prevState,
         [anotherMode]: {
           ...prevState[anotherMode],
-          amount: previewValueString2,
+          amount: previewValueString,
         },
       }));
     }
-  }, [trade, previewValueString2]);
+  }, [trade, previewValueString, swapState]);
   useEffect(() => {
-    if (previewValueString2 !== inputsState[anotherMode].amount) {
+    if (previewValueString !== inputsState[anotherMode].amount) {
       setInputsState((prevState) => ({
         ...prevState,
         [anotherMode]: {
-          amount: previewValueString2,
+          amount: previewValueString,
         },
       }));
     }
-  }, [trade, previewValueString2]);
+  }, [trade, previewValueString, inputsState]);
 
   const sellValue = inputsState.sell.amount;
   const buyValue = inputsState.buy.amount;
@@ -284,12 +279,11 @@ const Swap = ({isWidget}: {isWidget?: boolean}) => {
     ],
   );
 
-  const debouncedSetState = useDebounceCallback(setSwapState, 500);
   const setAmount = useCallback(
     (mode: "buy" | "sell") => {
       return (amount: string) => {
         if (amount === "") {
-          debouncedSetState((prevState) => ({
+          setSwapState((prevState) => ({
             sell: {
               assetId: prevState.sell.assetId,
               amount: "",
@@ -315,17 +309,27 @@ const Swap = ({isWidget}: {isWidget?: boolean}) => {
           return;
         }
 
-        debouncedSetState((prevState) => ({
+        const otherMode = mode === "buy" ? "sell" : "buy";
+
+        // resetting other mode's amounts as on user's input, the other mode amount will be recalculated
+        setSwapState((prevState) => ({
           ...prevState,
           [mode]: {
             ...prevState[mode],
             amount,
+          },
+          [otherMode]: {
+            ...prevState[otherMode],
+            amount: "",
           },
         }));
         setInputsState((prevState) => ({
           ...prevState,
           [mode]: {
             amount,
+          },
+          [otherMode]: {
+            amount: "",
           },
         }));
 
@@ -335,7 +339,7 @@ const Swap = ({isWidget}: {isWidget?: boolean}) => {
         }
       };
     },
-    [debouncedSetState, activeMode],
+    [setSwapState, activeMode],
   );
 
   const handleCoinSelectorClick = useCallback(
@@ -381,6 +385,7 @@ const Swap = ({isWidget}: {isWidget?: boolean}) => {
     swapState.sell.amount === "" ||
     Number(swapState.buy.amount) <= 0 ||
     Number(swapState.sell.amount) <= 0;
+
   const sufficientEthBalance = useCheckEthBalance(swapState.sell);
   const exchangeRate = useExchangeRate(swapState);
 
@@ -497,8 +502,10 @@ const Swap = ({isWidget}: {isWidget?: boolean}) => {
     tradeState !== TradeState.VALID;
   useEffect(() => {
     let newSwapButtonTitle = "";
-
-    if (!isValidNetwork) {
+    if (previewError) newSwapButtonTitle = previewError;
+    else if (amountMissing) {
+      newSwapButtonTitle = "Input amounts";
+    } else if (!isValidNetwork) {
       newSwapButtonTitle = "Incorrect network";
     } else if (swapPending) {
       newSwapButtonTitle = "Waiting for approval in wallet";
@@ -508,8 +515,6 @@ const Swap = ({isWidget}: {isWidget?: boolean}) => {
       newSwapButtonTitle = "Bridge more ETH to pay for gas";
     } else if (!review && !amountMissing) {
       newSwapButtonTitle = "Review";
-    } else if (amountMissing) {
-      newSwapButtonTitle = "Input amounts";
     } else {
       newSwapButtonTitle = swapButtonTitle; // Default to previous title
     }
@@ -518,6 +523,7 @@ const Swap = ({isWidget}: {isWidget?: boolean}) => {
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
+    previewError,
     isValidNetwork,
     amountMissing,
     swapPending,
@@ -602,9 +608,6 @@ const Swap = ({isWidget}: {isWidget?: boolean}) => {
             loading={inputPreviewLoading || swapPending}
             onCoinSelectorClick={handleCoinSelectorClick}
             usdRate={sellAssetPrice.price}
-            previewError={
-              activeMode === "buy" && !inputPreviewLoading ? previewError : null
-            }
           />
           <div className={styles.splitter}>
             <IconButton onClick={swapAssets} className={styles.convertButton}>
@@ -620,11 +623,6 @@ const Swap = ({isWidget}: {isWidget?: boolean}) => {
             loading={outputPreviewLoading || swapPending}
             onCoinSelectorClick={handleCoinSelectorClick}
             usdRate={buyAssetPrice.price}
-            previewError={
-              activeMode === "sell" && !outputPreviewLoading
-                ? previewError
-                : null
-            }
           />
           {review && (
             <div className={styles.summary}>

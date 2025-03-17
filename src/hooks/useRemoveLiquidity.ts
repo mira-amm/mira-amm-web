@@ -50,7 +50,8 @@ const useRemoveLiquidity = ({
     const tx = await wallet.sendTransaction(fundedTx, {
       estimateTxDependencies: true,
     });
-    return tx.waitForResult();
+    await tx.waitForResult();
+    return tx;
   }, [mira, wallet, pool, liquidityPercentage, lpTokenBalance]);
 
   const {data, mutateAsync, error, isPending} = useMutation({
