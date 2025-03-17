@@ -1,5 +1,3 @@
-// TODO: Have to create a generalised number formatter for all kind of numbers displayed in the dapp
-
 import {DefaultLocale} from "./constants";
 
 type NumberFormatOptions = Intl.NumberFormatOptions;
