@@ -1,0 +1,50 @@
+.pointsPageLayout {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  padding: 0 16px 72px;
+}
+
+.titleSection {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.title {
+  font-size: 24px;
+  font-weight: 400;
+  color: #ffffff;
+}
+
+.subtitle {
+  font-size: 16px;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.subsection {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.pointsWarning {
+  font-size: 16px;
+  color: #d4b226;
+}
+
+@media (min-width: 1024px) {
+  .pointsPageLayout {
+    max-width: 1084px;
+    margin: 0 auto;
+    min-height: 100vh;
+    padding: 32px 16px;
+  }
+}
+
+@media (max-width: 768px) {
+  .subsection {
+    gap: 4px;
+    flex-direction: column;
+  }
+}

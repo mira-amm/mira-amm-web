@@ -11,6 +11,9 @@ export const BASE_ASSET_CONTRACT =
 export const USDC_ASSET_ID =
   "0x286c479da40dc953bddc3bb4c453b608bba2e0ac483b077bd475174115395e6b";
 
+export const FUEL_ASSET_ID =
+  "0x1d5d97005e41cae2187a895fd8eab0506111e0e2f3331cd3912c15c24e3c1d82";
+
 export const DefaultTxParams: TxParams = {
   gasLimit: 2_000_000,
   maxFee: 100_000,
@@ -84,4 +87,22 @@ export const RewardsApiUrl = "/api/rewards" as const;
 export const boosterBannerTitle =
   " Introducing Boost Rewards, earn $FUEL by providing liquidity.";
 
-export const EPOCH_NUMBER = 3 as const;
+export const POINTS_PROMO_TITLE =
+  "Introducing Mira Points, earn points by providing liquidity and engaging in activities.";
+
+export const EPOCH_NUMBER = 4 as const;
+
+export const POINTS_TOOLTIP =
+  "Your points are calculated based on the amount of liquidity you provide and the number of transactions you make.";
+
+export const POINTS_RANK_TOOLTIP =
+  "Your rank is determined by the amount of points you have accumulated.";
+
+// TODO: Add the url for the points learn more
+export const POINTS_LEARN_MORE_URL =
+  "https://mirror.xyz/miraly.eth/W2W1Zv8jKS-70OY64cF-qneyPgLngG4ItRv9PMmxHeY";
+
+export const POINTS_BANNER_TITLE = "Introducing Points";
+
+export const POINTS_BANNER_SUBHEADER =
+  "Earn MIRA points by providing liquidity and engaging in activities.";

@@ -117,12 +117,16 @@ export const getBoostReward = (
     };
     rewards: {
       dailyAmount: number;
+      assetId: string;
     }[];
   }[],
-): number => {
+): {
+  dailyAmount: number;
+  assetId: string | undefined;
+} => {
   const item = data.find((item) => item.pool.id === poolKey.replace(/0x/g, ""));
 
-  return item?.rewards[0].dailyAmount || 0;
+  return item?.rewards[0] || {dailyAmount: 0, assetId: undefined};
 };
 
 export const getRewardsPoolsId = (
