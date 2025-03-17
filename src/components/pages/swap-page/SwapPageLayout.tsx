@@ -4,7 +4,7 @@ import Header from "@/src/components/common/Header/Header";
 import Footer from "@/src/components/common/Footer/Footer";
 import Swap from "@/src/components/common/Swap/Swap";
 import styles from "./SwapPageLayout.module.css";
-import swapConnectedBg from "@/assets/swap-connected-bg.svg";
+import BgGradient from "../../icons/BgGradient/BgGradient";
 import {useIsConnected} from "@fuels/react";
 
 const SwapPageLayout = () => {
@@ -14,16 +14,18 @@ const SwapPageLayout = () => {
     <>
       <Header />
       <main className={styles.swapLayoutWrapper}>
-        <div className={styles.swapLayout}>
-          <Swap />
+        <div className={styles.swapContainer}>
+          <div className={styles.swapLayout}>
+            <Swap />
+          </div>
+          <div
+            className={`${styles.gradientLayout} ${
+              isConnected ? styles.visible : styles.hidden
+            }`}
+          >
+            <BgGradient />
+          </div>
         </div>
-        <img
-          src={swapConnectedBg.src}
-          alt="connected-bg-gradient"
-          className={`${styles.gradientBackground} ${
-            isConnected ? styles.visible : styles.hidden
-          }`}
-        />
       </main>
       <Footer />
     </>

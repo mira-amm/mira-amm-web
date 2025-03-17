@@ -2,9 +2,30 @@
   flex: 1;
   display: flex;
   justify-content: center;
-  padding: 16px;
+  padding: 84px 16px 0px 16px;
   position: relative;
+}
+
+.swapContainer {
+  display: flex;
+  flex-direction: column;
   align-items: center;
+  width: 100%;
+}
+
+.gradientLayout {
+  margin-top: 236px;
+  position: absolute;
+  opacity: 0;
+  transition: opacity 0.5s ease-in-out;
+}
+
+.gradientLayout.visible {
+  opacity: 1;
+}
+
+.gradientLayout.hidden {
+  opacity: 0;
 }
 
 .swapLayout {
@@ -16,28 +37,8 @@
   z-index: 1;
 }
 
-.gradientBackground {
-  position: absolute;
-  margin-top: 300px;
-  margin-left: 800px;
-  transform: translateX(-50%);
-  width: 100%;
-  max-width: 800px;
-  z-index: 0;
-  opacity: 0;
-  transition: opacity 0.5s ease-in-out;
-}
-
-.gradientBackground.visible {
-  opacity: 1;
-}
-
-.gradientBackground.hidden {
-  opacity: 0;
-}
-
-@media (min-width: 1024px) {
+@media (max-width: 1024px) {
   .swapLayoutWrapper {
-    /* padding: 84px 16px 48px; */
+    padding: 16px 16px 40px 16px;
   }
 }
