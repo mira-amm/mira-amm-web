@@ -4,6 +4,7 @@ import {memo} from "react";
 import {useAssetImage} from "@/src/hooks/useAssetImage";
 import {B256Address} from "fuels";
 import useAssetMetadata from "@/src/hooks/useAssetMetadata";
+import Image from "next/image";
 
 type Props = {
   firstCoin: B256Address;
@@ -39,10 +40,22 @@ const CoinPair = ({
     >
       <div className={styles.coinPairIcons}>
         {firstCoinIcon && (
-          <img src={firstCoinIcon} alt={`${firstSymbol} icon`} />
+          <Image
+            src={firstCoinIcon}
+            alt={`${firstSymbol} icon`}
+            width={34}
+            height={34}
+            priority
+          />
         )}
         {secondCoinIcon && (
-          <img src={secondCoinIcon} alt={`${secondSymbol} icon`} />
+          <Image
+            src={secondCoinIcon}
+            alt={`${secondSymbol} icon`}
+            width={34}
+            height={34}
+            priority
+          />
         )}
       </div>
       <div className={styles.namesAndFee}>
@@ -51,7 +64,7 @@ const CoinPair = ({
         </p>
         {withFeeBelow && <p className={styles.coinPairFee}>{feeText}</p>}
         {withPoolDescription && (
-          <p className={styles.poolDescription}>{poolDescription}</p>
+          <p className={styles.poolDescription}>{poolDescription} fee</p>
         )}
       </div>
       {withFee && <p className={styles.coinPairFee}>{feeText}</p>}

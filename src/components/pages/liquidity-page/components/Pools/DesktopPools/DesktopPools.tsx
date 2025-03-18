@@ -1,5 +1,4 @@
 import styles from "./DesktopPools.module.css";
-import {useRouter} from "next/navigation";
 import {clsx} from "clsx";
 import {PoolData} from "@/src/hooks/usePoolsData";
 import DesktopPoolRow from "./DesktopPoolRow";
@@ -14,8 +13,6 @@ type Props = {
 };
 
 const DesktopPools = ({poolsData, orderBy, handleSort}: Props) => {
-  const router = useRouter();
-
   if (!poolsData) {
     return null;
   }
@@ -42,7 +39,7 @@ const DesktopPools = ({poolsData, orderBy, handleSort}: Props) => {
           <th>
             <Link href="/liquidity/create-pool">
               <ActionButton className={styles.createButton}>
-                Create Pool
+                Create pool
               </ActionButton>
             </Link>
           </th>

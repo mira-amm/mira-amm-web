@@ -1,6 +1,9 @@
 .labelCell {
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 100%;
   text-align: center;
-  color: var(--content-primary) !important;
+  color: var(--mc-black) !important;
 }
 
 .aprBadge {
@@ -12,7 +15,7 @@ button.addButton {
   padding: 12px;
   font-weight: 500;
   font-size: 16px;
-  line-height: 19px;
+  line-height: 24px;
   min-width: 160px;
 }
 

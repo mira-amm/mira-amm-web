@@ -16,17 +16,6 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background-image: url("../../../../../../assets/lp-icon-bg.jpg");
-  background-size: cover;
-  width: 44px;
-  height: 44px;
-  border-radius: 4px;
-  color: var(--content-primary);
-}
-
-.icon > svg {
-  width: 28px;
-  height: 28px;
 }
 
 .content {
@@ -34,15 +23,17 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
-  gap: 4px;
+  gap: 6px;
 }
 
 .title {
-  font-weight: 500;
+  font-size: 16px;
+  font-weight: 400;
+  color: var(--mc-black);
 }
 
 .text {
-  font-size: 14px;
-  line-height: 16px;
-  color: var(--content-dimmed-light);
+  font-size: 16px;
+  font-weight: 400;
+  color: var(--mc-grey-4);
 }

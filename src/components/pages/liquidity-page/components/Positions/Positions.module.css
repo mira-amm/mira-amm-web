@@ -1,12 +1,14 @@
 .positions {
   display: flex;
   flex-direction: column;
-  gap: 24px;
+  gap: 18px;
 }
 
 .positionsTitle {
-  font-size: 20px;
-  line-height: 24px;
+  font-size: 24px;
+  line-height: 100%;
+  font-weight: 400;
+  color: var(--mc-black);
 }
 
 .positionsFallback {
@@ -26,6 +28,9 @@
 }
 
 .fallbackText {
+  font-size: 16px;
+  line-height: 22px;
+  font-weight: 400;
   color: var(--content-secondary) !important;
 }
 

@@ -15,8 +15,6 @@
 
 .coinPairIcons > svg,
 .coinPairIcons > img {
-  width: 28px;
-  height: 28px;
   border-radius: 100%;
 }
 
@@ -27,8 +25,8 @@
 
 .coinNames {
   font-weight: 500;
-  font-size: 14px;
-  line-height: 16px;
+  font-size: 18px;
+  line-height: 100%;
 }
 
 .namesAndFee {
@@ -39,7 +37,6 @@
 
 .coinPairFee {
   font-size: 12px;
-  line-height: 14px;
   color: var(--content-tertiary);
 }
 
@@ -47,17 +44,4 @@
   font-size: 12px;
   line-height: 14px;
   color: #d4b226;
-}
-
-@media (min-width: 1024px) {
-  .coinNames {
-    font-weight: 500;
-    font-size: 16px;
-    line-height: 19px;
-  }
-
-  .coinPairFee {
-    font-size: 14px;
-    line-height: 16px;
-  }
 }

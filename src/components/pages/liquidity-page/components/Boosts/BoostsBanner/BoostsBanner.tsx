@@ -6,12 +6,15 @@ import {
   POINTS_BANNER_TITLE,
   POINTS_LEARN_MORE_URL,
 } from "@/src/utils/constants";
-import PointsIcon from "@/src/components/icons/Points/PointsIcon";
+import PointsIcon from "@/assets/sparcle.svg";
+import Image from "next/image";
 
 const BoostsBanner = (): JSX.Element => {
   return (
     <div className={styles.banner}>
-      <PointsIcon />
+      <div className={styles.iconContainer}>
+        <Image src={PointsIcon} alt="sparkle" width={13} height={13} priority />
+      </div>
       <h2 className={pointsStyles.pointsTitle}>{POINTS_BANNER_TITLE}</h2>
       <div className={styles.bottomArea}>
         <p className={pointsStyles.pointsSubtitle}>{POINTS_BANNER_SUBHEADER}</p>

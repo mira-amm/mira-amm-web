@@ -3,15 +3,32 @@
   background-color: var(--background-secondary);
   border-radius: 16px;
   border: 11px solid var(--background-tertiary);
+  padding: 16px;
 }
 
 .desktopPositions th {
   font-size: 16px;
-  line-height: 19px;
+  line-height: 100%;
   font-weight: 400;
-  color: var(--content-tertiary);
+  color: var(--mc-black);
   padding: 0 16px;
-  border-bottom: 1px solid var(--background-grey-darker);
+  text-align: left;
+
+  /* border-bottom: 1px solid var(--background-grey-darker); */
+}
+
+.desktopPositions thead {
+  position: relative;
+}
+
+.desktopPositions thead::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 1px;
+  background-color: var(--mc-grey-3);
 }
 
 .desktopPositions td,
@@ -28,14 +45,12 @@
 .desktopPositions td:nth-child(2),
 .desktopPositions th:nth-child(2) {
   text-align: center;
-  color: var(--content-tertiary);
   min-width: 215px;
 }
 
 .desktopPositions td:nth-child(3),
 .desktopPositions th:nth-child(3) {
   text-align: center;
-  color: var(--content-tertiary);
   min-width: 215px;
 }
 

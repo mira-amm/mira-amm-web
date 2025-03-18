@@ -2,8 +2,8 @@
   --font-inter: 'Inter';
   --font-prompt: 'Prompt';
 
+  --primary-white: #FFFFFF;
   --mc-white: #FDFDFD;
-
   --mc-grey-1: #F5F5F5;
   --mc-grey-2: #ECEDF0;
   --mc-grey-3: #E0E2E7;
@@ -19,7 +19,7 @@
   --mc-red: #F95465;
   --mc-blue: #72A2FF;
 
-  --background-white: #FFFFFF;
+  --background-white: var(--primary-white);
   --background-primary: var(--mc-white);
   --background-secondary: var(--mc-grey-1);
   --background-tertiary: var(--mc-grey-2);

@@ -27,9 +27,6 @@ const Positions = (): JSX.Element => {
               Your liquidity will appear here
             </p>
           </div>
-          {/*<button className={styles.viewArchivedButton}>*/}
-          {/*  View archive positions*/}
-          {/*</button>*/}
         </div>
       ) : (
         <>

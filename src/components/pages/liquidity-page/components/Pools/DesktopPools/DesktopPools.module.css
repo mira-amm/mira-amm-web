@@ -2,24 +2,38 @@
   background-color: var(--background-secondary);
   border-radius: 16px;
   border: 11px solid var(--background-tertiary);
-  width: 100%;
-  table-layout: fixed;
+  padding: 16px;
 }
 
 .desktopPools th {
   font-size: 16px;
-  line-height: 19px;
-  font-weight: 500;
-  color: var(--content-tertiary);
-  border-bottom: 1px solid var(--background-grey-darker);
+  line-height: 100%;
+  font-weight: 400;
+  color: var(--mc-black);
+  padding: 0 16px;
+  text-align: left;
+}
+
+.desktopPools thead {
+  position: relative;
+}
+
+.desktopPools thead::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 1px;
+  background-color: var(--mc-grey-3);
+}
+.desktopPools tr {
+  margin-bottom: 20px;
 }
 
 .desktopPools th,
 .desktopPools td {
   padding: 16px 24px;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
 }
 
 .desktopPools th:first-child {
@@ -34,9 +48,9 @@
 button.createButton {
   width: 100%;
   padding: 12px;
-  font-weight: 400;
+  font-weight: 500;
   font-size: 16px;
-  line-height: 19px;
+  line-height: 24px;
   box-shadow: unset;
   height: 40px;
 }
@@ -69,10 +83,15 @@ button.createButton {
   /* Width for the "Create Pool" column */
 }
 
-.aprTd {
-  overflow: visible !important;
-  margin-top: 26px;
+.aprBadge {
   display: flex;
   justify-content: center;
-  align-content: center;
+}
+
+.labelCell {
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 100%;
+  text-align: center;
+  color: var(--mc-black) !important;
 }

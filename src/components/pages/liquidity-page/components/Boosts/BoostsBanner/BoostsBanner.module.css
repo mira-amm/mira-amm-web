@@ -1,12 +1,22 @@
 .banner {
   background-image: url("../../../../../../../assets/boost-banner.png");
   background-size: cover;
-  padding: 16px;
+  padding: 24px;
   gap: 10px;
   border-radius: 10px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+}
+
+.iconContainer {
+  width: 20px;
+  height: 20px;
+  background-color: rgba(255, 255, 255, 0.4);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .header {
@@ -24,7 +34,7 @@
 .subHeader {
   font-size: 16px;
   font-weight: 400;
-  color: white;
+  color: var(--primary-white);
   flex: 1 1 auto;
   margin-right: 8px;
 }
@@ -32,9 +42,9 @@
 .learnMore {
   display: inline-flex;
   align-items: center;
-  font-size: 16px;
-  font-weight: 500;
-  color: white;
+  font-size: 15px;
+  font-weight: 400;
+  color: var(--primary-white);
   background: transparent;
   border: none;
   cursor: pointer;
@@ -54,7 +64,7 @@
   bottom: -2px;
   width: 100%;
   height: 2px;
-  background-color: white;
+  background-color: var(--primary-white);
   transform: scaleX(0);
   transform-origin: left;
   transition: transform 0.3s ease;
@@ -66,7 +76,7 @@
 
 .arrow {
   margin-left: 4px;
-  font-size: 18px;
+  font-size: 15px;
   transition: margin-left 0.3s ease;
 }
 

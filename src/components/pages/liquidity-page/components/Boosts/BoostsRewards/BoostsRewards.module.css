@@ -37,7 +37,7 @@
   min-height: 110px;
   padding: 24px;
   background-size: cover;
-  background: var(--primary-card-gradient);
+  background-image: url("../../../../../../../assets/boost-banner.png");
 }
 
 .rewardsItem {
