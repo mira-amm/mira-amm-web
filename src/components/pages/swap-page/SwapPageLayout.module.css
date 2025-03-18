@@ -2,8 +2,8 @@
   flex: 1;
   display: flex;
   justify-content: center;
-  padding: 84px 16px 0px 16px;
-  position: relative;
+  padding: 16px 16px 0px 16px;
+  align-items: center;
 }
 
 .swapContainer {
@@ -14,8 +14,8 @@
 }
 
 .gradientLayout {
-  margin-top: 236px;
-  position: absolute;
+  max-height: 358px;
+  margin-top: -300px;
   opacity: 0;
   transition: opacity 0.5s ease-in-out;
 }
@@ -39,6 +39,6 @@
 
 @media (max-width: 1024px) {
   .swapLayoutWrapper {
-    padding: 16px 16px 40px 16px;
+    padding: 16px;
   }
 }

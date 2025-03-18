@@ -646,9 +646,9 @@ const Swap = () => {
             </ActionButton>
           )}
         </div>
-        <div className={styles.rates}>
+        {/* <div className={styles.rates}>
           <ExchangeRate swapState={swapState} />
-        </div>
+        </div> */}
       </div>
       {swapPending && <div className={styles.loadingOverlay} />}
       <SettingsModal title={`Slippage tolerance: ${slippage / 100}%`}>
