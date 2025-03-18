@@ -174,7 +174,7 @@ const TransactionsHistory = forwardRef<
   return (
     <div className={isOpened ? styles.overlayOpened : styles.overlayClosed}>
       <div
-        className={`${styles.wrapper} ${isOpened ? styles.open : styles.close}`}
+        className={`action-container ${styles.wrapper} ${isOpened ? styles.open : styles.close}`}
         ref={ref}
       >
         <div className={styles.header}>
