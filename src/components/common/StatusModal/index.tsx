@@ -1,9 +1,9 @@
 import SuccessIcon from "@/src/components/icons/Success/SuccessIcon";
 import FailureIcon from "@/src/components/icons/Failure/FailureIcon";
 import ActionButton from "@/src/components/common/ActionButton/ActionButton";
-import {useCallback} from "react";
-import {openNewTab} from "@/src/utils/common";
-import {FuelAppUrl} from "@/src/utils/constants";
+import { useCallback } from "react";
+import { openNewTab } from "@/src/utils/common";
+import { FuelAppUrl } from "@/src/utils/constants";
 import styles from "./index.module.css";
 
 export enum ModalType {
@@ -40,10 +40,7 @@ const StatusModal = ({
         <p className={styles.subText}>{subTitle}</p>
       </div>
       {transactionHash && (
-        <ActionButton
-          onClick={handleViewTransactionClick}
-          className={styles.viewButton}
-        >
+        <ActionButton onClick={handleViewTransactionClick} fullWidth>
           View transaction
         </ActionButton>
       )}

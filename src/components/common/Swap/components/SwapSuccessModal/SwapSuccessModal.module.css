@@ -18,10 +18,6 @@
   color: var(--content-dimmed-dark);
 }
 
-.viewButton {
-  width: 100%;
-}
-
 @media (min-width: 1024px) {
   .claimFailureModal {
     gap: 24px;

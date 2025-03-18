@@ -1,6 +1,6 @@
-import {clsx} from "clsx";
+import { clsx } from "clsx";
 
-import {forwardRef, memo, ReactNode, useCallback} from "react";
+import { forwardRef, memo, ReactNode, useCallback } from "react";
 
 import Loader from "@/src/components/common/Loader/Loader";
 
@@ -52,7 +52,7 @@ const ActionButton = forwardRef<HTMLButtonElement, Props>(function ActionButton(
         variant !== "secondary" && variant !== "outlined" && styles.primary,
         variant === "secondary" && styles.secondary,
         variant === "outlined" && styles.outlined,
-        loading && styles.loading,
+        loading && styles.loadingAnimation,
         completed && styles.completed,
         fullWidth && styles.fullWidth,
         className,
@@ -62,7 +62,7 @@ const ActionButton = forwardRef<HTMLButtonElement, Props>(function ActionButton(
       type={type || "button"}
       ref={ref}
     >
-      {loading ? <Loader variant={variant} /> : children}
+      {!loading && children}
     </button>
   );
 });
