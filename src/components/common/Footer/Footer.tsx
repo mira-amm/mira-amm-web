@@ -9,6 +9,8 @@ import X from "../../icons/X/XSocialIcon";
 
 const Footer = () => {
 
+  const currentYear = new Date().getFullYear();
+
   return (
     <footer className={styles.footerLayout}>
       <div className={clsx("mobileOnly", styles.footer)}>
@@ -51,6 +53,9 @@ const Footer = () => {
               </a>
             </div>
           </div>
+        </div>
+        <div className={styles.copyright}>
+          <p className="mobileOnly">&copy; {currentYear} Mira Finance</p>
         </div>
       </div>
       <div className={clsx("desktopOnly", styles.footer)}>
@@ -116,6 +121,9 @@ const Footer = () => {
               </a>
             </div>
           </div>
+        </div>
+        <div className={styles.copyright}>
+          <p className="desktopOnly">&copy; {currentYear} Mira Finance</p>
         </div>
       </div>
     </footer>
