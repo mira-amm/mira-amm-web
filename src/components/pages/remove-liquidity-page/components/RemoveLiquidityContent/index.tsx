@@ -1,43 +1,29 @@
-import styles from "./index.module.css";
-import CoinPair from "@/src/components/common/CoinPair/CoinPair";
-import WarningIcon from "@/src/components/icons/Warning/WarningIcon";
 import ActionButton from "@/src/components/common/ActionButton/ActionButton";
-import {
-  ChangeEvent,
-  memo,
-  MouseEvent,
-  TouchEvent,
-  useEffect,
-  useRef,
-  useState,
-  useCallback,
-} from "react";
-import {useDebounceCallback} from "usehooks-ts";
+import AprBadge from "@/src/components/common/AprBadge/AprBadge";
+import CoinPair from "@/src/components/common/CoinPair/CoinPair";
+import Info from "@/src/components/common/Info/Info";
+import StatusModal, {ModalType} from "@/src/components/common/StatusModal";
 import useAssetMetadata from "@/src/hooks/useAssetMetadata";
-import {bn, formatUnits, FuelError} from "fuels";
-import {PoolId} from "mira-dex-ts";
-import usePositionData from "@/src/hooks/usePositionData";
-import usePoolAPR from "@/src/hooks/usePoolAPR";
-import {createPoolKey} from "@/src/utils/common";
-import useRemoveLiquidity from "@/src/hooks/useRemoveLiquidity";
 import useCheckActiveNetwork from "@/src/hooks/useCheckActiveNetwork";
 import useModal from "@/src/hooks/useModal/useModal";
-import StatusModal, {ModalType} from "@/src/components/common/StatusModal";
+import usePoolAPR from "@/src/hooks/usePoolAPR";
+import usePoolNameAndMatch from "@/src/hooks/usePoolNameAndMatch";
+import usePositionData from "@/src/hooks/usePositionData";
+import useRemoveLiquidity from "@/src/hooks/useRemoveLiquidity";
+import {createPoolKey} from "@/src/utils/common";
+import {APRTooltip, DefaultLocale} from "@/src/utils/constants";
+import clsx from "clsx";
+import {bn, formatUnits, FuelError} from "fuels";
+import {PoolId} from "mira-dex-ts";
+import {memo, useCallback, useRef, useState} from "react";
+import Slider from "../Slider";
+import styles from "./index.module.css";
 
 type Props = {
   pool: PoolId;
 };
 
 const RemoveLiquidityModalContent = ({pool}: Props) => {
-  useEffect(() => {
-    if (sliderRef.current) {
-      document.documentElement.style.setProperty(
-        "--value",
-        `${sliderRef.current.value}%`,
-      );
-    }
-  }, []);
-
   const [SuccessModal, openSuccessModal] = useModal();
   const [FailureModal, openFailureModal] = useModal();
 
@@ -49,13 +35,22 @@ const RemoveLiquidityModalContent = ({pool}: Props) => {
 
   const [removeLiquidityPercentage, setRemoveLiquidityPercentage] =
     useState(50);
-  const [displayValue, setDisplayValue] = useState(removeLiquidityPercentage);
 
+  const aprValue =
+    apr !== undefined
+      ? apr.apr.toLocaleString(DefaultLocale, {
+          minimumFractionDigits: 2,
+          maximumFractionDigits: 2,
+        })
+      : null;
   const tvlValue = apr?.tvlUSD;
   const coinReserveA = apr?.reserve0;
   const coinReserveB = apr?.reserve1;
 
   const poolKey = createPoolKey(pool);
+
+  const {isMatching} = usePoolNameAndMatch(poolKey);
+
   const isStablePool = pool[2];
 
   const [assetA, assetB] = assets || [
@@ -120,28 +115,8 @@ const RemoveLiquidityModalContent = ({pool}: Props) => {
     removeLiquidity,
   ]);
 
-  const sliderRef = useRef<HTMLInputElement>(null);
-
-  const debouncedSetValue = useDebounceCallback(
-    setRemoveLiquidityPercentage,
-    500,
-  );
-
-  const handleMouseUp = (
-    e: MouseEvent<HTMLInputElement> | TouchEvent<HTMLInputElement>,
-  ) => {
-    // @ts-expect-error add correct event type
-    debouncedSetValue(Number(e.target.value));
-  };
-
-  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setDisplayValue(Number(e.target.value));
-    document.documentElement.style.setProperty("--value", `${e.target.value}%`);
-  };
-
-  const handleMax = () => {
-    debouncedSetValue(100);
-    document.documentElement.style.setProperty("--value", "100%");
+  const handleChange = (value: number) => {
+    setRemoveLiquidityPercentage(value);
   };
 
   const getModalMessage = () => {
@@ -168,28 +143,54 @@ const RemoveLiquidityModalContent = ({pool}: Props) => {
 
   return (
     <div className={styles.removeLiquidityContent}>
-      <CoinPair
-        firstCoin={pool[0].bits}
-        secondCoin={pool[1].bits}
-        isStablePool={isStablePool}
-      />
-      <div className={styles.valueAndMax}>
-        <p className={styles.value}>{displayValue}%</p>
-        <button className={styles.maxButton} onClick={handleMax}>
-          Max
-        </button>
+      <p>Selected pair</p>
+      <div className={styles.coinHeader}>
+        <CoinPair
+          firstCoin={pool[0].bits}
+          secondCoin={pool[1].bits}
+          isStablePool={isStablePool}
+        />
+        <div className={styles.APR}>
+          <div className={styles.aprText}>
+            <p>Estimated APR</p>
+            <Info tooltipText={APRTooltip} tooltipKey="apr" />
+          </div>
+          {isMatching ? (
+            <div className={styles.aprDiv}>
+              <AprBadge
+                aprValue={
+                  aprValue === "NaN"
+                    ? "n/a"
+                    : aprValue
+                      ? `${aprValue}%`
+                      : "pending"
+                }
+                small
+                poolKey={poolKey}
+                tvlValue={tvlValue}
+              />
+            </div>
+          ) : (
+            <span
+              className={clsx(
+                aprValue && styles.highlight,
+                !aprValue && styles.pending,
+              )}
+            >
+              {aprValue ? `${aprValue}%` : "Awaiting data"}
+            </span>
+          )}
+        </div>
       </div>
-      <input
-        type="range"
-        className={styles.slider}
-        min={0}
-        max={100}
-        defaultValue={removeLiquidityPercentage}
-        onMouseUp={handleMouseUp}
-        onTouchEnd={handleMouseUp}
-        onChange={handleChange}
-        ref={sliderRef}
-      />
+
+      <div className={styles.sliderContainer}>
+        <div className={styles.sliderInfoContainer}>
+          <p>Amount to remove</p>
+          <p>1200</p>
+        </div>
+        <Slider value={removeLiquidityPercentage} onChange={handleChange} />
+      </div>
+
       <div className={styles.tableWrapper}>
         <table className={styles.liquidityTable}>
           <thead>
@@ -199,12 +200,14 @@ const RemoveLiquidityModalContent = ({pool}: Props) => {
               <th>{coinBMetadata.symbol}</th>
             </tr>
           </thead>
+          <hr className={styles.divider} />
           <tbody>
             <tr>
               <td>Current position</td>
               <td>{coinAAmount}</td>
               <td>{coinBAmount}</td>
             </tr>
+
             <tr className={styles.lastRow}>
               <td>Remove</td>
               <td>{coinAAmountToWithdrawStr}</td>
@@ -213,26 +216,20 @@ const RemoveLiquidityModalContent = ({pool}: Props) => {
           </tbody>
         </table>
       </div>
-      <div className={styles.textBlock}>
-        <p className={styles.infoBlockTitle}>
-          <WarningIcon />
-          Pay attention
-        </p>
-        <p className={styles.infoBlockText}>
-          This based on the current price of the pool. Your fees earned will
-          always increase, but the principal amount may change with the price of
-          the pool
-        </p>
-      </div>
-      <div className={styles.buttons}>
-        <ActionButton
-          onClick={handleRemoveLiquidity}
-          disabled={withdrawalDisabled}
-          loading={isPending}
-        >
-          {buttonTitle}
-        </ActionButton>
-      </div>
+      <p className={styles.infoBlockText}>
+        This is based on the current price of the pool. Your fees earned will
+        always increase, but the principal amount may change with the price of
+        the pool.
+      </p>
+
+      <ActionButton
+        onClick={handleRemoveLiquidity}
+        disabled={withdrawalDisabled}
+        loading={isPending}
+        fullWidth
+      >
+        {buttonTitle}
+      </ActionButton>
       <SuccessModal title={<></>}>
         <StatusModal
           type={ModalType.SUCCESS}

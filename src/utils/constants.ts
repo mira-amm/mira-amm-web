@@ -103,3 +103,6 @@ export const POINTS_BANNER_TITLE = "Introducing Boosts";
 
 export const POINTS_BANNER_SUBHEADER =
   "Earn MIRA points by providing liquidity and engaging in activities.";
+
+export const APRTooltip =
+  "Annual return for liquidity providers, including fees and incentives";

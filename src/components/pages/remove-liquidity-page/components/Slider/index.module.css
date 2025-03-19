@@ -1,0 +1,71 @@
+.sliderContainer {
+  background-color: #f5f7fa;
+  border-radius: 8px;
+  width: 100%;
+  font-family: "EllographCF";
+}
+
+.sliderWrapper {
+  position: relative;
+}
+
+.sliderLabels {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 10px;
+  font-size: 14px;
+  color: var(--mc-black);
+}
+
+/* Style the range input */
+.customSlider {
+  -webkit-appearance: none;
+  width: 100%;
+  height: 8px;
+  background: var(--mc-black);
+  outline: none;
+  border-radius: 5px;
+  position: relative;
+}
+
+/* Style the thumb */
+.customSlider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 20px;
+  height: 20px;
+  background: var(--mc-black);
+  border: 2px solid var(--primary-white);
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.customSlider::-moz-range-thumb {
+  width: 20px;
+  height: 20px;
+  background: var(--mc-black);
+  border: 2px solid var(--primary-white);
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+/* Style the dots */
+.sliderDots {
+  position: absolute;
+  top: 10px;
+  width: 98%;
+  height: 8px;
+  pointer-events: none;
+  margin-left: 5px;
+}
+
+.dot {
+  position: absolute;
+  width: 6px;
+  height: 6px;
+  background: var(--primary-white);
+  border: 1px solid black;
+  border-radius: 50%;
+  transform: translateX(-50%);
+  top: 0;
+}
