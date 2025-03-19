@@ -179,7 +179,7 @@ input:focus {
   border-radius: 16px;
   border: 11px solid var(--background-tertiary);
   background-color: var(--background-secondary);
-  padding: 20px;
+  padding: 24px 20px;
   gap: 10px;
   width: 563px;
   height: auto;

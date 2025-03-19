@@ -37,7 +37,7 @@ interface MobilePositionViewProps {
   positionPath: string;
   assetA: AssetData;
   assetB: AssetData;
-  handleWithdrawLiquidity: () => void;
+  removeLiquidityPath: string;
 }
 
 const MobilePositionView = ({
@@ -47,7 +47,7 @@ const MobilePositionView = ({
   positionPath,
   assetA,
   assetB,
-  handleWithdrawLiquidity,
+  removeLiquidityPath,
 }: MobilePositionViewProps): JSX.Element => {
   const loading = <Loader variant="outlined" color="gray" />;
 
@@ -113,14 +113,15 @@ const MobilePositionView = ({
         </Link>
       </div>
       <div className={styles.nonSticky}>
-        <ActionButton
-          className={styles.withdrawButton}
-          variant="secondary"
-          onClick={handleWithdrawLiquidity}
-          fullWidth
-        >
-          Remove Liquidity
-        </ActionButton>
+        <Link href={removeLiquidityPath}>
+          <ActionButton
+            className={styles.withdrawButton}
+            variant="secondary"
+            fullWidth
+          >
+            Remove Liquidity
+          </ActionButton>
+        </Link>
       </div>
 
       <PromoBlock

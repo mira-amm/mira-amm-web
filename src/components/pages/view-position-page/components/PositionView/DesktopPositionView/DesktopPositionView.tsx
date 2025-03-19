@@ -34,7 +34,7 @@ interface DesktopPositionViewProps {
   positionPath: string;
   assetA: AssetData;
   assetB: AssetData;
-  handleWithdrawLiquidity: () => void;
+  removeLiquidityPath: string;
 }
 
 const DesktopPositionView = ({
@@ -44,7 +44,7 @@ const DesktopPositionView = ({
   positionPath,
   assetA,
   assetB,
-  handleWithdrawLiquidity,
+  removeLiquidityPath,
 }: DesktopPositionViewProps): JSX.Element => {
   return (
     <section className={clsx(styles.contentSection, "desktopOnly")}>
@@ -58,13 +58,11 @@ const DesktopPositionView = ({
           />
         </div>
         <div className={styles.actionBlock}>
-          <ActionButton
-            variant="secondary"
-            className={styles.actionButton}
-            onClick={handleWithdrawLiquidity}
-          >
-            Remove Liquidity
-          </ActionButton>
+          <Link href={removeLiquidityPath}>
+            <ActionButton variant="secondary" className={styles.actionButton}>
+              Remove Liquidity
+            </ActionButton>
+          </Link>
           <Link href={positionPath}>
             <ActionButton variant="primary" className={styles.actionButton}>
               Add Liquidity
