@@ -4,7 +4,7 @@ import {Navigate, PageElement, By, PageElements} from "@serenity-js/web";
 import {
   // Ensure,
   // equals,
-  isPresent
+  isPresent,
 } from "@serenity-js/assertions";
 import {isVisible} from "@serenity-js/web";
 
@@ -81,13 +81,20 @@ describe("Footer", () => {
     PageElement.located(By.cssContainingText("a", "Support"));
   const footerMediaKitLink = () =>
     PageElement.located(By.cssContainingText("a", "Media Kit"));
+  const footerSecurityAuditLink = () =>
+    PageElement.located(By.cssContainingText("a", "Security Audit"));
+  const footerDocsLink = () =>
+    PageElement.located(By.cssContainingText("a", "Docs"));
+  const footerBlogLink = () =>
+    PageElement.located(By.cssContainingText("a", "Blog"));
+  const footerCareersLink = () =>
+    PageElement.located(By.cssContainingText("a", "Careers"));
+  const footerContactUsLink = () =>
+    PageElement.located(By.cssContainingText("a", "Contact us"));
 
   it("footer is visible", async ({actor}) => {
     console.log(footer());
-    await actor.attemptsTo(
-      Navigate.to("/"),
-      Wait.until(footer(), isPresent()),
-    );
+    await actor.attemptsTo(Navigate.to("/"), Wait.until(footer(), isPresent()));
   });
 
   it.skip("logo in footer is visible", async ({actor}) => {
@@ -108,6 +115,39 @@ describe("Footer", () => {
     await actor.attemptsTo(
       Navigate.to("/"),
       Wait.until(footerMediaKitLink(), isPresent()),
+    );
+  });
+
+  it("'Security Audit' link is visible", async ({actor}) => {
+    await actor.attemptsTo(
+      Navigate.to("/"),
+      Wait.until(footerSecurityAuditLink(), isPresent()),
+    );
+  });
+
+
+  it("'Docs' link is visible", async ({actor}) => {
+    await actor.attemptsTo(
+      Navigate.to("/"),
+      Wait.until(footerDocsLink(), isPresent()),
+    );
+  });
+  it("'Blog' link is visible", async ({actor}) => {
+    await actor.attemptsTo(
+      Navigate.to("/"),
+      Wait.until(footerBlogLink(), isPresent()),
+    );
+  });
+  it("'Careers' link is visible", async ({actor}) => {
+    await actor.attemptsTo(
+      Navigate.to("/"),
+      Wait.until(footerCareersLink(), isPresent()),
+    );
+  });
+  it("'Contact us' link is visible", async ({actor}) => {
+    await actor.attemptsTo(
+      Navigate.to("/"),
+      Wait.until(footerContactUsLink(), isPresent()),
     );
   });
 });
