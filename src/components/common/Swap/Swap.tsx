@@ -584,6 +584,7 @@ const Swap = ({isWidget}: {isWidget?: boolean}) => {
         <div
           className={clsx(
             styles.swapContainer,
+            isWidget && styles.widgetSwapContainer,
             swapPending && styles.swapContainerLoading,
           )}
         >

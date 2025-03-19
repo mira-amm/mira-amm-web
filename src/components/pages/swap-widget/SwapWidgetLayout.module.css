@@ -4,6 +4,7 @@
   justify-content: center;
   padding: 16px;
   gap: 16px;
+  background-color: var(--background-primary);
 }
 
 @media (min-width: 1024px) {
