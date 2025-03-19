@@ -157,6 +157,10 @@
   align-items: center;
 }
 
+.withdrawLiquidityTitle {
+  text-align: center;
+}
+
 @media (min-width: 1024px) {
   .viewPositionLayout {
     /* min-height: calc(100vh - 157px); */

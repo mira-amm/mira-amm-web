@@ -5,7 +5,7 @@ import Footer from "@/src/components/common/Footer/Footer";
 import BackLink from "@/src/components/common/BackLink/BackLink";
 import Pools from "@/src/components/pages/liquidity-page/components/Pools/Pools";
 import Positions from "@/src/components/pages/liquidity-page/components/Positions/Positions";
-import PromoBlock from "@/src/components/pages/liquidity-page/components/PromoBlock/PromoBlock";
+import PromoBlock from "@/src/components/common/PromoBlock/PromoBlock";
 
 import styles from "./LiquidityPageLayout.module.css";
 import {
