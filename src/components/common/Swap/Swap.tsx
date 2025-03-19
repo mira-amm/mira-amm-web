@@ -572,7 +572,7 @@ const Swap = () => {
 
   return (
     <>
-      <div className={styles.swapAndRate}>
+      <div>
         <div
           className={clsx(
             styles.swapContainer,

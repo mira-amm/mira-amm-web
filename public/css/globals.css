@@ -17,7 +17,7 @@
   --mc-green-3: #015537;
 
   --mc-red: #F95465;
-  --mc-blue: #72A2FF;
+  --mc-blue: #507FF7;
 
   --background-white: var(--primary-white);
   --background-primary: var(--mc-white);
@@ -29,7 +29,7 @@
   --background-dimmer: rgba(14, 17, 30, 0.63);
   --border-dark: var(--mc-grey-4);
   --background-grey-darker: rgba(255, 255, 255, 0.05);
-
+  --background-promotional-banner: var(--mc-blue);
 
 
   --content-primary: var(--mc-black);
@@ -182,5 +182,16 @@ input:focus {
   padding: 24px 20px;
   gap: 10px;
   width: 563px;
+  height: auto;
+}
+
+.action-container {
+  display: flex;
+  flex-direction: column;
+  border: 11px solid var(--background-tertiary);
+  background-color: var(--background-secondary);
+  border-radius: 8px;
+  padding: 20px;
+  gap: 10px;
   height: auto;
 }

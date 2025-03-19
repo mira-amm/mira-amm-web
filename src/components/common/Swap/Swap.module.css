@@ -1,14 +1,14 @@
-.swapAndRate {
+/* .swapAndRate {
   display: flex;
   flex-direction: column;
   gap: 12px;
-}
+} */
 
 .swapContainer {
   display: flex;
   flex-direction: column;
   gap: 16px;
-  padding: 16px 16px 18px;
+  padding: 19px;
   border: var(--border-style-secondary);
   border-radius: 16px;
   background-color: var(--background-secondary);
@@ -79,10 +79,6 @@
 }
 
 @media (min-width: 1024px) {
-  .swapAndRate {
-    gap: 16px;
-  }
-
   .heading {
     font-size: 20px;
     line-height: 24px;

@@ -7,12 +7,16 @@
 .promo {
   display: flex;
   padding: 12px 16px;
-  background-color: #507ff7;
+  font-size: 18px;
+  line-height: 22px;
+  font-weight: 400;
+  background-color: var(--background-promotional-banner);
   justify-content: space-between;
 }
 
 .promo_text {
   display: flex;
+  color: var(--primary-white);
 }
 
 .promo_text u {
@@ -90,8 +94,6 @@
   }
 
   .promo {
-    font-size: 18px;
-    line-height: 22px;
     justify-content: center;
     text-align: center;
   }
