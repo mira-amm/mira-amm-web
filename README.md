@@ -63,6 +63,10 @@ pnpm dev
 ### Run End-to-End tests
 
 ``` shell
-pnpm test:e2e
+pnpm test:e2e # UI mode
+```
+
+``` shell
+pnpm test:e2e-ci # Headless mode
 ```
 

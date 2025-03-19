@@ -21,6 +21,7 @@ const baseURL = process.env.BASE_URL || "http://localhost:3000";
  * See https://playwright.dev/docs/test-configuration.
  */
 export default defineConfig<SerenityOptions>({
+  testDir: "apps/web-e2e",
   // ...nxE2EPreset(__filename, {testDir: "./apps/web-e2e/src/"}),
   fullyParallel: !process.env.CI,
   // Opt out of parallel tests on CI.

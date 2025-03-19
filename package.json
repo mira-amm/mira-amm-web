@@ -12,6 +12,7 @@
     "test": "jest",
     "test:watch": "jest --watch",
     "test:e2e": "playwright test --ui",
+    "test:e2e-ci": "playwright test",
     "fix:formatting": "npx prettier --write .",
     "rewards": "tsx scripts/getAllCampaignRewardsForEpoch.ts"
   },
