@@ -4,6 +4,7 @@ Source code for the [Mira Exchange](https://mira.ly/) web interface that enables
 the [Fuel blockchain](https://fuel.network/).
 
 It provides an intuitive interface for:
+
 - Performing token swaps
 - Providing liquidity
 - Managing liquidity positions
@@ -21,16 +22,22 @@ and more within the Mira protocol.
 ## Installation
 
 ### Clone Repo
+
 HTTPS:
-``` shell
+
+```shell
 https://github.com/mira-amm/mira-amm-web.git # HTTPS
 ```
+
 Or
-``` shell
+
+```shell
 git@github.com:mira-amm/mira-amm-web.git # SSH
 ```
+
 Or
-``` shell
+
+```shell
 gh repo clone mira-amm/mira-amm-web # GitHub CLI
 ```
 
@@ -48,7 +55,7 @@ pnpm exec playwright install
 
 ### Obtain environment variables
 
-``` shell
+```shell
 cp .env.example .env
 ```
 
@@ -56,17 +63,16 @@ Fill in all missing API keys and access tokens.
 
 ### Run dev server
 
-``` shell
+```shell
 pnpm dev
 ```
 
 ### Run End-to-End tests
 
-``` shell
+```shell
 pnpm test:e2e # UI mode
 ```
 
-``` shell
+```shell
 pnpm test:e2e-ci # Headless mode
 ```
-

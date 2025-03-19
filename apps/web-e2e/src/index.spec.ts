@@ -125,7 +125,6 @@ describe("Footer", () => {
     );
   });
 
-
   it("'Docs' link is visible", async ({actor}) => {
     await actor.attemptsTo(
       Navigate.to("/"),
