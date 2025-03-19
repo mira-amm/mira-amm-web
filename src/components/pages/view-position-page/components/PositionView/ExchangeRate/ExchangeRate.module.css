@@ -4,17 +4,15 @@
   justify-content: space-between;
 }
 
-.reserveItems > p {
-  font-size: 16px;
+.infoText {
+  color: var(--mc-grey-4);
+  font-size: 14px;
   font-weight: 400;
-  line-height: 19px;
+  line-height: 100%;
 }
 
 .exchangeRate {
   cursor: pointer;
   display: flex;
-}
-
-.exchangeIcon {
-  margin-left: 4px;
+  gap: 6px;
 }

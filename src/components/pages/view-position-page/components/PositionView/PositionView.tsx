@@ -36,7 +36,7 @@ const PositionView = ({pool}: Props): JSX.Element => {
     closeRemoveLiquidityModal,
   ] = useModal();
   const [SuccessModal, openSuccessModal] = useModal();
-  const [FailureModal, openFailureModal, closeFailureModal] = useModal();
+  const [FailureModal, openFailureModal] = useModal();
 
   const router = useRouter();
   const assetAMetadata = useAssetMetadata(pool[0].bits);
@@ -156,7 +156,7 @@ const PositionView = ({pool}: Props): JSX.Element => {
 
   return (
     <>
-      <BackLink showOnDesktop href="/liquidity" chevron />
+      <BackLink showOnDesktop href="/liquidity" chevron title="Back to Pool" />
       <MobilePositionView
         pool={pool}
         isStablePool={isStablePool}

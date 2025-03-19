@@ -12,3 +12,13 @@
   display: flex;
   align-items: center;
 }
+
+.infoText {
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 100%;
+}
+
+.positionText {
+  color: var(--mc-black);
+}

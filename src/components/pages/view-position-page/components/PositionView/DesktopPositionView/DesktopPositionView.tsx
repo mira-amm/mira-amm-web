@@ -4,8 +4,7 @@ import Link from "next/link";
 import CoinPair from "@/src/components/common/CoinPair/CoinPair";
 import CoinWithAmount from "@/src/components/common/CoinWithAmount/CoinWithAmount";
 import ActionButton from "@/src/components/common/ActionButton/ActionButton";
-import PromoBlock from "@/src/components/pages/liquidity-page/components/PromoBlock/PromoBlock";
-import StarsIcon from "@/src/components/icons/Stars/StarsIcon";
+import PromoBlock from "@/src/components/common/PromoBlock/PromoBlock";
 import {PoolId} from "mira-dex-ts";
 import styles from "./DesktopPositionView.module.css";
 import AprDisplay from "../AprDisplay/AprDisplay";
@@ -13,6 +12,9 @@ import ReserveItem from "../ReserveItem/ReserveItem";
 import ExchangeRate from "../ExchangeRate/ExchangeRate";
 import MiraBlock from "../MiraBlock/MiraBlock";
 import {formatDisplayAmount} from "@/src/utils/common";
+import {LIQUIDITY_PROVIDING_DOC_URL} from "@/src/utils/constants";
+import Image from "next/image";
+import LearnMoreIcon from "@/assets/learn-more.png";
 
 interface AssetMetadata {
   name?: string;
@@ -55,16 +57,16 @@ const DesktopPositionView = ({
             withPoolDescription
           />
         </div>
-        <div className={styles.actionBtnDiv}>
+        <div className={styles.actionBlock}>
           <ActionButton
             variant="secondary"
-            className={styles.withdrawButton}
+            className={styles.actionButton}
             onClick={handleWithdrawLiquidity}
           >
             Remove Liquidity
           </ActionButton>
           <Link href={positionPath}>
-            <ActionButton variant="primary" className={styles.withdrawButton}>
+            <ActionButton variant="primary" className={styles.actionButton}>
               Add Liquidity
             </ActionButton>
           </Link>
@@ -75,7 +77,9 @@ const DesktopPositionView = ({
         <MiraBlock pool={pool} />
         <div className={styles.infoBlocks}>
           <div className={styles.infoBlock}>
-            <p className={styles.subheading}>Your position</p>
+            <p className={clsx(styles.infoText, styles.positionText)}>
+              Your position
+            </p>
             <AprDisplay pool={pool} />
             <div className={styles.coinsData}>
               <CoinWithAmount
@@ -92,7 +96,12 @@ const DesktopPositionView = ({
       </div>
 
       <div className={styles.priceBlockLargeDesktop}>
-        <p className={styles.subheading}>Pool reserves</p>
+        <p className={clsx(styles.infoText, styles.positionText)}>
+          Pool reserves
+        </p>
+
+        <hr className={styles.divider} />
+
         <ReserveItem
           assetId={pool[0].bits}
           amount={assetA.amount}
@@ -103,7 +112,7 @@ const DesktopPositionView = ({
           amount={assetB.amount}
           reserve={assetB.reserve}
         />
-        {formattedTvlValue && <div className={clsx(styles.divider)}></div>}
+        {formattedTvlValue && <hr className={styles.divider} />}
         <div className={styles.footer}>
           <div className={styles.reserveItems}>
             {formattedTvlValue && <p>Total value locked</p>}
@@ -119,10 +128,18 @@ const DesktopPositionView = ({
       </div>
 
       <PromoBlock
-        icon={<StarsIcon />}
+        icon={
+          <Image
+            src={LearnMoreIcon}
+            alt={"learn more"}
+            width={40}
+            height={40}
+            priority
+          />
+        }
         title="Learn about providing liquidity"
-        link="https://mirror.xyz/miraly.eth"
-        linkText="Click here and check our v3 LP walkthrough"
+        link={LIQUIDITY_PROVIDING_DOC_URL}
+        linkText="Click here to see the guide"
       />
     </section>
   );

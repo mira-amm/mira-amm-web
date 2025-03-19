@@ -1,27 +1,22 @@
 .miraBlock {
   display: flex;
-  flex: 1;
   flex-direction: column;
   justify-content: flex-end;
   padding: 16px;
   border-radius: 16px;
-  background: linear-gradient(
-    97.15deg,
-    #5872fc -1.13%,
-    #6142ba 56.75%,
-    #c41cff 135.82%
-  );
+  background-image: url("../../../../../../../assets/mira-block-bg.png");
+  background-size: cover;
+  gap: 6px;
+  width: 400px;
 }
 
 .miraLogo {
-  width: 64px;
-  height: 32px;
-  margin-bottom: 12px;
+  margin-bottom: 6px;
 }
 
 .tokenDisplayValue,
 .numberAndCopy {
-  font-size: 16px;
+  color: var(--primary-white);
 }
 
 .numberAndCopy {
@@ -32,4 +27,16 @@
 .numberAndCopy svg {
   width: 16px;
   height: 16px;
+}
+
+.infoText {
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 100%;
+}
+
+@media screen and (max-width: 768px) {
+  .miraBlock {
+    width: 100%;
+  }
 }

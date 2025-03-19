@@ -24,7 +24,9 @@ const AprDisplay = ({pool}: AprDiplayProps): JSX.Element => {
     <>
       {isMatching ? (
         <div className={styles.aprBadge}>
-          <p>APR &nbsp;</p>
+          <p className={clsx(styles.infoText, styles.positionText)}>
+            APR &nbsp;
+          </p>
           <AprBadge
             aprValue={aprValue}
             poolKey={poolKey}

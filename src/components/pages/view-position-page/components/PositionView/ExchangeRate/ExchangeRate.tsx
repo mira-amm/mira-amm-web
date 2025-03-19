@@ -2,6 +2,7 @@ import React, {useState, useEffect} from "react";
 import ExchangeIcon from "@/src/components/icons/Exchange/ExchangeIcon";
 import styles from "./ExchangeRate.module.css";
 import {calculateFlooredRate} from "./utils";
+import clsx from "clsx";
 interface AssetMetadata {
   name?: string;
   symbol?: string;
@@ -48,16 +49,16 @@ const ExchangeRate = ({
 
   return (
     <div className={styles.reserveItems}>
-      <p>Price</p>
+      <p className={styles.infoText}>Price</p>
       <div
         className={styles.exchangeRate}
         onClick={() => setIsBaseCoinA(!isBaseCoinA)}
       >
-        <p className={styles.exchangeRate}>
+        <p className={clsx(styles.exchangeRate, styles.infoText)}>
           {isBaseCoinA
             ? `1 ${assetBMetadata.symbol} ≈ ${flooredRate} ${assetAMetadata.symbol}`
             : `1 ${assetAMetadata.symbol} ≈ ${flooredRate} ${assetBMetadata.symbol}`}
-          <span className={styles.exchangeIcon}>
+          <span>
             <ExchangeIcon />
           </span>
         </p>
