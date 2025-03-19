@@ -1,14 +1,18 @@
-.swapLayout {
+.widgetLayout {
   display: flex;
   flex-direction: column;
   justify-content: center;
   padding: 16px;
   gap: 16px;
-  background-color: var(--background-primary);
+  background-color: var(--content-primary);
+}
+
+.widgetContainer {
+  background-color: var(--content-primary);
 }
 
 @media (min-width: 1024px) {
-  .swapLayout {
+  .widgetLayout {
     justify-content: flex-start;
     min-height: 100vh;
     max-width: 500px;

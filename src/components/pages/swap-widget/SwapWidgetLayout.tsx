@@ -6,8 +6,8 @@ import styles from "./SwapWidgetLayout.module.css";
 
 const SwapWidgetLayout = () => {
   return (
-    <div>
-      <main className={styles.swapLayout}>
+    <div className={styles.widgetContainer}>
+      <main className={styles.widgetLayout}>
         <Swap isWidget />
       </main>
     </div>
