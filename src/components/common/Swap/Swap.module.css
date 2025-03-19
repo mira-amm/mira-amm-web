@@ -17,6 +17,10 @@
   background-color: var(--background-primary) !important;
 }
 
+.widgetBoxBg {
+  background-color: var(--background-grey-dark) !important;
+}
+
 .swapContainerLoading {
   z-index: 5;
 }

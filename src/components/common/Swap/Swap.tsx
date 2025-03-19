@@ -609,6 +609,7 @@ const Swap = ({isWidget}: {isWidget?: boolean}) => {
             loading={inputPreviewLoading || swapPending}
             onCoinSelectorClick={handleCoinSelectorClick}
             usdRate={sellAssetPrice.price}
+            className={isWidget ? styles.widgetBoxBg : undefined}
           />
           <div className={styles.splitter}>
             <IconButton onClick={swapAssets} className={styles.convertButton}>
@@ -624,6 +625,7 @@ const Swap = ({isWidget}: {isWidget?: boolean}) => {
             loading={outputPreviewLoading || swapPending}
             onCoinSelectorClick={handleCoinSelectorClick}
             usdRate={buyAssetPrice.price}
+            className={isWidget ? styles.widgetBoxBg : undefined}
           />
           {review && (
             <div className={styles.summary}>
@@ -691,6 +693,9 @@ const Swap = ({isWidget}: {isWidget?: boolean}) => {
             <ActionButton
               variant="primary"
               disabled={isActionDisabled}
+              className={
+                isWidget && isActionDisabled ? styles.widgetBoxBg : undefined
+              }
               onClick={handleSwapClick}
               loading={isActionLoading}
             >
