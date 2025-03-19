@@ -44,8 +44,6 @@ const RemoveLiquidityModalContent = ({pool}: Props) => {
         })
       : null;
   const tvlValue = apr?.tvlUSD;
-  const coinReserveA = apr?.reserve0;
-  const coinReserveB = apr?.reserve1;
 
   const poolKey = createPoolKey(pool);
 
