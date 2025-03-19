@@ -11,6 +11,7 @@
     "lint:fix": "next lint --fix",
     "test": "jest",
     "test:watch": "jest --watch",
+    "test:e2e": "playwright test --ui",
     "fix:formatting": "npx prettier --write .",
     "rewards": "tsx scripts/getAllCampaignRewardsForEpoch.ts"
   },
