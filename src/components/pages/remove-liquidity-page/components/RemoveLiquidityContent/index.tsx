@@ -205,7 +205,6 @@ const RemoveLiquidityModalContent = ({pool}: Props) => {
               <td>{coinAAmount}</td>
               <td>{coinBAmount}</td>
             </tr>
-
             <tr className={styles.lastRow}>
               <td>Remove</td>
               <td>{coinAAmountToWithdrawStr}</td>
