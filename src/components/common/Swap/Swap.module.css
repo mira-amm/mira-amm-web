@@ -13,6 +13,10 @@
   background-color: var(--background-grey-dark);
 }
 
+.widgetSwapContainer {
+  background-color: var(--background-primary) !important;
+}
+
 .swapContainerLoading {
   z-index: 5;
 }
