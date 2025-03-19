@@ -1,6 +1,11 @@
 import {describe, it} from "@serenity-js/playwright-test";
+import {Wait} from "@serenity-js/core";
 import {Navigate, PageElement, By, PageElements} from "@serenity-js/web";
-import {Ensure, equals, isPresent} from "@serenity-js/assertions";
+import {
+  // Ensure,
+  // equals,
+  isPresent
+} from "@serenity-js/assertions";
 import {isVisible} from "@serenity-js/web";
 
 describe("Header", () => {
@@ -18,51 +23,48 @@ describe("Header", () => {
     PageElement.located(By.cssContainingText("header", "Connect Wallet"));
 
   it("header is visible", async ({actor}) => {
-    await actor.attemptsTo(
-      Navigate.to("/"),
-      Ensure.that(header(), isVisible()),
-    );
+    await actor.attemptsTo(Navigate.to("/"), Wait.until(header(), isVisible()));
   });
 
   it("logo is visible", async ({actor}) => {
     await actor.attemptsTo(
       Navigate.to("/"),
-      Ensure.that(headerLogo(), isVisible()),
+      Wait.until(headerLogo(), isVisible()),
     );
   });
 
   it("'Swap' link is visible", async ({actor}) => {
     await actor.attemptsTo(
       Navigate.to("/"),
-      Ensure.that(headerSwapLink(), isVisible()),
+      Wait.until(headerSwapLink(), isVisible()),
     );
   });
 
   it("'Liquidity' link is visible", async ({actor}) => {
     await actor.attemptsTo(
       Navigate.to("/"),
-      Ensure.that(headerLiquidityLink(), isVisible()),
+      Wait.until(headerLiquidityLink(), isVisible()),
     );
   });
 
   it("'Bridge' link is visible", async ({actor}) => {
     await actor.attemptsTo(
       Navigate.to("/"),
-      Ensure.that(headerBridgeLink(), isVisible()),
+      Wait.until(headerBridgeLink(), isVisible()),
     );
   });
 
   it("'Mainnet' text is visible", async ({actor}) => {
     await actor.attemptsTo(
       Navigate.to("/"),
-      Ensure.that(headerMainnetText(), isVisible()),
+      Wait.until(headerMainnetText(), isVisible()),
     );
   });
 
   it("'Connect Wallet' button is visible", async ({actor}) => {
     await actor.attemptsTo(
       Navigate.to("/"),
-      Ensure.that(headerConnectWalletButton(), isVisible()),
+      Wait.until(headerConnectWalletButton(), isVisible()),
     );
   });
 });
@@ -84,28 +86,28 @@ describe("Footer", () => {
     console.log(footer());
     await actor.attemptsTo(
       Navigate.to("/"),
-      Ensure.that(footer(), isPresent()),
+      Wait.until(footer(), isPresent()),
     );
   });
 
   it.skip("logo in footer is visible", async ({actor}) => {
     await actor.attemptsTo(
       Navigate.to("/"),
-      Ensure.that(footerLogo(), isPresent()),
+      Wait.until(footerLogo(), isPresent()),
     );
   });
 
   it("'Support' link is visible", async ({actor}) => {
     await actor.attemptsTo(
       Navigate.to("/"),
-      Ensure.that(footerSupportLink(), isPresent()),
+      Wait.until(footerSupportLink(), isPresent()),
     );
   });
 
   it("'Media Kit' link is visible", async ({actor}) => {
     await actor.attemptsTo(
       Navigate.to("/"),
-      Ensure.that(footerMediaKitLink(), isPresent()),
+      Wait.until(footerMediaKitLink(), isPresent()),
     );
   });
 });
