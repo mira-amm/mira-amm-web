@@ -18,6 +18,8 @@ const usePoolAPR = (pool: PoolId) => {
               feesUSD
             }
             tvlUSD
+            reserve0Decimal
+            reserve1Decimal
           }
         }
       `;
@@ -32,9 +34,14 @@ const usePoolAPR = (pool: PoolId) => {
       );
       const apr = (fees24h / parseFloat(result.poolById.tvlUSD)) * 365 * 100;
 
+      const reserve0 = parseFloat(result.poolById.reserve0Decimal) || 0;
+      const reserve1 = parseFloat(result.poolById.reserve1Decimal) || 0;
+
       return {
         apr,
         tvlUSD: result.poolById.tvlUSD,
+        reserve0,
+        reserve1,
       };
     },
   });

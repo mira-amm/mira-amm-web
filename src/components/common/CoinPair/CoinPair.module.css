@@ -11,6 +11,8 @@
 .coinPairIcons {
   display: flex;
   align-items: center;
+  width: 64px;
+  height: 36px;
 }
 
 .coinPairIcons > svg,
