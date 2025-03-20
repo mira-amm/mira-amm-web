@@ -42,6 +42,7 @@
 .header {
   display: flex;
   justify-content: space-between;
+  width: 100%;
 }
 
 .title {
@@ -67,8 +68,9 @@
   gap: 20px;
   padding: 12px;
   border-radius: 10px;
-  background-color: var(--background-tertiary);
-  /* background: linear-gradient(95.91deg, #663e92 -15.22%, #29294e 83.17%); */
+  color: var(--background-primary);
+  width: 100%;
+  background: linear-gradient(95.91deg, #663e92 -15.22%, #29294e 83.17%);
 }
 
 .accountUserInfo {
@@ -106,6 +108,7 @@
 }
 
 .transactionsList {
+  width: 100%;
   list-style: none;
   display: flex;
   flex-direction: column;
@@ -129,7 +132,7 @@
   display: flex;
   gap: 28px;
   padding: 10px;
-  background: #3b3d48;
+  background-color: var(--background-tertiary);
   border-radius: 8px;
 }
 
@@ -164,6 +167,10 @@
   color: var(--content-primary);
 }
 
+.transactionName:hover {
+  opacity: 0.64;
+}
+
 .transactionAmount {
   color: var(--content-primary) a3;
 }
@@ -185,6 +192,7 @@
   gap: 8px;
   align-items: center;
 }
+
 
 .typeCircle {
   width: 12px;
