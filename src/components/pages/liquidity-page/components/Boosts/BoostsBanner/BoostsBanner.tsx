@@ -8,6 +8,7 @@ import {
 } from "@/src/utils/constants";
 import PointsIcon from "@/assets/sparcle.svg";
 import Image from "next/image";
+import { LearnMoreButton } from "@/src/components/common/LearnMoreButton/LearnMoreButton";
 
 const BoostsBanner = (): JSX.Element => {
   return (
@@ -19,9 +20,7 @@ const BoostsBanner = (): JSX.Element => {
       <div className={styles.bottomArea}>
         <p className={pointsStyles.pointsSubtitle}>{POINTS_BANNER_SUBHEADER}</p>
         <Link href={POINTS_LEARN_MORE_URL} target="_blank">
-          <button className={styles.learnMore}>
-            Learn more <span className={styles.arrow}>&rarr;</span>
-          </button>
+          <LearnMoreButton />
         </Link>
       </div>
     </div>
