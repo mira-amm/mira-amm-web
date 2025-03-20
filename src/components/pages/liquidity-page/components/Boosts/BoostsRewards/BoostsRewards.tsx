@@ -9,11 +9,12 @@ import {
   DefaultLocale,
 } from "@/src/utils/constants";
 import Loader from "@/src/components/common/Loader/Loader";
-import {usePointsRank} from "@/src/hooks/usePoints/usePoints";
+import { usePointsRank } from "@/src/hooks/usePoints/usePoints";
 import pointsStyles from "@/src/components/pages/points-page/PointsStyles.module.css";
 import PointsIcon from "@/src/components/icons/Points/PointsIcon";
+import { LearnMoreButton } from "@/src/components/common/LearnMoreButton/LearnMoreButton";
 const BoostsRewards = (): JSX.Element => {
-  const {data: pointsRankArray, isLoading, error} = usePointsRank();
+  const { data: pointsRankArray, isLoading, error } = usePointsRank();
 
   if (isLoading) {
     return <Loader />;
@@ -38,13 +39,7 @@ const BoostsRewards = (): JSX.Element => {
       <div className={styles.boostsHeader}>
         <p className={pointsStyles.pointsTitle}>Points Program</p>
         <Link href={POINTS_LEARN_MORE_URL} target="_blank">
-          <ActionButton
-            className={styles.learnMoreButton}
-            variant="secondary"
-            fullWidth
-          >
-            Learn more
-          </ActionButton>
+          <LearnMoreButton />
         </Link>
       </div>
 

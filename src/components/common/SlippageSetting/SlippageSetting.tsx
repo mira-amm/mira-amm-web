@@ -10,7 +10,7 @@ type Props = {
 export const SlippageSetting = ({slippage, openSettingsModal}: Props) => {
   return (
     <>
-      <p className={styles.slippageLabel}>{slippage / 100}% slippage</p>
+      <p className={styles.slippageLabel}>{slippage / 100}% Slippage</p>
       <IconButton onClick={openSettingsModal} className={styles.settingsButton}>
         <SettingsIcon />
       </IconButton>

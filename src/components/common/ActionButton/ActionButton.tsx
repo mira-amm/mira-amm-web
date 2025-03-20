@@ -8,11 +8,13 @@ import styles from "./ActionButton.module.css";
 
 type ButtonType = "button" | "submit" | "reset";
 type ButtonVariant = "primary" | "secondary" | "outlined";
+type ButtonSize = "small" | "big" | "longer";
 
 type Props = {
   children: ReactNode;
   onClick?: () => void;
   className?: string;
+  size?: ButtonSize;
   disabled?: boolean;
   loading?: boolean;
   completed?: boolean;
@@ -31,6 +33,7 @@ const ActionButton = forwardRef<HTMLButtonElement, Props>(function ActionButton(
     completed,
     type,
     variant,
+    size,
     fullWidth,
   }: Props,
   ref,
@@ -52,6 +55,8 @@ const ActionButton = forwardRef<HTMLButtonElement, Props>(function ActionButton(
         variant !== "secondary" && variant !== "outlined" && styles.primary,
         variant === "secondary" && styles.secondary,
         variant === "outlined" && styles.outlined,
+        size === "big" && styles.big,
+        size === "longer" && styles.longer,
         loading && styles.loadingAnimation,
         completed && styles.completed,
         fullWidth && styles.fullWidth,
