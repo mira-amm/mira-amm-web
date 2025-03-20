@@ -29,8 +29,11 @@ export const BlogLink = "https://mirror.xyz/miraly.eth" as const;
 // TODO: Use env variables for values below to separate dev/prod | testnet/mainnet
 export const ValidNetworkChainId = CHAIN_IDS.fuel.mainnet;
 export const NetworkUrl: string = "https://mainnet.fuel.network/v1/graphql";
+
+// Source: https://envio.dev/app/mira-amm/mira-indexer-mainnet
+// playground: https://envio.dev/app/mira-amm/mira-indexer-mainnet/1b905cc/playground
 export const IndexerUrl =
-  "https://indexer.bigdevenergy.link/755fa3e/v1/graphql" as const;
+  "https://indexer.hyperindex.xyz/755fa3e/v1/graphql" as const;
 export const SQDIndexerUrl =
   "https://mira-dex.squids.live/mira-indexer@v3/api/graphql" as const;
 export const MainnetUrl = "https://mainnet-explorer.fuel.network";
@@ -99,7 +102,10 @@ export const POINTS_RANK_TOOLTIP =
 export const POINTS_LEARN_MORE_URL =
   "https://mirror.xyz/miraly.eth/W2W1Zv8jKS-70OY64cF-qneyPgLngG4ItRv9PMmxHeY";
 
-export const POINTS_BANNER_TITLE = "Introducing Points";
+export const POINTS_BANNER_TITLE = "Introducing Boosts";
 
 export const POINTS_BANNER_SUBHEADER =
   "Earn MIRA points by providing liquidity and engaging in activities.";
+
+export const APRTooltip =
+  "Annual return for liquidity providers, including fees and incentives";

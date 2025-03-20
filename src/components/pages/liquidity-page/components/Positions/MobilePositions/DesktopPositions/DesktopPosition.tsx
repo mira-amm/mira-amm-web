@@ -59,7 +59,7 @@ export const DesktopPosition = ({
   const {isMatching} = usePoolNameAndMatch(poolKey);
 
   return (
-    <tr>
+    <tr key={poolKey}>
       <td>
         <CoinPair
           firstCoin={assetIdA}

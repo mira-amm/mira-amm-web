@@ -1,7 +1,6 @@
 "use client";
 
 import Header from "@/src/components/common/Header/Header";
-import Footer from "@/src/components/common/Footer/Footer";
 import BackLink from "@/src/components/common/BackLink/BackLink";
 
 import styles from "../add-liquidity-page/AddLiquidityPageLayout.module.css";
@@ -25,7 +24,6 @@ const CreatePoolPageLayout = () => {
       <main className={styles.addLiquidityLayout} ref={mainRef}>
         <CreatePool />
       </main>
-      <Footer />
     </>
   );
 };

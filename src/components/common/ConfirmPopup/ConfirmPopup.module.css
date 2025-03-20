@@ -16,7 +16,7 @@
 .popupForm {
   display: flex;
   flex-direction: column;
-  background: #262834;
+  background: var(--background-secondary);
   border-radius: 16px;
   position: relative;
   z-index: 48;
@@ -30,13 +30,12 @@
 }
 
 .popupButton {
-  width: 100%;
   height: 48px;
   box-shadow: none;
 }
 
 .buttonWrapper {
-  background: #262834;
+  background: var(--background-secondary);
   position: sticky;
   z-index: 48;
   width: 100%;
@@ -53,7 +52,7 @@
   top: 0;
   left: 0;
   z-index: 48;
-  background: #262834;
+  background: var(--background-secondary);
   padding: 20px 28px 16px 28px;
   width: 100%;
   box-sizing: border-box;

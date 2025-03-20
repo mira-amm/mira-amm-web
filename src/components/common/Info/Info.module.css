@@ -37,8 +37,8 @@
   line-height: 16px;
   font-weight: 400;
   padding: 8px;
-  background-color: var(--background-secondary);
-  color: var(--content-dimmed-dark);
+  background-color: var(--content-primary);
+  color: var(--background-primary);
   border: none;
   border-radius: 8px;
   visibility: hidden;

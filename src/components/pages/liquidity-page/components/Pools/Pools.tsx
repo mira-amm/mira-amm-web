@@ -104,9 +104,7 @@ const Pools = () => {
       {/* Pagination */}
       {data && data.length > 0 && (
         <div className={styles.pagination}>
-          <p className={clsx("desktopOnly")}>
-            Showing {data.length} out of {totalCount} pools...
-          </p>
+          <p className={clsx("desktopOnly")}></p>
           <Pagination
             currentPage={page}
             totalPages={totalPages}

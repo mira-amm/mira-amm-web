@@ -1,10 +1,10 @@
 import SuccessIcon from "@/src/components/icons/Success/SuccessIcon";
 import styles from "../../../add-liquidity-page/components/AddLiquiditySuccessModal/AddLiquiditySuccessModal.module.css";
 import ActionButton from "@/src/components/common/ActionButton/ActionButton";
-import {useCallback} from "react";
-import {openNewTab} from "@/src/utils/common";
-import {CoinName} from "@/src/utils/coinsConfig";
-import {FuelAppUrl} from "@/src/utils/constants";
+import { useCallback } from "react";
+import { openNewTab } from "@/src/utils/common";
+import { CoinName } from "@/src/utils/coinsConfig";
+import { FuelAppUrl } from "@/src/utils/constants";
 
 type Props = {
   coinA: CoinName;
@@ -36,10 +36,7 @@ const CreatePoolSuccessModal = ({
       <SuccessIcon />
       <p className={styles.mainText}>Success</p>
       <p className={styles.subText}>{subText}</p>
-      <ActionButton
-        onClick={handleViewTransactionClick}
-        className={styles.viewButton}
-      >
+      <ActionButton onClick={handleViewTransactionClick} fullWidth>
         View transaction
       </ActionButton>
     </div>

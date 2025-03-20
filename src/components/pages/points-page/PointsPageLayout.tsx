@@ -11,19 +11,21 @@ const PointsPageLayout = (): JSX.Element => {
     <>
       <Header />
       <main className={styles.pointsPageLayout}>
-        <Boosts />
-        <div className={styles.titleSection}>
-          <p className={styles.title}>Leaderboard</p>
-          <div className={styles.subsection}>
-            <p className={styles.subtitle}>
-              See the top participants of the points program.{" "}
-            </p>
-            <p className={styles.pointsWarning}>
-              The leaderboard is updated every hour.
-            </p>
+        <div className={styles.pointsPageContents}>
+          <Boosts />
+          <div className={styles.titleSection}>
+            <p className={styles.title}>Leaderboard</p>
+            <div className={styles.subsection}>
+              <p className={styles.subtitle}>
+                See the top participants of the points program.{" "}
+              </p>
+              <p className={styles.pointsWarning}>
+                The leaderboard is updated every hour.
+              </p>
+            </div>
           </div>
+          <PointsRankTable />
         </div>
-        <PointsRankTable />
       </main>
       <Footer />
     </>

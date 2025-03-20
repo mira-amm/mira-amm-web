@@ -1,6 +1,6 @@
-import {clsx} from "clsx";
+import { clsx } from "clsx";
 
-import {forwardRef, memo, ReactNode, useCallback} from "react";
+import { forwardRef, memo, ReactNode, useCallback } from "react";
 
 import Loader from "@/src/components/common/Loader/Loader";
 
@@ -8,11 +8,13 @@ import styles from "./ActionButton.module.css";
 
 type ButtonType = "button" | "submit" | "reset";
 type ButtonVariant = "primary" | "secondary" | "outlined";
+type ButtonSize = "small" | "big" | "longer";
 
 type Props = {
   children: ReactNode;
   onClick?: () => void;
   className?: string;
+  size?: ButtonSize;
   disabled?: boolean;
   loading?: boolean;
   completed?: boolean;
@@ -31,6 +33,7 @@ const ActionButton = forwardRef<HTMLButtonElement, Props>(function ActionButton(
     completed,
     type,
     variant,
+    size,
     fullWidth,
   }: Props,
   ref,
@@ -49,9 +52,12 @@ const ActionButton = forwardRef<HTMLButtonElement, Props>(function ActionButton(
     <button
       className={clsx(
         styles.btn,
+        variant !== "secondary" && variant !== "outlined" && styles.primary,
         variant === "secondary" && styles.secondary,
         variant === "outlined" && styles.outlined,
-        loading && styles.loading,
+        size === "big" && styles.big,
+        size === "longer" && styles.longer,
+        loading && styles.loadingAnimation,
         completed && styles.completed,
         fullWidth && styles.fullWidth,
         className,
@@ -61,7 +67,7 @@ const ActionButton = forwardRef<HTMLButtonElement, Props>(function ActionButton(
       type={type || "button"}
       ref={ref}
     >
-      {loading ? <Loader variant={variant} /> : children}
+      {!loading && children}
     </button>
   );
 });

@@ -1,6 +1,6 @@
 "use client";
 
-import {useState} from "react";
+import { useState } from "react";
 import {
   createColumnHelper,
   flexRender,
@@ -9,10 +9,10 @@ import {
   useReactTable,
 } from "@tanstack/react-table";
 import styles from "./PointsRankTable.module.css";
-import {usePointsRanks} from "@/src/hooks/usePoints/usePoints";
+import { usePointsRanks } from "@/src/hooks/usePoints/usePoints";
 import LoaderV2 from "@/src/components/common/LoaderV2/LoaderV2";
 import PointsIconSimple from "@/src/components/icons/Points/PointsIconSimple";
-import {DefaultLocale} from "@/src/utils/constants";
+import { DefaultLocale } from "@/src/utils/constants";
 
 // Define the data type for our table
 type PointsRankData = {
@@ -40,7 +40,7 @@ export default function PointsRankTable(): JSX.Element {
   const pageSize = pagination.pageSize;
 
   // Fetch data with pagination parameters
-  const {data: response, isLoading, error} = usePointsRanks(page, pageSize);
+  const { data: response, isLoading, error } = usePointsRanks(page, pageSize);
 
   // Column definitions
   const columnHelper = createColumnHelper<PointsRankData>();
@@ -101,15 +101,17 @@ export default function PointsRankTable(): JSX.Element {
 
   if (isLoading) {
     return (
-      <div className={styles.loadingFallback}>
-        <LoaderV2 />
+      <div className="table-container">
+        <div className={styles.loaderIconContainer}>
+          <LoaderV2 />
+        </div>
         <p>Loading points leaderboard...</p>
       </div>
     );
   }
 
   return (
-    <div className={styles.tableContainer}>
+    <div className="table-container">
       <table className={styles.table}>
         <thead>
           {table.getHeaderGroups().map((headerGroup) => (
@@ -119,9 +121,9 @@ export default function PointsRankTable(): JSX.Element {
                   {header.isPlaceholder
                     ? null
                     : flexRender(
-                        header.column.columnDef.header,
-                        header.getContext(),
-                      )}
+                      header.column.columnDef.header,
+                      header.getContext(),
+                    )}
                 </th>
               ))}
             </tr>

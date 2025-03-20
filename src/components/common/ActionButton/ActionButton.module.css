@@ -2,74 +2,152 @@
   display: inline-flex;
   justify-content: center;
   align-items: center;
-  padding: 16px 0;
+  width: 158px;
+  height: 40px;
+  /* padding: 16px 0; */
   text-align: center;
   font-family: var(--font-inter), sans-serif;
   font-weight: 600;
   font-size: 18px;
   line-height: 22px;
-  color: var(--content-inverse);
-  background-color: var(--accent-primary);
-  border: 1px solid var(--accent-primary);
-  border-radius: 12px;
+  border: none;
+  border-radius: 8px;
   text-decoration: none;
   cursor: pointer;
-  box-shadow: 1px 1px 20px 0 #a1db0b4d;
-  transition: box-shadow 0.2s ease;
+  transition: opacity 0.2s ease;
+}
+
+.longer {
+  width: 175px;
+}
+
+.big {
+  width: 172px;
+  height: 54px;
 }
 
 .btn:hover {
-  text-decoration: none;
-  box-shadow: 1px 1px 30px 0 #a1db0b4d;
+  opacity: 0.9;
 }
 
 .btn:active {
-  background-color: #9fd908;
-}
-
-.btn.loading:hover {
-  color: var(--content-inverse);
-  background-color: var(--accent-primary);
-  cursor: default;
+  opacity: 0.8;
 }
 
 .btn:disabled {
-  background-color: var(--background-secondary);
-  border-color: var(--background-secondary);
-  color: var(--content-dimmed-dark);
-  box-shadow: unset;
+  cursor: default;
   pointer-events: none;
 }
 
+.primary {
+  color: var(--button-content-primary);
+  background-color: var(--button-primary);
+}
+
+.primary:disabled {
+  background-color: var(--mc-green-3);
+  color: var(--mc-green-2);
+}
+
 .secondary {
-  border: none;
-  background: var(--accent-dimmed);
-  color: var(--accent-primary);
-  box-shadow: none;
-}
-
-.secondary:hover {
-  background-color: #97cf061a;
-  box-shadow: none;
-}
-
-.secondary:active {
-  background-color: #b6fa081a;
+  border: 1px solid var(--border-dark);
+  background: var(--background-secondary);
+  color: var(--content-primary);
 }
 
 .outlined {
-  border: 1px solid var(--accent-primary);
+  border: 1px solid var(--mc-green-2);
   background: transparent;
-  color: var(--accent-primary);
-  box-shadow: none;
+  color: var(--mc-green-2);
   transition: opacity 0.2s;
 }
 
 .outlined:hover {
-  box-shadow: none;
   opacity: 0.8;
 }
 
 .fullWidth {
   width: 100%;
+}
+
+@keyframes cycleSymbols {
+  0% {
+    opacity: 0;
+    content: "/";
+  }
+  8.33% {
+    opacity: 1;
+    content: "/";
+  }
+  16.66% {
+    opacity: 1;
+    content: "/";
+  }
+  24% {
+    opacity: 0;
+    content: "/";
+  }
+  25% {
+    opacity: 0;
+    content: "-";
+  }
+  33.33% {
+    opacity: 1;
+    content: "-";
+  }
+  41.66% {
+    opacity: 1;
+    content: "-";
+  }
+  49% {
+    opacity: 0;
+    content: "-";
+  }
+  50% {
+    opacity: 0;
+    content: "\\";
+  }
+  58.33% {
+    opacity: 1;
+    content: "\\";
+  }
+  66.66% {
+    opacity: 1;
+    content: "\\";
+  }
+  74% {
+    opacity: 0;
+    content: "\\";
+  }
+  75% {
+    opacity: 0;
+    content: "-";
+  }
+  83.33% {
+    opacity: 1;
+    content: "-";
+  }
+  91.66% {
+    opacity: 1;
+    content: "-";
+  }
+  99% {
+    opacity: 0;
+    content: "-";
+  }
+  100% {
+    opacity: 0;
+    content: "/";
+  }
+}
+
+.loadingAnimation {
+  font-size: 24px;
+  font-weight: bold;
+  position: relative;
+}
+
+.loadingAnimation::before {
+  content: "\200B";
+  animation: cycleSymbols 4s infinite;
 }

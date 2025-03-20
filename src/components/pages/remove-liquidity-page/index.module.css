@@ -1,0 +1,15 @@
+.removeLiquidityLayout {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  padding: 16px;
+  gap: 16px;
+}
+
+@media (min-width: 1024px) {
+  .removeLiquidityLayout {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 32px 16px;
+  }
+}

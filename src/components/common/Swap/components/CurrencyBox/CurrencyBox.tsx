@@ -2,15 +2,11 @@ import {ChangeEvent, memo, useCallback} from "react";
 import {clsx} from "clsx";
 
 import Coin from "@/src/components/common/Coin/Coin";
-import ChevronDownIcon from "@/src/components/icons/ChevronDown/ChevronDownIcon";
 import {CurrencyBoxMode} from "@/src/components/common/Swap/Swap";
-import {CoinName, coinsConfig} from "@/src/utils/coinsConfig";
 
 import styles from "./CurrencyBox.module.css";
 import TextButton from "@/src/components/common/TextButton/TextButton";
 import {DefaultLocale, MinEthValueBN} from "@/src/utils/constants";
-import {InsufficientReservesError} from "mira-dex-ts/dist/sdk/errors";
-import {NoRouteFoundError} from "@/src/hooks/useSwapPreview";
 import {B256Address, BN} from "fuels";
 import useAssetMetadata from "@/src/hooks/useAssetMetadata";
 
@@ -102,22 +98,7 @@ const CurrencyBox = ({
             onChange={handleChange}
           />
         )}
-
-        <button
-          className={clsx(
-            styles.selector,
-            coinNotSelected && styles.selectorHighlighted,
-          )}
-          onClick={handleCoinSelectorClick}
-          disabled={loading}
-        >
-          {coinNotSelected ? (
-            <p className={styles.chooseCoin}>Choose coin</p>
-          ) : (
-            <Coin assetId={assetId} />
-          )}
-          <ChevronDownIcon />
-        </button>
+        <Coin assetId={assetId} onClick={handleCoinSelectorClick} />
       </div>
       <div className={styles.estimateAndBalance}>
         <p className={styles.estimate}>{usdValue !== null && `$${usdValue}`}</p>

@@ -1,0 +1,182 @@
+.viewPositionLayout {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  max-width: 716px;
+  margin: 0 auto;
+  padding: 32px 16px;
+  gap: 16px;
+}
+
+.contentSection {
+  margin-top: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.contentSection > div:not:last-child {
+  flex: 1;
+}
+
+.coinPairAndLabel {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.infoBlock {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 22px 18px;
+  background-color: var(--background-secondary);
+  border-radius: 16px;
+  border: 11px solid var(--background-tertiary);
+}
+
+.infoText {
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 100%;
+}
+
+.positionText {
+  color: var(--mc-black);
+}
+
+.subheading {
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 19px;
+}
+
+.coinsData {
+  display: flex;
+  justify-content: space-between;
+}
+
+.priceBlocks {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin: 10px 0;
+}
+
+.sticky,
+.nonSticky {
+  width: 100%;
+  align-self: flex-start;
+}
+
+.sticky {
+  position: sticky;
+  bottom: 0;
+}
+
+.withdrawLiquidityTitle {
+  text-align: center;
+}
+
+.actionButton {
+  width: 170px;
+  padding: 8px 24px;
+  font-size: 14px;
+}
+
+.reserveItems {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.reserveItems > p {
+  color: var(--mc-grey-4);
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 100%;
+}
+
+.footer {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+@keyframes fade {
+  0% {
+    opacity: 0.5;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+.loadingText {
+  color: var(--content-primary);
+  font-size: 14px;
+  animation: fade 0.5s linear infinite alternate;
+}
+
+.positionHeading {
+  justify-content: space-between;
+  align-items: center;
+  display: flex;
+}
+
+.actionBlock {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+}
+
+.topRow {
+  display: flex;
+  gap: 16px;
+}
+
+.infoBlocks {
+  width: 500px;
+  flex-direction: column;
+}
+
+.priceBlocksDesktop {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.priceBlockLargeDesktop {
+  width: 100%;
+  padding: 28px 22px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  background-color: var(--background-secondary);
+  border-radius: 16px;
+  border: 11px solid var(--background-tertiary);
+}
+
+.priceBlockDesktop {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+}
+
+.divider {
+  border: 0;
+  height: 1px;
+  background-color: var(--mc-grey-3);
+  width: 100%;
+  margin: 8px 0;
+}
+
+p.smallLabel {
+  padding: 4px 8px;
+  font-size: 13px;
+  line-height: 15px;
+}

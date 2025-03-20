@@ -1,5 +1,11 @@
+import ActionButton from "../ActionButton/ActionButton";
 import styles from "./LearnMoreButton.module.css";
 
 export const LearnMoreButton = () => {
-  return <button className={styles.button}>Learn More</button>;
+  return (<ActionButton
+    variant="secondary"
+    size='longer'
+  >
+    Learn More
+  </ActionButton>);
 };

@@ -5,7 +5,8 @@ import useBoostedApr, {RewardsToken} from "@/src/hooks/useBoostedApr";
 import {isMobile} from "react-device-detect";
 import Loader from "../Loader/Loader";
 import {EPOCH_NUMBER} from "@/src/utils/constants";
-import PointsIconSimple from "../../icons/Points/PointsIconSimple";
+import Image from "next/image";
+import SparkleIcon from "@/assets/sparcle.svg";
 
 interface AprBadgeProps {
   aprValue: string | null;
@@ -50,9 +51,6 @@ const AprBadge: React.FC<AprBadgeProps> = ({
   const handleMouseLeave = () => !isMobile && setIsHovered(false);
   const handleClick = () => isMobile && setIsHovered((prev) => !prev);
 
-  const iconWidth = small ? 15 : 20;
-  const iconHeight = small ? 15 : 18;
-
   const showApr = aprValue
     ? (boostedApr + aprValueInNumber).toFixed(2)
     : boostedApr.toFixed(2);
@@ -75,7 +73,13 @@ const AprBadge: React.FC<AprBadgeProps> = ({
         )}
       >
         <span className={styles.badgeIcon}>
-          <PointsIconSimple width={iconWidth} height={iconHeight} />
+          <Image
+            src={SparkleIcon}
+            alt="sparkle"
+            width={12}
+            height={12}
+            priority
+          />
         </span>
         <span
           className={clsx(
