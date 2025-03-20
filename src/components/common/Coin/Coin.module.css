@@ -1,7 +1,7 @@
 .coin {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 5px;
   color: var(--content-primary);
 }
 
@@ -20,9 +20,9 @@
   background-color: var(--mc-grey-3);
 }
 
-.clickable:active {
+/* .clickable:active {
   background-color: var(--mc-grey-4);
-}
+} */
 
 .selectable:hover {
   background-color: var(--mc-black-1);
