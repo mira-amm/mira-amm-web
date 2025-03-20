@@ -27,6 +27,7 @@
   margin-right: 5px;
   width: 18px;
   height: 18px;
+  color: var(--transparent-white) !important;
 }
 
 .main {
@@ -181,7 +182,7 @@
 
   .promoClose {
     position: absolute;
-    /* top: 16px; */
+    color: var(--transparent-white) !important;
     right: 16px;
     cursor: pointer;
   }
