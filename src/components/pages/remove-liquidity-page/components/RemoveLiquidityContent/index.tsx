@@ -141,7 +141,7 @@ const RemoveLiquidityModalContent = ({pool}: Props) => {
 
   return (
     <div className={styles.removeLiquidityContent}>
-      <p>Selected pair</p>
+      <p className={styles.subHeader}>Selected pair</p>
       <div className={styles.coinHeader}>
         <CoinPair
           firstCoin={pool[0].bits}

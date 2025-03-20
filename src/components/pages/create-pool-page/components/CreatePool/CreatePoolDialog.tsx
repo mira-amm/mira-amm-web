@@ -3,7 +3,6 @@ import CoinPair from "@/src/components/common/CoinPair/CoinPair";
 import CurrencyBox from "@/src/components/common/CurrencyBox/CurrencyBox";
 import CoinsListModal from "@/src/components/common/Swap/components/CoinsListModal/CoinsListModal";
 import ExchangeIcon from "@/src/components/icons/Exchange/ExchangeIcon";
-import SparkleIcon from "@/src/components/icons/Sparkle/SparkleIcon";
 import styles from "@/src/components/pages/add-liquidity-page/components/AddLiquidity/AddLiquidity.module.css";
 import useAssetBalance from "@/src/hooks/useAssetBalance";
 import useAssetMetadata from "@/src/hooks/useAssetMetadata";
@@ -24,6 +23,8 @@ import Link from "next/link";
 import {Dispatch, SetStateAction, useCallback, useRef, useState} from "react";
 import {useDebounceCallback} from "usehooks-ts";
 import {CreatePoolPreviewData} from "./PreviewCreatePoolDialog";
+import Image from "next/image";
+import SparkleIcon from "@/assets/sparcle.svg";
 
 type Props = {
   setPreviewData: Dispatch<SetStateAction<CreatePoolPreviewData | null>>;
@@ -228,18 +229,19 @@ const CreatePoolDialog = ({setPreviewData}: Props) => {
 
   return (
     <>
-      <div className={styles.section}>
-        <p>Selected pair</p>
+      <div className={styles.addLiquidityContent}>
+        <p className={styles.subHeader}>Selected pair</p>
         <div className={styles.sectionContent}>
-          <div className={styles.coinPair}>
-            {!oneOfAssetsIsNotSelected && (
+          {!oneOfAssetsIsNotSelected && (
+            <div className={styles.coinHeader}>
               <CoinPair
                 firstCoin={firstAssetId}
                 secondCoin={secondAssetId}
                 isStablePool={isStablePool}
               />
-            )}
-          </div>
+            </div>
+          )}
+
           <div className={styles.poolStability}>
             <div
               className={clsx(
@@ -251,12 +253,8 @@ const CreatePoolDialog = ({setPreviewData}: Props) => {
             >
               <div className={styles.poolStabilityButtonContent}>
                 <span className={styles.poolStabilityButtonText}>
-                  0.30% fee tier (Volatile pool)
+                  0.30% fee tier (volatile pool)
                 </span>
-                {/* <Info
-                  tooltipText={VolatilePoolTooltip}
-                  tooltipKey="volatilePool"
-                /> */}
               </div>
             </div>
             <div
@@ -269,7 +267,7 @@ const CreatePoolDialog = ({setPreviewData}: Props) => {
             >
               <div className={styles.poolStabilityButtonContent}>
                 <span className={styles.poolStabilityButtonText}>
-                  0.05% fee tier (Stable pool)
+                  0.05% fee tier (stable pool)
                 </span>
                 {/* <Info tooltipText={StablePoolTooltip} tooltipKey="stablePool" /> */}
               </div>
@@ -277,46 +275,52 @@ const CreatePoolDialog = ({setPreviewData}: Props) => {
           </div>
         </div>
       </div>
-      <div className={styles.section}>
-        <p>Deposit amount</p>
+      <div className={styles.depositAmountSection}>
+        <p className={styles.subHeader}>Deposit amount</p>
         <div className={styles.sectionContent}>
           <CurrencyBox
             assetId={firstAssetId}
             value={firstAmountInput}
-            loading={poolExists}
+            isDisabled={poolExists}
             setAmount={setAmount(firstAssetId)}
             balance={firstAssetBalanceValue}
             usdRate={firstAssetPrice.price}
-            // onAssetClick={handleAssetClick(firstAssetId)}
+            onCoinSelectorClick={handleAssetClick(firstAssetId)}
           />
           <CurrencyBox
-            assetId={firstAssetId}
-            value={firstAmountInput}
-            loading={poolExists}
-            setAmount={setAmount(firstAssetId)}
-            balance={firstAssetBalanceValue}
-            usdRate={firstAssetPrice.price}
-            // onAssetClick={handleAssetClick(firstAssetId)}
+            assetId={secondAssetId}
+            value={secondAmountInput}
+            isDisabled={poolExists}
+            setAmount={setAmount(secondAssetId)}
+            balance={secondAssetBalanceValue}
+            usdRate={secondAssetPrice.price}
+            onCoinSelectorClick={handleAssetClick(secondAssetId)}
           />
         </div>
       </div>
       {poolExists && (
         <div className={styles.existingPoolBlock}>
           <div className={styles.sparkleIcon}>
-            <SparkleIcon />
+            <Image
+              src={SparkleIcon}
+              alt="sparkle"
+              width={12}
+              height={12}
+              priority
+            />
           </div>
           <p className={styles.existingPoolText}>This pool already exists</p>
           <Link
             href={`/liquidity/add/?pool=${existingPoolKey}`}
             className={styles.addLiquidityLink}
           >
-            Add liquidity →
+            Add liquidity<span className={styles.arrow}>&rarr;</span>
           </Link>
         </div>
       )}
       {!poolExists && !oneOfAssetsIsNotSelected && !oneOfAmountsIsEmpty && (
-        <div className={styles.section}>
-          <p>Starting price</p>
+        <div className={styles.depositAmountSection}>
+          <p className={styles.subHeader}>Starting price</p>
           <div className={styles.priceBlock} onClick={handleExchangeRateSwap}>
             <p>{exchangeRate}</p>
             <ExchangeIcon />

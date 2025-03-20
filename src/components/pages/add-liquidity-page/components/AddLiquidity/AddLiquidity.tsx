@@ -45,7 +45,7 @@ const AddLiquidity = ({poolId, poolKey}: Props): JSX.Element => {
         className={styles.backLink}
         title="Back to Pool"
       />
-      <section className={clsx("liquidity-action-container", styles.preview)}>
+      <section className={clsx("liquidity-action-container")}>
         <div className={styles.addLiquidityHeading}>
           <p className={styles.title}>Add Liquidity</p>
           {showPreview && (

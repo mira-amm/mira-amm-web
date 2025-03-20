@@ -232,7 +232,7 @@ const AddLiquidityDialog = ({
   return (
     <>
       <div className={styles.addLiquidityContent}>
-        <p>Selected pair</p>
+        <p className={styles.subHeader}>Selected pair</p>
         <div className={styles.sectionContent}>
           <div className={styles.coinHeader}>
             <CoinPair
@@ -286,10 +286,6 @@ const AddLiquidityDialog = ({
                 <span className={styles.poolStabilityButtonText}>
                   0.30% fee tier (volatile pool)
                 </span>
-                {/* <Info
-                  tooltipText={VolatilePoolTooltip}
-                  tooltipKey="volatilePool"
-                /> */}
               </div>
             </div>
             <div
@@ -311,7 +307,7 @@ const AddLiquidityDialog = ({
         </div>
       </div>
       <div className={styles.depositAmountSection}>
-        <p>Deposit amount</p>
+        <p className={styles.subHeader}>Deposit amount</p>
         <div className={styles.sectionContent}>
           <CurrencyBox
             assetId={firstAssetId}

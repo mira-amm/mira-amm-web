@@ -46,6 +46,7 @@
 
 .input:disabled {
   color: var(--content-dimmed-dark);
+  opacity: 0.5;
 }
 
 .chooseCoin {

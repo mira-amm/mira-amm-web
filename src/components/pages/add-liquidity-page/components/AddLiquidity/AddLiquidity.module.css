@@ -42,6 +42,11 @@
   gap: 14px;
 }
 
+.subHeader {
+  font-size: 16px;
+  font-weight: 500;
+  color: var(--mc-black);
+}
 .sectionContent {
   display: flex;
   flex-direction: column;
@@ -136,25 +141,6 @@
 .prices {
   color: var(--content-dimmed-dark);
 }
-
-/*.priceBlocks {*/
-/*  display: flex;*/
-/*  flex-direction: row;*/
-/*  gap: 8px;*/
-/*}*/
-
-/*.priceBlock {*/
-/*  display: flex;*/
-/*  flex-direction: column;*/
-/*  gap: 4px;*/
-/*  padding: 12px;*/
-/*  border-radius: 8px;*/
-/*  background-color: var(--background-grey-darker);*/
-/*}*/
-
-/*.priceBlocks > div {*/
-/*  width: 50%;*/
-/*}*/
 
 .loadingOverlay {
   position: fixed;
@@ -253,12 +239,10 @@
   align-items: center;
   padding: 12px;
   border-radius: 10px;
-  background: linear-gradient(
-    97.15deg,
-    #5872fc -1.13%,
-    #6142ba 56.75%,
-    #c41cff 135.82%
-  );
+  background-image: url("../../../../../../assets/mira-block-bg.png");
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
 }
 
 .sparkleIcon {
@@ -273,14 +257,54 @@
 
 .existingPoolText {
   flex: 1;
+  color: var(--primary-white);
+  font-size: 15px;
+  font-weight: 400;
 }
 
 .addLiquidityLink {
-  text-decoration: underline;
+  display: inline-flex;
+  align-items: center;
+  font-size: 15px;
+  font-weight: 400;
+  color: var(--primary-white);
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  text-decoration: none;
+  position: relative;
+  transition: color 0.3s ease;
 }
 
 .addLiquidityLink:hover {
-  color: var(--content-secondary);
+  color: #e0e0e0;
+}
+
+.addLiquidityLink::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -2px;
+  width: 100%;
+  height: 2px;
+  background-color: var(--primary-white);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.3s ease;
+}
+
+.addLiquidityLink:hover::after {
+  transform: scaleX(1);
+}
+
+.arrow {
+  margin-left: 4px;
+  font-size: 15px;
+  transition: margin-left 0.3s ease;
+}
+
+.addLiquidityLink:hover .arrow {
+  margin-left: 8px;
 }
 
 .priceBlock {
@@ -291,12 +315,15 @@
   border-radius: 8px;
   background-color: var(--background-tertiary);
   cursor: pointer;
+  color: var(--content-primary);
 }
 
 .priceWarning {
+  font-weight: 400;
   font-size: 14px;
-  line-height: 17px;
-  color: #ffb800;
+  line-height: 20px;
+  color: var(--mc-yellow);
+  margin-bottom: 8px;
 }
 
 .coinHeader {
