@@ -1,11 +1,17 @@
 import {describe, it} from "@serenity-js/playwright-test";
 import {Wait} from "@serenity-js/core";
-import {Navigate, PageElement, By, PageElements} from "@serenity-js/web";
 import {
-  // Ensure,
-  // equals,
-  isPresent,
-} from "@serenity-js/assertions";
+  Navigate,
+  PageElement,
+  By,
+  PageElements,
+  Text,
+  Press,
+  Click,
+  Enter,
+} from "@serenity-js/web";
+
+import {Ensure, equals, isPresent} from "@serenity-js/assertions";
 import {isVisible} from "@serenity-js/web";
 
 describe("Header", () => {
@@ -147,6 +153,109 @@ describe("Footer", () => {
     await actor.attemptsTo(
       Navigate.to("/"),
       Wait.until(footerContactUsLink(), isPresent()),
+    );
+  });
+});
+
+describe("swap", () => {
+  const swapModule = () =>
+    PageElement.located(By.css("div.Swap_swapAndRate__7ZIhj"));
+
+  it("should see swap module", async ({actor}) => {
+    await actor.attemptsTo(
+      Navigate.to("/"),
+      Wait.until(swapModule(), isPresent()),
+    );
+  });
+
+  const slippageLabel = () =>
+    PageElement.located(By.css(".SlippageSetting_slippageLabel___IHXt"));
+  const slippageSettingsButton = () =>
+    PageElement.located(By.css("div .Swap_heading__CjEVx > button"));
+  const slippageSettingsModal = () =>
+    PageElement.located(By.css(".Modal_modalWindow__S7LXs"));
+  const slippageSettingsModalPercentageButton = (percentage: string) =>
+    PageElement.located(By.cssContainingText("button", `${percentage}%`));
+  const slippageSettingsInput = () =>
+    PageElement.located(By.css(".SettingsModalContent_slippageInput___szna"));
+
+  const slippageValues = ["0.1", "0.5"];
+
+  slippageValues.forEach((value) => {
+    it(`should be able to adjust slippage to ${value}%`, async ({actor}) => {
+      await actor.attemptsTo(
+        Navigate.to("/"),
+        Wait.until(slippageLabel(), isPresent()),
+        Wait.until(slippageSettingsButton(), isPresent()),
+        slippageSettingsButton().click(),
+        Wait.until(slippageSettingsModal(), isPresent()),
+        Wait.until(slippageSettingsModalPercentageButton(value), isPresent()),
+        slippageSettingsModalPercentageButton(value).click(),
+        Ensure.that(Text.of(slippageLabel()), equals(`${value}% slippage`)),
+      );
+    });
+  });
+
+  const slippageSettingsModalCustomButton = () =>
+    PageElement.located(By.cssContainingText("button", `Custom`));
+
+  it(`should be able to adjust custom slippage`, async ({actor}) => {
+    await actor.attemptsTo(
+      Navigate.to("/"),
+      Wait.until(slippageLabel(), isPresent()),
+      Wait.until(slippageSettingsButton(), isPresent()),
+      slippageSettingsButton().click(),
+      Wait.until(slippageSettingsModal(), isPresent()),
+      Wait.until(slippageSettingsModalCustomButton(), isPresent()),
+      Click.on(slippageSettingsModalCustomButton()),
+      slippageSettingsInput().enterValue("0.7%"),
+      Press.the("Enter"),
+      Press.the("Escape"),
+      Ensure.that(Text.of(slippageLabel()), equals(`0.7% slippage`)),
+    );
+  });
+
+  const sellInput = () =>
+    PageElements.located(By.css(".CurrencyBox_input__7lBMk")).first();
+  const buyInput = () =>
+    PageElements.located(By.css(".CurrencyBox_input__7lBMk")).last();
+  const sellCoinButton = () =>
+    PageElements.located(By.css(".CurrencyBox_selector__JrCLa")).first();
+  const buyCoinButton = () =>
+    PageElements.located(By.css(".CurrencyBox_selector__JrCLa")).last();
+  const searchInput = () =>
+    PageElement.located(By.css(".CoinsListModal_tokenSearchInput__TWcHY"));
+  const searchResults = () =>
+    PageElements.located(By.css(".CoinsListModal_tokenListItem__oeJhZ"));
+  const swapConvertButton = () =>
+    PageElement.located(
+      By.css(".IconButton_iconButton___GOzQ.Swap_convertButton__unBzD"),
+    );
+
+  it(`should be able to sell ETH for USDC`, async ({actor}) => {
+    await actor.attemptsTo(
+      Navigate.to("/"),
+      Wait.until(sellInput(), isPresent()),
+      sellInput().enterValue("2"),
+      Click.on(sellCoinButton()),
+      Wait.until(searchResults().first(), isPresent()),
+      Enter.theValue("ETH").into(searchInput()),
+      Wait.until(searchResults().first(), isPresent()),
+      Click.on(searchResults().first()),
+      Wait.until(sellCoinButton(), isVisible()),
+      Ensure.that(Text.of(sellCoinButton()), equals("ETH")),
+      Click.on(buyCoinButton()),
+      Wait.until(searchResults().first(), isPresent()),
+      Enter.theValue("USDC").into(searchInput()),
+      Wait.until(searchResults().first(), isPresent()),
+      Click.on(searchResults().first()),
+      Wait.until(buyCoinButton(), isVisible()),
+      Ensure.that(Text.of(sellCoinButton()), equals("USDC")),
+      Ensure.that(Text.of(buyCoinButton()), equals("ETH")),
+      Wait.until(swapConvertButton(), isVisible()),
+      Click.on(swapConvertButton()),
+      Ensure.that(Text.of(buyCoinButton()), equals("USDC")),
+      Ensure.that(Text.of(sellCoinButton()), equals("ETH")),
     );
   });
 });

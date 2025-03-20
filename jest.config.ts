@@ -2,7 +2,7 @@ import type {Config} from "jest";
 
 const config: Config = {
   testEnvironment: "node",
-testPathIgnorePatterns: ["<rootDir>/apps/web-e2e"],
+  testPathIgnorePatterns: ["<rootDir>/apps/web-e2e"],
   setupFilesAfterEnv: ["<rootDir>/jest.setup.ts"],
   moduleNameMapper: {
     "^@/(.*)$": "<rootDir>/$1",

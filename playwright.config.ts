@@ -26,6 +26,7 @@ export default defineConfig<SerenityOptions>({
   fullyParallel: !process.env.CI,
   // Opt out of parallel tests on CI.
   workers: process.env.CI ? 2 : undefined,
+  retries: 2,
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
   use: {
     // Serenity/JS configuration options
