@@ -13,11 +13,11 @@ import useAssetMetadata from "@/src/hooks/useAssetMetadata";
 type Props = {
   value: string;
   assetId: B256Address | null;
-  mode: CurrencyBoxMode;
+  mode?: CurrencyBoxMode;
   balance: BN;
   setAmount: (amount: string) => void;
   loading: boolean;
-  onCoinSelectorClick: (mode: CurrencyBoxMode) => void;
+  onCoinSelectorClick?: (mode: CurrencyBoxMode) => void;
   usdRate: number | null;
   previewError?: string | null;
 };
@@ -46,7 +46,7 @@ const CurrencyBox = ({
   };
 
   const handleCoinSelectorClick = () => {
-    if (!loading) {
+    if (!loading && mode && onCoinSelectorClick) {
       onCoinSelectorClick(mode);
     }
   };
@@ -79,7 +79,9 @@ const CurrencyBox = ({
 
   return (
     <div className={styles.currencyBox}>
-      <p className={styles.title}>{mode === "buy" ? "Buy" : "Sell"}</p>
+      {mode && (
+        <p className={styles.title}>{mode === "buy" ? "Buy" : "Sell"}</p>
+      )}
       <div className={styles.content}>
         {previewError ? (
           <div className={styles.warningBox}>
@@ -101,7 +103,9 @@ const CurrencyBox = ({
         <Coin assetId={assetId} onClick={handleCoinSelectorClick} />
       </div>
       <div className={styles.estimateAndBalance}>
-        <p className={styles.estimate}>{usdValue !== null && `$${usdValue}`}</p>
+        <p className={styles.fiatValue}>
+          {usdValue !== null && `$${usdValue}`}
+        </p>
         {balance.gt(0) && (
           <span className={styles.balance}>
             Balance: {balanceValue}

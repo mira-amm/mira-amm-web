@@ -1,6 +1,5 @@
 import styles from "@/src/components/pages/add-liquidity-page/components/AddLiquidity/AddLiquidity.module.css";
 import CoinPair from "@/src/components/common/CoinPair/CoinPair";
-import CoinInput from "@/src/components/pages/add-liquidity-page/components/CoinInput/CoinInput";
 import {clsx} from "clsx";
 import ActionButton from "@/src/components/common/ActionButton/ActionButton";
 import useBalances from "@/src/hooks/useBalances/useBalances";
@@ -24,11 +23,7 @@ import {DefaultLocale, FuelAppUrl} from "@/src/utils/constants";
 import Info from "@/src/components/common/Info/Info";
 import {AddLiquidityPreviewData} from "@/src/components/pages/add-liquidity-page/components/AddLiquidity/PreviewAddLiquidityDialog";
 import {PoolId} from "mira-dex-ts";
-import {
-  APRTooltip,
-  StablePoolTooltip,
-  VolatilePoolTooltip,
-} from "@/src/components/pages/add-liquidity-page/components/AddLiquidity/addLiquidityTooltips";
+import {APRTooltip} from "@/src/components/pages/add-liquidity-page/components/AddLiquidity/addLiquidityTooltips";
 import useModal from "@/src/hooks/useModal/useModal";
 import TransactionFailureModal from "@/src/components/common/TransactionFailureModal/TransactionFailureModal";
 import {BN, bn} from "fuels";
@@ -37,6 +32,7 @@ import useAssetMetadata from "@/src/hooks/useAssetMetadata";
 import {useAssetPrice} from "@/src/hooks/useAssetPrice";
 import AprBadge from "@/src/components/common/AprBadge/AprBadge";
 import usePoolNameAndMatch from "@/src/hooks/usePoolNameAndMatch";
+import CurrencyBox from "@/src/components/common/CurrencyBox/CurrencyBox";
 
 type Props = {
   poolId: PoolId;
@@ -168,6 +164,8 @@ const AddLiquidityDialog = ({
     ],
   );
 
+  const oneOfAmountsIsEmpty = firstAmount.eq(0) || secondAmount.eq(0);
+
   const sufficientEthBalanceForFirstCoin = useCheckEthBalance({
     assetId: poolId[0].bits,
     amount: firstAmount.formatUnits(asset0Metadata.decimals),
@@ -218,13 +216,12 @@ const AddLiquidityDialog = ({
   let buttonTitle = "Preview";
   if (!isValidNetwork) {
     buttonTitle = "Incorrect network";
-  } else if (!sufficientEthBalance) {
+  } else if (oneOfAmountsIsEmpty) buttonTitle = "Input amounts";
+  else if (!sufficientEthBalance) {
     buttonTitle = "Bridge more ETH to pay for gas";
   } else if (insufficientBalance) {
     buttonTitle = "Insufficient balance";
   }
-
-  const oneOfAmountsIsEmpty = firstAmount.eq(0) || secondAmount.eq(0);
 
   const buttonDisabled =
     !isValidNetwork || insufficientBalance || oneOfAmountsIsEmpty;
@@ -234,10 +231,10 @@ const AddLiquidityDialog = ({
 
   return (
     <>
-      <div className={styles.section}>
+      <div className={styles.addLiquidityContent}>
         <p>Selected pair</p>
         <div className={styles.sectionContent}>
-          <div className={styles.coinPair}>
+          <div className={styles.coinHeader}>
             <CoinPair
               firstCoin={firstAssetId}
               secondCoin={secondAssetId}
@@ -287,7 +284,7 @@ const AddLiquidityDialog = ({
             >
               <div className={styles.poolStabilityButtonContent}>
                 <span className={styles.poolStabilityButtonText}>
-                  0.30% fee tier (Volatile pool)
+                  0.30% fee tier (volatile pool)
                 </span>
                 {/* <Info
                   tooltipText={VolatilePoolTooltip}
@@ -305,7 +302,7 @@ const AddLiquidityDialog = ({
             >
               <div className={styles.poolStabilityButtonContent}>
                 <span className={styles.poolStabilityButtonText}>
-                  0.05% fee tier (Stable pool)
+                  0.05% fee tier (stable pool)
                 </span>
                 {/* <Info tooltipText={StablePoolTooltip} tooltipKey="stablePool" /> */}
               </div>
@@ -313,24 +310,25 @@ const AddLiquidityDialog = ({
           </div>
         </div>
       </div>
-      <div className={styles.section}>
+      <div className={styles.depositAmountSection}>
         <p>Deposit amount</p>
         <div className={styles.sectionContent}>
-          <CoinInput
+          <CurrencyBox
             assetId={firstAssetId}
             value={firstAmountInput}
             loading={!isFirstToken && isFetching}
             setAmount={setAmount(poolId[0].bits)}
             balance={firstAssetBalance}
-            usdRate={asset0Price || undefined}
+            usdRate={asset0Price}
           />
-          <CoinInput
+
+          <CurrencyBox
             assetId={secondAssetId}
             value={secondAmountInput}
             loading={isFirstToken && isFetching}
             setAmount={setAmount(poolId[1].bits)}
             balance={secondAssetBalance}
-            usdRate={asset1Price || undefined}
+            usdRate={asset1Price}
           />
         </div>
       </div>

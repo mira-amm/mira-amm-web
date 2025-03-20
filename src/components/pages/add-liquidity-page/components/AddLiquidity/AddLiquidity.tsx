@@ -9,10 +9,8 @@ import {useRouter} from "next/navigation";
 import IconButton from "@/src/components/common/IconButton/IconButton";
 import CloseIcon from "@/src/components/icons/Close/CloseIcon";
 import {PoolId} from "mira-dex-ts";
-import {SlippageSetting} from "@/src/components/common/SlippageSetting/SlippageSetting";
-import SettingsModalContent from "@/src/components/common/Swap/components/SettingsModalContent/SettingsModalContent";
-import useModal from "@/src/hooks/useModal/useModal";
 import {DefaultSlippageValue} from "@/src/components/common/Swap/Swap";
+import clsx from "clsx";
 
 type Props = {
   poolId: PoolId;
@@ -21,11 +19,9 @@ type Props = {
 
 const AddLiquidity = ({poolId, poolKey}: Props): JSX.Element => {
   const router = useRouter();
-  const [SettingsModal, openSettingsModal, closeSettingsModal] = useModal();
 
   const [previewData, setPreviewData] =
     useState<AddLiquidityPreviewData | null>(null);
-  const [slippage, setSlippage] = useState<number>(DefaultSlippageValue);
 
   const handleBackClick = useCallback(() => {
     if (previewData) {
@@ -47,14 +43,11 @@ const AddLiquidity = ({poolId, poolKey}: Props): JSX.Element => {
         showOnDesktop
         onClick={handleBackClick}
         className={styles.backLink}
+        title="Back to Pool"
       />
-      <section className="liquidity-action-container">
+      <section className={clsx("liquidity-action-container", styles.preview)}>
         <div className={styles.addLiquidityHeading}>
           <p className={styles.title}>Add Liquidity</p>
-          <SlippageSetting
-            slippage={slippage}
-            openSettingsModal={openSettingsModal}
-          />
           {showPreview && (
             <IconButton onClick={handleCloseClick}>
               <CloseIcon />
@@ -65,7 +58,7 @@ const AddLiquidity = ({poolId, poolKey}: Props): JSX.Element => {
           <PreviewAddLiquidityDialog
             previewData={previewData!}
             setPreviewData={setPreviewData}
-            slippage={slippage}
+            slippage={DefaultSlippageValue}
           />
         ) : (
           <AddLiquidityDialog
@@ -75,10 +68,6 @@ const AddLiquidity = ({poolId, poolKey}: Props): JSX.Element => {
           />
         )}
       </section>
-      {showPreview && <div className={styles.loadingOverlay} />}
-      <SettingsModal title="Settings">
-        <SettingsModalContent slippage={slippage} setSlippage={setSlippage} />
-      </SettingsModal>
     </>
   );
 };

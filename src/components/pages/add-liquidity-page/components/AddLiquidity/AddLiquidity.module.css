@@ -9,10 +9,7 @@
   padding-bottom: 16px;
   border-bottom: 1px solid var(--background-grey-light);
   gap: 10px;
-  font-weight: 500;
-  font-size: 16px;
-  line-height: 19px;
-  color: var(--content-grey);
+  justify-content: space-between;
 }
 
 .addButton {
@@ -20,27 +17,42 @@
 }
 
 .title {
-  flex: 1;
+  font-size: 20px;
+  font-weight: 500;
+  line-height: 100%;
   color: var(--content-primary);
 }
 
-.section {
+.addLiquidityContent {
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 24px;
+}
+
+.previewContent {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.depositAmountSection {
+  margin-top: 4px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
 }
 
 .sectionContent {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 22px;
 }
 
 .APR {
   display: flex;
-  flex-direction: column;
-  align-items: end;
-  gap: 4px;
+  flex-direction: row;
+  align-items: center;
+  gap: 8px;
   line-height: 14px;
   padding-bottom: 4px;
 }
@@ -51,6 +63,8 @@
   gap: 3px;
 }
 .aprText > p {
+  font-weight: 400;
+  line-height: 100%;
   font-size: 12px;
 }
 
@@ -76,10 +90,9 @@
 .poolStabilityButton {
   width: 100%;
   display: flex;
-  padding: 10px 12px;
+  padding: 12px 14px;
   background-color: var(--background-secondary);
-  border: 1px solid var(--content-primary);
-  font-size: 14px !important;
+  border: 1px solid var(--mc-grey-4);
   cursor: pointer;
   align-items: center;
 }
@@ -95,9 +108,11 @@
 
 .poolStabilityButtonText {
   font-size: 14px !important;
+  font-weight: 500;
 }
 
 .poolStabilityButtonActive {
+  border: 1px solid var(--content-primary);
   background-color: var(--content-primary);
   color: var(--background-primary);
 }
@@ -152,14 +167,14 @@
   pointer-events: auto;
 }
 
-.inputsPreview,
-.previewPriceBlock,
-.previewCurrentPriceBlock {
+.inputsPreview {
   display: flex;
   flex-direction: column;
-  padding: 12px;
   border-radius: 8px;
   background-color: var(--background-secondary);
+  padding: 22px 18px;
+  border-radius: 16px;
+  background-color: var(--mc-grey-2);
 }
 
 .inputsPreview {
@@ -181,11 +196,6 @@
 .inputPreviewRow img {
   width: 20px;
   height: 20px;
-}
-
-.inputPreviewRow:last-child {
-  padding-top: 12px;
-  border-top: 1px solid var(--background-grey-dark);
 }
 
 .previewPriceBlocks {
@@ -227,6 +237,14 @@
 .previewCoinPair {
   display: flex;
   justify-content: space-between;
+}
+
+.divider {
+  border: 0;
+  height: 1px;
+  background-color: var(--mc-grey-3);
+  width: 100%;
+  margin: 8px 0;
 }
 
 .existingPoolBlock {
@@ -280,8 +298,10 @@
   line-height: 17px;
   color: #ffb800;
 }
-.coinPair {
+
+.coinHeader {
   display: flex;
+  flex-direction: row;
   justify-content: space-between;
 }
 
