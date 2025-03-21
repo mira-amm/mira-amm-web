@@ -8,7 +8,6 @@ import usePositionData from "@/src/hooks/usePositionData";
 import {createPoolKey} from "@/src/utils/common";
 import {useCallback, useRef, useState} from "react";
 import useRemoveLiquidity from "@/src/hooks/useRemoveLiquidity";
-import {useRouter} from "next/navigation";
 import RemoveLiquiditySuccessModal from "@/src/components/pages/view-position-page/components/RemoveLiquiditySuccessModal/RemoveLiquiditySuccessModal";
 
 import {PoolId} from "mira-dex-ts";
@@ -36,7 +35,6 @@ const PositionView = ({pool}: Props): JSX.Element => {
   const [SuccessModal, openSuccessModal] = useModal();
   const [FailureModal, openFailureModal, closeFailureModal] = useModal();
 
-  const router = useRouter();
   const assetAMetadata = useAssetMetadata(pool[0].bits);
   const assetBMetadata = useAssetMetadata(pool[1].bits);
 
@@ -124,9 +122,15 @@ const PositionView = ({pool}: Props): JSX.Element => {
     coinBAmountToWithdrawStr,
   ]);
 
-  const redirectToLiquidity = useCallback(() => {
-    router.push("/liquidity");
-  }, [router]);
+  const rate = parseFloat(coinAAmount) / parseFloat(coinBAmount);
+  const flooredRate =
+    rate < 0.01
+      ? floorToTwoSignificantDigits(rate).toLocaleString()
+      : rate.toLocaleString(DefaultLocale, {minimumFractionDigits: 2});
+  const makeRateFontSmaller = flooredRate.length > 10;
+
+  const lpTokenAssetId = getLPAssetId(DEFAULT_AMM_CONTRACT_ID, pool);
+  const formattedLpTokenAssetId = useFormattedAddress(lpTokenAssetId.bits);
 
   const isValidNetwork = useCheckActiveNetwork();
 
@@ -194,7 +198,7 @@ const PositionView = ({pool}: Props): JSX.Element => {
           isLoading={isPending}
         />
       </RemoveLiquidityModal>
-      <SuccessModal title={<></>} onClose={redirectToLiquidity}>
+      <SuccessModal title={<></>}>
         <RemoveLiquiditySuccessModal
           coinA={assetAMetadata.symbol || ""}
           coinB={assetBMetadata.symbol || ""}
