@@ -1,5 +1,5 @@
-# ===== ci(lint) ======
-name: Lint
+# ===== ci(test/e2e) ======
+name: End-to-End Tests
 
 on:
   push:
@@ -8,7 +8,7 @@ on:
     branches: "*"
 
 jobs:
-  lint:
+  e2e:
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -20,7 +20,7 @@ jobs:
         with:
           fetch-depth: 0 # Fetch all history for all branches and tags to ensure the 'main' branch is available
 
-      - name: Fetch main branch
+      - name: Fetch main branch # Will be used for test splitting later
         run: git fetch origin main # Explicitly fetch the 'main' branch to ensure it's available
 
       - name: 📦 Install pnpm
@@ -34,5 +34,8 @@ jobs:
       - name: Install dependencies
         run: pnpm i
 
-      - name: 🧹 Lint Projects
-        run: pnpx prettier --check .
+      - name: Install Playwright Browsers
+        run: pnpm exec playwright install --with-deps
+
+      - name: Run End-to-End tests
+        run: pnpm test:e2e-ci
