@@ -186,22 +186,26 @@ const ConnectButton = ({className, isWidget}: Props) => {
 
   return (
     <>
-      <ActionButton
-        className={clsx(className, isConnected && styles.connected)}
-        onClick={handleClick}
-        loading={isWalletLoading}
-        ref={buttonRef}
-      >
-        {isConnected && <img src="/images/avatar.png" width="24" height="24" />}
-        {title}
-        {isConnected && (!isMenuOpened ? <ArrowDownIcon /> : <ArrowUpIcon />)}
-      </ActionButton>
-      {isMenuOpened && <DropDownMenu buttons={menuButtons} ref={menuRef} />}
-      <TransactionsHistory
-        onClose={handleHistoryClose}
-        isOpened={isHistoryOpened}
-        ref={transactionsRef}
-      />
+      <div style={{position: "relative"}}>
+        <ActionButton
+          className={clsx(className, isConnected && styles.connected)}
+          onClick={handleClick}
+          loading={isWalletLoading}
+          ref={buttonRef}
+        >
+          {isConnected && (
+            <img src="/images/avatar.png" width="24" height="24" />
+          )}
+          {title}
+          {isConnected && (!isMenuOpened ? <ArrowDownIcon /> : <ArrowUpIcon />)}
+        </ActionButton>
+        {isMenuOpened && <DropDownMenu buttons={menuButtons} ref={menuRef} />}
+        <TransactionsHistory
+          onClose={handleHistoryClose}
+          isOpened={isHistoryOpened}
+          ref={transactionsRef}
+        />
+      </div>
       {isAddressCopied && (
         <CopyNotification onClose={() => setAddressCopied(false)} />
       )}

@@ -1,8 +1,8 @@
-import {useCallback, useEffect, useMemo, useRef, useState} from "react";
 import {useConnectUI, useIsConnected} from "@fuels/react";
 import {useLocalStorage} from "usehooks-ts";
 import {clsx} from "clsx";
 import Logo from "@/src/components/common/Logo/Logo";
+import {useCallback, useEffect, useMemo, useRef, useState} from "react";
 
 import ActionButton from "@/src/components/common/ActionButton/ActionButton";
 import IconButton from "@/src/components/common/IconButton/IconButton";
@@ -12,6 +12,7 @@ import useModal from "@/src/hooks/useModal/useModal";
 import useSwap from "@/src/hooks/useSwap/useSwap";
 
 import styles from "./Swap.module.css";
+import ConnectButton from "@/src/components/common/ConnectButton/ConnectButton";
 
 import ExchangeRate from "@/src/components/common/Swap/components/ExchangeRate/ExchangeRate";
 import useExchangeRate from "@/src/hooks/useExchangeRate/useExchangeRate";
@@ -41,7 +42,6 @@ import {useAssetPrice} from "@/src/hooks/useAssetPrice";
 import useAssetMetadata from "@/src/hooks/useAssetMetadata";
 import {SlippageSetting} from "../SlippageSetting/SlippageSetting";
 import Loader from "@/src/components/common/Loader/Loader";
-import ConnectButton from "@/src/components/common/ConnectButton/ConnectButton";
 
 import {TradeState} from "@/src/hooks/useSwapRouter";
 
