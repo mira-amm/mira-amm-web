@@ -41,13 +41,11 @@ Or
 gh repo clone mira-amm/mira-amm-web # GitHub CLI
 ```
 
-
 ### Install dependencies
 
 ```shell
 pnpm i
 ```
-
 
 ```shell
 pnpm exec playwright install

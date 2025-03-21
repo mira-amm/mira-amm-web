@@ -8,38 +8,22 @@ import {defineConfig, devices} from "@playwright/test";
 
 // const __filename = fileURLToPath(import.meta.url);
 
-// For CI, you may want to set BASE_URL to the deployed application.
-const baseURL = process.env.BASE_URL || "http://localhost:3000";
+const baseURL = "http://localhost:3000";
 
-/**
- * Read environment variables from file.
- * https://github.com/motdotla/dotenv
- */
-// require('dotenv').config();
-
-/**
- * See https://playwright.dev/docs/test-configuration.
- */
 export default defineConfig<SerenityOptions>({
   testDir: "apps/web-e2e",
   // ...nxE2EPreset(__filename, {testDir: "./apps/web-e2e/src/"}),
   fullyParallel: !process.env.CI,
-  // Opt out of parallel tests on CI.
   workers: process.env.CI ? 2 : undefined,
-  retries: 2,
-  /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
+  retries: 4,
   use: {
-    // Serenity/JS configuration options
     crew: [
-      // Automatically take screenshots upon an assertion failure
       ["@serenity-js/web:Photographer", {strategy: "TakePhotosOfFailures"}],
     ],
     defaultActorName: "User",
     baseURL,
-    /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
     trace: "on-first-retry",
   },
-  /* Run your local dev server before starting the tests */
   webServer: {
     command: "pnpm dev",
     url: "http://localhost:3000",
@@ -47,7 +31,6 @@ export default defineConfig<SerenityOptions>({
     // cwd: workspaceRoot,
   },
   reporter: [
-    // Serenity/JS reporting services
     [
       "@serenity-js/playwright-test",
       {

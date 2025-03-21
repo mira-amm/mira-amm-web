@@ -1,261 +1,220 @@
-import {describe, it} from "@serenity-js/playwright-test";
-import {Wait} from "@serenity-js/core";
+import {describe, it, beforeEach} from "@serenity-js/playwright-test";
+import {Duration, Wait} from "@serenity-js/core";
+import {Navigate, PageElement, By, Click, isVisible} from "@serenity-js/web";
+import {isPresent, not} from "@serenity-js/assertions";
+
 import {
-  Navigate,
-  PageElement,
-  By,
-  PageElements,
-  Text,
-  Press,
-  Click,
-  Enter,
-} from "@serenity-js/web";
+  connectWalletButton,
+  swapModule,
+  addLiquidityButton,
+  header,
+  headerLogo,
+  headerSwapLink,
+  headerLiquidityLink,
+  headerBridgeLink,
+  headerMainnetText,
+  headerConnectWalletButton,
+  footer,
+  footerLogo,
+  footerSupportLink,
+  footerMediaKitLink,
+  footerSecurityAuditLink,
+  footerDocsLink,
+  footerBlogLink,
+  footerCareersLink,
+  footerContactUsLink,
+  footerSocialLinks,
+} from "./locators";
 
-import {Ensure, equals, isPresent} from "@serenity-js/assertions";
-import {isVisible} from "@serenity-js/web";
+import {
+  Connect,
+  CreatePool,
+  AdjustSlippage,
+  Layout,
+  Swap,
+  TOKENS,
+} from "./tasks";
 
-describe("Header", () => {
-  const header = () => PageElement.located(By.tagName("header"));
-  const headerLogo = () => PageElement.located(By.css("header a svg"));
-  const headerSwapLink = () =>
-    PageElement.located(By.cssContainingText("header", "Swap"));
-  const headerLiquidityLink = () =>
-    PageElement.located(By.cssContainingText("header", "Liquidity"));
-  const headerBridgeLink = () =>
-    PageElement.located(By.cssContainingText("header", "Bridge"));
-  const headerMainnetText = () =>
-    PageElement.located(By.cssContainingText("header", "Mainnet"));
-  const headerConnectWalletButton = () =>
-    PageElement.located(By.cssContainingText("header", "Connect Wallet"));
+describe("Wallets", () => {
+  [
+    "Bako Safe",
+    "Fuel Wallet",
+    "Fuelet Wallet",
+    "Ethereum Wallets",
+    "Solana Wallets",
+  ].forEach((wallet) => {
+    it(`should see option to connect '${wallet}'`, async ({actor}) => {
+      await actor.attemptsTo(Connect.toWallet(wallet));
+    });
+  });
+});
 
-  it("header is visible", async ({actor}) => {
-    await actor.attemptsTo(Navigate.to("/"), Wait.until(header(), isVisible()));
+describe("Liquidity", () => {
+  beforeEach(async ({actor}) => {
+    await actor.attemptsTo(Navigate.to("/liquidity"));
   });
 
-  it("logo is visible", async ({actor}) => {
+  it("should be able to learn more about points program", async ({actor}) => {
     await actor.attemptsTo(
-      Navigate.to("/"),
-      Wait.until(headerLogo(), isVisible()),
+      Wait.upTo(Duration.ofSeconds(10)).until(
+        PageElement.located(By.cssContainingText("button", "Learn More ")),
+        isVisible(),
+      ),
+      Click.on(
+        PageElement.located(By.cssContainingText("button", "Learn More ")),
+      ),
     );
   });
 
-  it("'Swap' link is visible", async ({actor}) => {
+  it("should be able to create volatile pool", async ({actor}) => {
     await actor.attemptsTo(
-      Navigate.to("/"),
-      Wait.until(headerSwapLink(), isVisible()),
+      CreatePool.ofType("Volatile").withAssets(TOKENS.Base, TOKENS.Quote),
     );
   });
 
-  it("'Liquidity' link is visible", async ({actor}) => {
+  it("should be able to create stable pool", async ({actor}) => {
     await actor.attemptsTo(
-      Navigate.to("/"),
-      Wait.until(headerLiquidityLink(), isVisible()),
+      CreatePool.ofType("Stable").withAssets(TOKENS.Base, TOKENS.Quote),
     );
   });
 
-  it("'Bridge' link is visible", async ({actor}) => {
+  it("should be able to add liquidity to existing pool", async ({actor}) => {
     await actor.attemptsTo(
-      Navigate.to("/"),
-      Wait.until(headerBridgeLink(), isVisible()),
-    );
-  });
-
-  it("'Mainnet' text is visible", async ({actor}) => {
-    await actor.attemptsTo(
-      Navigate.to("/"),
-      Wait.until(headerMainnetText(), isVisible()),
-    );
-  });
-
-  it("'Connect Wallet' button is visible", async ({actor}) => {
-    await actor.attemptsTo(
-      Navigate.to("/"),
-      Wait.until(headerConnectWalletButton(), isVisible()),
+      Wait.upTo(Duration.ofSeconds(10)).until(
+        PageElement.located(By.css("Loading pools...")),
+        not(isVisible()),
+      ),
+      Wait.until(addLiquidityButton(), isPresent()),
+      Click.on(addLiquidityButton()),
+      Wait.until(connectWalletButton(), isVisible()),
     );
   });
 });
 
-describe("Footer", () => {
-  // TODO: Improve locators during front-end refactor
-  const footer = () =>
-    PageElement.located(By.css("footer.desktopOnly.Footer_footer__12mlR"));
-  const footerLogo = () =>
-    PageElement.located(
-      By.css("div.Footer_content__BowRn>a.Logo_logo__J4dc0"),
-    ).of(footer());
-  const footerSupportLink = () =>
-    PageElement.located(By.cssContainingText("a", "Support"));
-  const footerMediaKitLink = () =>
-    PageElement.located(By.cssContainingText("a", "Media Kit"));
-  const footerSecurityAuditLink = () =>
-    PageElement.located(By.cssContainingText("a", "Security Audit"));
-  const footerDocsLink = () =>
-    PageElement.located(By.cssContainingText("a", "Docs"));
-  const footerBlogLink = () =>
-    PageElement.located(By.cssContainingText("a", "Blog"));
-  const footerCareersLink = () =>
-    PageElement.located(By.cssContainingText("a", "Careers"));
-  const footerContactUsLink = () =>
-    PageElement.located(By.cssContainingText("a", "Contact us"));
-
-  it("footer is visible", async ({actor}) => {
-    console.log(footer());
-    await actor.attemptsTo(Navigate.to("/"), Wait.until(footer(), isPresent()));
+describe("Swap", () => {
+  beforeEach(async ({actor}) => {
+    await actor.attemptsTo(Navigate.to("/"));
   });
-
-  it.skip("logo in footer is visible", async ({actor}) => {
-    await actor.attemptsTo(
-      Navigate.to("/"),
-      Wait.until(footerLogo(), isPresent()),
-    );
-  });
-
-  it("'Support' link is visible", async ({actor}) => {
-    await actor.attemptsTo(
-      Navigate.to("/"),
-      Wait.until(footerSupportLink(), isPresent()),
-    );
-  });
-
-  it("'Media Kit' link is visible", async ({actor}) => {
-    await actor.attemptsTo(
-      Navigate.to("/"),
-      Wait.until(footerMediaKitLink(), isPresent()),
-    );
-  });
-
-  it("'Security Audit' link is visible", async ({actor}) => {
-    await actor.attemptsTo(
-      Navigate.to("/"),
-      Wait.until(footerSecurityAuditLink(), isPresent()),
-    );
-  });
-
-  it("'Docs' link is visible", async ({actor}) => {
-    await actor.attemptsTo(
-      Navigate.to("/"),
-      Wait.until(footerDocsLink(), isPresent()),
-    );
-  });
-  it("'Blog' link is visible", async ({actor}) => {
-    await actor.attemptsTo(
-      Navigate.to("/"),
-      Wait.until(footerBlogLink(), isPresent()),
-    );
-  });
-  it("'Careers' link is visible", async ({actor}) => {
-    await actor.attemptsTo(
-      Navigate.to("/"),
-      Wait.until(footerCareersLink(), isPresent()),
-    );
-  });
-  it("'Contact us' link is visible", async ({actor}) => {
-    await actor.attemptsTo(
-      Navigate.to("/"),
-      Wait.until(footerContactUsLink(), isPresent()),
-    );
-  });
-});
-
-describe("swap", () => {
-  const swapModule = () =>
-    PageElement.located(By.css("div.Swap_swapAndRate__7ZIhj"));
 
   it("should see swap module", async ({actor}) => {
-    await actor.attemptsTo(
-      Navigate.to("/"),
-      Wait.until(swapModule(), isPresent()),
-    );
+    await actor.attemptsTo(Wait.until(swapModule(), isPresent()));
   });
 
-  const slippageLabel = () =>
-    PageElement.located(By.css(".SlippageSetting_slippageLabel___IHXt"));
-  const slippageSettingsButton = () =>
-    PageElement.located(By.css("div .Swap_heading__CjEVx > button"));
-  const slippageSettingsModal = () =>
-    PageElement.located(By.css(".Modal_modalWindow__S7LXs"));
-  const slippageSettingsModalPercentageButton = (percentage: string) =>
-    PageElement.located(By.cssContainingText("button", `${percentage}%`));
-  const slippageSettingsInput = () =>
-    PageElement.located(By.css(".SettingsModalContent_slippageInput___szna"));
-
-  const slippageValues = ["0.1", "0.5"];
-
-  slippageValues.forEach((value) => {
+  ["0.1", "0.5"].forEach((value) => {
     it(`should be able to adjust slippage to ${value}%`, async ({actor}) => {
-      await actor.attemptsTo(
-        Navigate.to("/"),
-        Wait.until(slippageLabel(), isPresent()),
-        Wait.until(slippageSettingsButton(), isPresent()),
-        slippageSettingsButton().click(),
-        Wait.until(slippageSettingsModal(), isPresent()),
-        Wait.until(slippageSettingsModalPercentageButton(value), isPresent()),
-        slippageSettingsModalPercentageButton(value).click(),
-        Ensure.that(Text.of(slippageLabel()), equals(`${value}% slippage`)),
-      );
+      await actor.attemptsTo(AdjustSlippage.to(value));
     });
   });
 
-  const slippageSettingsModalCustomButton = () =>
-    PageElement.located(By.cssContainingText("button", `Custom`));
-
-  it(`should be able to adjust custom slippage`, async ({actor}) => {
-    await actor.attemptsTo(
-      Navigate.to("/"),
-      Wait.until(slippageLabel(), isPresent()),
-      Wait.until(slippageSettingsButton(), isPresent()),
-      slippageSettingsButton().click(),
-      Wait.until(slippageSettingsModal(), isPresent()),
-      Wait.until(slippageSettingsModalCustomButton(), isPresent()),
-      Click.on(slippageSettingsModalCustomButton()),
-      slippageSettingsInput().enterValue("0.7%"),
-      Press.the("Enter"),
-      Press.the("Escape"),
-      Ensure.that(Text.of(slippageLabel()), equals(`0.7% slippage`)),
-    );
+  it("should be able to adjust custom slippage", async ({actor}) => {
+    await actor.attemptsTo(AdjustSlippage.toCustom("0.7"));
   });
 
-  const sellInput = () =>
-    PageElements.located(By.css(".CurrencyBox_input__7lBMk")).first();
-  const buyInput = () =>
-    PageElements.located(By.css(".CurrencyBox_input__7lBMk")).last();
-  const sellCoinButton = () =>
-    PageElements.located(By.css(".CurrencyBox_selector__JrCLa")).first();
-  const buyCoinButton = () =>
-    PageElements.located(By.css(".CurrencyBox_selector__JrCLa")).last();
-  const searchInput = () =>
-    PageElement.located(By.css(".CoinsListModal_tokenSearchInput__TWcHY"));
-  const searchResults = () =>
-    PageElements.located(By.css(".CoinsListModal_tokenListItem__oeJhZ"));
-  const swapConvertButton = () =>
-    PageElement.located(
-      By.css(".IconButton_iconButton___GOzQ.Swap_convertButton__unBzD"),
-    );
-
-  it(`should be able to sell ETH for USDC`, async ({actor}) => {
-    await actor.attemptsTo(
-      Navigate.to("/"),
-      Wait.until(sellInput(), isPresent()),
-      sellInput().enterValue("2"),
-      Click.on(sellCoinButton()),
-      Wait.until(searchResults().first(), isPresent()),
-      Enter.theValue("ETH").into(searchInput()),
-      Wait.until(searchResults().first(), isPresent()),
-      Click.on(searchResults().first()),
-      Wait.until(sellCoinButton(), isVisible()),
-      Ensure.that(Text.of(sellCoinButton()), equals("ETH")),
-      Click.on(buyCoinButton()),
-      Wait.until(searchResults().first(), isPresent()),
-      Enter.theValue("USDC").into(searchInput()),
-      Wait.until(searchResults().first(), isPresent()),
-      Click.on(searchResults().first()),
-      Wait.until(buyCoinButton(), isVisible()),
-      Ensure.that(Text.of(sellCoinButton()), equals("USDC")),
-      Ensure.that(Text.of(buyCoinButton()), equals("ETH")),
-      Wait.until(swapConvertButton(), isVisible()),
-      Click.on(swapConvertButton()),
-      Ensure.that(Text.of(buyCoinButton()), equals("USDC")),
-      Ensure.that(Text.of(sellCoinButton()), equals("ETH")),
-    );
+  it("should be able to sell ETH for USDC", async ({actor}) => {
+    await actor.attemptsTo(Swap.sell("2", TOKENS.Base), Swap.buy(TOKENS.Quote));
   });
+
+  it("should be able to swap buy and sell currencies", async ({actor}) => {
+    await actor.attemptsTo(Swap.sell("2", TOKENS.Base), Swap.convert());
+  });
+});
+
+describe("Points", () => {
+  it("should be able to see leaderboard", async ({actor}) =>
+    actor.attemptsTo(
+      Navigate.to("/points"),
+      Wait.upTo(Duration.ofSeconds(10)).until(
+        PageElement.located(By.css("Loading points leaderboard...")),
+        not(isVisible()),
+      ),
+    ));
+});
+
+describe("Layout: Header", () => {
+  beforeEach(async ({actor}) => {
+    await actor.attemptsTo(Navigate.to("/"));
+  });
+
+  it("should show header", async ({actor}) =>
+    actor.attemptsTo(Layout.shouldShow("header", header())));
+
+  it("should show logo", async ({actor}) =>
+    actor.attemptsTo(Layout.shouldShow("logo", headerLogo())));
+
+  it("should show 'Swap' link", async ({actor}) =>
+    actor.attemptsTo(Layout.shouldShow("'Swap' link", headerSwapLink())));
+
+  it("should show 'Liquidity' link", async ({actor}) =>
+    actor.attemptsTo(
+      Layout.shouldShow("'Liquidity' link", headerLiquidityLink()),
+    ));
+
+  it("should show 'Bridge' link", async ({actor}) =>
+    actor.attemptsTo(Layout.shouldShow("'Bridge' link", headerBridgeLink())));
+
+  it("should show 'Mainnet' text", async ({actor}) =>
+    actor.attemptsTo(Layout.shouldShow("'Mainnet' text", headerMainnetText())));
+
+  it("should show 'Connect Wallet' button", async ({actor}) =>
+    actor.attemptsTo(
+      Layout.shouldShow("'Connect Wallet' button", headerConnectWalletButton()),
+    ));
+});
+
+describe("Layout: Footer", () => {
+  beforeEach(async ({actor}) => {
+    await actor.attemptsTo(Navigate.to("/"));
+  });
+
+  it("should show footer", async ({actor}) =>
+    actor.attemptsTo(Layout.shouldBePresent("footer", footer())));
+
+  it.skip("should show footer logo", async ({actor}) =>
+    actor.attemptsTo(Layout.shouldBePresent("footer logo", footerLogo())));
+
+  it("should show 'Support' link", async ({actor}) =>
+    actor.attemptsTo(
+      Layout.shouldBePresent("Support link", footerSupportLink()),
+    ));
+
+  it("should show 'Media Kit' link", async ({actor}) =>
+    actor.attemptsTo(
+      Layout.shouldBePresent("Media Kit link", footerMediaKitLink()),
+    ));
+
+  it("should show 'Security Audit' link", async ({actor}) =>
+    actor.attemptsTo(
+      Layout.shouldBePresent("Security Audit link", footerSecurityAuditLink()),
+    ));
+
+  it("should show 'Docs' link", async ({actor}) =>
+    actor.attemptsTo(Layout.shouldBePresent("Docs link", footerDocsLink())));
+
+  it("should show 'Blog' link", async ({actor}) =>
+    actor.attemptsTo(Layout.shouldBePresent("Blog link", footerBlogLink())));
+
+  it("should show 'Careers' link", async ({actor}) =>
+    actor.attemptsTo(
+      Layout.shouldBePresent("Careers link", footerCareersLink()),
+    ));
+
+  it("should show 'Contact us' link", async ({actor}) =>
+    actor.attemptsTo(
+      Layout.shouldBePresent("Contact us link", footerContactUsLink()),
+    ));
+
+  it("should allow clicking GitHub link", async ({actor}) =>
+    actor.attemptsTo(
+      Layout.shouldAllowClick("GitHub link", footerSocialLinks().nth(0)),
+    ));
+
+  it("should allow clicking discord link", async ({actor}) =>
+    actor.attemptsTo(
+      Layout.shouldAllowClick("discord link", footerSocialLinks().nth(1)),
+    ));
+
+  it("should allow clicking X link", async ({actor}) =>
+    actor.attemptsTo(
+      Layout.shouldAllowClick("X link", footerSocialLinks().nth(2)),
+    ));
 });

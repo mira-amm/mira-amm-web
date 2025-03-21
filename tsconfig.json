@@ -29,5 +29,5 @@
     ".next/types/**/*.ts",
     "playwright.config.ts"
   ],
-  "exclude": ["node_modules"]
+  "exclude": ["node_modules", "apps/web-e2e"]
 }

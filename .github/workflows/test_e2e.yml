@@ -20,7 +20,7 @@ jobs:
         with:
           fetch-depth: 0 # Fetch all history for all branches and tags to ensure the 'main' branch is available
 
-      - name: Fetch main branch
+      - name: Fetch main branch # Will be used for test splitting later
         run: git fetch origin main # Explicitly fetch the 'main' branch to ensure it's available
 
       - name: 📦 Install pnpm
