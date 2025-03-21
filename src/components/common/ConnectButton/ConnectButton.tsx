@@ -20,9 +20,10 @@ import DropDownMenu from "../DropDownMenu/DropDownMenu";
 
 type Props = {
   className?: string;
+  isWidget?: boolean;
 };
 
-const ConnectButton = ({className}: Props) => {
+const ConnectButton = ({className, isWidget}: Props) => {
   const {account, connect, disconnect, isConnected, isWalletLoading} =
     useWeb3React();
 
@@ -140,22 +141,22 @@ const ConnectButton = ({className}: Props) => {
   };
 
   const menuButtons = useMemo(() => {
-    return DropDownButtons.map((button) => {
-      return {
-        ...button,
-        onClick:
-          button.text === "Disconnect"
-            ? handleDisconnect
-            : button.text === "Transaction History"
-              ? handleHistoryOpen
-              : button.text === "Copy Address"
-                ? handleCopy
-                : button.text === "View in Explorer"
-                  ? handleExplorerClick
-                  : button.onClick,
-      };
-    });
-  }, [handleDisconnect, handleCopy, handleExplorerClick]);
+    return DropDownButtons.filter(
+      ({text}) => !isWidget || text === "Disconnect" || text === "Copy Address",
+    ).map((button) => ({
+      ...button,
+      onClick:
+        button.text === "Disconnect"
+          ? handleDisconnect
+          : button.text === "Transaction History"
+            ? handleHistoryOpen
+            : button.text === "Copy Address"
+              ? handleCopy
+              : button.text === "View in Explorer"
+                ? handleExplorerClick
+                : button.onClick,
+    }));
+  }, [handleDisconnect, handleCopy, handleExplorerClick, isWidget]);
 
   useEffect(() => {
     if (isHistoryOpened) {
