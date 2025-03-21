@@ -9,6 +9,13 @@ button.connected {
   box-shadow: none;
 }
 
+@media (max-width: 1024px) {
+  button.connected {
+    width: 120px;
+    height: 32px;
+  }
+}
+
 button.connected:hover {
   box-shadow: none;
 }
