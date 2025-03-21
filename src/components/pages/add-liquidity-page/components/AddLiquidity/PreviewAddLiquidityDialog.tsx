@@ -109,7 +109,7 @@ const PreviewAddLiquidityDialog = ({
 
   return (
     <>
-      <div className={styles.section}>
+      <div className={styles.previewContent}>
         <div className={styles.previewCoinPair}>
           <CoinPair
             firstCoin={assets[0].assetId}
@@ -126,60 +126,13 @@ const PreviewAddLiquidityDialog = ({
             <Coin assetId={assets[1].assetId} />
             <p>{secondAssetAmountString}</p>
           </div>
+          <hr className={styles.divider} />
           <div className={styles.inputPreviewRow}>
             <p>Fee tier</p>
             <p>{feeText}</p>
           </div>
         </div>
       </div>
-      {/* <div className={styles.section}>
-        <p>Selected Price</p>
-        <div className={styles.sectionContent}>
-          <div className={styles.previewPriceBlocks}>
-            <div className={styles.previewPriceBlock}>
-              <p className={styles.previewPriceBlockTitle}>
-                Low price
-              </p>
-              <p className={styles.previewPriceBlockValue}>
-                0
-              </p>
-              <p className={styles.previewPriceBlockExchange}>
-                {coinA} per {coinB}
-              </p>
-              <p className={styles.previewPriceBlockDescription}>
-                Your position will be 100% composed of {coinA} at this price
-              </p>
-            </div>
-            <div className={styles.previewPriceBlock}>
-              <p className={styles.previewPriceBlockTitle}>
-                High price
-              </p>
-              <p className={styles.previewPriceBlockValue}>
-                ∞
-              </p>
-              <p className={styles.previewPriceBlockExchange}>
-                {coinA} per {coinB}
-              </p>
-              <p className={styles.previewPriceBlockDescription}>
-                Your position will be 100% composed of {coinB} at this price
-              </p>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div className={styles.section}>
-        <div className={styles.previewCurrentPriceBlock}>
-          <p className={styles.previewPriceBlockTitle}>
-            Current Price
-          </p>
-          <p className={styles.previewPriceBlockValue}>
-            {rate}
-          </p>
-          <p className={styles.previewPriceBlockExchange}>
-            {coinA} per {coinB}
-          </p>
-        </div>
-      </div> */}
       <ActionButton loading={isPending} onClick={handleAddLiquidity}>
         Add Liquidity
       </ActionButton>

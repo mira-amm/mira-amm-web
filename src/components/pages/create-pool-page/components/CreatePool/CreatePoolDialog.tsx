@@ -1,31 +1,30 @@
-import styles from "@/src/components/pages/add-liquidity-page/components/AddLiquidity/AddLiquidity.module.css";
-import CoinPair from "@/src/components/common/CoinPair/CoinPair";
-import CoinInput from "@/src/components/pages/add-liquidity-page/components/CoinInput/CoinInput";
-import {clsx} from "clsx";
 import ActionButton from "@/src/components/common/ActionButton/ActionButton";
-import useBalances from "@/src/hooks/useBalances/useBalances";
-import useAssetBalance from "@/src/hooks/useAssetBalance";
-import {useConnectUI, useIsConnected} from "@fuels/react";
-import {Dispatch, SetStateAction, useCallback, useRef, useState} from "react";
-import {useDebounceCallback} from "usehooks-ts";
-import useCheckEthBalance from "@/src/hooks/useCheckEthBalance/useCheckEthBalance";
-import useFaucetLink from "@/src/hooks/useFaucetLink";
-import {createPoolKey, openNewTab} from "@/src/utils/common";
-import useCheckActiveNetwork from "@/src/hooks/useCheckActiveNetwork";
-import Info from "@/src/components/common/Info/Info";
-import {CreatePoolPreviewData} from "./PreviewCreatePoolDialog";
-import {buildPoolId} from "mira-dex-ts";
-import {StablePoolTooltip, VolatilePoolTooltip} from "./CreatePoolTooltips";
-import usePoolsMetadata from "@/src/hooks/usePoolsMetadata";
-import useModal from "@/src/hooks/useModal/useModal";
+import CoinPair from "@/src/components/common/CoinPair/CoinPair";
+import CurrencyBox from "@/src/components/common/CurrencyBox/CurrencyBox";
 import CoinsListModal from "@/src/components/common/Swap/components/CoinsListModal/CoinsListModal";
-import {B256Address, BN, bn, formatUnits} from "fuels";
+import ExchangeIcon from "@/src/components/icons/Exchange/ExchangeIcon";
+import styles from "@/src/components/pages/add-liquidity-page/components/AddLiquidity/AddLiquidity.module.css";
+import useAssetBalance from "@/src/hooks/useAssetBalance";
 import useAssetMetadata from "@/src/hooks/useAssetMetadata";
 import {useAssetPrice} from "@/src/hooks/useAssetPrice";
-import SparkleIcon from "@/src/components/icons/Sparkle/SparkleIcon";
-import Link from "next/link";
+import useBalances from "@/src/hooks/useBalances/useBalances";
+import useCheckActiveNetwork from "@/src/hooks/useCheckActiveNetwork";
+import useCheckEthBalance from "@/src/hooks/useCheckEthBalance/useCheckEthBalance";
 import useExchangeRateV2 from "@/src/hooks/useExchangeRate/useExchangeRateV2";
-import ExchangeIcon from "@/src/components/icons/Exchange/ExchangeIcon";
+import useFaucetLink from "@/src/hooks/useFaucetLink";
+import useModal from "@/src/hooks/useModal/useModal";
+import usePoolsMetadata from "@/src/hooks/usePoolsMetadata";
+import {createPoolKey, openNewTab} from "@/src/utils/common";
+import {useConnectUI, useIsConnected} from "@fuels/react";
+import {clsx} from "clsx";
+import {B256Address, bn} from "fuels";
+import {buildPoolId} from "mira-dex-ts";
+import Link from "next/link";
+import {Dispatch, SetStateAction, useCallback, useRef, useState} from "react";
+import {useDebounceCallback} from "usehooks-ts";
+import {CreatePoolPreviewData} from "./PreviewCreatePoolDialog";
+import Image from "next/image";
+import SparkleIcon from "@/assets/sparcle.svg";
 
 type Props = {
   setPreviewData: Dispatch<SetStateAction<CreatePoolPreviewData | null>>;
@@ -230,18 +229,19 @@ const CreatePoolDialog = ({setPreviewData}: Props) => {
 
   return (
     <>
-      <div className={styles.section}>
-        <p>Selected pair</p>
+      <div className={styles.addLiquidityContent}>
+        <p className={styles.subHeader}>Selected pair</p>
         <div className={styles.sectionContent}>
-          <div className={styles.coinPair}>
-            {!oneOfAssetsIsNotSelected && (
+          {!oneOfAssetsIsNotSelected && (
+            <div className={styles.coinHeader}>
               <CoinPair
                 firstCoin={firstAssetId}
                 secondCoin={secondAssetId}
                 isStablePool={isStablePool}
               />
-            )}
-          </div>
+            </div>
+          )}
+
           <div className={styles.poolStability}>
             <div
               className={clsx(
@@ -253,12 +253,8 @@ const CreatePoolDialog = ({setPreviewData}: Props) => {
             >
               <div className={styles.poolStabilityButtonContent}>
                 <span className={styles.poolStabilityButtonText}>
-                  0.30% fee tier (Volatile pool)
+                  0.30% fee tier (volatile pool)
                 </span>
-                {/* <Info
-                  tooltipText={VolatilePoolTooltip}
-                  tooltipKey="volatilePool"
-                /> */}
               </div>
             </div>
             <div
@@ -271,7 +267,7 @@ const CreatePoolDialog = ({setPreviewData}: Props) => {
             >
               <div className={styles.poolStabilityButtonContent}>
                 <span className={styles.poolStabilityButtonText}>
-                  0.05% fee tier (Stable pool)
+                  0.05% fee tier (stable pool)
                 </span>
                 {/* <Info tooltipText={StablePoolTooltip} tooltipKey="stablePool" /> */}
               </div>
@@ -279,46 +275,52 @@ const CreatePoolDialog = ({setPreviewData}: Props) => {
           </div>
         </div>
       </div>
-      <div className={styles.section}>
-        <p>Deposit amount</p>
+      <div className={styles.depositAmountSection}>
+        <p className={styles.subHeader}>Deposit amount</p>
         <div className={styles.sectionContent}>
-          <CoinInput
+          <CurrencyBox
             assetId={firstAssetId}
             value={firstAmountInput}
-            loading={poolExists}
+            isDisabled={poolExists}
             setAmount={setAmount(firstAssetId)}
             balance={firstAssetBalanceValue}
-            usdRate={firstAssetPrice.price ?? undefined}
-            onAssetClick={handleAssetClick(firstAssetId)}
+            usdRate={firstAssetPrice.price}
+            onCoinSelectorClick={handleAssetClick(firstAssetId)}
           />
-          <CoinInput
+          <CurrencyBox
             assetId={secondAssetId}
             value={secondAmountInput}
-            loading={poolExists}
+            isDisabled={poolExists}
             setAmount={setAmount(secondAssetId)}
             balance={secondAssetBalanceValue}
-            usdRate={secondAssetPrice.price ?? undefined}
-            onAssetClick={handleAssetClick(secondAssetId)}
+            usdRate={secondAssetPrice.price}
+            onCoinSelectorClick={handleAssetClick(secondAssetId)}
           />
         </div>
       </div>
       {poolExists && (
         <div className={styles.existingPoolBlock}>
           <div className={styles.sparkleIcon}>
-            <SparkleIcon />
+            <Image
+              src={SparkleIcon}
+              alt="sparkle"
+              width={12}
+              height={12}
+              priority
+            />
           </div>
           <p className={styles.existingPoolText}>This pool already exists</p>
           <Link
             href={`/liquidity/add/?pool=${existingPoolKey}`}
             className={styles.addLiquidityLink}
           >
-            Add liquidity →
+            Add liquidity<span className={styles.arrow}>&rarr;</span>
           </Link>
         </div>
       )}
       {!poolExists && !oneOfAssetsIsNotSelected && !oneOfAmountsIsEmpty && (
-        <div className={styles.section}>
-          <p>Starting price</p>
+        <div className={styles.depositAmountSection}>
+          <p className={styles.subHeader}>Starting price</p>
           <div className={styles.priceBlock} onClick={handleExchangeRateSwap}>
             <p>{exchangeRate}</p>
             <ExchangeIcon />

@@ -10,17 +10,28 @@ import {DefaultLocale, MinEthValueBN} from "@/src/utils/constants";
 import {B256Address, BN} from "fuels";
 import useAssetMetadata from "@/src/hooks/useAssetMetadata";
 
-type Props = {
+type BaseProps = {
   value: string;
   assetId: B256Address | null;
-  mode: CurrencyBoxMode;
   balance: BN;
   setAmount: (amount: string) => void;
-  loading: boolean;
-  onCoinSelectorClick: (mode: CurrencyBoxMode) => void;
+  loading?: boolean;
   usdRate: number | null;
   previewError?: string | null;
+  isDisabled?: boolean;
 };
+
+type SwapPageProps = BaseProps & {
+  mode: CurrencyBoxMode;
+  onCoinSelectorClick?: (param: CurrencyBoxMode) => void;
+};
+
+type LiquidityPageProps = BaseProps & {
+  mode?: never;
+  onCoinSelectorClick?: () => void;
+};
+
+type Props = SwapPageProps | LiquidityPageProps;
 
 const CurrencyBox = ({
   value,
@@ -32,6 +43,7 @@ const CurrencyBox = ({
   onCoinSelectorClick,
   usdRate,
   previewError,
+  isDisabled,
 }: Props) => {
   const metadata = useAssetMetadata(assetId);
   const balanceValue = balance.formatUnits(metadata.decimals || 0);
@@ -46,8 +58,12 @@ const CurrencyBox = ({
   };
 
   const handleCoinSelectorClick = () => {
-    if (!loading) {
-      onCoinSelectorClick(mode);
+    if (!loading && onCoinSelectorClick) {
+      if (mode) {
+        onCoinSelectorClick(mode);
+      } else {
+        onCoinSelectorClick();
+      }
     }
   };
 
@@ -79,7 +95,9 @@ const CurrencyBox = ({
 
   return (
     <div className={styles.currencyBox}>
-      <p className={styles.title}>{mode === "buy" ? "Buy" : "Sell"}</p>
+      {mode && (
+        <p className={styles.title}>{mode === "buy" ? "Buy" : "Sell"}</p>
+      )}
       <div className={styles.content}>
         {previewError ? (
           <div className={styles.warningBox}>
@@ -94,14 +112,16 @@ const CurrencyBox = ({
             placeholder="0"
             minLength={1}
             value={value}
-            disabled={coinNotSelected || loading}
+            disabled={coinNotSelected || loading || isDisabled}
             onChange={handleChange}
           />
         )}
         <Coin assetId={assetId} onClick={handleCoinSelectorClick} />
       </div>
       <div className={styles.estimateAndBalance}>
-        <p className={styles.estimate}>{usdValue !== null && `$${usdValue}`}</p>
+        <p className={styles.fiatValue}>
+          {usdValue !== null && `$${usdValue}`}
+        </p>
         {balance.gt(0) && (
           <span className={styles.balance}>
             Balance: {balanceValue}
