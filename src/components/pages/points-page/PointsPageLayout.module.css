@@ -1,21 +1,3 @@
-.pointsPageLayout {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  width: 100%;
-  flex: 1;
-  padding: 0px 16px;
-}
-
-.pointsPageContents {
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-  gap: 24px;
-  padding: 32px 0px;
-  max-width: 1084px;
-}
-
 .titleSection {
   display: flex;
   flex-direction: column;

@@ -175,6 +175,18 @@ input:focus {
     url("../../src/fonts/EllographCF-Regular.ttf") format("truetype");
 }
 
+.page-container {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  align-self: center;
+  width: 100%;
+  flex: 1;
+  padding: 32px 16px;
+  gap: 24px;
+  max-width: 1106px; /* length 1084 + 16*2 (padding) */
+}
+
 .liquidity-action-container {
   display: flex;
   flex-direction: column;

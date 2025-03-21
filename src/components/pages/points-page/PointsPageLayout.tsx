@@ -10,22 +10,20 @@ const PointsPageLayout = (): JSX.Element => {
   return (
     <>
       <Header />
-      <main className={styles.pointsPageLayout}>
-        <div className={styles.pointsPageContents}>
-          <Boosts />
-          <div className={styles.titleSection}>
-            <p className={styles.title}>Leaderboard</p>
-            <div className={styles.subsection}>
-              <p className={styles.subtitle}>
-                See the top participants of the points program.{" "}
-              </p>
-              <p className={styles.pointsWarning}>
-                The leaderboard is updated every hour.
-              </p>
-            </div>
+      <main className="page-container">
+        <Boosts />
+        <div className={styles.titleSection}>
+          <p className={styles.title}>Leaderboard</p>
+          <div className={styles.subsection}>
+            <p className={styles.subtitle}>
+              See the top participants of the points program.{" "}
+            </p>
+            <p className={styles.pointsWarning}>
+              The leaderboard is updated every hour.
+            </p>
           </div>
-          <PointsRankTable />
         </div>
+        <PointsRankTable />
       </main>
       <Footer />
     </>
