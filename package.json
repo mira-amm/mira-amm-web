@@ -43,7 +43,6 @@
   },
   "devDependencies": {
     "@next/eslint-plugin-next": "^14.2.23",
-    "@tanstack/react-query-devtools": "^5.66.9",
     "@nx/eslint": "20.5.0",
     "@nx/next": "20.5.0",
     "@nx/playwright": "20.5.0",
@@ -56,6 +55,7 @@
     "@serenity-js/rest": "^3.31.8",
     "@serenity-js/serenity-bdd": "^3.31.10",
     "@serenity-js/web": "^3.31.10",
+    "@tanstack/react-query-devtools": "^5.66.9",
     "@types/decimal.js": "^7.4.3",
     "@types/jest": "^29.5.14",
     "@types/node": "^20",
@@ -76,6 +76,7 @@
     "nx": "20.5.0",
     "playwright": "^1.51.0",
     "prettier": "^3.4.2",
+    "semantic-release": "^24.2.3",
     "ts-jest": "^29.2.5",
     "ts-node": "^10.9.2",
     "tsx": "^4.19.2",
