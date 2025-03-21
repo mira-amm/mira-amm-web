@@ -14,7 +14,6 @@ import usePositionData from "@/src/hooks/usePositionData";
 import {floorToTwoSignificantDigits, createPoolKey} from "@/src/utils/common";
 import {useCallback, useRef, useState} from "react";
 import useRemoveLiquidity from "@/src/hooks/useRemoveLiquidity";
-import {useRouter} from "next/navigation";
 import RemoveLiquiditySuccessModal from "@/src/components/pages/view-position-page/components/RemoveLiquiditySuccessModal/RemoveLiquiditySuccessModal";
 import IconButton from "@/src/components/common/IconButton/IconButton";
 import {getLPAssetId, PoolId} from "mira-dex-ts";
@@ -49,10 +48,9 @@ const PositionView = ({pool}: Props) => {
     openRemoveLiquidityModal,
     closeRemoveLiquidityModal,
   ] = useModal();
-  const [SuccessModal, openSuccessModal, closeSuccessModal] = useModal();
+  const [SuccessModal, openSuccessModal] = useModal();
   const [FailureModal, openFailureModal, closeFailureModal] = useModal();
 
-  const router = useRouter();
   const assetAMetadata = useAssetMetadata(pool[0].bits);
   const assetBMetadata = useAssetMetadata(pool[1].bits);
 
@@ -147,10 +145,6 @@ const PositionView = ({pool}: Props) => {
     coinAAmountToWithdrawStr,
     coinBAmountToWithdrawStr,
   ]);
-
-  const redirectToLiquidity = useCallback(() => {
-    router.push("/liquidity");
-  }, [router]);
 
   const rate = parseFloat(coinAAmount) / parseFloat(coinBAmount);
   const flooredRate =
@@ -393,7 +387,7 @@ const PositionView = ({pool}: Props) => {
           isLoading={isPending}
         />
       </RemoveLiquidityModal>
-      <SuccessModal title={<></>} onClose={redirectToLiquidity}>
+      <SuccessModal title={<></>}>
         <RemoveLiquiditySuccessModal
           coinA={assetAMetadata.symbol || ""}
           coinB={assetBMetadata.symbol || ""}
