@@ -1,5 +1,8 @@
 import React from "react";
 import styles from "./index.module.css";
+import clsx from "clsx";
+
+const STEPS = ["0%", "25%", "50%", "75%", "100%"];
 
 const Slider = ({
   value,
@@ -11,6 +14,9 @@ const Slider = ({
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     onChange(Number(event.target.value));
   };
+
+  const getIsSelectedDot = (dot: string) =>
+    parseFloat(dot.replace("%", "")) === value;
 
   return (
     <div className={styles.sliderContainer}>
@@ -25,18 +31,21 @@ const Slider = ({
           className={styles.customSlider}
         />
         <div className={styles.sliderDots}>
-          <div className={styles.dot} style={{left: "0%"}}></div>
-          <div className={styles.dot} style={{left: "25%"}}></div>
-          <div className={styles.dot} style={{left: "50%"}}></div>
-          <div className={styles.dot} style={{left: "75%"}}></div>
-          <div className={styles.dot} style={{left: "100%"}}></div>
+          {STEPS.map((step) => (
+            <div
+              className={clsx(
+                styles.dot,
+                getIsSelectedDot(step) && styles.dotsSelected,
+              )}
+              style={{left: step}}
+              key={step}
+            ></div>
+          ))}
         </div>
         <div className={styles.sliderLabels}>
-          <span>0%</span>
-          <span>25%</span>
-          <span>50%</span>
-          <span>75%</span>
-          <span>100%</span>
+          {STEPS.map((step) => (
+            <span key={step}>{step}</span>
+          ))}
         </div>
       </div>
     </div>
