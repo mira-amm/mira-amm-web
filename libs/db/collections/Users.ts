@@ -22,6 +22,12 @@ export const Users: CollectionConfig = {
     {
       name: 'name',
       type: 'text',
+      defaultValue: 'test'
+    },
+    {
+      name: 'email',
+      type: 'email',
+      defaultValue: 'test@mira.ly'
     },
   ],
   timestamps: true,

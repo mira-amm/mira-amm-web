@@ -1,22 +1,10 @@
 import type { CollectionConfig, Payload } from 'payload'
 
 import { navAccordions } from '@/db/collections/navAccordions'
-import {
-  anyone,
-  isOrganizer,
-  isSuperAdmin,
-} from "@/db/access";
 
 export const Media: CollectionConfig = {
   slug: 'media',
-  access: {
-    read: () => true,
-    update: isOrganizer || isSuperAdmin,
-  },
   admin: {
-    hidden: ({user}) => {
-      return user?.group?.name === "Hacker"
-    },
     group: navAccordions.categories,
     defaultColumns: [
       'filename',
@@ -77,14 +65,14 @@ const contentType = res.headers.get("content-type") || "application/octet-stream
 }
 
 export const mediaSeedData = [
-  {
-alt: "Mira Symbol",
-    url: "https://mira.ly/images/favicon.png",
-    filename: "mira_symbol.svg"
-  },
-  {
-alt: "Mira Wordmark",
-    url: "https://4079782695-files.gitbook.io/~/files/v0/b/gitbook-x-prod.appspot.com/o/spaces%2F9vifHFKfl951onmvvApO%2Fuploads%2F706QDtbgWs2OvpBZh3Mk%2Flogo_primary_white.svg?alt=media&token=de16a6a8-c8d9-4cec-80cd-c0843dbd8039",
-    filename: "mira_wordmark.svg"
-  },
+//   {
+// alt: "Mira Symbol",
+//     url: "https://mira.ly/images/favicon.png",
+//     filename: "mira_symbol.svg"
+//   },
+//   {
+// alt: "Mira Wordmark",
+//     url: "https://4079782695-files.gitbook.io/~/files/v0/b/gitbook-x-prod.appspot.com/o/spaces%2F9vifHFKfl951onmvvApO%2Fuploads%2F706QDtbgWs2OvpBZh3Mk%2Flogo_primary_white.svg?alt=media&token=de16a6a8-c8d9-4cec-80cd-c0843dbd8039",
+//     filename: "mira_wordmark.svg"
+//   },
 ]

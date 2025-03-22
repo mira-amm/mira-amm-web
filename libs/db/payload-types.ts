@@ -717,12 +717,7 @@ export interface Design {
  */
 export interface Doc {
   id: number;
-  blog?: string | null;
-  discord?: string | null;
-  x?: string | null;
-  instagram?: string | null;
-  facebook?: string | null;
-  github?: string | null;
+  link?: string | null;
   _status?: ('draft' | 'published') | null;
   updatedAt?: string | null;
   createdAt?: string | null;
@@ -755,12 +750,7 @@ export interface DesignSelect<T extends boolean = true> {
  * via the `definition` "docs_select".
  */
 export interface DocsSelect<T extends boolean = true> {
-  blog?: T;
-  discord?: T;
-  x?: T;
-  instagram?: T;
-  facebook?: T;
-  github?: T;
+  link?: T;
   _status?: T;
   updatedAt?: T;
   createdAt?: T;

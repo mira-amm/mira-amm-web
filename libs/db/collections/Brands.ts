@@ -31,13 +31,13 @@ export const Brands: CollectionConfig = {
     { name: 'name', type: 'text', required: true, label: 'Name' },
     { name: 'description', type: 'textarea', label: 'Description' },
     { name: 'domain', type: 'text', admin: { position: 'sidebar' } },
-    {name: 'links', type: 'array', label: 'Links',
-      labels: {singular: 'Link', plural: 'Links'},
-      fields: [
-        {name: 'name', type: 'text'},
-        {name: 'link', type: 'text'},
-      ],
-    },
+    {name: 'blog', type: 'text', admin: { position: 'sidebar' } },
+    {name: 'discord', type: 'text', admin: { position: 'sidebar' } },
+    {name: 'x', type: 'text', admin: { position: 'sidebar' } },
+    {name: 'instagram', type: 'text', admin: { position: 'sidebar' }, },
+    {name: 'linkedin', type: 'text', admin: { position: 'sidebar' }, },
+    {name: 'facebook', type: 'text', admin: { position: 'sidebar' } },
+    {name: 'github', type: 'text', admin: { position: 'sidebar' } }
   ],
 }
 
@@ -278,9 +278,8 @@ export async function seedBrands(payload: Payload, req: any) {
         "domain": "https://www.lua.org/",
         "symbol": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/lua/lua-original.svg"
       },
-
       {
-        "name": "Remix.js",
+        "name": "Remix",
         "domain": "https://remix.run/",
         "symbol": "https://github.com/user-attachments/assets/5ac0e523-a337-42a2-ba56-c13d314fdaac"
       },
@@ -471,20 +470,28 @@ export async function seedBrands(payload: Payload, req: any) {
       {
         "name": "Mira",
         "domain": "https://mira.ly",
-        "symbol": "https://mira.ly/images/favicon.png"
+        "symbol": "https://mira.ly/images/favicon.png",
+        "blog": 'https://mirror.xyz/miraly.eth',
+        "discord": 'https://discord.gg/6pHdTY6rYq',
+        "x": 'https://x.com/MiraProtocol',
+        "instagram": 'https://instagram.com',
+        "facebook": 'https://facebook.com',
+        "github": 'https://github.com/mira-amm',
       },
       {
         "name": "ChartHouse Labs",
         "domain": "https://www.charthouse.io",
-        "symbol": "https://avatars.githubusercontent.com/u/196121682?s=400&u=35fa95a7a7268d12847c997656992ea7ba7b8c7a&v=4"
+        "symbol": "https://avatars.githubusercontent.com/u/196121682?s=400&u=35fa95a7a7268d12847c997656992ea7ba7b8c7a&v=4",
+        "linkedin": "https://www.linkedin.com/company/charthouse-labs"
       },
 ].map(async (brand) => {
+
       const symbol = await getOrUploadMedia(
         payload,
         req,
         brand.symbol,
-        `${brand.name.replace(/ /g, "-").toLowerCase()}-logo-symbol`,
-        `${brand.name} Logo`,
+        `${brand.name.replace(/ /g, "_").toLowerCase()}_symbol`,
+        `${brand.name} Symbol`,
       );
 
       await payload.create({
@@ -494,7 +501,13 @@ export async function seedBrands(payload: Payload, req: any) {
           description: brand.description || '',
           symbol: symbol?.id || null,
           domain: brand.domain || null,
-          links: brand.links || [],
+    blog: brand.blog || null,
+    discord: brand.discord || null,
+    x: brand.x || null,
+    instagram: brand.instagram || null,
+    linkedin: brand.linkedin || null,
+    facebook: brand.facebook || null,
+    github: brand.github || null,
         },
       });
       payload.logger.info(`✅ Inserted brand: ${brand.name}`);
