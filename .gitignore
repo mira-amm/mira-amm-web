@@ -55,3 +55,7 @@ generated/
 # Next.js
 .next
 out
+
+pgdata
+apps/admin/media
+apps/web/node_modules
