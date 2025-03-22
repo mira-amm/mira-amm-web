@@ -7,6 +7,7 @@
   "scripts": {
     "mira": "pnpm nx dev infra",
     "clean": "git clean -fdX -e '!**/.env*' -e '!**/pgdata' # 🧽 Remove any and all files listed in .gitignore except .env and pgdata",
+    "nuke": " sudo git clean -fdX; # 🚨 WARNING: REMOVE ANY AND ALL FILES LISTED IN .gitignore INCLUDING .env AND pgdata",
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
