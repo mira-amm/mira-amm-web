@@ -24,8 +24,8 @@
 }
 
 .name {
-  font-weight: 500;
-  font-size: 14px;
-  line-height: 16px;
+  font-weight: 400;
+  font-size: 15px;
+  line-height: 18px;
   color: var(--content-dimmed-light);
 }
