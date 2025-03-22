@@ -1,10 +1,10 @@
 import {GET} from "./route";
 import {NextRequest} from "next/server";
 import {request} from "graphql-request";
-import {SQDIndexerUrl} from "@/src/utils/constants";
-import {NotFoundError} from "@/src/utils/errors";
+import {SQDIndexerUrl} from "../../../../../libs/web/src/utils/constants";
+import {NotFoundError} from "../../../../../libs/web/src/utils/errors";
 
-jest.mock("@/src/utils/constants", () => ({
+jest.mock("../../../../../libs/web/src/utils/constants", () => ({
   SQDIndexerUrl: "https://mock-squid-indexer.com",
 }));
 

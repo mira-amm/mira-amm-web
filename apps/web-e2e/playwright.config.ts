@@ -1,18 +1,17 @@
 import type {SerenityOptions} from "@serenity-js/playwright-test";
 /* eslint-disable node/prefer-global/process */
-// import {fileURLToPath} from "node:url";
-// import {workspaceRoot} from "@nx/devkit";
-// import {nxE2EPreset} from "@nx/playwright/preset";
+import {fileURLToPath} from "node:url";
+import {workspaceRoot} from "@nx/devkit";
+import {nxE2EPreset} from "@nx/playwright/preset";
 
 import {defineConfig, devices} from "@playwright/test";
 
-// const __filename = fileURLToPath(import.meta.url);
+const __filename = fileURLToPath(import.meta.url);
 
 const baseURL = "http://localhost:3000";
 
 export default defineConfig<SerenityOptions>({
-  testDir: "apps/web-e2e",
-  // ...nxE2EPreset(__filename, {testDir: "./apps/web-e2e/src/"}),
+  ...nxE2EPreset(__filename, {testDir: "./src"}),
   fullyParallel: !process.env.CI,
   workers: process.env.CI ? 2 : undefined,
   retries: 4,
@@ -25,10 +24,10 @@ export default defineConfig<SerenityOptions>({
     trace: "on-first-retry",
   },
   webServer: {
-    command: "pnpm dev",
+    command: "pnpm nx dev web",
     url: "http://localhost:3000",
     reuseExistingServer: !process.env.CI,
-    // cwd: workspaceRoot,
+    cwd: workspaceRoot,
   },
   reporter: [
     [

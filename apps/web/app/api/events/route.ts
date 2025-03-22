@@ -3,12 +3,15 @@
  */
 import {NextRequest, NextResponse} from "next/server";
 import {request, gql} from "graphql-request";
-import {SQDIndexerUrl} from "@/src/utils/constants";
+import {SQDIndexerUrl} from "../../../../../libs/web/src/utils/constants";
 import {
   GeckoTerminalQueryResponses,
   SQDIndexerResponses,
-} from "../shared/types";
-import {GeckoTerminalTypes, SQDIndexerTypes} from "../shared/constants";
+} from "@/web/shared/types";
+import {
+  GeckoTerminalTypes,
+  SQDIndexerTypes,
+} from "../../../../../libs/web/shared/constants";
 import {formatUnits} from "fuels";
 
 interface FetchEventsParams {

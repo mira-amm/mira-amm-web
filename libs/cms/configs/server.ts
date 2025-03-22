@@ -1,7 +1,15 @@
 // github.com/jhb-software/payload-plugins/tree/main/geocoding
 /* eslint-disable node/prefer-global/process */
 import {navAccordions, Brands, Media, Users} from "@/db/collections";
-import {App, Design, Docs} from "@/db/globals"
+import {
+  App,
+  Graph,
+  DrizzleStudio,
+  DatabaseSchema,
+  Docs,
+  Figma,
+  Storybook
+} from "@/db/globals"
 
 import {formBuilderPlugin} from "@payloadcms/plugin-form-builder";
 import {resendAdapter} from "@payloadcms/email-resend";
@@ -18,8 +26,12 @@ export const baseConfig = {
   ],
   globals: [
     App,
-    Design,
-    Docs
+DrizzleStudio,
+DatabaseSchema,
+    Graph,
+    Figma,
+    Docs,
+    Storybook
   ],
   blocks: [],
   email: resendAdapter({
@@ -47,7 +59,7 @@ export const baseConfig = {
         admin: {
           group: navAccordions.communication,
           livePreview: {
-            url: `${process.env.WEBSITE_PUBLIC_URL}`,
+            url: `${process.env.APP_LOCAL_URL}`,
           },
         },
         versions: {

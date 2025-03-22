@@ -2,7 +2,7 @@ import {NextRequest} from "next/server";
 import {request} from "graphql-request";
 import {GET} from "./route";
 
-jest.mock("@/src/utils/constants", () => ({
+jest.mock("../../../../../libs/web/src/utils/constants", () => ({
   SQDIndexerUrl: "https://mock-squid-indexer.com",
   NetworkUrl: "https://mock-network-url.com",
 }));

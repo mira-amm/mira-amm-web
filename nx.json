@@ -20,14 +20,6 @@
       "{workspaceRoot}/pnpm-lock.yaml"
     ]
   },
-  "targetDefaults": {
-    "build": {
-      "outputs": [
-        "{projectRoot}/.next"
-      ],
-      "cache": true
-    }
-  },
   "plugins": [
     {
       "plugin": "@nx/next/plugin",
@@ -47,6 +39,12 @@
         "buildStorybookTargetName": "build-storybook",
         "testStorybookTargetName": "test-storybook",
         "staticStorybookTargetName": "static-storybook"
+      }
+    },
+    {
+      "plugin": "@nx/playwright/plugin",
+      "options": {
+        "targetName": "e2e"
       }
     },
   ]

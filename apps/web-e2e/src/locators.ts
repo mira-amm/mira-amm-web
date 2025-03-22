@@ -1,12 +1,12 @@
 import {PageElement, PageElements, By} from "@serenity-js/web";
 
 export const connectWalletButton = () =>
-  PageElement.located(
+  PageElements.located(
     By.cssContainingText(
-      "button.ActionButton_btn__fm8nx.ActionButton_secondary__gLMKU",
+      "button",
       "Connect Wallet",
     ),
-  );
+  ).last();
 
 export const walletOption = (walletName: string) =>
   PageElement.located(

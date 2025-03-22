@@ -2,6 +2,9 @@
 
 playwright-report
 target/*
+apps/web-e2e/target/*
+apps/web-e2e/dist/*
+dist/*
 test-results
 
 # dependencies

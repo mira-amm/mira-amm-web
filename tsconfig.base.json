@@ -33,6 +33,15 @@
       "@/shared/*": [
         "libs/shared/*"
       ],
+      "@/*": [
+        "libs/web/*"
+      ],
+      "@/web": [
+        "libs/web/index.ts"
+      ],
+      "@/web/*": [
+        "libs/web/*"
+      ],
       "@/docs": [
         "libs/docs/index.ts"
       ],

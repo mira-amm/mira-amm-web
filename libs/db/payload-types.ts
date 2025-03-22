@@ -92,13 +92,21 @@ export interface Config {
   };
   globals: {
     app: App;
-    design: Design;
+    'drizzle-studio': DrizzleStudio;
+    'database-schema': DatabaseSchema;
+    graph: Graph;
+    figma: Figma;
     docs: Doc;
+    storybook: Storybook;
   };
   globalsSelect: {
     app: AppSelect<false> | AppSelect<true>;
-    design: DesignSelect<false> | DesignSelect<true>;
+    'drizzle-studio': DrizzleStudioSelect<false> | DrizzleStudioSelect<true>;
+    'database-schema': DatabaseSchemaSelect<false> | DatabaseSchemaSelect<true>;
+    graph: GraphSelect<false> | GraphSelect<true>;
+    figma: FigmaSelect<false> | FigmaSelect<true>;
     docs: DocsSelect<false> | DocsSelect<true>;
+    storybook: StorybookSelect<false> | StorybookSelect<true>;
   };
   locale: null;
   user: User & {
@@ -692,16 +700,49 @@ export interface PayloadMigrationsSelect<T extends boolean = true> {
  */
 export interface App {
   id: number;
-  text?: string | null;
+  link?: string | null;
   _status?: ('draft' | 'published') | null;
   updatedAt?: string | null;
   createdAt?: string | null;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "design".
+ * via the `definition` "drizzle-studio".
  */
-export interface Design {
+export interface DrizzleStudio {
+  id: number;
+  link?: string | null;
+  _status?: ('draft' | 'published') | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "database-schema".
+ */
+export interface DatabaseSchema {
+  id: number;
+  link?: string | null;
+  _status?: ('draft' | 'published') | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "graph".
+ */
+export interface Graph {
+  id: number;
+  link?: string | null;
+  _status?: ('draft' | 'published') | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "figma".
+ */
+export interface Figma {
   id: number;
   embedLink?: string | null;
   shareLink?: string | null;
@@ -715,6 +756,22 @@ export interface Design {
  */
 export interface Doc {
   id: number;
+  blog?: string | null;
+  discord?: string | null;
+  x?: string | null;
+  instagram?: string | null;
+  facebook?: string | null;
+  github?: string | null;
+  _status?: ('draft' | 'published') | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "storybook".
+ */
+export interface Storybook {
+  id: number;
   link?: string | null;
   _status?: ('draft' | 'published') | null;
   updatedAt?: string | null;
@@ -725,7 +782,7 @@ export interface Doc {
  * via the `definition` "app_select".
  */
 export interface AppSelect<T extends boolean = true> {
-  text?: T;
+  link?: T;
   _status?: T;
   updatedAt?: T;
   createdAt?: T;
@@ -733,9 +790,42 @@ export interface AppSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "design_select".
+ * via the `definition` "drizzle-studio_select".
  */
-export interface DesignSelect<T extends boolean = true> {
+export interface DrizzleStudioSelect<T extends boolean = true> {
+  link?: T;
+  _status?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "database-schema_select".
+ */
+export interface DatabaseSchemaSelect<T extends boolean = true> {
+  link?: T;
+  _status?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "graph_select".
+ */
+export interface GraphSelect<T extends boolean = true> {
+  link?: T;
+  _status?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "figma_select".
+ */
+export interface FigmaSelect<T extends boolean = true> {
   embedLink?: T;
   shareLink?: T;
   _status?: T;
@@ -748,6 +838,22 @@ export interface DesignSelect<T extends boolean = true> {
  * via the `definition` "docs_select".
  */
 export interface DocsSelect<T extends boolean = true> {
+  blog?: T;
+  discord?: T;
+  x?: T;
+  instagram?: T;
+  facebook?: T;
+  github?: T;
+  _status?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "storybook_select".
+ */
+export interface StorybookSelect<T extends boolean = true> {
   link?: T;
   _status?: T;
   updatedAt?: T;

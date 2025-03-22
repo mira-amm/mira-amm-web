@@ -15,7 +15,7 @@ describe("test for GET /api/asset", () => {
 
   beforeAll(() => {
     // Mock MainnetUrl if needed
-    jest.mock("@/src/utils/constants", () => ({
+    jest.mock("../../../../../libs/web/src/utils/constants", () => ({
       MainnetUrl: mockMainnetUrl,
     }));
   });

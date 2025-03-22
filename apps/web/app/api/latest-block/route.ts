@@ -7,12 +7,15 @@ import {request, gql} from "graphql-request";
 import {DateTime} from "fuels";
 
 // local imports
-import {SQDIndexerUrl, NetworkUrl} from "@/src/utils/constants";
+import {
+  SQDIndexerUrl,
+  NetworkUrl,
+} from "../../../../../libs/web/src/utils/constants";
 import {
   FuelAPIResponses,
   GeckoTerminalQueryResponses,
   SQDIndexerResponses,
-} from "@/app/api/shared/types";
+} from "@/web/shared/types";
 
 // Function to fetch the squid status (height)
 async function fetchSquidStatus(

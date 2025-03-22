@@ -3,12 +3,12 @@
  */
 import {NextRequest, NextResponse} from "next/server";
 import {request, gql} from "graphql-request";
-import {SQDIndexerUrl} from "@/src/utils/constants";
+import {SQDIndexerUrl} from "../../../../../libs/web/src/utils/constants";
 import {
   SQDIndexerResponses,
   GeckoTerminalQueryResponses,
-} from "../shared/types";
-import {NotFoundError} from "@/src/utils/errors";
+} from "../../../../../libs/web/shared/types";
+import {NotFoundError} from "../../../../../libs/web/src/utils/errors";
 
 // Function to fetch pool details by ID
 async function fetchPoolById(

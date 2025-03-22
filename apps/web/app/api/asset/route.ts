@@ -2,8 +2,8 @@
  * @api {get} /asset Get details of an asset by ID
  */
 import {NextRequest, NextResponse} from "next/server";
-import {GeckoTerminalQueryResponses} from "../shared/types";
-import {MainnetUrl} from "@/src/utils/constants";
+import {GeckoTerminalQueryResponses} from "@/web/shared/types";
+import {MainnetUrl} from "../../../../../libs/web/src/utils/constants";
 
 // Handle GET requests for /api/asset
 export async function GET(req: NextRequest) {
