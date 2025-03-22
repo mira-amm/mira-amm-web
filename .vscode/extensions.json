@@ -9,5 +9,6 @@
     "bbenoist.nix",
     "bradlc.vscode-tailwindcss",
     "vitest.explorer",
+    "likec4.likec4-vscode"
   ]
 }
