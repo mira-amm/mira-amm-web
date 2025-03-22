@@ -1,12 +1,6 @@
 import type { BaseLayoutProps } from 'fumadocs-ui/layouts/shared';
+import type { HomeLayoutProps } from 'fumadocs-ui/layouts/home'
 
-/**
- * Shared layout configurations
- *
- * you can customise layouts individually from:
- * Home Layout: app/(home)/layout.tsx
- * Docs Layout: app/docs/layout.tsx
- */
 export const baseOptions: BaseLayoutProps = {
   nav: {
     title: (
@@ -30,4 +24,7 @@ export const baseOptions: BaseLayoutProps = {
       active: 'nested-url',
     },
   ],
+  githubUrl: 'https://github.com/mira-amm/mira-amm-web',
 };
+
+export const homeOptions: HomeLayoutProps = { ...baseOptions }

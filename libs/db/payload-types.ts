@@ -156,13 +156,13 @@ export interface Brand {
   name: string;
   description?: string | null;
   domain?: string | null;
-  links?:
-    | {
-        name?: string | null;
-        link?: string | null;
-        id?: string | null;
-      }[]
-    | null;
+  blog?: string | null;
+  discord?: string | null;
+  x?: string | null;
+  instagram?: string | null;
+  linkedin?: string | null;
+  facebook?: string | null;
+  github?: string | null;
   updatedAt: string;
   createdAt: string;
   _status?: ('draft' | 'published') | null;
@@ -174,7 +174,6 @@ export interface Brand {
 export interface Media {
   id: number;
   alt: string;
-  prefix?: string | null;
   updatedAt: string;
   createdAt: string;
   url?: string | null;
@@ -475,13 +474,13 @@ export interface BrandsSelect<T extends boolean = true> {
   name?: T;
   description?: T;
   domain?: T;
-  links?:
-    | T
-    | {
-        name?: T;
-        link?: T;
-        id?: T;
-      };
+  blog?: T;
+  discord?: T;
+  x?: T;
+  instagram?: T;
+  linkedin?: T;
+  facebook?: T;
+  github?: T;
   updatedAt?: T;
   createdAt?: T;
   _status?: T;
@@ -492,7 +491,6 @@ export interface BrandsSelect<T extends boolean = true> {
  */
 export interface MediaSelect<T extends boolean = true> {
   alt?: T;
-  prefix?: T;
   updatedAt?: T;
   createdAt?: T;
   url?: T;

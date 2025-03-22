@@ -1,12 +1,16 @@
-import { DocsLayout } from 'fumadocs-ui/layouts/docs';
-import type { ReactNode } from 'react';
-import { baseOptions } from '@/app/layout.config';
-import { source } from '@/lib/source';
+import type { ReactNode } from 'react'
+import { DocsLayout } from 'fumadocs-ui/layouts/notebook'
+import { source } from '../../../source'
+import { baseOptions } from '../layout.config'
+import 'katex/dist/katex.css'
 
 export default function Layout({ children }: { children: ReactNode }) {
   return (
-    <DocsLayout tree={source.pageTree} {...baseOptions}>
+    <DocsLayout
+      tree={source.pageTree}
+      {...baseOptions}
+    >
       {children}
     </DocsLayout>
-  );
+  )
 }
