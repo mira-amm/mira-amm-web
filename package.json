@@ -15,6 +15,7 @@
     "ri": "mv .env .env.backup; pnpm clean; pnpm i; cp .env.example .env;  # 🧼 Backup `.env`->`.env.backup`, and perform a clean install"
   },
   "dependencies": {
+    "@sentry/nextjs": "^9",
     "@hookform/resolvers": "^3.10.0",
     "@payloadcms/db-postgres": "^3.23.0",
     "@payloadcms/email-resend": "^3.25.0",
