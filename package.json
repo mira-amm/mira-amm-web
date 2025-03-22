@@ -4,6 +4,7 @@
   "private": true,
   "type": "module",
   "scripts": {
+    "mira": "pnpm nx dev infra",
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
