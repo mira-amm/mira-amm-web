@@ -4,6 +4,12 @@
   "sourceRoot": "infra",
   "projectType": "application",
   "targets": {
+    "up": {
+      "command": "nix-shell --argstr DB 'up'",
+      "options": {
+        "cwd": "infra"
+      }
+    },
     "down": {
       "command": "nix-shell --argstr DB 'down'",
       "options": {
