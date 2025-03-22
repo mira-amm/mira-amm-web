@@ -12,6 +12,12 @@
     "module": "esnext",
     "moduleResolution": "node",
     "paths": {
+      "@/shared": [
+        "libs/shared/index.ts"
+      ],
+      "@/shared/*": [
+        "libs/shared/*"
+      ],
       "@/docs": [
         "libs/docs/index.ts"
       ],
