@@ -14,15 +14,17 @@ layout {
             }
 
             pane command="pnpm" name="🟩 Mira App | 3000 | mira.ly" cwd="../" {
-                args "dev"
-                start_suspended true
+                args "nx" "next:dev" "mira-amm"
             }
 
         pane split_direction="horizontal" size="30%" {
             pane command="pnpm" name="📚 Docs | 4000 | docs.mira.ly" cwd="../" {
-                args "nx" "next:dev" "docs"
-                start_suspended true
+                args "nx" "dev" "docs"
             }
+                pane command="pnpm" name="🏛 Architecture | 6400 | arch.mira.ly" cwd="../" {
+                    args "nx" "dev" "arch"
+                    start_suspended true
+                }
             pane command="pnpm" name="🗺 Project Graph - Nx | 4211 | graph.mira.ly" cwd="../" {
                     args "nx" "graph" "--groupByFolder" "--verbose"
                     start_suspended true
@@ -53,12 +55,11 @@ layout {
         pane size=1 borderless=true {
             plugin location="zellij:tab-bar"
         }
-        pane split_direction="vertical" {
                 pane command="browsh" name="Web Browser Preview" cwd="../" {
-                    args "http://localhost:3000"
+                    args "http://localhost:3000" "http://localhost:8000" "http://localhost:4000"
+                    /- "http://localhost:4211" "https://local.drizzle.studio" "http://localhost:5600"
                     start_suspended true
                 }
-            }
         pane size=1 borderless=true {
             plugin location="zellij:status-bar"
         }
@@ -121,6 +122,36 @@ layout {
         pane command="sudo" name="netscanner" {
             args "netscanner"
         }
+        pane size=1 borderless=true {
+            plugin location="zellij:status-bar"
+        }
+    }
+     tab name="🛠 Devtools" hide_floating_panes=true {
+        pane size=1 borderless=true {
+            plugin location="zellij:tab-bar"
+        }
+        pane split_direction="vertical" {
+        pane split_direction="horizontal" {
+                pane name="PayloadCMS Schema, Typegen, & Importmap" command="pnpm" cwd="../" {
+                    args "nx" "types" "admin"
+                    start_suspended true
+                   }
+                pane command="pnpm" name="🎨 Storybook | 6006 | design.mira.ly" cwd="../" {
+                    args "storybook"
+                    start_suspended true
+                }
+                }
+        pane split_direction="horizontal" {
+                pane command="pnpm" name="📊 Drizzle Studio | local.drizzle.studio" cwd="../" {
+                    args "nx" "studio" "db"
+                    start_suspended true
+                }
+                pane command="pnpm" name="👀 Schema Visualizer | 5600" cwd="../" {
+                    args "nx" "visualizer" "db"
+                    start_suspended true
+                }
+                }
+                }
         pane size=1 borderless=true {
             plugin location="zellij:status-bar"
         }
