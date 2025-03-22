@@ -12,6 +12,9 @@
     "module": "esnext",
     "moduleResolution": "node",
     "paths": {
+      "@payload-config": [
+        "apps/admin/src/payload.config.ts"
+      ],
       "@/cms": [
         "libs/cms/index.ts"
       ],

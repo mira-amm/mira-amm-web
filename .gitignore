@@ -57,3 +57,5 @@ generated/
 out
 
 pgdata
+apps/admin/media
+apps/web/node_modules
