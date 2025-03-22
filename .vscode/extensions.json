@@ -8,5 +8,6 @@
     "ms-vscode-remote.remote-wsl",
     "bbenoist.nix",
     "bradlc.vscode-tailwindcss",
+    "vitest.explorer",
   ]
 }
