@@ -4,6 +4,12 @@
   "sourceRoot": "infra",
   "projectType": "application",
   "targets": {
+    "down": {
+      "command": "nix-shell --argstr DB 'down'",
+      "options": {
+        "cwd": "infra"
+      }
+    },
     "destroy": {
       "command": "nix-shell --argstr DB 'destroy'",
       "options": {
