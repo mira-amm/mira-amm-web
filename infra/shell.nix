@@ -115,8 +115,14 @@ in pkgs.mkShell {
         ;;
     esac
 
+zellij --config zellij.config.kdl -n zellij.layout.kdl
+
 stop_db
+
+zellij da -y
 echo "🚪 Exiting Nix shell..."
 exit
+
+# trap 'echo "🚪 Exiting Nix shell..."; zellij da;' EXIT
  '';
 }
