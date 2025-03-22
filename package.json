@@ -8,6 +8,7 @@
     "mira": "pnpm nx dev infra",
     "clean": "git clean -fdX -e '!**/.env*' -e '!**/pgdata' # 🧽 Remove any and all files listed in .gitignore except .env and pgdata",
     "nuke": " sudo git clean -fdX; # 🚨 WARNING: REMOVE ANY AND ALL FILES LISTED IN .gitignore INCLUDING .env AND pgdata",
+    "ri": "mv .env .env.backup; pnpm clean; pnpm i; cp .env.example .env;  # 🧼 Backup `.env`->`.env.backup`, and perform a clean install",
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
