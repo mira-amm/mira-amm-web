@@ -4,6 +4,10 @@
   "private": true,
   "type": "module",
   "packageManager": "pnpm@10.6.1",
+  "engines": {
+    "node": "22.13.1"
+  },
+  "engineStrict": true,
   "scripts": {
     "mira": "pnpm nx dev infra",
     "clean": "git clean -fdX -e '!**/.env*' -e '!**/pgdata' # 🧽 Remove any and all files listed in .gitignore except .env and pgdata",
