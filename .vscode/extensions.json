@@ -5,5 +5,6 @@
     "esbenp.prettier-vscode",
     "ms-playwright.playwright",
     "unifiedjs.vscode-mdx",
+    "ms-vscode-remote.remote-wsl",
   ]
 }
