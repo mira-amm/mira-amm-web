@@ -1,0 +1,128 @@
+layout {
+    tab name="🔌 API" focus=true hide_floating_panes=true {
+        pane size=1 borderless=true {
+            plugin location="zellij:tab-bar"
+        }
+        pane split_direction="vertical" {
+        pane split_direction="horizontal" size="30%" {
+            pane command="pnpm" name="⚙ API Layer + Admin Panel | 8000 | admin.mira.ly" cwd="../" focus=true {
+                args "nx" "dev" "admin"
+            }
+            pane size="80%" command="pnpm" name="💿 Database | 5432 | Nix-PostgreSQL" close_on_exit=true cwd="../" {
+                args "nx" "up" "infra"
+            }
+            }
+
+            pane command="pnpm" name="🟩 Mira App | 3000 | mira.ly" cwd="../" {
+                args "dev"
+                start_suspended true
+            }
+
+        pane split_direction="horizontal" size="30%" {
+            pane command="pnpm" name="📚 Docs | 4000 | docs.mira.ly" cwd="../" {
+                args "nx" "next:dev" "docs"
+                start_suspended true
+            }
+            pane command="pnpm" name="🗺 Project Graph - Nx | 4211 | graph.mira.ly" cwd="../" {
+                    args "nx" "graph" "--groupByFolder" "--verbose"
+                    start_suspended true
+                }
+            }
+            }
+        floating_panes {
+            pane command="atac" name="{A}rguably a {T}erminal {A}PI {C}lient" {
+                args "--no-ansi-log"
+            }
+        }
+        pane size=1 borderless=true {
+            plugin location="zellij:status-bar"
+        }
+    }
+    tab name="💿 Database" {
+        pane size=1 borderless=true {
+            plugin location="zellij:tab-bar"
+        }
+        pane command="lazysql" name="Lazysql" {
+            args "postgres://postgres:password@127.0.0.1:5432/postgres?sslmode=disable"
+        }
+        pane size=1 borderless=true {
+            plugin location="zellij:status-bar"
+        }
+    }
+    tab name="👀 Previews" hide_floating_panes=true {
+        pane size=1 borderless=true {
+            plugin location="zellij:tab-bar"
+        }
+        pane split_direction="vertical" {
+                pane command="browsh" name="Web Browser Preview" cwd="../" {
+                    args "http://localhost:3000"
+                    start_suspended true
+                }
+            }
+        pane size=1 borderless=true {
+            plugin location="zellij:status-bar"
+        }
+    }
+    tab name="🍒 Git" hide_floating_panes=true {
+        pane size=1 borderless=true {
+            plugin location="zellij:tab-bar"
+        }
+        pane command="lazygit" name="Lazygit" {
+        }
+        pane size=1 borderless=true {
+            plugin location="zellij:status-bar"
+        }
+
+        floating_panes {
+            pane command="pnpm" name="🧼 Perform a clean install" cwd="../" {
+                start_suspended true
+                height 25
+                width 86
+                x 43
+                y 14
+                args "ri"
+            }
+        }
+    }
+    tab name="📁 Files" {
+        pane size=1 borderless=true {
+            plugin location="zellij:tab-bar"
+        }
+        pane command="yazi" name="Yazi" {
+        }
+        pane size=1 borderless=true {
+            plugin location="zellij:status-bar"
+        }
+        floating_panes {
+            pane command="rm" name="🚨 WARNING: Delete local database?" cwd="../" {
+                start_suspended true
+                height 25
+                width 86
+                x 43
+                y 14
+                args "-rf" "apps/admin/media" "infra/pgdata"
+            }
+        }
+    }
+    tab name="🩺 Health" hide_floating_panes=true {
+        pane size=1 borderless=true {
+            plugin location="zellij:tab-bar"
+        }
+        pane command="btop" name="btop" {
+        }
+        pane size=1 borderless=true {
+            plugin location="zellij:status-bar"
+        }
+    }
+    /- tab name="🧮 Network" hide_floating_panes=true {
+        pane size=1 borderless=true {
+            plugin location="zellij:tab-bar"
+        }
+        pane command="sudo" name="netscanner" {
+            args "netscanner"
+        }
+        pane size=1 borderless=true {
+            plugin location="zellij:status-bar"
+        }
+    }
+}
