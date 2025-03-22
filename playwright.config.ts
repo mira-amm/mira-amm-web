@@ -25,7 +25,7 @@ export default defineConfig<SerenityOptions>({
     trace: "on-first-retry",
   },
   webServer: {
-    command: "pnpm dev",
+    command: "pnpm nx dev web",
     url: "http://localhost:3000",
     reuseExistingServer: !process.env.CI,
     // cwd: workspaceRoot,

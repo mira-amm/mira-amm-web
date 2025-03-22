@@ -5,10 +5,14 @@ import {
   Star,
   Library,
   Figma,
+Database,
+  TableColumnsSplit,
+  SearchCheck,
   User,
   Coins,
 MousePointer2,
   Inbox,
+  MapPin
 } from 'lucide-react'
 import { ExoticComponent } from 'react'
 
@@ -16,8 +20,12 @@ export const navIconMap: Partial<
   Record<CollectionSlug | GlobalSlug, ExoticComponent<LucideProps>>
 > = {
   app: Coins,
-  design: Figma,
   docs: Library,
+  "drizzle-studio": Database,
+  "database-schema": TableColumnsSplit,
+  graph: MapPin,
+  figma: Figma,
+  storybook: SearchCheck,
   users: User,
   brands: Star,
   media: Image,
