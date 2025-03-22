@@ -6,6 +6,7 @@
   "packageManager": "pnpm@10.6.1",
   "scripts": {
     "mira": "pnpm nx dev infra",
+    "clean": "git clean -fdX -e '!**/.env*' -e '!**/pgdata' # 🧽 Remove any and all files listed in .gitignore except .env and pgdata",
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
