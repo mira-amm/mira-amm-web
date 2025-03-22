@@ -1,0 +1,105 @@
+{
+  "name": "admin",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "apps/admin/src",
+  "projectType": "application",
+  "targets": {
+    "dev": {
+      "command": "cross-env NODE_OPTIONS=--no-deprecation next dev -p $PAYLOADCMS_DEV_SERVER_PORT",
+      "options": {
+        "cwd": "apps/admin"
+      }
+    },
+    "devsafe": {
+      "command": "rm -rf .next && cross-env NODE_OPTIONS=--no-deprecation next dev -p $PAYLOADCMS_DEV_SERVER_PORT",
+      "options": {
+        "cwd": "apps/admin"
+      }
+    },
+    "build": {
+      "command": "cross-env NODE_OPTIONS=--no-deprecation next build",
+      "options": {
+        "cwd": "apps/admin"
+      }
+    },
+    "start": {
+      "command": "cross-env NODE_OPTIONS=--no-deprecation next start -p $PAYLOADCMS_DEV_SERVER_PORT",
+      "options": {
+        "cwd": "apps/admin"
+      }
+    },
+    "lint": {
+      "command": "cross-env NODE_OPTIONS=--no-deprecation next lint",
+      "options": {
+        "cwd": "apps/admin"
+      }
+    },
+    "payload": {
+      "command": "cross-env NODE_OPTIONS=--no-deprecation payload",
+      "options": {
+        "cwd": "apps/admin"
+      }
+    },
+    "importmap": {
+      "command": "cross-env NODE_OPTIONS=--no-deprecation payload generate:importmap",
+      "options": {
+        "cwd": "apps/admin"
+      }
+    },
+    "types": {
+      "command": "cross-env NODE_OPTIONS=--no-deprecation payload generate:types",
+      "options": {
+        "cwd": "apps/admin"
+      }
+    },
+    "schema": {
+      "command": "cross-env NODE_OPTIONS=--no-deprecation payload generate:db-schema",
+      "options": {
+        "cwd": "apps/admin"
+      }
+    },
+    "migrate:run": {
+      "command": "cross-env NODE_OPTIONS=--no-deprecation payload migrate",
+      "options": {
+        "cwd": "apps/admin"
+      }
+    },
+    "migrate:create": {
+      "command": "cross-env NODE_OPTIONS=--no-deprecation payload migrate:create",
+      "options": {
+        "cwd": "apps/admin"
+      }
+    },
+    "migrate:status": {
+      "command": "cross-env NODE_OPTIONS=--no-deprecation payload migrate:status",
+      "options": {
+        "cwd": "apps/admin"
+      }
+    },
+    "migrate:down": {
+      "command": "cross-env NODE_OPTIONS=--no-deprecation payload migrate:down",
+      "options": {
+        "cwd": "apps/admin"
+      }
+    },
+    "migrate:refresh": {
+      "command": "cross-env NODE_OPTIONS=--no-deprecation payload migrate:refresh",
+      "options": {
+        "cwd": "apps/admin"
+      }
+    },
+    "migrate:reset": {
+      "command": "cross-env NODE_OPTIONS=--no-deprecation payload migrate:reset",
+      "options": {
+        "cwd": "apps/admin"
+      }
+    },
+    "migrate:fresh": {
+      "command": "cross-env NODE_OPTIONS=--no-deprecation payload migrate:fresh",
+      "options": {
+        "cwd": "apps/admin"
+      }
+    },
+  },
+  "tags": []
+}
