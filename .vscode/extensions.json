@@ -7,5 +7,6 @@
     "unifiedjs.vscode-mdx",
     "ms-vscode-remote.remote-wsl",
     "bbenoist.nix",
+    "bradlc.vscode-tailwindcss",
   ]
 }
