@@ -2,5 +2,6 @@
   "recommendations": [
     "christian-kohler.path-intellisense",
     "nrwl.angular-console",
+    "esbenp.prettier-vscode",
   ]
 }
