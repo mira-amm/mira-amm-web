@@ -13,6 +13,14 @@
   background-color: var(--background-grey-dark);
 }
 
+.widgetSwapContainer {
+  background-color: var(--background-primary) !important;
+}
+
+.widgetBoxBg {
+  background-color: var(--background-grey-dark) !important;
+}
+
 .swapContainerLoading {
   z-index: 5;
 }
@@ -118,6 +126,13 @@
 .rates {
   display: flex;
   justify-content: space-between;
+}
+
+.connectWallet {
+  min-width: 100px;
+  height: 20px;
+  font-size: 10px !important;
+  line-height: 24px !important;
 }
 
 @media (min-width: 1024px) {
