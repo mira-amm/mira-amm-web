@@ -333,11 +333,18 @@ const AddLiquidityDialog = ({
           variant="secondary"
           onClick={connect}
           loading={isConnecting}
+          fullWidth
+          size="big"
         >
           Connect Wallet
         </ActionButton>
       ) : (
-        <ActionButton disabled={buttonDisabled} onClick={handleButtonClick}>
+        <ActionButton
+          disabled={buttonDisabled}
+          onClick={handleButtonClick}
+          fullWidth
+          size="big"
+        >
           {buttonTitle}
         </ActionButton>
       )}
