@@ -51,7 +51,7 @@ const DesktopPoolRow = ({poolData}: Props): JSX.Element => {
           <ActionButton
             className={styles.createButton}
             variant="secondary"
-            fullWidth
+            size="longer"
           >
             Add Liquidity
           </ActionButton>
