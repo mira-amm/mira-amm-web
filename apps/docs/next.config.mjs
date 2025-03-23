@@ -2,6 +2,8 @@ import { createMDX } from 'fumadocs-mdx/next';
 
 const defaultImageHostnames = [
   'github.com',
+  'img.icons8.com',
+  'upload.wikimedia.org'
 ]
 
 const withMDX = createMDX();

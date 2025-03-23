@@ -1,5 +1,5 @@
 import { remarkMermaid } from '@theguild/remark-mermaid'
-import { fileGenerator, remarkDocGen } from 'fumadocs-docgen'
+import { fileGenerator, remarkDocGen, remarkInstall } from 'fumadocs-docgen'
 import { defineConfig, defineDocs } from 'fumadocs-mdx/config'
 import rehypeKatex from 'rehype-katex'
 import remarkMath from 'remark-math'
@@ -10,7 +10,7 @@ export const docs = defineDocs({
 
 export default defineConfig({
   mdxOptions: {
-    remarkPlugins: [remarkMath, remarkMermaid, [remarkDocGen, { generators: [fileGenerator()] }]],
+    remarkPlugins: [remarkMath, remarkMermaid, remarkInstall, [remarkDocGen, { generators: [fileGenerator()] }]],
     // Placed first, otherwise gets affected by syntax highlighter
     rehypePlugins: v => [rehypeKatex, ...v],
   },

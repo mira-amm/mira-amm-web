@@ -6,7 +6,7 @@ export const baseOptions: BaseLayoutProps = {
   nav: {
     title: (
       <>
-        <Image src="https://github.com/user-attachments/assets/f4cea652-6234-438b-9b9d-e75cddd4e0c3" alt="Mira Stripes" height={48} width={48} />
+        <Image src="/mira_stripes.png" alt="Mira Stripes" height={48} width={48} />
         <span className="text-lg font-bold text-[#01EC97]">
           Mira
           {' '}
