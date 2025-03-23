@@ -130,14 +130,14 @@ const DesktopPositionView = ({
           <Image
             src={LearnMoreIcon}
             alt={"learn more"}
-            width={40}
-            height={40}
+            width={48}
+            height={48}
             priority
           />
         }
         title="Learn about providing liquidity"
         link={LIQUIDITY_PROVIDING_DOC_URL}
-        linkText="Click here to see the guide"
+        linkText="Click here and check our v3 LP walktrought"
       />
     </section>
   );
