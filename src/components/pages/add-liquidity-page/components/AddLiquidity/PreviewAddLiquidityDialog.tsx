@@ -134,7 +134,7 @@ const PreviewAddLiquidityDialog = ({
         </div>
       </div>
       <ActionButton loading={isPending} onClick={handleAddLiquidity}>
-        Add Liquidity
+        Add liquidity
       </ActionButton>
       <SuccessModal title={<></>} onClose={redirectToLiquidity}>
         <StatusModal
