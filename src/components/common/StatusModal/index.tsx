@@ -5,6 +5,7 @@ import {useCallback} from "react";
 import {openNewTab} from "@/src/utils/common";
 import {FuelAppUrl} from "@/src/utils/constants";
 import styles from "./index.module.css";
+import clsx from "clsx";
 
 export enum ModalType {
   "SUCCESS",
@@ -37,7 +38,14 @@ const StatusModal = ({
       {type === ModalType.SUCCESS ? <SuccessIcon /> : <FailureIcon />}
       <div className={styles.statusContent}>
         <p className={styles.mainText}>{title}</p>
-        <p className={styles.subText}>{subTitle}</p>
+        <p
+          className={clsx(
+            styles.subText,
+            !transactionHash && styles.subTextOnly,
+          )}
+        >
+          {subTitle}
+        </p>
       </div>
       {transactionHash && (
         <ActionButton

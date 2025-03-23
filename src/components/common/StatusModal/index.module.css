@@ -25,6 +25,11 @@
   line-height: 16px;
   color: var(--mc-grey-4);
   text-align: center;
+  width: 294px;
+}
+
+.subTextOnly {
+  margin-bottom: 48px;
 }
 
 .statusModal > svg {
