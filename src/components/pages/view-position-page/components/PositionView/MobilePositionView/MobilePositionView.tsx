@@ -136,7 +136,7 @@ const MobilePositionView = ({
         }
         title="Learn about providing liquidity"
         link={LIQUIDITY_PROVIDING_DOC_URL}
-        linkText="Click here to see the guide"
+        linkText="Click here and check our v3 LP walktrought"
       />
     </section>
   );
