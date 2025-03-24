@@ -53,7 +53,7 @@ const DesktopPoolRow = ({poolData}: Props): JSX.Element => {
             variant="secondary"
             fullWidth
           >
-            Add Liquidity
+            Add liquidity
           </ActionButton>
         </Link>
       </td>

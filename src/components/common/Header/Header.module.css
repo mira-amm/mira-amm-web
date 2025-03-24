@@ -55,7 +55,7 @@
 
 .links {
   display: flex;
-  gap: 16px;
+  gap: 24px;
   align-items: center;
 }
 
@@ -78,10 +78,12 @@
   display: inline-flex;
   align-items: center;
   text-transform: uppercase;
-  background-image: radial-gradient(114.58% 814.77% at -1.46% 26.54%,
-      var(--accent-primary) 0%,
-      #5872fc 49.15%,
-      #31fe3a 100%);
+  background-image: radial-gradient(
+    114.58% 814.77% at -1.46% 26.54%,
+    var(--accent-primary) 0%,
+    #5872fc 49.15%,
+    #31fe3a 100%
+  );
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   cursor: pointer;
@@ -167,7 +169,7 @@
       margin-left 0s 0.3s;
   }
 
-  div:hover>.hiddenLabel {
+  div:hover > .hiddenLabel {
     opacity: 1;
     max-width: 200px;
     padding: 2px 8px 3px;

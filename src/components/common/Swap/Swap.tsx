@@ -630,6 +630,8 @@ const Swap = () => {
               variant="primary"
               onClick={connect}
               loading={isConnecting}
+              size={"big"}
+              fullWidth
             >
               Connect Wallet
             </ActionButton>
@@ -641,6 +643,8 @@ const Swap = () => {
               onClick={handleSwapClick}
               loading={isActionLoading}
               className={clsx(isActionLoading && styles.btnLoading)}
+              size={"big"}
+              fullWidth
             >
               {swapButtonTitle}
             </ActionButton>

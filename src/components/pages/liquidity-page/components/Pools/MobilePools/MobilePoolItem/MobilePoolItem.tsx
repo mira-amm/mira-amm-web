@@ -68,7 +68,7 @@ const MobilePoolItem = ({poolData}: Props): JSX.Element => {
         onClick={handleAddClick}
         fullWidth
       >
-        Add Liquidity
+        Add liquidity
       </ActionButton>
     </div>
   );

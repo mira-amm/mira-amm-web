@@ -108,7 +108,7 @@ const MobilePositionView = ({
       <div className={styles.sticky}>
         <Link href={positionPath}>
           <ActionButton variant="primary" className={styles.withdrawButton}>
-            Add Liquidity
+            Add liquidity
           </ActionButton>
         </Link>
       </div>
