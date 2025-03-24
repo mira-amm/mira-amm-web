@@ -139,7 +139,7 @@ const PreviewAddLiquidityDialog = ({
         fullWidth
         size="big"
       >
-        Add Liquidity
+        Add liquidity
       </ActionButton>
       <SuccessModal title={<></>} onClose={redirectToLiquidity}>
         <StatusModal
