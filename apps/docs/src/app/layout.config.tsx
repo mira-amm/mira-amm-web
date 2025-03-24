@@ -2,6 +2,14 @@ import type { BaseLayoutProps } from 'fumadocs-ui/layouts/shared';
 import type { HomeLayoutProps } from 'fumadocs-ui/layouts/home'
 import Image from 'next/image'
 
+import {
+  Figma as BrandIcon,
+  Rss as BlogIcon,
+  Twitter,
+} from 'lucide-react'
+
+import { AiOutlineDiscord as DiscordIcon } from 'react-icons/ai'
+
 export const baseOptions: BaseLayoutProps = {
   nav: {
     title: (
@@ -18,9 +26,37 @@ export const baseOptions: BaseLayoutProps = {
   },
   links: [
     {
-      text: 'Documentation',
-      url: '/docs',
-      active: 'nested-url',
+      text: 'Swap',
+      url: 'https://mira.ly',
+      external: true,
+    },
+    {
+      type: 'icon',
+      text: 'Blog',
+      url: 'https://mirror.xyz/miraly.eth',
+      icon: <BlogIcon/>,
+      external: true,
+    },
+    {
+      type: 'icon',
+      text: 'Discord',
+      url: 'https://discord.gg/6pHdTY6rYq',
+      external: true,
+      icon: <DiscordIcon/>,
+    },
+    {
+      type: 'icon',
+      text: 'X (Twitter)',
+      url: 'https://x.com/MiraProtocol',
+      icon: <Twitter/>,
+      external: true,
+    },
+    {
+      type: 'icon',
+      text: 'Brand',
+      url: 'https://figma.com',
+      external: true,
+      icon: <BrandIcon />,
     },
   ],
   githubUrl: 'https://github.com/mira-amm/mira-amm-web',
