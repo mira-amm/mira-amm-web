@@ -40,7 +40,7 @@
 }
 
 .primary {
-  color: var(--button-content-primary);
+  color: var(--content-inverse);
   background-color: var(--button-primary);
 }
 
