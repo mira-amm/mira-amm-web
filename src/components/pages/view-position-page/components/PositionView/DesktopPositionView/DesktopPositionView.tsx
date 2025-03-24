@@ -60,12 +60,12 @@ const DesktopPositionView = ({
         <div className={styles.actionBlock}>
           <Link href={removeLiquidityPath}>
             <ActionButton variant="secondary" className={styles.actionButton}>
-              Remove Liquidity
+              Remove liquidity
             </ActionButton>
           </Link>
           <Link href={positionPath}>
             <ActionButton variant="primary" className={styles.actionButton}>
-              Add Liquidity
+              Add liquidity
             </ActionButton>
           </Link>
         </div>
