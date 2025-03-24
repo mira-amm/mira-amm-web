@@ -33,10 +33,11 @@
   display: flex;
   flex-direction: column;
   gap: 24px;
+  margin: 4px 0 10px;
 }
 
 .depositAmountSection {
-  margin-top: 4px;
+  margin: 4px 0 10px;
   display: flex;
   flex-direction: column;
   gap: 14px;
@@ -46,11 +47,13 @@
   font-size: 16px;
   font-weight: 500;
   color: var(--mc-black);
+  margin-top: 4px;
 }
+
 .sectionContent {
   display: flex;
   flex-direction: column;
-  gap: 22px;
+  gap: 12px;
 }
 
 .APR {
@@ -100,6 +103,7 @@
   border: 1px solid var(--mc-grey-4);
   cursor: pointer;
   align-items: center;
+  height: 40px;
 }
 
 .poolStabilityButtonContent {
@@ -330,6 +334,7 @@
   display: flex;
   flex-direction: row;
   justify-content: space-between;
+  margin-bottom: 4px;
 }
 
 @media (min-width: 1024px) {

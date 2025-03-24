@@ -141,52 +141,54 @@ const RemoveLiquidityModalContent = ({pool}: Props) => {
 
   return (
     <div className={styles.removeLiquidityContent}>
-      <p className={styles.subHeader}>Selected pair</p>
-      <div className={styles.coinHeader}>
-        <CoinPair
-          firstCoin={pool[0].bits}
-          secondCoin={pool[1].bits}
-          isStablePool={isStablePool}
-        />
-        <div className={styles.APR}>
-          <div className={styles.aprText}>
-            <p>Estimated APR</p>
-            <Info tooltipText={APRTooltip} tooltipKey="apr" />
-          </div>
-          {isMatching ? (
-            <div className={styles.aprDiv}>
-              <AprBadge
-                aprValue={
-                  aprValue === "NaN"
-                    ? "n/a"
-                    : aprValue
-                      ? `${aprValue}%`
-                      : "pending"
-                }
-                small
-                poolKey={poolKey}
-                tvlValue={tvlValue}
-              />
+      <div>
+        <p className={styles.subHeader}>Selected pair</p>
+        <div className={styles.coinHeader}>
+          <CoinPair
+            firstCoin={pool[0].bits}
+            secondCoin={pool[1].bits}
+            isStablePool={isStablePool}
+          />
+          <div className={styles.APR}>
+            <div className={styles.aprText}>
+              <p>Estimated APR</p>
+              <Info tooltipText={APRTooltip} tooltipKey="apr" />
             </div>
-          ) : (
-            <span
-              className={clsx(
-                aprValue && styles.highlight,
-                !aprValue && styles.pending,
-              )}
-            >
-              {aprValue ? `${aprValue}%` : "Awaiting data"}
-            </span>
-          )}
+            {isMatching ? (
+              <div className={styles.aprDiv}>
+                <AprBadge
+                  aprValue={
+                    aprValue === "NaN"
+                      ? "n/a"
+                      : aprValue
+                        ? `${aprValue}%`
+                        : "pending"
+                  }
+                  small
+                  poolKey={poolKey}
+                  tvlValue={tvlValue}
+                />
+              </div>
+            ) : (
+              <span
+                className={clsx(
+                  aprValue && styles.highlight,
+                  !aprValue && styles.pending,
+                )}
+              >
+                {aprValue ? `${aprValue}%` : "Awaiting data"}
+              </span>
+            )}
+          </div>
         </div>
-      </div>
 
-      <div className={styles.sliderContainer}>
-        <div className={styles.sliderInfoContainer}>
-          <p>Amount to remove</p>
-          <p>1200</p>
+        <div className={styles.sliderContainer}>
+          <div className={styles.sliderInfoContainer}>
+            <p>Amount to remove</p>
+            <p>1200</p>
+          </div>
+          <Slider value={removeLiquidityPercentage} onChange={handleChange} />
         </div>
-        <Slider value={removeLiquidityPercentage} onChange={handleChange} />
       </div>
 
       <div className={styles.tableWrapper}>
@@ -224,6 +226,7 @@ const RemoveLiquidityModalContent = ({pool}: Props) => {
         disabled={withdrawalDisabled}
         loading={isPending}
         fullWidth
+        size="big"
       >
         {buttonTitle}
       </ActionButton>

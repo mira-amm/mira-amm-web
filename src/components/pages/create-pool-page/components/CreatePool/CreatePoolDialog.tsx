@@ -230,8 +230,8 @@ const CreatePoolDialog = ({setPreviewData}: Props) => {
   return (
     <>
       <div className={styles.addLiquidityContent}>
-        <p className={styles.subHeader}>Selected pair</p>
         <div className={styles.sectionContent}>
+          <p className={styles.subHeader}>Selected pair</p>
           {!oneOfAssetsIsNotSelected && (
             <div className={styles.coinHeader}>
               <CoinPair
@@ -336,11 +336,18 @@ const CreatePoolDialog = ({setPreviewData}: Props) => {
           variant="secondary"
           onClick={connect}
           loading={isConnecting}
+          fullWidth
+          size="big"
         >
           Connect Wallet
         </ActionButton>
       ) : (
-        <ActionButton disabled={buttonDisabled} onClick={handleButtonClick}>
+        <ActionButton
+          disabled={buttonDisabled}
+          onClick={handleButtonClick}
+          fullWidth
+          size="big"
+        >
           {buttonTitle}
         </ActionButton>
       )}

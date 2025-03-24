@@ -232,8 +232,8 @@ const AddLiquidityDialog = ({
   return (
     <>
       <div className={styles.addLiquidityContent}>
-        <p className={styles.subHeader}>Selected pair</p>
         <div className={styles.sectionContent}>
+          <p className={styles.subHeader}>Selected pair</p>
           <div className={styles.coinHeader}>
             <CoinPair
               firstCoin={firstAssetId}
@@ -307,7 +307,7 @@ const AddLiquidityDialog = ({
         </div>
       </div>
       <div className={styles.depositAmountSection}>
-        <p className={styles.subHeader}>Deposit amount</p>
+        <p className={styles.subHeader}>Deposit amounts</p>
         <div className={styles.sectionContent}>
           <CurrencyBox
             assetId={firstAssetId}
