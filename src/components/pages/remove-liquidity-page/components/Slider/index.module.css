@@ -5,6 +5,10 @@
   font-family: "EllographCF";
 }
 
+.dotsSelected {
+  visibility: hidden;
+}
+
 .sliderWrapper {
   position: relative;
 }
@@ -34,8 +38,12 @@
   appearance: none;
   width: 20px;
   height: 20px;
-  background: var(--mc-black);
-  border: 2px solid var(--primary-white);
+  background: radial-gradient(
+    circle at center,
+    var(--primary-white) 2px,
+    var(--mc-black) 3px
+  );
+  border: 4px solid var(--primary-white);
   border-radius: 50%;
   cursor: pointer;
 }
@@ -43,8 +51,12 @@
 .customSlider::-moz-range-thumb {
   width: 20px;
   height: 20px;
-  background: var(--mc-black);
-  border: 2px solid var(--primary-white);
+  background: radial-gradient(
+    circle at center,
+    var(--primary-white) 2px,
+    var(--mc-black) 3px
+  );
+  border: 4px solid var(--primary-white);
   border-radius: 50%;
   cursor: pointer;
 }
@@ -52,7 +64,7 @@
 /* Style the dots */
 .sliderDots {
   position: absolute;
-  top: 10px;
+  top: 10.5px;
   width: 98%;
   height: 8px;
   pointer-events: none;
