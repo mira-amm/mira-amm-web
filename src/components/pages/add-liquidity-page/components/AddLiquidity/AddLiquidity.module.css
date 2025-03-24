@@ -328,14 +328,19 @@
 
 .coinHeader {
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   justify-content: space-between;
+  gap: 10px;
 }
 
 @media (min-width: 1024px) {
   /*.poolStabilityButton {*/
   /*  flex-direction: row;*/
   /*}*/
+
+  .coinHeader {
+    flex-direction: row;
+  }
 
   .APR {
     flex-direction: row;

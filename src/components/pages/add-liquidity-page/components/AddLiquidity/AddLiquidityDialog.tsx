@@ -33,6 +33,7 @@ import {useAssetPrice} from "@/src/hooks/useAssetPrice";
 import AprBadge from "@/src/components/common/AprBadge/AprBadge";
 import usePoolNameAndMatch from "@/src/hooks/usePoolNameAndMatch";
 import CurrencyBox from "@/src/components/common/CurrencyBox/CurrencyBox";
+import {isMobile} from "react-device-detect";
 
 type Props = {
   poolId: PoolId;
@@ -284,7 +285,9 @@ const AddLiquidityDialog = ({
             >
               <div className={styles.poolStabilityButtonContent}>
                 <span className={styles.poolStabilityButtonText}>
-                  0.30% fee tier (volatile pool)
+                  {isMobile
+                    ? "0.30% fee tier"
+                    : "0.30% fee tier (volatile pool)"}
                 </span>
               </div>
             </div>
@@ -298,7 +301,7 @@ const AddLiquidityDialog = ({
             >
               <div className={styles.poolStabilityButtonContent}>
                 <span className={styles.poolStabilityButtonText}>
-                  0.05% fee tier (stable pool)
+                  {isMobile ? "0.05% fee tier" : "0.05% fee tier (stable pool)"}
                 </span>
                 {/* <Info tooltipText={StablePoolTooltip} tooltipKey="stablePool" /> */}
               </div>
