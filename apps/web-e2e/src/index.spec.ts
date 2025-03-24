@@ -87,6 +87,32 @@ describe("Liquidity", () => {
       Wait.until(addLiquidityButton(), isPresent()),
       Click.on(addLiquidityButton()),
       Wait.until(connectWalletButton(), isVisible()),
+      // https://github.com/user-attachments/assets/f72703fd-2c2b-4181-92e9-2ed7329e93c7
+      // PageElement.located(By.cssContainingText(".ActionButton_btn__fm8nx", "Preview"))
+      // Click.on(previewButton()),
+      // https://github.com/user-attachments/assets/0ee2f99a-41d1-4083-b817-b987da2a9790
+      // PageElement.located(By.cssContainingText(".ActionButton_btn__fm8nx.AddLiquiditySuccessModal_viewButton__yIkNM", "View Transaction"))
+      // Click.on(viewTransactionButton()),
+    );
+  });
+
+  it("should be able to manage positions in liquidity pools", async ({
+    actor,
+  }) => {
+    await actor.attemptsTo(
+      Wait.upTo(Duration.ofSeconds(10)).until(
+        PageElement.located(By.css("Loading pools...")),
+        not(isVisible()),
+      ),
+      // https://github.com/user-attachments/assets/a8391ae1-46e3-4466-8981-17f604f39f44
+      // PageElement.located(By.css(".ActionButton_btn__fm8nx.ActionButton_secondary__gLMKU.DesktopPosition_addButton__JkbHU"))
+      // Wait.until(managePositionButton(), isVisible())
+      // https://github.com/user-attachments/assets/d2731ef8-45a5-4a6c-86fd-d4c0c0e847df
+      // PageElement.located(By.cssContainingText(".ActionButton_btn__fm8nx.PositionView_withdrawButton__Qzi_l", "Remove Liquidity"))
+      // Click.on(removeLiquidityButton()),
+      // https://github.com/user-attachments/assets/e4a63046-f761-4609-8b4b-eb479baec6c4
+      // PageElement.located(By.cssContainingText(".ActionButton_btn__fm8nx.AddLiquiditySuccessModal_viewButton__yIkNM", "View Transaction"))
+      // Click.on(viewTransactionButton()),
     );
   });
 });
