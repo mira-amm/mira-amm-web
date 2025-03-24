@@ -351,6 +351,10 @@
     line-height: 19px;
   }
 
+  .previewContent {
+    width: 400px;
+  }
+
   .inputPreviewRow svg,
   .inputPreviewRow img {
     width: 24px;

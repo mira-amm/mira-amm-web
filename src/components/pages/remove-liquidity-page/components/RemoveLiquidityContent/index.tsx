@@ -182,10 +182,10 @@ const RemoveLiquidityModalContent = ({pool}: Props) => {
       </div>
 
       <div className={styles.sliderContainer}>
-        <div className={styles.sliderInfoContainer}>
+        {/* <div className={styles.sliderInfoContainer}>
           <p>Amount to remove</p>
           <p>1200</p>
-        </div>
+        </div> */}
         <Slider value={removeLiquidityPercentage} onChange={handleChange} />
       </div>
 
