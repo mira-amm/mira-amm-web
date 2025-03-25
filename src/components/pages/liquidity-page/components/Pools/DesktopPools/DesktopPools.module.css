@@ -88,9 +88,6 @@ button.createButton {
 }
 
 .labelCell {
-  font-weight: 400;
-  font-size: 16px;
-  line-height: 100%;
   text-align: center;
   color: var(--mc-black) !important;
 }

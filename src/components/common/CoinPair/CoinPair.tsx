@@ -60,18 +60,24 @@ const CoinPair = ({
       </div>
       <div className={styles.namesAndFee}>
         {firstSymbol && secondSymbol ? (
-          <p className={styles.coinNames} data-identifier="coin-pair">
+          <p className="mc-type-xl" data-identifier="coin-pair">
             {firstSymbol}/{secondSymbol}
           </p>
         ) : (
           <p className={styles.loadingText}>loading...</p>
         )}
-        {withFeeBelow && <p className={styles.coinPairFee}>{feeText}</p>}
+        {withFeeBelow && (
+          <p className={clsx(styles.coinPairFee, "mc-type-s")}>{feeText}</p>
+        )}
         {withPoolDescription && (
-          <p className={styles.poolDescription}>{poolDescription} fee</p>
+          <p className={clsx(styles.poolDescription, "mc-type-s")}>
+            {poolDescription} fee
+          </p>
         )}
       </div>
-      {withFee && <p className={styles.coinPairFee}>{feeText}</p>}
+      {withFee && (
+        <p className={clsx(styles.coinPairFee, "mc-type-s")}>{feeText}</p>
+      )}
     </div>
   );
 };
