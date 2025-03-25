@@ -16,7 +16,7 @@ type StatusModalProps = {
   type: ModalType;
   transactionHash?: string;
   title: string;
-  subTitle: string;
+  subTitle: string | React.ReactNode;
 };
 
 const StatusModal = ({
@@ -37,11 +37,12 @@ const StatusModal = ({
     <div className={styles.statusModal}>
       {type === ModalType.SUCCESS ? <SuccessIcon /> : <FailureIcon />}
       <div className={styles.statusContent}>
-        <p className={styles.mainText}>{title}</p>
+        <p className={clsx(styles.mainText, "mc-type-xxl")}>{title}</p>
         <p
           className={clsx(
             styles.subText,
             !transactionHash && styles.subTextOnly,
+            "mc-type-l",
           )}
         >
           {subTitle}
