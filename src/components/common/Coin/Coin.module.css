@@ -27,13 +27,3 @@
 .selectable:hover {
   background-color: var(--mc-black-1);
 }
-
-.name {
-  font-size: 18px;
-  font-weight: 500;
-  line-height: 19px;
-}
-
-.chooseCoin {
-  font-size: 16px;
-}

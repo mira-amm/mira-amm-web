@@ -96,7 +96,9 @@ const CurrencyBox = ({
   return (
     <div className={styles.currencyBox}>
       {mode && (
-        <p className={styles.title}>{mode === "buy" ? "Buy" : "Sell"}</p>
+        <p className={clsx(styles.title, "mc-type-s")}>
+          {mode === "buy" ? "Buy" : "Sell"}
+        </p>
       )}
       <div className={styles.content}>
         {previewError ? (
@@ -105,7 +107,11 @@ const CurrencyBox = ({
           </div>
         ) : (
           <input
-            className={clsx(styles.input, loading && "blurredTextLight")}
+            className={clsx(
+              styles.input,
+              "mc-mono-xxl",
+              loading && "blurredTextLight",
+            )}
             type="text"
             inputMode="decimal"
             pattern="^[0-9]*[.,]?[0-9]*$"
@@ -119,12 +125,12 @@ const CurrencyBox = ({
         <Coin assetId={assetId} onClick={handleCoinSelectorClick} />
       </div>
       <div className={styles.estimateAndBalance}>
-        <p className={styles.fiatValue}>
+        <p className={clsx(styles.fiatValue, "mc-mono-s")}>
           {usdValue !== null && `$${usdValue}`}
         </p>
         {balance.gt(0) && (
-          <span className={styles.balance}>
-            Balance: {balanceValue}
+          <span className={clsx(styles.balance, "mc-type-s")}>
+            Balance: <span className="mc-mono-s">{balanceValue}</span>
             &nbsp;
             <TextButton onClick={handleMaxClick}>Max</TextButton>
           </span>

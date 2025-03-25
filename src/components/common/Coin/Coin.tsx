@@ -42,9 +42,7 @@ const Coin = ({assetId, className, onClick}: Props) => {
         />
       ) : null}
       <p
-        className={clsx(styles.name, className, {
-          [styles.chooseCoin]: !metadata.symbol,
-        })}
+        className={clsx(metadata.symbol ? "mc-type-l" : "mc-type-m", className)}
       >
         {metadata.symbol ?? "Choose Coin"}
       </p>
