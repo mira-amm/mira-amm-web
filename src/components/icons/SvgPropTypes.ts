@@ -1,4 +1,4 @@
-export type ArrowLeftIconProps = {
+export type ColorProps = {
   primaryColor?: string;
   secondaryColor?: string;
 };
