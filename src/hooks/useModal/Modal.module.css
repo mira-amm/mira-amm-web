@@ -47,6 +47,12 @@
   max-width: 460px;
 }
 
+.modalSizeRegular {
+  width: 90%;
+  max-width: 507px;
+  padding: 25px;
+}
+
 .modalSizeLarge {
   width: 90%;
   max-width: 640px;
