@@ -1,7 +1,7 @@
 "use client";
 
-import { clsx } from "clsx";
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import {clsx} from "clsx";
+import {useCallback, useEffect, useMemo, useRef, useState} from "react";
 
 import styles from "./ConnectButton.module.css";
 import actionButtonStyles from "../ActionButton/ActionButton.module.css";
@@ -10,24 +10,24 @@ import ActionButton from "@/src/components/common/ActionButton/ActionButton";
 import TransactionsHistory from "@/src/components/common/TransactionsHistory/TransactionsHistory";
 import useFormattedAddress from "@/src/hooks/useFormattedAddress/useFormattedAddress";
 import useWeb3React from "@/src/hooks/useWeb3Connection";
-import { openNewTab } from "@/src/utils/common";
-import { FuelAppUrl } from "@/src/utils/constants";
-import { DropDownButtons } from "@/src/utils/DropDownButtons";
-import { useScrollLock } from "usehooks-ts";
-import { CopyNotification } from "../../common/CopyNotification/CopyNotification";
-import { ArrowDownIcon } from "../../icons/ArrowDown/ArrowDownIcon";
-import { ArrowUpIcon } from "../../icons/ArrowUp/ArrowUpIcon";
+import {openNewTab} from "@/src/utils/common";
+import {FuelAppUrl} from "@/src/utils/constants";
+import {DropDownButtons} from "@/src/utils/DropDownButtons";
+import {useScrollLock} from "usehooks-ts";
+import {CopyNotification} from "../../common/CopyNotification/CopyNotification";
+import {ArrowDownIcon} from "../../icons/ArrowDown/ArrowDownIcon";
+import {ArrowUpIcon} from "../../icons/ArrowUp/ArrowUpIcon";
 import DropDownMenu from "../DropDownMenu/DropDownMenu";
 
 type Props = {
   className?: string;
 };
 
-const ConnectButton = ({ className }: Props) => {
-  const { account, connect, disconnect, isConnected, isWalletLoading } =
+const ConnectButton = ({className}: Props) => {
+  const {account, connect, disconnect, isConnected, isWalletLoading} =
     useWeb3React();
 
-  const { lock, unlock } = useScrollLock({ autoLock: false });
+  const {lock, unlock} = useScrollLock({autoLock: false});
 
   // TODO: Hack to avoid empty button when account is changed to the not connected one in wallet
   // It is not reproducible on Fuelet, but on Fuel wallet
@@ -175,7 +175,12 @@ const ConnectButton = ({ className }: Props) => {
           loading={isWalletLoading}
           ref={buttonRef}
         >
-          {isConnected && <img src="/images/avatar.png" className={actionButtonStyles.buttonIcon} />}
+          {isConnected && (
+            <img
+              src="/images/avatar.png"
+              className={actionButtonStyles.buttonIcon}
+            />
+          )}
           {title}
           {isConnected && (!isMenuOpened ? <ArrowDownIcon /> : <ArrowUpIcon />)}
         </ActionButton>
