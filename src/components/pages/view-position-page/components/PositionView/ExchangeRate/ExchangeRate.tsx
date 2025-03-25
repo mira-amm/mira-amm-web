@@ -49,15 +49,25 @@ const ExchangeRate = ({
 
   return (
     <div className={styles.reserveItems}>
-      <p className={styles.infoText}>Price</p>
+      <p className={clsx(styles.infoText, "mc-type-b")}>Price</p>
       <div
         className={styles.exchangeRate}
         onClick={() => setIsBaseCoinA(!isBaseCoinA)}
       >
         <p className={clsx(styles.exchangeRate, styles.infoText)}>
-          {isBaseCoinA
-            ? `1 ${assetBMetadata.symbol} ≈ ${flooredRate} ${assetAMetadata.symbol}`
-            : `1 ${assetAMetadata.symbol} ≈ ${flooredRate} ${assetBMetadata.symbol}`}
+          {isBaseCoinA ? (
+            <>
+              1 <span className="mc-type-b">{assetBMetadata.symbol}</span> ≈{" "}
+              <span className="mc-mono-b">{flooredRate}</span>{" "}
+              <span className="mc-type-b">{assetAMetadata.symbol}</span>
+            </>
+          ) : (
+            <>
+              1 <span className="mc-type-b">{assetAMetadata.symbol}</span> ≈{" "}
+              <span className="mc-mono-b">{flooredRate}</span>{" "}
+              <span className="mc-type-b">{assetBMetadata.symbol}</span>
+            </>
+          )}
           <span>
             <ExchangeIcon />
           </span>

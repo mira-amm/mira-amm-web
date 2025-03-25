@@ -13,19 +13,13 @@
 .info {
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: 4px;
 }
 
 .amount {
-  font-weight: 500;
-  font-size: 18px;
-  line-height: 100%;
   color: var(--content-primary);
 }
 
 .name {
-  font-weight: 400;
-  font-size: 15px;
-  line-height: 100%;
   color: var(--content-dimmed-light);
 }
