@@ -181,6 +181,7 @@ const RemoveLiquidityModalContent = ({pool}: Props) => {
             )}
           </div>
         </div>
+      </div>
       <div className={styles.sliderContainer}>
         {/* <div className={styles.sliderInfoContainer}>
           <p>Amount to remove</p>
