@@ -10,8 +10,8 @@ export const ArrowUpIcon = () => {
       <path
         d="M16.6377 14.4395L10.3877 8.18945L4.1377 14.4395"
         stroke="#6D6D6D"
-        stroke-width="2"
-        stroke-linecap="square"
+        strokeWidth="2"
+        strokeLinecap="square"
       />
     </svg>
   );
