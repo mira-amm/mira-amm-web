@@ -1,6 +1,6 @@
 import styles from "./ConfirmPopup.module.css";
 import ActionButton from "../ActionButton/ActionButton";
-import { FC } from "react";
+import {FC} from "react";
 import clsx from "clsx";
 
 type ConfirmPopupProps = {

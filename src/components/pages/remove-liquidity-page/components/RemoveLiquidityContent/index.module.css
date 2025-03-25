@@ -13,7 +13,7 @@
 
 .coinHeader {
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   justify-content: space-between;
   margin-bottom: 20px;
 }
@@ -183,6 +183,10 @@ tr:has(+ .lastRow) > td {
 }
 
 @media (min-width: 1024px) {
+  .coinHeader {
+    flex-direction: row;
+  }
+
   .liquidityTable {
     font-size: 16px;
     line-height: 19px;

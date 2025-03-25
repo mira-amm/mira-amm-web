@@ -1,5 +1,5 @@
 import Logo from "@/src/components/common/Logo/Logo";
-import { BlogLink, DiscordLink, XLink } from "@/src/utils/constants";
+import {BlogLink, DiscordLink, XLink} from "@/src/utils/constants";
 
 import styles from "./Footer.module.css";
 import clsx from "clsx";
@@ -11,8 +11,7 @@ interface FooterProps {
   isHomePage?: boolean;
 }
 
-const Footer = ({ isHomePage = false }: FooterProps) => {
-
+const Footer = ({isHomePage = false}: FooterProps) => {
   const currentYear = new Date().getFullYear();
 
   return (
@@ -26,7 +25,10 @@ const Footer = ({ isHomePage = false }: FooterProps) => {
                 <a className={styles.link} href={DiscordLink}>
                   Support
                 </a>
-                <a href="https://docs.mira.ly/resources/media-kit" target="_blank">
+                <a
+                  href="https://docs.mira.ly/resources/media-kit"
+                  target="_blank"
+                >
                   Media Kit
                 </a>
                 <a href="https://docs.mira.ly" target="_blank">
@@ -35,7 +37,10 @@ const Footer = ({ isHomePage = false }: FooterProps) => {
                 <a href={BlogLink} target="_blank">
                   Blog
                 </a>
-                <a href="https://docs.mira.ly/resources/careers" target="_blank">
+                <a
+                  href="https://docs.mira.ly/resources/careers"
+                  target="_blank"
+                >
                   Careers
                 </a>
                 <a href="mailto:help@mira.ly" target="_blank">
@@ -48,13 +53,17 @@ const Footer = ({ isHomePage = false }: FooterProps) => {
                   href="https://github.com/mira-amm"
                   target="_blank"
                 >
-                  <GithubIcon />
+                  <GithubIcon primaryColor="#8A8B8E" />
                 </a>
-                <a className={styles.socialLink} href={DiscordLink} target="_blank">
-                  <DiscordIcon />
+                <a
+                  className={styles.socialLink}
+                  href={DiscordLink}
+                  target="_blank"
+                >
+                  <DiscordIcon primaryColor="#8A8B8E" />
                 </a>
                 <a className={styles.socialLink} href={XLink} target="_blank">
-                  <X />
+                  <X primaryColor="#8A8B8E" />
                 </a>
               </div>
             </div>
@@ -116,13 +125,17 @@ const Footer = ({ isHomePage = false }: FooterProps) => {
                   href="https://github.com/mira-amm"
                   target="_blank"
                 >
-                  <GithubIcon />
+                  <GithubIcon primaryColor="#8A8B8E" />
                 </a>
-                <a className={styles.socialLink} href={DiscordLink} target="_blank">
-                  <DiscordIcon />
+                <a
+                  className={styles.socialLink}
+                  href={DiscordLink}
+                  target="_blank"
+                >
+                  <DiscordIcon primaryColor="#8A8B8E" />
                 </a>
                 <a className={styles.socialLink} href={XLink} target="_blank">
-                  <X />
+                  <X primaryColor="#8A8B8E" />
                 </a>
               </div>
             </div>

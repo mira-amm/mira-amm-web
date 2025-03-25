@@ -33,14 +33,14 @@
 }
 
 .name {
-  font-size: 18px;
-  font-weight: 400;
-  line-height: 22px;
+  font-size: 19px;
+  font-weight: 500;
+  line-height: 100%;
 }
 
 .fullName {
-  font-size: 14px;
-  line-height: 16px;
+  font-size: 15px;
+  line-height: 100%;
   color: var(--content-dimmed-light);
 }
 

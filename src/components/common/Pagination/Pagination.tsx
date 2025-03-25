@@ -51,15 +51,13 @@ const Pagination = ({
         onClick={() => onPageChange(currentPage - 1)}
         disabled={currentPage === 1}
       >
-        <ArrowLeftIcon />
+        <ArrowLeftIcon secondaryColor="black" />
         <span>Previous</span>
       </button>
       {generatePages().map((page, index) => (
         <button
           key={index}
-          className={`${styles.paginationButton} ${
-            page === currentPage ? styles.active : ""
-          }`}
+          className={`${styles.paginationButton} ${page === currentPage ? styles.active : ""}`}
           onClick={() => typeof page === "number" && onPageChange(page)}
           disabled={page === "..."}
         >
@@ -71,7 +69,7 @@ const Pagination = ({
         onClick={() => onPageChange(currentPage + 1)}
         disabled={currentPage === totalPages}
       >
-        <ArrowRightIcon />
+        <ArrowRightIcon secondaryColor="black" />
         <span>Next</span>
       </button>
     </div>

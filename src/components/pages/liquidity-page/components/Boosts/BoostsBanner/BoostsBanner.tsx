@@ -8,7 +8,7 @@ import {
 } from "@/src/utils/constants";
 import PointsIcon from "@/assets/sparcle.svg";
 import Image from "next/image";
-import { LearnMoreButton } from "@/src/components/common/LearnMoreButton/LearnMoreButton";
+import {LearnMoreButton} from "@/src/components/common/LearnMoreButton/LearnMoreButton";
 
 const BoostsBanner = (): JSX.Element => {
   return (
