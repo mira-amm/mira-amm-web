@@ -22,7 +22,7 @@ const Footer = ({isHomePage = false}: FooterProps) => {
             <Logo isFooter={true} />
             <div className={styles.linksAndSocial}>
               <div className={styles.links}>
-                <a className={styles.link} href={DiscordLink}>
+                <a className={styles.link} href={DiscordLink} target="_blank">
                   Support
                 </a>
                 <a
@@ -77,7 +77,7 @@ const Footer = ({isHomePage = false}: FooterProps) => {
             <Logo isFooter={true} />
             <div className={styles.linksAndSocial}>
               <div className={styles.links}>
-                <a className={styles.link} href={DiscordLink}>
+                <a className={styles.link} href={DiscordLink} target="_blank">
                   Support
                 </a>
                 <a
