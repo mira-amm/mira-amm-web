@@ -42,8 +42,6 @@
 .title {
   flex: 1;
   color: var(--content-primary);
-  font-weight: 500;
-  font-size: 18px;
 }
 
 .splitter {

@@ -580,7 +580,7 @@ const Swap = () => {
           )}
         >
           <div className={styles.heading}>
-            <p className={styles.title}>Swap</p>
+            <p className={clsx(styles.title, "mc-type-l")}>Swap</p>
             <SlippageSetting
               slippage={slippage}
               openSettingsModal={openSettingsModal}
