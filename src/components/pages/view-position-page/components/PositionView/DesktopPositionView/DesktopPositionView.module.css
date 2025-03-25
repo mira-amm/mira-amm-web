@@ -36,12 +36,6 @@
   border: 11px solid var(--background-tertiary);
 }
 
-.infoText {
-  font-size: 16px;
-  font-weight: 400;
-  line-height: 100%;
-}
-
 .positionText {
   color: var(--mc-black);
 }
@@ -93,9 +87,6 @@
 
 .reserveItems > p {
   color: var(--mc-grey-4);
-  font-size: 14px;
-  font-weight: 400;
-  line-height: 100%;
 }
 
 .footer {

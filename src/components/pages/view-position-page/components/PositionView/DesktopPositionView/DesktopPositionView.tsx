@@ -75,7 +75,7 @@ const DesktopPositionView = ({
         <MiraBlock pool={pool} />
         <div className={styles.infoBlocks}>
           <div className={styles.infoBlock}>
-            <p className={clsx(styles.infoText, styles.positionText)}>
+            <p className={clsx("mc-type-m", styles.positionText)}>
               Your position
             </p>
             <AprDisplay pool={pool} />
@@ -94,9 +94,7 @@ const DesktopPositionView = ({
       </div>
 
       <div className={styles.priceBlockLargeDesktop}>
-        <p className={clsx(styles.infoText, styles.positionText)}>
-          Pool reserves
-        </p>
+        <p className={clsx("mc-type-m", styles.positionText)}>Pool reserves</p>
 
         <hr className={styles.divider} />
 
@@ -113,8 +111,12 @@ const DesktopPositionView = ({
         {formattedTvlValue && <hr className={styles.divider} />}
         <div className={styles.footer}>
           <div className={styles.reserveItems}>
-            {formattedTvlValue && <p>Total value locked</p>}
-            {formattedTvlValue && <p>${formattedTvlValue}</p>}
+            {formattedTvlValue && (
+              <p className="mc-type-b">Total value locked</p>
+            )}
+            {formattedTvlValue && (
+              <p className="mc-mono-b">${formattedTvlValue}</p>
+            )}
           </div>
           <ExchangeRate
             assetBMetadata={assetB.metadata}
