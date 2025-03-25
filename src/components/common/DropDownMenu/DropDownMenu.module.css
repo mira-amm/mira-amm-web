@@ -1,6 +1,7 @@
 .menuList {
   position: absolute;
   top: calc(100% + 10px);
+  right: 0;
   list-style: none;
   padding: 10px;
   background: var(--background-secondary);
@@ -9,7 +10,6 @@
   flex-direction: column;
   max-width: 205px;
   box-sizing: border-box;
-  right: 0;
   z-index: 2;
 }
 
