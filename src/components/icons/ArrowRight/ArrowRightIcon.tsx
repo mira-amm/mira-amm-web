@@ -1,6 +1,6 @@
-import { ColorProps } from "../SvgPropTypes";
+import {ColorProps} from "../SvgPropTypes";
 
-export const ArrowRightIcon = ({ primaryColor, secondaryColor }: ColorProps) => {
+export const ArrowRightIcon = ({primaryColor, secondaryColor}: ColorProps) => {
   return (
     <svg
       focusable="false"
@@ -9,7 +9,10 @@ export const ArrowRightIcon = ({ primaryColor, secondaryColor }: ColorProps) => 
       data-testid="NavigateNextIcon"
       fill={primaryColor}
     >
-      <path fill={secondaryColor} d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"></path>
+      <path
+        fill={secondaryColor}
+        d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"
+      ></path>
     </svg>
   );
 };

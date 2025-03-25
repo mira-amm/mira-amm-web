@@ -1,6 +1,6 @@
-import { clsx } from "clsx";
+import {clsx} from "clsx";
 
-import { forwardRef, memo, ReactNode, useCallback } from "react";
+import {forwardRef, memo, ReactNode, useCallback} from "react";
 
 import Loader from "@/src/components/common/Loader/Loader";
 
