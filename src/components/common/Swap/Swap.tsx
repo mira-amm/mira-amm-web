@@ -661,7 +661,10 @@ const Swap = () => {
         </div> */}
       </div>
       {swapPending && <div className={styles.loadingOverlay} />}
-      <SettingsModal title={`Slippage tolerance: ${slippage / 100}%`}>
+      <SettingsModal
+        title={`Slippage tolerance: ${slippage / 100}%`}
+        size={"regular"}
+      >
         <SettingsModalContent slippage={slippage} setSlippage={setSlippage} />
       </SettingsModal>
       <CoinsModal title="Choose token">

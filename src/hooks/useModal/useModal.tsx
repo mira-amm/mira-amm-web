@@ -13,7 +13,7 @@ type ModalProps = {
   children: ReactNode;
   className?: string;
   onClose?: VoidFunction;
-  size?: "small" | "medium" | "large" | "fullWidth";
+  size?: "small" | "medium" | "large" | "fullWidth" | "regular";
 };
 
 type ReturnType = (props: ModalProps) => ReactPortal | null;
