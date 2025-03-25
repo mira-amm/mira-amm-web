@@ -19,6 +19,14 @@
   flex: 1;
 }
 
+.notification {
+  width: 300px;
+  height: 300px;
+  position: absolute;
+  top: 200px;
+  left: -10px;
+}
+
 .coinPairAndLabel {
   display: flex;
   align-items: flex-start;

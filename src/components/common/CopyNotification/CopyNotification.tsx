@@ -4,16 +4,18 @@ import styles from "./CopyNotification.module.css";
 
 interface CopyNotificationProps {
   onClose: () => void;
+  text: string;
 }
 
 export const CopyNotification: React.FC<CopyNotificationProps> = ({
   onClose,
+  text,
 }) => {
   return (
     <div className={styles.wrapper}>
       <div className={styles.messageArea}>
         <NotificationCheckboxIcon />
-        <span className={styles.message}>Copied address</span>
+        <span className={styles.message}>{text}</span>
       </div>
       <button onClick={onClose} className={styles.closeButton}>
         <TransactionsCloseIcon />

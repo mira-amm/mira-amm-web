@@ -184,7 +184,10 @@ const ConnectButton = ({className}: Props) => {
         ref={transactionsRef}
       />
       {isAddressCopied && (
-        <CopyNotification onClose={() => setAddressCopied(false)} />
+        <CopyNotification
+          onClose={() => setAddressCopied(false)}
+          text={"Copied address"}
+        />
       )}
     </>
   );

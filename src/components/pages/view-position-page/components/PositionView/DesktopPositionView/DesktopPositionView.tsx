@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState} from "react";
 import clsx from "clsx";
 import Link from "next/link";
 import CoinPair from "@/src/components/common/CoinPair/CoinPair";
@@ -15,6 +15,7 @@ import {formatDisplayAmount} from "@/src/utils/common";
 import {LIQUIDITY_PROVIDING_DOC_URL} from "@/src/utils/constants";
 import Image from "next/image";
 import LearnMoreIcon from "@/assets/learn-more.png";
+import {CopyNotification} from "@/src/components/common/CopyNotification/CopyNotification";
 
 interface AssetMetadata {
   name?: string;
@@ -46,100 +47,110 @@ const DesktopPositionView = ({
   assetB,
   removeLiquidityPath,
 }: DesktopPositionViewProps): JSX.Element => {
+  const [isAddressCopied, setIsAddressCopied] = useState(false);
   return (
-    <section className={clsx(styles.contentSection, "desktopOnly")}>
-      <div className={styles.positionHeading}>
-        <div className={styles.coinPairAndLabel}>
-          <CoinPair
-            firstCoin={pool[0].bits}
-            secondCoin={pool[1].bits}
-            isStablePool={isStablePool}
-            withPoolDescription
+    <>
+      {isAddressCopied && (
+        <div className={styles.notification}>
+          <CopyNotification
+            onClose={() => setIsAddressCopied(false)}
+            text={"Asset ID copied"}
           />
         </div>
-        <div className={styles.actionBlock}>
-          <Link href={removeLiquidityPath}>
-            <ActionButton variant="secondary" className={styles.actionButton}>
-              Remove liquidity
-            </ActionButton>
-          </Link>
-          <Link href={positionPath}>
-            <ActionButton variant="primary" className={styles.actionButton}>
-              Add liquidity
-            </ActionButton>
-          </Link>
+      )}
+      <section className={clsx(styles.contentSection, "desktopOnly")}>
+        <div className={styles.positionHeading}>
+          <div className={styles.coinPairAndLabel}>
+            <CoinPair
+              firstCoin={pool[0].bits}
+              secondCoin={pool[1].bits}
+              isStablePool={isStablePool}
+              withPoolDescription
+            />
+          </div>
+          <div className={styles.actionBlock}>
+            <Link href={removeLiquidityPath}>
+              <ActionButton variant="secondary" className={styles.actionButton}>
+                Remove liquidity
+              </ActionButton>
+            </Link>
+            <Link href={positionPath}>
+              <ActionButton variant="primary" className={styles.actionButton}>
+                Add liquidity
+              </ActionButton>
+            </Link>
+          </div>
         </div>
-      </div>
 
-      <div className={styles.topRow}>
-        <MiraBlock pool={pool} />
-        <div className={styles.infoBlocks}>
-          <div className={styles.infoBlock}>
-            <p className={clsx(styles.infoText, styles.positionText)}>
-              Your position
-            </p>
-            <AprDisplay pool={pool} />
-            <div className={styles.coinsData}>
-              <CoinWithAmount
-                assetId={pool[0].bits}
-                amount={formatDisplayAmount(assetA.amount)}
-              />
-              <CoinWithAmount
-                assetId={pool[1].bits}
-                amount={formatDisplayAmount(assetB.amount)}
-              />
+        <div className={styles.topRow}>
+          <MiraBlock pool={pool} setIsAddressCopied={setIsAddressCopied} />
+          <div className={styles.infoBlocks}>
+            <div className={styles.infoBlock}>
+              <p className={clsx(styles.infoText, styles.positionText)}>
+                Your position
+              </p>
+              <AprDisplay pool={pool} />
+              <div className={styles.coinsData}>
+                <CoinWithAmount
+                  assetId={pool[0].bits}
+                  amount={formatDisplayAmount(assetA.amount)}
+                />
+                <CoinWithAmount
+                  assetId={pool[1].bits}
+                  amount={formatDisplayAmount(assetB.amount)}
+                />
+              </div>
             </div>
           </div>
         </div>
-      </div>
 
-      <div className={styles.priceBlockLargeDesktop}>
-        <p className={clsx(styles.infoText, styles.positionText)}>
-          Pool reserves
-        </p>
+        <div className={styles.priceBlockLargeDesktop}>
+          <p className={clsx(styles.infoText, styles.positionText)}>
+            Pool reserves
+          </p>
 
-        <hr className={styles.divider} />
+          <hr className={styles.divider} />
 
-        <ReserveItem
-          assetId={pool[0].bits}
-          amount={assetA.amount}
-          reserve={assetA.reserve}
-        />
-        <ReserveItem
-          assetId={pool[1].bits}
-          amount={assetB.amount}
-          reserve={assetB.reserve}
-        />
-        {formattedTvlValue && <hr className={styles.divider} />}
-        <div className={styles.footer}>
-          <div className={styles.reserveItems}>
-            {formattedTvlValue && <p>Total value locked</p>}
-            {formattedTvlValue && <p>${formattedTvlValue}</p>}
+          <ReserveItem
+            assetId={pool[0].bits}
+            amount={assetA.amount}
+            reserve={assetA.reserve}
+          />
+          <ReserveItem
+            assetId={pool[1].bits}
+            amount={assetB.amount}
+            reserve={assetB.reserve}
+          />
+          {formattedTvlValue && <hr className={styles.divider} />}
+          <div className={styles.footer}>
+            <div className={styles.reserveItems}>
+              {formattedTvlValue && <p>Total value locked</p>}
+              {formattedTvlValue && <p>${formattedTvlValue}</p>}
+            </div>
+            <ExchangeRate
+              assetBMetadata={assetB.metadata}
+              assetAMetadata={assetA.metadata}
+              coinAAmount={assetA.amount}
+              coinBAmount={assetB.amount}
+            />
           </div>
-          <ExchangeRate
-            assetBMetadata={assetB.metadata}
-            assetAMetadata={assetA.metadata}
-            coinAAmount={assetA.amount}
-            coinBAmount={assetB.amount}
-          />
         </div>
-      </div>
-
-      <PromoBlock
-        icon={
-          <Image
-            src={LearnMoreIcon}
-            alt={"learn more"}
-            width={48}
-            height={48}
-            priority
-          />
-        }
-        title="Learn about providing liquidity"
-        link={LIQUIDITY_PROVIDING_DOC_URL}
-        linkText="Click here and check our v3 LP walktrought"
-      />
-    </section>
+        <PromoBlock
+          icon={
+            <Image
+              src={LearnMoreIcon}
+              alt={"learn more"}
+              width={48}
+              height={48}
+              priority
+            />
+          }
+          title="Learn about providing liquidity"
+          link={LIQUIDITY_PROVIDING_DOC_URL}
+          linkText="Click here and check our v3 LP walktrought"
+        />
+      </section>
+    </>
   );
 };
 
