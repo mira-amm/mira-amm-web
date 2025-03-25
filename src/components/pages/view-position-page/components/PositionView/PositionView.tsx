@@ -5,12 +5,12 @@ import styles from "./PositionView.module.css";
 import useModal from "@/src/hooks/useModal/useModal";
 import RemoveLiquidityModalContent from "@/src/components/pages/view-position-page/components/RemoveLiquidityModalContent/RemoveLiquidityModalContent";
 import usePositionData from "@/src/hooks/usePositionData";
-import {createPoolKey} from "@/src/utils/common";
+import {createPoolKey, floorToTwoSignificantDigits} from "@/src/utils/common";
 import {useCallback, useRef, useState} from "react";
 import useRemoveLiquidity from "@/src/hooks/useRemoveLiquidity";
 import RemoveLiquiditySuccessModal from "@/src/components/pages/view-position-page/components/RemoveLiquiditySuccessModal/RemoveLiquiditySuccessModal";
 
-import {PoolId} from "mira-dex-ts";
+import {getLPAssetId, PoolId} from "mira-dex-ts";
 
 import useCheckActiveNetwork from "@/src/hooks/useCheckActiveNetwork";
 import usePoolAPR from "@/src/hooks/usePoolAPR";
@@ -21,6 +21,8 @@ import useAssetMetadata from "@/src/hooks/useAssetMetadata";
 
 import DesktopPositionView from "./DesktopPositionView/DesktopPositionView";
 import MobilePositionView from "./MobilePositionView/MobilePositionView";
+import {DEFAULT_AMM_CONTRACT_ID, DefaultLocale} from "@/src/utils/constants";
+import useFormattedAddress from "@/src/hooks/useFormattedAddress/useFormattedAddress";
 
 type Props = {
   pool: PoolId;
