@@ -76,7 +76,13 @@ const useModal = (): [ReturnType, () => void, () => void] => {
               )}
             >
               <div className={styles.modalHeading}>
-                <div className={clsx(styles.modalTitle, titleClassName)}>
+                <div
+                  className={clsx(
+                    styles.modalTitle,
+                    titleClassName,
+                    "mc-type-xl",
+                  )}
+                >
                   {title}
                 </div>
                 <IconButton

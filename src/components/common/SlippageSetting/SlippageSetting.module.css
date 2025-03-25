@@ -1,8 +1,5 @@
 .slippageLabel {
   padding: 4px 8px;
-  font-weight: 400;
-  font-size: 13px;
-  line-height: 16px;
   border-radius: 6px;
   background-color: var(--background-grey-light);
   color: var(--content-dimmed-light);

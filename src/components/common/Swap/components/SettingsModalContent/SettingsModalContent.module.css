@@ -12,8 +12,6 @@
 }
 
 .settingsText {
-  font-size: 16px;
-  font-weight: 400;
   color: var(--mc-grey-4);
 }
 
@@ -21,11 +19,6 @@
   display: flex;
   gap: 20px;
   align-items: center;
-}
-
-.inputContent {
-  font-size: 16px;
-  font-weight: 500;
 }
 
 .slippageButtons {
@@ -70,8 +63,6 @@
   padding: 10px 12px;
   border: 1px solid var(--mc-black-1);
   border-radius: 8px;
-  font-size: 16px;
-  font-weight: 500;
 }
 
 .slippageInput:focus {

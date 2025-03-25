@@ -7,6 +7,7 @@ import {useAssetImage} from "@/src/hooks/useAssetImage";
 import useAssetMetadata from "@/src/hooks/useAssetMetadata";
 import PriceImpact from "../PriceImpact/PriceImpact";
 import Loader from "../../../Loader/Loader";
+import clsx from "clsx";
 
 interface ReviewSwapProps {
   tradeState: TradeState;
@@ -73,7 +74,7 @@ const ReviewSwap: FC<ReviewSwapProps> = ({
     tradeState === TradeState.LOADING || tradeState === TradeState.REEFETCHING;
 
   return (
-    <div className={styles.review}>
+    <div className={clsx(styles.review, "mc-mono-b")}>
       <div className={styles.summary}>
         {/* Rate */}
         <SummaryEntry

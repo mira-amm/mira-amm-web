@@ -547,8 +547,14 @@ const Swap = () => {
   // Swap succcess and failure error message for the modal
   const calculateModalContent = () => {
     const currentState = swapStateForPreview.current;
-    const successModalSubtitle = `${currentState.sell.amount} ${sellMetadata.symbol} for ${currentState.buy.amount} ${buyMetadata.symbol}`;
-
+    const successModalSubtitle = (
+      <>
+        <span className="mc-mono-m">{currentState.sell.amount}</span>{" "}
+        <span className="mc-type-m">{sellMetadata.symbol}</span> for{" "}
+        <span className="mc-mono-m">{currentState.buy.amount}</span>{" "}
+        <span className="mc-type-m">{buyMetadata.symbol}</span>
+      </>
+    );
     let errorMessage = "An error occurred. Please try again.";
     const error = txCostError || swapError;
     if (error instanceof FuelError) {
@@ -580,7 +586,7 @@ const Swap = () => {
           )}
         >
           <div className={styles.heading}>
-            <p className={styles.title}>Swap</p>
+            <p className={clsx(styles.title, "mc-type-l")}>Swap</p>
             <SlippageSetting
               slippage={slippage}
               openSettingsModal={openSettingsModal}

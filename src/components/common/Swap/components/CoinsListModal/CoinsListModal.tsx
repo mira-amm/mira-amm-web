@@ -8,6 +8,7 @@ import EmptySearchResults from "../EmptySearchResults";
 import SkeletonLoader from "../SkeletonLoader/SkeletonLoader";
 import UnknownCoinListItem from "../UnknownCoinListItem";
 import styles from "./CoinsListModal.module.css";
+import clsx from "clsx";
 
 type Props = {
   balances: CoinQuantity[] | undefined;
@@ -33,7 +34,7 @@ const CoinsListModal = ({selectCoin, verifiedAssetsOnly, balances}: Props) => {
       <div className={styles.tokenSearch}>
         <SearchIcon />
         <input
-          className={styles.tokenSearchInput}
+          className={clsx(styles.tokenSearchInput, "mc-type-m")}
           type="text"
           placeholder="Search by token or paste address"
           onChange={handleFilterChange}
