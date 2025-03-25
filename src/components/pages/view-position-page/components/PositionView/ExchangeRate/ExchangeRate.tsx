@@ -57,13 +57,15 @@ const ExchangeRate = ({
         <p className={clsx(styles.exchangeRate, styles.infoText)}>
           {isBaseCoinA ? (
             <>
-              1 <span className="mc-type-b">{assetBMetadata.symbol}</span> ≈{" "}
+              <span className="mc-mono-b">1</span>{" "}
+              <span className="mc-type-b">{assetBMetadata.symbol}</span> ≈{" "}
               <span className="mc-mono-b">{flooredRate}</span>{" "}
               <span className="mc-type-b">{assetAMetadata.symbol}</span>
             </>
           ) : (
             <>
-              1 <span className="mc-type-b">{assetAMetadata.symbol}</span> ≈{" "}
+              <span className="mc-mono-b">1</span>{" "}
+              <span className="mc-type-b">{assetAMetadata.symbol}</span> ≈{" "}
               <span className="mc-mono-b">{flooredRate}</span>{" "}
               <span className="mc-type-b">{assetBMetadata.symbol}</span>
             </>
