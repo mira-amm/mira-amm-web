@@ -11,8 +11,8 @@ export const NotificationCheckboxIcon = () => {
       <path
         d="M16 10L10.6667 15L8 12.5"
         stroke="var(--content-positive)"
-        stroke-width="2"
-        stroke-linecap="square"
+        strokeWidth="2"
+        strokeLinecap="square"
       />
     </svg>
   );
