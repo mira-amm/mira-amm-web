@@ -53,17 +53,13 @@ const Footer = ({isHomePage = false}: FooterProps) => {
                   href="https://github.com/mira-amm"
                   target="_blank"
                 >
-                  <GithubIcon />
+                  <GithubIcon primaryColor="#8A8B8E" />
                 </a>
-                <a
-                  className={styles.socialLink}
-                  href={DiscordLink}
-                  target="_blank"
-                >
-                  <DiscordIcon />
+                <a className={styles.socialLink} href={DiscordLink} target="_blank">
+                  <DiscordIcon primaryColor="#8A8B8E" />
                 </a>
                 <a className={styles.socialLink} href={XLink} target="_blank">
-                  <X />
+                  <X primaryColor="#8A8B8E" />
                 </a>
               </div>
             </div>
@@ -125,17 +121,13 @@ const Footer = ({isHomePage = false}: FooterProps) => {
                   href="https://github.com/mira-amm"
                   target="_blank"
                 >
-                  <GithubIcon />
+                  <GithubIcon primaryColor="#8A8B8E" />
                 </a>
-                <a
-                  className={styles.socialLink}
-                  href={DiscordLink}
-                  target="_blank"
-                >
-                  <DiscordIcon />
+                <a className={styles.socialLink} href={DiscordLink} target="_blank">
+                  <DiscordIcon primaryColor="#8A8B8E" />
                 </a>
                 <a className={styles.socialLink} href={XLink} target="_blank">
-                  <X />
+                  <X primaryColor="#8A8B8E" />
                 </a>
               </div>
             </div>
