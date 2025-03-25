@@ -29,10 +29,11 @@ const MiraBlock = ({pool}: MiraBlockProps): JSX.Element => {
       <div className={styles.miraLogo}>
         <MiraTextLogo />
       </div>
-      <p className={clsx(styles.tokenDisplayValue, styles.infoText)}>
-        {lpTokenDisplayValue} LP tokens
+      <p className={clsx(styles.tokenDisplayValue)}>
+        <span className="mc-mono-m">{lpTokenDisplayValue}</span>{" "}
+        <span className="mc-type-m">LP tokens</span>
       </p>
-      <p className={clsx(styles.numberAndCopy, styles.infoText)}>
+      <p className={clsx(styles.numberAndCopy, "mc-type-m")}>
         Asset ID: {formattedLpTokenAssetId}
         <IconButton onClick={handleCopy}>
           <CopyIcon />
