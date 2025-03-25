@@ -72,20 +72,16 @@
 
 .label,
 .value {
-  font-size: 16px;
-  line-height: 19.36px;
   color: white;
   text-align: left;
 }
 
 .subtext {
-  font-size: 10px;
   color: white;
   opacity: 0.8;
   width: 70%;
   text-wrap: wrap;
   text-align: left;
-  line-height: 12.1px;
 }
 
 .columns {

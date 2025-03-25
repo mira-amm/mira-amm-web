@@ -149,18 +149,22 @@ const AprLabel: React.FC<{
     <div className={styles.columns}>
       <div className={styles.row}>
         <span className={styles.label}>Swap fees</span>
-        <span className={styles.value}>{baseApr}</span>
+        <span className={clsx(styles.value, "mc-mono-m")}>{baseApr}</span>
       </div>
       <div>
         <div className={styles.row}>
           <span className={styles.label}>{label}</span>
           {boostedApr === 0 ? (
-            <span className={styles.value}>{boostReward.toLocaleString()}</span>
+            <span className={clsx(styles.value, "mc-mono-m")}>
+              {boostReward.toLocaleString()}
+            </span>
           ) : (
-            <span className={styles.value}>{boostedApr}%</span>
+            <span className={clsx(styles.value, "mc-mono-m")}>
+              {boostedApr}%
+            </span>
           )}
         </div>
-        <p className={styles.subtext}>
+        <p className={clsx(styles.subtext, "mc-type-xs")}>
           {boostReward && boostReward.toLocaleString()} {description}
         </p>
       </div>
@@ -169,7 +173,9 @@ const AprLabel: React.FC<{
           <div className={styles.divider}></div>
           <div className={styles.row}>
             <span className={styles.label}>Total rewards</span>
-            <span className={styles.value}>{aprElement}</span>
+            <span className={clsx(styles.value, "mc-mono-m")}>
+              {aprElement}
+            </span>
           </div>
         </>
       )}
