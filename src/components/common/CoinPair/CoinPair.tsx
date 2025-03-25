@@ -43,8 +43,8 @@ const CoinPair = ({
           <Image
             src={firstCoinIcon}
             alt={`${firstSymbol} icon`}
-            width={34}
-            height={34}
+            width={36}
+            height={36}
             priority
           />
         )}
@@ -52,8 +52,8 @@ const CoinPair = ({
           <Image
             src={secondCoinIcon}
             alt={`${secondSymbol} icon`}
-            width={34}
-            height={34}
+            width={36}
+            height={36}
             priority
           />
         )}

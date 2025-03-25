@@ -8,13 +8,14 @@
   font-size: 16px;
   font-weight: 500;
   color: var(--mc-black);
+  padding: 14px 0 16px;
 }
 
 .coinHeader {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  gap: 10px;
+  margin-bottom: 20px;
 }
 
 .APR {
