@@ -1,16 +1,18 @@
-import {useCallback, useEffect, useMemo, useRef, useState} from "react";
 import {useConnectUI, useIsConnected} from "@fuels/react";
 import {useLocalStorage} from "usehooks-ts";
 import {clsx} from "clsx";
+import Logo from "@/src/components/common/Logo/Logo";
+import {useCallback, useEffect, useMemo, useRef, useState} from "react";
 
-import CurrencyBox from "@/src/components/common/Swap/components/CurrencyBox/CurrencyBox";
 import ActionButton from "@/src/components/common/ActionButton/ActionButton";
-import ConvertIcon from "@/src/components/icons/Convert/ConvertIcon";
 import IconButton from "@/src/components/common/IconButton/IconButton";
+import CurrencyBox from "@/src/components/common/Swap/components/CurrencyBox/CurrencyBox";
+import ConvertIcon from "@/src/components/icons/Convert/ConvertIcon";
 import useModal from "@/src/hooks/useModal/useModal";
 import useSwap from "@/src/hooks/useSwap/useSwap";
 
 import styles from "./Swap.module.css";
+
 import ExchangeRate from "@/src/components/common/Swap/components/ExchangeRate/ExchangeRate";
 import useExchangeRate from "@/src/hooks/useExchangeRate/useExchangeRate";
 import {createPoolKey, openNewTab} from "@/src/utils/common";
@@ -26,14 +28,20 @@ import PriceImpact from "@/src/components/common/Swap/components/PriceImpact/Pri
 import {FuelAppUrl} from "@/src/utils/constants";
 import useReservesPrice from "@/src/hooks/useReservesPrice";
 import SwapFailureModal from "@/src/components/common/Swap/components/SwapFailureModal/SwapFailureModal";
-import {B256Address, bn, BN} from "fuels";
+import {
+  B256Address,
+  bn,
+  BN,
+  ScriptTransactionRequest,
+  TransactionCost,
+} from "fuels";
 import {PoolId} from "mira-dex-ts";
 import {useAssetImage} from "@/src/hooks/useAssetImage";
 import {useAssetPrice} from "@/src/hooks/useAssetPrice";
 import useAssetMetadata from "@/src/hooks/useAssetMetadata";
 import {SlippageSetting} from "../SlippageSetting/SlippageSetting";
 import Loader from "@/src/components/common/Loader/Loader";
-import {ScriptTransactionRequest, TransactionCost} from "fuels";
+import ConnectButton from "@/src/components/common/ConnectButton/ConnectButton";
 import {TradeState} from "@/src/hooks/useSwapRouter";
 
 export type CurrencyBoxMode = "buy" | "sell";
@@ -80,13 +88,13 @@ function SwapRouteItem({pool}: {pool: PoolId}) {
   );
 }
 
-const Swap = () => {
+const Swap = ({isWidget}: {isWidget?: boolean}) => {
   const [SettingsModal, openSettingsModal, closeSettingsModal] = useModal();
   const [CoinsModal, openCoinsModal, closeCoinsModal] = useModal();
   const [SuccessModal, openSuccess] = useModal();
   const [FailureModal, openFailure, closeFailureModal] = useModal();
 
-  const initialSwapState = useInitialSwapState();
+  const initialSwapState = useInitialSwapState(isWidget);
 
   const [swapState, setSwapState] = useState<SwapState>(initialSwapState);
   const [inputsState, setInputsState] =
@@ -103,7 +111,7 @@ const Swap = () => {
   const [showInsufficientBalance, setShowInsufficientBalance] = useState(true);
   const [customErrorTitle, setCustomErrorTitle] = useState<string>("");
 
-  const [swapCoins, setSwapCoins] = useLocalStorage("swapCoins", {
+  const [, setSwapCoins] = useLocalStorage("swapCoins", {
     sell: initialSwapState.sell.assetId,
     buy: initialSwapState.buy.assetId,
   });
@@ -214,11 +222,15 @@ const Swap = () => {
       },
     }));
 
+    if (isWidget) {
+      return;
+    }
+
     setSwapCoins((prevState) => ({
       buy: prevState.sell,
       sell: prevState.buy,
     }));
-  }, [setSwapCoins]);
+  }, [isWidget, setSwapCoins]);
 
   const selectCoin = useCallback(
     (mode: "buy" | "sell") => {
@@ -243,16 +255,22 @@ const Swap = () => {
               amount,
             },
           }));
-        }
 
-        setSwapCoins((prevState) => ({
-          ...prevState,
-          [mode]: assetId,
-        }));
+          if (isWidget) {
+            return;
+          }
+          setSwapCoins((prevState) => ({
+            ...prevState,
+            [mode]: assetId,
+          }));
+
+          setActiveMode(mode);
+        }
       };
     },
     [
       inputsState,
+      isWidget,
       setSwapCoins,
       swapAssets,
       swapState.buy.assetId,
@@ -565,15 +583,21 @@ const Swap = () => {
         <div
           className={clsx(
             styles.swapContainer,
+            isWidget && styles.widgetSwapContainer,
             swapPending && styles.swapContainerLoading,
           )}
         >
           <div className={styles.heading}>
-            <p className={styles.title}>Swap</p>
+            <div className={styles.title}>
+              {isWidget ? <Logo /> : <p>Swap</p>}
+            </div>
             <SlippageSetting
               slippage={slippage}
               openSettingsModal={openSettingsModal}
             />
+            {isWidget && (
+              <ConnectButton className={styles.connectWallet} isWidget />
+            )}
           </div>
           <CurrencyBox
             value={sellValue}
@@ -584,6 +608,7 @@ const Swap = () => {
             loading={inputPreviewLoading || swapPending}
             onCoinSelectorClick={handleCoinSelectorClick}
             usdRate={sellAssetPrice.price}
+            className={isWidget ? styles.widgetBoxBg : undefined}
           />
           <div className={styles.splitter}>
             <IconButton onClick={swapAssets} className={styles.convertButton}>
@@ -599,6 +624,7 @@ const Swap = () => {
             loading={outputPreviewLoading || swapPending}
             onCoinSelectorClick={handleCoinSelectorClick}
             usdRate={buyAssetPrice.price}
+            className={isWidget ? styles.widgetBoxBg : undefined}
           />
           {review && (
             <div className={styles.summary}>
@@ -666,6 +692,9 @@ const Swap = () => {
             <ActionButton
               variant="primary"
               disabled={isActionDisabled}
+              className={
+                isWidget && isActionDisabled ? styles.widgetBoxBg : undefined
+              }
               onClick={handleSwapClick}
               loading={isActionLoading}
             >

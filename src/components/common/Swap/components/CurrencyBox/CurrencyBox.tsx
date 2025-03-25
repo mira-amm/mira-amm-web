@@ -24,6 +24,7 @@ type Props = {
   onCoinSelectorClick: (mode: CurrencyBoxMode) => void;
   usdRate: number | null;
   previewError?: string | null;
+  className?: string;
 };
 
 const CurrencyBox = ({
@@ -36,6 +37,7 @@ const CurrencyBox = ({
   onCoinSelectorClick,
   usdRate,
   previewError,
+  className,
 }: Props) => {
   const metadata = useAssetMetadata(assetId);
   const balanceValue = balance.formatUnits(metadata.decimals || 0);
@@ -79,7 +81,7 @@ const CurrencyBox = ({
       : null;
 
   return (
-    <div className={styles.currencyBox}>
+    <div className={clsx(styles.currencyBox, className)}>
       <p className={styles.title}>{mode === "buy" ? "Buy" : "Sell"}</p>
       <div className={styles.content}>
         {previewError ? (

@@ -20,9 +20,10 @@ import DropDownMenu from "../DropDownMenu/DropDownMenu";
 
 type Props = {
   className?: string;
+  isWidget?: boolean;
 };
 
-const ConnectButton = ({className}: Props) => {
+const ConnectButton = ({className, isWidget}: Props) => {
   const {account, connect, disconnect, isConnected, isWalletLoading} =
     useWeb3React();
 
@@ -139,23 +140,41 @@ const ConnectButton = ({className}: Props) => {
     setHistoryOpened(false);
   };
 
+  const getOnClickHandler = useCallback(
+    (text: string) => {
+      switch (text) {
+        case "Disconnect":
+          return handleDisconnect;
+        case "Transaction History":
+          return handleHistoryOpen;
+        case "Copy Address":
+          return handleCopy;
+        case "View in Explorer":
+          return handleExplorerClick;
+        default:
+          return () => {};
+      }
+    },
+    [handleCopy, handleDisconnect, handleExplorerClick],
+  );
+
+  const filterButtons = useCallback(
+    (button: {text: string}) => {
+      return (
+        !isWidget ||
+        button.text === "Disconnect" ||
+        button.text === "Copy Address"
+      );
+    },
+    [isWidget],
+  );
+
   const menuButtons = useMemo(() => {
-    return DropDownButtons.map((button) => {
-      return {
-        ...button,
-        onClick:
-          button.text === "Disconnect"
-            ? handleDisconnect
-            : button.text === "Transaction History"
-              ? handleHistoryOpen
-              : button.text === "Copy Address"
-                ? handleCopy
-                : button.text === "View in Explorer"
-                  ? handleExplorerClick
-                  : button.onClick,
-      };
-    });
-  }, [handleDisconnect, handleCopy, handleExplorerClick]);
+    return DropDownButtons.filter(filterButtons).map((button) => ({
+      ...button,
+      onClick: getOnClickHandler(button.text),
+    }));
+  }, [filterButtons, getOnClickHandler]);
 
   useEffect(() => {
     if (isHistoryOpened) {
@@ -167,22 +186,26 @@ const ConnectButton = ({className}: Props) => {
 
   return (
     <>
-      <ActionButton
-        className={clsx(className, isConnected && styles.connected)}
-        onClick={handleClick}
-        loading={isWalletLoading}
-        ref={buttonRef}
-      >
-        {isConnected && <img src="/images/avatar.png" width="24" height="24" />}
-        {title}
-        {isConnected && (!isMenuOpened ? <ArrowDownIcon /> : <ArrowUpIcon />)}
-      </ActionButton>
-      {isMenuOpened && <DropDownMenu buttons={menuButtons} ref={menuRef} />}
-      <TransactionsHistory
-        onClose={handleHistoryClose}
-        isOpened={isHistoryOpened}
-        ref={transactionsRef}
-      />
+      <div style={{position: "relative"}}>
+        <ActionButton
+          className={clsx(className, isConnected && styles.connected)}
+          onClick={handleClick}
+          loading={isWalletLoading}
+          ref={buttonRef}
+        >
+          {isConnected && (
+            <img src="/images/avatar.png" width="24" height="24" />
+          )}
+          {title}
+          {isConnected && (!isMenuOpened ? <ArrowDownIcon /> : <ArrowUpIcon />)}
+        </ActionButton>
+        {isMenuOpened && <DropDownMenu buttons={menuButtons} ref={menuRef} />}
+        <TransactionsHistory
+          onClose={handleHistoryClose}
+          isOpened={isHistoryOpened}
+          ref={transactionsRef}
+        />
+      </div>
       {isAddressCopied && (
         <CopyNotification onClose={() => setAddressCopied(false)} />
       )}
