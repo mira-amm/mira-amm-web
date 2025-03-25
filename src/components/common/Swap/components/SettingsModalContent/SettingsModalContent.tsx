@@ -77,7 +77,7 @@ const SettingsModalContent = ({slippage, setSlippage}: Props) => {
   return (
     <div className={styles.settingsContainer}>
       <div className={styles.settingsSection}>
-        <p className={styles.settingsText}>
+        <p className={clsx(styles.settingsText, "mc-type-m")}>
           The amount the price can change unfavorably before the trade reverts
         </p>
       </div>
@@ -99,7 +99,8 @@ const SettingsModalContent = ({slippage, setSlippage}: Props) => {
                   <span
                     className={
                       (buttonstyles.poolStabilityButtonText,
-                      styles.inputContent)
+                      styles.inputContent,
+                      "mc-mono-m")
                     }
                   >
                     {value / 100}%
@@ -109,11 +110,11 @@ const SettingsModalContent = ({slippage, setSlippage}: Props) => {
             </React.Fragment>
           ))}
         </div>
-        <p className={styles.inputContent}>or</p>
+        <p className={clsx(styles.inputContent, "mc-type-m")}>or</p>
         <div>
           <input
             type="number"
-            className={styles.slippageInput}
+            className={clsx(styles.slippageInput, "mc-mono-m")}
             inputMode="decimal"
             min="0.1"
             step="0.1"
