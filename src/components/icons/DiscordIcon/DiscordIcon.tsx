@@ -1,6 +1,6 @@
-import { ColorProps } from "../SvgPropTypes";
+import {ColorProps} from "../SvgPropTypes";
 
-export const DiscordIcon = ({ primaryColor }: ColorProps) => {
+export const DiscordIcon = ({primaryColor}: ColorProps) => {
   return (
     <svg
       width="24"

@@ -1,6 +1,6 @@
-import { ColorProps } from "../SvgPropTypes";
+import {ColorProps} from "../SvgPropTypes";
 
-export const XSocialIcon = ({ primaryColor }: ColorProps) => {
+export const XSocialIcon = ({primaryColor}: ColorProps) => {
   return (
     <svg
       width="20"

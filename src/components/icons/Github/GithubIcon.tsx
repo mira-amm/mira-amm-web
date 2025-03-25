@@ -1,6 +1,6 @@
-import { ColorProps } from "../SvgPropTypes";
+import {ColorProps} from "../SvgPropTypes";
 
-export const GithubIcon = ({ primaryColor }: ColorProps) => {
+export const GithubIcon = ({primaryColor}: ColorProps) => {
   return (
     <svg
       width="24"

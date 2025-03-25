@@ -55,7 +55,11 @@ const Footer = ({isHomePage = false}: FooterProps) => {
                 >
                   <GithubIcon primaryColor="#8A8B8E" />
                 </a>
-                <a className={styles.socialLink} href={DiscordLink} target="_blank">
+                <a
+                  className={styles.socialLink}
+                  href={DiscordLink}
+                  target="_blank"
+                >
                   <DiscordIcon primaryColor="#8A8B8E" />
                 </a>
                 <a className={styles.socialLink} href={XLink} target="_blank">
@@ -123,7 +127,11 @@ const Footer = ({isHomePage = false}: FooterProps) => {
                 >
                   <GithubIcon primaryColor="#8A8B8E" />
                 </a>
-                <a className={styles.socialLink} href={DiscordLink} target="_blank">
+                <a
+                  className={styles.socialLink}
+                  href={DiscordLink}
+                  target="_blank"
+                >
                   <DiscordIcon primaryColor="#8A8B8E" />
                 </a>
                 <a className={styles.socialLink} href={XLink} target="_blank">
