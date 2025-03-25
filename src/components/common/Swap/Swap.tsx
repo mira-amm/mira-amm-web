@@ -1,8 +1,8 @@
-import {useCallback, useEffect, useMemo, useRef, useState} from "react";
 import {useConnectUI, useIsConnected} from "@fuels/react";
 import {useLocalStorage} from "usehooks-ts";
 import {clsx} from "clsx";
 import Logo from "@/src/components/common/Logo/Logo";
+import {useCallback, useEffect, useMemo, useRef, useState} from "react";
 
 import ActionButton from "@/src/components/common/ActionButton/ActionButton";
 import IconButton from "@/src/components/common/IconButton/IconButton";
