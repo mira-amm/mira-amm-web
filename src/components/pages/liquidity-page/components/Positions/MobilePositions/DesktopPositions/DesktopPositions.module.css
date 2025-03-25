@@ -39,19 +39,16 @@
 .desktopPositions td:first-child,
 .desktopPositions th:first-child {
   text-align: left;
-  min-width: 350px;
 }
 
 .desktopPositions td:nth-child(2),
 .desktopPositions th:nth-child(2) {
   text-align: center;
-  min-width: 215px;
 }
 
 .desktopPositions td:nth-child(3),
 .desktopPositions th:nth-child(3) {
   text-align: center;
-  min-width: 215px;
 }
 
 .desktopPositions td:last-child,

@@ -195,7 +195,7 @@ input:focus {
   background-color: var(--background-secondary);
   padding: 24px 20px;
   gap: 10px;
-  width: 563px;
+  max-width: 560px;
   height: auto;
 }
 

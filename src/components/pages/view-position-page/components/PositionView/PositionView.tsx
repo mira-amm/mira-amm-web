@@ -51,7 +51,7 @@ const PositionView = ({pool}: Props): JSX.Element => {
 
   return (
     <>
-      <BackLink showOnDesktop href="/liquidity" chevron title="Back to Pool" />
+      <BackLink showOnDesktop href="/liquidity" chevron title="Back" />
       <MobilePositionView
         pool={pool}
         isStablePool={isStablePool}

@@ -64,8 +64,8 @@
 /* Style the dots */
 .sliderDots {
   position: absolute;
-  top: 10.5px;
-  width: 98%;
+  top: 10.45px;
+  width: 96.3%;
   height: 8px;
   pointer-events: none;
   margin-left: 5px;
@@ -80,4 +80,11 @@
   border-radius: 50%;
   transform: translateX(-50%);
   top: 0;
+}
+
+@media (min-width: 1024px) {
+  .sliderDots {
+    top: 10.5px;
+    width: 98%;
+  }
 }

@@ -26,7 +26,7 @@ const RemoveLiquidity = ({poolId}: Props): JSX.Element => {
 
   return (
     <>
-      <BackLink showOnDesktop onClick={handleBackClick} title="Back to Pool" />
+      <BackLink showOnDesktop onClick={handleBackClick} title="Back" />
       <section className="liquidity-action-container">
         <div className={styles.removeLiquidityHeading}>
           <p className={styles.title}>Remove Liquidity</p>
