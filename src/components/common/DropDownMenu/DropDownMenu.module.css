@@ -1,4 +1,6 @@
 .menuList {
+  position: absolute;
+  top: 100%;
   list-style: none;
   padding: 10px;
   background: var(--background-secondary);
@@ -7,8 +9,6 @@
   flex-direction: column;
   max-width: 205px;
   box-sizing: border-box;
-  position: absolute;
-  top: 120px;
   right: 27px;
   z-index: 2;
 }

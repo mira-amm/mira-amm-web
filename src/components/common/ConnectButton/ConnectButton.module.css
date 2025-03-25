@@ -1,3 +1,7 @@
+.container {
+  position: relative;
+}
+
 button.connected {
   display: flex;
   align-items: center;

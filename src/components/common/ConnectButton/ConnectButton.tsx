@@ -166,7 +166,7 @@ const ConnectButton = ({className}: Props) => {
   }, [isHistoryOpened]);
 
   return (
-    <>
+    <div>
       <ActionButton
         className={clsx(className, isConnected && styles.connected)}
         onClick={handleClick}
@@ -186,7 +186,7 @@ const ConnectButton = ({className}: Props) => {
       {isAddressCopied && (
         <CopyNotification onClose={() => setAddressCopied(false)} />
       )}
-    </>
+    </div>
   );
 };
 
