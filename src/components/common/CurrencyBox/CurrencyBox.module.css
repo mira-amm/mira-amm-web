@@ -15,14 +15,7 @@
 .title,
 .fiatValue,
 .balance {
-  font-size: 13px;
-  line-height: 18px;
   color: var(--content-secondary);
-  font-weight: 400;
-}
-
-.fiatValue {
-  font-family: EllographCF;
 }
 
 .content {
@@ -35,10 +28,6 @@
 .input {
   width: 0;
   flex: 1;
-  font-family: EllographCF, sans-serif;
-  font-weight: 600;
-  font-size: 20px;
-  line-height: 24px;
   color: var(--content-primary);
   background: transparent;
   border: none;
