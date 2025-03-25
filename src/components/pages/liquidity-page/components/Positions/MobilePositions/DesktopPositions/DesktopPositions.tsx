@@ -15,7 +15,7 @@ const DesktopPositions = ({positions}: Props): JSX.Element => {
 
   return (
     <table className={clsx(styles.desktopPositions, "desktopOnly")}>
-      <thead className="mc-type-m">
+      <thead>
         <tr>
           <th>Pools</th>
           <th>APR</th>

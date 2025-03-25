@@ -79,7 +79,7 @@ export const DesktopPosition = ({
             />
           </div>
         ) : (
-          <p>{aprValue}</p>
+          <p className="mc-mono-m">{aprValue}</p>
         )}
       </td>
       <td className={clsx(styles.labelCell, "mc-mono-m")}>
