@@ -36,8 +36,8 @@ const Coin = ({assetId, className, onClick}: Props) => {
         <Image
           src={icon}
           alt={`${metadata.symbol} icon`}
-          width={25}
-          height={25}
+          width={24}
+          height={24}
           priority
         />
       ) : null}
