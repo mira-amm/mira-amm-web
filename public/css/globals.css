@@ -175,6 +175,12 @@ input:focus {
     url("../../src/fonts/EllographCF-Regular.ttf") format("truetype");
 }
 
+@font-face {
+  font-family: "Cartograph CF"; 
+  src: local("CartographCF-Regular"),
+    url("../../src/fonts/CartographCF-Regular.ttf") format("truetype");
+}
+
 .page-container {
   display: flex;
   flex-direction: column;
@@ -226,7 +232,7 @@ input:focus {
 
 /* Inter Typography Classes */
 .mc-type-xs {
-  font-family: 'Inter';
+  font-family: var(--font-inter);
   font-style: normal;
   font-weight: 500;
   font-size: 11.06px;
@@ -234,7 +240,7 @@ input:focus {
 }
 
 .mc-type-s {
-  font-family: 'Inter';
+  font-family: var(--font-inter);
   font-style: normal;
   font-weight: 500;
   font-size: 12.44px;
@@ -242,7 +248,7 @@ input:focus {
 }
 
 .mc-type-b {
-  font-family: 'Inter';
+  font-family: var(--font-inter);
   font-style: normal;
   font-weight: 500;
   font-size: 14px;
@@ -250,7 +256,7 @@ input:focus {
 }
 
 .mc-type-m {
-  font-family: 'Inter';
+  font-family: var(--font-inter);
   font-style: normal;
   font-weight: 500;
   font-size: 15.75px;
@@ -258,7 +264,7 @@ input:focus {
 }
 
 .mc-type-l {
-  font-family: 'Inter';
+  font-family: var(--font-inter);
   font-style: normal;
   font-weight: 500;
   font-size: 17.72px;
@@ -266,7 +272,7 @@ input:focus {
 }
 
 .mc-type-xl {
-  font-family: 'Inter';
+  font-family: var(--font-inter);
   font-style: normal;
   font-weight: 500;
   font-size: 19.93px;
@@ -274,7 +280,7 @@ input:focus {
 }
 
 .mc-type-xxl {
-  font-family: 'Inter';
+  font-family: var(--font-inter);
   font-style: normal;
   font-weight: 500;
   font-size: 22.43px;
@@ -282,7 +288,7 @@ input:focus {
 }
 
 .mc-type-xxxl {
-  font-family: 'Inter';
+  font-family: var(--font-inter);
   font-style: normal;
   font-weight: 500;
   font-size: 25.23px;
@@ -290,7 +296,7 @@ input:focus {
 }
 
 .mc-type-xxxxl {
-  font-family: 'Inter';
+  font-family: var(--font-inter);
   font-style: normal;
   font-weight: 500;
   font-size: 28.38px;
