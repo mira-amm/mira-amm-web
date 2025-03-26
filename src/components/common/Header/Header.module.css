@@ -7,9 +7,6 @@
 .promo {
   display: flex;
   padding: 12px 16px;
-  font-size: 18px;
-  line-height: 22px;
-  font-weight: 400;
   background-color: var(--background-promotional-banner);
   justify-content: space-between;
 }
