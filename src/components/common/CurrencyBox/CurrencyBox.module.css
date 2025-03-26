@@ -34,7 +34,7 @@
 }
 
 .input:disabled {
-  color: var(--content-dimmed-dark);
+  color: var(--content-dimmed-light);
   opacity: 0.5;
 }
 

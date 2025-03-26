@@ -238,15 +238,11 @@
 .existingPoolText {
   flex: 1;
   color: var(--primary-white);
-  font-size: 15px;
-  font-weight: 400;
 }
 
 .addLiquidityLink {
   display: inline-flex;
   align-items: center;
-  font-size: 15px;
-  font-weight: 400;
   color: var(--primary-white);
   background: transparent;
   border: none;
@@ -299,9 +295,6 @@
 }
 
 .priceWarning {
-  font-weight: 400;
-  font-size: 14px;
-  line-height: 20px;
   color: var(--mc-yellow);
   margin-bottom: 8px;
 }
