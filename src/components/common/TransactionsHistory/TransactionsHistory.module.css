@@ -68,9 +68,14 @@
   gap: 20px;
   padding: 12px;
   border-radius: 10px;
-  color: var(--background-primary);
+  color: var(--mc-black);
   width: 100%;
-  background: linear-gradient(95.91deg, #663e92 -15.22%, #29294e 83.17%);
+  background: linear-gradient(
+    to right,
+    rgba(1, 236, 151, 0.3) 0%,
+    rgba(249, 84, 101, 0.3) 50%,
+    rgba(114, 162, 255, 0.3) 100%
+  );
 }
 
 .accountUserInfo {
