@@ -232,7 +232,7 @@ const CreatePoolDialog = ({setPreviewData}: Props) => {
     <>
       <div className={styles.addLiquidityContent}>
         <div className={styles.sectionContent}>
-          <p className={styles.subHeader}>Selected pair</p>
+          <p className={clsx(styles.subHeader, "mc-type-m")}>Selected pair</p>
           {!oneOfAssetsIsNotSelected && (
             <div className={styles.coinHeader}>
               <CoinPair
@@ -279,7 +279,7 @@ const CreatePoolDialog = ({setPreviewData}: Props) => {
         </div>
       </div>
       <div className={styles.depositAmountSection}>
-        <p className={styles.subHeader}>Deposit amount</p>
+        <p className={clsx(styles.subHeader, "mc-type-m")}>Deposit amounts</p>
         <div className={styles.sectionContent}>
           <CurrencyBox
             assetId={firstAssetId}
