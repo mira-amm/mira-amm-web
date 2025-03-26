@@ -76,7 +76,7 @@ const Footer = ({isHomePage = false}: FooterProps) => {
           <div className={styles.content}>
             <Logo isFooter={true} />
             <div className={styles.linksAndSocial}>
-              <div className={styles.links}>
+              <div className={clsx(styles.links, "mc-type-m")}>
                 <a className={styles.link} href={DiscordLink} target="_blank">
                   Support
                 </a>
@@ -140,7 +140,7 @@ const Footer = ({isHomePage = false}: FooterProps) => {
               </div>
             </div>
           </div>
-          <div className={styles.copyright}>
+          <div className={clsx(styles.copyright, "mc-type-m")}>
             <p className="desktopOnly">&copy; {currentYear} Mira Finance</p>
           </div>
         </div>
