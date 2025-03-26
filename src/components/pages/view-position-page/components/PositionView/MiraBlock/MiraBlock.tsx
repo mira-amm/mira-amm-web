@@ -1,17 +1,17 @@
-import React, { useCallback } from "react";
+import React, {useCallback} from "react";
 import clsx from "clsx";
 
 import IconButton from "@/src/components/common/IconButton/IconButton";
-import { CopyIcon } from "@/src/components/icons/Copy/CopyIcon";
+import {CopyIcon} from "@/src/components/icons/Copy/CopyIcon";
 import MiraTextLogo from "@/src/components/icons/Logo/MiraTextLogo";
 
-import { PoolId, getLPAssetId } from "mira-dex-ts";
-import { formatUnits } from "fuels";
+import {PoolId, getLPAssetId} from "mira-dex-ts";
+import {formatUnits} from "fuels";
 
 import usePositionData from "@/src/hooks/usePositionData";
 import useFormattedAddress from "@/src/hooks/useFormattedAddress/useFormattedAddress";
 
-import { DEFAULT_AMM_CONTRACT_ID } from "@/src/utils/constants";
+import {DEFAULT_AMM_CONTRACT_ID} from "@/src/utils/constants";
 
 import styles from "./MiraBlock.module.css";
 
@@ -20,8 +20,8 @@ interface MiraBlockProps {
   setIsAddressCopied?: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-const MiraBlock = ({ pool, setIsAddressCopied }: MiraBlockProps): JSX.Element => {
-  const { lpTokenBalance } = usePositionData({ pool });
+const MiraBlock = ({pool, setIsAddressCopied}: MiraBlockProps): JSX.Element => {
+  const {lpTokenBalance} = usePositionData({pool});
   const lpTokenDisplayValue = formatUnits(lpTokenBalance || "0", 9);
   const lpTokenAssetId = getLPAssetId(DEFAULT_AMM_CONTRACT_ID, pool);
   const formattedLpTokenAssetId = useFormattedAddress(lpTokenAssetId.bits);

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, {useState} from "react";
 import clsx from "clsx";
 import Link from "next/link";
 import Image from "next/image";
@@ -6,7 +6,7 @@ import Image from "next/image";
 import CoinPair from "@/src/components/common/CoinPair/CoinPair";
 import CoinWithAmount from "@/src/components/common/CoinWithAmount/CoinWithAmount";
 import ActionButton from "@/src/components/common/ActionButton/ActionButton";
-import { PoolId } from "mira-dex-ts";
+import {PoolId} from "mira-dex-ts";
 
 import styles from "./DesktopPositionView.module.css";
 
@@ -15,13 +15,12 @@ import ReserveItem from "../ReserveItem/ReserveItem";
 import ExchangeRate from "../ExchangeRate/ExchangeRate";
 import MiraBlock from "../MiraBlock/MiraBlock";
 
-import { formatDisplayAmount } from "@/src/utils/common";
-import { LIQUIDITY_PROVIDING_DOC_URL } from "@/src/utils/constants";
+import {formatDisplayAmount} from "@/src/utils/common";
+import {LIQUIDITY_PROVIDING_DOC_URL} from "@/src/utils/constants";
 
 import LearnMoreIcon from "@/assets/learn-more.png";
-import { CopyNotification } from "@/src/components/common/CopyNotification/CopyNotification";
+import {CopyNotification} from "@/src/components/common/CopyNotification/CopyNotification";
 import PromoBlock from "@/src/components/common/PromoBlock/PromoBlock";
-
 
 interface AssetMetadata {
   name?: string;
@@ -30,7 +29,7 @@ interface AssetMetadata {
 }
 interface AssetData {
   amount: string;
-  metadata: AssetMetadata & { isLoading: boolean };
+  metadata: AssetMetadata & {isLoading: boolean};
   reserve?: number;
 }
 
@@ -111,7 +110,9 @@ const DesktopPositionView = ({
         </div>
 
         <div className={styles.priceBlockLargeDesktop}>
-          <p className={clsx("mc-type-m", styles.positionText)}>Pool reserves</p>
+          <p className={clsx("mc-type-m", styles.positionText)}>
+            Pool reserves
+          </p>
 
           <hr className={styles.divider} />
 

@@ -1,13 +1,13 @@
-import { ChangeEvent, memo, useCallback } from "react";
-import { clsx } from "clsx";
+import {ChangeEvent, memo, useCallback} from "react";
+import {clsx} from "clsx";
 
 import Coin from "@/src/components/common/Coin/Coin";
-import { CurrencyBoxMode } from "@/src/components/common/Swap/Swap";
+import {CurrencyBoxMode} from "@/src/components/common/Swap/Swap";
 
 import styles from "./CurrencyBox.module.css";
 import TextButton from "@/src/components/common/TextButton/TextButton";
-import { DefaultLocale, MinEthValueBN } from "@/src/utils/constants";
-import { B256Address, BN } from "fuels";
+import {DefaultLocale, MinEthValueBN} from "@/src/utils/constants";
+import {B256Address, BN} from "fuels";
 import useAssetMetadata from "@/src/hooks/useAssetMetadata";
 import fiatValueFormatter from "@/src/utils/abbreviateNumber";
 

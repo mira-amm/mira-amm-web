@@ -1,7 +1,7 @@
-import { useConnectUI, useIsConnected } from "@fuels/react";
-import { clsx } from "clsx";
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { useLocalStorage } from "usehooks-ts";
+import {useConnectUI, useIsConnected} from "@fuels/react";
+import {clsx} from "clsx";
+import {useCallback, useEffect, useMemo, useRef, useState} from "react";
+import {useLocalStorage} from "usehooks-ts";
 
 import ActionButton from "@/src/components/common/ActionButton/ActionButton";
 import IconButton from "@/src/components/common/IconButton/IconButton";
@@ -9,7 +9,7 @@ import ConvertIcon from "@/src/components/icons/Convert/ConvertIcon";
 import useModal from "@/src/hooks/useModal/useModal";
 import useSwap from "@/src/hooks/useSwap/useSwap";
 import useExchangeRate from "@/src/hooks/useExchangeRate/useExchangeRate";
-import { openNewTab } from "@/src/utils/common";
+import {openNewTab} from "@/src/utils/common";
 import useBalances from "@/src/hooks/useBalances/useBalances";
 import CoinsListModal from "@/src/components/common/Swap/components/CoinsListModal/CoinsListModal";
 import SettingsModalContent from "@/src/components/common/Swap/components/SettingsModalContent/SettingsModalContent";
@@ -17,15 +17,15 @@ import useCheckEthBalance from "@/src/hooks/useCheckEthBalance/useCheckEthBalanc
 import useInitialSwapState from "@/src/hooks/useInitialSwapState/useInitialSwapState";
 import useCheckActiveNetwork from "@/src/hooks/useCheckActiveNetwork";
 import usePreview from "@/src/hooks/useSwapPreviewV2";
-import { FuelAppUrl } from "@/src/utils/constants";
+import {FuelAppUrl} from "@/src/utils/constants";
 import useReservesPrice from "@/src/hooks/useReservesPrice";
-import { useAssetPrice } from "@/src/hooks/useAssetPrice";
+import {useAssetPrice} from "@/src/hooks/useAssetPrice";
 import useAssetMetadata from "@/src/hooks/useAssetMetadata";
-import { PoolId } from "mira-dex-ts";
-import { useAssetImage } from "@/src/hooks/useAssetImage";
-import { SlippageSetting } from "../SlippageSetting/SlippageSetting";
+import {PoolId} from "mira-dex-ts";
+import {useAssetImage} from "@/src/hooks/useAssetImage";
+import {SlippageSetting} from "../SlippageSetting/SlippageSetting";
 import ConnectButton from "@/src/components/common/ConnectButton/ConnectButton";
-import { TradeState } from "@/src/hooks/useSwapRouter";
+import {TradeState} from "@/src/hooks/useSwapRouter";
 import {
   B256Address,
   bn,
@@ -35,7 +35,7 @@ import {
   ScriptTransactionRequest,
   TransactionCost,
 } from "fuels";
-import StatusModal, { ModalType } from "../StatusModal";
+import StatusModal, {ModalType} from "../StatusModal";
 import ReviewSwap from "./components/ReviewSwap/ReviewSwap";
 
 import styles from "./Swap.module.css";
@@ -67,7 +67,7 @@ export type SlippageMode = "auto" | "custom";
 
 export const DefaultSlippageValue = 100;
 
-function SwapRouteItem({ pool }: { pool: PoolId }) {
+function SwapRouteItem({pool}: {pool: PoolId}) {
   const firstAssetIcon = useAssetImage(pool[0].bits);
   const secondAssetIcon = useAssetImage(pool[1].bits);
 
@@ -86,7 +86,7 @@ function SwapRouteItem({ pool }: { pool: PoolId }) {
   );
 }
 
-const Swap = ({ isWidget }: { isWidget?: boolean }) => {
+const Swap = ({isWidget}: {isWidget?: boolean}) => {
   const [SettingsModal, openSettingsModal, closeSettingsModal] = useModal();
   const [CoinsModal, openCoinsModal, closeCoinsModal] = useModal();
   const [SuccessModal, openSuccess] = useModal();
@@ -100,7 +100,7 @@ const Swap = ({ isWidget }: { isWidget?: boolean }) => {
   const [activeMode, setActiveMode] = useState<CurrencyBoxMode>("sell");
   const [slippage, setSlippage] = useState<number>(DefaultSlippageValue);
   const [txCostData, setTxCostData] = useState<
-    { tx: ScriptTransactionRequest; txCost: TransactionCost } | undefined
+    {tx: ScriptTransactionRequest; txCost: TransactionCost} | undefined
   >();
   const [txCost, setTxCost] = useState<number | null>(null);
   const [swapButtonTitle, setSwapButtonTitle] = useState<string>("Review");
@@ -120,9 +120,9 @@ const Swap = ({ isWidget }: { isWidget?: boolean }) => {
   const swapStateForPreview = useRef(swapState);
   const modeForCoinSelector = useRef<CurrencyBoxMode>("sell");
 
-  const { isConnected } = useIsConnected();
-  const { connect, isConnecting } = useConnectUI();
-  const { balances, balancesPending, refetchBalances } = useBalances();
+  const {isConnected} = useIsConnected();
+  const {connect, isConnecting} = useConnectUI();
+  const {balances, balancesPending, refetchBalances} = useBalances();
 
   const isValidNetwork = useCheckActiveNetwork();
 
@@ -161,13 +161,13 @@ const Swap = ({ isWidget }: { isWidget?: boolean }) => {
 
   const previewValueString =
     !trade ||
-      tradeState === TradeState.INVALID ||
-      tradeState === TradeState.NO_ROUTE_FOUND ||
-      !trade?.amountIn ||
-      trade?.amountIn?.eq(0) ||
-      !trade?.amountOut ||
-      trade?.amountOut?.eq(0) ||
-      !decimals
+    tradeState === TradeState.INVALID ||
+    tradeState === TradeState.NO_ROUTE_FOUND ||
+    !trade?.amountIn ||
+    trade?.amountIn?.eq(0) ||
+    !trade?.amountOut ||
+    trade?.amountOut?.eq(0) ||
+    !decimals
       ? ""
       : activeMode === "sell"
         ? trade.amountOut.formatUnits(decimals)
@@ -470,11 +470,11 @@ const Swap = ({ isWidget }: { isWidget?: boolean }) => {
         bn.parseUnits(sellValue, sellMetadata.decimals || 0),
       );
       setShowInsufficientBalance(insufficientSellBalance);
-    } catch (e) { }
+    } catch (e) {}
   }, [sellValue, sellMetadata, sellBalanceValue]);
 
   const feePercent =
-    trade?.bestRoute?.pools.reduce((percent, { poolId }) => {
+    trade?.bestRoute?.pools.reduce((percent, {poolId}) => {
       const isStablePool = poolId[2];
       const poolPercent = isStablePool ? 0.05 : 0.3;
 
@@ -485,8 +485,8 @@ const Swap = ({ isWidget }: { isWidget?: boolean }) => {
     sellValue === ""
       ? 0
       : ((feePercent / 100) * parseFloat(sellValue)).toFixed(
-        sellMetadata.decimals || 0,
-      );
+          sellMetadata.decimals || 0,
+        );
 
   const swapDisabled =
     !isValidNetwork ||
@@ -537,7 +537,7 @@ const Swap = ({ isWidget }: { isWidget?: boolean }) => {
   const inputPreviewLoading = previewLoading && activeMode === "buy";
   const outputPreviewLoading = previewLoading && activeMode === "sell";
 
-  const { reservesPrice } = useReservesPrice({
+  const {reservesPrice} = useReservesPrice({
     pools,
     sellAssetId: swapState.sell.assetId,
     buyAssetId: swapState.buy.assetId,

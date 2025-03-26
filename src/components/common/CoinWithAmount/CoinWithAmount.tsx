@@ -1,6 +1,6 @@
 import styles from "./CoinWithAmount.module.css";
-import { B256Address } from "fuels";
-import { useAssetImage } from "@/src/hooks/useAssetImage";
+import {B256Address} from "fuels";
+import {useAssetImage} from "@/src/hooks/useAssetImage";
 import useAssetMetadata from "@/src/hooks/useAssetMetadata";
 import Image from "next/image";
 import clsx from "clsx";
@@ -11,7 +11,7 @@ type Props = {
   withName?: boolean;
 };
 
-const CoinWithAmount = ({ amount, assetId, withName }: Props): JSX.Element => {
+const CoinWithAmount = ({amount, assetId, withName}: Props): JSX.Element => {
   const icon = useAssetImage(assetId);
   const metadata = useAssetMetadata(assetId);
 

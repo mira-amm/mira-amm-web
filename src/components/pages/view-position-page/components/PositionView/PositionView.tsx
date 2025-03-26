@@ -1,14 +1,14 @@
 "use client";
 import BackLink from "@/src/components/common/BackLink/BackLink";
 
-import { bn, formatUnits } from "fuels";
+import {bn, formatUnits} from "fuels";
 
 import usePositionData from "@/src/hooks/usePositionData";
 import usePoolAPR from "@/src/hooks/usePoolAPR";
 import useAssetMetadata from "@/src/hooks/useAssetMetadata";
 
-import { createPoolKey } from "@/src/utils/common";
-import { PoolId } from "mira-dex-ts";
+import {createPoolKey} from "@/src/utils/common";
+import {PoolId} from "mira-dex-ts";
 
 import DesktopPositionView from "./DesktopPositionView/DesktopPositionView";
 import MobilePositionView from "./MobilePositionView/MobilePositionView";
@@ -17,14 +17,14 @@ type Props = {
   pool: PoolId;
 };
 
-const PositionView = ({ pool }: Props): JSX.Element => {
+const PositionView = ({pool}: Props): JSX.Element => {
   const assetAMetadata = useAssetMetadata(pool[0].bits);
   const assetBMetadata = useAssetMetadata(pool[1].bits);
 
   const isStablePool = pool[2];
 
-  const { assets } = usePositionData({ pool });
-  const { apr } = usePoolAPR(pool);
+  const {assets} = usePositionData({pool});
+  const {apr} = usePoolAPR(pool);
 
   const tvlValue = apr?.tvlUSD;
   const poolKey = createPoolKey(pool);

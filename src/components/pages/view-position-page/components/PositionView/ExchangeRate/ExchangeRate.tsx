@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from "react";
+import React, {useState, useEffect} from "react";
 import ExchangeIcon from "@/src/components/icons/Exchange/ExchangeIcon";
 import styles from "./ExchangeRate.module.css";
-import { calculateFlooredRate } from "./utils";
+import {calculateFlooredRate} from "./utils";
 import clsx from "clsx";
 interface AssetMetadata {
   name?: string;
@@ -12,8 +12,8 @@ interface AssetMetadata {
 interface ExchangeRateProps {
   coinAAmount: string;
   coinBAmount: string;
-  assetAMetadata: AssetMetadata & { isLoading: boolean };
-  assetBMetadata: AssetMetadata & { isLoading: boolean };
+  assetAMetadata: AssetMetadata & {isLoading: boolean};
+  assetBMetadata: AssetMetadata & {isLoading: boolean};
 }
 
 const ExchangeRate = ({
