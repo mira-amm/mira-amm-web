@@ -16,9 +16,6 @@
 }
 
 .title {
-  font-size: 20px;
-  font-weight: 500;
-  line-height: 100%;
   color: var(--content-primary);
 }
 
@@ -50,11 +47,6 @@
 }
 .aprText > p {
   font-size: 12px;
-}
-
-.APR > span {
-  font-size: 12px;
-  line-height: 14px;
 }
 
 .highlight {

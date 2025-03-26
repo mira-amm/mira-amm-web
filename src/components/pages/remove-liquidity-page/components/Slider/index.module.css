@@ -2,7 +2,6 @@
   background-color: #f5f7fa;
   border-radius: 8px;
   width: 100%;
-  font-family: "EllographCF";
 }
 
 .dotsSelected {
@@ -17,7 +16,6 @@
   display: flex;
   justify-content: space-between;
   margin-top: 10px;
-  font-size: 14px;
   color: var(--mc-black);
 }
 

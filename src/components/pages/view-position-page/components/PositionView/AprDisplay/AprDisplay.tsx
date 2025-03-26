@@ -35,7 +35,13 @@ const AprDisplay = ({pool}: AprDiplayProps): JSX.Element => {
       ) : (
         <p>
           APR &nbsp;
-          <span className={clsx(styles.pending, !aprValue && "blurredText")}>
+          <span
+            className={clsx(
+              styles.pending,
+              !aprValue && "blurredText",
+              "mc-mono-m",
+            )}
+          >
             {aprValue ?? "33.33%"}
           </span>
         </p>

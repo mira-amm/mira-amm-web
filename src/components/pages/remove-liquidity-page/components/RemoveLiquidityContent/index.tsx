@@ -142,7 +142,7 @@ const RemoveLiquidityModalContent = ({pool}: Props) => {
   return (
     <div className={styles.removeLiquidityContent}>
       <div>
-        <p className={styles.subHeader}>Selected pair</p>
+        <p className={clsx(styles.subHeader, "mc-type-m")}>Selected pair</p>
         <div className={styles.coinHeader}>
           <CoinPair
             firstCoin={pool[0].bits}
@@ -151,7 +151,7 @@ const RemoveLiquidityModalContent = ({pool}: Props) => {
           />
           <div className={styles.APR}>
             <div className={styles.aprText}>
-              <p>Estimated APR</p>
+              <p className="mc-type-b">Estimated APR</p>
               <Info tooltipText={APRTooltip} tooltipKey="apr" />
             </div>
             {isMatching ? (
@@ -173,7 +173,7 @@ const RemoveLiquidityModalContent = ({pool}: Props) => {
               <span
                 className={clsx(
                   aprValue && styles.highlight,
-                  !aprValue && styles.pending,
+                  aprValue ? "mc-mono-m" : "mc-type-m",
                 )}
               >
                 {aprValue ? `${aprValue}%` : "Awaiting data"}
@@ -191,7 +191,7 @@ const RemoveLiquidityModalContent = ({pool}: Props) => {
       </div>
       <div className={styles.tableWrapper}>
         <table className={styles.liquidityTable}>
-          <thead>
+          <thead className="mc-type-b">
             <tr>
               <th />
               <th>{coinAMetadata.symbol}</th>
@@ -201,19 +201,19 @@ const RemoveLiquidityModalContent = ({pool}: Props) => {
           <hr className={styles.divider} />
           <tbody>
             <tr>
-              <td>Current position</td>
-              <td>{coinAAmount}</td>
-              <td>{coinBAmount}</td>
+              <td className="mc-type-b">Current position</td>
+              <td className="mc-mono-b">{coinAAmount}</td>
+              <td className="mc-mono-b">{coinBAmount}</td>
             </tr>
             <tr className={styles.lastRow}>
-              <td>Remove</td>
-              <td>{coinAAmountToWithdrawStr}</td>
-              <td>{coinBAmountToWithdrawStr}</td>
+              <td className="mc-type-b">Remove</td>
+              <td className="mc-mono-b">{coinAAmountToWithdrawStr}</td>
+              <td className="mc-mono-b">{coinBAmountToWithdrawStr}</td>
             </tr>
           </tbody>
         </table>
       </div>
-      <p className={styles.infoBlockText}>
+      <p className={clsx(styles.infoBlockText, "mc-type-b")}>
         This is based on the current price of the pool. Your fees earned will
         always increase, but the principal amount may change with the price of
         the pool.
