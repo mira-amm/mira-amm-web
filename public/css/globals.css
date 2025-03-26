@@ -1,5 +1,6 @@
 :root {
-  --font-inter: 'Inter';
+  --font-inter: 'inter-variable', sans-serif;
+  --font-cartograph: 'cartograph-cf', monospace;
   --font-prompt: 'Prompt';
 
   --primary-white: #FFFFFF;
@@ -170,9 +171,19 @@ input:focus {
 }
 
 @font-face {
-  font-family: "EllographCF"; 
-  src: local("EllographCF-Regular"),
-    url("../../src/fonts/EllographCF-Regular.ttf") format("truetype");
+  font-family: 'inter-variable';
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+  src: url('https://use.typekit.net/joy1wau.css') format('woff2');
+}
+
+@font-face {
+  font-family: 'cartograph-cf';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('https://use.typekit.net/joy1wau.css') format('woff2');
 }
 
 @font-face {
@@ -237,6 +248,7 @@ input:focus {
   font-weight: 500;
   font-size: 11.06px;
   line-height: 13px;
+  font-variation-settings: "slnt" 0, "wght" 400;
 }
 
 .mc-type-s {
@@ -245,6 +257,7 @@ input:focus {
   font-weight: 500;
   font-size: 12.44px;
   line-height: 15px;
+  font-variation-settings: "slnt" 0, "wght" 400;
 }
 
 .mc-type-b {
@@ -253,6 +266,7 @@ input:focus {
   font-weight: 500;
   font-size: 14px;
   line-height: 17px;
+  font-variation-settings: "slnt" 0, "wght" 400;
 }
 
 .mc-type-m {
@@ -261,6 +275,7 @@ input:focus {
   font-weight: 500;
   font-size: 15.75px;
   line-height: 19px;
+  font-variation-settings: "slnt" 0, "wght" 400;
 }
 
 .mc-type-l {
@@ -269,6 +284,7 @@ input:focus {
   font-weight: 500;
   font-size: 17.72px;
   line-height: 21px;
+  font-variation-settings: "slnt" 0, "wght" 400;
 }
 
 .mc-type-xl {
@@ -277,6 +293,7 @@ input:focus {
   font-weight: 500;
   font-size: 19.93px;
   line-height: 24px;
+  font-variation-settings: "slnt" 0, "wght" 400;
 }
 
 .mc-type-xxl {
@@ -285,6 +302,7 @@ input:focus {
   font-weight: 500;
   font-size: 22.43px;
   line-height: 27px;
+  font-variation-settings: "slnt" 0, "wght" 400;
 }
 
 .mc-type-xxxl {
@@ -293,6 +311,7 @@ input:focus {
   font-weight: 500;
   font-size: 25.23px;
   line-height: 31px;
+  font-variation-settings: "slnt" 0, "wght" 400;
 }
 
 .mc-type-xxxxl {
@@ -301,11 +320,12 @@ input:focus {
   font-weight: 500;
   font-size: 28.38px;
   line-height: 34px;
+  font-variation-settings: "slnt" 0, "wght" 400;
 }
 
 /* Monospace Typography Classes */
 .mc-mono-xs {
-  font-family: 'Cartograph CF';
+  font-family: var(--font-cartograph);
   font-style: normal;
   font-weight: 400;
   font-size: 11.06px;
@@ -313,7 +333,7 @@ input:focus {
 }
 
 .mc-mono-s {
-  font-family: 'Cartograph CF';
+  font-family: var(--font-cartograph);
   font-style: normal;
   font-weight: 400;
   font-size: 12.44px;
@@ -321,7 +341,7 @@ input:focus {
 }
 
 .mc-mono-b {
-  font-family: 'Cartograph CF';
+  font-family: var(--font-cartograph);
   font-style: normal;
   font-weight: 400;
   font-size: 14px;
@@ -329,7 +349,7 @@ input:focus {
 }
 
 .mc-mono-m {
-  font-family: 'Cartograph CF';
+  font-family: var(--font-cartograph);
   font-style: normal;
   font-weight: 400;
   font-size: 15.75px;
@@ -337,7 +357,7 @@ input:focus {
 }
 
 .mc-mono-l {
-  font-family: 'Cartograph CF';
+  font-family: var(--font-cartograph);
   font-style: normal;
   font-weight: 400;
   font-size: 17.72px;
@@ -345,7 +365,7 @@ input:focus {
 }
 
 .mc-mono-xl {
-  font-family: 'Cartograph CF';
+  font-family: var(--font-cartograph);
   font-style: normal;
   font-weight: 400;
   font-size: 19.93px;
@@ -353,7 +373,7 @@ input:focus {
 }
 
 .mc-mono-xxl {
-  font-family: 'Cartograph CF';
+  font-family: var(--font-cartograph);
   font-style: normal;
   font-weight: 400;
   font-size: 22.43px;
@@ -361,7 +381,7 @@ input:focus {
 }
 
 .mc-mono-xxxl {
-  font-family: 'Cartograph CF';
+  font-family: var(--font-cartograph);
   font-style: normal;
   font-weight: 400;
   font-size: 25.23px;
@@ -369,7 +389,7 @@ input:focus {
 }
 
 .mc-mono-xxxxl {
-  font-family: 'Cartograph CF';
+  font-family: var(--font-cartograph);
   font-style: normal;
   font-weight: 400;
   font-size: 28.38px;
