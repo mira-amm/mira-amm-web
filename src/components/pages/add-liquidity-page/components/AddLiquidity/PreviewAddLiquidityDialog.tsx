@@ -120,16 +120,16 @@ const PreviewAddLiquidityDialog = ({
         <div className={styles.inputsPreview}>
           <div className={styles.inputPreviewRow}>
             <Coin assetId={assets[0].assetId} />
-            <p>{firstAssetAmountString}</p>
+            <p className="mc-mono-m">{firstAssetAmountString}</p>
           </div>
           <div className={styles.inputPreviewRow}>
             <Coin assetId={assets[1].assetId} />
-            <p>{secondAssetAmountString}</p>
+            <p className="mc-mono-m">{secondAssetAmountString}</p>
           </div>
           <hr className={styles.divider} />
           <div className={styles.inputPreviewRow}>
-            <p>Fee tier</p>
-            <p>{feeText}</p>
+            <p className="mc-type-m">Fee tier</p>
+            <p className="mc-mono-m">{feeText}</p>
           </div>
         </div>
       </div>

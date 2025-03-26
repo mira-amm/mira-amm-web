@@ -47,7 +47,7 @@ const AddLiquidity = ({poolId, poolKey}: Props): JSX.Element => {
       />
       <section className={clsx("liquidity-action-container")}>
         <div className={styles.addLiquidityHeading}>
-          <p className={styles.title}>Add Liquidity</p>
+          <p className={clsx(styles.title, "mc-type-xl")}>Add Liquidity</p>
           {showPreview && (
             <IconButton onClick={handleCloseClick}>
               <CloseIcon />

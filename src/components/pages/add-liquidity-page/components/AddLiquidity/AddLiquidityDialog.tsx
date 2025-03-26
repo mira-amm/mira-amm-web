@@ -234,7 +234,7 @@ const AddLiquidityDialog = ({
     <>
       <div className={styles.addLiquidityContent}>
         <div className={styles.sectionContent}>
-          <p className={styles.subHeader}>Selected pair</p>
+          <p className={clsx(styles.subHeader, "mc-type-m")}>Selected pair</p>
           <div className={styles.coinHeader}>
             <CoinPair
               firstCoin={firstAssetId}
@@ -243,7 +243,7 @@ const AddLiquidityDialog = ({
             />
             <div className={styles.APR}>
               <div className={styles.aprText}>
-                <p>Estimated APR</p>
+                <p className="mc-type-b">Estimated APR</p>
                 <Info tooltipText={APRTooltip} tooltipKey="apr" />
               </div>
               {isMatching ? (
@@ -266,7 +266,7 @@ const AddLiquidityDialog = ({
                 <span
                   className={clsx(
                     aprValue && styles.highlight,
-                    !aprValue && styles.pending,
+                    aprValue ? "mc-mono-s" : "mc-type-s",
                   )}
                 >
                   {aprValue ? `${aprValue}%` : "Awaiting data"}
@@ -284,7 +284,7 @@ const AddLiquidityDialog = ({
               role="button"
             >
               <div className={styles.poolStabilityButtonContent}>
-                <span className={styles.poolStabilityButtonText}>
+                <span className={"mc-type-b"}>
                   {isMobile
                     ? "0.30% fee tier"
                     : "0.30% fee tier (volatile pool)"}
@@ -300,7 +300,7 @@ const AddLiquidityDialog = ({
               role="button"
             >
               <div className={styles.poolStabilityButtonContent}>
-                <span className={styles.poolStabilityButtonText}>
+                <span className={"mc-type-b"}>
                   {isMobile ? "0.05% fee tier" : "0.05% fee tier (stable pool)"}
                 </span>
                 {/* <Info tooltipText={StablePoolTooltip} tooltipKey="stablePool" /> */}
@@ -310,7 +310,7 @@ const AddLiquidityDialog = ({
         </div>
       </div>
       <div className={styles.depositAmountSection}>
-        <p className={styles.subHeader}>Deposit amounts</p>
+        <p className={clsx(styles.subHeader, "mc-type-m")}>Deposit amounts</p>
         <div className={styles.sectionContent}>
           <CurrencyBox
             assetId={firstAssetId}
