@@ -53,10 +53,7 @@
   display: flex;
   flex-direction: column;
   gap: 11px;
-  font-size: 16px;
-  line-height: 22px;
   color: var(--content-secondary);
-  font-weight: 400;
 }
 
 .links a {
@@ -105,7 +102,6 @@
   text-align: left;
   width: 100%;
   padding-top: 12px;
-  font-size: 14px;
   color: var(--content-dimmed-light);
 }
 

@@ -70,7 +70,7 @@ const Header = ({isHomePage}: Props): JSX.Element => {
         </div>
 
         <div className={styles.center}>
-          <div className={clsx("desktopOnly", styles.links)}>
+          <div className={clsx("desktopOnly", "mc-type-l", styles.links)}>
             <Link
               //TEMPORARY ROUTING SINCE LANDING PAGE IS DISABLED
               href="/"
