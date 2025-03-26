@@ -266,7 +266,7 @@ const AddLiquidityDialog = ({
                 <span
                   className={clsx(
                     aprValue && styles.highlight,
-                    aprValue ? "mc-mono-s" : "mc-type-s",
+                    aprValue ? "mc-mono-m" : "mc-type-m",
                   )}
                 >
                   {aprValue ? `${aprValue}%` : "Awaiting data"}
