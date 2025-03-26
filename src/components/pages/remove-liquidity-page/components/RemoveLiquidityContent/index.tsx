@@ -18,12 +18,15 @@ import {PoolId} from "mira-dex-ts";
 import {memo, useCallback, useRef, useState} from "react";
 import Slider from "../Slider";
 import styles from "./index.module.css";
+import {useRouter} from "next/navigation";
 
 type Props = {
   pool: PoolId;
 };
 
 const RemoveLiquidityModalContent = ({pool}: Props) => {
+  const router = useRouter();
+
   const [SuccessModal, openSuccessModal] = useModal();
   const [FailureModal, openFailureModal] = useModal();
 
@@ -116,6 +119,9 @@ const RemoveLiquidityModalContent = ({pool}: Props) => {
   const handleChange = (value: number) => {
     setRemoveLiquidityPercentage(value);
   };
+
+  const redirectToLiquidity = () =>
+    router.push(`/liquidity/position?pool=${poolKey}`);
 
   const getModalMessage = () => {
     const successMessage = `Removed ${confirmationModalAssetsAmounts.current.firstAsset} ${coinAMetadata.symbol} and ${confirmationModalAssetsAmounts.current.secondAsset} ${coinBMetadata.symbol} from your position`;
@@ -228,7 +234,7 @@ const RemoveLiquidityModalContent = ({pool}: Props) => {
       >
         {buttonTitle}
       </ActionButton>
-      <SuccessModal title={<></>}>
+      <SuccessModal title={<></>} onClose={redirectToLiquidity}>
         <StatusModal
           type={ModalType.SUCCESS}
           transactionHash={data?.id}
