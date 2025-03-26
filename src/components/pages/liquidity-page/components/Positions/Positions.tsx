@@ -5,13 +5,16 @@ import DesktopPositions from "@/src/components/pages/liquidity-page/components/P
 import usePositions from "@/src/hooks/usePositions";
 import DocumentIcon from "@/src/components/icons/Document/DocumentIcon";
 import LoaderV2 from "@/src/components/common/LoaderV2/LoaderV2";
+import clsx from "clsx";
 
 const Positions = (): JSX.Element => {
   const {data, isLoading} = usePositions();
 
   return (
     <section className={styles.positions}>
-      <p className={styles.positionsTitle}>Your Positions</p>
+      <p className={clsx(styles.positionsTitle, "mc-type-xxxl")}>
+        Your Positions
+      </p>
       {isLoading ? (
         <div className={styles.positionsFallback}>
           <LoaderV2 />

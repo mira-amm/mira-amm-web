@@ -1,11 +1,11 @@
-import React, {useCallback} from "react";
+import React, { useCallback } from "react";
 import IconButton from "@/src/components/common/IconButton/IconButton";
 import styles from "./MiraBlock.module.css";
-import {CopyIcon} from "@/src/components/icons/Copy/CopyIcon";
-import {PoolId, getLPAssetId} from "mira-dex-ts";
+import { CopyIcon } from "@/src/components/icons/Copy/CopyIcon";
+import { PoolId, getLPAssetId } from "mira-dex-ts";
 import usePositionData from "@/src/hooks/usePositionData";
-import {formatUnits} from "fuels";
-import {DEFAULT_AMM_CONTRACT_ID} from "@/src/utils/constants";
+import { formatUnits } from "fuels";
+import { DEFAULT_AMM_CONTRACT_ID } from "@/src/utils/constants";
 import useFormattedAddress from "@/src/hooks/useFormattedAddress/useFormattedAddress";
 import clsx from "clsx";
 import MiraTextLogo from "@/src/components/icons/Logo/MiraTextLogo";
@@ -15,8 +15,8 @@ interface MiraBlockProps {
   setIsAddressCopied?: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-const MiraBlock = ({pool, setIsAddressCopied}: MiraBlockProps): JSX.Element => {
-  const {lpTokenBalance} = usePositionData({pool});
+const MiraBlock = ({ pool, setIsAddressCopied }: MiraBlockProps): JSX.Element => {
+  const { lpTokenBalance } = usePositionData({ pool });
   const lpTokenDisplayValue = formatUnits(lpTokenBalance || "0", 9);
   const lpTokenAssetId = getLPAssetId(DEFAULT_AMM_CONTRACT_ID, pool);
   const formattedLpTokenAssetId = useFormattedAddress(lpTokenAssetId.bits);
@@ -37,10 +37,11 @@ const MiraBlock = ({pool, setIsAddressCopied}: MiraBlockProps): JSX.Element => {
         <div className={styles.miraLogo}>
           <MiraTextLogo />
         </div>
-        <p className={clsx(styles.tokenDisplayValue, styles.infoText)}>
-          {lpTokenDisplayValue} LP tokens
+        <p className={clsx(styles.tokenDisplayValue)}>
+          <span className="mc-mono-m">{lpTokenDisplayValue}</span>{" "}
+          <span className="mc-type-m">LP tokens</span>
         </p>
-        <p className={clsx(styles.numberAndCopy, styles.infoText)}>
+        <p className={clsx(styles.numberAndCopy, "mc-type-m")}>
           Asset ID: {formattedLpTokenAssetId}
           <IconButton onClick={handleCopy}>
             <CopyIcon />

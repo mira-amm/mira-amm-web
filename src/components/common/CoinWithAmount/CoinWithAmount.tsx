@@ -3,6 +3,7 @@ import {B256Address} from "fuels";
 import {useAssetImage} from "@/src/hooks/useAssetImage";
 import useAssetMetadata from "@/src/hooks/useAssetMetadata";
 import Image from "next/image";
+import clsx from "clsx";
 
 type Props = {
   amount: string;
@@ -27,13 +28,13 @@ const CoinWithAmount = ({amount, assetId, withName}: Props) => {
       )}
       {!withName ? (
         <div className={styles.info}>
-          <p className={styles.amount}>{amount}</p>
-          <p className={styles.name}>{metadata.symbol}</p>
+          <p className={clsx(styles.amount, "mc-mono-l")}>{amount}</p>
+          <p className={clsx(styles.name, "mc-type-l")}>{metadata.symbol}</p>
         </div>
       ) : (
         <div className={styles.info}>
-          <p className={styles.amount}>{metadata.symbol}</p>
-          <p className={styles.name}>{metadata.name}</p>
+          <p className={clsx(styles.amount, "mc-type-l")}>{metadata.symbol}</p>
+          <p className={clsx(styles.name, "mc-type-l")}>{metadata.name}</p>
         </div>
       )}
     </div>

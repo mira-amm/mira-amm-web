@@ -76,7 +76,7 @@ const Pools = () => {
 
       {/* Header with Search Bar */}
       <div className={styles.poolsHeader}>
-        <p className={styles.poolsTitle}>All Pools</p>
+        <p className={clsx(styles.poolsTitle, "mc-type-xxxl")}>All Pools</p>
         <SearchBar
           placeholder="Symbol or address..."
           className={styles.poolsSearchBar}

@@ -13,19 +13,10 @@
 .reserveValues {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 4px;
   align-items: end;
-}
-
-.reserveValues p:first-child {
-  font-weight: 500;
-  font-size: 18px;
-  line-height: 100%;
 }
 
 .reserveValues p:last-child {
   color: var(--mc-grey-4);
-  font-weight: 400;
-  font-size: 15px;
-  line-height: 100%;
 }

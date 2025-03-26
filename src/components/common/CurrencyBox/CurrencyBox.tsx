@@ -9,6 +9,7 @@ import TextButton from "@/src/components/common/TextButton/TextButton";
 import {DefaultLocale, MinEthValueBN} from "@/src/utils/constants";
 import {B256Address, BN} from "fuels";
 import useAssetMetadata from "@/src/hooks/useAssetMetadata";
+import fiatValueFormatter from "@/src/utils/abbreviateNumber";
 
 type BaseProps = {
   value: string;
@@ -87,10 +88,7 @@ const CurrencyBox = ({
   const numericValue = parseFloat(value);
   const usdValue =
     !isNaN(numericValue) && Boolean(usdRate)
-      ? (numericValue * usdRate!).toLocaleString(DefaultLocale, {
-          minimumFractionDigits: 2,
-          maximumFractionDigits: 2,
-        })
+      ? fiatValueFormatter(numericValue * usdRate!)
       : null;
 
   return (
@@ -126,7 +124,7 @@ const CurrencyBox = ({
       </div>
       <div className={styles.estimateAndBalance}>
         <p className={clsx(styles.fiatValue, "mc-mono-s")}>
-          {usdValue !== null && `$${usdValue}`}
+          {usdValue !== null && `${usdValue}`}
         </p>
         {balance.gt(0) && (
           <span className={clsx(styles.balance, "mc-type-s")}>

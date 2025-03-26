@@ -14,18 +14,12 @@
 }
 
 .mainText {
-  font-weight: 500;
-  font-size: 22px;
-  line-height: 26px;
   text-align: center;
 }
 
 .subText {
-  font-size: 14px;
-  line-height: 16px;
   color: var(--mc-grey-4);
   text-align: center;
-  width: 294px;
 }
 
 .subTextOnly {

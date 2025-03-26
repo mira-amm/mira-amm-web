@@ -4,6 +4,7 @@ import {clsx} from "clsx";
 import {useCallback, useEffect, useMemo, useRef, useState} from "react";
 
 import styles from "./ConnectButton.module.css";
+import actionButtonStyles from "../ActionButton/ActionButton.module.css";
 
 import ActionButton from "@/src/components/common/ActionButton/ActionButton";
 import TransactionsHistory from "@/src/components/common/TransactionsHistory/TransactionsHistory";
@@ -167,22 +168,29 @@ const ConnectButton = ({className}: Props) => {
 
   return (
     <>
-      <ActionButton
-        className={clsx(className, isConnected && styles.connected)}
-        onClick={handleClick}
-        loading={isWalletLoading}
-        ref={buttonRef}
-      >
-        {isConnected && <img src="/images/avatar.png" width="24" height="24" />}
-        {title}
-        {isConnected && (!isMenuOpened ? <ArrowDownIcon /> : <ArrowUpIcon />)}
-      </ActionButton>
-      {isMenuOpened && <DropDownMenu buttons={menuButtons} ref={menuRef} />}
-      <TransactionsHistory
-        onClose={handleHistoryClose}
-        isOpened={isHistoryOpened}
-        ref={transactionsRef}
-      />
+      <div className={styles.container}>
+        <ActionButton
+          className={clsx(className, isConnected && styles.connected)}
+          onClick={handleClick}
+          loading={isWalletLoading}
+          ref={buttonRef}
+        >
+          {isConnected && (
+            <img
+              src="/images/avatar.png"
+              className={actionButtonStyles.buttonIcon}
+            />
+          )}
+          {title}
+          {isConnected && (!isMenuOpened ? <ArrowDownIcon /> : <ArrowUpIcon />)}
+        </ActionButton>
+        {isMenuOpened && <DropDownMenu buttons={menuButtons} ref={menuRef} />}
+        <TransactionsHistory
+          onClose={handleHistoryClose}
+          isOpened={isHistoryOpened}
+          ref={transactionsRef}
+        />
+      </div>
       {isAddressCopied && (
         <CopyNotification
           onClose={() => setAddressCopied(false)}

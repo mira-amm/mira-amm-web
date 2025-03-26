@@ -36,7 +36,7 @@ const CoinListItem = ({assetData}: Props) => {
 
       <div className={styles.names}>
         <div className={styles.name_container}>
-          <p className={styles.name}>{assetData.symbol}</p>
+          <p className="mc-type-xl">{assetData.symbol}</p>
           {isVerified && (
             <span
               data-tooltip-id="verified-tooltip"
@@ -46,7 +46,7 @@ const CoinListItem = ({assetData}: Props) => {
             </span>
           )}
         </div>
-        <p className={styles.fullName}>{assetData.name}</p>
+        <p className={clsx(styles.fullName, "mc-type-m")}>{assetData.name}</p>
       </div>
       {balanceValue.gt(0) && (
         <p className={styles.balance}>

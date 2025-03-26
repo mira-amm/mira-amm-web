@@ -42,10 +42,12 @@ const DesktopPoolRow = ({poolData}: Props): JSX.Element => {
           </div>
         </td>
       ) : (
-        <td className={clsx(!aprValue && styles.pending)}>{aprValue}</td>
+        <td className={clsx("mc-mono-m", !aprValue && styles.pending)}>
+          {aprValue}
+        </td>
       )}
-      <td className={styles.labelCell}>{volumeValue}</td>
-      <td className={styles.labelCell}>{tvlValue}</td>
+      <td className={clsx(styles.labelCell, "mc-mono-m")}>{volumeValue}</td>
+      <td className={clsx(styles.labelCell, "mc-mono-m")}>{tvlValue}</td>
       <td>
         <Link href={`/liquidity/add?pool=${poolKey}`}>
           <ActionButton

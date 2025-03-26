@@ -1,5 +1,10 @@
+.container {
+  position: relative;
+}
+
 button.connected {
   display: flex;
+  justify-content: space-between;
   align-items: center;
   gap: 10px;
   padding: 16px 8px;

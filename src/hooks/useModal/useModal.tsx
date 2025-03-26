@@ -13,7 +13,7 @@ type ModalProps = {
   children: ReactNode;
   className?: string;
   onClose?: VoidFunction;
-  size?: "small" | "medium" | "large" | "fullWidth";
+  size?: "small" | "medium" | "large" | "fullWidth" | "regular";
 };
 
 type ReturnType = (props: ModalProps) => ReactPortal | null;
@@ -76,7 +76,13 @@ const useModal = (): [ReturnType, () => void, () => void] => {
               )}
             >
               <div className={styles.modalHeading}>
-                <div className={clsx(styles.modalTitle, titleClassName)}>
+                <div
+                  className={clsx(
+                    styles.modalTitle,
+                    titleClassName,
+                    "mc-type-xl",
+                  )}
+                >
                   {title}
                 </div>
                 <IconButton

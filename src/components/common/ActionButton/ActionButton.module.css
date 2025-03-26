@@ -70,6 +70,11 @@
   width: 100%;
 }
 
+.buttonIcon {
+  height: 24px;
+  width: 24px;
+}
+
 @keyframes cycleSymbols {
   0% {
     opacity: 0;

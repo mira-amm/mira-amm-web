@@ -25,12 +25,6 @@
   margin-left: -8px;
 }
 
-.coinNames {
-  font-weight: 500;
-  font-size: 18px;
-  line-height: 100%;
-}
-
 .namesAndFee {
   display: flex;
   flex-direction: column;
@@ -38,12 +32,9 @@
 }
 
 .coinPairFee {
-  font-size: 12px;
   color: var(--content-tertiary);
 }
 
 .poolDescription {
-  font-size: 12px;
-  line-height: 14px;
   color: #d4b226;
 }

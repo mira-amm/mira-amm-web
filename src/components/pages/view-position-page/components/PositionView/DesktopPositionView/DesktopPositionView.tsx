@@ -1,21 +1,21 @@
-import React, {useState} from "react";
+import React, { useState } from "react";
 import clsx from "clsx";
 import Link from "next/link";
 import CoinPair from "@/src/components/common/CoinPair/CoinPair";
 import CoinWithAmount from "@/src/components/common/CoinWithAmount/CoinWithAmount";
 import ActionButton from "@/src/components/common/ActionButton/ActionButton";
 import PromoBlock from "@/src/components/common/PromoBlock/PromoBlock";
-import {PoolId} from "mira-dex-ts";
+import { PoolId } from "mira-dex-ts";
 import styles from "./DesktopPositionView.module.css";
 import AprDisplay from "../AprDisplay/AprDisplay";
 import ReserveItem from "../ReserveItem/ReserveItem";
 import ExchangeRate from "../ExchangeRate/ExchangeRate";
 import MiraBlock from "../MiraBlock/MiraBlock";
-import {formatDisplayAmount} from "@/src/utils/common";
-import {LIQUIDITY_PROVIDING_DOC_URL} from "@/src/utils/constants";
+import { formatDisplayAmount } from "@/src/utils/common";
+import { LIQUIDITY_PROVIDING_DOC_URL } from "@/src/utils/constants";
 import Image from "next/image";
 import LearnMoreIcon from "@/assets/learn-more.png";
-import {CopyNotification} from "@/src/components/common/CopyNotification/CopyNotification";
+import { CopyNotification } from "@/src/components/common/CopyNotification/CopyNotification";
 
 interface AssetMetadata {
   name?: string;
@@ -24,7 +24,7 @@ interface AssetMetadata {
 }
 interface AssetData {
   amount: string;
-  metadata: AssetMetadata & {isLoading: boolean};
+  metadata: AssetMetadata & { isLoading: boolean };
   reserve?: number;
 }
 
@@ -86,7 +86,7 @@ const DesktopPositionView = ({
           <MiraBlock pool={pool} setIsAddressCopied={setIsAddressCopied} />
           <div className={styles.infoBlocks}>
             <div className={styles.infoBlock}>
-              <p className={clsx(styles.infoText, styles.positionText)}>
+              <p className={clsx("mc-type-m", styles.positionText)}>
                 Your position
               </p>
               <AprDisplay pool={pool} />
@@ -105,9 +105,7 @@ const DesktopPositionView = ({
         </div>
 
         <div className={styles.priceBlockLargeDesktop}>
-          <p className={clsx(styles.infoText, styles.positionText)}>
-            Pool reserves
-          </p>
+          <p className={clsx("mc-type-m", styles.positionText)}>Pool reserves</p>
 
           <hr className={styles.divider} />
 
@@ -124,8 +122,12 @@ const DesktopPositionView = ({
           {formattedTvlValue && <hr className={styles.divider} />}
           <div className={styles.footer}>
             <div className={styles.reserveItems}>
-              {formattedTvlValue && <p>Total value locked</p>}
-              {formattedTvlValue && <p>${formattedTvlValue}</p>}
+              {formattedTvlValue && (
+                <p className="mc-type-b">Total value locked</p>
+              )}
+              {formattedTvlValue && (
+                <p className="mc-mono-b">${formattedTvlValue}</p>
+              )}
             </div>
             <ExchangeRate
               assetBMetadata={assetB.metadata}
