@@ -13,6 +13,7 @@ import {usePointsRanks} from "@/src/hooks/usePoints/usePoints";
 import LoaderV2 from "@/src/components/common/LoaderV2/LoaderV2";
 import PointsIconSimple from "@/src/components/icons/Points/PointsIconSimple";
 import {DefaultLocale} from "@/src/utils/constants";
+import clsx from "clsx";
 
 // Define the data type for our table
 type PointsRankData = {
@@ -48,7 +49,7 @@ export default function PointsRankTable(): JSX.Element {
   const columns = [
     columnHelper.accessor("rank", {
       header: "Rank",
-      cell: (info) => info.getValue(),
+      cell: (info) => <span className="mc-mono-m">{info.getValue()}</span>,
     }),
     columnHelper.accessor("address", {
       header: "Address",
@@ -56,8 +57,10 @@ export default function PointsRankTable(): JSX.Element {
         const address = info.getValue();
         return (
           <>
-            <span className={styles.desktopAddress}>{address}</span>
-            <span className={styles.mobileAddress}>
+            <span className={clsx(styles.desktopAddress, "mc-type-m")}>
+              {address}
+            </span>
+            <span className={clsx(styles.mobileAddress, "mc-type-m")}>
               {truncateAddress(address)}
             </span>
           </>
@@ -67,7 +70,7 @@ export default function PointsRankTable(): JSX.Element {
     columnHelper.accessor("points", {
       header: "Points",
       cell: (info) => (
-        <div className={styles.pointsCell}>
+        <div className={clsx(styles.pointsCell, "mc-mono-m")}>
           <span className={styles.pointsIcon}>
             <PointsIconSimple />
           </span>
@@ -117,7 +120,10 @@ export default function PointsRankTable(): JSX.Element {
           {table.getHeaderGroups().map((headerGroup) => (
             <tr key={headerGroup.id}>
               {headerGroup.headers.map((header) => (
-                <th key={header.id} className={styles.tableHeader}>
+                <th
+                  key={header.id}
+                  className={clsx(styles.tableHeader, "mc-type-m")}
+                >
                   {header.isPlaceholder
                     ? null
                     : flexRender(
