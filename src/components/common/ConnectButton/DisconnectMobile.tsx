@@ -143,7 +143,10 @@ const DisconnectMobile = ({className}: Props) => {
         isOpened={isHistoryOpened}
       />
       {isAddressCopied && (
-        <CopyNotification onClose={() => setAddressCopied(false)} />
+        <CopyNotification
+          onClose={() => setAddressCopied(false)}
+          text="Copied address"
+        />
       )}
     </>
   );
