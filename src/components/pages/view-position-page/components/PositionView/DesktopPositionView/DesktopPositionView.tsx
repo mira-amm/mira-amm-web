@@ -1,21 +1,27 @@
 import React, { useState } from "react";
 import clsx from "clsx";
 import Link from "next/link";
+import Image from "next/image";
+
 import CoinPair from "@/src/components/common/CoinPair/CoinPair";
 import CoinWithAmount from "@/src/components/common/CoinWithAmount/CoinWithAmount";
 import ActionButton from "@/src/components/common/ActionButton/ActionButton";
-import PromoBlock from "@/src/components/common/PromoBlock/PromoBlock";
 import { PoolId } from "mira-dex-ts";
+
 import styles from "./DesktopPositionView.module.css";
+
 import AprDisplay from "../AprDisplay/AprDisplay";
 import ReserveItem from "../ReserveItem/ReserveItem";
 import ExchangeRate from "../ExchangeRate/ExchangeRate";
 import MiraBlock from "../MiraBlock/MiraBlock";
+
 import { formatDisplayAmount } from "@/src/utils/common";
 import { LIQUIDITY_PROVIDING_DOC_URL } from "@/src/utils/constants";
-import Image from "next/image";
+
 import LearnMoreIcon from "@/assets/learn-more.png";
 import { CopyNotification } from "@/src/components/common/CopyNotification/CopyNotification";
+import PromoBlock from "@/src/components/common/PromoBlock/PromoBlock";
+
 
 interface AssetMetadata {
   name?: string;

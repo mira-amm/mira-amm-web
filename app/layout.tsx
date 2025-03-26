@@ -1,9 +1,9 @@
-import type {Metadata} from "next";
 import Script from "next/script";
 import {ReactNode} from "react";
 import {clsx} from "clsx";
 import {Prompt, Inter} from "next/font/google";
 import localFont from "next/font/local";
+import {metadata} from "./metadata";
 
 import "@/public/css/globals.css";
 import Providers from "@/src/core/providers/Providers";
@@ -23,27 +23,7 @@ const inter = Inter({
   variable: "--font-inter",
 });
 
-export const metadata: Metadata = {
-  title: "Swap on MIRA DEX instantly with low slippage | MIRA Swaps",
-  description:
-    "Discover seamless crypto swaps with MIRA DEX. Swap your digital assets instantly and securely on the Fuel blockchain. Enjoy best rates and minimal slippage with our optimized trading protocol",
-  icons: {
-    icon: "/images/favicon.png",
-  },
-  openGraph: {
-    title: "Swap on MIRA DEX instantly with low slippage | MIRA Swaps",
-    url: "https://mira.ly/swap",
-    description:
-      "Discover seamless crypto swaps with MIRA DEX. Swap your digital assets instantly and securely on the Fuel blockchain. Enjoy best rates and minimal slippage with our optimized trading protocol",
-    images: "https://mira.ly/images/preview.png",
-  },
-  twitter: {
-    title: "Swap on MIRA DEX instantly with low slippage | MIRA Swaps",
-    description:
-      "Discover seamless crypto swaps with MIRA DEX. Swap your digital assets instantly and securely on the Fuel blockchain. Enjoy best rates and minimal slippage with our optimized trading protocol",
-    images: "https://mira.ly/images/preview.png",
-  },
-};
+export {metadata};
 
 //TEMPORARY, DO NOT DELETE
 /* export const metadata: Metadata = {

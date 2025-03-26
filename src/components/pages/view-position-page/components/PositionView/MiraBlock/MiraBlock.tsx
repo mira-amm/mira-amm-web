@@ -1,14 +1,19 @@
 import React, { useCallback } from "react";
-import IconButton from "@/src/components/common/IconButton/IconButton";
-import styles from "./MiraBlock.module.css";
-import { CopyIcon } from "@/src/components/icons/Copy/CopyIcon";
-import { PoolId, getLPAssetId } from "mira-dex-ts";
-import usePositionData from "@/src/hooks/usePositionData";
-import { formatUnits } from "fuels";
-import { DEFAULT_AMM_CONTRACT_ID } from "@/src/utils/constants";
-import useFormattedAddress from "@/src/hooks/useFormattedAddress/useFormattedAddress";
 import clsx from "clsx";
+
+import IconButton from "@/src/components/common/IconButton/IconButton";
+import { CopyIcon } from "@/src/components/icons/Copy/CopyIcon";
 import MiraTextLogo from "@/src/components/icons/Logo/MiraTextLogo";
+
+import { PoolId, getLPAssetId } from "mira-dex-ts";
+import { formatUnits } from "fuels";
+
+import usePositionData from "@/src/hooks/usePositionData";
+import useFormattedAddress from "@/src/hooks/useFormattedAddress/useFormattedAddress";
+
+import { DEFAULT_AMM_CONTRACT_ID } from "@/src/utils/constants";
+
+import styles from "./MiraBlock.module.css";
 
 interface MiraBlockProps {
   pool: PoolId;

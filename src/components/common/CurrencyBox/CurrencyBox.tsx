@@ -1,13 +1,13 @@
-import {ChangeEvent, memo, useCallback} from "react";
-import {clsx} from "clsx";
+import { ChangeEvent, memo, useCallback } from "react";
+import { clsx } from "clsx";
 
 import Coin from "@/src/components/common/Coin/Coin";
-import {CurrencyBoxMode} from "@/src/components/common/Swap/Swap";
+import { CurrencyBoxMode } from "@/src/components/common/Swap/Swap";
 
 import styles from "./CurrencyBox.module.css";
 import TextButton from "@/src/components/common/TextButton/TextButton";
-import {DefaultLocale, MinEthValueBN} from "@/src/utils/constants";
-import {B256Address, BN} from "fuels";
+import { DefaultLocale, MinEthValueBN } from "@/src/utils/constants";
+import { B256Address, BN } from "fuels";
 import useAssetMetadata from "@/src/hooks/useAssetMetadata";
 import fiatValueFormatter from "@/src/utils/abbreviateNumber";
 
@@ -20,6 +20,7 @@ type BaseProps = {
   usdRate: number | null;
   previewError?: string | null;
   isDisabled?: boolean;
+  className?: string;
 };
 
 type SwapPageProps = BaseProps & {
@@ -45,6 +46,7 @@ const CurrencyBox = ({
   usdRate,
   previewError,
   isDisabled,
+  className,
 }: Props) => {
   const metadata = useAssetMetadata(assetId);
   const balanceValue = balance.formatUnits(metadata.decimals || 0);
@@ -92,7 +94,7 @@ const CurrencyBox = ({
       : null;
 
   return (
-    <div className={styles.currencyBox}>
+    <div className={clsx(styles.currencyBox, className)}>
       {mode && (
         <p className={clsx(styles.title, "mc-type-s")}>
           {mode === "buy" ? "Buy" : "Sell"}
