@@ -21,7 +21,7 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
 
   const pointsService = new TmpFilePointsPerUserService(
     process.env.SENTIO_API_KEY,
-    process.env.SENTIO_API_URL,
+    "https://endpoint.sentio.xyz/fuellabs/mira-mainnet/points-per-user/async",
     new JSONEpochConfigService(
       path.join(process.cwd(), "src", "models", "campaigns.json"),
     ),
