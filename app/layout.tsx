@@ -52,6 +52,7 @@ const RootLayout = ({children}: Props) => {
     <html lang="en">
       <head>
         <link rel="preload" as="image" href="/images/loader.webp" />
+        <link rel="stylesheet" href="https://use.typekit.net/joy1wau.css" />
       </head>
       <body className={clsx(inter.className, inter.variable, prompt.variable)}>
         <Providers>{children}</Providers>

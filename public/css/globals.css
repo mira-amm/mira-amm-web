@@ -1,5 +1,6 @@
 :root {
-  --font-inter: 'Inter';
+  --font-inter: 'inter-variable', sans-serif;
+  --font-cartograph: 'cartograph-cf', monospace;
   --font-prompt: 'Prompt';
 
   --primary-white: #FFFFFF;
@@ -170,9 +171,13 @@ input:focus {
 }
 
 @font-face {
-  font-family: "EllographCF"; 
-  src: local("EllographCF-Regular"),
-    url("../../src/fonts/EllographCF-Regular.ttf") format("truetype");
+  font-family: 'inter-variable';
+  src: url('https://use.typekit.net/joy1wau.css') format('woff2');
+}
+
+@font-face {
+  font-family: 'cartograph-cf';
+  src: url('https://use.typekit.net/joy1wau.css') format('woff2');
 }
 
 @font-face {
@@ -305,7 +310,7 @@ input:focus {
 
 /* Monospace Typography Classes */
 .mc-mono-xs {
-  font-family: 'Cartograph CF';
+  font-family: var(--font-cartograph);
   font-style: normal;
   font-weight: 400;
   font-size: 11.06px;
@@ -313,7 +318,7 @@ input:focus {
 }
 
 .mc-mono-s {
-  font-family: 'Cartograph CF';
+  font-family: var(--font-cartograph);
   font-style: normal;
   font-weight: 400;
   font-size: 12.44px;
@@ -321,7 +326,7 @@ input:focus {
 }
 
 .mc-mono-b {
-  font-family: 'Cartograph CF';
+  font-family: var(--font-cartograph);
   font-style: normal;
   font-weight: 400;
   font-size: 14px;
@@ -329,7 +334,7 @@ input:focus {
 }
 
 .mc-mono-m {
-  font-family: 'Cartograph CF';
+  font-family: var(--font-cartograph);
   font-style: normal;
   font-weight: 400;
   font-size: 15.75px;
@@ -337,7 +342,7 @@ input:focus {
 }
 
 .mc-mono-l {
-  font-family: 'Cartograph CF';
+  font-family: var(--font-cartograph);
   font-style: normal;
   font-weight: 400;
   font-size: 17.72px;
@@ -345,7 +350,7 @@ input:focus {
 }
 
 .mc-mono-xl {
-  font-family: 'Cartograph CF';
+  font-family: var(--font-cartograph);
   font-style: normal;
   font-weight: 400;
   font-size: 19.93px;
@@ -353,7 +358,7 @@ input:focus {
 }
 
 .mc-mono-xxl {
-  font-family: 'Cartograph CF';
+  font-family: var(--font-cartograph);
   font-style: normal;
   font-weight: 400;
   font-size: 22.43px;
@@ -361,7 +366,7 @@ input:focus {
 }
 
 .mc-mono-xxxl {
-  font-family: 'Cartograph CF';
+  font-family: var(--font-cartograph);
   font-style: normal;
   font-weight: 400;
   font-size: 25.23px;
@@ -369,7 +374,7 @@ input:focus {
 }
 
 .mc-mono-xxxxl {
-  font-family: 'Cartograph CF';
+  font-family: var(--font-cartograph);
   font-style: normal;
   font-weight: 400;
   font-size: 28.38px;
