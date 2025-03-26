@@ -312,10 +312,12 @@ const CreatePoolDialog = ({setPreviewData}: Props) => {
               priority
             />
           </div>
-          <p className={styles.existingPoolText}>This pool already exists</p>
+          <p className={clsx(styles.existingPoolText, "mc-type-m")}>
+            This pool already exists
+          </p>
           <Link
             href={`/liquidity/add/?pool=${existingPoolKey}`}
-            className={styles.addLiquidityLink}
+            className={clsx(styles.addLiquidityLink, "mc-type-m")}
           >
             Add liquidity<span className={styles.arrow}>&rarr;</span>
           </Link>
@@ -323,12 +325,12 @@ const CreatePoolDialog = ({setPreviewData}: Props) => {
       )}
       {!poolExists && !oneOfAssetsIsNotSelected && !oneOfAmountsIsEmpty && (
         <div className={styles.depositAmountSection}>
-          <p className={styles.subHeader}>Starting price</p>
+          <p className={clsx(styles.subHeader, "mc-type-m")}>Starting price</p>
           <div className={styles.priceBlock} onClick={handleExchangeRateSwap}>
             <p>{exchangeRate}</p>
             <ExchangeIcon />
           </div>
-          <p className={styles.priceWarning}>
+          <p className={clsx(styles.priceWarning, "mc-type-m")}>
             This is the price of the pool on inception. Always double check
             before deploying a pool.
           </p>
