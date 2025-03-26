@@ -5,8 +5,6 @@
 }
 
 .subHeader {
-  font-size: 16px;
-  font-weight: 500;
   color: var(--mc-black);
   padding: 14px 0 16px;
 }
@@ -31,16 +29,6 @@
   display: flex;
   align-items: center;
   gap: 3px;
-}
-.aprText > p {
-  font-weight: 400;
-  line-height: 100%;
-  font-size: 12px;
-}
-
-.APR > span {
-  font-size: 12px;
-  line-height: 14px;
 }
 
 .valueAndMax,
@@ -145,14 +133,10 @@
 }
 
 .infoBlockText {
-  font-weight: 400;
-  font-size: 14px;
-  line-height: 18px;
   color: var(--mc-yellow);
 }
 
 .sliderContainer {
-  font-family: "EllographCF";
   color: var(--mc-grey-4);
   display: flex;
   width: 100%;
@@ -163,8 +147,6 @@
 .sliderInfoContainer {
   display: flex;
   width: 100%;
-  font-size: 14px;
-  font-weight: 400;
   justify-content: space-between;
 }
 

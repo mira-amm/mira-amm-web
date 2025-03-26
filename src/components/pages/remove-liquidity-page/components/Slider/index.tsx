@@ -42,7 +42,7 @@ const Slider = ({
             ></div>
           ))}
         </div>
-        <div className={styles.sliderLabels}>
+        <div className={clsx(styles.sliderLabels, "mc-mono-b")}>
           {STEPS.map((step) => (
             <span key={step}>{step}</span>
           ))}

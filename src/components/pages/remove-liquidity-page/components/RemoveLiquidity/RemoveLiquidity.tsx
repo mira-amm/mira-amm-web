@@ -5,6 +5,7 @@ import {useRouter} from "next/navigation";
 import {useCallback, useState} from "react";
 import styles from "./RemoveLiquidity.module.css";
 import RemoveLiquidityContent from "../RemoveLiquidityContent";
+import clsx from "clsx";
 
 type Props = {
   poolId: PoolId;
@@ -29,7 +30,7 @@ const RemoveLiquidity = ({poolId}: Props): JSX.Element => {
       <BackLink showOnDesktop onClick={handleBackClick} title="Back" />
       <section className="liquidity-action-container">
         <div className={styles.removeLiquidityHeading}>
-          <p className={styles.title}>Remove Liquidity</p>
+          <p className={clsx(styles.title, "mc-type-xl")}>Remove Liquidity</p>
         </div>
         <RemoveLiquidityContent pool={poolId} />
       </section>
