@@ -26,7 +26,7 @@ const Positions = (): JSX.Element => {
             <div className={styles.icon}>
               <DocumentIcon />
             </div>
-            <p className={styles.fallbackText}>
+            <p className={clsx(styles.fallbackText, "mc-type-m")}>
               Your liquidity will appear here
             </p>
           </div>
