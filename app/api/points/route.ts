@@ -1,7 +1,6 @@
 import {NextRequest, NextResponse} from "next/server";
 import path from "path";
 import {JSONEpochConfigService} from "@/src/models/campaigns/JSONEpochConfigService";
-import {NotFoundError} from "@/src/utils/errors";
 import {TmpFilePointsPerUserService} from "@/src/models/points/Points";
 
 // Cache header settings
