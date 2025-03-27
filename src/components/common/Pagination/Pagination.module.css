@@ -11,10 +11,10 @@
   padding: 8px 12px;
   border: 1px solid var(--border-dark);
   background-color: var(--background-secondary);
-  font-size: 14px;
-  font-weight: 500;
   border-radius: 8px;
   cursor: pointer;
+  min-width: 41px;
+  min-height: 40px;
   transition:
     background-color 0.2s,
     color 0.2s;
@@ -53,6 +53,7 @@
     padding: 6px 8px;
     font-size: 12px;
     min-width: 32px;
+    min-height: 31px;
   }
 
   .paginationButton.previous,
