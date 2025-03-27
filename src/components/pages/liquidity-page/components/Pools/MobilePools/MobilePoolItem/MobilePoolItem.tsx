@@ -45,7 +45,7 @@ const MobilePoolItem = ({poolData}: Props): JSX.Element => {
         <div className={styles.infoBlocks}>
           {isMatching ? (
             <div>
-              <p>{"APR"}</p>
+              <p className="mc-type-m">{"APR"}</p>
               <AprBadge
                 small={true}
                 aprValue={aprValue}
