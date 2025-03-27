@@ -1,5 +1,5 @@
-import { ArrowLeftIcon } from "../../icons/ArrowLeft/ArrowLeftIcon";
-import { ArrowRightIcon } from "../../icons/ArrowRight/ArrowRightIcon";
+import {ArrowLeftIcon} from "../../icons/ArrowLeft/ArrowLeftIcon";
+import {ArrowRightIcon} from "../../icons/ArrowRight/ArrowRightIcon";
 import styles from "./Pagination.module.css";
 
 interface PaginationProps {
