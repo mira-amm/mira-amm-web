@@ -1,3 +1,13 @@
+.positionsPageContainer {
+  gap: 47px;
+}
+
+.leaderboardContainer {
+  display: flex;
+  gap: 20px;
+  flex-direction: column;
+}
+
 .titleSection {
   display: flex;
   flex-direction: column;

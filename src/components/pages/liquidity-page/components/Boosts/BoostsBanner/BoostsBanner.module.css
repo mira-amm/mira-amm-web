@@ -1,7 +1,7 @@
 .banner {
   background-image: url("../../../../../../../assets/boost-banner.png");
   background-size: cover;
-  padding: 24px;
+  padding: 25px;
   gap: 10px;
   border-radius: 10px;
   display: flex;
@@ -30,9 +30,10 @@
 
 .bottomArea {
   display: flex;
+  flex-direction: row;
   justify-content: space-between;
   flex-wrap: wrap;
-  gap: 12px;
+  gap: 5px;
 }
 
 .subHeader {

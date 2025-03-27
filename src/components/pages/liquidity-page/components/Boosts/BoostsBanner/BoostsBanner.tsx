@@ -25,7 +25,9 @@ const BoostsBanner = (): JSX.Element => {
           {POINTS_BANNER_SUBHEADER}
         </p>
         <Link href={POINTS_LEARN_MORE_URL} target="_blank">
-          <LearnMoreButton />
+          <button className={styles.learnMore}>
+            Learn more <span className={styles.arrow}>&rarr;</span>
+          </button>
         </Link>
       </div>
     </div>

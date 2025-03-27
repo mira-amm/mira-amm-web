@@ -11,10 +11,6 @@
   gap: 10px;
 }
 
-.addButton {
-  margin-top: 100px;
-}
-
 .title {
   color: var(--content-primary);
 }
