@@ -56,19 +56,9 @@ const ExchangeRate = ({
       >
         <p className={clsx(styles.exchangeRate, styles.infoText)}>
           {isBaseCoinA ? (
-            <>
-              <span className="mc-mono-b">1</span>{" "}
-              <span className="mc-type-b">{assetBMetadata.symbol}</span> ≈{" "}
-              <span className="mc-mono-b">{flooredRate}</span>{" "}
-              <span className="mc-type-b">{assetAMetadata.symbol}</span>
-            </>
+            <span className="mc-mono-b">{`1 ${assetBMetadata.symbol} ≈ ${flooredRate} ${assetAMetadata.symbol}`}</span>
           ) : (
-            <>
-              <span className="mc-mono-b">1</span>{" "}
-              <span className="mc-type-b">{assetAMetadata.symbol}</span> ≈{" "}
-              <span className="mc-mono-b">{flooredRate}</span>{" "}
-              <span className="mc-type-b">{assetBMetadata.symbol}</span>
-            </>
+            <span className="mc-mono-b">{`1 ${assetAMetadata.symbol} ≈ ${flooredRate} ${assetBMetadata.symbol}`}</span>
           )}
           <span>
             <ExchangeIcon />
