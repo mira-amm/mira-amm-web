@@ -9,11 +9,11 @@
 
 .paginationButton {
   padding: 8px 12px;
-  border: 1px solid var(--background-tertiary);
+  border: 1px solid var(--border-dark);
   background-color: var(--background-secondary);
   font-size: 14px;
   font-weight: 500;
-  border-radius: 4px;
+  border-radius: 8px;
   cursor: pointer;
   transition:
     background-color 0.2s,
@@ -25,11 +25,11 @@
   border: 1px solid black;
   color: white;
   font-weight: bold;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .paginationButton:disabled {
   cursor: not-allowed;
+  border: 1px solid var(--background-secondary);
 }
 
 .paginationButton span {
@@ -38,6 +38,10 @@
 
 .paginationButton svg {
   display: inline-block;
+}
+
+.paginationButton:disabled svg {
+  fill: var(--background-grey-light);
 }
 
 .paginationButton:hover:not(:disabled):not(.active) {

@@ -51,7 +51,7 @@ const Pagination = ({
         onClick={() => onPageChange(currentPage - 1)}
         disabled={currentPage === 1}
       >
-        <ArrowLeftIcon secondaryColor="black" />
+        <ArrowLeftIcon />
         <span>Previous</span>
       </button>
       {generatePages().map((page, index) => (
@@ -69,7 +69,7 @@ const Pagination = ({
         onClick={() => onPageChange(currentPage + 1)}
         disabled={currentPage === totalPages}
       >
-        <ArrowRightIcon secondaryColor="black" />
+        <ArrowRightIcon />
         <span>Next</span>
       </button>
     </div>
