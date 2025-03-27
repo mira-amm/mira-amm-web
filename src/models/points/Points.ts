@@ -4,26 +4,30 @@ import {
   PointsQueryParams,
   PointsPerUserService,
 } from "@/src/models/points/interfaces";
-import fs from "fs/promises";
+import {CacheProvider, createCacheProvider} from "./CacheProvider";
 
 const ONE_HOUR_IN_SECONDS = 60 * 60;
 const ONE_MINUTE_IN_SECONDS = 60;
 const ONE_SECOND_IN_MS = 1000;
-const FILE_PATH = "/tmp/latestPoints.json";
 const RESULT_POLL_RETRIES = 20;
 const RESULT_POLL_INTERVAL_MS = 5 * ONE_SECOND_IN_MS; // 5 seconds
 
 const POINTS_CACHE_EXPIRATION_MS = 5 * ONE_MINUTE_IN_SECONDS * ONE_SECOND_IN_MS; // 5 minutes
 const SENTIO_STALE_WHILE_REVALIDATE_SECS = ONE_HOUR_IN_SECONDS; // 1 hour
 const SENTIO_CACHE_TTL_SECS = 20 * ONE_MINUTE_IN_SECONDS; // 20 minutes
-// A service that fetches the latest points from the sentio API and saves them to a temporary file
-// This is used to avoid configuring vercel kv or postgres
-export class TmpFilePointsPerUserService implements PointsPerUserService {
+
+// A service that fetches the latest points from the sentio API and saves them to a cache
+// This is used to persist data between deployments
+export class FileCachedPointsPerUserService implements PointsPerUserService {
+  private readonly cacheProvider: CacheProvider;
+
   constructor(
     private readonly apiKey: string,
     private readonly apiUrl: string,
     private readonly epochConfigService: EpochConfigService,
-  ) {}
+  ) {
+    this.cacheProvider = createCacheProvider();
+  }
 
   async updateLatestPoints(): Promise<PointsResponse[]> {
     const points = await this.fetchLatestPoints();
@@ -36,8 +40,7 @@ export class TmpFilePointsPerUserService implements PointsPerUserService {
       points,
     };
 
-    await fs.writeFile(FILE_PATH, JSON.stringify(pointsCache));
-
+    await this.cacheProvider.write(pointsCache);
     return points;
   }
 
@@ -48,9 +51,9 @@ export class TmpFilePointsPerUserService implements PointsPerUserService {
     let parsedPoints;
 
     try {
-      const points = await fs.readFile(FILE_PATH, "utf8");
-      const pointsCache = JSON.parse(points);
+      const pointsCache = await this.cacheProvider.read();
       parsedPoints = pointsCache.points;
+
       if (
         !pointsCache.expiresAt ||
         new Date(pointsCache.expiresAt) < new Date(Date.now())
@@ -65,9 +68,9 @@ export class TmpFilePointsPerUserService implements PointsPerUserService {
       }
       totalCount = parsedPoints.length;
     } catch (e) {
-      // If file doesn't exist or can't be read, fetch and save the latest points
+      // If data doesn't exist or can't be read, fetch and save the latest points
       console.log(
-        "Points file not found or invalid, fetching latest points...",
+        "Points data not found or invalid, fetching latest points...",
       );
       parsedPoints = await this.updateLatestPoints();
     }
