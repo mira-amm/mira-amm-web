@@ -52,7 +52,7 @@ const DesktopPools = ({poolsData, orderBy, handleSort}: Props) => {
           ))
         ) : (
           <tr>
-            <td colSpan={5} className={styles.noData}>
+            <td colSpan={5} className={clsx(styles.noData, "mc-type-m")}>
               No pools available
             </td>
           </tr>
