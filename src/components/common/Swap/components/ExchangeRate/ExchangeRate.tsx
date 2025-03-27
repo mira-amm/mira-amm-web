@@ -4,6 +4,7 @@ import ExchangeIcon from "@/src/components/icons/Exchange/ExchangeIcon";
 import useExchangeRate from "@/src/hooks/useExchangeRate/useExchangeRate";
 
 import styles from "./ExchangeRate.module.css";
+import clsx from "clsx";
 
 type Props = {
   swapState: SwapState;
@@ -23,7 +24,10 @@ const ExchangeRate = ({swapState}: Props) => {
   }
 
   return (
-    <button className={styles.exchangeRate} onClick={handleClick}>
+    <button
+      className={clsx(styles.exchangeRate, "mc-mono-b")}
+      onClick={handleClick}
+    >
       {rate}
       <ExchangeIcon />
     </button>

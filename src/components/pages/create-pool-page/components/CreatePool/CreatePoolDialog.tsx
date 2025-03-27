@@ -327,7 +327,7 @@ const CreatePoolDialog = ({setPreviewData}: Props) => {
         <div className={styles.depositAmountSection}>
           <p className={clsx(styles.subHeader, "mc-type-m")}>Starting price</p>
           <div className={styles.priceBlock} onClick={handleExchangeRateSwap}>
-            <p>{exchangeRate}</p>
+            <p className="mc-mono-b">{exchangeRate}</p>
             <ExchangeIcon />
           </div>
           <p className={clsx(styles.priceWarning, "mc-type-m")}>
