@@ -106,3 +106,6 @@ export const POINTS_BANNER_TITLE = "Introducing Points";
 
 export const POINTS_BANNER_SUBHEADER =
   "Earn MIRA points by providing liquidity and engaging in activities.";
+
+export const SENTIO_POINTS_ENDPOINT =
+  "https://endpoint.sentio.xyz/fuellabs/mira-mainnet/points-per-user/async";
