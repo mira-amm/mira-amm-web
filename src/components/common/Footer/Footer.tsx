@@ -21,7 +21,7 @@ const Footer = ({isHomePage = false}: FooterProps) => {
           <div className={styles.content}>
             <Logo isFooter={true} />
             <div className={styles.linksAndSocial}>
-              <div className={styles.links}>
+              <div className={clsx(styles.links, "mc-type-m")}>
                 <a className={styles.link} href={DiscordLink} target="_blank">
                   Support
                 </a>
@@ -69,7 +69,9 @@ const Footer = ({isHomePage = false}: FooterProps) => {
             </div>
           </div>
           <div className={styles.copyright}>
-            <p className="mobileOnly">&copy; {currentYear} Mira Finance</p>
+            <p className={clsx("mobileOnly", "mc-type-m")}>
+              &copy; {currentYear} Mira Finance
+            </p>
           </div>
         </div>
         <div className={clsx("desktopOnly", styles.footer)}>
@@ -140,8 +142,10 @@ const Footer = ({isHomePage = false}: FooterProps) => {
               </div>
             </div>
           </div>
-          <div className={clsx(styles.copyright, "mc-type-m")}>
-            <p className="desktopOnly">&copy; {currentYear} Mira Finance</p>
+          <div className={styles.copyright}>
+            <p className={clsx("desktopOnly", "mc-type-m")}>
+              &copy; {currentYear} Mira Finance
+            </p>
           </div>
         </div>
       </div>
