@@ -61,12 +61,7 @@ const MobilePositionItem = ({position, onClick}: Props): JSX.Element => {
   const {isMatching} = usePoolNameAndMatch(poolKey);
 
   const feeText = position.isStable ? "0.05%" : "0.3%";
-  const poolTitle = position.isStable ? (
-    <p className={styles.poolDescription}>{"Stable"}</p>
-  ) : (
-    <p className={styles.poolDescription}>{"Volatile"}</p>
-  );
-
+  const poolTitle = position.isStable ? "Stable" : "Volatile";
   return (
     <div className={styles.mobilePositionItem}>
       <div className={styles.infoSection}>
@@ -79,35 +74,41 @@ const MobilePositionItem = ({position, onClick}: Props): JSX.Element => {
       <div className={styles.content}>
         {isMatching ? (
           <div>
-            <p className={styles.title}>APR</p>
+            <p className={clsx(styles.title, "mc-type-m")}>APR</p>
             <AprBadge
               aprValue={aprValue}
               tvlValue={tvlValue}
               poolKey={poolKey}
-              small={true}
+              small
             />
           </div>
         ) : (
           <div className={clsx(styles.subContent, styles.aprDiv)}>
-            <p className={styles.title}>{"APR"}</p>
-            <p className={styles.aprValue}>{aprValue}</p>
+            <p className={clsx(styles.title, "mc-type-m")}>{"APR"}</p>
+            <p className={clsx(styles.aprValue, "mc-mono-m")}>{aprValue}</p>
           </div>
         )}
         <div className={styles.positionPrice}>
           {size ? (
             <div className={styles.subContent}>
-              <p className={styles.title}>{"Position size"}</p>
-              <p className={styles.value}>${size?.toFixed(2)}</p>
+              <p className={clsx(styles.title, "mc-type-m")}>
+                {"Position size"}
+              </p>
+              <p className={clsx(styles.value, "mc-mono-m")}>
+                ${size?.toFixed(2)}
+              </p>
             </div>
           ) : (
-            <p className={styles.loadingText}>{"checking..."}</p>
+            <p className={clsx(styles.loadingText, "mc-type-m")}>
+              {"checking..."}
+            </p>
           )}
         </div>
         <div className={styles.subContent}>
-          {poolTitle}
-          <p className={clsx(styles.poolDescription, styles.poolValue)}>
-            {feeText}
+          <p className={clsx(styles.poolDescription, "mc-type-m")}>
+            {poolTitle}
           </p>
+          <p className={clsx(styles.poolDescription, "mc-mono-m")}>{feeText}</p>
         </div>
       </div>
 

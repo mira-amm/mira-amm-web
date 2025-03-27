@@ -18,7 +18,7 @@ const Positions = (): JSX.Element => {
       {isLoading ? (
         <div className={styles.positionsFallback}>
           <LoaderV2 />
-          <p>Loading positions...</p>
+          <p className="mc-type-m">Loading positions...</p>
         </div>
       ) : (data && data.length === 0) || !data ? (
         <div className={styles.positionsFallback}>
