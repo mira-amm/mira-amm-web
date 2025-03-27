@@ -2,7 +2,7 @@
 
 import Header from "@/src/components/common/Header/Header";
 
-import styles from "./index.module.css";
+// import styles from "./index.module.css";
 import RemoveLiquidity from "./components/RemoveLiquidity/RemoveLiquidity";
 import {useRouter, useSearchParams} from "next/navigation";
 import {useEffect, useRef} from "react";
@@ -31,7 +31,7 @@ const RemoveLiquidityPageLayout = () => {
   return (
     <>
       <Header />
-      <main className={styles.removeLiquidityLayout} ref={mainRef}>
+      <main className="action-layout" ref={mainRef}>
         <RemoveLiquidity poolId={poolId} />
       </main>
     </>
