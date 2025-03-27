@@ -52,7 +52,7 @@ const Header = ({isHomePage}: Props): JSX.Element => {
         <section className={styles.promo}>
           <div className={styles.promo_text}>
             <PointsIcon />
-            <p>
+            <p className="mc-type-l">
               {POINTS_PROMO_TITLE}
               <Link href={POINTS_LEARN_MORE_URL} target="_blank">
                 <u>Learn More</u>
