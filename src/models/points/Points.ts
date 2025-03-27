@@ -48,8 +48,8 @@ export class FileCachedPointsPerUserService implements PointsPerUserService {
   async getPoints(
     queryParams: PointsQueryParams,
   ): Promise<{data: PointsResponse[]; totalCount: number}> {
-    let totalCount;
-    let parsedPoints;
+    let totalCount = 0;
+    let parsedPoints: PointsResponse[] = [];
 
     try {
       const pointsCache = await this.cacheProvider.read();
