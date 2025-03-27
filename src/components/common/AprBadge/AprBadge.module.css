@@ -38,17 +38,6 @@
   width: fit-content;
 }
 
-.largeFont {
-  font-weight: 400;
-  font-size: 16px;
-  line-height: 100%;
-}
-
-.smallFont {
-  font-size: 13px;
-  line-height: 16px;
-}
-
 .hoverUI {
   position: absolute;
   top: 140%;

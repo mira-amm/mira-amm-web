@@ -67,7 +67,7 @@
 }
 
 .highlight {
-  color: var(--content-positive);
+  color: var(--accent-primary);
   padding-bottom: 2px;
 }
 

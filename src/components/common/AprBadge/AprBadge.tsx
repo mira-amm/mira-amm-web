@@ -82,11 +82,7 @@ const AprBadge: React.FC<AprBadgeProps> = ({
           />
         </span>
         <span
-          className={clsx(
-            styles.badgeText,
-            small ? styles.smallFont : styles.largeFont,
-            "mc-mono-m",
-          )}
+          className={clsx(styles.badgeText, small ? "mc-mono-s" : "mc-mono-m")}
         >
           {aprElement}
         </span>

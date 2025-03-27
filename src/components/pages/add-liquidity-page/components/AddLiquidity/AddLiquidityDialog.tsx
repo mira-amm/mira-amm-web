@@ -243,7 +243,7 @@ const AddLiquidityDialog = ({
             />
             <div className={styles.APR}>
               <div className={styles.aprText}>
-                <p className="mc-type-b">Estimated APR</p>
+                <p className="mc-type-s">Estimated APR</p>
                 <Info tooltipText={APRTooltip} tooltipKey="apr" />
               </div>
               {isMatching ? (
@@ -266,7 +266,7 @@ const AddLiquidityDialog = ({
                 <span
                   className={clsx(
                     aprValue && styles.highlight,
-                    aprValue ? "mc-mono-s" : "mc-type-s",
+                    aprValue ? "mc-mono-m" : "mc-type-m",
                   )}
                 >
                   {aprValue ? `${aprValue}%` : "Awaiting data"}

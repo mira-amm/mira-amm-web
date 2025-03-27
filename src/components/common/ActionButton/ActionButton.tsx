@@ -61,6 +61,7 @@ const ActionButton = forwardRef<HTMLButtonElement, Props>(function ActionButton(
         completed && styles.completed,
         fullWidth && styles.fullWidth,
         className,
+        "mc-type-l",
       )}
       onClick={handleClick}
       disabled={disabled}
