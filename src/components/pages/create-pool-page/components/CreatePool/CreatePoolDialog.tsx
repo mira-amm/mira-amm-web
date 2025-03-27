@@ -319,7 +319,7 @@ const CreatePoolDialog = ({setPreviewData}: Props) => {
             href={`/liquidity/add/?pool=${existingPoolKey}`}
             className={clsx(styles.addLiquidityLink, "mc-type-m")}
           >
-            Add liquidity<span className={styles.arrow}>&rarr;</span>
+            Add Liquidity<span className={styles.arrow}>&rarr;</span>
           </Link>
         </div>
       )}

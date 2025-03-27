@@ -43,7 +43,7 @@ const AddLiquidity = ({poolId, poolKey}: Props): JSX.Element => {
         showOnDesktop
         onClick={handleBackClick}
         className={styles.backLink}
-        title="Back"
+        title="Back to Pool"
       />
       <section className={clsx("liquidity-action-container")}>
         <div className={styles.addLiquidityHeading}>

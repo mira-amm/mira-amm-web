@@ -12,10 +12,6 @@
   justify-content: space-between;
 }
 
-.addButton {
-  margin-top: 100px;
-}
-
 .title {
   color: var(--content-primary);
 }
@@ -31,6 +27,7 @@
   flex-direction: column;
   gap: 24px;
   margin: 4px 0 10px;
+  width: 100%;
 }
 
 .depositAmountSection {
@@ -324,9 +321,9 @@
     line-height: 19px;
   }
 
-  .previewContent {
+  /* .previewContent {
     width: 400px;
-  }
+  } */
 
   .inputPreviewRow svg,
   .inputPreviewRow img {

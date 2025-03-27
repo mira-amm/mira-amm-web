@@ -3,6 +3,10 @@
 }
 
 @media (min-width: 1024px) {
+  .logo {
+    height: 28px;
+  }
+
   .logo svg {
     width: 182px;
   }

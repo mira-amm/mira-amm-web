@@ -16,12 +16,13 @@ import Boosts from "./components/Boosts/Boosts";
 import LearnMoreIcon from "@/assets/learn-more.png";
 import BoostIcon from "@/assets/learn-more-2.png";
 import Image from "next/image";
+import clsx from "clsx";
 
 const LiquidityPageLayout = (): JSX.Element => {
   return (
     <>
       <Header />
-      <main className="page-container">
+      <main className={clsx("page-container", styles.liquidityPageContainer)}>
         <BackLink />
         <Boosts />
         <Positions />

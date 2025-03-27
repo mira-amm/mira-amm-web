@@ -36,12 +36,12 @@ const BoostsRewards = (): JSX.Element => {
 
   return (
     <div className={styles.boosts}>
-      <div className={styles.boostsHeader}>
+      {/* <div className={styles.boostsHeader}>
         <p className={pointsStyles.pointsTitle}>Points Program</p>
         <Link href={POINTS_LEARN_MORE_URL} target="_blank">
           <LearnMoreButton />
         </Link>
-      </div>
+      </div> */}
 
       {/* Boosts rewards details */}
       <div className={styles.boostsFallback}>

@@ -44,7 +44,7 @@ const CreatePool = () => {
         showOnDesktop
         onClick={handleBackClick}
         className={styles.backLink}
-        title="Back"
+        title="Back to Pool"
       />
       <section className="liquidity-action-container">
         <div className={styles.addLiquidityHeading}>

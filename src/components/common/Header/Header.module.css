@@ -20,6 +20,10 @@
   margin-left: 5px;
 }
 
+.promo_text u:hover {
+  color: var(--background-secondary);
+}
+
 .promo svg {
   margin-right: 5px;
   width: 18px;

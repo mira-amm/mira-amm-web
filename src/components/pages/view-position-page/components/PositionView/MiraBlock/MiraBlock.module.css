@@ -7,7 +7,7 @@
   background-image: url("../../../../../../../assets/mira-block-bg.png");
   background-size: cover;
   gap: 6px;
-  width: 400px;
+  width: 348px;
 }
 
 .miraLogo {
@@ -29,7 +29,7 @@
   height: 16px;
 }
 
-@media screen and (max-width: 768px) {
+@media (max-width: 1024px) {
   .miraBlock {
     width: 100%;
   }

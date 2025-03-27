@@ -38,9 +38,7 @@ const DesktopPools = ({poolsData, orderBy, handleSort}: Props) => {
           />
           <th>
             <Link href="/liquidity/create-pool">
-              <ActionButton className={styles.createButton} size={"longer"}>
-                Create Pool
-              </ActionButton>
+              <ActionButton size={"longer"}>Create Pool</ActionButton>
             </Link>
           </th>
         </tr>
