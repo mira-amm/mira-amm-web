@@ -47,8 +47,6 @@
 }
 
 .rewardsLabel {
-  font-size: 16px;
-  font-weight: 400;
   color: #ffffffb8;
   display: flex;
   gap: 5px;
@@ -60,11 +58,6 @@
   gap: 8px;
   height: 25px;
   color: var(--background-white);
-}
-
-.rewardsValue p {
-  font-size: 26px;
-  font-weight: 400;
 }
 
 .rewardsValue span {
@@ -92,8 +85,6 @@
 }
 
 .rank {
-  font-size: 20px;
-  font-weight: 400;
   color: var(--background-white);
 }
 
