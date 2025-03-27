@@ -49,7 +49,7 @@ const CoinListItem = ({assetData}: Props) => {
         <p className={clsx(styles.fullName, "mc-type-m")}>{assetData.name}</p>
       </div>
       {balanceValue.gt(0) && (
-        <p className={styles.balance}>
+        <p className={clsx(styles.balance, "mc-mono-b")}>
           {balanceValue.formatUnits(assetData.decimals || 0)}
         </p>
       )}

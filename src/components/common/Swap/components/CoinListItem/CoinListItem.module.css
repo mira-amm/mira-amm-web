@@ -38,9 +38,7 @@
 }
 
 .balance {
-  font-size: 14px;
-  line-height: 16px;
-  color: var(--content-dimmed-dark);
+  color: var(--content-dimmed-light);
 }
 
 @media (min-width: 1024px) {
