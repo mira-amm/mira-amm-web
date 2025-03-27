@@ -1,8 +1,6 @@
 "use client";
 
 import Header from "@/src/components/common/Header/Header";
-
-import styles from "./AddLiquidityPageLayout.module.css";
 import AddLiquidity from "@/src/components/pages/add-liquidity-page/components/AddLiquidity/AddLiquidity";
 import {useRouter, useSearchParams} from "next/navigation";
 import {useEffect, useRef} from "react";
@@ -31,7 +29,7 @@ const AddLiquidityPageLayout = () => {
   return (
     <>
       <Header />
-      <main className={styles.addLiquidityLayout} ref={mainRef}>
+      <main className="action-layout" ref={mainRef}>
         <AddLiquidity poolId={poolId} poolKey={poolKey || ""} />
       </main>
     </>

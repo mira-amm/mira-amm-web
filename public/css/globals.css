@@ -204,6 +204,23 @@ input:focus {
   max-width: 1116px; /* length 1084 + 16*2 (padding) */
 }
 
+.action-layout {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  padding: 16px;
+  gap: 16px;
+  width: 100%;
+  max-width: 595px;
+  margin: 0 auto;
+}
+
+@media (min-width: 1024px) {
+  .action-layout {
+    padding: 32px 16px;
+  }
+}
+
 .liquidity-action-container {
   display: flex;
   flex-direction: column;
