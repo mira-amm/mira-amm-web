@@ -2,6 +2,7 @@ import {NextRequest, NextResponse} from "next/server";
 import path from "path";
 import {JSONEpochConfigService} from "@/src/models/campaigns/JSONEpochConfigService";
 import {FileCachedPointsPerUserService} from "@/src/models/points/Points";
+import {SENTIO_POINTS_ENDPOINT} from "@/src/utils/constants";
 
 // Cache header settings
 // These are set low as we are cacheing in a server side file
@@ -21,7 +22,7 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
 
   const pointsService = new FileCachedPointsPerUserService(
     process.env.SENTIO_API_KEY,
-    "https://endpoint.sentio.xyz/fuellabs/mira-mainnet/points-per-user/async",
+    SENTIO_POINTS_ENDPOINT,
     new JSONEpochConfigService(
       path.join(process.cwd(), "src", "models", "campaigns.json"),
     ),
