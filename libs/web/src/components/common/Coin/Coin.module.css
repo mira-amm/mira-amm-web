@@ -3,26 +3,23 @@
   align-items: center;
   gap: 5px;
   color: var(--content-primary);
+  border-radius: var(--button-border-radius);
 }
 
 .selectable {
   background-color: var(--mc-black);
   color: var(--mc-white);
+  padding: 6px 10px;
 }
 
 .clickable {
-  border-radius: var(--button-border-radius);
-  padding: 6px 10px;
   cursor: pointer;
+  padding: 6px 10px;
 }
 
 .clickable:hover {
   background-color: var(--mc-grey-3);
 }
-
-/* .clickable:active {
-  background-color: var(--mc-grey-4);
-} */
 
 .selectable:hover {
   background-color: var(--mc-black-1);
