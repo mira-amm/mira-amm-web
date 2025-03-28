@@ -259,6 +259,12 @@
   }
 }
 
+@media (max-width: 480px) {
+  .overlayOpened {
+    background-color: var(--background-tertiary);
+  }
+}
+
 @media (min-width: 769px) and (max-width: 800px) {
   .linerVisible {
     display: none;
@@ -279,6 +285,6 @@
 
 @media (min-width: 769px) {
   .wrapper {
-    border-radius: 12px;
+    border-radius: 16px;
   }
 }
