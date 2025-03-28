@@ -20,7 +20,7 @@ const DesktopPools = ({poolsData, orderBy, handleSort}: Props) => {
   return (
     <table className={clsx(styles.desktopPools, "desktopOnly")}>
       <thead>
-        <tr>
+        <tr className="mc-type-m">
           <th>Pools</th>
           <th>APR</th>
           <th>24H Volume</th>
