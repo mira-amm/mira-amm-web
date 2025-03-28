@@ -12,6 +12,12 @@
         "cwd": "apps/web"
       }
     },
+    "dev-ci": {
+      "command": "next dev -p 3000",
+      "options": {
+        "cwd": "apps/web"
+      }
+    },
     "build": {
       "command": "next build",
       "options": {
