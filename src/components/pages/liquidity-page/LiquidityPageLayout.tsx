@@ -23,7 +23,6 @@ const LiquidityPageLayout = (): JSX.Element => {
     <>
       <Header />
       <main className={clsx("page-container", styles.liquidityPageContainer)}>
-        <BackLink />
         <Boosts />
         <Positions />
         <Pools />
