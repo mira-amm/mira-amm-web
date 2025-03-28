@@ -8,6 +8,9 @@ import {
 import Loader from "@/src/components/common/Loader/Loader";
 import {usePointsRank} from "@/src/hooks/usePoints/usePoints";
 import PointsIcon from "@/src/components/icons/Points/PointsIcon";
+import {LearnMoreButton} from "@/src/components/common/LearnMoreButton/LearnMoreButton";
+import clsx from "clsx";
+
 const BoostsRewards = (): JSX.Element => {
   const {data: pointsRankArray, isLoading, error} = usePointsRank();
 
@@ -36,7 +39,7 @@ const BoostsRewards = (): JSX.Element => {
   return (
     <div className={styles.boosts}>
       {/* <div className={styles.boostsHeader}>
-        <p className={pointsStyles.pointsTitle}>Points Program</p>
+        <p className={clsx(pointsStyles.pointsTitle, "mc-type-xxxl")}>
         <Link href={POINTS_LEARN_MORE_URL} target="_blank">
           <LearnMoreButton />
         </Link>
@@ -46,7 +49,7 @@ const BoostsRewards = (): JSX.Element => {
       <div className={styles.boostsFallback}>
         <div className={styles.rewardsItem}>
           <div className={styles.rewardsLabel}>
-            <p>Your Points</p>
+            <p className="mc-type-m">Your Points</p>
             <Info
               tooltipText={POINTS_TOOLTIP}
               tooltipKey="points"
@@ -59,7 +62,7 @@ const BoostsRewards = (): JSX.Element => {
             ) : (
               <>
                 <PointsIcon />
-                <p>
+                <p className="mc-mono-xxxl">
                   {pointsRank?.points.toLocaleString(DefaultLocale, {
                     maximumFractionDigits: 0,
                   })}
@@ -72,14 +75,16 @@ const BoostsRewards = (): JSX.Element => {
           <div className={styles.divider}></div>
           <div className={styles.rankItem}>
             <div className={styles.rewardsLabel}>
-              <p>Your rank</p>
+              <p className="mc-type-m">Your rank</p>
               <Info
                 tooltipText={POINTS_RANK_TOOLTIP}
                 tooltipKey="rank"
                 color="#D1D4F9"
               />
             </div>
-            <p className={styles.rank}>{pointsRank?.rank}</p>
+            <p className={clsx(styles.rank, "mc-mono-xl")}>
+              {pointsRank?.rank}
+            </p>
           </div>
         </div>
       </div>
