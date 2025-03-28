@@ -257,7 +257,7 @@ const AddLiquidityDialog = ({
                           : "pending"
                     }
                     small={true}
-                    leftAlignValue={"-80"}
+                    leftAlignValue="-80"
                     poolKey={poolKey}
                     tvlValue={tvlValue}
                   />
