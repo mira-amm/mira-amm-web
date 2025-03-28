@@ -24,10 +24,12 @@
   color: var(--background-secondary);
 }
 
-.promo svg {
-  margin-right: 5px;
-  width: 18px;
-  height: 18px;
+.promo_text svg {
+  margin-right: 8px;
+  min-width: 18px;
+  min-height: 18px;
+  width: 1.2em;
+  height: 1.2em;
   color: var(--transparent-white) !important;
 }
 
@@ -88,6 +90,16 @@
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   cursor: pointer;
+}
+
+.promoClose {
+  color: var(--transparent-white) !important;
+}
+
+@media (max-width: 768px) {
+  .promo_text p {
+    font-size: 15px;
+  }
 }
 
 @media (min-width: 1024px) {
