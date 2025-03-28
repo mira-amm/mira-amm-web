@@ -191,6 +191,7 @@ const RemoveLiquidityModalContent = ({pool}: Props) => {
                   small
                   poolKey={poolKey}
                   tvlValue={tvlValue}
+                  leftAlignValue="-80"
                 />
               </div>
             ) : (
