@@ -4,7 +4,7 @@ import {createPortal} from "react-dom";
 import styles from "./Modal.module.css";
 import {clsx} from "clsx";
 import IconButton from "@/src/components/common/IconButton/IconButton";
-import ThickCloseIcon from "@/src/components/icons/Close/ThickCloseIcon";
+import CloseIcon from "@/src/components/icons/Close/CloseIcon";
 import {useScrollLock} from "usehooks-ts";
 
 type ModalProps = {
@@ -93,7 +93,7 @@ const useModal = (): [ReturnType, () => void, () => void] => {
                     closeModal();
                   }}
                 >
-                  <ThickCloseIcon />
+                  <CloseIcon />
                 </IconButton>
               </div>
               {children}
