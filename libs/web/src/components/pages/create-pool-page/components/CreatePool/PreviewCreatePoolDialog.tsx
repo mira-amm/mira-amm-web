@@ -81,17 +81,26 @@ const PreviewCreatePoolDialog = ({previewData}: Props) => {
         <div className={styles.inputsPreview}>
           <div className={styles.inputPreviewRow}>
             <Coin assetId={previewData.assets[0].assetId} />
-            <p>{firstCoinAmount}</p>
+            <p className="mc-mono-m">{firstCoinAmount}</p>
           </div>
           <div className={styles.inputPreviewRow}>
             <Coin assetId={previewData.assets[1].assetId} />
-            <p>{secondCoinAmount}</p>
+            <p className="mc-mono-m">{secondCoinAmount}</p>
           </div>
+          <hr className={styles.divider} />
           <div className={styles.inputPreviewRow}>
-            <p>Fee tier</p>
-            <p>{feeText}</p>
+            <p className="mc-type-m">Fee tier</p>
+            <p className="mc-mono-m">{feeText}</p>
           </div>
         </div>
+        <ActionButton
+          loading={isPoolCreationPending}
+          onClick={handleCreateLiquidity}
+          fullWidth
+          size="big"
+        >
+          Create pool
+        </ActionButton>
       </div>
       {/* <div className={styles.section}>
         <p>Selected Price</p>
@@ -141,12 +150,6 @@ const PreviewCreatePoolDialog = ({previewData}: Props) => {
           </p>
         </div>
       </div> */}
-      <ActionButton
-        loading={isPoolCreationPending}
-        onClick={handleCreateLiquidity}
-      >
-        Create pool
-      </ActionButton>
       <SuccessModal title={<></>} onClose={redirectToLiquidity}>
         <StatusModal
           type={ModalType.SUCCESS}
