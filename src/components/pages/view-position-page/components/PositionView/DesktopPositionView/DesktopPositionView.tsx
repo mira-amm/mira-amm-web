@@ -148,6 +148,7 @@ const DesktopPositionView = ({
               width={48}
               height={48}
               priority
+              placeholder="blur"
             />
           }
           title="Learn about providing liquidity"

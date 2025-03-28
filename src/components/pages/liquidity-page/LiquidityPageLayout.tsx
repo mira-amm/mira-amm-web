@@ -35,6 +35,7 @@ const LiquidityPageLayout = (): JSX.Element => {
                 width={48}
                 height={48}
                 priority
+                placeholder="blur"
               />
             }
             title="Learn about providing liquidity"
@@ -49,6 +50,7 @@ const LiquidityPageLayout = (): JSX.Element => {
                 width={48}
                 height={48}
                 priority
+                placeholder="blur"
               />
             }
             title="Fuel Boost Program"
