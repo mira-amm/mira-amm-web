@@ -1,3 +1,4 @@
+import clsx from "clsx";
 import {ArrowLeftIcon} from "../../icons/ArrowLeft/ArrowLeftIcon";
 import {ArrowRightIcon} from "../../icons/ArrowRight/ArrowRightIcon";
 import styles from "./Pagination.module.css";
@@ -47,7 +48,7 @@ const Pagination = ({
   return (
     <div className={styles.pagination}>
       <button
-        className={`${styles.paginationButton} ${styles.previous}`}
+        className={clsx(styles.paginationButton, styles.previous, "mc-type-m")}
         onClick={() => onPageChange(currentPage - 1)}
         disabled={currentPage === 1}
       >
@@ -57,7 +58,11 @@ const Pagination = ({
       {generatePages().map((page, index) => (
         <button
           key={index}
-          className={`${styles.paginationButton} ${page === currentPage ? styles.active : ""}`}
+          className={clsx(
+            styles.paginationButton,
+            "mc-type-m",
+            page === currentPage && styles.active,
+          )}
           onClick={() => typeof page === "number" && onPageChange(page)}
           disabled={page === "..."}
         >
@@ -65,7 +70,7 @@ const Pagination = ({
         </button>
       ))}
       <button
-        className={`${styles.paginationButton} ${styles.next}`}
+        className={clsx(styles.paginationButton, styles.next, "mc-type-m")}
         onClick={() => onPageChange(currentPage + 1)}
         disabled={currentPage === totalPages}
       >

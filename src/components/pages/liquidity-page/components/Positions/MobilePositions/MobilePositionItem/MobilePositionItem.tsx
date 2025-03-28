@@ -112,13 +112,8 @@ const MobilePositionItem = ({position, onClick}: Props): JSX.Element => {
         </div>
       </div>
 
-      <ActionButton
-        onClick={onClick}
-        fullWidth
-        className={styles.addButton}
-        variant="secondary"
-      >
-        Manage position
+      <ActionButton onClick={onClick} variant="secondary" fullWidth>
+        Manage Position
       </ActionButton>
     </div>
   );

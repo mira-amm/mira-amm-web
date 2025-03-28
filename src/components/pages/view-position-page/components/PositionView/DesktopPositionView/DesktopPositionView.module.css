@@ -1,13 +1,3 @@
-.viewPositionLayout {
-  display: flex;
-  flex-direction: column;
-  min-height: 100vh;
-  max-width: 716px;
-  margin: 0 auto;
-  padding: 32px 16px;
-  gap: 16px;
-}
-
 .contentSection {
   margin-top: 10px;
   display: flex;
@@ -81,12 +71,6 @@
   text-align: center;
 }
 
-.actionButton {
-  width: 170px;
-  padding: 8px 24px;
-  font-size: 14px;
-}
-
 .reserveItems {
   display: flex;
   align-items: center;
@@ -137,7 +121,7 @@
 }
 
 .infoBlocks {
-  width: 500px;
+  width: 348px;
   flex-direction: column;
 }
 

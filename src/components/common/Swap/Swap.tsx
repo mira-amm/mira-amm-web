@@ -41,6 +41,7 @@ import ReviewSwap from "./components/ReviewSwap/ReviewSwap";
 import styles from "./Swap.module.css";
 import CurrencyBox from "../CurrencyBox/CurrencyBox";
 import Logo from "../Logo/Logo";
+import ExchangeRate from "./components/ExchangeRate/ExchangeRate";
 
 export type CurrencyBoxMode = "buy" | "sell";
 export type CurrencyBoxState = {
@@ -669,6 +670,10 @@ const Swap = ({isWidget}: {isWidget?: boolean}) => {
             />
           )}
 
+          <div className={styles.rates}>
+            <ExchangeRate swapState={swapState} />
+          </div>
+
           {!isConnected && (
             <ActionButton
               variant="primary"
@@ -696,9 +701,6 @@ const Swap = ({isWidget}: {isWidget?: boolean}) => {
             </ActionButton>
           )}
         </div>
-        {/* <div className={styles.rates}>
-          <ExchangeRate swapState={swapState} />
-        </div> */}
       </div>
       {swapPending && <div className={styles.loadingOverlay} />}
       <SettingsModal

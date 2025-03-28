@@ -1,3 +1,4 @@
+import clsx from "clsx";
 import {NotificationCheckboxIcon} from "../../icons/Checkbox/NotificationCheckboxIcon";
 import {TransactionsCloseIcon} from "../../icons/Close/TransactionsCloseIcon";
 import styles from "./CopyNotification.module.css";
@@ -15,7 +16,7 @@ export const CopyNotification: React.FC<CopyNotificationProps> = ({
     <div className={styles.wrapper}>
       <div className={styles.messageArea}>
         <NotificationCheckboxIcon />
-        <span className={styles.message}>{text}</span>
+        <span className={clsx(styles.message, "mc-type-m")}>{text}</span>
       </div>
       <button onClick={onClose} className={styles.closeButton}>
         <TransactionsCloseIcon />

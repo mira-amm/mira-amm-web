@@ -92,11 +92,11 @@ export const DesktopPosition = ({
       <td className={styles.labelCell}>
         <Link href={positionPath}>
           <ActionButton
-            className={styles.addButton}
+            // className={styles.addButton}
             variant="secondary"
             size={"longer"}
           >
-            Manage position
+            Manage Position
           </ActionButton>
         </Link>
       </td>

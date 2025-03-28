@@ -22,6 +22,7 @@ const DropDownMenu = forwardRef<HTMLUListElement, DropDownMenuProps>(
             <button
               className={clsx(
                 button.disabled ? styles.menuButtonDisabled : styles.menuButton,
+                "mc-type-m",
               )}
               onClick={button.onClick}
             >

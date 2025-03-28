@@ -168,3 +168,9 @@
     align-items: start;
   }
 }
+
+.loaderContainer {
+  width: 100%;
+  justify-content: center;
+  display: flex;
+}

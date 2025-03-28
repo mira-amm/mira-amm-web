@@ -67,8 +67,9 @@ const Pools = () => {
       {/* Action Button */}
       <div className={styles.actionButtonDiv}>
         <ActionButton
-          className={clsx("mobileOnly", styles.createButton)}
+          className={clsx("mobileOnly")}
           onClick={handleCreatePoolClick}
+          fullWidth
         >
           Create Pool
         </ActionButton>

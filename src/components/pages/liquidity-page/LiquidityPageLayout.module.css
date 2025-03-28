@@ -4,6 +4,10 @@
   gap: 16px;
 }
 
+.liquidityPageContainer {
+  gap: 47px;
+}
+
 @media (min-width: 1024px) {
   .promoBlocks {
     width: 100%;

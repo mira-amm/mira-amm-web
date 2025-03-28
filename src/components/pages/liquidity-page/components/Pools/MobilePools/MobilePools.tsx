@@ -51,7 +51,7 @@ const MobilePools = ({poolsData, orderBy, handleSort}: Props) => {
             );
           })
         ) : (
-          <p className={styles.noData}>No pools available</p>
+          <p className={clsx(styles.noData, "mc-type-m")}>No pools available</p>
         )}
       </div>
     </div>

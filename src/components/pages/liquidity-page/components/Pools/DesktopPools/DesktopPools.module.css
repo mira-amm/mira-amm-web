@@ -45,19 +45,8 @@
   text-align: center;
 }
 
-button.createButton {
-  padding: 12px;
-  font-weight: 500;
-  font-size: 16px;
-  line-height: 24px;
-  box-shadow: unset;
-  height: 40px;
-}
-
 .noData {
   text-align: center;
-  font-size: 16px;
-  font-weight: 500;
   color: var(--content-tertiary);
   padding: 16px 24px;
 }

@@ -38,9 +38,7 @@ const DesktopPools = ({poolsData, orderBy, handleSort}: Props) => {
           />
           <th>
             <Link href="/liquidity/create-pool">
-              <ActionButton className={styles.createButton} size={"longer"}>
-                Create Pool
-              </ActionButton>
+              <ActionButton size={"longer"}>Create Pool</ActionButton>
             </Link>
           </th>
         </tr>
@@ -52,7 +50,7 @@ const DesktopPools = ({poolsData, orderBy, handleSort}: Props) => {
           ))
         ) : (
           <tr>
-            <td colSpan={5} className={styles.noData}>
+            <td colSpan={5} className={clsx(styles.noData, "mc-type-m")}>
               No pools available
             </td>
           </tr>
