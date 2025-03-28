@@ -61,7 +61,6 @@ const CreatePool = () => {
           <CreatePoolDialog setPreviewData={setPreviewData} />
         )}
       </section>
-      {showPreview && <div className={styles.loadingOverlay} />}
     </>
   );
 };
