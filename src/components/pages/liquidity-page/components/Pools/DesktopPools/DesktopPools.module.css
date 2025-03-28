@@ -49,28 +49,35 @@
 }
 
 .desktopPools th:nth-child(1) {
-  width: 30%;
+  /* width: 30%; */
 }
 
+.desktopPools td:nth-child(2),
 .desktopPools th:nth-child(2) {
-  width: 20%;
+  text-align: left;
+  width: 16%;
   /* Width for the "APR" column */
 }
 
+.desktopPools td:nth-child(3),
 .desktopPools th:nth-child(3),
+.desktopPools td:nth-child(4),
 .desktopPools th:nth-child(4) {
-  width: 15%;
+  text-align: left;
+  width: 16%;
   /* Width for "24H Volume" and "TVL" columns */
 }
 
+.desktopPools td:nth-child(5),
 .desktopPools th:nth-child(5) {
-  width: 20%;
+  text-align: left;
+  width: 16%;
   /* Width for the "Create Pool" column */
 }
 
 .aprBadge {
   display: flex;
-  justify-content: center;
+  justify-content: start;
 }
 
 .labelCell {
