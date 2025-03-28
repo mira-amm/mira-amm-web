@@ -40,17 +40,20 @@
 
 .desktopPositions td:nth-child(2),
 .desktopPositions th:nth-child(2) {
-  text-align: center;
+  text-align: left;
+  width: 18%;
 }
 
 .desktopPositions td:nth-child(3),
 .desktopPositions th:nth-child(3) {
-  text-align: center;
+  text-align: left;
+  width: 18%;
 }
 
 .desktopPositions td:last-child,
 .desktopPositions th:last-child {
   text-align: right;
+  width: 21%;
 }
 
 .hideButton {
