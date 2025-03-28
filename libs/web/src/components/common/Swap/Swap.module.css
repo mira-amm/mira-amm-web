@@ -91,6 +91,14 @@
   line-height: 24px !important;
 }
 
+.coinsModal {
+  gap: 16px;
+}
+
+.settingsModal {
+  gap: 20px;
+}
+
 @media (min-width: 1024px) {
   .heading {
     font-size: 20px;
