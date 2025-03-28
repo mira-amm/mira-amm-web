@@ -119,6 +119,14 @@
   color: var(--mc-grey-4);
 }
 
+.liquidityTable th:first-child {
+  width: 240px;
+}
+
+.liquidityTable th:not(:first-child) {
+  width: 130px;
+}
+
 .liquidityTable td,
 .liquidityTable th {
   padding: 4px;
