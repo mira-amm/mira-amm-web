@@ -7,7 +7,7 @@
 
 .sortArea {
   display: flex;
-  justify-content: center;
+  justify-content: start;
   gap: 4px;
 }
 

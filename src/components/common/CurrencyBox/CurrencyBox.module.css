@@ -1,0 +1,75 @@
+.currencyBox {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  padding: 12px 16px;
+  border-radius: 10px;
+  background-color: var(--background-tertiary);
+  border: 1px solid var(--background-tertiary);
+}
+
+.currencyBox:focus-within {
+  border: 1px solid var(--border-dark);
+}
+
+.title,
+.fiatValue,
+.balance {
+  color: var(--content-secondary);
+}
+
+.content {
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.input {
+  width: 0;
+  flex: 1;
+  color: var(--content-primary);
+  background: transparent;
+  border: none;
+}
+
+.input:disabled {
+  color: var(--content-dimmed-light);
+  opacity: 0.5;
+}
+
+.chooseCoin {
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 19px;
+  color: var(--content-primary);
+}
+
+.estimateAndBalance {
+  min-height: 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: var(--content-dimmed-light);
+}
+
+.warningBox {
+  flex: 1;
+  background-color: rgba(255, 235, 59, 0.1);
+  border: 1px solid rgba(255, 235, 59, 0.3);
+  border-radius: 8px;
+  padding: 12px;
+}
+
+.warningLabel {
+  color: #d4a900;
+  font-size: 14px;
+  line-height: 1.4;
+  font-weight: 500;
+}
+
+@media (min-width: 1024px) {
+  .estimateAndBalance {
+    min-height: 18px;
+  }
+}

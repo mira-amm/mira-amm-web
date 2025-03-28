@@ -1,8 +1,8 @@
-.infoBlocks {
+/* .infoBlocks {
   display: flex;
   flex-direction: column;
   align-items: center;
-}
+} */
 
 .title {
   font-weight: 400;

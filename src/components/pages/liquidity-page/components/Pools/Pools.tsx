@@ -67,8 +67,9 @@ const Pools = () => {
       {/* Action Button */}
       <div className={styles.actionButtonDiv}>
         <ActionButton
-          className={clsx("mobileOnly", styles.createButton)}
+          className={clsx("mobileOnly")}
           onClick={handleCreatePoolClick}
+          fullWidth
         >
           Create Pool
         </ActionButton>
@@ -76,7 +77,7 @@ const Pools = () => {
 
       {/* Header with Search Bar */}
       <div className={styles.poolsHeader}>
-        <p className={styles.poolsTitle}>All Pools</p>
+        <p className={clsx(styles.poolsTitle, "mc-type-xxxl")}>All Pools</p>
         <SearchBar
           placeholder="Symbol or address..."
           className={styles.poolsSearchBar}
@@ -104,9 +105,7 @@ const Pools = () => {
       {/* Pagination */}
       {data && data.length > 0 && (
         <div className={styles.pagination}>
-          <p className={clsx("desktopOnly")}>
-            Showing {data.length} out of {totalCount} pools...
-          </p>
+          <p className={clsx("desktopOnly")}></p>
           <Pagination
             currentPage={page}
             totalPages={totalPages}

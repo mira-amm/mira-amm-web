@@ -23,7 +23,7 @@ const TransactionFailureModal = ({closeModal, error}: Props) => {
       <FailureIcon />
       <p className={styles.mainText}>{title}</p>
       <p className={styles.subText}>{message}</p>
-      <ActionButton onClick={closeModal} className={styles.viewButton}>
+      <ActionButton onClick={closeModal} fullWidth>
         Try again
       </ActionButton>
     </div>

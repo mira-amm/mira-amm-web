@@ -1,6 +1,5 @@
 import styles from "@/src/components/pages/add-liquidity-page/components/AddLiquidity/AddLiquidity.module.css";
 import CoinPair from "@/src/components/common/CoinPair/CoinPair";
-import CoinInput from "@/src/components/pages/add-liquidity-page/components/CoinInput/CoinInput";
 import {clsx} from "clsx";
 import ActionButton from "@/src/components/common/ActionButton/ActionButton";
 import useBalances from "@/src/hooks/useBalances/useBalances";
@@ -24,11 +23,7 @@ import {DefaultLocale, FuelAppUrl} from "@/src/utils/constants";
 import Info from "@/src/components/common/Info/Info";
 import {AddLiquidityPreviewData} from "@/src/components/pages/add-liquidity-page/components/AddLiquidity/PreviewAddLiquidityDialog";
 import {PoolId} from "mira-dex-ts";
-import {
-  APRTooltip,
-  StablePoolTooltip,
-  VolatilePoolTooltip,
-} from "@/src/components/pages/add-liquidity-page/components/AddLiquidity/addLiquidityTooltips";
+import {APRTooltip} from "@/src/components/pages/add-liquidity-page/components/AddLiquidity/addLiquidityTooltips";
 import useModal from "@/src/hooks/useModal/useModal";
 import TransactionFailureModal from "@/src/components/common/TransactionFailureModal/TransactionFailureModal";
 import {BN, bn} from "fuels";
@@ -37,6 +32,8 @@ import useAssetMetadata from "@/src/hooks/useAssetMetadata";
 import {useAssetPrice} from "@/src/hooks/useAssetPrice";
 import AprBadge from "@/src/components/common/AprBadge/AprBadge";
 import usePoolNameAndMatch from "@/src/hooks/usePoolNameAndMatch";
+import CurrencyBox from "@/src/components/common/CurrencyBox/CurrencyBox";
+import {isMobile} from "react-device-detect";
 
 type Props = {
   poolId: PoolId;
@@ -168,6 +165,8 @@ const AddLiquidityDialog = ({
     ],
   );
 
+  const oneOfAmountsIsEmpty = firstAmount.eq(0) || secondAmount.eq(0);
+
   const sufficientEthBalanceForFirstCoin = useCheckEthBalance({
     assetId: poolId[0].bits,
     amount: firstAmount.formatUnits(asset0Metadata.decimals),
@@ -218,13 +217,12 @@ const AddLiquidityDialog = ({
   let buttonTitle = "Preview";
   if (!isValidNetwork) {
     buttonTitle = "Incorrect network";
-  } else if (!sufficientEthBalance) {
+  } else if (oneOfAmountsIsEmpty) buttonTitle = "Input amounts";
+  else if (!sufficientEthBalance) {
     buttonTitle = "Bridge more ETH to pay for gas";
   } else if (insufficientBalance) {
     buttonTitle = "Insufficient balance";
   }
-
-  const oneOfAmountsIsEmpty = firstAmount.eq(0) || secondAmount.eq(0);
 
   const buttonDisabled =
     !isValidNetwork || insufficientBalance || oneOfAmountsIsEmpty;
@@ -234,10 +232,10 @@ const AddLiquidityDialog = ({
 
   return (
     <>
-      <div className={styles.section}>
-        <p>Selected pair</p>
+      <div className={styles.addLiquidityContent}>
         <div className={styles.sectionContent}>
-          <div className={styles.coinPair}>
+          <p className={clsx(styles.subHeader, "mc-type-m")}>Selected pair</p>
+          <div className={styles.coinHeader}>
             <CoinPair
               firstCoin={firstAssetId}
               secondCoin={secondAssetId}
@@ -245,7 +243,7 @@ const AddLiquidityDialog = ({
             />
             <div className={styles.APR}>
               <div className={styles.aprText}>
-                <p>Estimated APR</p>
+                <p className="mc-type-s">Estimated APR</p>
                 <Info tooltipText={APRTooltip} tooltipKey="apr" />
               </div>
               {isMatching ? (
@@ -259,18 +257,13 @@ const AddLiquidityDialog = ({
                           : "pending"
                     }
                     small={true}
-                    leftAlignValue={"-200px"}
+                    leftAlignValue="-80"
                     poolKey={poolKey}
                     tvlValue={tvlValue}
                   />
                 </div>
               ) : (
-                <span
-                  className={clsx(
-                    aprValue && styles.highlight,
-                    !aprValue && styles.pending,
-                  )}
-                >
+                <span className={clsx(aprValue ? "mc-mono-m" : "mc-type-m")}>
                   {aprValue ? `${aprValue}%` : "Awaiting data"}
                 </span>
               )}
@@ -285,16 +278,14 @@ const AddLiquidityDialog = ({
               )}
               role="button"
             >
-              <div className={styles.poolStabilityButtonTitle}>
-                <p>Volatile pool</p>
-                <Info
-                  tooltipText={VolatilePoolTooltip}
-                  tooltipKey="volatilePool"
-                />
+              <div className={styles.poolStabilityButtonContent}>
+                <span className={"mc-type-b"}>
+                  {isMobile
+                    ? "0.30% fee tier"
+                    : "0.30% fee tier (volatile pool)"}
+                </span>
               </div>
-              <p>0.30% fee tier</p>
             </div>
-
             <div
               className={clsx(
                 styles.poolStabilityButton,
@@ -303,33 +294,35 @@ const AddLiquidityDialog = ({
               )}
               role="button"
             >
-              <div className={styles.poolStabilityButtonTitle}>
-                <p>Stable pool</p>
-                <Info tooltipText={StablePoolTooltip} tooltipKey="stablePool" />
+              <div className={styles.poolStabilityButtonContent}>
+                <span className={"mc-type-b"}>
+                  {isMobile ? "0.05% fee tier" : "0.05% fee tier (stable pool)"}
+                </span>
+                {/* <Info tooltipText={StablePoolTooltip} tooltipKey="stablePool" /> */}
               </div>
-              <p>0.05% fee tier</p>
             </div>
           </div>
         </div>
       </div>
-      <div className={styles.section}>
-        <p>Deposit amount</p>
+      <div className={styles.depositAmountSection}>
+        <p className={clsx(styles.subHeader, "mc-type-m")}>Deposit amounts</p>
         <div className={styles.sectionContent}>
-          <CoinInput
+          <CurrencyBox
             assetId={firstAssetId}
             value={firstAmountInput}
             loading={!isFirstToken && isFetching}
             setAmount={setAmount(poolId[0].bits)}
             balance={firstAssetBalance}
-            usdRate={asset0Price || undefined}
+            usdRate={asset0Price}
           />
-          <CoinInput
+
+          <CurrencyBox
             assetId={secondAssetId}
             value={secondAmountInput}
             loading={isFirstToken && isFetching}
             setAmount={setAmount(poolId[1].bits)}
             balance={secondAssetBalance}
-            usdRate={asset1Price || undefined}
+            usdRate={asset1Price}
           />
         </div>
       </div>
@@ -338,11 +331,18 @@ const AddLiquidityDialog = ({
           variant="secondary"
           onClick={connect}
           loading={isConnecting}
+          fullWidth
+          size="big"
         >
           Connect Wallet
         </ActionButton>
       ) : (
-        <ActionButton disabled={buttonDisabled} onClick={handleButtonClick}>
+        <ActionButton
+          disabled={buttonDisabled}
+          onClick={handleButtonClick}
+          fullWidth
+          size="big"
+        >
           {buttonTitle}
         </ActionButton>
       )}

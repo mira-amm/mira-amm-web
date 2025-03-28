@@ -52,7 +52,7 @@ const Header = ({isHomePage}: Props): JSX.Element => {
         <section className={styles.promo}>
           <div className={styles.promo_text}>
             <PointsIcon />
-            <p>
+            <p className="mc-type-l">
               {POINTS_PROMO_TITLE}
               <Link href={POINTS_LEARN_MORE_URL} target="_blank">
                 <u>Learn More</u>
@@ -67,7 +67,10 @@ const Header = ({isHomePage}: Props): JSX.Element => {
       <section className={styles.main}>
         <div className={styles.left}>
           <Logo />
-          <div className={clsx("desktopOnly", styles.links)}>
+        </div>
+
+        <div className={styles.center}>
+          <div className={clsx("desktopOnly", "mc-type-l", styles.links)}>
             <Link
               //TEMPORARY ROUTING SINCE LANDING PAGE IS DISABLED
               href="/"
@@ -105,11 +108,8 @@ const Header = ({isHomePage}: Props): JSX.Element => {
             </a>
           </div>
         </div>
-        <div className={clsx("mobileOnly", styles.links)}>
-          <DisconnectMobile className={styles.disconnectMobile} />
-          <MobileMenu />
-        </div>
-        <div className={clsx("desktopOnly", styles.links)}>
+
+        <div className={clsx("desktopOnly", styles.right)}>
           {isHomePage && (
             <>
               <a
@@ -124,7 +124,7 @@ const Header = ({isHomePage}: Props): JSX.Element => {
               </a>
             </>
           )}
-          {!isHomePage && <TestnetLabel />}
+          {/* {!isHomePage && <TestnetLabel />} */}
           {!isHomePage && <ConnectButton className={styles.launchAppButton} />}
           {isHomePage && (
             <div className={styles.launchAppArea}>
@@ -135,6 +135,11 @@ const Header = ({isHomePage}: Props): JSX.Element => {
               )}
             </div>
           )}
+        </div>
+
+        <div className={clsx("mobileOnly", styles.links)}>
+          <DisconnectMobile className={styles.disconnectMobile} />
+          <MobileMenu />
         </div>
       </section>
     </header>

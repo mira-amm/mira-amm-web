@@ -1,20 +1,16 @@
-.loadingFallback {
+.loaderIconContainer {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 16px;
-  padding: 28px 16px;
-  border-radius: 16px;
-  background-color: var(--background-grey-dark);
 }
 
-.tableContainer {
+/* .tableContainer {
   width: 100%;
   overflow-x: auto;
   border-radius: 12px;
   background-color: var(--background-grey-dark);
   padding: 16px;
-}
+} */
 
 .table {
   width: 100%;
@@ -25,10 +21,8 @@
 .tableHeader {
   padding: 16px;
   text-align: left;
-  font-weight: 400;
-  font-size: 16px;
-  color: var(--content-tertiary);
-  border-bottom: 1px solid var(--background-grey-darker);
+  color: var(--mc-black);
+  border-bottom: 1px solid var(--background-grey-light);
 }
 
 .tableRow {
@@ -38,7 +32,7 @@
 .tableCell {
   padding: 16px;
   font-size: 16px;
-  border-bottom: 1px solid #2a2b35;
+  /* border-bottom: 1px solid #2a2b35; */
 }
 
 .pointsCell {

@@ -36,10 +36,7 @@ const AddLiquiditySuccessModal = ({
       <SuccessIcon />
       <p className={styles.mainText}>Success</p>
       <p className={styles.subText}>{subText}</p>
-      <ActionButton
-        onClick={handleViewTransactionClick}
-        className={styles.viewButton}
-      >
+      <ActionButton onClick={handleViewTransactionClick} fullWidth>
         View transaction
       </ActionButton>
     </div>

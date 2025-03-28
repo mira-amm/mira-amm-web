@@ -7,35 +7,59 @@
 .promo {
   display: flex;
   padding: 12px 16px;
-  background-color: #507ff7;
+  background-color: var(--background-promotional-banner);
   justify-content: space-between;
+  align-items: center;
 }
 
 .promo_text {
   display: flex;
+  color: var(--primary-white);
 }
 
 .promo_text u {
   margin-left: 5px;
 }
 
-.promo svg {
-  margin-right: 5px;
-  width: 18px;
-  height: 18px;
+.promo_text u:hover {
+  color: var(--background-secondary);
+}
+
+.promo_text svg {
+  margin-right: 8px;
+  min-width: 18px;
+  min-height: 18px;
+  width: 1.2em;
+  height: 1.2em;
+  color: var(--transparent-white) !important;
 }
 
 .main {
   display: flex;
+  align-items: center;
   justify-content: space-between;
   padding: 16px;
   gap: 16px;
   background-color: var(--background-primary);
 }
 
+.left {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.center {
+  display: none;
+}
+
+.right {
+  display: none;
+}
+
 .links {
   display: flex;
-  gap: 16px;
+  gap: 24px;
   align-items: center;
 }
 
@@ -69,6 +93,16 @@
   cursor: pointer;
 }
 
+.promoClose {
+  color: var(--transparent-white) !important;
+}
+
+@media (max-width: 768px) {
+  .promo_text p {
+    font-size: 15px;
+  }
+}
+
 @media (min-width: 1024px) {
   .header {
     position: relative;
@@ -76,30 +110,36 @@
     line-height: 24px;
   }
 
-  .launchAppArea {
-    display: flex;
-    gap: 24px;
-    align-items: center;
-  }
-
   .promo {
-    font-size: 18px;
-    line-height: 22px;
     justify-content: center;
     text-align: center;
   }
 
   .main {
-    padding: 16px 40px;
+    padding: 25px 27px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
   }
 
   .left {
     display: flex;
-    gap: 38px;
+    flex: 1;
     align-items: center;
+    gap: 24px;
   }
 
-  .links {
+  .center {
+    display: flex;
+    justify-content: center;
+    gap: 24px;
+  }
+
+  .right {
+    display: flex;
+    flex: 1;
+    justify-content: flex-end;
+    align-items: center;
     gap: 24px;
   }
 
@@ -107,19 +147,25 @@
     display: inline-flex;
     position: relative;
     align-items: center;
-    transition: all 0.3s ease;
-  }
-
-  .link:hover,
-  .activeLink {
     padding: 6px 12px;
     border-radius: 20px;
-    background: var(--background-grey-light);
+    transition: all 0.3s ease;
+    color: var(--content-secondary);
+  }
+
+  .activeLink {
+    background: var(--content-primary);
+    color: var(--background-white);
   }
 
   .link:hover:not(.activeLink) {
-    margin: -6px -12px;
-    color: var(--content-primary) !important;
+    background: var(--background-grey-light);
+    color: var(--content-secondary);
+  }
+
+  .activeLink:hover {
+    opacity: 0.9;
+    color: var(--background-white);
   }
 
   .linkAlike {
@@ -155,7 +201,7 @@
 
   .promoClose {
     position: absolute;
-    /* top: 16px; */
+    color: var(--transparent-white) !important;
     right: 16px;
     cursor: pointer;
   }

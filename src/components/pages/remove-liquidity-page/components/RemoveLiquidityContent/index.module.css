@@ -1,0 +1,197 @@
+.removeLiquidityContent {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.subHeader {
+  color: var(--mc-black);
+  padding: 14px 0 16px;
+}
+
+.coinHeader {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.APR {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 8px;
+  line-height: 14px;
+  padding-bottom: 4px;
+}
+
+.aprText {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+}
+
+.valueAndMax,
+.someText {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.value {
+  font-weight: 500;
+  font-size: 24px;
+  line-height: 28px;
+}
+
+.maxButton {
+  text-transform: uppercase;
+  color: var(--accent-primary);
+  font-size: 12px;
+  line-height: 16px;
+  padding: 4px 8px;
+  border: 1px solid var(--accent-primary);
+  border-radius: 4px;
+  cursor: pointer;
+  background: transparent;
+}
+
+.maxButton:hover {
+  transition: opacity 0.2s;
+  opacity: 0.8;
+}
+
+.feesButton {
+  border: none;
+  background: transparent;
+  color: var(--accent-primary);
+  cursor: pointer;
+}
+
+.feesButton:hover {
+  transition: opacity 0.2s;
+  opacity: 0.8;
+}
+
+.someText {
+  font-size: 12px;
+  line-height: 16px;
+}
+
+.dimmed {
+  color: var(--content-tertiary);
+}
+
+.highlight {
+  color: var(--accent-primary);
+}
+
+.tableWrapper {
+  padding: 18px 16px 0;
+  border-radius: 8px;
+  background-color: var(--mc-grey-2);
+}
+
+.liquidityTable {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+  line-height: 100%;
+  font-weight: 500;
+}
+
+.liquidityTable tr {
+  position: relative;
+}
+
+.liquidityTable tbody tr:nth-child(1)::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 1px;
+  background-color: var(--mc-grey-3);
+}
+
+.liquidityTable th {
+  text-align: left;
+  color: var(--mc-grey-4);
+}
+
+.liquidityTable th:first-child {
+  width: 240px;
+}
+
+.liquidityTable th:not(:first-child) {
+  width: 130px;
+}
+
+.liquidityTable td,
+.liquidityTable th {
+  padding: 4px;
+}
+
+.divider {
+  border: 0;
+  height: 1px;
+  background-color: none;
+  width: 100%;
+  margin: 4px 0;
+}
+
+.infoBlockText {
+  color: var(--mc-yellow);
+}
+
+.sliderContainer {
+  color: var(--mc-grey-4);
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.sliderInfoContainer {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+}
+
+.lastRow {
+  font-weight: 500;
+  color: var(--content-primary);
+  border-top: 1px solid var(--background-grey-dark);
+}
+
+.lastRow > td {
+  padding: 16px 4px;
+}
+
+tr:has(+ .lastRow) > td {
+  padding-bottom: 16px;
+}
+
+@media (min-width: 1024px) {
+  .coinHeader {
+    flex-direction: row;
+  }
+
+  .liquidityTable {
+    font-size: 16px;
+    line-height: 19px;
+  }
+
+  .buttons {
+    flex-direction: row-reverse;
+  }
+
+  .maxButton {
+    min-width: 75px;
+  }
+
+  .buttons > button {
+    width: 50%;
+    padding: 12px 16px;
+  }
+}

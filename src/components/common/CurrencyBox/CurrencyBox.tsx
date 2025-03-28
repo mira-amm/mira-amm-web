@@ -2,30 +2,38 @@ import {ChangeEvent, memo, useCallback} from "react";
 import {clsx} from "clsx";
 
 import Coin from "@/src/components/common/Coin/Coin";
-import ChevronDownIcon from "@/src/components/icons/ChevronDown/ChevronDownIcon";
 import {CurrencyBoxMode} from "@/src/components/common/Swap/Swap";
-import {CoinName, coinsConfig} from "@/src/utils/coinsConfig";
 
 import styles from "./CurrencyBox.module.css";
 import TextButton from "@/src/components/common/TextButton/TextButton";
-import {DefaultLocale, MinEthValueBN} from "@/src/utils/constants";
-import {InsufficientReservesError} from "mira-dex-ts/dist/sdk/errors";
-import {NoRouteFoundError} from "@/src/hooks/useSwapPreview";
+import {MinEthValueBN} from "@/src/utils/constants";
 import {B256Address, BN} from "fuels";
 import useAssetMetadata from "@/src/hooks/useAssetMetadata";
 import fiatValueFormatter from "@/src/utils/abbreviateNumber";
-type Props = {
+
+type BaseProps = {
   value: string;
   assetId: B256Address | null;
-  mode: CurrencyBoxMode;
   balance: BN;
   setAmount: (amount: string) => void;
-  loading: boolean;
-  onCoinSelectorClick: (mode: CurrencyBoxMode) => void;
+  loading?: boolean;
   usdRate: number | null;
   previewError?: string | null;
+  isDisabled?: boolean;
   className?: string;
 };
+
+type SwapPageProps = BaseProps & {
+  mode: CurrencyBoxMode;
+  onCoinSelectorClick?: (param: CurrencyBoxMode) => void;
+};
+
+type LiquidityPageProps = BaseProps & {
+  mode?: never;
+  onCoinSelectorClick?: () => void;
+};
+
+type Props = SwapPageProps | LiquidityPageProps;
 
 const CurrencyBox = ({
   value,
@@ -37,6 +45,7 @@ const CurrencyBox = ({
   onCoinSelectorClick,
   usdRate,
   previewError,
+  isDisabled,
   className,
 }: Props) => {
   const metadata = useAssetMetadata(assetId);
@@ -52,12 +61,17 @@ const CurrencyBox = ({
   };
 
   const handleCoinSelectorClick = () => {
-    if (!loading) {
-      onCoinSelectorClick(mode);
+    if (!loading && onCoinSelectorClick) {
+      if (mode) {
+        onCoinSelectorClick(mode);
+      } else {
+        onCoinSelectorClick();
+      }
     }
   };
 
   const handleMaxClick = useCallback(() => {
+    if (!balance.gt(0)) return;
     let amountStringToSet;
     // TODO ETH AssetId
     if (metadata.symbol === "ETH" && mode === "sell") {
@@ -70,7 +84,14 @@ const CurrencyBox = ({
     }
 
     setAmount(amountStringToSet);
-  }, [assetId, mode, balance, setAmount, metadata]);
+  }, [
+    balance,
+    metadata.symbol,
+    metadata.decimals,
+    mode,
+    setAmount,
+    balanceValue,
+  ]);
 
   const coinNotSelected = assetId === null;
 
@@ -78,11 +99,17 @@ const CurrencyBox = ({
   const usdValue =
     !isNaN(numericValue) && Boolean(usdRate)
       ? fiatValueFormatter(numericValue * usdRate!)
-      : null;
+      : !Boolean(usdRate)
+        ? "-"
+        : fiatValueFormatter(0);
 
   return (
     <div className={clsx(styles.currencyBox, className)}>
-      <p className={styles.title}>{mode === "buy" ? "Buy" : "Sell"}</p>
+      {mode && (
+        <p className={clsx(styles.title, "mc-type-s")}>
+          {mode === "buy" ? "Buy" : "Sell"}
+        </p>
+      )}
       <div className={styles.content}>
         {previewError ? (
           <div className={styles.warningBox}>
@@ -90,44 +117,40 @@ const CurrencyBox = ({
           </div>
         ) : (
           <input
-            className={clsx(styles.input, loading && "blurredTextLight")}
+            className={clsx(
+              styles.input,
+              "mc-mono-xxl",
+              loading && "blurredTextLight",
+            )}
             type="text"
             inputMode="decimal"
             pattern="^[0-9]*[.,]?[0-9]*$"
             placeholder="0"
             minLength={1}
             value={value}
-            disabled={coinNotSelected || loading}
+            disabled={coinNotSelected || loading || isDisabled}
             onChange={handleChange}
           />
         )}
-
-        <button
-          className={clsx(
-            styles.selector,
-            coinNotSelected && styles.selectorHighlighted,
-          )}
+        <Coin
+          assetId={assetId}
           onClick={handleCoinSelectorClick}
-          disabled={loading}
-        >
-          {coinNotSelected ? (
-            <p className={styles.chooseCoin}>Choose coin</p>
-          ) : (
-            <Coin assetId={assetId} />
-          )}
-          <ChevronDownIcon />
-        </button>
+          coinSelectionDisabled={!Boolean(onCoinSelectorClick)}
+        />
       </div>
-      <div className={styles.estimateAndBalance}>
-        <p className={styles.estimate}>{usdValue !== null && usdValue}</p>
-        {balance.gt(0) && (
-          <span className={styles.balance}>
-            Balance: {balanceValue}
+      {assetId && (
+        <div className={styles.estimateAndBalance}>
+          <p className={clsx(styles.fiatValue, "mc-mono-s")}>{`${usdValue}`}</p>
+          <span className={clsx(styles.balance, "mc-type-s")}>
+            Balance:{" "}
+            <span className="mc-mono-s">
+              {balance.gt(0) ? balanceValue : 0}
+            </span>
             &nbsp;
             <TextButton onClick={handleMaxClick}>Max</TextButton>
           </span>
-        )}
-      </div>
+        </div>
+      )}
     </div>
   );
 };

@@ -1,5 +1,10 @@
+.container {
+  position: relative;
+}
+
 button.connected {
   display: flex;
+  justify-content: space-between;
   align-items: center;
   gap: 10px;
   padding: 16px 8px;
@@ -7,6 +12,13 @@ button.connected {
   background-color: transparent;
   border: 1px solid var(--accent-primary);
   box-shadow: none;
+}
+
+@media (max-width: 1024px) {
+  button.connected {
+    width: 120px;
+    height: 32px;
+  }
 }
 
 button.connected:hover {

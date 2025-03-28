@@ -5,10 +5,11 @@ import {FuelAppUrl} from "@/src/utils/constants";
 import {useAccount, useIsConnected} from "@fuels/react";
 import Image from "next/image";
 import {forwardRef, useMemo} from "react";
-import {TransactionsCloseIcon} from "../../icons/Close/TransactionsCloseIcon";
+import CloseIcon from "../../icons/Close/CloseIcon";
 import CopyAddressIcon from "../../icons/Copy/CopyAddressIcon";
 import styles from "./TransactionsHistory.module.css";
 import SkeletonLoader from "../Swap/components/SkeletonLoader/SkeletonLoader";
+import clsx from "clsx";
 
 interface TransactionsHistoryProps {
   onClose: () => void;
@@ -48,17 +49,17 @@ const TransactionsHistory = forwardRef<
   return (
     <div className={isOpened ? styles.overlayOpened : styles.overlayClosed}>
       <div
-        className={`${styles.wrapper} ${isOpened ? styles.open : styles.close}`}
+        className={`action-container ${styles.wrapper} ${isOpened ? styles.open : styles.close}`}
         ref={ref}
       >
         <div className={styles.header}>
-          <h2 className={styles.title}>Transactions History</h2>
+          <h2 className="mc-type-xl">Transactions History</h2>
           <button
             type="button"
             className={styles.transactionCloseButton}
             onClick={onClose}
           >
-            <TransactionsCloseIcon />
+            <CloseIcon />
           </button>
         </div>
         <div className={styles.accountInfo}>
@@ -71,7 +72,7 @@ const TransactionsHistory = forwardRef<
               width={40}
               height={40}
             />
-            <span className={styles.accountWallet}>{walletAddress}</span>
+            <span className="mc-type-m">{walletAddress}</span>
             <button
               className={styles.copyButton}
               type="button"
@@ -86,7 +87,9 @@ const TransactionsHistory = forwardRef<
           <ul className={styles.transactionsList}>
             {Object.entries(transactions).map(([date, transactions]) => (
               <li key={date} className={styles.transactionGroup}>
-                <span className={styles.transactionDate}>{date}</span>
+                <span className={clsx(styles.transactionDate, "mc-type-m")}>
+                  {date}
+                </span>
                 <ul className={styles.transactions}>
                   {transactions.map((transaction, index) => (
                     <li key={index} className={styles.transaction}>
@@ -120,7 +123,12 @@ const TransactionsHistory = forwardRef<
                               target="_blank"
                               rel="noopener noreferrer"
                             >
-                              <span className={styles.transactionName}>
+                              <span
+                                className={clsx(
+                                  styles.transactionName,
+                                  "mc-type-m",
+                                )}
+                              >
                                 {transaction.name}
                               </span>
                             </a>
@@ -134,7 +142,12 @@ const TransactionsHistory = forwardRef<
                               }`}
                             ></div>
                           </div>
-                          <span className={styles.transactionAmount}>
+                          <span
+                            className={clsx(
+                              styles.transactionAmount,
+                              "mc-mono-b",
+                            )}
+                          >
                             {transaction.firstAssetAmount}{" "}
                             {transaction.firstAsset.name}
                             {transaction.addLiquidity || transaction.withdrawal
@@ -154,7 +167,7 @@ const TransactionsHistory = forwardRef<
         </SkeletonLoader>
       </div>
       <div
-        className={isOpened ? styles.linerVisible : styles.linerHidden}
+      // className={isOpened ? styles.linerVisible : styles.linerHidden}
       ></div>
     </div>
   );

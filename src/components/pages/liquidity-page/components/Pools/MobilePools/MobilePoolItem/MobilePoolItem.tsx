@@ -45,7 +45,7 @@ const MobilePoolItem = ({poolData}: Props): JSX.Element => {
         <div className={styles.infoBlocks}>
           {isMatching ? (
             <div>
-              <p>{"APR"}</p>
+              <p className="mc-type-m">{"APR"}</p>
               <AprBadge
                 small={true}
                 aprValue={aprValue}
@@ -62,12 +62,7 @@ const MobilePoolItem = ({poolData}: Props): JSX.Element => {
         </div>
         <p className={styles.poolDescription}>{poolDescription}</p>
       </div>
-      <ActionButton
-        className={styles.addButton}
-        variant="secondary"
-        onClick={handleAddClick}
-        fullWidth
-      >
+      <ActionButton variant="secondary" onClick={handleAddClick} fullWidth>
         Add Liquidity
       </ActionButton>
     </div>

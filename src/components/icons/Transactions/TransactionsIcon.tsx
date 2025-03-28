@@ -7,7 +7,7 @@ export const TransactionsIcon = () => {
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
     >
-      <g clip-path="url(#clip0_11890_35187)">
+      <g clipPath="url(#clip0_11890_35187)">
         <path
           d="M22.3877 7.68945H12.3877M22.3877 7.68945L17.3877 12.6895M22.3877 7.68945L17.3877 2.68945"
           stroke="var(--content-grey)"

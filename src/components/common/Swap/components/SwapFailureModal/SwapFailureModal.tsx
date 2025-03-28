@@ -35,7 +35,7 @@ const SwapFailureModal = ({error, closeModal, customTitle}: Props) => {
         {customTitle && customTitle.length > 0 ? customTitle : title}
       </p>
       <p className={styles.subText}>{message}</p>
-      <ActionButton onClick={closeModal} className={styles.viewButton}>
+      <ActionButton onClick={closeModal} fullWidth>
         Try again
       </ActionButton>
     </div>

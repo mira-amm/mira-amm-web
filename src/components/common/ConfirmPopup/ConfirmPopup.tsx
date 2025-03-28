@@ -77,10 +77,15 @@ export const ConfirmPopup: FC<ConfirmPopupProps> = ({
             variant="outlined"
             onClick={onDeny}
             loading={disconnectIsPending}
+            fullWidth
           >
             Deny and Disconnect
           </ActionButton>
-          <ActionButton className={styles.popupButton} onClick={onConfirm}>
+          <ActionButton
+            className={styles.popupButton}
+            onClick={onConfirm}
+            fullWidth
+          >
             Sign and Confirm
           </ActionButton>
         </div>

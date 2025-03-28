@@ -10,12 +10,13 @@ type Props = {
 const InfoBlock = ({title, value, type}: Props): JSX.Element => {
   return (
     <div className={styles.infoBlock}>
-      <p>{title}</p>
+      <p className="mc-type-m">{title}</p>
       <p
         className={clsx(
           styles.infoBlockValue,
           type === "positive" && styles.infoBlockValuePositive,
           !value && styles.pending,
+          "mc-mono-m",
         )}
       >
         {value ?? "Awaiting data"}

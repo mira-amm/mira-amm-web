@@ -1,6 +1,7 @@
 import {ReactNode} from "react";
 
 import styles from "./PromoBlock.module.css";
+import clsx from "clsx";
 
 type Props = {
   icon: ReactNode;
@@ -14,8 +15,8 @@ const PromoBlock = ({icon, title, link, linkText}: Props) => {
     <a href={link} className={styles.promoBlock} target="_blank">
       <div className={styles.icon}>{icon}</div>
       <div className={styles.content}>
-        <p className={styles.title}>{title}</p>
-        <p className={styles.text}>{linkText}</p>
+        <p className={clsx(styles.title, "mc-type-m")}>{title}</p>
+        <p className={clsx(styles.text, "mc-type-m")}>{linkText}</p>
       </div>
     </a>
   );

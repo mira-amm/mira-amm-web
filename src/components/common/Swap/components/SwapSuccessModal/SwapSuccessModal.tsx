@@ -31,10 +31,7 @@ const SwapSuccessModal = ({swapState, transactionHash}: Props) => {
       <SuccessIcon />
       <p className={styles.mainText}>Swap success</p>
       <p className={styles.subText}>{subText}</p>
-      <ActionButton
-        onClick={handleViewTransactionClick}
-        className={styles.viewButton}
-      >
+      <ActionButton onClick={handleViewTransactionClick} fullWidth>
         View transaction
       </ActionButton>
     </div>

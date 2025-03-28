@@ -2,71 +2,66 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 8px; /* Space between buttons */
-  flex-wrap: wrap; /* Allow wrapping on smaller screens */
+  gap: 8px;
   padding: 8px;
+  overflow-x: auto;
 }
 
 .paginationButton {
   padding: 8px 12px;
-  background-color: #2a2a3c;
-  border: none;
-  color: #ffffff;
-  font-size: 14px;
-  font-weight: 500;
-  border-radius: 4px;
+  border: 1px solid var(--border-dark);
+  background-color: var(--background-secondary);
+  border-radius: 8px;
   cursor: pointer;
+  min-width: 41px;
+  min-height: 40px;
   transition:
     background-color 0.2s,
     color 0.2s;
 }
 
 .paginationButton.active {
-  background-color: var(--accent-dimmed);
-  color: var(--accent-primary);
+  background-color: black;
+  border: 1px solid black;
+  color: white;
   font-weight: bold;
 }
 
 .paginationButton:disabled {
-  opacity: 0.5;
   cursor: not-allowed;
+  border: 1px solid var(--background-secondary);
 }
 
-.paginationButton:hover:not(:disabled) {
-  background-color: #3b3b4e;
+.paginationButton span {
+  display: none;
 }
 
-@media (max-width: 390px) {
+.paginationButton svg {
+  display: inline-block;
+}
+
+.paginationButton:disabled svg {
+  fill: var(--background-grey-light);
+}
+
+.paginationButton:hover:not(:disabled):not(.active) {
+  background-color: var(--background-grey-light);
+}
+
+@media (max-width: 600px) {
   .paginationButton {
     padding: 6px 8px;
     font-size: 12px;
-  }
-}
-
-/* Responsive styles for mobile */
-@media (max-width: 600px) {
-  .pagination {
-    gap: 4px;
+    min-width: 32px;
+    min-height: 31px;
+    border-radius: 6px;
   }
 
   .paginationButton.previous,
   .paginationButton.next {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 32px; /* Fixed size for the buttons */
-    height: 32px;
+    min-width: 35px;
     padding: 0;
-  }
-
-  /* Hide text on mobile */
-  .paginationButton span {
-    display: none;
-  }
-
-  /* Show icon only on mobile */
-  .paginationButton svg {
-    display: inline-block;
+    display: flex;
   }
 }
 

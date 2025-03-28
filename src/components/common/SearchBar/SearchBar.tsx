@@ -14,7 +14,7 @@ export const SearchBar: React.FC<SearchBarProps> = ({
     <div className={clsx(styles.searchBar, className)}>
       <SearchIcon />
       <input
-        className={styles.searchInput}
+        className={clsx(styles.searchInput, "mc-type-m")}
         type="text"
         placeholder={placeholder}
         value={value}

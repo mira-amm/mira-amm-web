@@ -1,0 +1,43 @@
+.statusModal {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 12px;
+  gap: 12px;
+}
+
+.statusContent {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+
+.mainText {
+  text-align: center;
+}
+
+.subText {
+  color: var(--mc-grey-4);
+  text-align: center;
+}
+
+.subTextOnly {
+  margin-bottom: 48px;
+}
+
+.statusModal > svg {
+  width: 80px;
+  height: 80px;
+}
+
+@media (min-width: 1024px) {
+  .statusModal {
+    gap: 32px;
+  }
+
+  .claimFailureModal > svg {
+    width: 80px;
+    height: 80px;
+  }
+}

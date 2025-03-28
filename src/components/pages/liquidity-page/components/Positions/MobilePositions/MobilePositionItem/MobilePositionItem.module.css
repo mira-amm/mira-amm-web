@@ -16,19 +16,7 @@
 }
 
 .poolDescription {
-  font-size: 15px;
-  line-height: 17px;
   color: #d4b226;
-}
-
-.poolValue {
-  font-size: 14px;
-}
-
-.addButton {
-  height: 40px;
-  font-weight: 500;
-  font-size: 16px;
 }
 
 .aprDiv {
@@ -39,11 +27,9 @@
 
 .title {
   color: var(--content-primary);
-  font-size: 15px;
 }
 
 .value {
-  font-size: 14px;
   color: var(--content-tertiary);
 }
 
@@ -75,6 +61,5 @@
 
 .loadingText {
   color: var(--content-primary);
-  font-size: 14px;
   animation: fade 0.5s linear infinite alternate;
 }
