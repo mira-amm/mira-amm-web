@@ -11,7 +11,7 @@ import usePoolNameAndMatch from "@/src/hooks/usePoolNameAndMatch";
 import usePositionData from "@/src/hooks/usePositionData";
 import useRemoveLiquidity from "@/src/hooks/useRemoveLiquidity";
 import {createPoolKey} from "@/src/utils/common";
-import {APRTooltip, DefaultLocale} from "@/src/utils/constants";
+import {DefaultLocale} from "@/src/utils/constants";
 import clsx from "clsx";
 import {bn, formatUnits, FuelError} from "fuels";
 import {PoolId} from "mira-dex-ts";
@@ -19,6 +19,7 @@ import {memo, useCallback, useRef, useState} from "react";
 import Slider from "../Slider";
 import styles from "./index.module.css";
 import {useRouter} from "next/navigation";
+import {APRTooltip} from "../../../add-liquidity-page/components/AddLiquidity/addLiquidityTooltips";
 
 type Props = {
   pool: PoolId;
