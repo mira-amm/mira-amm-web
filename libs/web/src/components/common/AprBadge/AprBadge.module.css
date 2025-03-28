@@ -3,6 +3,7 @@
   align-items: center;
   justify-content: center;
   background-image: url("../../../../assets/apr-bg.jpg");
+  background-color: black;
   background-size: cover;
   gap: 5px;
   border-radius: 10px;
@@ -45,6 +46,7 @@
   padding: 25px;
   gap: 10px;
   background-image: url("../../../../assets/apr-bg.jpg");
+  background-color: black;
   background-size: cover;
   color: white;
   text-align: center;
