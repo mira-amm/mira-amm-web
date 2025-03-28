@@ -44,6 +44,7 @@
   border-radius: 40px;
   color: var(--background-white);
   background-image: url("../../../../../../assets/lp-icon-bg.jpg");
+  background-color: black;
   background-size: cover;
 }
 
