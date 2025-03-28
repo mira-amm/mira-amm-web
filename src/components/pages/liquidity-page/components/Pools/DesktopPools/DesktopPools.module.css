@@ -6,9 +6,6 @@
 }
 
 .desktopPools th {
-  font-size: 16px;
-  line-height: 100%;
-  font-weight: 400;
   color: var(--mc-black);
   padding: 0 16px;
   text-align: left;
