@@ -54,12 +54,14 @@
     font-size: 12px;
     min-width: 32px;
     min-height: 31px;
+    border-radius: 6px;
   }
 
   .paginationButton.previous,
   .paginationButton.next {
     min-width: 35px;
     padding: 0;
+    display: flex;
   }
 }
 
