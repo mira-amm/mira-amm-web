@@ -2,10 +2,9 @@
 export function validateURL(value) {
   try {
     // eslint-disable-next-line no-new
-    new URL(value)
-    return true
-  }
-  catch {
-    return 'Invalid URL format'
+    new URL(value);
+    return true;
+  } catch {
+    return "Invalid URL format";
   }
 }

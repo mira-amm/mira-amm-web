@@ -1,6 +1,5 @@
 @layer payload-default {
   :root {
-
     // --color-base-0: rgb(255, 255, 255);
     // --color-base-50: rgb(181, 206, 220);
     // --color-base-100: rgb(235, 235, 235);
@@ -44,7 +43,6 @@
     --color-base-900: rgb(11, 15, 10);
     --color-base-950: rgb(7, 7, 7);
     --color-base-1000: rgb(0, 0, 0);
-
 
     // --color-success-50: rgb(237, 245, 249);
     // --color-success-100: rgb(218, 237, 248);
@@ -147,27 +145,26 @@
     // --color-blue-950: rgb(22, 33, 39);
     // --color-accent-0: rgb(3, 106, 162);
 
---color-blue-50: rgb(237, 249, 237);
---color-blue-100: rgb(218, 248, 226);
---color-blue-150: rgb(188, 248, 208);
---color-blue-200: rgb(156, 253, 192);
---color-blue-250: rgb(125, 248, 174);
---color-blue-300: rgb(97, 241, 157);
---color-blue-350: rgb(65, 236, 139);
---color-blue-400: rgb(36, 223, 122);
---color-blue-450: rgb(18, 204, 108);
---color-blue-500: rgb(21, 186, 96);
---color-blue-550: rgb(12, 168, 84);
---color-blue-600: rgb(11, 153, 76);
---color-blue-650: rgb(11, 135, 67);
---color-blue-700: rgb(17, 121, 59);
---color-blue-750: rgb(17, 105, 52);
---color-blue-800: rgb(18, 90, 45);
---color-blue-850: rgb(18, 76, 38);
---color-blue-900: rgb(19, 58, 32);
---color-blue-950: rgb(22, 39, 27);
---color-accent-0: rgb(3, 162, 106);
-
+    --color-blue-50: rgb(237, 249, 237);
+    --color-blue-100: rgb(218, 248, 226);
+    --color-blue-150: rgb(188, 248, 208);
+    --color-blue-200: rgb(156, 253, 192);
+    --color-blue-250: rgb(125, 248, 174);
+    --color-blue-300: rgb(97, 241, 157);
+    --color-blue-350: rgb(65, 236, 139);
+    --color-blue-400: rgb(36, 223, 122);
+    --color-blue-450: rgb(18, 204, 108);
+    --color-blue-500: rgb(21, 186, 96);
+    --color-blue-550: rgb(12, 168, 84);
+    --color-blue-600: rgb(11, 153, 76);
+    --color-blue-650: rgb(11, 135, 67);
+    --color-blue-700: rgb(17, 121, 59);
+    --color-blue-750: rgb(17, 105, 52);
+    --color-blue-800: rgb(18, 90, 45);
+    --color-blue-850: rgb(18, 76, 38);
+    --color-blue-900: rgb(19, 58, 32);
+    --color-blue-950: rgb(22, 39, 27);
+    --color-accent-0: rgb(3, 162, 106);
 
     --theme-border-color: var(--theme-elevation-150);
 
@@ -254,7 +251,7 @@
     --theme-elevation-1000: var(--color-base-1000);
   }
 
-  html[data-theme='dark'] {
+  html[data-theme="dark"] {
     --theme-border-color: var(--theme-elevation-150);
 
     --theme-elevation-0: var(--color-base-900);

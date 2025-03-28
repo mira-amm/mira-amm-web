@@ -12,7 +12,7 @@ interface AprDiplayProps {
   pool: PoolId;
 }
 
-const AprDisplay = ({pool}: AprDiplayProps)=> {
+const AprDisplay = ({pool}: AprDiplayProps) => {
   const {apr} = usePoolAPR(pool);
   const aprValue = formatAprValue(apr);
 

@@ -1,23 +1,27 @@
-import type { Preview } from '@storybook/react'
-import { withThemeByClassName } from '@storybook/addon-themes'// Wide button with a pen and text. Toggles both Preview Components and Preview Background
+import type {Preview} from "@storybook/react";
+import {withThemeByClassName} from "@storybook/addon-themes"; // Wide button with a pen and text. Toggles both Preview Components and Preview Background
 
-import { DocsContainer, type DocsContextProps } from '@storybook/blocks'
-import { themes, type ThemeVars } from '@storybook/theming'
-import { ThemeProvider } from 'next-themes'
-import React from 'react'
+import {DocsContainer, type DocsContextProps} from "@storybook/blocks";
+import {themes, type ThemeVars} from "@storybook/theming";
+import {ThemeProvider} from "next-themes";
+import React from "react";
 
-import { DARK_MODE_EVENT_NAME } from 'storybook-dark-mode'
+import {DARK_MODE_EVENT_NAME} from "storybook-dark-mode";
 
-import { customViewports } from './custom-viewports'
-import { commonTheme, darkUIStorybook, lightUIStorybook } from './themes-storybook-ui'
-import '../libs/shared/ui/global.css'
+import {customViewports} from "./custom-viewports";
+import {
+  commonTheme,
+  darkUIStorybook,
+  lightUIStorybook,
+} from "./themes-storybook-ui";
+import "../libs/shared/ui/global.css";
 
 const preview: Preview = {
   parameters: {
-    layout: 'fullscreen',
+    layout: "fullscreen",
     // https://storybook.js.org/docs/essentials/actions
     actions: {
-      argTypesRegex: '^on[A-Z].*',
+      argTypesRegex: "^on[A-Z].*",
     },
     // https://storybook.js.org/docs/essentials/controls
     controls: {
@@ -29,15 +33,15 @@ const preview: Preview = {
     options: {
       // https://storybook.js.org/docs/writing-stories/naming-components-and-hierarchy#sorting-stories
       storySort: {
-        method: 'alphabetical',
+        method: "alphabetical",
         order: [
-          '👋 Welcome',
-          '🏛 Architecture',
-          '🎯 Branding',
-          '💅 Figma',
-          '🌀 Portal',
-          'Website',
-          '📚 Docs Site',
+          "👋 Welcome",
+          "🏛 Architecture",
+          "🎯 Branding",
+          "💅 Figma",
+          "🌀 Portal",
+          "Website",
+          "📚 Docs Site",
         ],
       },
     },
@@ -49,12 +53,12 @@ const preview: Preview = {
     },
     // https://storybook.js.org/addons/storybook-dark-mode
     darkMode: {
-      classTarget: 'html',
+      classTarget: "html",
       stylePreview: true,
-      darkClass: 'dark',
-      lightClass: 'light',
+      darkClass: "dark",
+      lightClass: "light",
       // Set the initial theme
-      current: 'dark',
+      current: "dark",
       // Override the default dark theme
       dark: {
         ...themes.dark,
@@ -74,16 +78,16 @@ const preview: Preview = {
       // default: 'twitter',
       values: [
         {
-          name: 'black',
-          value: '#000000',
+          name: "black",
+          value: "#000000",
         },
         {
-          name: 'twitter',
-          value: '#00aced',
+          name: "twitter",
+          value: "#00aced",
         },
         {
-          name: 'facebook',
-          value: '#3b5998',
+          name: "facebook",
+          value: "#3b5998",
         },
       ],
       grid: {
@@ -97,20 +101,23 @@ const preview: Preview = {
     },
     // fix for theming docs page found here: https://github.com/hipstersmoothie/storybook-dark-mode/issues/282#issuecomment-2208816632
     docs: {
-      defaultName: 'Documentation',
+      defaultName: "Documentation",
       toc: true,
       container: (props: {
-        children: React.ReactNode
-        context: DocsContextProps
-        theme?: ThemeVars
+        children: React.ReactNode;
+        context: DocsContextProps;
+        theme?: ThemeVars;
       }) => {
         // eslint-disable-next-line react-hooks/rules-of-hooks
-        const [isDark, setDark] = React.useState(true)
-        props.context.channel.on(DARK_MODE_EVENT_NAME, state =>
-          setDark(state))
-        const currentProps = { ...props }
-        currentProps.theme = isDark ? darkUIStorybook as ThemeVars : themes.light
-        return <DocsContainer {...currentProps} />
+        const [isDark, setDark] = React.useState(true);
+        props.context.channel.on(DARK_MODE_EVENT_NAME, (state) =>
+          setDark(state),
+        );
+        const currentProps = {...props};
+        currentProps.theme = isDark
+          ? (darkUIStorybook as ThemeVars)
+          : themes.light;
+        return <DocsContainer {...currentProps} />;
       },
     },
     // https://github.com/whitespace-se/storybook-addon-html
@@ -118,7 +125,7 @@ const preview: Preview = {
       prettier: {
         tabWidth: 4,
         useTabs: false,
-        htmlWhitespaceSensitivity: 'strict',
+        htmlWhitespaceSensitivity: "strict",
       },
       highlighter: {
         showLineNumbers: true, // default: false
@@ -138,16 +145,16 @@ const preview: Preview = {
         >
           <Story />
         </ThemeProvider>
-      )
+      );
     },
     withThemeByClassName({
       themes: {
-        light: 'light',
-        dark: 'dark',
+        light: "light",
+        dark: "dark",
       },
-      defaultTheme: 'dark',
+      defaultTheme: "dark",
     }),
   ],
-}
+};
 
-export default preview
+export default preview;

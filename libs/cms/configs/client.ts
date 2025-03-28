@@ -1,19 +1,21 @@
-import { lexicalEditor } from "@payloadcms/richtext-lexical";
-import { Users } from "@/db/collections";
+import {lexicalEditor} from "@payloadcms/richtext-lexical";
+import {Users} from "@/db/collections";
 
 export const adminConfig = {
   autoLogin:
-    process.env.NEXT_PUBLIC_ENABLE_AUTOLOGIN === 'true'
+    process.env.NEXT_PUBLIC_ENABLE_AUTOLOGIN === "true"
       ? {
-          email: 'test@mira.ly',
-          password: 'test',
+          email: "test@mira.ly",
+          password: "test",
           prefillOnly: true,
         }
       : false,
-    components: { // resolves to apps/admin/src/components, no idea why. Tried to fix it.
-      // https://payload-visual-guide.vercel.app/
+  components: {
+    // resolves to apps/admin/src/components, no idea why. Tried to fix it.
+    // https://payload-visual-guide.vercel.app/
     meta: {
-      description: "Admin Dashboard & Content Management System for the Mira Platform",
+      description:
+        "Admin Dashboard & Content Management System for the Mira Platform",
       icons: [
         {
           type: "image/ico",
@@ -25,31 +27,31 @@ export const adminConfig = {
     },
     // routes: {
     // },
-      beforeLogin: ['/components/BeforeLogin#BeforeLogin'],
-      afterLogin: ["/components/AfterLogin#AfterLogin"],
-      graphics: {
-        Icon: "/components/icon#Icon",
-        Logo: "/components/logo#Logo",
+    beforeLogin: ["/components/BeforeLogin#BeforeLogin"],
+    afterLogin: ["/components/AfterLogin#AfterLogin"],
+    graphics: {
+      Icon: "/components/icon#Icon",
+      Logo: "/components/logo#Logo",
+    },
+    Nav: "/components/Nav#Nav",
+    views: {
+      dashboard: {
+        Component: "/components/Dashboard#Dashboard",
       },
-      Nav: '/components/Nav#Nav',
-      views: {
-        dashboard: {
-          Component: '/components/Dashboard#Dashboard',
-        },
-      },
+    },
     avatar: {
-      Component: '/components/Avatar#Avatar',
+      Component: "/components/Avatar#Avatar",
     },
   },
-    importMap: {
-      baseDir: "src", // resolves from location of payload.config.ts
-    },
-    user: Users.slug,
-}
+  importMap: {
+    baseDir: "src", // resolves from location of payload.config.ts
+  },
+  user: Users.slug,
+};
 
 export const clientConfig = {
   editor: lexicalEditor({}),
-  theme: 'dark', // CREDITS: github.com/akhrarovsaid/payload-theme-quantum-leap
+  theme: "dark", // CREDITS: github.com/akhrarovsaid/payload-theme-quantum-leap
   versions: {
     drafts: {
       autosave: {
@@ -59,4 +61,4 @@ export const clientConfig = {
     },
     maxPerDoc: 20,
   },
-}
+};

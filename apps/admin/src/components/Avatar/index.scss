@@ -1,4 +1,4 @@
-@import '~@payloadcms/ui/scss';
+@import "~@payloadcms/ui/scss";
 
 @layer payload-default {
   .avatar {
@@ -13,13 +13,14 @@
     gap: 4px;
     align-items: center;
 
-    &__greeting, &__chevron {
+    &__greeting,
+    &__chevron {
       color: var(--theme-elevation-300);
     }
 
     &__username {
-      color: var(--theme-elevation-700); 
-      font-weight: 600; 
+      color: var(--theme-elevation-700);
+      font-weight: 600;
     }
 
     &:hover {
@@ -28,7 +29,6 @@
   }
 
   .graphic-account {
-
     &__bg {
       fill: var(--theme-elevation-50);
       stroke: var(--theme-elevation-300);
@@ -46,7 +46,7 @@
           fill: var(--theme-elevation-50);
           stroke: var(--theme-elevation-300);
         }
-  
+
         &__head,
         &__body {
           fill: var(--theme-elevation-300);

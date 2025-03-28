@@ -1,9 +1,9 @@
 /* eslint-disable node/prefer-global/buffer */
-import type { File, Payload, PayloadRequest } from "payload";
-import { seedMedia } from '../collections/Media';
-import { promises as fs } from "fs";
+import type {File, Payload, PayloadRequest} from "payload";
+import {seedMedia} from "../collections/Media";
+import {promises as fs} from "fs";
 import path from "path";
-import {seedBrands} from '../collections'
+import {seedBrands} from "../collections";
 
 export async function seed({
   payload,
@@ -11,30 +11,25 @@ export async function seed({
 }: {
   payload: Payload;
   req: PayloadRequest;
-}): Promise<{ message: string }> {
+}): Promise<{message: string}> {
   payload.logger.info("🌱 Seeding database...");
 
   await Promise.all(
-    [
-      "users",
-      "brands",
-      "forms",
-      "form-submissions",
-    ].map(async (collection) => {
+    ["users", "brands", "forms", "form-submissions"].map(async (collection) => {
       if (collection === "users") {
         await payload.db.deleteMany({
           collection,
           req,
           where: {
-            id: { not_equals: 1 },
+            id: {not_equals: 1},
           },
         });
       } else {
-        await payload.db.deleteMany({ collection, req, where: {} });
+        await payload.db.deleteMany({collection, req, where: {}});
       }
 
       if (payload.collections[collection].config.versions) {
-        await payload.db.deleteVersions({ collection, req, where: {} });
+        await payload.db.deleteVersions({collection, req, where: {}});
       }
     }),
   );
@@ -42,7 +37,7 @@ export async function seed({
   const mediaDir = path.resolve("../../../apps/admin/media");
 
   try {
-    await fs.rm(mediaDir, { recursive: true, force: true });
+    await fs.rm(mediaDir, {recursive: true, force: true});
     payload.logger.info(`🗑 Deleted media directory: ${mediaDir}`);
   } catch (error) {
     payload.logger.warn(
@@ -91,10 +86,10 @@ export async function seed({
             required: true,
             blockType: "select",
             options: [
-              { label: "colors", value: "🎨 Hardware" },
-              { label: "speed", value: "🚀 AI/ML" },
-              { label: "reliability", value: "⚙ Reliability" },
-              { label: "security", value: "👩‍💻 Security" },
+              {label: "colors", value: "🎨 Hardware"},
+              {label: "speed", value: "🚀 AI/ML"},
+              {label: "reliability", value: "⚙ Reliability"},
+              {label: "security", value: "👩‍💻 Security"},
             ],
           },
         ],
@@ -136,7 +131,7 @@ export async function seed({
 
   payload.logger.info("🎉 Database seeded successfully! 🌱");
 
-  return { message: "Database seeded successfully!" };
+  return {message: "Database seeded successfully!"};
 }
 
 export async function getOrUploadMedia(
@@ -151,7 +146,7 @@ export async function getOrUploadMedia(
   try {
     const existingMedia = await payload.find({
       collection: "media",
-      where: { alt: { equals: alt } },
+      where: {alt: {equals: alt}},
       limit: 1,
     });
 
@@ -169,17 +164,18 @@ export async function getOrUploadMedia(
 
     const data = Buffer.from(await res.arrayBuffer());
 
-const contentType = res.headers.get("content-type") || "application/octet-stream";
+    const contentType =
+      res.headers.get("content-type") || "application/octet-stream";
 
     const uploadedFile = await payload.create({
       collection: "media",
       file: {
         name: filename,
         data,
-      mimetype: contentType,
+        mimetype: contentType,
         size: data.length,
       },
-      data: { alt },
+      data: {alt},
     });
 
     payload.logger.info(`✅ Uploaded image: ${filename}`);
@@ -193,5 +189,5 @@ const contentType = res.headers.get("content-type") || "application/octet-stream
 }
 
 export function formatRichText(content: any) {
-  return { root: { type: "root", children: content.children } };
+  return {root: {type: "root", children: content.children}};
 }

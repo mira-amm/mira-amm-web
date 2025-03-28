@@ -5,7 +5,7 @@ type Props = {
   className?: string;
 };
 
-const PositionLabel = ({className}: Props)  => {
+const PositionLabel = ({className}: Props) => {
   return <p className={clsx(styles.positionLabel, className)}>Active</p>;
 };
 

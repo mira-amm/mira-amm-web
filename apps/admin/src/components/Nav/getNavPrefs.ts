@@ -1,13 +1,19 @@
-import type { NavPreferences, Payload, User } from 'payload'
+import type {NavPreferences, Payload, User} from "payload";
 
-import { cache } from 'react'
+import {cache} from "react";
 
 export const getNavPrefs = cache(
-  async ({ payload, user }: { payload: Payload; user?: User }): Promise<NavPreferences | null> =>
+  async ({
+    payload,
+    user,
+  }: {
+    payload: Payload;
+    user?: User;
+  }): Promise<NavPreferences | null> =>
     user
       ? await payload
           .find({
-            collection: 'payload-preferences',
+            collection: "payload-preferences",
             depth: 0,
             limit: 1,
             user,
@@ -15,16 +21,16 @@ export const getNavPrefs = cache(
               and: [
                 {
                   key: {
-                    equals: 'nav',
+                    equals: "nav",
                   },
                 },
                 {
-                  'user.relationTo': {
+                  "user.relationTo": {
                     equals: user.collection,
                   },
                 },
                 {
-                  'user.value': {
+                  "user.value": {
                     equals: user.id,
                   },
                 },
@@ -33,4 +39,4 @@ export const getNavPrefs = cache(
           })
           ?.then((res) => res?.docs?.[0]?.value as NavPreferences)
       : null,
-)
+);

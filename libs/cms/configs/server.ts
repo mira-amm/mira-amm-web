@@ -8,8 +8,8 @@ import {
   DatabaseSchema,
   Docs,
   Figma,
-  Storybook
-} from "@/db/globals"
+  Storybook,
+} from "@/db/globals";
 
 import {formBuilderPlugin} from "@payloadcms/plugin-form-builder";
 import {resendAdapter} from "@payloadcms/email-resend";
@@ -19,20 +19,8 @@ import sharp from "sharp";
 
 export const baseConfig = {
   defaultDepth: 3,
-  collections: [
-    Users,
-    Brands,
-    Media
-  ],
-  globals: [
-    App,
-DrizzleStudio,
-DatabaseSchema,
-    Graph,
-    Figma,
-    Docs,
-    Storybook
-  ],
+  collections: [Users, Brands, Media],
+  globals: [App, DrizzleStudio, DatabaseSchema, Graph, Figma, Docs, Storybook],
   blocks: [],
   email: resendAdapter({
     defaultFromAddress: "test@gmail.com",

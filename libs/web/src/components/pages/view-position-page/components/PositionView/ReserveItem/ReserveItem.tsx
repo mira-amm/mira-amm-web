@@ -10,11 +10,7 @@ interface ReserveItemsProps {
   reserve: number | undefined;
 }
 
-const ReserveItem = ({
-  assetId,
-  amount,
-  reserve,
-}: ReserveItemsProps) => {
+const ReserveItem = ({assetId, amount, reserve}: ReserveItemsProps) => {
   const {usdValue, coinAmount} = useFormattedReserveValue(
     assetId,
     amount,

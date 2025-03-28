@@ -1,33 +1,33 @@
-import type { Meta, StoryObj } from '@storybook/react'
-import { File, Files, Folder } from 'fumadocs-ui/components/files'
+import type {Meta, StoryObj} from "@storybook/react";
+import {File, Files, Folder} from "fumadocs-ui/components/files";
 
 const meta: Meta<typeof Files> = {
-  title: '📚 Docs Site/Files',
+  title: "📚 Docs Site/Files",
   component: Files,
-  tags: ['autodocs'],
+  tags: ["autodocs"],
   parameters: {
-    layout: 'centered',
+    layout: "centered",
   },
   argTypes: {
     name: {
-      control: 'text',
-      description: 'The name of the file or folder',
+      control: "text",
+      description: "The name of the file or folder",
     },
     disabled: {
-      control: 'boolean',
-      description: 'Disables the folder interaction',
+      control: "boolean",
+      description: "Disables the folder interaction",
       defaultValue: false,
     },
     icon: {
-      control: 'object',
-      description: 'Optional icon component to display',
+      control: "object",
+      description: "Optional icon component to display",
     },
   },
-}
+};
 
-export default meta
+export default meta;
 
-type Story = StoryObj<typeof Files>
+type Story = StoryObj<typeof Files>;
 
 export const Default: Story = {
   render: () => (
@@ -48,7 +48,7 @@ export const Default: Story = {
       <File name="package.json" />
     </Files>
   ),
-}
+};
 
 export const FolderDisabled: Story = {
   render: () => (
@@ -63,7 +63,7 @@ export const FolderDisabled: Story = {
       </Folder>
     </Files>
   ),
-}
+};
 
 export const CustomIcons: Story = {
   render: () => (
@@ -79,4 +79,4 @@ export const CustomIcons: Story = {
       <File name="package.json" icon={<span>📦</span>} />
     </Files>
   ),
-}
+};

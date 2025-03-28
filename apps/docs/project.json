@@ -10,19 +10,19 @@
       "command": "next dev -p $DOCS_DEV_SERVER_PORT",
       "options": {
         "cwd": "apps/docs"
-      },
+      }
     },
     "build": {
       "command": "next build",
       "options": {
         "cwd": "apps/docs"
-      },
+      }
     },
     "start": {
       "command": "next start -p $DOCS_DEV_SERVER_PORT",
       "options": {
         "cwd": "apps/docs"
       }
-    },
+    }
   }
 }

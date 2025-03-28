@@ -1,6 +1,6 @@
-@import 'tailwindcss';
-@import 'fumadocs-ui/css/black.css';
-@import 'fumadocs-ui/css/preset.css';
+@import "tailwindcss";
+@import "fumadocs-ui/css/black.css";
+@import "fumadocs-ui/css/preset.css";
 
 @source '../../../node_modules/fumadocs-ui/dist/**/*.js';
 
@@ -135,7 +135,8 @@
     }
 
     100% {
-      transform: rotate(360deg) translateY(calc(var(--radius) * 1px)) rotate(-360deg);
+      transform: rotate(360deg) translateY(calc(var(--radius) * 1px))
+        rotate(-360deg);
     }
   }
 
@@ -152,11 +153,19 @@
 
 @layer utilities {
   .bg-greendiant {
-    background-image: linear-gradient(200deg, var(--color-secondary) 10%, var(--color-primary) 90%);
+    background-image: linear-gradient(
+      200deg,
+      var(--color-secondary) 10%,
+      var(--color-primary) 90%
+    );
   }
 
   .bg-g-keyboardBlack {
-    background-image: linear-gradient(300deg, var(--color-g-keyboardblack-start) -10%, var(--color-background) 100%);
+    background-image: linear-gradient(
+      300deg,
+      var(--color-g-keyboardblack-start) -10%,
+      var(--color-background) 100%
+    );
   }
 
   .bg-g-nav-drawer-background {
@@ -226,10 +235,10 @@
   }
 
   body {
-    font-family: 'JetBrains Mono', monospace;
+    font-family: "JetBrains Mono", monospace;
     @apply bg-background text-foreground;
     font-feature-settings:
-      'rlig' 1,
-      'calt' 1;
+      "rlig" 1,
+      "calt" 1;
   }
 }

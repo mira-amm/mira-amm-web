@@ -1,14 +1,14 @@
-import { EntityToGroup, EntityType, groupNavItems } from '@payloadcms/ui/shared'
-import { ServerProps } from 'payload'
-import { FC } from 'react'
-import { getNavPrefs } from './getNavPrefs'
-import { NavWrapper } from './NavWrapper'
-import { RenderServerComponent } from '@payloadcms/ui/elements/RenderServerComponent'
-import { Logout } from '@payloadcms/ui'
-import { NavClient } from './index.client'
-import { NavHamburger } from './NavHamburger'
+import {EntityToGroup, EntityType, groupNavItems} from "@payloadcms/ui/shared";
+import {ServerProps} from "payload";
+import {FC} from "react";
+import {getNavPrefs} from "./getNavPrefs";
+import {NavWrapper} from "./NavWrapper";
+import {RenderServerComponent} from "@payloadcms/ui/elements/RenderServerComponent";
+import {Logout} from "@payloadcms/ui";
+import {NavClient} from "./index.client";
+import {NavHamburger} from "./NavHamburger";
 
-export const baseClass = 'nav'
+export const baseClass = "nav";
 
 export const Nav: FC<ServerProps> = async (props) => {
   const {
@@ -22,25 +22,25 @@ export const Nav: FC<ServerProps> = async (props) => {
     user,
     viewType,
     visibleEntities,
-  } = props
+  } = props;
 
   if (!payload?.config || !permissions) {
-    return null
+    return null;
   }
 
   const {
     admin: {
-      components: { afterNavLinks, beforeNavLinks, logout },
+      components: {afterNavLinks, beforeNavLinks, logout},
     },
     collections,
     globals,
     blocks,
-  } = payload.config
+  } = payload.config;
 
   const groups = groupNavItems(
     [
       ...collections
-        .filter(({ slug }) => visibleEntities?.collections.includes(slug))
+        .filter(({slug}) => visibleEntities?.collections.includes(slug))
         .map(
           (collection) =>
             ({
@@ -49,7 +49,7 @@ export const Nav: FC<ServerProps> = async (props) => {
             }) satisfies EntityToGroup,
         ),
       ...globals
-        .filter(({ slug }) => visibleEntities?.globals.includes(slug))
+        .filter(({slug}) => visibleEntities?.globals.includes(slug))
         .map(
           (global) =>
             ({
@@ -60,9 +60,9 @@ export const Nav: FC<ServerProps> = async (props) => {
     ],
     permissions,
     i18n,
-  )
+  );
 
-  const navPreferences = await getNavPrefs({ payload, user })
+  const navPreferences = await getNavPrefs({payload, user});
 
   const LogoutComponent = RenderServerComponent({
     clientProps: {
@@ -81,7 +81,7 @@ export const Nav: FC<ServerProps> = async (props) => {
       searchParams,
       user,
     },
-  })
+  });
 
   return (
     <NavWrapper baseClass={baseClass}>
@@ -129,5 +129,5 @@ export const Nav: FC<ServerProps> = async (props) => {
         </div>
       </div>
     </NavWrapper>
-  )
-}
+  );
+};

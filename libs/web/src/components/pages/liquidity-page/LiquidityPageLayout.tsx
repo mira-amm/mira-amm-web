@@ -16,7 +16,7 @@ import {
 } from "@/src/utils/constants";
 import Boosts from "./components/Boosts/Boosts";
 
-const LiquidityPageLayout = ()  => {
+const LiquidityPageLayout = () => {
   return (
     <>
       <Header />

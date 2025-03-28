@@ -8,7 +8,7 @@ type Props = {
   positions: Position[] | undefined;
 };
 
-const DesktopPositions = ({positions}: Props)  => {
+const DesktopPositions = ({positions}: Props) => {
   if (!positions) {
     return <></>;
   }

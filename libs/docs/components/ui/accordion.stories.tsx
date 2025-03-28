@@ -1,41 +1,41 @@
-import type { Meta, StoryObj } from '@storybook/react'
-import { Accordion, Accordions } from 'fumadocs-ui/components/accordion'
+import type {Meta, StoryObj} from "@storybook/react";
+import {Accordion, Accordions} from "fumadocs-ui/components/accordion";
 
 const meta: Meta<typeof Accordion> = {
-  title: '📚 Docs Site/Accordion',
+  title: "📚 Docs Site/Accordion",
   component: Accordion,
-  tags: ['autodocs'],
+  tags: ["autodocs"],
   parameters: {
-    layout: 'centered',
+    layout: "centered",
   },
   argTypes: {
     title: {
-      control: 'text',
-      description: 'The title of the accordion',
+      control: "text",
+      description: "The title of the accordion",
     },
     asChild: {
-      control: 'boolean',
-      description: 'Renders the component as a child element',
+      control: "boolean",
+      description: "Renders the component as a child element",
     },
     disabled: {
-      control: 'boolean',
-      description: 'Disables the accordion',
+      control: "boolean",
+      description: "Disables the accordion",
       defaultValue: false,
     },
   },
-}
+};
 
-export default meta
+export default meta;
 
-type Story = StoryObj<typeof Accordion>
+type Story = StoryObj<typeof Accordion>;
 
 export const Default: Story = {
   args: {
-    title: 'What is Fumadocs?',
+    title: "What is Fumadocs?",
     asChild: false,
     disabled: false,
   },
-  render: args => (
+  render: (args) => (
     <Accordions>
       <Accordion {...args}>Fumadocs is a documentation UI toolkit.</Accordion>
       <Accordion title="What do we love?" {...args}>
@@ -43,28 +43,28 @@ export const Default: Story = {
       </Accordion>
     </Accordions>
   ),
-}
+};
 
 export const Disabled: Story = {
   args: {
-    title: 'What is Fumadocs?',
+    title: "What is Fumadocs?",
     asChild: false,
     disabled: true,
   },
-  render: args => (
+  render: (args) => (
     <Accordions>
       <Accordion {...args}>This accordion is disabled.</Accordion>
     </Accordions>
   ),
-}
+};
 
 export const Multiple: Story = {
   args: {
-    title: 'What is Fumadocs?',
+    title: "What is Fumadocs?",
     asChild: false,
     disabled: false,
   },
-  render: args => (
+  render: (args) => (
     <Accordions type="multiple">
       <Accordion {...args}>Fumadocs is a documentation UI toolkit.</Accordion>
       <Accordion title="What do we love?" {...args}>
@@ -72,4 +72,4 @@ export const Multiple: Story = {
       </Accordion>
     </Accordions>
   ),
-}
+};

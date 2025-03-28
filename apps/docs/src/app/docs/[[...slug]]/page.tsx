@@ -1,17 +1,12 @@
-import { source } from '../../../../source';
-import {
-  DocsPage,
-  DocsBody,
-  DocsDescription,
-  DocsTitle,
-} from 'fumadocs-ui/page';
-import { notFound } from 'next/navigation';
-import { ImageZoom } from 'fumadocs-ui/components/image-zoom';
-import defaultMdxComponents, { createRelativeLink } from 'fumadocs-ui/mdx';
-import { Tab, Tabs } from 'fumadocs-ui/components/tabs';
+import {source} from "../../../../source";
+import {DocsPage, DocsBody, DocsDescription, DocsTitle} from "fumadocs-ui/page";
+import {notFound} from "next/navigation";
+import {ImageZoom} from "fumadocs-ui/components/image-zoom";
+import defaultMdxComponents, {createRelativeLink} from "fumadocs-ui/mdx";
+import {Tab, Tabs} from "fumadocs-ui/components/tabs";
 
 export default async function Page(props: {
-  params: Promise<{ slug?: string[] }>;
+  params: Promise<{slug?: string[]}>;
 }) {
   const params = await props.params;
   const page = source.getPage(params.slug);
@@ -45,7 +40,7 @@ export async function generateStaticParams() {
 }
 
 export async function generateMetadata(props: {
-  params: Promise<{ slug?: string[] }>;
+  params: Promise<{slug?: string[]}>;
 }) {
   const params = await props.params;
   const page = source.getPage(params.slug);

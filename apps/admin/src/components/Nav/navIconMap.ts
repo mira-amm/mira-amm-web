@@ -1,20 +1,20 @@
-import { CollectionSlug, GlobalSlug } from 'payload'
+import {CollectionSlug, GlobalSlug} from "payload";
 import {
   Image,
   LucideProps,
   Star,
   Library,
   Figma,
-Database,
+  Database,
   TableColumnsSplit,
   SearchCheck,
   User,
   Coins,
-MousePointer2,
+  MousePointer2,
   Inbox,
-  MapPin
-} from 'lucide-react'
-import { ExoticComponent } from 'react'
+  MapPin,
+} from "lucide-react";
+import {ExoticComponent} from "react";
 
 export const navIconMap: Partial<
   Record<CollectionSlug | GlobalSlug, ExoticComponent<LucideProps>>
@@ -31,7 +31,9 @@ export const navIconMap: Partial<
   media: Image,
   forms: MousePointer2,
   "form-submissions": Inbox,
-}
+};
 
 export const getNavIcon = (slug: string) =>
-  Object.hasOwn(navIconMap, slug) ? navIconMap[slug as CollectionSlug | GlobalSlug] : undefined
+  Object.hasOwn(navIconMap, slug)
+    ? navIconMap[slug as CollectionSlug | GlobalSlug]
+    : undefined;

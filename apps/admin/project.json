@@ -99,7 +99,7 @@
       "options": {
         "cwd": "apps/admin"
       }
-    },
+    }
   },
   "tags": []
 }

@@ -29,7 +29,7 @@ export const DesktopPosition = ({
   isStablePool,
   priceA,
   priceB,
-}: Props)  => {
+}: Props) => {
   const assetAMetadata = useAssetMetadata(assetIdA);
   const assetBMetadata = useAssetMetadata(assetIdB);
 

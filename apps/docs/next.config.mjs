@@ -1,10 +1,10 @@
-import { createMDX } from 'fumadocs-mdx/next';
+import {createMDX} from "fumadocs-mdx/next";
 
 const defaultImageHostnames = [
-  'github.com',
-  'img.icons8.com',
-  'upload.wikimedia.org'
-]
+  "github.com",
+  "img.icons8.com",
+  "upload.wikimedia.org",
+];
 
 const withMDX = createMDX();
 
@@ -12,8 +12,8 @@ const withMDX = createMDX();
 const config = {
   reactStrictMode: true,
   images: {
-    remotePatterns: defaultImageHostnames.map(hostname => ({
-      protocol: 'https',
+    remotePatterns: defaultImageHostnames.map((hostname) => ({
+      protocol: "https",
       // eslint-disable-next-line node/prefer-global/process
       hostname,
     })),

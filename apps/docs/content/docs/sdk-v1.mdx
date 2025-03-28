@@ -5,6 +5,7 @@ icon: CodeXml
 ---
 
 ## Overview
+
 The SDK provides a set of tools to interact with the Mira Decentralized Exchange.
 
 It allows developers to perform actions such as adding/removing liquidity, swapping tokens, querying liquidity pools, and more.
@@ -12,33 +13,41 @@ It allows developers to perform actions such as adding/removing liquidity, swapp
 The SDK is built on top of the `fuels` library and supports both transaction-based and readonly operations.
 
 <Cards>
-  <Card title="GitHub"
+  <Card
+    title="GitHub"
     icon={
       <img
         src="https://img.icons8.com/?size=100&id=62856&format=png&color=40C057"
         alt="GitHub Logo"
         width={24}
         height={24}
-      />}
-  href="https://github.com/mira-amm/mira-v1-ts" />
-  <Card title="NPM"
+      />
+    }
+    href="https://github.com/mira-amm/mira-v1-ts"
+  />
+  <Card
+    title="NPM"
     icon={
       <img
         src="https://upload.wikimedia.org/wikipedia/commons/d/db/Npm-logo.svg"
         alt="NPM Logo"
         width={24}
         height={24}
-      />}
-  href="https://www.npmjs.com/package/mira-dex-ts?activeTab=readme#installation" />
+      />
+    }
+    href="https://www.npmjs.com/package/mira-dex-ts?activeTab=readme#installation"
+  />
 </Cards>
 
 ## Installation
+
 ```package-install
 npm i fuels
 npm i mira-dex-ts
-````
+```
 
 ## Setup
+
 To start using the SDK, you need to instantiate the `MiraAmm` or `ReadonlyMiraAmm` classes by providing the appropriate parameters like `Account` for signing transactions or `Provider` for read-only operations.
 
 ```typescript title="Example"
@@ -65,6 +74,7 @@ export type PoolId = [AssetId, AssetId, boolean];
 ```
 
 ## MiraAmm Class
+
 The MiraAmm class is used for building transaction requests to interact with the AMM.
 
 Methods
@@ -79,7 +89,13 @@ const ammId = miraAmm.id();
 
 ```typescript title="addLiquidity"
 const txRequest = await miraAmm.addLiquidity(
-  poolId, amount0Desired, amount1Desired, amount0Min, amount1Min, deadline, txParams
+  poolId,
+  amount0Desired,
+  amount1Desired,
+  amount0Min,
+  amount1Min,
+  deadline,
+  txParams,
 );
 ```
 
@@ -101,7 +117,15 @@ The function will add two assets to the pool in the same proportion as the exist
 
 ```typescript title="createPoolAndAddLiquidity"
 const txRequest = await miraAmm.createPoolAndAddLiquidity(
-  token0Contract, token0SubId, token1Contract, token1SubId, isStable, amount0Desired, amount1Desired, deadline, txParams
+  token0Contract,
+  token0SubId,
+  token1Contract,
+  token1SubId,
+  isStable,
+  amount0Desired,
+  amount1Desired,
+  deadline,
+  txParams,
 );
 ```
 
@@ -121,7 +145,12 @@ The same as addLiquidity but creates a new pool. The pool is created with the pr
 
 ```typescript title="removeLiquidity"
 const txRequest = await miraAmm.removeLiquidity(
-  poolId, liquidity, amount0Min, amount1Min, deadline, txParams
+  poolId,
+  liquidity,
+  amount0Min,
+  amount1Min,
+  deadline,
+  txParams,
 );
 ```
 
@@ -139,7 +168,12 @@ Exchanges LP tokens for the underlying assets. The LP tokens are burned, and the
 
 ```typescript title="swapExactInput"
 const txRequest = await miraAmm.swapExactInput(
-  amountIn, assetIn, amountOutMin, pools, deadline, txParams
+  amountIn,
+  assetIn,
+  amountOutMin,
+  pools,
+  deadline,
+  txParams,
 );
 ```
 
@@ -159,7 +193,12 @@ Performs the swap specifying the exact number of input tokens. Supports multi-ho
 
 ```typescript title="swapExactOutput"
 const txRequest = await miraAmm.swapExactOutput(
-  amountOut, assetOut, amountInMax, pools, deadline, txParams
+  amountOut,
+  assetOut,
+  amountInMax,
+  pools,
+  deadline,
+  txParams,
 );
 ```
 
@@ -176,6 +215,7 @@ const txRequest = await miraAmm.swapExactOutput(
 Performs the swap specifying the exact number of output tokens. Supports multi-hop swaps if several pools are provided.
 
 ## ReadonlyMiraAmm Class
+
 The `ReadonlyMiraAmm` class is used for reading information from the AMM.
 
 ### Methods
@@ -215,7 +255,10 @@ const totalAssets = await readonlyMiraAmm.totalAssets();
 `getLiquidityPosition` - Fetches the position corresponding to the number of LP tokens for a specific pool.
 
 ```typescript
-const liquidityPosition = await readonlyMiraAmm.getLiquidityPosition(poolId, lpTokensAmount);
+const liquidityPosition = await readonlyMiraAmm.getLiquidityPosition(
+  poolId,
+  lpTokensAmount,
+);
 ```
 
 `poolId`: ID of the pool.
@@ -225,7 +268,11 @@ const liquidityPosition = await readonlyMiraAmm.getLiquidityPosition(poolId, lpT
 `getOtherTokenToAddLiquidity` - Calculates the required amount of the second asset in a token pair based on the provided amount of the first asset. Returns the corresponding amount needed for the second asset to add to the pool.
 
 ```typescript
-const assetToAdd = await readonlyMiraAmm.getOtherTokenToAddLiquidity(poolId, amount, isFirstToken);
+const assetToAdd = await readonlyMiraAmm.getOtherTokenToAddLiquidity(
+  poolId,
+  amount,
+  isFirstToken,
+);
 ```
 
 `poolId`: ID of the pool.
@@ -237,7 +284,11 @@ const assetToAdd = await readonlyMiraAmm.getOtherTokenToAddLiquidity(poolId, amo
 `previewSwapExactInput` - Calculates the output result of a swap operation with the exact input amount routed through the provided pools.
 
 ```typescript
-const expectedOutputAmount = await readonlyMiraAmm.previewSwapExactInput(assetIdIn, assetAmountIn, pools);
+const expectedOutputAmount = await readonlyMiraAmm.previewSwapExactInput(
+  assetIdIn,
+  assetAmountIn,
+  pools,
+);
 ```
 
 `assetIdIn`: Asset ID of the input token.
@@ -249,7 +300,11 @@ const expectedOutputAmount = await readonlyMiraAmm.previewSwapExactInput(assetId
 `previewSwapExactOutput` - Calculates the amount of the input token to perform a swap operation routed through the provided pools to receive the specified output number of tokens.
 
 ```typescript
-const requiredInputAmount = await readonlyMiraAmm.previewSwapExactOutput(assetIdOut, assetAmountOut, pools);
+const requiredInputAmount = await readonlyMiraAmm.previewSwapExactOutput(
+  assetIdOut,
+  assetAmountOut,
+  pools,
+);
 ```
 
 `assetIdOut`: Asset ID of the output token.

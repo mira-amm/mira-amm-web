@@ -1,12 +1,7 @@
 import {PageElement, PageElements, By} from "@serenity-js/web";
 
 export const connectWalletButton = () =>
-  PageElements.located(
-    By.cssContainingText(
-      "button",
-      "Connect Wallet",
-    ),
-  ).last();
+  PageElements.located(By.cssContainingText("button", "Connect Wallet")).last();
 
 export const walletOption = (walletName: string) =>
   PageElement.located(
@@ -30,25 +25,17 @@ export const buyCoinButton = () =>
 
 export const swapConvertButton = () =>
   PageElement.located(
-    By.css(
-      "[class^='IconButton_iconButton__'][class*='Swap_convertButton__']"
-    )
+    By.css("[class^='IconButton_iconButton__'][class*='Swap_convertButton__']"),
   );
 
 export const searchInput = () =>
-  PageElement.located(
-    By.css("[class^='CoinsListModal_tokenSearchInput__']")
-  );
+  PageElement.located(By.css("[class^='CoinsListModal_tokenSearchInput__']"));
 
 export const searchResults = () =>
-  PageElements.located(
-    By.deepCss("[class^='CoinsListModal_tokenListItem__']")
-  );
+  PageElements.located(By.deepCss("[class^='CoinsListModal_tokenListItem__']"));
 
 export const slippageLabel = () =>
-  PageElement.located(
-    By.css("[class^='SlippageSetting_slippageLabel__']")
-  );
+  PageElement.located(By.css("[class^='SlippageSetting_slippageLabel__']"));
 
 export const slippageSettingsButton = () =>
   PageElement.located(By.css("div [class^='Swap_heading__'] > button"));
@@ -64,7 +51,7 @@ export const slippageSettingsModalCustomButton = () =>
 
 export const slippageSettingsInput = () =>
   PageElement.located(
-    By.css("[class^='SettingsModalContent_slippageInput__']")
+    By.css("[class^='SettingsModalContent_slippageInput__']"),
   );
 
 //
@@ -72,14 +59,10 @@ export const slippageSettingsInput = () =>
 //
 
 export const createPoolButton = () =>
-  PageElements.located(
-    By.cssContainingText("button", 'Create Pool'),
-  ).last();
+  PageElements.located(By.cssContainingText("button", "Create Pool")).last();
 
 export const chooseAssetButtons = () =>
-  PageElements.located(
-    By.cssContainingText('p', "Choose Asset"),
-  );
+  PageElements.located(By.cssContainingText("p", "Choose Asset"));
 
 export const poolTypeOption = (type: "Volatile" | "Stable") =>
   PageElements.located(By.cssContainingText("div", `${type} pool`)).first();
@@ -87,7 +70,7 @@ export const poolTypeOption = (type: "Volatile" | "Stable") =>
 export const addLiquidityButton = () =>
   PageElements.located(
     By.css(
- 'button[class^="ActionButton_btn__"][class*="ActionButton_secondary__"][class*="ActionButton_fullWidth__"]'
+      'button[class^="ActionButton_btn__"][class*="ActionButton_secondary__"][class*="ActionButton_fullWidth__"]',
     ),
   ).nth(12);
 
@@ -118,10 +101,7 @@ export const headerConnectWalletButton = () =>
 // ========== LAYOUT LOCATORS: FOOTER ==========
 //
 
-export const footer = () =>
-PageElement.located(
-  By.css('footer.desktopOnly')
-);
+export const footer = () => PageElement.located(By.css("footer.desktopOnly"));
 
 export const footerLogo = () =>
   PageElement.located(
@@ -150,4 +130,4 @@ export const footerContactUsLink = () =>
   PageElement.located(By.cssContainingText("a", "Contact us"));
 
 export const footerSocialLinks = () =>
-PageElements.located(By.css('[class^="Footer_socialLink__"]'));
+  PageElements.located(By.css('[class^="Footer_socialLink__"]'));

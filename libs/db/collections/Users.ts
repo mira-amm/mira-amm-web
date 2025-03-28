@@ -1,10 +1,10 @@
-import type { CollectionConfig } from 'payload'
-import { navAccordions } from './navAccordions';
+import type {CollectionConfig} from "payload";
+import {navAccordions} from "./navAccordions";
 
-import { authenticated } from '../access/index';
+import {authenticated} from "../access/index";
 
 export const Users: CollectionConfig = {
-  slug: 'users',
+  slug: "users",
   access: {
     admin: authenticated,
     create: authenticated,
@@ -13,22 +13,22 @@ export const Users: CollectionConfig = {
     update: authenticated,
   },
   admin: {
-    defaultColumns: ['name', 'email'],
-    useAsTitle: 'name',
+    defaultColumns: ["name", "email"],
+    useAsTitle: "name",
     group: navAccordions.categories,
   },
   auth: true,
   fields: [
     {
-      name: 'name',
-      type: 'text',
-      defaultValue: 'test'
+      name: "name",
+      type: "text",
+      defaultValue: "test",
     },
     {
-      name: 'email',
-      type: 'email',
-      defaultValue: 'test@mira.ly'
+      name: "email",
+      type: "email",
+      defaultValue: "test@mira.ly",
     },
   ],
   timestamps: true,
-}
+};

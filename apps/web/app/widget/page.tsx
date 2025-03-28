@@ -1,6 +1,6 @@
 import SwapWidgetLayout from "@/web/src/components/pages/swap-widget/SwapWidgetLayout";
 
-const SwapWidget = ()=> {
+const SwapWidget = () => {
   return <SwapWidgetLayout />;
 };
 
