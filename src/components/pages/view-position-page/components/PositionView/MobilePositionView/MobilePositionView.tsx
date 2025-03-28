@@ -74,7 +74,7 @@ const MobilePositionView = ({
         </div>
 
         <div className={styles.infoBlock}>
-          <p className={styles.subheading}>Your position</p>
+          <p className={"mc-type-m"}>Your position</p>
           <AprDisplay pool={pool} />
           <div className={styles.coinsData}>
             <CoinWithAmount
@@ -91,7 +91,7 @@ const MobilePositionView = ({
         <MiraBlock pool={pool} setIsAddressCopied={setIsAddressCopied} />
 
         <div className={styles.priceBlocks}>
-          <p className={styles.subheading}>Pool reserves</p>
+          <p className={"mc-type-m"}>Pool reserves</p>
           <ReserveItem
             reserve={assetA.reserve}
             assetId={pool[0].bits}
@@ -105,8 +105,10 @@ const MobilePositionView = ({
 
           <div className={styles.divider}></div>
           <div className={styles.reserveItems}>
-            <p>Total value locked</p>
-            {formattedTvlValue ? <p>${formattedTvlValue}</p> : loading}
+            <p className="mc-type-m">Total value locked</p>
+            <p className="mc-mono-m">
+              {formattedTvlValue ? <p>${formattedTvlValue}</p> : loading}
+            </p>
           </div>
           <ExchangeRate
             assetBMetadata={assetB.metadata}
