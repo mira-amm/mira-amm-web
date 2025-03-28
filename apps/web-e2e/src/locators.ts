@@ -14,39 +14,47 @@ export const walletOption = (walletName: string) =>
   );
 
 export const swapModule = () =>
-  PageElement.located(By.css("div.Swap_swapAndRate__7ZIhj"));
+  PageElement.located(By.css("div[class^='Swap_swapAndRate__']"));
 
 export const sellInput = () =>
-  PageElements.located(By.css(".CurrencyBox_input__7lBMk")).first();
+  PageElements.located(By.css("[class^='CurrencyBox_input__']")).first();
 
 export const buyInput = () =>
-  PageElements.located(By.css(".CurrencyBox_input__7lBMk")).last();
+  PageElements.located(By.css("[class^='CurrencyBox_input__']")).last();
 
 export const sellCoinButton = () =>
-  PageElements.located(By.css(".CurrencyBox_selector__JrCLa")).first();
+  PageElements.located(By.css("[class^='CurrencyBox_selector__']")).first();
 
 export const buyCoinButton = () =>
-  PageElements.located(By.css(".CurrencyBox_selector__JrCLa")).last();
+  PageElements.located(By.css("[class^='CurrencyBox_selector__']")).last();
 
 export const swapConvertButton = () =>
   PageElement.located(
-    By.css(".IconButton_iconButton___GOzQ.Swap_convertButton__unBzD"),
+    By.css(
+      "[class^='IconButton_iconButton__'][class*='Swap_convertButton__']"
+    )
   );
 
 export const searchInput = () =>
-  PageElement.located(By.css(".CoinsListModal_tokenSearchInput__TWcHY"));
+  PageElement.located(
+    By.css("[class^='CoinsListModal_tokenSearchInput__']")
+  );
 
 export const searchResults = () =>
-  PageElements.located(By.deepCss(".CoinsListModal_tokenListItem__oeJhZ"));
+  PageElements.located(
+    By.deepCss("[class^='CoinsListModal_tokenListItem__']")
+  );
 
 export const slippageLabel = () =>
-  PageElement.located(By.css(".SlippageSetting_slippageLabel___IHXt"));
+  PageElement.located(
+    By.css("[class^='SlippageSetting_slippageLabel__']")
+  );
 
 export const slippageSettingsButton = () =>
-  PageElement.located(By.css("div .Swap_heading__CjEVx > button"));
+  PageElement.located(By.css("div [class^='Swap_heading__'] > button"));
 
 export const slippageSettingsModal = () =>
-  PageElement.located(By.css(".Modal_modalWindow__S7LXs"));
+  PageElement.located(By.css("[class^='Modal_modalWindow__']"));
 
 export const slippageSettingsModalPercentageButton = (percentage: string) =>
   PageElement.located(By.cssContainingText("button", `${percentage}%`));
@@ -55,7 +63,9 @@ export const slippageSettingsModalCustomButton = () =>
   PageElement.located(By.cssContainingText("button", "Custom"));
 
 export const slippageSettingsInput = () =>
-  PageElement.located(By.css(".SettingsModalContent_slippageInput___szna"));
+  PageElement.located(
+    By.css("[class^='SettingsModalContent_slippageInput__']")
+  );
 
 //
 // ========== LIQUIDITY LOCATORS ==========
@@ -63,12 +73,12 @@ export const slippageSettingsInput = () =>
 
 export const createPoolButton = () =>
   PageElements.located(
-    By.css("button.ActionButton_btn__fm8nx.DesktopPools_createButton__Qt8xv"),
+    By.cssContainingText("button", 'Create Pool'),
   ).last();
 
 export const chooseAssetButtons = () =>
   PageElements.located(
-    By.css(".CoinInput_coinInputLine__mZnrF.CoinInput_rightColumn__Wjw0X"),
+    By.cssContainingText('p', "Choose Asset"),
   );
 
 export const poolTypeOption = (type: "Volatile" | "Stable") =>
@@ -77,7 +87,7 @@ export const poolTypeOption = (type: "Volatile" | "Stable") =>
 export const addLiquidityButton = () =>
   PageElements.located(
     By.css(
-      "button.ActionButton_btn__fm8nx.ActionButton_secondary__gLMKU.ActionButton_fullWidth__RUwiV",
+ 'button[class^="ActionButton_btn__"][class*="ActionButton_secondary__"][class*="ActionButton_fullWidth__"]'
     ),
   ).nth(12);
 
@@ -109,7 +119,9 @@ export const headerConnectWalletButton = () =>
 //
 
 export const footer = () =>
-  PageElement.located(By.css("footer.desktopOnly.Footer_footer__12mlR"));
+PageElement.located(
+  By.css('footer.desktopOnly')
+);
 
 export const footerLogo = () =>
   PageElement.located(
@@ -138,4 +150,4 @@ export const footerContactUsLink = () =>
   PageElement.located(By.cssContainingText("a", "Contact us"));
 
 export const footerSocialLinks = () =>
-  PageElements.located(By.css(".Footer_socialLink__bvMZ6"));
+PageElements.located(By.css('[class^="Footer_socialLink__"]'));

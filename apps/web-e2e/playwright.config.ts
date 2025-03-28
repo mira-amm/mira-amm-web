@@ -12,7 +12,7 @@ const baseURL = "http://localhost:3000";
 
 export default defineConfig<SerenityOptions>({
   ...nxE2EPreset(__filename, {testDir: "./src"}),
-  fullyParallel: !process.env.CI,
+  fullyParallel: false,
   workers: process.env.CI ? 2 : undefined,
   retries: 4,
   use: {
