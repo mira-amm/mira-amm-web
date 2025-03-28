@@ -80,11 +80,11 @@ const PreviewCreatePoolDialog = ({previewData}: Props) => {
         </div>
         <div className={styles.inputsPreview}>
           <div className={styles.inputPreviewRow}>
-            <Coin assetId={previewData.assets[0].assetId} />
+            <Coin assetId={previewData.assets[0].assetId} coinSelectionDisabled />
             <p className="mc-mono-m">{firstCoinAmount}</p>
           </div>
           <div className={styles.inputPreviewRow}>
-            <Coin assetId={previewData.assets[1].assetId} />
+            <Coin assetId={previewData.assets[1].assetId} coinSelectionDisabled />
             <p className="mc-mono-m">{secondCoinAmount}</p>
           </div>
           <hr className={styles.divider} />
