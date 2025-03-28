@@ -224,6 +224,7 @@
   padding: 12px;
   border-radius: 10px;
   background-image: url("../../../../../../assets/mira-block-bg.png");
+  background-color: black;
   background-position: center;
   background-size: cover;
   background-repeat: no-repeat;
