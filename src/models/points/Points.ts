@@ -4,56 +4,63 @@ import {
   PointsQueryParams,
   PointsPerUserService,
 } from "@/src/models/points/interfaces";
-import fs from "fs/promises";
-import {loadFile} from "@/src/utils/fileLoader";
-import path from "path";
+import {CacheProvider, createCacheProvider} from "./CacheProvider";
 
-const pointsPerUserQuery = loadFile(
-  path.join(process.cwd(), "src", "queries", "PointsPerUser.sql"),
-);
+const ONE_HOUR_IN_SECONDS = 60 * 60;
+const ONE_MINUTE_IN_SECONDS = 60;
+const ONE_SECOND_IN_MS = 1000;
+const RESULT_POLL_RETRIES = 20;
+const RESULT_POLL_INTERVAL_MS = 5 * ONE_SECOND_IN_MS; // 5 seconds
 
-const FILE_PATH = "/tmp/latestPoints.json";
-const POINTS_CACHE_EXPIRATION = 0.5 * 60 * 60 * 1000; // 30 minutes
+const POINTS_CACHE_EXPIRATION_MS =
+  20 * ONE_MINUTE_IN_SECONDS * ONE_SECOND_IN_MS; // 20 minutes
+const SENTIO_STALE_WHILE_REVALIDATE_SECS = ONE_HOUR_IN_SECONDS; // 1 hour
+const SENTIO_CACHE_TTL_SECS = 20 * ONE_MINUTE_IN_SECONDS; // 20 minutes
 
-// A service that fetches the latest points from the sentio API and saves them to a temporary file
-// This is used to avoid configuring vercel kv or postgres
-export class TmpFilePointsPerUserService implements PointsPerUserService {
+// A service that fetches the latest points from the sentio API and saves them to a cache
+// This is used to persist data between deployments
+export class FileCachedPointsPerUserService implements PointsPerUserService {
+  private readonly cacheProvider: CacheProvider;
+
   constructor(
     private readonly apiKey: string,
     private readonly apiUrl: string,
     private readonly epochConfigService: EpochConfigService,
-  ) {}
+  ) {
+    this.cacheProvider = createCacheProvider();
+  }
 
   async updateLatestPoints(): Promise<PointsResponse[]> {
     const points = await this.fetchLatestPoints();
 
     // add a timestamp to the overall object
     const pointsCache = {
-      expiresAt: new Date(Date.now() + POINTS_CACHE_EXPIRATION).toISOString(),
+      expiresAt: new Date(
+        Date.now() + POINTS_CACHE_EXPIRATION_MS,
+      ).toISOString(),
       points,
     };
 
-    await fs.writeFile(FILE_PATH, JSON.stringify(pointsCache));
-
+    await this.cacheProvider.write(pointsCache);
     return points;
   }
 
   async getPoints(
     queryParams: PointsQueryParams,
   ): Promise<{data: PointsResponse[]; totalCount: number}> {
-    let totalCount;
-    let parsedPoints;
+    let totalCount = 0;
+    let parsedPoints: PointsResponse[] = [];
 
     try {
-      const points = await fs.readFile(FILE_PATH, "utf8");
-      const pointsCache = JSON.parse(points);
+      const pointsCache = await this.cacheProvider.read();
       parsedPoints = pointsCache.points;
+
       if (
         !pointsCache.expiresAt ||
         new Date(pointsCache.expiresAt) < new Date(Date.now())
       ) {
         console.log(
-          "Points cache is older than one hour, updating in the background...",
+          `Points cache is older than ${POINTS_CACHE_EXPIRATION_MS / 1000 / ONE_MINUTE_IN_SECONDS} minutes, updating in the background...`,
         );
         // update the points cache non-blocking
         Promise.resolve().then(async () => {
@@ -62,9 +69,9 @@ export class TmpFilePointsPerUserService implements PointsPerUserService {
       }
       totalCount = parsedPoints.length;
     } catch (e) {
-      // If file doesn't exist or can't be read, fetch and save the latest points
+      // If data doesn't exist or can't be read, fetch and save the latest points
       console.log(
-        "Points file not found or invalid, fetching latest points...",
+        "Points data not found or invalid, fetching latest points...",
       );
       parsedPoints = await this.updateLatestPoints();
     }
@@ -102,7 +109,8 @@ export class TmpFilePointsPerUserService implements PointsPerUserService {
         (campaign) => campaign.rewards[0].dailyAmount,
       );
 
-      const options = this.getQueryOptions(
+      // trigger the job
+      const {resultUrl} = await this.triggerUpdateLatestPoints(
         this.apiKey,
         epochStart,
         epochEnd,
@@ -110,115 +118,102 @@ export class TmpFilePointsPerUserService implements PointsPerUserService {
         rewardRates,
       );
 
-      console.log(
-        "Sending request to Sentio API for latest points (this may take up to a minute)...",
-      );
+      console.log("Sentio job triggered, resultUrl:", resultUrl);
 
-      // Set a longer timeout for the fetch request
-      const controller = new AbortController();
-      const timeoutId = setTimeout(() => controller.abort(), 120000); // 2 minute timeout
-
-      try {
-        const response = await fetch(this.apiUrl, {
-          ...options,
-          signal: controller.signal,
-        });
-
-        if (!response.ok) {
-          throw new Error(
-            `Sentio API request failed with status ${response.status}: ${response.statusText}`,
-          );
-        }
-
-        // Get the full response text
-        const responseText = await response.text();
-
-        if (!responseText) {
-          throw new Error("Received empty response from Sentio API");
-        }
-
-        let json;
-        try {
-          json = JSON.parse(responseText);
-        } catch (e) {
-          console.error("Failed to parse JSON response:", e);
-          console.error("Response preview:", responseText.substring(0, 500));
-          throw new Error("Failed to parse JSON response from Sentio API");
-        }
-
-        if (json.error) {
-          console.error("Sentio API error:", json.error);
-          throw new Error(`Sentio API error: ${json.error}`);
-        }
-
-        // Check for result.rows structure instead of data
-        if (json.result && json.result.rows) {
-          console.log(
-            `Successfully retrieved ${json.result.rows.length} records`,
-          );
-
-          // Transform the rows into the expected PointsResponse format
-          return json.result.rows;
-        }
-
-        console.error("Unexpected response format:", json);
-        throw new Error("Sentio API returned unexpected data format");
-      } finally {
-        clearTimeout(timeoutId); // Clear the timeout if the request completes
-      }
+      return await this.pollForResults(this.apiKey, resultUrl);
     } catch (error) {
-      if (error instanceof Error && error.name === "AbortError") {
-        console.error("Request timed out after 2 minutes");
-        throw new Error("Sentio API request timed out after 2 minutes");
-      }
-      console.error("Error in fetchLatestPoints:", error);
+      console.error("Error fetching latest points:", error);
       throw error;
     }
   }
 
-  private getQueryOptions(
+  private async triggerUpdateLatestPoints(
     apiKey: string,
     epochStart: string,
     epochEnd: string,
     lpTokens: string[],
     rewardRates: number[],
-  ) {
-    let modifiedQuery = pointsPerUserQuery;
+  ): Promise<{resultUrl: string}> {
+    const queryParams = new URLSearchParams({
+      version: "0",
+      "cache_policy.ttl_secs": SENTIO_CACHE_TTL_SECS.toString(),
+      "cache_policy.refresh_ttl_secs":
+        SENTIO_STALE_WHILE_REVALIDATE_SECS.toString(),
+      // This is a hack to force the job to run, sentio will not run the job if the seconds per row is too high
+      size: "100000",
+    }).toString();
 
-    // Format the arrays for SQL
-    const lpTokensFormatted = lpTokens.map((token) => `'${token}'`).join(",");
-    const rewardRatesFormatted = rewardRates.join(",");
+    const data = {
+      epochEnd,
+      epochStart,
+      lpTokens: `[${lpTokens.map((token) => `'${token}'`).join(", ")}]`,
+      rewardRates: `[${rewardRates.join(", ")}]`,
+    };
 
-    // Replace the template variables in the SQL query
-    // Using parameters for these fields did not work with sentio queries
-    modifiedQuery = modifiedQuery.replace(
-      "${lpTokens}",
-      `[${lpTokensFormatted}]`,
-    );
-    modifiedQuery = modifiedQuery.replace(
-      "${rewardRates}",
-      `[${rewardRatesFormatted}]`,
-    );
-
-    return {
+    const response = await fetch(`${this.apiUrl}?${queryParams}`, {
       method: "POST",
       headers: {
-        accept: "application/json",
-        "content-type": "application/json",
+        "Content-Type": "application/json",
         "api-key": apiKey,
       },
-      body: JSON.stringify({
-        sqlQuery: {
-          sql: modifiedQuery,
-          parameters: {
-            fields: {
-              epochStart: {timestampValue: epochStart},
-              epochEnd: {timestampValue: epochEnd},
-            },
-          },
-        },
-        size: 10000,
-      }),
+      body: JSON.stringify(data),
+    });
+
+    console.log("Sentio job response:", response);
+
+    const json = await response.json();
+    return {
+      resultUrl: json.asyncResponse.resultUrl,
     };
+  }
+
+  private async fetchJobResult(
+    apiKey: string,
+    resultUrl: string,
+  ): Promise<PointsResponse[]> {
+    // try fetching the resultUrl
+    const response = await fetch(resultUrl, {
+      headers: {
+        "api-key": apiKey,
+      },
+    });
+
+    const json = await response.json();
+
+    // if it is finished, return the points
+    if (json.sqlQueryResult?.executionInfo?.status === "FINISHED") {
+      const rows = json.sqlQueryResult.executionInfo.result.rows;
+      const points: PointsResponse[] = rows;
+
+      return points;
+    } else {
+      throw new Error("Job not finished yet");
+    }
+  }
+
+  // poll the resultUrl until it is finished, or maxRetries is reached
+  private async pollForResults(
+    apiKey: string,
+    resultUrl: string,
+    maxRetries = RESULT_POLL_RETRIES,
+  ) {
+    for (let attempt = 0; attempt < maxRetries; attempt++) {
+      try {
+        const result = await this.fetchJobResult(apiKey, resultUrl);
+        if (result.length > 0) {
+          return result;
+        }
+      } catch (error) {
+        console.log(
+          `Attempt ${attempt + 1}/${maxRetries}: Job not finished yet, retrying in ${RESULT_POLL_INTERVAL_MS}ms...`,
+        );
+      }
+
+      await new Promise((resolve) =>
+        setTimeout(resolve, RESULT_POLL_INTERVAL_MS),
+      );
+    }
+
+    throw new Error(`Job polling timed out after ${maxRetries} attempts`);
   }
 }
