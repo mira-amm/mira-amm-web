@@ -253,7 +253,7 @@ const AddLiquidityDialog = ({poolId, setPreviewData, poolKey}: Props) => {
                           : "pending"
                     }
                     small={true}
-                    leftAlignValue={"-80"}
+                    leftAlignValue="-80"
                     poolKey={poolKey}
                     tvlValue={tvlValue}
                   />
