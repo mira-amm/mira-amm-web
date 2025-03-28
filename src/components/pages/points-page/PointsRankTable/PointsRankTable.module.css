@@ -21,10 +21,8 @@
 .tableHeader {
   padding: 16px;
   text-align: left;
-  font-weight: 400;
-  font-size: 16px;
-  color: var(--content-tertiary);
-  border-bottom: 1px solid var(--background-grey-darker);
+  color: var(--mc-black);
+  border-bottom: 1px solid var(--background-grey-light);
 }
 
 .tableRow {
@@ -34,7 +32,7 @@
 .tableCell {
   padding: 16px;
   font-size: 16px;
-  border-bottom: 1px solid #2a2b35;
+  /* border-bottom: 1px solid #2a2b35; */
 }
 
 .pointsCell {
