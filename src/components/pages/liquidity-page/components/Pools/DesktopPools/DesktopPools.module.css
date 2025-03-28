@@ -18,8 +18,8 @@
 .desktopPools thead::after {
   content: "";
   position: absolute;
-  left: 0;
-  right: 0;
+  left: 24px;
+  right: 24px;
   bottom: 0;
   height: 1px;
   background-color: var(--mc-grey-3);
