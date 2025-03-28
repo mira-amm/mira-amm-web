@@ -48,6 +48,13 @@
   gap: 12px;
 }
 
+.section {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  margin-top: 4px;
+}
+
 .APR {
   display: flex;
   flex-direction: row;
