@@ -1,0 +1,13 @@
+model {
+    context users {
+        title: "Users"
+        icon: https://www.svgrepo.com/show/532372/user-heart-alt-1.svg
+        style {
+            color: pink-200
+            shape: person
+            opacity: 30%
+        }
+    }
+
+    users -> platform "use digital devices to access"
+}
