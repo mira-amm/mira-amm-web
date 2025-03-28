@@ -9,9 +9,10 @@ type Props = {
   assetId: string | null;
   className?: string;
   onClick?: VoidFunction;
+  coinSelectionDisabled?: boolean;
 };
 
-const Coin = ({assetId, className, onClick}: Props) => {
+const Coin = ({assetId, className, onClick, coinSelectionDisabled}: Props) => {
   const metadata = useAssetMetadata(assetId);
   const icon = useAssetImage(assetId);
 
@@ -21,13 +22,11 @@ const Coin = ({assetId, className, onClick}: Props) => {
     }
   };
 
-  const newPool = Boolean(onClick);
-
   return (
     <div
       className={clsx(
         styles.coin,
-        newPool && styles.clickable,
+        !coinSelectionDisabled && styles.clickable,
         (!assetId || !metadata.symbol) && styles.selectable,
       )}
       onClick={handleClick}
@@ -46,7 +45,7 @@ const Coin = ({assetId, className, onClick}: Props) => {
       >
         {metadata.symbol ?? "Choose Coin"}
       </p>
-      {newPool && <ChevronDownIcon />}
+      {!coinSelectionDisabled ? <ChevronDownIcon /> : null}
     </div>
   );
 };
