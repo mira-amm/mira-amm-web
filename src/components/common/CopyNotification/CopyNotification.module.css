@@ -1,5 +1,5 @@
 .wrapper {
-  background: var(--content-positive);
+  background: var(--button-primary);
   width: 480px;
   border-radius: 10px;
   display: flex;
@@ -14,13 +14,11 @@
 
 .messageArea {
   display: flex;
+  align-items: center;
   gap: 16px;
 }
 
 .message {
-  font-weight: 400;
-  font-size: 16px;
-  line-height: 24px;
   color: var(--content-primary);
   margin: 0;
 }
