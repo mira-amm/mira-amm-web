@@ -2,7 +2,7 @@
   margin-top: 10px;
   display: flex;
   flex-direction: column;
-  gap: 24px;
+  gap: 28px;
 }
 
 .contentSection > div:not:last-child {
@@ -27,8 +27,8 @@
 .infoBlock {
   display: flex;
   flex-direction: column;
-  gap: 16px;
-  padding: 22px 18px;
+  gap: 15px;
+  padding: 19px;
   background-color: var(--background-secondary);
   border-radius: 16px;
   border: 11px solid var(--background-tertiary);
@@ -84,7 +84,7 @@
 .footer {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 8px;
 }
 
 @keyframes fade {
@@ -117,7 +117,7 @@
 
 .topRow {
   display: flex;
-  gap: 16px;
+  gap: 19px;
 }
 
 .infoBlocks {
@@ -133,7 +133,7 @@
 
 .priceBlockLargeDesktop {
   width: 100%;
-  padding: 28px 22px;
+  padding: 19px;
   display: flex;
   flex-direction: column;
   gap: 16px;
@@ -155,7 +155,6 @@
   height: 1px;
   background-color: var(--mc-grey-3);
   width: 100%;
-  margin: 8px 0;
 }
 
 p.smallLabel {
