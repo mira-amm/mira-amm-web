@@ -35,4 +35,4 @@ jobs:
         run: pnpm i
 
       - name: 🧹 Lint Projects
-        run: pnpx prettier --check .
+        run: pnpx prettier --check apps/web

@@ -1,0 +1,36 @@
+{
+  "name": "infra",
+  "$schema": "../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "infra",
+  "projectType": "application",
+  "targets": {
+    "dev": {
+      "command": "nix-shell",
+      "options": {
+        "cwd": "infra"
+      },
+      "prefixColor": "yellow",
+      "color": "green",
+      "bgColor": "black",
+      "description": "Enter the Nix Shell in the `infra` project."
+    },
+    "up": {
+      "command": "nix-shell --argstr DB 'up'",
+      "options": {
+        "cwd": "infra"
+      }
+    },
+    "down": {
+      "command": "nix-shell --argstr DB 'down'",
+      "options": {
+        "cwd": "infra"
+      }
+    },
+    "destroy": {
+      "command": "nix-shell --argstr DB 'destroy'",
+      "options": {
+        "cwd": "infra"
+      }
+    }
+  }
+}
