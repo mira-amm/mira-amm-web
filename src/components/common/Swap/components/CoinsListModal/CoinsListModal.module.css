@@ -11,14 +11,14 @@
   flex: 1;
   background: transparent;
   border: none;
-  color: var(--content-primary);
+  color: var(--content-tertiary);
 }
 
 .tokenList {
 }
 
 .tokenListItem {
-  padding: 8px 16px;
+  padding: 8px;
   border-radius: 8px;
 }
 
