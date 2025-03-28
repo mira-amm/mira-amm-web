@@ -29,6 +29,7 @@
   transform: translateX(100%);
   transition: transform 0.3s ease;
   z-index: 200;
+  border-radius: 16px;
 }
 
 .open {
@@ -43,12 +44,6 @@
   display: flex;
   justify-content: space-between;
   width: 100%;
-}
-
-.title {
-  font-size: 20px;
-  font-weight: 400;
-  line-height: 24px;
 }
 
 .transactionCloseButton {
@@ -89,12 +84,6 @@
   height: 32px;
 }
 
-.accountWallet {
-  font-size: 16px;
-  line-height: 24px;
-  font-weight: 400;
-}
-
 .copyButton {
   border: none;
   background: none;
@@ -128,9 +117,6 @@
 
 .transactionDate {
   color: var(--content-primary) a3;
-  font-weight: 400;
-  font-size: 16px;
-  line-height: 22px;
 }
 
 .transactionInfo {
@@ -259,6 +245,12 @@
   }
 }
 
+@media (max-width: 480px) {
+  .overlayOpened {
+    background-color: var(--background-tertiary);
+  }
+}
+
 @media (min-width: 769px) and (max-width: 800px) {
   .linerVisible {
     display: none;
@@ -279,6 +271,6 @@
 
 @media (min-width: 769px) {
   .wrapper {
-    border-radius: 12px;
+    border-radius: 16px;
   }
 }
