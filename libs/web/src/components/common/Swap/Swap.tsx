@@ -704,10 +704,15 @@ const Swap = ({isWidget}: {isWidget?: boolean}) => {
       <SettingsModal
         title={`Slippage tolerance: ${slippage / 100}%`}
         size={"regular"}
+        className={styles.settingsModal}
       >
         <SettingsModalContent slippage={slippage} setSlippage={setSlippage} />
       </SettingsModal>
-      <CoinsModal title="Choose token">
+      <CoinsModal
+        title="Choose token"
+        size="regular"
+        className={styles.coinsModal}
+      >
         <CoinsListModal selectCoin={handleCoinSelection} balances={balances} />
       </CoinsModal>
       <SuccessModal title={<></>}>
