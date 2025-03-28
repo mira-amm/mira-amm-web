@@ -17,7 +17,7 @@ import {
 } from "@/src/utils/constants";
 import TestnetLabel from "@/src/components/common/TestnetLabel/TestnetLabel";
 import IconButton from "../IconButton/IconButton";
-import CloseIcon from "../../icons/Close/CloseIcon";
+import ThickCloseIcon from "../../icons/Close/ThickCloseIcon";
 import {useEffect, useState} from "react";
 import PointsIcon from "../../icons/Points/PointsIcon";
 
@@ -60,7 +60,7 @@ const Header = ({isHomePage}: Props): JSX.Element => {
             </p>
           </div>
           <IconButton onClick={handleCloseBanner} className={styles.promoClose}>
-            <CloseIcon />
+            <ThickCloseIcon />
           </IconButton>
         </section>
       )}
