@@ -5,7 +5,7 @@ import {FuelAppUrl} from "@/src/utils/constants";
 import {useAccount, useIsConnected} from "@fuels/react";
 import Image from "next/image";
 import {forwardRef, useMemo} from "react";
-import {TransactionsCloseIcon} from "../../icons/Close/TransactionsCloseIcon";
+import CloseIcon from "../../icons/Close/CloseIcon";
 import CopyAddressIcon from "../../icons/Copy/CopyAddressIcon";
 import styles from "./TransactionsHistory.module.css";
 import SkeletonLoader from "../Swap/components/SkeletonLoader/SkeletonLoader";
@@ -59,7 +59,7 @@ const TransactionsHistory = forwardRef<
             className={styles.transactionCloseButton}
             onClick={onClose}
           >
-            <TransactionsCloseIcon />
+            <CloseIcon />
           </button>
         </div>
         <div className={styles.accountInfo}>

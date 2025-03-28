@@ -9,6 +9,7 @@
   padding: 12px 16px;
   background-color: var(--background-promotional-banner);
   justify-content: space-between;
+  align-items: center;
 }
 
 .promo_text {
