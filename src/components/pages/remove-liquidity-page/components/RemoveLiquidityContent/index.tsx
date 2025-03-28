@@ -19,6 +19,8 @@ import {memo, useCallback, useRef, useState} from "react";
 import Slider from "../Slider";
 import styles from "./index.module.css";
 import {useRouter} from "next/navigation";
+import {useAssetPrice} from "@/src/hooks/useAssetPrice";
+import fiatValueFormatter from "@/src/utils/abbreviateNumber";
 
 type Props = {
   pool: PoolId;
@@ -35,6 +37,9 @@ const RemoveLiquidityModalContent = ({pool}: Props) => {
   const {assets, lpTokenBalance} = usePositionData({pool});
   const {apr} = usePoolAPR(pool);
   const isValidNetwork = useCheckActiveNetwork();
+
+  const {price: coinAPrice} = useAssetPrice(pool[0].bits);
+  const {price: coinBPrice} = useAssetPrice(pool[1].bits);
 
   const [removeLiquidityPercentage, setRemoveLiquidityPercentage] =
     useState(50);
@@ -76,6 +81,18 @@ const RemoveLiquidityModalContent = ({pool}: Props) => {
     coinBAmountToWithdraw,
     coinBMetadata.decimals,
   );
+
+  const totalCoinValueToBeRemoved = !!(
+    coinAPrice &&
+    coinBPrice &&
+    Number(coinAAmountToWithdrawStr) &&
+    Number(coinBAmountToWithdrawStr)
+  )
+    ? fiatValueFormatter(
+        Number(coinAAmountToWithdrawStr) * coinAPrice +
+          Number(coinBAmountToWithdrawStr) * coinBPrice,
+      )
+    : "-";
 
   const {
     data,
@@ -189,10 +206,10 @@ const RemoveLiquidityModalContent = ({pool}: Props) => {
         </div>
       </div>
       <div className={styles.sliderContainer}>
-        {/* <div className={styles.sliderInfoContainer}>
+        <div className={styles.sliderInfoContainer}>
           <p>Amount to remove</p>
-          <p>1200</p>
-        </div> */}
+          <p>{totalCoinValueToBeRemoved}</p>
+        </div>
         <Slider value={removeLiquidityPercentage} onChange={handleChange} />
       </div>
       <div className={styles.tableWrapper}>
