@@ -14,7 +14,7 @@ const ReserveItem = ({
   assetId,
   amount,
   reserve,
-}: ReserveItemsProps): JSX.Element => {
+}: ReserveItemsProps) => {
   const {usdValue, coinAmount} = useFormattedReserveValue(
     assetId,
     amount,

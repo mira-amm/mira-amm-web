@@ -43,7 +43,7 @@ const DesktopPositionView = ({
   assetA,
   assetB,
   handleWithdrawLiquidity,
-}: DesktopPositionViewProps): JSX.Element => {
+}: DesktopPositionViewProps)  => {
   return (
     <section className={clsx(styles.contentSection, "desktopOnly")}>
       <div className={styles.positionHeading}>

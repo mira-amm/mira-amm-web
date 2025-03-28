@@ -16,7 +16,7 @@ import {
 } from "@/src/utils/constants";
 import Boosts from "./components/Boosts/Boosts";
 
-const LiquidityPageLayout = (): JSX.Element => {
+const LiquidityPageLayout = ()  => {
   return (
     <>
       <Header />

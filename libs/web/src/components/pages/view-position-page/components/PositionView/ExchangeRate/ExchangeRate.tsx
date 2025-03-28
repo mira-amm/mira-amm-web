@@ -20,7 +20,7 @@ const ExchangeRate = ({
   assetAMetadata,
   coinAAmount,
   coinBAmount,
-}: ExchangeRateProps): JSX.Element | null => {
+}: ExchangeRateProps) => {
   const [flooredRate, setFlooredRate] = useState("");
   const [isBaseCoinA, setIsBaseCoinA] = useState(true);
 

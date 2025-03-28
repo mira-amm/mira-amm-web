@@ -46,7 +46,7 @@ const MobilePositionView = ({
   assetA,
   assetB,
   handleWithdrawLiquidity,
-}: MobilePositionViewProps): JSX.Element => {
+}: MobilePositionViewProps) => {
   const loading = <Loader variant="outlined" color="gray" />;
 
   return (

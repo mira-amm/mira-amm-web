@@ -23,7 +23,7 @@ const SkeletonLoader = ({
   count = 3,
   textLines = 2,
   children,
-}: SkeletonLoaderProps): JSX.Element => {
+}: SkeletonLoaderProps)  => {
   if (!isLoading) return <>{children}</>;
 
   return (

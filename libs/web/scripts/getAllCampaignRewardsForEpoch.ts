@@ -48,7 +48,7 @@ async function main() {
   );
 
   const epochConfigService = new JSONEpochConfigService(
-    path.join(process.cwd(), "src", "models", "campaigns.json"),
+    path.join(process.cwd(), "../../libs/web/src", "models", "campaigns.json"),
   );
 
   // overwrite the csv file

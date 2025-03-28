@@ -28,7 +28,7 @@ type Props = {
 const PROMO_BANNER_STORAGE_KEY = "fuel-boost-program-promo-banner-closed";
 
 const ISSERVER = typeof window === "undefined";
-const Header = ({isHomePage}: Props): JSX.Element => {
+const Header = ({isHomePage}: Props)  => {
   const pathname = usePathname();
   const {isConnected} = useIsConnected();
 

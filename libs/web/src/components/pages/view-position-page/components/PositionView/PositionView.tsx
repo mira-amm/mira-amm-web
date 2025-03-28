@@ -28,7 +28,7 @@ type Props = {
   pool: PoolId;
 };
 
-const PositionView = ({pool}: Props): JSX.Element => {
+const PositionView = ({pool}: Props)  => {
   const [
     RemoveLiquidityModal,
     openRemoveLiquidityModal,

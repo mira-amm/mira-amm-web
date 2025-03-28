@@ -6,7 +6,7 @@ type Props = {
   color?: "gray"; //Add more color options if required
 };
 
-const Loader = ({variant, color}: Props): JSX.Element => {
+const Loader = ({variant, color}: Props)  => {
   return (
     <div
       className={clsx(

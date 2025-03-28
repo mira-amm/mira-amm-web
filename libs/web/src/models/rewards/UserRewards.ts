@@ -15,7 +15,7 @@ import {Campaign, EpochConfigService} from "../campaigns/interfaces";
 import {convertDailyRewardsToTotalRewards} from "@/src/utils/common";
 
 const userPoolRewardsQuery = loadFile(
-  path.join(process.cwd(), "src", "queries", "UserPoolRewards.sql"),
+  path.join(process.cwd(), "../../libs/web/src", "queries", "UserPoolRewards.sql"),
 );
 const addressPattern: RegExp = /^0x[a-fA-F0-9]{64}$/;
 const timestampPattern: RegExp =

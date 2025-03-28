@@ -8,7 +8,7 @@ import {
 } from "@/src/utils/constants";
 import PointsIcon from "@/src/components/icons/Points/PointsIcon";
 
-const BoostsBanner = (): JSX.Element => {
+const BoostsBanner = ()  => {
   return (
     <div className={styles.banner}>
       <PointsIcon />

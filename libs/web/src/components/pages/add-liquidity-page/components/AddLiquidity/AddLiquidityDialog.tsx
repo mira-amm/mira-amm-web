@@ -48,7 +48,7 @@ const AddLiquidityDialog = ({
   poolId,
   setPreviewData,
   poolKey,
-}: Props): JSX.Element => {
+}: Props)  => {
   const [FailureModal, openFailureModal, closeFailureModal] = useModal();
 
   const {isConnected, isPending: isConnecting} = useIsConnected();

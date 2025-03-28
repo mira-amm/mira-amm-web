@@ -28,7 +28,7 @@ const truncateAddress = (address: string) => {
   return `${address.slice(0, 6)}...${address.slice(-4)}`;
 };
 
-export default function PointsRankTable(): JSX.Element {
+export default function PointsRankTable() {
   // State for pagination
   const [pagination, setPagination] = useState({
     pageIndex: 0, // 0-based index

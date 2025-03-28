@@ -15,7 +15,7 @@ import path from "path";
 import {convertDailyRewardsToTotalRewards} from "@/src/utils/common";
 
 const campaignsQuery = loadFile(
-  path.join(process.cwd(), "src", "queries", "CampaignsAPR.sql"),
+  path.join(process.cwd(), "../../libs/web/src", "queries", "CampaignsAPR.sql"),
 );
 
 // Specific implementation for Sentio

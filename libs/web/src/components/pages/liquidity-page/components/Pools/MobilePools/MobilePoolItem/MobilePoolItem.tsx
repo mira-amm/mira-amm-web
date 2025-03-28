@@ -12,7 +12,7 @@ type Props = {
   poolData: PoolData;
 };
 
-const MobilePoolItem = ({poolData}: Props): JSX.Element => {
+const MobilePoolItem = ({poolData}: Props)  => {
   const router = useRouter();
   const {
     poolKey,

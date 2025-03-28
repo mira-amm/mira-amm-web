@@ -24,7 +24,7 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
     process.env.SENTIO_API_KEY,
     SENTIO_POINTS_ENDPOINT,
     new JSONEpochConfigService(
-      path.join(process.cwd(), "src", "models", "campaigns.json"),
+      path.join(process.cwd(), "../../libs/web/src", "models", "campaigns.json"),
     ),
   );
 

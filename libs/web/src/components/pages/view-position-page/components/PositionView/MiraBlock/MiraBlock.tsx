@@ -13,7 +13,7 @@ interface MiraBlockProps {
   pool: PoolId;
 }
 
-const MiraBlock = ({pool}: MiraBlockProps): JSX.Element => {
+const MiraBlock = ({pool}: MiraBlockProps) => {
   const {lpTokenBalance} = usePositionData({pool});
   const lpTokenDisplayValue = formatUnits(lpTokenBalance || "0", 9);
   const lpTokenAssetId = getLPAssetId(DEFAULT_AMM_CONTRACT_ID, pool);

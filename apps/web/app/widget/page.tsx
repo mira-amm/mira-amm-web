@@ -1,6 +1,6 @@
-import SwapWidgetLayout from "@/src/components/pages/swap-widget/SwapWidgetLayout";
+import SwapWidgetLayout from "@/web/src/components/pages/swap-widget/SwapWidgetLayout";
 
-const SwapWidget = (): JSX.Element => {
+const SwapWidget = ()=> {
   return <SwapWidgetLayout />;
 };
 

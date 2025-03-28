@@ -7,7 +7,7 @@ type Props = {
   type?: "positive" | "negative";
 };
 
-const InfoBlock = ({title, value, type}: Props): JSX.Element => {
+const InfoBlock = ({title, value, type}: Props)=> {
   return (
     <div className={styles.infoBlock}>
       <p>{title}</p>

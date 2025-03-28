@@ -6,7 +6,7 @@ import styles from "./PointsPageLayout.module.css";
 import PointsRankTable from "./PointsRankTable/PointsRankTable";
 import Boosts from "../liquidity-page/components/Boosts/Boosts";
 
-const PointsPageLayout = (): JSX.Element => {
+const PointsPageLayout = () => {
   return (
     <>
       <Header />

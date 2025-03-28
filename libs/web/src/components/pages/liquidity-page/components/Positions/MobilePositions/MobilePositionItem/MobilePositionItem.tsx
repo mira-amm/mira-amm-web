@@ -18,7 +18,7 @@ type Props = {
   onClick: VoidFunction;
 };
 
-const MobilePositionItem = ({position, onClick}: Props): JSX.Element => {
+const MobilePositionItem = ({position, onClick}: Props)  => {
   const coinAMetadata = useAssetMetadata(
     position.token0Item.token0Position[0].bits,
   );
