@@ -64,11 +64,18 @@
   border-radius: 40px;
   color: var(--background-primary) !important;
   background-color: var(--content-primary) !important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-.convertButton:hover > svg {
+.convertButton svg {
+  transition: transform 0.3s ease;
+  transform-origin: center center;
+}
+
+.convertButton:hover svg {
   transform: rotate(180deg);
-  transition: transform 0.3s;
 }
 
 .convertButton:hover {
