@@ -670,9 +670,7 @@ const Swap = ({isWidget}: {isWidget?: boolean}) => {
             />
           )}
 
-          <div className={styles.rates}>
-            <ExchangeRate swapState={swapState} />
-          </div>
+          <ExchangeRate swapState={swapState} className={styles.rates} />
 
           {!isConnected && (
             <ActionButton
