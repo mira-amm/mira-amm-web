@@ -135,11 +135,15 @@ layout {
                     args "nx" "types" "admin"
                     start_suspended true
                    }
+
                 pane command="pnpm" name="🎨 Storybook | 6006 | design.mira.ly" cwd="../" {
                     args "storybook"
                 }
                 }
         pane split_direction="horizontal" {
+                pane command="pnpm" name="📦 Node Modules Inspector | 7000" cwd="../" {
+                    args "node-modules-inspector" "--depth=7" "--port=7000" "--open=false"
+                }
                 pane command="pnpm" name="📊 Drizzle Studio | local.drizzle.studio" cwd="../" {
                     args "nx" "studio" "db"
                 }
