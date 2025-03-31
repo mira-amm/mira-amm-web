@@ -153,7 +153,7 @@ const DesktopPositionView = ({
           }
           title="Learn about providing liquidity"
           link={LIQUIDITY_PROVIDING_DOC_URL}
-          linkText="Click here and check our v3 LP walktrought"
+          linkText="Click here and check our v3 LP walkthrough"
         />
       </section>
     </>
