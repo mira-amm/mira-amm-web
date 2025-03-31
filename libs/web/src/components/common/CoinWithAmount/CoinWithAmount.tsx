@@ -4,16 +4,26 @@ import {useAssetImage} from "@/src/hooks/useAssetImage";
 import useAssetMetadata from "@/src/hooks/useAssetMetadata";
 import Image from "next/image";
 import clsx from "clsx";
+import {formatTokenAmount} from "@/src/utils/formatTokenAmount";
 
 type Props = {
   amount: string;
   assetId: B256Address;
   withName?: boolean;
+  maxDecimals?: number;
+  minDecimals?: number;
 };
 
-const CoinWithAmount = ({amount, assetId, withName}: Props) => {
+const CoinWithAmount = ({
+  amount,
+  assetId,
+  withName,
+  maxDecimals = 5,
+  minDecimals = 2,
+}: Props): JSX.Element => {
   const icon = useAssetImage(assetId);
   const metadata = useAssetMetadata(assetId);
+  const formattedAmount = formatTokenAmount(amount, maxDecimals, minDecimals);
 
   return (
     <div className={styles.coinWithAmount}>
@@ -28,7 +38,7 @@ const CoinWithAmount = ({amount, assetId, withName}: Props) => {
       )}
       {!withName ? (
         <div className={styles.info}>
-          <p className={clsx(styles.amount, "mc-mono-l")}>{amount}</p>
+          <p className={clsx(styles.amount, "mc-mono-l")}>{formattedAmount}</p>
           <p className={clsx(styles.name, "mc-type-l")}>{metadata.symbol}</p>
         </div>
       ) : (
