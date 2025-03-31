@@ -13,7 +13,7 @@ import AprDisplay from "../AprDisplay/AprDisplay";
 import ReserveItem from "../ReserveItem/ReserveItem";
 import ExchangeRate from "../ExchangeRate/ExchangeRate";
 import MiraBlock from "../MiraBlock/MiraBlock";
-import {formatDisplayAmount} from "@/src/utils/common";
+import {formatTokenAmount} from "@/src/utils/formatTokenAmount";
 import Image from "next/image";
 import {LIQUIDITY_PROVIDING_DOC_URL} from "@/src/utils/constants";
 import LearnMoreIcon from "@/assets/learn-more.png";
@@ -79,11 +79,11 @@ const MobilePositionView = ({
           <div className={styles.coinsData}>
             <CoinWithAmount
               assetId={pool[0].bits}
-              amount={formatDisplayAmount(assetA.amount)}
+              amount={formatTokenAmount(assetA.amount)}
             />
             <CoinWithAmount
               assetId={pool[1].bits}
-              amount={formatDisplayAmount(assetB.amount)}
+              amount={formatTokenAmount(assetB.amount)}
             />
           </div>
         </div>

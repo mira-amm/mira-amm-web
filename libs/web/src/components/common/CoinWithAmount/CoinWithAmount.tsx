@@ -11,7 +11,7 @@ type Props = {
   withName?: boolean;
 };
 
-const CoinWithAmount = ({amount, assetId, withName}: Props) => {
+const CoinWithAmount = ({amount, assetId, withName}: Props): JSX.Element => {
   const icon = useAssetImage(assetId);
   const metadata = useAssetMetadata(assetId);
 
