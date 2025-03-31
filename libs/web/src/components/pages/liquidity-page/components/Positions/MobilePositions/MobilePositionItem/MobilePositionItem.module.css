@@ -16,7 +16,7 @@
 }
 
 .poolDescription {
-  color: #d4b226;
+  color: var(--accent-alert);
 }
 
 .aprDiv {

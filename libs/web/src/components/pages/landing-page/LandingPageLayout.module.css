@@ -72,16 +72,7 @@
   border-radius: 16px;
 }
 
-.discordBlock {
-  background-color: #32389f;
-}
-
-.xBlock {
-  background-color: #040305;
-}
-
 .divider {
-  background-color: #1b2749;
   width: 100vw;
   align-self: center;
 }
