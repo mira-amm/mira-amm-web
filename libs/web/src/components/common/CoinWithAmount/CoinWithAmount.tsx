@@ -9,8 +9,6 @@ type Props = {
   amount: string;
   assetId: B256Address;
   withName?: boolean;
-  maxDecimals?: number;
-  minDecimals?: number;
 };
 
 const CoinWithAmount = ({amount, assetId, withName}: Props): JSX.Element => {
