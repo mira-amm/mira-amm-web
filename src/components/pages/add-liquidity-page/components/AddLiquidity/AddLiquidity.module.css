@@ -311,6 +311,17 @@
   margin-bottom: 4px;
 }
 
+.extendedText {
+  display: none;
+}
+
+@media (min-width: 768px) {
+  /* or whatever your mobile breakpoint is */
+  .extendedText {
+    display: inline;
+  }
+}
+
 @media (min-width: 1024px) {
   /*.poolStabilityButton {*/
   /*  flex-direction: row;*/

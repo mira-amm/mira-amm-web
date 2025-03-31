@@ -25,7 +25,6 @@ import {useDebounceCallback} from "usehooks-ts";
 import {CreatePoolPreviewData} from "./PreviewCreatePoolDialog";
 import Image from "next/image";
 import SparkleIcon from "@/assets/sparcle.svg";
-import {isMobile} from "react-device-detect";
 
 type Props = {
   setPreviewData: Dispatch<SetStateAction<CreatePoolPreviewData | null>>;
@@ -253,10 +252,9 @@ const CreatePoolDialog = ({setPreviewData}: Props) => {
               role="button"
             >
               <div className={styles.poolStabilityButtonContent}>
-                <span className={styles.poolStabilityButtonText}>
-                  {isMobile
-                    ? "0.30% fee tier"
-                    : "0.30% fee tier (volatile pool)"}
+                <span className={"mc-type-b"}>
+                  0.30% fee tier
+                  <span className={styles.extendedText}> (volatile pool)</span>
                 </span>
               </div>
             </div>
@@ -269,8 +267,9 @@ const CreatePoolDialog = ({setPreviewData}: Props) => {
               role="button"
             >
               <div className={styles.poolStabilityButtonContent}>
-                <span className={styles.poolStabilityButtonText}>
-                  {isMobile ? "0.05% fee tier" : "0.05% fee tier (stable pool)"}
+                <span className={"mc-type-b"}>
+                  0.05% fee tier
+                  <span className={styles.extendedText}> (volatile pool)</span>
                 </span>
                 {/* <Info tooltipText={StablePoolTooltip} tooltipKey="stablePool" /> */}
               </div>

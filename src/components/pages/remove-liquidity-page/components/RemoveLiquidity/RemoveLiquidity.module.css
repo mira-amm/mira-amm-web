@@ -79,10 +79,6 @@
   white-space: nowrap;
 }
 
-.poolStabilityButtonText {
-  font-size: 14px !important;
-}
-
 .poolStabilityButtonActive {
   background-color: var(--content-primary);
   color: var(--background-primary);
