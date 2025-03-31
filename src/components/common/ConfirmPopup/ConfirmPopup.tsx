@@ -18,12 +18,14 @@ export const ConfirmPopup: FC<ConfirmPopupProps> = ({
     <section className={styles.popupOverlay}>
       <form className={styles.popupForm}>
         <div className={styles.popupHeader}>
-          <h2 className={styles.popupTitle}>Disclaimer</h2>
+          <h2 className={clsx(styles.popupTitle, "mc-type-xxxl")}>
+            Disclaimer
+          </h2>
         </div>
-        <p className={styles.popupDescription}>
+        <p className={clsx(styles.popupDescription, "mc-type-m")}>
           By accessing this website or using the Mira Protocol, I confirm that:
         </p>
-        <ul className={styles.popupList}>
+        <ul className={clsx(styles.popupList, "mc-type-m")}>
           <li className={styles.popupListItem}>
             I am not a person or entity who resides in, is a citizen of, is
             incorporated in, or has a registered office in the United States of
