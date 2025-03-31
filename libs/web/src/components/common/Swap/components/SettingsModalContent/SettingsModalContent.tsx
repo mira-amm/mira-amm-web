@@ -96,13 +96,7 @@ const SettingsModalContent = ({slippage, setSlippage}: Props) => {
                 role="button"
               >
                 <div className={buttonstyles.poolStabilityButtonContent}>
-                  <span
-                    className={
-                      (buttonstyles.poolStabilityButtonText,
-                      styles.inputContent,
-                      "mc-mono-m")
-                    }
-                  >
+                  <span className={clsx(styles.inputContent, "mc-mono-m")}>
                     {value / 100}%
                   </span>
                 </div>
