@@ -1,24 +1,35 @@
 import {DefaultLocale} from "./constants";
 
-/**
- * Formats token amounts with appropriate decimal places:
- * - Very small amounts (<0.0001): Show 4 decimal places with scientific notation if needed
- * - Medium amounts: Show 2-5 decimal places based on value
- * - Large amounts (>1000): Show 2 decimal places with compact notation
- */
 export function formatTokenAmount(
   value: number | string,
-  maxDecimals: number = 5,
-  minDecimals: number = 2,
+  options: {
+    maxDecimals?: number;
+    minDecimals?: number;
+    thresholdForSmallValues?: number;
+  } = {},
 ): string {
+  const {
+    maxDecimals = 5,
+    minDecimals = 2,
+    thresholdForSmallValues = 0.00001,
+  } = options;
+
   const numericValue = typeof value === "string" ? parseFloat(value) : value;
 
   if (isNaN(numericValue)) return "0";
   if (numericValue === 0) return "0";
 
-  // Handle very small amounts
+  // Handle very small amounts (combining both functions' approaches)
+  if (Math.abs(numericValue) < thresholdForSmallValues) {
+    return `<${thresholdForSmallValues}`;
+  }
+
+  // Handle amounts that would show as 0.00001-0.0001
   if (Math.abs(numericValue) < 0.0001) {
-    return numericValue.toExponential(4).replace("e", "e+");
+    return numericValue.toLocaleString(DefaultLocale, {
+      minimumFractionDigits: 5,
+      maximumFractionDigits: 5,
+    });
   }
 
   // Handle large amounts
@@ -30,7 +41,7 @@ export function formatTokenAmount(
     }).format(numericValue);
   }
 
-  // Calculate optimal decimal places
+  // Calculate optimal decimal places for medium amounts
   const log10 = Math.log10(Math.abs(numericValue));
   const decimals = Math.max(
     minDecimals,
@@ -40,6 +51,6 @@ export function formatTokenAmount(
   // Format with optimal decimal places
   return new Intl.NumberFormat(DefaultLocale, {
     maximumFractionDigits: decimals,
-    minimumFractionDigits: Math.min(decimals, 2),
+    minimumFractionDigits: Math.min(decimals, minDecimals),
   }).format(numericValue);
 }
