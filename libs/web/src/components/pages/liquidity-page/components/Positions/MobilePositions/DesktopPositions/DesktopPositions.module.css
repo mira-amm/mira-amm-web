@@ -60,7 +60,5 @@
   background-color: transparent;
   border: none;
   color: var(--accent-primary);
-  font-size: 16px;
-  line-height: 19px;
   cursor: pointer;
 }

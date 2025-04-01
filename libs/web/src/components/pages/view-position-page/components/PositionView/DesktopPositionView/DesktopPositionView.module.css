@@ -38,12 +38,6 @@
   color: var(--mc-black);
 }
 
-.subheading {
-  font-size: 16px;
-  font-weight: 600;
-  line-height: 19px;
-}
-
 .coinsData {
   display: flex;
   justify-content: space-between;
@@ -94,12 +88,6 @@
   100% {
     opacity: 1;
   }
-}
-
-.loadingText {
-  color: var(--content-primary);
-  font-size: 14px;
-  animation: fade 0.5s linear infinite alternate;
 }
 
 .positionHeading {
@@ -155,10 +143,4 @@
   height: 1px;
   background-color: var(--mc-grey-3);
   width: 100%;
-}
-
-p.smallLabel {
-  padding: 4px 8px;
-  font-size: 13px;
-  line-height: 15px;
 }
