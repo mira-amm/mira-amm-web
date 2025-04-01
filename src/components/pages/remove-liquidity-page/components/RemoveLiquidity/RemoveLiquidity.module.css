@@ -153,12 +153,6 @@
   justify-content: space-between;
 }
 
-.inputPreviewRow p {
-  font-size: 14px;
-  line-height: 16px;
-  font-weight: 500;
-}
-
 .inputPreviewRow svg,
 .inputPreviewRow img {
   width: 20px;
