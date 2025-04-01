@@ -3,7 +3,7 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  background: #00000059;
+  background: var(--modal-overlay);
   backdrop-filter: blur(8px);
   position: absolute;
   top: 0;
@@ -39,7 +39,6 @@
   bottom: 0;
   left: 0;
   padding: 24px 28px;
-  box-shadow: 1px 0px 2px 0px #faf8f830;
   display: flex;
   gap: 12px;
 }
@@ -53,7 +52,6 @@
   padding: 20px 28px 16px 28px;
   width: 100%;
   box-sizing: border-box;
-  box-shadow: 1px 0px 2px 0px #faf8f830;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -71,14 +69,6 @@
 }
 
 .popupTitle {
-}
-
-.popupTitleScroll {
-  box-shadow: 1px 0px 2px 0px #faf8f840;
-}
-
-.popupButtonScroll {
-  box-shadow: 1px 0px 2px 0px #faf8f840;
 }
 
 .popupDescription {

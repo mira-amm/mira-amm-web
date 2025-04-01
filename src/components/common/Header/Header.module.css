@@ -77,22 +77,6 @@
   line-height: 16px !important;
 }
 
-.pointsText {
-  position: relative;
-  display: inline-flex;
-  align-items: center;
-  text-transform: uppercase;
-  background-image: radial-gradient(
-    114.58% 814.77% at -1.46% 26.54%,
-    var(--accent-primary) 0%,
-    #5872fc 49.15%,
-    #31fe3a 100%
-  );
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  cursor: pointer;
-}
-
 .promoClose {
   color: var(--transparent-white) !important;
 }

@@ -252,7 +252,7 @@
 }
 
 .addLiquidityLink:hover {
-  color: #e0e0e0;
+  color: var(--mc-white);
 }
 
 .addLiquidityLink::after {

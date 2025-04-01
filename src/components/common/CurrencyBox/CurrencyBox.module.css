@@ -55,7 +55,7 @@
 }
 
 .warningLabel {
-  color: #d4a900;
+  color: var(--mc-yellow);
 }
 
 @media (min-width: 1024px) {
