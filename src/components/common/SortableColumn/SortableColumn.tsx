@@ -21,7 +21,7 @@ const SortableColumn = ({
   return (
     <th onClick={() => onSort(columnKey)} className={styles.sortable}>
       <div className={styles.sortArea}>
-        {title}
+        <p className="mc-type-m">{title}</p>
         <span className={styles.sortIcon}>
           {
             isActive && (

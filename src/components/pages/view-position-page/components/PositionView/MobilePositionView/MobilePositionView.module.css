@@ -86,12 +86,6 @@
   }
 }
 
-.loadingText {
-  color: var(--content-primary);
-  font-size: 14px;
-  animation: fade 0.5s linear infinite alternate;
-}
-
 .divider {
   width: 100%;
   height: 1px;
