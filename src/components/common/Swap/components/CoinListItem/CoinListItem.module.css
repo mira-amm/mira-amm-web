@@ -42,20 +42,6 @@
 }
 
 @media (min-width: 1024px) {
-  /*.name {*/
-  /*  font-size: 18px;*/
-  /*  line-height: 22px;*/
-  /*}*/
-
-  /*.fullName {*/
-  /*  font-size: 14px;*/
-  /*  line-height: 16px;*/
-  /*}*/
-
-  /*.balance {*/
-  /*  font-size: 14px;*/
-  /*  line-height: 16px;*/
-  /*}*/
   .coin svg,
   .coin img {
     width: 32px;
