@@ -27,9 +27,11 @@ const DropDownMenu = forwardRef<HTMLUListElement, DropDownMenuProps>(
               onClick={button.onClick}
             >
               <button.icon />
-              <span>{button.text}</span>
+              <span className="mc-type-m">{button.text}</span>
               {button.disabled && button.tooltip && (
-                <div className={styles.tooltip}>{button.tooltip}</div>
+                <div className={clsx(styles.tooltip, "mc-type-xs")}>
+                  {button.tooltip}
+                </div>
               )}
             </button>
           </li>
