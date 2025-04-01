@@ -113,7 +113,9 @@ const CurrencyBox = ({
       <div className={styles.content}>
         {previewError ? (
           <div className={styles.warningBox}>
-            <p className={styles.warningLabel}>{previewError}</p>
+            <p className={clsx(styles.warningLabel, "mc-type-b")}>
+              {previewError}
+            </p>
           </div>
         ) : (
           <input
