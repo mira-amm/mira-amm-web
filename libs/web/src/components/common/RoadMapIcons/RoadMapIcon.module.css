@@ -1,7 +1,6 @@
 .background {
   min-width: 112px;
   height: 40px;
-  background: linear-gradient(132.04deg, #262f5f 11.87%, #c41cff 176.88%);
   border-radius: 40px;
   color: var(--content-primary);
   display: flex;

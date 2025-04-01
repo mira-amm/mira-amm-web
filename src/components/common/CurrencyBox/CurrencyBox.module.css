@@ -55,7 +55,10 @@
 }
 
 .warningLabel {
-  color: #d4a900;
+  color: var(--mc-yellow);
+  font-size: 14px;
+  line-height: 1.4;
+  font-weight: 500;
 }
 
 @media (min-width: 1024px) {

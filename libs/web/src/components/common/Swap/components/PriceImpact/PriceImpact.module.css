@@ -1,5 +1,5 @@
 .priceImpact {
-  color: #ffffffa3;
+  color: var(--mc-grey-3);
   display: flex;
   flex-direction: column;
   gap: 9px;
@@ -15,11 +15,11 @@
 }
 
 .orangeText {
-  color: #e56910;
+  color: var(--mc-orange);
 }
 
 .yellowText {
-  color: #d4b226;
+  color: var(--accent-alert);
 }
 
 .hidden {

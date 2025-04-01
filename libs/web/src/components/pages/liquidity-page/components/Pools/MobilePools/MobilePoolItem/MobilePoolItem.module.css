@@ -22,5 +22,7 @@
 }
 
 .poolDescription {
-  color: #d4b226;
+  font-size: 12px;
+  line-height: 14px;
+  color: var(--accent-alert);
 }

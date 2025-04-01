@@ -4,25 +4,30 @@
   align-items: center;
 }
 
-/* .tableContainer {
-  width: 100%;
-  overflow-x: auto;
-  border-radius: 12px;
-  background-color: var(--background-grey-dark);
-  padding: 16px;
-} */
-
 .table {
   width: 100%;
   border-collapse: collapse;
   color: var(--content-primary);
 }
 
+.table thead {
+  position: relative;
+}
+
+.table thead::after {
+  content: "";
+  position: absolute;
+  left: 16px;
+  right: 16px;
+  bottom: 0;
+  height: 1px;
+  background-color: var(--mc-grey-3);
+}
+
 .tableHeader {
   padding: 16px;
   text-align: left;
   color: var(--mc-black);
-  border-bottom: 1px solid var(--background-grey-light);
 }
 
 .tableRow {
@@ -31,7 +36,7 @@
 
 .tableCell {
   padding: 16px;
-  /* border-bottom: 1px solid #2a2b35; */
+  font-size: 16px;
 }
 
 .pointsCell {
@@ -63,17 +68,12 @@
 }
 
 .paginationButton {
-  background-color: #2a2b35;
-  color: #fff;
+  color: var(--primary-white);
   border: none;
   border-radius: 4px;
   padding: 8px 12px;
   cursor: pointer;
   transition: background-color 0.2s;
-}
-
-.paginationButton:hover:not(:disabled) {
-  background-color: #3a3b45;
 }
 
 .paginationButton:disabled {
@@ -82,7 +82,7 @@
 }
 
 .paginationText {
-  color: #fff;
+  font-size: 14px;
 }
 
 /* Make the first column take minimal width */
@@ -161,5 +161,10 @@
   .pointsIcon svg {
     width: 16px;
     height: 16px;
+  }
+
+  .table thead::after {
+    left: 10px;
+    right: 10px;
   }
 }

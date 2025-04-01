@@ -29,7 +29,7 @@
 }
 
 .pointsWarning {
-  color: #d4b226;
+  color: var(--accent-alert);
 }
 
 @media (max-width: 768px) {

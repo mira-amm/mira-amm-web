@@ -20,6 +20,10 @@
   --mc-red: #F95465;
   --mc-blue: #507FF7;
   --mc-yellow: #CB9200;
+  --mc-orange: #E56910;
+  --mc-purple-light: #D8C8F0;
+
+
 
   --background-white: var(--primary-white);
   --background-primary: var(--mc-white);
@@ -56,7 +60,7 @@
   --accent-alert: #d4b226;
   --content-positive: #46CC44;
   --points-gradient: linear-gradient(170deg, #262f5f 35%, #c41cff 100%);
-  --primary-card-gradient: linear-gradient(97.15deg, #5872FC -1.13%, #6142BA 56.75%, #C41CFF 135.82%);
+  --modal-overlay: #00000059;
 
   --transparent-white: #FFFFFFA3;
 
@@ -187,7 +191,7 @@ input:focus {
 }
 
 @font-face {
-  font-family: "Cartograph CF"; 
+  font-family: "Cartograph CF";
   src: local("CartographCF-Regular"),
     url("../../src/fonts/CartographCF-Regular.ttf") format("truetype");
 }

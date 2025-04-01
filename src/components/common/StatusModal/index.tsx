@@ -38,15 +38,14 @@ const StatusModal = ({
       {type === ModalType.SUCCESS ? <SuccessIcon /> : <FailureIcon />}
       <div className={styles.statusContent}>
         <p className={clsx(styles.mainText, "mc-type-xxl")}>{title}</p>
-        <p
+        <div
           className={clsx(
-            styles.subText,
+            styles.subTextContainer,
             !transactionHash && styles.subTextOnly,
-            "mc-type-l",
           )}
         >
-          {subTitle}
-        </p>
+          <p className={clsx(styles.subText, "mc-type-l")}>{subTitle}</p>
+        </div>
       </div>
       {transactionHash && (
         <ActionButton
