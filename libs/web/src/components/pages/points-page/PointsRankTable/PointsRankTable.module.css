@@ -170,4 +170,9 @@
     width: 16px;
     height: 16px;
   }
+
+  .table thead::after {
+    left: 10px;
+    right: 10px;
+  }
 }
