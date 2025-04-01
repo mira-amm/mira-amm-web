@@ -42,7 +42,7 @@
   visibility: hidden;
   width: max-content;
   background: var(--accent-primary);
-  color: var(----content-inverse);
+  color: var(--content-inverse);
   text-align: center;
   padding: 3px 8px;
   border-radius: 20px;

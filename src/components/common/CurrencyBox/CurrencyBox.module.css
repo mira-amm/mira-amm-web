@@ -62,7 +62,7 @@
 }
 
 .warningLabel {
-  color: var(--accent-alert);
+  color: var(--mc-yellow);
   font-size: 14px;
   line-height: 1.4;
   font-weight: 500;

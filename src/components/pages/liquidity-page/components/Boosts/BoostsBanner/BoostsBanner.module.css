@@ -60,7 +60,7 @@
 }
 
 .learnMore:hover {
-  color: var(----mc-white);
+  color: var(--mc-white);
 }
 
 .learnMore::after {
