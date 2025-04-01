@@ -18,12 +18,11 @@
 }
 
 .sortable:hover {
-  color: rgb(141, 141, 164);
+  color: var(--mc-grey-4);
 }
 
 .sortIcon {
   font-size: 14px;
-  color: #888888;
   transition: color 0.2s ease;
 }
 
@@ -34,5 +33,5 @@
 }
 
 .sortIcon.active {
-  color: #ffffff;
+  color: var(--primary-white);
 }
