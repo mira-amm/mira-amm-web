@@ -33,9 +33,6 @@
   /*top: anchor(--anchor_1 bottom);*/
   /*left: anchor(--anchor_1 right);*/
   max-width: 200px;
-  font-size: 14px;
-  line-height: 16px;
-  font-weight: 400;
   padding: 8px;
   background-color: var(--content-primary);
   color: var(--background-primary);
