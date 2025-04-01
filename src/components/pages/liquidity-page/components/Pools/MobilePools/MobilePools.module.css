@@ -13,7 +13,7 @@
 }
 
 .mobilePoolsSort {
-  color: #94a3b8;
+  color: var(--mc-grey-4);
   font-size: 14px;
   background-color: var(--background-grey-dark);
   border-radius: 8px;

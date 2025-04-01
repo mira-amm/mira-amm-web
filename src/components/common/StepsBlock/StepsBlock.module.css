@@ -1,5 +1,5 @@
 .stepsBlock {
-  background-color: #262934;
+  background-color: var(--content-inverse);
   border-radius: 16px;
   width: 350px;
   display: flex;
