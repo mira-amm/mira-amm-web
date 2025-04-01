@@ -66,14 +66,6 @@
   color: var(--content-primary);
 }
 
-/* Fuel Wrapper */
-.fuelWrapper {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  font-size: 16px;
-}
-
 /* Social Icons */
 .socialLinks {
   display: flex;
