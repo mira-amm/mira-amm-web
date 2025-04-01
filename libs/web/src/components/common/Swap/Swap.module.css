@@ -41,9 +41,6 @@
   display: flex;
   align-items: center;
   gap: 8px;
-  font-weight: 500;
-  font-size: 16px;
-  line-height: 19px;
   color: var(--content-primary);
 }
 
@@ -109,6 +106,5 @@
 @media (min-width: 1024px) {
   .heading {
     font-size: 20px;
-    line-height: 24px;
   }
 }
