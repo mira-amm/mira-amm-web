@@ -102,7 +102,7 @@ export const POINTS_RANK_TOOLTIP =
 export const POINTS_LEARN_MORE_URL =
   "https://mirror.xyz/miraly.eth/W2W1Zv8jKS-70OY64cF-qneyPgLngG4ItRv9PMmxHeY";
 
-export const POINTS_BANNER_TITLE = "Introducing Boosts";
+export const POINTS_BANNER_TITLE = "Introducing Points";
 
 export const POINTS_BANNER_SUBHEADER =
   "Earn MIRA points by providing liquidity and engaging in activities.";
