@@ -8,7 +8,6 @@ import ActionButton from "@/src/components/common/ActionButton/ActionButton";
 import PromoBlock from "@/src/components/common/PromoBlock/PromoBlock";
 import {PoolId} from "mira-dex-ts";
 import styles from "./MobilePositionView.module.css";
-import Loader from "@/src/components/common/Loader/Loader";
 import AprDisplay from "../AprDisplay/AprDisplay";
 import ReserveItem from "../ReserveItem/ReserveItem";
 import ExchangeRate from "../ExchangeRate/ExchangeRate";
@@ -18,6 +17,7 @@ import Image from "next/image";
 import {LIQUIDITY_PROVIDING_DOC_URL} from "@/src/utils/constants";
 import LearnMoreIcon from "@/assets/learn-more.png";
 import {CopyNotification} from "@/src/components/common/CopyNotification/CopyNotification";
+import LoadingIndicator from "@/src/components/common/LoadingIndicator/LoadingIndicator";
 
 interface AssetMetadata {
   name?: string;
@@ -51,7 +51,6 @@ const MobilePositionView = ({
   removeLiquidityPath,
 }: MobilePositionViewProps): JSX.Element => {
   const [isAddressCopied, setIsAddressCopied] = useState(false);
-  const loading = <Loader variant="outlined" color="gray" />;
 
   return (
     <>
@@ -107,7 +106,11 @@ const MobilePositionView = ({
           <div className={styles.reserveItems}>
             <p className="mc-type-m">Total value locked</p>
             <p className="mc-mono-m">
-              {formattedTvlValue ? <p>${formattedTvlValue}</p> : loading}
+              {formattedTvlValue ? (
+                <p>${formattedTvlValue}</p>
+              ) : (
+                <LoadingIndicator fontSize="mc-mono-m" />
+              )}
             </p>
           </div>
           <ExchangeRate

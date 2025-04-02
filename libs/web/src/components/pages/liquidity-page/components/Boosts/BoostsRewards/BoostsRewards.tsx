@@ -1,5 +1,4 @@
 import styles from "./BoostsRewards.module.css";
-import loadingStyles from "../../../../../common/ActionButton/ActionButton.module.css";
 import Info from "@/src/components/common/Info/Info";
 import {
   POINTS_TOOLTIP,
@@ -9,6 +8,7 @@ import {
 import {usePointsRank} from "@/src/hooks/usePoints/usePoints";
 import PointsIcon from "@/src/components/icons/Points/PointsIcon";
 import {LearnMoreButton} from "@/src/components/common/LearnMoreButton/LearnMoreButton";
+import LoadingIndicator from "@/src/components/common/LoadingIndicator/LoadingIndicator";
 import clsx from "clsx";
 
 const BoostsRewards = (): JSX.Element => {
@@ -51,13 +51,13 @@ const BoostsRewards = (): JSX.Element => {
           <div className={styles.rewardsValue}>
             <PointsIcon />
             {isLoading ? (
-              <div className={loadingStyles.loadingAnimation} />
+              <LoadingIndicator fontSize="mc-mono-xl" />
             ) : (
-                <p className="mc-mono-xxxl">
-                  {pointsRank?.points.toLocaleString(DefaultLocale, {
-                    maximumFractionDigits: 0,
-                  })}
-                </p>
+              <p className="mc-mono-xxxl">
+                {pointsRank?.points.toLocaleString(DefaultLocale, {
+                  maximumFractionDigits: 0,
+                })}
+              </p>
             )}
           </div>
         </div>
@@ -73,7 +73,11 @@ const BoostsRewards = (): JSX.Element => {
               />
             </div>
             <p className={clsx(styles.rank, "mc-mono-xl")}>
-              {isLoading ? <div className={loadingStyles.loadingAnimation} /> : pointsRank?.rank}
+              {isLoading ? (
+                <LoadingIndicator fontSize="mc-mono-xl" />
+              ) : (
+                pointsRank?.rank
+              )}
             </p>
           </div>
         </div>

@@ -2,7 +2,7 @@ import {clsx} from "clsx";
 
 import {forwardRef, memo, ReactNode, useCallback} from "react";
 
-import Loader from "@/src/components/common/Loader/Loader";
+import LoadingIndicator from "../LoadingIndicator/LoadingIndicator";
 
 import styles from "./ActionButton.module.css";
 
@@ -57,7 +57,6 @@ const ActionButton = forwardRef<HTMLButtonElement, Props>(function ActionButton(
         variant === "outlined" && styles.outlined,
         size === "big" && styles.big,
         size === "longer" && styles.longer,
-        loading && styles.loadingAnimation,
         completed && styles.completed,
         fullWidth && styles.fullWidth,
         className,
@@ -68,7 +67,7 @@ const ActionButton = forwardRef<HTMLButtonElement, Props>(function ActionButton(
       type={type || "button"}
       ref={ref}
     >
-      {!loading && children}
+      {loading ? <LoadingIndicator /> : children}
     </button>
   );
 });

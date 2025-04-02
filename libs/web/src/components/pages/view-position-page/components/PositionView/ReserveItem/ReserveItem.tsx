@@ -2,7 +2,7 @@ import React from "react";
 import CoinWithAmount from "@/src/components/common/CoinWithAmount/CoinWithAmount";
 import styles from "./ReserveItem.module.css";
 import {useFormattedReserveValue} from "./useFormattedReserveValue";
-import Loader from "@/src/components/common/Loader/Loader";
+import LoadingIndicator from "@/src/components/common/LoadingIndicator/LoadingIndicator";
 
 interface ReserveItemsProps {
   assetId: string;
@@ -30,7 +30,7 @@ const ReserveItem = ({assetId, amount, reserve}: ReserveItemsProps) => {
           )}
         </div>
       ) : (
-        <Loader color="gray" />
+        <LoadingIndicator fontSize="mc-mono-m" />
       )}
     </div>
   );
