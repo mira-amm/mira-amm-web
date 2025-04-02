@@ -76,15 +76,13 @@ const AprBadge: React.FC<AprBadgeProps> = ({
           small ? styles.small : styles.large,
         )}
       >
-        <span className={styles.badgeIcon}>
-          <Image
-            src={SparkleIcon}
-            alt="sparkle"
-            width={12}
-            height={12}
-            priority
-          />
-        </span>
+        <Image
+          src={SparkleIcon}
+          alt="sparkle"
+          width={12}
+          height={12}
+          priority
+        />
         <span
           className={clsx(styles.badgeText, small ? "mc-mono-s" : "mc-mono-m")}
         >

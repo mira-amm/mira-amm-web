@@ -1,6 +1,7 @@
 import styles from "./SwapFailureModal.module.css";
 import ActionButton from "@/src/components/common/ActionButton/ActionButton";
 import FailureIcon from "@/src/components/icons/Failure/FailureIcon";
+import clsx from "clsx";
 import {ErrorCode, FuelError} from "fuels";
 
 type Props = {
@@ -31,10 +32,10 @@ const SwapFailureModal = ({error, closeModal, customTitle}: Props) => {
   return (
     <div className={styles.claimFailureModal}>
       <FailureIcon />
-      <p className={styles.mainText}>
+      <p className={clsx(styles.mainText, "mc-type-xxl")}>
         {customTitle && customTitle.length > 0 ? customTitle : title}
       </p>
-      <p className={styles.subText}>{message}</p>
+      <p className={clsx(styles.subText, "mc-type-b")}>{message}</p>
       <ActionButton onClick={closeModal} fullWidth>
         Try again
       </ActionButton>

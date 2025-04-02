@@ -37,7 +37,6 @@
 
 .tableCell {
   padding: 16px;
-  font-size: 16px;
 }
 
 .pointsCell {
@@ -74,7 +73,6 @@
   border-radius: 4px;
   padding: 8px 12px;
   cursor: pointer;
-  font-size: 14px;
   transition: background-color 0.2s;
 }
 
@@ -84,7 +82,6 @@
 }
 
 .paginationText {
-  font-size: 14px;
 }
 
 /* Make the first column take minimal width */

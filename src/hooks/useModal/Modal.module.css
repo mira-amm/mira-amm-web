@@ -31,9 +31,6 @@
 .modalHeading {
   display: flex;
   justify-content: space-between;
-  font-weight: 500;
-  font-size: 18px;
-  line-height: 22px;
 }
 
 /* Size variants */
@@ -66,7 +63,6 @@
 @media (min-width: 1024px) {
   .modalHeading {
     font-size: 20px;
-    line-height: 24px;
   }
 
   .modalWindow {

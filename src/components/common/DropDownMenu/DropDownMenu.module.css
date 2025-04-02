@@ -46,9 +46,6 @@
   text-align: center;
   padding: 3px 8px;
   border-radius: 20px;
-  font-size: 10px;
-  line-height: 14px;
-  font-weight: 500;
   position: absolute;
   z-index: 1;
   left: -60px;
@@ -63,16 +60,10 @@
 }
 
 .menuButton span {
-  font-weight: 400;
-  font-size: 15px;
-  line-height: 24px;
   text-wrap: nowrap;
 }
 
 .menuButtonDisabled span {
-  font-weight: 400;
-  font-size: 15px;
-  line-height: 24px;
   text-wrap: nowrap;
 }
 

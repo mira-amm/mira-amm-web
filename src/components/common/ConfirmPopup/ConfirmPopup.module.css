@@ -24,9 +24,6 @@
   height: 450px;
   overflow-y: scroll;
   overflow-x: hidden;
-  font-size: 16px;
-  line-height: 24px;
-  font-weight: 300;
 }
 
 .popupButton {
@@ -72,9 +69,6 @@
 }
 
 .popupTitle {
-  font-size: 24px;
-  line-height: 32px;
-  font-weight: 400;
 }
 
 .popupDescription {
@@ -109,6 +103,5 @@
 
   .popupTitle {
     font-size: 22px;
-    line-height: 28px;
   }
 }
