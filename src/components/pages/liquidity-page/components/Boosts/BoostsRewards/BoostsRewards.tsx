@@ -9,7 +9,7 @@ import {
 import {usePointsRank} from "@/src/hooks/usePoints/usePoints";
 import PointsIcon from "@/src/components/icons/Points/PointsIcon";
 import {LearnMoreButton} from "@/src/components/common/LearnMoreButton/LearnMoreButton";
-import LoadingIndicator from "@/src/components/LoadingIndicator/LoadingIndicator";
+import LoadingIndicator from "@/src/components/common/LoadingIndicator/LoadingIndicator";
 import clsx from "clsx";
 
 const BoostsRewards = (): JSX.Element => {
@@ -74,7 +74,11 @@ const BoostsRewards = (): JSX.Element => {
               />
             </div>
             <p className={clsx(styles.rank, "mc-mono-xl")}>
-              {isLoading ? <LoadingIndicator /> : pointsRank?.rank}
+              {isLoading ? (
+                <LoadingIndicator fontSize="mc-mono-xl" />
+              ) : (
+                pointsRank?.rank
+              )}
             </p>
           </div>
         </div>

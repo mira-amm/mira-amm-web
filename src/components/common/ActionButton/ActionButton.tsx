@@ -2,7 +2,7 @@ import {clsx} from "clsx";
 
 import {forwardRef, memo, ReactNode, useCallback} from "react";
 
-import LoadingIndicator from "../../LoadingIndicator/LoadingIndicator";
+import LoadingIndicator from "../LoadingIndicator/LoadingIndicator";
 
 import styles from "./ActionButton.module.css";
 
