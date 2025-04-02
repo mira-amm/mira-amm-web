@@ -6,7 +6,7 @@ import {createPoolKey} from "@/src/utils/common";
 import {useAssetImage} from "@/src/hooks/useAssetImage";
 import useAssetMetadata from "@/src/hooks/useAssetMetadata";
 import PriceImpact from "../PriceImpact/PriceImpact";
-import Loader from "../../../Loader/Loader";
+import LoadingIndicator from "../../../LoadingIndicator/LoadingIndicator";
 import clsx from "clsx";
 
 interface ReviewSwapProps {
@@ -54,7 +54,7 @@ const SummaryEntry: FC<SummaryEntryProps> = ({label, isLoading, value}) => {
   return (
     <div className={styles.summaryEntry}>
       <p>{label}</p>
-      {isLoading ? <Loader color="gray" /> : <p>{value}</p>}
+      {isLoading ? <LoadingIndicator fontSize="mc-mono-b" /> : <p>{value}</p>}
     </div>
   );
 };

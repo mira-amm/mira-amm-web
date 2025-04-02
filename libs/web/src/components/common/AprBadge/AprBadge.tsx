@@ -3,10 +3,10 @@ import styles from "./AprBadge.module.css";
 import {clsx} from "clsx";
 import useBoostedApr, {RewardsToken} from "@/src/hooks/useBoostedApr";
 import {isMobile} from "react-device-detect";
-import Loader from "../Loader/Loader";
 import {EPOCH_NUMBER} from "@/src/utils/constants";
 import Image from "next/image";
 import SparkleIcon from "@/assets/sparcle.svg";
+import LoadingIndicator from "../LoadingIndicator/LoadingIndicator";
 
 interface AprBadgeProps {
   aprValue: string | null;
@@ -58,7 +58,11 @@ const AprBadge: React.FC<AprBadgeProps> = ({
   let aprElement = <>{showApr}%</>;
 
   if (rewardsToken === "$FUEL") {
-    aprElement = boostedApr ? <>{showApr}%</> : <Loader color="gray" />;
+    aprElement = boostedApr ? (
+      <>{showApr}%</>
+    ) : (
+      <LoadingIndicator fontSize="mc-mono-s" />
+    );
   }
 
   return (

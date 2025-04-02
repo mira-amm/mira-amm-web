@@ -10,10 +10,10 @@ import {
 } from "@tanstack/react-table";
 import styles from "./PointsRankTable.module.css";
 import {usePointsRanks} from "@/src/hooks/usePoints/usePoints";
-import LoaderV2 from "@/src/components/common/LoaderV2/LoaderV2";
 import PointsIconSimple from "@/src/components/icons/Points/PointsIconSimple";
 import {DefaultLocale} from "@/src/utils/constants";
 import clsx from "clsx";
+import LoadingIndicator from "@/src/components/common/LoadingIndicator/LoadingIndicator";
 
 // Define the data type for our table
 type PointsRankData = {
@@ -106,7 +106,7 @@ export default function PointsRankTable() {
     return (
       <div className="table-container">
         <div className={styles.loaderIconContainer}>
-          <LoaderV2 />
+          <LoadingIndicator fontSize="mc-mono-xxxxl" />
         </div>
         <p>Loading points leaderboard...</p>
       </div>
