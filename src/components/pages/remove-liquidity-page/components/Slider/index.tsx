@@ -4,13 +4,8 @@ import clsx from "clsx";
 
 const STEPS = ["0%", "25%", "50%", "75%", "100%"];
 
-const thumbMargin = {
-  0: "-6px",
-  25: "-3px",
-  50: "0px",
-  75: "3px",
-  100: "6px",
-};
+const getThumbMargin = (percentage: number) =>
+  `${(percentage - 50) * (6 / 50)}px`;
 
 const Slider = ({
   value,
@@ -23,7 +18,7 @@ const Slider = ({
     onChange(Number(event.target.value));
     event.target.style.setProperty(
       "--thumb-margin",
-      thumbMargin[event.target.value as unknown as keyof typeof thumbMargin],
+      getThumbMargin(Number(event.target.value)),
     );
   };
 
