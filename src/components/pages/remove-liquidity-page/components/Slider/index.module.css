@@ -34,6 +34,7 @@
   -webkit-appearance: none;
   appearance: none;
   width: 20px;
+  margin-left: var(--thumb-margin, 0);
   height: 20px;
   background: radial-gradient(
     circle at center,
