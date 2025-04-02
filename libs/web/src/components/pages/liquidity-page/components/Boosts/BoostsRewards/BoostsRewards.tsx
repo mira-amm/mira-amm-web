@@ -1,5 +1,4 @@
 import styles from "./BoostsRewards.module.css";
-import loadingStyles from "../../../../../common/ActionButton/ActionButton.module.css";
 import Info from "@/src/components/common/Info/Info";
 import {
   POINTS_TOOLTIP,
@@ -52,7 +51,7 @@ const BoostsRewards = (): JSX.Element => {
           <div className={styles.rewardsValue}>
             <PointsIcon />
             {isLoading ? (
-              <div className={loadingStyles.loadingAnimation} />
+              <LoadingIndicator fontSize="mc-mono-xl" />
             ) : (
               <p className="mc-mono-xxxl">
                 {pointsRank?.points.toLocaleString(DefaultLocale, {
