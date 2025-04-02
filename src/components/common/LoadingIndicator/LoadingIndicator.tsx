@@ -1,13 +1,13 @@
 import styles from "./LoadingIndicator.module.css";
 import clsx from "clsx";
 
-type ButtonProps = {
+type LoadingProps = {
   fontSize?: string;
 };
 
 const LoadingIndicator = ({
   fontSize = "mc-type-xxl",
-}: ButtonProps): JSX.Element => {
+}: LoadingProps): JSX.Element => {
   return <span className={clsx(styles.loadingAnimation, `${fontSize}`)} />;
 };
 
