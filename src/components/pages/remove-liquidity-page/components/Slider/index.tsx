@@ -4,6 +4,14 @@ import clsx from "clsx";
 
 const STEPS = ["0%", "25%", "50%", "75%", "100%"];
 
+const thumbMargin = {
+  0: "-6px",
+  25: "-3px",
+  50: "0px",
+  75: "3px",
+  100: "6px",
+};
+
 const Slider = ({
   value,
   onChange,
@@ -13,6 +21,10 @@ const Slider = ({
 }) => {
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     onChange(Number(event.target.value));
+    event.target.style.setProperty(
+      "--thumb-margin",
+      thumbMargin[event.target.value as unknown as keyof typeof thumbMargin],
+    );
   };
 
   const getIsSelectedDot = (dot: string) =>
