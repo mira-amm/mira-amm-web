@@ -4,8 +4,8 @@ import styles from "./Positions.module.css";
 import DesktopPositions from "@/src/components/pages/liquidity-page/components/Positions/MobilePositions/DesktopPositions/DesktopPositions";
 import usePositions from "@/src/hooks/usePositions";
 import DocumentIcon from "@/src/components/icons/Document/DocumentIcon";
-import LoaderV2 from "@/src/components/common/LoaderV2/LoaderV2";
 import clsx from "clsx";
+import LoadingIndicator from "@/src/components/common/LoadingIndicator/LoadingIndicator";
 
 const Positions = (): JSX.Element => {
   const {data, isLoading} = usePositions();
@@ -17,7 +17,7 @@ const Positions = (): JSX.Element => {
       </p>
       {isLoading ? (
         <div className={styles.positionsFallback}>
-          <LoaderV2 />
+          <LoadingIndicator fontSize="mc-mono-xxxxl" />
           <p className="mc-type-m">Loading positions...</p>
         </div>
       ) : (data && data.length === 0) || !data ? (
