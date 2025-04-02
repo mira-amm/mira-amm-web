@@ -29,10 +29,6 @@
   gap: 12px;
 }
 
-.mobilePoolsSort th {
-  font-weight: 500;
-}
-
 @media (min-width: 640px) {
   .mobilePoolsSort.sm\:px-5 {
     padding-left: 1.25rem;

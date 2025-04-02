@@ -25,7 +25,7 @@ const BoostsBanner = () => {
           {POINTS_BANNER_SUBHEADER}
         </p>
         <Link href={POINTS_LEARN_MORE_URL} target="_blank">
-          <button className={styles.learnMore}>
+          <button className={clsx(styles.learnMore, "mc-type-m")}>
             Learn more <span className={styles.arrow}>&rarr;</span>
           </button>
         </Link>

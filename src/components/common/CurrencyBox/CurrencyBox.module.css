@@ -38,13 +38,6 @@
   opacity: 0.5;
 }
 
-.chooseCoin {
-  font-weight: 500;
-  font-size: 16px;
-  line-height: 19px;
-  color: var(--content-primary);
-}
-
 .estimateAndBalance {
   min-height: 16px;
   display: flex;

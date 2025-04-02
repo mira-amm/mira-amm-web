@@ -156,12 +156,6 @@
   justify-content: space-between;
 }
 
-.inputPreviewRow p {
-  font-size: 14px;
-  line-height: 16px;
-  font-weight: 500;
-}
-
 .inputPreviewRow svg,
 .inputPreviewRow img {
   width: 20px;
@@ -280,7 +274,6 @@
 
 .arrow {
   margin-left: 4px;
-  font-size: 15px;
   transition: margin-left 0.3s ease;
 }
 
@@ -337,7 +330,6 @@
 
   .inputPreviewRow p {
     font-size: 16px;
-    line-height: 19px;
   }
 
   /* .previewContent {

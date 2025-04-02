@@ -6,6 +6,7 @@ import {useCallback} from "react";
 import {openNewTab} from "@/src/utils/common";
 import {FuelAppUrl} from "@/src/utils/constants";
 import useAssetMetadata from "@/src/hooks/useAssetMetadata";
+import clsx from "clsx";
 
 type Props = {
   swapState: SwapState;
@@ -29,8 +30,8 @@ const SwapSuccessModal = ({swapState, transactionHash}: Props) => {
   return (
     <div className={styles.claimFailureModal}>
       <SuccessIcon />
-      <p className={styles.mainText}>Swap success</p>
-      <p className={styles.subText}>{subText}</p>
+      <p className={clsx(styles.mainText, "mc-type-xxl")}>Swap success</p>
+      <p className={clsx(styles.subText, "mc-type-b")}>{subText}</p>
       <ActionButton onClick={handleViewTransactionClick} fullWidth>
         View transaction
       </ActionButton>

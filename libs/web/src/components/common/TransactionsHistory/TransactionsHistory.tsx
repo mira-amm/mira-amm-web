@@ -81,7 +81,7 @@ const TransactionsHistory = forwardRef<
               <CopyAddressIcon />
             </button>
           </div>
-          {/*<span className={styles.accountBalance}>$4,789.06</span>*/}
+          {/* <span className={clsx(styles.accountBalance,"mc-type-xl")}>$4,789.06</span> */}
         </div>
         <SkeletonLoader isLoading={isLoading} count={6} textLines={2}>
           <ul className={styles.transactionsList}>

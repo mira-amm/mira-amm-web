@@ -15,18 +15,6 @@
   gap: 10px;
 }
 
-.boostsTitle p {
-  font-size: 20px;
-  line-height: 24px;
-}
-
-/* .learnMoreButton {
-  font-size: 16px;
-  font-weight: 500;
-  height: 40px;
-  padding: 12px 24px !important;
-} */
-
 .boostsFallback {
   display: flex;
   justify-content: space-between;

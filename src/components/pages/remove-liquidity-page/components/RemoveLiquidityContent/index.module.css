@@ -73,11 +73,6 @@
   opacity: 0.8;
 }
 
-.someText {
-  font-size: 12px;
-  line-height: 16px;
-}
-
 .dimmed {
   color: var(--content-tertiary);
 }

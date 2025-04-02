@@ -11,12 +11,6 @@
   gap: 4px;
 }
 
-@media (max-width: 1024px) {
-  .sortArea {
-    font-weight: 500;
-  }
-}
-
 .sortable:hover {
   color: var(--mc-grey-4);
 }

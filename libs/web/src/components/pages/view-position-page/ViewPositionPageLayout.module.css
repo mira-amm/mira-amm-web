@@ -58,11 +58,6 @@
   margin-bottom: 12px;
 }
 
-.tokenDisplayValue,
-.numberAndCopy {
-  font-size: 14px;
-}
-
 .numberAndCopy {
   display: flex;
   justify-content: space-between;
@@ -104,20 +99,11 @@
 
 .priceBlockTitle,
 .priceBlockDescription {
-  font-size: 14px;
-  line-height: 16px;
   color: var(--content-dimmed-light);
 }
 
 .priceBlockValue {
-  font-size: 20px;
-  line-height: 24px;
   color: var(--content-primary);
-}
-
-.priceBlockValueSmall {
-  font-size: 16px;
-  line-height: 19px;
 }
 
 .bottomPriceBlocks {
@@ -159,15 +145,11 @@
 
   p.smallLabel {
     padding: 4px 8px;
-    font-size: 13px;
-    line-height: 15px;
   }
 
   .withdrawButton {
     max-width: 191px;
     padding: 8px 24px;
-    font-size: 13px;
-    line-height: 15px;
   }
 
   /* .topRow {

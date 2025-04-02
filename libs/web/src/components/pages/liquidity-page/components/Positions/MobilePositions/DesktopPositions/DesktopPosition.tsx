@@ -86,7 +86,9 @@ export const DesktopPosition = ({
         {size ? (
           `$${size.toFixed(2)}`
         ) : (
-          <p className={styles.loadingText}>{"checking..."}</p>
+          <p className={clsx(styles.loadingText, "mc-type-b")}>
+            {"checking..."}
+          </p>
         )}
       </td>
       <td className={styles.labelCell}>

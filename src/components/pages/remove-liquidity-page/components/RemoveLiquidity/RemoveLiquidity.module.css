@@ -32,7 +32,6 @@
   flex-direction: column;
   align-items: end;
   gap: 4px;
-  line-height: 14px;
   padding-bottom: 4px;
 }
 
@@ -40,9 +39,6 @@
   display: flex;
   align-items: center;
   gap: 3px;
-}
-.aprText > p {
-  font-size: 12px;
 }
 
 .highlight {
@@ -65,7 +61,6 @@
   padding: 10px 12px;
   background-color: var(--background-secondary);
   border: 1px solid var(--content-primary);
-  font-size: 14px !important;
   cursor: pointer;
   align-items: center;
 }
@@ -153,12 +148,6 @@
   justify-content: space-between;
 }
 
-.inputPreviewRow p {
-  font-size: 14px;
-  line-height: 16px;
-  font-weight: 500;
-}
-
 .inputPreviewRow svg,
 .inputPreviewRow img {
   width: 20px;
@@ -184,13 +173,6 @@
 .previewCurrentPriceBlock {
   gap: 4px;
   align-items: center;
-}
-
-.previewPriceBlockTitle,
-.previewPriceBlockExchange,
-.previewPriceBlockDescription {
-  font-size: 12px;
-  line-height: 16px;
 }
 
 .previewPriceBlockTitle,
@@ -262,11 +244,6 @@
     flex-direction: row;
   }
 
-  .inputPreviewRow p {
-    font-size: 16px;
-    line-height: 19px;
-  }
-
   .inputPreviewRow svg,
   .inputPreviewRow img {
     width: 24px;
@@ -276,11 +253,5 @@
   .previewPriceBlock,
   .previewCurrentPriceBlock {
     padding: 8px 16px;
-  }
-
-  .previewPriceBlockTitle,
-  .previewPriceBlockExchange,
-  .previewPriceBlockDescription {
-    line-height: 18px;
   }
 }

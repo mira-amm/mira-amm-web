@@ -57,10 +57,11 @@ const ActionButton = forwardRef<HTMLButtonElement, Props>(function ActionButton(
         variant === "outlined" && styles.outlined,
         size === "big" && styles.big,
         size === "longer" && styles.longer,
+        loading && styles.loadingAnimation,
+        loading ? "mc-type-xxl" : size === "big" ? "mc-type-l" : "mc-type-m",
         completed && styles.completed,
         fullWidth && styles.fullWidth,
         className,
-        size === "big" ? "mc-type-l" : "mc-type-m",
       )}
       onClick={handleClick}
       disabled={disabled}
