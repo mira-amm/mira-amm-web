@@ -16,6 +16,8 @@
 
 .widgetSwapContainer {
   background-color: var(--background-primary) !important;
+  border: none !important;
+  border-radius: none !important;
 }
 
 .widgetBoxBg {
@@ -39,6 +41,7 @@
 
 .heading {
   display: flex;
+  justify-content: space-between;
   align-items: center;
   gap: 8px;
   color: var(--content-primary);
@@ -46,6 +49,8 @@
 
 .title {
   flex: 1;
+  display: flex;
+  align-items: center;
   color: var(--content-primary);
 }
 
@@ -89,10 +94,7 @@
 }
 
 .connectWallet {
-  min-width: 100px;
-  height: 20px;
   font-size: 10px !important;
-  line-height: 24px !important;
 }
 
 .coinsModal {
@@ -106,5 +108,9 @@
 @media (min-width: 1024px) {
   .heading {
     font-size: 20px;
+  }
+  .connectWallet {
+    height: 100%;
+    font-size: 14px !important;
   }
 }

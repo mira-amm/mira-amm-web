@@ -2,9 +2,8 @@
   display: inline-flex;
   justify-content: center;
   align-items: center;
-  width: 158px;
-  height: 40px;
-  /* padding: 16px 0; */
+  min-width: 88px;
+  padding: 4px 8px;
   text-align: center;
   border: none;
   border-radius: 8px;
@@ -63,10 +62,17 @@
 }
 
 .fullWidth {
-  width: 100%;
+  width: 100% !important;
 }
 
 .buttonIcon {
   height: 24px;
   width: 24px;
+}
+
+@media (min-width: 1024px) {
+  .btn {
+    min-width: 147px;
+    padding: 8px 16px;
+  }
 }

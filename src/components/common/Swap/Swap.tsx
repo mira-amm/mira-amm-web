@@ -40,8 +40,8 @@ import ReviewSwap from "./components/ReviewSwap/ReviewSwap";
 
 import styles from "./Swap.module.css";
 import CurrencyBox from "../CurrencyBox/CurrencyBox";
-import Logo from "../Logo/Logo";
 import ExchangeRate from "./components/ExchangeRate/ExchangeRate";
+import MiraTextLogo from "../../icons/Logo/MiraTextLogo";
 
 export type CurrencyBoxMode = "buy" | "sell";
 export type CurrencyBoxState = {
@@ -619,7 +619,7 @@ const Swap = ({isWidget}: {isWidget?: boolean}) => {
         >
           <div className={styles.heading}>
             <div className={styles.title}>
-              {isWidget ? <Logo /> : <p className={"mc-type-l"}>Swap</p>}
+              {isWidget ? <MiraTextLogo primaryColor="black" /> : <p className={"mc-type-l"}>Swap</p>}
             </div>
             <SlippageSetting
               slippage={slippage}
