@@ -7,7 +7,7 @@ button.connected {
   justify-content: space-between;
   align-items: center;
   gap: 10px;
-  padding: 16px 8px;
+  padding: 6px 6px;
   color: var(--content-primary);
   background-color: transparent;
   border: 1px solid var(--accent-primary);
