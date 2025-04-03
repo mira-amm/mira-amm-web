@@ -1,7 +1,10 @@
 {
   "compilerOptions": {
     "target": "es2015",
-    "lib": ["es2020", "dom"],
+    "lib": [
+      "es2020",
+      "dom"
+    ],
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "baseUrl": ".",
@@ -9,18 +12,27 @@
     "module": "esnext",
     "moduleResolution": "node",
     "paths": {
-      "@payload-config": ["apps/admin/src/payload.config.ts"],
-      "@/cms": ["libs/cms/index.ts"],
-      "@/cms/*": ["libs/cms/*"],
-      "@/db": ["libs/db/index.ts"],
-      "@/db/*": ["libs/db/*"],
-      "@/shared": ["libs/shared/index.ts"],
-      "@/shared/*": ["libs/shared/*"],
-      "@/*": ["libs/web/*"],
-      "@/web": ["libs/web/index.ts"],
-      "@/web/*": ["libs/web/*"],
-      "@/docs": ["libs/docs/index.ts"],
-      "@/docs/*": ["libs/docs/*"]
+      "@/shared": [
+        "libs/shared/index.ts"
+      ],
+      "@/shared/*": [
+        "libs/shared/*"
+      ],
+      "@/*": [
+        "libs/web/*"
+      ],
+      "@/web": [
+        "libs/web/index.ts"
+      ],
+      "@/web/*": [
+        "libs/web/*"
+      ],
+      "@/docs": [
+        "libs/docs/index.ts"
+      ],
+      "@/docs/*": [
+        "libs/docs/*"
+      ]
     },
     "declaration": false,
     "importHelpers": true,
@@ -28,6 +40,9 @@
     "skipDefaultLibCheck": true,
     "skipLibCheck": true
   },
-  "exclude": ["node_modules", "tmp"],
+  "exclude": [
+    "node_modules",
+    "tmp"
+  ],
   "compileOnSave": false
 }

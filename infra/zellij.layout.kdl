@@ -1,22 +1,15 @@
 layout {
-    tab name="🔌 API" focus=true hide_floating_panes=true {
+    tab name="🟩 Priority" focus=true hide_floating_panes=true {
         pane size=1 borderless=true {
             plugin location="zellij:tab-bar"
         }
         pane split_direction="vertical" {
-        pane split_direction="horizontal" size="30%" {
-            pane command="pnpm" name="⚙ API Layer + Admin Panel | 8000 | admin.mira.ly" cwd="../" focus=true {
-                args "nx" "dev" "admin"
-            }
-            pane size="80%" command="pnpm" name="💿 Database | 5432 | Nix-PostgreSQL" close_on_exit=true cwd="../" {
-                args "nx" "up" "infra"
-            }
-            }
-
-            pane command="pnpm" name="🟩 Mira App | 3000 | mira.ly" cwd="../" {
+            pane command="pnpm" name="🟩 Web App | 3000 | mira.ly" cwd="../" {
                 args "nx" "dev" "web"
             }
-
+                pane command="pnpm" name="🎨 Storybook | 6006 | design.mira.ly" cwd="../" {
+                    args "storybook"
+                }
         pane split_direction="horizontal" size="30%" {
             pane command="pnpm" name="📚 Docs | 4000 | docs.mira.ly" cwd="../" {
                 args "nx" "dev" "docs"
@@ -35,30 +28,6 @@ layout {
                 args "--no-ansi-log"
             }
         }
-        pane size=1 borderless=true {
-            plugin location="zellij:status-bar"
-        }
-    }
-    tab name="💿 Database" {
-        pane size=1 borderless=true {
-            plugin location="zellij:tab-bar"
-        }
-        pane command="lazysql" name="Lazysql" {
-            args "postgres://postgres:password@127.0.0.1:5432/postgres?sslmode=disable"
-        }
-        pane size=1 borderless=true {
-            plugin location="zellij:status-bar"
-        }
-    }
-    tab name="👀 Previews" hide_floating_panes=true {
-        pane size=1 borderless=true {
-            plugin location="zellij:tab-bar"
-        }
-                pane command="browsh" name="Web Browser Preview" cwd="../" {
-                    args "http://localhost:3000" "http://localhost:8000" "http://localhost:4000"
-                    /- "http://localhost:4211" "https://local.drizzle.studio" "http://localhost:5600"
-                    start_suspended true
-                }
         pane size=1 borderless=true {
             plugin location="zellij:status-bar"
         }
@@ -93,16 +62,6 @@ layout {
         pane size=1 borderless=true {
             plugin location="zellij:status-bar"
         }
-        floating_panes {
-            pane command="rm" name="🚨 WARNING: Delete local database?" cwd="../" {
-                start_suspended true
-                height 25
-                width 86
-                x 43
-                y 14
-                args "-rf" "apps/admin/media" "infra/pgdata"
-            }
-        }
     }
     tab name="🩺 Health" hide_floating_panes=true {
         pane size=1 borderless=true {
@@ -131,24 +90,8 @@ layout {
         }
         pane split_direction="vertical" {
         pane split_direction="horizontal" {
-                pane name="PayloadCMS Schema, Typegen, & Importmap" command="pnpm" cwd="../" {
-                    args "nx" "types" "admin"
-                    start_suspended true
-                   }
-
-                pane command="pnpm" name="🎨 Storybook | 6006 | design.mira.ly" cwd="../" {
-                    args "storybook"
-                }
-                }
-        pane split_direction="horizontal" {
                 pane command="pnpm" name="📦 Node Modules Inspector | 7000" cwd="../" {
                     args "node-modules-inspector" "--depth=7" "--port=7000" "--open=false"
-                }
-                pane command="pnpm" name="📊 Drizzle Studio | local.drizzle.studio" cwd="../" {
-                    args "nx" "studio" "db"
-                }
-                pane command="pnpm" name="👀 Schema Visualizer | 5600" cwd="../" {
-                    args "nx" "visualizer" "db"
                 }
                 }
                 }
