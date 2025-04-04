@@ -12,6 +12,7 @@ import {PoolId} from "mira-dex-ts";
 
 import DesktopPositionView from "./DesktopPositionView/DesktopPositionView";
 import MobilePositionView from "./MobilePositionView/MobilePositionView";
+import useModal from "@/src/hooks/useModal/useModal";
 
 type Props = {
   pool: PoolId;
