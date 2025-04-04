@@ -11,7 +11,7 @@ type Props = {
   poolId: PoolId;
 };
 
-const RemoveLiquidity = ({poolId}: Props): JSX.Element => {
+const RemoveLiquidity = ({poolId}: Props)=> {
   const router = useRouter();
 
   const [previewData, setPreviewData] =

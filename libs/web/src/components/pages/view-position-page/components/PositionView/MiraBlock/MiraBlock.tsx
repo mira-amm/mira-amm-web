@@ -20,7 +20,7 @@ interface MiraBlockProps {
   setIsAddressCopied?: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-const MiraBlock = ({pool, setIsAddressCopied}: MiraBlockProps): JSX.Element => {
+const MiraBlock = ({pool, setIsAddressCopied}: MiraBlockProps)=> {
   const {lpTokenBalance} = usePositionData({pool});
   const lpTokenDisplayValue = formatUnits(lpTokenBalance || "0", 9);
   const lpTokenAssetId = getLPAssetId(DEFAULT_AMM_CONTRACT_ID, pool);

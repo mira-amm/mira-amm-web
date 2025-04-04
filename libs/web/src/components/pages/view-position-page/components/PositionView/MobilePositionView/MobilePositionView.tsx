@@ -49,7 +49,7 @@ const MobilePositionView = ({
   assetA,
   assetB,
   removeLiquidityPath,
-}: MobilePositionViewProps): JSX.Element => {
+}: MobilePositionViewProps)=> {
   const [isAddressCopied, setIsAddressCopied] = useState(false);
 
   return (

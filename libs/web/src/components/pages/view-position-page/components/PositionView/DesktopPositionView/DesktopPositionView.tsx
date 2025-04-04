@@ -51,7 +51,7 @@ const DesktopPositionView = ({
   assetA,
   assetB,
   removeLiquidityPath,
-}: DesktopPositionViewProps): JSX.Element => {
+}: DesktopPositionViewProps) => {
   const [isAddressCopied, setIsAddressCopied] = useState(false);
   return (
     <>

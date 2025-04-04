@@ -7,7 +7,7 @@ type LoadingProps = {
 
 const LoadingIndicator = ({
   fontSize = "mc-type-xxl",
-}: LoadingProps): JSX.Element => {
+}: LoadingProps) => {
   return <span className={clsx(styles.loadingAnimation, `${fontSize}`)} />;
 };
 

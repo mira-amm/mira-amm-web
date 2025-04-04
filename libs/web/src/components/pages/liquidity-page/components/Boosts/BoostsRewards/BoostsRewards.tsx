@@ -11,7 +11,7 @@ import {LearnMoreButton} from "@/src/components/common/LearnMoreButton/LearnMore
 import LoadingIndicator from "@/src/components/common/LoadingIndicator/LoadingIndicator";
 import clsx from "clsx";
 
-const BoostsRewards = (): JSX.Element => {
+const BoostsRewards = () => {
   const {data: pointsRankArray, isLoading, error} = usePointsRank();
 
   if (error) {
