@@ -3,7 +3,6 @@
 let
   logoPath = "../libs/shared/assets/charthouse-labs-symbol.png";
   miraLogoPath = "../libs/shared/assets/mira-wordmark-long-light.png";
-  pgLog = "$PGDATA/postgresql.log";
 
 in pkgs.mkShell {
   name = "mira-dev-env";
@@ -14,10 +13,8 @@ in pkgs.mkShell {
     pkgs.ascii-image-converter
     pkgs.lazygit
     pkgs.btop
-    pkgs.atac
     pkgs.yazi
-    pkgs.bat
-    pkgs.zsh
+    pkgs.tgpt
   ];
 
   shellHook = ''
