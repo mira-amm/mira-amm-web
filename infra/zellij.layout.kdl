@@ -35,41 +35,20 @@ layout {
         pane size=1 borderless=true {
             plugin location="zellij:tab-bar"
         }
-        pane command="lazygit" name="Lazygit" {
+        pane split_direction="vertical" {
+        pane command="lazygit" name="🍒 Git - Lazygit" {
+        }
+        pane command="yazi" name="📁 File Browser - Yazi" {
+        }
         }
         pane size=1 borderless=true {
             plugin location="zellij:status-bar"
         }
 
-        floating_panes {
-            pane command="pnpm" name="🧼 Perform a clean install" cwd="../" {
-                start_suspended true
-                height 25
-                width 86
-                x 43
-                y 14
-                args "ri"
-            }
+      floating_panes {
+        pane command="tgpt" name="🧠 TGPT" {
+        args "-m"
         }
-    }
-    tab name="📁 Files" {
-        pane size=1 borderless=true {
-            plugin location="zellij:tab-bar"
-        }
-        pane command="yazi" name="Yazi" {
-        }
-        pane size=1 borderless=true {
-            plugin location="zellij:status-bar"
-        }
-    }
-    tab name="🩺 Health" hide_floating_panes=true {
-        pane size=1 borderless=true {
-            plugin location="zellij:tab-bar"
-        }
-        pane command="btop" name="btop" {
-        }
-        pane size=1 borderless=true {
-            plugin location="zellij:status-bar"
         }
     }
     /- tab name="🧮 Network" hide_floating_panes=true {
