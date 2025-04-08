@@ -10,6 +10,7 @@
     "kdl-org.kdl",
     "bradlc.vscode-tailwindcss",
     "vitest.explorer",
-    "likec4.likec4-vscode"
+    "likec4.likec4-vscode",
+    "tamasfe.even-better-toml"
   ]
 }
