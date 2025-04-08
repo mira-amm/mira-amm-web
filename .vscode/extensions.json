@@ -11,6 +11,7 @@
     "bradlc.vscode-tailwindcss",
     "vitest.explorer",
     "likec4.likec4-vscode",
-    "tamasfe.even-better-toml"
+    "tamasfe.even-better-toml",
+    "ms-vsliveshare.vsliveshare"
   ]
 }
