@@ -24,9 +24,8 @@ layout {
             }
             }
         floating_panes {
-            pane command="atac" name="{A}rguably a {T}erminal {A}PI {C}lient" {
-                args "--no-ansi-log"
-            }
+        pane command="btop" name="🩺 System Health - btop" borderless=true {
+        }
         }
         pane size=1 borderless=true {
             plugin location="zellij:status-bar"
