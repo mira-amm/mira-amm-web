@@ -7,6 +7,7 @@
     "unifiedjs.vscode-mdx",
     "ms-vscode-remote.remote-wsl",
     "bbenoist.nix",
+    "kdl-org.kdl",
     "bradlc.vscode-tailwindcss",
     "vitest.explorer",
     "likec4.likec4-vscode"
