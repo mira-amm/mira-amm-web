@@ -36,9 +36,11 @@ layout {
             plugin location="zellij:tab-bar"
         }
         pane split_direction="vertical" {
-        pane command="lazygit" name="🍒 Git - Lazygit" {
-        }
-        pane command="yazi" name="📁 File Browser - Yazi" {
+          pane command="lazygit" name="🍒 Git - Lazygit" {
+          }
+        pane name="📁 File Browser - Yazi" {
+          command "env"
+          args "YAZI_CONFIG_HOME=./" "yazi"
         }
         }
         pane size=1 borderless=true {
