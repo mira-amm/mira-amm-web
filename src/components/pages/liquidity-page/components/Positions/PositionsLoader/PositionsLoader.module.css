@@ -1,0 +1,19 @@
+.tableHeadingText {
+  min-height: 19px;
+}
+
+.tableCell {
+  min-height: 43px;
+}
+
+.loaderLineCenter {
+  align-items: center;
+}
+
+.loaderLineHeight {
+  min-height: 20px;
+}
+
+.marginAuto {
+  margin: auto;
+}
