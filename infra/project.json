@@ -9,28 +9,10 @@
       "options": {
         "cwd": "infra"
       },
+      "description": "Enter the Nix Shell in the `infra` project.",
       "prefixColor": "yellow",
       "color": "green",
-      "bgColor": "black",
-      "description": "Enter the Nix Shell in the `infra` project."
+      "bgColor": "black"
     },
-    "up": {
-      "command": "nix-shell --argstr DB 'up'",
-      "options": {
-        "cwd": "infra"
-      }
-    },
-    "down": {
-      "command": "nix-shell --argstr DB 'down'",
-      "options": {
-        "cwd": "infra"
-      }
-    },
-    "destroy": {
-      "command": "nix-shell --argstr DB 'destroy'",
-      "options": {
-        "cwd": "infra"
-      }
-    }
   }
 }
