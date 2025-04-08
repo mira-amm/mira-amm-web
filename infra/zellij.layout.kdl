@@ -1,67 +1,99 @@
 layout {
     default_tab_template {
-        pane size=1 borderless=true {
+        pane {
+            size 1
+            borderless true
             plugin location="zellij:tab-bar"
         }
         children
-        pane size=2 borderless=true {
+        pane {
+            size 2
+            borderless true
             plugin location="zellij:status-bar"
         }
     }
+
     tab name="🧮 Servers" focus=true {
         pane split_direction="vertical" {
-            pane command="pnpm" name="🟩 Web App | 3000 | mira.ly" cwd="../" {
+            pane {
+                name "🟩 Web App | 3000 | mira.ly"
+                cwd "../"
+                command "pnpm"
                 args "nx" "dev" "web"
             }
-                pane command="pnpm" name="🎨 Storybook | 6006 | design.mira.ly" cwd="../" {
-                    args "storybook"
-                }
-        pane split_direction="horizontal" size="30%" {
-            pane command="pnpm" name="📚 Docs | 4000 | docs.mira.ly" cwd="../" {
-                args "nx" "dev" "docs"
+
+            pane {
+                command "pnpm"
+                name "🎨 Storybook | 6006 | design.mira.ly"
+                cwd "../"
+                args "storybook"
             }
-                pane command="pnpm" name="🏛 Architecture | 6400 | arch.mira.ly" cwd="../" {
+
+            pane split_direction="horizontal" size="30%" {
+                pane {
+                    name "📚 Docs | 4000 | docs.mira.ly"
+                    cwd "../"
+                    command "pnpm"
+                    args "nx" "dev" "docs"
+                }
+
+                pane {
+                    command "pnpm"
+                    name "🏛 Architecture | 6400 | arch.mira.ly"
+                    cwd "../"
                     args "nx" "dev" "arch"
                     start_suspended true
                 }
-            pane command="pnpm" name="🗺 Project Graph - Nx | 4211 | graph.mira.ly" cwd="../" {
+                pane {
+                    name "🗺 Project Graph - Nx | 4211 | graph.mira.ly"
+                    cwd "../"
+                    command "pnpm"
                     args "nx" "graph" "--groupByFolder" "--open='false'" "--verbose"
                 }
             }
-            }
-        floating_panes {
-        pane command="btop" name="🩺 System Health - btop" borderless=true {
-        }
-        }
-    }
-    tab name="🟩 Status" {
-        pane split_direction="vertical" {
-          pane command="lazygit" name="🍒 Git - Lazygit" {
-          }
-        pane name="📁 File Browser - Yazi" {
-          command "env"
-          args "YAZI_CONFIG_HOME=./" "yazi"
-        }
         }
 
-      floating_panes {
-        pane command="tgpt" name="🧠 TGPT" {
-        args "-m"
-        }
-        }
-    }
-    /- tab name="🧮 Network" hide_floating_panes=true {
-        pane command="sudo" name="netscanner" {
-            args "netscanner"
+        floating_panes {
+            pane {
+                name "🩺 System Health - btop"
+                command "btop"
+            }
         }
     }
-     tab name="🛠 Devtools" hide_floating_panes=true {
+
+    tab name="🟩 Status" {
         pane split_direction="vertical" {
-        pane split_direction="horizontal" {
-                pane command="pnpm" name="📦 Node Modules Inspector | 7000" cwd="../" {
+            pane {
+                name "🍒 Git - Lazygit"
+                command "lazygit"
+            }
+
+            pane {
+                name "📁 File Browser - Yazi"
+                command "env"
+                args "YAZI_CONFIG_HOME=./" "yazi"
+            }
+        }
+
+        floating_panes {
+            pane {
+                name "🧠 TGPT"
+                command "tgpt"
+                args "-m"
+            }
+        }
+    }
+
+    tab name="🛠 Devtools" hide_floating_panes=true {
+        pane split_direction="vertical" {
+            pane split_direction="horizontal" {
+                pane {
+                    name "📦 Node Modules Inspector | 7000"
+                    cwd "../"
+                    command "pnpm"
                     args "node-modules-inspector" "--depth=7" "--port=7000" "--open=false"
                 }
-                }
-                }
+            }
+        }
     }
 }
