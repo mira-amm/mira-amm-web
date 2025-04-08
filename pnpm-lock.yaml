@@ -481,7 +481,7 @@ importers:
         specifier: ^6.0.0
         version: 6.0.0
       semantic-release:
-        specifier: ^24.2.2
+        specifier: ^24.2.3
         version: 24.2.3(typescript@5.8.2)
       storybook:
         specifier: ^8.5.3
@@ -13931,6 +13931,9 @@ packages:
   third-party-web@0.26.5:
     resolution: {integrity: sha512-tDuKQJUTfjvi9Fcrs1s6YAQAB9mzhTSbBZMfNgtWNmJlHuoFeXO6dzBFdGeCWRvYL50jQGK0jPsBZYxqZQJ2SA==}
 
+  third-party-web@0.26.6:
+    resolution: {integrity: sha512-GsjP92xycMK8qLTcQCacgzvffYzEqe29wyz3zdKVXlfRD5Kz1NatCTOZEeDaSd6uCZXvGd2CNVtQ89RNIhJWvA==}
+
   thread-stream@0.15.2:
     resolution: {integrity: sha512-UkEhKIg2pD+fjkHQKyJO3yoIvAP3N6RlNFt2dUhcS1FGvCD1cQa1M/PGknCLFIyZdtJOWQjejp7bdNqmN7zwdA==}
 
@@ -19302,7 +19305,7 @@ snapshots:
 
   '@paulirish/trace_engine@0.0.50':
     dependencies:
-      third-party-web: 0.26.5
+      third-party-web: 0.26.6
 
   '@paulmillr/qr@0.2.1': {}
 
@@ -33074,6 +33077,8 @@ snapshots:
       tslib: 2.8.1
 
   third-party-web@0.26.5: {}
+
+  third-party-web@0.26.6: {}
 
   thread-stream@0.15.2:
     dependencies:
