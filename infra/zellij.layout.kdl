@@ -1,8 +1,14 @@
 layout {
-    tab name="🧮 Servers" focus=true {
+    default_tab_template {
         pane size=1 borderless=true {
             plugin location="zellij:tab-bar"
         }
+        children
+        pane size=2 borderless=true {
+            plugin location="zellij:status-bar"
+        }
+    }
+    tab name="🧮 Servers" focus=true {
         pane split_direction="vertical" {
             pane command="pnpm" name="🟩 Web App | 3000 | mira.ly" cwd="../" {
                 args "nx" "dev" "web"
@@ -27,14 +33,8 @@ layout {
         pane command="btop" name="🩺 System Health - btop" borderless=true {
         }
         }
-        pane size=1 borderless=true {
-            plugin location="zellij:status-bar"
-        }
     }
     tab name="🟩 Status" {
-        pane size=1 borderless=true {
-            plugin location="zellij:tab-bar"
-        }
         pane split_direction="vertical" {
           pane command="lazygit" name="🍒 Git - Lazygit" {
           }
@@ -42,9 +42,6 @@ layout {
           command "env"
           args "YAZI_CONFIG_HOME=./" "yazi"
         }
-        }
-        pane size=1 borderless=true {
-            plugin location="zellij:status-bar"
         }
 
       floating_panes {
@@ -54,20 +51,11 @@ layout {
         }
     }
     /- tab name="🧮 Network" hide_floating_panes=true {
-        pane size=1 borderless=true {
-            plugin location="zellij:tab-bar"
-        }
         pane command="sudo" name="netscanner" {
             args "netscanner"
         }
-        pane size=1 borderless=true {
-            plugin location="zellij:status-bar"
-        }
     }
      tab name="🛠 Devtools" hide_floating_panes=true {
-        pane size=1 borderless=true {
-            plugin location="zellij:tab-bar"
-        }
         pane split_direction="vertical" {
         pane split_direction="horizontal" {
                 pane command="pnpm" name="📦 Node Modules Inspector | 7000" cwd="../" {
@@ -75,8 +63,5 @@ layout {
                 }
                 }
                 }
-        pane size=1 borderless=true {
-            plugin location="zellij:status-bar"
-        }
     }
 }
