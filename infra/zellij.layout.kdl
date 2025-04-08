@@ -31,7 +31,7 @@ layout {
             plugin location="zellij:status-bar"
         }
     }
-    tab name="🍒 Git" hide_floating_panes=true {
+    tab name="🟩 Status" {
         pane size=1 borderless=true {
             plugin location="zellij:tab-bar"
         }
