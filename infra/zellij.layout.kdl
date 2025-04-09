@@ -27,6 +27,7 @@ layout {
                 name "🎨 Storybook | 6006 | design.mira.ly"
                 cwd "../"
                 args "storybook"
+                start_suspended true
             }
 
             pane split_direction="horizontal" size="30%" {
