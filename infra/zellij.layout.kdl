@@ -51,6 +51,7 @@ layout {
                     cwd "../"
                     command "pnpm"
                     args "nx" "graph" "--groupByFolder" "--open='false'" "--verbose"
+                    start_suspended true
                 }
             }
         }
