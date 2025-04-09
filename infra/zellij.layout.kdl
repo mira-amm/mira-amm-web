@@ -39,7 +39,7 @@ layout {
 
                 pane {
                     command "pnpm"
-                    name "🏛 Architecture | 6400 | arch.mira.ly"
+                    name "🏛 Architecture | 5173 | arch.mira.ly"
                     cwd "../"
                     args "nx" "dev" "arch"
                     start_suspended true
