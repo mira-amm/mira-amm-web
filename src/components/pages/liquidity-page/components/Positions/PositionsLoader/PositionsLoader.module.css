@@ -1,3 +1,24 @@
+.mobileInfoSection {
+  display: flex;
+}
+
+.mobileContentItem {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 25%;
+  min-height: 61px;
+}
+
+.mobileActionButton {
+  min-height: 29px;
+}
+
+.mobileActionButton {
+  min-height: 29px;
+}
+
 .tableHeadingText {
   min-height: 19px;
 }
