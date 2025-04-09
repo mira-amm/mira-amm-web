@@ -36,6 +36,7 @@ layout {
                     cwd "../"
                     command "pnpm"
                     args "nx" "dev" "docs"
+                    start_suspended true
                 }
 
                 pane {
