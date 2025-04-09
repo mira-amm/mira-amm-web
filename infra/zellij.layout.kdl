@@ -86,12 +86,21 @@ layout {
 
     tab name="🛠 Devtools" hide_floating_panes=true {
         pane split_direction="vertical" {
+            pane {
+                name "🔺 Vercel Deployments"
+                cwd "../"
+                command "pnpm"
+                args "nx" "preview" "infra"
+                start_suspended true
+            }
             pane split_direction="horizontal" {
+                size "15%"
                 pane {
                     name "📦 Node Modules Inspector | 7000"
                     cwd "../"
                     command "pnpm"
                     args "node-modules-inspector" "--depth=7" "--port=7000" "--open=false"
+                    start_suspended true
                 }
             }
         }
