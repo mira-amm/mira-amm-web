@@ -14,5 +14,11 @@
       "color": "green",
       "bgColor": "black"
     },
+    "preview": {
+      "command": "pulumi preview -e -s 'dev'",
+      "options": {
+        "cwd": "infra"
+      }
+    }
   }
 }
