@@ -4,6 +4,7 @@ const defaultImageHostnames = [
   "github.com",
   "img.icons8.com",
   "upload.wikimedia.org",
+  "12factor.net"
 ];
 
 const withMDX = createMDX();
