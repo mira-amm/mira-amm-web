@@ -4,5 +4,6 @@
     "trunk-based-development",
     "conventional-branch",
     "conventional-commits",
+    "conventional-comments",
   ]
 }
