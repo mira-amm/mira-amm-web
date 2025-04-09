@@ -9,8 +9,8 @@
   "engineStrict": true,
   "scripts": {
     "dev": "pnpm nx dev infra",
-    "clean": "git clean -fdX -e '!**/.env*' -e '!**/pgdata' # 🧽 Remove any and all files listed in .gitignore except .env and pgdata",
-    "nuke": " sudo git clean -fdX; # 🚨 WARNING: REMOVE ANY AND ALL FILES LISTED IN .gitignore INCLUDING .env AND pgdata",
+    "clean": "git clean -fdX -e '!**/.env*' # 🧽 Remove any and all files listed in .gitignore except .env",
+    "nuke": " sudo git clean -fdX; # 🚨 WARNING: REMOVE ANY AND ALL FILES LISTED IN .gitignore INCLUDING .env",
     "ri": "mv .env .env.backup; pnpm clean; pnpm i; cp .env.example .env;  # 🧼 Backup `.env`->`.env.backup`, and perform a clean install",
     "storybook": "pnpm nx storybook -p $STORYBOOK_DEV_SERVER_PORT --no-open # 🎨 Design System - Storybook",
     "fix:formatting": "pnpx prettier --write apps/web"
