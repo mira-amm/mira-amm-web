@@ -40,6 +40,11 @@ export const baseOptions: BaseLayoutProps = {
       external: true,
     },
     {
+      text: "Design",
+      url: "https://design.mira.ly",
+      external: true,
+    },
+    {
       type: "icon",
       text: "Blog",
       url: "https://mirror.xyz/miraly.eth",
