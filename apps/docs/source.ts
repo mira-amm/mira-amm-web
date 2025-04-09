@@ -4,7 +4,7 @@ import {createElement} from "react";
 import {docs} from "./.source";
 
 export const source = loader({
-  baseUrl: "/docs",
+  baseUrl: "/",
 
   icon(icon) {
     if (!icon) {
