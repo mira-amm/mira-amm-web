@@ -6,10 +6,12 @@ import usePositions from "@/src/hooks/usePositions";
 import PositionsLoader from "./PositionsLoader/PositionsLoader";
 import DocumentIcon from "@/src/components/icons/Document/DocumentIcon";
 import { useMemo } from "react";
+import { useIsConnected } from "@fuels/react";
 
 const POSITIONS_COUNT = "positions-count";
 
 const Positions = (): JSX.Element => {
+  const { isConnected } = useIsConnected();
   const { data, isLoading } = usePositions();
 
   const positionsCount = useMemo(() => {
@@ -30,7 +32,7 @@ const Positions = (): JSX.Element => {
   return (
     <section className={styles.positions}>
       <p className={styles.positionsTitle}>Your Positions</p>
-      {(!data && !isLoading) || data?.length === 0 ? (
+      {!isConnected || data?.length === 0 ? (
         <div className={styles.positionsFallback}>
           <div className={styles.fallbackTop}>
             <div className={styles.icon}>
@@ -39,12 +41,14 @@ const Positions = (): JSX.Element => {
             <p>Your liquidity will appear here</p>
           </div>
         </div>
-      ) : data ? (
-        <DesktopPositions positions={data} />
+      ) : (data && data.length > 0 && !isLoading) ? (
+        <>
+          <DesktopPositions positions={data} />
+          <MobilePositions positions={data} />
+        </>
       ) : (
         <PositionsLoader count={positionsCount} />
       )}
-      <MobilePositions positions={data} />
     </section>
   );
 };
