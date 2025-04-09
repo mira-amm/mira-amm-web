@@ -9,7 +9,9 @@ on:
 
 jobs:
   e2e:
-    runs-on: self-hosted
+    # Sped up greatly via sharding across cores
+    runs-on: self-hosted # https://github.com/mira-amm/mira-amm-web/settings/actions/runners
+    # runs-on: ubuntu-latest # Uncomment in case of self-hosted runner downtime. Slower test runs due to only 2 cores.
     strategy:
       matrix:
         node-version: [22]
