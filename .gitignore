@@ -2,13 +2,16 @@
 
 playwright-report
 target/*
+apps/web-e2e/target/*
+apps/web-e2e/dist/*
+dist/*
 test-results
+storybook-static
 
 # dependencies
 /node_modules
 /.pnp
 .pnp.js
-.yarn/install-state.gz
 
 # testing
 /coverage
@@ -23,11 +26,6 @@ test-results
 # misc
 .DS_Store
 *.pem
-
-# debug
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
 
 # local env files
 .env*.local
@@ -46,6 +44,7 @@ next-env.d.ts
 .env*
 
 generated/
+
 # Sentry Config File
 .env.sentry-build-plugin
 
@@ -55,3 +54,6 @@ generated/
 # Next.js
 .next
 out
+
+pgdata
+apps/web/node_modules

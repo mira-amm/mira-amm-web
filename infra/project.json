@@ -1,0 +1,24 @@
+{
+  "name": "infra",
+  "$schema": "../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "infra",
+  "projectType": "application",
+  "targets": {
+    "dev": {
+      "command": "nix-shell",
+      "options": {
+        "cwd": "infra"
+      },
+      "description": "Enter the Nix Shell in the `infra` project.",
+      "prefixColor": "yellow",
+      "color": "green",
+      "bgColor": "black"
+    },
+    "preview": {
+      "command": "pulumi preview -e -s 'dev'",
+      "options": {
+        "cwd": "infra"
+      }
+    }
+  }
+}

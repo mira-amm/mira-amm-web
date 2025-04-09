@@ -1,0 +1,639 @@
+model {
+    context platform {
+        title: "Mira Platform"
+        icon: https://mira.ly/images/favicon.png
+        link : https://github.com/mira-amm
+
+        style {
+            color: green
+            shape: browser
+            multiple true
+            opacity: 50%
+        }
+
+        web = component {
+            title: "Web App"
+            icon: tech:nextjs
+            technology: "TypeScript, Next.js"
+            link : https://mira.ly
+            style {
+                color: pink-900
+                shape: mobile
+            }
+        }
+
+        packages = container {
+            title: "Packages"
+            style {
+                color: gray
+                opacity: 40%
+            }
+
+            sdks = container {
+                title: "SDKs"
+                style {
+                    color: white
+                    opacity: 40%
+                }
+
+                typescript-sdk = component {
+                    title: "TypeScript"
+                    icon: tech:typescript
+                    link : https://github.com/mira-amm/mira-v1-ts
+                    style {
+                        color: slate-500
+                        shape: queue
+                    }
+                }
+
+                rust-sdk = component {
+                    title: "Rust"
+                    icon: tech:rust
+                    link : https://github.com/mira-amm/mira-v1-rs
+                    style {
+                        color: orange-500
+                        shape: queue
+                    }
+                }
+            }
+
+            periphery-scripts = component {
+                title: "Periphery Scripts"
+                icon: tech:rust
+                link : https://github.com/mira-amm/mira-v1-periphery
+                style {
+                    color: purple-500
+                    shape: queue
+                }
+            }
+
+        }
+
+        documentation = container {
+            title: "Documentation"
+            style {
+                color: gray
+                opacity: 40%
+            }
+
+            docs-site = component {
+                title: "Docs"
+                icon: tech:nextjs
+                technology: "TypeScript, Fumadocs, Next.js, MDX, Tailwind CSS"
+                link : https://docs.mira.ly
+                style {
+                    color: green
+                    shape: browser
+                }
+            }
+
+            design-site = component {
+                title: "Design"
+                technology: "TypeScript, Storybook, React, Component Story Format (CSF)"
+                icon: tech:storybook
+                link : https://design.mira.ly
+                style {
+                    color: purple-800
+                    shape: browser
+                }
+            }
+
+            architecture-site = component {
+                title: "Architecture Site"
+                technology: 'LikeC4, C4 Model, React'
+                icon https://avatars.githubusercontent.com/u/128791862?s=200&v=4
+                link : https://arch.mira.ly
+                style {
+                    color: blue-700
+                    shape: browser
+                }
+            }
+
+
+            graph-site = component {
+                title: "Project Graph Site"
+                icon: https://camo.githubusercontent.com/30fd89042b9d367be3b5f04ba1c73083048eb94d3ae5d84f0b50287092c424a6/68747470733a2f2f6170692e69636f6e6966792e64657369676e2f6c6f676f733a6e782e737667
+                description "Interactive map of the codebase showing dependencies and task pipelines"
+                link : https://graph.mira.ly
+                style {
+                    color: cyan-700
+                    shape: browser
+                }
+            }
+        }
+
+        external-providers.software-development.vercel -> platform {
+            title: "provides continous deployment hosting for"
+        }
+
+        external-providers.software-development.vercel -> backend {
+            title: "provides serverless edge function hosting for"
+            description: "Next.js and React Router 7 are full-stack frameworks
+            that contain their own server. When an app built using these frameworks is deployed,
+            the server lives on the deployment provider's machine while the front-end bundle is shipped to the client.
+            
+            When the client makes a fetch request to the server, only the specific function responsible for serving the request is run. This is referred to as a serverless model.
+
+            Ideally this server lives in a data center as close to the client as possible, referred to as the 'Edge'.
+            "
+        }
+
+        container backend {
+            title: "Back-End (Squid Indexer)"
+            technology: "TypeORM, SQL"
+            icon: https://www.svgrepo.com/show/484343/server-like.svg
+            description: "Database, API Layer, and State Engine. ⚙"
+            style {
+                color: red
+                shape: queue
+            }
+
+            component api {
+                title: "API Layer"
+                icon: tech:swagger
+                link: https://github.com/mira-amm/mira-sqd-indexer
+                description: "REST via Next.js API routes & GraphQL via SQD"
+                style {
+                    color: red
+                    shape: queue
+                }
+            }
+
+            component database {
+                title: "PostgreSQL"
+                icon: tech:postgresql
+                link: https://www.postgresql.org
+                style {
+                    color: red
+                    shape: storage
+                }
+            }
+        }
+
+        tech-stack = container {
+            title: "Tech Stack"
+            icon: https://avatars.githubusercontent.com/u/55993183?s=200&v=4
+            style {
+                color: fuchsia-800
+                opacity: 40%
+            }
+
+            architecture = container {
+                title: "Architecture"
+                icon: https://www.svgrepo.com/show/404980/classical-building.svg
+
+                bulletproof-react = component {
+                    title: "Bulletproof React"
+                    icon: tech:react
+                    link : https://reacthandbook.dev/project-standards
+                    style {
+                        color: gray-500
+                    }
+                }
+
+                screenplay-pattern = component {
+                    title: "Screenplay Pattern"
+                    icon: https://avatars.githubusercontent.com/u/25189746?s=200&v=4
+                    link : https://serenity-js.org
+                    style {
+                        color: gray-500
+                    }
+                }
+            }
+
+            documentation = container {
+                title: "Technical Documentation"
+                icon: https://www.svgrepo.com/show/398268/scroll.svg
+                style {
+                    color: blue-500
+                    opacity: 40%
+                }
+
+                diataxis-model = component {
+                    title: "Diátaxis Model"
+                    icon: https://diataxis.fr/_static/favicon.png
+                    link : https://diataxis.fr/
+                    style {
+                        color: gray-500
+                    }
+                }
+
+                mermaid-js = component {
+                    title: "Mermaid.js"
+                    icon: https://avatars.githubusercontent.com/u/57169982?s=48&v=4
+                    link : https://mermaid.js.org/
+                    style {
+                        color: gray-500
+                    }
+                }
+
+                c4-model = component {
+                    title: "C4 Model"
+                    icon: https://avatars.githubusercontent.com/u/7525795?s=200&v=4.svg
+                    link : https://c4model.com
+                    style {
+                        color: gray-500
+                    }
+                }
+            }
+
+            languages = container {
+                title: "Languages"
+
+                mdx = component {
+                    title: "MDX"
+                    icon: https://avatars.githubusercontent.com/u/37453691?s=200&v=4
+                    link : https://mdxjs.com/
+                    style {
+                        color: gray-500
+                    }
+                }
+
+                rust = component {
+                    title: "Rust"
+                    icon: tech:rust
+                    link : https://www.rust-lang.org
+                    style {
+                        color: gray-500
+                    }
+                }
+
+                sway = component {
+                    title: "Sway"
+                    icon: https://avatars.githubusercontent.com/u/55993183?s=200&v=4
+                    link : https://docs.fuel.network/docs/sway/
+                    style {
+                        color: gray-500
+                    }
+                }
+
+                typescript = component {
+                    title: "TypeScript"
+                    icon: tech:typescript
+                    link : https://typescriptlang.org
+                    style {
+                        color: gray-500
+                    }
+                }
+            }
+
+            libraries = component {
+                title: "Libraries"
+                icon: https://www.svgrepo.com/show/395907/books.svg
+                react = component {
+                    title: "React"
+                    icon: https://upload.wikimedia.org/wikipedia/commons/a/a7/React-icon.svg
+                    link : https://reactjs.org/
+                    style {
+                        color: gray-500
+                    }
+                }
+            }
+
+            frameworks = container {
+                title: "Frameworks"
+                icon: https://www.svgrepo.com/show/297908/crane.svg
+
+                sqd = component {
+                    title: "Squid"
+                    icon: https://docs.sqd.ai/img/logo-dark.svg
+                    link : https://docs.sqd.ai
+                    style {
+                        color: gray-500
+                    }
+                }
+
+                nextjs = component {
+                    title: "Next.js"
+                    icon: tech:nextjs
+                    link : https://nextjs.org
+                    style {
+                        color: gray-500
+                    }
+                }
+
+                fumadocs = component {
+                    title: "Fumadocs"
+                    icon: https://stack-builder-v1.vercel.app/logos/fumadocs.svg
+                    link : https://fumadocs.vercel.app
+                    style {
+                        color: gray-500
+                    }
+                }
+
+                likec4 = component {
+                    title: "LikeC4"
+                    icon: https://avatars.githubusercontent.com/u/128791862?s=200&v=4
+                    link : https://likec4.dev/
+                    style {
+                        color: gray-500
+                    }
+                }
+            }
+
+            database = container {
+                title: "Database"
+                icon: tech:azure-sql-database
+
+                postgresql = component {
+                    title: "PostgreSQL"
+                    icon: tech:postgresql
+                    link : https://postgresql.org
+                    style {
+                        color: gray-500
+                    }
+                }
+
+                typeorm = component {
+                    title: "TypeORM"
+                    icon: https://images.seeklogo.com/logo-png/44/1/typeorm-logo-png_seeklogo-443592.png
+                    link : https://typeorm.io
+                    style {
+                        color: gray-500
+                    }
+                }
+            }
+
+            devops = container {
+                title: "☁ DevOps"
+                style {
+                    color: blue-500
+                    opacity: 40%
+                }
+
+                nix = component {
+                    title: "Nix"
+                    icon: https://avatars.githubusercontent.com/u/487568?s=48&v=4
+                    description: "Environment Manager"
+                    link : https://nixos.org/
+                    style {
+                        color: gray-500
+                    }
+                }
+
+                pnpm = component {
+                    title: "pnpm"
+                    icon: https://pnpm.io/assets/images/pnpm-light-477811893d2e1c4ad4b10345c442282e.svg
+                    description: "Package Manager"
+                    link : https://pnpm.io/
+                    style {
+                        color: gray-500
+                    }
+                }
+
+                nx = component {
+                    title: "Nx"
+                    icon: https://avatars.githubusercontent.com/u/23692104?s=200&v=4.svg
+                    description: "Monorepo Manager"
+                    link : https://nx.dev
+                    style {
+                        color: gray-500
+                    }
+                }
+
+                zellij = component {
+                    title: "Zellij"
+                    icon: https://raw.githubusercontent.com/zellij-org/zellij/main/assets/logo.png
+                    description: "Terminal Workspace Manager"
+                    link : https://zellij.dev
+                    style {
+                        color: gray-500
+                    }
+                }
+
+                code-quality = component {
+                    title: "🧹 Code Quality"
+                    icon: tech:eslint
+                    style {
+                        color: gray-500
+                        opacity: 40%
+                    }
+
+                    eslint = component {
+                        title: "ESLint"
+                        icon: https://upload.wikimedia.org/wikipedia/commons/e/e3/ESLint_logo.svg
+                        link : https://eslint.org/
+                        style {
+                            color: gray-500
+                        }
+                    }
+
+                    prettier = component {
+                        title: "Prettier"
+                        icon: https://cdn.worldvectorlogo.com/logos/prettier-1.svg
+                        link : https://prettier.io/
+                        style {
+                            color: gray-500
+                        }
+                    }
+                }
+
+                pr-review = container {
+                    title: "🤖 PR Review Automation"
+                    style {
+                        color: orange-500
+                        opacity: 40%
+                    }
+
+                    coderabbit = component {
+                        title: "CodeRabbit"
+                        icon: https://avatars.githubusercontent.com/u/132028505?s=200&v=4.svg
+                        link : https://www.coderabbit.ai/
+                        style {
+                            color: gray-500
+                        }
+                    }
+
+                    conventional-comments = component {
+                        title: "Conventional Comments"
+                        icon: https://conventionalcomments.org/logo.png
+                        link : https://conventionalcomments.org/
+                        style {
+                            color: gray-500
+                        }
+                    }
+                }
+
+                test-automation = component {
+                    title: "⚗ Test Automation"
+                    style {
+                        color: gray-500
+                        opacity: 40%
+                    }
+
+                    vitest = component {
+                        title: "Vitest"
+                        icon: https://vitest.dev/logo.svg
+                        link : https://vitest.dev/
+                        style {
+                            color: gray-500
+                        }
+                    }
+
+                    playwright = component {
+                        title: "Playwright"
+                        icon: https://playwright.dev/img/playwright-logo.svg
+                        link : https://playwright.dev/
+                        style {
+                            color: gray-500
+                        }
+                    }
+
+                    storybook-test-runner = component {
+                        title: "Storybook Test Runner"
+                        icon: https://www.svgrepo.com/show/354397/storybook-icon.svg
+                        link : https://storybook.js.org/docs/writing-tests/test-runner
+                        style {
+                            color: gray-500
+                        }
+                    }
+                }
+
+                gitops = container {
+                    title: "🌵 GitOps"
+                    icon: tech:git
+                    style {
+                        color: gray-500
+                        opacity: 40%
+                    }
+
+                    trunk-based-development = component {
+                        title: "Trunk-Based Development"
+                        icon: https://trunkbaseddevelopment.com/images/logo.png
+                        link : https://trunkbaseddevelopment.com/
+                        style {
+                            color: gray-500
+                        }
+                    }
+
+                    conventional-commits = component {
+                        title: "Conventional Commits"
+                        icon: https://avatars.githubusercontent.com/u/42154238?s=200&v=4.svg
+                        link : https://www.conventionalcommits.org/en/v1.0.0/
+                        style {
+                            color: gray-500
+                        }
+                    }
+
+                    conventional-branch = component {
+                        title: "Conventional Branch"
+                        icon: https://avatars.githubusercontent.com/u/179835931?s=200&v=4.svg
+                        link : https://conventional-branch.github.io/
+                        style {
+                            color: gray-500
+                        }
+                    }
+
+                    commitizen = component {
+                        title: "Commitizen"
+                        icon: https://avatars.githubusercontent.com/u/62252524?s=48&v=4.svg
+                        link : https://commitizen.github.io/cz-cli/
+                        style {
+                            color: gray-500
+                        }
+                    }
+
+                    commitlint = component {
+                        title: "Commitlint"
+                        icon: https://www.svgrepo.com/show/373518/commitlint.svg
+                        link : https://commitlint.js.org/
+                        style {
+                            color: gray-500
+                        }
+                    }
+
+                    lint-staged = component {
+                        title: "Lint-staged"
+                        icon: https://avatars.githubusercontent.com/u/142687600?s=200&v=4.svg
+                        link : https://github.com/okonet/lint-staged
+                        style {
+                            color: gray-500
+                        }
+                    }
+
+                    husky = component {
+                        title: "Husky"
+                        icon: https://raw.githubusercontent.com/vscode-icons/vscode-icons/master/icons/file_type_husky.svg
+                        link : https://typicode.github.io/husky/#/
+                        style {
+                            color: gray-500
+                        }
+                    }
+                }
+
+                ci = container {
+                    title: "♻ Continuous Integration"
+                    style {
+                        color: gray-500
+                        opacity: 40%
+                    }
+
+                    semantic-release = component {
+                        title: "Semantic Release"
+                        icon: https://avatars.githubusercontent.com/u/12867925?s=200&v=4.svg
+                        link : https://semantic-release.gitbook.io/semantic-release/
+                        style {
+                            color: gray-500
+                        }
+                    }
+
+                    github-actions = component {
+                        title: "GitHub Actions"
+                        icon: https://icon.icepanel.io/Technology/svg/GitHub-Actions.svg
+                        link : https://github.com/features/actions
+                        style {
+                            color: gray-500
+                        }
+                    }
+
+                    docker = component {
+                        title: "Docker"
+                        icon: tech:docker
+                        link : https://www.docker.com/
+                        style {
+                            color: gray-500
+                        }
+                    }
+                }
+
+                cd = container {
+                    title: "🚢 Continuous Deployment"
+                    style {
+                        color: gray-500
+                        opacity: 40%
+                    }
+
+                    pulumi = component {
+                        title: "Pulumi"
+                        icon: https://avatars.githubusercontent.com/u/21992475?s=48&v=4.svg
+                        link : https://www.pulumi.com
+                        style {
+                            color: gray-500
+                        }
+                    }
+
+                    vercel = brand {
+                        title: "Vercel"
+                        icon: https://avatars.githubusercontent.com/u/14985020?s=48&v=4
+                        description: "Platform-as-a-Service provider hosting front-ends with continous deployment"
+                        link: https://vercel.com
+                        style {
+                            color: gray-500
+                            shape: browser
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    platform -> external-providers {
+        title: "uses a number of"
+    }
+
+    external-providers.software-development.github -> platform {
+        title: "stores all source code for"
+        link : https://github.com/mira-amm
+    }
+
+}

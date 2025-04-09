@@ -1,0 +1,189 @@
+model {
+    external-providers = context {
+        title: "Third Party Tools & 
+        Services"
+        icon: https://www.svgrepo.com/show/474375/cloud-server2.svg
+        style {
+            color: yellow-600
+            opacity: 10%
+            shape: browser
+            multiple: true
+        }
+
+        enterprise-management = component {
+            title: "Enterprise Management"
+            icon: gcp:cloud-interconnect
+            style {
+                color: purple-100
+                shape: browser
+                opacity: 10%
+            }
+            
+            google = brand {
+                title: "Google"
+                description: "Enterprise workspace provider"
+                link: https://workspace.google.com
+                style {
+                    color: orange-100
+                    icon: https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/google/google-original.svg
+                    shape: cylinder
+                    multiple: true
+                    opacity: 10%
+                }
+
+                gmail = brand {
+                    title: "Gmail"
+                    link: https://mail.google.com
+                    icon: https://upload.wikimedia.org/wikipedia/commons/thumb/7/7e/Gmail_icon_%282020%29.svg/2560px-Gmail_icon_%282020%29.svg.png
+                    style {
+                        color: yellow-500
+                        shape: browser
+                    }
+                }
+
+                docs = brand {
+                    title: "Docs"
+                    link: https://docs.google.com
+                    icon: https://upload.wikimedia.org/wikipedia/commons/thumb/0/01/Google_Docs_logo_%282014-2020%29.svg/1481px-Google_Docs_logo_%282014-2020%29.svg.png
+                    style {
+                        color: orange-500
+                        shape: browser
+                    }
+                }
+
+                sheets = brand {
+                    title: "Sheets"
+                    link: https://sheets.google.com
+                    icon: https://upload.wikimedia.org/wikipedia/commons/thumb/3/30/Google_Sheets_logo_%282014-2020%29.svg/1200px-Google_Sheets_logo_%282014-2020%29.svg.png
+                    style {
+                        color: amber-500
+                        shape: browser
+                    }
+                }
+
+                drive = brand {
+                    title: "Drive"
+                    link: https://drive.google.com
+                    icon: https://cdn.iconscout.com/icon/free/png-256/free-google-drive-logo-icon-download-in-svg-png-gif-file-formats--storage-social-media-pack-logos-icons-1718511.png?f=webp&w=256
+                    style {
+                        color: lime-800
+                        shape: browser
+                    }
+                }
+
+            }
+            
+            notion = brand {
+                title: "Notion"
+                icon: https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/notion/notion-original.svg
+                description: "Enterprise workspace provider"
+                link : https://notion.com
+                style {
+                    color: slate
+                    shape: browser
+                }
+            }
+        }
+        
+        marketing-and-communication = container {
+            title: "Marketing & 
+            Communication"
+            icon: gcp:cloud-for-marketing
+            style {
+                color: slate-800
+                shape: mobile
+                opacity: 10%
+            }
+
+            discord = brand {
+                title: "Discord"
+                icon: https://www.svgrepo.com/show/353655/discord-icon.svg
+                link : https://discord.com
+                style {
+                    color: orange-600
+                    shape: mobile
+                }
+            }
+
+            telegram = brand {
+                title: "Telegram"
+                icon: https://upload.wikimedia.org/wikipedia/commons/thumb/8/82/Telegram_logo.svg/2048px-Telegram_logo.svg.png
+                link : https://telegram.org
+                style {
+                    color: sky-800
+                    shape: mobile
+                }
+            }
+        }
+
+        ui-ux-design = container {
+            title: "UI/UX Design"
+            icon: https://www.svgrepo.com/show/397564/nail-polish.svg
+            style {
+                color: teal-700
+                shape: browser
+                opacity: 10%
+            }
+            figma = brand {
+                title: "Figma"
+                icon: tech:figma
+                description: "2D Assets"
+                link : https://www.figma.com/community/file/1472076259079188838
+
+                style {
+                    color: indigo
+                    shape: browser
+                }
+            }
+        }
+
+        software-development = container {
+            title: "Software Development"
+            icon: https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/archlinux/archlinux-original.svg
+            style {
+                color: red
+                shape: browser
+                opacity: 10%
+            }
+
+            github = brand {
+                title: "GitHub"
+                icon: tech:github
+                link : https://github.com
+                style {
+                    color: stone-500
+                    shape: browser
+                }
+            }
+
+            vercel = brand {
+                title: "Vercel"
+                icon: https://avatars.githubusercontent.com/u/14985020?s=48&v=4
+                description: "Platform-as-a-Service provider hosting front-ends with continous deployment"
+                link : https://vercel.com
+                style {
+                    color: gray-900
+                    shape: browser
+                }
+            }
+
+
+            pulumi = brand {
+                title: "Pulumi Cloud"
+                icon: https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/pulumi/pulumi-original.svg
+                description: "Infrastructure-as-Code
+            Provider"
+                link : https://pulumi.com
+                style {
+                    color: stone-500
+                    shape: browser
+                }
+            }
+
+        }
+    }
+
+    pulumi -> vercel{
+        title: "automates"
+    }
+}
