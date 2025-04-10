@@ -2,8 +2,9 @@
   display: flex;
   flex-direction: column;
   padding: 16px;
-  border-radius: 8px;
-  background-color: var(--background-grey-dark);
+  border-radius: 16px;
+  border: 11px solid var(--background-tertiary);
+  background-color: var(--background-secondary);
 }
 
 .separator {

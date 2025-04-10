@@ -3,7 +3,8 @@
   flex-direction: column;
   padding: 16px;
   border-radius: 16px;
-  background-color: var(--background-grey-dark);
+  border: 11px solid var(--background-tertiary);
+  background-color: var(--background-secondary);
 }
 
 .separator {

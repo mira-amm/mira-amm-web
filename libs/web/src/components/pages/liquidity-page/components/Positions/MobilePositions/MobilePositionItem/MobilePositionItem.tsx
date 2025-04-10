@@ -111,8 +111,7 @@ const MobilePositionItem = ({position, onClick}: Props) => {
           <p className={clsx(styles.poolDescription, "mc-mono-m")}>{feeText}</p>
         </div>
       </div>
-
-      <ActionButton onClick={onClick} variant="secondary" fullWidth>
+      <ActionButton onClick={onClick} variant="secondary" size="big" fullWidth>
         Manage Position
       </ActionButton>
     </div>
