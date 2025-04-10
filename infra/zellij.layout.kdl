@@ -108,4 +108,14 @@ layout {
             }
         }
     }
+    tab name="🔌 API" hide_floating_panes=true {
+        pane split_direction="vertical" {
+                pane {
+                    name "Posting"
+                    cwd "posting"
+                    command "posting"
+                    args "-e" "dev.env" "--collection" "."
+                }
+        }
+    }
 }
