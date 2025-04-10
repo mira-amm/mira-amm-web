@@ -25,11 +25,6 @@
   align-items: center;
 }
 
-.actionButtonDiv {
-  display: flex;
-  justify-content: flex-end;
-}
-
 .loadingFallback img {
   width: 36px;
   height: 36px;

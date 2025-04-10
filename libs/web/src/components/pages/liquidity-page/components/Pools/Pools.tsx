@@ -1,9 +1,7 @@
-import {useCallback, useEffect, useState} from "react";
-import {useRouter} from "next/navigation";
+import {useEffect, useState} from "react";
 
 import MobilePools from "@/src/components/pages/liquidity-page/components/Pools/MobilePools/MobilePools";
 import DesktopPools from "@/src/components/pages/liquidity-page/components/Pools/DesktopPools/DesktopPools";
-import ActionButton from "@/src/components/common/ActionButton/ActionButton";
 import Pagination from "@/src/components/common/Pagination/Pagination";
 import {SearchBar} from "@/src/components/common/SearchBar/SearchBar";
 import usePoolsData, {DEFAULT_PAGE} from "@/src/hooks/usePoolsData";
@@ -14,7 +12,6 @@ import styles from "./Pools.module.css";
 import LoadingIndicator from "@/src/components/common/LoadingIndicator/LoadingIndicator";
 
 const Pools = () => {
-  const router = useRouter();
   const {data, isLoading, moreInfo} = usePoolsData();
 
   const {
@@ -26,11 +23,6 @@ const Pools = () => {
 
   const [searchInput, setSearchInput] = useState(search || "");
   const debouncedSearchTerm = useDebounce(searchInput, 300);
-
-  // Navigate to "Create Pool" page
-  const handleCreatePoolClick = useCallback(() => {
-    router.push("/liquidity/create-pool");
-  }, [router]);
 
   // Initialize query variables on component mount
   useEffect(() => {
@@ -64,17 +56,6 @@ const Pools = () => {
 
   return (
     <section className={styles.pools}>
-      {/* Action Button */}
-      <div className={styles.actionButtonDiv}>
-        <ActionButton
-          className={clsx("mobileOnly")}
-          onClick={handleCreatePoolClick}
-          fullWidth
-        >
-          Create Pool
-        </ActionButton>
-      </div>
-
       {/* Header with Search Bar */}
       <div className={styles.poolsHeader}>
         <p className={clsx(styles.poolsTitle, "mc-type-xxxl")}>All Pools</p>

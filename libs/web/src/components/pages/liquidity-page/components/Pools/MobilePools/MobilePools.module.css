@@ -16,13 +16,15 @@
 .mobilePoolsSort {
   color: var(--mc-grey-4);
   font-size: 14px;
-  background-color: var(--background-grey-dark);
-  border-radius: 8px;
-  padding: 8px;
-  padding-top: 0.8rem; /* this is a temporary fix and need to be handled more elegantly - Correct solution would be to align vertically centered for all child component */
-  padding-bottom: 0.5rem;
+  border: var(--border-style-secondary);
+  border-radius: 12px;
+  background-color: var(--background-secondary);
+  padding: 16px;
+  padding-bottom: 14px;
   margin-bottom: 8px;
   display: flex;
+  /*   width: 50%;
+  margin-top: 8px; */
 }
 
 .mobilePoolsSort tr {
@@ -41,3 +43,20 @@
   text-align: center;
   color: var(--content-tertiary);
 }
+
+.tableHead {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.actionButtonDiv {
+  width: 50%;
+}
+
+/* .sortTable {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+} */
