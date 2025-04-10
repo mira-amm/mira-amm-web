@@ -6,30 +6,6 @@
   "tags": [],
   "// targets": "to see all targets run: nx show project web --web",
   "targets": {
-    "dev": {
-      "command": "next dev -p $APP_DEV_SERVER_PORT",
-      "options": {
-        "cwd": "apps/web"
-      }
-    },
-    "dev-ci": {
-      "command": "next dev -p 3000",
-      "options": {
-        "cwd": "apps/web"
-      }
-    },
-    "build": {
-      "command": "next build",
-      "options": {
-        "cwd": "apps/web"
-      }
-    },
-    "start": {
-      "command": "next start -p $APP_DEV_SERVER_PORT",
-      "options": {
-        "cwd": "apps/web"
-      }
-    },
     "test": {
       "command": "jest",
       "options": {

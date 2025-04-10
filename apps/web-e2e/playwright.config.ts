@@ -12,8 +12,8 @@ const baseURL = "http://localhost:3000";
 
 export default defineConfig<SerenityOptions>({
   ...nxE2EPreset(__filename, {testDir: "./src"}),
-  fullyParallel: false,
-  workers: process.env.CI ? 6 : undefined,
+  fullyParallel: true,
+  workers: process.env.CI ? 6 : "80%",
   retries: 4,
   use: {
     crew: [
@@ -24,8 +24,8 @@ export default defineConfig<SerenityOptions>({
     trace: "on-first-retry",
   },
   webServer: {
-    command: "pnpm nx dev-ci web",
-    url: "http://localhost:3000",
+    command: "pnpm nx start web",
+    url: baseURL,
     reuseExistingServer: !process.env.CI,
     cwd: workspaceRoot,
     timeout: 120 * 3000,
