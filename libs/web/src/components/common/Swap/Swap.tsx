@@ -500,7 +500,7 @@ const Swap = ({isWidget}: {isWidget?: boolean}) => {
   useEffect(() => {
     let newSwapButtonTitle = "";
     if (previewError) newSwapButtonTitle = previewError;
-    else if (amountMissing) {
+    else if (amountMissing && !swapPending) {
       newSwapButtonTitle = "Input amounts";
     } else if (!isValidNetwork) {
       newSwapButtonTitle = "Incorrect network";
@@ -565,7 +565,8 @@ const Swap = ({isWidget}: {isWidget?: boolean}) => {
       tradeState !== TradeState.REEFETCHING &&
       !balancesPending &&
       (txCostPending || amountMissing)) ||
-    showInsufficientBalance;
+    showInsufficientBalance ||
+    swapPending;
 
   //If amount is missing txCostPending is irrelevant
   //If in sufficient fund, previewLoading is irrelevant
@@ -619,11 +620,16 @@ const Swap = ({isWidget}: {isWidget?: boolean}) => {
         >
           <div className={styles.heading}>
             <div className={styles.title}>
-              {isWidget ? <MiraTextLogo primaryColor="black" /> : <p className={"mc-type-l"}>Swap</p>}
+              {isWidget ? (
+                <MiraTextLogo primaryColor="black" />
+              ) : (
+                <p className={"mc-type-l"}>Swap</p>
+              )}
             </div>
             <SlippageSetting
               slippage={slippage}
               openSettingsModal={openSettingsModal}
+              isDisabled={swapPending}
             />
             {isWidget && (
               <ConnectButton className={styles.connectWallet} isWidget />
@@ -641,7 +647,10 @@ const Swap = ({isWidget}: {isWidget?: boolean}) => {
             className={isWidget ? styles.widgetBoxBg : undefined}
           />
           <div className={styles.splitter}>
-            <IconButton onClick={swapAssets} className={styles.convertButton}>
+            <IconButton
+              onClick={swapPending ? () => {} : swapAssets}
+              className={styles.convertButton}
+            >
               <ConvertIcon />
             </IconButton>
           </div>
@@ -700,7 +709,6 @@ const Swap = ({isWidget}: {isWidget?: boolean}) => {
           )}
         </div>
       </div>
-      {swapPending && <div className={styles.loadingOverlay} />}
       <SettingsModal
         title={`Slippage tolerance: ${slippage / 100}%`}
         size={"regular"}
