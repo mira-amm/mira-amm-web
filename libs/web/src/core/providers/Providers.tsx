@@ -34,7 +34,7 @@ const defaultPersistOptions: PersistQueryClientOptions = {
   // @ts-ignore
   queryClient,
   persister: localStoragePersistor,
-  maxAge: 1000 * 60 * 5,
+  maxAge: 1000 * 60 * 60 * 12,
   dehydrateOptions: {
     shouldDehydrateQuery: (query) => !!query.meta?.persist,
   },
