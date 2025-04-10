@@ -3,7 +3,7 @@
 import {ReactNode, Suspense, useEffect, useState} from "react";
 import NextAdapterApp from "next-query-params/app";
 import {QueryParamProvider} from "use-query-params";
-import {Query, QueryClient} from "@tanstack/react-query";
+import {QueryClient} from "@tanstack/react-query";
 import {
   PersistQueryClientOptions,
   PersistQueryClientProvider,
@@ -36,9 +36,10 @@ const Providers = ({children}: Props) => {
     });
 
     setPersistOptions({
+      // @ts-ignore
       queryClient,
       persister,
-      maxAge: 1000 * 60 * 1,
+      maxAge: 1000 * 60 * 60 * 12, // 12 hours
       dehydrateOptions: {
         shouldDehydrateQuery: (query) => !!query.meta?.persist,
       },
