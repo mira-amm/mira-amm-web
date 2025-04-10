@@ -1,6 +1,10 @@
-{ pkgs ? import <nixpkgs> {}, DB ? "" }:
+{ pkgs ? import <nixpkgs> {} }:
 
 let
+  pkgs-unstable = import (builtins.fetchTarball {
+    url = "https://github.com/NixOS/nixpkgs/archive/refs/heads/nixpkgs-unstable.tar.gz";
+  }) {};
+
   logoPath = "../libs/shared/assets/charthouse-labs-symbol.png";
   miraLogoPath = "../libs/shared/assets/mira-wordmark-long-light.png";
 
@@ -15,6 +19,7 @@ in pkgs.mkShell {
     pkgs.btop
     pkgs.yazi
     pkgs.tgpt
+    pkgs-unstable.posting
   ];
 
   shellHook = ''
