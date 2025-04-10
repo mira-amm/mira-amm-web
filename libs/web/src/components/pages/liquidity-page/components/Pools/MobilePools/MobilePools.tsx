@@ -45,19 +45,9 @@ const MobilePools = ({poolsData, orderBy, handleSort}: Props) => {
                 onSort={handleSort}
               />
             </tr>
-            <div className={styles.actionButtonDiv}>
-              <ActionButton
-                className={clsx("mobileOnly")}
-                onClick={handleCreatePoolClick}
-                fullWidth
-                size="big"
-              >
-                Create Pool
-              </ActionButton>
-            </div>
           </thead>
         </table>
-        {/*   <div className={styles.actionButtonDiv}>
+        <div className={styles.actionButtonDiv}>
           <ActionButton
             className={clsx("mobileOnly")}
             onClick={handleCreatePoolClick}
@@ -66,7 +56,7 @@ const MobilePools = ({poolsData, orderBy, handleSort}: Props) => {
           >
             Create Pool
           </ActionButton>
-        </div> */}
+        </div>
       </div>
       <div className={clsx(styles.mobilePools, "mobileOnly")}>
         {poolsData && poolsData.length > 0 ? (
