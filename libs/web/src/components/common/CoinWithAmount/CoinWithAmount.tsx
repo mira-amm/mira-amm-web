@@ -1,5 +1,3 @@
-import {CoinName, coinsConfig} from "@/src/utils/coinsConfig";
-
 import styles from "./CoinWithAmount.module.css";
 import {B256Address} from "fuels";
 import {useAssetImage} from "@/src/hooks/useAssetImage";
