@@ -74,6 +74,31 @@ const SettingsModalContent = ({slippage, setSlippage}: Props) => {
     setSlippage(value);
   };
 
+  const getPercentPositionClass = (length: number) => {
+    switch (length) {
+      case 1:
+        return styles.inputPercentPosition;
+      case 2:
+        return styles.inputPercentPosition2;
+      case 3:
+        return styles.inputPercentPosition3;
+      case 4:
+        return styles.inputPercentPosition4;
+      default:
+        return styles.inputPercentPosition5;
+    }
+  };
+
+  const increment = () => {
+    const next = Math.min(Number(inputValue) + 0.1, 100);
+    handleSlippageChange({target: {value: next.toFixed(1)}});
+  };
+
+  const decrement = () => {
+    const next = Math.max(Number(inputValue) - 0.1, 0.1);
+    handleSlippageChange({target: {value: next.toFixed(1)}});
+  };
+
   return (
     <div className={styles.settingsContainer}>
       <div className={styles.settingsSection}>
@@ -83,11 +108,14 @@ const SettingsModalContent = ({slippage, setSlippage}: Props) => {
       </div>
       <div className={styles.inputWrapper}>
         <div className={buttonstyles.poolStability}>
-          {AutoSlippageValues.map((value) => (
+          {AutoSlippageValues.map((value, index) => (
             <React.Fragment key={value}>
               <div
                 className={clsx(
                   buttonstyles.poolStabilityButton,
+                  index === 0 && styles.borderLeftTopBottom,
+                  index === 1 && styles.borderAll,
+                  index === 2 && styles.borderTopRightBottom,
                   (selectedSlippageValue === value ||
                     Number(inputValue) === value) &&
                     buttonstyles.poolStabilityButtonActive,
@@ -105,7 +133,7 @@ const SettingsModalContent = ({slippage, setSlippage}: Props) => {
           ))}
         </div>
         <p className={clsx(styles.inputContent, "mc-type-m")}>or</p>
-        <div>
+        <div className={styles.inputWrapper}>
           <input
             type="number"
             className={clsx(styles.slippageInput, "mc-mono-m")}
@@ -118,6 +146,24 @@ const SettingsModalContent = ({slippage, setSlippage}: Props) => {
             onBlur={handleInputBlur}
             ref={inputRef}
           />
+
+          <span
+            className={clsx(
+              styles.percentSuffix,
+              "mc-mono-m",
+              getPercentPositionClass(inputValue.length),
+            )}
+          >
+            %
+          </span>
+          <div className={styles.customSpinner}>
+            <button type="button" onClick={increment}>
+              ▲
+            </button>
+            <button type="button" onClick={decrement}>
+              ▼
+            </button>
+          </div>
         </div>
       </div>
     </div>

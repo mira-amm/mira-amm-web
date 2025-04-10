@@ -74,3 +74,91 @@
   align-items: center;
   gap: 8px;
 }
+
+.borderLeftTopBottom {
+  border-left: 1px solid var(--mc-grey-4);
+  border-top: 1px solid var(--mc-grey-4);
+  border-bottom: 1px solid var(--mc-grey-4);
+  border-right: none;
+}
+
+.borderAll {
+  border: 1px solid var(--mc-grey-4);
+}
+
+.borderTopRightBottom {
+  border-right: 1px solid var(--mc-grey-4);
+  border-top: 1px solid var(--mc-grey-4);
+  border-bottom: 1px solid var(--mc-grey-4);
+  border-left: none;
+}
+
+.inputWrapper {
+  position: relative;
+}
+
+.slippageInput {
+  padding-right: 20px;
+}
+
+.percentSuffix {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--mc-black);
+  pointer-events: none;
+}
+
+.inputPercentPosition {
+  right: 45px;
+}
+
+.inputPercentPosition2 {
+  right: 35px;
+}
+
+.inputPercentPosition3 {
+  right: 28px;
+}
+
+.inputPercentPosition4 {
+  right: 20px;
+}
+
+.inputPercentPosition5 {
+  right: 0;
+}
+
+/* Hide default spinner for all browsers */
+.slippageInput::-webkit-inner-spin-button,
+.slippageInput::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.slippageInput {
+  -moz-appearance: textfield;
+}
+
+.customSpinner {
+  position: absolute;
+  top: 7px;
+  right: 6px;
+  display: flex;
+  flex-direction: column;
+}
+
+.customSpinner button {
+  all: unset;
+  font-size: 10px;
+  padding: 2px;
+  cursor: pointer;
+  text-align: center;
+  user-select: none;
+  color: var(--mc-grey-4);
+  line-height: 1;
+}
+
+.customSpinner button:hover {
+  color: var(--mc-black);
+}
