@@ -26,9 +26,23 @@ const queryClient = new QueryClient({
   },
 });
 
+const localStoragePersistor = createSyncStoragePersister({
+  storage: undefined,
+});
+
+const defaultPersistOptions: PersistQueryClientOptions = {
+  // @ts-ignore
+  queryClient,
+  persister: localStoragePersistor,
+  maxAge: 1000 * 60 * 5,
+  dehydrateOptions: {
+    shouldDehydrateQuery: (query) => !!query.meta?.persist,
+  },
+};
+
 const Providers = ({children}: Props) => {
   const [persistOptions, setPersistOptions] =
-    useState<PersistQueryClientOptions | null>(null);
+    useState<PersistQueryClientOptions>(defaultPersistOptions);
 
   useEffect(() => {
     const persister = createSyncStoragePersister({
@@ -36,17 +50,10 @@ const Providers = ({children}: Props) => {
     });
 
     setPersistOptions({
-      // @ts-ignore
-      queryClient,
+      ...defaultPersistOptions,
       persister,
-      maxAge: 1000 * 60 * 60 * 12, // 12 hours
-      dehydrateOptions: {
-        shouldDehydrateQuery: (query) => !!query.meta?.persist,
-      },
     });
   }, []);
-
-  if (!persistOptions) return null;
 
   return (
     <Suspense>
