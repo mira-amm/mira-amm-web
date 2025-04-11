@@ -7,6 +7,7 @@ import {useRouter} from "next/navigation";
 import IconButton from "@/src/components/common/IconButton/IconButton";
 import CloseIcon from "@/src/components/icons/Close/CloseIcon";
 import dynamic from "next/dynamic";
+import clsx from "clsx";
 
 const PreviewCreatePoolDialog = dynamic(
   () =>
@@ -43,10 +44,11 @@ const CreatePool = () => {
         showOnDesktop
         onClick={handleBackClick}
         className={styles.backLink}
+        title="Back"
       />
-      <section className={styles.addLiquidity}>
+      <section className="liquidity-action-container">
         <div className={styles.addLiquidityHeading}>
-          <p className={styles.title}>Create Pool</p>
+          <p className={clsx(styles.title, "mc-type-xl")}>Create Pool</p>
           {showPreview && (
             <IconButton onClick={handleCloseClick}>
               <CloseIcon />
@@ -59,7 +61,6 @@ const CreatePool = () => {
           <CreatePoolDialog setPreviewData={setPreviewData} />
         )}
       </section>
-      {showPreview && <div className={styles.loadingOverlay} />}
     </>
   );
 };

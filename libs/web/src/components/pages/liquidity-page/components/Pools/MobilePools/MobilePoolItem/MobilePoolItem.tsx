@@ -7,6 +7,7 @@ import styles from "./MobilePoolItem.module.css";
 import {PoolData} from "@/src/hooks/usePoolsData";
 import AprBadge from "@/src/components/common/AprBadge/AprBadge";
 import usePoolNameAndMatch from "@/src/hooks/usePoolNameAndMatch";
+import clsx from "clsx";
 
 type Props = {
   poolData: PoolData;
@@ -45,7 +46,7 @@ const MobilePoolItem = ({poolData}: Props) => {
         <div className={styles.infoBlocks}>
           {isMatching ? (
             <div>
-              <p>{"APR"}</p>
+              <p className="mc-type-m">{"APR"}</p>
               <AprBadge
                 small={true}
                 aprValue={aprValue}
@@ -60,14 +61,11 @@ const MobilePoolItem = ({poolData}: Props) => {
           <InfoBlock title="24H Volume" value={volumeValue} />
           <InfoBlock title="TVL" value={tvlValue} />
         </div>
-        <p className={styles.poolDescription}>{poolDescription}</p>
+        <p className={clsx(styles.poolDescription, "mc-type-s")}>
+          {poolDescription}
+        </p>
       </div>
-      <ActionButton
-        className={styles.addButton}
-        variant="secondary"
-        onClick={handleAddClick}
-        fullWidth
-      >
+      <ActionButton variant="secondary" onClick={handleAddClick} fullWidth>
         Add Liquidity
       </ActionButton>
     </div>

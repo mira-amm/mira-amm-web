@@ -4,6 +4,7 @@ import {memo} from "react";
 import {useAssetImage} from "@/src/hooks/useAssetImage";
 import {B256Address} from "fuels";
 import useAssetMetadata from "@/src/hooks/useAssetMetadata";
+import Image from "next/image";
 
 type Props = {
   firstCoin: B256Address;
@@ -39,26 +40,44 @@ const CoinPair = ({
     >
       <div className={styles.coinPairIcons}>
         {firstCoinIcon && (
-          <img src={firstCoinIcon} alt={`${firstSymbol} icon`} />
+          <Image
+            src={firstCoinIcon}
+            alt={`${firstSymbol} icon`}
+            width={36}
+            height={36}
+            priority
+          />
         )}
         {secondCoinIcon && (
-          <img src={secondCoinIcon} alt={`${secondSymbol} icon`} />
+          <Image
+            src={secondCoinIcon}
+            alt={`${secondSymbol} icon`}
+            width={36}
+            height={36}
+            priority
+          />
         )}
       </div>
       <div className={styles.namesAndFee}>
         {firstSymbol && secondSymbol ? (
-          <p className={styles.coinNames} data-identifier="coin-pair">
+          <p className="mc-type-xl" data-identifier="coin-pair">
             {firstSymbol}/{secondSymbol}
           </p>
         ) : (
           <p className={styles.loadingText}>loading...</p>
         )}
-        {withFeeBelow && <p className={styles.coinPairFee}>{feeText}</p>}
+        {withFeeBelow && (
+          <p className={clsx(styles.coinPairFee, "mc-type-s")}>{feeText}</p>
+        )}
         {withPoolDescription && (
-          <p className={styles.poolDescription}>{poolDescription}</p>
+          <p className={clsx(styles.poolDescription, "mc-type-s")}>
+            {poolDescription} fee
+          </p>
         )}
       </div>
-      {withFee && <p className={styles.coinPairFee}>{feeText}</p>}
+      {withFee && (
+        <p className={clsx(styles.coinPairFee, "mc-type-s")}>{feeText}</p>
+      )}
     </div>
   );
 };

@@ -24,7 +24,7 @@ const AprDisplay = ({pool}: AprDiplayProps) => {
     <>
       {isMatching ? (
         <div className={styles.aprBadge}>
-          <p>APR &nbsp;</p>
+          <p className={clsx("mc-type-m")}>APR &nbsp;</p>
           <AprBadge
             aprValue={aprValue}
             poolKey={poolKey}
@@ -35,8 +35,8 @@ const AprDisplay = ({pool}: AprDiplayProps) => {
       ) : (
         <p>
           APR &nbsp;
-          <span className={clsx(styles.pending, !aprValue && "blurredText")}>
-            {aprValue ?? "33.33%"}
+          <span className={clsx(!aprValue && "blurredText", "mc-mono-m")}>
+            {aprValue ?? "Awaiting data"}
           </span>
         </p>
       )}

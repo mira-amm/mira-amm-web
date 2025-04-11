@@ -8,7 +8,9 @@ type Props = {
 };
 
 const SoonLabel = ({className}: Props) => {
-  return <span className={clsx(styles.soonLabel, className)}>Soon</span>;
+  return (
+    <span className={clsx(styles.soonLabel, className, "mc-type-b")}>Soon</span>
+  );
 };
 
 export default memo(SoonLabel);

@@ -16,29 +16,28 @@ type DropDownMenuProps = {
 const DropDownMenu = forwardRef<HTMLUListElement, DropDownMenuProps>(
   function DropDownMenu({buttons, children}, ref) {
     return (
-      <>
-        <ul className={styles.menuList} ref={ref}>
-          {buttons.map((button) => (
-            <li key={button.text}>
-              <button
-                className={clsx(
-                  button.disabled
-                    ? styles.menuButtonDisabled
-                    : styles.menuButton,
-                )}
-                onClick={button.onClick}
-              >
-                <button.icon />
-                <span>{button.text}</span>
-                {button.disabled && button.tooltip && (
-                  <div className={styles.tooltip}>{button.tooltip}</div>
-                )}
-              </button>
-            </li>
-          ))}
-          {children && <div>{children}</div>}
-        </ul>
-      </>
+      <ul className={styles.menuList} ref={ref}>
+        {buttons.map((button) => (
+          <li key={button.text}>
+            <button
+              className={clsx(
+                button.disabled ? styles.menuButtonDisabled : styles.menuButton,
+                "mc-type-m",
+              )}
+              onClick={button.onClick}
+            >
+              <button.icon />
+              <span className="mc-type-b">{button.text}</span>
+              {button.disabled && button.tooltip && (
+                <div className={clsx(styles.tooltip, "mc-type-xs")}>
+                  {button.tooltip}
+                </div>
+              )}
+            </button>
+          </li>
+        ))}
+        {children && <div>{children}</div>}
+      </ul>
     );
   },
 );

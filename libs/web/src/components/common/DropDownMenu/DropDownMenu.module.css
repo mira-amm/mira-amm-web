@@ -1,15 +1,15 @@
 .menuList {
+  position: absolute;
+  top: calc(100% + 10px);
+  right: 0;
   list-style: none;
   padding: 10px;
-  background: #262834;
+  background: var(--background-secondary);
   border-radius: 12px;
   display: flex;
   flex-direction: column;
   max-width: 205px;
   box-sizing: border-box;
-  position: absolute;
-  top: 50px;
-  right: -5px;
   z-index: 2;
 }
 
@@ -34,7 +34,7 @@
   padding: 8px 10px;
   width: 100%;
   cursor: default;
-  background: #262834;
+  background: var(--background-secondary);
   color: var(--content-grey);
 }
 
@@ -42,13 +42,10 @@
   visibility: hidden;
   width: max-content;
   background: var(--accent-primary);
-  color: #292929;
+  color: var(--content-inverse);
   text-align: center;
   padding: 3px 8px;
   border-radius: 20px;
-  font-size: 10px;
-  line-height: 14px;
-  font-weight: 500;
   position: absolute;
   z-index: 1;
   left: -60px;
@@ -63,16 +60,10 @@
 }
 
 .menuButton span {
-  font-weight: 400;
-  font-size: 15px;
-  line-height: 24px;
   text-wrap: nowrap;
 }
 
 .menuButtonDisabled span {
-  font-weight: 400;
-  font-size: 15px;
-  line-height: 24px;
   text-wrap: nowrap;
 }
 

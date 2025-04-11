@@ -31,7 +31,10 @@ const BackLink = ({
 
   if (onClick) {
     return (
-      <button onClick={onClick} className={clsx(styles.backLink, className)}>
+      <button
+        onClick={onClick}
+        className={clsx(styles.backLink, className, "mc-type-l")}
+      >
         <ChevronLeft />
         {titleToUse}
       </button>
@@ -39,7 +42,10 @@ const BackLink = ({
   }
 
   return (
-    <Link href={hrefToUse} className={clsx(styles.backLink, className)}>
+    <Link
+      href={hrefToUse}
+      className={clsx(styles.backLink, className, "mc-type-l")}
+    >
       {chevron && <ChevronLeft />}
       {titleToUse}
     </Link>

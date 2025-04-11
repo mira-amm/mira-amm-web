@@ -10,6 +10,7 @@ import AprBadge from "@/src/components/common/AprBadge/AprBadge";
 import usePoolNameAndMatch from "@/src/hooks/usePoolNameAndMatch";
 import {DefaultLocale} from "@/src/utils/constants";
 import ActionButton from "@/src/components/common/ActionButton/ActionButton";
+import clsx from "clsx";
 
 interface Props {
   assetIdA: B256Address;
@@ -59,7 +60,7 @@ export const DesktopPosition = ({
   const {isMatching} = usePoolNameAndMatch(poolKey);
 
   return (
-    <tr>
+    <tr key={poolKey}>
       <td>
         <CoinPair
           firstCoin={assetIdA}
@@ -78,20 +79,26 @@ export const DesktopPosition = ({
             />
           </div>
         ) : (
-          <p>{aprValue}</p>
+          <p className="mc-mono-m">{aprValue}</p>
         )}
       </td>
-      <td className={styles.labelCell}>
+      <td className={clsx(styles.labelCell, "mc-mono-m")}>
         {size ? (
-          `$ ${size.toFixed(2)}`
+          `$${size.toFixed(2)}`
         ) : (
-          <p className={styles.loadingText}>{"checking..."}</p>
+          <p className={clsx(styles.loadingText, "mc-type-b")}>
+            {"checking..."}
+          </p>
         )}
       </td>
       <td className={styles.labelCell}>
         <Link href={positionPath}>
-          <ActionButton className={styles.addButton} variant="secondary">
-            Manage position
+          <ActionButton
+            // className={styles.addButton}
+            variant="secondary"
+            size={"longer"}
+          >
+            Manage Position
           </ActionButton>
         </Link>
       </td>

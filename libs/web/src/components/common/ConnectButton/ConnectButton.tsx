@@ -4,6 +4,7 @@ import {clsx} from "clsx";
 import {useCallback, useEffect, useMemo, useRef, useState} from "react";
 
 import styles from "./ConnectButton.module.css";
+import actionButtonStyles from "../ActionButton/ActionButton.module.css";
 
 import ActionButton from "@/src/components/common/ActionButton/ActionButton";
 import TransactionsHistory from "@/src/components/common/TransactionsHistory/TransactionsHistory";
@@ -186,7 +187,7 @@ const ConnectButton = ({className, isWidget}: Props) => {
 
   return (
     <>
-      <div style={{position: "relative"}}>
+      <div className={styles.container}>
         <ActionButton
           className={clsx(className, isConnected && styles.connected)}
           onClick={handleClick}
@@ -194,7 +195,10 @@ const ConnectButton = ({className, isWidget}: Props) => {
           ref={buttonRef}
         >
           {isConnected && (
-            <img src="/images/avatar.png" width="24" height="24" />
+            <img
+              src="/images/avatar.png"
+              className={actionButtonStyles.buttonIcon}
+            />
           )}
           {title}
           {isConnected && (!isMenuOpened ? <ArrowDownIcon /> : <ArrowUpIcon />)}
@@ -207,7 +211,10 @@ const ConnectButton = ({className, isWidget}: Props) => {
         />
       </div>
       {isAddressCopied && (
-        <CopyNotification onClose={() => setAddressCopied(false)} />
+        <CopyNotification
+          onClose={() => setAddressCopied(false)}
+          text={"Copied address"}
+        />
       )}
     </>
   );
