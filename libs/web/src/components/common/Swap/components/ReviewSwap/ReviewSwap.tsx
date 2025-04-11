@@ -70,8 +70,7 @@ const ReviewSwap: FC<ReviewSwapProps> = ({
   reservesPrice,
   previewPrice,
 }) => {
-  const isPreviewLoading =
-    tradeState === TradeState.LOADING || tradeState === TradeState.REEFETCHING;
+  const isPreviewLoading = tradeState === TradeState.LOADING;
 
   return (
     <div className={clsx(styles.review, "mc-mono-b")}>

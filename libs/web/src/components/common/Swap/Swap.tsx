@@ -572,7 +572,6 @@ const Swap = ({isWidget}: {isWidget?: boolean}) => {
   //If in sufficient fund, previewLoading is irrelevant
   const isActionLoading =
     balancesPending ||
-    tradeState === TradeState.REEFETCHING ||
     (previewLoading && swapButtonTitle !== "Insufficient balance") ||
     (!amountMissing && !showInsufficientBalance && txCostPending);
 
