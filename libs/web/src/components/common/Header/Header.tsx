@@ -148,7 +148,7 @@ const Header = ({isHomePage}: Props) => {
       </section>
 
       <div className={clsx("mobileOnly", styles.navMobile)}>
-        <div className={clsx("mc-type-l", styles.links)}>
+        <div className={clsx("mc-type-b", styles.links)}>
           <Link
             href="/"
             className={clsx(

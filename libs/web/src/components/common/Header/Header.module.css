@@ -98,7 +98,6 @@
   border-radius: 20px;
   transition: all 0.3s ease;
   color: var(--content-secondary);
-  font-size: 14px;
 }
 
 .activeLink {
@@ -193,10 +192,6 @@
     position: relative;
     font-size: 18px;
     line-height: 24px;
-  }
-
-  .link {
-    font-size: 17px;
   }
 
   .promo {
