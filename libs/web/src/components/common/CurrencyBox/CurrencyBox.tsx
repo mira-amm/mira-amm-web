@@ -149,7 +149,12 @@ const CurrencyBox = ({
               {balance.gt(0) ? balanceValue : 0}
             </span>
             &nbsp;
-            <TextButton onClick={handleMaxClick}>Max</TextButton>
+            <TextButton
+              isDisabled={coinNotSelected || loading || isDisabled}
+              onClick={handleMaxClick}
+            >
+              Max
+            </TextButton>
           </span>
         </div>
       )}

@@ -648,8 +648,12 @@ const Swap = ({isWidget}: {isWidget?: boolean}) => {
           />
           <div className={styles.splitter}>
             <IconButton
-              onClick={swapPending ? () => {} : swapAssets}
-              className={styles.convertButton}
+              onClick={swapAssets}
+              className={clsx(
+                styles.convertButton,
+                !swapPending && styles.convertButtonHover,
+              )}
+              isDisabled={swapPending}
             >
               <ConvertIcon />
             </IconButton>
@@ -678,9 +682,7 @@ const Swap = ({isWidget}: {isWidget?: boolean}) => {
               previewPrice={previewPrice}
             />
           )}
-
           <ExchangeRate swapState={swapState} className={styles.rates} />
-
           {!isConnected && (
             <ActionButton
               variant="primary"

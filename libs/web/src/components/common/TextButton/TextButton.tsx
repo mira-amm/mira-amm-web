@@ -5,11 +5,16 @@ import styles from "./TextButton.module.css";
 type Props = {
   children: ReactNode;
   onClick: VoidFunction;
+  isDisabled?: boolean;
 };
 
-const TextButton = ({children, onClick}: Props) => {
+const TextButton = ({children, onClick, isDisabled}: Props) => {
   return (
-    <button className={styles.textButton} onClick={onClick}>
+    <button
+      disabled={isDisabled}
+      className={styles.textButton}
+      onClick={onClick}
+    >
       {children}
     </button>
   );

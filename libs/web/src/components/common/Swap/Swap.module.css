@@ -65,7 +65,7 @@
   transform-origin: center center;
 }
 
-.convertButton:hover svg {
+.convertButtonHover:hover svg {
   transform: rotate(180deg);
 }
 
