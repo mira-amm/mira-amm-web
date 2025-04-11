@@ -50,9 +50,7 @@ const DesktopPoolRow = ({poolData}: Props) => {
       <td className={clsx(styles.labelCell, "mc-mono-m")}>{tvlValue}</td>
       <td>
         <Link href={`/liquidity/add?pool=${poolKey}`}>
-          <ActionButton variant="secondary" size="longer">
-            Add Liquidity
-          </ActionButton>
+          <ActionButton variant="secondary">Add Liquidity</ActionButton>
         </Link>
       </td>
     </tr>

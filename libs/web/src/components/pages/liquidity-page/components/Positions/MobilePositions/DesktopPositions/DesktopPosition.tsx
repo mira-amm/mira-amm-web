@@ -96,7 +96,6 @@ export const DesktopPosition = ({
           <ActionButton
             // className={styles.addButton}
             variant="secondary"
-            size={"longer"}
           >
             Manage Position
           </ActionButton>
