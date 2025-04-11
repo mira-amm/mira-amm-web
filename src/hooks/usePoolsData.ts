@@ -60,44 +60,22 @@ export const usePoolsData = () => {
     query PoolsConnection($first: Int!, $after: String, $orderBy: [PoolOrderByInput!]!, $poolWhereInput: PoolWhereInput) {
       poolsConnection(first: $first, after: $after, orderBy: $orderBy, where: $poolWhereInput ) {
         totalCount
-        pageInfo {
-            hasNextPage
-            hasPreviousPage
-            startCursor
-            endCursor
-        }
         totalCount
         edges {
             node {
               id
-              isStable
-              reserve0
-              reserve1
               reserve0Decimal
               reserve1Decimal
-              volumeAsset0
-              volumeAsset1
               tvlUSD
-              lpToken {
-                symbol
-                name
-              }
               asset1 {
                 id
                 symbol
-                decimals
               }
               asset0 {
                 id
                 symbol
-                decimals
               }
               snapshots(where: { timestamp_gt: ${timestamp24hAgo} }) {
-                timestamp
-                volumeAsset0
-                volumeAsset1
-                volumeAsset0Decimal
-                volumeAsset1Decimal
                 volumeUSD
                 feesUSD
               }
