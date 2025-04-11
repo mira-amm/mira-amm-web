@@ -70,8 +70,8 @@ const Header = ({isHomePage}: Props) => {
           <Logo />
         </div>
 
-        <div className={styles.center}>
-          <div className={clsx("desktopOnly", "mc-type-l", styles.links)}>
+        <div className={clsx(styles.center)}>
+          <div className={clsx("mc-type-l", styles.links)}>
             <Link
               //TEMPORARY ROUTING SINCE LANDING PAGE IS DISABLED
               href="/"
@@ -113,7 +113,7 @@ const Header = ({isHomePage}: Props) => {
           </div>
         </div>
 
-        <div className={clsx("desktopOnly", styles.right)}>
+        <div className={clsx(styles.right)}>
           {isHomePage && (
             <>
               <a
@@ -143,9 +143,51 @@ const Header = ({isHomePage}: Props) => {
 
         <div className={clsx("mobileOnly", styles.links)}>
           <DisconnectMobile className={styles.disconnectMobile} />
-          <MobileMenu />
+          {/*   <MobileMenu /> */}
         </div>
       </section>
+
+      <div className={clsx("mobileOnly", styles.navMobile)}>
+        <div className={clsx("mc-type-l", styles.links)}>
+          <Link
+            href="/"
+            className={clsx(
+              styles.link,
+              pathname === "/" && styles.activeLink,
+              styles.animateToLeft,
+            )}
+          >
+            Swap
+          </Link>
+          <Link
+            href="/liquidity"
+            className={clsx(
+              styles.link,
+              pathname.includes("/liquidity") && styles.activeLink,
+              styles.animateToBottom,
+            )}
+          >
+            Liquidity
+          </Link>
+          <Link
+            href="/points"
+            className={clsx(
+              styles.link,
+              pathname.includes("/points") && styles.activeLink,
+              styles.animateToRight,
+            )}
+          >
+            Points
+          </Link>
+          <a
+            href={`${FuelAppUrl}/bridge?from=eth&to=fuel&auto_close=true&=true`}
+            className={styles.link}
+            target="_blank"
+          >
+            Bridge
+          </a>
+        </div>
+      </div>
     </header>
   );
 };
