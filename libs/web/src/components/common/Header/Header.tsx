@@ -28,6 +28,7 @@ type Props = {
 const PROMO_BANNER_STORAGE_KEY = "fuel-boost-program-promo-banner-closed";
 
 const ISSERVER = typeof window === "undefined";
+
 const Header = ({isHomePage}: Props) => {
   const pathname = usePathname();
   const {isConnected} = useIsConnected();
@@ -77,6 +78,7 @@ const Header = ({isHomePage}: Props) => {
               className={clsx(
                 styles.link,
                 pathname === "/" && styles.activeLink,
+                styles.animateToLeft,
               )}
             >
               Swap
@@ -86,6 +88,7 @@ const Header = ({isHomePage}: Props) => {
               className={clsx(
                 styles.link,
                 pathname.includes("/liquidity") && styles.activeLink,
+                styles.animateToBottom,
               )}
             >
               Liquidity
@@ -95,6 +98,7 @@ const Header = ({isHomePage}: Props) => {
               className={clsx(
                 styles.link,
                 pathname.includes("/points") && styles.activeLink,
+                styles.animateToRight,
               )}
             >
               Points

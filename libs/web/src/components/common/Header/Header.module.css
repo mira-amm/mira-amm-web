@@ -137,9 +137,63 @@
     color: var(--content-secondary);
   }
 
+  @keyframes fillBackgroundLeftToRight {
+    0% {
+      background-size: 0% 100%;
+    }
+
+    100% {
+      background-size: 100% 100%;
+    }
+  }
+
+  @keyframes fillBackgroundRightToLeft {
+    0% {
+      background-size: 0% 100%;
+      background-position: right;
+    }
+
+    100% {
+      background-size: 100% 100%;
+      background-position: right;
+    }
+  }
+
+  @keyframes fillBackgroundTopToBottom {
+    0% {
+      background-size: 100% 0%;
+      background-position: top;
+    }
+
+    100% {
+      background-size: 100% 100%;
+      background-position: top;
+    }
+  }
+
   .activeLink {
-    background: var(--content-primary);
     color: var(--background-white);
+    background: linear-gradient(
+      to right,
+      var(--content-primary) 100%,
+      transparent 0%
+    );
+    background-repeat: no-repeat;
+    background-position: left center;
+    background-size: 0% 100%;
+    transition: color 0.4s ease-ins;
+  }
+
+  .animateToRight {
+    animation: fillBackgroundLeftToRight 0.4s forwards;
+  }
+
+  .animateToLeft {
+    animation: fillBackgroundRightToLeft 0.4s forwards;
+  }
+
+  .animateToBottom {
+    animation: fillBackgroundTopToBottom 0.4s forwards;
   }
 
   .link:hover:not(.activeLink) {
