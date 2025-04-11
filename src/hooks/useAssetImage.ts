@@ -38,6 +38,7 @@ export const useAssetImage = (assetId: string | null): string => {
     },
     staleTime: Infinity,
     enabled: assetId !== null,
+    meta: {persist: true},
   });
 
   return data || defaultImage.src;
