@@ -12,6 +12,7 @@ export const useVerifiedAssets = () => {
       return res as VerifiedAssets;
     },
     staleTime: Infinity,
+    meta: {persist: true},
   });
 
   return {verifiedAssetData, isLoading};
