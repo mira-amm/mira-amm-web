@@ -1,11 +1,9 @@
+import src20Abi from "@/src/abis/src20-abi.json";
 import {useQuery} from "@tanstack/react-query";
 import {B256Address, Contract, Provider} from "fuels";
-import src20Abi from "@/src/abis/src20-abi.json";
-import {useProvider} from "@fuels/react";
-import {useAssetMinterContract} from "./useAssetMinterContract";
-import useMiraDex from "./useMiraDex/useMiraDex";
 import {NetworkUrl} from "../utils/constants";
-import {coinsConfig} from "../utils/coinsConfig";
+import {useAssetList} from "./useAssetList";
+import {useAssetMinterContract} from "./useAssetMinterContract";
 
 interface AssetMetadata {
   name?: string;
@@ -18,18 +16,24 @@ const providerPromise = Provider.create(NetworkUrl);
 const useAssetMetadata = (
   assetId: B256Address | null,
 ): AssetMetadata & {isLoading: boolean} => {
+  const {assets} = useAssetList();
+
   const {contractId, isLoading: contractLoading} =
     useAssetMinterContract(assetId);
 
   const {data, isLoading: metadataLoading} = useQuery({
     queryKey: ["assetMetadata", contractId, assetId],
     queryFn: async () => {
-      const config = coinsConfig.get(assetId);
-      if (config) {
+      const asset = assets.find(
+        (asset) => asset.assetId.toLowerCase() === assetId?.toLowerCase(),
+      );
+
+      // first check if asset in the already fetched list
+      if (asset) {
         return {
-          name: config.name,
-          symbol: config.symbol,
-          decimals: config.decimals,
+          name: asset.name,
+          symbol: asset.symbol,
+          decimals: asset.decimals,
         };
       }
 
