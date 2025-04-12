@@ -14,15 +14,16 @@ export const SlippageSetting = ({
   openSettingsModal,
   isDisabled,
 }: Props) => {
-  const handleClick = () => {
-    if (!isDisabled) openSettingsModal();
-  };
   return (
     <>
       <p className={clsx(styles.slippageLabel, "mc-type-b")}>
         {slippage / 100}% Slippage
       </p>
-      <IconButton onClick={handleClick} className={styles.settingsButton}>
+      <IconButton
+        isDisabled={isDisabled}
+        onClick={openSettingsModal}
+        className={styles.settingsButton}
+      >
         <SettingsIcon />
       </IconButton>
     </>
