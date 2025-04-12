@@ -1,6 +1,6 @@
 import MobileMenu from "@/src/components/common/Header/components/MobileMenu/MobileMenu";
 import Logo from "@/src/components/common/Logo/Logo";
-
+import {useLocalStorage} from "usehooks-ts";
 import styles from "./Header.module.css";
 import Link from "next/link";
 import {clsx} from "clsx";
@@ -32,6 +32,10 @@ const ISSERVER = typeof window === "undefined";
 const Header = ({isHomePage}: Props) => {
   const pathname = usePathname();
   const {isConnected} = useIsConnected();
+  const [previousPage, setPreviousPage] = useLocalStorage<string | null>(
+    "previousPage",
+    null,
+  );
 
   const [isPromoShown, setIsPromoShown] = useState(false);
 
@@ -45,6 +49,36 @@ const Header = ({isHomePage}: Props) => {
   const handleCloseBanner = () => {
     setIsPromoShown(false);
     localStorage.setItem(PROMO_BANNER_STORAGE_KEY, "true");
+  };
+
+  const swapClick = () => {
+    if (pathname === "/liquidity/") {
+      setPreviousPage("liquidity");
+    } else if (pathname === "/points/") {
+      setPreviousPage("points");
+    } else {
+      setPreviousPage(null);
+    }
+  };
+
+  const liquidityClick = () => {
+    if (pathname === "/") {
+      setPreviousPage("swap");
+    } else if (pathname === "/points/") {
+      setPreviousPage("points");
+    } else {
+      setPreviousPage(null);
+    }
+  };
+
+  const pointsClick = () => {
+    if (pathname === "/") {
+      setPreviousPage("swap");
+    } else if (pathname === "/liquidity/") {
+      setPreviousPage("liquidity");
+    } else {
+      setPreviousPage(null);
+    }
   };
 
   return (
@@ -78,27 +112,38 @@ const Header = ({isHomePage}: Props) => {
               className={clsx(
                 styles.link,
                 pathname === "/" && styles.activeLink,
-                styles.animateToLeft,
+                (previousPage === "swap" || previousPage === null) &&
+                  styles.staticFill,
+                previousPage === "points" && styles.animateToLeft,
+                previousPage === "liquidity" && styles.animateToLeft,
               )}
+              onClick={swapClick}
             >
               Swap
             </Link>
             <Link
+              onClick={liquidityClick}
               href="/liquidity"
               className={clsx(
                 styles.link,
                 pathname.includes("/liquidity") && styles.activeLink,
-                styles.animateToBottom,
+                previousPage === "swap" && styles.animateToRight,
+                previousPage === "points" && styles.animateToLeft,
+                (previousPage === "liquidity" || previousPage === null) &&
+                  styles.staticFill,
               )}
             >
               Liquidity
             </Link>
             <Link
+              onClick={pointsClick}
               href="/points"
               className={clsx(
                 styles.link,
                 pathname.includes("/points") && styles.activeLink,
-                styles.animateToRight,
+                previousPage === "points"
+                  ? styles.staticFill
+                  : styles.animateToRight,
               )}
             >
               Points
@@ -154,8 +199,12 @@ const Header = ({isHomePage}: Props) => {
             className={clsx(
               styles.link,
               pathname === "/" && styles.activeLink,
-              styles.animateToLeft,
+              (previousPage === "swap" || previousPage === null) &&
+                styles.staticFill,
+              previousPage === "points" && styles.animateToLeft,
+              previousPage === "liquidity" && styles.animateToLeft,
             )}
+            onClick={swapClick}
           >
             Swap
           </Link>
@@ -164,17 +213,24 @@ const Header = ({isHomePage}: Props) => {
             className={clsx(
               styles.link,
               pathname.includes("/liquidity") && styles.activeLink,
-              styles.animateToBottom,
+              previousPage === "swap" && styles.animateToRight,
+              previousPage === "points" && styles.animateToLeft,
+              (previousPage === "liquidity" || previousPage === null) &&
+                styles.staticFill,
             )}
+            onClick={liquidityClick}
           >
             Liquidity
           </Link>
           <Link
+            onClick={pointsClick}
             href="/points"
             className={clsx(
               styles.link,
               pathname.includes("/points") && styles.activeLink,
-              styles.animateToRight,
+              previousPage === "points"
+                ? styles.staticFill
+                : styles.animateToRight,
             )}
           >
             Points

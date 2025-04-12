@@ -98,6 +98,14 @@
   border-radius: 20px;
   transition: all 0.3s ease;
   color: var(--content-secondary);
+  background: linear-gradient(
+    to right,
+    transparent 100%,
+    var(--content-primary) 0%
+  );
+  background-repeat: no-repeat;
+  background-position: left center;
+  background-size: 0% 100%;
 }
 
 .activeLink {
@@ -135,28 +143,16 @@
   }
 }
 
-@keyframes fillBackgroundTopToBottom {
-  0% {
-    background-size: 100% 0%;
-    background-position: top;
-  }
-
-  100% {
-    background-size: 100% 100%;
-    background-position: top;
-  }
-}
-
 .animateToRight {
-  animation: fillBackgroundLeftToRight 0.4s forwards;
+  animation: fillBackgroundLeftToRight 0.8s forwards;
 }
 
 .animateToLeft {
-  animation: fillBackgroundRightToLeft 0.4s forwards;
+  animation: fillBackgroundRightToLeft 0.8s forwards;
 }
 
-.animateToBottom {
-  animation: fillBackgroundTopToBottom 0.4s forwards;
+.staticFill {
+  background-size: 100% 100%;
 }
 
 .link:hover:not(.activeLink) {
