@@ -85,18 +85,25 @@ const SettingsModalContent = ({slippage, setSlippage}: Props) => {
       case 4:
         return styles.inputPercentPosition4;
       default:
-        return styles.inputPercentPosition5;
+        return styles.inputPercentPosition2;
     }
   };
 
+  const updateSlippage = (value: number) => {
+    const rounded = Number(value.toFixed(1));
+    setSelectedSlippageValue(rounded * 100);
+    setInputValue(`${(rounded * 100) / 100}`);
+    setSlippage(rounded * 100);
+  };
+
   const increment = () => {
-    const next = Math.min(Number(inputValue) + 0.1, 100);
-    handleSlippageChange({target: {value: next.toFixed(1)}});
+    const next = Math.min(Number((Number(inputValue) + 0.1).toFixed(1)), 100);
+    updateSlippage(next);
   };
 
   const decrement = () => {
-    const next = Math.max(Number(inputValue) - 0.1, 0.1);
-    handleSlippageChange({target: {value: next.toFixed(1)}});
+    const next = Math.max(Number((Number(inputValue) - 0.1).toFixed(1)), 0.1);
+    updateSlippage(next);
   };
 
   return (
