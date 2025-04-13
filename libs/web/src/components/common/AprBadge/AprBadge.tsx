@@ -4,9 +4,8 @@ import {clsx} from "clsx";
 import useBoostedApr, {RewardsToken} from "@/src/hooks/useBoostedApr";
 import {isMobile} from "react-device-detect";
 import {EPOCH_NUMBER} from "@/src/utils/constants";
-import Image from "next/image";
-import SparkleIcon from "@/assets/sparcle.svg";
 import LoadingIndicator from "../LoadingIndicator/LoadingIndicator";
+import PointsIconSimple from "../../icons/Points/PointsIconSimple";
 
 interface AprBadgeProps {
   aprValue: string | null;
@@ -76,13 +75,7 @@ const AprBadge: React.FC<AprBadgeProps> = ({
           small ? styles.small : styles.large,
         )}
       >
-        <Image
-          src={SparkleIcon}
-          alt="sparkle"
-          width={12}
-          height={12}
-          priority
-        />
+        <PointsIconSimple color={"var(--mc-white)"} />
         <span
           className={clsx(styles.badgeText, small ? "mc-mono-s" : "mc-mono-m")}
         >

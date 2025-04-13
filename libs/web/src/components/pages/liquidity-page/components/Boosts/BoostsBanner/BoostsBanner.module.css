@@ -1,6 +1,6 @@
 .banner {
-  background-image: url("../../../../../../../assets/boost-banner.png");
-  background-color: black;
+  /*  background-image: url("../../../../../../../assets/boost-banner.png"); */
+  background-color: var(--content-primary);
   background-size: cover;
   padding: 25px;
   gap: 10px;
