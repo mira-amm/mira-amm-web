@@ -2,12 +2,14 @@ interface PointsIconSimpleProps {
   width?: number | string;
   height?: number | string;
   className?: string;
+  color?: string;
 }
 
 const PointsIconSimple = ({
   width = 20,
   height = 20,
   className = "",
+  color = "currentColor",
 }: PointsIconSimpleProps) => {
   return (
     <svg
@@ -25,7 +27,7 @@ const PointsIconSimple = ({
         width="6.87"
         height="6.87"
         transform="rotate(45 10 5.17)"
-        fill="currentColor" // This will use the color from CSS
+        fill={color} // This will use the color from CSS
       />
     </svg>
   );

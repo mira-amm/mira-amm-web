@@ -66,13 +66,13 @@ export default function PointsRankTable() {
           </>
         );
       },
-    }),
+    }), //
     columnHelper.accessor("points", {
       header: "Points",
       cell: (info) => (
         <div className={clsx(styles.pointsCell, "mc-mono-m")}>
           <span className={styles.pointsIcon}>
-            <PointsIconSimple />
+            <PointsIconSimple color={"var(--mc-green)"} />
           </span>
           {info.getValue().toLocaleString(DefaultLocale, {
             maximumFractionDigits: 0,
