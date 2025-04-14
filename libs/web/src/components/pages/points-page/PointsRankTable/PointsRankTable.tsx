@@ -66,7 +66,7 @@ export default function PointsRankTable() {
           </>
         );
       },
-    }), //
+    }),
     columnHelper.accessor("points", {
       header: "Points",
       cell: (info) => (

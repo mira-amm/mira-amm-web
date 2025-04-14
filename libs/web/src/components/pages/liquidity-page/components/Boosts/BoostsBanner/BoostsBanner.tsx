@@ -10,12 +10,13 @@ import PointsIcon from "@/assets/sparcle.svg";
 import Image from "next/image";
 import {LearnMoreButton} from "@/src/components/common/LearnMoreButton/LearnMoreButton";
 import clsx from "clsx";
+import PointsIconSimple from "@/src/components/icons/Points/PointsIconSimple";
 
 const BoostsBanner = () => {
   return (
     <div className={styles.banner}>
       <div className={styles.iconContainer}>
-        <Image src={PointsIcon} alt="sparkle" width={13} height={13} priority />
+        <PointsIconSimple color={"var(--mc-white)"} />
       </div>
       <h2 className={clsx(styles.bannerTitle, "mc-type-xxxl")}>
         {POINTS_BANNER_TITLE}
