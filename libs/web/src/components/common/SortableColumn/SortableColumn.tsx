@@ -1,6 +1,6 @@
-import {ArrowDownSmallIcon} from "../../icons/ArrowDown/ArrowDownSmallIcon";
-import {ArrowUpSmallIcon} from "../../icons/ArrowUp/ArrowUpSmallIcon";
+import Image from "next/image";
 import styles from "./SortableColumn.module.css";
+import ArrowUpDown from "@/assets/arrow-up-down.svg";
 
 type SortableColumnProps = {
   title: string;
@@ -21,14 +21,25 @@ const SortableColumn = ({
   return (
     <th onClick={() => onSort(columnKey)} className={styles.sortable}>
       <div className={styles.sortArea}>
-        {title}
+        <p className="mc-type-m">{title}</p>
         <span className={styles.sortIcon}>
-          {isActive &&
-            (direction === "DESC" ? (
-              <ArrowDownSmallIcon />
-            ) : (
-              <ArrowUpSmallIcon />
-            ))}
+          {
+            isActive && (
+              <Image
+                src={ArrowUpDown}
+                alt="sort-icon"
+                width={12}
+                height={20}
+                priority
+              />
+            )
+
+            // (direction === "DESC" ? (
+            //   <ArrowDownSmallIcon />
+            // ) : (
+            //   <ArrowUpSmallIcon />
+            // ))
+          }
         </span>
       </div>
     </th>

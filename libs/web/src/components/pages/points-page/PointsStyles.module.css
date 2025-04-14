@@ -1,7 +1,5 @@
 .pointsTitle {
-  font-size: 24px;
-  font-weight: 400;
-  color: #ffffff;
+  color: var(--mc-black);
 }
 
 .pointsSubsection {
@@ -10,13 +8,12 @@
   justify-content: space-between;
 }
 
+.pointsSubtitle {
+  color: var(--primary-white);
+}
+
 @media (max-width: 768px) {
   .pointsSubsection {
     flex-direction: column;
   }
-}
-
-.pointsSubtitle {
-  font-size: 16px;
-  color: rgba(255, 255, 255, 0.7);
 }

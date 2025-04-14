@@ -1,5 +1,5 @@
 .page {
-  background: #1e1e22;
+  background: var(--mc-black);
   height: 100vh;
 }
 

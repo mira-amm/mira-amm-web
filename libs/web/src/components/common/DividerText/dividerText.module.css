@@ -1,9 +1,6 @@
 .dividerText {
   margin: 0;
-  font-size: 20px;
-  line-height: 24px;
   text-align: center;
-  font-weight: 400;
 }
 
 .dimmed {
@@ -13,7 +10,6 @@
 @media (max-width: 1024px) {
   .dividerText {
     font-size: 16px;
-    line-height: 22px;
     list-style: none;
   }
 }
@@ -21,7 +17,6 @@
 @media (max-width: 900px) {
   .dividerText {
     font-size: 16px;
-    line-height: 22px;
     list-style: none;
     margin-left: 16px;
   }

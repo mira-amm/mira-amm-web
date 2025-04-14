@@ -5,25 +5,28 @@ import Footer from "@/src/components/common/Footer/Footer";
 import styles from "./PointsPageLayout.module.css";
 import PointsRankTable from "./PointsRankTable/PointsRankTable";
 import Boosts from "../liquidity-page/components/Boosts/Boosts";
+import clsx from "clsx";
 
 const PointsPageLayout = () => {
   return (
     <>
       <Header />
-      <main className={styles.pointsPageLayout}>
+      <main className={clsx("page-container", styles.positionsPageContainer)}>
         <Boosts />
-        <div className={styles.titleSection}>
-          <p className={styles.title}>Leaderboard</p>
-          <div className={styles.subsection}>
-            <p className={styles.subtitle}>
-              See the top participants of the points program.{" "}
-            </p>
-            <p className={styles.pointsWarning}>
-              The leaderboard is updated every hour.
-            </p>
+        <div className={styles.leaderboardContainer}>
+          <div className={styles.titleSection}>
+            <p className={clsx(styles.title, "mc-type-xxxl")}>Leaderboard</p>
+            <div className={styles.subsection}>
+              <p className={clsx(styles.subtitle, "mc-type-m")}>
+                See the top participants of the points program.{" "}
+              </p>
+              <p className={clsx(styles.pointsWarning, "mc-type-m")}>
+                The leaderboard is updated every hour.
+              </p>
+            </div>
           </div>
+          <PointsRankTable />
         </div>
-        <PointsRankTable />
       </main>
       <Footer />
     </>

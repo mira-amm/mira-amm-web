@@ -1,26 +1,36 @@
 .desktopPools {
+  background-color: var(--background-secondary);
   border-radius: 16px;
-  background-color: var(--background-grey-dark);
-  border-collapse: collapse;
-  width: 100%;
-  table-layout: fixed;
-  border-collapse: collapse;
+  border: 11px solid var(--background-tertiary);
+  padding: 16px;
 }
 
 .desktopPools th {
-  font-size: 16px;
-  line-height: 19px;
-  font-weight: 500;
-  color: var(--content-tertiary);
-  border-bottom: 1px solid var(--background-grey-darker);
+  color: var(--mc-black);
+  padding: 0 16px;
+  text-align: left;
+}
+
+.desktopPools thead {
+  position: relative;
+}
+
+.desktopPools thead::after {
+  content: "";
+  position: absolute;
+  left: 24px;
+  right: 24px;
+  bottom: 0;
+  height: 1px;
+  background-color: var(--mc-grey-3);
+}
+.desktopPools tr {
+  margin-bottom: 20px;
 }
 
 .desktopPools th,
 .desktopPools td {
   padding: 16px 24px;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
 }
 
 .desktopPools th:first-child {
@@ -32,44 +42,45 @@
   text-align: center;
 }
 
-button.createButton {
-  width: 100%;
-  padding: 12px;
-  font-weight: 400;
-  font-size: 16px;
-  line-height: 19px;
-  box-shadow: unset;
-}
-
 .noData {
   text-align: center;
-  font-size: 16px;
-  font-weight: 500;
   color: var(--content-tertiary);
   padding: 16px 24px;
 }
 
 .desktopPools th:nth-child(1) {
-  width: 30%;
+  /* width: 30%; */
 }
 
+.desktopPools td:nth-child(2),
 .desktopPools th:nth-child(2) {
-  width: 20%; /* Width for the "APR" column */
+  text-align: left;
+  width: 16%;
+  /* Width for the "APR" column */
 }
 
+.desktopPools td:nth-child(3),
 .desktopPools th:nth-child(3),
+.desktopPools td:nth-child(4),
 .desktopPools th:nth-child(4) {
-  width: 15%; /* Width for "24H Volume" and "TVL" columns */
+  text-align: left;
+  width: 16%;
+  /* Width for "24H Volume" and "TVL" columns */
 }
 
+.desktopPools td:nth-child(5),
 .desktopPools th:nth-child(5) {
-  width: 20%; /* Width for the "Create Pool" column */
+  text-align: left;
+  width: 16%;
+  /* Width for the "Create Pool" column */
 }
 
-.aprTd {
-  overflow: visible !important;
-  margin-top: 26px;
+.aprBadge {
   display: flex;
-  justify-content: center;
-  align-content: center;
+  justify-content: start;
+}
+
+.labelCell {
+  text-align: center;
+  color: var(--mc-black) !important;
 }

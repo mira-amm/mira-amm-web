@@ -30,41 +30,18 @@
 
 .name_container {
   display: flex;
-}
-
-.name {
-  font-size: 18px;
-  font-weight: 400;
-  line-height: 22px;
+  align-items: center;
 }
 
 .fullName {
-  font-size: 14px;
-  line-height: 16px;
   color: var(--content-dimmed-light);
 }
 
 .balance {
-  font-size: 14px;
-  line-height: 16px;
-  color: var(--content-dimmed-dark);
+  color: var(--content-dimmed-light);
 }
 
 @media (min-width: 1024px) {
-  /*.name {*/
-  /*  font-size: 18px;*/
-  /*  line-height: 22px;*/
-  /*}*/
-
-  /*.fullName {*/
-  /*  font-size: 14px;*/
-  /*  line-height: 16px;*/
-  /*}*/
-
-  /*.balance {*/
-  /*  font-size: 14px;*/
-  /*  line-height: 16px;*/
-  /*}*/
   .coin svg,
   .coin img {
     width: 32px;

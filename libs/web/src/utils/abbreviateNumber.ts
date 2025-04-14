@@ -35,6 +35,10 @@ function fiatValueFormatter(value: number): string {
 
   const absValue = Math.abs(value);
 
+  if (!value) return "$0";
+
+  if (absValue < 0.01) return "<$0.01";
+
   if (absValue >= 1e16) {
     options = SEVEN_SIG_FIGS__SCI_NOTATION_CURRENCY;
   } else if (absValue >= 1e6) {

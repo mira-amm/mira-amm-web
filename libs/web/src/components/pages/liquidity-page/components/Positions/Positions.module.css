@@ -1,12 +1,11 @@
 .positions {
   display: flex;
   flex-direction: column;
-  gap: 24px;
+  gap: 18px;
 }
 
 .positionsTitle {
-  font-size: 20px;
-  line-height: 24px;
+  color: var(--mc-black);
 }
 
 .positionsFallback {
@@ -14,14 +13,19 @@
   flex-direction: column;
   align-items: center;
   gap: 8px;
-  border-radius: 16px;
   padding: 28px 16px;
-  background-color: var(--background-grey-dark);
+  border: var(--border-style-secondary);
+  border-radius: 16px;
+  background-color: var(--background-secondary);
 }
 
 .positionsFallback img {
   width: 36px;
   height: 36px;
+}
+
+.fallbackText {
+  color: var(--content-secondary) !important;
 }
 
 .fallbackTop {
@@ -38,13 +42,10 @@
   align-items: center;
   justify-content: center;
   border-radius: 40px;
-  color: var(--content-primary);
-  background: linear-gradient(
-    96.75deg,
-    #befa15 -106.79%,
-    #5872fc 48.13%,
-    #c41cff 168.79%
-  );
+  color: var(--background-white);
+  background-image: url("../../../../../../assets/lp-icon-bg.jpg");
+  background-color: black;
+  background-size: cover;
 }
 
 .viewArchivedButton {

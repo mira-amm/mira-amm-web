@@ -1,21 +1,20 @@
-.viewPositionLayout {
-  display: flex;
-  flex-direction: column;
-  min-height: 100vh;
-  max-width: 716px;
-  margin: 0 auto;
-  padding: 32px 16px;
-  gap: 16px;
-}
-
 .contentSection {
+  margin-top: 10px;
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 28px;
 }
 
 .contentSection > div:not:last-child {
   flex: 1;
+}
+
+.notification {
+  width: 300px;
+  height: 300px;
+  position: absolute;
+  top: 200px;
+  left: -10px;
 }
 
 .coinPairAndLabel {
@@ -29,15 +28,14 @@
   display: flex;
   flex-direction: column;
   gap: 15px;
-  padding: 16px;
+  padding: 19px;
+  background-color: var(--background-secondary);
   border-radius: 16px;
-  background-color: var(--background-grey-dark);
+  border: 11px solid var(--background-tertiary);
 }
 
-.subheading {
-  font-size: 16px;
-  font-weight: 600;
-  line-height: 19px;
+.positionText {
+  color: var(--mc-black);
 }
 
 .coinsData {
@@ -67,14 +65,6 @@
   text-align: center;
 }
 
-.withdrawButton {
-  padding: 12px 24px;
-  font-size: 13px;
-  font-weight: 500;
-  line-height: 15px;
-  height: 40px;
-}
-
 .reserveItems {
   display: flex;
   align-items: center;
@@ -82,15 +72,13 @@
 }
 
 .reserveItems > p {
-  font-size: 16px;
-  font-weight: 400;
-  line-height: 19px;
+  color: var(--mc-grey-4);
 }
 
 .footer {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 8px;
 }
 
 @keyframes fade {
@@ -102,41 +90,26 @@
   }
 }
 
-.loadingText {
-  color: var(--content-primary);
-  font-size: 14px;
-  animation: fade 0.5s linear infinite alternate;
-}
-
-.divider {
-  width: 100%;
-  height: 1px;
-  border: 1px solid #fff;
-  opacity: 0.1;
-}
-
 .positionHeading {
   justify-content: space-between;
   align-items: center;
   display: flex;
 }
 
-.actionBtnDiv {
+.actionBlock {
   display: flex;
+  justify-content: space-between;
   align-items: center;
   gap: 10px;
 }
 
 .topRow {
   display: flex;
-  gap: 12px;
-  width: 100%;
+  gap: 19px;
 }
 
 .infoBlocks {
-  min-width: 350px;
-  flex: 1;
-  width: 100%;
+  width: 348px;
   flex-direction: column;
 }
 
@@ -148,12 +121,13 @@
 
 .priceBlockLargeDesktop {
   width: 100%;
-  padding: 16px;
-  border-radius: 12px;
+  padding: 19px;
   display: flex;
   flex-direction: column;
   gap: 16px;
-  background-color: var(--background-grey-dark);
+  background-color: var(--background-secondary);
+  border-radius: 16px;
+  border: 11px solid var(--background-tertiary);
 }
 
 .priceBlockDesktop {
@@ -164,8 +138,9 @@
   gap: 8px;
 }
 
-p.smallLabel {
-  padding: 4px 8px;
-  font-size: 13px;
-  line-height: 15px;
+.divider {
+  border: 0;
+  height: 1px;
+  background-color: var(--mc-grey-3);
+  width: 100%;
 }

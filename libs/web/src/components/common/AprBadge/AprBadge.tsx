@@ -3,9 +3,10 @@ import styles from "./AprBadge.module.css";
 import {clsx} from "clsx";
 import useBoostedApr, {RewardsToken} from "@/src/hooks/useBoostedApr";
 import {isMobile} from "react-device-detect";
-import Loader from "../Loader/Loader";
 import {EPOCH_NUMBER} from "@/src/utils/constants";
-import PointsIconSimple from "../../icons/Points/PointsIconSimple";
+import Image from "next/image";
+import SparkleIcon from "@/assets/sparcle.svg";
+import LoadingIndicator from "../LoadingIndicator/LoadingIndicator";
 
 interface AprBadgeProps {
   aprValue: string | null;
@@ -50,9 +51,6 @@ const AprBadge: React.FC<AprBadgeProps> = ({
   const handleMouseLeave = () => !isMobile && setIsHovered(false);
   const handleClick = () => isMobile && setIsHovered((prev) => !prev);
 
-  const iconWidth = small ? 15 : 20;
-  const iconHeight = small ? 15 : 18;
-
   const showApr = aprValue
     ? (boostedApr + aprValueInNumber).toFixed(2)
     : boostedApr.toFixed(2);
@@ -60,7 +58,11 @@ const AprBadge: React.FC<AprBadgeProps> = ({
   let aprElement = <>{showApr}%</>;
 
   if (rewardsToken === "$FUEL") {
-    aprElement = boostedApr ? <>{showApr}%</> : <Loader color="gray" />;
+    aprElement = boostedApr ? (
+      <>{showApr}%</>
+    ) : (
+      <LoadingIndicator fontSize="mc-mono-s" />
+    );
   }
 
   return (
@@ -74,14 +76,15 @@ const AprBadge: React.FC<AprBadgeProps> = ({
           small ? styles.small : styles.large,
         )}
       >
-        <span className={styles.badgeIcon}>
-          <PointsIconSimple width={iconWidth} height={iconHeight} />
-        </span>
+        <Image
+          src={SparkleIcon}
+          alt="sparkle"
+          width={12}
+          height={12}
+          priority
+        />
         <span
-          className={clsx(
-            styles.badgeText,
-            small ? styles.smallFont : styles.largeFont,
-          )}
+          className={clsx(styles.badgeText, small ? "mc-mono-s" : "mc-mono-m")}
         >
           {aprElement}
         </span>
@@ -144,18 +147,22 @@ const AprLabel: React.FC<{
     <div className={styles.columns}>
       <div className={styles.row}>
         <span className={styles.label}>Swap fees</span>
-        <span className={styles.value}>{baseApr}</span>
+        <span className={clsx(styles.value, "mc-mono-m")}>{baseApr}</span>
       </div>
       <div>
         <div className={styles.row}>
           <span className={styles.label}>{label}</span>
           {boostedApr === 0 ? (
-            <span className={styles.value}>{boostReward.toLocaleString()}</span>
+            <span className={clsx(styles.value, "mc-mono-m")}>
+              {boostReward.toLocaleString()}
+            </span>
           ) : (
-            <span className={styles.value}>{boostedApr}%</span>
+            <span className={clsx(styles.value, "mc-mono-m")}>
+              {boostedApr}%
+            </span>
           )}
         </div>
-        <p className={styles.subtext}>
+        <p className={clsx(styles.subtext, "mc-type-xs")}>
           {boostReward && boostReward.toLocaleString()} {description}
         </p>
       </div>
@@ -164,7 +171,9 @@ const AprLabel: React.FC<{
           <div className={styles.divider}></div>
           <div className={styles.row}>
             <span className={styles.label}>Total rewards</span>
-            <span className={styles.value}>{aprElement}</span>
+            <span className={clsx(styles.value, "mc-mono-m")}>
+              {aprElement}
+            </span>
           </div>
         </>
       )}

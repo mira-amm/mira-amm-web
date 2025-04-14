@@ -4,8 +4,8 @@
   left: 0;
   width: 100vw;
   height: 100vh;
-  background: #00000059;
-  backdrop-filter: blur(4px);
+  background-color: var(--background-dimmer);
+  backdrop-filter: blur(5px);
   z-index: 100;
 }
 
@@ -16,10 +16,7 @@
 }
 
 .wrapper {
-  background: #262834;
   overflow-x: hidden;
-  display: flex;
-  flex-direction: column;
   padding: 16px 20px;
   gap: 24px;
   height: calc(100vh - 197px);
@@ -32,6 +29,7 @@
   transform: translateX(100%);
   transition: transform 0.3s ease;
   z-index: 200;
+  border-radius: 16px;
 }
 
 .open {
@@ -45,12 +43,7 @@
 .header {
   display: flex;
   justify-content: space-between;
-}
-
-.title {
-  font-size: 20px;
-  font-weight: 400;
-  line-height: 24px;
+  width: 100%;
 }
 
 .transactionCloseButton {
@@ -70,7 +63,14 @@
   gap: 20px;
   padding: 12px;
   border-radius: 10px;
-  background: linear-gradient(95.91deg, #663e92 -15.22%, #29294e 83.17%);
+  color: var(--mc-black);
+  width: 100%;
+  background: linear-gradient(
+    to right,
+    rgba(1, 236, 151, 0.3) 0%,
+    rgba(249, 84, 101, 0.3) 50%,
+    rgba(114, 162, 255, 0.3) 100%
+  );
 }
 
 .accountUserInfo {
@@ -84,12 +84,6 @@
   height: 32px;
 }
 
-.accountWallet {
-  font-size: 16px;
-  line-height: 24px;
-  font-weight: 400;
-}
-
 .copyButton {
   border: none;
   background: none;
@@ -101,13 +95,8 @@
   opacity: 0.64;
 }
 
-.accountBalance {
-  font-size: 20px;
-  font-weight: 400;
-  line-height: 24px;
-}
-
 .transactionsList {
+  width: 100%;
   list-style: none;
   display: flex;
   flex-direction: column;
@@ -122,16 +111,13 @@
 
 .transactionDate {
   color: var(--content-primary) a3;
-  font-weight: 400;
-  font-size: 16px;
-  line-height: 22px;
 }
 
 .transactionInfo {
   display: flex;
   gap: 28px;
   padding: 10px;
-  background: #3b3d48;
+  background-color: var(--background-tertiary);
   border-radius: 8px;
 }
 
@@ -156,14 +142,15 @@
 .transactionText {
   display: flex;
   flex-direction: column;
-  font-size: 16px;
-  line-height: 22px;
-  font-weight: 400;
   gap: 5px;
 }
 
 .transactionName {
   color: var(--content-primary);
+}
+
+.transactionName:hover {
+  opacity: 0.64;
 }
 
 .transactionAmount {
@@ -249,6 +236,12 @@
   }
 }
 
+@media (max-width: 480px) {
+  .overlayOpened {
+    background-color: var(--background-tertiary);
+  }
+}
+
 @media (min-width: 769px) and (max-width: 800px) {
   .linerVisible {
     display: none;
@@ -269,6 +262,6 @@
 
 @media (min-width: 769px) {
   .wrapper {
-    border-radius: 12px;
+    border-radius: 16px;
   }
 }

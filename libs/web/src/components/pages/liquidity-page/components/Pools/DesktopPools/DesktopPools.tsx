@@ -1,5 +1,4 @@
 import styles from "./DesktopPools.module.css";
-import {useRouter} from "next/navigation";
 import {clsx} from "clsx";
 import {PoolData} from "@/src/hooks/usePoolsData";
 import DesktopPoolRow from "./DesktopPoolRow";
@@ -14,8 +13,6 @@ type Props = {
 };
 
 const DesktopPools = ({poolsData, orderBy, handleSort}: Props) => {
-  const router = useRouter();
-
   if (!poolsData) {
     return null;
   }
@@ -23,7 +20,7 @@ const DesktopPools = ({poolsData, orderBy, handleSort}: Props) => {
   return (
     <table className={clsx(styles.desktopPools, "desktopOnly")}>
       <thead>
-        <tr>
+        <tr className="mc-type-m">
           <th>Pools</th>
           <th>APR</th>
           <th>24H Volume</th>
@@ -41,9 +38,7 @@ const DesktopPools = ({poolsData, orderBy, handleSort}: Props) => {
           />
           <th>
             <Link href="/liquidity/create-pool">
-              <ActionButton className={styles.createButton}>
-                Create Pool
-              </ActionButton>
+              <ActionButton size={"longer"}>Create Pool</ActionButton>
             </Link>
           </th>
         </tr>
@@ -55,7 +50,7 @@ const DesktopPools = ({poolsData, orderBy, handleSort}: Props) => {
           ))
         ) : (
           <tr>
-            <td colSpan={5} className={styles.noData}>
+            <td colSpan={5} className={clsx(styles.noData, "mc-type-m")}>
               No pools available
             </td>
           </tr>

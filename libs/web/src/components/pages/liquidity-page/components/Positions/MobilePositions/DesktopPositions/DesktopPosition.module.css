@@ -1,19 +1,11 @@
 .labelCell {
   text-align: center;
-  color: var(--content-primary) !important;
+  color: var(--mc-black) !important;
 }
 
 .aprBadge {
   display: flex;
-  justify-content: center;
-}
-
-.addButton {
-  padding: 12px;
-  font-weight: 500;
-  font-size: 16px;
-  line-height: 19px;
-  min-width: 160px;
+  justify-content: start;
 }
 
 @keyframes fade {
@@ -27,6 +19,5 @@
 
 .loadingText {
   color: var(--content-primary);
-  font-size: 14px;
   animation: fade 0.5s linear infinite alternate;
 }

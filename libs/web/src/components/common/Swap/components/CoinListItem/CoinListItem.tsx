@@ -2,13 +2,13 @@ import {clsx} from "clsx";
 import {BN, CoinQuantity} from "fuels";
 import {memo} from "react";
 
-import SuccessIcon from "@/src/components/icons/Success/SuccessIcon";
 import {CoinDataWithPrice} from "@/src/utils/coinsConfig";
 import {Tooltip} from "react-tooltip";
 import "react-tooltip/dist/react-tooltip.css";
 import styles from "./CoinListItem.module.css";
 import {useAssetImage} from "@/src/hooks/useAssetImage";
 import Image from "next/image";
+import VerifiedIcon from "@/src/components/icons/Verified/VerifiedIcon";
 
 type Props = {
   assetData: Omit<CoinDataWithPrice, "price"> & {
@@ -36,20 +36,20 @@ const CoinListItem = ({assetData}: Props) => {
 
       <div className={styles.names}>
         <div className={styles.name_container}>
-          <p className={styles.name}>{assetData.symbol}</p>
+          <p className="mc-type-xl">{assetData.symbol}</p>
           {isVerified && (
             <span
               data-tooltip-id="verified-tooltip"
               data-tooltip-content="Verified asset from Fuel's official asset list."
             >
-              <SuccessIcon />
+              <VerifiedIcon />
             </span>
           )}
         </div>
-        <p className={styles.fullName}>{assetData.name}</p>
+        <p className={clsx(styles.fullName, "mc-type-m")}>{assetData.name}</p>
       </div>
       {balanceValue.gt(0) && (
-        <p className={styles.balance}>
+        <p className={clsx(styles.balance, "mc-mono-b")}>
           {balanceValue.formatUnits(assetData.decimals || 0)}
         </p>
       )}

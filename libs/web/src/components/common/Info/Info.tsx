@@ -2,6 +2,7 @@ import {memo, useEffect, useRef} from "react";
 
 import styles from "./Info.module.css";
 import InfoIcon from "@/src/components/icons/Info/InfoIcon";
+import clsx from "clsx";
 
 type Props = {
   tooltipText: string;
@@ -43,7 +44,7 @@ const Info = ({tooltipText, tooltipKey, color}: Props) => {
       </button>
 
       <div
-        className={styles.tooltip}
+        className={clsx(styles.tooltip, "mc-type-b")}
         id={tooltipId}
         ref={tooltipRef}
         style={{color: color}}

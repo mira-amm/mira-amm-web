@@ -30,7 +30,9 @@ const DisconnectDesktop = ({className}: Props) => {
       {isConnected && <img src="/images/avatar.png" width="24" height="24" />}
       {formattedAddress}
       {isConnected && (
-        <span className={styles.disconnectLabel}>Disconnect</span>
+        <span className={clsx(styles.disconnectLabel, "mc-type-b")}>
+          Disconnect
+        </span>
       )}
     </ActionButton>
   );

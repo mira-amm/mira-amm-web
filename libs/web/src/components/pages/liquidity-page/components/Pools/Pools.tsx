@@ -3,7 +3,6 @@ import {useRouter} from "next/navigation";
 
 import MobilePools from "@/src/components/pages/liquidity-page/components/Pools/MobilePools/MobilePools";
 import DesktopPools from "@/src/components/pages/liquidity-page/components/Pools/DesktopPools/DesktopPools";
-import LoaderV2 from "@/src/components/common/LoaderV2/LoaderV2";
 import ActionButton from "@/src/components/common/ActionButton/ActionButton";
 import Pagination from "@/src/components/common/Pagination/Pagination";
 import {SearchBar} from "@/src/components/common/SearchBar/SearchBar";
@@ -12,6 +11,7 @@ import useDebounce from "@/src/hooks/useDebounce";
 
 import clsx from "clsx";
 import styles from "./Pools.module.css";
+import LoadingIndicator from "@/src/components/common/LoadingIndicator/LoadingIndicator";
 
 const Pools = () => {
   const router = useRouter();
@@ -67,8 +67,9 @@ const Pools = () => {
       {/* Action Button */}
       <div className={styles.actionButtonDiv}>
         <ActionButton
-          className={clsx("mobileOnly", styles.createButton)}
+          className={clsx("mobileOnly")}
           onClick={handleCreatePoolClick}
+          fullWidth
         >
           Create Pool
         </ActionButton>
@@ -76,7 +77,7 @@ const Pools = () => {
 
       {/* Header with Search Bar */}
       <div className={styles.poolsHeader}>
-        <p className={styles.poolsTitle}>All Pools</p>
+        <p className={clsx(styles.poolsTitle, "mc-type-xxxl")}>All Pools</p>
         <SearchBar
           placeholder="Symbol or address..."
           className={styles.poolsSearchBar}
@@ -84,6 +85,14 @@ const Pools = () => {
           onChange={handleSearchChange}
         />
       </div>
+
+      {/* Loading State */}
+      {isLoading && (
+        <div className={styles.loadingFallback}>
+          <LoadingIndicator fontSize="mc-mono-xxxxl" />
+          <p>Loading pools...</p>
+        </div>
+      )}
 
       {/* Pools List (Mobile and Desktop) */}
       <MobilePools poolsData={data} orderBy={orderBy} handleSort={handleSort} />
@@ -93,20 +102,10 @@ const Pools = () => {
         handleSort={handleSort}
       />
 
-      {/* Loading State */}
-      {isLoading && (
-        <div className={styles.loadingFallback}>
-          <LoaderV2 />
-          <p>Loading pools...</p>
-        </div>
-      )}
-
       {/* Pagination */}
       {data && data.length > 0 && (
         <div className={styles.pagination}>
-          <p className={clsx("desktopOnly")}>
-            Showing {data.length} out of {totalCount} pools...
-          </p>
+          <p className={clsx("desktopOnly", "mc-type-b")}></p>
           <Pagination
             currentPage={page}
             totalPages={totalPages}

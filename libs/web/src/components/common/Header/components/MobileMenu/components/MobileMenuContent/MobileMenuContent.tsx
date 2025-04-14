@@ -35,7 +35,7 @@ const MobileMenuContent = ({expanded, toggleExpandedState}: Props) => {
           <CloseIcon />
         </button>
       </div>
-      <nav className={styles.links}>
+      <nav className={clsx(styles.links, "mc-type-m")}>
         <Link href="/swap">Swap</Link>
         <Link href="/liquidity">Liquidity</Link>
         <Link href="/points">Points</Link>

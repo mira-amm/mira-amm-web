@@ -21,7 +21,7 @@ const MobilePools = ({poolsData, orderBy, handleSort}: Props) => {
     <div className={clsx("mobileOnly")}>
       <table className={clsx(styles.mobilePoolsSort, "mobileOnly")}>
         <thead>
-          <tr>
+          <tr className="mc-type-m">
             <th>SORT BY:</th>
             {/* <SortableColumn
               title="24H Volume"
@@ -51,7 +51,7 @@ const MobilePools = ({poolsData, orderBy, handleSort}: Props) => {
             );
           })
         ) : (
-          <p className={styles.noData}>No pools available</p>
+          <p className={clsx(styles.noData, "mc-type-m")}>No pools available</p>
         )}
       </div>
     </div>

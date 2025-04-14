@@ -11,8 +11,8 @@ const CheckboxIcon = () => {
       <path
         d="M12.5 6L7.16667 11.3333L4.5 8.66667"
         stroke="#262934"
-        stroke-width="2"
-        stroke-linecap="square"
+        strokeWidth="2"
+        strokeLinecap="square"
       />
     </svg>
   );

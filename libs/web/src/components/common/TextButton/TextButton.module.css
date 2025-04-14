@@ -2,7 +2,7 @@
   border: none;
   background-color: transparent;
   padding: 0;
-  color: var(--accent-primary);
+  color: var(--button-primary);
   font: inherit;
   cursor: pointer;
   display: inline-block;

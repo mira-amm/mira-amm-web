@@ -1,14 +1,13 @@
 .priceImpact {
-  width: fit-content;
+  color: var(--mc-grey-3);
   display: flex;
-  align-items: center;
-  gap: 10px;
-  font-size: 12px;
-  line-height: 18px;
-  color: #ffffffa3;
-  background: transparent;
-  border: none;
-  cursor: pointer;
+  flex-direction: column;
+  gap: 9px;
+}
+
+.priceImpactEntry {
+  display: flex;
+  justify-content: space-between;
 }
 
 .redText {
@@ -16,11 +15,11 @@
 }
 
 .orangeText {
-  color: #e56910;
+  color: var(--mc-orange);
 }
 
 .yellowText {
-  color: #d4b226;
+  color: var(--accent-alert);
 }
 
 .hidden {
@@ -28,7 +27,7 @@
 }
 
 @media (min-width: 1024px) {
-  .priceImpact {
-    font-size: 13px;
+  .priceImpact p {
+    font-size: 14px;
   }
 }
