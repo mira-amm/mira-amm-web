@@ -144,11 +144,11 @@
 }
 
 .animateToRight {
-  animation: fillBackgroundLeftToRight 0.8s forwards;
+  animation: fillBackgroundLeftToRight 0.4s forwards;
 }
 
 .animateToLeft {
-  animation: fillBackgroundRightToLeft 0.8s forwards;
+  animation: fillBackgroundRightToLeft 0.4s forwards;
 }
 
 .staticFill {
