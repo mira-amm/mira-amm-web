@@ -110,4 +110,4 @@ export const POINTS_BANNER_SUBHEADER =
 export const SENTIO_POINTS_ENDPOINT =
   "https://endpoint.sentio.xyz/fuellabs/mira-mainnet/points-per-user/async";
 
-export const POSITIONS_COUNT = "positions-count";
+export const POSITIONS_COUNT_STORAGE_KEY = "positions-count";

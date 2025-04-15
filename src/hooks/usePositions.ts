@@ -2,9 +2,11 @@ import {useQuery} from "@tanstack/react-query";
 import useReadonlyMira from "@/src/hooks/useReadonlyMira";
 import useBalances from "@/src/hooks/useBalances/useBalances";
 import request, {gql} from "graphql-request";
-import {SQDIndexerUrl} from "../utils/constants";
+import {POSITIONS_COUNT_STORAGE_KEY, SQDIndexerUrl} from "../utils/constants";
 import {createPoolIdFromIdString} from "../utils/common";
 import {Asset, PoolId} from "mira-dex-ts";
+import {useLocalStorage} from "usehooks-ts";
+import {useMemo} from "react";
 
 export interface Position {
   poolId: PoolId;
@@ -20,7 +22,11 @@ export interface Position {
   };
 }
 
-const usePositions = (): {data: Position[] | undefined; isLoading: boolean} => {
+const usePositions = (): {
+  data: Position[] | undefined;
+  isLoading: boolean;
+  syncedPositionsCount: number;
+} => {
   const mira = useReadonlyMira();
   const {balances} = useBalances();
 
@@ -100,7 +106,24 @@ const usePositions = (): {data: Position[] | undefined; isLoading: boolean} => {
     enabled: miraExists && !!balances,
   });
 
-  return {data, isLoading};
+  const [storageValue, setStorageValue] = useLocalStorage(
+    POSITIONS_COUNT_STORAGE_KEY,
+    3,
+  );
+
+  const syncedPositionsCount = useMemo(() => {
+    const initialCount = storageValue;
+    if (data) {
+      const freshCount = data.length;
+      if (freshCount !== initialCount) {
+        setStorageValue(freshCount);
+        return freshCount;
+      }
+    }
+    return initialCount;
+  }, [data, setStorageValue, storageValue]);
+
+  return {data, isLoading, syncedPositionsCount};
 };
 
 export default usePositions;
