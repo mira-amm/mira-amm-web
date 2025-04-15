@@ -4,7 +4,7 @@ import mobilePositionStyles from "../../Positions/MobilePositions/MobilePosition
 import mobilePositionItemStyles from "../../Positions/MobilePositions/MobilePositionItem/MobilePositionItem.module.css";
 import desktopPositionStyles from "../../Positions/MobilePositions/DesktopPositions/DesktopPositions.module.css";
 
-const PositionsLoader = ({count}: {count: number}): JSX.Element => {
+const PositionsLoader = ({count}: {count: number}) => {
   return (
     <>
       <div className={clsx(mobilePositionStyles.mobilePositions, "mobileOnly")}>

@@ -1,23 +1,16 @@
-import {useMemo} from "react";
 import MobilePositions from "@/src/components/pages/liquidity-page/components/Positions/MobilePositions/MobilePositions";
 
 import styles from "./Positions.module.css";
 import DesktopPositions from "@/src/components/pages/liquidity-page/components/Positions/MobilePositions/DesktopPositions/DesktopPositions";
 import {useIsConnected} from "@fuels/react";
-import {POSITIONS_COUNT} from "@/src/utils/constants";
-import {useLoadingLocalStorage} from "@/src/hooks/useLoadingLocalStorage";
 import usePositions from "@/src/hooks/usePositions";
 import PositionsLoader from "./PositionsLoader/PositionsLoader";
 import DocumentIcon from "@/src/components/icons/Document/DocumentIcon";
+import {POSITIONS_SKELTON_COUNT} from "@/src/utils/constants";
 
-const Positions = (): JSX.Element => {
+const Positions = () => {
   const {isConnected} = useIsConnected();
   const {data, isLoading} = usePositions();
-  const positionsCount = useLoadingLocalStorage({
-    key: POSITIONS_COUNT,
-    initialValue: 3,
-    data,
-  });
 
   return (
     <section className={styles.positions}>
@@ -37,7 +30,7 @@ const Positions = (): JSX.Element => {
           <MobilePositions positions={data} />
         </>
       ) : (
-        <PositionsLoader count={positionsCount} />
+        <PositionsLoader count={POSITIONS_SKELTON_COUNT} />
       )}
     </section>
   );
