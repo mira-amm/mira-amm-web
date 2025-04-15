@@ -4,6 +4,7 @@ import {useVerifiedAssets} from "./useVerifiedAssets";
 import {CoinDataWithPrice} from "../utils/coinsConfig";
 import {BN, CoinQuantity} from "fuels";
 import {checkIfCoinVerified} from "../components/common/Swap/components/CoinListItem/checkIfCoinVerified";
+import {useFetchMultiAssetImages} from "./useAssetImage";
 
 const priorityOrder: string[] = ["ETH", "USDC", "USDT", "FUEL"];
 const lowPriorityOrder: string[] = ["DUCKY"];
@@ -17,6 +18,13 @@ const useCoinListModalData = (
   const {assets, isLoading} = useAssetList();
   const {verifiedAssetData, isLoading: isVerifiedAssetsLoading} =
     useVerifiedAssets();
+
+  const assetsWithOutIcon = assets
+    .filter((asset) => !asset.icon)
+    .map((asset) => asset.assetId);
+
+  const {data: assetImages, isLoading: isAssetImagesLoading} =
+    useFetchMultiAssetImages(assetsWithOutIcon);
 
   const handleFilterChange = (e: ChangeEvent<HTMLInputElement>) => {
     setValue(e.target.value);
@@ -41,6 +49,7 @@ const useCoinListModalData = (
 
   // TODO: Pre-sort the list by priorityOrder and alphabet to avoid sorting each time and optimise this filtering
   const sortedCoinsList = useMemo(() => {
+    if (isLoading || isVerifiedAssetsLoading || isAssetImagesLoading) return [];
     if (!assets?.length) return [];
     return assets
       .toSorted((firstAsset, secondAsset) => {
@@ -115,6 +124,11 @@ const useCoinListModalData = (
               assetId: eachAsset.assetId,
               verifiedAssetData,
             });
+
+          let assetIcon = eachAsset?.icon;
+          if (!assetIcon) {
+            assetIcon = assetImages?.[eachAsset.assetId].image || undefined;
+          }
 
           const updatedAsset = {
             ...eachAsset,
