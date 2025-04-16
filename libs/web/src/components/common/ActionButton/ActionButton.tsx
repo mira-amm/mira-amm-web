@@ -7,7 +7,7 @@ import LoadingIndicator from "../LoadingIndicator/LoadingIndicator";
 import styles from "./ActionButton.module.css";
 
 type ButtonType = "button" | "submit" | "reset";
-type ButtonVariant = "primary" | "secondary" | "outlined";
+type ButtonVariant = "primary" | "secondary" | "outlined" | "danger";
 type ButtonSize = "small" | "big" | "longer";
 
 type Props = {
@@ -55,10 +55,18 @@ const ActionButton = forwardRef<HTMLButtonElement, Props>(function ActionButton(
         variant !== "secondary" && variant !== "outlined" && styles.primary,
         variant === "secondary" && styles.secondary,
         variant === "outlined" && styles.outlined,
+        variant === "danger" && styles.danger,
         size === "big" && styles.big,
         size === "longer" && styles.longer,
+        size === "small" && styles.small,
         loading && styles.loadingAnimation,
-        loading ? "mc-type-xxl" : size === "big" ? "mc-type-l" : "mc-type-m",
+        loading && size !== "small"
+          ? "mc-type-xxl"
+          : size === "big"
+            ? "mc-type-l"
+            : size === "small"
+              ? "mc-type-xs"
+              : "mc-type-m",
         completed && styles.completed,
         fullWidth && styles.fullWidth,
         className,
@@ -68,7 +76,13 @@ const ActionButton = forwardRef<HTMLButtonElement, Props>(function ActionButton(
       type={type || "button"}
       ref={ref}
     >
-      {loading ? <LoadingIndicator /> : children}
+      {loading ? (
+        <LoadingIndicator
+          fontSize={size === "small" ? "mc-type-xs" : undefined}
+        />
+      ) : (
+        children
+      )}
     </button>
   );
 });

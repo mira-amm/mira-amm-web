@@ -14,6 +14,63 @@ button.connected {
   box-shadow: none;
 }
 
+.connectionContainer {
+  border: var(--border-style-secondary);
+  border-radius: 16px;
+  padding: 10px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.connectionLeft {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.powerContainer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.powerIndicator {
+  width: 18px;
+  height: 8px;
+}
+
+.powerOn {
+  background-color: var(--mc-green);
+  box-shadow: 0 0 10px 5px rgba(1, 236, 151, 0.5);
+}
+.powerOff {
+  background-color: var(--mc-green-3);
+}
+
+.fakeSelect {
+  min-width: 240px;
+  height: 46px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: var(--mc-black);
+  color: var(--mc-green);
+  border-radius: 8px;
+  padding: 16px;
+  font-family: var(--font-cartograph);
+  width: fit-content;
+}
+
+.walletConnected {
+  cursor: pointer;
+}
+
+.fakeSelect .chevron {
+  margin-left: 8px;
+  margin-top: 5px;
+}
+
 @media (max-width: 1024px) {
   button.connected {
     width: 120px;

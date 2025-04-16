@@ -18,6 +18,8 @@ import {CopyNotification} from "../../common/CopyNotification/CopyNotification";
 import {ArrowDownIcon} from "../../icons/ArrowDown/ArrowDownIcon";
 import {ArrowUpIcon} from "../../icons/ArrowUp/ArrowUpIcon";
 import DropDownMenu from "../DropDownMenu/DropDownMenu";
+import ChevronDownIcon from "../../icons/ColoredArrowDown/ChevronDownIcon";
+import ChevronUpIcon from "../../icons/ColoredArrowUp/ChevronUpIcon";
 
 type Props = {
   className?: string;
@@ -46,7 +48,7 @@ const ConnectButton = ({className, isWidget}: Props) => {
 
   const menuRef = useRef<HTMLUListElement>(null);
   const transactionsRef = useRef<HTMLDivElement>(null);
-  const buttonRef = useRef<HTMLButtonElement>(null);
+  const buttonRef = useRef<HTMLDivElement>(null);
 
   // TODO: Ugly, rewrite all modals/dropdowns/notifications/sidenavs to the separate logic layer
   useEffect(() => {
@@ -98,14 +100,6 @@ const ConnectButton = ({className, isWidget}: Props) => {
     setMenuOpened(false);
   }, [disconnect]);
 
-  const handleClick = useCallback(() => {
-    if (!isConnected) {
-      handleConnection();
-    } else {
-      setMenuOpened((prev) => !prev);
-    }
-  }, [isConnected, handleConnection]);
-
   const formattedAddress = useFormattedAddress(account);
 
   const title = useMemo(() => {
@@ -113,7 +107,7 @@ const ConnectButton = ({className, isWidget}: Props) => {
       return formattedAddress;
     }
 
-    return "Connect Wallet";
+    return "NO WALLET CONNECTED";
   }, [isConnected, formattedAddress]);
 
   const handleCopy = useCallback(async () => {
@@ -188,21 +182,46 @@ const ConnectButton = ({className, isWidget}: Props) => {
   return (
     <>
       <div className={styles.container}>
-        <ActionButton
-          className={clsx(className, isConnected && styles.connected)}
-          onClick={handleClick}
-          loading={isWalletLoading}
-          ref={buttonRef}
-        >
-          {isConnected && (
-            <img
-              src="/images/avatar.png"
-              className={actionButtonStyles.buttonIcon}
-            />
-          )}
-          {title}
-          {isConnected && (!isMenuOpened ? <ArrowDownIcon /> : <ArrowUpIcon />)}
-        </ActionButton>
+        <div className={styles.connectionContainer}>
+          <div className={styles.connectionLeft}>
+            <div className={styles.powerContainer}>
+              <p className={clsx("mc-type-s")}>Power</p>
+              <div
+                className={clsx(
+                  styles.powerIndicator,
+                  isConnected ? styles.powerOn : styles.powerOff,
+                )}
+              ></div>
+            </div>
+            <ActionButton
+              variant={isConnected ? "danger" : "primary"}
+              size="small"
+              onClick={isConnected ? handleDisconnect : handleConnection}
+              loading={isWalletLoading}
+            >
+              {isConnected ? "DISCONNECT" : "CONNECT"}
+            </ActionButton>
+          </div>
+          <div className={styles.connectionRight}>
+            <div
+              ref={buttonRef}
+              onClick={() => {
+                if (isConnected) setMenuOpened((prev) => !prev);
+              }}
+              className={clsx(
+                styles.fakeSelect,
+                isConnected && styles.walletConnected,
+              )}
+            >
+              <span className={styles.address}>{title}</span>
+              {isConnected && (
+                <span className={styles.chevron}>
+                  {isMenuOpened ? <ChevronUpIcon /> : <ChevronDownIcon />}
+                </span>
+              )}
+            </div>
+          </div>
+        </div>
         {isMenuOpened && <DropDownMenu buttons={menuButtons} ref={menuRef} />}
         <TransactionsHistory
           onClose={handleHistoryClose}

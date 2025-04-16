@@ -5,11 +5,11 @@
   list-style: none;
   padding: 10px;
   background: var(--background-secondary);
-  border-radius: 12px;
+  border: var(--border-style-secondary);
   display: flex;
   flex-direction: column;
-  max-width: 205px;
-  box-sizing: border-box;
+  width: 388px;
+  border-radius: 16px;
   z-index: 2;
 }
 

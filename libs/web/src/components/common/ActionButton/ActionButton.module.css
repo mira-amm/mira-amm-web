@@ -50,6 +50,16 @@
   color: var(--content-primary);
 }
 
+.danger {
+  color: var(--content-inverse);
+  background-color: var(--button-danger);
+}
+
+.danger:disabled {
+  background-color: var(--mc-green-3);
+  color: var(--mc-green-2);
+}
+
 .outlined {
   border: 1px solid var(--mc-green-2);
   background: transparent;
@@ -75,4 +85,20 @@
     min-width: 147px;
     padding: 8px 16px;
   }
+
+  .small {
+    width: 96px !important;
+    height: 24px;
+    padding: 6px;
+    border-radius: 4px;
+  }
+  .btn.small {
+    min-width: 96px !important;
+    height: 24px;
+  }
+}
+
+.small {
+  width: 96px !important;
+  height: 24px;
 }

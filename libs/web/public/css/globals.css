@@ -52,6 +52,7 @@
 
   --button-primary: var(--mc-green);
   --button-content-primary: var(--mc-black);
+  --button-danger: var(--mc-red);
 
   --accent-primary: #AEED0D;
   --accent-secondary: rgba(174, 237, 13, 0.4);
