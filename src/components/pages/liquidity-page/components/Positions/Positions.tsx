@@ -6,10 +6,11 @@ import {useIsConnected} from "@fuels/react";
 import usePositions from "@/src/hooks/usePositions";
 import PositionsLoader from "./PositionsLoader/PositionsLoader";
 import DocumentIcon from "@/src/components/icons/Document/DocumentIcon";
+import {POSITIONS_SKELTON_COUNT} from "@/src/utils/constants";
 
 const Positions = (): JSX.Element => {
   const {isConnected} = useIsConnected();
-  const {data, syncedPositionsCount, isLoading} = usePositions();
+  const {data, isLoading} = usePositions();
 
   return (
     <section className={styles.positions}>
@@ -29,7 +30,7 @@ const Positions = (): JSX.Element => {
           <MobilePositions positions={data} />
         </>
       ) : (
-        <PositionsLoader count={syncedPositionsCount} />
+        <PositionsLoader count={POSITIONS_SKELTON_COUNT} />
       )}
     </section>
   );
