@@ -1,0 +1,77 @@
+.widget {
+  position: fixed;
+  bottom: 20px;
+  left: 20px;
+  padding: 10px 20px;
+  background-color: var(--background-primary);
+  color: var(--content-primary);
+  border: 1px solid var(--background-primary);
+  border-radius: 5px;
+  z-index: 100;
+  transition:
+    color 0.5s,
+    background-color 0.5s;
+}
+
+.green {
+  color: var(--content-positive);
+}
+
+.incrementButton {
+  color: var(--content-primary);
+  background-color: var(--background-primary);
+  border: 1;
+  border-radius: 5;
+  font-size: 16;
+}
+
+/* Base cyberpunk glow - subtle */
+.widget span {
+  font-family: monospace;
+  font-size: 20px;
+  color: var(--content-primary);
+  text-shadow:
+    0 0 2px rgba(70, 204, 68, 0.3),
+    0 0 4px rgba(70, 204, 68, 0.2);
+}
+
+/* Final stage glow - a little more presence */
+.green span {
+  animation: greenHighlight 0.5s 1s ease-in forwards;
+}
+
+@keyframes greenHighlight {
+  0% {
+    color: inherit;
+    text-shadow: none;
+  }
+  100% {
+    color: var(--content-positive);
+    text-shadow:
+      0 0 2px rgba(70, 204, 68, 0.4),
+      0 0 6px rgba(70, 204, 68, 0.3),
+      0 0 12px rgba(70, 204, 68, 0.2);
+  }
+}
+
+.emptyChar {
+  opacity: 0.3;
+  text-align: center;
+}
+
+@media screen and (max-width: 1320px) {
+  .hintText {
+    font-size: 14px !important;
+  }
+}
+
+@media screen and (max-width: 500px) {
+  .hintText {
+    position: absolute;
+    top: 40px;
+  }
+  .widget {
+    bottom: 60px;
+    width: 90%;
+  }
+}

@@ -71,9 +71,7 @@ const useModal = (): [ReturnType, () => void, () => void] => {
                 </div>
                 <IconButton
                   onClick={() => {
-                    if (onClose) {
-                      onClose();
-                    }
+                    if (onClose) onClose();
                     closeModal();
                   }}
                 >
@@ -81,6 +79,16 @@ const useModal = (): [ReturnType, () => void, () => void] => {
                 </IconButton>
               </div>
               {children}
+
+              {/* Glitch layer with full modal content duplicated */}
+              <div className="glitchLayer">
+                <div className={styles.modalHeading}>
+                  <div className={clsx(styles.modalTitle, titleClassName)}>
+                    {title}
+                  </div>
+                </div>
+                {children}
+              </div>
             </div>
           </>,
           document.body,
