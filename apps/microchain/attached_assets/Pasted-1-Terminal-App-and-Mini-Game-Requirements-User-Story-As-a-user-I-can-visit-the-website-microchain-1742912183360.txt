@@ -1,0 +1,28 @@
+1. Terminal App and Mini-Game Requirements
+User Story:
+As a user, I can visit the website microchain.systems and immediately see a cryptic, retro-styled terminal interface designed with ASCII art aesthetics reminiscent of 1980s computing.
+When arriving at the site, I'm presented with a password-protected screen that intrigues me and sparks curiosity about what lies behind it.
+Upon successfully entering the discovered puzzle password, the terminal grants me access, displaying private strategic notes from Derek Dino, offering insights into market developments and hints about future updates.
+Within this secure terminal, I notice a countdown timer prominently displayed, clearly counting down to an anticipated launch event, synchronized with actual launch timing.
+I also see an option to engage in an interactive, ASCII-based retro-styled mini-game, which is both simple to play yet challenging enough to encourage repeated attempts and competition.
+As I play, my scores and multipliers are tracked and clearly displayed, allowing me to see my progress.
+After achieving a high score, I'm prompted to enter my wallet address directly within the game, securely linking my score to my identity.
+My score then appears on a public leaderboard alongside other usernames or wallet addresses, fostering a sense of community and competition.
+Functional Requirements:
+Secret Terminal:
+Secure password entry (accepts the discovered puzzle word).
+Displays private notes from Derek Dino with strategy insights.
+Countdown timer clearly displayed, synchronized with actual launch time.
+Mini-Game:
+Accessible through terminal post-password entry.
+Interactive, easy-to-play ASCII-based retro-styled game.
+Tracks and displays user scores and multipliers.
+Ability for users to enter wallet addresses linked to their game scores.
+Leaderboard displaying usernames/wallet addresses and their scores.
+Non-Functional Requirements:
+Usability:
+Nice looking user interface that fits with our typography and aesthetics. 
+Clear instructions for terminal and mini-game interactions.
+Security:
+Wallet address input validated and securely stored.
+Robust protection against leaderboard and game-score manipulation.
