@@ -86,18 +86,25 @@ layout {
             }
         }
     }
-
-    tab name="🛠 Devtools" hide_floating_panes=true {
+    tab name="🔌 API" hide_floating_panes=true {
+        pane split_direction="vertical" {
+                pane {
+                    cwd "posting"
+                    command "posting"
+                    args "-e" "dev.env" "--collection" "."
+                }
+        }
+    }
+    tab name="⚒ Devtools" {
         pane split_direction="vertical" {
             pane {
-                name "🔺 Vercel Deployments"
-                cwd "../"
+                name "💊 Doctor"
                 command "pnpm"
-                args "nx" "preview" "infra"
-                start_suspended true
+                args "nx" "doctor" "infra"
+                cwd "../"
             }
             pane split_direction="horizontal" {
-                size "15%"
+                size "30%"
                 pane {
                     name "📦 Node Modules Inspector | 7000"
                     cwd "../"
@@ -108,14 +115,15 @@ layout {
             }
         }
     }
-    tab name="🔌 API" hide_floating_panes=true {
+    tab name="☁ Deployments" {
         pane split_direction="vertical" {
-                pane {
-                    name "Posting"
-                    cwd "posting"
-                    command "posting"
-                    args "-e" "dev.env" "--collection" "."
-                }
+            pane {
+                name "🔺 Vercel"
+                cwd "../"
+                command "pnpm"
+                args "nx" "preview" "infra"
+                start_suspended true
+            }
         }
     }
 }

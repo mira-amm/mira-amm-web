@@ -1,10 +1,6 @@
-{ pkgs ? import <nixpkgs> {} }:
+{ pkgs ? import <nixpkgs> {}, arg ? "" }:
 
 let
-  pkgs-unstable = import (builtins.fetchTarball {
-    url = "https://github.com/NixOS/nixpkgs/archive/refs/heads/nixpkgs-unstable.tar.gz";
-  }) {};
-
   logoPath = "../libs/shared/assets/charthouse-labs-symbol.png";
   miraLogoPath = "../libs/shared/assets/mira-wordmark-long-light.png";
 
@@ -19,18 +15,38 @@ in pkgs.mkShell {
     pkgs.btop
     pkgs.yazi
     pkgs.tgpt
-    pkgs-unstable.posting
+    pkgs.uv
+    pkgs.shellspec
+    pkgs.fastfetch
+    pkgs.figlet
+    pkgs.lolcat
+    pkgs.ansi
+    pkgs.ncurses
   ];
 
   shellHook = ''
-zellij --config zellij.config.kdl -n zellij.layout.kdl
+    export TERM=xterm-256color
 
-ascii-image-converter ${miraLogoPath} --color -f -b
+    doctor() {
+    shellspec --format documentation
+    }
 
-zellij da -y
-echo "🚪 Exiting Nix shell..."
-exit
+    case "${arg}" in
+      doctor)
+        doctor
+        exit 0
+        ;;
+    esac
 
-# trap 'echo "🚪 Exiting Nix shell..."; zellij da;' EXIT
- '';
+    uv tool install --python 3.12 posting
+
+    zellij --config zellij.config.kdl -n zellij.layout.kdl
+
+    ascii-image-converter ${miraLogoPath} --color -f -b
+
+    zellij da -y
+
+    echo "🚪 Exiting Nix shell..."
+    exit
+  '';
 }
