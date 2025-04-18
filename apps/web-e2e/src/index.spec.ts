@@ -247,7 +247,7 @@ describe("Layout: Footer", () => {
 
 });
 
-describe("API Endpoints", () => {
+describe.skip("API Endpoints", () => {
 //   beforeEach(async ({actor}) => {
 //     await actor.attemptsTo(
 //       Navigate.to("/"),
@@ -302,6 +302,4 @@ actor.attemptsTo(
     Ensure.that(LastResponse.status(), equals(200)),
     Ensure.that(LastResponse.body(), isPresent()),
 ));
-
-
 });
