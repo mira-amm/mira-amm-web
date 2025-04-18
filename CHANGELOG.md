@@ -1,3 +1,81 @@
+## 1.1.0 (2025-04-18)
+
+### 🚀 Features
+
+- add ability to connect/disconnect to wallet ([2f61ba1e8](https://github.com/mira-amm/mira-amm-web/commit/2f61ba1e8))
+- add possibility to connect to specific connectors from mobile ([#9](https://github.com/mira-amm/mira-amm-web/pull/9))
+- update seo titles and descriptions for mira pages ([#14](https://github.com/mira-amm/mira-amm-web/pull/14))
+- Add layout for liquidity ([#10](https://github.com/mira-amm/mira-amm-web/pull/10))
+- Add check for testnet network ([#21](https://github.com/mira-amm/mira-amm-web/pull/21))
+- add multihop routing ([#29](https://github.com/mira-amm/mira-amm-web/pull/29))
+- disable default swap button ([#35](https://github.com/mira-amm/mira-amm-web/pull/35))
+- switch wallet address to B256 format ([#34](https://github.com/mira-amm/mira-amm-web/pull/34))
+- stats for pools, transactions history, swap page for fuelet, various fixes ([#42](https://github.com/mira-amm/mira-amm-web/pull/42))
+- bump connectors version, check for chain id ([#44](https://github.com/mira-amm/mira-amm-web/pull/44))
+- add LPing into an empty pool ([#78](https://github.com/mira-amm/mira-amm-web/pull/78))
+- update landing roadmap ([#84](https://github.com/mira-amm/mira-amm-web/pull/84))
+- new fuel asset price api integration ([#253](https://github.com/mira-amm/mira-amm-web/pull/253))
+- token list skeleton loader ([#254](https://github.com/mira-amm/mira-amm-web/pull/254))
+- provide more than 1000 results for points program ([4716bc05e](https://github.com/mira-amm/mira-amm-web/commit/4716bc05e))
+- implement blob caching for points response ([01301f398](https://github.com/mira-amm/mira-amm-web/commit/01301f398))
+- persist asset queries to localStorage using react-query persister ([9782f962f](https://github.com/mira-amm/mira-amm-web/commit/9782f962f))
+
+### 🩹 Fixes
+
+- change meta description ([21f791978](https://github.com/mira-amm/mira-amm-web/commit/21f791978))
+- address initial landing/swaps layouts comments ([3b4d4c0b0](https://github.com/mira-amm/mira-amm-web/commit/3b4d4c0b0))
+- address mobile spacings, add preview image ([587c7478d](https://github.com/mira-amm/mira-amm-web/commit/587c7478d))
+- pre-release fixes ([#6](https://github.com/mira-amm/mira-amm-web/pull/6))
+- hide launch app on connect ([c793771a4](https://github.com/mira-amm/mira-amm-web/commit/c793771a4))
+- change mimic icon, change setting max amount for eth ([19fa8c724](https://github.com/mira-amm/mira-amm-web/commit/19fa8c724))
+- change text on faucet page ([#11](https://github.com/mira-amm/mira-amm-web/pull/11))
+- fix connectors losing issue with temporary build from fuels ([#12](https://github.com/mira-amm/mira-amm-web/pull/12))
+- incorrect check for ETH ([#13](https://github.com/mira-amm/mira-amm-web/pull/13))
+- eth max click leads to 0 set ([#15](https://github.com/mira-amm/mira-amm-web/pull/15))
+- various fixes for mira overall ([#20](https://github.com/mira-amm/mira-amm-web/pull/20))
+- Hide create a pool button ([#22](https://github.com/mira-amm/mira-amm-web/pull/22))
+- copy untrimmed address ([#24](https://github.com/mira-amm/mira-amm-web/pull/24))
+- view in explorer link ([#25](https://github.com/mira-amm/mira-amm-web/pull/25))
+- landing page connect button ([#26](https://github.com/mira-amm/mira-amm-web/pull/26))
+- make liquidity under table blocks clickable ([#38](https://github.com/mira-amm/mira-amm-web/pull/38))
+- change add liquidity button text (add -> add liquidity ([#36](https://github.com/mira-amm/mira-amm-web/pull/36))
+- resolve empty connection button after account in wallet change ([#45](https://github.com/mira-amm/mira-amm-web/pull/45))
+- return testnet label to header ([#48](https://github.com/mira-amm/mira-amm-web/pull/48))
+- return fuel connector, add connectors setup changes ([#52](https://github.com/mira-amm/mira-amm-web/pull/52))
+- filter out invalid pools, correct poolId validity on add/show LP ([#75](https://github.com/mira-amm/mira-amm-web/pull/75))
+- use BNs for swaps balance rather than .toNumber conversion ([#77](https://github.com/mira-amm/mira-amm-web/pull/77))
+- pool LPing ([#79](https://github.com/mira-amm/mira-amm-web/pull/79))
+- disable swaps ([#81](https://github.com/mira-amm/mira-amm-web/pull/81))
+- make lping for all pools unavailable ([#80](https://github.com/mira-amm/mira-amm-web/pull/80))
+- make error messages on add/remove liquidity more clear, clean both swap fields if one is empty ([#83](https://github.com/mira-amm/mira-amm-web/pull/83))
+- improve token search feedback when no results found ([#222](https://github.com/mira-amm/mira-amm-web/pull/222))
+- reset swap form on successful swap ([#239](https://github.com/mira-amm/mira-amm-web/pull/239))
+- wallet button flickering issue due to loading state ([#259](https://github.com/mira-amm/mira-amm-web/pull/259))
+- slippage value formatting ([#283](https://github.com/mira-amm/mira-amm-web/pull/283))
+- removing the non functional back button in swap page ([#290](https://github.com/mira-amm/mira-amm-web/pull/290))
+- update url on how to add liquidity doc ([#310](https://github.com/mira-amm/mira-amm-web/pull/310))
+- format fiat token prices ([58d60d1a9](https://github.com/mira-amm/mira-amm-web/commit/58d60d1a9))
+- update maxAge of query persistance ([7892e5d5f](https://github.com/mira-amm/mira-amm-web/commit/7892e5d5f))
+- update maxAge of persistance to 12h ([692efb35d](https://github.com/mira-amm/mira-amm-web/commit/692efb35d))
+- **ui/liquidity:** closing success dialog after removing liquidity redirecting to liquidity route instead of staying on current page ([#329](https://github.com/mira-amm/mira-amm-web/pull/329))
+
+### 🔥 Performance
+
+- persist the verified assets and asset images ([574a570f8](https://github.com/mira-amm/mira-amm-web/commit/574a570f8))
+- query to fetch multiple asset images ([379f4017b](https://github.com/mira-amm/mira-amm-web/commit/379f4017b))
+
+### ❤️ Thank You
+
+- Boiled Beans @jude98
+- Jude @jude98
+- Karan Das @0xkar4n
+- Kirtiraj Thakor @kirtiraj22
+- Mattias Lightstone @mattiaslightstone
+- Mumtahin Farabi 🐞
+- Nikita Chistousov
+- Peter Logo @peterlogo
+- Voiislav Mitrovich @Voiislav
+
 # 1.0.0 (2025-04-18)
 
 ### 🚀 Features
