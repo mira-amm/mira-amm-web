@@ -20,7 +20,9 @@ describe("test for GET /api/events", () => {
   });
 
   it("should return 400 if fromBlock or toBlock is missing", async () => {
-    const req = new NextRequest("http://localhost:3000/api/events?fromBlock=100"); // Missing toBlock
+    const req = new NextRequest(
+      "http://localhost:3000/api/events?fromBlock=100",
+    ); // Missing toBlock
 
     const response = await GET(req);
 
