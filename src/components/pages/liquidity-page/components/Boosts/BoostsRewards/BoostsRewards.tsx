@@ -15,10 +15,6 @@ import PointsIcon from "@/src/components/icons/Points/PointsIcon";
 const BoostsRewards = (): JSX.Element => {
   const {data: pointsRankArray, isLoading, error} = usePointsRank();
 
-  if (isLoading) {
-    return <Loader />;
-  }
-
   if (error) {
     return <div>Error: {error.message}</div>;
   }
@@ -61,7 +57,7 @@ const BoostsRewards = (): JSX.Element => {
           </div>
           <div className={styles.rewardsValue}>
             {isLoading ? (
-              <Loader />
+              <Loader color="gray" />
             ) : (
               <>
                 <PointsIcon />
@@ -85,7 +81,12 @@ const BoostsRewards = (): JSX.Element => {
                 color="#D1D4F9"
               />
             </div>
-            <p className={styles.rank}>{pointsRank?.rank}</p>
+
+            {isLoading ? (
+              <Loader color="gray" />
+            ) : (
+              <p className={styles.rank}>{pointsRank?.rank}</p>
+            )}
           </div>
         </div>
       </div>

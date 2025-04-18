@@ -1,10 +1,10 @@
-import {useQuery} from "@tanstack/react-query";
-import useReadonlyMira from "@/src/hooks/useReadonlyMira";
 import useBalances from "@/src/hooks/useBalances/useBalances";
+import useReadonlyMira from "@/src/hooks/useReadonlyMira";
+import {useQuery} from "@tanstack/react-query";
 import request, {gql} from "graphql-request";
-import {SQDIndexerUrl} from "../utils/constants";
-import {createPoolIdFromIdString} from "../utils/common";
 import {Asset, PoolId} from "mira-dex-ts";
+import {createPoolIdFromIdString} from "../utils/common";
+import {SQDIndexerUrl} from "../utils/constants";
 
 export interface Position {
   poolId: PoolId;
@@ -20,7 +20,10 @@ export interface Position {
   };
 }
 
-const usePositions = (): {data: Position[] | undefined; isLoading: boolean} => {
+const usePositions = (): {
+  data: Position[] | undefined;
+  isLoading: boolean;
+} => {
   const mira = useReadonlyMira();
   const {balances} = useBalances();
 
