@@ -1,7 +1,8 @@
 import {describe, it, beforeEach} from "@serenity-js/playwright-test";
+import { CallAnApi, DeleteRequest, GetRequest, LastResponse, PostRequest, Send } from '@serenity-js/rest'
 import {Duration, Wait} from "@serenity-js/core";
 import {Navigate, PageElement, By, Click, isVisible} from "@serenity-js/web";
-import {isPresent, not} from "@serenity-js/assertions";
+import { Ensure, property, equals, and, startsWith, isPresent, not} from "@serenity-js/assertions";
 
 import {
   connectWalletButton,
@@ -243,4 +244,62 @@ describe("Layout: Footer", () => {
     actor.attemptsTo(
       Layout.shouldAllowClick("X link", footerSocialLinks().nth(2)),
     ));
+
+});
+
+describe.skip("API Endpoints", () => {
+//   beforeEach(async ({actor}) => {
+//     await actor.attemptsTo(
+//       Navigate.to("/"),
+// );
+//   });
+
+  it("asset", async ({actor}) =>
+actor.attemptsTo(
+    Send.a(GetRequest.to('/api/asset?id=123456')),
+    Ensure.that(LastResponse.status(), equals(200)),
+    Ensure.that(LastResponse.body(), isPresent()),
+));
+
+  it("campaigns", async ({actor}) =>
+actor.attemptsTo(
+    Send.a(GetRequest.to('/api/campaigns')),
+    Ensure.that(LastResponse.status(), equals(200)),
+    Ensure.that(LastResponse.body(), isPresent()),
+));
+
+  it("events", async ({actor}) =>
+actor.attemptsTo(
+    Send.a(GetRequest.to('/api/events?fromBlock=100&toBlock=200')),
+    Ensure.that(LastResponse.status(), equals(200)),
+    Ensure.that(LastResponse.body(), isPresent()),
+));
+
+  it("latest-block", async ({actor}) =>
+actor.attemptsTo(
+    Send.a(GetRequest.to('/api/latest-block')),
+    Ensure.that(LastResponse.status(), equals(200)),
+    Ensure.that(LastResponse.body(), isPresent()),
+));
+
+  it("pair", async ({actor}) =>
+actor.attemptsTo(
+    Send.a(GetRequest.to('/api/pair?id=pool1')),
+    Ensure.that(LastResponse.status(), equals(200)),
+    Ensure.that(LastResponse.body(), isPresent()),
+));
+
+  it("points", async ({actor}) =>
+actor.attemptsTo(
+    Send.a(GetRequest.to('/api/points')),
+    Ensure.that(LastResponse.status(), equals(200)),
+    Ensure.that(LastResponse.body(), isPresent()),
+));
+
+  it("rewards", async ({actor}) =>
+actor.attemptsTo(
+    Send.a(GetRequest.to('/api/rewards?poolIds=286c479da40dc953bddc3bb4c453b608bba2e0ac483b077bd475174115395e6b-f8f8b6283d7fa5b672b530cbb84fcccb4ff8dc40f8176ef4544ddb1f1952ad07-false&epochNumbers=1&userId=0x69e6223f2adf576dfefb21873b78e31ba228b094d05f74f59ea60cbd1bf87d0d')),
+    Ensure.that(LastResponse.status(), equals(200)),
+    Ensure.that(LastResponse.body(), isPresent()),
+));
 });

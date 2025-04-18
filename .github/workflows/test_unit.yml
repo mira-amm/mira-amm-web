@@ -35,4 +35,4 @@ jobs:
         run: pnpm i
 
       - name: Run Unit tests
-        run: pnpm test
+        run: pnpm nx test web --verbose

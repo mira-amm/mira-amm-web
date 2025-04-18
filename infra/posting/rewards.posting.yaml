@@ -1,0 +1,11 @@
+name: rewards
+url: http://127.0.0.1:3000/api/rewards
+params:
+- name: poolIds
+  value: 286c479da40dc953bddc3bb4c453b608bba2e0ac483b077bd475174115395e6b-f8f8b6283d7fa5b672b530cbb84fcccb4ff8dc40f8176ef4544ddb1f1952ad07-false
+- name: epochNumbers
+  value: '1'
+- name: userId
+  value: '0x69e6223f2adf576dfefb21873b78e31ba228b094d05f74f59ea60cbd1bf87d0d'
+options:
+  timeout: 10.0
