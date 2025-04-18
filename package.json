@@ -1,6 +1,7 @@
 {
   "name": "mira",
   "private": true,
+  "version": "1.0.0",
   "type": "module",
   "packageManager": "pnpm@10.8.1",
   "engines": {
