@@ -58,6 +58,12 @@ layout {
 
         floating_panes {
             pane {
+                focus true
+                name "💿 Nix-PostgreSQL | 5432"
+                command "pnpm"
+                args "nx" "start" "infra"
+            }
+            pane {
                 name "🩺 System Health - btop"
                 command "btop"
             }
