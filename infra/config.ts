@@ -3,8 +3,9 @@ import Table from "cli-table3";
 
 export const PROJECTS = [
   { name: "mira-amm-web", emoji: "🪙", domain:'mira.ly' },
-  { name: "web", emoji: "🪙", domain: 'mira.ly' },
-  { name: "docs", emoji: "📚", domain: 'mira.ly' },
+  { name: "web", emoji: "🪙", domain: 'web.mira.ly' },
+  { name: "microgame", emoji: "🕹", domain: 'microgame.mira.ly' },
+  { name: "docs", emoji: "📚", domain: 'docs.mira.ly' },
   { name: "arch", emoji: "🏛", domain: 'arch.mira.ly' },
   { name: "design", emoji: "💅", domain: 'design.mira.ly' },
   { name: "graph", emoji: "🧭", domain: 'graph.mira.ly' }
