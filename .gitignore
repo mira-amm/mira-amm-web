@@ -1,64 +1,49 @@
-# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+#====================================================
+#               Build/Test Outputs
+#====================================================
+**/dist
+**/target
+**/.next
+**/out
+**/build
+**/generated
+**/playwright-report
+**/test-results
+**/storybook-static
+**/coverage
+**/*.tsbuildinfo
+**/next-env.d.ts
+**/*.tar.gz
+**/.env*
+**/.env.sentry-build-plugin
+**/.vercel
+**/.drizzle
 
-playwright-report
-target/*
-apps/web-e2e/target/*
-apps/web-e2e/dist/*
-dist/*
-test-results
-storybook-static
+#====================================================
+#                     Caches
+#====================================================
+.nx/cache
+.nx/workspace-data
+apps/microgame/media
+**/pgdata
 
-# dependencies
-/node_modules
+#====================================================
+#                  Dependencies
+#====================================================
+**/node_modules
 /.pnp
 .pnp.js
 
-# testing
-/coverage
-
-# next.js
-/.next/
-/out/
-
-# production
-/build
-
-# misc
+#====================================================
+#                  Miscellaneous
+#====================================================
 .DS_Store
 *.pem
-
-# local env files
-.env*.local
-
-# vercel
-.vercel
-
-# typescript
-*.tsbuildinfo
-next-env.d.ts
-
+*tmp*
 .idea/
 
-*tmp*
-
-.env*
-
-generated/
-
-# Sentry Config File
-.env.sentry-build-plugin
-
-.nx/cache
-.nx/workspace-data
-
-# Next.js
-.next
-out
-
-pgdata
-apps/web/node_modules
-apps/microchain/node_modules
-apps/microchain/server/public
-apps/microchain/dist
-vite.config.ts.*
-*.tar.gz
+#====================================================
+#              Environment Variables
+#====================================================
+.env
+.env*.local
