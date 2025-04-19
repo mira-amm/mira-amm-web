@@ -10,12 +10,17 @@
     "moduleResolution": "node",
     "paths": {
       "@/*": ["libs/web/*"],
+      "@/cms": ["libs/cms/index.ts"],
+      "@/cms/*": ["libs/cms/*"],
+      "@/db": ["libs/db/index.ts"],
+      "@/db/*": ["libs/db/*"],
       "@/docs": ["libs/docs/index.ts"],
       "@/docs/*": ["libs/docs/*"],
+      "@payload-config": ["apps/microgame/src/payload.config.ts"],
       "@/shared": ["libs/shared/index.ts"],
       "@/shared/*": ["libs/shared/*"],
       "@/web": ["libs/web/index.ts"],
-      "@/web/*": ["libs/web/*"]
+      "@/web/*": ["libs/web/*"],
     },
     "declaration": false,
     "importHelpers": true,
