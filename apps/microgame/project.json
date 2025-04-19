@@ -1,0 +1,108 @@
+{
+  "name": "microgame",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "apps/microgame/src",
+  "implicitDependencies": [
+    "!libs/web"
+  ],
+  "projectType": "application",
+  "targets": {
+    "dev": {
+      "command": "cross-env NODE_OPTIONS=--no-deprecation next dev -p $MICROGAME_DEV_SERVER_PORT",
+      "options": {
+        "cwd": "apps/microgame"
+      }
+    },
+    "devsafe": {
+      "command": "rm -rf .next && cross-env NODE_OPTIONS=--no-deprecation next dev -p $PAYLOADCMS_DEV_SERVER_PORT",
+      "options": {
+        "cwd": "apps/microgame"
+      }
+    },
+    "build": {
+      "command": "cross-env NODE_OPTIONS=--no-deprecation next build",
+      "options": {
+        "cwd": "apps/microgame"
+      }
+    },
+    "start": {
+      "command": "cross-env NODE_OPTIONS=--no-deprecation next start -p $PAYLOADCMS_DEV_SERVER_PORT",
+      "options": {
+        "cwd": "apps/microgame"
+      }
+    },
+    "lint": {
+      "command": "cross-env NODE_OPTIONS=--no-deprecation next lint",
+      "options": {
+        "cwd": "apps/microgame"
+      }
+    },
+    "payload": {
+      "command": "cross-env NODE_OPTIONS=--no-deprecation payload",
+      "options": {
+        "cwd": "apps/microgame"
+      }
+    },
+    "importmap": {
+      "command": "cross-env NODE_OPTIONS=--no-deprecation payload generate:importmap",
+      "options": {
+        "cwd": "apps/microgame"
+      }
+    },
+    "types": {
+      "command": "cross-env NODE_OPTIONS=--no-deprecation payload generate:types",
+      "options": {
+        "cwd": "apps/microgame"
+      }
+    },
+    "schema": {
+      "command": "cross-env NODE_OPTIONS=--no-deprecation payload generate:db-schema",
+      "options": {
+        "cwd": "apps/microgame"
+      }
+    },
+    "migrate:run": {
+      "command": "cross-env NODE_OPTIONS=--no-deprecation payload migrate",
+      "options": {
+        "cwd": "apps/microgame"
+      }
+    },
+    "migrate:create": {
+      "command": "cross-env NODE_OPTIONS=--no-deprecation payload migrate:create",
+      "options": {
+        "cwd": "apps/microgame"
+      }
+    },
+    "migrate:status": {
+      "command": "cross-env NODE_OPTIONS=--no-deprecation payload migrate:status",
+      "options": {
+        "cwd": "apps/microgame"
+      }
+    },
+    "migrate:down": {
+      "command": "cross-env NODE_OPTIONS=--no-deprecation payload migrate:down",
+      "options": {
+        "cwd": "apps/microgame"
+      }
+    },
+    "migrate:refresh": {
+      "command": "cross-env NODE_OPTIONS=--no-deprecation payload migrate:refresh",
+      "options": {
+        "cwd": "apps/microgame"
+      }
+    },
+    "migrate:reset": {
+      "command": "cross-env NODE_OPTIONS=--no-deprecation payload migrate:reset",
+      "options": {
+        "cwd": "apps/microgame"
+      }
+    },
+    "migrate:fresh": {
+      "command": "cross-env NODE_OPTIONS=--no-deprecation payload migrate:fresh",
+      "options": {
+        "cwd": "apps/microgame"
+      }
+    },
+  },
+  "tags": []
+}
