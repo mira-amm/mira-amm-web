@@ -23,6 +23,7 @@ in pkgs.mkShell {
     pkgs.lolcat
     pkgs.ansi
     pkgs.ncurses
+    pkgs.postgresql
   ];
 
   shellHook = ''
@@ -83,9 +84,82 @@ in pkgs.mkShell {
 
     alias psqlx="psql -p $PGPORT -d $PGDATABASE -U $PGUSER"
 
+    start_db() {
+      if [ ! -d "$PGDATA" ]; then
+        echo "Initializing PostgreSQL database..."
+        initdb -D "$PGDATA" --no-locale --encoding=UTF8 --username=$PGUSER
+
+        echo "listen_addresses = '*'" >> "$PGDATA/postgresql.conf"
+        echo "unix_socket_directories = '$PGDATA'" >> "$PGDATA/postgresql.conf"
+
+        echo "host all all 127.0.0.1/32 md5" >> "$PGDATA/pg_hba.conf"
+        echo "local all $PGUSER trust" >> "$PGDATA/pg_hba.conf"
+
+        pg_ctl start -o "-p $PGPORT -k \"$PGDATA\"" -l "${pgLog}"
+
+        psql -d $PGDATABASE -U $PGUSER -c "ALTER USER $PGUSER WITH PASSWORD '$PGPASSWORD';"
+
+        sed -i 's/local all postgres trust/local all postgres md5/' "$PGDATA/pg_hba.conf"
+
+        pg_ctl restart -D "$PGDATA"
+
+        # Create database only if it doesn't exist
+        psql -p $PGPORT -U $PGUSER -tc "SELECT 1 FROM pg_database WHERE datname = '$PGDATABASE'" | grep -q 1 || createdb "$PGDATABASE" -p $PGPORT -U $PGUSER
+      else
+        echo "Starting PostgreSQL..."
+        pg_ctl start -o "-p $PGPORT -k \"$PGDATA\"" -l "${pgLog}"
+      fi
+
+      echo ""
+      echo "***************************************************"
+      echo "PostgreSQL running on port $PGPORT"
+      echo "DATABASE_URI=$DATABASE_URI"
+      echo "Connection URL: postgres://$DATABASE_USER:$DATABASE_PASSWORD@127.0.0.1:$DATABASE_PORT/$DATABASE_NAME/?sslmode=disable"
+      echo "***************************************************"
+      echo ""
+      ascii-image-converter ${logoPath} --color --complex
+    }
+
+   stop_db() {
+      echo "Stopping PostgreSQL..."
+      if pg_ctl status -D "$PGDATA" > /dev/null 2>&1; then
+        pg_ctl stop -D "$PGDATA"
+        ascii-image-converter ${miraLogoPath} --color --full 
+        echo "PostgreSQL stopped. 💤🛌"
+      else
+        ascii-image-converter ${miraLogoPath} --color --full
+        echo "PostgreSQL is not running. 💤🛌"
+      fi
+    }
+
+    destroy_db() {
+      echo "Destroying database..."
+      if ls | grep pgdata; then
+        pg_ctl stop -D "$PGDATA"
+        rm -rf $PGDATA
+        echo "PostgreSQL server stopped and all data removed."
+      fi
+    }
+
     case "${arg}" in
       doctor)
         doctor
+        exit 0
+        ;;
+      start)
+        start_db
+        echo "Happy Hacking! ⌨"
+        sleep 1
+        # zellij action toggle-floating-panes
+        zellij action move-focus down
+        exit 0
+        ;;
+      stop)
+        stop_db
+        exit 0
+        ;;
+      destroy)
+        destroy_db
         exit 0
         ;;
     esac
@@ -95,6 +169,8 @@ in pkgs.mkShell {
     zellij --config zellij.config.kdl -n zellij.layout.kdl
 
     ascii-image-converter ${miraLogoPath} --color -f -b
+
+    stop_db
 
     zellij da -y
 
