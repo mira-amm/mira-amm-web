@@ -12,28 +12,31 @@ layout {
             plugin location="zellij:status-bar"
         }
     }
-
-    tab name="🧮 Servers" focus=true {
-        pane split_direction="vertical" {
+    tab name="🧮 SERVERS" focus=true split_direction="vertical" cwd="../"  {
+            pane {
+                name "🕹 Microgame | 8000 | microgame.mira.ly"
+                command "pnpm"
+                args "nx" "dev" "microgame"
+            }
+            pane {
+            split_direction "horizontal"
             pane {
                 name "🟩 Web App | 3000 | mira.ly"
-                cwd "../"
                 command "pnpm"
                 args "nx" "dev" "web"
+                start_suspended true
             }
-
             pane {
                 command "pnpm"
                 name "🎨 Storybook | 6006 | design.mira.ly"
-                cwd "../"
                 args "storybook"
                 start_suspended true
             }
+            }
 
-            pane split_direction="horizontal" size="30%" {
+            pane split_direction="horizontal" {
                 pane {
                     name "📚 Docs | 4000 | docs.mira.ly"
-                    cwd "../"
                     command "pnpm"
                     args "nx" "dev" "docs"
                     start_suspended true
@@ -42,21 +45,24 @@ layout {
                 pane {
                     command "pnpm"
                     name "🏛 Architecture | 5173 | arch.mira.ly"
-                    cwd "../"
                     args "nx" "dev" "arch"
                     start_suspended true
                 }
                 pane {
                     name "🗺 Project Graph - Nx | 4211 | graph.mira.ly"
-                    cwd "../"
                     command "pnpm"
                     args "nx" "graph" "--groupByFolder" "--open='false'" "--verbose"
                     start_suspended true
                 }
             }
-        }
 
         floating_panes {
+            pane {
+                focus true
+                name "💿 Nix-PostgreSQL | 5432"
+                command "pnpm"
+                args "nx" "start" "infra"
+            }
             pane {
                 name "🩺 System Health - btop"
                 command "btop"
@@ -64,19 +70,18 @@ layout {
         }
     }
 
-    tab name="🟩 Status" {
-        pane split_direction="vertical" {
+    tab name="🟩 STATUS" split_direction="vertical"  {
             pane {
                 name "🍒 Git - Lazygit"
                 command "lazygit"
             }
 
             pane {
+                cwd "infra"
                 name "📁 File Browser - Yazi"
                 command "env"
                 args "YAZI_CONFIG_HOME=./" "yazi"
             }
-        }
 
         floating_panes {
             pane {
@@ -86,44 +91,62 @@ layout {
             }
         }
     }
-    tab name="🔌 API" hide_floating_panes=true {
-        pane split_direction="vertical" {
+
+    tab name="🔍🤨 INSPECT" split_direction="vertical" cwd="../" {
                 pane {
-                    cwd "posting"
+                    name "🔌 API"
                     command "posting"
-                    args "-e" "dev.env" "--collection" "."
+                    args "-e" "infra/posting/dev.env" "--collection" "infra/posting"
+                }
+        pane {
+            name "💿 DATABASE"
+            command "lazysql"
+            args "postgres://postgres:password@127.0.0.1:5432/postgres?sslmode=disable"
+        }
+        floating_panes {
+            pane {
+                name "📦 Node Modules Inspector | 7000"
+                command "pnpm"
+                args "node-modules-inspector" "--depth=7" "--port=7000"
+                start_suspended true
+            }
+                pane {
+                    name "📊 Drizzle Studio | local.drizzle.studio"
+                    command "pnpm"
+                    args "nx" "studio" "db"
+                    start_suspended true
+                }
+                pane {
+                    name "👀 Schema Visualizer | 5600"
+                    command "pnpm"
+                    args "nx" "visualizer" "db"
+                    start_suspended true
                 }
         }
     }
-    tab name="⚒ Devtools" {
-        pane split_direction="vertical" {
+    tab name="🧪 TESTING" split_direction="vertical" cwd="../" {
+            pane {
+                name "🎭 Web"
+                command "pnpm"
+                args "nx" "e2e" "web-e2e" "--ui"
+                start_suspended true
+            }
+            pane split_direction="horizontal" {
+                size "30%"
             pane {
                 name "💊 Doctor"
                 command "pnpm"
                 args "nx" "doctor" "infra"
-                cwd "../"
+                start_suspended true
             }
-            pane split_direction="horizontal" {
-                size "30%"
-                pane {
-                    name "📦 Node Modules Inspector | 7000"
-                    cwd "../"
-                    command "pnpm"
-                    args "node-modules-inspector" "--depth=7" "--port=7000" "--open=false"
-                    start_suspended true
-                }
             }
-        }
     }
-    tab name="☁ Deployments" {
-        pane split_direction="vertical" {
+    tab name="☁ DEPLOYMENTS" split_direction="vertical" cwd="../" {
             pane {
                 name "🔺 Vercel"
-                cwd "../"
                 command "pnpm"
                 args "nx" "preview" "infra"
                 start_suspended true
             }
-        }
     }
 }

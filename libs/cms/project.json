@@ -1,0 +1,11 @@
+{
+  "name": "libs/cms",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/cms",
+  "implicitDependencies": [
+    "!libs/web"
+  ],
+  "projectType": "library",
+  "tags": [],
+  "targets": {}
+}
