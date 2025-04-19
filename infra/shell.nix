@@ -24,6 +24,7 @@ in pkgs.mkShell {
     pkgs.ansi
     pkgs.ncurses
     pkgs.postgresql
+    pkgs.lazysql
   ];
 
   shellHook = ''
@@ -124,10 +125,10 @@ in pkgs.mkShell {
       echo "Stopping PostgreSQL..."
       if pg_ctl status -D "$PGDATA" > /dev/null 2>&1; then
         pg_ctl stop -D "$PGDATA"
-        ascii-image-converter ${miraLogoPath} --color --full 
+        ascii-image-converter ${miraLogoPath} --color --full -b
         echo "PostgreSQL stopped. 💤🛌"
       else
-        ascii-image-converter ${miraLogoPath} --color --full
+        ascii-image-converter ${miraLogoPath} --color --full -b
         echo "PostgreSQL is not running. 💤🛌"
       fi
     }
@@ -164,11 +165,11 @@ in pkgs.mkShell {
         ;;
     esac
 
+    if ! command -v posting > /dev/null; then
     uv tool install --python 3.12 posting
+    fi
 
     zellij --config zellij.config.kdl -n zellij.layout.kdl
-
-    ascii-image-converter ${miraLogoPath} --color -f -b
 
     stop_db
 
