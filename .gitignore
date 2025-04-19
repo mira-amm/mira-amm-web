@@ -25,7 +25,10 @@
 .nx/cache
 .nx/workspace-data
 apps/microgame/media
-**/pgdata
+libs/db/data/*
+**/postgresql.log
+libs/db/supabase/.branches
+libs/db/supabase/.temp
 
 #====================================================
 #                  Dependencies
