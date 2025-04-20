@@ -93,15 +93,15 @@ layout {
     }
 
     tab name="🔍🤨 INSPECT" split_direction="vertical" cwd="../" {
-                pane {
-                    name "🔌 API"
-                    command "posting"
-                    args "-e" "infra/posting/dev.env" "--collection" "infra/posting"
-                }
         pane {
             name "💿 DATABASE"
             command "lazysql"
             args "postgres://postgres:password@127.0.0.1:5432/postgres?sslmode=disable"
+        }
+        pane {
+            name "🔌 API"
+            command "posting"
+            args "-e" "infra/posting/dev.env" "--collection" "infra/posting"
         }
         floating_panes {
             pane {
