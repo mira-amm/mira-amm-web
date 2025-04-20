@@ -105,23 +105,17 @@ layout {
         }
         floating_panes {
             pane {
+                name "📊 Drizzle Studio | local.drizzle.studio + 👀 Schema Visualizer | 5600"
+                command "pnpm"
+                args "nx" "view" "db"
+                start_suspended true
+            }
+            pane {
                 name "📦 Node Modules Inspector | 7000"
                 command "pnpm"
                 args "node-modules-inspector" "--depth=7" "--port=7000"
                 start_suspended true
             }
-                pane {
-                    name "📊 Drizzle Studio | local.drizzle.studio"
-                    command "pnpm"
-                    args "nx" "studio" "db"
-                    start_suspended true
-                }
-                pane {
-                    name "👀 Schema Visualizer | 5600"
-                    command "pnpm"
-                    args "nx" "visualizer" "db"
-                    start_suspended true
-                }
         }
     }
     tab name="🧪 TESTING" split_direction="vertical" cwd="../" {
