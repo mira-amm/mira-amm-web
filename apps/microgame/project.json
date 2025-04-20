@@ -6,17 +6,23 @@
     "!libs/web"
   ],
   "projectType": "application",
+  "tags": [],
   "targets": {
     "dev": {
-      "command": "cross-env NODE_OPTIONS=--no-deprecation next dev -p $MICROGAME_DEV_SERVER_PORT",
+      "dependsOn": [
+        {
+          "projects": [
+            "db"
+          ],
+          "target": "start"
+        }
+      ],
+      "command": "ascii-image-converter ../../libs/shared/assets/charthouse-labs-symbol.png --color --complex; next dev -p $MICROGAME_DEV_SERVER_PORT",
       "options": {
-        "cwd": "apps/microgame"
-      }
-    },
-    "devsafe": {
-      "command": "rm -rf .next && cross-env NODE_OPTIONS=--no-deprecation next dev -p $PAYLOADCMS_DEV_SERVER_PORT",
-      "options": {
-        "cwd": "apps/microgame"
+        "cwd": "apps/microgame",
+        "env": {
+          "NODE_OPTIONS": "--no-deprecation"
+        },
       }
     },
     "build": {
@@ -45,18 +51,6 @@
     },
     "importmap": {
       "command": "cross-env NODE_OPTIONS=--no-deprecation payload generate:importmap",
-      "options": {
-        "cwd": "apps/microgame"
-      }
-    },
-    "types": {
-      "command": "cross-env NODE_OPTIONS=--no-deprecation payload generate:types",
-      "options": {
-        "cwd": "apps/microgame"
-      }
-    },
-    "schema": {
-      "command": "cross-env NODE_OPTIONS=--no-deprecation payload generate:db-schema",
       "options": {
         "cwd": "apps/microgame"
       }
@@ -103,6 +97,5 @@
         "cwd": "apps/microgame"
       }
     },
-  },
-  "tags": []
+  }
 }

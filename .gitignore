@@ -14,7 +14,7 @@
 **/*.tsbuildinfo
 **/next-env.d.ts
 **/*.tar.gz
-**/.env*
+**/.env
 **/.env.sentry-build-plugin
 **/.vercel
 **/.drizzle
