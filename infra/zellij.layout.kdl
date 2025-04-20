@@ -51,7 +51,7 @@ layout {
                 pane {
                     name "🗺 Project Graph - Nx | 4211 | graph.mira.ly"
                     command "pnpm"
-                    args "nx" "graph" "--groupByFolder" "--open='false'" "--verbose"
+                    args "nx" "graph" "--groupByFolder"
                     start_suspended true
                 }
             }
