@@ -1,15 +1,53 @@
 {
-  "name": "libs/db",
+  "name": "db",
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "metadata": {
+    "description": "Database models and utilities."
+  },
   "sourceRoot": "libs/db",
   "implicitDependencies": [
     "!libs/web"
   ],
   "projectType": "library",
-  "tags": [],
+  "tags": [
+    "libs"
+  ],
   "targets": {
+    "start": {
+      "dependsOn": [
+        "create"
+      ],
+      "command": "pg_ctl status > /dev/null 2>&1 || pg_ctl start -o '-c  config_file=postgresql.conf -c unix_socket_directories=$PGDATA'",
+      "options": {
+        "cwd": "libs/db"
+      }
+    },
+    "create": {
+      "command": "if [ ! -d data ]; then pg_ctl init -o '--username=$PGUSER'; fi",
+      "options": {
+        "cwd": "libs/db",
+      },
+      "cache": true
+    },
+    "stop": {
+      "command": "pg_ctl stop",
+      "options": {
+        "cwd": "libs/db"
+      }
+    },
+    "destroy": {
+      "command": "rm -rf data",
+      "options": {
+        "cwd": "libs/db"
+      }
+    },
     "view": {
-      "command": "nx run-many -t studio visualizer # 🎙 View database schema at `local.drizzle.studio`, and visualizer at `localhost:5600` ",
+      "dependsOn": [
+        "start",
+        "types",
+        "schema"
+      ],
+      "command": "nx run-many -t studio visualizer # 🎙 View database schema at `local.drizzle.studio`, and visualizer at `localhost:5600`",
       "options": {
         "cwd": "libs/db"
       }
@@ -21,10 +59,22 @@
       }
     },
     "visualizer": {
-      "command": "pnpx drizzle-lab visualizer --debug -p=5600 -c='./drizzle.config.ts' -e='../../.env'",
+      "command": "pnpx drizzle-lab visualizer --debug -p=5600 -c='drizzle.config.ts'",
       "options": {
         "cwd": "libs/db"
       }
-    }
+    },
+    "types": {
+      "command": "cross-env NODE_OPTIONS=--no-deprecation payload generate:types",
+      "options": {
+        "cwd": "apps/microgame"
+      }
+    },
+    "schema": {
+      "command": "cross-env NODE_OPTIONS=--no-deprecation payload generate:db-schema",
+      "options": {
+        "cwd": "apps/microgame"
+      }
+    },
   }
 }

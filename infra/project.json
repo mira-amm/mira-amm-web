@@ -21,24 +21,6 @@
       },
       "description": "Enter the Nix Shell in the `infra` project and do health check.",
     },
-    "start": {
-      "command": "nix-shell --argstr arg 'start'",
-      "options": {
-        "cwd": "infra"
-      }
-    },
-    "down": {
-      "command": "nix-shell --argstr arg 'stop'",
-      "options": {
-        "cwd": "infra"
-      }
-    },
-    "destroy": {
-      "command": "nix-shell --argstr arg 'destroy'",
-      "options": {
-        "cwd": "infra"
-      }
-    },
     "preview": {
       "command": "pulumi preview -e -s 'dev'",
       "options": {
