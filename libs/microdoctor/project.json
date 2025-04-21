@@ -1,0 +1,24 @@
+{
+  "name": "microdoctor",
+  "$schema": "../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/microdoctor",
+  "projectType": "library",
+  "tags": [
+    "tools"
+  ],
+  "targets": {
+    "check": {
+      "command": "shellspec --format documentation",
+      "options": {
+        "cwd": "libs/microdoctor"
+      },
+      "description": "System environment health check.",
+    },
+    "shell": {
+      "command": "nix-shell --argstr arg 'doctor'",
+      "options": {
+        "cwd": "infra"
+      },
+    },
+  }
+}
