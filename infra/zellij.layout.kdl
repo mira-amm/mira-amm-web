@@ -91,6 +91,7 @@ layout {
             name "💿 DATABASE"
             command "lazysql"
             args "postgresql://postgres:postgres@127.0.0.1:54322/postgres?sslmode=disable"
+            // args "./libs/db/sqlite.db"
         }
         pane {
             name "🔌 API"

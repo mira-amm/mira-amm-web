@@ -33,7 +33,6 @@
     },
     "view": {
       "dependsOn": [
-        "start",
         "types",
         "schema"
       ],

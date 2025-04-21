@@ -24,6 +24,7 @@
     "@fuels/react": "0.40.0",
     "@hookform/resolvers": "^3.10.0",
     "@payloadcms/db-postgres": "^3.23.0",
+    "@payloadcms/db-sqlite": "^3.35.1",
     "@payloadcms/email-resend": "^3.25.0",
     "@payloadcms/next": "^3.23.0",
     "@payloadcms/plugin-form-builder": "^3.26.0",
