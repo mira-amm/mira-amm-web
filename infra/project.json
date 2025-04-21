@@ -14,13 +14,6 @@
       "color": "green",
       "bgColor": "black"
     },
-    "doctor": {
-      "command": "nix-shell --argstr arg 'doctor'",
-      "options": {
-        "cwd": "infra"
-      },
-      "description": "Enter the Nix Shell in the `infra` project and do health check.",
-    },
     "preview": {
       "command": "pulumi preview -e -s 'dev'",
       "options": {

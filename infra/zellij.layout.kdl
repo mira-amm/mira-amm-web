@@ -125,7 +125,7 @@ layout {
             pane {
                 name "💊 Doctor"
                 command "pnpm"
-                args "nx" "doctor" "infra"
+                args "nx" "check" "microdoctor"
                 start_suspended true
             }
             }
