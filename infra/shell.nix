@@ -79,7 +79,7 @@ in pkgs.mkShell {
 
     case "${arg}" in
       doctor)
-        doctor
+        pnpm nx check microdoctor
         exit 0
         ;;
     esac
