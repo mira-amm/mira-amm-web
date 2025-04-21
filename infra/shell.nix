@@ -4,7 +4,7 @@ let
   miraLogoPath = "../libs/shared/assets/mira-wordmark-long-light.png";
 
 in pkgs.mkShell {
-  name = "mira-dev-env";
+  name = "microchain-dev-env";
 
   buildInputs = [
     pkgs.zellij
@@ -24,27 +24,26 @@ in pkgs.mkShell {
     pkgs.postgresql
     pkgs.lazysql
     pkgs.glibcLocales
+    pkgs.docker
+    pkgs.lazydocker
+    pkgs.supabase-cli
   ];
 
   shellHook = ''
     #====================================================
+    #                      FLAGS
+    #====================================================
+    export NX_VERBOSE_LOGGING=true
+    export NEXT_PUBLIC_ENABLE_AUTOLOGIN="true"
+    export TERM=xterm-256color
+
+    #====================================================
     #                    DATABASE
     #====================================================
 
-    export DATABASE_USER="postgres"
-    export DATABASE_PASSWORD="password"
-    export DATABASE_HOST="localhost"
-    export DATABASE_PORT="5432"
-    export DATABASE_NAME="postgres"
-    export DATABASE_URI="postgres://$DATABASE_USER:$DATABASE_PASSWORD@$DATABASE_HOST:$DATABASE_PORT/$DATABASE_NAME"
-
-    export PGDATABASE="$DATABASE_NAME"
-    export PGPASSWORD="$DATABASE_PASSWORD"
-    export PGUSER="$DATABASE_USER"
-    export PGHOST="$DATABASE_HOST"
-    export PGPORT="$DATABASE_PORT"
     export PGDATA="$PWD/../libs/db/data"
     export PG_COLOR=always
+    export DATABASE_URI="postgresql://postgres:postgres@127.0.0.1:54322/postgres"
 
     #====================================================
     #                      PORTS
@@ -61,7 +60,6 @@ in pkgs.mkShell {
     #                      URLS
     #====================================================
     export BASE_URL="https://mira.ly"
-
     export LOCALHOST_STRING="http://localhost"
 
     export APP_LOCAL_URL="$LOCALHOST_STRING:$APP_DEV_SERVER_PORT"
@@ -72,13 +70,6 @@ in pkgs.mkShell {
     export GRAPH_LOCAL_URL="$LOCALHOST_STRING:$GRAPH_DEV_SERVER_PORT"
 
     export SENTIO_API_URL="https://app.sentio.xyz/api/v1/analytics/fuellabs/mira-mainnet/sql/execute"
-
-    #====================================================
-    #                      FLAGS
-    #====================================================
-    export NX_VERBOSE_LOGGING=true
-    export NEXT_PUBLIC_ENABLE_AUTOLOGIN="true"
-    export TERM=xterm-256color
 
     doctor() {
     shellspec --format documentation

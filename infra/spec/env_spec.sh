@@ -44,7 +44,7 @@ The output should end with '/node_modules/.bin/playwright'
 End
 End
 
-Describe "❄ Nix version should be:"
+Describe "❄ Nix should be:"
 It "version 2.25.3"
 When run nix --version
 The status should be success
@@ -88,14 +88,10 @@ End
 
 Describe "🖥 The Environment Variables should be defined as:"
 Parameters
-"DATABASE_USER" "postgres"
-"DATABASE_PASSWORD" "password"
-"DATABASE_HOST" "localhost"
-"DATABASE_PORT" "5432"
-"DATABASE_NAME" "postgres"
-"DATABASE_URI" "postgres://postgres:password@localhost:5432/postgres"
+"DATABASE_URI" "postgresql://postgres:postgres@127.0.0.1:54322/postgres"
 "SENTIO_API_URL" "https://app.sentio.xyz/api/v1/analytics/fuellabs/mira-mainnet/sql/execute"
 "NX_VERBOSE_LOGGING" true
+"NEXT_PUBLIC_ENABLE_AUTOLOGIN" "true"
 End
 
 Example "${1}=$2"
@@ -108,7 +104,6 @@ Describe "🐚 Ports should be defined and not conflict:"
 Skip if "Running Inside Zellij Session" [ "$(echo $ZELLIJ)" = "0" ]
 
 Parameters
-"DATABASE_PORT" "5432"
 "APP_DEV_SERVER_PORT" "3000"
 "MICROGAME_DEV_SERVER_PORT" "8000"
 "STORYBOOK_DEV_SERVER_PORT" "6006"
@@ -123,4 +118,39 @@ When run nc -zv localhost ${!1}
 The status should be failure
 The error should include 'Connection refused'
 End
+End
+
+Describe "💿🟩 If Supabase is enabled:"
+Skip if "Supabase disabled" [ "$SUPABASE" != "true" ]
+
+Describe "🐳 Docker"
+
+It "socket should be activated"
+When run docker info
+The status should be success
+The output should not include 'ERROR'
+End
+
+Describe "container ports should not conflict:"
+Skip if "Running Inside Zellij Session" [ "$(echo $ZELLIJ)" = "0" ]
+
+Parameters
+"API" "54321"
+"GraphQL" "54321"
+"S3 Storage" "54321"
+"DB" "54322"
+"Studio" "54323"
+"Inbucket" "54324"
+End
+
+Example "$1=${2}"
+When run nc -zv localhost ${2}
+The status should be failure
+The error should include 'Connection refused'
+End
+
+End
+
+End
+
 End

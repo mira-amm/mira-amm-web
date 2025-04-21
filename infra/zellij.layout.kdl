@@ -90,7 +90,7 @@ layout {
         pane {
             name "💿 DATABASE"
             command "lazysql"
-            args "postgres://postgres:password@127.0.0.1:5432/postgres?sslmode=disable"
+            args "postgresql://postgres:postgres@127.0.0.1:54322/postgres?sslmode=disable"
         }
         pane {
             name "🔌 API"
@@ -135,6 +135,11 @@ layout {
                 command "pnpm"
                 args "nx" "preview" "infra"
                 start_suspended true
+            }
+    }
+    tab name="🐳 CONTAINERS" split_direction="vertical" cwd="../" {
+            pane {
+                command "lazydocker"
             }
     }
 }
