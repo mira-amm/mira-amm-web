@@ -1,28 +1,65 @@
 {
   "$schema": "./node_modules/nx/schemas/nx-schema.json",
-  "targetDefaults": {
-    "build": {
-      "outputs": ["{projectRoot}/.next"],
-      "cache": true
-    }
+  "namedInputs": {
+    "default": [
+      "{projectRoot}/**/*",
+      "sharedGlobals"
+    ],
+    "production": [
+      "default",
+      "!{projectRoot}/**/?(*.)+(spec|test).[jt]s?(x)?(.snap)",
+      "!{projectRoot}/tsconfig.spec.json",
+      "!{projectRoot}/eslint.config.js",
+      "!{projectRoot}/**/*.stories.@(js|jsx|ts|tsx|mdx)",
+      "!{projectRoot}/.storybook/**/*",
+      "!{projectRoot}/tsconfig.storybook.json",
+      "!{projectRoot}/src/test-setup.[jt]s"
+    ],
+    "sharedGlobals": [
+      "{workspaceRoot}/package.json",
+      "{workspaceRoot}/pnpm-lock.yaml"
+    ]
   },
   "plugins": [
     {
-      "plugin": "@nx/eslint/plugin",
-      "options": {
-        "targetName": "eslint:lint"
-      }
-    },
-    {
       "plugin": "@nx/next/plugin",
       "options": {
-        "startTargetName": "next:start",
-        "buildTargetName": "next:build",
-        "devTargetName": "next:dev",
+        "startTargetName": "start",
+        "buildTargetName": "build",
+        "devTargetName": "dev",
         "serveStaticTargetName": "serve-static",
         "buildDepsTargetName": "build-deps",
         "watchDepsTargetName": "watch-deps"
       }
+    },
+    {
+      "plugin": "@nx/storybook/plugin",
+      "options": {
+        "serveStorybookTargetName": "storybook",
+        "buildStorybookTargetName": "build-storybook",
+        "testStorybookTargetName": "test-storybook",
+        "staticStorybookTargetName": "static-storybook"
+      }
+    },
+    {
+      "plugin": "@nx/playwright/plugin",
+      "options": {
+        "targetName": "e2e"
+      }
     }
-  ]
+  ],
+  "release": {
+"version": {
+      "conventionalCommits": true
+    },
+    "projects": [
+      "mira",
+    ]
+  },
+   "changelog": {
+      "workspaceChangelog": {
+        "file": false,
+        "createRelease": "github"
+      }
+    }
 }

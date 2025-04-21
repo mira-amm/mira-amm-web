@@ -1,0 +1,7 @@
+name: events
+url: http://127.0.0.1:3000/api/events
+params:
+- name: fromBlock
+  value: '100'
+- name: toBlock
+  value: '200'

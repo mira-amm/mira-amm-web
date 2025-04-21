@@ -1,0 +1,47 @@
+
+views {
+    view index {
+        title: "System Context"
+        description: "Top-level Overview"
+        include *
+        exclude external-providers -> platform
+        exclude screenplay-pattern
+    }
+
+    view external-providers of external-providers {
+        include *
+        include enterprise-management.**
+        include marketing-and-communication.**
+        include ui-ux-design.**
+        include software-development.**
+    }
+
+    view platform of platform {
+    title: "Mira Platform"
+        include *
+        include packages.**
+        include documentation.*
+        include tech-stack
+        include backend.*
+        include external-providers.software-development._
+	}
+
+    view tech-stack of platform.tech-stack {
+    title: "Tech Stack"
+        include *
+        include documentation.*
+        include architecture.*
+        include languages.*
+        include libraries.*
+        include frameworks.*
+        include database.*
+        include devops.*
+	}
+
+    view screenplay-pattern of screenplay-pattern {
+        title: "Screenplay Pattern"
+        description: "Behaviour-Driven Development framework for scalable and performant End-to-End Tests."
+        include *
+        autoLayout LeftRight
+    }
+}

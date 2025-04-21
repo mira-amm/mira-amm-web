@@ -1,0 +1,21 @@
+{
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "lint": "next lint",
+    "lint:fix": "next lint --fix",
+    "test:e2e": "playwright test --ui",
+    "test:e2e-ci": "playwright test",
+    "rewards": "tsx scripts/getAllCampaignRewardsForEpoch.ts"
+  },
+  "dependencies": {
+    "next": "14.2.15",
+    "react": "^18",
+    "react-dom": "^18"
+  },
+  "devDependencies": {
+    "@types/node": "^20",
+    "@types/react": "^18",
+    "@types/react-dom": "^18"
+  }
+}

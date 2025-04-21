@@ -1,0 +1,6 @@
+name: "Mira"
+description: The Mira Platform's Infrastructure-as-Code
+runtime:
+  name: nodejs
+  options:
+    packagemanager: pnpm

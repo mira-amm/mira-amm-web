@@ -1,0 +1,244 @@
+@import "tailwindcss";
+@import "fumadocs-ui/css/black.css";
+@import "fumadocs-ui/css/preset.css";
+
+@source '../../../node_modules/fumadocs-ui/dist/**/*.js';
+
+/* @font-face { */
+/*   font-family: 'JetBrains Mono'; */
+/*   src: url('../../shared/assets/fonts/JetBrains_Mono/JetBrainsMono-VariableFont_wght.ttf'); */
+/* } */
+
+@layer base {
+  :root {
+    --background: 0 0% 0%;
+    --foreground: 0 0% 100%;
+    --card: 0 0% 11% / 40%;
+    --card-foreground: 0 0% 100%;
+    --popover: 0 0% 12% / 40%;
+    --popover-foreground: 0 0% 100%;
+    --primary: 116 74% 52%;
+    --primary-foreground: 0 0% 0%;
+    --secondary: 87 87% 50%;
+    --secondary-foreground: 0 0% 0%;
+    --muted: 0 0% 100% / 25%;
+    --muted-foreground: 116 74% 52% / 50%;
+    --accent: 116 74% 52%;
+    --accent-foreground: 0 0% 100%;
+    --destructive: 0 72% 51%;
+    --destructive-foreground: 0 0% 90%;
+    --border: 0 0% 100% / 15%;
+    --input: 0 0% 100%;
+    --ring: 0 0% 100% / 15%;
+    --radius: 0.5rem;
+    --greendiant-start: 78 100% 42%;
+    --greendiant-end: 136 98% 45%;
+    --g-keyboardblack-start: 0 0% 5%;
+    --light-black: 0 0% 0% / 5%;
+    --color-1: 0 100% 63%;
+    --color-2: 270 100% 63%;
+    --color-3: 210 100% 63%;
+    --color-4: 195 100% 63%;
+    --color-5: 90 100% 63%;
+  }
+
+  :dark {
+    --background: 0 0% 0%;
+    --foreground: 0 0% 100%;
+    --card: 0 0% 11% / 40%;
+    --card-foreground: 0 0% 100%;
+    --popover: 0 0% 12% / 40%;
+    --popover-foreground: 0 0% 100%;
+    --primary: 116 74% 52%;
+    --primary-foreground: 0 0% 0%;
+    --secondary: 87 87% 50%;
+    --secondary-foreground: 0 0% 0%;
+    --muted: 0 0% 100% / 25%;
+    --muted-foreground: 116 74% 52% / 50%;
+    --accent: 116 74% 52%;
+    --accent-foreground: 0 0% 100%;
+    --destructive: 0 72% 51%;
+    --destructive-foreground: 0 0% 90%;
+    --border: 0 0% 100% / 15%;
+    --input: 0 0% 100%;
+    --ring: 0 0% 100% / 15%;
+    --radius: 0.5rem;
+    --greendiant-start: 78 100% 42%;
+    --greendiant-end: 136 98% 45%;
+    --g-keyboardblack-start: 0 0% 5%;
+    --light-black: 0 0% 0% / 5%;
+    --color-1: 0 100% 63%;
+    --color-2: 270 100% 63%;
+    --color-3: 210 100% 63%;
+    --color-4: 195 100% 63%;
+    --color-5: 90 100% 63%;
+  }
+}
+
+@theme {
+  --color-primary: hsl(var(--primary));
+  --color-secondary: hsl(var(--secondary));
+  --color-border: hsl(var(--border));
+  --color-input: hsl(var(--input));
+  --color-ring: hsl(var(--ring));
+  --color-background: hsl(var(--background));
+  --color-foreground: hsl(var(--foreground));
+  --color-primary-foreground: hsl(var(--primary-foreground));
+  --color-secondary-foreground: hsl(var(--secondary-foreground));
+  --color-destructive: hsl(var(--destructive));
+  --color-destructive-foreground: hsl(var(--destructive-foreground));
+  --color-muted: hsl(var(--muted));
+  --color-muted-foreground: hsl(var(--muted-foreground));
+  --color-accent: hsl(var(--accent));
+  --color-accent-foreground: hsl(var(--accent-foreground));
+  --color-popover: hsl(var(--popover));
+  --color-popover-foreground: hsl(var(--popover-foreground));
+  --color-card: hsl(var(--card));
+  --color-card-foreground: hsl(var(--card-foreground));
+  --color-1: hsl(var(--color-1));
+  --color-2: hsl(var(--color-2));
+  --color-3: hsl(var(--color-3));
+  --color-4: hsl(var(--color-4));
+  --color-5: hsl(var(--color-5));
+  --radius-lg: var(--radius);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-sm: calc(var(--radius) - 4px);
+
+  --animate-accordion-down: accordion-down 0.2s ease-out;
+  --animate-accordion-up: accordion-up 0.2s ease-out;
+  --animate-orbit: orbit calc(var(--duration) * 1s) linear infinite;
+  --animate-rainbow: rainbow var(--speed, 2s) infinite linear;
+
+  @keyframes accordion-down {
+    from {
+      height: 0;
+    }
+
+    to {
+      height: var(--radix-accordion-content-height);
+    }
+  }
+
+  @keyframes accordion-up {
+    from {
+      height: var(--radix-accordion-content-height);
+    }
+
+    to {
+      height: 0;
+    }
+  }
+
+  @keyframes orbit {
+    0% {
+      transform: rotate(0deg) translateY(calc(var(--radius) * 1px)) rotate(0deg);
+    }
+
+    100% {
+      transform: rotate(360deg) translateY(calc(var(--radius) * 1px))
+        rotate(-360deg);
+    }
+  }
+
+  @keyframes rainbow {
+    0% {
+      background-position: 0%;
+    }
+
+    100% {
+      background-position: 200%;
+    }
+  }
+}
+
+@layer utilities {
+  .bg-greendiant {
+    background-image: linear-gradient(
+      200deg,
+      var(--color-secondary) 10%,
+      var(--color-primary) 90%
+    );
+  }
+
+  .bg-g-keyboardBlack {
+    background-image: linear-gradient(
+      300deg,
+      var(--color-g-keyboardblack-start) -10%,
+      var(--color-background) 100%
+    );
+  }
+
+  .bg-g-nav-drawer-background {
+    background-image: linear-gradient(
+      90deg,
+      var(--color-background) 0%,
+      var(--color-light-black) 25%,
+      var(--color-light-black) 75%,
+      var(--color-background) 100%
+    );
+  }
+}
+
+@layer utilities {
+  .shadow-dropShadow {
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  }
+
+  .shadow-innerShadow {
+    box-shadow: inset 0 4px 4px rgba(0, 0, 0, 0.25);
+  }
+
+  .shadow-buttonKeyboard {
+    box-shadow:
+      0.5px 0.5px 0px 0.6px rgba(0, 0, 0, 0.7),
+      0.35px 0.35px 0.2px 0.75px rgba(255, 255, 255, 0.15) inset,
+      4px 2px 4px -1px rgba(0, 0, 0, 0.25);
+  }
+
+  .shadow-buttonKeyboardHover {
+    box-shadow:
+      0.25px 0.25px 0px 0.5px #0a0a0a,
+      0.2px 0.2px 0.2px 0.35px rgba(255, 255, 255, 0.25) inset,
+      0.2px 0.2px 0px 0.75px rgba(137, 237, 16, 0.25),
+      0px 0px 10px -4px rgba(137, 237, 16, 0.6),
+      4px 2px 4px -1px rgba(0, 0, 0, 0.25);
+  }
+}
+
+/* width */
+::-webkit-scrollbar {
+  width: 0.75em;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background-color: var(--color-background);
+  border-radius: 100px;
+  background-clip: padding-box;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: var(--color-muted);
+  border: 0.1em solid var(--border);
+  border-radius: 100vw;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-primary);
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    font-family: "JetBrains Mono", monospace;
+    @apply bg-background text-foreground;
+    font-feature-settings:
+      "rlig" 1,
+      "calt" 1;
+  }
+}

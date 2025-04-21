@@ -1,0 +1,5 @@
+name: asset
+url: http://127.0.0.1:3000/api/asset
+params:
+- name: id
+  value: '123456'
