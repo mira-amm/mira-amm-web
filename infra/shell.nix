@@ -71,6 +71,8 @@ in pkgs.mkShell {
 
     export SENTIO_API_URL="https://app.sentio.xyz/api/v1/analytics/fuellabs/mira-mainnet/sql/execute"
 
+    export PAYLOAD_SECRET="YOUR_SECRET_HERE"
+
     doctor() {
     shellspec --format documentation
     }
