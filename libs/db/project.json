@@ -14,23 +14,13 @@
   ],
   "targets": {
     "start": {
-      "dependsOn": [
-        "create"
-      ],
-      "command": "pg_ctl status > /dev/null 2>&1 || pg_ctl start -o '-c  config_file=postgresql.conf -c unix_socket_directories=$PGDATA'",
+      "command": "if [ ${SUPABASE:-false} = true ]; then supabase start; elif [ ! -d data ]; then pg_ctl init -o '--username=postgres'; pg_ctl start -o '-c config_file=postgresql.conf -c unix_socket_directories=$PGDATA'; else pg_ctl start -o '-c config_file=postgresql.conf -c unix_socket_directories=$PGDATA'; fi",
       "options": {
         "cwd": "libs/db"
       }
     },
-    "create": {
-      "command": "if [ ! -d data ]; then pg_ctl init -o '--username=$PGUSER'; fi",
-      "options": {
-        "cwd": "libs/db",
-      },
-      "cache": true
-    },
     "stop": {
-      "command": "pg_ctl stop",
+      "command": "if [ ${SUPABASE:-false} = true ]; then supabase stop; else pg_ctl stop; fi",
       "options": {
         "cwd": "libs/db"
       }
@@ -75,6 +65,6 @@
       "options": {
         "cwd": "apps/microgame"
       }
-    },
+    }
   }
 }
