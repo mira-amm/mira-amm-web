@@ -117,8 +117,8 @@ importers:
         specifier: 0.21.0
         version: 0.21.0
       mira-dex-ts:
-        specifier: ^1.0.42
-        version: 1.0.42(fuels@0.96.1(encoding@0.1.13))
+        specifier: ^1.1.42
+        version: 1.1.42(fuels@0.96.1(encoding@0.1.13))
       next:
         specifier: 15.2.2
         version: 15.2.2(@babel/core@7.26.10)(@opentelemetry/api@1.9.0)(@playwright/test@1.51.1)(babel-plugin-macros@3.1.0)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)(sass@1.86.0)
@@ -11552,10 +11552,10 @@ packages:
       typescript:
         optional: true
 
-  mira-dex-ts@1.0.42:
-    resolution: {integrity: sha512-QP0qM8T7g7c45lOnMzlvfmiuSXy0vOARVfMv/d7Q7ZEoGdIVt9rwALARjltVS0Yi7u7fnVdGdqIn9PIEV9osVg==}
+  mira-dex-ts@1.1.42:
+    resolution: {integrity: sha512-YQQzQPSys/u/5S806E83skmjTQlm0Bajci0pvJpUy2GuEuPZsQs6VCHNI9/BnkXsr51afrTWUXpmgGLjV9g/wQ==}
     peerDependencies:
-      fuels: ^0.96.1
+      fuels: ^0.100.3
 
   mitt@3.0.1:
     resolution: {integrity: sha512-vKivATfr97l2/QBCYAkXYDbrIWPM2IIKEl7YPhjCvKlG3kE2gm+uBo6nEXK3M5/Ffh/FLpKExzOQ3JJoJGFKBw==}
@@ -30294,7 +30294,7 @@ snapshots:
     optionalDependencies:
       typescript: 5.8.2
 
-  mira-dex-ts@1.0.42(fuels@0.96.1(encoding@0.1.13)):
+  mira-dex-ts@1.1.42(fuels@0.96.1(encoding@0.1.13)):
     dependencies:
       fuels: 0.96.1(encoding@0.1.13)
 
