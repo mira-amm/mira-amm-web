@@ -16,7 +16,7 @@ const cacheControlHeaders = {
 };
 
 export async function GET(request: NextRequest): Promise<NextResponse> {
-  if (!process.env.SENTIO_API_KEY || !process.env.SENTIO_API_URL) {
+  if (!process.env.SENTIO_API_KEY) {
     throw new Error("SENTIO_API_KEY and SENTIO_API_URL must be set");
   }
 
