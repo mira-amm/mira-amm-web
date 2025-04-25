@@ -9,10 +9,10 @@ The status should be success
 The line 3 should be undefined
 End
 
-It "version 10.8.1"
+It "version 10.9.0"
 When run pnpm --version
 The status should be success
-The output should equal '10.8.1'
+The output should equal '10.9.0'
 End
 End
 
