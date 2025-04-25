@@ -18,7 +18,7 @@ import {NetworkUrl} from "@/src/utils/constants";
 
 type ExternalConnectorConfig = Partial<{
   chainId: number;
-  fuelProvider: Promise<Provider>;
+  fuelProvider: Provider;
 }>;
 type Props = {
   children: ReactNode;
@@ -53,7 +53,7 @@ const FUEL_CONFIG = createFuelConfig(() => {
     ],
   });
 
-  const fuelProvider = Provider.create(NetworkUrl);
+  const fuelProvider = new Provider(NetworkUrl);
 
   const externalConnectorConfig: ExternalConnectorConfig = {
     chainId: CHAIN_IDS.fuel.mainnet,
