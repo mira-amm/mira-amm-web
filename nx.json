@@ -48,18 +48,18 @@
       }
     }
   ],
-  "release": {
-"version": {
-      "conventionalCommits": true
-    },
-    "projects": [
-      "mira",
-    ]
+"release": {
+  "version": {
+    "conventionalCommits": true
   },
-   "changelog": {
-      "workspaceChangelog": {
-        "file": false,
-        "createRelease": "github"
-      }
+  "projects": [
+    "mira"
+  ],
+  "changelog": {
+    "workspaceChangelog": {
+      "file": false,
+      "createRelease": "github"
     }
+  }
+}
 }
