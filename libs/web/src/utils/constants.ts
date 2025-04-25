@@ -16,7 +16,7 @@ export const FUEL_ASSET_ID =
 
 export const DefaultTxParams: TxParams = {
   gasLimit: 2_000_000,
-  maxFee: 100_000,
+  maxFee: 275_000,
 } as const;
 
 export const MaxDeadline = 4_294_967_295 as const;
