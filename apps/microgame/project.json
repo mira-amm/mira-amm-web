@@ -25,14 +25,17 @@
         },
       }
     },
-    "build": {
-      "command": "cross-env NODE_OPTIONS=--no-deprecation next build",
+    "start": {
+      "dependsOn": [
+          "build"
+      ],
+      "command": "cross-env NODE_OPTIONS=--no-deprecation next start -p $MICROGAME_DEV_SERVER_PORT",
       "options": {
         "cwd": "apps/microgame"
       }
     },
-    "start": {
-      "command": "cross-env NODE_OPTIONS=--no-deprecation next start -p $PAYLOADCMS_DEV_SERVER_PORT",
+    "build": {
+      "command": "cross-env NODE_OPTIONS=--no-deprecation next build",
       "options": {
         "cwd": "apps/microgame"
       }
