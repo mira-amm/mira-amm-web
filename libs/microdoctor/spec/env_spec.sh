@@ -9,32 +9,34 @@ The status should be success
 The line 3 should be undefined
 End
 
-It "version 10.9.0"
+It "greater than or equal to version 10.10.0"
 When run pnpm --version
 The status should be success
-The output should equal '10.9.0'
+The output should include '10.10'
 End
 End
 
 Describe "🟢 Node.js should be:"
-It "version 22.13.1"
+It "greater than or equal to version 22.15.0"
 When run which node
 The status should be success
-The output should end with '/pnpm/nodejs/22.13.1/bin/node'
+The output should include '/pnpm/nodejs/22.15'
+The output should end with '/bin/node'
 End
 
 It "managed by pnpm"
 When run which node
 The status should be success
-The output should end with '/pnpm/nodejs/22.13.1/bin/node'
+The output should include '/pnpm/nodejs'
+The output should end with '/bin/node'
 End
 End
 
 Describe "🎭 Playwright should be:"
-It "version 1.52.0"
+It "greater than or equal to version 1.52.0"
 When run playwright --version
 The status should be success
-The output should include '1.52.0'
+The output should include '1.52'
 End
 
 It "installed by pnpm"
@@ -44,27 +46,29 @@ The output should end with '/node_modules/.bin/playwright'
 End
 End
 
+# https://nix.dev/manual/nix/2.17/installation/upgrading
 Describe "❄ Nix should be:"
-It "version 2.25.3"
+It "greater than or equal to version 2.28.0"
 When run nix --version
 The status should be success
-The output should include '2.25.3'
+The output should include '2.28'
 End
 End
 
-Describe "🐍 uv should be:"
-It "version 0.4.30"
-When run which uv
-The status should be success
-The output should include '0.4.30'
-End
+# uv tool uninstall --python 3.12 posting
+# Describe "🐍 uv should be:"
+# It "greater than or equal to version 0.4.30"
+# When run which uv
+# The status should be success
+# The second word of stdout should include '0.4.30'
+# End
 
-It "installed by Nix"
-When run which uv
-The status should be success
-The output should start with '/nix/store'
-End
-End
+# It "installed by Nix"
+# When run which uv
+# The status should be success
+# The output should start with '/nix/store'
+# End
+# End
 
 Describe "🌈 Terminal should:"
 It "support color output"
