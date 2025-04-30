@@ -74,21 +74,6 @@ const SettingsModalContent = ({slippage, setSlippage}: Props) => {
     setSlippage(value);
   };
 
-  const getPercentPositionClass = (length: number) => {
-    switch (length) {
-      case 1:
-        return styles.inputPercentPosition;
-      case 2:
-        return styles.inputPercentPosition2;
-      case 3:
-        return styles.inputPercentPosition3;
-      case 4:
-        return styles.inputPercentPosition4;
-      default:
-        return styles.inputPercentPosition2;
-    }
-  };
-
   const updateSlippage = (value: number) => {
     const rounded = Number(value.toFixed(1));
     setSelectedSlippageValue(rounded * 100);
@@ -154,15 +139,6 @@ const SettingsModalContent = ({slippage, setSlippage}: Props) => {
             ref={inputRef}
           />
 
-          <span
-            className={clsx(
-              styles.percentSuffix,
-              "mc-mono-m",
-              getPercentPositionClass(inputValue.length),
-            )}
-          >
-            %
-          </span>
           <div className={styles.customSpinner}>
             <button type="button" onClick={increment}>
               ▲
@@ -171,6 +147,7 @@ const SettingsModalContent = ({slippage, setSlippage}: Props) => {
               ▼
             </button>
           </div>
+          <span className={clsx(styles.percentSuffix, "mc-mono-m")}>%</span>
         </div>
       </div>
     </div>

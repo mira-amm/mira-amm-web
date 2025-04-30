@@ -59,8 +59,8 @@
 }
 
 .slippageInput {
-  width: 80px;
-  padding: 10px 12px;
+  width: 90px;
+  padding: 10px 8px;
   border: 1px solid var(--mc-black-1);
   border-radius: 8px;
 }
@@ -105,28 +105,9 @@
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
+  right: 5px;
   color: var(--mc-black);
   pointer-events: none;
-}
-
-.inputPercentPosition {
-  right: 45px;
-}
-
-.inputPercentPosition2 {
-  right: 35px;
-}
-
-.inputPercentPosition3 {
-  right: 28px;
-}
-
-.inputPercentPosition4 {
-  right: 20px;
-}
-
-.inputPercentPosition5 {
-  right: 0;
 }
 
 /* Hide default spinner for all browsers */
@@ -143,7 +124,7 @@
 .customSpinner {
   position: absolute;
   top: 7px;
-  right: 6px;
+  right: 15px;
   display: flex;
   flex-direction: column;
 }
