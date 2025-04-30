@@ -47,6 +47,7 @@
     "@radix-ui/react-tooltip": "^1.2.4",
     "@radix-ui/react-visually-hidden": "^1.2.0",
     "@sentry/nextjs": "^9.14.0",
+    "@swc/helpers": "0.5.17",
     "@tailwindcss/postcss": "^4.1.4",
     "@tailwindcss/typography": "^0.5.16",
     "@tailwindcss/vite": "^4.1.4",
@@ -78,7 +79,8 @@
     "reflect-metadata": "^0.1.14",
     "sharp": "^0.33.5",
     "use-query-params": "^2.2.1",
-    "usehooks-ts": "^3.1.1"
+    "usehooks-ts": "^3.1.1",
+    "viem": "^2.28.1"
   },
   "devDependencies": {
     "@antfu/eslint-config": "^3.16.0",
