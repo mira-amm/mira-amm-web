@@ -33,6 +33,7 @@ in pkgs.mkShell {
     #====================================================
     #                      FLAGS
     #====================================================
+    # export SUPABASE=true # Requires Docker
     export NX_VERBOSE_LOGGING=true
     export NEXT_PUBLIC_ENABLE_AUTOLOGIN="true"
     export TERM=xterm-256color
@@ -40,7 +41,6 @@ in pkgs.mkShell {
     #====================================================
     #                    DATABASE
     #====================================================
-
     export PGDATA="$PWD/libs/db/data"
     export PG_COLOR=always
     export DATABASE_URI="postgresql://postgres:postgres@127.0.0.1:54322/postgres"
