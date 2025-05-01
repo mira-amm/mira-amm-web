@@ -3,6 +3,12 @@
   "$schema": "../node_modules/nx/schemas/project-schema.json",
   "sourceRoot": "infra",
   "projectType": "application",
+  "implicitDependencies": [
+    "microdoctor",
+    "api",
+    "db",
+    "platform-vercel"
+  ],
   "targets": {
     "dev": {
       "command": "nix-shell",
