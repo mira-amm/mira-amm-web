@@ -12,7 +12,7 @@ layout {
             plugin location="zellij:status-bar"
         }
     }
-    tab name="🧮 SERVERS" focus=true split_direction="vertical" cwd="../"  {
+    tab name="🧮 SERVERS" focus=true split_direction="vertical" {
             pane {
                 name "🕹 Microgame | 8000 | microgame.mira.ly"
                 command "pnpm"
@@ -71,10 +71,9 @@ layout {
             }
 
             pane {
-                cwd "infra"
                 name "📁 File Browser - Yazi"
                 command "env"
-                args "YAZI_CONFIG_HOME=./" "yazi"
+                args "YAZI_CONFIG_HOME=./apps/mide" "yazi"
             }
 
         floating_panes {
@@ -86,7 +85,7 @@ layout {
         }
     }
 
-    tab name="🔍🤨 INSPECT" split_direction="vertical" cwd="../" {
+    tab name="🔍🤨 INSPECT" split_direction="vertical" {
         pane {
             name "🔌 API"
             command "pnpm"
@@ -113,7 +112,7 @@ layout {
             }
         }
     }
-    tab name="🧪 TESTING" split_direction="vertical" cwd="../" {
+    tab name="🧪 TESTING" split_direction="vertical" {
             pane {
                 name "🎭 Web"
                 command "pnpm"
@@ -130,7 +129,7 @@ layout {
             }
             }
     }
-    tab name="☁ DEPLOYMENTS" split_direction="vertical" cwd="../" {
+    tab name="☁ DEPLOYMENTS" split_direction="vertical" {
             pane {
                 name "🔺 Vercel"
                 command "pnpm"
@@ -138,7 +137,7 @@ layout {
                 start_suspended true
             }
     }
-    tab name="🐳 CONTAINERS" split_direction="vertical" cwd="../" {
+    tab name="🐳 CONTAINERS" split_direction="vertical" {
             pane {
                 command "lazydocker"
             }

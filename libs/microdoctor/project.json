@@ -16,9 +16,6 @@
     },
     "shell": {
       "command": "nix-shell --argstr arg 'doctor'",
-      "options": {
-        "cwd": "infra"
-      },
     },
   }
 }

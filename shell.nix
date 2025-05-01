@@ -1,7 +1,7 @@
 { pkgs ? import <nixpkgs> {}, arg ? "" }:
 
 let
-  logoPath = "../libs/shared/assets/mira-wordmark-long-light.png";
+  logoPath = "libs/shared/assets/mira-wordmark-long-light.png";
 
 in pkgs.mkShell {
   name = "microchain-dev-env";
@@ -41,7 +41,7 @@ in pkgs.mkShell {
     #                    DATABASE
     #====================================================
 
-    export PGDATA="$PWD/../libs/db/data"
+    export PGDATA="$PWD/libs/db/data"
     export PG_COLOR=always
     export DATABASE_URI="postgresql://postgres:postgres@127.0.0.1:54322/postgres"
 
@@ -84,7 +84,7 @@ in pkgs.mkShell {
     uv tool install --python 3.12 posting
     fi
 
-    zellij --config zellij.config.kdl -n zellij.layout.kdl
+    zellij --config apps/mide/zellij.config.kdl -n apps/mide/zellij.layout.kdl
 
     pnpm nx stop db
 
