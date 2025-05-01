@@ -1,5 +1,4 @@
-import { useState, useEffect } from 'react';
-import { ASCII_LOGO, BOOT_MESSAGES } from '../../lib/constants';
+import {ASCII_LOGO, BOOT_MESSAGES} from "../../lib/constants";
 
 const BootSequence = () => {
   const [visibleMessages, setVisibleMessages] = useState<string[]>([]);
@@ -22,14 +21,16 @@ const BootSequence = () => {
 
   return (
     <div className="boot-sequence">
-      {/* ASCII Logo */}
-      <pre className="mb-4 text-terminal-green font-bold text-center animate-text-glow">
+      <pre className="boot-logo text-terminal-green font-bold text-center">
         {ASCII_LOGO}
       </pre>
 
-      <div className="space-y-1 opacity-80">
-        {visibleMessages.map((message, index) => (
-          <p key={index} className={message.includes("NOTICE") ? "text-terminal-yellow" : ""}>
+      <div className="boot-messages opacity-80">
+        {BOOT_MESSAGES.map((message, index) => (
+          <p
+            key={index}
+            className={`boot-message ${message.includes("NOTICE") ? "text-terminal-yellow" : ""}`}
+          >
             {message}
           </p>
         ))}
