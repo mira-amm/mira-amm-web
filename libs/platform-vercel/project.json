@@ -1,0 +1,14 @@
+{
+  "name": "platform-vercel",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/platform-vercel",
+  "projectType": "library",
+  "targets": {
+    "dev": {
+      "command": "pulumi preview -e -s 'dev'",
+      "options": {
+        "cwd": "libs/platform-vercel"
+      }
+    }
+  }
+}
