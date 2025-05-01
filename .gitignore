@@ -20,13 +20,15 @@
 **/.drizzle
 
 #====================================================
-#                     Caches
+#                 Caches & Logs
 #====================================================
 .nx/cache
 .nx/workspace-data
 apps/microgame/media
 libs/db/data/*
 **/postgresql.log
+logs
+*.log
 libs/db/supabase/.branches
 libs/db/supabase/.temp
 

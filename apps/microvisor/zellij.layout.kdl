@@ -20,6 +20,11 @@ layout {
             }
             pane {
             split_direction "horizontal"
+                pane {
+                    name "🔬 Microscope"
+                    command "pnpm"
+                    args "nx" "dev" "microscope"
+                }
             pane {
                 name "🟩 Web App | 3000 | mira.ly"
                 command "pnpm"
@@ -48,6 +53,7 @@ layout {
                     args "nx" "dev" "arch"
                     start_suspended true
                 }
+            pane split_direction="vertical" {
                 pane {
                     name "🗺 Project Graph - Nx | 4211 | graph.mira.ly"
                     focus true
@@ -55,19 +61,20 @@ layout {
                     args "nx" "graph" "--groupByFolder"
                     start_suspended true
                 }
+                }
             pane split_direction="vertical" {
-            pane {
-                name "📊 Drizzle Studio | local.drizzle.studio + 👀 Schema Visualizer | 5600"
-                command "pnpm"
-                args "nx" "view" "db"
-                start_suspended true
-            }
-            pane {
-                name "📦 Node Modules Inspector | 7000"
-                command "pnpm"
-                args "node-modules-inspector" "--depth=7" "--port=7000"
-                start_suspended true
-            }
+                pane {
+                    name "📊 Drizzle Studio | local.drizzle.studio + 👀 Schema Visualizer | 5600"
+                    command "pnpm"
+                    args "nx" "view" "db"
+                    start_suspended true
+                }
+                pane {
+                    name "📦 Node Modules Inspector | 7000"
+                    command "pnpm"
+                    args "node-modules-inspector" "--depth=7" "--port=7000"
+                    start_suspended true
+                }
             }
             }
 

@@ -1,0 +1,7 @@
+{
+  "name": "Microscope",
+  "description": "Microchain Browser Extension",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module"
+}
