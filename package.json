@@ -9,7 +9,6 @@
   },
   "engineStrict": true,
   "scripts": {
-    "dev": "nx dev infra",
     "clean": "git clean -fdX -e '!**/.env*' -e '!libs/db/data' # 🧽 Remove any and all files listed in .gitignore except .env and libs/db/data",
     "nuke": "nx destroy db; sudo git clean -fdX; # 🚨 WARNING: REMOVE ANY AND ALL FILES LISTED IN .gitignore INCLUDING .env and libs/db/data",
     "ri": "pnpm clean; pnpm i; pnpm d; # 🧹 Perform a clean install",

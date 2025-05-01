@@ -7,9 +7,9 @@ icon: SquareTerminal
 
 ## Install Package Managers
 
-Clean existing system environment. You can re-install these later.
+**Optional but highly recommended:** Clean existing system environment. You can re-install these later.
 ```sh title="Terminal"
-sudo rm -rf "$(which npm node yarn pnpm)" "$(where npm node yarn pnpm)"
+sudo rm -rf "$(which nvm npm node yarn pnpm)" "$(where nvm npm node yarn pnpm)"
 ```
 
 ### [Nix](https://nixos.org/)
@@ -28,12 +28,12 @@ curl -fsSL https://get.pnpm.io/install.sh | sh -
 Re-open the terminal once installation is complete.
 
 Set [Node.js](https://nodejs.org/en) version.
+
 ```sh title="Terminal"
 pnpm env use --global 22.13.1
 ```
 
 ## Configure [GitHub CLI](https://github.com/cli/cli#installation)
-
 
 Create a GitHub account if you don't already have one.
 
@@ -87,8 +87,9 @@ Open VSCode (Or your preferred editor):
 ⭐ Enjoy the project-specific IDE.
 
    ```sh title="Shell"
-   pnpm dev
+   nix-shell
    ```
+
 - Move panes & tabs: <kbd>Ctrl</kbd> + <kbd>left/right/up/down</kbd>
 - Toggle popup panes <kbd>Ctrl</kbd> + <kbd>F</kbd>
 

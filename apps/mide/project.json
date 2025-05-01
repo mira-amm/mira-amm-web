@@ -1,0 +1,12 @@
+{
+  "name": "mide",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "apps/mide",
+  "projectType": "application",
+  "implicitDependencies": [
+    "microdoctor",
+    "api",
+    "db",
+    "platform-vercel"
+  ],
+}
