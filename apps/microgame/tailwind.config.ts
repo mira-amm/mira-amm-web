@@ -1,8 +1,12 @@
-import type { Config } from "tailwindcss";
+import type {Config} from "tailwindcss";
+import sharedConfig from "../../libs/shared/ui/tailwind.config";
 
 export default {
-  darkMode: ["class"],
-  content: ["./src/**/*.{js,jsx,ts,tsx}"],
+  ...sharedConfig,
+  content: [
+    "./src/**/*.{js,jsx,ts,tsx}",
+    "../../libs/shared/**/*.{js,jsx,ts,tsx}",
+  ],
   theme: {
     extend: {
       borderRadius: {
@@ -13,7 +17,6 @@ export default {
       colors: {
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",
-        // Terminal colors
         terminal: {
           bg: "hsl(var(--terminal-bg))",
           green: "hsl(var(--terminal-green))",
@@ -21,7 +24,7 @@ export default {
           text: "hsl(var(--terminal-text))",
           red: "hsl(var(--terminal-red))",
           blue: "hsl(var(--terminal-blue))",
-          yellow: "hsl(var(--terminal-yellow))"
+          yellow: "hsl(var(--terminal-yellow))",
         },
         card: {
           DEFAULT: "hsl(var(--card))",
@@ -95,5 +98,5 @@ export default {
         "accordion-up": "accordion-up 0.2s ease-out",
       },
     },
-  }
+  },
 } satisfies Config;

@@ -13,10 +13,9 @@ import { cn } from "../../utils/cn";
 
 const Terminal = () => {
   const terminal = useTerminal();
-  const { state, validatePassword, processCommand, returnToTerminal } = terminal;
+  const { state, validatePassword, returnToTerminal } = terminal;
   const [passwordError, setPasswordError] = useState(false);
 
-  // Handle keydown events globally
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       // Handle Escape key to return to main terminal from game
