@@ -4,9 +4,9 @@ import {TsconfigPathsPlugin} from "tsconfig-paths-webpack-plugin";
 
 export default {
   stories: [
-    "./*.@(mdx|stories.@(js|jsx|ts|tsx))",
-    "../libs/docs/**/*.@(mdx|stories.@(js|jsx|ts|tsx))",
-    "../libs/shared/ui/**/*.@(mdx|stories.@(js|jsx|ts|tsx))",
+    // "../../../../../*.@(mdx|stories.@(ts|tsx))",
+    "../../../libs/docs/**/*.@(mdx|stories.@(ts|tsx))",
+    "../../../libs/shared/ui/**/*.@(mdx|stories.@(ts|tsx))",
   ],
   staticDirs: [
     // './public',
