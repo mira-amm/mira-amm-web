@@ -1,7 +1,7 @@
 { pkgs ? import <nixpkgs> {}, arg ? "" }:
 
 let
-  miraLogoPath = "../libs/shared/assets/mira-wordmark-long-light.png";
+  logoPath = "../libs/shared/assets/mira-wordmark-long-light.png";
 
 in pkgs.mkShell {
   name = "microchain-dev-env";
@@ -73,10 +73,6 @@ in pkgs.mkShell {
 
     export PAYLOAD_SECRET="YOUR_SECRET_HERE"
 
-    doctor() {
-    shellspec --format documentation
-    }
-
     case "${arg}" in
       doctor)
         pnpm nx check microdoctor
@@ -94,7 +90,7 @@ in pkgs.mkShell {
 
     zellij da -y
 
-    ascii-image-converter ${miraLogoPath} --color --full -b
+    ascii-image-converter ${logoPath} --color --full -b
 
     echo "🚪 Exiting Nix shell..."
     exit
