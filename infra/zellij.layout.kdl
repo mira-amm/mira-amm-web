@@ -95,8 +95,8 @@ layout {
         }
         pane {
             name "🔌 API"
-            command "posting"
-            args "-e" "infra/posting/dev.env" "--collection" "infra/posting"
+            command "pnpm"
+            args "nx" "dev" "api"
         }
         floating_panes {
             pane {
