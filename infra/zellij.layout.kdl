@@ -134,7 +134,7 @@ layout {
             pane {
                 name "🔺 Vercel"
                 command "pnpm"
-                args "nx" "preview" "infra"
+                args "nx" "dev" "platform-vercel"
                 start_suspended true
             }
     }
