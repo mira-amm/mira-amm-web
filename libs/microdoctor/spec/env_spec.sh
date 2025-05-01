@@ -1,4 +1,4 @@
-figlet -cf slant "💊 MicroDoctor"
+figlet -cf slant "💊 Microdoctor"
 
 # fastfetch -c all.jsonc
 
