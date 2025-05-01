@@ -4,7 +4,9 @@
   "[likec4]": {
     "editor.defaultFormatter": "likec4.likec4-vscode"
   },
-  "deno.enablePaths": ["supabase/functions"],
+  "deno.enablePaths": [
+    "supabase/functions"
+  ],
   "deno.lint": true,
   "deno.unstable": [
     "bare-node-builtins",
@@ -27,6 +29,9 @@
       "args": [
         "@playwright/mcp@latest"
       ]
+    },
+    "nx-mcp": {
+      "url": "http://localhost:9786/sse"
     }
   }
 }
