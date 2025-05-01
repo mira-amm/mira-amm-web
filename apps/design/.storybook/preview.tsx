@@ -14,7 +14,7 @@ import {
   darkUIStorybook,
   lightUIStorybook,
 } from "./themes-storybook-ui";
-import "../libs/shared/ui/global.css";
+import "../../../libs/shared/ui/global.css";
 
 const preview: Preview = {
   parameters: {
