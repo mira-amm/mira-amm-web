@@ -84,7 +84,7 @@ in pkgs.mkShell {
     uv tool install --python 3.12 posting
     fi
 
-    zellij --config apps/mide/zellij.config.kdl -n apps/mide/zellij.layout.kdl
+    zellij --config apps/microvisor/zellij.config.kdl -n apps/microvisor/zellij.layout.kdl
 
     pnpm nx stop db
 

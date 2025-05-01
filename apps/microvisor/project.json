@@ -1,7 +1,7 @@
 {
-  "name": "mide",
+  "name": "microvisor",
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
-  "sourceRoot": "apps/mide",
+  "sourceRoot": "apps/microvisor",
   "projectType": "application",
   "implicitDependencies": [
     "microdoctor",

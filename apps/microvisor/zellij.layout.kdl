@@ -12,7 +12,7 @@ layout {
             plugin location="zellij:status-bar"
         }
     }
-    tab name="🧮 SERVERS" focus=true split_direction="vertical" {
+    tab name="🧮 SERVERS" split_direction="vertical" {
             pane {
                 name "🕹 Microgame | 8000 | microgame.mira.ly"
                 command "pnpm"
@@ -50,10 +50,25 @@ layout {
                 }
                 pane {
                     name "🗺 Project Graph - Nx | 4211 | graph.mira.ly"
+                    focus true
                     command "pnpm"
                     args "nx" "graph" "--groupByFolder"
                     start_suspended true
                 }
+            pane split_direction="vertical" {
+            pane {
+                name "📊 Drizzle Studio | local.drizzle.studio + 👀 Schema Visualizer | 5600"
+                command "pnpm"
+                args "nx" "view" "db"
+                start_suspended true
+            }
+            pane {
+                name "📦 Node Modules Inspector | 7000"
+                command "pnpm"
+                args "node-modules-inspector" "--depth=7" "--port=7000"
+                start_suspended true
+            }
+            }
             }
 
         floating_panes {
@@ -70,19 +85,20 @@ layout {
                 command "lazygit"
             }
 
-            pane {
-                name "📁 File Browser - Yazi"
-                command "env"
-                args "YAZI_CONFIG_HOME=./apps/mide" "yazi"
-            }
+            pane split_direction="horizontal" {
+                pane {
+                    name "📁 File Browser - Yazi"
+                    command "env"
+                    args "YAZI_CONFIG_HOME=./apps/microvisor" "yazi"
+                }
 
-        floating_panes {
-            pane {
-                name "🧠 TGPT"
-                command "tgpt"
-                args "-m"
+                pane {
+                    focus true
+                    name "🧠 TGPT | Model:phind"
+                    command "tgpt"
+                    args "-m"
+                }
             }
-        }
     }
 
     tab name="🔍🤨 INSPECT" split_direction="vertical" {
@@ -96,20 +112,6 @@ layout {
             command "lazysql"
             args "postgresql://postgres:postgres@127.0.0.1:54322/postgres?sslmode=disable"
             // args "./libs/db/sqlite.db"
-        }
-        floating_panes {
-            pane {
-                name "📊 Drizzle Studio | local.drizzle.studio + 👀 Schema Visualizer | 5600"
-                command "pnpm"
-                args "nx" "view" "db"
-                start_suspended true
-            }
-            pane {
-                name "📦 Node Modules Inspector | 7000"
-                command "pnpm"
-                args "node-modules-inspector" "--depth=7" "--port=7000"
-                start_suspended true
-            }
         }
     }
     tab name="🧪 TESTING" split_direction="vertical" {
