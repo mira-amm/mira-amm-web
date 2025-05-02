@@ -96,63 +96,11 @@
   align-items: center;
   padding: 6px 12px;
   border-radius: 20px;
-  transition: all 0.3s ease;
-  color: var(--content-secondary);
-  background: linear-gradient(
-    to right,
-    transparent 100%,
-    var(--content-primary) 0%
-  );
-  background-repeat: no-repeat;
-  background-position: left center;
-  background-size: 0% 100%;
 }
 
 .activeLink {
   color: var(--background-white);
-  background: linear-gradient(
-    to right,
-    var(--content-primary) 100%,
-    transparent 0%
-  );
-  background-repeat: no-repeat;
-  background-position: left center;
-  background-size: 0% 100%;
-  transition: color 0.4s ease-ins;
-}
-
-@keyframes fillBackgroundLeftToRight {
-  0% {
-    background-size: 0% 100%;
-  }
-
-  100% {
-    background-size: 100% 100%;
-  }
-}
-
-@keyframes fillBackgroundRightToLeft {
-  0% {
-    background-size: 0% 100%;
-    background-position: right;
-  }
-
-  100% {
-    background-size: 100% 100%;
-    background-position: right;
-  }
-}
-
-.animateToRight {
-  animation: fillBackgroundLeftToRight 0.4s forwards;
-}
-
-.animateToLeft {
-  animation: fillBackgroundRightToLeft 0.4s forwards;
-}
-
-.staticFill {
-  background-size: 100% 100%;
+  background-color: var(--content-primary);
 }
 
 .link:hover:not(.activeLink) {

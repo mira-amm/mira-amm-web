@@ -32,11 +32,6 @@ const ISSERVER = typeof window === "undefined";
 const Header = ({isHomePage}: Props) => {
   const pathname = usePathname();
   const {isConnected} = useIsConnected();
-  const [previousPage, setPreviousPage] = useLocalStorage<string | null>(
-    "previousPage",
-    null,
-  );
-
   const [isPromoShown, setIsPromoShown] = useState(false);
 
   useEffect(() => {
@@ -49,36 +44,6 @@ const Header = ({isHomePage}: Props) => {
   const handleCloseBanner = () => {
     setIsPromoShown(false);
     localStorage.setItem(PROMO_BANNER_STORAGE_KEY, "true");
-  };
-
-  const swapClick = () => {
-    if (pathname === "/liquidity/") {
-      setPreviousPage("liquidity");
-    } else if (pathname === "/points/") {
-      setPreviousPage("points");
-    } else {
-      setPreviousPage(null);
-    }
-  };
-
-  const liquidityClick = () => {
-    if (pathname === "/") {
-      setPreviousPage("swap");
-    } else if (pathname === "/points/") {
-      setPreviousPage("points");
-    } else {
-      setPreviousPage(null);
-    }
-  };
-
-  const pointsClick = () => {
-    if (pathname === "/") {
-      setPreviousPage("swap");
-    } else if (pathname === "/liquidity/") {
-      setPreviousPage("liquidity");
-    } else {
-      setPreviousPage(null);
-    }
   };
 
   return (
@@ -112,38 +77,24 @@ const Header = ({isHomePage}: Props) => {
               className={clsx(
                 styles.link,
                 pathname === "/" && styles.activeLink,
-                (previousPage === "swap" || previousPage === null) &&
-                  styles.staticFill,
-                previousPage === "points" && styles.animateToLeft,
-                previousPage === "liquidity" && styles.animateToLeft,
               )}
-              onClick={swapClick}
             >
               Swap
             </Link>
             <Link
-              onClick={liquidityClick}
               href="/liquidity"
               className={clsx(
                 styles.link,
                 pathname.includes("/liquidity") && styles.activeLink,
-                previousPage === "swap" && styles.animateToRight,
-                previousPage === "points" && styles.animateToLeft,
-                (previousPage === "liquidity" || previousPage === null) &&
-                  styles.staticFill,
               )}
             >
               Liquidity
             </Link>
             <Link
-              onClick={pointsClick}
               href="/points"
               className={clsx(
                 styles.link,
                 pathname.includes("/points") && styles.activeLink,
-                previousPage === "points"
-                  ? styles.staticFill
-                  : styles.animateToRight,
               )}
             >
               Points
@@ -196,15 +147,7 @@ const Header = ({isHomePage}: Props) => {
         <div className={clsx("mc-type-b", styles.links)}>
           <Link
             href="/"
-            className={clsx(
-              styles.link,
-              pathname === "/" && styles.activeLink,
-              (previousPage === "swap" || previousPage === null) &&
-                styles.staticFill,
-              previousPage === "points" && styles.animateToLeft,
-              previousPage === "liquidity" && styles.animateToLeft,
-            )}
-            onClick={swapClick}
+            className={clsx(styles.link, pathname === "/" && styles.activeLink)}
           >
             Swap
           </Link>
@@ -213,24 +156,15 @@ const Header = ({isHomePage}: Props) => {
             className={clsx(
               styles.link,
               pathname.includes("/liquidity") && styles.activeLink,
-              previousPage === "swap" && styles.animateToRight,
-              previousPage === "points" && styles.animateToLeft,
-              (previousPage === "liquidity" || previousPage === null) &&
-                styles.staticFill,
             )}
-            onClick={liquidityClick}
           >
             Liquidity
           </Link>
           <Link
-            onClick={pointsClick}
             href="/points"
             className={clsx(
               styles.link,
               pathname.includes("/points") && styles.activeLink,
-              previousPage === "points"
-                ? styles.staticFill
-                : styles.animateToRight,
             )}
           >
             Points
