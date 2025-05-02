@@ -15,6 +15,7 @@ import {
   DefaultSlippageValue,
   SlippageMode,
 } from "@/src/components/common/Swap/Swap";
+import {useAnimationStore} from "@/src/stores/useMiniGame";
 
 type Props = {
   slippage: number;
@@ -40,6 +41,9 @@ const SettingsModalContent = ({
   const handleSlippageChange = (event: ChangeEvent<HTMLInputElement>) => {
     const value = event.target.value.replace("%", "");
     setInputValue(value + "%");
+    useAnimationStore
+      .getState()
+      .handleMagicInput(event.target.value.replace("%", ""));
   };
 
   const handleInputBlur = (event: FocusEvent<HTMLInputElement>) => {
