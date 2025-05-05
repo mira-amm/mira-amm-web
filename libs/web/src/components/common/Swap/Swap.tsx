@@ -440,7 +440,7 @@ const Swap = ({isWidget}: {isWidget?: boolean}) => {
             setInputsState(initialInputsState);
             setReview(false);
             openSuccess();
-            triggerClassAnimation("dino", 2000);
+            triggerClassAnimation("dino");
             await refetchBalances();
           }
         } else {

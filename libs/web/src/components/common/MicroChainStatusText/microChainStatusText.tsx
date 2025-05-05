@@ -101,12 +101,10 @@ const MicroChainStatusText = () => {
         </button>
         <button onClick={() => ScrambleEffect()}>scramble</button>
         <button onClick={() => GlitchAndScanLines()}>glitch</button>
-        <button onClick={() => triggerClassAnimation("rainbowColor", 3500)}>
+        <button onClick={() => triggerClassAnimation("rainbowColor")}>
           rainbow
         </button>
-        <button onClick={() => triggerClassAnimation("dino", 2000)}>
-          dino
-        </button>
+        <button onClick={() => triggerClassAnimation("dino")}>dino</button>
         <button
           onClick={() =>
             useAnimationStore.getState().handleMagicTripleClickToken()
