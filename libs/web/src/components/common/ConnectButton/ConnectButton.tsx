@@ -194,15 +194,16 @@ const ConnectButton = ({className, isWidget}: Props) => {
               ></div>
             </div>
             <ActionButton
-              variant={isConnected ? "danger" : "primary"}
+              variant={"primary"}
               size="small"
               onClick={isConnected ? handleDisconnect : handleConnection}
               loading={isWalletLoading}
+              className={clsx(isConnected && styles.connectBtn)}
             >
               {isConnected ? "DISCONNECT" : "CONNECT"}
             </ActionButton>
           </div>
-          <div className={styles.connectionRight}>
+          <div>
             <div
               ref={buttonRef}
               onClick={() => {
@@ -213,7 +214,7 @@ const ConnectButton = ({className, isWidget}: Props) => {
                 isConnected && styles.walletConnected,
               )}
             >
-              <span className={styles.address}>{title}</span>
+              <span className={clsx("mc-mono-s")}>{title}</span>
               {isConnected && (
                 <span className={styles.chevron}>
                   {isMenuOpened ? <ChevronUpIcon /> : <ChevronDownIcon />}

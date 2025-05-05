@@ -50,16 +50,6 @@
   color: var(--content-primary);
 }
 
-.danger {
-  color: var(--content-inverse);
-  background-color: var(--button-danger);
-}
-
-.danger:disabled {
-  background-color: var(--mc-green-3);
-  color: var(--mc-green-2);
-}
-
 .outlined {
   border: 1px solid var(--mc-green-2);
   background: transparent;

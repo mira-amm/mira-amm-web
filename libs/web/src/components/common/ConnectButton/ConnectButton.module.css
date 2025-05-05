@@ -14,6 +14,10 @@ button.connected {
   box-shadow: none;
 }
 
+.connectBtn {
+  background-color: var(--button-danger) !important;
+}
+
 .connectionContainer {
   border: var(--border-style-secondary);
   border-radius: 16px;
@@ -58,7 +62,6 @@ button.connected {
   color: var(--mc-green);
   border-radius: 8px;
   padding: 16px;
-  font-family: var(--font-cartograph);
   width: fit-content;
 }
 

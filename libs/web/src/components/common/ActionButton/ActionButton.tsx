@@ -7,7 +7,7 @@ import LoadingIndicator from "../LoadingIndicator/LoadingIndicator";
 import styles from "./ActionButton.module.css";
 
 type ButtonType = "button" | "submit" | "reset";
-type ButtonVariant = "primary" | "secondary" | "outlined" | "danger";
+type ButtonVariant = "primary" | "secondary" | "outlined";
 type ButtonSize = "small" | "big" | "longer";
 
 type Props = {
@@ -55,7 +55,6 @@ const ActionButton = forwardRef<HTMLButtonElement, Props>(function ActionButton(
         variant !== "secondary" && variant !== "outlined" && styles.primary,
         variant === "secondary" && styles.secondary,
         variant === "outlined" && styles.outlined,
-        variant === "danger" && styles.danger,
         size === "big" && styles.big,
         size === "longer" && styles.longer,
         size === "small" && styles.small,
