@@ -43,7 +43,7 @@ import {SlippageSetting} from "../SlippageSetting/SlippageSetting";
 import Loader from "@/src/components/common/Loader/Loader";
 import ConnectButton from "@/src/components/common/ConnectButton/ConnectButton";
 import {TradeState} from "@/src/hooks/useSwapRouter";
-import {useAnimationStore} from "@/src/stores/useMiniGame";
+import {useAnimationStore} from "@/src/stores/useGlitchScavengerHunt";
 import {triggerClassAnimation} from "../GlitchEffects/ClassAnimationTrigger";
 
 export type CurrencyBoxMode = "buy" | "sell";

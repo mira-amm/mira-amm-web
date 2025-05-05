@@ -7,7 +7,7 @@ import {metadata} from "./metadata";
 import "@/public/css/globals.css";
 import "@/public/css/animations.css";
 import Providers from "@/src/core/providers/Providers";
-import {useAnimationStore} from "@/src/stores/useMiniGame";
+import {useAnimationStore} from "@/src/stores/useGlitchScavengerHunt";
 import GlitchEffects from "@/src/components/common/GlitchEffects/GlitchEffects";
 
 type Props = Readonly<{
@@ -50,7 +50,7 @@ export {metadata};
 }; */
 
 const RootLayout = ({children}: Props) => {
-  const minigameMaster = useAnimationStore.getState().masterEnabled;
+  const glitchScavengerHuntEnabled = useAnimationStore.getState().masterEnabled;
   return (
     <html lang="en">
       <head>
@@ -60,7 +60,7 @@ const RootLayout = ({children}: Props) => {
         <Providers>
           <div style={{position: "relative"}}>
             {children}
-            {minigameMaster && <GlitchEffects />}
+            {glitchScavengerHuntEnabled && <GlitchEffects />}
           </div>
         </Providers>
       </body>

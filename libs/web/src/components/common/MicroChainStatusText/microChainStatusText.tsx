@@ -2,7 +2,7 @@
 
 import {motion, AnimatePresence} from "framer-motion";
 import styles from "./MicroChainStatusText.module.css";
-import {useAnimationStore} from "@/src/stores/useMiniGame";
+import {useAnimationStore} from "@/src/stores/useGlitchScavengerHunt";
 import IconButton from "../IconButton/IconButton";
 import {useEffect, useState} from "react";
 import ScrambleEffect from "../GlitchEffects/ScrambleEffect";

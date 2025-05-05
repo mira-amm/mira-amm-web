@@ -15,7 +15,7 @@ import {
   DefaultSlippageValue,
   SlippageMode,
 } from "@/src/components/common/Swap/Swap";
-import {useAnimationStore} from "@/src/stores/useMiniGame";
+import {useAnimationStore} from "@/src/stores/useGlitchScavengerHunt";
 
 type Props = {
   slippage: number;

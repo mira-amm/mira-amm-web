@@ -62,7 +62,8 @@ const ANIMATION_COUNT_KEY = "animation-count";
 
 export const useAnimationStore = create<AnimationState>()(
   subscribeWithSelector((set, get) => ({
-    masterEnabled: process.env.NEXT_PUBLIC_MINIGAME_MASTER === "true",
+    masterEnabled:
+      process.env.NEXT_PUBLIC_ENABLE_GLITCH_SCAVENGER_HUNT === "true",
     toggles: {
       timer: true,
       tripleClickToken: true,

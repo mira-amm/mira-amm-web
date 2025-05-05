@@ -4,7 +4,7 @@ import ExchangeIcon from "@/src/components/icons/Exchange/ExchangeIcon";
 import useExchangeRate from "@/src/hooks/useExchangeRate/useExchangeRate";
 
 import styles from "./ExchangeRate.module.css";
-import {useAnimationStore} from "@/src/stores/useMiniGame";
+import {useAnimationStore} from "@/src/stores/useGlitchScavengerHunt";
 
 type Props = {
   swapState: SwapState;
