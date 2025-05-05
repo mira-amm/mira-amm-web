@@ -1,4 +1,3 @@
-import MobileMenu from "@/src/components/common/Header/components/MobileMenu/MobileMenu";
 import Logo from "@/src/components/common/Logo/Logo";
 
 import styles from "./Header.module.css";
@@ -15,7 +14,6 @@ import {
   POINTS_LEARN_MORE_URL,
   POINTS_PROMO_TITLE,
 } from "@/src/utils/constants";
-import TestnetLabel from "@/src/components/common/TestnetLabel/TestnetLabel";
 import IconButton from "../IconButton/IconButton";
 import CloseIcon from "../../icons/Close/CloseIcon";
 import {useEffect, useState} from "react";
@@ -46,6 +44,45 @@ const Header = ({isHomePage}: Props) => {
     localStorage.setItem(PROMO_BANNER_STORAGE_KEY, "true");
   };
 
+  const NavLinks = () => {
+    return (
+      <>
+        <Link
+          href="/"
+          className={clsx(styles.link, pathname === "/" && styles.activeLink)}
+        >
+          Swap
+        </Link>
+        <Link
+          href="/liquidity"
+          className={clsx(
+            styles.link,
+            pathname.includes("/liquidity") && styles.activeLink,
+          )}
+        >
+          Liquidity
+        </Link>
+        <Link
+          href="/points"
+          className={clsx(
+            styles.link,
+            pathname.includes("/points") && styles.activeLink,
+          )}
+        >
+          Points
+        </Link>
+        <a
+          href={`${FuelAppUrl}/bridge?from=eth&to=fuel&auto_close=true&=true`}
+          className={styles.link}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Bridge
+        </a>
+      </>
+    );
+  };
+
   return (
     <header className={styles.header}>
       {isPromoShown && (
@@ -71,41 +108,7 @@ const Header = ({isHomePage}: Props) => {
 
         <div className={clsx(styles.center)}>
           <div className={clsx("mc-type-l", styles.links)}>
-            <Link
-              //TEMPORARY ROUTING SINCE LANDING PAGE IS DISABLED
-              href="/"
-              className={clsx(
-                styles.link,
-                pathname === "/" && styles.activeLink,
-              )}
-            >
-              Swap
-            </Link>
-            <Link
-              href="/liquidity"
-              className={clsx(
-                styles.link,
-                pathname.includes("/liquidity") && styles.activeLink,
-              )}
-            >
-              Liquidity
-            </Link>
-            <Link
-              href="/points"
-              className={clsx(
-                styles.link,
-                pathname.includes("/points") && styles.activeLink,
-              )}
-            >
-              Points
-            </Link>
-            <a
-              href={`${FuelAppUrl}/bridge?from=eth&to=fuel&auto_close=true&=true`}
-              className={styles.link}
-              target="_blank"
-            >
-              Bridge
-            </a>
+            <NavLinks />
           </div>
         </div>
 
@@ -145,37 +148,7 @@ const Header = ({isHomePage}: Props) => {
 
       <div className={clsx("mobileOnly", styles.navMobile)}>
         <div className={clsx("mc-type-b", styles.links)}>
-          <Link
-            href="/"
-            className={clsx(styles.link, pathname === "/" && styles.activeLink)}
-          >
-            Swap
-          </Link>
-          <Link
-            href="/liquidity"
-            className={clsx(
-              styles.link,
-              pathname.includes("/liquidity") && styles.activeLink,
-            )}
-          >
-            Liquidity
-          </Link>
-          <Link
-            href="/points"
-            className={clsx(
-              styles.link,
-              pathname.includes("/points") && styles.activeLink,
-            )}
-          >
-            Points
-          </Link>
-          <a
-            href={`${FuelAppUrl}/bridge?from=eth&to=fuel&auto_close=true&=true`}
-            className={styles.link}
-            target="_blank"
-          >
-            Bridge
-          </a>
+          <NavLinks />
         </div>
       </div>
     </header>
