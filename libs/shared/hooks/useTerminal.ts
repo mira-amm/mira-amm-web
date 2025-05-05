@@ -1,7 +1,14 @@
-import { useState, useRef, useEffect, useCallback } from 'react';
-import { COMMANDS, CORRECT_PASSWORD, HELP_TEXT } from '../lib/constants';
+import {useState, useRef, useEffect, useCallback} from "react";
+import {COMMANDS, CORRECT_PASSWORD, HELP_TEXT} from "../lib/constants";
+import {get} from "http";
 
-export type TerminalView = 'boot' | 'passwordPrompt' | 'authenticated' | 'notes' | 'timer' | 'game';
+export type TerminalView =
+  | "boot"
+  | "passwordPrompt"
+  | "authenticated"
+  | "notes"
+  | "timer"
+  | "game";
 
 interface TerminalState {
   isAuthenticated: boolean;
@@ -13,25 +20,31 @@ interface TerminalState {
   multiplier: number;
   gameActive: boolean;
   walletAddress: string;
-  leaderboard: { wallet: string; score: number }[];
+  leaderboard: {wallet: string; score: number}[];
 }
+
+const getLocalStorageHighScore = () => {
+  const highScore =
+    typeof localStorage !== "undefined" ? localStorage.getItem("hiScore") : 0;
+  return highScore ? parseInt(highScore) : 0;
+};
 
 export function useTerminal() {
   const [state, setState] = useState<TerminalState>({
     isAuthenticated: false,
-    currentView: 'boot',
+    currentView: "boot",
     commandHistory: [],
     commandOutputs: [],
     currentScore: 0,
-    highScore: 0,
+    highScore: getLocalStorageHighScore(),
     multiplier: 1,
     gameActive: false,
-    walletAddress: '',
+    walletAddress: "",
     leaderboard: [
-      { wallet: '0x1a2b...3c4d', score: 15750 },
-      { wallet: '0x7e8f...9a0b', score: 12320 },
-      { wallet: '0x4d5e...6f7g', score: 9845 }
-    ]
+      {wallet: "0x1a2b...3c4d", score: 15750},
+      {wallet: "0x7e8f...9a0b", score: 12320},
+      {wallet: "0x4d5e...6f7g", score: 9845},
+    ],
   });
 
   const commandInputRef = useRef<HTMLInputElement>(null);
@@ -40,9 +53,9 @@ export function useTerminal() {
   useEffect(() => {
     // After 2 seconds, move from boot to password prompt
     const timer = setTimeout(() => {
-      setState(prevState => ({
+      setState((prevState) => ({
         ...prevState,
-        currentView: 'passwordPrompt'
+        currentView: "passwordPrompt",
       }));
     }, 2000);
 
@@ -51,7 +64,7 @@ export function useTerminal() {
 
   // Focus command input whenever authenticated terminal is shown
   useEffect(() => {
-    if (state.currentView === 'authenticated' && commandInputRef.current) {
+    if (state.currentView === "authenticated" && commandInputRef.current) {
       commandInputRef.current.focus();
     }
   }, [state.currentView]);
@@ -59,15 +72,15 @@ export function useTerminal() {
   // Handle password validation
   const validatePassword = useCallback((password: string) => {
     if (password.toLowerCase() === CORRECT_PASSWORD) {
-      setState(prevState => ({
+      setState((prevState) => ({
         ...prevState,
         isAuthenticated: true,
-        currentView: 'authenticated',
+        currentView: "authenticated",
         commandOutputs: [
           ...prevState.commandOutputs,
           "Authentication successful. Welcome to MICROCHAIN SYSTEMS.",
-          "Type 'help' to see available commands."
-        ]
+          "Type 'help' to see available commands.",
+        ],
       }));
       return true;
     }
@@ -79,79 +92,79 @@ export function useTerminal() {
     const cmd = command.toLowerCase().trim();
 
     // Add command to history
-    setState(prevState => ({
+    setState((prevState) => ({
       ...prevState,
       commandHistory: [...prevState.commandHistory, cmd],
-      commandOutputs: [...prevState.commandOutputs, `> ${cmd}`]
+      commandOutputs: [...prevState.commandOutputs, `> ${cmd}`],
     }));
 
     // Process different commands
     switch (cmd) {
       case COMMANDS.HELP:
-        setState(prevState => ({
+        setState((prevState) => ({
           ...prevState,
-          commandOutputs: [...prevState.commandOutputs, ...HELP_TEXT]
+          commandOutputs: [...prevState.commandOutputs, ...HELP_TEXT],
         }));
         break;
 
       case COMMANDS.NOTES:
-        setState(prevState => ({
+        setState((prevState) => ({
           ...prevState,
-          currentView: 'notes'
+          currentView: "notes",
         }));
         break;
 
       case COMMANDS.TIMER:
-        setState(prevState => ({
+        setState((prevState) => ({
           ...prevState,
-          currentView: 'timer'
+          currentView: "timer",
         }));
         break;
 
       case COMMANDS.GAME:
-        setState(prevState => ({
+        setState((prevState) => ({
           ...prevState,
-          currentView: 'game',
+          currentView: "game",
           gameActive: false,
-          currentScore: 0
+          currentScore: 0,
         }));
         break;
 
       case COMMANDS.CLEAR:
-        setState(prevState => ({
+        setState((prevState) => ({
           ...prevState,
-          commandOutputs: []
+          commandOutputs: [],
         }));
         break;
 
       case COMMANDS.LOGOUT:
-        setState(prevState => ({
+        setState((prevState) => ({
           ...prevState,
           isAuthenticated: false,
-          currentView: 'passwordPrompt',
-          commandOutputs: []
+          currentView: "passwordPrompt",
+          commandOutputs: [],
         }));
         break;
 
       default:
-        setState(prevState => ({
+        setState((prevState) => ({
           ...prevState,
           commandOutputs: [
             ...prevState.commandOutputs,
             `Command not recognized: '${cmd}'`,
-            "Type 'help' to see available commands."
-          ]
+            "Type 'help' to see available commands.",
+          ],
         }));
     }
   }, []);
 
   // Handle return to terminal from detail views
   const returnToTerminal = useCallback(() => {
-    setState(prevState => ({
+    setState((prevState) => ({
       ...prevState,
-      currentView: 'authenticated'
+      currentView: "authenticated",
     }));
-    
+
     if (commandInputRef.current) {
       commandInputRef.current.focus();
     }
@@ -159,53 +172,56 @@ export function useTerminal() {
 
   // Start game function
   const startGame = useCallback(() => {
-    setState(prevState => ({
+    setState((prevState) => ({
       ...prevState,
       gameActive: true,
       currentScore: 0,
-      multiplier: 1
+      multiplier: 1,
     }));
   }, []);
 
   // Update game score (placeholder for actual game mechanics)
   const updateGameScore = useCallback((points: number) => {
-    setState(prevState => {
-      const newScore = prevState.currentScore + (points * prevState.multiplier);
-      const newHighScore = newScore > prevState.highScore ? newScore : prevState.highScore;
-      
+    setState((prevState) => {
+      // const newScore = prevState.currentScore + (points * prevState.multiplier);
+      // const newHighScore = newScore > prevState.highScore ? newScore : prevState.highScore;
+
       return {
         ...prevState,
-        currentScore: newScore,
-        highScore: newHighScore,
+        currentScore: points,
+        // highScore: newHighScore,
         // Increase multiplier as score increases
-        multiplier: Math.floor(newScore / 1000) + 1
+        // multiplier: Math.floor(newScore / 1000) + 1
       };
     });
   }, []);
 
   // End game and check for high score
   const endGame = useCallback(() => {
-    setState(prevState => ({
+    setState((prevState) => ({
       ...prevState,
-      gameActive: false
+      gameActive: false,
+      highScore: getLocalStorageHighScore(),
     }));
   }, []);
 
   // Submit wallet address
   const submitWalletAddress = useCallback((wallet: string) => {
-    if (wallet && wallet.startsWith('0x') && wallet.length >= 10) {
+    if (wallet && wallet.startsWith("0x") && wallet.length >= 10) {
       // In a real app, this would submit to the server
-      setState(prevState => {
+      setState((prevState) => {
         // Create a new leaderboard with the current wallet/score
         const newLeaderboard = [
           ...prevState.leaderboard,
-          { wallet: wallet, score: prevState.currentScore }
-        ].sort((a, b) => b.score - a.score).slice(0, 10); // Keep top 10
-        
+          {wallet: wallet, score: prevState.currentScore},
+        ]
+          .sort((a, b) => b.score - a.score)
+          .slice(0, 10); // Keep top 10
+
         return {
           ...prevState,
           walletAddress: wallet,
-          leaderboard: newLeaderboard
+          leaderboard: newLeaderboard,
         };
       });
       return true;
@@ -222,6 +238,6 @@ export function useTerminal() {
     startGame,
     updateGameScore,
     endGame,
-    submitWalletAddress
+    submitWalletAddress,
   };
 }

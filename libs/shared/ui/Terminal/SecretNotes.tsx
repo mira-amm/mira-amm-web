@@ -1,6 +1,10 @@
 import { SECRET_NOTES } from '../../lib/constants';
 
-export const SecretNotes = () => {
+interface SecretNotesProps {
+  onReturn: () => void;
+}
+
+const SecretNotes = ({ onReturn }: SecretNotesProps) => {
   return (
     <div className="secret-notes">
       <div className="mb-4 border-b border-terminal-red/50 pb-2">
@@ -10,7 +14,7 @@ export const SecretNotes = () => {
         </div>
         <p className="text-terminal-blue text-sm font-bold">TOP SECRET // T-REX EXECUTIVE ACCESS // CLEARANCE LEVEL: CEO</p>
       </div>
-      
+
       <div className="space-y-6">
         {SECRET_NOTES.map((note, index) => (
           <div key={index} className={`note p-3 border-l-4 ${note.isHighlighted ? 'border-terminal-red bg-terminal-red/10 text-terminal-red' : 'border-terminal-blue bg-terminal-blue/5'}`}>
@@ -24,7 +28,7 @@ export const SecretNotes = () => {
           </div>
         ))}
       </div>
-      
+
       <div className="mt-6 border-t border-dashed border-terminal-blue pt-4 flex items-center">
         <div className="w-3 h-3 bg-terminal-green animate-ping mr-2"></div>
         <p className="text-terminal-green font-bold">{"> PRESS [ ENTER ] TO RETURN TO DLM-2000 COMMAND PROMPT"}</p>
@@ -32,3 +36,5 @@ export const SecretNotes = () => {
     </div>
   );
 };
+
+export default SecretNotes;
