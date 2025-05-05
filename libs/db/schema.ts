@@ -1556,6 +1556,50 @@ export const _constants_v = pgTable(
   }),
 );
 
+export const leaderboard_entries = pgTable(
+  "leaderboard_entries",
+  {
+    _order: integer("_order").notNull(),
+    _parentID: integer("_parent_id").notNull(),
+    id: varchar("id").primaryKey(),
+    user: integer("user_id")
+      .notNull()
+      .references(() => users.id, {
+        onDelete: "set null",
+      }),
+    score: numeric("score").notNull(),
+    gameData: jsonb("game_data"),
+  },
+  (columns) => ({
+    _orderIdx: index("leaderboard_entries_order_idx").on(columns._order),
+    _parentIDIdx: index("leaderboard_entries_parent_id_idx").on(
+      columns._parentID,
+    ),
+    leaderboard_entries_user_idx: index("leaderboard_entries_user_idx").on(
+      columns.user,
+    ),
+    _parentIDFk: foreignKey({
+      columns: [columns["_parentID"]],
+      foreignColumns: [leaderboard.id],
+      name: "leaderboard_entries_parent_id_fk",
+    }).onDelete("cascade"),
+  }),
+);
+
+export const leaderboard = pgTable("leaderboard", {
+  id: serial("id").primaryKey(),
+  updatedAt: timestamp("updated_at", {
+    mode: "string",
+    withTimezone: true,
+    precision: 3,
+  }),
+  createdAt: timestamp("created_at", {
+    mode: "string",
+    withTimezone: true,
+    precision: 3,
+  }),
+});
+
 export const relations_users = relations(users, ({one}) => ({
   avatar: one(media, {
     fields: [users.avatar],
@@ -2133,6 +2177,26 @@ export const relations__constants_v = relations(
     ),
   }),
 );
+export const relations_leaderboard_entries = relations(
+  leaderboard_entries,
+  ({one}) => ({
+    _parentID: one(leaderboard, {
+      fields: [leaderboard_entries._parentID],
+      references: [leaderboard.id],
+      relationName: "entries",
+    }),
+    user: one(users, {
+      fields: [leaderboard_entries.user],
+      references: [users.id],
+      relationName: "user",
+    }),
+  }),
+);
+export const relations_leaderboard = relations(leaderboard, ({many}) => ({
+  entries: many(leaderboard_entries, {
+    relationName: "entries",
+  }),
+}));
 
 type DatabaseSchema = {
   enum_brands_status: typeof enum_brands_status;
@@ -2190,6 +2254,8 @@ type DatabaseSchema = {
   _constants_v_version_microgame_notes: typeof _constants_v_version_microgame_notes;
   _constants_v_version_microgame_instructions: typeof _constants_v_version_microgame_instructions;
   _constants_v: typeof _constants_v;
+  leaderboard_entries: typeof leaderboard_entries;
+  leaderboard: typeof leaderboard;
   relations_users: typeof relations_users;
   relations_brands_links: typeof relations_brands_links;
   relations_brands: typeof relations_brands;
@@ -2237,6 +2303,8 @@ type DatabaseSchema = {
   relations__constants_v_version_microgame_notes: typeof relations__constants_v_version_microgame_notes;
   relations__constants_v_version_microgame_instructions: typeof relations__constants_v_version_microgame_instructions;
   relations__constants_v: typeof relations__constants_v;
+  relations_leaderboard_entries: typeof relations_leaderboard_entries;
+  relations_leaderboard: typeof relations_leaderboard;
 };
 
 declare module "@payloadcms/db-postgres" {

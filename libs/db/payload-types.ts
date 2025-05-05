@@ -92,9 +92,11 @@ export interface Config {
   };
   globals: {
     constants: Constant;
+    leaderboard: Leaderboard;
   };
   globalsSelect: {
     constants: ConstantsSelect<false> | ConstantsSelect<true>;
+    leaderboard: LeaderboardSelect<false> | LeaderboardSelect<true>;
   };
   locale: null;
   user: User & {
@@ -744,6 +746,31 @@ export interface Constant {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "leaderboard".
+ */
+export interface Leaderboard {
+  id: number;
+  entries?:
+    | {
+        user: number | User;
+        score: number;
+        gameData?:
+          | {
+              [k: string]: unknown;
+            }
+          | unknown[]
+          | string
+          | number
+          | boolean
+          | null;
+        id?: string | null;
+      }[]
+    | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "constants_select".
  */
 export interface ConstantsSelect<T extends boolean = true> {
@@ -792,6 +819,23 @@ export interface ConstantsSelect<T extends boolean = true> {
             };
       };
   _status?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "leaderboard_select".
+ */
+export interface LeaderboardSelect<T extends boolean = true> {
+  entries?:
+    | T
+    | {
+        user?: T;
+        score?: T;
+        gameData?: T;
+        id?: T;
+      };
   updatedAt?: T;
   createdAt?: T;
   globalType?: T;
