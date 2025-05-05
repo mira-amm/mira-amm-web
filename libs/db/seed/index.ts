@@ -1,6 +1,7 @@
 /* eslint-disable node/prefer-global/buffer */
 import type { File, Payload, PayloadRequest } from "payload";
 import { seedMedia } from '../collections/Media';
+import { seedUsers } from "../collections/Users";
 import { promises as fs } from "fs";
 import path from "path";
 import {seedBrands} from '../collections'
@@ -52,6 +53,7 @@ export async function seed({
 
   try {
     await seedMedia(payload);
+    await seedUsers(payload);
     await seedBrands(payload);
   } catch (error) {
     payload.logger.error(
