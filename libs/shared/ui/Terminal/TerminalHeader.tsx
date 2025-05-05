@@ -1,4 +1,4 @@
-export const TerminalHeader = () => {
+const TerminalHeader = () => {
   return (
     <div className="terminal-header h-8 bg-terminal-bg border-b border-terminal-text/30 flex items-center px-4">
       <div className="flex space-x-2 items-center">
@@ -10,3 +10,5 @@ export const TerminalHeader = () => {
     </div>
   );
 };
+
+export default TerminalHeader;
