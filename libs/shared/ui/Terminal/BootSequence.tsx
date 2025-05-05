@@ -1,3 +1,4 @@
+import {useEffect, useState} from "react";
 import {ASCII_LOGO, BOOT_MESSAGES} from "../../lib/constants";
 
 const BootSequence = () => {
@@ -9,7 +10,7 @@ const BootSequence = () => {
 
     const interval = setInterval(() => {
       if (currentIndex < BOOT_MESSAGES.length) {
-        setVisibleMessages(prev => [...prev, BOOT_MESSAGES[currentIndex]]);
+        setVisibleMessages((prev) => [...prev, BOOT_MESSAGES[currentIndex]]);
         currentIndex++;
       } else {
         clearInterval(interval);
