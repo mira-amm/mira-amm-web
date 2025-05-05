@@ -7,7 +7,10 @@ import {
         Users,
        } from "@/db/collections"
 
-import {Constants} from "@/db/globals"
+import {
+  Constants,
+  Leaderboard
+} from "@/db/globals"
 
 import { formBuilderPlugin } from '@payloadcms/plugin-form-builder'
 import { postgresAdapter } from "@payloadcms/db-postgres";
@@ -21,7 +24,8 @@ export const dataBaseConfig = {
     Media,
   ],
   globals:[
-    Constants
+    Constants,
+    Leaderboard
   ],
   blocks:[
   ],
