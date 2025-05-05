@@ -1,6 +1,6 @@
 import MobileMenu from "@/src/components/common/Header/components/MobileMenu/MobileMenu";
 import Logo from "@/src/components/common/Logo/Logo";
-import {useLocalStorage} from "usehooks-ts";
+
 import styles from "./Header.module.css";
 import Link from "next/link";
 import {clsx} from "clsx";
