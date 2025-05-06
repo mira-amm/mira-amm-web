@@ -4,6 +4,7 @@
 **/dist
 **/target
 **/.next
+**/.react-router
 **/out
 **/build
 **/generated
