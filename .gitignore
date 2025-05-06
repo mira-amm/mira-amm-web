@@ -31,6 +31,8 @@ logs
 *.log
 libs/db/supabase/.branches
 libs/db/supabase/.temp
+vite.config.*.timestamp*
+vitest.config.*.timestamp*
 
 #====================================================
 #                  Dependencies
