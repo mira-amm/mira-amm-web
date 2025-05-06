@@ -108,6 +108,7 @@ export const useAnimationStore = create<AnimationState>()(
 
     isRadioPlaying: false,
 
+    // Play the radio audio effect for 8 seconds and is triggered along with the magic input. Can be muted by clicking the radio icon.
     playRadioAudio: () => {
       playAudioEffect("/audio/radio-audio.mp3", {
         volume: 0.7,
@@ -119,11 +120,13 @@ export const useAnimationStore = create<AnimationState>()(
       });
     },
 
+    // Stop the radio audio effect and set isRadioPlaying to false. The speaker icon visibility is handled based on the isRadioPlaying state.
     stopRadioAudio: () => {
       stopCurrentAudio();
       set({isRadioPlaying: false});
     },
 
+    // Calls all registered animation subscriber functions. Used to run UI effects from external logic.
     triggerAnimations: () => {
       if (!get().masterEnabled) return;
       get().subscribers.forEach((cb) => cb());
@@ -133,6 +136,11 @@ export const useAnimationStore = create<AnimationState>()(
       return get().animationCallCount;
     },
 
+    // Handles the magic triple click on the token. If the user clicks the token 3 times within 1 second, it triggers the ScrambleEffect.
+    // Triggers a scramble effect.
+    // Registers the effect and updates progress state.
+    // Queues hint #1 to show after a delay.
+    // Progress Requirement: Only runs when animationCallCount === 0. Then updates to 1.
     handleMagicTripleClickToken: () => {
       const {
         masterEnabled,
@@ -173,6 +181,7 @@ export const useAnimationStore = create<AnimationState>()(
         get().subscribers.push(animationSubscriber);
         get().triggerAnimations();
 
+        // Update the values only after the user sees the effect.
         setTimeout(() => {
           set({
             calledAnimations: newCalledAnimations,
@@ -194,6 +203,10 @@ export const useAnimationStore = create<AnimationState>()(
       }
     },
 
+    // Checks if slippage value matches "19.85". If it does:
+    // Triggers scanlines and plays radio audio.
+    // Updates progress once the audio finishes / user mutes.
+    // Progress Requirement: Only runs when animationCallCount === 1.
     handleMagicInput: (value: string) => {
       const {
         masterEnabled,
@@ -272,6 +285,10 @@ export const useAnimationStore = create<AnimationState>()(
       }
     },
 
+    // Detects 3 rapid clicks on swap currency area within 1 second. If valid:
+    // Triggers a rainbow CSS class animation.
+    // Updates animation progress and queues hint #3.
+    // Progress Requirement: Only runs when animationCallCount === 2.
     handleMagicTripleClickCurrency: () => {
       const {
         masterEnabled,
@@ -332,6 +349,7 @@ export const useAnimationStore = create<AnimationState>()(
       }
     },
 
+    // Resets all animation progress, localStorage state, and manual trigger flags. Useful for debugging or restarting the experience.
     resetAnimationCalls: () => {
       const defaultCalled = {
         tripleClickTokenSwap: false,
@@ -354,6 +372,8 @@ export const useAnimationStore = create<AnimationState>()(
       }
     },
 
+    // Begins a 30-second interval loop alternating between glitch effects and CSS class animations.
+    // Stops automatically once all 3 animations are completed.
     startPeriodicGlobalAnimation: () => {
       const {masterEnabled, toggles} = get();
       if (!masterEnabled || !toggles.globalAnimation) return;
@@ -396,6 +416,10 @@ export const useAnimationStore = create<AnimationState>()(
       }
     },
 
+    // Starts a delayed timer that shows a contextual hint after a delay (shortened for dev purposes). It:
+    // Pauses when the tab is inactive. Resumes when the tab is active.
+    // Shows one of three predefined hints based on progress.
+    // Returns a cleanup function to stop the timer and remove event listeners.
     initializeGlobalAnimation: () => {
       if (typeof window === "undefined") return () => {};
 
