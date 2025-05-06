@@ -38,6 +38,7 @@ interface AnimationState {
   delayedTestStartTime: number | null;
   delayedTestRemaining: number | null;
   isRadioPlaying: boolean;
+  isAnimationInProgress: boolean;
 
   subscribe: (callback: AnimationTrigger) => () => void;
   triggerAnimations: () => void;
@@ -107,6 +108,7 @@ export const useAnimationStore = create<AnimationState>()(
     },
 
     isRadioPlaying: false,
+    isAnimationInProgress: false,
 
     // Play the radio audio effect for 8 seconds and is triggered along with the magic input. Can be muted by clicking the radio icon.
     playRadioAudio: () => {
@@ -145,6 +147,7 @@ export const useAnimationStore = create<AnimationState>()(
       const {
         masterEnabled,
         toggles,
+        isAnimationInProgress,
         lastClicks,
         calledAnimations,
         animationCallCount,
@@ -153,6 +156,7 @@ export const useAnimationStore = create<AnimationState>()(
       if (
         !masterEnabled ||
         !toggles.tripleClickToken ||
+        isAnimationInProgress ||
         calledAnimations.tripleClickTokenSwap ||
         animationCallCount !== 0
       )
@@ -165,6 +169,7 @@ export const useAnimationStore = create<AnimationState>()(
         set({lastClicks: []});
 
         const animationSubscriber = () => {
+          set({isAnimationInProgress: true});
           ScrambleEffect();
           get().subscribers = get().subscribers.filter(
             (sub) => sub !== animationSubscriber,
@@ -187,6 +192,7 @@ export const useAnimationStore = create<AnimationState>()(
             calledAnimations: newCalledAnimations,
             animationCallCount: newCount,
             isTriggeredManually: true,
+            isAnimationInProgress: false,
           });
           initializeHintListener(newCount);
 
@@ -211,6 +217,7 @@ export const useAnimationStore = create<AnimationState>()(
       const {
         masterEnabled,
         toggles,
+        isAnimationInProgress,
         inputBuffer,
         calledAnimations,
         animationCallCount,
@@ -221,6 +228,7 @@ export const useAnimationStore = create<AnimationState>()(
         !masterEnabled ||
         !toggles.magicNumber ||
         calledAnimations.magicInput ||
+        isAnimationInProgress ||
         animationCallCount !== 1
       )
         return;
@@ -230,6 +238,7 @@ export const useAnimationStore = create<AnimationState>()(
 
       if (newBuffer === "19.85") {
         const magicNumberSubscriber = () => {
+          set({isAnimationInProgress: true});
           GlitchAndScanLines();
           playRadioAudio();
           set((state) => ({
@@ -263,6 +272,7 @@ export const useAnimationStore = create<AnimationState>()(
                 calledAnimations: newCalledAnimations,
                 animationCallCount: newCount,
                 isTriggeredManually: true,
+                isAnimationInProgress: false,
               });
 
               initializeHintListener(newCount);
@@ -293,6 +303,7 @@ export const useAnimationStore = create<AnimationState>()(
       const {
         masterEnabled,
         toggles,
+        isAnimationInProgress,
         lastClicks,
         calledAnimations,
         animationCallCount,
@@ -301,6 +312,7 @@ export const useAnimationStore = create<AnimationState>()(
       if (
         !masterEnabled ||
         !toggles.tripleClickCurrency ||
+        isAnimationInProgress ||
         calledAnimations.tripleClickCurrencySwap ||
         animationCallCount !== 2
       )
@@ -314,6 +326,7 @@ export const useAnimationStore = create<AnimationState>()(
 
         const animationSubscriber = () => {
           triggerClassAnimation("rainbowColor");
+          set({isAnimationInProgress: true});
           get().subscribers = get().subscribers.filter(
             (sub) => sub !== animationSubscriber,
           );
@@ -334,6 +347,7 @@ export const useAnimationStore = create<AnimationState>()(
             calledAnimations: newCalledAnimations,
             animationCallCount: newCount,
             isTriggeredManually: true,
+            isAnimationInProgress: false,
           });
           initializeHintListener(newCount);
           if (typeof window !== "undefined") {
