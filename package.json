@@ -20,6 +20,10 @@
     "postinstall": "nx postinstall microscope"
   },
   "dependencies": {
+    "isbot": "^5.1.27",
+    "@react-router/node": "^7.5.3",
+    "@react-router/serve": "^7.5.3",
+    "react-router": "^7.5.3",
     "@fuels/connectors": "0.40.0",
     "@fuels/react": "0.40.0",
     "@hookform/resolvers": "^3.10.0",
@@ -86,6 +90,7 @@
     "zustand": "^5.0.3"
   },
   "devDependencies": {
+    "@react-router/dev": "^7.5.3",
     "@antfu/eslint-config": "^4.13.0",
     "@babel/core": "^7.26.10",
     "@babel/preset-react": "^7.26.3",
@@ -137,6 +142,7 @@
     "@storybook/addon-themes": "8.6.12",
     "@storybook/addon-viewport": "8.6.12",
     "@storybook/nextjs": "8.6.12",
+    "@swc/cli": "~0.3.12",
     "@swc-node/register": "^1.10.10",
     "@swc/core": "^1.11.22",
     "@tanstack/react-query-devtools": "^5.74.6",
