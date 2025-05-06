@@ -20,12 +20,9 @@
     "postinstall": "nx postinstall microscope"
   },
   "dependencies": {
-    "isbot": "^5.1.27",
-    "@react-router/node": "^7.5.3",
-    "@react-router/serve": "^7.5.3",
-    "react-router": "^7.5.3",
     "@fuels/connectors": "0.40.0",
     "@fuels/react": "0.40.0",
+    "@fumadocs/mdx-remote": "^1.3.0",
     "@hookform/resolvers": "^3.10.0",
     "@payloadcms/db-postgres": "^3.35.1",
     "@payloadcms/db-sqlite": "^3.35.1",
@@ -50,6 +47,8 @@
     "@radix-ui/react-tabs": "^1.1.9",
     "@radix-ui/react-tooltip": "^1.2.4",
     "@radix-ui/react-visually-hidden": "^1.2.0",
+    "@react-router/node": "^7.5.3",
+    "@react-router/serve": "^7.5.3",
     "@sentry/nextjs": "^9.14.0",
     "@swc/helpers": "0.5.17",
     "@tailwindcss/postcss": "^4.1.4",
@@ -70,7 +69,10 @@
     "get-port": "^7.1.0",
     "graphql": "^16.10.0",
     "graphql-request": "^7.1.2",
+    "gray-matter": "^4.0.3",
+    "isbot": "^5.1.27",
     "lexical": "0.21.0",
+    "mermaid": "^11.6.0",
     "mira-dex-ts": "^1.1.42",
     "next": "^15.3.1",
     "next-query-params": "^5.1.0",
@@ -80,17 +82,19 @@
     "react-device-detect": "^2.2.3",
     "react-dom": "19.1.0",
     "react-loading-skeleton": "^3.5.0",
+    "react-router": "^7.5.3",
     "react-select": "^5.10.1",
     "react-tooltip": "^5.28.1",
     "reflect-metadata": "^0.1.14",
     "sharp": "^0.33.5",
+    "shiki": "^3.4.0",
     "use-query-params": "^2.2.1",
     "usehooks-ts": "^3.1.1",
     "viem": "^2.28.1",
     "zustand": "^5.0.3"
   },
   "devDependencies": {
-    "@react-router/dev": "^7.5.3",
+    "react-router-devtools": "^5.0.1",
     "@antfu/eslint-config": "^4.13.0",
     "@babel/core": "^7.26.10",
     "@babel/preset-react": "^7.26.3",
@@ -121,6 +125,7 @@
     "@pulumi/pulumi": "^3.163.0",
     "@pulumiverse/vercel": "^1.14.3",
     "@radix-ui/react-icons": "^1.3.2",
+    "@react-router/dev": "^7.5.3",
     "@serenity-js/assertions": "^3.31.13",
     "@serenity-js/console-reporter": "^3.31.13",
     "@serenity-js/core": "^3.31.13",
@@ -142,8 +147,8 @@
     "@storybook/addon-themes": "8.6.12",
     "@storybook/addon-viewport": "8.6.12",
     "@storybook/nextjs": "8.6.12",
-    "@swc/cli": "~0.3.12",
     "@swc-node/register": "^1.10.10",
+    "@swc/cli": "~0.3.12",
     "@swc/core": "^1.11.22",
     "@tanstack/react-query-devtools": "^5.74.6",
     "@testing-library/dom": "10.4.0",
@@ -234,24 +239,5 @@
   },
   "peerDependencies": {
     "pg-cloudflare": "1.1.1"
-  },
-  "pnpm": {
-    "onlyBuiltDependencies": [
-      "@parcel/watcher",
-      "@sentry/cli",
-      "@swc/core",
-      "bigint-buffer",
-      "bufferutil",
-      "core-js-pure",
-      "esbuild",
-      "keccak",
-      "nx",
-      "protobufjs",
-      "sharp",
-      "spawn-sync",
-      "unix-dgram",
-      "unrs-resolver",
-      "utf-8-validate"
-    ]
   }
 }
