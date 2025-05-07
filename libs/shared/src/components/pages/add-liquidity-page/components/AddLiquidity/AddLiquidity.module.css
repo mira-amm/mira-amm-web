@@ -1,0 +1,320 @@
+.addLiquidity {
+  display: flex;
+  flex-direction: column;
+  padding: 16px;
+  border-radius: 16px;
+  gap: 24px;
+  background-color: var(--background-grey-dark);
+  z-index: 5;
+  width: 100%;
+  max-width: 524px;
+  margin: 0 auto;
+}
+
+.backLink {
+  z-index: 5;
+}
+
+.addLiquidityHeading {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--background-grey-light);
+  gap: 10px;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 19px;
+  color: var(--content-grey);
+}
+
+.addButton {
+  margin-top: 100px;
+}
+
+.title {
+  flex: 1;
+  color: var(--content-primary);
+}
+
+.section {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.sectionContent {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.APR {
+  display: flex;
+  flex-direction: column;
+  align-items: end;
+  gap: 4px;
+  line-height: 14px;
+  padding-bottom: 4px;
+}
+
+.aprText {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+}
+.aprText > p {
+  font-size: 12px;
+}
+
+.APR > span {
+  font-size: 12px;
+  line-height: 14px;
+}
+
+.highlight {
+  color: var(--content-positive);
+  padding-bottom: 2px;
+}
+
+.pending {
+  color: var(--content-dimmed-dark);
+}
+
+.poolStability {
+  display: flex;
+  width: 100%;
+  gap: 8px;
+}
+
+.poolStabilityButton {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 10px 12px;
+  background-color: var(--background-secondary);
+  color: var(--content-dimmed-light);
+  border: 1px solid transparent;
+  border-radius: 8px;
+  cursor: pointer;
+  align-items: flex-start;
+}
+
+.poolStabilityButtonTitle {
+  display: flex;
+  width: 100%;
+}
+
+.poolStabilityButtonTitle > p {
+  text-align: left;
+  flex: 1;
+}
+
+.poolStabilityButtonActive {
+  color: var(--content-primary);
+  border-color: var(--accent-primary);
+}
+
+.poolStabilityButtonDisabled {
+  cursor: not-allowed;
+}
+
+.prices {
+  color: var(--content-dimmed-dark);
+}
+
+/*.priceBlocks {*/
+/*  display: flex;*/
+/*  flex-direction: row;*/
+/*  gap: 8px;*/
+/*}*/
+
+/*.priceBlock {*/
+/*  display: flex;*/
+/*  flex-direction: column;*/
+/*  gap: 4px;*/
+/*  padding: 12px;*/
+/*  border-radius: 8px;*/
+/*  background-color: var(--background-grey-darker);*/
+/*}*/
+
+/*.priceBlocks > div {*/
+/*  width: 50%;*/
+/*}*/
+
+.loadingOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  backdrop-filter: blur(5px);
+  z-index: 4;
+  pointer-events: auto;
+}
+
+.inputsPreview,
+.previewPriceBlock,
+.previewCurrentPriceBlock {
+  display: flex;
+  flex-direction: column;
+  padding: 12px;
+  border-radius: 8px;
+  background-color: var(--background-secondary);
+}
+
+.inputsPreview {
+  gap: 12px;
+}
+
+.inputPreviewRow {
+  display: flex;
+  justify-content: space-between;
+}
+
+.inputPreviewRow p {
+  font-size: 14px;
+  line-height: 16px;
+  font-weight: 500;
+}
+
+.inputPreviewRow svg,
+.inputPreviewRow img {
+  width: 20px;
+  height: 20px;
+}
+
+.inputPreviewRow:last-child {
+  padding-top: 12px;
+  border-top: 1px solid var(--background-grey-dark);
+}
+
+.previewPriceBlocks {
+  display: flex;
+  gap: 12px;
+  justify-content: space-between;
+}
+
+.previewPriceBlock {
+  flex: 1;
+  gap: 6px;
+}
+
+.previewCurrentPriceBlock {
+  gap: 4px;
+  align-items: center;
+}
+
+.previewPriceBlockTitle,
+.previewPriceBlockExchange,
+.previewPriceBlockDescription {
+  font-size: 12px;
+  line-height: 16px;
+}
+
+.previewPriceBlockTitle,
+.previewPriceBlockExchange {
+  color: var(--content-tertiary);
+}
+
+.previewPriceBlockValue {
+  color: var(--content-primary);
+}
+
+.previewPriceBlockDescription {
+  color: var(--background-grey-light);
+}
+
+.previewCoinPair {
+  display: flex;
+  justify-content: space-between;
+}
+
+.existingPoolBlock {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  padding: 12px;
+  border-radius: 10px;
+  background: linear-gradient(
+    97.15deg,
+    #5872fc -1.13%,
+    #6142ba 56.75%,
+    #c41cff 135.82%
+  );
+}
+
+.sparkleIcon {
+  height: 20px;
+  width: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 34px;
+  background-color: var(--content-dimmed-dark);
+}
+
+.existingPoolText {
+  flex: 1;
+}
+
+.addLiquidityLink {
+  text-decoration: underline;
+}
+
+.addLiquidityLink:hover {
+  color: var(--content-secondary);
+}
+
+.priceBlock {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 16px;
+  border-radius: 8px;
+  background-color: var(--background-grey-darker);
+  cursor: pointer;
+}
+
+.priceWarning {
+  font-size: 14px;
+  line-height: 17px;
+  color: #ffb800;
+}
+.coinPair {
+  display: flex;
+  justify-content: space-between;
+}
+
+@media (min-width: 1024px) {
+  /*.poolStabilityButton {*/
+  /*  flex-direction: row;*/
+  /*}*/
+
+  .APR {
+    flex-direction: row;
+  }
+
+  .inputPreviewRow p {
+    font-size: 16px;
+    line-height: 19px;
+  }
+
+  .inputPreviewRow svg,
+  .inputPreviewRow img {
+    width: 24px;
+    height: 24px;
+  }
+
+  .previewPriceBlock,
+  .previewCurrentPriceBlock {
+    padding: 8px 16px;
+  }
+
+  .previewPriceBlockTitle,
+  .previewPriceBlockExchange,
+  .previewPriceBlockDescription {
+    line-height: 18px;
+  }
+}

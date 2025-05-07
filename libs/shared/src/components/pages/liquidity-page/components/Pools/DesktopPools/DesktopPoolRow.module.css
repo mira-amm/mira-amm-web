@@ -1,0 +1,10 @@
+.pending {
+  color: var(--content-dimmed-light);
+}
+
+button.addButton {
+  padding: 12px;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 19px;
+}

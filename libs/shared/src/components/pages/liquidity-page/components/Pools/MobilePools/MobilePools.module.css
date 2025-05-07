@@ -1,0 +1,48 @@
+.mobilePools {
+  display: flex;
+  flex-direction: column;
+  padding: 16px;
+  border-radius: 8px;
+  background-color: var(--background-grey-dark);
+}
+
+.separator {
+  height: 1px;
+  background-color: var(--background-grey-light);
+  margin: 16px -16px;
+}
+
+.mobilePoolsSort {
+  color: #94a3b8;
+  font-size: 14px;
+  background-color: var(--background-grey-dark);
+  border-radius: 8px;
+  padding: 8px;
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+  margin-bottom: 8px;
+  display: flex;
+}
+
+.mobilePoolsSort tr {
+  display: flex;
+  gap: 12px;
+}
+
+.mobilePoolsSort th {
+  font-weight: 500;
+}
+
+@media (min-width: 640px) {
+  .mobilePoolsSort.sm\:px-5 {
+    padding-left: 1.25rem;
+    padding-right: 1.25rem;
+  }
+}
+
+.noData {
+  text-align: center;
+  font-size: 16px;
+  font-weight: 500;
+  color: var(--content-tertiary);
+}
