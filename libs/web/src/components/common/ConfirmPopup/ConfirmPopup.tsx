@@ -1,5 +1,5 @@
 import styles from "./ConfirmPopup.module.css";
-import ActionButton from "../ActionButton/ActionButton";
+import ActionButton from "@shared/src/components/common/ActionButton/ActionButton";
 import {FC} from "react";
 import clsx from "clsx";
 
