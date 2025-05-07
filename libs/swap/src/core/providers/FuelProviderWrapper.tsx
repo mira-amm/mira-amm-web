@@ -14,7 +14,7 @@ import {
 import {createConfig, http, injected} from "@wagmi/core";
 import {mainnet} from "@wagmi/core/chains";
 import {walletConnect} from "@wagmi/connectors";
-import {NetworkUrl} from "libs/swap/src/utils/constants";
+import {NetworkUrl} from "@shared/src/utils/constants";
 
 type ExternalConnectorConfig = Partial<{
   chainId: number;
