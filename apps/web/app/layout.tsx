@@ -2,11 +2,13 @@ import Script from "next/script";
 import {ReactNode} from "react";
 import {clsx} from "clsx";
 import {Prompt, Inter} from "next/font/google";
-import localFont from "next/font/local";
 import {metadata} from "./metadata";
 
 import "@/public/css/globals.css";
+import "@/public/css/animations.css";
 import Providers from "@/src/core/providers/Providers";
+import {useAnimationStore} from "@/src/stores/useGlitchScavengerHunt";
+import GlitchEffects from "@/src/components/common/GlitchEffects/GlitchEffects";
 
 type Props = Readonly<{
   children: ReactNode;
@@ -48,13 +50,19 @@ export {metadata};
 }; */
 
 const RootLayout = ({children}: Props) => {
+  const glitchScavengerHuntEnabled = useAnimationStore.getState().masterEnabled;
   return (
     <html lang="en">
       <head>
         <link rel="preload" as="image" href="/images/loader.webp" />
       </head>
       <body className={clsx(inter.className, inter.variable, prompt.variable)}>
-        <Providers>{children}</Providers>
+        <Providers>
+          <div style={{position: "relative"}}>
+            {children}
+            {glitchScavengerHuntEnabled && <GlitchEffects />}
+          </div>
+        </Providers>
       </body>
       <Script src="https://www.googletagmanager.com/gtag/js?id=G-K113JNM8XN" />
       <Script id="gtag">{`
