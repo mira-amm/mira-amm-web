@@ -5,16 +5,16 @@ import Logo from "@shared/src/components/common/Logo/Logo";
 import {useCallback, useEffect, useMemo, useRef, useState} from "react";
 
 import ActionButton from "@shared/src/components/common/ActionButton/ActionButton";
-import IconButton from "@/src/components/common/IconButton/IconButton";
+import IconButton from "@shared/src/components/common/IconButton/IconButton";
 import CurrencyBox from "libs/swap/src/components/common/Swap/components/CurrencyBox/CurrencyBox";
-import ConvertIcon from "@/src/components/icons/Convert/ConvertIcon";
+import ConvertIcon from "@shared/src/components/icons/Convert/ConvertIcon";
 import useModal from "@shared/src/hooks/useModal/useModal";
 import useSwap from "@shared/src/hooks/useSwap/useSwap";
 
 import styles from "./Swap.module.css";
 
 import ExchangeRate from "@shared/src/components/common/Swap/components/ExchangeRate/ExchangeRate";
-import useExchangeRate from "@/src/hooks/useExchangeRate/useExchangeRate";
+import useExchangeRate from "@shared/src/hooks/useExchangeRate/useExchangeRate";
 import {createPoolKey, openNewTab} from "libs/swap/src/utils/common";
 import useBalances from "@shared/src/hooks/useBalances/useBalances";
 import CoinsListModal from "@shared/src/components/common/Swap/components/CoinsListModal/CoinsListModal";
