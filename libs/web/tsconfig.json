@@ -21,7 +21,8 @@
     ],
     "paths": {
       "@/*": ["./libs/web/*"],
-      "@swap/*": ["libs/swap/*"]
+      "@swap/*": ["libs/swap/*"],
+      "@shared/*": ["libs/shared/*"]
     },
     "target": "ES2017"
   },
