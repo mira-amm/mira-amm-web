@@ -375,6 +375,7 @@ export const useAnimationStore = create<AnimationState>()(
         animationCallCount: 0,
         hintText: "",
         isTriggeredManually: false,
+        isAnimationInProgress: false,
       });
 
       if (typeof window !== "undefined") {
