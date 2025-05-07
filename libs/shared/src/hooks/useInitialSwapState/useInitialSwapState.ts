@@ -1,8 +1,8 @@
-import {SwapState} from "@swap/src/components/common/Swap/Swap";
 import {ETH_ASSET_ID, USDC_ASSET_ID} from "@shared/src/utils/constants";
 import {useSearchParams} from "next/navigation";
 import {useMemo} from "react";
 import {useLocalStorage} from "usehooks-ts";
+import { SwapState } from "../../types/swap";
 
 const b256Regex = /0x[0-9a-fA-F]{64}/;
 

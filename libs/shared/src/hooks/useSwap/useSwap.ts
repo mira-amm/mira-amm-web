@@ -3,15 +3,12 @@ import {bn, ScriptTransactionRequest} from "fuels";
 import {useWallet} from "@fuels/react";
 import {useMutation} from "@tanstack/react-query";
 
-import type {
-  CurrencyBoxMode,
-  SwapState,
-} from "@swap/src/components/common/Swap/Swap";
 import useMiraDex from "@shared/src/hooks/useMiraDex/useMiraDex";
 import useSwapData from "@shared/src/hooks/useAssetPair/useSwapData";
 import {DefaultTxParams, MaxDeadline} from "@shared/src/utils/constants";
 import {PoolId} from "mira-dex-ts";
 import useReadonlyMira from "../useReadonlyMira";
+import { CurrencyBoxMode, SwapState } from "../../types/swap";
 
 type Props = {
   swapState: SwapState;

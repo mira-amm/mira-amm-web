@@ -1,11 +1,11 @@
 import SuccessIcon from "@shared/src/components/icons/Success/SuccessIcon";
 import styles from "./SwapSuccessModal.module.css";
-import {SwapState} from "@swap/src/components/common/Swap/Swap";
 import ActionButton from "@shared/src/components/common/ActionButton/ActionButton";
 import {useCallback} from "react";
 import {openNewTab} from "@shared/src/utils/common";
 import {FuelAppUrl} from "@shared/src/utils/constants";
 import useAssetMetadata from "@shared/src/hooks/useAssetMetadata";
+import { SwapState } from "@/shared/src/types/swap";
 
 type Props = {
   swapState: SwapState;

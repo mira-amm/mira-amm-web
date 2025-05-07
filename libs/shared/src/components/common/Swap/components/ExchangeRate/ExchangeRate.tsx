@@ -1,9 +1,9 @@
 import {memo, useState} from "react";
-import {CurrencyBoxMode, SwapState} from "@swap/src/components/common/Swap/Swap";
 import ExchangeIcon from "@shared/src/components/icons/Exchange/ExchangeIcon";
 import useExchangeRate from "@shared/src/hooks/useExchangeRate/useExchangeRate";
 
 import styles from "./ExchangeRate.module.css";
+import { CurrencyBoxMode, SwapState } from "@/shared/src/types/swap";
 
 type Props = {
   swapState: SwapState;
