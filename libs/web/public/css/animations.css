@@ -1,0 +1,165 @@
+.rainbowContainer {
+  position: fixed;
+  aspect-ratio: 2 / 1;
+  /* Width = 2x Height */
+  width: min(70vw, 140vh);
+  /* Make sure it fits in viewport */
+  height: auto;
+  /* Maintain aspect ratio */
+  left: 50%;
+  top: 15%;
+  transform: translate(-50%, 0);
+  transform-origin: bottom;
+  z-index: 999999;
+  pointer-events: none;
+  filter: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='b' x='0' y='0'%3E%3CfeFlood x='4' y='4' height='2' width='2'/%3E%3CfeComposite width='10' height='10'/%3E%3CfeTile result='a'/%3E%3CfeComposite in='SourceGraphic' in2='a' operator='in'/%3E%3CfeMorphology operator='dilate' radius='5'/%3E%3C/filter%3E%3C/svg%3E#b");
+  overflow: hidden;
+}
+
+/* Common rainbow arc style */
+.rainbowColor {
+  display: none;
+  opacity: 0;
+  position: absolute;
+  left: 50%;
+  top: 100%;
+  transform: translate(-50%, 0);
+  transform-origin: 50% 0;
+  animation: spin 3.5s ease-in-out infinite forwards;
+  animation-fill-mode: forwards;
+}
+
+.rainbowColor1 {
+  width: 100%;
+  height: 100%;
+  border: min(2vw, 4vh) solid #ff0000;
+  border-top: none;
+  border-radius: 0 0 9999px 9999px;
+  animation-delay: 0.8s;
+}
+
+.rainbowColor2 {
+  width: 94%;
+  height: 94%;
+  border: min(2vw, 4vh) solid #ff8000;
+  border-top: none;
+  border-radius: 0 0 9999px 9999px;
+  animation-delay: 0.6s;
+}
+
+.rainbowColor3 {
+  width: 88%;
+  height: 88%;
+  border: min(2vw, 4vh) solid #ffff00;
+  border-top: none;
+  border-radius: 0 0 9999px 9999px;
+  animation-delay: 0.4s;
+}
+
+.rainbowColor4 {
+  width: 82%;
+  height: 82%;
+  border: min(2vw, 4vh) solid #00ff00;
+  border-top: none;
+  border-radius: 0 0 9999px 9999px;
+  animation-delay: 0.2s;
+}
+
+.rainbowColor5 {
+  width: 76%;
+  height: 76%;
+  border: min(2vw, 4vh) solid #0000ff;
+  border-top: none;
+  border-radius: 0 0 9999px 9999px;
+  animation-delay: 0s;
+}
+
+@keyframes spin {
+  0% {
+    transform: translate(-50%, 0) rotate(0deg);
+    opacity: 1;
+  }
+
+  50% {
+    transform: translate(-50%, 0) rotate(180deg);
+    opacity: 1;
+  }
+
+  75% {
+    transform: translate(-50%, 0) rotate(180deg);
+    opacity: 0.6;
+  }
+
+  100% {
+    transform: translate(-50%, 0) rotate(180deg);
+    opacity: 0;
+  }
+}
+
+.dino {
+  display: none;
+  position: fixed;
+  width: 230px;
+  height: 190px;
+  bottom: 120px;
+  left: 80px;
+  opacity: 0;
+  pointer-events: none;
+  z-index: 999;
+  transform-origin: bottom center;
+  animation: dinoPopUp 1.5s ease-in-out;
+}
+
+@keyframes dinoPopUp {
+  0% {
+    transform: translateY(100%);
+    opacity: 0;
+    display: block;
+  }
+
+  3% {
+    transform: translateY(0);
+    opacity: 1;
+    display: block;
+  }
+
+  97% {
+    transform: translateY(0);
+    opacity: 1;
+    display: block;
+  }
+
+  100% {
+    transform: translateY(100%);
+    opacity: 1;
+    display: block;
+  }
+}
+
+
+@media (min-width: 860px) {
+  .dino {
+    right: 100px;
+  }
+}
+
+@keyframes visible {
+  0% {
+    opacity: 0;
+  }
+
+  20% {
+    transform: rotate(-40deg) translateY(-30vh);
+    opacity: 1;
+  }
+
+  85% {
+    transform: rotate(-40deg) translateY(-30vh);
+    opacity: 1;
+  }
+
+  100% {
+    transform: rotate(+40deg) translateY(+30vh);
+    opacity: 0;
+  }
+}
