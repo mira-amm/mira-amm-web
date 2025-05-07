@@ -20,7 +20,8 @@
       }
     ],
     "paths": {
-      "@/*": ["./libs/web/*"]
+      "@/*": ["./libs/web/*"],
+      "@swap/*": ["libs/swap/*"]
     },
     "target": "ES2017"
   },
