@@ -3,7 +3,7 @@ import {useRouter} from "next/navigation";
 import {clsx} from "clsx";
 import {PoolData} from "@/src/hooks/usePoolsData";
 import DesktopPoolRow from "./DesktopPoolRow";
-import ActionButton from "@/src/components/common/ActionButton/ActionButton";
+import ActionButton from "@shared/src/components/common/ActionButton/ActionButton";
 import Link from "next/link";
 import SortableColumn from "@/src/components/common/SortableColumn/SortableColumn";
 

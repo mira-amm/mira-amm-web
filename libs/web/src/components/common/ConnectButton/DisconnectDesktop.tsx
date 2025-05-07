@@ -2,7 +2,7 @@ import {useAccount, useDisconnect, useIsConnected} from "@fuels/react";
 import {clsx} from "clsx";
 
 import useFormattedAddress from "@/src/hooks/useFormattedAddress/useFormattedAddress";
-import ActionButton from "@/src/components/common/ActionButton/ActionButton";
+import ActionButton from "@shared/src/components/common/ActionButton/ActionButton";
 
 import styles from "./ConnectButton.module.css";
 import {memo} from "react";

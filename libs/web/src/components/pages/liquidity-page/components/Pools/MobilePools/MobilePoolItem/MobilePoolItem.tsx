@@ -1,6 +1,6 @@
 import {usePoolDetails} from "../../usePoolDetails";
 import CoinPair from "@/src/components/common/CoinPair/CoinPair";
-import ActionButton from "@/src/components/common/ActionButton/ActionButton";
+import ActionButton from "@shared/src/components/common/ActionButton/ActionButton";
 import InfoBlock from "@/src/components/common/InfoBlock/InfoBlock";
 import {useRouter} from "next/navigation";
 import styles from "./MobilePoolItem.module.css";

@@ -9,7 +9,7 @@ import usePoolAPR from "@/src/hooks/usePoolAPR";
 import AprBadge from "@/src/components/common/AprBadge/AprBadge";
 import usePoolNameAndMatch from "@/src/hooks/usePoolNameAndMatch";
 import {DefaultLocale} from "@/src/utils/constants";
-import ActionButton from "@/src/components/common/ActionButton/ActionButton";
+import ActionButton from "@shared/src/components/common/ActionButton/ActionButton";
 
 interface Props {
   assetIdA: B256Address;

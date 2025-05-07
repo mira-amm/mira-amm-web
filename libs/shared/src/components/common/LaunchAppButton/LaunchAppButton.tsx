@@ -1,7 +1,7 @@
 "use client";
 
 import {useRouter} from "next/navigation";
-import ActionButton from "@/src/components/common/ActionButton/ActionButton";
+import ActionButton from "@shared/src/components/common/ActionButton/ActionButton";
 
 type Props = {
   className?: string;

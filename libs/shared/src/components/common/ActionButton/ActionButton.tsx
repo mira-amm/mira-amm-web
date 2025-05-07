@@ -2,7 +2,7 @@ import {clsx} from "clsx";
 
 import {forwardRef, memo, ReactNode, useCallback} from "react";
 
-import Loader from "@/src/components/common/Loader/Loader";
+import Loader from "@shared/src/components/common/Loader/Loader";
 
 import styles from "./ActionButton.module.css";
 
