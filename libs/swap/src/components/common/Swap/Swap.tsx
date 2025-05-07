@@ -611,7 +611,6 @@ const Swap = ({isWidget}: {isWidget?: boolean}) => {
             className={isWidget ? styles.widgetBoxBg : undefined}
           />
           <div className={styles.splitter}>
-            as
             <IconButton onClick={swapAssets} className={styles.convertButton}>
               <ConvertIcon />
             </IconButton>
