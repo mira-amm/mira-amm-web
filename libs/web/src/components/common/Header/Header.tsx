@@ -141,8 +141,7 @@ const Header = ({isHomePage}: Props) => {
         </div>
 
         <div className={clsx("mobileOnly", styles.links)}>
-          <DisconnectMobile className={styles.disconnectMobile} />
-          {/*   <MobileMenu /> */}
+          <ConnectButton className={styles.disconnectMobile} />
         </div>
       </section>
 

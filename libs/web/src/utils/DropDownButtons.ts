@@ -19,9 +19,9 @@ export const DropDownButtons = [
     text: "Transaction History",
     onClick: () => {},
   },
-  /*  {
+  {
     icon: LogOutIcon,
     text: "Disconnect",
     onClick: () => {},
-  }, */
+  },
 ];
