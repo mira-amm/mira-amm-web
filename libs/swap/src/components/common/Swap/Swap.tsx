@@ -6,7 +6,7 @@ import {useCallback, useEffect, useMemo, useRef, useState} from "react";
 
 import ActionButton from "@shared/src/components/common/ActionButton/ActionButton";
 import IconButton from "@shared/src/components/common/IconButton/IconButton";
-import CurrencyBox from "libs/swap/src/components/common/Swap/components/CurrencyBox/CurrencyBox";
+import CurrencyBox from "@shared/src/components/common/Swap/components/CurrencyBox/CurrencyBox";
 import ConvertIcon from "@shared/src/components/icons/Convert/ConvertIcon";
 import useModal from "@shared/src/hooks/useModal/useModal";
 import useSwap from "@shared/src/hooks/useSwap/useSwap";
