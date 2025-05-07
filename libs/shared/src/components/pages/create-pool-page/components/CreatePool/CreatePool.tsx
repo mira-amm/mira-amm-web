@@ -4,7 +4,7 @@ import {CreatePoolPreviewData} from "@/src/components/pages/create-pool-page/com
 import CreatePoolDialog from "./CreatePoolDialog";
 import BackLink from "@/src/components/common/BackLink/BackLink";
 import {useRouter} from "next/navigation";
-import IconButton from "@/src/components/common/IconButton/IconButton";
+import IconButton from "@shared/src/components/common/IconButton/IconButton";
 import CloseIcon from "@/src/components/icons/Close/CloseIcon";
 import dynamic from "next/dynamic";
 

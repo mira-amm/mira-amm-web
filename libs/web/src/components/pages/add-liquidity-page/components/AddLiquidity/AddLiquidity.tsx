@@ -6,7 +6,7 @@ import PreviewAddLiquidityDialog, {
 import AddLiquidityDialog from "@/src/components/pages/add-liquidity-page/components/AddLiquidity/AddLiquidityDialog";
 import BackLink from "@/src/components/common/BackLink/BackLink";
 import {useRouter} from "next/navigation";
-import IconButton from "@/src/components/common/IconButton/IconButton";
+import IconButton from "@shared/src/components/common/IconButton/IconButton";
 import CloseIcon from "@/src/components/icons/Close/CloseIcon";
 import {PoolId} from "mira-dex-ts";
 import {SlippageSetting} from "@/src/components/common/SlippageSetting/SlippageSetting";

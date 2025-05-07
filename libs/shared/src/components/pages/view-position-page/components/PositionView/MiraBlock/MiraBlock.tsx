@@ -1,5 +1,5 @@
 import React, {useCallback} from "react";
-import IconButton from "@/src/components/common/IconButton/IconButton";
+import IconButton from "@shared/src/components/common/IconButton/IconButton";
 import LogoIcon from "@/src/components/icons/Logo/LogoIcon";
 import styles from "./MiraBlock.module.css";
 import {CopyIcon} from "@/src/components/icons/Copy/CopyIcon";

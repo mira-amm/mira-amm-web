@@ -3,7 +3,7 @@ import {createPortal} from "react-dom";
 
 import styles from "./Modal.module.css";
 import {clsx} from "clsx";
-import IconButton from "@/src/components/common/IconButton/IconButton";
+import IconButton from "@shared/src/components/common/IconButton/IconButton";
 import CloseIcon from "@/src/components/icons/Close/CloseIcon";
 import {useScrollLock} from "usehooks-ts";
 

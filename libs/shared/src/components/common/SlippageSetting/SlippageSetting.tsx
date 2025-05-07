@@ -1,5 +1,5 @@
 import SettingsIcon from "../../icons/Settings/SettingsIcon";
-import IconButton from "../IconButton/IconButton";
+import IconButton from "@shared/src/components/common/IconButton/IconButton";
 import styles from "./SlippageSetting.module.css";
 
 type Props = {

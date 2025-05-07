@@ -1,6 +1,5 @@
 // MARK AS TOMBSTONE TO BE DELETED
 
-
 // import {useConnectUI, useIsConnected} from "@fuels/react";
 // import {useLocalStorage} from "usehooks-ts";
 // import {clsx} from "clsx";
@@ -8,7 +7,7 @@
 // import {useCallback, useEffect, useMemo, useRef, useState} from "react";
 
 // import ActionButton from "@shared/src/components/common/ActionButton/ActionButton";
-// import IconButton from "@/src/components/common/IconButton/IconButton";
+// import IconButton from "@shared/src/components/common/IconButton/IconButton";
 // import CurrencyBox from "@/src/components/common/Swap/components/CurrencyBox/CurrencyBox";
 // import ConvertIcon from "@/src/components/icons/Convert/ConvertIcon";
 // import useModal from "@/src/hooks/useModal/useModal";

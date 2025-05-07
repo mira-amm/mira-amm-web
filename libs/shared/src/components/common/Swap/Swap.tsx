@@ -7,7 +7,7 @@
 // import {useCallback, useEffect, useMemo, useRef, useState} from "react";
 
 // import ActionButton from "@shared/src/components/common/ActionButton/ActionButton";
-// import IconButton from "@/src/components/common/IconButton/IconButton";
+// import IconButton from "@shared/src/components/common/IconButton/IconButton";
 // import CurrencyBox from "@/src/components/common/Swap/components/CurrencyBox/CurrencyBox";
 // import ConvertIcon from "@/src/components/icons/Convert/ConvertIcon";
 // import useModal from "@/src/hooks/useModal/useModal";
@@ -45,7 +45,7 @@
 // import Loader from "@/src/components/common/Loader/Loader";
 // import ConnectButton from "@/src/components/common/ConnectButton/ConnectButton";
 // import {TradeState} from "@/src/hooks/useSwapRouter";
-// 
+//
 // export type CurrencyBoxMode = "buy" | "sell";
 // export type CurrencyBoxState = {
 //   assetId: string | null;

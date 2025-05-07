@@ -16,7 +16,7 @@ import {
   POINTS_PROMO_TITLE,
 } from "@/src/utils/constants";
 import TestnetLabel from "@/src/components/common/TestnetLabel/TestnetLabel";
-import IconButton from "../IconButton/IconButton";
+import IconButton from "@shared/src/components/common/IconButton/IconButton";
 import CloseIcon from "../../icons/Close/CloseIcon";
 import {useEffect, useState} from "react";
 import PointsIcon from "../../icons/Points/PointsIcon";
