@@ -1,7 +1,7 @@
 "use client";
-import CoinListItem from "@/src/components/common/Swap/components/CoinListItem/CoinListItem";
-import SearchIcon from "@/src/components/icons/Search/SearchIcon";
-import useCoinListModalData from "@/src/hooks/useCoinListModal";
+import CoinListItem from "@shared/src/components/common/Swap/components/CoinListItem/CoinListItem";
+import SearchIcon from "@shared/src/components/icons/Search/SearchIcon";
+import useCoinListModalData from "@shared/src/hooks/useCoinListModal";
 import {CoinQuantity} from "fuels";
 import {memo, useEffect, useRef} from "react";
 import EmptySearchResults from "../EmptySearchResults";

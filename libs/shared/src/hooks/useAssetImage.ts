@@ -1,7 +1,7 @@
 import {skipToken, useQuery} from "@tanstack/react-query";
 import request, {gql} from "graphql-request";
 import {SQDIndexerUrl} from "../utils/constants";
-import defaultImage from "@/assets/unknown-asset.svg";
+import defaultImage from "@shared/assets/unknown-asset.svg";
 import {useAssetList} from "./useAssetList";
 
 export interface AssetImageData {

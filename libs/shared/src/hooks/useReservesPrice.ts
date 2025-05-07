@@ -1,5 +1,5 @@
-import useReadonlyMira from "@/src/hooks/useReadonlyMira";
-import {CoinName, coinsConfig} from "@/src/utils/coinsConfig";
+import useReadonlyMira from "@shared/src/hooks/useReadonlyMira";
+import {CoinName, coinsConfig} from "@shared/src/utils/coinsConfig";
 import {PoolId} from "mira-dex-ts";
 import {useQuery} from "@tanstack/react-query";
 import {B256Address} from "fuels";

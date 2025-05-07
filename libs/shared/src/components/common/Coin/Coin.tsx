@@ -2,9 +2,9 @@ import {memo} from "react";
 
 import styles from "./Coin.module.css";
 import {clsx} from "clsx";
-import ChevronDownIcon from "@/src/components/icons/ChevronDown/ChevronDownIcon";
-import useAssetMetadata from "@/src/hooks/useAssetMetadata";
-import {useAssetImage} from "@/src/hooks/useAssetImage";
+import ChevronDownIcon from "@shared/src/components/icons/ChevronDown/ChevronDownIcon";
+import useAssetMetadata from "@shared/src/hooks/useAssetMetadata";
+import {useAssetImage} from "@shared/src/hooks/useAssetImage";
 
 type Props = {
   assetId: string | null;

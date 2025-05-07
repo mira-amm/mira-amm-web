@@ -1,4 +1,4 @@
-import WarningIcon from "@/src/components/icons/Warning/WarningIcon";
+import WarningIcon from "@shared/src/components/icons/Warning/WarningIcon";
 import styles from "./SettingsModalContent.module.css";
 import {
   ChangeEvent,

@@ -1,9 +1,9 @@
-import useAssetMetadata from "@/src/hooks/useAssetMetadata";
+import useAssetMetadata from "@shared/src/hooks/useAssetMetadata";
 import CoinListItem from "./CoinListItem/CoinListItem";
 import {CoinQuantity} from "fuels";
 import styles from "./CoinsListModal/CoinsListModal.module.css";
 import SkeletonLoader from "./SkeletonLoader/SkeletonLoader";
-import useAsset from "@/src/hooks/useAsset";
+import useAsset from "@shared/src/hooks/useAsset";
 
 interface Props {
   assetId: string;

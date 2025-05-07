@@ -1,4 +1,4 @@
-import src20Abi from "@/src/abis/src20-abi.json";
+import src20Abi from "@shared/src/abis/src20-abi.json";
 import {useQuery} from "@tanstack/react-query";
 import {B256Address, Contract, Provider} from "fuels";
 import {NetworkUrl} from "../utils/constants";

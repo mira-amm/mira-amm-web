@@ -1,5 +1,5 @@
-import {SwapState} from "@/src/components/common/Swap/Swap";
-import {ETH_ASSET_ID, USDC_ASSET_ID} from "@/src/utils/constants";
+import {SwapState} from "@swap/src/components/common/Swap/Swap";
+import {ETH_ASSET_ID, USDC_ASSET_ID} from "@shared/src/utils/constants";
 import {useSearchParams} from "next/navigation";
 import {useMemo} from "react";
 import {useLocalStorage} from "usehooks-ts";

@@ -6,10 +6,10 @@ import {useMutation} from "@tanstack/react-query";
 import type {
   CurrencyBoxMode,
   SwapState,
-} from "@/src/components/common/Swap/Swap";
-import useMiraDex from "@/src/hooks/useMiraDex/useMiraDex";
-import useSwapData from "@/src/hooks/useAssetPair/useSwapData";
-import {DefaultTxParams, MaxDeadline} from "@/src/utils/constants";
+} from "@swap/src/components/common/Swap/Swap";
+import useMiraDex from "@shared/src/hooks/useMiraDex/useMiraDex";
+import useSwapData from "@shared/src/hooks/useAssetPair/useSwapData";
+import {DefaultTxParams, MaxDeadline} from "@shared/src/utils/constants";
 import {PoolId} from "mira-dex-ts";
 import useReadonlyMira from "../useReadonlyMira";
 

@@ -1,4 +1,4 @@
-import {CurrencyBoxMode, SwapState} from "@/src/components/common/Swap/Swap";
+import {CurrencyBoxMode, SwapState} from "@swap/src/components/common/Swap/Swap";
 import useSwapData from "./useAssetPair/useSwapData";
 import useAsset from "./useAsset";
 import {useMemo} from "react";

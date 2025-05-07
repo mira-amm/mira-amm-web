@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useWallet } from "@fuels/react";
-import { ValidNetworkChainId } from "@/src/utils/constants";
+import { ValidNetworkChainId } from "@shared/src/utils/constants";
 
 const useCheckActiveNetwork = () => {
   const { wallet } = useWallet();

@@ -1,18 +1,18 @@
 import {ChangeEvent, memo, useCallback} from "react";
 import {clsx} from "clsx";
 
-import Coin from "@/src/components/common/Coin/Coin";
-import ChevronDownIcon from "@/src/components/icons/ChevronDown/ChevronDownIcon";
+import Coin from "@shared/src/components/common/Coin/Coin";
+import ChevronDownIcon from "@shared/src/components/icons/ChevronDown/ChevronDownIcon";
 import {CurrencyBoxMode} from "libs/swap/src/components/common/Swap/Swap";
 import {CoinName, coinsConfig} from "libs/swap/src/utils/coinsConfig";
 
 import styles from "./CurrencyBox.module.css";
-import TextButton from "@/src/components/common/TextButton/TextButton";
+import TextButton from "@shared/src/components/common/TextButton/TextButton";
 import {DefaultLocale, MinEthValueBN} from "libs/swap/src/utils/constants";
 import {InsufficientReservesError} from "mira-dex-ts/dist/sdk/errors";
-import {NoRouteFoundError} from "@/src/hooks/useSwapPreview";
+import {NoRouteFoundError} from "@shared/src/hooks/useSwapPreview";
 import {B256Address, BN} from "fuels";
-import useAssetMetadata from "@/src/hooks/useAssetMetadata";
+import useAssetMetadata from "@shared/src/hooks/useAssetMetadata";
 import fiatValueFormatter from "libs/swap/src/utils/abbreviateNumber";
 type Props = {
   value: string;
