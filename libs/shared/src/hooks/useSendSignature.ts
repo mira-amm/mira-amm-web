@@ -3,7 +3,7 @@ import {ApiBaseUrl} from "../utils/constants";
 import {useAccount, useCurrentConnector, useWallet} from "@fuels/react";
 import {useCallback} from "react";
 import {Account, FuelConnector, toBech32} from "fuels";
-import {calculateSHA256Hash} from "@/src/utils/common";
+import {calculateSHA256Hash} from "@shared/src/utils/common";
 import {hasSignMessageCustomCurve} from "@fuels/connectors";
 
 const signMessage = async (

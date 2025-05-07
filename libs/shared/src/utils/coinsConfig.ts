@@ -1,4 +1,4 @@
-import {ValidNetworkChainId} from "@/src/utils/constants";
+import {ValidNetworkChainId} from "@shared/src/utils/constants";
 
 import assets from "./verified-assets.json";
 

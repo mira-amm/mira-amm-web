@@ -1,11 +1,8 @@
 import {useQuery} from "@tanstack/react-query";
-import type {
-  CurrencyBoxMode,
-  SwapState,
-} from "@/src/components/common/Swap/Swap";
 import useSwapData from "@/src/hooks/useAssetPair/useSwapData";
 import useReadonlyMira from "@/src/hooks/useReadonlyMira";
 import {buildPoolId} from "mira-dex-ts";
+import { CurrencyBoxMode, SwapState } from "../../types/Swap";
 
 type Props = {
   swapState: SwapState;

@@ -1,8 +1,8 @@
-import useReadonlyMira from "@/src/hooks/useReadonlyMira";
+import useReadonlyMira from "@shared/src/hooks/useReadonlyMira";
 import {useQuery} from "@tanstack/react-query";
 import {getLPAssetId, PoolId} from "mira-dex-ts";
-import {DEFAULT_AMM_CONTRACT_ID} from "@/src/utils/constants";
-import useBalances from "@/src/hooks/useBalances/useBalances";
+import {DEFAULT_AMM_CONTRACT_ID} from "@shared/src/utils/constants";
+import useBalances from "@shared/src/hooks/useBalances/useBalances";
 import {bn} from "fuels";
 
 type Props = {

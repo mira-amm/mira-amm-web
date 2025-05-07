@@ -1,6 +1,6 @@
 import {useMemo} from "react";
 
-import {DefaultLocale} from "@/src/utils/constants";
+import {DefaultLocale} from "@shared/src/utils/constants";
 import useAssetMetadata from "../useAssetMetadata";
 
 type Props = {

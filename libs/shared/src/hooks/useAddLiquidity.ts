@@ -2,7 +2,7 @@ import {useMutation} from "@tanstack/react-query";
 import useMiraDex from "@/src/hooks/useMiraDex/useMiraDex";
 import {useCallback} from "react";
 import {useWallet} from "@fuels/react";
-import {DefaultTxParams, MaxDeadline} from "@/src/utils/constants";
+import {DefaultTxParams, MaxDeadline} from "@shared/src/utils/constants";
 import {bn, BN} from "fuels";
 import {buildPoolId} from "mira-dex-ts";
 

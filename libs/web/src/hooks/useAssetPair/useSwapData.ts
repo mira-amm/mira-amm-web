@@ -1,7 +1,7 @@
 import {useMemo} from "react";
 import {AssetIdInput} from "mira-dex-ts/dist/sdk/typegen/MiraAmmContract";
 
-import {SwapState} from "@/src/components/common/Swap/Swap";
+import {SwapState} from "@shared/src/types/Swap";
 import useAssetMetadata from "../useAssetMetadata";
 
 type SwapData = {

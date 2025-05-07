@@ -4,7 +4,7 @@ import {useMemo} from "react";
 import {coinsConfig} from "@shared/src/utils/coinsConfig";
 import {DefaultLocale} from "@shared/src/utils/constants";
 import useAssetMetadata from "../useAssetMetadata";
-import { CurrencyBoxMode, SwapState } from "../../types/swap";
+import { CurrencyBoxMode, SwapState } from "../../types/Swap";
 
 const useExchangeRate = (
   swapState: SwapState,

@@ -8,7 +8,7 @@ import useSwapData from "@shared/src/hooks/useAssetPair/useSwapData";
 import {DefaultTxParams, MaxDeadline} from "@shared/src/utils/constants";
 import {PoolId} from "mira-dex-ts";
 import useReadonlyMira from "../useReadonlyMira";
-import { CurrencyBoxMode, SwapState } from "../../types/swap";
+import { CurrencyBoxMode, SwapState } from "../../types/Swap";
 
 type Props = {
   swapState: SwapState;

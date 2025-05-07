@@ -1,7 +1,7 @@
 import {gql, request} from "graphql-request";
 import {useQuery} from "@tanstack/react-query";
 import {B256Address} from "fuels";
-import {DefaultLocale, IndexerUrl} from "@/src/utils/constants";
+import {DefaultLocale, IndexerUrl} from "@shared/src/utils/constants";
 import {useMemo} from "react";
 import {CoinDataWithPrice} from "../utils/coinsConfig";
 import {useAssetList} from "./useAssetList";

@@ -1,12 +1,12 @@
 import {useQuery} from "@tanstack/react-query";
-import {CurrencyBoxMode, SwapState} from "@/src/components/common/Swap/Swap";
-import useSwapData from "@/src/hooks/useAssetPair/useSwapData";
-import useReadonlyMira from "@/src/hooks/useReadonlyMira";
+import useSwapData from "@shared/src/hooks/useAssetPair/useSwapData";
+import useReadonlyMira from "@shared/src/hooks/useReadonlyMira";
 import {buildPoolId, PoolId, Asset} from "mira-dex-ts";
-import {BASE_ASSETS, MAX_U256} from "@/src/utils/constants";
+import {BASE_ASSETS, MAX_U256} from "@shared/src/utils/constants";
 import {InsufficientReservesError} from "mira-dex-ts/dist/sdk/errors";
 import {bn, BN} from "fuels";
 import useAssetMetadata from "./useAssetMetadata";
+import { CurrencyBoxMode, SwapState } from "../types/swap";
 type Props = {
   swapState: SwapState;
   mode: CurrencyBoxMode;

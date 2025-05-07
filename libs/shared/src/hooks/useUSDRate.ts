@@ -1,5 +1,5 @@
 import {useQuery} from "@tanstack/react-query";
-import {CoinGeckoApiUrl} from "@/src/utils/constants";
+import {CoinGeckoApiUrl} from "@shared/src/utils/constants";
 import {
   assetHandleToSymbol,
   CoinName,

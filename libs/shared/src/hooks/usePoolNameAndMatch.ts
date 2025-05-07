@@ -1,4 +1,4 @@
-import boostRewards from "@/src/models/campaigns.json";
+import boostRewards from "@shared/src/models/campaigns.json";
 import {EPOCH_NUMBER} from "../utils/constants";
 
 const usePoolNameAndMatch = (poolKey: string): {isMatching: boolean} => {

@@ -1,8 +1,8 @@
 import {useQuery} from "@tanstack/react-query";
 import {useAccount} from "@fuels/react";
 import {toBech32} from "fuels";
-import {ApiBaseUrl} from "@/src/utils/constants";
-import useSHA256Hash from "@/src/hooks/useSHA256Hash";
+import {ApiBaseUrl} from "@shared/src/utils/constants";
+import useSHA256Hash from "@shared/src/hooks/useSHA256Hash";
 
 type SignatureData = {
   msg_hash: string;

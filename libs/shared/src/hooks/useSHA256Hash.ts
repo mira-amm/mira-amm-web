@@ -1,5 +1,5 @@
 import {useQuery} from "@tanstack/react-query";
-import {calculateSHA256Hash} from "@/src/utils/common";
+import {calculateSHA256Hash} from "@shared/src/utils/common";
 
 const useSHA256Hash = (message: string) => {
   const {data} = useQuery({

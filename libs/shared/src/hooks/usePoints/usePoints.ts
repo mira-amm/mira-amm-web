@@ -1,5 +1,5 @@
 import {useAccount} from "@fuels/react";
-import pointsRewards from "@/src/models/campaigns.json";
+import pointsRewards from "@shared/src/models/campaigns.json";
 import {EPOCH_NUMBER} from "@/src/utils/constants";
 import {useMemo} from "react";
 import {getRewardsPoolsId} from "@/src/utils/common";
