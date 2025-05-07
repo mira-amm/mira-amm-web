@@ -24,6 +24,8 @@
       "@/shared/*": ["libs/shared/*"],
       "@/web": ["libs/web/index.ts"],
       "@/web/*": ["libs/web/*"],
+      "@swap/*": ["libs/swap/*"],
+      "@shared/*": ["libs/shared/*"]
     },
     "declaration": false,
     "importHelpers": true,
