@@ -5,6 +5,14 @@
   "projectType": "application",
   "targets": {
     "dev": {
+      "dependsOn": [
+        {
+          "projects": [
+            "microvisor"
+          ],
+          "target": "dev"
+        }
+      ],
       "command": "wxt",
       "options": {
         "cwd": "apps/microscope"

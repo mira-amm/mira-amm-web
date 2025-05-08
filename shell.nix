@@ -88,7 +88,7 @@ in pkgs.mkShell {
     uv tool install --python 3.12 posting
     fi
 
-    zellij --config apps/microvisor/zellij.config.kdl -n apps/microvisor/zellij.layout.kdl
+    pnpm nx dev microscope;
 
     zellij ka -y;
     zellij da -y;
