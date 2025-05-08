@@ -6,7 +6,15 @@ export default defineConfig({
     '@wxt-dev/module-react'
   ],
   manifest: {
-    permissions: ['storage', 'tabs', 'sidePanel'],
+    permissions: [
+      'storage',
+      'tabs',
+      "activeTab",
+      "tabGroups",
+      "fontSettings",
+      "contextMenus",
+      'sidePanel'
+    ],
   },
   dev:{
     server:{
