@@ -52,3 +52,6 @@ libs/db/supabase/.temp
 #====================================================
 .env
 .env*.local
+
+vite.config.*.timestamp*
+vitest.config.*.timestamp*

@@ -3,8 +3,9 @@
   "compilerOptions": {
     "jsx": "react-jsx",
     "allowJs": false,
+    "esModuleInterop": false,
     "allowSyntheticDefaultImports": true,
-    "esModuleInterop": true
+    "strict": true
   },
   "references": [
     {
