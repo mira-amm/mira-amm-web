@@ -6,6 +6,12 @@ export default defineConfig({
     '@wxt-dev/module-react'
   ],
   manifest: {
+ name: "Microscope",
+    description: "Microchain Browser Extension",
+      action: {
+      default_title: "Microscope",
+    },
+ version: "0.0.0",
     permissions: [
       'storage',
       'tabs',
