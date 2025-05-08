@@ -3,7 +3,7 @@ import ExchangeIcon from "@shared/src/components/icons/Exchange/ExchangeIcon";
 import useExchangeRate from "@shared/src/hooks/useExchangeRate/useExchangeRate";
 
 import styles from "./ExchangeRate.module.css";
-import { CurrencyBoxMode, SwapState } from "@/shared/src/types/swap";
+import {CurrencyBoxMode, SwapState} from "@/shared/src/types/swap-types";
 
 type Props = {
   swapState: SwapState;

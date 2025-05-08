@@ -1,10 +1,14 @@
 import useBalances from "@shared/src/hooks/useBalances/useBalances";
 import {coinsConfig} from "@shared/src/utils/coinsConfig";
 import {useMemo} from "react";
-import {ETH_ASSET_ID, EthDecimals, MinEthValueBN} from "@shared/src/utils/constants";
+import {
+  ETH_ASSET_ID,
+  EthDecimals,
+  MinEthValueBN,
+} from "@shared/src/utils/constants";
 import {bn, BN} from "fuels";
 import useAssetBalance from "@shared/src/hooks/useAssetBalance";
-import { CurrencyBoxState } from "../../types/swap";
+import {CurrencyBoxState} from "../../types/swap-types";
 
 const useCheckEthBalance = (sellCoin?: CurrencyBoxState) => {
   const {balances} = useBalances();

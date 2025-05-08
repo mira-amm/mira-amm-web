@@ -5,7 +5,7 @@ import {useCallback} from "react";
 import {openNewTab} from "@shared/src/utils/common";
 import {FuelAppUrl} from "@shared/src/utils/constants";
 import useAssetMetadata from "@shared/src/hooks/useAssetMetadata";
-import { SwapState } from "@/shared/src/types/swap";
+import {SwapState} from "@/shared/src/types/swap-types";
 
 type Props = {
   swapState: SwapState;

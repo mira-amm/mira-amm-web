@@ -2,7 +2,7 @@ import {useMemo} from "react";
 import {AssetIdInput} from "mira-dex-ts/dist/sdk/typegen/MiraAmmContract";
 
 import useAssetMetadata from "../useAssetMetadata";
-import { SwapState } from "../../types/swap";
+import {SwapState} from "../../types/swap-types";
 
 type SwapData = {
   sellAssetId: string;

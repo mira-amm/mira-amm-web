@@ -4,7 +4,7 @@ import {useMemo} from "react";
 import {bn} from "fuels";
 import useSwapRouter, {TradeType} from "./useSwapRouter";
 import useDebounce from "./useDebounce";
-import { CurrencyBoxMode, SwapState } from "../types/swap";
+import {CurrencyBoxMode, SwapState} from "../types/swap-types";
 
 const useSwapPreview = (swapState: SwapState, mode: CurrencyBoxMode) => {
   const {sellAssetId, buyAssetId} = useSwapData(swapState);

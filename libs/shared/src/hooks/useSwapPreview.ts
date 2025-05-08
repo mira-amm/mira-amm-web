@@ -6,7 +6,7 @@ import {BASE_ASSETS, MAX_U256} from "@shared/src/utils/constants";
 import {InsufficientReservesError} from "mira-dex-ts/dist/sdk/errors";
 import {bn, BN} from "fuels";
 import useAssetMetadata from "./useAssetMetadata";
-import { CurrencyBoxMode, SwapState } from "../types/swap";
+import {CurrencyBoxMode, SwapState} from "../types/swap-types";
 type Props = {
   swapState: SwapState;
   mode: CurrencyBoxMode;

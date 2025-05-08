@@ -13,7 +13,7 @@ import {NoRouteFoundError} from "@shared/src/hooks/useSwapPreview";
 import {B256Address, BN} from "fuels";
 import useAssetMetadata from "@shared/src/hooks/useAssetMetadata";
 import fiatValueFormatter from "@shared/src/utils/abbreviateNumber";
-import { CurrencyBoxMode } from "@/shared/src/types/swap";
+import {CurrencyBoxMode} from "@/shared/src/types/swap-types";
 type Props = {
   value: string;
   assetId: B256Address | null;
