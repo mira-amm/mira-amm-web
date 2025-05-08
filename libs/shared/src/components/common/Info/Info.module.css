@@ -1,0 +1,54 @@
+.infoContainer {
+  position: relative;
+}
+
+.infoButton {
+  height: 16px;
+  width: 16px;
+  background: transparent;
+  border: none;
+  color: var(--content-grey-dark);
+  cursor: pointer;
+  anchor-name: --infoTooltipAnchor;
+}
+
+.infoButton:hover {
+  color: var(--content-grey);
+}
+
+.infoButton:active {
+  color: var(--content-dimmed-dark);
+}
+
+.infoButton > svg {
+  height: 100%;
+  width: 100%;
+}
+
+.tooltip {
+  position-anchor: --infoTooltipAnchor;
+  position: fixed;
+  top: anchor(50%);
+  left: anchor(50%);
+  /*top: anchor(--anchor_1 bottom);*/
+  /*left: anchor(--anchor_1 right);*/
+  max-width: 200px;
+  font-size: 14px;
+  line-height: 16px;
+  font-weight: 400;
+  padding: 8px;
+  background-color: var(--background-secondary);
+  color: var(--content-dimmed-dark);
+  border: none;
+  border-radius: 8px;
+  visibility: hidden;
+  transition:
+    opacity 0.2s ease-in-out,
+    visibility 0.2s ease-in-out;
+  z-index: 1000;
+}
+
+.infoContainer:hover .tooltip {
+  visibility: visible; /* Show tooltip on hover */
+  opacity: 1; /* Fully visible */
+}

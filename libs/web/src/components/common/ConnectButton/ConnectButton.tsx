@@ -5,7 +5,7 @@ import {useCallback, useEffect, useMemo, useRef, useState} from "react";
 
 import styles from "./ConnectButton.module.css";
 
-import ActionButton from "@/src/components/common/ActionButton/ActionButton";
+import ActionButton from "@shared/src/components/common/ActionButton/ActionButton";
 import TransactionsHistory from "@/src/components/common/TransactionsHistory/TransactionsHistory";
 import useFormattedAddress from "@/src/hooks/useFormattedAddress/useFormattedAddress";
 import useWeb3React from "@/src/hooks/useWeb3Connection";

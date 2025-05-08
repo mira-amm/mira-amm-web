@@ -1,0 +1,31 @@
+.coinWithAmount {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  flex: 1;
+}
+
+.coinWithAmount > img {
+  width: 38px;
+  height: 38px;
+}
+
+.info {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.amount {
+  font-weight: 500;
+  font-size: 18px;
+  line-height: 22px;
+  color: var(--content-primary);
+}
+
+.name {
+  font-weight: 400;
+  font-size: 15px;
+  line-height: 18px;
+  color: var(--content-dimmed-light);
+}

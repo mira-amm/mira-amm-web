@@ -2,7 +2,7 @@
 
 import Header from "@/src/components/common/Header/Header";
 import Footer from "@/src/components/common/Footer/Footer";
-import Swap from "@/src/components/common/Swap/Swap";
+import Swap from "@swap/src/components/common/Swap/Swap";
 import styles from "./SwapPageLayout.module.css";
 
 const SwapPageLayout = () => {
