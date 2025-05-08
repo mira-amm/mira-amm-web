@@ -38,6 +38,8 @@ in pkgs.mkShell {
     export NX_VERBOSE_LOGGING=true
     export NEXT_PUBLIC_ENABLE_AUTOLOGIN="true"
     export TERM=xterm-256color
+    export ZELLIJ_AUTO_ATTACH=true
+    export ZELLIJ_AUTO_EXIT=true
 
     #====================================================
     #                    DATABASE
@@ -88,9 +90,10 @@ in pkgs.mkShell {
 
     zellij --config apps/microvisor/zellij.config.kdl -n apps/microvisor/zellij.layout.kdl
 
-    pnpm nx stop db
+    zellij ka -y;
+    zellij da -y;
 
-    zellij da -y
+    pnpm nx stop db;
 
     ascii-image-converter ${logoPath} --color --full -b
 
