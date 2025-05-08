@@ -20,7 +20,7 @@ layout {
             }
             pane {
             split_direction "horizontal"
-                pane {
+                 /- pane {
                     name "🔬 Microscope"
                     command "pnpm"
                     args "nx" "dev" "microscope"
