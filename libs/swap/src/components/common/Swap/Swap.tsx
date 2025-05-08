@@ -15,7 +15,6 @@ import styles from "./Swap.module.css";
 
 import ExchangeRate from "@shared/src/components/common/Swap/components/ExchangeRate/ExchangeRate";
 import useExchangeRate from "@shared/src/hooks/useExchangeRate/useExchangeRate";
-import {createPoolKey, openNewTab} from "libs/swap/src/utils/common";
 import useBalances from "@shared/src/hooks/useBalances/useBalances";
 import CoinsListModal from "@shared/src/components/common/Swap/components/CoinsListModal/CoinsListModal";
 import SwapSuccessModal from "@shared/src/components/common/Swap/components/SwapSuccessModal/SwapSuccessModal";
@@ -43,6 +42,7 @@ import {SlippageSetting} from "@shared/src/components/common/SlippageSetting/Sli
 import Loader from "@shared/src/components/common/Loader/Loader";
 import ConnectButton from "@shared/src/components/common/ConnectButton/ConnectButton";
 import {TradeState} from "@shared/src/hooks/useSwapRouter";
+import { createPoolKey, openNewTab } from "@/shared/src/utils/common";
 
 export type CurrencyBoxMode = "buy" | "sell";
 export type CurrencyBoxState = {
