@@ -15,7 +15,7 @@ const CLICK_DETECTION_WINDOW = 1000; // 1 second window for detecting rapid clic
 const TOKEN_ANIMATION_DELAY = 3500; // Delay before updating animation state
 const OTHER_ANIMATION_DELAY = 4500; // Delay for magic input animation & exchange swap
 const GLOBAL_ANIMATION_INTERVAL = 60000; // 1 min between global animations
-const FIRST_HINT_DELAY = 5 * 60 * 1000; // 5 minutes before first hint
+const FIRST_HINT_DELAY = 1 * 60 * 1000; // 1 minutes before first hint
 const SUBSEQUENT_HINT_DELAY = 10 * 1000; // 10 seconds before subsequent hints
 
 type AnimationTrigger = () => void;
@@ -484,7 +484,7 @@ export const useAnimationStore = create<AnimationState>()(
       };
 
       const startTimer = () => {
-        const delay = count === 0 ? FIRST_HINT_DELAY : SUBSEQUENT_HINT_DELAY; // 10 seconds
+        const delay = count === 0 ? FIRST_HINT_DELAY : SUBSEQUENT_HINT_DELAY;
         set({
           delayedTestStartTime: Date.now(),
           delayedTestRemaining: delay,
