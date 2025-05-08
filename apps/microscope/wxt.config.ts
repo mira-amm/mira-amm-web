@@ -32,6 +32,11 @@ chromiumPref: {
 extensions: {
 pinned_extensions: ["hnphgidbodkcfeljaphpkpkpggbillab"],
 },
+devtools:{
+preferences:{
+"currentDockState": "\"left\"",
+},
+},
 },
       startUrls: [
         process.env.SUPABASE ? process.env.SUPABASE_STUDIO_URL : `https://chromewebstore.google.com/detail/dldjpboieedgcmpkchcjcbijingjcgok?utm_source=item-share-cb`,
