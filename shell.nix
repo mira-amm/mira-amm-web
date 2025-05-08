@@ -27,6 +27,7 @@ in pkgs.mkShell {
     pkgs.docker
     pkgs.lazydocker
     pkgs.supabase-cli
+    pkgs.ttyd
   ];
 
   shellHook = ''
