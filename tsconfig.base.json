@@ -31,7 +31,8 @@
     "importHelpers": true,
     "sourceMap": true,
     "skipDefaultLibCheck": true,
-    "skipLibCheck": true
+    "skipLibCheck": true,
+    "resolveJsonModule": true
   },
   "exclude": ["node_modules", "tmp"],
   "compileOnSave": false
