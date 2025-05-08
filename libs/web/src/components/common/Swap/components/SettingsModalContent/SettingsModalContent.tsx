@@ -138,15 +138,6 @@ const SettingsModalContent = ({slippage, setSlippage}: Props) => {
             onBlur={handleInputBlur}
             ref={inputRef}
           />
-
-          <div className={styles.customSpinner}>
-            <button type="button" onClick={increment}>
-              ▲
-            </button>
-            <button type="button" onClick={decrement}>
-              ▼
-            </button>
-          </div>
           <span className={clsx(styles.percentSuffix, "mc-mono-m")}>%</span>
         </div>
       </div>
