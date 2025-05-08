@@ -102,7 +102,7 @@
   width: 230px;
   height: 190px;
   bottom: 120px;
-  left: 80px;
+  right: 80px;
   opacity: 0;
   pointer-events: none;
   z-index: 999;
