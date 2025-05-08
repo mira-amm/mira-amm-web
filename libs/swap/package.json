@@ -1,0 +1,24 @@
+{
+  "name": "swap",
+  "version": "0.0.1",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "type": "module",
+  "files": [
+    "dist"
+  ],
+  "peerDependencies": {
+    "react": "19.0.0",
+    "react-dom": "19.0.0",
+    "@fuels/connectors": "0.40.0",
+    "@fuels/react": "0.40.0",
+    "fuels": "0.100.0",
+    "@tanstack/react-query": "^5.74.4",
+    "mira-dex-ts": "^1.1.42",
+    "@wagmi/connectors": "^5.7.11",
+    "@wagmi/core": "^2.16.7"
+  },
+  "scripts": {
+    "build": "vite build"
+  }
+}
