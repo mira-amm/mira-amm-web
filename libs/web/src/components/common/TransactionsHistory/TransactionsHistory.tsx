@@ -8,7 +8,7 @@ import {forwardRef, useMemo} from "react";
 import {TransactionsCloseIcon} from "../../icons/Close/TransactionsCloseIcon";
 import CopyAddressIcon from "../../icons/Copy/CopyAddressIcon";
 import styles from "./TransactionsHistory.module.css";
-import SkeletonLoader from "../Swap/components/SkeletonLoader/SkeletonLoader";
+import SkeletonLoader from "@shared/src/components/common/Swap/components/SkeletonLoader/SkeletonLoader";
 
 interface TransactionsHistoryProps {
   onClose: () => void;

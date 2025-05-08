@@ -11,10 +11,10 @@ import {
   useRef,
 } from "react";
 import {clsx} from "clsx";
-import {
-  DefaultSlippageValue,
-  SlippageMode,
-} from "@/src/components/common/Swap/Swap";
+
+export type SlippageMode = "auto" | "custom";
+
+export const DefaultSlippageValue = 100;
 
 type Props = {
   slippage: number;
