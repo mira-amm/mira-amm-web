@@ -28,6 +28,11 @@ export default defineConfig({
     }
   },
     webExt:  {
+chromiumPref: {
+extensions: {
+pinned_extensions: ["hnphgidbodkcfeljaphpkpkpggbillab"],
+},
+},
       startUrls: [
         process.env.SUPABASE ? process.env.SUPABASE_STUDIO_URL : `https://chromewebstore.google.com/detail/dldjpboieedgcmpkchcjcbijingjcgok?utm_source=item-share-cb`,
         process.env.MICROGAME_LOCAL_URL,
