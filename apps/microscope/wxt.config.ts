@@ -14,6 +14,11 @@ export default defineConfig({
   manifest: {
     permissions: ['storage', 'tabs', 'sidePanel'],
   },
+  dev:{
+    server:{
+    port: 3010,
+    }
+  },
     webExt:  {
       startUrls: [
         process.env.SUPABASE ? process.env.SUPABASE_STUDIO_URL : `https://chromewebstore.google.com/detail/dldjpboieedgcmpkchcjcbijingjcgok?utm_source=item-share-cb`,
