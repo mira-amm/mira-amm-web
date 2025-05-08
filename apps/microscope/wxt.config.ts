@@ -27,7 +27,7 @@ export default defineConfig({
         process.env.MICROGAME_LOCAL_URL,
         `${process.env.MICROGAME_LOCAL_URL}/admin`,
       ],
- chromiumArgs: ['--user-data-dir=./.wxt/chrome-data'],
+ // chromiumArgs: ['--user-data-dir=./.wxt/chrome-data'],
     },
   publicDir: '../../apps/microgame/public',
 });

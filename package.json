@@ -9,7 +9,7 @@
   },
   "engineStrict": true,
   "scripts": {
-    "clean": "git clean -fdX -e '!**/.env*' -e '!**/db/data' -e '!**/.wxt/chrome-data' # 🧽 Remove any and all files listed in .gitignore except .env and data",
+    "clean": "git clean -fdX -e '!**/.env*' -e '!**/db/data' # 🧽 Remove any and all files listed in .gitignore except .env and data",
     "nuke": "nx destroy db; sudo git clean -fdX; # 🚨 WARNING: REMOVE ANY AND ALL FILES LISTED IN .gitignore INCLUDING .env and data",
     "ri": "pnpm clean; pnpm i; pnpm d; # 🧹 Perform a clean install",
     "d": "nx shell microdoctor # 💊 Get a check-up from Microdoctor",
