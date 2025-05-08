@@ -3,8 +3,13 @@ import { defineConfig } from 'wxt';
 // See https://wxt.dev/api/config.html
 export default defineConfig({
   modules: [
-    '@wxt-dev/module-react'
+    '@wxt-dev/module-react',
+'@wxt-dev/webextension-polyfill',
+'@wxt-dev/auto-icons'
   ],
+  autoIcons:{
+  grayscaleOnDevelopment: false
+  },
   manifest: {
  name: "Microscope",
     description: "Microchain Browser Extension",
@@ -40,8 +45,6 @@ preferences:{
 },
       startUrls: [
         process.env.SUPABASE ? process.env.SUPABASE_STUDIO_URL : `https://chromewebstore.google.com/detail/dldjpboieedgcmpkchcjcbijingjcgok?utm_source=item-share-cb`,
-        process.env.MICROGAME_LOCAL_URL,
-        `${process.env.MICROGAME_LOCAL_URL}/admin`,
       ],
  // chromiumArgs: ['--user-data-dir=./.wxt/chrome-data'],
     },
