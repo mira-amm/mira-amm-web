@@ -9,4 +9,10 @@
     "db",
     "platform-vercel"
   ],
+  "targets": {
+    "dev": {
+      "command": "ttyd -aW zellij --config apps/microvisor/zellij.config.kdl -n apps/microvisor/zellij.layout.kdl",
+      "continuous": true
+    }
+  }
 }
