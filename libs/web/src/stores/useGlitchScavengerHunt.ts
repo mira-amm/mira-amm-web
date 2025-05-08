@@ -10,6 +10,14 @@ const HINT_2 = "Slippage is so low these days, it feels great to live in 1985.";
 const HINT_3 =
   "Easy there, Gordon Gecko. If you keep switching these prices, the market will tank.";
 
+// Timeout constants
+const CLICK_DETECTION_WINDOW = 1000; // 1 second window for detecting rapid clicks
+const TOKEN_ANIMATION_DELAY = 3500; // Delay before updating animation state
+const OTHER_ANIMATION_DELAY = 4500; // Delay for magic input animation & exchange swap
+const GLOBAL_ANIMATION_INTERVAL = 60000; // 1 min between global animations
+const FIRST_HINT_DELAY = 5 * 60 * 1000; // 5 minutes before first hint
+const SUBSEQUENT_HINT_DELAY = 10 * 1000; // 10 seconds before subsequent hints
+
 type AnimationTrigger = () => void;
 type AnimationType =
   | "timer"
@@ -163,7 +171,9 @@ export const useAnimationStore = create<AnimationState>()(
         return;
 
       const now = Date.now();
-      const recentClicks = lastClicks.filter((t) => now - t < 1000);
+      const recentClicks = lastClicks.filter(
+        (t) => now - t < CLICK_DETECTION_WINDOW,
+      );
 
       if (recentClicks.length >= 2) {
         set({lastClicks: []});
@@ -203,7 +213,7 @@ export const useAnimationStore = create<AnimationState>()(
             );
             localStorage.setItem(ANIMATION_COUNT_KEY, newCount.toString());
           }
-        }, 3500);
+        }, TOKEN_ANIMATION_DELAY);
       } else {
         set({lastClicks: [...recentClicks, now]});
       }
@@ -291,7 +301,7 @@ export const useAnimationStore = create<AnimationState>()(
         // start after 4.5s delay (same as before)
         setTimeout(() => {
           waitForRadioToStop();
-        }, 4500);
+        }, OTHER_ANIMATION_DELAY);
       }
     },
 
@@ -319,7 +329,9 @@ export const useAnimationStore = create<AnimationState>()(
         return;
 
       const now = Date.now();
-      const recentClicks = lastClicks.filter((t) => now - t < 1000);
+      const recentClicks = lastClicks.filter(
+        (t) => now - t < CLICK_DETECTION_WINDOW,
+      );
 
       if (recentClicks.length >= 2) {
         set({lastClicks: []});
@@ -357,7 +369,7 @@ export const useAnimationStore = create<AnimationState>()(
             );
             localStorage.setItem(ANIMATION_COUNT_KEY, newCount.toString());
           }
-        }, 4500);
+        }, OTHER_ANIMATION_DELAY);
       } else {
         set({lastClicks: [...recentClicks, now]});
       }
@@ -410,7 +422,7 @@ export const useAnimationStore = create<AnimationState>()(
           triggerClassAnimation("dino");
         }
         isGlitchNext = !isGlitchNext;
-      }, 30000); // 30 second interval
+      }, GLOBAL_ANIMATION_INTERVAL); // 30 second interval
 
       set({intervalId, isGlobalActive: true});
     },
@@ -472,8 +484,7 @@ export const useAnimationStore = create<AnimationState>()(
       };
 
       const startTimer = () => {
-        // const delay = 5 * 60 * 1000; // 5 minutes
-        const delay = count === 0 ? 15 * 1000 : 8 * 1000; // 10 seconds
+        const delay = count === 0 ? FIRST_HINT_DELAY : SUBSEQUENT_HINT_DELAY; // 10 seconds
         set({
           delayedTestStartTime: Date.now(),
           delayedTestRemaining: delay,
