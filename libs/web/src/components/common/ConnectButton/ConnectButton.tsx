@@ -196,7 +196,7 @@ const ConnectButton = ({className, isWidget}: Props) => {
               size="small"
               onClick={isConnected ? handleDisconnect : handleConnection}
               loading={isWalletLoading}
-              className={clsx(isConnected && styles.connectBtn)}
+              className={clsx(isConnected && styles.connected)}
             >
               {isConnected ? "DISCONNECT" : "CONNECT"}
             </ActionButton>

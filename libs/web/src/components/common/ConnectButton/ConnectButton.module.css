@@ -2,7 +2,7 @@
   position: relative;
 }
 
-.connectBtn {
+.connected {
   background-color: var(--button-danger) !important;
 }
 
@@ -62,7 +62,12 @@
   margin-top: 5px;
 }
 
-@media (max-width: 1399px) {
+@media (max-width: 1350px) {
+  .fakeSelect {
+    min-width: 180px;
+  }
+}
+@media (max-width: 1230px) {
   .fakeSelect {
     min-width: 120px;
   }
