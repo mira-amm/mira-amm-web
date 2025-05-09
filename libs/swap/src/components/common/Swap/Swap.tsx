@@ -1,5 +1,4 @@
 import {useConnectUI, useIsConnected} from "@fuels/react";
-import {useLocalStorage} from "usehooks-ts";
 import {clsx} from "clsx";
 import Logo from "@shared/src/components/common/Logo/Logo";
 import {useCallback, useEffect, useMemo, useRef, useState} from "react";
@@ -10,6 +9,7 @@ import CurrencyBox from "@shared/src/components/common/Swap/components/CurrencyB
 import ConvertIcon from "@shared/src/components/icons/Convert/ConvertIcon";
 import useModal from "@shared/src/hooks/useModal/useModal";
 import useSwap from "@shared/src/hooks/useSwap/useSwap";
+import {useIsClient} from "@shared/src/hooks/useIsClient";
 
 import styles from "./Swap.module.css";
 
@@ -42,7 +42,7 @@ import {SlippageSetting} from "@shared/src/components/common/SlippageSetting/Sli
 import Loader from "@shared/src/components/common/Loader/Loader";
 import ConnectButton from "@shared/src/components/common/ConnectButton/ConnectButton";
 import {TradeState} from "@shared/src/hooks/useSwapRouter";
-import { createPoolKey, openNewTab } from "@/shared/src/utils/common";
+import {createPoolKey, openNewTab} from "@/shared/src/utils/common";
 
 export type CurrencyBoxMode = "buy" | "sell";
 export type CurrencyBoxState = {
@@ -93,6 +93,7 @@ const Swap = ({isWidget}: {isWidget?: boolean}) => {
   const [CoinsModal, openCoinsModal, closeCoinsModal] = useModal();
   const [SuccessModal, openSuccess] = useModal();
   const [FailureModal, openFailure, closeFailureModal] = useModal();
+  const isClient = useIsClient();
 
   const initialSwapState = useInitialSwapState(isWidget);
 
@@ -111,10 +112,19 @@ const Swap = ({isWidget}: {isWidget?: boolean}) => {
   const [showInsufficientBalance, setShowInsufficientBalance] = useState(true);
   const [customErrorTitle, setCustomErrorTitle] = useState<string>("");
 
-  const [, setSwapCoins] = useLocalStorage("swapCoins", {
-    sell: initialSwapState.sell.assetId,
-    buy: initialSwapState.buy.assetId,
-  });
+  const setSwapCoins = useCallback(
+    (next: (prev: any) => any) => {
+      const current = JSON.parse(
+        localStorage.getItem("swapCoins") ?? "null",
+      ) ?? {
+        sell: initialSwapState.sell.assetId,
+        buy: initialSwapState.buy.assetId,
+      };
+      const updated = next(current);
+      localStorage.setItem("swapCoins", JSON.stringify(updated));
+    },
+    [initialSwapState],
+  );
 
   const sellMetadata = useAssetMetadata(swapState.sell.assetId);
   const buyMetadata = useAssetMetadata(swapState.buy.assetId);
@@ -123,8 +133,13 @@ const Swap = ({isWidget}: {isWidget?: boolean}) => {
   const swapStateForPreview = useRef(swapState);
   const modeForCoinSelector = useRef<CurrencyBoxMode>("sell");
 
-  const {isConnected} = useIsConnected();
-  const {connect, isConnecting} = useConnectUI();
+  const isConnectedFromHook = useIsConnected();
+  const connectUI = useConnectUI();
+
+  const isConnected = isClient ? isConnectedFromHook.isConnected : false;
+  const connect = isClient ? connectUI.connect : () => {};
+  const isConnecting = isClient ? connectUI.isConnecting : false;
+
   const {balances, balancesPending, refetchBalances} = useBalances();
 
   const isValidNetwork = useCheckActiveNetwork();
@@ -576,6 +591,10 @@ const Swap = ({isWidget}: {isWidget?: boolean}) => {
     tradeState === TradeState.REEFETCHING ||
     (previewLoading && swapButtonTitle !== "Insufficient balance") ||
     (!amountMissing && !showInsufficientBalance && txCostPending);
+
+  if (!isClient) {
+    return <div className={styles.swapPlaceholder}>Loading swap</div>;
+  }
 
   return (
     <>
