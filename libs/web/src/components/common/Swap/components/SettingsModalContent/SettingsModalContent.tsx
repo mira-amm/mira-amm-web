@@ -74,23 +74,6 @@ const SettingsModalContent = ({slippage, setSlippage}: Props) => {
     setSlippage(value);
   };
 
-  const updateSlippage = (value: number) => {
-    const rounded = Number(value.toFixed(1));
-    setSelectedSlippageValue(rounded * 100);
-    setInputValue(`${(rounded * 100) / 100}`);
-    setSlippage(rounded * 100);
-  };
-
-  const increment = () => {
-    const next = Math.min(Number((Number(inputValue) + 0.1).toFixed(1)), 100);
-    updateSlippage(next);
-  };
-
-  const decrement = () => {
-    const next = Math.max(Number((Number(inputValue) - 0.1).toFixed(1)), 0.1);
-    updateSlippage(next);
-  };
-
   return (
     <div className={styles.settingsContainer}>
       <div className={styles.settingsSection}>
