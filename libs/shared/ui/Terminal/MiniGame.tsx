@@ -1,9 +1,9 @@
-import {useState, useEffect} from "react";
-import {GAME_INSTRUCTIONS} from "../../lib/constants";
-import {PaginationContextProvider} from "../Pagination/PaginationContextProvider";
-import {Pagination} from "../Pagination/Pagination";
-import {Input} from "../input";
-import {Game} from "../Game/Game";
+import { useState, useEffect } from "react";
+import { GAME_INSTRUCTIONS } from "../../lib/constants";
+import { PaginationContextProvider } from "../Pagination/PaginationContextProvider";
+import { Pagination } from "../Pagination/Pagination";
+import { Input } from "../input";
+import { Game } from "../Game/Game";
 import useWeb3React from "../../hooks/use-web3-react";
 
 interface MiniGameProps {
@@ -11,19 +11,21 @@ interface MiniGameProps {
 }
 
 interface LeaderboardEntry {
+  id: string;
   wallet: string;
   score: number;
 }
 
-const MiniGame = ({terminal}: MiniGameProps) => {
-  const {state, startGame, updateGameScore, endGame, submitWalletAddress} =
+const MiniGame = ({ terminal }: MiniGameProps) => {
+  const { state, startGame, updateGameScore, endGame, submitWalletAddress } =
     terminal;
+  console.log("leaderboard", state.leaderboard);
   const [walletInput, setWalletInput] = useState("");
   const [showWalletInput, setShowWalletInput] = useState(false);
   const [walletError, setWalletError] = useState("");
   const [searchInput, setSearchInput] = useState("");
 
-  const {connect, account, disconnect, isConnected, isWalletLoading} =
+  const { connect, account, disconnect, isConnected, isWalletLoading } =
     useWeb3React();
 
   useEffect(() => {
@@ -167,10 +169,10 @@ const MiniGame = ({terminal}: MiniGameProps) => {
       {/* Leaderboard - 80s Highscore Table */}
       <PaginationContextProvider
         initialPage={1}
-        fetchData={async () => {}}
+        fetchData={async () => { }}
         pageSize={50}
       >
-        {({currentPage, setCurrentPage}) => (
+        {({ currentPage, setCurrentPage }) => (
           <>
             <div className="leaderboard mt-8 border-2 border-terminal-green p-2 bg-black/10">
               <div className="text-terminal-green font-bold mb-2 text-center border-b border-terminal-green pb-2 flex items-center justify-between relative">
