@@ -109,26 +109,3 @@
   color: var(--mc-black);
   pointer-events: none;
 }
-
-.customSpinner {
-  position: absolute;
-  top: 7px;
-  right: 15px;
-  display: flex;
-  flex-direction: column;
-}
-
-.customSpinner button {
-  all: unset;
-  font-size: 10px;
-  padding: 2px;
-  cursor: pointer;
-  text-align: center;
-  user-select: none;
-  color: var(--mc-grey-4);
-  line-height: 1;
-}
-
-.customSpinner button:hover {
-  color: var(--mc-black);
-}
