@@ -5,12 +5,10 @@ import '@payloadcms/next/css'
 import type { ServerFunctionClient } from 'payload'
 import { handleServerFunctions, RootLayout } from '@payloadcms/next/layouts'
 import React from 'react'
-import {VT323} from "next/font/google";
+import {JetBrains_Mono} from "next/font/google";
 
-const vt323 = VT323({
-  weight: "400",
+const jetBrainsMono = JetBrains_Mono({
   subsets: ["latin"],
-  display: "swap",
 });
 
 import { importMap } from './admin/importMap.js'
@@ -30,7 +28,7 @@ const serverFunction: ServerFunctionClient = async function (args) {
 }
 
 const Layout = ({ children }: Args) => (
-  <RootLayout className={vt323.className} config={config} importMap={importMap} serverFunction={serverFunction}>
+  <RootLayout className={jetBrainsMono.className} config={config} importMap={importMap} serverFunction={serverFunction}>
     {children}
   </RootLayout>
 )

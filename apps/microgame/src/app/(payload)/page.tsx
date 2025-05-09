@@ -11,7 +11,7 @@ export default function Home() {
   return (
     <QueryClientProvider client={queryClient}>
       <FuelProviderWrapper>
-        <div className="min-h-screen w-full flex items-center justify-center bg-black font-['VT323',monospace]">
+        <div className="min-h-screen w-full flex items-center justify-center bg-black">
           <Terminal />
         </div>
       </FuelProviderWrapper>
