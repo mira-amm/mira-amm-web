@@ -127,7 +127,7 @@ const MiniGame = ({terminal}: MiniGameProps) => {
       {showWalletInput && (
         <div className="wallet-input mt-8 border-2 border-terminal-blue p-4 bg-black/20">
           <p className="text-terminal-red font-bold mb-2 animate-pulse">
-            EXCEPTIONAL TRADING PERFORMANCE! ENTER YOUR T-REX WALLET:
+            EXCEPTIONAL GAMINIG PERFORMANCE! ENTER YOUR T-REX WALLET:
           </p>
           <div className="flex items-center">
             <span className="text-terminal-blue font-bold mr-2">
