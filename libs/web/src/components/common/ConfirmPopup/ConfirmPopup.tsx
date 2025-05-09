@@ -50,8 +50,8 @@ export const ConfirmPopup: FC<ConfirmPopupProps> = ({
           </li>
           <li className={styles.popupListItem}>
             I am lawfully permitted to access this site and use the Microchain
-            protocol under the laws of the jurisdiction in which I reside and am
-            located.
+            Dex protocol under the laws of the jurisdiction in which I reside
+            and am located.
           </li>
           <li className={styles.popupListItem}>
             I understand the risks associated with using decentralized

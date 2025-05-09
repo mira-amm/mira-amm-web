@@ -70,7 +70,7 @@ const Footer = ({isHomePage = false}: FooterProps) => {
           </div>
           <div className={styles.copyright}>
             <p className={clsx("mobileOnly", "mc-type-m")}>
-              &copy; {currentYear} Microchain
+              &copy; {currentYear} Microchain Finance
             </p>
           </div>
         </div>
@@ -144,7 +144,7 @@ const Footer = ({isHomePage = false}: FooterProps) => {
           </div>
           <div className={styles.copyright}>
             <p className={clsx("desktopOnly", "mc-type-m")}>
-              &copy; {currentYear} Microchain
+              &copy; {currentYear} Microchain Finance
             </p>
           </div>
         </div>

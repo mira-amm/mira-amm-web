@@ -7,20 +7,20 @@ type Props = Readonly<{
 
 export const metadata: Metadata = {
   title:
-    "Provide Liquidity on MICROCHAIN | Earn Rewards with MICROCHAIN Liquidity Pools",
+    "Provide Liquidity on MICROCHAIN AMM | Earn Rewards with MICROCHAIN Liquidity Pools",
   description:
-    "Contribute to liquidity pools on MICROCHAIN. Get rewards for providing liquidity using MICROCHAIN protocol. Maximize your earnings with our incentive points program. Join our liquidity providers",
+    "Contribute to liquidity pools on MICROCHAIN AMM. Get rewards for providing liquidity using MICROCHAIN protocol. Maximize your earnings with our incentive points program. Join our liquidity providers",
   openGraph: {
     title:
-      "Provide Liquidity on MICROCHAIN | Earn Rewards with MICROCHAIN Liquidity Pools",
+      "Provide Liquidity on MICROCHAIN AMM | Earn Rewards with MICROCHAIN Liquidity Pools",
     url: "https://mira.ly/liquidity",
     description:
-      "Contribute to liquidity pools on MICROCHAIN. Get rewards for providing liquidity using MICROCHAIN protocol. Maximize your earnings with our incentive points program. Join our liquidity providers",
+      "Contribute to liquidity pools on MICROCHAIN AMM. Get rewards for providing liquidity using MICROCHAIN protocol. Maximize your earnings with our incentive points program. Join our liquidity providers",
     images: "https://mira.ly/images/preview.png",
   },
   twitter: {
     title:
-      "Provide Liquidity on MICROCHAIN | Earn Rewards with MICROCHAIN Liquidity Pools",
+      "Provide Liquidity on MICROCHAIN AMM | Earn Rewards with MICROCHAIN Liquidity Pools",
     description:
       "Contribute to liquidity pools on MICROCHAIN. Get rewards for providing liquidity using MICROCHAIN protocol. Maximize your earnings with our incentive points program. Join our liquidity providers",
     images: "https://mira.ly/images/preview.png",

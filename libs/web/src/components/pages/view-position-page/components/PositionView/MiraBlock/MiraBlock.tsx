@@ -3,7 +3,7 @@ import clsx from "clsx";
 
 import IconButton from "@/src/components/common/IconButton/IconButton";
 import {CopyIcon} from "@/src/components/icons/Copy/CopyIcon";
-import MiraTextLogo from "@/src/components/icons/Logo/MiraTextLogo";
+import MicrochainTextLogo from "@/src/components/icons/Logo/MicrochainTextLogo";
 
 import {PoolId, getLPAssetId} from "mira-dex-ts";
 import {formatUnits} from "fuels";
@@ -20,7 +20,7 @@ interface MiraBlockProps {
   setIsAddressCopied?: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-const MiraBlock = ({pool, setIsAddressCopied}: MiraBlockProps)=> {
+const MiraBlock = ({pool, setIsAddressCopied}: MiraBlockProps) => {
   const {lpTokenBalance} = usePositionData({pool});
   const lpTokenDisplayValue = formatUnits(lpTokenBalance || "0", 9);
   const lpTokenAssetId = getLPAssetId(DEFAULT_AMM_CONTRACT_ID, pool);
@@ -40,7 +40,7 @@ const MiraBlock = ({pool, setIsAddressCopied}: MiraBlockProps)=> {
     <>
       <div className={styles.miraBlock}>
         <div className={styles.miraLogo}>
-          <MiraTextLogo />
+          <MicrochainTextLogo />
         </div>
         <p className={clsx(styles.tokenDisplayValue)}>
           <span className="mc-mono-m">{lpTokenDisplayValue}</span>{" "}

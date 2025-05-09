@@ -41,7 +41,7 @@ import ReviewSwap from "./components/ReviewSwap/ReviewSwap";
 import styles from "./Swap.module.css";
 import CurrencyBox from "../CurrencyBox/CurrencyBox";
 import ExchangeRate from "./components/ExchangeRate/ExchangeRate";
-import MiraTextLogo from "../../icons/Logo/MiraTextLogo";
+import MicrochainTextLogo from "../../icons/Logo/MicrochainTextLogo";
 
 export type CurrencyBoxMode = "buy" | "sell";
 export type CurrencyBoxState = {
@@ -620,7 +620,7 @@ const Swap = ({isWidget}: {isWidget?: boolean}) => {
           <div className={styles.heading}>
             <div className={styles.title}>
               {isWidget ? (
-                <MiraTextLogo primaryColor="black" />
+                <MicrochainTextLogo primaryColor="black" />
               ) : (
                 <p className={"mc-type-l"}>Swap</p>
               )}
