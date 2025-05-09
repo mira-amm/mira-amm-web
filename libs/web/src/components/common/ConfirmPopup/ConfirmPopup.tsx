@@ -23,7 +23,8 @@ export const ConfirmPopup: FC<ConfirmPopupProps> = ({
           </h2>
         </div>
         <p className={clsx(styles.popupDescription, "mc-type-m")}>
-          By accessing this website or using the Mira Protocol, I confirm that:
+          By accessing this website or using the Microchain Protocol, I confirm
+          that:
         </p>
         <ul className={clsx(styles.popupList, "mc-type-m")}>
           <li className={styles.popupListItem}>
@@ -40,21 +41,21 @@ export const ConfirmPopup: FC<ConfirmPopupProps> = ({
             .
           </li>
           <li className={styles.popupListItem}>
-            I will not access this site or use the Mira Protocol while located
-            within the United States or any Prohibited Localities.
+            I will not access this site or use the Microchain Protocol while
+            located within the United States or any Prohibited Localities.
           </li>
           <li className={styles.popupListItem}>
             I am not using, and will not use in the future, a VPN or other tools
             to obscure my physical location from a restricted territory.
           </li>
           <li className={styles.popupListItem}>
-            I am lawfully permitted to access this site and use the Mira Dex
+            I am lawfully permitted to access this site and use the Microchain
             protocol under the laws of the jurisdiction in which I reside and am
             located.
           </li>
           <li className={styles.popupListItem}>
             I understand the risks associated with using decentralized
-            protocols, including the Mira Protocol, as outlined in the{" "}
+            protocols, including the Microchain Protocol, as outlined in the{" "}
             <a
               className={styles.popupLink}
               href="https://docs.mira.ly/resources/terms-and-conditions"

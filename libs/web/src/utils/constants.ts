@@ -62,13 +62,13 @@ export const BASE_ASSETS = [ETH_ASSET_ID, USDC_ASSET_ID];
 export const DisclaimerMessage = `Disclaimer
 1. I am not a person or entity who resides in, is a citizen of, is incorporated in, or has a registered office in the United States of America or any other Prohibited Localities, as defined in the Terms of Use.
 
-2. I will not access this site or use the Mira Dex protocol while located within the United States or any Prohibited Localities.
+2. I will not access this site or use the Microchain protocol while located within the United States or any Prohibited Localities.
 
 3. I am not using, and will not use in the future, a VPN or other tools to obscure my physical location from a restricted territory.
 
-4. I am lawfully permitted to access this site and use the Mira Dex protocol under the laws of the jurisdiction in which I reside and am located.
+4. I am lawfully permitted to access this site and use the Microchain protocol under the laws of the jurisdiction in which I reside and am located.
 
-5. I understand the risks associated with using decentralized protocols, including the Mira Dex protocol, as outlined in the Terms of Use and Privacy Policy.`;
+5. I understand the risks associated with using decentralized protocols, including the Microchain protocol, as outlined in the Terms of Use and Privacy Policy.`;
 
 export const BoostsLearnMoreUrl =
   "https://mirror.xyz/miraly.eth/X-80QWbrq4f17L67Yy8QyQBdE5y2okxTzcfJIL-SHCQ" as const;
@@ -88,7 +88,7 @@ export const boosterBannerTitle =
   " Introducing Boost Rewards, earn $FUEL by providing liquidity.";
 
 export const POINTS_PROMO_TITLE =
-  "Introducing Mira Points, earn points by providing liquidity and engaging in activities.";
+  "Introducing Microchain Points, earn points by providing liquidity and engaging in activities.";
 
 export const EPOCH_NUMBER = 4 as const;
 
