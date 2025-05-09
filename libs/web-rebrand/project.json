@@ -1,0 +1,7 @@
+{
+  "name": "libs/web-rebrand",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/web-rebrand",
+  "projectType": "library",
+  "tags": []
+}

@@ -1,0 +1,40 @@
+.coinPair {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.coinPairAlignStart {
+  align-items: flex-start;
+}
+
+.coinPairIcons {
+  display: flex;
+  align-items: center;
+  width: 64px;
+  height: 36px;
+}
+
+.coinPairIcons > svg,
+.coinPairIcons > img {
+  border-radius: 100%;
+}
+
+.coinPairIcons > svg:nth-child(2),
+.coinPairIcons > img:nth-child(2) {
+  margin-left: -8px;
+}
+
+.namesAndFee {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.coinPairFee {
+  color: var(--content-tertiary);
+}
+
+.poolDescription {
+  color: var(--accent-alert);
+}

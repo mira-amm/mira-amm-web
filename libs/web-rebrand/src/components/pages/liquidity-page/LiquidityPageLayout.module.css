@@ -1,0 +1,21 @@
+.promoBlocks {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.liquidityPageContainer {
+  gap: 47px;
+}
+
+@media (min-width: 1024px) {
+  .promoBlocks {
+    width: 100%;
+    flex-direction: row;
+    gap: 20px;
+  }
+
+  .promoBlocks > div {
+    width: 50%;
+  }
+}

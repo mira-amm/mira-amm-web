@@ -1,0 +1,94 @@
+.contentSection {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.contentSection > div:not:last-child {
+  flex: 1;
+}
+
+.notification {
+  width: 100px;
+  height: 100px;
+  position: absolute;
+  top: 0;
+  left: -10px;
+}
+
+.coinPairAndLabel {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+}
+
+.infoBlock {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  padding: 16px;
+  background-color: var(--background-secondary);
+  border-radius: 16px;
+  border: 11px solid var(--background-tertiary);
+}
+
+.pending {
+  color: var(--content-dimmed-light);
+}
+
+.coinsData {
+  display: flex;
+  justify-content: space-between;
+}
+
+.priceBlocks {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin: 10px 0;
+}
+
+.sticky,
+.nonSticky {
+  width: 100%;
+  align-self: flex-start;
+}
+
+.withdrawLiquidityTitle {
+  text-align: center;
+}
+
+.aprBadge {
+  display: flex;
+  align-items: center;
+}
+
+.withdrawButton {
+  width: 100%;
+}
+
+.reserveItems {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.reserveItems > p {
+  color: var(--mc-grey-4);
+}
+
+@keyframes fade {
+  0% {
+    opacity: 0.5;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+.divider {
+  width: 100%;
+  height: 1px;
+  border: 1px solid var(--primary-white);
+  opacity: 0.1;
+}

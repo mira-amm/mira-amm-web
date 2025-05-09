@@ -1,0 +1,31 @@
+.sortable {
+  cursor: pointer;
+  gap: 10px;
+  user-select: none;
+  transition: color 0.2s ease;
+}
+
+.sortArea {
+  display: flex;
+  justify-content: start;
+  gap: 4px;
+}
+
+.sortable:hover {
+  color: var(--mc-grey-4);
+}
+
+.sortIcon {
+  font-size: 14px;
+  transition: color 0.2s ease;
+}
+
+@media (min-width: 1024px) {
+  .sortIcon {
+    width: 16px;
+  }
+}
+
+.sortIcon.active {
+  color: var(--primary-white);
+}

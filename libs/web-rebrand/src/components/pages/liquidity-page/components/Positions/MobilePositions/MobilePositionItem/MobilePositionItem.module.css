@@ -1,0 +1,63 @@
+.mobilePositionItem {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.infoSection {
+  display: flex;
+  justify-content: space-between;
+}
+
+.positionPrice {
+  color: var(--content-tertiary);
+}
+
+.poolDescription {
+  color: var(--accent-alert);
+}
+
+.aprDiv {
+  display: flex;
+  flex-direction: column;
+  width: 80px;
+}
+
+.title {
+  color: var(--content-primary);
+}
+
+.value {
+  color: var(--content-tertiary);
+}
+
+.aprValue {
+  color: var(--content-positive);
+}
+
+.content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 0;
+}
+
+.subContent {
+  display: flex;
+  flex-direction: column;
+  line-height: 20px;
+}
+
+@keyframes fade {
+  0% {
+    opacity: 0.5;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+.loadingText {
+  color: var(--content-primary);
+  animation: fade 0.5s linear infinite alternate;
+}

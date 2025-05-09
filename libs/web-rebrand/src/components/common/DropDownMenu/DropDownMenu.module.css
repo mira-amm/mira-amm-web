@@ -1,0 +1,101 @@
+.menuList {
+  position: absolute;
+  top: calc(100% + 10px);
+  right: 0;
+  list-style: none;
+  padding: 10px;
+  background: var(--background-secondary);
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  max-width: 205px;
+  box-sizing: border-box;
+  z-index: 2;
+}
+
+.menuButton {
+  border: none;
+  background: none;
+  cursor: pointer;
+  color: var(--content-primary);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 10px;
+  width: 100%;
+}
+
+.menuButtonDisabled {
+  border: none;
+  background: none;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 10px;
+  width: 100%;
+  cursor: default;
+  background: var(--background-secondary);
+  color: var(--content-grey);
+}
+
+.tooltip {
+  visibility: hidden;
+  width: max-content;
+  background: var(--accent-primary);
+  color: var(--content-inverse);
+  text-align: center;
+  padding: 3px 8px;
+  border-radius: 20px;
+  position: absolute;
+  z-index: 1;
+  left: -60px;
+  top: 61%;
+  transform: translateY(-50%);
+  margin-left: 8px;
+  white-space: nowrap;
+}
+
+.menuButtonDisabled:hover .tooltip {
+  visibility: visible;
+}
+
+.menuButton span {
+  text-wrap: nowrap;
+}
+
+.menuButtonDisabled span {
+  text-wrap: nowrap;
+}
+
+.menuButton:hover {
+  background: var(--background-grey-dark);
+  border-radius: 8px;
+}
+
+@media (max-width: 1023px) {
+  .menuList {
+    top: calc(100vh - 220px);
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: 100%;
+    border-radius: 12px 12px 0 0;
+    max-width: 100%;
+    position: fixed;
+    padding-top: 38px;
+  }
+
+  .menuButton span {
+    font-size: 18px;
+  }
+
+  .menuButtonDisabled span {
+    font-size: 18px;
+  }
+
+  .tooltip {
+    top: 64%;
+    left: 210px;
+    visibility: visible;
+  }
+}

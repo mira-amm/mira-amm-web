@@ -1,0 +1,28 @@
+.mobilePoolItem {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.infoSection {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.infoBlocks {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.infoBlocks > .infoBlock {
+  flex: 1;
+  max-width: 120px;
+}
+
+.poolDescription {
+  font-size: 12px;
+  line-height: 14px;
+  color: var(--accent-alert);
+}

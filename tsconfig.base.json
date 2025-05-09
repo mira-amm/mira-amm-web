@@ -9,7 +9,15 @@
     "module": "esnext",
     "moduleResolution": "node",
     "paths": {
-      "@/*": ["libs/web/*"],
+      "@/*": [
+        "libs/web-rebrand/*"
+      ],
+      "@/web-rebrand": [
+        "libs/web-rebrand/index.ts"
+      ],
+      "@/web-rebrand/*": [
+        "libs/web-rebrand/*"
+      ],
       "@/api/*": ["libs/api/*"],
       "@/cms": ["libs/cms/index.ts"],
       "@/cms/*": ["libs/cms/*"],

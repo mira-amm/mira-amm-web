@@ -1,0 +1,21 @@
+.iconBackground {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border-radius: 10px;
+  width: 64px;
+  height: 64px;
+}
+
+/* @media (max-width: 500px) {
+    .iconBackground {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        border-radius: 10px;
+        width: 64px;
+        height: 64px;
+    }
+} */

@@ -1,0 +1,86 @@
+.desktopPools {
+  background-color: var(--background-secondary);
+  border-radius: 16px;
+  border: 11px solid var(--background-tertiary);
+  padding: 16px;
+}
+
+.desktopPools th {
+  color: var(--mc-black);
+  padding: 0 16px;
+  text-align: left;
+}
+
+.desktopPools thead {
+  position: relative;
+}
+
+.desktopPools thead::after {
+  content: "";
+  position: absolute;
+  left: 24px;
+  right: 24px;
+  bottom: 0;
+  height: 1px;
+  background-color: var(--mc-grey-3);
+}
+.desktopPools tr {
+  margin-bottom: 20px;
+}
+
+.desktopPools th,
+.desktopPools td {
+  padding: 16px 24px;
+}
+
+.desktopPools th:first-child {
+  text-align: left;
+}
+
+.desktopPools th:not(:first-child),
+.desktopPools td:not(:first-child) {
+  text-align: center;
+}
+
+.noData {
+  text-align: center;
+  color: var(--content-tertiary);
+  padding: 16px 24px;
+}
+
+.desktopPools th:nth-child(1) {
+  /* width: 30%; */
+}
+
+.desktopPools td:nth-child(2),
+.desktopPools th:nth-child(2) {
+  text-align: left;
+  width: 16%;
+  /* Width for the "APR" column */
+}
+
+.desktopPools td:nth-child(3),
+.desktopPools th:nth-child(3),
+.desktopPools td:nth-child(4),
+.desktopPools th:nth-child(4) {
+  text-align: left;
+  width: 16%;
+  /* Width for "24H Volume" and "TVL" columns */
+}
+
+.desktopPools td:nth-child(5),
+.desktopPools th:nth-child(5) {
+  text-align: left;
+  width: 16%;
+  /* Width for the "Create Pool" column */
+}
+
+.aprBadge {
+  display: flex;
+  justify-content: start;
+}
+
+.labelCell {
+  text-align: center;
+  color: var(--mc-black) !important;
+}

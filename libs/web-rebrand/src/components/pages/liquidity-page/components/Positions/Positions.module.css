@@ -1,0 +1,63 @@
+.positions {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.positionsTitle {
+  color: var(--mc-black);
+}
+
+.positionsFallback {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 28px 16px;
+  border: var(--border-style-secondary);
+  border-radius: 16px;
+  background-color: var(--background-secondary);
+}
+
+.positionsFallback img {
+  width: 36px;
+  height: 36px;
+}
+
+.fallbackText {
+  color: var(--content-secondary) !important;
+}
+
+.fallbackTop {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+}
+
+.icon {
+  height: 44px;
+  width: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 40px;
+  color: var(--background-white);
+  background-image: url("../../../../../../assets/lp-icon-bg.jpg");
+  background-color: black;
+  background-size: cover;
+}
+
+.viewArchivedButton {
+  color: var(--accent-primary);
+  background: transparent;
+  border: none;
+  cursor: pointer;
+}
+
+@media (min-width: 1024px) {
+  .positionsFallback img {
+    width: 50px;
+    height: 50px;
+  }
+}

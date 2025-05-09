@@ -1,0 +1,116 @@
+/* .swapAndRate {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+} */
+
+.swapContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 19px;
+  border: var(--border-style-secondary);
+  border-radius: 16px;
+  background-color: var(--background-secondary);
+}
+
+.widgetSwapContainer {
+  background-color: var(--background-primary) !important;
+  border: none !important;
+  border-radius: none !important;
+}
+
+.widgetBoxBg {
+  background-color: var(--background-grey-dark) !important;
+}
+
+.swapContainerLoading {
+  z-index: 5;
+}
+
+.loadingOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  backdrop-filter: blur(5px);
+  z-index: 4;
+  pointer-events: auto;
+}
+
+.heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+  color: var(--content-primary);
+}
+
+.title {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  color: var(--content-primary);
+}
+
+.splitter {
+  display: flex;
+  justify-content: center;
+  padding: 7px 0px;
+}
+
+.convertButton {
+  width: 40px;
+  height: 40px;
+  border-radius: 40px;
+  color: var(--background-primary) !important;
+  background-color: var(--content-primary) !important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.convertButton svg {
+  transition: transform 0.3s ease;
+  transform-origin: center center;
+}
+
+.convertButton:hover svg {
+  transform: rotate(180deg);
+}
+
+.convertButton:hover {
+  /* color: var(--content-primary); */
+}
+
+.rates {
+  display: flex;
+  justify-content: end;
+}
+
+.btnLoading {
+  min-height: 54px;
+}
+
+.connectWallet {
+  font-size: 10px !important;
+}
+
+.coinsModal {
+  gap: 16px;
+}
+
+.settingsModal {
+  gap: 20px;
+}
+
+@media (min-width: 1024px) {
+  .heading {
+    font-size: 20px;
+  }
+  .connectWallet {
+    height: 100%;
+    font-size: 14px !important;
+  }
+}

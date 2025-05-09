@@ -28,7 +28,7 @@ layout {
             pane {
                 name "🦕 Web App | 3000 | mira.ly"
                 command "pnpm"
-                args "nx" "dev" "web"
+                args "nx" "dev" "web-rebrand"
             }
             pane {
                 command "pnpm"

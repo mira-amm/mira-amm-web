@@ -1,0 +1,19 @@
+.pointsTitle {
+  color: var(--mc-black);
+}
+
+.pointsSubsection {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.pointsSubtitle {
+  color: var(--primary-white);
+}
+
+@media (max-width: 768px) {
+  .pointsSubsection {
+    flex-direction: column;
+  }
+}

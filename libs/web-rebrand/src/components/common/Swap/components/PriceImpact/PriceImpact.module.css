@@ -1,0 +1,33 @@
+.priceImpact {
+  color: var(--mc-grey-3);
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+}
+
+.priceImpactEntry {
+  display: flex;
+  justify-content: space-between;
+}
+
+.redText {
+  color: var(--accent-warning);
+}
+
+.orangeText {
+  color: var(--mc-orange);
+}
+
+.yellowText {
+  color: var(--accent-alert);
+}
+
+.hidden {
+  opacity: 0;
+}
+
+@media (min-width: 1024px) {
+  .priceImpact p {
+    font-size: 14px;
+  }
+}

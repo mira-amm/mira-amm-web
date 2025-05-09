@@ -1,0 +1,18 @@
+.backLink {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--content-grey);
+}
+
+button.backLink {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  color: var(--content-grey);
+}
+
+button.backLink:hover {
+  color: var(--content-primary);
+}

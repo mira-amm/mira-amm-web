@@ -1,0 +1,40 @@
+{
+  "name": "web-rebrand",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "apps/web-rebrand",
+  "projectType": "application",
+  "tags": [],
+  "// targets": "to see all targets run: nx show project web-rebrand --web-rebrand",
+  "targets": {
+    "dev": {
+      "command": "next dev -p 3000",
+      "options": {
+        "cwd": "apps/web-rebrand"
+      }
+    },
+    "dev-ci": {
+      "command": "next dev -p 3000",
+      "options": {
+        "cwd": "apps/web-rebrand"
+      }
+    },
+    "build": {
+      "command": "next build",
+      "options": {
+        "cwd": "apps/web-rebrand"
+      }
+    },
+    "start": {
+      "command": "next start -p 3000",
+      "options": {
+        "cwd": "apps/web-rebrand"
+      }
+    },
+    "test": {
+      "command": "jest",
+      "options": {
+        "cwd": "apps/web-rebrand"
+      }
+    }
+  }
+}

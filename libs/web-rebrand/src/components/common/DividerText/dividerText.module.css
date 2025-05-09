@@ -1,0 +1,23 @@
+.dividerText {
+  margin: 0;
+  text-align: center;
+}
+
+.dimmed {
+  color: var(--content-dimmed-light);
+}
+
+@media (max-width: 1024px) {
+  .dividerText {
+    font-size: 16px;
+    list-style: none;
+  }
+}
+
+@media (max-width: 900px) {
+  .dividerText {
+    font-size: 16px;
+    list-style: none;
+    margin-left: 16px;
+  }
+}
