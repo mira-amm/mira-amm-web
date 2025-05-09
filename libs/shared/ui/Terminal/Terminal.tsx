@@ -11,8 +11,8 @@ import CountdownTimer from "./CountdownTimer";
 import MiniGame from "./MiniGame";
 import { cn } from "../../utils/cn";
 
-const Terminal = () => {
-  const terminal = useTerminal();
+const Terminal = ({ leaderBoardData }: any) => {
+  const terminal = useTerminal(leaderBoardData);
   const { state, validatePassword, returnToTerminal } = terminal;
   const [passwordError, setPasswordError] = useState(false);
 

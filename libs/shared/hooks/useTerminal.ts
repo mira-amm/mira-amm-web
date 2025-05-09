@@ -1,5 +1,6 @@
 import {useState, useRef, useEffect, useCallback} from "react";
 import {COMMANDS, CORRECT_PASSWORD, HELP_TEXT} from "../lib/constants";
+import crypto from "crypto";
 import {get} from "http";
 
 export type TerminalView =
@@ -20,7 +21,7 @@ interface TerminalState {
   multiplier: number;
   gameActive: boolean;
   walletAddress: string;
-  leaderboard: {wallet: string; score: number}[];
+  leaderboard: {id: string; wallet: string; score: number}[];
 }
 
 const getLocalStorageHighScore = () => {
@@ -29,7 +30,7 @@ const getLocalStorageHighScore = () => {
   return highScore ? parseInt(highScore) : 0;
 };
 
-export function useTerminal() {
+export function useTerminal({leaderBoardData}: any) {
   const [state, setState] = useState<TerminalState>({
     isAuthenticated: false,
     currentView: "boot",
@@ -40,11 +41,7 @@ export function useTerminal() {
     multiplier: 1,
     gameActive: false,
     walletAddress: "",
-    leaderboard: [
-      {wallet: "0x1a2b...3c4d", score: 15750},
-      {wallet: "0x7e8f...9a0b", score: 12320},
-      {wallet: "0x4d5e...6f7g", score: 9845},
-    ],
+    leaderboard: leaderBoardData,
   });
 
   const commandInputRef = useRef<HTMLInputElement>(null);
@@ -213,7 +210,11 @@ export function useTerminal() {
         // Create a new leaderboard with the current wallet/score
         const newLeaderboard = [
           ...prevState.leaderboard,
-          {wallet: wallet, score: prevState.currentScore},
+          {
+            id: crypto.randomBytes(16).toString("hex"),
+            wallet: wallet,
+            score: prevState.currentScore,
+          },
         ]
           .sort((a, b) => b.score - a.score)
           .slice(0, 10); // Keep top 10
