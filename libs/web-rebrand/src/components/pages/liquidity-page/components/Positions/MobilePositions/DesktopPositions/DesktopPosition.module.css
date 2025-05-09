@@ -1,0 +1,23 @@
+.labelCell {
+  text-align: center;
+  color: var(--mc-black) !important;
+}
+
+.aprBadge {
+  display: flex;
+  justify-content: start;
+}
+
+@keyframes fade {
+  0% {
+    opacity: 0.5;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+.loadingText {
+  color: var(--content-primary);
+  animation: fade 0.5s linear infinite alternate;
+}

@@ -1,6 +1,9 @@
 {
-  "name": "microgame",
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "name": "microgame",
+  "metadata": {
+    "description": "Terminal minigame created ahead of the microchain launch."
+  },
   "sourceRoot": "apps/microgame/src",
   "implicitDependencies": [
     "!libs/web"

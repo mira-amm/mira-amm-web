@@ -1,0 +1,44 @@
+.swapLayoutWrapper {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  padding: 16px 16px 0px 16px;
+  align-items: center;
+}
+
+.swapContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+
+.gradientLayout {
+  max-height: 358px;
+  margin-top: -300px;
+  opacity: 0;
+  transition: opacity 0.5s ease-in-out;
+}
+
+.gradientLayout.visible {
+  opacity: 1;
+}
+
+.gradientLayout.hidden {
+  opacity: 0;
+}
+
+.swapLayout {
+  width: 100%;
+  max-width: 530px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  z-index: 1;
+}
+
+@media (max-width: 1024px) {
+  .swapLayoutWrapper {
+    padding: 16px;
+  }
+}

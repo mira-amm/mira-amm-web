@@ -1,0 +1,90 @@
+.customBadge {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-image: url("../../../../assets/apr-bg.jpg");
+  background-color: black;
+  background-size: cover;
+  gap: 5px;
+  border-radius: 10px;
+  position: relative;
+  cursor: pointer;
+}
+
+.badgeText {
+  color: white;
+  display: inline-block;
+  word-wrap: break-word;
+  white-space: normal;
+  overflow-wrap: anywhere;
+}
+
+.large {
+  min-width: 96px;
+  max-width: 100%;
+  width: fit-content;
+  padding: 7px;
+}
+
+.small {
+  min-width: 76px;
+  max-width: 100%;
+  padding: 5px 0;
+  width: fit-content;
+}
+
+.hoverUI {
+  position: absolute;
+  top: 140%;
+  width: 292px;
+  border-radius: 10px;
+  padding: 25px;
+  gap: 10px;
+  background-image: url("../../../../assets/apr-bg.jpg");
+  background-color: black;
+  background-size: cover;
+  color: white;
+  text-align: center;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+  z-index: 9999;
+}
+
+.row {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.label,
+.value {
+  color: white;
+  text-align: left;
+}
+
+.subtext {
+  color: white;
+  opacity: 0.8;
+  width: 70%;
+  text-wrap: wrap;
+  text-align: left;
+}
+
+.columns {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.divider {
+  width: 100%;
+  height: 1px;
+  background-color: var(--mc-grey-1);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+.badgeWrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+}

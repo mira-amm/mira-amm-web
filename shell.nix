@@ -27,6 +27,7 @@ in pkgs.mkShell {
     pkgs.docker
     pkgs.lazydocker
     pkgs.supabase-cli
+    pkgs.ttyd
   ];
 
   shellHook = ''
@@ -37,6 +38,8 @@ in pkgs.mkShell {
     export NX_VERBOSE_LOGGING=true
     export NEXT_PUBLIC_ENABLE_AUTOLOGIN="true"
     export TERM=xterm-256color
+    export ZELLIJ_AUTO_ATTACH=true
+    export ZELLIJ_AUTO_EXIT=true
 
     #====================================================
     #                    DATABASE
@@ -85,11 +88,12 @@ in pkgs.mkShell {
     uv tool install --python 3.12 posting
     fi
 
-    zellij --config apps/microvisor/zellij.config.kdl -n apps/microvisor/zellij.layout.kdl
+    pnpm nx dev microscope;
 
-    pnpm nx stop db
+    zellij ka -y;
+    zellij da -y;
 
-    zellij da -y
+    pnpm nx stop db;
 
     ascii-image-converter ${logoPath} --color --full -b
 

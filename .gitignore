@@ -4,6 +4,7 @@
 **/dist
 **/target
 **/.next
+**/.react-router
 **/out
 **/build
 **/generated
@@ -31,6 +32,8 @@ logs
 *.log
 libs/db/supabase/.branches
 libs/db/supabase/.temp
+vite.config.*.timestamp*
+vitest.config.*.timestamp*
 
 #====================================================
 #                  Dependencies

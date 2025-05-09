@@ -1,0 +1,64 @@
+.desktopPositions {
+  width: 100%;
+  background-color: var(--background-secondary);
+  border-radius: 16px;
+  border: 11px solid var(--background-tertiary);
+  padding: 16px;
+}
+
+.desktopPositions th {
+  color: var(--mc-black);
+  padding: 0 16px;
+  text-align: left;
+
+  /* border-bottom: 1px solid var(--background-grey-darker); */
+}
+
+.desktopPositions thead {
+  position: relative;
+}
+
+.desktopPositions thead::after {
+  content: "";
+  position: absolute;
+  left: 24px;
+  right: 24px;
+  bottom: 0;
+  height: 1px;
+  background-color: var(--mc-grey-3);
+}
+
+.desktopPositions td,
+.desktopPositions th {
+  padding: 16px 24px;
+}
+
+.desktopPositions td:first-child,
+.desktopPositions th:first-child {
+  text-align: left;
+}
+
+.desktopPositions td:nth-child(2),
+.desktopPositions th:nth-child(2) {
+  text-align: left;
+  width: 18%;
+}
+
+.desktopPositions td:nth-child(3),
+.desktopPositions th:nth-child(3) {
+  text-align: left;
+  width: 18%;
+}
+
+.desktopPositions td:last-child,
+.desktopPositions th:last-child {
+  text-align: right;
+  width: 21%;
+}
+
+.hideButton {
+  background-color: transparent;
+  border: none;
+  color: var(--accent-primary);
+  cursor: pointer;
+}

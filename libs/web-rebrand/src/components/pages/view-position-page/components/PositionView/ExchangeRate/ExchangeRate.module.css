@@ -1,0 +1,15 @@
+.reserveItems {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.infoText {
+  color: var(--mc-grey-4);
+}
+
+.exchangeRate {
+  cursor: pointer;
+  display: flex;
+  gap: 6px;
+}

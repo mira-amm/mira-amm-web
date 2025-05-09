@@ -1,0 +1,51 @@
+.coin {
+  display: flex;
+  gap: 8px;
+  color: var(--content-primary);
+}
+
+.coin svg,
+.coin img {
+  width: 28px;
+  height: 28px;
+}
+
+.centered {
+  align-items: center;
+}
+
+.names {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  gap: 4px;
+}
+
+.names svg {
+  width: 17px !important;
+  height: 17px !important;
+  margin-left: 3px;
+  margin-top: 2px;
+}
+
+.name_container {
+  display: flex;
+  align-items: center;
+}
+
+.fullName {
+  color: var(--content-dimmed-light);
+}
+
+.balance {
+  color: var(--content-dimmed-light);
+}
+
+@media (min-width: 1024px) {
+  .coin svg,
+  .coin img {
+    width: 32px;
+    height: 32px;
+    border-radius: 100%;
+  }
+}

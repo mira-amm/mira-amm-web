@@ -1,0 +1,7 @@
+.soonLabel {
+  padding: 2px 8px 3px 8px;
+  border-radius: 20px;
+  color: var(--background-primary);
+  background-color: var(--accent-primary);
+  text-transform: lowercase;
+}

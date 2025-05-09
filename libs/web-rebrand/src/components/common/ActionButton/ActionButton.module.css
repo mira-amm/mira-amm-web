@@ -1,0 +1,78 @@
+.btn {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  min-width: 88px;
+  padding: 4px 8px;
+  text-align: center;
+  border: none;
+  border-radius: 8px;
+  text-decoration: none;
+  cursor: pointer;
+  transition: opacity 0.2s ease;
+}
+
+.longer {
+  width: 175px;
+}
+
+.big {
+  width: 172px;
+  height: 54px;
+}
+
+.btn:hover {
+  opacity: 0.9;
+}
+
+.btn:active {
+  opacity: 0.8;
+}
+
+.btn:disabled {
+  cursor: default;
+  pointer-events: none;
+}
+
+.primary {
+  color: var(--content-inverse);
+  background-color: var(--button-primary);
+}
+
+.primary:disabled {
+  background-color: var(--mc-green-3);
+  color: var(--mc-green-2);
+}
+
+.secondary {
+  border: 1px solid var(--border-dark);
+  background: var(--background-secondary);
+  color: var(--content-primary);
+}
+
+.outlined {
+  border: 1px solid var(--mc-green-2);
+  background: transparent;
+  color: var(--mc-green-2);
+  transition: opacity 0.2s;
+}
+
+.outlined:hover {
+  opacity: 0.8;
+}
+
+.fullWidth {
+  width: 100% !important;
+}
+
+.buttonIcon {
+  height: 24px;
+  width: 24px;
+}
+
+@media (min-width: 1024px) {
+  .btn {
+    min-width: 147px;
+    padding: 8px 16px;
+  }
+}

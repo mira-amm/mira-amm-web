@@ -9,7 +9,15 @@
     "module": "esnext",
     "moduleResolution": "node",
     "paths": {
-      "@/*": ["libs/web/*"],
+      "@/*": [
+        "libs/web-rebrand/*"
+      ],
+      "@/web-rebrand": [
+        "libs/web-rebrand/index.ts"
+      ],
+      "@/web-rebrand/*": [
+        "libs/web-rebrand/*"
+      ],
       "@/api/*": ["libs/api/*"],
       "@/cms": ["libs/cms/index.ts"],
       "@/cms/*": ["libs/cms/*"],
@@ -18,12 +26,12 @@
       "@/docs": ["libs/docs/index.ts"],
       "@/docs/*": ["libs/docs/*"],
       "@/microdoctor/*": ["libs/microdoctor/*"],
-      "@payload-config": ["apps/microgame/src/payload.config.ts"],
       "@/platform-vercel/*": ["libs/platform-vercel/*"],
       "@/shared": ["libs/shared/index.ts"],
       "@/shared/*": ["libs/shared/*"],
       "@/web": ["libs/web/index.ts"],
       "@/web/*": ["libs/web/*"],
+      "@payload-config": ["apps/microgame/src/payload.config.ts"]
     },
     "declaration": false,
     "importHelpers": true,

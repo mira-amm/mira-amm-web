@@ -20,16 +20,15 @@ layout {
             }
             pane {
             split_direction "horizontal"
-                pane {
+                 /- pane {
                     name "🔬 Microscope"
                     command "pnpm"
                     args "nx" "dev" "microscope"
                 }
             pane {
-                name "🟩 Web App | 3000 | mira.ly"
+                name "🦕 Web App | 3000 | mira.ly"
                 command "pnpm"
-                args "nx" "dev" "web"
-                start_suspended true
+                args "nx" "dev" "web-rebrand"
             }
             pane {
                 command "pnpm"

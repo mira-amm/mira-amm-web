@@ -1,0 +1,107 @@
+.popupOverlay {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background: var(--modal-overlay);
+  backdrop-filter: blur(8px);
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  width: 100vw;
+  z-index: 47;
+}
+
+.popupForm {
+  display: flex;
+  flex-direction: column;
+  background: var(--background-secondary);
+  border-radius: 16px;
+  position: relative;
+  z-index: 48;
+  width: 500px;
+  height: 450px;
+  overflow-y: scroll;
+  overflow-x: hidden;
+}
+
+.popupButton {
+  height: 48px;
+  box-shadow: none;
+}
+
+.buttonWrapper {
+  background: var(--background-secondary);
+  position: sticky;
+  z-index: 48;
+  width: 100%;
+  bottom: 0;
+  left: 0;
+  padding: 24px 28px;
+  display: flex;
+  gap: 12px;
+}
+
+.popupHeader {
+  position: sticky;
+  top: 0;
+  left: 0;
+  z-index: 48;
+  background: var(--background-secondary);
+  padding: 20px 28px 16px 28px;
+  width: 100%;
+  box-sizing: border-box;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.popupCloseButton {
+  all: unset;
+  cursor: pointer;
+  transition: 0.3s ease all;
+}
+
+.popupCloseButton:hover {
+  transition: 0.3s ease all;
+  opacity: 0.64;
+}
+
+.popupTitle {
+}
+
+.popupDescription {
+  padding: 12px 28px 16px 28px;
+}
+
+.popupList {
+  padding: 0 28px 0 45px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.popupLink {
+  color: var(--content-dimmed-light);
+}
+
+.popupLink:hover {
+  color: var(--content-primary);
+}
+
+.buttonDeny {
+  background: none;
+  color: var(--accent-primary);
+}
+
+@media (max-width: 768px) {
+  .popupForm {
+    width: 343px;
+    height: 525px;
+  }
+
+  .popupTitle {
+    font-size: 22px;
+  }
+}

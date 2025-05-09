@@ -1,0 +1,10 @@
+.slippageLabel {
+  padding: 4px 8px;
+  border-radius: 6px;
+  background-color: var(--background-grey-light);
+  color: var(--content-dimmed-light);
+}
+
+.settingsButton {
+  color: var(--content-secondary);
+}

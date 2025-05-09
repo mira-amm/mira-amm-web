@@ -1,0 +1,53 @@
+---
+title: Overview
+description: Architecture of MIRA, links to repositories and their purposes, and access to deployed instances of the system.
+icon: Info
+---
+
+## Architecture and Repositories
+
+The MIRA architecture is divided into several core components, each with a specific purpose. Below is an overview of these components and the repositories associated with them:
+
+| Component                                                             | Description                                                                                                                     |
+| --------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------- |
+| [Core Contract](https://github.com/mira-amm/mira-v1-core)             | Implements the foundational AMM logic, handling swaps, liquidity provision, and pool state management.                          |
+| [Periphery Scripts](https://github.com/mira-amm/mira-v1-periphery)    | Provides high-level abstractions for interacting with the core contract, including safety mechanisms and swap functions.        |
+| [TypeScript SDK](https://github.com/mira-amm/mira-dex-typescript-sdk) | Offers tools for developers to interact with MIRA, including swapping tokens, querying liquidity pools, and managing liquidity. |
+| [Rust SDK](https://github.com/mira-amm/mira-v1-rs)                    | Provides a Rust-based toolkit for developers building high-performance applications on top of MIRA.                             |
+
+## Deployed Instances
+
+### Mainnet
+
+- Front-End: [https://mira.ly](https://mira.ly)
+- Smart Contract IDs:
+  - Core: `0x2e40f2b244b98ed6b8204b3de0156c6961f98525c8162f80162fcf53eebd90e7`
+  - Hook: `0xa703db08d1dbf30a6cd2fef942d8dcf03f25d2254e2091ee1f97bf5fa615639e`
+    - Current hook validates that swaps [follow the invariant curve](https://mirror.xyz/miraly.eth/XCXsrpbUxdqe708pXPZkNrhegTu0vMcesc95CjIYyuo).
+    - Additional functionality can be added to the AMM in the future using new hooks.
+
+[Fuel Explorer Link](https://app.fuel.network/contract/0x2e40f2b244b98ed6b8204b3de0156c6961f98525c8162f80162fcf53eebd90e7/minted-assets)
+
+<iframe
+  title="Fuel Explorer Link"
+  className="mt-4 w-full h-[400px] rounded-lg"
+  src="https://app.fuel.network/contract/0x2e40f2b244b98ed6b8204b3de0156c6961f98525c8162f80162fcf53eebd90e7/minted-assets"
+  allowFullScreen
+/>
+
+### Testnet
+
+- Front-end: None currently available.
+
+Smart Contracts:
+
+Contract ID: `0xd5a716d967a9137222219657d7877bd8c79c64e1edb5de9f2901c98ebe74da80`
+
+[Fuel Testnet Explorer Link](https://app-testnet.fuel.network/contract/0xd5a716d967a9137222219657d7877bd8c79c64e1edb5de9f2901c98ebe74da80/minted-assets)
+
+<iframe
+  title="Fuel Explorer Link"
+  className="mt-4 w-full h-[400px] rounded-lg"
+  src="https://app-testnet.fuel.network/contract/0xd5a716d967a9137222219657d7877bd8c79c64e1edb5de9f2901c98ebe74da80/minted-assets"
+  allowFullScreen
+/>

@@ -1,0 +1,146 @@
+.contentSection {
+  margin-top: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+}
+
+.contentSection > div:not:last-child {
+  flex: 1;
+}
+
+.notification {
+  width: 300px;
+  height: 300px;
+  position: absolute;
+  top: 200px;
+  left: -10px;
+}
+
+.coinPairAndLabel {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.infoBlock {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  padding: 19px;
+  background-color: var(--background-secondary);
+  border-radius: 16px;
+  border: 11px solid var(--background-tertiary);
+}
+
+.positionText {
+  color: var(--mc-black);
+}
+
+.coinsData {
+  display: flex;
+  justify-content: space-between;
+}
+
+.priceBlocks {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin: 10px 0;
+}
+
+.sticky,
+.nonSticky {
+  width: 100%;
+  align-self: flex-start;
+}
+
+.sticky {
+  position: sticky;
+  bottom: 0;
+}
+
+.withdrawLiquidityTitle {
+  text-align: center;
+}
+
+.reserveItems {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.reserveItems > p {
+  color: var(--mc-grey-4);
+}
+
+.footer {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+@keyframes fade {
+  0% {
+    opacity: 0.5;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+.positionHeading {
+  justify-content: space-between;
+  align-items: center;
+  display: flex;
+}
+
+.actionBlock {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+}
+
+.topRow {
+  display: flex;
+  gap: 19px;
+}
+
+.infoBlocks {
+  width: 348px;
+  flex-direction: column;
+}
+
+.priceBlocksDesktop {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.priceBlockLargeDesktop {
+  width: 100%;
+  padding: 19px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  background-color: var(--background-secondary);
+  border-radius: 16px;
+  border: 11px solid var(--background-tertiary);
+}
+
+.priceBlockDesktop {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+}
+
+.divider {
+  border: 0;
+  height: 1px;
+  background-color: var(--mc-grey-3);
+  width: 100%;
+}

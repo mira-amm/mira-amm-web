@@ -1,0 +1,139 @@
+.footerLayout {
+  width: 100%;
+  padding: 0 16px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.footerContainer {
+  width: 100%;
+  max-width: 1084px;
+}
+
+@media (min-width: 1024px) {
+  .footerContainer {
+    /* margin: 0; */
+    /*  min-height: 20vh;
+    padding: 32px 0px; */
+  }
+}
+
+.footer {
+  display: flex;
+  flex-direction: column;
+  border-top: 1px solid var(--background-grey-light);
+  box-sizing: border-box;
+  padding: 15px 0 24px 0;
+  width: 100%;
+  max-width: 100%;
+  margin: 0 auto;
+}
+
+/* Content Wrapper */
+.content {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  /* Left-align for mobile */
+  text-align: left;
+  gap: 16px;
+  width: 100%;
+}
+
+.linksAndSocial {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+/* Links Section */
+.links {
+  display: flex;
+  flex-direction: column;
+  gap: 11px;
+  color: var(--content-secondary);
+}
+
+.links a {
+  text-decoration: none;
+  white-space: nowrap;
+  transition: color 0.3s ease;
+}
+
+.links a:hover {
+  color: var(--content-primary);
+}
+
+/* Social Icons */
+.socialLinks {
+  display: flex;
+  gap: 5px; /*  Accounting for the actual width of icons extending both sides 3px + 3px */
+  margin-top: 12px;
+  padding-top: 8px;
+}
+
+.socialLinks a {
+  transition: opacity 0.3s ease;
+  color: var(--content-primary);
+  /* Darker color */
+}
+
+.socialLinks a {
+  /* fill: var(--content-primary) !important; */
+  /* Override the default fill */
+}
+
+.socialLinks a:hover {
+  opacity: 0.64;
+}
+
+/* Copywright Section */
+.copyright {
+  text-align: left;
+  width: 100%;
+  padding-top: 12px;
+  color: var(--content-dimmed-light);
+}
+
+/* Desktop Styles */
+@media (min-width: 1024px) {
+  .footer {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 15px 0 24px 0;
+    width: 100%;
+  }
+
+  .content {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    text-align: left;
+  }
+
+  .linksAndSocial {
+    flex-direction: row;
+    align-items: center;
+    gap: 35px;
+  }
+
+  .links {
+    flex-direction: row;
+    justify-content: flex-start;
+    gap: 24px;
+  }
+
+  .socialLinks {
+    margin: 0;
+  }
+
+  .copyright {
+    text-align: right;
+    width: 100%;
+    padding-top: 12px;
+  }
+}
