@@ -3634,16 +3634,32 @@
                     color: "#FFFF00",
                     align: "center",
                   }),
+                  p1 = G({
+                    x: 128,
+                    y: 160,
+                    text: "SAVE YOUR SCORE BY",
+                    color: "#72A2FF",
+                    align: "center",
+                  }),
+                  p2 = G({
+                    x: 128,
+                    y: 176,
+                    text: "CONNECTING YOUR WALLET BELOW",
+                    color: "#72A2FF",
+                    align: "center",
+                  }),
                   o = P({
                     frame: 0,
                     children: [
                       i,
                       G({
                         x: 128,
-                        y: 224,
-                        text: "ENTER TO CONTINUE",
+                        y: 200,
+                        text: "ENTER TO PLAY AGAIN",
                         color: "#01EC97",
                         align: "center",
+                        scaleX: 1.5,
+                        scaleY: 1.5,
                       }),
                       a,
                     ],
@@ -3658,6 +3674,10 @@
                   C(() => {
                     o.add(r);
                   }, 2500),
+                  C(() => {
+                    o.add(p1);
+                    o.add(p2);
+                  }, 2750),
                   e < t &&
                     C(() => {
                       o.add(n), j("explosion", 128, 132, 60, 4, "yellow");
