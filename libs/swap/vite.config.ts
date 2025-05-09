@@ -4,7 +4,7 @@ import react from "@vitejs/plugin-react";
 import dts from "vite-plugin-dts";
 import * as path from "path";
 import {nxViteTsPaths} from "@nx/vite/plugins/nx-tsconfig-paths.plugin";
-import {nxCopyAssetsPlugin} from "@nx/vite/plugins/nx-copy-assets.plugin";
+import pkg from "./package.json";
 
 export default defineConfig({
   root: __dirname,
@@ -12,12 +12,16 @@ export default defineConfig({
   plugins: [
     react(),
     nxViteTsPaths(),
-    nxCopyAssetsPlugin(["*.md"]),
     dts({
       entryRoot: "src",
       tsconfigPath: path.join(__dirname, "tsconfig.lib.json"),
     }),
   ],
+  css: {
+    modules: {
+      generateScopedName: "[local]__[hash:base64:5]",
+    },
+  },
   // Uncomment this if you are using workers.
   // worker: {
   //  plugins: [ nxViteTsPaths() ],
@@ -31,6 +35,7 @@ export default defineConfig({
     commonjsOptions: {
       transformMixedEsModules: true,
     },
+    cssCodeSplit: true,
     lib: {
       // Could also be a dictionary or array of multiple entry points.
       entry: "src/index.ts",
@@ -38,11 +43,18 @@ export default defineConfig({
       fileName: "index",
       // Change this to the formats you want to support.
       // Don't forget to update your package.json as well.
-      formats: ["es"],
+      formats: ["es", "cjs"],
     },
+    minify: false,
     rollupOptions: {
-      // External packages that should not be bundled into your library.
-      external: ["react", "react-dom", "react/jsx-runtime"],
+      external: [
+        ...Object.keys(pkg.peerDependencies),
+        /picomatch/,
+        "react/jsx-runtime",
+      ],
+      output: {
+        assetFileNames: "assets/[name].[ext]",
+      },
     },
   },
 });
