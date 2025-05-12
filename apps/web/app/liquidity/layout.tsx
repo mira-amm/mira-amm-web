@@ -22,7 +22,7 @@ export const metadata: Metadata = {
     title:
       "Provide Liquidity on MICROCHAIN AMM | Earn Rewards with MICROCHAIN Liquidity Pools",
     description:
-      "Contribute to liquidity pools on MICROCHAIN. Get rewards for providing liquidity using MICROCHAIN protocol. Maximize your earnings with our incentive points program. Join our liquidity providers",
+      "Contribute to liquidity pools on MICROCHAIN AMM. Get rewards for providing liquidity using MICROCHAIN protocol. Maximize your earnings with our incentive points program. Join our liquidity providers",
     images: "https://mira.ly/images/preview.png",
   },
 };
