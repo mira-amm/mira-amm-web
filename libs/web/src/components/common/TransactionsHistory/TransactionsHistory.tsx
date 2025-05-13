@@ -3,7 +3,6 @@ import useFormattedAddress from "@/src/hooks/useFormattedAddress/useFormattedAdd
 import useWalletTransactions from "@/src/hooks/useWalletTransactions";
 import {FuelAppUrl} from "@/src/utils/constants";
 import {useAccount, useIsConnected} from "@fuels/react";
-import Image from "next/image";
 import {forwardRef, useMemo} from "react";
 import {TransactionsCloseIcon} from "../../icons/Close/TransactionsCloseIcon";
 import CopyAddressIcon from "../../icons/Copy/CopyAddressIcon";
@@ -63,10 +62,10 @@ const TransactionsHistory = forwardRef<
         </div>
         <div className={styles.accountInfo}>
           <div className={styles.accountUserInfo}>
-            <Image
+            <img
               className={styles.accountAvatar}
               src="/images/avatar.png"
-              priority
+              fetchPriority="high"
               alt="avatar"
               width={40}
               height={40}
@@ -93,21 +92,21 @@ const TransactionsHistory = forwardRef<
                       <div className={styles.transactionInfo}>
                         <div className={styles.transactionCoins}>
                           <div className={styles.firstCoin}>
-                            <Image
+                            <img
                               src={transaction.firstAsset?.icon || defaultImage}
                               alt={`${transaction.firstAsset.symbol} icon`}
-                              priority
+                              fetchPriority="high"
                               width={40}
                               height={40}
                             />
                           </div>
                           <div className={styles.secondCoin}>
-                            <Image
+                            <img
                               src={
                                 transaction.secondAsset?.icon || defaultImage
                               }
                               alt={`${transaction.secondAsset.name} icon`}
-                              priority
+                              fetchPriority="high"
                               width={40}
                               height={40}
                             />

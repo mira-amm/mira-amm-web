@@ -1,5 +1,4 @@
 import {useConnectUI, useIsConnected} from "@fuels/react";
-import {useLocalStorage} from "usehooks-ts";
 import {clsx} from "clsx";
 import Logo from "@/src/components/common/Logo/Logo";
 import {useCallback, useEffect, useMemo, useRef, useState} from "react";
@@ -45,6 +44,7 @@ import ConnectButton from "@/src/components/common/ConnectButton/ConnectButton";
 import {TradeState} from "@/src/hooks/useSwapRouter";
 import {useAnimationStore} from "@/src/stores/useGlitchScavengerHunt";
 import {triggerClassAnimation} from "../GlitchEffects/ClassAnimationTrigger";
+import {useIsClient} from "@/src/hooks/useIsClient";
 
 export type CurrencyBoxMode = "buy" | "sell";
 export type CurrencyBoxState = {
@@ -95,6 +95,7 @@ const Swap = ({isWidget}: {isWidget?: boolean}) => {
   const [CoinsModal, openCoinsModal, closeCoinsModal] = useModal();
   const [SuccessModal, openSuccess] = useModal();
   const [FailureModal, openFailure, closeFailureModal] = useModal();
+  const isClient = useIsClient();
 
   const initialSwapState = useInitialSwapState(isWidget);
 
@@ -113,10 +114,19 @@ const Swap = ({isWidget}: {isWidget?: boolean}) => {
   const [showInsufficientBalance, setShowInsufficientBalance] = useState(true);
   const [customErrorTitle, setCustomErrorTitle] = useState<string>("");
 
-  const [, setSwapCoins] = useLocalStorage("swapCoins", {
-    sell: initialSwapState.sell.assetId,
-    buy: initialSwapState.buy.assetId,
-  });
+  const setSwapCoins = useCallback(
+    (next: (prev: any) => any) => {
+      const current = JSON.parse(
+        localStorage.getItem("swapCoins") ?? "null",
+      ) ?? {
+        sell: initialSwapState.sell.assetId,
+        buy: initialSwapState.buy.assetId,
+      };
+      const updated = next(current);
+      localStorage.setItem("swapCoins", JSON.stringify(updated));
+    },
+    [initialSwapState],
+  );
 
   const sellMetadata = useAssetMetadata(swapState.sell.assetId);
   const buyMetadata = useAssetMetadata(swapState.buy.assetId);
@@ -125,8 +135,13 @@ const Swap = ({isWidget}: {isWidget?: boolean}) => {
   const swapStateForPreview = useRef(swapState);
   const modeForCoinSelector = useRef<CurrencyBoxMode>("sell");
 
-  const {isConnected} = useIsConnected();
-  const {connect, isConnecting} = useConnectUI();
+  const isConnectedFromHook = useIsConnected();
+  const connectUI = useConnectUI();
+
+  const isConnected = isClient ? isConnectedFromHook.isConnected : false;
+  const connect = isClient ? connectUI.connect : () => {};
+  const isConnecting = isClient ? connectUI.isConnecting : false;
+
   const {balances, balancesPending, refetchBalances} = useBalances();
 
   const isValidNetwork = useCheckActiveNetwork();
@@ -581,6 +596,14 @@ const Swap = ({isWidget}: {isWidget?: boolean}) => {
     tradeState === TradeState.REEFETCHING ||
     (previewLoading && swapButtonTitle !== "Insufficient balance") ||
     (!amountMissing && !showInsufficientBalance && txCostPending);
+
+  if (!isClient) {
+    return (
+      <div className={styles.swapPlaceholder}>
+        <Loader color="gray" />
+      </div>
+    );
+  }
 
   return (
     <>
