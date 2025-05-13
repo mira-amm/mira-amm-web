@@ -180,8 +180,8 @@ importers:
         specifier: ^3.35.1
         version: 3.37.0(bufferutil@4.0.9)(graphql@16.11.0)(typescript@5.8.3)(utf-8-validate@5.0.10)
       payload-oauth2:
-        specifier: ^1.0.14
-        version: 1.0.14(payload@3.37.0(bufferutil@4.0.9)(graphql@16.11.0)(typescript@5.8.3)(utf-8-validate@5.0.10))
+        specifier: ^1.0.15
+        version: 1.0.15(payload@3.37.0(bufferutil@4.0.9)(graphql@16.11.0)(typescript@5.8.3)(utf-8-validate@5.0.10))
       pg-cloudflare:
         specifier: 1.1.1
         version: 1.1.1
@@ -14676,8 +14676,8 @@ packages:
     resolution: {integrity: sha512-vE7JKRyES09KiunauX7nd2Q9/L7lhok4smP9RZTDeD4MVs72Dp2qNFVz39Nz5a0FVEW0BJR6C0DYrq6unoziZA==}
     engines: {node: '>= 14.16'}
 
-  payload-oauth2@1.0.14:
-    resolution: {integrity: sha512-s/KMLyXBtr0RY5eD1F3oVoc6oSlx51734okWxw7U99qbDdQo5fnmwSofZptUCBkIYPHMeaXwvzO9H8ASur1VHg==}
+  payload-oauth2@1.0.15:
+    resolution: {integrity: sha512-8olwJ9pRm1wFEiqdMCmZ9wyOTA4dIa8McHP4paF3WhiSCYNbC0tOza7++XhckhzrKCPOEpZuw5bqbSW4YCO5Hg==}
     peerDependencies:
       payload: ^3
 
@@ -37810,7 +37810,7 @@ snapshots:
 
   pathval@2.0.0: {}
 
-  payload-oauth2@1.0.14(payload@3.37.0(bufferutil@4.0.9)(graphql@16.11.0)(typescript@5.8.3)(utf-8-validate@5.0.10)):
+  payload-oauth2@1.0.15(payload@3.37.0(bufferutil@4.0.9)(graphql@16.11.0)(typescript@5.8.3)(utf-8-validate@5.0.10)):
     dependencies:
       payload: 3.37.0(bufferutil@4.0.9)(graphql@16.11.0)(typescript@5.8.3)(utf-8-validate@5.0.10)
 
