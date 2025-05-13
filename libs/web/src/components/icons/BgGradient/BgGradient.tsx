@@ -1,7 +1,7 @@
 const BgGradient = () => {
   return (
     <svg
-      width="auto"
+      width="100%"
       height="468"
       viewBox="0 0 789 468"
       fill="none"
