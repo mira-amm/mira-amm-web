@@ -1,25 +1,15 @@
-import Link from 'next/link';
 import '../../theme/tailwind.scss';
-
-const OAuthButton = ({ href, iconSrc, bgColor, altText }) => {
-  return (
-    <Link href={href} style={{ flex: 1 }}>
-      <button style={{ ...buttonStyles, backgroundColor: bgColor }}>
-        <img
-          src={iconSrc}
-          alt={altText}
-          width="24"
-          height="24"
-          style={iconStyle}
-        />
-      </button>
-    </Link>
-  );
-};
+import {OAuthButton} from "@/cms/ui/OAuthButton"
 
 export function OAuthButtons() {
   return (
     <section style={containerStyle}>
+      <OAuthButton
+        href="/api/users/oauth/twitter"
+        iconSrc="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/twitter/twitter-original.svg"
+        bgColor="#FFF"
+        altText="Twitter(X) Login"
+      />
       {/* <OAuthButton
         href="/api/users/oauth/linkedin"
         iconSrc="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/linkedin/linkedin-original.svg"
@@ -62,23 +52,4 @@ const containerStyle = {
   gap: '15px',
   width: '100%',
   marginBottom: '30px'
-};
-
-const buttonStyles = {
-  width: '100%',
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'center',
-  border: 'none',
-  padding: '12px 0',
-  cursor: 'pointer',
-  color: 'white',
-  fontSize: '16px',
-  fontWeight: 'bold',
-  borderRadius: '5px',
-  transition: 'all 750ms ease-in-out',
-};
-
-const iconStyle = {
-  marginRight: '8px',
 };
