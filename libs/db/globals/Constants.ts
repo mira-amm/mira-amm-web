@@ -45,7 +45,7 @@ export const Constants: GlobalConfig = {
                         //   const media = await req.payload.find({
                         //     collection: "media",
                         //     where: {
-                        //       filename: { equals: "cuHacking_2025_primary_logo.svg" }
+                        //       filename: { equals: "microchain_primary_logo.svg" }
                         //     }
                         //   });
 
@@ -72,7 +72,7 @@ export const Constants: GlobalConfig = {
                 {
                   label: "Dashboard",
                   fields: [
-                    {name: 'title', type: "text", defaultValue: () => "CEO ACCESS GRANTED - WELCOME TO DLM-2000, DEREK DINO"},
+                    {name: 'title', type: "text", defaultValue: () => "CEO ACCESS GRANTED - WELCOME TO DLM-2000,"},
                     {name: 'lastLogin', type: "text", defaultValue: () => "> Last login: 4/20/2025, 10:15:19 PM on T-REX SECURE NETWORK"},
                     {name: 'welcome', type: "text", defaultValue: () => "Authentication successful. Welcome to MICROCHAIN SYSTEMS."},
                     {name: 'help', type: "text", defaultValue: () => "Type 'help' to see available commands."},

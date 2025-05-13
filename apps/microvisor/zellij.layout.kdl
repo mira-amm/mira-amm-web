@@ -29,6 +29,7 @@ layout {
                 name "🦕 Web App | 3000 | mira.ly"
                 command "pnpm"
                 args "nx" "dev" "web"
+                start_suspended true
             }
             pane {
                 command "pnpm"

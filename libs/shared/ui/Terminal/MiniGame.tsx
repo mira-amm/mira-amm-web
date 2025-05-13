@@ -11,15 +11,13 @@ interface MiniGameProps {
 }
 
 interface LeaderboardEntry {
-  id: string;
-  wallet: string;
+  id: number;
   score: number;
 }
 
 const MiniGame = ({ terminal }: MiniGameProps) => {
-  const { state, startGame, updateGameScore, endGame, submitWalletAddress } =
+  const {state, startGame, updateGameScore, endGame, submitWalletAddress } =
     terminal;
-  console.log("leaderboard", state.leaderboard);
   const [walletInput, setWalletInput] = useState("");
   const [showWalletInput, setShowWalletInput] = useState(false);
   const [walletError, setWalletError] = useState("");
@@ -44,6 +42,26 @@ const MiniGame = ({ terminal }: MiniGameProps) => {
       setShowWalletInput(true);
     }
   }, [state.currentScore, state.highScore, state.gameActive, showWalletInput]);
+
+const [leaderboard, setLeaderboard] = useState<LeaderboardEntry[]>([]);
+
+useEffect(() => {
+  const fetchLeaderboard = async () => {
+    try {
+    const res = await fetch(`/api/games`);
+
+    if (!res.ok) {
+      throw new Error(`HTTP error ${res.status}`);
+    }
+      const data = await res.json();
+      setLeaderboard(data.docs);
+    } catch (error) {
+      console.error("Failed to fetch leaderboard:", error);
+    }
+  };
+
+  fetchLeaderboard();
+}, []);
 
   const handleWalletSubmit = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter") {
@@ -187,7 +205,7 @@ const MiniGame = ({ terminal }: MiniGameProps) => {
                   />
                 </div>
               </div>
-              {state.leaderboard.map(
+              {leaderboard.map(
                 (entry: LeaderboardEntry, index: number) => (
                   <div
                     key={index}
@@ -201,7 +219,7 @@ const MiniGame = ({ terminal }: MiniGameProps) => {
                         className="text-terminal-red font-bold truncate animate-flicker-slow"
                         title={entry.wallet}
                       >
-                        {entry.wallet}
+                        {entry.id}
                       </span>
                     </div>
                     <span className="text-terminal-green font-bold">
