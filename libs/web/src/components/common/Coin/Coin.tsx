@@ -1,9 +1,12 @@
+import {useEffect, useState} from "react";
+
 import styles from "./Coin.module.css";
 import {clsx} from "clsx";
 import ChevronDownIcon from "@/src/components/icons/ChevronDown/ChevronDownIcon";
 import useAssetMetadata from "@/src/hooks/useAssetMetadata";
 import {useAssetImage} from "@/src/hooks/useAssetImage";
 import Image from "next/image";
+import defaultImage from "@/assets/unknown-asset.svg";
 
 type Props = {
   assetId: string | null;
@@ -15,12 +18,19 @@ type Props = {
 const Coin = ({assetId, className, onClick, coinSelectionDisabled}: Props) => {
   const metadata = useAssetMetadata(assetId);
   const icon = useAssetImage(assetId);
+  const [imgError, setImgError] = useState(false);
 
   const handleClick = () => {
     if (onClick) {
       onClick();
     }
   };
+
+  useEffect(() => {
+    if (imgError) {
+      setImgError(false);
+    }
+  }, [assetId]);
 
   return (
     <div
@@ -33,11 +43,12 @@ const Coin = ({assetId, className, onClick, coinSelectionDisabled}: Props) => {
     >
       {!!assetId && !!icon && !!metadata.symbol ? (
         <Image
-          src={icon}
+          src={imgError ? defaultImage : (icon ?? defaultImage)}
           alt={`${metadata.symbol} icon`}
           width={24}
           height={24}
           priority
+          onError={() => setImgError(true)}
         />
       ) : null}
       <p

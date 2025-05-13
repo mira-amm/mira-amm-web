@@ -1,14 +1,14 @@
 import {clsx} from "clsx";
 import {BN, CoinQuantity} from "fuels";
-import {memo} from "react";
+import {memo, useState} from "react";
 
+import VerifiedIcon from "@/src/components/icons/Verified/VerifiedIcon";
 import {CoinDataWithPrice} from "@/src/utils/coinsConfig";
 import {Tooltip} from "react-tooltip";
 import "react-tooltip/dist/react-tooltip.css";
 import styles from "./CoinListItem.module.css";
-import {useAssetImage} from "@/src/hooks/useAssetImage";
 import Image from "next/image";
-import VerifiedIcon from "@/src/components/icons/Verified/VerifiedIcon";
+import defaultImage from "@/assets/unknown-asset.svg";
 
 type Props = {
   assetData: Omit<CoinDataWithPrice, "price"> & {
@@ -19,19 +19,19 @@ type Props = {
 const CoinListItem = ({assetData}: Props) => {
   const {isVerified, userBalance} = assetData;
   const balanceValue = userBalance?.amount ?? new BN(0);
-  const fallbackIcon = useAssetImage(
-    !assetData?.icon ? assetData.assetId : null,
-  ); // fetch only if no image for the asset
+  const [imgError, setImgError] = useState(false);
+
   return (
     <span className={clsx(styles.coin, !assetData?.name && styles.centered)}>
       <Tooltip id="verified-tooltip" />
 
       <Image
-        src={assetData.icon || fallbackIcon}
+        src={imgError ? (defaultImage) : (assetData.icon ?? defaultImage)}
         alt={`${assetData.name} icon`}
         width={40}
         height={40}
         priority
+        onError={() => setImgError(true)}
       />
 
       <div className={styles.names}>
