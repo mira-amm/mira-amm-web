@@ -76,6 +76,8 @@ in pkgs.mkShell {
     export SENTIO_API_URL="https://app.sentio.xyz/api/v1/analytics/fuellabs/mira-mainnet/sql/execute"
 
     export PAYLOAD_SECRET="YOUR_SECRET_HERE"
+    export CORS_WHITELIST_ORIGINS="http://localhost:8000,https://microgame.mira.ly,https://microchain.systems,https://x.com,https://api.x.com"
+    export CSRF_WHITELIST_ORIGINS="http://localhost:8000,https://microgame.mira.ly,https://microchain.systems,https://x.com,https://api.x.com"
 
     case "${arg}" in
       doctor)

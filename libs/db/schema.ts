@@ -11,12 +11,12 @@ import {
   index,
   uniqueIndex,
   foreignKey,
-  serial,
-  varchar,
   integer,
+  varchar,
+  serial,
   timestamp,
-  numeric,
   boolean,
+  numeric,
   text,
   jsonb,
   pgEnum,
@@ -53,56 +53,6 @@ export const enum_constants_status = pgEnum("enum_constants_status", [
 export const enum__constants_v_version_status = pgEnum(
   "enum__constants_v_version_status",
   ["draft", "published"],
-);
-
-export const users = pgTable(
-  "users",
-  {
-    id: serial("id").primaryKey(),
-    firstName: varchar("first_name"),
-    middleName: varchar("middle_name"),
-    lastName: varchar("last_name"),
-    preferredDisplayName: varchar("preferred_display_name"),
-    avatar: integer("avatar_id").references(() => media.id, {
-      onDelete: "set null",
-    }),
-    walletAddress: varchar("wallet_address"),
-    updatedAt: timestamp("updated_at", {
-      mode: "string",
-      withTimezone: true,
-      precision: 3,
-    })
-      .defaultNow()
-      .notNull(),
-    createdAt: timestamp("created_at", {
-      mode: "string",
-      withTimezone: true,
-      precision: 3,
-    })
-      .defaultNow()
-      .notNull(),
-    email: varchar("email").notNull(),
-    resetPasswordToken: varchar("reset_password_token"),
-    resetPasswordExpiration: timestamp("reset_password_expiration", {
-      mode: "string",
-      withTimezone: true,
-      precision: 3,
-    }),
-    salt: varchar("salt"),
-    hash: varchar("hash"),
-    loginAttempts: numeric("login_attempts").default("0"),
-    lockUntil: timestamp("lock_until", {
-      mode: "string",
-      withTimezone: true,
-      precision: 3,
-    }),
-  },
-  (columns) => ({
-    users_avatar_idx: index("users_avatar_idx").on(columns.avatar),
-    users_updated_at_idx: index("users_updated_at_idx").on(columns.updatedAt),
-    users_created_at_idx: index("users_created_at_idx").on(columns.createdAt),
-    users_email_idx: uniqueIndex("users_email_idx").on(columns.email),
-  }),
 );
 
 export const brands_links = pgTable(
@@ -294,6 +244,58 @@ export const media = pgTable(
     media_updated_at_idx: index("media_updated_at_idx").on(columns.updatedAt),
     media_created_at_idx: index("media_created_at_idx").on(columns.createdAt),
     media_filename_idx: uniqueIndex("media_filename_idx").on(columns.filename),
+  }),
+);
+
+export const users = pgTable(
+  "users",
+  {
+    id: serial("id").primaryKey(),
+    firstName: varchar("first_name"),
+    middleName: varchar("middle_name"),
+    lastName: varchar("last_name"),
+    preferredDisplayName: varchar("preferred_display_name"),
+    avatar: integer("avatar_id").references(() => media.id, {
+      onDelete: "set null",
+    }),
+    walletAddress: varchar("wallet_address"),
+    sub: varchar("sub"),
+    updatedAt: timestamp("updated_at", {
+      mode: "string",
+      withTimezone: true,
+      precision: 3,
+    })
+      .defaultNow()
+      .notNull(),
+    createdAt: timestamp("created_at", {
+      mode: "string",
+      withTimezone: true,
+      precision: 3,
+    })
+      .defaultNow()
+      .notNull(),
+    email: varchar("email").notNull(),
+    resetPasswordToken: varchar("reset_password_token"),
+    resetPasswordExpiration: timestamp("reset_password_expiration", {
+      mode: "string",
+      withTimezone: true,
+      precision: 3,
+    }),
+    salt: varchar("salt"),
+    hash: varchar("hash"),
+    loginAttempts: numeric("login_attempts").default("0"),
+    lockUntil: timestamp("lock_until", {
+      mode: "string",
+      withTimezone: true,
+      precision: 3,
+    }),
+  },
+  (columns) => ({
+    users_avatar_idx: index("users_avatar_idx").on(columns.avatar),
+    users_sub_idx: index("users_sub_idx").on(columns.sub),
+    users_updated_at_idx: index("users_updated_at_idx").on(columns.updatedAt),
+    users_created_at_idx: index("users_created_at_idx").on(columns.createdAt),
+    users_email_idx: uniqueIndex("users_email_idx").on(columns.email),
   }),
 );
 
@@ -1103,9 +1105,9 @@ export const payload_locked_documents_rels = pgTable(
     order: integer("order"),
     parent: integer("parent_id").notNull(),
     path: varchar("path").notNull(),
-    usersID: integer("users_id"),
     brandsID: integer("brands_id"),
     mediaID: integer("media_id"),
+    usersID: integer("users_id"),
     formsID: integer("forms_id"),
     "form-submissionsID": integer("form_submissions_id"),
   },
@@ -1115,15 +1117,15 @@ export const payload_locked_documents_rels = pgTable(
       columns.parent,
     ),
     pathIdx: index("payload_locked_documents_rels_path_idx").on(columns.path),
-    payload_locked_documents_rels_users_id_idx: index(
-      "payload_locked_documents_rels_users_id_idx",
-    ).on(columns.usersID),
     payload_locked_documents_rels_brands_id_idx: index(
       "payload_locked_documents_rels_brands_id_idx",
     ).on(columns.brandsID),
     payload_locked_documents_rels_media_id_idx: index(
       "payload_locked_documents_rels_media_id_idx",
     ).on(columns.mediaID),
+    payload_locked_documents_rels_users_id_idx: index(
+      "payload_locked_documents_rels_users_id_idx",
+    ).on(columns.usersID),
     payload_locked_documents_rels_forms_id_idx: index(
       "payload_locked_documents_rels_forms_id_idx",
     ).on(columns.formsID),
@@ -1135,11 +1137,6 @@ export const payload_locked_documents_rels = pgTable(
       foreignColumns: [payload_locked_documents.id],
       name: "payload_locked_documents_rels_parent_fk",
     }).onDelete("cascade"),
-    usersIdFk: foreignKey({
-      columns: [columns["usersID"]],
-      foreignColumns: [users.id],
-      name: "payload_locked_documents_rels_users_fk",
-    }).onDelete("cascade"),
     brandsIdFk: foreignKey({
       columns: [columns["brandsID"]],
       foreignColumns: [brands.id],
@@ -1149,6 +1146,11 @@ export const payload_locked_documents_rels = pgTable(
       columns: [columns["mediaID"]],
       foreignColumns: [media.id],
       name: "payload_locked_documents_rels_media_fk",
+    }).onDelete("cascade"),
+    usersIdFk: foreignKey({
+      columns: [columns["usersID"]],
+      foreignColumns: [users.id],
+      name: "payload_locked_documents_rels_users_fk",
     }).onDelete("cascade"),
     formsIdFk: foreignKey({
       columns: [columns["formsID"]],
@@ -1600,13 +1602,6 @@ export const leaderboard = pgTable("leaderboard", {
   }),
 });
 
-export const relations_users = relations(users, ({one}) => ({
-  avatar: one(media, {
-    fields: [users.avatar],
-    references: [media.id],
-    relationName: "avatar",
-  }),
-}));
 export const relations_brands_links = relations(brands_links, ({one}) => ({
   _parentID: one(brands, {
     fields: [brands_links._parentID],
@@ -1660,6 +1655,13 @@ export const relations__brands_v = relations(_brands_v, ({one, many}) => ({
   }),
 }));
 export const relations_media = relations(media, () => ({}));
+export const relations_users = relations(users, ({one}) => ({
+  avatar: one(media, {
+    fields: [users.avatar],
+    references: [media.id],
+    relationName: "avatar",
+  }),
+}));
 export const relations_forms_blocks_checkbox = relations(
   forms_blocks_checkbox,
   ({one}) => ({
@@ -1988,11 +1990,6 @@ export const relations_payload_locked_documents_rels = relations(
       references: [payload_locked_documents.id],
       relationName: "_rels",
     }),
-    usersID: one(users, {
-      fields: [payload_locked_documents_rels.usersID],
-      references: [users.id],
-      relationName: "users",
-    }),
     brandsID: one(brands, {
       fields: [payload_locked_documents_rels.brandsID],
       references: [brands.id],
@@ -2002,6 +1999,11 @@ export const relations_payload_locked_documents_rels = relations(
       fields: [payload_locked_documents_rels.mediaID],
       references: [media.id],
       relationName: "media",
+    }),
+    usersID: one(users, {
+      fields: [payload_locked_documents_rels.usersID],
+      references: [users.id],
+      relationName: "users",
     }),
     formsID: one(forms, {
       fields: [payload_locked_documents_rels.formsID],
@@ -2207,12 +2209,12 @@ type DatabaseSchema = {
   enum__forms_v_version_status: typeof enum__forms_v_version_status;
   enum_constants_status: typeof enum_constants_status;
   enum__constants_v_version_status: typeof enum__constants_v_version_status;
-  users: typeof users;
   brands_links: typeof brands_links;
   brands: typeof brands;
   _brands_v_version_links: typeof _brands_v_version_links;
   _brands_v: typeof _brands_v;
   media: typeof media;
+  users: typeof users;
   forms_blocks_checkbox: typeof forms_blocks_checkbox;
   forms_blocks_country: typeof forms_blocks_country;
   forms_blocks_email: typeof forms_blocks_email;
@@ -2256,12 +2258,12 @@ type DatabaseSchema = {
   _constants_v: typeof _constants_v;
   leaderboard_entries: typeof leaderboard_entries;
   leaderboard: typeof leaderboard;
-  relations_users: typeof relations_users;
   relations_brands_links: typeof relations_brands_links;
   relations_brands: typeof relations_brands;
   relations__brands_v_version_links: typeof relations__brands_v_version_links;
   relations__brands_v: typeof relations__brands_v;
   relations_media: typeof relations_media;
+  relations_users: typeof relations_users;
   relations_forms_blocks_checkbox: typeof relations_forms_blocks_checkbox;
   relations_forms_blocks_country: typeof relations_forms_blocks_country;
   relations_forms_blocks_email: typeof relations_forms_blocks_email;

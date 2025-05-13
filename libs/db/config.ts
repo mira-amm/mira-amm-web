@@ -16,6 +16,7 @@ import { formBuilderPlugin } from '@payloadcms/plugin-form-builder'
 import { postgresAdapter } from "@payloadcms/db-postgres";
 // import { sqliteAdapter } from '@payloadcms/db-sqlite'
 import { s3Storage } from '@payloadcms/storage-s3'
+import {twitterOAuth} from "@/db/access/config"
 
 export const dataBaseConfig = {
   collections: [
@@ -30,6 +31,7 @@ export const dataBaseConfig = {
   blocks:[
   ],
   plugins: [
+   twitterOAuth,
 formBuilderPlugin({
   defaultToEmail: 'info@microchain.systems',
   fields: {
