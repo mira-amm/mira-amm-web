@@ -1,4 +1,4 @@
-import type { CollectionConfig } from 'payload'
+import type { CollectionConfig, Payload } from 'payload'
 
 import { authenticated } from '../access/index';
 import { getOrUploadMedia } from "@/db/seed";
@@ -26,11 +26,10 @@ export const Users: CollectionConfig = {
   admin: {
     defaultColumns: [
       'avatar',
-      'firstName',
-      'lastName',
+      'name',
       'email'
     ],
-    useAsTitle: 'preferredDisplayName',
+    useAsTitle: 'name',
   },
   fields: [
     {
@@ -40,21 +39,13 @@ export const Users: CollectionConfig = {
       type: "collapsible",
       label: ({ data }) => data?.title || "Personal Information",
       fields: [
-        {
-          type: 'row',
-          fields:[
-        { name: "firstName", type: "text", label: "First Name" },
-        { name: "middleName", type: "text", label: "Middle Name", admin: {hidden: true} },
-        { name: "lastName", type: "text", label: "Last Name" },
-        { name: "preferredDisplayName", type: "text", label: "Display Name" },
-          ],
-        },
+        { name: "name", type: "text", label: "Name" },
         {
           name: "avatar",
           type: "upload",
           relationTo: "media",
           label: "Avatar",
-        }
+        },
       ],
     },
     ]
@@ -111,70 +102,56 @@ export async function seedUsers(payload: Payload, req: any) {
   payload.logger.info("👤 Uploading user avatars & inserting users...");
 
   await Promise.all(
-    [
-      {
-        email: "mumtahin.farabi@microchain.systems",
-        firstName: "Mumtahin",
-        lastName: "Farabi",
-        preferredDisplayName: "Mumtahin Farabi",
-        mediaUrl:
-          "https://i.abcnewsfe.com/a/a63a564c-6577-4a93-89df-7af7dee5de60/dino-1-ht-er-240110_1704903903782_hpMain.jpeg",
-      },
-      {
-        email: "kate.kharitonova@microchain.systems",
-        firstName: "Kate",
-        lastName: "Kharitonova",
-        preferredDisplayName: "Kate Kharitonova",
-        mediaUrl:
-          "https://i.abcnewsfe.com/a/a63a564c-6577-4a93-89df-7af7dee5de60/dino-1-ht-er-240110_1704903903782_hpMain.jpeg",
-      },
-      {
-        email: "fossil.frank@microchain.systems",
-        firstName: "Fossil",
-        lastName: "Frank",
-        preferredDisplayName: "Fossil Frank",
-        mediaUrl:
-          "https://i.abcnewsfe.com/a/a63a564c-6577-4a93-89df-7af7dee5de60/dino-1-ht-er-240110_1704903903782_hpMain.jpeg",
-      },
-      {
-        email: "derek.dino@microchain.systems",
-        firstName: "Derek",
-        lastName: "Dino",
-        preferredDisplayName: "Derek Dino",
-        mediaUrl:
-          "https://i.abcnewsfe.com/a/a63a564c-6577-4a93-89df-7af7dee5de60/dino-1-ht-er-240110_1704903903782_hpMain.jpeg",
-      },
-      {
-        email: "amal.josea@example.com",
-        firstName: "Amal",
-        lastName: "Josea",
-        preferredDisplayName: "Amal Josea",
-        mediaUrl:
-          "https://i.abcnewsfe.com/a/a63a564c-6577-4a93-89df-7af7dee5de60/dino-1-ht-er-240110_1704903903782_hpMain.jpeg",
-      },
-      {
-        email: "mattias.lightstone@microchain.systems",
-        firstName: "Mattias",
-        lastName: "Lightstone",
-        preferredDisplayName: "Mattias Lightstone",
-        mediaUrl:
-          "https://i.abcnewsfe.com/a/a63a564c-6577-4a93-89df-7af7dee5de60/dino-1-ht-er-240110_1704903903782_hpMain.jpeg",
-      },
-      {
-        email: "mumtahin.farabi@microchain.systems",
-        firstName: "Mumtahin",
-        lastName: "Farabi",
-        preferredDisplayName: "Mumtahin Farabi",
-        mediaUrl:
-          "https://i.abcnewsfe.com/a/a63a564c-6577-4a93-89df-7af7dee5de60/dino-1-ht-er-240110_1704903903782_hpMain.jpeg",
-      },
+[
+  {
+    name: "Kate Kharitonova",
+    email: "kate.kharitonova@microchain.systems",
+    mediaUrl:
+      "https://i.abcnewsfe.com/a/a63a564c-6577-4a93-89df-7af7dee5de60/dino-1-ht-er-240110_1704903903782_hpMain.jpeg",
+    walletAddress: "0xA3f91eC0B5a14cBc8f9a6CdbAf7B6E1eF6A8F1B3"
+  },
+  {
+    name: "Fossil Frank",
+    email: "fossil.frank@microchain.systems",
+    mediaUrl:
+      "https://avatars.githubusercontent.com/u/112352297?v=4",
+    walletAddress: "0x9cC0F3a77EfAe92F2Be57d47fCb9FbB23c45e9Fd"
+  },
+  {
+    name: "Derek Dino",
+    email: "derek.dino@microchain.systems",
+    mediaUrl:
+      "https://avatars.githubusercontent.com/u/13684960?v=4",
+    walletAddress: "0x4e8d5D93E8Efa7cB6a22f8Fa728Dcb16eB6D9D5A"
+  },
+  {
+    name: "Amal Josea",
+    email: "amal.josea@example.com",
+    mediaUrl:
+      "https://avatars.githubusercontent.com/u/26934320?v=4",
+    walletAddress: "0x6bFd3Cb891aef1Df51F8d2b25D4FbAdB726fe9b7"
+  },
+  {
+    name: "Mattias Lightstone",
+    email: "mattias.lightstone@microchain.systems",
+    mediaUrl:
+      "https://avatars.githubusercontent.com/u/19267314?v=4",
+    walletAddress: "0xD93fEb0D9Bd8cBBc38E51F3C03CcDcFec5A49c35"
+  },
+  {
+    name: "Mumtahin Farabi",
+    email: "mumtahin.farabi@microchain.systems",
+    mediaUrl:
+      "https://avatars.githubusercontent.com/u/54924158?v=4",
+    walletAddress: "0x0b7A0EDAfCDE2c7B93f8c1b44A85c167aFE4C654"
+  }
     ].map(async (user) => {
       const media = await getOrUploadMedia(
         payload,
         req,
         user.mediaUrl,
-        `${user.firstName.toLowerCase()}-${user.lastName.toLowerCase()}-avatar.png`,
-        `${user.firstName} ${user.lastName}'s avatar`,
+        `${user.name.replace(/ /g, "-").toLowerCase()}-avatar.png`,
+        `${user.name}'s Avatar`,
       );
 
 
@@ -182,15 +159,13 @@ export async function seedUsers(payload: Payload, req: any) {
         collection: "users",
         data: {
           email: user.email,
-          firstName: user.firstName,
-          lastName: user.lastName,
-          preferredDisplayName: user.preferredDisplayName,
+          name: user.name,
           avatar: media?.id || null,
         },
       });
 
       payload.logger.info(
-        `✅ Inserted user: ${user.firstName} ${user.lastName}`,
+        `✅ Inserted user: ${user.name}`,
       );
     }),
   );

@@ -1,21 +1,40 @@
 import { KeyboardEvent, useState } from 'react';
 import { useEffect, useRef } from 'react';
 
-interface AuthenticatedTerminalProps {
-  terminal: any;
-}
+const getName = async (): Promise<string> => {
+  try {
+    const res = await fetch(`/api/users/me`, {
+      cache: "no-store",
+    });
 
-const AuthenticatedTerminal = ({ terminal }: AuthenticatedTerminalProps) => {
+    if (!res.ok) {
+      throw new Error(`HTTP error ${res.status}`);
+    }
+
+    const data = await res.json();
+
+    return data.user.name;
+  } catch (err) {
+    console.error(err);
+    return "Unknown User";
+  }
+};
+
+const AuthenticatedTerminal = ({ terminal }: any) => {
   const { state, commandInputRef, processCommand } = terminal;
   const outputRef = useRef<HTMLDivElement>(null);
   const [commandInput, setCommandInput] = useState('');
-  
-  // Scroll to bottom whenever outputs change
+  const [userName, setUserName] = useState<string>('UNKNOWN USER');
+
   useEffect(() => {
     if (outputRef.current) {
       outputRef.current.scrollTop = outputRef.current.scrollHeight;
     }
   }, [state.commandOutputs]);
+
+  useEffect(() => {
+    getName().then(setUserName);
+  }, []);
   
   const handleKeyUp = (e: KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter' && commandInput.trim()) {
@@ -28,7 +47,9 @@ const AuthenticatedTerminal = ({ terminal }: AuthenticatedTerminalProps) => {
     <div className="authenticated-terminal">
       {/* Terminal Header after authentication */}
       <div className="mb-6 border-b border-terminal-green/30 pb-2">
-        <p className="text-terminal-green mb-2 animate-text-glow font-bold">CEO ACCESS GRANTED - WELCOME TO DLM-2000, DEREK DINO</p>
+        <p className="text-terminal-green mb-2 animate-text-glow font-bold">
+   CEO ACCESS GRANTED - WELCOME TO DLM-2000, {userName}
+        </p>
         <p className="text-terminal-blue">{"> Last login: " + new Date().toLocaleString() + " on T-REX SECURE NETWORK"}</p>
       </div>
       

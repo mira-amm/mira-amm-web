@@ -17,18 +17,18 @@ export const baseConfig = {
         : `${process.env.MICROGAME_PUBLIC_URL}`;
 
     if (user) {
-      if (user.id === 1 || user.group?.name === "Developer") {
+      if (user.id === 1) {
         return "/admin/login";
       } else {
         return returnURL;
       }
     }
 
-    return "/";
+    return "/admin/login";
   },
   failureRedirect: (req: PayloadRequest, err) => {
     req.payload.logger.error(err);
-    return "/admin/login";
+    return "/";
   },
 };
 
@@ -96,6 +96,8 @@ export const twitterOAuth = OAuth2Plugin({
       },
     ).then((res) => res.json());
 
+    console.log(user)
+
     const filename = `${user.data.username.toLowerCase()}-avatar.png`;
     const avatarId = user.data.profile_image_url
       ? await getOrUploadMedia(
@@ -110,7 +112,7 @@ export const twitterOAuth = OAuth2Plugin({
     return {
       email: user.data.confirmed_email,
       avatar: avatarId,
-      preferredDisplayName: user.data.name,
+      name: user.data.name,
       xUserName: user.data.username,
       xIsIdentityVerified: user.data.is_identity_verified,
       xVerified: user.data.verified,

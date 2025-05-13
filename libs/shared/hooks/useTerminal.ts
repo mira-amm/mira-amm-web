@@ -1,7 +1,6 @@
 import {useState, useRef, useEffect, useCallback} from "react";
 import {COMMANDS, CORRECT_PASSWORD, HELP_TEXT} from "../lib/constants";
 import crypto from "crypto";
-import {get} from "http";
 
 export type TerminalView =
   | "boot"
@@ -21,7 +20,7 @@ interface TerminalState {
   multiplier: number;
   gameActive: boolean;
   walletAddress: string;
-  leaderboard: {id: string; wallet: string; score: number}[];
+  // leaderboard: {id: string; wallet: string; score: number}[];
 }
 
 const getLocalStorageHighScore = () => {
@@ -30,7 +29,7 @@ const getLocalStorageHighScore = () => {
   return highScore ? parseInt(highScore) : 0;
 };
 
-export function useTerminal({leaderBoardData}: any) {
+export function useTerminal() {
   const [state, setState] = useState<TerminalState>({
     isAuthenticated: false,
     currentView: "boot",
@@ -41,7 +40,7 @@ export function useTerminal({leaderBoardData}: any) {
     multiplier: 1,
     gameActive: false,
     walletAddress: "",
-    leaderboard: leaderBoardData,
+    // leaderboard: leaderBoardData,
   });
 
   const commandInputRef = useRef<HTMLInputElement>(null);

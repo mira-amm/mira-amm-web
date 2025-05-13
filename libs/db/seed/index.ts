@@ -4,7 +4,7 @@ import { seedMedia } from '../collections/Media';
 import { seedUsers } from "../collections/Users";
 import { promises as fs } from "fs";
 import path from "path";
-import {seedBrands} from '../collections'
+import {seedBrands, seedGames} from '../collections'
 
 export async function seed({
   payload,
@@ -19,8 +19,8 @@ export async function seed({
     [
       "users",
       "brands",
-      "forms",
-      "form-submissions",
+      "media",
+      "games",
     ].map(async (collection) => {
       if (collection === "users") {
         await payload.db.deleteMany({
@@ -55,86 +55,87 @@ export async function seed({
     await seedMedia(payload);
     await seedUsers(payload);
     await seedBrands(payload);
+    await seedGames(payload);
   } catch (error) {
     payload.logger.error(
       `❌ Error seeding initial data: ${error instanceof Error ? error.message : "Unknown error"}`,
     );
   }
 
-  payload.logger.info("📝 Seeding forms...");
+  // payload.logger.info("📝 Seeding forms...");
 
-  try {
-    const forms = [
-      {
-        title: "User Feedback Form",
-        fields: [
-          {
-            blockName: "Thank you for your feedback!",
-            blockType: "message",
-            message: formatRichText({
-              children: [
-                {
-                  type: "paragraph",
-                  children: [
-                    {
-                      mode: "normal",
-                      text: "Thank you for your feedback!",
-                      type: "text",
-                    },
-                  ],
-                },
-              ],
-            }),
-          },
-          {
-            name: "what-did-you-like-most?",
-            label: "What did you like most?",
-            width: 100,
-            required: true,
-            blockType: "select",
-            options: [
-              {label: "colors", value: "🎨 Hardware"},
-              {label: "speed", value: "🚀 AI/ML"},
-              {label: "reliability", value: "⚙ Reliability"},
-              {label: "security", value: "👩‍💻 Security"},
-            ],
-          },
-        ],
-        submitButtonLabel: "Register",
-        confirmationMessage: formatRichText({
-          children: [
-            {
-              type: "paragraph",
-              children: [
-                {
-                  mode: "normal",
-                  text: "Thanks for Registering!",
-                  type: "text",
-                },
-              ],
-            },
-          ],
-        }),
-      },
-    ];
+  // try {
+  //   const forms = [
+  //     {
+  //       title: "User Feedback Form",
+  //       fields: [
+  //         {
+  //           blockName: "Thank you for your feedback!",
+  //           blockType: "message",
+  //           message: formatRichText({
+  //             children: [
+  //               {
+  //                 type: "paragraph",
+  //                 children: [
+  //                   {
+  //                     mode: "normal",
+  //                     text: "Thank you for your feedback!",
+  //                     type: "text",
+  //                   },
+  //                 ],
+  //               },
+  //             ],
+  //           }),
+  //         },
+  //         {
+  //           name: "what-did-you-like-most?",
+  //           label: "What did you like most?",
+  //           width: 100,
+  //           required: true,
+  //           blockType: "select",
+  //           options: [
+  //             {label: "colors", value: "🎨 Hardware"},
+  //             {label: "speed", value: "🚀 AI/ML"},
+  //             {label: "reliability", value: "⚙ Reliability"},
+  //             {label: "security", value: "👩‍💻 Security"},
+  //           ],
+  //         },
+  //       ],
+  //       submitButtonLabel: "Register",
+  //       confirmationMessage: formatRichText({
+  //         children: [
+  //           {
+  //             type: "paragraph",
+  //             children: [
+  //               {
+  //                 mode: "normal",
+  //                 text: "Thanks for Registering!",
+  //                 type: "text",
+  //               },
+  //             ],
+  //           },
+  //         ],
+  //       }),
+  //     },
+  //   ];
 
-    await Promise.all(
-      forms.map(async (form) => {
-        await payload.create({
-          collection: "forms",
-          data: form,
-        });
+  //   await Promise.all(
+  //     forms.map(async (form) => {
+  //       await payload.create({
+  //         collection: "forms",
+  //         data: form,
+  //       });
 
-        payload.logger.info(`✅ Inserted form: ${form.title}`);
-      }),
-    );
+  //       payload.logger.info(`✅ Inserted form: ${form.title}`);
+  //     }),
+  //   );
 
-    payload.logger.info("✅ All form seed data successfully inserted!");
-  } catch (error) {
-    payload.logger.error(
-      `❌ Error seeding form data: ${error instanceof Error ? error.message : "Unknown error"}`,
-    );
-  }
+  //   payload.logger.info("✅ All form seed data successfully inserted!");
+  // } catch (error) {
+  //   payload.logger.error(
+  //     `❌ Error seeding form data: ${error instanceof Error ? error.message : "Unknown error"}`,
+  //   );
+  // }
 
   payload.logger.info("🎉 Database seeded successfully! 🌱");
 
