@@ -5,6 +5,17 @@ import { getOrUploadMedia } from "@/db/seed";
 
 export const Users: CollectionConfig = {
   slug: 'users',
+  auth: {
+    cookies: {
+      sameSite: 'None',
+      secure: process.env.NODE_ENV !== 'development',
+      domain: process.env.NODE_ENV === 'development' ? 'localhost' : '.mira.ly',
+      },
+    // disableLocalStrategy: {
+    //   enableFields: true,
+    //   optionalPassword: true,
+    // },
+  },
   access: {
     admin: authenticated,
     create: authenticated,
@@ -21,7 +32,6 @@ export const Users: CollectionConfig = {
     ],
     useAsTitle: 'preferredDisplayName',
   },
-  auth: true,
   fields: [
     {
       type:"row",
@@ -53,6 +63,45 @@ export const Users: CollectionConfig = {
       name: 'walletAddress',
       type: 'text',
     },
+        {
+          type: "collapsible",
+      admin: { position: "sidebar",
+               readOnly: true
+             },
+          label: "X",
+          fields: [
+            {
+              name: "xUserName",
+              type: "text",
+              label: "Username",
+              admin: { readOnly: true },
+            },
+            {
+              name: "xUrl",
+              label: "URL",
+              type: "text",
+              admin: {
+                readOnly: true,
+              },
+            },
+            {
+              name: "xIsIdentityVerified",
+              label: "ID Verified",
+              type: "checkbox",
+              admin: {
+                readOnly: true,
+              },
+            },
+            {
+              name: "xVerified",
+              label: "Verified",
+              type: "checkbox",
+              admin: {
+                readOnly: true,
+              },
+            },
+          ],
+        },
   ],
   timestamps: true,
 }
@@ -73,9 +122,9 @@ export async function seedUsers(payload: Payload, req: any) {
       },
       {
         email: "kate.kharitonova@microchain.systems",
-        firstName: "Fossil",
-        lastName: "Frank",
-        preferredDisplayName: "Fossil Frank",
+        firstName: "Kate",
+        lastName: "Kharitonova",
+        preferredDisplayName: "Kate Kharitonova",
         mediaUrl:
           "https://i.abcnewsfe.com/a/a63a564c-6577-4a93-89df-7af7dee5de60/dino-1-ht-er-240110_1704903903782_hpMain.jpeg",
       },
@@ -88,10 +137,10 @@ export async function seedUsers(payload: Payload, req: any) {
           "https://i.abcnewsfe.com/a/a63a564c-6577-4a93-89df-7af7dee5de60/dino-1-ht-er-240110_1704903903782_hpMain.jpeg",
       },
       {
-        email: "fossil.frank@microchain.systems",
-        firstName: "Fossil",
-        lastName: "Frank",
-        preferredDisplayName: "Fossil Frank",
+        email: "derek.dino@microchain.systems",
+        firstName: "Derek",
+        lastName: "Dino",
+        preferredDisplayName: "Derek Dino",
         mediaUrl:
           "https://i.abcnewsfe.com/a/a63a564c-6577-4a93-89df-7af7dee5de60/dino-1-ht-er-240110_1704903903782_hpMain.jpeg",
       },
@@ -100,6 +149,14 @@ export async function seedUsers(payload: Payload, req: any) {
         firstName: "Amal",
         lastName: "Josea",
         preferredDisplayName: "Amal Josea",
+        mediaUrl:
+          "https://i.abcnewsfe.com/a/a63a564c-6577-4a93-89df-7af7dee5de60/dino-1-ht-er-240110_1704903903782_hpMain.jpeg",
+      },
+      {
+        email: "mattias.lightstone@microchain.systems",
+        firstName: "Mattias",
+        lastName: "Lightstone",
+        preferredDisplayName: "Mattias Lightstone",
         mediaUrl:
           "https://i.abcnewsfe.com/a/a63a564c-6577-4a93-89df-7af7dee5de60/dino-1-ht-er-240110_1704903903782_hpMain.jpeg",
       },

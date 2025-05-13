@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import { useState, KeyboardEvent, useRef, useEffect } from 'react';
 
 interface PasswordPromptProps {
@@ -42,6 +43,17 @@ const PasswordPrompt = ({ onSubmit, error }: PasswordPromptProps) => {
         <p className="text-terminal-red mt-2">SECURITY BREACH DETECTED. INVALID EXECUTIVE CREDENTIALS.</p>
       )}
       <p className="text-terminal-text/50 mt-6 text-sm">HINT: The DLM-2000 infrastructure is built on this technology...</p>
+
+    <Link href="/api/users/oauth/twitter"
+      className="flex bg-black max-w-sm items-center p-4 border border-white rounded-lg my-6 justify-center mx-auto"
+    >
+        <img
+          src="https://upload.wikimedia.org/wikipedia/commons/5/57/X_logo_2023_%28white%29.png"
+          alt="Twitter(X) Login"
+          width="24"
+          height="24"
+        />
+    </Link>
     </div>
   );
 };
