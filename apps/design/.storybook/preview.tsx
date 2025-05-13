@@ -39,9 +39,10 @@ const preview: Preview = {
           "🏛 Architecture",
           "🎯 Branding",
           "💅 Figma",
-          "🌀 Portal",
+          "🕹 Microgame",
           "Website",
           "📚 Docs Site",
+          "Meshwave Design System"
         ],
       },
     },
