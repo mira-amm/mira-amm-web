@@ -29,8 +29,9 @@ const NavLinks = () => {
     {left: 0, width: 0},
   );
   const [isReady, setIsReady] = useState(false);
+  const [shouldAnimate, setShouldAnimate] = useState(false);
 
-  useLayoutEffect(() => {
+  const updateSliderPosition = (animate: boolean = false) => {
     if (!navRef.current || !activeRef.current) return;
 
     const activeRect = activeRef.current.getBoundingClientRect();
@@ -40,6 +41,18 @@ const NavLinks = () => {
     const width = activeRect.width;
 
     setSliderStyle({left, width});
+    setShouldAnimate(animate && isReady && sliderStyle.width > 0);
+  };
+
+  useLayoutEffect(() => {
+    updateSliderPosition(true);
+
+    const handleResize = () => {
+      updateSliderPosition(false);
+    };
+
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
   }, [pathname]);
 
   useEffect(() => {
@@ -49,7 +62,7 @@ const NavLinks = () => {
   return (
     <div className={styles.navLinksWrapper} ref={navRef}>
       <div
-        className={clsx(styles.slider, isReady && styles.sliderAnimate)}
+        className={clsx(styles.slider, shouldAnimate && styles.sliderAnimate)}
         style={{
           transform: `translateX(${sliderStyle.left}px)`,
           width: `${sliderStyle.width}px`,
