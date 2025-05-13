@@ -96,6 +96,9 @@
   align-items: center;
   padding: 6px 12px;
   border-radius: 20px;
+  z-index: 1;
+  color: var(--content-secondary);
+  transition: color 0.3s ease;
 }
 
 .activeLink {
@@ -210,4 +213,26 @@
     line-height: 24px !important;
     border: 1px solid red;
   }
+}
+
+.navLinksWrapper {
+  position: relative;
+  display: flex;
+  gap: 24px;
+}
+
+.slider {
+  position: absolute;
+  height: 100%;
+  border-radius: 20px;
+  background-color: var(--content-primary);
+  top: 0;
+  z-index: 0;
+}
+
+.sliderAnimate {
+  transition:
+    transform 0.3s ease,
+    width 0.3s ease;
+  will-change: transform, width;
 }

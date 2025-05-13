@@ -1,6 +1,5 @@
 "use client";
 
-import Header from "@/src/components/common/Header/Header";
 import Footer from "@/src/components/common/Footer/Footer";
 import styles from "./PointsPageLayout.module.css";
 import PointsRankTable from "./PointsRankTable/PointsRankTable";
@@ -10,7 +9,6 @@ import clsx from "clsx";
 const PointsPageLayout = () => {
   return (
     <>
-      <Header />
       <main className={clsx("page-container", styles.positionsPageContainer)}>
         <Boosts />
         <div className={styles.leaderboardContainer}>

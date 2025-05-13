@@ -1,86 +1,124 @@
-import Logo from "@/src/components/common/Logo/Logo";
+"use client";
 
+import Logo from "@/src/components/common/Logo/Logo";
 import styles from "./Header.module.css";
 import Link from "next/link";
 import {clsx} from "clsx";
 import {usePathname} from "next/navigation";
 import ConnectButton from "@/src/components/common/ConnectButton/ConnectButton";
-import LaunchAppButton from "@/src/components/common/LaunchAppButton/LaunchAppButton";
-import DisconnectMobile from "@/src/components/common/ConnectButton/DisconnectMobile";
-import {useIsConnected} from "@fuels/react";
 import {
-  BlogLink,
   FuelAppUrl,
   POINTS_LEARN_MORE_URL,
   POINTS_PROMO_TITLE,
 } from "@/src/utils/constants";
 import IconButton from "../IconButton/IconButton";
 import CloseIcon from "../../icons/Close/CloseIcon";
-import {useEffect, useState} from "react";
+import {useEffect, useState, useRef, useLayoutEffect} from "react";
 import PointsIcon from "../../icons/Points/PointsIcon";
-
-type Props = {
-  isHomePage?: boolean;
-};
 
 const PROMO_BANNER_STORAGE_KEY = "fuel-boost-program-promo-banner-closed";
 
 const ISSERVER = typeof window === "undefined";
 
-const Header = ({isHomePage}: Props) => {
+const NavLinks = () => {
+  const navRef = useRef<HTMLDivElement>(null);
+  const activeRef = useRef<HTMLAnchorElement>(null);
   const pathname = usePathname();
-  const {isConnected} = useIsConnected();
-  const [isPromoShown, setIsPromoShown] = useState(false);
+
+  const [sliderStyle, setSliderStyle] = useState<{left: number; width: number}>(
+    {left: 0, width: 0},
+  );
+  const [isReady, setIsReady] = useState(false);
+
+  useLayoutEffect(() => {
+    if (!navRef.current || !activeRef.current) return;
+
+    const activeRect = activeRef.current.getBoundingClientRect();
+    const navRect = navRef.current.getBoundingClientRect();
+
+    const left = activeRect.left - navRect.left;
+    const width = activeRect.width;
+
+    setSliderStyle({left, width});
+  }, [pathname]);
+
+  useEffect(() => {
+    setIsReady(true);
+  }, []);
+
+  return (
+    <div className={styles.navLinksWrapper} ref={navRef}>
+      <div
+        className={clsx(styles.slider, isReady && styles.sliderAnimate)}
+        style={{
+          transform: `translateX(${sliderStyle.left}px)`,
+          width: `${sliderStyle.width}px`,
+        }}
+      />
+      <Link
+        href="/"
+        className={clsx(styles.link, pathname === "/" && styles.activeLink)}
+        ref={pathname === "/" ? activeRef : null}
+        aria-current={pathname === "/" ? "page" : undefined}
+      >
+        Swap
+      </Link>
+      <Link
+        href="/liquidity"
+        className={clsx(
+          styles.link,
+          pathname.startsWith("/liquidity") && styles.activeLink,
+        )}
+        ref={pathname.startsWith("/liquidity") ? activeRef : null}
+        aria-current={pathname.startsWith("/liquidity") ? "page" : undefined}
+      >
+        Liquidity
+      </Link>
+      <Link
+        href="/points"
+        className={clsx(
+          styles.link,
+          pathname.startsWith("/points") && styles.activeLink,
+        )}
+        ref={pathname.startsWith("/points") ? activeRef : null}
+        aria-current={pathname.startsWith("/points") ? "page" : undefined}
+      >
+        Points
+      </Link>
+      <a
+        href={`${FuelAppUrl}/bridge?from=eth&to=fuel&auto_close=true&=true`}
+        className={styles.link}
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        Bridge
+      </a>
+    </div>
+  );
+};
+
+const Header = () => {
+  const [isPromoShown, setIsPromoShown] = useState<boolean | null>(null);
 
   useEffect(() => {
     if (!ISSERVER) {
-      const bannerClosed = localStorage.getItem(PROMO_BANNER_STORAGE_KEY);
-      setIsPromoShown(!bannerClosed);
+      try {
+        const bannerClosed = localStorage.getItem(PROMO_BANNER_STORAGE_KEY);
+        setIsPromoShown(!bannerClosed);
+      } catch (error) {
+        console.error("Error accessing localStorage:", error);
+        setIsPromoShown(false);
+      }
     }
   }, []);
 
   const handleCloseBanner = () => {
-    setIsPromoShown(false);
-    localStorage.setItem(PROMO_BANNER_STORAGE_KEY, "true");
-  };
-
-  const NavLinks = () => {
-    return (
-      <>
-        <Link
-          href="/"
-          className={clsx(styles.link, pathname === "/" && styles.activeLink)}
-        >
-          Swap
-        </Link>
-        <Link
-          href="/liquidity"
-          className={clsx(
-            styles.link,
-            pathname.includes("/liquidity") && styles.activeLink,
-          )}
-        >
-          Liquidity
-        </Link>
-        <Link
-          href="/points"
-          className={clsx(
-            styles.link,
-            pathname.includes("/points") && styles.activeLink,
-          )}
-        >
-          Points
-        </Link>
-        <a
-          href={`${FuelAppUrl}/bridge?from=eth&to=fuel&auto_close=true&=true`}
-          className={styles.link}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Bridge
-        </a>
-      </>
-    );
+    try {
+      setIsPromoShown(false);
+      localStorage.setItem(PROMO_BANNER_STORAGE_KEY, "true");
+    } catch (error) {
+      console.error("Error setting localStorage:", error);
+    }
   };
 
   return (
@@ -96,7 +134,11 @@ const Header = ({isHomePage}: Props) => {
               </Link>
             </p>
           </div>
-          <IconButton onClick={handleCloseBanner} className={styles.promoClose}>
+          <IconButton
+            onClick={handleCloseBanner}
+            className={styles.promoClose}
+            aria-label="Close promo banner"
+          >
             <CloseIcon />
           </IconButton>
         </section>
@@ -113,31 +155,7 @@ const Header = ({isHomePage}: Props) => {
         </div>
 
         <div className={clsx(styles.right)}>
-          {isHomePage && (
-            <>
-              <a
-                href="https://docs.mira.ly"
-                className={styles.link}
-                target="_blank"
-              >
-                Docs
-              </a>
-              <a href={BlogLink} className={styles.link} target="_blank">
-                Blog
-              </a>
-            </>
-          )}
-          {/* {!isHomePage && <TestnetLabel />} */}
-          {!isHomePage && <ConnectButton className={styles.launchAppButton} />}
-          {isHomePage && (
-            <div className={styles.launchAppArea}>
-              {isConnected ? (
-                <ConnectButton className={styles.launchAppButton} />
-              ) : (
-                <LaunchAppButton className={styles.launchAppButton} />
-              )}
-            </div>
-          )}
+          <ConnectButton className={styles.launchAppButton} />
         </div>
 
         <div className={clsx("mobileOnly", styles.links)}>

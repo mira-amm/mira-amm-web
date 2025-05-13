@@ -1,6 +1,5 @@
 "use client";
 
-import Header from "@/src/components/common/Header/Header";
 import Footer from "@/src/components/common/Footer/Footer";
 import BackLink from "@/src/components/common/BackLink/BackLink";
 import Pools from "@/src/components/pages/liquidity-page/components/Pools/Pools";
@@ -21,7 +20,6 @@ import clsx from "clsx";
 const LiquidityPageLayout = () => {
   return (
     <>
-      <Header />
       <main className={clsx("page-container", styles.liquidityPageContainer)}>
         <Boosts />
         <Positions />

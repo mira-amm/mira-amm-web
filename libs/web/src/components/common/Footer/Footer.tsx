@@ -7,11 +7,7 @@ import GithubIcon from "../../icons/Github/GithubIcon";
 import DiscordIcon from "../../icons/DiscordIcon/DiscordIcon";
 import X from "../../icons/X/XSocialIcon";
 
-interface FooterProps {
-  isHomePage?: boolean;
-}
-
-const Footer = ({isHomePage = false}: FooterProps) => {
+const Footer = () => {
   const currentYear = new Date().getFullYear();
 
   return (

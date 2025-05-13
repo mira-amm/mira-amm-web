@@ -1,5 +1,4 @@
 "use client";
-import Header from "@/src/components/common/Header/Header";
 import CreatePool from "./components/CreatePool/CreatePool";
 import {useEffect, useRef} from "react";
 
@@ -14,7 +13,6 @@ const CreatePoolPageLayout = () => {
 
   return (
     <>
-      <Header />
       <main className="action-layout" ref={mainRef}>
         <CreatePool />
       </main>

@@ -1,6 +1,5 @@
 "use client";
 
-import Header from "@/src/components/common/Header/Header";
 import Footer from "@/src/components/common/Footer/Footer";
 import Swap from "@/src/components/common/Swap/Swap";
 import styles from "./SwapPageLayout.module.css";
@@ -12,7 +11,6 @@ const SwapPageLayout = () => {
 
   return (
     <>
-      <Header />
       <main className={styles.swapLayoutWrapper}>
         <div className={styles.swapContainer}>
           <div className={styles.swapLayout}>

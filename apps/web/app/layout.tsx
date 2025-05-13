@@ -4,6 +4,7 @@ import {clsx} from "clsx";
 import {Prompt, Inter} from "next/font/google";
 import localFont from "next/font/local";
 import {metadata} from "./metadata";
+import Header from "@/src/components/common/Header/Header";
 
 import "@/public/css/globals.css";
 import Providers from "@/src/core/providers/Providers";
@@ -55,7 +56,10 @@ const RootLayout = ({children}: Props) => {
         <link rel="stylesheet" href="https://use.typekit.net/joy1wau.css" />
       </head>
       <body className={clsx(inter.className, inter.variable, prompt.variable)}>
-        <Providers>{children}</Providers>
+        <Providers>
+          <Header />
+          {children}
+        </Providers>
       </body>
       <Script src="https://www.googletagmanager.com/gtag/js?id=G-K113JNM8XN" />
       <Script id="gtag">{`
