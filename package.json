@@ -147,6 +147,7 @@
     "@storybook/addon-themes": "8.6.12",
     "@storybook/addon-viewport": "8.6.12",
     "@storybook/nextjs": "8.6.12",
+    "@storybook/test": "^8.6.12",
     "@swc-node/register": "^1.10.10",
     "@swc/cli": "~0.3.12",
     "@swc/core": "^1.11.22",
