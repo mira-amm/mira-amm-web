@@ -8,7 +8,6 @@ import {Tooltip} from "react-tooltip";
 import "react-tooltip/dist/react-tooltip.css";
 import styles from "./CoinListItem.module.css";
 import {useAssetImage} from "@/src/hooks/useAssetImage";
-import Image from "next/image";
 
 type Props = {
   assetData: Omit<CoinDataWithPrice, "price"> & {
@@ -26,12 +25,12 @@ const CoinListItem = ({assetData}: Props) => {
     <span className={clsx(styles.coin, !assetData?.name && styles.centered)}>
       <Tooltip id="verified-tooltip" />
 
-      <Image
+      <img
         src={assetData.icon || fallbackIcon}
         alt={`${assetData.name} icon`}
         width={40}
         height={40}
-        priority
+        fetchPriority="high"
       />
 
       <div className={styles.names}>
