@@ -47,7 +47,7 @@ export const useAssetImage = (assetId: string | null): string => {
     meta: {persist: true},
   });
 
-  return data || defaultImage.src;
+  return data || (defaultImage as any).src;
 };
 
 const buildDynamicAssetQuery = (assetIds: string[]) => {
