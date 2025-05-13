@@ -1,0 +1,57 @@
+import { Meta } from "@storybook/blocks";
+import Image from "next/image";
+
+import mira_cover from "../../libs/shared/assets/mira-github-repo-readme-banner.png"
+import aceternity_ui_website from "../../libs/shared/assets/screenshots/aceternity_ui_website.png";
+import magic_ui_website from "../../libs/shared/assets/screenshots/magic_ui_website.png";
+import shadcn_ui_website from "../../libs/shared/assets/screenshots/shadcn_ui_website.png";
+import tailwindcss_website from "../../libs/shared/assets/screenshots/tailwindcss_website.png";
+
+<Meta title="👋 Welcome" />
+
+<div className="space-y-8 p-8">
+  <h1 className="text-3xl font-bold text-center">Welcome to the Mira's Meshwave Design System 👋</h1>
+  <hr/>
+
+  <Image
+    src={mira_cover}
+    alt="Mira Design System Cover"
+    className="w-full h-auto mb-4"
+  />
+
+  {/* Foundations Section */}
+  <section className="space-y-8 mb-12">
+    <h2 className="text-2xl font-bold">Foundations</h2>
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-8 px-2 py-2">
+      {/* UI Libraries Grid */}
+      <div className="flex flex-col items-center space-y-4 p-4 rounded-md border border-gray-700">
+        <a href="https://ui.aceternity.com" target="_blank" rel="noopener noreferrer" className="w-full">
+          <Image src={aceternity_ui_website} alt="Aceternity UI" className="w-full h-auto" />
+        </a>
+        <h3 className="font-semibold">Aceternity UI</h3>
+      </div>
+
+      <div className="flex flex-col items-center space-y-4 p-4 rounded-md border border-gray-700">
+        <a href="https://magicui.design/" target="_blank" rel="noopener noreferrer" className="w-full">
+          <Image src={magic_ui_website} alt="Magic UI" className="w-full h-auto" />
+        </a>
+        <h3 className="font-semibold">Magic UI</h3>
+      </div>
+
+      <div className="flex flex-col items-center space-y-4 p-4 rounded-md border border-gray-700">
+        <a href="https://ui.shadcn.com" target="_blank" rel="noopener noreferrer" className="w-full">
+          <Image src={shadcn_ui_website} alt="Shadcn UI" className="w-full h-auto" />
+        </a>
+        <h3 className="font-semibold">Shadcn UI</h3>
+      </div>
+
+      <div className="flex flex-col items-center space-y-4 p-4 rounded-md border border-gray-700">
+        <a href="https://tailwindcss.com" target="_blank" rel="noopener noreferrer" className="w-full">
+          <Image src={tailwindcss_website} alt="Tailwind CSS" className="w-full h-auto" />
+        </a>
+        <h3 className="font-semibold">Tailwind CSS</h3>
+      </div>
+    </div>
+  </section>
+
+</div>

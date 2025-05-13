@@ -3,7 +3,6 @@
     "emitDecoratorMetadata": true
   },
   "include": [
-    ".storybook/*.js",
     ".storybook/*.ts",
     "tailwind.config.ts",
     "postcss.config.js"
