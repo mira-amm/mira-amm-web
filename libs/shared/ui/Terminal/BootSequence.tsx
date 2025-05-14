@@ -1,3 +1,5 @@
+'use client'
+
 import {useEffect, useState} from "react";
 import {ASCII_LOGO, BOOT_MESSAGES} from "../../lib/constants";
 
@@ -21,7 +23,7 @@ const BootSequence = () => {
   }, []);
 
   return (
-    <div className="boot-sequence">
+    <>
       <pre className="boot-logo text-terminal-green font-bold text-center">
         {ASCII_LOGO}
       </pre>
@@ -36,7 +38,7 @@ const BootSequence = () => {
           </p>
         ))}
       </div>
-    </div>
+    </>
   );
 };
 

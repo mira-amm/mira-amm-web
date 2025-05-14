@@ -3,8 +3,7 @@ import {COMMANDS, CORRECT_PASSWORD, HELP_TEXT} from "../lib/constants";
 import crypto from "crypto";
 
 export type TerminalView =
-  | "boot"
-  | "passwordPrompt"
+  | "login"
   | "authenticated"
   | "notes"
   | "timer"
@@ -32,7 +31,7 @@ const getLocalStorageHighScore = () => {
 export function useTerminal() {
   const [state, setState] = useState<TerminalState>({
     isAuthenticated: false,
-    currentView: "boot",
+    currentView: "login",
     commandHistory: [],
     commandOutputs: [],
     currentScore: 0,
@@ -46,17 +45,17 @@ export function useTerminal() {
   const commandInputRef = useRef<HTMLInputElement>(null);
 
   // Boot sequence effect
-  useEffect(() => {
-    // After 2 seconds, move from boot to password prompt
-    const timer = setTimeout(() => {
-      setState((prevState) => ({
-        ...prevState,
-        currentView: "passwordPrompt",
-      }));
-    }, 2000);
+  // useEffect(() => {
+  //   // After 2 seconds, move from boot to password prompt
+  //   const timer = setTimeout(() => {
+  //     setState((prevState) => ({
+  //       ...prevState,
+  //       currentView: "passwordPrompt",
+  //     }));
+  //   }, 2000);
 
-    return () => clearTimeout(timer);
-  }, []);
+  //   return () => clearTimeout(timer);
+  // }, []);
 
   // Focus command input whenever authenticated terminal is shown
   useEffect(() => {
@@ -137,7 +136,7 @@ export function useTerminal() {
         setState((prevState) => ({
           ...prevState,
           isAuthenticated: false,
-          currentView: "passwordPrompt",
+          currentView: "login",
           commandOutputs: [],
         }));
         break;
