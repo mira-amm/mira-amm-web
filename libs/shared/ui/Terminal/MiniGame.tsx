@@ -100,7 +100,7 @@ useEffect(() => {
     <div className="mini-game">
       {!state.gameActive && (
         <>
-          <div className="mb-4 border-b-4 border-double border-terminal-blue pb-2">
+          <div className="mb-4 border-b border-b-6 border-double border-b-terminal-blue pb-2">
             <div className="flex items-center mb-2">
               <div className="w-4 h-4 bg-terminal-blue animate-pulse mr-2"></div>
               <p className="text-terminal-blue text-xl font-bold">
@@ -114,7 +114,7 @@ useEffect(() => {
           </div>
 
           {/* Game Instructions */}
-          <div className="game-instructions mb-6 bg-black/20 p-3 border-2 border-terminal-green">
+          <div className="game-instructions mb-6 bg-black/20 p-3 border border-6 border-terminal-green">
             <p className="text-terminal-green font-bold mb-2 underline">
               GAME INSTRUCTIONS:
             </p>
@@ -130,7 +130,7 @@ useEffect(() => {
       )}
 
       {/* Game Canvas Placeholder - 80s Terminal Style */}
-      <div className="game-canvas-container border-4 border-terminal-blue flex items-center justify-center mb-6 bg-black/30 relative overflow-hidden">
+      <div className="game-canvas-container border border-6 border-terminal-blue flex items-center justify-center mb-6 bg-black/30 relative overflow-hidden">
         {/* {/* <div className="absolute top-0 left-0 right-0 h-1 bg-terminal-blue/20"></div> */}
         <div className="absolute bottom-0 left-0 right-0 h-1 bg-terminal-blue/20"></div>
         <div className="absolute left-0 top-0 bottom-0 w-1 bg-terminal-blue/20"></div>
@@ -146,7 +146,7 @@ useEffect(() => {
 
       {/* Wallet Input (shown after game over) - Styled as 80s terminal interface */}
       {showWalletInput && (
-        <div className="wallet-input mt-8 border-2 border-terminal-blue p-4 bg-black/20">
+        <div className="wallet-input mt-8 border border-4 border-terminal-blue p-4 bg-black/20">
           <p className="text-terminal-red font-bold mb-2 animate-pulse">
             EXCEPTIONAL GAMING PERFORMANCE! ENTER YOUR T-REX WALLET:
           </p>
@@ -171,13 +171,13 @@ useEffect(() => {
             <button
               onClick={handleWalletConnection}
               disabled={isWalletLoading}
-              className="mt-4 bg-black border-2 border-terminal-blue px-4 py-2 font-bold text-terminal-blue hover:bg-terminal-blue hover:text-black animate-pulse cursor-pointer"
+              className="mt-4 bg-black border border-4 border-terminal-blue px-4 py-2 font-bold text-terminal-blue hover:bg-terminal-blue hover:text-black animate-pulse cursor-pointer"
             >
               {isConnected ? "DISCONNECT WALLET" : "CONNECT WALLET"}
             </button>
             <button
               onClick={handleButtonSubmit}
-              className="mt-4 bg-terminal-blue border-2 border-terminal-blue px-4 py-2 font-bold text-black hover:bg-black hover:text-terminal-blue animate-pulse cursor-pointer"
+              className="mt-4 bg-terminal-blue border border-4 border-terminal-blue px-4 py-2 font-bold text-black hover:bg-black hover:text-terminal-blue animate-pulse cursor-pointer"
             >
               SAVE YOUR HIGH SCORE
             </button>
@@ -193,13 +193,13 @@ useEffect(() => {
       >
         {({ currentPage, setCurrentPage }) => (
           <>
-            <div className="leaderboard mt-8 border-2 border-terminal-green p-2 bg-black/10">
-              <div className="text-terminal-green font-bold mb-2 text-center border-b border-terminal-green pb-2 flex items-center justify-between relative">
+            <div className="leaderboard mt-8 border border-6 border-terminal-green p-2 bg-black/10">
+              <div className="text-terminal-green font-bold mb-2 text-center border-b border-b-terminal-green pb-2 flex items-center justify-between relative">
                 <div />
                 <p>== TOP PLAYERS LEADERBOARD == </p>
                 <div className="flex items-center">
                   <Input
-                    className="h-8 w-48 absolute right-0 border-terminal-green/50 hover:border-terminal-green focus:border-terminal-green focus:ring-0"
+                    className="h-8 w-48 absolute right-0 border border-terminal-green/50 hover:border-terminal-green focus:border-terminal-green bg-terminal-bg text-terminal-green placeholder:text-terminal-green focus:ring-0"
                     placeholder="Search..."
                     onChange={(e) => setSearchInput(e.target.value)}
                     value={searchInput}

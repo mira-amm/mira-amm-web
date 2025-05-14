@@ -30,7 +30,7 @@ const TimeBlock = ({
 }) => (
   <div className="flex flex-col items-center">
     <div
-      className={`bg-terminal-bg border-2 border-terminal-green p-4 w-full text-terminal-green font-digital font-bold relative overflow-hidden ${
+      className={`bg-terminal-bg border border-6 border-terminal-green p-4 w-full text-terminal-green font-digital font-bold relative overflow-hidden ${
         pulse ? "animate-pulse" : ""
       }`}
     >
@@ -59,7 +59,7 @@ const CountdownTimer = ({ onReturn }: { onReturn: () => void }) => {
 
   return (
     <>
-      <div className="mb-6 border-b-4 border-double border-terminal-blue pb-2">
+      <div className="mb-6 border-b border-double border-b-6 border-b-terminal-blue pb-2">
         <p className="text-terminal-blue text-xl mb-2 font-bold flex items-center">
           <span className="animate-pulse mr-2">▲▲</span>
           DLM-2000 PRODUCT LAUNCH COUNTDOWN
@@ -75,7 +75,7 @@ const CountdownTimer = ({ onReturn }: { onReturn: () => void }) => {
           -- T-REX TECHNOLOGIES LAUNCH TIMER v4.2 --
         </div>
 
-        <div className="grid grid-cols-4 gap-4 text-4xl bg-black/20 p-4 border-4 border-terminal-blue">
+        <div className="grid grid-cols-4 gap-4 text-4xl bg-black/20 p-4 border border-6 border-terminal-blue">
           <TimeBlock label="DAYS" value={timeRemaining.days} />
           <TimeBlock label="HOURS" value={timeRemaining.hours} pulse />
           <TimeBlock label="MINUTES" value={timeRemaining.minutes} />

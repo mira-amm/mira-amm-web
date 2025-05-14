@@ -1,8 +1,8 @@
 import {Prompt} from "next/font/google";
 import type {ReactNode} from "react";
-import { ReactNode } from "react";
 import {TerminalHeader} from "@/shared/ui/Terminal/TerminalHeader"
 
+import "@/shared/ui/global.css";
 
 const prompt = Prompt({
   weight: ["100", "200", "300", "400", "500", "600", "700", "800", "900"],
@@ -12,9 +12,9 @@ const prompt = Prompt({
 export default function Layout({children}: {children: ReactNode}) {
   return (
     <html lang="en" className={prompt.className} suppressHydrationWarning>
-      <body className="flex h-screen justify-center items-center bg-black font-['VT323',monospace]">
+      <body className="flex h-screen justify-center items-center bg-black text-terminal-green font-['VT323',monospace]">
       {/* Terminal Window */}
-      <div className="terminal-window relative w-full max-w-7xl h-[calc(100vh-20rem)] bg-terminal-bg rounded-md border border-terminal-text/30 overflow-hidden shadow-2xl shadow-terminal-green/20">
+      <div className="relative w-full max-w-7xl h-[calc(100vh-20rem)] bg-terminal-bg rounded-md border border-terminal-text/30 overflow-hidden shadow-[0_35px_35px_rgba(27,254,174,0.15)] ">
         <TerminalHeader/>
           {/* Animated scanline effect */}
         <div className="scanlines relative h-[calc(100%-2rem)] overflow-hidden">
