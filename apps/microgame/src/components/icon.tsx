@@ -1,1 +1,1 @@
-export const Icon = () => <img src="/symbol.png" className="scale-300"/>
+export const Icon = () => <img src="/logo.svg" />

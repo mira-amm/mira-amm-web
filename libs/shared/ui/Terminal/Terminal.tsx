@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from "react";
 import { useTerminal } from "../../hooks/useTerminal";
-import TerminalHeader from "./TerminalHeader";
 import BootSequence from "./BootSequence";
 import PasswordPrompt from "./PasswordPrompt";
 import AuthenticatedTerminal from "./AuthenticatedTerminal";
@@ -40,18 +39,6 @@ const Terminal = () => {
   };
 
   return (
-    <div className="relative w-full h-full max-w-6xl mx-auto flex items-center justify-center p-4">
-      {/* Terminal Window */}
-      <div className="terminal-window relative w-full h-[calc(100vh-2rem)] md:w-[800px] md:h-[600px] bg-terminal-bg rounded-md border border-terminal-text/30 overflow-hidden shadow-2xl shadow-terminal-green/20">
-        {/* Terminal Header */}
-        <TerminalHeader />
-
-        {/* Main Terminal Content */}
-        <div className="scanlines relative h-[calc(100%-2rem)] overflow-hidden">
-          {/* Animated scanline effect */}
-          <div className="absolute top-0 left-0 w-full h-full bg-terminal-green/5 opacity-30 animate-scanline pointer-events-none z-10"></div>
-
-          {/* Terminal content area */}
           <div
             className={cn("terminal-content h-full p-4 text-terminal-text text-lg", {
               "overflow-y-auto": !state.gameActive,
@@ -70,9 +57,6 @@ const Terminal = () => {
             {state.currentView === "timer" && <CountdownTimer onReturn={returnToTerminal} />}
 
             {state.currentView === "game" && <MiniGame terminal={terminal} />}
-          </div>
-        </div>
-      </div>
     </div>
   );
 };
