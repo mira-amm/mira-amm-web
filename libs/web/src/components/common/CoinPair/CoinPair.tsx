@@ -4,7 +4,7 @@ import {memo} from "react";
 import {useAssetImage} from "@/src/hooks/useAssetImage";
 import {B256Address} from "fuels";
 import useAssetMetadata from "@/src/hooks/useAssetMetadata";
-import Image from "next/image";
+import {FallbackImage} from "../FallbackImage/FallbackImage";
 
 type Props = {
   firstCoin: B256Address;
@@ -40,21 +40,23 @@ const CoinPair = ({
     >
       <div className={styles.coinPairIcons}>
         {firstCoinIcon && (
-          <Image
+          <FallbackImage
             src={firstCoinIcon}
             alt={`${firstSymbol} icon`}
             width={36}
             height={36}
             priority
+            onChangeParam={firstCoin}
           />
         )}
         {secondCoinIcon && (
-          <Image
+          <FallbackImage
             src={secondCoinIcon}
             alt={`${secondSymbol} icon`}
             width={36}
             height={36}
             priority
+            onChangeParam={secondCoin}
           />
         )}
       </div>

@@ -1,4 +1,3 @@
-import defaultImage from "@/assets/unknown-asset.svg";
 import useFormattedAddress from "@/src/hooks/useFormattedAddress/useFormattedAddress";
 import useWalletTransactions from "@/src/hooks/useWalletTransactions";
 import {FuelAppUrl} from "@/src/utils/constants";
@@ -10,6 +9,7 @@ import CopyAddressIcon from "../../icons/Copy/CopyAddressIcon";
 import styles from "./TransactionsHistory.module.css";
 import SkeletonLoader from "../Swap/components/SkeletonLoader/SkeletonLoader";
 import clsx from "clsx";
+import {FallbackImage} from "../FallbackImage/FallbackImage";
 
 interface TransactionsHistoryProps {
   onClose: () => void;
@@ -96,23 +96,21 @@ const TransactionsHistory = forwardRef<
                       <div className={styles.transactionInfo}>
                         <div className={styles.transactionCoins}>
                           <div className={styles.firstCoin}>
-                            <Image
-                              src={transaction.firstAsset?.icon || defaultImage}
+                            <FallbackImage
+                              src={transaction.firstAsset?.icon}
                               alt={`${transaction.firstAsset.symbol} icon`}
-                              priority
                               width={40}
                               height={40}
+                              priority
                             />
                           </div>
                           <div className={styles.secondCoin}>
-                            <Image
-                              src={
-                                transaction.secondAsset?.icon || defaultImage
-                              }
+                            <FallbackImage
+                              src={transaction.secondAsset?.icon}
                               alt={`${transaction.secondAsset.name} icon`}
-                              priority
                               width={40}
                               height={40}
+                              priority
                             />
                           </div>
                         </div>
