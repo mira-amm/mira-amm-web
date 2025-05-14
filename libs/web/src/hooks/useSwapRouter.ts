@@ -1,11 +1,10 @@
-import {useQueries} from "@tanstack/react-query";
-import {type BN, bn} from "fuels";
+import {skipToken, useQuery} from "@tanstack/react-query";
+import {AssetId, type BN, bn} from "fuels";
+import type {ReadonlyMiraAmm, Route} from "mira-dex-ts";
+import {useMemo} from "react";
 import {CoinData} from "../utils/coinsConfig";
 import useReadonlyMira from "./useReadonlyMira";
 import useRoutablePools from "./useRoutablePools";
-import {useMemo} from "react";
-import {Route} from "./useGetPoolsWithReserve";
-import type {ReadonlyMiraAmm} from "mira-dex-ts";
 
 export enum TradeState {
   LOADING,
@@ -32,29 +31,36 @@ type SwapPreviewState = {
   error: string | null;
 };
 
-const getSwapQuotes = (
-  inputAmount: BN,
+const getSwapQuote = async (
+  amountIn: BN,
+  assetIn: AssetId,
+  assetOut: AssetId,
+  routes: Route[],
   tradeType: TradeType,
-  route: Route,
   miraAmm: ReadonlyMiraAmm,
 ) => {
-  if (tradeType === TradeType.EXACT_IN)
-    return miraAmm.previewSwapExactInput(
-      {
-        bits: route.assetIn.assetId,
-      },
-      inputAmount,
-      route.pools.map((pool) => pool.poolId),
+  if (tradeType === TradeType.EXACT_IN) {
+    const poolDatas = await miraAmm.getMultiRouteAmountsOut(
+      assetIn,
+      amountIn,
+      routes,
+      assetOut,
     );
 
-  // exact out
-  return miraAmm.previewSwapExactOutput(
-    {
-      bits: route.assetOut.assetId,
-    },
-    inputAmount,
-    route.pools.map((pool) => pool.poolId),
+    return poolDatas;
+  }
+
+  console.log(tradeType, assetIn, assetOut, routes);
+
+  const poolDatas = await miraAmm.getMultiRouteAmountsIn(
+    assetOut,
+    amountIn,
+    routes,
+    assetIn,
   );
+
+  console.log(poolDatas, "poolDatas");
+  return poolDatas;
 };
 
 const useSwapRouter = (
@@ -78,36 +84,27 @@ const useSwapRouter = (
     data: quoteResults,
     isLoading,
     isRefetching,
-  } = useQueries({
-    queries:
+  } = useQuery({
+    queryFn:
       routes.length && miraAmm && shouldFetchPools
-        ? routes.map((route) => ({
-            queryFn: () =>
-              getSwapQuotes(amountSpecified, tradeType, route, miraAmm),
-            queryKey: [
-              "swap-route-quote",
-              route,
+        ? () =>
+            getSwapQuote(
+              amountSpecified,
+              {bits: assetIn.assetId},
+              {bits: assetOut.assetId},
+              routes,
               tradeType,
-              amountSpecified.toString(),
-              assetIn.assetId,
-              assetOut.assetId,
-            ],
-          }))
-        : [],
-    combine: (results) => ({
-      isRefetching: results.some((result) => result.isRefetching),
-      data: results.map((result, idx) =>
-        result.data
-          ? {
-              amountOut: result.data[1],
-              route: routes[idx],
-            }
-          : undefined,
-      ),
-      pending: results.some((result) => result.isPending),
-      isLoading: results.some((result) => result.isLoading),
-      isSuccess: results.every((result) => result.isSuccess),
-    }),
+              miraAmm,
+            )
+        : skipToken,
+    queryKey: [
+      "swap-route-quote",
+      routes.length,
+      tradeType,
+      amountSpecified.toString(),
+      assetIn?.assetId,
+      assetOut?.assetId,
+    ],
   });
 
   // find the best route out of all routes
@@ -127,7 +124,7 @@ const useSwapRouter = (
       };
 
     // This can also happen when query throws an error
-    if (!quoteResults.length)
+    if (!quoteResults?.length)
       return {
         tradeState: TradeState.NO_ROUTE_FOUND,
         trade: undefined,
@@ -143,22 +140,26 @@ const useSwapRouter = (
         if (!quote) return currentBest;
         if (tradeType === TradeType.EXACT_IN) {
           if (
-            currentBest.amountOut === null ||
-            currentBest.amountOut.lt(quote.amountOut)
+            (!quote.amounts[1].isZero() && currentBest.amountOut === null) ||
+            (!quote.amounts[1].isZero() &&
+              currentBest.amountOut !== null &&
+              currentBest.amountOut.lt(quote.amounts[1]))
           )
             return {
               bestRoute: quote.route,
               amountIn: amountSpecified,
-              amountOut: quote.amountOut,
+              amountOut: quote.amounts[1],
             };
         } else {
           if (
-            currentBest.amountIn === null ||
-            currentBest.amountIn.gt(quote.amountOut)
+            (currentBest.amountIn === null && !quote.amounts[1].isZero()) ||
+            (currentBest.amountIn !== null &&
+              currentBest.amountIn.gt(quote.amounts[1]) &&
+              !quote.amounts[1].isZero())
           ) {
             return {
               bestRoute: quote.route,
-              amountIn: quote.amountOut,
+              amountIn: quote.amounts[1],
               amountOut: amountSpecified,
             };
           }

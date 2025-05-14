@@ -158,7 +158,7 @@ const Swap = ({isWidget}: {isWidget?: boolean}) => {
     error: previewError,
   } = usePreview(swapState, activeMode);
 
-  const pools = trade?.bestRoute?.pools.map((pool) => pool.poolId);
+  const pools = trade?.bestRoute?.pools.map((pool) => pool);
 
   const anotherMode = activeMode === "sell" ? "buy" : "sell";
   const decimals =
@@ -482,7 +482,7 @@ const Swap = ({isWidget}: {isWidget?: boolean}) => {
   }, [sellValue, sellMetadata, sellBalanceValue]);
 
   const feePercent =
-    trade?.bestRoute?.pools.reduce((percent, {poolId}) => {
+    trade?.bestRoute?.pools.reduce((percent, poolId) => {
       const isStablePool = poolId[2];
       const poolPercent = isStablePool ? 0.05 : 0.3;
 

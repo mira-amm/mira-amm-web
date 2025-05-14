@@ -1,27 +1,25 @@
 import {useMemo} from "react";
 import {CoinData} from "../utils/coinsConfig";
 import {useAllAssetsCombination} from "./useAllAssetsCombination";
-import {buildPoolId, PoolId} from "mira-dex-ts";
-import useGetPoolsWithReserve, {Pool, Route} from "./useGetPoolsWithReserve";
+import {buildPoolId, PoolId, Route} from "mira-dex-ts";
+import useGetPoolsWithReserve from "./useGetPoolsWithReserve";
+import {AssetId} from "fuels";
 
-const involvesAssetInPool = (pool: Pool, asset: CoinData): boolean =>
-  pool.assetA.assetId === asset.assetId ||
-  pool.assetB.assetId === asset.assetId;
+const involvesAssetInPool = (pool: PoolId, asset: AssetId): boolean => {
+  return pool[0].bits === asset.bits || pool[1].bits === asset.bits;
+};
 
-const poolEquals = (poolA: Pool, poolB: Pool): boolean => {
-  return (
-    poolA === poolB ||
-    poolA.poolId.every((id, index) => id === poolB.poolId[index])
-  );
+const poolEquals = (poolA: PoolId, poolB: PoolId): boolean => {
+  return poolA === poolB || poolA.every((id, index) => id === poolB[index]);
 };
 
 function computeAllRoutes(
-  assetIn: CoinData,
-  assetOut: CoinData,
-  pools: Pool[],
-  currentPath: Pool[] = [],
+  assetIn: AssetId,
+  assetOut: AssetId,
+  pools: PoolId[],
+  currentPath: PoolId[] = [],
   allPaths: Route[] = [],
-  startAssetIn: CoinData = assetIn,
+  startAssetIn: AssetId = assetIn,
   maxHops = 2, // maximum number of intermediate assets (or pools) allowed for the swap
 ): Route[] {
   if (!assetIn || !assetOut) throw new Error("Missing tokenIn/tokenOut");
@@ -33,13 +31,10 @@ function computeAllRoutes(
     )
       continue;
 
-    const outputToken =
-      pool.assetA.assetId === assetIn.assetId ? pool.assetB : pool.assetA;
-    if (outputToken.assetId === assetOut.assetId) {
+    const outputToken = pool[0].bits === assetIn.bits ? pool[1] : pool[0];
+    if (outputToken.bits === assetOut.bits) {
       allPaths.push({
         pools: [...currentPath, pool],
-        assetIn: startAssetIn,
-        assetOut,
       }); // pools and tokenIn and tokenOut for each route
     } else if (maxHops > 1) {
       computeAllRoutes(
@@ -95,12 +90,12 @@ const useRoutablePools = (
     if (!pools || !assetIn || !assetOut) return [];
 
     const routes = computeAllRoutes(
-      assetIn,
-      assetOut,
+      {bits: assetIn.assetId},
+      {bits: assetOut.assetId},
       pools,
       [],
       [],
-      assetIn,
+      {bits: assetIn.assetId},
       2,
     );
 
