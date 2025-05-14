@@ -33,7 +33,9 @@ export const Users: CollectionConfig = {
     defaultColumns: [
       'avatar',
       'name',
-      'email'
+      'email',
+      'walletAddress',
+      'xUserName'
     ],
     useAsTitle: 'name',
   },
@@ -167,6 +169,7 @@ export async function seedUsers(payload: Payload, req: any) {
           email: user.email,
           name: user.name,
           avatar: media?.id || null,
+          walletAddress: user.walletAddress,
         },
       });
 
