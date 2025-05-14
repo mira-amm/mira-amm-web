@@ -11,6 +11,7 @@ interface MiniGameProps {
 }
 
 interface LeaderboardEntry {
+  player: any;
   id: number;
   score: number;
 }
@@ -205,27 +206,38 @@ useEffect(() => {
                   />
                 </div>
               </div>
-              {leaderboard.map(
-                (entry: LeaderboardEntry, index: number) => (
-                  <div
-                    key={index}
-                    className="leaderboard-entry flex justify-between border-b border-dashed border-terminal-green/30 py-2"
-                  >
-                    <div className="flex">
-                      <span className="text-terminal-blue font-bold mr-2">
-                        {index + 1}.
-                      </span>
-                      <span
-                        className="text-terminal-red font-bold truncate animate-flicker-slow"
-                        title={entry.wallet}
-                      >
-                        {entry.id}
-                      </span>
-                    </div>
-                    <span className="text-terminal-green font-bold">
-                      {entry.score}
-                    </span>
-                  </div>
+{leaderboard.map((entry: LeaderboardEntry, index: number) => (
+  <div
+    key={index}
+    className="leaderboard-entry grid grid-cols-4 items-center gap-4 border-b border-dashed border-terminal-green/30 py-2"
+  >
+    <div className="flex items-center space-x-2">
+      <span
+        className="text-terminal-blue font-bold"
+        title="Rank"
+      >
+        {index + 1}.
+      </span>
+      <span
+        className="text-terminal-red font-bold truncate animate-flicker-slow"
+        title="Name"
+      >
+        {entry.player.name}
+      </span>
+    </div>
+    <span
+      className="text-terminal-blue font-bold truncate animate-flicker-slow"
+      title="Address"
+    >
+      {entry.player.walletAddress}
+    </span>
+    <span
+      className="text-terminal-green font-bold text-right col-start-4 justify-self-end"
+      title="Score"
+    >
+      {entry.score}
+    </span>
+  </div>
                 ),
               )}
             </div>
@@ -241,7 +253,7 @@ useEffect(() => {
       </PaginationContextProvider>
 
       <div className="mt-6 border-t border-dashed border-terminal-blue pt-4 flex items-center">
-        <div className="w-3 h-3 bg-terminal-green animate-ping mr-2"></div>
+        <div className="w-3 h-3 bg-terminal-green animate-ping mr-2"/>
         <p className="text-terminal-green font-bold">
           {"> PRESS [ ESC ] TO EXIT SIMULATOR"}
         </p>
