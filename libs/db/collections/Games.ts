@@ -21,8 +21,16 @@ export const Games: CollectionConfig = {
   ],
 }
 
-export async function seedGames(payload: Payload, req: any) {
+export async function seedGames(payload: Payload) {
   payload.logger.info("📸 Uploading games & inserting scores...");
+
+  const res = await payload.find({
+      collection: "users",
+      pagination: false,
+    });
+
+    const users = res.docs;
+
   await Promise.all(
 [
       {
@@ -43,15 +51,16 @@ export async function seedGames(payload: Payload, req: any) {
       {
         "score": 480
       },
-].map(async (game) => {
-
+].map(async (game, index) => {
+      const user = users[index % users.length];
       await payload.create({
         collection: "games",
         data: {
+          player: user.id,
           score: game.score,
         },
       });
-      payload.logger.info(`✅ Inserted brand: ${game.score}`);
+      payload.logger.info(`✅ Inserted game with score: ${game.score}, assigned to player: ${user.id}`);
     }),
   );
 }
