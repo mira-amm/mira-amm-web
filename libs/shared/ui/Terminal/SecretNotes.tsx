@@ -1,4 +1,5 @@
 import { SECRET_NOTES } from '../../lib/constants';
+   import clsx from 'clsx';
 
 const SecretNotes = ({ onReturn }: {onReturn: ()=>void}) => {
   return (
@@ -13,7 +14,14 @@ const SecretNotes = ({ onReturn }: {onReturn: ()=>void}) => {
 
       <div className="space-y-6">
         {SECRET_NOTES.map((note, index) => (
-          <div key={index} className={`note p-3 border-l-4 ${note.isHighlighted ? 'border-terminal-red bg-terminal-red/10 text-terminal-red' : 'border-terminal-blue bg-terminal-blue/5'}`}>
+          <div key={index}
+         className={clsx(
+           'note p-3 border-l border-l-6',
+           note.isHighlighted
+             ? 'border-l-terminal-red bg-terminal-red/10 text-terminal-red'
+             : 'border-l-terminal-blue bg-terminal-blue/5'
+         )}
+          >
             {note.date && (
               <p className="text-terminal-green font-bold mb-1 flex items-center">
                 <span className="mr-2">▲</span>
