@@ -17,7 +17,7 @@ const getTitle = async (): Promise<string> => {
   );
 
   try {
-    const res = await fetch(`${process.env.NODE_ENV==='development' ? process.env.MICROGAME_LOCAL_URL : process.env.MICROGAME_PROD_URL}
+    const res = await fetch(`${process.env.NODE_ENV==='development' ? process.env.MICROGAME_LOCAL_URL : process.env.MICROGAME_PUBLIC_URL}
 /api/globals/constants${stringifiedQuery}`, {
       cache: "no-store",
     });
@@ -30,7 +30,6 @@ const getTitle = async (): Promise<string> => {
       data?.microgame?.login?.text?.find((item: any) => item.name === "title")?.text ||
       "Error fetching title";
 
-    console.log("Fetched title:", title);
     return title;
   } catch (err) {
     console.error("Error fetching title:", err);

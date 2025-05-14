@@ -44,10 +44,11 @@ const Terminal = () => {
               "overflow-y-auto": !state.gameActive,
             })}
           >
-            {state.currentView === "boot" && <BootSequence />}
-
-            {state.currentView === "passwordPrompt" && (
+            {state.currentView === "login" && (
+              <>
+              <BootSequence />
               <PasswordPrompt onSubmit={handlePasswordSubmit} error={passwordError} />
+            </>
             )}
 
             {state.currentView === "authenticated" && <AuthenticatedTerminal terminal={terminal} />}
