@@ -24,6 +24,12 @@ export const Users: CollectionConfig = {
     update: authenticated,
   },
   admin: {
+    livePreview: {
+      url: process.env.NODE_ENV === "development" ? 'http://localhost:8000' : 'https://microgame.mira.ly',
+      breakpoints: [
+        {label: "Mobile", name: "mobile", width: 320, height: 568},
+      ],
+  },
     defaultColumns: [
       'avatar',
       'name',
