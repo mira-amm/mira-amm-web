@@ -98,7 +98,8 @@ export default {
       config.resolve.plugins = [
         ...(config.resolve.plugins || []),
         new TsconfigPathsPlugin({
-          configFile: "./.storybook/tsconfig.storybook.json",
+          // configFile: "./.storybook/tsconfig.storybook.json",
+          configFile: "../../tsconfig.base.json",
         }),
       ];
     }
