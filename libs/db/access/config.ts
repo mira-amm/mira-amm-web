@@ -11,20 +11,11 @@ export const baseConfig = {
   successRedirect: (req: PayloadRequest, accessToken?: string) => {
     const user = req.user;
 
-    const returnURL =
-      process.env.NODE_ENV === "development"
-        ? `${process.env.MICROGAME_LOCAL_URL}`
-        : `${process.env.MICROGAME_PUBLIC_URL}`;
-
-    if (user) {
-      if (user.id === 1) {
-        return "/admin/login";
-      } else {
-        return returnURL;
-      }
+    if (user && user.id === 1) {
+        return "/admin";
     }
 
-    return "/admin/login";
+    return "/";
   },
   failureRedirect: (req: PayloadRequest, err) => {
     req.payload.logger.error(err);
@@ -53,7 +44,7 @@ export const twitterOAuth = OAuth2Plugin({
   useEmailAsIdentity: true,
   scopes: ["users.email", "users.read", "tweet.read"],
   getToken: async (code: string, req: PayloadRequest) => {
-    const redirectUri = `${process.env.NEXT_PUBLIC_URL || "http://localhost:8000"}/api/users/oauth/twitter/callback`;
+    const redirectUri = `${process.env.NODE_ENV === "development" ? process.env.MICROGAME_LOCAL_URL : process.env.MICROGAME_PUBLIC_URL}/api/users/oauth/twitter/callback`;
 
     const tokenResponse = await fetch(
       "https://api.x.com/2/oauth2/token?&state=state&code_challenge=challenge&code_challenge_method=plain",
@@ -79,6 +70,7 @@ export const twitterOAuth = OAuth2Plugin({
     );
 
     const tokenData = await tokenResponse.json();
+
     const accessToken = tokenData?.access_token;
     if (typeof accessToken !== "string") {
       throw new Error(`No access token: ${tokenData}`);
@@ -96,7 +88,7 @@ export const twitterOAuth = OAuth2Plugin({
       },
     ).then((res) => res.json());
 
-    console.log(user)
+    req.payload.logger.info(user)
 
     const filename = `${user.data.username.toLowerCase()}-avatar.png`;
     const avatarId = user.data.profile_image_url
