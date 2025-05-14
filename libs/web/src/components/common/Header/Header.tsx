@@ -112,6 +112,7 @@ const NavLinks = () => {
 
 const Header = () => {
   const [isPromoShown, setIsPromoShown] = useState<boolean | null>(null);
+  const pathname = usePathname();
 
   useEffect(() => {
     if (!ISSERVER) {
@@ -135,7 +136,12 @@ const Header = () => {
   };
 
   return (
-    <header className={styles.header}>
+    <header
+      className={clsx(
+        styles.header,
+        pathname.startsWith("/widget") && styles.hidden,
+      )}
+    >
       {isPromoShown && (
         <section className={styles.promo}>
           <div className={styles.promo_text}>

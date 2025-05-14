@@ -53,6 +53,10 @@
   width: fit-content;
 }
 
+.widgetConnect {
+  min-width: 280px;
+}
+
 .walletConnected {
   cursor: pointer;
 }
@@ -66,10 +70,16 @@
   .fakeSelect {
     min-width: 180px;
   }
+  .widgetConnect {
+    min-width: 280px;
+  }
 }
 @media (max-width: 1230px) {
   .fakeSelect {
     min-width: 120px;
+  }
+  .widgetConnect {
+    min-width: 280px;
   }
 }
 @media (max-width: 495px) {

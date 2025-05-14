@@ -210,6 +210,7 @@ const ConnectButton = ({className, isWidget}: Props) => {
               className={clsx(
                 styles.fakeSelect,
                 isConnected && styles.walletConnected,
+                isWidget && styles.widgetConnect,
               )}
             >
               <span className={clsx("mc-mono-s")}>{title}</span>

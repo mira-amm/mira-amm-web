@@ -617,22 +617,26 @@ const Swap = ({isWidget}: {isWidget?: boolean}) => {
             swapPending && styles.swapContainerLoading,
           )}
         >
-          <div className={styles.heading}>
-            <div className={styles.title}>
-              {isWidget ? (
-                <MicrochainTextLogo primaryColor="black" />
-              ) : (
-                <p className={"mc-type-l"}>Swap</p>
-              )}
-            </div>
-            <SlippageSetting
-              slippage={slippage}
-              openSettingsModal={openSettingsModal}
-              isDisabled={swapPending}
-            />
+          <div
+            className={clsx(styles.heading, isWidget && styles.widgetHeader)}
+          >
             {isWidget && (
               <ConnectButton className={styles.connectWallet} isWidget />
             )}
+            <div className={clsx(isWidget && styles.widgetHeaderContent)}>
+              <div className={styles.title}>
+                {isWidget ? (
+                  <MicrochainTextLogo primaryColor="black" />
+                ) : (
+                  <p className={"mc-type-l"}>Swap</p>
+                )}
+              </div>
+              <SlippageSetting
+                slippage={slippage}
+                openSettingsModal={openSettingsModal}
+                isDisabled={swapPending}
+              />
+            </div>
           </div>
           <CurrencyBox
             value={sellValue}

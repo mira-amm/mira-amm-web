@@ -36,6 +36,18 @@
   color: var(--content-primary);
 }
 
+.widgetHeader {
+  flex-direction: column;
+}
+
+.widgetHeaderContent {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  padding-top: 10px;
+}
+
 .title {
   flex: 1;
   display: flex;

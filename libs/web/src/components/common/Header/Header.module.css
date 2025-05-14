@@ -3,6 +3,10 @@
   z-index: 10;
 }
 
+.hidden {
+  display: none;
+}
+
 .promo {
   display: flex;
   padding: 12px 16px;
