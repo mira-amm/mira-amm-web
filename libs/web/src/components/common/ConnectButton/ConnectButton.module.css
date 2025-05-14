@@ -73,12 +73,25 @@
   }
 }
 @media (max-width: 495px) {
-  .connectionLeft {
-    display: flex;
-    flex-direction: column;
-    display: none;
+  .fakeSelect {
+    min-width: 260px;
   }
   .connectionContainer {
-    border: none;
+    justify-content: space-around;
+  }
+}
+@media (max-width: 420px) {
+  .fakeSelect {
+    min-width: 240px;
+  }
+}
+@media (max-width: 405px) {
+  .fakeSelect {
+    min-width: 200px;
+  }
+}
+@media (max-width: 362px) {
+  .fakeSelect {
+    min-width: 180px;
   }
 }

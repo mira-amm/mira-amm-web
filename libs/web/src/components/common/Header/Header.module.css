@@ -116,6 +116,10 @@
   color: var(--background-white);
 }
 
+.connectMobile {
+  display: none;
+}
+
 @media (max-width: 768px) {
   .promo_text p {
     font-size: 15px;
@@ -235,4 +239,14 @@
     transform 0.3s ease,
     width 0.3s ease;
   will-change: transform, width;
+}
+
+@media (max-width: 495px) {
+  .connectMobile {
+    margin: 0 15px;
+    display: block;
+  }
+  .connectDesktop {
+    display: none;
+  }
 }

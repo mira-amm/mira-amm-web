@@ -170,8 +170,7 @@ const Header = () => {
         <div className={clsx(styles.right)}>
           <ConnectButton className={styles.launchAppButton} />
         </div>
-
-        <div className={clsx("mobileOnly", styles.links)}>
+        <div className={clsx("mobileOnly", styles.connectDesktop)}>
           <ConnectButton className={styles.disconnectMobile} />
         </div>
       </section>
@@ -180,6 +179,9 @@ const Header = () => {
         <div className={clsx("mc-type-b", styles.links)}>
           <NavLinks />
         </div>
+      </div>
+      <div className={clsx("mobileOnly", styles.connectMobile)}>
+        <ConnectButton className={styles.disconnectMobile} />
       </div>
     </header>
   );
