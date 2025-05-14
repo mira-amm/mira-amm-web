@@ -36,6 +36,12 @@
   color: var(--content-primary);
 }
 
+.headerContent {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+
 .widgetHeader {
   flex-direction: column;
 }

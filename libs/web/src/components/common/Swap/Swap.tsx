@@ -623,7 +623,11 @@ const Swap = ({isWidget}: {isWidget?: boolean}) => {
             {isWidget && (
               <ConnectButton className={styles.connectWallet} isWidget />
             )}
-            <div className={clsx(isWidget && styles.widgetHeaderContent)}>
+            <div
+              className={clsx(
+                isWidget ? styles.widgetHeaderContent : styles.headerContent,
+              )}
+            >
               <div className={styles.title}>
                 {isWidget ? (
                   <MicrochainTextLogo primaryColor="black" />
