@@ -7,6 +7,7 @@ export default {
     "../*.@(mdx|stories.@(ts|tsx))",
     "../../../libs/docs/**/*.@(mdx|stories.@(ts|tsx))",
     "../../../libs/shared/ui/**/*.@(mdx|stories.@(ts|tsx))",
+    "../../../libs/external/**/*.@(mdx|stories.@(ts|tsx))",
   ],
   staticDirs: [
     // './public',
