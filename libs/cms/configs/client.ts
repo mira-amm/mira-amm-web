@@ -2,6 +2,7 @@ import { lexicalEditor } from "@payloadcms/richtext-lexical";
 import { Users } from "@/db/collections";
 
 export const adminConfig = {
+  admin: {
    autoLogin:
     process.env.NEXT_PUBLIC_ENABLE_AUTOLOGIN === 'true'
       ? {
@@ -10,9 +11,10 @@ export const adminConfig = {
           prefillOnly: true,
         }
       : false,
-    components: { // resolves to apps/microgame/src/components, no idea why. Tried to fix it.
-      // https://payload-visual-guide.vercel.app/
     meta: {
+    defaultOGImageType: 'dynamic',
+    applicationName: "Microchain Admin Panel",
+      titleSuffix: "- Microchain",
       description: "Admin Dashboard & Content Management System for Microchain",
       icons: [
         {
@@ -21,8 +23,9 @@ export const adminConfig = {
           url: "/assets/favicon.ico",
         },
       ],
-      titleSuffix: "- Microchain",
     },
+    components: { // resolves to apps/microgame/src/components, no idea why. Tried to fix it.
+      // https://payload-visual-guide.vercel.app/
     routes: {
       // createFirstUser: '/create-account',
     },
@@ -59,11 +62,13 @@ export const adminConfig = {
       baseDir: "src", // resolves from location of payload.config.ts
     },
     user: Users.slug,
+    theme: 'dark', // CREDITS: github.com/akhrarovsaid/payload-theme-quantum-leap
+    suppressHydrationWarning: true
+  },
 }
 
 export const clientConfig = {
   editor: lexicalEditor({}),
-  theme: 'dark', // CREDITS: github.com/akhrarovsaid/payload-theme-quantum-leap
   versions: {
     drafts: {
       autosave: {
