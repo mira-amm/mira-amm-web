@@ -11,7 +11,7 @@ interface AssetMetadata {
   decimals?: number;
 }
 
-const providerPromise = Provider.create(NetworkUrl);
+const providerPromise = new Provider(NetworkUrl);
 
 const useAssetMetadata = (
   assetId: B256Address | null,

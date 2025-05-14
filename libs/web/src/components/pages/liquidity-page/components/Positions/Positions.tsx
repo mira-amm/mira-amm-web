@@ -2,22 +2,20 @@ import MobilePositions from "@/src/components/pages/liquidity-page/components/Po
 
 import styles from "./Positions.module.css";
 import DesktopPositions from "@/src/components/pages/liquidity-page/components/Positions/MobilePositions/DesktopPositions/DesktopPositions";
+import {useIsConnected} from "@fuels/react";
 import usePositions from "@/src/hooks/usePositions";
+import PositionsLoader from "./PositionsLoader/PositionsLoader";
 import DocumentIcon from "@/src/components/icons/Document/DocumentIcon";
-import LoaderV2 from "@/src/components/common/LoaderV2/LoaderV2";
+import {POSITIONS_SKELTON_COUNT} from "@/src/utils/constants";
 
 const Positions = () => {
+  const {isConnected} = useIsConnected();
   const {data, isLoading} = usePositions();
 
   return (
     <section className={styles.positions}>
       <p className={styles.positionsTitle}>Your Positions</p>
-      {isLoading ? (
-        <div className={styles.positionsFallback}>
-          <LoaderV2 />
-          <p>Loading positions...</p>
-        </div>
-      ) : (data && data.length === 0) || !data ? (
+      {!isConnected || data?.length === 0 ? (
         <div className={styles.positionsFallback}>
           <div className={styles.fallbackTop}>
             <div className={styles.icon}>
@@ -25,15 +23,14 @@ const Positions = () => {
             </div>
             <p>Your liquidity will appear here</p>
           </div>
-          {/*<button className={styles.viewArchivedButton}>*/}
-          {/*  View archive positions*/}
-          {/*</button>*/}
         </div>
-      ) : (
+      ) : data && data.length > 0 && !isLoading ? (
         <>
-          <MobilePositions positions={data} />
           <DesktopPositions positions={data} />
+          <MobilePositions positions={data} />
         </>
+      ) : (
+        <PositionsLoader count={POSITIONS_SKELTON_COUNT} />
       )}
     </section>
   );

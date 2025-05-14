@@ -1,0 +1,15 @@
+onlyBuiltDependencies:
+  - '@parcel/watcher'
+  - '@sentry/cli'
+  - '@swc/core'
+  - bigint-buffer
+  - bufferutil
+  - core-js-pure
+  - esbuild
+  - keccak
+  - nx
+  - protobufjs
+  - sharp
+  - spawn-sync
+  - unrs-resolver
+  - utf-8-validate

@@ -16,7 +16,7 @@ export const FUEL_ASSET_ID =
 
 export const DefaultTxParams: TxParams = {
   gasLimit: 2_000_000,
-  maxFee: 100_000,
+  maxFee: 275_000,
 } as const;
 
 export const MaxDeadline = 4_294_967_295 as const;
@@ -108,4 +108,6 @@ export const POINTS_BANNER_SUBHEADER =
   "Earn MIRA points by providing liquidity and engaging in activities.";
 
 export const SENTIO_POINTS_ENDPOINT =
-  "https://endpoint.sentio.xyz/fuellabs/mira-mainnet/points-per-user/async";
+  "https://endpoint.sentio.xyz/fuellabs/mira-mainnet/points-per-user-from-balance-table/async";
+
+export const POSITIONS_SKELTON_COUNT = 3;

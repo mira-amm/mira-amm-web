@@ -43,6 +43,8 @@ import {SlippageSetting} from "../SlippageSetting/SlippageSetting";
 import Loader from "@/src/components/common/Loader/Loader";
 import ConnectButton from "@/src/components/common/ConnectButton/ConnectButton";
 import {TradeState} from "@/src/hooks/useSwapRouter";
+import {useAnimationStore} from "@/src/stores/useGlitchScavengerHunt";
+import {triggerClassAnimation} from "../GlitchEffects/ClassAnimationTrigger";
 
 export type CurrencyBoxMode = "buy" | "sell";
 export type CurrencyBoxState = {
@@ -230,6 +232,8 @@ const Swap = ({isWidget}: {isWidget?: boolean}) => {
       buy: prevState.sell,
       sell: prevState.buy,
     }));
+
+    useAnimationStore.getState().handleMagicTripleClickToken();
   }, [isWidget, setSwapCoins]);
 
   const selectCoin = useCallback(
@@ -436,6 +440,7 @@ const Swap = ({isWidget}: {isWidget?: boolean}) => {
             setInputsState(initialInputsState);
             setReview(false);
             openSuccess();
+            triggerClassAnimation("dino");
             await refetchBalances();
           }
         } else {

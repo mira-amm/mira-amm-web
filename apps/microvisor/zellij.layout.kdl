@@ -1,0 +1,153 @@
+layout {
+    default_tab_template {
+        pane {
+            size 1
+            borderless true
+            plugin location="zellij:tab-bar"
+        }
+        children
+        pane {
+            size 2
+            borderless true
+            plugin location="zellij:status-bar"
+        }
+    }
+    tab name="🧮 SERVERS" split_direction="vertical" {
+            pane {
+                name "🕹 Microgame | 8000 | microgame.mira.ly"
+                command "pnpm"
+                args "nx" "dev" "microgame"
+            }
+            pane {
+            split_direction "horizontal"
+                 /- pane {
+                    name "🔬 Microscope"
+                    command "pnpm"
+                    args "nx" "dev" "microscope"
+                }
+            pane {
+                name "🦕 Web App | 3000 | mira.ly"
+                command "pnpm"
+                args "nx" "dev" "web"
+            }
+            pane {
+                command "pnpm"
+                name "🎨 Storybook | 6006 | design.mira.ly"
+                args "storybook"
+                start_suspended true
+            }
+            }
+
+            pane split_direction="horizontal" {
+                pane {
+                    name "📚 Docs | 4000 | docs.mira.ly"
+                    command "pnpm"
+                    args "nx" "dev" "docs"
+                    start_suspended true
+                }
+
+                pane {
+                    command "pnpm"
+                    name "🏛 Architecture | 5173 | arch.mira.ly"
+                    args "nx" "dev" "arch"
+                    start_suspended true
+                }
+            pane split_direction="vertical" {
+                pane {
+                    name "🗺 Project Graph - Nx | 4211 | graph.mira.ly"
+                    focus true
+                    command "pnpm"
+                    args "nx" "graph" "--groupByFolder"
+                    start_suspended true
+                }
+                }
+            pane split_direction="vertical" {
+                pane {
+                    name "📊 Drizzle Studio | local.drizzle.studio + 👀 Schema Visualizer | 5600"
+                    command "pnpm"
+                    args "nx" "view" "db"
+                    start_suspended true
+                }
+                pane {
+                    name "📦 Node Modules Inspector | 7000"
+                    command "pnpm"
+                    args "node-modules-inspector" "--depth=7" "--port=7000"
+                    start_suspended true
+                }
+            }
+            }
+
+        floating_panes {
+            pane {
+                name "🩺 System Health - btop"
+                command "btop"
+            }
+        }
+    }
+
+    tab name="🟩 STATUS" split_direction="vertical"  {
+            pane {
+                name "🍒 Git - Lazygit"
+                command "lazygit"
+            }
+
+            pane split_direction="horizontal" {
+                pane {
+                    name "📁 File Browser - Yazi"
+                    command "env"
+                    args "YAZI_CONFIG_HOME=./apps/microvisor" "yazi"
+                }
+
+                pane {
+                    focus true
+                    name "🧠 TGPT | Model:phind"
+                    command "tgpt"
+                    args "-m"
+                }
+            }
+    }
+
+    tab name="🔍🤨 INSPECT" split_direction="vertical" {
+        pane {
+            name "🔌 API"
+            command "pnpm"
+            args "nx" "dev" "api"
+        }
+        pane {
+            name "💿 DATABASE"
+            command "lazysql"
+            args "postgresql://postgres:postgres@127.0.0.1:54322/postgres?sslmode=disable"
+            // args "./libs/db/sqlite.db"
+        }
+    }
+    tab name="🧪 TESTING" split_direction="vertical" {
+            pane {
+                name "🎭 Web"
+                command "pnpm"
+                args "nx" "e2e" "web-e2e" "--ui"
+                start_suspended true
+            }
+            pane split_direction="horizontal" {
+                size "30%"
+            pane {
+                name "💊 Microdoctor"
+                command "pnpm"
+                args "nx" "check" "microdoctor"
+                start_suspended true
+            }
+            }
+    }
+    tab name="☁ DEPLOYMENTS" split_direction="vertical" {
+            pane {
+                name "🔺 Vercel"
+                command "pnpm"
+                args "nx" "dev" "platform-vercel"
+                start_suspended true
+            }
+    }
+    tab name="🐳 CONTAINERS" split_direction="vertical" {
+            pane {
+                command "lazydocker"
+            }
+    }
+}

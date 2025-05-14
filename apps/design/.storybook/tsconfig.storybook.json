@@ -1,0 +1,12 @@
+{
+  "compilerOptions": {
+    "emitDecoratorMetadata": true
+  },
+  "include": [
+    ".storybook/*.js",
+    ".storybook/*.ts",
+    "tailwind.config.ts",
+    "postcss.config.js"
+  ],
+  "exclude": ["src/**/*.spec.ts", "src/**/*.test.ts"]
+}

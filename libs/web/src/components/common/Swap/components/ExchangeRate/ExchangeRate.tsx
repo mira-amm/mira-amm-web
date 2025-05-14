@@ -4,6 +4,7 @@ import ExchangeIcon from "@/src/components/icons/Exchange/ExchangeIcon";
 import useExchangeRate from "@/src/hooks/useExchangeRate/useExchangeRate";
 
 import styles from "./ExchangeRate.module.css";
+import {useAnimationStore} from "@/src/stores/useGlitchScavengerHunt";
 
 type Props = {
   swapState: SwapState;
@@ -14,6 +15,7 @@ const ExchangeRate = ({swapState}: Props) => {
 
   const handleClick = () => {
     setMode((prevMode) => (prevMode === "sell" ? "buy" : "sell"));
+    useAnimationStore.getState().handleMagicTripleClickCurrency();
   };
 
   const rate = useExchangeRate(swapState, mode);

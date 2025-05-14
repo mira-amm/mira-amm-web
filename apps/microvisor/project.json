@@ -1,0 +1,18 @@
+{
+  "name": "microvisor",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "apps/microvisor",
+  "projectType": "application",
+  "implicitDependencies": [
+    "microdoctor",
+    "api",
+    "db",
+    "platform-vercel"
+  ],
+  "targets": {
+    "dev": {
+      "command": "ttyd -aW zellij --config apps/microvisor/zellij.config.kdl -n apps/microvisor/zellij.layout.kdl",
+      "continuous": true
+    }
+  }
+}

@@ -67,7 +67,7 @@ export const CreatePool = {
         Click.on(createPoolButton()),
         Wait.until(chooseAssetButtons().first(), isVisible()),
         Click.on(chooseAssetButtons().first()),
-        Wait.until(searchResults().first(), isVisible()),
+        Wait.until(searchInput(), isVisible()),
         Enter.theValue(base).into(searchInput()),
         Press.the("Enter"),
         Wait.until(searchResults().first(), isVisible()),
@@ -90,7 +90,7 @@ export const SelectToken = {
       Task.where(
         `#actor selects token ${token}`,
         Click.on(button),
-        Wait.until(searchResults().first(), isVisible()),
+        Wait.until(searchInput(), isVisible()),
         Enter.theValue(token).into(searchInput()),
         Press.the("Enter"),
         Wait.until(searchResults().first(), isVisible()),
