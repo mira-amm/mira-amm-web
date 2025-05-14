@@ -21,6 +21,7 @@
       "@/platform-vercel/*": ["libs/platform-vercel/*"],
       "@/shared": ["libs/shared/index.ts"],
       "@/shared/*": ["libs/shared/*"],
+      "@/aceternity/*": ["libs/external/aceternity-ui/*"],
       "@/web": ["libs/web/index.ts"],
       "@/web/*": ["libs/web/*"],
       "@payload-config": ["apps/microgame/src/payload.config.ts"]

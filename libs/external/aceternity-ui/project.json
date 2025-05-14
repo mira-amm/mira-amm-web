@@ -1,0 +1,15 @@
+{
+  "name": "aceternity-ui",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "metadata": {
+    "description": "Aceternity UI"
+  },
+  "sourceRoot": "libs/external/aceternity-ui",
+  "implicitDependencies": [
+    "!libs/web"
+  ],
+  "projectType": "library",
+  "tags": [
+    "libs"
+  ]
+  }
