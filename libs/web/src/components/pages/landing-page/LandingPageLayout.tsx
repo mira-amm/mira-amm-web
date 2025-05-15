@@ -30,7 +30,6 @@ import RoadmapMobile from "../../icons/Roadmap/RoadmapMobileIcon";
 const LandingPageLayout = () => {
   return (
     <>
-      <Header isHomePage />
       <main className={clsx("mobileOnly", styles.main)}>
         <section className={styles.topBlock}>
           <h1>The Liquidity Hub on Fuel</h1>

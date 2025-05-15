@@ -28,7 +28,6 @@ const AddLiquidityPageLayout = () => {
 
   return (
     <>
-      <Header />
       <main className="action-layout" ref={mainRef}>
         <AddLiquidity poolId={poolId} poolKey={poolKey || ""} />
       </main>

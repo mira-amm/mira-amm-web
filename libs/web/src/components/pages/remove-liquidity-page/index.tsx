@@ -30,7 +30,6 @@ const RemoveLiquidityPageLayout = () => {
 
   return (
     <>
-      <Header />
       <main className="action-layout" ref={mainRef}>
         <RemoveLiquidity poolId={poolId} />
       </main>
