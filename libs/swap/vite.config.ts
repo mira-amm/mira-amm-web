@@ -4,6 +4,7 @@ import react from "@vitejs/plugin-react";
 import dts from "vite-plugin-dts";
 import * as path from "path";
 import {nxViteTsPaths} from "@nx/vite/plugins/nx-tsconfig-paths.plugin";
+import {nxCopyAssetsPlugin} from "@nx/vite/plugins/nx-copy-assets.plugin";
 import pkg from "./package.json";
 
 export default defineConfig({
@@ -12,6 +13,7 @@ export default defineConfig({
   plugins: [
     react(),
     nxViteTsPaths(),
+    nxCopyAssetsPlugin(["index.d.ts"]),
     dts({
       entryRoot: "src",
       include: ["src/domains.ts"],
