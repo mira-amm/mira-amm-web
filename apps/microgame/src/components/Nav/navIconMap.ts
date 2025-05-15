@@ -4,11 +4,10 @@ import {
   LucideProps,
   Star,
   User,
-  MousePointer2,
-  Inbox,
+  // MousePointer2,
+  // Inbox,
   List,
   Gamepad,
-  Flag
 } from 'lucide-react'
 import { ExoticComponent } from 'react'
 
@@ -20,9 +19,8 @@ export const navIconMap: Partial<
   games: Gamepad,
   users: User,
   constants: List,
-  leaderboards: Flag,
-  forms: MousePointer2,
-  "form-submissions": Inbox,
+  // forms: MousePointer2,
+  // "form-submissions": Inbox,
 }
 
 export const getNavIcon = (slug: string) =>
