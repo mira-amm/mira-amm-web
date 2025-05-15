@@ -184,6 +184,7 @@ export async function seedUsers(payload: Payload, req: any) {
         collection: "users",
         data: {
           email: user.email,
+          xUserName: user.xUserName,
           name: user.name,
           avatar: media?.id || null,
           walletAddress: user.walletAddress,
