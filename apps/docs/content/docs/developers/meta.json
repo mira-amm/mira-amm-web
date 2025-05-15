@@ -1,0 +1,12 @@
+{
+  "title": "Developers",
+  "description": "Technical guides for open-source contributions.",
+  "icon": "Code",
+  "root": true,
+  "pages": [
+    "overview",
+    "installation",
+    "sdk-v1",
+    "concepts"
+  ]
+}
