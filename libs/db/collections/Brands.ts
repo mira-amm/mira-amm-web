@@ -46,6 +46,24 @@ export async function seedBrands(payload: Payload, req: any) {
   await Promise.all(
 [
       {
+        "name": "Pyth Network",
+        "description": "Smarter Data for Smarter Contracts",
+        "domain": "https://www.pyth.network",
+        "symbol": "https://avatars.githubusercontent.com/u/75637738?s=200&v=4"
+      },
+      {
+        "name": "Swaylend",
+        "description": "Experience lightning-fast, low-cost lending and borrowing on Fuel.",
+        "domain": "https://swaylend.com",
+        "symbol": "https://swaylend.com/_next/static/media/dark-logo.f8b6fe51.svg"
+      },
+      {
+        "name": "Microchain Systems",
+        "description": "State of the art DAPP on the Fuel Network",
+        "domain": "https://microchain.systems",
+        "symbol": "https://microchain.systems/logo.cc6b5658.png"
+      },
+      {
         "name": "Mira",
         "description": "The Liquidity Hub on Fuel",
         "domain": "https://mira.ly/",
@@ -66,11 +84,6 @@ export async function seedBrands(payload: Payload, req: any) {
         "name": "Fuel",
         "domain": "https://fuel.network",
         "symbol": "https://verified-assets.fuel.network/images/fuel.svg"
-      },
-      {
-        "name": "Ethereum",
-        "domain": "https://ethereum.org/en/",
-        "symbol": "https://verified-assets.fuel.network/images/eth.svg"
       },
    {
     "name": "WETH",

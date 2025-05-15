@@ -33,11 +33,15 @@ export const Users: CollectionConfig = {
     defaultColumns: [
       'avatar',
       'name',
+      'xUserName',
       'email',
       'walletAddress',
-      'xUserName'
     ],
     useAsTitle: 'name',
+    pagination: {
+      defaultLimit: 50,
+      limits: [10, 20, 50],
+    },
   },
   fields: [
     {
@@ -61,6 +65,13 @@ export const Users: CollectionConfig = {
     {
       name: 'walletAddress',
       type: 'text',
+    },
+    {
+      name: 'games',
+      type: 'join',
+      on: 'player',
+      collection: 'games',
+      defaultSort: '-score'
     },
         {
           type: "collapsible",
@@ -114,12 +125,14 @@ export async function seedUsers(payload: Payload, req: any) {
   {
     name: "Kate Kharitonova",
     email: "kate.kharitonova@microchain.systems",
+    xUserName: "litlaroca",
     mediaUrl:
       "https://i.abcnewsfe.com/a/a63a564c-6577-4a93-89df-7af7dee5de60/dino-1-ht-er-240110_1704903903782_hpMain.jpeg",
     walletAddress: "0xA3f91eC0B5a14cBc8f9a6CdbAf7B6E1eF6A8F1B3"
   },
   {
     name: "Fossil Frank",
+    xUserName: "FrankTheFossil",
     email: "fossil.frank@microchain.systems",
     mediaUrl:
       "https://avatars.githubusercontent.com/u/112352297?v=4",
@@ -127,6 +140,7 @@ export async function seedUsers(payload: Payload, req: any) {
   },
   {
     name: "Derek Dino",
+    xUserName: "MicrochainSys",
     email: "derek.dino@microchain.systems",
     mediaUrl:
       "https://avatars.githubusercontent.com/u/13684960?v=4",
@@ -135,12 +149,14 @@ export async function seedUsers(payload: Payload, req: any) {
   {
     name: "Amal Josea",
     email: "amal.josea@example.com",
+    xUserName: "joseamal07",
     mediaUrl:
       "https://avatars.githubusercontent.com/u/26934320?v=4",
     walletAddress: "0x6bFd3Cb891aef1Df51F8d2b25D4FbAdB726fe9b7"
   },
   {
     name: "Mattias Lightstone",
+    xUserName: "lig92960",
     email: "mattias.lightstone@microchain.systems",
     mediaUrl:
       "https://avatars.githubusercontent.com/u/19267314?v=4",
@@ -149,6 +165,7 @@ export async function seedUsers(payload: Payload, req: any) {
   {
     name: "Mumtahin Farabi",
     email: "mumtahin.farabi@microchain.systems",
+    xUserName: "charthouselabs",
     mediaUrl:
       "https://avatars.githubusercontent.com/u/54924158?v=4",
     walletAddress: "0x0b7A0EDAfCDE2c7B93f8c1b44A85c167aFE4C654"

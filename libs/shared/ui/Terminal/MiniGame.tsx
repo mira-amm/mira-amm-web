@@ -6,17 +6,13 @@ import { Input } from "../input";
 import { Game } from "../Game/Game";
 import useWeb3React from "../../hooks/use-web3-react";
 
-interface MiniGameProps {
-  terminal: any;
-}
-
 interface LeaderboardEntry {
   player: any;
   id: number;
   score: number;
 }
 
-const MiniGame = ({ terminal }: MiniGameProps) => {
+const MiniGame = ({ terminal }: any) => {
   const {state, startGame, updateGameScore, endGame, submitWalletAddress } =
     terminal;
   const [walletInput, setWalletInput] = useState("");
@@ -78,15 +74,37 @@ useEffect(() => {
     }
   };
 
-  const handleButtonSubmit = () => {
-    const isValid = submitWalletAddress(walletInput);
-    if (isValid) {
-      setWalletError("");
-      setShowWalletInput(false);
-    } else {
-      setWalletError(
-        "Invalid wallet address. Must start with 0x and be at least 10 characters.",
-      );
+    async function handleButtonSubmit() {
+      const isValid = submitWalletAddress(walletInput);
+      if (isValid) {
+   setWalletError("");
+   setShowWalletInput(false);
+ } else {
+   setWalletError(
+     "Invalid wallet address. Must start with 0x and be at least 10 characters.",
+   );
+ }
+    try {
+      const response = await fetch("/api/games", {
+        method: "POST",
+credentials: "include",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify( {
+          player: 1,
+          score: state.currentScore,
+          }),
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        console.log("Game saved:", data);
+      } else {
+        const error = await response.json();
+        alert(`Failed to save game: ${error.message}`);
+      }
+    } catch (error) {
+      console.error("Error saving game:", error);
+      alert("An error occurred while saving the game.");
     }
   };
 
