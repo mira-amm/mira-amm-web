@@ -47,6 +47,12 @@ in pkgs.mkShell {
     export PGDATA="$PWD/libs/db/data"
     export PG_COLOR=always
     export DATABASE_URI="postgresql://postgres:postgres@127.0.0.1:54322/postgres"
+    # export DATABASE_URI="postgresql://[NAME]:[PASSWORD]@aws-0-us-east-1.pooler.supabase.com:6543/postgres"
+    # export S3_ACCESS_KEY_ID=""
+    # export S3_SECRET_ACCESS_KEY=""
+    # export S3_BUCKET="staging"
+    # export S3_REGION="us-east-1"
+    # export S3_ENDPOINT="https://[ID].supabase.co/storage/v1/s3"
 
     #====================================================
     #                      PORTS
