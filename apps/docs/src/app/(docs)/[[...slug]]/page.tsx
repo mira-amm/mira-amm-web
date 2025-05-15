@@ -25,7 +25,7 @@ export default async function Page(props: {
             ...defaultMdxComponents,
             // this allows you to link to other pages with relative file paths
             a: createRelativeLink(source, page),
-            img: (props) => <ImageZoom {...(props as any)} />,
+            img: (props) => <ImageZoom {...(props)} />,
             APIPage: (props) => <APIPage {...openapi.getAPIPageProps(props)}/>,
             Tab,
             Tabs,

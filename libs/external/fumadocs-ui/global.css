@@ -6,6 +6,7 @@
 @source '../../../node_modules/fumadocs-ui/dist/**/*.js';
 @source '../../../node_modules/fumadocs-openapi/dist/**/*.js';
 @source "./components/ui/**/*.{ts,tsx}";
+@source "../../meshwave-ui/**/*.{ts,tsx}";
 @source '../../../apps/docs{src,components,app,content}/**/*!(*.stories|*.spec).{ts,tsx,md,mdx,html}';
 @source '../../../apps/docs/content/docs/**/*.{md,mdx}';
 
@@ -109,6 +110,111 @@
   --radius-lg: var(--radius);
   --radius-md: calc(var(--radius) - 2px);
   --radius-sm: calc(var(--radius) - 4px);
+
+  --animate-background-position-spin: background-position-spin 3000ms infinite
+    alternate;
+
+  @keyframes background-position-spin {
+    0% {
+      background-position: top center;
+    }
+    100% {
+      background-position: bottom center;
+    }
+  }
+
+  --animate-color-cycle-emerald: color-cycle-emerald 8s infinite;
+  --animate-color-cycle-rose: color-cycle-rose 8s infinite;
+  --animate-color-cycle-blue: color-cycle-blue 8s infinite;
+  --animate-color-cycle-primary: color-cycle-primary 8s infinite;
+
+  @keyframes color-cycle-emerald {
+    0% {
+      color: #00ffcc;
+    }
+
+    25% {
+      color: #f43f5e;
+    }
+
+    50% {
+      color: #60a5fa;
+    }
+
+    75% {
+      color: var(--color-primary);
+    }
+
+    100% {
+      color: #00ffcc;
+    }
+  }
+
+  @keyframes color-cycle-rose {
+    0% {
+      color: #f43f5e;
+    }
+
+    25% {
+      color: #60a5fa;
+    }
+
+    50% {
+      color: var(--color-primary);
+    }
+
+    75% {
+      color: #00ffcc;
+    }
+
+    100% {
+      color: #f43f5e;
+    }
+  }
+
+  @keyframes color-cycle-blue {
+    0% {
+      color: #60a5fa;
+    }
+
+    25% {
+      color: var(--color-primary);
+    }
+
+    50% {
+      color: #00ffcc;
+    }
+
+    75% {
+      color: #f43f5e;
+    }
+
+    100% {
+      color: #60a5fa;
+    }
+  }
+
+  @keyframes color-cycle-primary {
+    0% {
+      color: var(--color-primary);
+    }
+
+    25% {
+      color: #00ffcc;
+    }
+
+    50% {
+      color: #f43f5e;
+    }
+
+    75% {
+      color: #60a5fa;
+    }
+
+    100% {
+      color: var(--color-primary);
+    }
+  }
 }
 
 .dark {
