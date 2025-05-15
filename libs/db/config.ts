@@ -17,6 +17,7 @@ import { postgresAdapter } from "@payloadcms/db-postgres";
 // import { sqliteAdapter } from '@payloadcms/db-sqlite'
 import { s3Storage } from '@payloadcms/storage-s3'
 import {twitterOAuth} from "@/db/access/config"
+import {openapi, swaggerUI, redoc, rapidoc} from 'payload-oapi'
 
 export const dataBaseConfig = {
   collections: [
@@ -32,6 +33,28 @@ export const dataBaseConfig = {
   ],
   plugins: [
    twitterOAuth,
+    // github.com/janbuchar/payload-oapi
+    openapi({
+      enabled: true,
+      openapiVersion: '3.0',
+      metadata: {
+        title: 'Microgame API',
+        version: '0.0.1',
+        description: 'OpenAPI Spec for Microgame.',
+      }
+    }),
+    swaggerUI({
+      enabled: true,
+      docsUrl: '/docs/swagger'
+    }),
+    redoc({
+      enabled: true,
+      docsUrl: '/docs/redoc'
+    }),
+    rapidoc({
+      enabled: true,
+      docsUrl: '/docs/rapidoc'
+    }),
 // formBuilderPlugin({
 //   defaultToEmail: 'info@microchain.systems',
 //   fields: {
