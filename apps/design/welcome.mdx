@@ -2,22 +2,37 @@ import { Meta } from "@storybook/blocks";
 import Image from "next/image";
 
 import mira_cover from "../../libs/shared/assets/mira-github-repo-readme-banner.png"
+import mira_website from "../../libs/shared/assets/screenshots/mira-landing-page.png"
+import mira_docs from "../docs/public/screenshots/docs-site.png"
+import mira_github from "../docs/public/screenshots/github.png"
+import mira_blog from "../docs/public/screenshots/mirror-blog.png"
 import aceternity_ui_website from "../../libs/shared/assets/screenshots/aceternity_ui_website.png";
 import magic_ui_website from "../../libs/shared/assets/screenshots/magic_ui_website.png";
 import shadcn_ui_website from "../../libs/shared/assets/screenshots/shadcn_ui_website.png";
 import tailwindcss_website from "../../libs/shared/assets/screenshots/tailwindcss_website.png";
+import {NeonGradientCard} from "../../libs/meshwave-ui/neon-gradient-card/neon-gradient-card";
+import fuel_website from "../docs/public/screenshots/fuel-website.png"
+import swaylend_website from "../docs/public/screenshots/swaylend-website.png"
+import charhouse_labs_banner from "../../libs/shared/assets/charthouse-labs-banner.png"
 
 <Meta title="👋 Welcome" />
 
-<div className="space-y-8 p-8">
-  <h1 className="text-3xl font-bold text-center">👋 Welcome to Microchain's <span className="text-primary text-3xl font-bold">Meshwave</span> <span className="text-secondary text-3xl font-bold">Design</span> <span className="text-accent text-3xl font-bold">System</span> 🌊</h1>
-  <hr/>
+<div className="space-y-8 mb-4">
 
+  <h1 className="text-3xl font-bold text-center">👋 Welcome to Microchain's <span className="animate-color-cycle-primary">Meshwave</span> <span className="animate-color-cycle-secondary">Design</span> <span className="animate-color-cycle-accent">System</span> 🌊</h1>
+  <hr/>
+<NeonGradientCard
+  className="animate-background-position-spin flex items-center justify-center h-auto z-5"
+>
+  <div className="w-full h-auto overflow-hidden rounded-[calc(19px-3px)] bg-transparent">
   <Image
     src={mira_cover}
     alt="Mira Design System Cover"
-    className="w-full h-auto mb-4"
+    className="w-full h-auto rounded-lg"
   />
+  </div>
+</NeonGradientCard>
+  <hr/>
 
   {/* Foundations Section */}
   <section className="space-y-8 mb-12">
@@ -52,6 +67,73 @@ import tailwindcss_website from "../../libs/shared/assets/screenshots/tailwindcs
         <h3 className="font-semibold">Tailwind CSS</h3>
       </div>
     </div>
+  </section>
+
+  {/* Quick Links Section */}
+  <section className="space-y-8 mt-5">
+    <h2 className="text-2xl font-bold">Quick Links</h2>
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-8 px-2 py-2">
+      <div className="flex flex-col items-center space-y-4 p-4 rounded-md border border-gray-700">
+        <a href="https://mira.ly/landing" target="_blank" rel="noopener noreferrer" className="w-full">
+          <Image src={mira_website} alt="Figma" className="w-full h-auto" />
+        </a>
+        <h3 className="font-semibold">👋 Website</h3>
+      </div>
+
+      <div className="flex flex-col items-center space-y-4 p-4 rounded-md border border-gray-700">
+        <a href="https://docs.mira.ly" target="_blank" rel="noopener noreferrer" className="w-full">
+          <Image src={mira_docs} alt="Mira Docs Site" className="w-full h-auto" />
+        </a>
+        <h3 className="font-semibold">📚 Docs</h3>
+      </div>
+
+      <div className="flex flex-col items-center space-y-4 p-4 rounded-md border border-gray-700">
+        <a href="https://github.com/mira-amm/mira-amm-web" target="_blank" rel="noopener noreferrer" className="w-full">
+          <Image src={mira_github} alt="Mira Platform GitHub Repository" className="w-full h-auto" />
+        </a>
+        <h3 className="font-semibold">GitHub Repository</h3>
+      </div>
+
+      <div className="flex flex-col items-center space-y-4 p-4 rounded-md border border-gray-700">
+        <a href="https://mirror.xyz/miraly.eth" target="_blank" rel="noopener noreferrer" className="w-full">
+          <Image src={mira_blog} alt="Mira Blog" className="w-full h-auto" />
+        </a>
+        <h3 className="font-semibold">Blog</h3>
+      </div>
+    </div>
+  </section>
+
+  <section className="space-y-8 mt-5">
+    <h2 className="text-2xl font-bold">Acknowledgements & Ecosystem</h2>
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-8 px-2 py-2">
+      <div className="flex flex-col items-center space-y-4 p-4 rounded-md border border-gray-700">
+        <a href="https://fuel.network" target="_blank" rel="noopener noreferrer" className="w-full">
+          <Image src={fuel_website} alt="Figma" className="w-full h-auto" />
+        </a>
+        <h3 className="font-semibold">⛽ Fuel</h3>
+      </div>
+
+      <div className="flex flex-col items-center space-y-4 p-4 rounded-md border border-gray-700">
+        <a href="https://swaylend.com" target="_blank" rel="noopener noreferrer" className="w-full">
+          <Image src={swaylend_website} alt="Mira Docs Site" className="w-full h-auto" />
+        </a>
+        <h3 className="font-semibold">Swaylend</h3>
+      </div>
+      </div>
+  </section>
+
+  <section className="space-y-8 mt-5">
+    <h2 className="text-2xl font-bold">Socials/Contact</h2>
+
+ - [Twitter/X - @MiraProtocol](https://x.com/MiraProtocol)
+ - [Discord](https://discord.gg/6pHdTY6rYq)
+  </section>
+
+  <section className="space-y-8 mt-5">
+    <h2 className="text-2xl font-bold">Maintained with 💙 by Open-Source @ [ChartHouse Labs](https://www.charthouse.io) 🔱</h2>
+<a href="https://www.charthouse.io" target="_blank" rel="noopener noreferrer" className="w-full">
+    <Image src={charhouse_labs_banner} alt="ChartHouse Labs Banner" className="w-full h-auto" />
+</a>
   </section>
 
 </div>

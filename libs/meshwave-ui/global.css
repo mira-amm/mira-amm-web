@@ -194,6 +194,89 @@
       background-position: 200%;
     }
   }
+
+  --animate-background-position-spin: background-position-spin 3000ms infinite
+    alternate;
+
+  @keyframes background-position-spin {
+    0% {
+      background-position: top center;
+    }
+    100% {
+      background-position: bottom center;
+    }
+  }
+
+  --animate-color-cycle-primary: color-cycle-primary 8s infinite;
+  --animate-color-cycle-secondary: color-cycle-secondary 8s infinite;
+  --animate-color-cycle-accent: color-cycle-accent 8s infinite;
+
+  @keyframes color-cycle-primary {
+    0% {
+      color: var(--color-primary);
+    }
+
+    25% {
+      color: #84cc16;
+    }
+
+    50% {
+      color: #f43f5e;
+    }
+
+    75% {
+      color: #60a5fa;
+    }
+
+    100% {
+      color: var(--color-primary);
+    }
+  }
+
+  @keyframes color-cycle-secondary {
+    0% {
+      color: #f43f5e;
+    }
+
+    25% {
+      color: #60a5fa;
+    }
+
+    50% {
+      color: var(--color-primary);
+    }
+
+    75% {
+      color: #84cc16;
+    }
+
+    100% {
+      color: #f43f5e;
+    }
+  }
+
+  @keyframes color-cycle-accent {
+    0% {
+      color: #60a5fa;
+    }
+
+    25% {
+      color: var(--color-primary);
+    }
+
+    50% {
+      color: #84cc16;
+    }
+
+    75% {
+      color: #f43f5e;
+    }
+
+    100% {
+      color: #60a5fa;
+    }
+  }
+
 }
 }
 
