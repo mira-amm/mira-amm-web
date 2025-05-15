@@ -5,9 +5,10 @@
 @source "./**/*.{ts,tsx}";
 @source './ui/**/*.stories.{ts,tsx}';
 @source '../../external/aceternity-ui/**/*.{ts,tsx}';
+@source '../../external/magic-ui/**/*.{ts,tsx}';
 @source '../../apps/docs{src,components,app,content}/**/*!(*.stories|*.spec).{ts,tsx,md,mdx,html}';
 @source '../../apps/docs/content/docs/**/*.{md,mdx}';
-@source '../../../apps/microgame/**/*.{ts,tsx}';
+@source '../../apps/microgame/**/*.{ts,tsx}';
 
 /* @plugin "tw-animate-css"; */
 /* @plugin "tailwindcss-animate"; */
@@ -60,6 +61,12 @@
   --shadow-lg: 0px 4px 8px -2px hsl(0 0% 0% / 0.10), 0px 4px 6px -3px hsl(0 0% 0% / 0.10);
   --shadow-xl: 0px 4px 8px -2px hsl(0 0% 0% / 0.10), 0px 8px 10px -3px hsl(0 0% 0% / 0.10);
   --shadow-2xl: 0px 4px 8px -2px hsl(0 0% 0% / 0.25);
+
+  --color-1: hsl(0 100% 63%);
+  --color-2: hsl(270 100% 63%);
+  --color-3: hsl(210 100% 63%);
+  --color-4: hsl(195 100% 63%);
+  --color-5: hsl(90 100% 63%);
 
   --terminal-bg: hsl(240 20% 10%);
   --terminal-green: hsl(159 99% 47%);
@@ -176,8 +183,20 @@
   --shadow-lg: var(--shadow-lg);
   --shadow-xl: var(--shadow-xl);
   --shadow-2xl: var(--shadow-2xl);
+
+  --animate-rainbow: rainbow var(--speed, 2s) infinite linear;
+
+  @keyframes rainbow {
+    0% {
+      background-position: 0%;
+    }
+    100% {
+      background-position: 200%;
+    }
+  }
 }
 }
+
 
 .game-canvas {
   image-rendering: pixelated;

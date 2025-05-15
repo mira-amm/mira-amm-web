@@ -22,6 +22,7 @@
       "@/shared": ["libs/shared/index.ts"],
       "@/shared/*": ["libs/shared/*"],
       "@/aceternity/*": ["libs/external/aceternity-ui/*"],
+      "@/magic-ui/*": ["libs/external/magic-ui/*"],
       "@/web": ["libs/web/index.ts"],
       "@/web/*": ["libs/web/*"],
       "@payload-config": ["apps/microgame/src/payload.config.ts"]

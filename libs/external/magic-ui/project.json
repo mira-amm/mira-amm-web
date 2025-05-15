@@ -1,0 +1,15 @@
+{
+  "name": "magic-ui",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "metadata": {
+    "description": "Magic UI"
+  },
+  "sourceRoot": "libs/external/magic-ui",
+  "implicitDependencies": [
+    "!libs/web"
+  ],
+  "projectType": "library",
+  "tags": [
+    "libs"
+  ]
+  }
