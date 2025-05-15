@@ -3,7 +3,7 @@ import {Card} from "fumadocs-ui/components/card";
 import {HomeIcon} from "lucide-react";
 
 const meta: Meta<typeof Card> = {
-  title: "📚 Docs Site/Card",
+  title: "🌕 ️Fumadocs UI/Card",
   parameters: {
     layout: "centered",
   },

@@ -1,11 +1,11 @@
 @import "tailwindcss";
 @import "fumadocs-ui/css/preset.css";
 
-@source '../../../node_modules/fumadocs-ui/dist/**/*.js';
+@source '../../node_modules/fumadocs-ui/dist/**/*.js';
 @source "./**/*.{ts,tsx}";
-@source './ui/**/*.stories.{ts,tsx}';
-@source '../../external/aceternity-ui/**/*.{ts,tsx}';
-@source '../../external/magic-ui/**/*.{ts,tsx}';
+@source '../../meshwave-ui/**/*.{ts,tsx}';
+@source '../external/**/*.{ts,tsx}';
+@source '../shared/ui/**/*.{ts,tsx}';
 @source '../../apps/docs{src,components,app,content}/**/*!(*.stories|*.spec).{ts,tsx,md,mdx,html}';
 @source '../../apps/docs/content/docs/**/*.{md,mdx}';
 @source '../../apps/microgame/**/*.{ts,tsx}';

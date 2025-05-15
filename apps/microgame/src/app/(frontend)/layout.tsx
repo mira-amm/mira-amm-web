@@ -2,7 +2,7 @@ import {Prompt} from "next/font/google";
 import type {ReactNode} from "react";
 import {TerminalHeader} from "@/shared/ui/Terminal/TerminalHeader"
 
-import "@/shared/ui/global.css";
+import "@/meshwave-ui/global.css";
 
 const prompt = Prompt({
   weight: ["100", "200", "300", "400", "500", "600", "700", "800", "900"],

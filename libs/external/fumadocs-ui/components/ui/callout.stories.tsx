@@ -2,7 +2,7 @@ import type {Meta, StoryObj} from "@storybook/react";
 import {Callout} from "fumadocs-ui/components/callout";
 
 const meta: Meta<typeof Callout> = {
-  title: "📚 Docs Site/Callout",
+  title: "🌕 ️Fumadocs UI/Callout",
   parameters: {
     layout: "centered",
   },

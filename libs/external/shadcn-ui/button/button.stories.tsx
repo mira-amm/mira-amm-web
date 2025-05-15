@@ -1,21 +1,21 @@
 import type { Meta, StoryObj } from '@storybook/react'
-import { fn } from '@storybook/test'
-import { RainbowButton } from './rainbow-button'
 import {
   ChevronRightIcon,
   EnvelopeOpenIcon,
   ReloadIcon,
 } from '@radix-ui/react-icons'
+import { fn } from '@storybook/test'
+import { Button } from './button'
 
-const meta: Meta = {
-  title: '🪄 Magic UI/Rainbow Button',
-  component: RainbowButton,
+const meta = {
+  title: '📐 Shadcn UI/Button',
+  component: Button,
+  tags: ['autodocs'],
   parameters: {
     layout: 'centered',
   },
-  tags: ['autodocs'],
   args: {
-    children: 'Rainbow Button',
+    children: 'Button',
     variant: 'default',
     onClick: fn(),
   },
@@ -23,7 +23,11 @@ const meta: Meta = {
     variant: {
       options: [
         'default',
+        'secondary',
+        'destructive',
         'outline',
+        'ghost',
+        'link',
       ],
       control: { type: 'select' },
     },
@@ -37,13 +41,18 @@ const meta: Meta = {
       control: { type: 'select' },
     },
   },
-}
+} satisfies Meta<typeof Button>
 
 export default meta
 type Story = StoryObj<typeof meta>
 
-export const Default: Story = {}
+export const Primary: Story = {}
+export const Secondary: Story = { args: { variant: 'secondary' } }
+export const Destructive: Story = { args: { variant: 'destructive' } }
 export const Outline: Story = { args: { variant: 'outline' } }
+export const Ghost: Story = { args: { variant: 'ghost' } }
+export const Link: Story = { args: { variant: 'link' } }
+
 export const Icon: Story = {
   args: {
     variant: 'outline',
@@ -73,6 +82,7 @@ export const WithIcon: Story = {
 
 export const Loading: Story = {
   args: {
+    variant: 'secondary',
     disabled: true,
     children: (
       <>

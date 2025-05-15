@@ -1,0 +1,15 @@
+{
+  "name": "fumadocs-ui",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "metadata": {
+    "description": "Fumadocs UI"
+  },
+  "sourceRoot": "libs/external/fumadocs-ui",
+  "implicitDependencies": [
+    "!libs/web"
+  ],
+  "projectType": "library",
+  "tags": [
+    "libs"
+  ]
+  }

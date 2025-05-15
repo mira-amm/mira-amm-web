@@ -2,7 +2,7 @@ import type {Meta, StoryObj} from "@storybook/react";
 import {Accordion, Accordions} from "fumadocs-ui/components/accordion";
 
 const meta: Meta<typeof Accordion> = {
-  title: "📚 Docs Site/Accordion",
+  title: "🌕 ️Fumadocs UI/Accordion",
   component: Accordion,
   tags: ["autodocs"],
   parameters: {

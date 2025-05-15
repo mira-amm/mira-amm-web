@@ -2,7 +2,7 @@ import type {Meta, StoryObj} from "@storybook/react";
 import {File, Files, Folder} from "fumadocs-ui/components/files";
 
 const meta: Meta<typeof Files> = {
-  title: "📚 Docs Site/Files",
+  title: "🌕 ️Fumadocs UI/Files",
   component: Files,
   tags: ["autodocs"],
   parameters: {

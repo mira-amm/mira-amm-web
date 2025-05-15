@@ -2,11 +2,11 @@
 @import "fumadocs-ui/css/black.css";
 @import "fumadocs-ui/css/preset.css";
 
-@source '../../node_modules/fumadocs-ui/dist/**/*.js';
+@source '../../../node_modules/fumadocs-ui/dist/**/*.js';
 @source "./components/ui/**/*.{ts,tsx}";
 @source './components/ui/**/*.stories.{ts,tsx}';
-@source '../../apps/docs{src,components,app,content}/**/*!(*.stories|*.spec).{ts,tsx,md,mdx,html}';
-@source '../../apps/docs/content/docs/**/*.{md,mdx}';
+@source '../../../apps/docs{src,components,app,content}/**/*!(*.stories|*.spec).{ts,tsx,md,mdx,html}';
+@source '../../../apps/docs/content/docs/**/*.{md,mdx}';
 
 @plugin "tailwindcss-animate";
 

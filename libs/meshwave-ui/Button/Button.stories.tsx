@@ -8,7 +8,7 @@ import { fn } from '@storybook/test'
 import { Button } from './Button'
 
 const meta = {
-  title: 'Meshwave Design System/Button',
+  title: '🌊 Meshwave UI/Button',
   component: Button,
   tags: ['autodocs'],
   parameters: {

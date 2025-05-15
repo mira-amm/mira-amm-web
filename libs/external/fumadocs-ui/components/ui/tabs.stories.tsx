@@ -2,7 +2,7 @@ import type {Meta, StoryObj} from "@storybook/react";
 import {Tab, Tabs} from "fumadocs-ui/components/tabs";
 
 const meta: Meta<typeof Tabs> = {
-  title: "📚 Docs Site/Tabs",
+  title: "🌕 ️Fumadocs UI/Tabs",
   component: Tabs,
   tags: ["autodocs"],
   parameters: {

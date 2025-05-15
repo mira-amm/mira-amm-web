@@ -8,7 +8,7 @@ import AuthenticatedTerminal from "./AuthenticatedTerminal";
 import SecretNotes from "./SecretNotes";
 import CountdownTimer from "./CountdownTimer";
 import MiniGame from "./MiniGame";
-import { cn } from "../../utils/cn";
+import { cn } from '@/shadcn-ui/utils'
 
 const Terminal = () => {
   const terminal = useTerminal();
