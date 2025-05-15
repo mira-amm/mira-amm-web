@@ -6,7 +6,6 @@ import {
         Media,
         Users,
         Games,
-        Leaderboards,
        } from "@/db/collections"
 
 import {
@@ -25,7 +24,6 @@ export const dataBaseConfig = {
     Brands,
     Media,
     Games,
-    Leaderboards
   ],
   globals:[
     Constants,

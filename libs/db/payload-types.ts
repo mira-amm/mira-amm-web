@@ -70,22 +70,20 @@ export interface Config {
     brands: Brand;
     media: Media;
     games: Game;
-    leaderboards: Leaderboard;
     users: User;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
     'payload-migrations': PayloadMigration;
   };
   collectionsJoins: {
-    leaderboards: {
-      list: 'games';
+    users: {
+      games: 'games';
     };
   };
   collectionsSelect: {
     brands: BrandsSelect<false> | BrandsSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
     games: GamesSelect<false> | GamesSelect<true>;
-    leaderboards: LeaderboardsSelect<false> | LeaderboardsSelect<true>;
     users: UsersSelect<false> | UsersSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
@@ -156,7 +154,6 @@ export interface Brand {
 export interface Media {
   id: number;
   alt: string;
-  prefix?: string | null;
   updatedAt: string;
   createdAt: string;
   url?: string | null;
@@ -179,7 +176,6 @@ export interface Game {
   score: number;
   updatedAt: string;
   createdAt: string;
-  _status?: ('draft' | 'published') | null;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -190,6 +186,11 @@ export interface User {
   name?: string | null;
   avatar?: (number | null) | Media;
   walletAddress?: string | null;
+  games?: {
+    docs?: (number | Game)[];
+    hasNextPage?: boolean;
+    totalDocs?: number;
+  };
   xUserName?: string | null;
   xUrl?: string | null;
   xIsIdentityVerified?: boolean | null;
@@ -205,20 +206,6 @@ export interface User {
   loginAttempts?: number | null;
   lockUntil?: string | null;
   password?: string | null;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "leaderboards".
- */
-export interface Leaderboard {
-  id: number;
-  list?: {
-    docs?: (number | Game)[];
-    hasNextPage?: boolean;
-    totalDocs?: number;
-  };
-  updatedAt: string;
-  createdAt: string;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -238,10 +225,6 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'games';
         value: number | Game;
-      } | null)
-    | ({
-        relationTo: 'leaderboards';
-        value: number | Leaderboard;
       } | null)
     | ({
         relationTo: 'users';
@@ -316,7 +299,6 @@ export interface BrandsSelect<T extends boolean = true> {
  */
 export interface MediaSelect<T extends boolean = true> {
   alt?: T;
-  prefix?: T;
   updatedAt?: T;
   createdAt?: T;
   url?: T;
@@ -338,16 +320,6 @@ export interface GamesSelect<T extends boolean = true> {
   score?: T;
   updatedAt?: T;
   createdAt?: T;
-  _status?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "leaderboards_select".
- */
-export interface LeaderboardsSelect<T extends boolean = true> {
-  list?: T;
-  updatedAt?: T;
-  createdAt?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -357,6 +329,7 @@ export interface UsersSelect<T extends boolean = true> {
   name?: T;
   avatar?: T;
   walletAddress?: T;
+  games?: T;
   xUserName?: T;
   xUrl?: T;
   xIsIdentityVerified?: T;
