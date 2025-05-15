@@ -1,10 +1,11 @@
 {
   "root": true,
   "pages": [
-    "--- Getting Started ---",
+    "--- 🦕 Getting Started ---",
     "...users",
-    "--- Developers ---",
+    "--- 🐞 Developers ---",
     "...developers",
+    "--- 📜 Resources ---",
     "...resources"
   ]
 }
