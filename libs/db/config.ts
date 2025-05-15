@@ -16,7 +16,7 @@ import {
 import { postgresAdapter } from "@payloadcms/db-postgres";
 // import { sqliteAdapter } from '@payloadcms/db-sqlite'
 import { s3Storage } from '@payloadcms/storage-s3'
-import {twitterOAuth} from "@/db/access/config"
+import {twitterOAuth} from "@/db/access/auth"
 import {openapi, swaggerUI, redoc, rapidoc} from 'payload-oapi'
 
 export const dataBaseConfig = {
