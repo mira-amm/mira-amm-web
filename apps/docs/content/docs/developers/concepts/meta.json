@@ -1,4 +1,5 @@
 {
+"defaultOpen": true,
   "pages": [
     "monorepo-architecture",
     "trunk-based-development",

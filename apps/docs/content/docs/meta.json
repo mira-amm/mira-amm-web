@@ -2,19 +2,9 @@
   "root": true,
   "pages": [
     "--- Getting Started ---",
-    "index",
-    "how-to-swap",
-    "how-to-add-liquidity",
-    "how-to-create-pools",
-    "--- Developer Guides ---",
-    "overview",
-    "installation",
-    "sdk-v1",
-    "--- Concepts ---",
-    "...concepts",
-    "--- Resources ---",
-    "security-audits",
-    "privacy-policy",
-    "terms-and-conditions"
+    "...users",
+    "--- Developers ---",
+    "...developers",
+    "...resources"
   ]
 }

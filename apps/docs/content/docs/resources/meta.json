@@ -1,0 +1,12 @@
+{
+  "title": "Resouces",
+  "description": "Experience the Liquidity Hub on Fuel.",
+  "icon": "Fuel",
+  "root": true,
+  "pages": [
+    "--- Resources ---",
+    "security-audits",
+    "privacy-policy",
+    "terms-and-conditions"
+  ]
+}

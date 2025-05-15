@@ -1,0 +1,12 @@
+{
+  "title": "Users",
+  "description": "Experience the Liquidity Hub on Fuel.",
+  "icon": "Fuel",
+  "root": true,
+  "pages": [
+    "index",
+    "how-to-swap",
+    "how-to-add-liquidity",
+    "how-to-create-pools"
+  ]
+}

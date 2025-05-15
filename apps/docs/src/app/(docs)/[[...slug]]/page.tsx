@@ -1,5 +1,6 @@
-import {source} from "../../../../source";
+import {source, openapi} from "../../../../source";
 import {DocsPage, DocsBody, DocsDescription, DocsTitle} from "fumadocs-ui/page";
+import { APIPage } from 'fumadocs-openapi/ui';
 import {notFound} from "next/navigation";
 import {ImageZoom} from "fumadocs-ui/components/image-zoom";
 import defaultMdxComponents, {createRelativeLink} from "fumadocs-ui/mdx";
@@ -22,11 +23,12 @@ export default async function Page(props: {
         <MDXContent
           components={{
             ...defaultMdxComponents,
-            Tab,
-            Tabs,
             // this allows you to link to other pages with relative file paths
             a: createRelativeLink(source, page),
             img: (props) => <ImageZoom {...(props as any)} />,
+            APIPage: (props) => <APIPage {...openapi.getAPIPageProps(props)}/>,
+            Tab,
+            Tabs,
             // you can add other MDX components here
           }}
         />
