@@ -109,3 +109,9 @@
   color: var(--mc-black);
   pointer-events: none;
 }
+
+@media (max-width: 640px) {
+  .inputWrapper {
+    flex-direction: column;
+  }
+}
