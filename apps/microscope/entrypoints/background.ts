@@ -30,6 +30,24 @@ export default defineBackground(() => {
       index: 3,
     });
 
+    await browser.tabs.create({
+      url: "http://localhost:8000/api/docs/swagger",
+      active: false,
+      index: 4,
+    });
+
+    await browser.tabs.create({
+      url: "http://localhost:8000/api/docs/redoc",
+      active: false,
+      index: 5,
+    });
+
+    await browser.tabs.create({
+      url: "http://localhost:8000/api/docs/rapidoc",
+      active: false,
+      index: 6,
+    });
+
     const tabs = await browser.tabs.query({currentWindow: true})
 
     const tabIds = tabs.map(({ id }) => id);
@@ -40,6 +58,7 @@ export default defineBackground(() => {
       title: '🦕 APPS',
       color: 'green',
     });
+
 
 
     await browser.fontSettings.setFont({
