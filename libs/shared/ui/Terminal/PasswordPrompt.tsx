@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import { useState, KeyboardEvent, useRef, useEffect } from 'react';
-import {useConnectUI, useIsConnected} from "@fuels/react";
+import {useConnectUI, useAccounts} from "@fuels/react";
+import {RainbowButton} from "@/magic-ui/rainbow-button"
 
 interface PasswordPromptProps {
   onSubmit: (password: string) => boolean;
@@ -27,10 +28,7 @@ const PasswordPrompt = ({ onSubmit, error }: PasswordPromptProps) => {
   };
 
   const {connect} = useConnectUI();
-  const {isConnected} = useIsConnected();
 
-  console.log(isConnected)
-  
   return (
     <div className="password-prompt mt-6">
       <p className="text-terminal-yellow mb-2">T-REX SECURITY SYSTEM:</p>
@@ -50,9 +48,13 @@ const PasswordPrompt = ({ onSubmit, error }: PasswordPromptProps) => {
       )}
       <p className="text-terminal-text/50 mt-6 text-sm">HINT: The DLM-2000 infrastructure is built on this technology...</p>
 
-      <section className="flex justify-around">
+      <section className="flex m-2 space-x-4">
+
+<RainbowButton
+  size="lg"
+  className="hover:scale-110"
+>
     <Link href="/api/users/oauth/twitter"
-      className="flex bg-black w-sm items-center p-4 border border-white rounded-lg my-6 justify-center mx-auto"
     >
         <img
           src="https://upload.wikimedia.org/wikipedia/commons/5/57/X_logo_2023_%28white%29.png"
@@ -61,14 +63,17 @@ const PasswordPrompt = ({ onSubmit, error }: PasswordPromptProps) => {
           height="24"
         />
     </Link>
+</RainbowButton>
 
-        <button className="flex bg-black w-sm space-x-4 items-center p-4 border border-white rounded-lg my-6 justify-center mx-auto hover:cursor-pointer"
+<RainbowButton
+  size="lg"
+  className="hover:scale-110"
           onClick={connect}
         >
           <img className="size-8" src="https://verified-assets.fuel.network/images/fuel.svg"/>
           <img className="size-8" src="https://avatars.githubusercontent.com/u/178423058?s=48&v=4"/>
           <img className="size-8" src="https://docs.fuelet.app/~gitbook/image?url=https%3A%2F%2F2435339766-files.gitbook.io%2F~%2Ffiles%2Fv0%2Fb%2Fgitbook-x-prod.appspot.com%2Fo%2Fspaces%252FT65XO2RJ6uispplU4cJT%252Fuploads%252F3W8rR7UgMOQrtslELoKu%252FFuelet%2520Logo%2520White.svg%3Falt%3Dmedia%26token%3Dd94170ce-168d-4ad8-8c81-5b10ced92afa&width=300&dpr=2&quality=100&sign=cf822ef8&sv=2"/>
-        </button>
+</RainbowButton>
     </section>
     </div>
   );
