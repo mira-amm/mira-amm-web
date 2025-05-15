@@ -4,7 +4,6 @@
   "icon": "Fuel",
   "root": true,
   "pages": [
-    "--- Resources ---",
     "security-audits",
     "privacy-policy",
     "terms-and-conditions"
