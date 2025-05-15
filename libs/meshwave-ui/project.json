@@ -1,0 +1,15 @@
+{
+  "name": "meshwave-ui",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "metadata": {
+    "description": "Meshwave UI"
+  },
+  "sourceRoot": "libs/meshwave-ui",
+  "projectType": "library",
+  "implicitDependencies": [
+    "!libs/web"
+  ],
+  "tags": [
+    "libs"
+  ]
+  }

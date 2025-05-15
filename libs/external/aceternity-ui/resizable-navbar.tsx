@@ -1,5 +1,5 @@
 "use client";
-import { cn } from "@/shared/utils/cn";
+import { cn } from '@/shadcn-ui/utils'
 import { IconMenu2, IconX } from "@tabler/icons-react";
 import {
   motion,

@@ -1,7 +1,7 @@
 import {RootProvider} from "fumadocs-ui/provider";
 import {Prompt} from "next/font/google";
 import type {ReactNode} from "react";
-import "../../../../libs/docs/global.css";
+import "@/fumadocs-ui/global.css";
 
 const prompt = Prompt({
   weight: ["100", "200", "300", "400", "500", "600", "700", "800", "900"],

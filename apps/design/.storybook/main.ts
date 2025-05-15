@@ -5,7 +5,7 @@ import {TsconfigPathsPlugin} from "tsconfig-paths-webpack-plugin";
 export default {
   stories: [
     "../*.@(mdx|stories.@(ts|tsx))",
-    "../../../libs/docs/**/*.@(mdx|stories.@(ts|tsx))",
+    "../../../libs/meshwave-ui/**/*.@(mdx|stories.@(ts|tsx))",
     "../../../libs/shared/ui/**/*.@(mdx|stories.@(ts|tsx))",
     "../../../libs/external/**/*.@(mdx|stories.@(ts|tsx))",
   ],

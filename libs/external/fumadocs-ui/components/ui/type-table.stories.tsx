@@ -2,7 +2,7 @@ import type {Meta, StoryObj} from "@storybook/react";
 import {TypeTable} from "fumadocs-ui/components/type-table";
 
 const meta: Meta<typeof TypeTable> = {
-  title: "📚 Docs Site/Type Table",
+  title: "🌕 ️Fumadocs UI/Type Table",
   component: TypeTable,
   tags: ["autodocs"],
   parameters: {

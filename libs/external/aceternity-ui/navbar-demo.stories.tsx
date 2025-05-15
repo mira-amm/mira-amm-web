@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react'
 import {NavbarDemo} from './navbar-demo'
 
 const meta = {
-  title: 'aceternity-ui/ResizableNavbar',
+  title: '✨ Aceternity UI/Resizable Navbar',
   component: NavbarDemo,
   tags: ['autodocs'],
   parameters: {

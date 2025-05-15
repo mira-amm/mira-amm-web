@@ -14,7 +14,7 @@ import {
   darkUIStorybook,
   lightUIStorybook,
 } from "./themes-storybook-ui";
-import "../../../libs/shared/ui/global.css";
+import "../../../libs/meshwave-ui/global.css";
 
 const preview: Preview = {
   parameters: {
@@ -37,12 +37,19 @@ const preview: Preview = {
         order: [
           "👋 Welcome",
           "🏛 Architecture",
+          "📍 Graph",
           "🎯 Branding",
           "💅 Figma",
           "🕹 Microgame",
           "Website",
-          "📚 Docs Site",
-          "Meshwave Design System"
+          "🌊 Meshwave UI",
+          "📐 Shadcn UI",
+          [
+            'Semantic Color Palette',
+          ],
+          "🌕 ️Fumadocs UI",
+          "✨ Aceternity UI",
+          "🪄 Magic UI"
         ],
       },
     },
