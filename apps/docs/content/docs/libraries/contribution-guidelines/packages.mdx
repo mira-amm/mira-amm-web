@@ -1,0 +1,36 @@
+---
+title: Packages
+icon: Box
+---
+
+<div className='fd-steps [&_h2]:fd-step'>
+## Bump the Version
+
+
+```ts title="libs/swap/package.json"
+// [!code word:useCodeBlocks]
+"version": "0.0.X"// [!code --]
+"version": "0.0.1" // ⬅️ Increase this number // [!code ++]
+```
+
+## Build the Package
+
+Run the following command to build the package using Nx:
+
+```bash
+pnpm nx build swap
+```
+
+## Publish to npm
+
+Navigate to the build output directory and publish:
+
+```bash
+cd dist/libs/swap
+npm login        # Only if not already logged in
+npm publish
+```
+
+> ✅ Make sure you have the correct permissions on the npm registry for `@microchain/swap`.
+
+</div>

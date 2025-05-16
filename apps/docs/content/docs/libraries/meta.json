@@ -1,0 +1,12 @@
+{
+  "title": "Developers",
+  "description": "Technical guides",
+  "icon": "Code",
+  "root": true,
+  "pages": [
+    "typescript-sdk",
+    "swap-widget-integration",
+    "--- 🐞 Contribution Guidelines ---",
+    "...contribution-guidelines"
+  ]
+}

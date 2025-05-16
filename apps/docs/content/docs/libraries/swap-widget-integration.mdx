@@ -1,0 +1,142 @@
+---
+title: Swap Widget Integration
+description: Work-in-progress.
+icon: Unplug
+---
+
+import {Accordion, Accordions} from "fumadocs-ui/components/accordion";
+
+<Cards>
+  <Card
+    title="Swaylend Example"
+    href="https://github.com/mira-amm/swaylend-monorepo"
+    description="Implemented as a widget."
+    icon={
+      <img
+        src="https://app.swaylend.com/_next/static/media/dark-logo.f8b6fe51.svg"
+        alt="Swaylend Logo"
+        width={24}
+        height={24}
+      />
+    }
+  />
+</Cards>
+
+<div className='fd-steps [&_h2]:fd-step'>
+
+## Install Packages
+
+<Callout type="warn">
+
+Only Tested for [Node](https://nodejs.org) v22+
+
+</Callout>
+```package-install
+@microchain/swap mira-dex-ts react-tooltip
+```
+
+## Configure Content Security Policy (CSP)
+
+<Accordions>
+  <Accordion title="What is CSP?">
+    CSP stands for Content Security Policy. [Learn More - MDN Web
+    Docs](https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/CSP)
+  </Accordion>
+</Accordions>
+
+```js title="next.config.mjs"
+import {DOMAINS} from "@microchain/swap/domains";
+
+const CSP_HEADER = `
+  default-src 'self';
+  connect-src 'self' https://app.swaylend.com ${CONNECT_DOMAINS.join(" ")};
+  script-src 'self' 'unsafe-eval' 'unsafe-inline' https://vercel.live;
+  style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
+  img-src 'self' blob: data: ${CONNECT_DOMAINS.join(" ")};
+  font-src 'self' https://fonts.googleapis.com https://fonts.gstatic.com;
+  object-src 'none';
+  base-uri 'self';
+  frame-src 'self' https://verify.walletconnect.com https://verify.walletconnect.org https://layerswap.io https://mira.ly;
+  form-action 'self';
+  frame-ancestors 'none';
+  upgrade-insecure-requests;
+`;
+
+async headers() {
+  return [
+    {
+      source: '/(.*)',
+      headers: [
+        { key: 'X-Frame-Options', value: 'SAMEORIGIN' },
+        { key: 'Content-Security-Policy', value: CSP_HEADER.replace(/\n/g, '')},
+      ],
+    },
+  ];
+}
+
+// Allow external images so Mira Swap can load assets
+images: {
+  remotePatterns: [
+    {
+      protocol: "https",
+      hostname: "**",
+    },
+  ],
+},
+```
+
+## Add Environment Variables
+
+<Callout type="error">Ensure variables are also set for deployments!</Callout>
+
+```typescript title=".env"
+NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID=
+NEXT_PUBLIC_SENTIO_API_KEY=
+NEXT_PUBLIC_SENTIO_API_URL=
+NEXT_PUBLIC_FUEL_EXPLORER_URL=
+NEXT_PUBLIC_FUEL_NODE_URL=
+```
+
+## Include Mira Design Tokens
+
+```css title="global.css"
+@layer base {
+  :root {
+    --background-primary: #0e111e;
+    --background-secondary: #1b1c23;
+    --background-grey-darker: rgba(255, 255, 255, 0.05);
+    --background-grey-dark: rgba(255, 255, 255, 0.1);
+    --background-grey-light: rgba(255, 255, 255, 0.2);
+    --content-primary: #ffffff;
+    --content-secondary: rgba(255, 255, 255, 0.8);
+    --content-tertiary: rgba(255, 255, 255, 0.72);
+    --content-dimmed-light: rgba(255, 255, 255, 0.64);
+    --content-dimmed-dark: rgba(255, 255, 255, 0.4);
+    --content-grey: #9d9d9d;
+    --content-grey-dark: #6d6d6d;
+    --content-inverse: #28282f;
+    --accent-primary: #aeed0d;
+    --accent-secondary: rgba(174, 237, 13, 0.4);
+    --accent-dimmed: rgba(174, 237, 13, 0.1);
+    --accent-warning: #f55353;
+    --accent-alert: #d4b226;
+    --content-positive: #46cc44;
+    --points-gradient: linear-gradient(170deg, #262f5f 35%, #c41cff 100%);
+  }
+}
+```
+
+## Import Swap Widget
+
+```tsx title="your-component.tsx"
+// [!code word:useCodeBlocks]
+"use client"  // [!code ++]
+import Swap from "@microchain/swap"  // [!code ++]
+import "@microchain/swap/assets/index.css";  // [!code ++]
+```
+
+## You’re all set!
+
+Mira Swap is now fully integrated and secure.
+
+</div>
