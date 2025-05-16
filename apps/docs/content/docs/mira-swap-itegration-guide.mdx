@@ -1,0 +1,136 @@
+---
+title: Mira Swap Integration Guide
+description: Configure the Mira Swap component in Swaylend Next.js application with proper domain access, CSP setup, image security, styling and client-side rendering support.
+icon: Bolt
+---
+
+## 1. Install Mira Swap Component
+
+```package-install
+@microchain/swap mira-dex-ts@1.1.42 react-tooltip
+```
+
+## 2. Configure Content Security Policy (CSP)
+
+To ensure Mira Swap and its dependencies work securely
+
+Swaylend `CONNECT_DOMAINS` list should include the domains from Mira
+
+```typescript
+import {DOMAINS} from "@microchain/swap/domains";
+```
+
+NOTE!!! ⚠️
+
+Before importing DOMAINS from `@microchain/swap/domains` ensure that your next.config uses ECMAScript Modules `next.config.mjs`
+
+Use it in your CSP header: `connect-src` `image-src`
+
+```typescript
+const CSP_HEADER = `
+  default-src 'self';
+  connect-src 'self' https://app.swaylend.com ${CONNECT_DOMAINS.join(" ")};
+  script-src 'self' 'unsafe-eval' 'unsafe-inline' https://vercel.live;
+  style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
+  img-src 'self' blob: data: ${CONNECT_DOMAINS.join(" ")};
+  font-src 'self' https://fonts.googleapis.com https://fonts.gstatic.com;
+  object-src 'none';
+  base-uri 'self';
+  frame-src 'self' https://verify.walletconnect.com https://verify.walletconnect.org https://layerswap.io https://mira.ly;
+  form-action 'self';
+  frame-ancestors 'none';
+  upgrade-insecure-requests;
+`;
+```
+
+Inject into `next.config.js`:
+
+```typescript
+async headers() {
+  return [
+    {
+      source: '/(.*)',
+      headers: [
+        { key: 'X-Frame-Options', value: 'SAMEORIGIN' },
+        { key: 'Content-Security-Policy', value: CSP_HEADER.replace(/\n/g, '')},
+      ],
+    },
+  ];
+}
+```
+
+## 3. Allow External Images in `next.config.js`
+
+Mira Swap loads external images from various CDN and asset sources. Add this to your Next.js config:
+
+```typescript
+images: {
+  remotePatterns: [
+    {
+      protocol: "https",
+      hostname: "**",
+    },
+  ],
+},
+```
+
+## 4. Define Required Environment Variables
+
+Ensure the following are set in `.env` or your deployment environment:
+
+```typescript
+NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID=
+NEXT_PUBLIC_SENTIO_API_KEY=
+NEXT_PUBLIC_SENTIO_API_URL=
+NEXT_PUBLIC_FUEL_EXPLORER_URL=
+NEXT_PUBLIC_FUEL_NODE_URL=
+```
+
+## 5. Mark Usage as Client Component
+
+Page or component that renders `Mira Swap component` **must** include:
+
+```typescript
+"use client";
+```
+
+## 6. Styling
+
+1. In the page where the Mira Swap component is imported, import the component styles as well:
+
+```typescript
+import "@microchain/swap/assets/index.css";
+```
+
+2. Also, include this Mira styling in your `global.css` file:
+
+```css
+@layer base {
+  :root {
+    --background-primary: #0e111e;
+    --background-secondary: #1b1c23;
+    --background-grey-darker: rgba(255, 255, 255, 0.05);
+    --background-grey-dark: rgba(255, 255, 255, 0.1);
+    --background-grey-light: rgba(255, 255, 255, 0.2);
+    --content-primary: #ffffff;
+    --content-secondary: rgba(255, 255, 255, 0.8);
+    --content-tertiary: rgba(255, 255, 255, 0.72);
+    --content-dimmed-light: rgba(255, 255, 255, 0.64);
+    --content-dimmed-dark: rgba(255, 255, 255, 0.4);
+    --content-grey: #9d9d9d;
+    --content-grey-dark: #6d6d6d;
+    --content-inverse: #28282f;
+    --accent-primary: #aeed0d;
+    --accent-secondary: rgba(174, 237, 13, 0.4);
+    --accent-dimmed: rgba(174, 237, 13, 0.1);
+    --accent-warning: #f55353;
+    --accent-alert: #d4b226;
+    --content-positive: #46cc44;
+    --points-gradient: linear-gradient(170deg, #262f5f 35%, #c41cff 100%);
+  }
+}
+```
+
+## 7. You’re all set!
+
+Mira Swap is now fully integrated and secure.
