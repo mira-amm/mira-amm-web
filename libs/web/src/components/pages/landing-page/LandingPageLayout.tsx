@@ -1,11 +1,9 @@
 "use client";
 
-import Header from "@/src/components/common/Header/Header";
 import FuelIcon from "@/src/components/icons/Fuel/FuelIcon";
 import Swap from "@/src/components/common/Swap/Swap";
 import DiscordIcon from "@/src/components/icons/Discord/DiscordIcon";
 import XIcon from "@/src/components/icons/X/XIcon";
-import Footer from "@/src/components/common/Footer/Footer";
 
 import styles from "./LandingPageLayout.module.css";
 import {clsx} from "clsx";
@@ -262,7 +260,6 @@ const LandingPageLayout = () => {
           </div>
         </section>
       </main>
-      <Footer isHomePage />
     </>
   );
 };

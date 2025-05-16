@@ -1,6 +1,5 @@
 "use client";
 
-import Footer from "@/src/components/common/Footer/Footer";
 import BackLink from "@/src/components/common/BackLink/BackLink";
 import Pools from "@/src/components/pages/liquidity-page/components/Pools/Pools";
 import Positions from "@/src/components/pages/liquidity-page/components/Positions/Positions";
@@ -57,7 +56,6 @@ const LiquidityPageLayout = () => {
           />
         </div>
       </main>
-      <Footer />
     </>
   );
 };

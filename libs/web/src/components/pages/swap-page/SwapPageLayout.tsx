@@ -1,6 +1,5 @@
 "use client";
 
-import Footer from "@/src/components/common/Footer/Footer";
 import Swap from "@/src/components/common/Swap/Swap";
 import styles from "./SwapPageLayout.module.css";
 import BgGradient from "../../icons/BgGradient/BgGradient";
@@ -25,7 +24,6 @@ const SwapPageLayout = () => {
           </div>
         </div>
       </main>
-      <Footer />
     </>
   );
 };

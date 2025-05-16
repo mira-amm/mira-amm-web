@@ -1,6 +1,5 @@
 "use client";
 
-import Header from "@/src/components/common/Header/Header";
 import AddLiquidity from "@/src/components/pages/add-liquidity-page/components/AddLiquidity/AddLiquidity";
 import {useRouter, useSearchParams} from "next/navigation";
 import {useEffect, useRef} from "react";

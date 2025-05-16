@@ -1,7 +1,5 @@
 "use client";
 
-import Header from "@/src/components/common/Header/Header";
-
 // import styles from "./index.module.css";
 import RemoveLiquidity from "./components/RemoveLiquidity/RemoveLiquidity";
 import {useRouter, useSearchParams} from "next/navigation";

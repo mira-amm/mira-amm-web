@@ -5,6 +5,7 @@ import {Prompt, Inter} from "next/font/google";
 import localFont from "next/font/local";
 import {metadata} from "./metadata";
 import Header from "@/src/components/common/Header/Header";
+import Footer from "@/src/components/common/Footer/Footer";
 
 import "@/public/css/globals.css";
 import Providers from "@/src/core/providers/Providers";
@@ -59,6 +60,7 @@ const RootLayout = ({children}: Props) => {
         <Providers>
           <Header />
           {children}
+          <Footer />
         </Providers>
       </body>
       <Script src="https://www.googletagmanager.com/gtag/js?id=G-K113JNM8XN" />

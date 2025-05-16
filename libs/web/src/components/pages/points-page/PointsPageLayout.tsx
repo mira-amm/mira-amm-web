@@ -1,6 +1,5 @@
 "use client";
 
-import Footer from "@/src/components/common/Footer/Footer";
 import styles from "./PointsPageLayout.module.css";
 import PointsRankTable from "./PointsRankTable/PointsRankTable";
 import Boosts from "../liquidity-page/components/Boosts/Boosts";
@@ -26,7 +25,6 @@ const PointsPageLayout = () => {
           <PointsRankTable />
         </div>
       </main>
-      <Footer />
     </>
   );
 };
