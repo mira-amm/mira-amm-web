@@ -1,18 +1,19 @@
 ---
-title: Publishing the Swap Package
-description: Follow these steps to publish the `@microchain/swap` package to npm.
-icon: Upload
+title: Packages
+icon: Box
 ---
 
-## 1. Bump the Version
+<div className='fd-steps [&_h2]:fd-step'>
+## Bump the Version
 
-Update the version number in `libs/swap/package.json` to reflect a new release:
 
-```json
-"version": "0.0.X" // ⬅️ Increase this number
+```ts title="libs/swap/package.json"
+// [!code word:useCodeBlocks]
+"version": "0.0.X"// [!code --]
+"version": "0.0.1" // ⬅️ Increase this number // [!code ++]
 ```
 
-## 2. Build the Package
+## Build the Package
 
 Run the following command to build the package using Nx:
 
@@ -20,7 +21,7 @@ Run the following command to build the package using Nx:
 pnpm nx build swap
 ```
 
-## 3. Publish to npm
+## Publish to npm
 
 Navigate to the build output directory and publish:
 
@@ -31,3 +32,5 @@ npm publish
 ```
 
 > ✅ Make sure you have the correct permissions on the npm registry for `@microchain/swap`.
+
+</div>
