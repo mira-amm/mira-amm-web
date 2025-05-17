@@ -35,6 +35,7 @@ in pkgs.mkShell {
     #                      FLAGS
     #====================================================
     # export SUPABASE=true # Requires Docker
+    # export SQLITE=true
     export NX_VERBOSE_LOGGING=true
     export NEXT_PUBLIC_ENABLE_AUTOLOGIN="true"
     export TERM=xterm-256color
