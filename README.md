@@ -104,6 +104,8 @@ See [docs](https://docs.mira.ly/installation) for instructions.
 |-|-|
 | ![Fuel Website](apps/docs/public/screenshots/fuel-website.png) | ![Swaylend Website](apps/docs/public/screenshots/swaylend-website.png) | 
 
+Many of the monorepo scaffolding foundations have been inspired by, and brought over from [cuHacking](https://docs.cuhacking.ca)'s Axiom framework. 💚
+
 ### Maintained with 💙 by Open-Source @ [ChartHouse Labs](https://www.charthouse.io) 🔱
 
 ![ChartHouse Labs Banner](libs/shared/assets/charthouse-labs-banner.png)
