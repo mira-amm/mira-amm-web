@@ -1,6 +1,6 @@
 import type { CollectionConfig } from 'payload/types'
 import { navAccordions } from './navAccordions';
-import { Payload } from 'payload'
+import { Payload, PayloadRequest } from 'payload'
 import { getOrUploadMedia } from '../seed/index';
 
 export const Brands: CollectionConfig = {
@@ -41,7 +41,7 @@ export const Brands: CollectionConfig = {
   ],
 }
 
-export async function seedBrands(payload: Payload, req: any) {
+export async function seedBrands(payload: Payload, req: PayloadRequest) {
   payload.logger.info("📸 Uploading brand logos & inserting brands...");
   await Promise.all(
 [
