@@ -27,7 +27,7 @@ export async function seed({
           collection,
           req,
           where: {
-            id: { not_equals: 1 },
+            // email: { not_equals: 'test@mira.ly' },
           },
         });
       } else {
@@ -52,9 +52,9 @@ export async function seed({
   }
 
   try {
+    await seedUsers(payload, req);
     await seedMedia(payload);
-    await seedUsers(payload);
-    await seedBrands(payload);
+    await seedBrands(payload, req);
     await seedGames(payload);
   } catch (error) {
     payload.logger.error(

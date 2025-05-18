@@ -78,12 +78,20 @@ saveToJWT: true,
   timestamps: true,
 }
 
-
 export async function seedUsers(payload: Payload, req: PayloadRequest) {
   payload.logger.info("👤 Uploading user avatars & inserting users...");
 
   await Promise.all(
 [
+  {
+    name: "Test Mira",
+    email: "test@mira.ly",
+    xUserName: "testmira",
+    mediaUrl:
+      "https://mira.ly/images/favicon.png",
+    walletAddress: "0xA3f91eC0B5a14cBc8f9a6CdbAf7B6E1eF6A8F1B3",
+    roles: ["admin", "user"]
+  },
   {
     name: "Kate Kharitonova",
     email: "kate.kharitonova@microchain.systems",
@@ -94,23 +102,23 @@ export async function seedUsers(payload: Payload, req: PayloadRequest) {
   },
   {
     name: "Fossil Frank",
-    xUserName: "FrankTheFossil",
     email: "fossil.frank@microchain.systems",
+    xUserName: "FrankTheFossil",
     mediaUrl:
       "https://avatars.githubusercontent.com/u/112352297?v=4",
     walletAddress: "0x9cC0F3a77EfAe92F2Be57d47fCb9FbB23c45e9Fd"
   },
   {
     name: "Derek Dino",
-    xUserName: "MicrochainSys",
     email: "derek.dino@microchain.systems",
+    xUserName: "MicrochainSys",
     mediaUrl:
       "https://avatars.githubusercontent.com/u/13684960?v=4",
     walletAddress: "0x4e8d5D93E8Efa7cB6a22f8Fa728Dcb16eB6D9D5A"
   },
   {
     name: "Amal Josea",
-    email: "amal.josea@example.com",
+    email: "amal.josea@microchain.systems",
     xUserName: "joseamal07",
     mediaUrl:
       "https://avatars.githubusercontent.com/u/26934320?v=4",
@@ -141,13 +149,13 @@ export async function seedUsers(payload: Payload, req: PayloadRequest) {
         `${user.name}'s Avatar`,
       );
 
-
       await payload.create({
         collection: "users",
         data: {
-          email: user.email,
-          xUserName: user.xUserName,
           name: user.name,
+          email: user.email,
+          password: user.name.split(" ")[0].toLowerCase() || "test",
+          xUserName: user.xUserName,
           avatar: media?.id || null,
           walletAddress: user.walletAddress,
           roles: user.roles || ["user"],

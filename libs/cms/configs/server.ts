@@ -1,10 +1,27 @@
 // github.com/jhb-software/payload-plugins/tree/main/geocoding
 /* eslint-disable node/prefer-global/process */
 
-import { resendAdapter } from '@payloadcms/email-resend'
+import { resendAdapter } from '@payloadcms/email-resend';
+import {type Payload} from 'payload';
 import sharp from "sharp";
+import { seed } from "@/db/seed";
 
 export const serverConfig = {
+  onInit: async (payload: Payload)=>{
+   const { totalDocs } = await payload.count({
+    collection: 'users',
+    where: {
+      email: {
+        equals: 'test@mira.ly',
+      },
+    },
+  })
+
+  if (!totalDocs) {
+    seed({ payload });
+  }
+  },
+  debug: true,
 defaultDepth: 3,
   email: resendAdapter({
     defaultFromAddress: 'test@microchain.systems',
