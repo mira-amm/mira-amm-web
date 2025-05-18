@@ -8,12 +8,7 @@ export const Games: CollectionConfig = {
   },
   admin: {
     useAsTitle: 'id',
-    defaultColumns: [
-      'id',
-      'player',
-      'score',
-      'createdAt'
-    ],
+    defaultColumns: ['id', 'player', 'score', 'createdAt'],
     group: navAccordions.categories,
     pagination: {
       defaultLimit: 50,
