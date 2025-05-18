@@ -1,16 +1,16 @@
 /* eslint-disable node/prefer-global/process */
 import type { GlobalConfig } from "payload";
 import {
-  isSuperAdmin,
+  admins,
 } from "@/db/access";
 
 import { navAccordions } from '@/db/collections/navAccordions'
 
-export const Constants: GlobalConfig = {
-  slug: "constants",
+export const Settings: GlobalConfig = {
+  slug: "settings",
   access: {
     read: () => true,
-    update: isSuperAdmin,
+    update: admins,
   },
   versions: {
     drafts: true,
