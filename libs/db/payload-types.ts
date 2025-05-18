@@ -93,10 +93,10 @@ export interface Config {
     defaultIDType: number;
   };
   globals: {
-    constants: Constant;
+    settings: Setting;
   };
   globalsSelect: {
-    constants: ConstantsSelect<false> | ConstantsSelect<true>;
+    settings: SettingsSelect<false> | SettingsSelect<true>;
   };
   locale: null;
   user: User & {
@@ -154,7 +154,6 @@ export interface Brand {
 export interface Media {
   id: number;
   alt: string;
-  prefix?: string | null;
   updatedAt: string;
   createdAt: string;
   url?: string | null;
@@ -184,6 +183,7 @@ export interface Game {
  */
 export interface User {
   id: number;
+  roles?: ('admin' | 'user')[] | null;
   name?: string | null;
   avatar?: (number | null) | Media;
   walletAddress?: string | null;
@@ -300,7 +300,6 @@ export interface BrandsSelect<T extends boolean = true> {
  */
 export interface MediaSelect<T extends boolean = true> {
   alt?: T;
-  prefix?: T;
   updatedAt?: T;
   createdAt?: T;
   url?: T;
@@ -328,6 +327,7 @@ export interface GamesSelect<T extends boolean = true> {
  * via the `definition` "users_select".
  */
 export interface UsersSelect<T extends boolean = true> {
+  roles?: T;
   name?: T;
   avatar?: T;
   walletAddress?: T;
@@ -381,9 +381,9 @@ export interface PayloadMigrationsSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "constants".
+ * via the `definition` "settings".
  */
-export interface Constant {
+export interface Setting {
   id: number;
   microgame?: {
     login?: {
@@ -431,9 +431,9 @@ export interface Constant {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "constants_select".
+ * via the `definition` "settings_select".
  */
-export interface ConstantsSelect<T extends boolean = true> {
+export interface SettingsSelect<T extends boolean = true> {
   microgame?:
     | T
     | {
