@@ -1,15 +1,13 @@
 import type { CollectionConfig, Payload } from 'payload'
 
 import { navAccordions } from '@/db/collections/navAccordions'
-import {
-  isSuperAdmin,
-} from "@/db/access";
+import { admins } from "@/db/access";
 
 export const Media: CollectionConfig = {
   slug: 'media',
   access: {
     read: () => true,
-    update: isSuperAdmin,
+    update: admins,
   },
   admin: {
     group: navAccordions.categories,
