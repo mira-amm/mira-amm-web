@@ -1,6 +1,6 @@
 import type { CollectionConfig, Payload, PayloadRequest } from 'payload'
 
-import { authenticated } from '../access/index';
+import { authenticated, admins } from '@/db/access';
 import { getOrUploadMedia } from "@/db/seed";
 
 export const Users: CollectionConfig = {
@@ -17,7 +17,7 @@ export const Users: CollectionConfig = {
     // },
   },
   access: {
-    admin: authenticated,
+    admin: admins,
     create: authenticated,
     delete: authenticated,
     read: authenticated,
