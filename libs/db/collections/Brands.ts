@@ -85,114 +85,33 @@ export async function seedBrands(payload: Payload, req: PayloadRequest) {
         "domain": "https://fuel.network",
         "symbol": "https://verified-assets.fuel.network/images/fuel.svg"
       },
-   {
-    "name": "WETH",
-    "symbol": "https://verified-assets.fuel.network/images/weth.svg",
-  },
-  {
-    "name": "weETH",
-    "symbol": "https://verified-assets.fuel.network/images/weETH.webp",
-  },
-  {
-    "name": "rsETH",
-    "symbol": "https://verified-assets.fuel.network/images/rsETH.webp",
-  },
-  {
-    "name": "rETH",
-    "symbol": "https://verified-assets.fuel.network/images/reth.svg",
-  },
-  {
-    "name": "wbETH",
-    "symbol": "https://verified-assets.fuel.network/images/wbeth.png",
-  },
-  {
-    "name": "rstETH",
-    "symbol": "https://verified-assets.fuel.network/images/rstETH.webp",
-  },
-  {
-    "name": "amphrETH",
-    "symbol": "https://verified-assets.fuel.network/images/amphrETH.png",
-  },
-  {
-    "name": "Manta mBTC",
-    "symbol": "https://verified-assets.fuel.network/images/manta-mbtc.svg",
-  },
-  {
-    "name": "Manta mETH",
-    "symbol": "https://verified-assets.fuel.network/images/manta-meth.svg",
-  },
-  {
-    "name": "Manta mUSD",
-    "symbol": "https://verified-assets.fuel.network/images/manta-musd.svg",
-  },
-  {
-    "name": "pumpBTC",
-    "symbol": "https://verified-assets.fuel.network/images/pumpbtc.webp",
-  },
-  {
-    "name": "FBTC",
-    "symbol": "https://verified-assets.fuel.network/images/fbtc.svg",
-  },
-  {
-    "name": "SolvBTC",
-    "symbol": "https://verified-assets.fuel.network/images/solvBTC.webp",
-  },
-  {
-    "name": "SolvBTC.BBN",
-    "symbol": "https://verified-assets.fuel.network/images/SolvBTC.BBN.png",
-  },
-  {
-    "name": "Mantle mETH",
-    "symbol": "https://verified-assets.fuel.network/images/mantle-meth.svg",
-  },
-  {
-    "name": "sDAI",
-    "symbol": "https://verified-assets.fuel.network/images/sdai.svg",
-  },
-  {
-    "name": "USDT",
-    "symbol": "https://verified-assets.fuel.network/images/usdt.svg",
-  },
-  {
-    "name": "USDC",
-    "symbol": "https://verified-assets.fuel.network/images/usdc.svg",
-  },
-  {
-    "name": "USDe",
-    "symbol": "https://verified-assets.fuel.network/images/USDe.svg",
-  },
-  {
-    "name": "sUSDe",
-    "symbol": "https://verified-assets.fuel.network/images/sUSDe.webp",
-  },
-  {
-    "name": "rsUSDe",
-    "symbol": "https://verified-assets.fuel.network/images/rsUSDe.svg",
-  },
-  {
-    "name": "wstETH",
-    "symbol": "https://verified-assets.fuel.network/images/wsteth.svg",
-  },
-  {
-    "name": "ezETH",
-    "symbol": "https://verified-assets.fuel.network/images/ezeth.webp",
-  },
-  {
-    "name": "pzETH",
-    "symbol": "https://verified-assets.fuel.network/images/pzETH.webp",
-  },
-  {
-    "name": "Re7LRT",
-    "symbol": "https://verified-assets.fuel.network/images/Re7LRT.png",
-  },
-  {
-    "name": "steakLRT",
-    "symbol": "https://verified-assets.fuel.network/images/steakLRT.png",
-  },
-  {
-    "name": "USDF",
-    "symbol": "https://verified-assets.fuel.network/images/USDF.png",
-  }
+   {"name": "WETH", "symbol": "https://verified-assets.fuel.network/images/weth.svg"},
+  {"name": "weETH", "symbol": "https://verified-assets.fuel.network/images/weETH.webp"},
+  {"name": "rsETH", "symbol": "https://verified-assets.fuel.network/images/rsETH.webp"},
+  {"name": "rETH", "symbol": "https://verified-assets.fuel.network/images/reth.svg"},
+  {"name": "wbETH", "symbol": "https://verified-assets.fuel.network/images/wbeth.png"},
+  {"name": "rstETH", "symbol": "https://verified-assets.fuel.network/images/rstETH.webp"},
+  {"name": "amphrETH", "symbol": "https://verified-assets.fuel.network/images/amphrETH.png"},
+  {"name": "Manta mBTC", "symbol": "https://verified-assets.fuel.network/images/manta-mbtc.svg"},
+  {"name": "Manta mETH", "symbol": "https://verified-assets.fuel.network/images/manta-meth.svg"},
+  {"name": "Manta mUSD", "symbol": "https://verified-assets.fuel.network/images/manta-musd.svg"},
+  {"name": "pumpBTC", "symbol": "https://verified-assets.fuel.network/images/pumpbtc.webp"},
+  {"name": "FBTC", "symbol": "https://verified-assets.fuel.network/images/fbtc.svg"},
+  {"name": "SolvBTC", "symbol": "https://verified-assets.fuel.network/images/solvBTC.webp"},
+  {"name": "SolvBTC.BBN", "symbol": "https://verified-assets.fuel.network/images/SolvBTC.BBN.png"},
+  {"name": "Mantle mETH", "symbol": "https://verified-assets.fuel.network/images/mantle-meth.svg"},
+  {"name": "sDAI", "symbol": "https://verified-assets.fuel.network/images/sdai.svg"},
+  {"name": "USDT", "symbol": "https://verified-assets.fuel.network/images/usdt.svg"},
+  {"name": "USDC", "symbol": "https://verified-assets.fuel.network/images/usdc.svg"},
+  {"name": "USDe", "symbol": "https://verified-assets.fuel.network/images/USDe.svg"},
+  {"name": "sUSDe", "symbol": "https://verified-assets.fuel.network/images/sUSDe.webp"},
+  {"name": "rsUSDe", "symbol": "https://verified-assets.fuel.network/images/rsUSDe.svg"},
+  {"name": "wstETH", "symbol": "https://verified-assets.fuel.network/images/wsteth.svg"},
+  {"name": "ezETH", "symbol": "https://verified-assets.fuel.network/images/ezeth.webp"},
+  {"name": "pzETH", "symbol": "https://verified-assets.fuel.network/images/pzETH.webp"},
+  {"name": "Re7LRT", "symbol": "https://verified-assets.fuel.network/images/Re7LRT.png"},
+  {"name": "steakLRT", "symbol": "https://verified-assets.fuel.network/images/steakLRT.png"},
+  {"name": "USDF", "symbol": "https://verified-assets.fuel.network/images/USDF.png"}
 ].map(async (brand) => {
       const symbol = await getOrUploadMedia(
         payload,
