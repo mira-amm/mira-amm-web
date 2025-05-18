@@ -45,6 +45,17 @@ export const Users: CollectionConfig = {
       type: "collapsible",
       label: ({ data }) => data?.title || "Personal Information",
       fields: [
+{
+name: "roles",
+type: "select",
+defaultValue: ["user"],
+hasMany: true,
+options: [
+{label: "admin", value: "admin",},
+{label: "user", value: "user",},
+],
+saveToJWT: true,
+},
         { name: "name", type: "text", label: "Name" },
         {name: "avatar", type: "upload", relationTo: "media", label: "Avatar"},
       ]},
@@ -139,6 +150,7 @@ export async function seedUsers(payload: Payload, req: any) {
           name: user.name,
           avatar: media?.id || null,
           walletAddress: user.walletAddress,
+          roles: user.roles || ["user"],
         },
       });
 
