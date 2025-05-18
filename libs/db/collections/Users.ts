@@ -1,4 +1,4 @@
-import type { CollectionConfig, Payload } from 'payload'
+import type { CollectionConfig, Payload, PayloadRequest } from 'payload'
 
 import { authenticated } from '../access/index';
 import { getOrUploadMedia } from "@/db/seed";
@@ -79,7 +79,7 @@ saveToJWT: true,
 }
 
 
-export async function seedUsers(payload: Payload, req: any) {
+export async function seedUsers(payload: Payload, req: PayloadRequest) {
   payload.logger.info("👤 Uploading user avatars & inserting users...");
 
   await Promise.all(
