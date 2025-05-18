@@ -46,14 +46,8 @@ export const Users: CollectionConfig = {
       label: ({ data }) => data?.title || "Personal Information",
       fields: [
         { name: "name", type: "text", label: "Name" },
-        {
-          name: "avatar",
-          type: "upload",
-          relationTo: "media",
-          label: "Avatar",
-        },
-      ],
-    },
+        {name: "avatar", type: "upload", relationTo: "media", label: "Avatar"},
+      ]},
     ]
     },
     {
