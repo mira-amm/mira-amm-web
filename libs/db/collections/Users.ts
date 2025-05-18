@@ -54,41 +54,13 @@ export const Users: CollectionConfig = {
     {name: 'games', type: 'join', on: 'player', collection: 'games', defaultSort: '-score'},
         {
           type: "collapsible",
-      admin: { position: "sidebar",
-               readOnly: true
-             },
+      admin: { position: "sidebar", readOnly: true },
           label: "X",
           fields: [
-            {
-              name: "xUserName",
-              type: "text",
-              label: "Username",
-              admin: { readOnly: true },
-            },
-            {
-              name: "xUrl",
-              label: "URL",
-              type: "text",
-              admin: {
-                readOnly: true,
-              },
-            },
-            {
-              name: "xIsIdentityVerified",
-              label: "ID Verified",
-              type: "checkbox",
-              admin: {
-                readOnly: true,
-              },
-            },
-            {
-              name: "xVerified",
-              label: "Verified",
-              type: "checkbox",
-              admin: {
-                readOnly: true,
-              },
-            },
+            {name: "xUserName", type: "text", label: "Username", admin: { readOnly: true }},
+            {name: "xUrl", label: "URL", type: "text", admin: {readOnly: true}},
+            {name: "xIsIdentityVerified", label: "ID Verified", type: "checkbox", admin: {readOnly: true}},
+            {name: "xVerified", label: "Verified", type: "checkbox", admin: {readOnly: true}},
           ],
         },
   ],
