@@ -50,14 +50,8 @@ export const Users: CollectionConfig = {
       ]},
     ]
     },
-    {
-      name: 'games',
-      type: 'join',
-      on: 'player',
-      collection: 'games',
-      defaultSort: '-score'
-    },
     {name: 'walletAddress', type: 'text'},
+    {name: 'games', type: 'join', on: 'player', collection: 'games', defaultSort: '-score'},
         {
           type: "collapsible",
       admin: { position: "sidebar",
