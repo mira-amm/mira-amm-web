@@ -1,0 +1,13 @@
+{
+  "name": "engine",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "metadata": {
+    "description": "State Engine composed of Finite State Machines."
+  },
+  "sourceRoot": "libs/engine",
+  "projectType": "library",
+  "implicitDependencies": [
+    "!libs/web"
+  ],
+  "tags": []
+}

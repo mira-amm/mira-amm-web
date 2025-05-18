@@ -16,6 +16,8 @@
       "@/db": ["libs/db/index.ts"],
       "@/db/*": ["libs/db/*"],
       "@/docs": ["libs/docs/index.ts"],
+      "@/engine": ["libs/engine/index.ts"],
+      "@/engine/*": ["libs/engine/*"],
       "@/microdoctor/*": ["libs/microdoctor/*"],
       "@/platform-vercel/*": ["libs/platform-vercel/*"],
       "@/shared": ["libs/shared/index.ts"],
