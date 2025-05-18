@@ -13,32 +13,14 @@ export const Media: CollectionConfig = {
   },
   admin: {
     group: navAccordions.categories,
-    defaultColumns: [
-      'filename',
-      'alt',
-      'prefix',
-      'mimeType',
-      'filesize',
-      'updatedAt',
-      'createdAt',
-      'id',
-    ],
+    defaultColumns: ['filename', 'alt', 'prefix', 'mimeType', 'filesize', 'updatedAt', 'createdAt', 'id'],
     pagination: {
       defaultLimit: 50,
       limits: [10, 20, 50],
     },
   },
-  fields: [
-    {
-      name: 'alt',
-      type: 'text',
-      required: true,
-    },
-  ],
-  upload: {
-    displayPreview: true,
-   focalPoint: true,
-  },
+  fields: [{name: 'alt', type: 'text', required: true}],
+  upload: {displayPreview: true, focalPoint: true},
 }
 
 export async function seedMedia(payload: Payload) {
