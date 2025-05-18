@@ -93,6 +93,8 @@ export default {
     // HTML Tab in action bar
     // https://github.com/whitespace-se/storybook-addon-html
     "@whitespace/storybook-addon-html",
+    // https://github.com/simeonc/storybook-xstate-addon
+    // "storybook-xstate-addon/preset" // waiting on xstate v5 & storybook v8 support
   ],
   webpackFinal: async (config) => {
     if (config.resolve) {
