@@ -9,7 +9,7 @@ import {
        } from "@/db/collections"
 
 import {
-  Constants,
+  Settings,
 } from "@/db/globals"
 
 // import { formBuilderPlugin } from '@payloadcms/plugin-form-builder'
@@ -27,7 +27,7 @@ export const dataBaseConfig = {
     Games,
   ],
   globals:[
-    Constants,
+    Settings,
   ],
   blocks:[
   ],

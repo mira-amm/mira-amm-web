@@ -6,7 +6,7 @@ import {
   User,
   // MousePointer2,
   // Inbox,
-  List,
+  Settings,
   Gamepad,
 } from 'lucide-react'
 import { ExoticComponent } from 'react'
@@ -18,7 +18,7 @@ export const navIconMap: Partial<
   brands: Star,
   games: Gamepad,
   users: User,
-  constants: List,
+  settings: Settings,
   // forms: MousePointer2,
   // "form-submissions": Inbox,
 }
