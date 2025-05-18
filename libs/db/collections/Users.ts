@@ -30,13 +30,7 @@ export const Users: CollectionConfig = {
         {label: "Mobile", name: "mobile", width: 320, height: 568},
       ],
   },
-    defaultColumns: [
-      'avatar',
-      'name',
-      'xUserName',
-      'email',
-      'walletAddress',
-    ],
+    defaultColumns: ['avatar', 'name', 'xUserName', 'email', 'walletAddress', 'roles', 'createdAt'],
     useAsTitle: 'name',
     pagination: {
       defaultLimit: 50,
