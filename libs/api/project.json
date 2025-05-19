@@ -31,8 +31,9 @@
       }
     },
     "compodoc": {
-      "command": "compodoc --theme=postmark",
+      "command": "compodoc",
       "continuous": true,
+      "cache": true,
       "options": {
         "cwd": "libs/api",
       }
@@ -46,10 +47,9 @@
     },
     "start": {
       "dependsOn": [
-        "compodoc",
         "build",
       ],
-      "command": "node build/main.js",
+      "command": "node --experimental-specifier-resolution=node build/main.js",
       "options": {
         "cwd": "libs/api"
       }

@@ -1,4 +1,4 @@
-import { Controller, Get, Inject,Query } from "@nestjs/common";
+import { Controller, Get, Inject } from "@nestjs/common";
 import { ReadAmmService } from './services/read-amm.service.js';
 
 @Controller('amm')

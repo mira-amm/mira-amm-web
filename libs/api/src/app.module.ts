@@ -1,16 +1,30 @@
 import { Module } from "@nestjs/common";
 import { ConfigModule } from "@nestjs/config";
+import { GraphQLModule } from '@nestjs/graphql';
+import { ApolloDriver, type ApolloDriverConfig } from '@nestjs/apollo';
+import { ReadAmmService } from "./features/read-amm/services/read-amm.service.js";
 import { ReadAmmModule } from "./features/read-amm/read-amm.module.js";
+import { ReadAmmResolver } from "./features/read-amm/resolvers/read-amm.resolver.js";
 import { TaskModule } from "./features/task/task.module.js";
+import { ApolloServerPluginLandingPageLocalDefault } from '@apollo/server/plugin/landingPage/default';
 
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true }),
+    GraphQLModule.forRoot<ApolloDriverConfig>({
+      driver: ApolloDriver,
+      playground: false,
+      // graphiql: true,
+      autoSchemaFile: true,
+      sortSchema: true,
+      plugins: [ApolloServerPluginLandingPageLocalDefault()],
+    }),
     ReadAmmModule,
     TaskModule
   ],
   controllers: [],
-  providers: [],
+  providers: [ReadAmmService, ReadAmmResolver],
   exports: [],
 })
+
 export class AppModule {}
