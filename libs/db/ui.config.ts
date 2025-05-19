@@ -41,14 +41,6 @@ export const adminConfig = {
       // https://dev.to/aaronksaunders/payload-cms-add-a-custom-create-account-screen-in-admin-ui-2pdg
       // https://www.youtube.com/watch?v=X-6af837WbY
       views: {
-      //   'login': {
-      //     Component: '/components/oauth#OAuth',
-      //     path: '/login',
-      //   },
-      //   'create-account': {
-      //     Component: '/components/oauth#OAuth',
-      //     path: '/create-account',
-      //   },
         dashboard: {
           Component: '/components/Dashboard#Dashboard',
         },
@@ -58,7 +50,7 @@ export const adminConfig = {
     },
   },
     importMap: {
-      // baseDir: path.resolve("../../../../src"),
+      // baseDir: path.resolve("../../../src"),
       baseDir: "src", // resolves from location of payload.config.ts
     },
     user: Users.slug,

@@ -9,7 +9,7 @@ import LinkWithDefault from 'next/link'
 import { NavPreferences } from 'payload'
 import { FC, Fragment } from 'react'
 import { getNavIcon } from './navIconMap'
-import { SeedButton } from '../../../../../libs/cms/ui/seed-button'
+import { SeedButton } from '@/meshwave-ui/seed-button'
 
 type Props = {
   groups: NavGroupType[]

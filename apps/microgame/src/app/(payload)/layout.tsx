@@ -12,7 +12,7 @@ const jetBrainsMono = JetBrains_Mono({
 });
 
 import { importMap } from './admin/importMap.js'
-import './custom.scss'
+import '@/meshwave-ui/admin.scss'
 
 type Args = {
   children: React.ReactNode
