@@ -1,18 +1,17 @@
-import TerminalPage from "@/shared/ui/Terminal/TerminalPage";
-/* import { redirect } from "next/navigation"; */
+import { redirect } from "next/navigation";
 
 export default async function Home() {
-  /* const res = await fetch("http://localhost:8000/api/users/me", {
-   *   cache: "no-store",
-   * });
+  const res = await fetch("http://localhost:8000/api/users/me", {
+   cache: "no-store",
+ });
 
-   * const data = await res.json(); */
+ const data = await res.json();
 
-  /* if (!data.user) {
-   *   redirect("/login");
-   * } */
+  if (!data.user) {
+  redirect("/docs");
+ }
 
   return (
-      <TerminalPage />
-  );
+  redirect("/admin/login")
+ );
 }

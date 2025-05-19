@@ -37,8 +37,22 @@ export const dbConfig = {
       openapiVersion: "3.0",
       metadata: {
         title: "🕹 Microgame API Reference",
-        version: "0.0.1",
-        description: "🧩 OpenAPI Spec for Microgame.",
+        version: "1.0.0?",
+        description: ([
+          "🧩 OpenAPI Spec for Microgame.",
+          "",
+          "- ✨ [Scalar UI:](/docs): `/docs`",
+          "",
+          "- 📗 [Swagger UI:](/api/docs/swagger) `/api/docs/swagger`",
+          "",
+          "- 📘 [Redoc UI:](/api/docs/redoc) `/api/docs/redoc`",
+          "",
+          "- 📕 [Rapidoc UI:](/api/docs/rapidoc) `/api/docs/rapidoc`",
+          "",
+          "- 🛝 [GraphQL Playground:](/api/graphql-playground) `/api/graphql-playground`",
+          "",
+          "- 🖥 [Admin Panel:](/admin) `/admin`",
+        ].join('\n'))
       },
     }),
     swaggerUI({
