@@ -123,6 +123,7 @@
     "@eslint/eslintrc": "^3.3.1",
     "@eslint/js": "^9.25.1",
     "@nestia/editor": "^6.0.3",
+    "@nestjs/serve-static": "^5.0.3",
     "@nestjs/swagger": "^11.2.0",
     "@nestjs/testing": "^11.1.1",
     "@next/eslint-plugin-next": "^15.3.1",
