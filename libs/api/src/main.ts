@@ -2,9 +2,8 @@ import {ConfigService} from "@nestjs/config";
 import {NestFactory} from "@nestjs/core";
 import {AppModule} from "./app.module.js";
 import {SwaggerModule, DocumentBuilder} from "@nestjs/swagger";
-// import { NestiaEditorModule } from "@nestia/editor/lib/NestiaEditorModule";
 import {apiReference} from "@scalar/nestjs-api-reference";
-// import { express as voyagerMiddleware } from 'graphql-voyager/middleware'
+import { express as voyagerMiddleware } from 'graphql-voyager/middleware'
 
 const app = await NestFactory.create(AppModule);
 
@@ -24,19 +23,10 @@ SwaggerModule.setup("/docs/swagger", app, documentFactory, {
   explorer: true,
 });
 
-// await NestiaEditorModule.setup({
-//     path: "editor",
-//     application: app,
-//     swagger: "/api/openapi.json",
-//     package: "your-package-name",
-//     simulate: true,
-//     e2e: true,
-//   });
-
 const configService = app.get(ConfigService);
 const port = configService.get("PORT") ?? (process.env.API_SERVER_PORT || 8080);
 
-// app.use('/voyager', voyagerMiddleware({endpointUrl: '/graphql'}))
+app.use('/voyager', voyagerMiddleware({endpointUrl: '/graphql'}))
 
 app.use(
   "/docs/scalar",

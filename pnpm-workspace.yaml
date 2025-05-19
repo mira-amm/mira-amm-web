@@ -1,4 +1,5 @@
 onlyBuiltDependencies:
+  - '@apollo/protobufjs'
   - '@compodoc/compodoc'
   - '@nestjs/core'
   - '@parcel/watcher'
