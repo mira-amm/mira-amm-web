@@ -353,3 +353,16 @@
     line-height: 18px;
   }
 }
+
+@media (max-width: 420px) {
+  .assetsModalTitle {
+    font-size: 17.72px;
+    line-height: 21px;
+  }
+}
+@media (max-width: 380px) {
+  .assetsModalTitle {
+    font-size: 15.75px;
+    line-height: 19px;
+  }
+}
