@@ -7,10 +7,5 @@
     "allowSyntheticDefaultImports": true,
     "strict": true,
     "resolveJsonModule": true
-  },
-  "references": [
-    {
-      "path": "./tsconfig.lib.json"
-    }
-  ]
+  }
 }
