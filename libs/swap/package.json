@@ -1,7 +1,7 @@
 {
   "name": "@microchain/swap",
   "version": "0.0.0",
-  "main": "index.js",
+  "browser": "index.js",
   "module": "index.js",
   "types": "index.d.ts",
   "description": "Swap using the most efficient AMM on Fuel",
