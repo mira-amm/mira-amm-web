@@ -369,6 +369,9 @@ importers:
       '@scalar/nestjs-api-reference':
         specifier: ^0.4.16
         version: 0.4.16
+      '@scalar/nextjs-api-reference':
+        specifier: ^0.7.17
+        version: 0.7.17(next@15.3.1(@babel/core@7.27.1)(@opentelemetry/api@1.9.0)(@playwright/test@1.52.0)(babel-plugin-macros@3.1.0)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)(sass@1.87.0))(react@19.1.0)
       '@serenity-js/assertions':
         specifier: ^3.31.13
         version: 3.31.15
@@ -6287,9 +6290,20 @@ packages:
   '@samchon/openapi@4.3.0':
     resolution: {integrity: sha512-PdagymZCUCPmhtfriO+6xYRulds2hgo1ec0LduPFEAOWkZ4viM15iRuEa5wkm9DkDRF/oaMiC+dOgXefmOFZAA==}
 
+  '@scalar/core@0.2.16':
+    resolution: {integrity: sha512-PYIsWbaC/0jE61aundn3koUE+m9beOSEgu+fCxB1G31PmoloIQdVcRp6O95uCa89TofPU317u+8SjeIG8NuWpw==}
+    engines: {node: '>=18'}
+
   '@scalar/nestjs-api-reference@0.4.16':
     resolution: {integrity: sha512-Nb/+IrQyErzDA0Z5nlYIEuGtVJvpjSzmfftWG9VY0/Zjhj1ERXdQ17z7HOa1wlC1NFvlOfVeYTK/zYcdMjykEQ==}
     engines: {node: '>=18'}
+
+  '@scalar/nextjs-api-reference@0.7.17':
+    resolution: {integrity: sha512-dg+42k/V7W9aSiP2XsQPMvz3guVnBHyg3wAwAPDuCF/029fxzXA8axIR+SlvX2k6F2EYBMW0g+HirhBp3H2mZA==}
+    engines: {node: '>=18'}
+    peerDependencies:
+      next: ^15.2.4
+      react: ^19.0.0
 
   '@scalar/openapi-parser@0.10.17':
     resolution: {integrity: sha512-SO+vw+kv8xEROJ527KpiT5ccAVQZuE6n8G4qTN6b72QVT0URHoLwr8uHQQnEGlyA0QhAx7En+lKD1Hy39xZ9oQ==}
@@ -27351,9 +27365,20 @@ snapshots:
 
   '@samchon/openapi@4.3.0': {}
 
+  '@scalar/core@0.2.16':
+    dependencies:
+      '@scalar/types': 0.1.16
+
   '@scalar/nestjs-api-reference@0.4.16':
     dependencies:
       '@scalar/types': 0.1.16
+
+  '@scalar/nextjs-api-reference@0.7.17(next@15.3.1(@babel/core@7.27.1)(@opentelemetry/api@1.9.0)(@playwright/test@1.52.0)(babel-plugin-macros@3.1.0)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)(sass@1.87.0))(react@19.1.0)':
+    dependencies:
+      '@scalar/core': 0.2.16
+      '@scalar/types': 0.1.16
+      next: 15.3.1(@babel/core@7.27.1)(@opentelemetry/api@1.9.0)(@playwright/test@1.52.0)(babel-plugin-macros@3.1.0)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)(sass@1.87.0)
+      react: 19.1.0
 
   '@scalar/openapi-parser@0.10.17':
     dependencies:
