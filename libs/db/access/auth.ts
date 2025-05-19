@@ -4,8 +4,8 @@ import { getOrUploadMedia } from "@/db/seed";
 
 const IS_DEV = process.env.NODE_ENV === "development";
 const BASE_URL = IS_DEV
-  ? process.env.MICROGAME_LOCAL_URL!
-  : process.env.MICROGAME_PUBLIC_URL!;
+  ? process.env.ADMIN_LOCAL_URL!
+  : process.env.ADMIN_PUBLIC_URL!;
 const TWITTER_SCOPES = ["users.email", "users.read", "tweet.read"];
 
 export const baseConfig = {

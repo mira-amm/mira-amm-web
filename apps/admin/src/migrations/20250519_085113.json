@@ -1,5 +1,5 @@
 {
-  "id": "d1d895ed-b747-40aa-9d78-476cc045280d",
+  "id": "7ddd719d-7c66-47e8-b551-e12ad4e4e461",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -897,6 +897,89 @@
       "checkConstraints": {},
       "isRLSEnabled": false
     },
+    "public.users_roles": {
+      "name": "users_roles",
+      "schema": "",
+      "columns": {
+        "order": {
+          "name": "order",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "parent_id": {
+          "name": "parent_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "value": {
+          "name": "value",
+          "type": "enum_users_roles",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "id": {
+          "name": "id",
+          "type": "serial",
+          "primaryKey": true,
+          "notNull": true
+        }
+      },
+      "indexes": {
+        "users_roles_order_idx": {
+          "name": "users_roles_order_idx",
+          "columns": [
+            {
+              "expression": "order",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "users_roles_parent_idx": {
+          "name": "users_roles_parent_idx",
+          "columns": [
+            {
+              "expression": "parent_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
+      "foreignKeys": {
+        "users_roles_parent_fk": {
+          "name": "users_roles_parent_fk",
+          "tableFrom": "users_roles",
+          "tableTo": "users",
+          "columnsFrom": [
+            "parent_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
     "public.users": {
       "name": "users",
       "schema": "",
@@ -1727,8 +1810,8 @@
       "checkConstraints": {},
       "isRLSEnabled": false
     },
-    "public.constants_microgame_login_text": {
-      "name": "constants_microgame_login_text",
+    "public.settings_microgame_login_text": {
+      "name": "settings_microgame_login_text",
       "schema": "",
       "columns": {
         "_order": {
@@ -1763,8 +1846,8 @@
         }
       },
       "indexes": {
-        "constants_microgame_login_text_order_idx": {
-          "name": "constants_microgame_login_text_order_idx",
+        "settings_microgame_login_text_order_idx": {
+          "name": "settings_microgame_login_text_order_idx",
           "columns": [
             {
               "expression": "_order",
@@ -1778,8 +1861,8 @@
           "method": "btree",
           "with": {}
         },
-        "constants_microgame_login_text_parent_id_idx": {
-          "name": "constants_microgame_login_text_parent_id_idx",
+        "settings_microgame_login_text_parent_id_idx": {
+          "name": "settings_microgame_login_text_parent_id_idx",
           "columns": [
             {
               "expression": "_parent_id",
@@ -1795,10 +1878,10 @@
         }
       },
       "foreignKeys": {
-        "constants_microgame_login_text_parent_id_fk": {
-          "name": "constants_microgame_login_text_parent_id_fk",
-          "tableFrom": "constants_microgame_login_text",
-          "tableTo": "constants",
+        "settings_microgame_login_text_parent_id_fk": {
+          "name": "settings_microgame_login_text_parent_id_fk",
+          "tableFrom": "settings_microgame_login_text",
+          "tableTo": "settings",
           "columnsFrom": [
             "_parent_id"
           ],
@@ -1815,8 +1898,8 @@
       "checkConstraints": {},
       "isRLSEnabled": false
     },
-    "public.constants_microgame_options": {
-      "name": "constants_microgame_options",
+    "public.settings_microgame_options": {
+      "name": "settings_microgame_options",
       "schema": "",
       "columns": {
         "_order": {
@@ -1851,8 +1934,8 @@
         }
       },
       "indexes": {
-        "constants_microgame_options_order_idx": {
-          "name": "constants_microgame_options_order_idx",
+        "settings_microgame_options_order_idx": {
+          "name": "settings_microgame_options_order_idx",
           "columns": [
             {
               "expression": "_order",
@@ -1866,8 +1949,8 @@
           "method": "btree",
           "with": {}
         },
-        "constants_microgame_options_parent_id_idx": {
-          "name": "constants_microgame_options_parent_id_idx",
+        "settings_microgame_options_parent_id_idx": {
+          "name": "settings_microgame_options_parent_id_idx",
           "columns": [
             {
               "expression": "_parent_id",
@@ -1883,10 +1966,10 @@
         }
       },
       "foreignKeys": {
-        "constants_microgame_options_parent_id_fk": {
-          "name": "constants_microgame_options_parent_id_fk",
-          "tableFrom": "constants_microgame_options",
-          "tableTo": "constants",
+        "settings_microgame_options_parent_id_fk": {
+          "name": "settings_microgame_options_parent_id_fk",
+          "tableFrom": "settings_microgame_options",
+          "tableTo": "settings",
           "columnsFrom": [
             "_parent_id"
           ],
@@ -1903,8 +1986,8 @@
       "checkConstraints": {},
       "isRLSEnabled": false
     },
-    "public.constants_microgame_notes": {
-      "name": "constants_microgame_notes",
+    "public.settings_microgame_notes": {
+      "name": "settings_microgame_notes",
       "schema": "",
       "columns": {
         "_order": {
@@ -1939,8 +2022,8 @@
         }
       },
       "indexes": {
-        "constants_microgame_notes_order_idx": {
-          "name": "constants_microgame_notes_order_idx",
+        "settings_microgame_notes_order_idx": {
+          "name": "settings_microgame_notes_order_idx",
           "columns": [
             {
               "expression": "_order",
@@ -1954,8 +2037,8 @@
           "method": "btree",
           "with": {}
         },
-        "constants_microgame_notes_parent_id_idx": {
-          "name": "constants_microgame_notes_parent_id_idx",
+        "settings_microgame_notes_parent_id_idx": {
+          "name": "settings_microgame_notes_parent_id_idx",
           "columns": [
             {
               "expression": "_parent_id",
@@ -1971,10 +2054,10 @@
         }
       },
       "foreignKeys": {
-        "constants_microgame_notes_parent_id_fk": {
-          "name": "constants_microgame_notes_parent_id_fk",
-          "tableFrom": "constants_microgame_notes",
-          "tableTo": "constants",
+        "settings_microgame_notes_parent_id_fk": {
+          "name": "settings_microgame_notes_parent_id_fk",
+          "tableFrom": "settings_microgame_notes",
+          "tableTo": "settings",
           "columnsFrom": [
             "_parent_id"
           ],
@@ -1991,8 +2074,8 @@
       "checkConstraints": {},
       "isRLSEnabled": false
     },
-    "public.constants_microgame_instructions": {
-      "name": "constants_microgame_instructions",
+    "public.settings_microgame_instructions": {
+      "name": "settings_microgame_instructions",
       "schema": "",
       "columns": {
         "_order": {
@@ -2021,8 +2104,8 @@
         }
       },
       "indexes": {
-        "constants_microgame_instructions_order_idx": {
-          "name": "constants_microgame_instructions_order_idx",
+        "settings_microgame_instructions_order_idx": {
+          "name": "settings_microgame_instructions_order_idx",
           "columns": [
             {
               "expression": "_order",
@@ -2036,8 +2119,8 @@
           "method": "btree",
           "with": {}
         },
-        "constants_microgame_instructions_parent_id_idx": {
-          "name": "constants_microgame_instructions_parent_id_idx",
+        "settings_microgame_instructions_parent_id_idx": {
+          "name": "settings_microgame_instructions_parent_id_idx",
           "columns": [
             {
               "expression": "_parent_id",
@@ -2053,10 +2136,10 @@
         }
       },
       "foreignKeys": {
-        "constants_microgame_instructions_parent_id_fk": {
-          "name": "constants_microgame_instructions_parent_id_fk",
-          "tableFrom": "constants_microgame_instructions",
-          "tableTo": "constants",
+        "settings_microgame_instructions_parent_id_fk": {
+          "name": "settings_microgame_instructions_parent_id_fk",
+          "tableFrom": "settings_microgame_instructions",
+          "tableTo": "settings",
           "columnsFrom": [
             "_parent_id"
           ],
@@ -2073,8 +2156,8 @@
       "checkConstraints": {},
       "isRLSEnabled": false
     },
-    "public.constants": {
-      "name": "constants",
+    "public.settings": {
+      "name": "settings",
       "schema": "",
       "columns": {
         "id": {
@@ -2139,7 +2222,7 @@
         },
         "_status": {
           "name": "_status",
-          "type": "enum_constants_status",
+          "type": "enum_settings_status",
           "typeSchema": "public",
           "primaryKey": false,
           "notNull": false,
@@ -2159,8 +2242,8 @@
         }
       },
       "indexes": {
-        "constants_microgame_login_microgame_login_logo_idx": {
-          "name": "constants_microgame_login_microgame_login_logo_idx",
+        "settings_microgame_login_microgame_login_logo_idx": {
+          "name": "settings_microgame_login_microgame_login_logo_idx",
           "columns": [
             {
               "expression": "microgame_login_logo_id",
@@ -2174,8 +2257,8 @@
           "method": "btree",
           "with": {}
         },
-        "constants__status_idx": {
-          "name": "constants__status_idx",
+        "settings__status_idx": {
+          "name": "settings__status_idx",
           "columns": [
             {
               "expression": "_status",
@@ -2191,9 +2274,9 @@
         }
       },
       "foreignKeys": {
-        "constants_microgame_login_logo_id_media_id_fk": {
-          "name": "constants_microgame_login_logo_id_media_id_fk",
-          "tableFrom": "constants",
+        "settings_microgame_login_logo_id_media_id_fk": {
+          "name": "settings_microgame_login_logo_id_media_id_fk",
+          "tableFrom": "settings",
           "tableTo": "media",
           "columnsFrom": [
             "microgame_login_logo_id"
@@ -2211,8 +2294,8 @@
       "checkConstraints": {},
       "isRLSEnabled": false
     },
-    "public._constants_v_version_microgame_login_text": {
-      "name": "_constants_v_version_microgame_login_text",
+    "public._settings_v_version_microgame_login_text": {
+      "name": "_settings_v_version_microgame_login_text",
       "schema": "",
       "columns": {
         "_order": {
@@ -2253,8 +2336,8 @@
         }
       },
       "indexes": {
-        "_constants_v_version_microgame_login_text_order_idx": {
-          "name": "_constants_v_version_microgame_login_text_order_idx",
+        "_settings_v_version_microgame_login_text_order_idx": {
+          "name": "_settings_v_version_microgame_login_text_order_idx",
           "columns": [
             {
               "expression": "_order",
@@ -2268,8 +2351,8 @@
           "method": "btree",
           "with": {}
         },
-        "_constants_v_version_microgame_login_text_parent_id_idx": {
-          "name": "_constants_v_version_microgame_login_text_parent_id_idx",
+        "_settings_v_version_microgame_login_text_parent_id_idx": {
+          "name": "_settings_v_version_microgame_login_text_parent_id_idx",
           "columns": [
             {
               "expression": "_parent_id",
@@ -2285,10 +2368,10 @@
         }
       },
       "foreignKeys": {
-        "_constants_v_version_microgame_login_text_parent_id_fk": {
-          "name": "_constants_v_version_microgame_login_text_parent_id_fk",
-          "tableFrom": "_constants_v_version_microgame_login_text",
-          "tableTo": "_constants_v",
+        "_settings_v_version_microgame_login_text_parent_id_fk": {
+          "name": "_settings_v_version_microgame_login_text_parent_id_fk",
+          "tableFrom": "_settings_v_version_microgame_login_text",
+          "tableTo": "_settings_v",
           "columnsFrom": [
             "_parent_id"
           ],
@@ -2305,8 +2388,8 @@
       "checkConstraints": {},
       "isRLSEnabled": false
     },
-    "public._constants_v_version_microgame_options": {
-      "name": "_constants_v_version_microgame_options",
+    "public._settings_v_version_microgame_options": {
+      "name": "_settings_v_version_microgame_options",
       "schema": "",
       "columns": {
         "_order": {
@@ -2347,8 +2430,8 @@
         }
       },
       "indexes": {
-        "_constants_v_version_microgame_options_order_idx": {
-          "name": "_constants_v_version_microgame_options_order_idx",
+        "_settings_v_version_microgame_options_order_idx": {
+          "name": "_settings_v_version_microgame_options_order_idx",
           "columns": [
             {
               "expression": "_order",
@@ -2362,8 +2445,8 @@
           "method": "btree",
           "with": {}
         },
-        "_constants_v_version_microgame_options_parent_id_idx": {
-          "name": "_constants_v_version_microgame_options_parent_id_idx",
+        "_settings_v_version_microgame_options_parent_id_idx": {
+          "name": "_settings_v_version_microgame_options_parent_id_idx",
           "columns": [
             {
               "expression": "_parent_id",
@@ -2379,10 +2462,10 @@
         }
       },
       "foreignKeys": {
-        "_constants_v_version_microgame_options_parent_id_fk": {
-          "name": "_constants_v_version_microgame_options_parent_id_fk",
-          "tableFrom": "_constants_v_version_microgame_options",
-          "tableTo": "_constants_v",
+        "_settings_v_version_microgame_options_parent_id_fk": {
+          "name": "_settings_v_version_microgame_options_parent_id_fk",
+          "tableFrom": "_settings_v_version_microgame_options",
+          "tableTo": "_settings_v",
           "columnsFrom": [
             "_parent_id"
           ],
@@ -2399,8 +2482,8 @@
       "checkConstraints": {},
       "isRLSEnabled": false
     },
-    "public._constants_v_version_microgame_notes": {
-      "name": "_constants_v_version_microgame_notes",
+    "public._settings_v_version_microgame_notes": {
+      "name": "_settings_v_version_microgame_notes",
       "schema": "",
       "columns": {
         "_order": {
@@ -2441,8 +2524,8 @@
         }
       },
       "indexes": {
-        "_constants_v_version_microgame_notes_order_idx": {
-          "name": "_constants_v_version_microgame_notes_order_idx",
+        "_settings_v_version_microgame_notes_order_idx": {
+          "name": "_settings_v_version_microgame_notes_order_idx",
           "columns": [
             {
               "expression": "_order",
@@ -2456,8 +2539,8 @@
           "method": "btree",
           "with": {}
         },
-        "_constants_v_version_microgame_notes_parent_id_idx": {
-          "name": "_constants_v_version_microgame_notes_parent_id_idx",
+        "_settings_v_version_microgame_notes_parent_id_idx": {
+          "name": "_settings_v_version_microgame_notes_parent_id_idx",
           "columns": [
             {
               "expression": "_parent_id",
@@ -2473,10 +2556,10 @@
         }
       },
       "foreignKeys": {
-        "_constants_v_version_microgame_notes_parent_id_fk": {
-          "name": "_constants_v_version_microgame_notes_parent_id_fk",
-          "tableFrom": "_constants_v_version_microgame_notes",
-          "tableTo": "_constants_v",
+        "_settings_v_version_microgame_notes_parent_id_fk": {
+          "name": "_settings_v_version_microgame_notes_parent_id_fk",
+          "tableFrom": "_settings_v_version_microgame_notes",
+          "tableTo": "_settings_v",
           "columnsFrom": [
             "_parent_id"
           ],
@@ -2493,8 +2576,8 @@
       "checkConstraints": {},
       "isRLSEnabled": false
     },
-    "public._constants_v_version_microgame_instructions": {
-      "name": "_constants_v_version_microgame_instructions",
+    "public._settings_v_version_microgame_instructions": {
+      "name": "_settings_v_version_microgame_instructions",
       "schema": "",
       "columns": {
         "_order": {
@@ -2529,8 +2612,8 @@
         }
       },
       "indexes": {
-        "_constants_v_version_microgame_instructions_order_idx": {
-          "name": "_constants_v_version_microgame_instructions_order_idx",
+        "_settings_v_version_microgame_instructions_order_idx": {
+          "name": "_settings_v_version_microgame_instructions_order_idx",
           "columns": [
             {
               "expression": "_order",
@@ -2544,8 +2627,8 @@
           "method": "btree",
           "with": {}
         },
-        "_constants_v_version_microgame_instructions_parent_id_idx": {
-          "name": "_constants_v_version_microgame_instructions_parent_id_idx",
+        "_settings_v_version_microgame_instructions_parent_id_idx": {
+          "name": "_settings_v_version_microgame_instructions_parent_id_idx",
           "columns": [
             {
               "expression": "_parent_id",
@@ -2561,10 +2644,10 @@
         }
       },
       "foreignKeys": {
-        "_constants_v_version_microgame_instructions_parent_id_fk": {
-          "name": "_constants_v_version_microgame_instructions_parent_id_fk",
-          "tableFrom": "_constants_v_version_microgame_instructions",
-          "tableTo": "_constants_v",
+        "_settings_v_version_microgame_instructions_parent_id_fk": {
+          "name": "_settings_v_version_microgame_instructions_parent_id_fk",
+          "tableFrom": "_settings_v_version_microgame_instructions",
+          "tableTo": "_settings_v",
           "columnsFrom": [
             "_parent_id"
           ],
@@ -2581,8 +2664,8 @@
       "checkConstraints": {},
       "isRLSEnabled": false
     },
-    "public._constants_v": {
-      "name": "_constants_v",
+    "public._settings_v": {
+      "name": "_settings_v",
       "schema": "",
       "columns": {
         "id": {
@@ -2647,7 +2730,7 @@
         },
         "version__status": {
           "name": "version__status",
-          "type": "enum__constants_v_version_status",
+          "type": "enum__settings_v_version_status",
           "typeSchema": "public",
           "primaryKey": false,
           "notNull": false,
@@ -2687,8 +2770,8 @@
         }
       },
       "indexes": {
-        "_constants_v_version_microgame_login_version_microgame_login_logo_idx": {
-          "name": "_constants_v_version_microgame_login_version_microgame_login_logo_idx",
+        "_settings_v_version_microgame_login_version_microgame_login_logo_idx": {
+          "name": "_settings_v_version_microgame_login_version_microgame_login_logo_idx",
           "columns": [
             {
               "expression": "version_microgame_login_logo_id",
@@ -2702,8 +2785,8 @@
           "method": "btree",
           "with": {}
         },
-        "_constants_v_version_version__status_idx": {
-          "name": "_constants_v_version_version__status_idx",
+        "_settings_v_version_version__status_idx": {
+          "name": "_settings_v_version_version__status_idx",
           "columns": [
             {
               "expression": "version__status",
@@ -2717,8 +2800,8 @@
           "method": "btree",
           "with": {}
         },
-        "_constants_v_created_at_idx": {
-          "name": "_constants_v_created_at_idx",
+        "_settings_v_created_at_idx": {
+          "name": "_settings_v_created_at_idx",
           "columns": [
             {
               "expression": "created_at",
@@ -2732,8 +2815,8 @@
           "method": "btree",
           "with": {}
         },
-        "_constants_v_updated_at_idx": {
-          "name": "_constants_v_updated_at_idx",
+        "_settings_v_updated_at_idx": {
+          "name": "_settings_v_updated_at_idx",
           "columns": [
             {
               "expression": "updated_at",
@@ -2747,8 +2830,8 @@
           "method": "btree",
           "with": {}
         },
-        "_constants_v_latest_idx": {
-          "name": "_constants_v_latest_idx",
+        "_settings_v_latest_idx": {
+          "name": "_settings_v_latest_idx",
           "columns": [
             {
               "expression": "latest",
@@ -2764,9 +2847,9 @@
         }
       },
       "foreignKeys": {
-        "_constants_v_version_microgame_login_logo_id_media_id_fk": {
-          "name": "_constants_v_version_microgame_login_logo_id_media_id_fk",
-          "tableFrom": "_constants_v",
+        "_settings_v_version_microgame_login_logo_id_media_id_fk": {
+          "name": "_settings_v_version_microgame_login_logo_id_media_id_fk",
+          "tableFrom": "_settings_v",
           "tableTo": "media",
           "columnsFrom": [
             "version_microgame_login_logo_id"
@@ -2802,16 +2885,24 @@
         "published"
       ]
     },
-    "public.enum_constants_status": {
-      "name": "enum_constants_status",
+    "public.enum_users_roles": {
+      "name": "enum_users_roles",
+      "schema": "public",
+      "values": [
+        "admin",
+        "user"
+      ]
+    },
+    "public.enum_settings_status": {
+      "name": "enum_settings_status",
       "schema": "public",
       "values": [
         "draft",
         "published"
       ]
     },
-    "public.enum__constants_v_version_status": {
-      "name": "enum__constants_v_version_status",
+    "public.enum__settings_v_version_status": {
+      "name": "enum__settings_v_version_status",
       "schema": "public",
       "values": [
         "draft",

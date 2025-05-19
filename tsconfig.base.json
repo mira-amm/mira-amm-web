@@ -27,7 +27,7 @@
       "@/shared/*": ["libs/shared/*"],
       "@/web": ["libs/web/index.ts"],
       "@/web/*": ["libs/web/*"],
-      "@payload-config": ["apps/microgame/src/payload.config.ts"]
+      "@payload-config": ["apps/admin/src/payload.config.ts"]
     },
     "declaration": false,
     "importHelpers": true,

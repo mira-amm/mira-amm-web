@@ -2,12 +2,12 @@
 
 import { useEffect, useState } from "react";
 import { useTerminal } from "../../hooks/useTerminal";
-import BootSequence from "./BootSequence";
-import PasswordPrompt from "./PasswordPrompt";
-import AuthenticatedTerminal from "./AuthenticatedTerminal";
-import SecretNotes from "./SecretNotes";
-import CountdownTimer from "./CountdownTimer";
-import MiniGame from "./MiniGame";
+import { BootSequence } from "@/shared/ui/Terminal/BootSequence";
+import {PasswordPrompt} from "@/shared/ui/Terminal/PasswordPrompt";
+import {AuthenticatedTerminal} from "@/shared/ui/Terminal/AuthenticatedTerminal";
+import {SecretNotes} from "@/shared/ui/Terminal/SecretNotes";
+import {CountdownTimer} from "@/shared/ui/Terminal/CountdownTimer";
+import {MiniGame} from "@/shared/ui/Terminal/MiniGame";
 import { cn } from '@/shadcn-ui/utils'
 
 const Terminal = () => {
@@ -40,7 +40,7 @@ const Terminal = () => {
 
   return (
           <div
-            className={cn("terminal-content h-full p-4 text-terminal-text text-lg", {
+            className={cn("h-full p-4 text-terminal-text text-lg", {
               "overflow-y-auto": !state.gameActive,
             })}
           >

@@ -13,7 +13,7 @@ const nextConfig = {
   eslint: {
     ignoreDuringBuilds: true
   },
-  // distDir: 'dist/apps/microgame'
+  // distDir: 'dist/apps/admin'
 }
 
 export default withPayload(nextConfig)

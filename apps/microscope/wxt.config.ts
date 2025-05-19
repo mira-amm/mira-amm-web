@@ -50,5 +50,5 @@ export default defineConfig({
     ],
     // chromiumArgs: ['--user-data-dir=./.wxt/chrome-data'],
   },
-  publicDir: '../../apps/microgame/public',
+  publicDir: '../../apps/admin/public',
 });

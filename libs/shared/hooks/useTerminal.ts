@@ -1,6 +1,15 @@
 import {useState, useRef, useEffect, useCallback} from "react";
-import {COMMANDS, CORRECT_PASSWORD, HELP_TEXT} from "../lib/constants";
-import crypto from "crypto";
+// import { HELP_TEXT} from "../lib/constants";
+// import crypto from "crypto";
+//
+const COMMANDS = {
+  NOTES: "notes",
+  TIMER: "timer",
+  GAME: "game",
+  HELP: "help",
+  CLEAR: "clear",
+  LOGOUT: "logout",
+};
 
 export type TerminalView =
   | "login"
@@ -66,7 +75,7 @@ export function useTerminal() {
 
   // Handle password validation
   const validatePassword = useCallback((password: string) => {
-    if (password.toLowerCase() === CORRECT_PASSWORD) {
+    if (password.toLowerCase() === "microchain") {
       setState((prevState) => ({
         ...prevState,
         isAuthenticated: true,
@@ -95,12 +104,12 @@ export function useTerminal() {
 
     // Process different commands
     switch (cmd) {
-      case COMMANDS.HELP:
-        setState((prevState) => ({
-          ...prevState,
-          commandOutputs: [...prevState.commandOutputs, ...HELP_TEXT],
-        }));
-        break;
+      // case COMMANDS.HELP:
+      //   setState((prevState) => ({
+      //     ...prevState,
+      //     commandOutputs: [...prevState.commandOutputs, ...HELP_TEXT],
+      //   }));
+      //   break;
 
       case COMMANDS.NOTES:
         setState((prevState) => ({
@@ -209,7 +218,8 @@ export function useTerminal() {
         const newLeaderboard = [
           ...prevState.leaderboard,
           {
-            id: crypto.randomBytes(16).toString("hex"),
+            // id: crypto.randomBytes(16).toString("hex"),
+            id: "0x8393274983oijaf9837",
             wallet: wallet,
             score: prevState.currentScore,
           },

@@ -1,7 +1,5 @@
-import { SECRET_NOTES } from '../../lib/constants';
-   import clsx from 'clsx';
-
-const SecretNotes = ({ onReturn }: {onReturn: ()=>void}) => {
+import clsx from 'clsx';
+export const SecretNotes = ({ onReturn }: {onReturn: ()=>void}) => {
   return (
     <>
       <div className="mb-4 border-b border-terminal-red/50 pb-2">
@@ -13,7 +11,29 @@ const SecretNotes = ({ onReturn }: {onReturn: ()=>void}) => {
       </div>
 
       <div className="space-y-6">
-        {SECRET_NOTES.map((note, index) => (
+        {[
+  {
+    date: "1985-03-12",
+    content:
+      "President Reagan's Digital Assets Deregulation Act is working in our favor. The freedom to operate without government intervention gives us a clear advantage. The DLM-2000 prototype is progressing ahead of schedule. Fossil Frank has outdone himself again.",
+  },
+  {
+    date: "1985-06-24",
+    content:
+      "Met with the Velociraptor hedge fund managers today. They're eager to be early adopters of the DLM-2000. Their aggressive trading style makes them perfect beta testers. Brian Bronto's connections continue to pay dividends - his disco-era networking is unmatched.",
+  },
+  {
+    date: "1985-09-18",
+    content:
+      "Breakthrough on the permissionless trading algorithm! Our tests show zero slippage even with Brontosaurus-sized trades. This will revolutionize Wall Street. The traditional Dino exchanges won't know what hit them. Keeping this TOP SECRET until launch.",
+  },
+  {
+    date: "1985-11-03",
+    content:
+      "URGENT: Possible corporate espionage detected. Suspicious T-Rex footprints found near R&D lab. Rival Dino firms getting desperate as our launch approaches. Implementing additional security protocols. TRUST NO ONE OUTSIDE THE CORE TEAM!",
+    isHighlighted: true,
+  }
+].map((note, index) => (
           <div key={index}
          className={clsx(
            'note p-3 border-l border-l-6',
@@ -40,5 +60,3 @@ const SecretNotes = ({ onReturn }: {onReturn: ()=>void}) => {
     </>
   );
 };
-
-export default SecretNotes;
