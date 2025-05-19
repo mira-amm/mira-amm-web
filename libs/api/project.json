@@ -32,7 +32,6 @@
     },
     "compodoc": {
       "command": "compodoc",
-      "continuous": true,
       "cache": true,
       "options": {
         "cwd": "libs/api",

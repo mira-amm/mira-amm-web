@@ -9,8 +9,20 @@ const app = await NestFactory.create(AppModule);
 
 const config = new DocumentBuilder()
   .setTitle("🦕 Microchain API Reference")
-  .setDescription("🧩 OpenAPI Spec for the Microchain Platform.")
-  .setVersion("1.0")
+  .setDescription([
+    "🧩 OpenAPI Spec for the Microchain Platform.",
+    "",
+    "- ✨ [Scalar UI:](/docs/scalar) `/docs/scalar`",
+    "",
+    "- 📚 [Compodoc UI:](/compodoc) `/compodoc`",
+    "",
+    "- 📗 [Swagger UI:](/docs/swagger) `/docs/swagger`",
+    "",
+    "- 🕸 [GraphQL Voyager:](/docs/voyager) `/docs/voyager`",
+    "",
+    "- 🛝 [GraphQL Playground - Apollo Server:](/graphql) `/graphql`",
+  ].join('\n'))
+  .setVersion("1.0?")
   .setTermsOfService("https://docs.mira.ly/resources/terms-and-conditions")
   .build();
 
@@ -26,7 +38,11 @@ SwaggerModule.setup("/docs/swagger", app, documentFactory, {
 const configService = app.get(ConfigService);
 const port = configService.get("PORT") ?? (process.env.API_SERVER_PORT || 8080);
 
-app.use('/voyager', voyagerMiddleware({endpointUrl: '/graphql'}))
+app.use('/docs/voyager', voyagerMiddleware({endpointUrl: '/graphql'}))
+
+app.getHttpAdapter().get("/voyager", (_req, res) => {
+  res.redirect("/docs/voyager");
+});
 
 app.use(
   "/docs/scalar",
@@ -53,6 +69,15 @@ app.use(
 
 app.getHttpAdapter().get("/", (_req, res) => {
   res.redirect("/docs/scalar");
+});
+
+
+app.getHttpAdapter().get("/docs", (_req, res) => {
+  res.redirect("/compodoc");
+});
+
+app.getHttpAdapter().get("/docs/compodoc", (_req, res) => {
+  res.redirect("/compodoc");
 });
 
 await app.listen(port);
