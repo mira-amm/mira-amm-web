@@ -1,7 +1,10 @@
 {
   "name": "@microchain/source",
+  "description": "The Liquidity Hub on Fuel.",
+  "license": "GPL-3.0-only",
   "version": "0.0.0",
   "type": "module",
+  "homepage": "https://github.com/mira-amm/mira-amm-web",
   "packageManager": "pnpm@10.10.0",
   "engines": {
     "node": "22.15.0"
@@ -288,5 +291,28 @@
         }
       }
     }
-  }
+  },
+  "bugs": {
+    "url": "https://github.com/mira-amm/mira-amm-web/issues"
+  },
+  "keywords": [
+    "react",
+    "nix",
+    "postgresql",
+    "monorepo",
+    "fuel",
+    "storybook",
+    "mdx",
+    "serenity-js",
+    "nx",
+    "wxt",
+    "tailwindcss",
+    "pulumi",
+    "playwright",
+    "trunk-based-development",
+    "payloadcms",
+    "drizzle-orm",
+    "fumadocs",
+    "likec4"
+  ]
 }
