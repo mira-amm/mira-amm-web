@@ -1,18 +1,76 @@
 {
   "name": "api",
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
-  "sourceRoot": "libs/api",
+  "metadata": {
+    "description": "Back-End Application for the Microchain Systems Platform."
+  },
+  "sourceRoot": "libs/api/src",
   "projectType": "library",
-  "tags": [
-    "tools"
+  "implicitDependencies": [
+    "!libs/web"
   ],
+  "tags": [
+    "tools",
+    "back-end"
+  ],
+  "// targets": "to see all targets run: nx show project api --web",
   "targets": {
-    "dev": {
+    "posting": {
       "command": "posting -e ./dev.env --collection ./",
       "options": {
         "cwd": "libs/api/posting"
       },
-
+    },
+    "dev": {
+      "dependsOn": [
+        "compodoc"
+      ],
+      "command": "tsx --watch src/main.ts",
+      "options": {
+        "cwd": "libs/api"
+      }
+    },
+    "compodoc": {
+      "command": "compodoc --theme=postmark",
+      "continuous": true,
+      "options": {
+        "cwd": "libs/api",
+      }
+    },
+    "build": {
+      "command": "tsx scripts/build.ts",
+      "cache": true,
+      "options": {
+        "cwd": "libs/api"
+      }
+    },
+    "start": {
+      "dependsOn": [
+        "compodoc",
+        "build",
+      ],
+      "command": "node build/main.js",
+      "options": {
+        "cwd": "libs/api"
+      }
+    },
+    "test": {
+      "command": "tsx --test",
+      "options": {
+        "cwd": "libs/api"
+      }
+    },
+    "test-e2e": {
+      "command": "tsx --test 'src/**/*.spec.ts'",
+      "options": {
+        "cwd": "libs/api"
+      }
+    },
+    "typecheck": {
+      "command": "tsc --noEmit",
+      "options": {
+        "cwd": "libs/api"
+      }
     },
   }
 }

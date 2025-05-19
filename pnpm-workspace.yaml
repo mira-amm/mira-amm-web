@@ -1,5 +1,8 @@
 onlyBuiltDependencies:
+  - '@compodoc/compodoc'
+  - '@nestjs/core'
   - '@parcel/watcher'
+  - '@scarf/scarf'
   - '@sentry/cli'
   - '@swc/core'
   - bigint-buffer

@@ -2,14 +2,19 @@
 #               Build/Test Outputs
 #====================================================
 **/dist
+**/bin
+**/.swc
 **/target
 **/.next
 **/.react-router
 **/out
 **/build
+libs/api/documentation
 **/generated
 **/playwright-report
 **/test-results
+**/.nyc_output
+**/coverage
 **/storybook-static
 **/coverage
 **/*.tsbuildinfo
@@ -30,8 +35,13 @@ libs/db/data/*
 **/postgresql.log
 logs
 *.log
+pnpm-debug.log*
 libs/db/supabase/.branches
 libs/db/supabase/.temp
+**/.temp
+**/.tmp
+**/temp
+**/tmp
 vite.config.*.timestamp*
 vitest.config.*.timestamp*
 
@@ -49,6 +59,14 @@ vitest.config.*.timestamp*
 *.pem
 *tmp*
 .idea/
+.project
+.classpath
+.c9
+*.launch
+.vscode/*
+.settings
+!.vscode/extensions.json
+!.vscode/settings-example.json
 
 #====================================================
 #              Environment Variables
