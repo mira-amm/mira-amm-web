@@ -77,7 +77,6 @@
     "version": {
       "conventionalCommits": true
     },
-    "projects": ["mira"],
     "changelog": {
       "workspaceChangelog": {
         "file": false,
