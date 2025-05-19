@@ -22,7 +22,6 @@ const CoinListItem = ({assetData}: Props) => {
   return (
     <span className={clsx(styles.coin, !assetData?.name && styles.centered)}>
       <Tooltip id="verified-tooltip" />
-
       <FallbackImage
         src={assetData.icon}
         alt={`${assetData.name} icon`}
@@ -33,7 +32,9 @@ const CoinListItem = ({assetData}: Props) => {
 
       <div className={styles.names}>
         <div className={styles.name_container}>
-          <p className="mc-type-xl">{assetData.symbol}</p>
+          <p className={clsx("mc-type-xl", styles.assetSymbol)}>
+            {assetData.symbol}
+          </p>
           {isVerified && (
             <span
               data-tooltip-id="verified-tooltip"

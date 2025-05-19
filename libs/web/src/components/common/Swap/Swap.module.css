@@ -121,3 +121,16 @@
     font-size: 14px !important;
   }
 }
+
+@media (max-width: 420px) {
+  .coinsModalTitle {
+    font-size: 17.72px;
+    line-height: 21px;
+  }
+}
+@media (max-width: 380px) {
+  .coinsModalTitle {
+    font-size: 15.75px;
+    line-height: 19px;
+  }
+}

@@ -49,3 +49,24 @@
     border-radius: 100%;
   }
 }
+
+@media (max-width: 420px) {
+  .assetSymbol {
+    font-size: 17.72px;
+    line-height: 21px;
+  }
+  .fullName {
+    font-size: 14px;
+    line-height: 17px;
+  }
+}
+@media (max-width: 380px) {
+  .assetSymbol {
+    font-size: 15.75px;
+    line-height: 19px;
+  }
+  .fullName {
+    font-size: 12.44px;
+    line-height: 15px;
+  }
+}

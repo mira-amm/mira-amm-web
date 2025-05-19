@@ -729,6 +729,7 @@ const Swap = ({isWidget}: {isWidget?: boolean}) => {
         title="Choose token"
         size="regular"
         className={styles.coinsModal}
+        titleClassName={styles.coinsModalTitle}
       >
         <CoinsListModal selectCoin={handleCoinSelection} balances={balances} />
       </CoinsModal>

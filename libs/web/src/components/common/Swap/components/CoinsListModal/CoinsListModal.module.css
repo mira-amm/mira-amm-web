@@ -26,3 +26,16 @@
   background-color: var(--background-grey-dark);
   cursor: pointer;
 }
+
+@media (max-width: 420px) {
+  .tokenSearchInput {
+    font-size: 14px;
+    line-height: 17px;
+  }
+}
+@media (max-width: 380px) {
+  .tokenSearchInput {
+    font-size: 12px;
+    line-height: 17px;
+  }
+}
