@@ -1,5 +1,5 @@
-import '../../theme/tailwind.scss';
-import {OAuthButton} from "@/cms/ui/OAuthButton"
+import '@/meshwave-ui/tailwind.scss';
+import {OAuthButton} from "@/meshwave-ui/oauth-button"
 
 export function OAuthButtons() {
   return (

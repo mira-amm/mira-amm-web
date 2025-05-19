@@ -29,12 +29,13 @@ export const enum__brands_v_version_status = pgEnum(
   "enum__brands_v_version_status",
   ["draft", "published"],
 );
-export const enum_constants_status = pgEnum("enum_constants_status", [
+export const enum_users_roles = pgEnum("enum_users_roles", ["admin", "user"]);
+export const enum_settings_status = pgEnum("enum_settings_status", [
   "draft",
   "published",
 ]);
-export const enum__constants_v_version_status = pgEnum(
-  "enum__constants_v_version_status",
+export const enum__settings_v_version_status = pgEnum(
+  "enum__settings_v_version_status",
   ["draft", "published"],
 );
 
@@ -258,6 +259,25 @@ export const games = pgTable(
     games_score_idx: index("games_score_idx").on(columns.score),
     games_updated_at_idx: index("games_updated_at_idx").on(columns.updatedAt),
     games_created_at_idx: index("games_created_at_idx").on(columns.createdAt),
+  }),
+);
+
+export const users_roles = pgTable(
+  "users_roles",
+  {
+    order: integer("order").notNull(),
+    parent: integer("parent_id").notNull(),
+    value: enum_users_roles("value"),
+    id: serial("id").primaryKey(),
+  },
+  (columns) => ({
+    orderIdx: index("users_roles_order_idx").on(columns.order),
+    parentIdx: index("users_roles_parent_idx").on(columns.parent),
+    parentFk: foreignKey({
+      columns: [columns["parent"]],
+      foreignColumns: [users.id],
+      name: "users_roles_parent_fk",
+    }).onDelete("cascade"),
   }),
 );
 
@@ -499,8 +519,8 @@ export const payload_migrations = pgTable(
   }),
 );
 
-export const constants_microgame_login_text = pgTable(
-  "constants_microgame_login_text",
+export const settings_microgame_login_text = pgTable(
+  "settings_microgame_login_text",
   {
     _order: integer("_order").notNull(),
     _parentID: integer("_parent_id").notNull(),
@@ -509,22 +529,22 @@ export const constants_microgame_login_text = pgTable(
     text: varchar("text"),
   },
   (columns) => ({
-    _orderIdx: index("constants_microgame_login_text_order_idx").on(
+    _orderIdx: index("settings_microgame_login_text_order_idx").on(
       columns._order,
     ),
-    _parentIDIdx: index("constants_microgame_login_text_parent_id_idx").on(
+    _parentIDIdx: index("settings_microgame_login_text_parent_id_idx").on(
       columns._parentID,
     ),
     _parentIDFk: foreignKey({
       columns: [columns["_parentID"]],
-      foreignColumns: [constants.id],
-      name: "constants_microgame_login_text_parent_id_fk",
+      foreignColumns: [settings.id],
+      name: "settings_microgame_login_text_parent_id_fk",
     }).onDelete("cascade"),
   }),
 );
 
-export const constants_microgame_options = pgTable(
-  "constants_microgame_options",
+export const settings_microgame_options = pgTable(
+  "settings_microgame_options",
   {
     _order: integer("_order").notNull(),
     _parentID: integer("_parent_id").notNull(),
@@ -533,22 +553,20 @@ export const constants_microgame_options = pgTable(
     description: varchar("description"),
   },
   (columns) => ({
-    _orderIdx: index("constants_microgame_options_order_idx").on(
-      columns._order,
-    ),
-    _parentIDIdx: index("constants_microgame_options_parent_id_idx").on(
+    _orderIdx: index("settings_microgame_options_order_idx").on(columns._order),
+    _parentIDIdx: index("settings_microgame_options_parent_id_idx").on(
       columns._parentID,
     ),
     _parentIDFk: foreignKey({
       columns: [columns["_parentID"]],
-      foreignColumns: [constants.id],
-      name: "constants_microgame_options_parent_id_fk",
+      foreignColumns: [settings.id],
+      name: "settings_microgame_options_parent_id_fk",
     }).onDelete("cascade"),
   }),
 );
 
-export const constants_microgame_notes = pgTable(
-  "constants_microgame_notes",
+export const settings_microgame_notes = pgTable(
+  "settings_microgame_notes",
   {
     _order: integer("_order").notNull(),
     _parentID: integer("_parent_id").notNull(),
@@ -557,20 +575,20 @@ export const constants_microgame_notes = pgTable(
     description: varchar("description"),
   },
   (columns) => ({
-    _orderIdx: index("constants_microgame_notes_order_idx").on(columns._order),
-    _parentIDIdx: index("constants_microgame_notes_parent_id_idx").on(
+    _orderIdx: index("settings_microgame_notes_order_idx").on(columns._order),
+    _parentIDIdx: index("settings_microgame_notes_parent_id_idx").on(
       columns._parentID,
     ),
     _parentIDFk: foreignKey({
       columns: [columns["_parentID"]],
-      foreignColumns: [constants.id],
-      name: "constants_microgame_notes_parent_id_fk",
+      foreignColumns: [settings.id],
+      name: "settings_microgame_notes_parent_id_fk",
     }).onDelete("cascade"),
   }),
 );
 
-export const constants_microgame_instructions = pgTable(
-  "constants_microgame_instructions",
+export const settings_microgame_instructions = pgTable(
+  "settings_microgame_instructions",
   {
     _order: integer("_order").notNull(),
     _parentID: integer("_parent_id").notNull(),
@@ -578,22 +596,22 @@ export const constants_microgame_instructions = pgTable(
     instruction: varchar("instruction"),
   },
   (columns) => ({
-    _orderIdx: index("constants_microgame_instructions_order_idx").on(
+    _orderIdx: index("settings_microgame_instructions_order_idx").on(
       columns._order,
     ),
-    _parentIDIdx: index("constants_microgame_instructions_parent_id_idx").on(
+    _parentIDIdx: index("settings_microgame_instructions_parent_id_idx").on(
       columns._parentID,
     ),
     _parentIDFk: foreignKey({
       columns: [columns["_parentID"]],
-      foreignColumns: [constants.id],
-      name: "constants_microgame_instructions_parent_id_fk",
+      foreignColumns: [settings.id],
+      name: "settings_microgame_instructions_parent_id_fk",
     }).onDelete("cascade"),
   }),
 );
 
-export const constants = pgTable(
-  "constants",
+export const settings = pgTable(
+  "settings",
   {
     id: serial("id").primaryKey(),
     microgame_login_logo: integer("microgame_login_logo_id").references(
@@ -612,7 +630,7 @@ export const constants = pgTable(
     microgame_tradingInstructionsTitle: varchar(
       "microgame_trading_instructions_title",
     ),
-    _status: enum_constants_status("_status").default("draft"),
+    _status: enum_settings_status("_status").default("draft"),
     updatedAt: timestamp("updated_at", {
       mode: "string",
       withTimezone: true,
@@ -625,15 +643,15 @@ export const constants = pgTable(
     }),
   },
   (columns) => ({
-    constants_microgame_login_microgame_login_logo_idx: index(
-      "constants_microgame_login_microgame_login_logo_idx",
+    settings_microgame_login_microgame_login_logo_idx: index(
+      "settings_microgame_login_microgame_login_logo_idx",
     ).on(columns.microgame_login_logo),
-    constants__status_idx: index("constants__status_idx").on(columns._status),
+    settings__status_idx: index("settings__status_idx").on(columns._status),
   }),
 );
 
-export const _constants_v_version_microgame_login_text = pgTable(
-  "_constants_v_version_microgame_login_text",
+export const _settings_v_version_microgame_login_text = pgTable(
+  "_settings_v_version_microgame_login_text",
   {
     _order: integer("_order").notNull(),
     _parentID: integer("_parent_id").notNull(),
@@ -643,22 +661,22 @@ export const _constants_v_version_microgame_login_text = pgTable(
     _uuid: varchar("_uuid"),
   },
   (columns) => ({
-    _orderIdx: index("_constants_v_version_microgame_login_text_order_idx").on(
+    _orderIdx: index("_settings_v_version_microgame_login_text_order_idx").on(
       columns._order,
     ),
     _parentIDIdx: index(
-      "_constants_v_version_microgame_login_text_parent_id_idx",
+      "_settings_v_version_microgame_login_text_parent_id_idx",
     ).on(columns._parentID),
     _parentIDFk: foreignKey({
       columns: [columns["_parentID"]],
-      foreignColumns: [_constants_v.id],
-      name: "_constants_v_version_microgame_login_text_parent_id_fk",
+      foreignColumns: [_settings_v.id],
+      name: "_settings_v_version_microgame_login_text_parent_id_fk",
     }).onDelete("cascade"),
   }),
 );
 
-export const _constants_v_version_microgame_options = pgTable(
-  "_constants_v_version_microgame_options",
+export const _settings_v_version_microgame_options = pgTable(
+  "_settings_v_version_microgame_options",
   {
     _order: integer("_order").notNull(),
     _parentID: integer("_parent_id").notNull(),
@@ -668,22 +686,22 @@ export const _constants_v_version_microgame_options = pgTable(
     _uuid: varchar("_uuid"),
   },
   (columns) => ({
-    _orderIdx: index("_constants_v_version_microgame_options_order_idx").on(
+    _orderIdx: index("_settings_v_version_microgame_options_order_idx").on(
       columns._order,
     ),
     _parentIDIdx: index(
-      "_constants_v_version_microgame_options_parent_id_idx",
+      "_settings_v_version_microgame_options_parent_id_idx",
     ).on(columns._parentID),
     _parentIDFk: foreignKey({
       columns: [columns["_parentID"]],
-      foreignColumns: [_constants_v.id],
-      name: "_constants_v_version_microgame_options_parent_id_fk",
+      foreignColumns: [_settings_v.id],
+      name: "_settings_v_version_microgame_options_parent_id_fk",
     }).onDelete("cascade"),
   }),
 );
 
-export const _constants_v_version_microgame_notes = pgTable(
-  "_constants_v_version_microgame_notes",
+export const _settings_v_version_microgame_notes = pgTable(
+  "_settings_v_version_microgame_notes",
   {
     _order: integer("_order").notNull(),
     _parentID: integer("_parent_id").notNull(),
@@ -693,22 +711,22 @@ export const _constants_v_version_microgame_notes = pgTable(
     _uuid: varchar("_uuid"),
   },
   (columns) => ({
-    _orderIdx: index("_constants_v_version_microgame_notes_order_idx").on(
+    _orderIdx: index("_settings_v_version_microgame_notes_order_idx").on(
       columns._order,
     ),
-    _parentIDIdx: index(
-      "_constants_v_version_microgame_notes_parent_id_idx",
-    ).on(columns._parentID),
+    _parentIDIdx: index("_settings_v_version_microgame_notes_parent_id_idx").on(
+      columns._parentID,
+    ),
     _parentIDFk: foreignKey({
       columns: [columns["_parentID"]],
-      foreignColumns: [_constants_v.id],
-      name: "_constants_v_version_microgame_notes_parent_id_fk",
+      foreignColumns: [_settings_v.id],
+      name: "_settings_v_version_microgame_notes_parent_id_fk",
     }).onDelete("cascade"),
   }),
 );
 
-export const _constants_v_version_microgame_instructions = pgTable(
-  "_constants_v_version_microgame_instructions",
+export const _settings_v_version_microgame_instructions = pgTable(
+  "_settings_v_version_microgame_instructions",
   {
     _order: integer("_order").notNull(),
     _parentID: integer("_parent_id").notNull(),
@@ -717,22 +735,22 @@ export const _constants_v_version_microgame_instructions = pgTable(
     _uuid: varchar("_uuid"),
   },
   (columns) => ({
-    _orderIdx: index(
-      "_constants_v_version_microgame_instructions_order_idx",
-    ).on(columns._order),
+    _orderIdx: index("_settings_v_version_microgame_instructions_order_idx").on(
+      columns._order,
+    ),
     _parentIDIdx: index(
-      "_constants_v_version_microgame_instructions_parent_id_idx",
+      "_settings_v_version_microgame_instructions_parent_id_idx",
     ).on(columns._parentID),
     _parentIDFk: foreignKey({
       columns: [columns["_parentID"]],
-      foreignColumns: [_constants_v.id],
-      name: "_constants_v_version_microgame_instructions_parent_id_fk",
+      foreignColumns: [_settings_v.id],
+      name: "_settings_v_version_microgame_instructions_parent_id_fk",
     }).onDelete("cascade"),
   }),
 );
 
-export const _constants_v = pgTable(
-  "_constants_v",
+export const _settings_v = pgTable(
+  "_settings_v",
   {
     id: serial("id").primaryKey(),
     version_microgame_login_logo: integer(
@@ -751,7 +769,7 @@ export const _constants_v = pgTable(
       "version_microgame_trading_instructions_title",
     ),
     version__status:
-      enum__constants_v_version_status("version__status").default("draft"),
+      enum__settings_v_version_status("version__status").default("draft"),
     version_updatedAt: timestamp("version_updated_at", {
       mode: "string",
       withTimezone: true,
@@ -779,22 +797,19 @@ export const _constants_v = pgTable(
     latest: boolean("latest"),
   },
   (columns) => ({
-    _constants_v_version_microgame_login_version_microgame_login_logo_idx:
-      index(
-        "_constants_v_version_microgame_login_version_microgame_login_logo_idx",
-      ).on(columns.version_microgame_login_logo),
-    _constants_v_version_version__status_idx: index(
-      "_constants_v_version_version__status_idx",
+    _settings_v_version_microgame_login_version_microgame_login_logo_idx: index(
+      "_settings_v_version_microgame_login_version_microgame_login_logo_idx",
+    ).on(columns.version_microgame_login_logo),
+    _settings_v_version_version__status_idx: index(
+      "_settings_v_version_version__status_idx",
     ).on(columns.version__status),
-    _constants_v_created_at_idx: index("_constants_v_created_at_idx").on(
+    _settings_v_created_at_idx: index("_settings_v_created_at_idx").on(
       columns.createdAt,
     ),
-    _constants_v_updated_at_idx: index("_constants_v_updated_at_idx").on(
+    _settings_v_updated_at_idx: index("_settings_v_updated_at_idx").on(
       columns.updatedAt,
     ),
-    _constants_v_latest_idx: index("_constants_v_latest_idx").on(
-      columns.latest,
-    ),
+    _settings_v_latest_idx: index("_settings_v_latest_idx").on(columns.latest),
   }),
 );
 
@@ -858,7 +873,17 @@ export const relations_games = relations(games, ({one}) => ({
     relationName: "player",
   }),
 }));
-export const relations_users = relations(users, ({one}) => ({
+export const relations_users_roles = relations(users_roles, ({one}) => ({
+  parent: one(users, {
+    fields: [users_roles.parent],
+    references: [users.id],
+    relationName: "roles",
+  }),
+}));
+export const relations_users = relations(users, ({one, many}) => ({
+  roles: many(users_roles, {
+    relationName: "roles",
+  }),
   avatar: one(media, {
     fields: [users.avatar],
     references: [media.id],
@@ -930,183 +955,180 @@ export const relations_payload_migrations = relations(
   payload_migrations,
   () => ({}),
 );
-export const relations_constants_microgame_login_text = relations(
-  constants_microgame_login_text,
+export const relations_settings_microgame_login_text = relations(
+  settings_microgame_login_text,
   ({one}) => ({
-    _parentID: one(constants, {
-      fields: [constants_microgame_login_text._parentID],
-      references: [constants.id],
+    _parentID: one(settings, {
+      fields: [settings_microgame_login_text._parentID],
+      references: [settings.id],
       relationName: "microgame_login_text",
     }),
   }),
 );
-export const relations_constants_microgame_options = relations(
-  constants_microgame_options,
+export const relations_settings_microgame_options = relations(
+  settings_microgame_options,
   ({one}) => ({
-    _parentID: one(constants, {
-      fields: [constants_microgame_options._parentID],
-      references: [constants.id],
+    _parentID: one(settings, {
+      fields: [settings_microgame_options._parentID],
+      references: [settings.id],
       relationName: "microgame_options",
     }),
   }),
 );
-export const relations_constants_microgame_notes = relations(
-  constants_microgame_notes,
+export const relations_settings_microgame_notes = relations(
+  settings_microgame_notes,
   ({one}) => ({
-    _parentID: one(constants, {
-      fields: [constants_microgame_notes._parentID],
-      references: [constants.id],
+    _parentID: one(settings, {
+      fields: [settings_microgame_notes._parentID],
+      references: [settings.id],
       relationName: "microgame_notes",
     }),
   }),
 );
-export const relations_constants_microgame_instructions = relations(
-  constants_microgame_instructions,
+export const relations_settings_microgame_instructions = relations(
+  settings_microgame_instructions,
   ({one}) => ({
-    _parentID: one(constants, {
-      fields: [constants_microgame_instructions._parentID],
-      references: [constants.id],
+    _parentID: one(settings, {
+      fields: [settings_microgame_instructions._parentID],
+      references: [settings.id],
       relationName: "microgame_instructions",
     }),
   }),
 );
-export const relations_constants = relations(constants, ({one, many}) => ({
+export const relations_settings = relations(settings, ({one, many}) => ({
   microgame_login_logo: one(media, {
-    fields: [constants.microgame_login_logo],
+    fields: [settings.microgame_login_logo],
     references: [media.id],
     relationName: "microgame_login_logo",
   }),
-  microgame_login_text: many(constants_microgame_login_text, {
+  microgame_login_text: many(settings_microgame_login_text, {
     relationName: "microgame_login_text",
   }),
-  microgame_options: many(constants_microgame_options, {
+  microgame_options: many(settings_microgame_options, {
     relationName: "microgame_options",
   }),
-  microgame_notes: many(constants_microgame_notes, {
+  microgame_notes: many(settings_microgame_notes, {
     relationName: "microgame_notes",
   }),
-  microgame_instructions: many(constants_microgame_instructions, {
+  microgame_instructions: many(settings_microgame_instructions, {
     relationName: "microgame_instructions",
   }),
 }));
-export const relations__constants_v_version_microgame_login_text = relations(
-  _constants_v_version_microgame_login_text,
+export const relations__settings_v_version_microgame_login_text = relations(
+  _settings_v_version_microgame_login_text,
   ({one}) => ({
-    _parentID: one(_constants_v, {
-      fields: [_constants_v_version_microgame_login_text._parentID],
-      references: [_constants_v.id],
+    _parentID: one(_settings_v, {
+      fields: [_settings_v_version_microgame_login_text._parentID],
+      references: [_settings_v.id],
       relationName: "version_microgame_login_text",
     }),
   }),
 );
-export const relations__constants_v_version_microgame_options = relations(
-  _constants_v_version_microgame_options,
+export const relations__settings_v_version_microgame_options = relations(
+  _settings_v_version_microgame_options,
   ({one}) => ({
-    _parentID: one(_constants_v, {
-      fields: [_constants_v_version_microgame_options._parentID],
-      references: [_constants_v.id],
+    _parentID: one(_settings_v, {
+      fields: [_settings_v_version_microgame_options._parentID],
+      references: [_settings_v.id],
       relationName: "version_microgame_options",
     }),
   }),
 );
-export const relations__constants_v_version_microgame_notes = relations(
-  _constants_v_version_microgame_notes,
+export const relations__settings_v_version_microgame_notes = relations(
+  _settings_v_version_microgame_notes,
   ({one}) => ({
-    _parentID: one(_constants_v, {
-      fields: [_constants_v_version_microgame_notes._parentID],
-      references: [_constants_v.id],
+    _parentID: one(_settings_v, {
+      fields: [_settings_v_version_microgame_notes._parentID],
+      references: [_settings_v.id],
       relationName: "version_microgame_notes",
     }),
   }),
 );
-export const relations__constants_v_version_microgame_instructions = relations(
-  _constants_v_version_microgame_instructions,
+export const relations__settings_v_version_microgame_instructions = relations(
+  _settings_v_version_microgame_instructions,
   ({one}) => ({
-    _parentID: one(_constants_v, {
-      fields: [_constants_v_version_microgame_instructions._parentID],
-      references: [_constants_v.id],
+    _parentID: one(_settings_v, {
+      fields: [_settings_v_version_microgame_instructions._parentID],
+      references: [_settings_v.id],
       relationName: "version_microgame_instructions",
     }),
   }),
 );
-export const relations__constants_v = relations(
-  _constants_v,
-  ({one, many}) => ({
-    version_microgame_login_logo: one(media, {
-      fields: [_constants_v.version_microgame_login_logo],
-      references: [media.id],
-      relationName: "version_microgame_login_logo",
-    }),
-    version_microgame_login_text: many(
-      _constants_v_version_microgame_login_text,
-      {
-        relationName: "version_microgame_login_text",
-      },
-    ),
-    version_microgame_options: many(_constants_v_version_microgame_options, {
-      relationName: "version_microgame_options",
-    }),
-    version_microgame_notes: many(_constants_v_version_microgame_notes, {
-      relationName: "version_microgame_notes",
-    }),
-    version_microgame_instructions: many(
-      _constants_v_version_microgame_instructions,
-      {
-        relationName: "version_microgame_instructions",
-      },
-    ),
+export const relations__settings_v = relations(_settings_v, ({one, many}) => ({
+  version_microgame_login_logo: one(media, {
+    fields: [_settings_v.version_microgame_login_logo],
+    references: [media.id],
+    relationName: "version_microgame_login_logo",
   }),
-);
+  version_microgame_login_text: many(_settings_v_version_microgame_login_text, {
+    relationName: "version_microgame_login_text",
+  }),
+  version_microgame_options: many(_settings_v_version_microgame_options, {
+    relationName: "version_microgame_options",
+  }),
+  version_microgame_notes: many(_settings_v_version_microgame_notes, {
+    relationName: "version_microgame_notes",
+  }),
+  version_microgame_instructions: many(
+    _settings_v_version_microgame_instructions,
+    {
+      relationName: "version_microgame_instructions",
+    },
+  ),
+}));
 
 type DatabaseSchema = {
   enum_brands_status: typeof enum_brands_status;
   enum__brands_v_version_status: typeof enum__brands_v_version_status;
-  enum_constants_status: typeof enum_constants_status;
-  enum__constants_v_version_status: typeof enum__constants_v_version_status;
+  enum_users_roles: typeof enum_users_roles;
+  enum_settings_status: typeof enum_settings_status;
+  enum__settings_v_version_status: typeof enum__settings_v_version_status;
   brands_links: typeof brands_links;
   brands: typeof brands;
   _brands_v_version_links: typeof _brands_v_version_links;
   _brands_v: typeof _brands_v;
   media: typeof media;
   games: typeof games;
+  users_roles: typeof users_roles;
   users: typeof users;
   payload_locked_documents: typeof payload_locked_documents;
   payload_locked_documents_rels: typeof payload_locked_documents_rels;
   payload_preferences: typeof payload_preferences;
   payload_preferences_rels: typeof payload_preferences_rels;
   payload_migrations: typeof payload_migrations;
-  constants_microgame_login_text: typeof constants_microgame_login_text;
-  constants_microgame_options: typeof constants_microgame_options;
-  constants_microgame_notes: typeof constants_microgame_notes;
-  constants_microgame_instructions: typeof constants_microgame_instructions;
-  constants: typeof constants;
-  _constants_v_version_microgame_login_text: typeof _constants_v_version_microgame_login_text;
-  _constants_v_version_microgame_options: typeof _constants_v_version_microgame_options;
-  _constants_v_version_microgame_notes: typeof _constants_v_version_microgame_notes;
-  _constants_v_version_microgame_instructions: typeof _constants_v_version_microgame_instructions;
-  _constants_v: typeof _constants_v;
+  settings_microgame_login_text: typeof settings_microgame_login_text;
+  settings_microgame_options: typeof settings_microgame_options;
+  settings_microgame_notes: typeof settings_microgame_notes;
+  settings_microgame_instructions: typeof settings_microgame_instructions;
+  settings: typeof settings;
+  _settings_v_version_microgame_login_text: typeof _settings_v_version_microgame_login_text;
+  _settings_v_version_microgame_options: typeof _settings_v_version_microgame_options;
+  _settings_v_version_microgame_notes: typeof _settings_v_version_microgame_notes;
+  _settings_v_version_microgame_instructions: typeof _settings_v_version_microgame_instructions;
+  _settings_v: typeof _settings_v;
   relations_brands_links: typeof relations_brands_links;
   relations_brands: typeof relations_brands;
   relations__brands_v_version_links: typeof relations__brands_v_version_links;
   relations__brands_v: typeof relations__brands_v;
   relations_media: typeof relations_media;
   relations_games: typeof relations_games;
+  relations_users_roles: typeof relations_users_roles;
   relations_users: typeof relations_users;
   relations_payload_locked_documents_rels: typeof relations_payload_locked_documents_rels;
   relations_payload_locked_documents: typeof relations_payload_locked_documents;
   relations_payload_preferences_rels: typeof relations_payload_preferences_rels;
   relations_payload_preferences: typeof relations_payload_preferences;
   relations_payload_migrations: typeof relations_payload_migrations;
-  relations_constants_microgame_login_text: typeof relations_constants_microgame_login_text;
-  relations_constants_microgame_options: typeof relations_constants_microgame_options;
-  relations_constants_microgame_notes: typeof relations_constants_microgame_notes;
-  relations_constants_microgame_instructions: typeof relations_constants_microgame_instructions;
-  relations_constants: typeof relations_constants;
-  relations__constants_v_version_microgame_login_text: typeof relations__constants_v_version_microgame_login_text;
-  relations__constants_v_version_microgame_options: typeof relations__constants_v_version_microgame_options;
-  relations__constants_v_version_microgame_notes: typeof relations__constants_v_version_microgame_notes;
-  relations__constants_v_version_microgame_instructions: typeof relations__constants_v_version_microgame_instructions;
-  relations__constants_v: typeof relations__constants_v;
+  relations_settings_microgame_login_text: typeof relations_settings_microgame_login_text;
+  relations_settings_microgame_options: typeof relations_settings_microgame_options;
+  relations_settings_microgame_notes: typeof relations_settings_microgame_notes;
+  relations_settings_microgame_instructions: typeof relations_settings_microgame_instructions;
+  relations_settings: typeof relations_settings;
+  relations__settings_v_version_microgame_login_text: typeof relations__settings_v_version_microgame_login_text;
+  relations__settings_v_version_microgame_options: typeof relations__settings_v_version_microgame_options;
+  relations__settings_v_version_microgame_notes: typeof relations__settings_v_version_microgame_notes;
+  relations__settings_v_version_microgame_instructions: typeof relations__settings_v_version_microgame_instructions;
+  relations__settings_v: typeof relations__settings_v;
 };
 
 declare module "@payloadcms/db-postgres" {
