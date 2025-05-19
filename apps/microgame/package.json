@@ -1,6 +1,6 @@
 {
-  "name": "dex",
-  "private": true,
+  "name": "microgame",
+  "version": "0.0.0",
   "type": "module",
   "sideEffects": false
 }
