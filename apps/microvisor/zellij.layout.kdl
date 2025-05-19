@@ -112,7 +112,7 @@ layout {
         pane {
             name "🔌 API"
             command "pnpm"
-            args "nx" "dev" "api"
+            args "nx" "posting" "api"
         }
         pane {
             name "💿 DATABASE"

@@ -1,0 +1,13 @@
+{
+  "$schema": "../../node_modules/@compodoc/compodoc/src/config/schema.json",
+  "tsconfig": "tsconfig.doc.json",
+  "serve": true,
+  "watch": true,
+  "port": 4800,
+  "open": true,
+  "output": "./documentation",
+  "name": "🦕 Microchain API Reference",
+  "assets": "../../libs/shared/assets",
+  "customFavicon": "../../apps/docs/public/favicon.ico",
+  "customLogo": "../../libs/shared/assets/microchain-symbol.svg"
+}
