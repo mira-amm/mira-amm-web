@@ -18,7 +18,7 @@
             "db"
           ],
           "target": "start"
-        }
+        },
       ],
       "command": "ascii-image-converter ../../libs/shared/assets/charthouse-labs-symbol.png --color --complex; next dev -p $MICROGAME_DEV_SERVER_PORT",
       "options": {
@@ -30,7 +30,7 @@
     },
     "start": {
       "dependsOn": [
-          "build"
+        "build"
       ],
       "command": "cross-env NODE_OPTIONS=--no-deprecation next start -p $MICROGAME_DEV_SERVER_PORT",
       "options": {
@@ -40,7 +40,8 @@
     "build": {
       "command": "cross-env NODE_OPTIONS=--no-deprecation next build",
       "options": {
-        "cwd": "apps/microgame"
+        "cwd": "apps/microgame",
+        "cache": true
       }
     },
     "lint": {
