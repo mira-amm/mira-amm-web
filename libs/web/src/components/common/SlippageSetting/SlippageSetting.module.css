@@ -3,6 +3,7 @@
   border-radius: 6px;
   background-color: var(--background-grey-light);
   color: var(--content-dimmed-light);
+  margin-right: 8px;
 }
 
 .settingsButton {
