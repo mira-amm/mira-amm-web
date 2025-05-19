@@ -1,220 +1,97 @@
-import { useState, useEffect } from "react";
-import { GAME_INSTRUCTIONS } from "../../lib/constants";
-import { PaginationContextProvider } from "../Pagination/PaginationContextProvider";
-import { Pagination } from "../Pagination/Pagination";
-import { Input } from "../input";
-import { Game } from "../Game/Game";
-import useWeb3React from "../../hooks/use-web3-react";
+import { useState } from "react";
+import { PaginationContextProvider } from "@/shared/ui/Pagination/PaginationContextProvider";
+import { Pagination } from "@/shared/ui/Pagination/Pagination";
+import { Input } from "@/shared/ui/input";
+import { Game } from "@/shared/ui/Game/Game";
+import { queryClient } from '@/shared/lib/queryClient'
+import { QueryClientProvider } from '@tanstack/react-query'
 
 interface LeaderboardEntry {
-  player: any;
+  player: { name: string; walletAddress: string };
   id: number;
   score: number;
 }
 
-const MiniGame = ({ terminal }: any) => {
-  const {state, startGame, updateGameScore, endGame, submitWalletAddress } =
-    terminal;
-  const [walletInput, setWalletInput] = useState("");
-  const [showWalletInput, setShowWalletInput] = useState(false);
-  const [walletError, setWalletError] = useState("");
+const MOCK_LEADERBOARD: LeaderboardEntry[] = [
+  {
+    id: 1,
+    player: { name: "DinoLord", walletAddress: "0xABC...123" },
+    score: 9001,
+  },
+  {
+    id: 2,
+    player: { name: "JurassicFin", walletAddress: "0xDEF...456" },
+    score: 8450,
+  },
+  {
+    id: 3,
+    player: { name: "TyrannoTrex", walletAddress: "0x789...XYZ" },
+    score: 8120,
+  },
+];
+
+export const MiniGame = () => {
   const [searchInput, setSearchInput] = useState("");
 
-  const { connect, account, disconnect, isConnected, isWalletLoading } =
-    useWeb3React();
-
-  useEffect(() => {
-    if (account) setWalletInput(account);
-    else setWalletInput("");
-  }, [account]);
-
-  useEffect(() => {
-    if (
-      !state.gameActive &&
-      !showWalletInput &&
-      state.highScore &&
-      state.currentScore === state.highScore
-    ) {
-      // Show wallet input if score is high enough
-      setShowWalletInput(true);
-    }
-  }, [state.currentScore, state.highScore, state.gameActive, showWalletInput]);
-
-const [leaderboard, setLeaderboard] = useState<LeaderboardEntry[]>([]);
-
-useEffect(() => {
-  const fetchLeaderboard = async () => {
-    try {
-    const res = await fetch(`/api/games`);
-
-    if (!res.ok) {
-      throw new Error(`HTTP error ${res.status}`);
-    }
-      const data = await res.json();
-      setLeaderboard(data.docs);
-    } catch (error) {
-      console.error("Failed to fetch leaderboard:", error);
-    }
-  };
-
-  fetchLeaderboard();
-}, []);
-
-  const handleWalletSubmit = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === "Enter") {
-      const isValid = submitWalletAddress(walletInput);
-      if (isValid) {
-        setWalletError("");
-        setShowWalletInput(false);
-      } else {
-        setWalletError(
-          "Invalid wallet address. Must start with 0x and be at least 10 characters.",
-        );
-      }
-    }
-  };
-
-    async function handleButtonSubmit() {
-      const isValid = submitWalletAddress(walletInput);
-      if (isValid) {
-   setWalletError("");
-   setShowWalletInput(false);
- } else {
-   setWalletError(
-     "Invalid wallet address. Must start with 0x and be at least 10 characters.",
-   );
- }
-    try {
-      const response = await fetch("/api/games", {
-        method: "POST",
-credentials: "include",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify( {
-          player: 1,
-          score: state.currentScore,
-          }),
-      });
-
-      if (response.ok) {
-        const data = await response.json();
-        console.log("Game saved:", data);
-      } else {
-        const error = await response.json();
-        alert(`Failed to save game: ${error.message}`);
-      }
-    } catch (error) {
-      console.error("Error saving game:", error);
-      alert("An error occurred while saving the game.");
-    }
-  };
-
-  const handleWalletConnection = () => {
-    if (isWalletLoading) return;
-    if (isConnected) return disconnect();
-    return connect();
-  };
-
   return (
-    <div className="mini-game">
-      {!state.gameActive && (
-        <>
-          <div className="mb-4 border-b border-b-6 border-double border-b-terminal-blue pb-2">
-            <div className="flex items-center mb-2">
-              <div className="w-4 h-4 bg-terminal-blue animate-pulse mr-2"></div>
-              <p className="text-terminal-blue text-xl font-bold">
-                DECENTRALIZED MARKET SIMULATOR
-              </p>
-              <div className="w-4 h-4 bg-terminal-blue animate-pulse ml-2"></div>
-            </div>
-            <p className="text-terminal-red font-bold">
-              DLM-2000 PROTOTYPE TESTING ENVIRONMENT
-            </p>
-          </div>
+        <QueryClientProvider client={queryClient}>
+      {/* Title & Instructions */}
+      <div className="mb-4 border-b border-b-6 border-double border-b-terminal-blue pb-2">
+        <div className="flex items-center mb-2">
+          <div className="w-4 h-4 bg-terminal-blue animate-pulse mr-2" />
+          <p className="text-terminal-blue text-xl font-bold">
+            DECENTRALIZED MARKET SIMULATOR
+          </p>
+          <div className="w-4 h-4 bg-terminal-blue animate-pulse ml-2" />
+        </div>
+        <p className="text-terminal-red font-bold">
+          DLM-2000 PROTOTYPE TESTING ENVIRONMENT
+        </p>
+      </div>
 
-          {/* Game Instructions */}
-          <div className="game-instructions mb-6 bg-black/20 p-3 border border-6 border-terminal-green">
-            <p className="text-terminal-green font-bold mb-2 underline">
-              GAME INSTRUCTIONS:
-            </p>
-            <ul className="space-y-1 ml-4 text-terminal-green font-mono">
-              {GAME_INSTRUCTIONS.map((instruction, index) => (
-                <li key={index} className="animate-flicker-slow">
-                  {instruction}
-                </li>
-              ))}
-            </ul>
-          </div>
-        </>
-      )}
+      <div className="mb-6 bg-black/20 p-3 border border-6 border-terminal-green">
+        <p className="text-terminal-green font-bold mb-2 underline">
+          GAME INSTRUCTIONS:
+        </p>
+        <ul className="space-y-1 ml-4 text-terminal-green font-mono">
+          {[
+  "> USE ARROW KEYS TO NAVIGATE YOUR SPACE SHIP",
+  `> USE "SPACE" TO SHOOT ENEMIES`,
+  "> PICK UP SPECIAL ITEMS BY FLYING INTO THEM",
+  "> HIGHEST SCORING PLAYERS MIGHT GET A SURPRISE",
+].map((instruction, index) => (
+            <li key={index} className="animate-flicker-slow">
+              {instruction}
+            </li>
+          ))}
+        </ul>
+      </div>
 
-      {/* Game Canvas Placeholder - 80s Terminal Style */}
-      <div className="game-canvas-container border border-6 border-terminal-blue flex items-center justify-center mb-6 bg-black/30 relative overflow-hidden">
-        {/* {/* <div className="absolute top-0 left-0 right-0 h-1 bg-terminal-blue/20"></div> */}
-        <div className="absolute bottom-0 left-0 right-0 h-1 bg-terminal-blue/20"></div>
-        <div className="absolute left-0 top-0 bottom-0 w-1 bg-terminal-blue/20"></div>
-        <div className="absolute right-0 top-0 bottom-0 w-1 bg-terminal-blue/20"></div>
-
+      {/* Game Canvas Placeholder */}
+      <div className="border border-6 border-terminal-blue flex items-center justify-center mb-6 bg-black/30 relative overflow-hidden">
+        <div className="absolute bottom-0 left-0 right-0 h-1 bg-terminal-blue/20" />
+        <div className="absolute left-0 top-0 bottom-0 w-1 bg-terminal-blue/20" />
+        <div className="absolute right-0 top-0 bottom-0 w-1 bg-terminal-blue/20" />
         <Game
-          onStart={startGame}
-          onChangScore={updateGameScore}
-          onExit={endGame}
-          onOver={endGame}
+          onStart={() => {}}
+          onChangScore={() => {}}
+          onExit={() => {}}
+          onOver={() => {}}
         />
       </div>
 
-      {/* Wallet Input (shown after game over) - Styled as 80s terminal interface */}
-      {showWalletInput && (
-        <div className="wallet-input mt-8 border border-4 border-terminal-blue p-4 bg-black/20">
-          <p className="text-terminal-red font-bold mb-2 animate-pulse">
-            EXCEPTIONAL GAMING PERFORMANCE! ENTER YOUR T-REX WALLET:
-          </p>
-          <div className="flex items-center">
-            <span className="text-terminal-blue font-bold mr-2">
-              {"DINO-ID://"}
-            </span>
-            <input
-              type="text"
-              value={walletInput}
-              onChange={(e) => setWalletInput(e.target.value)}
-              onKeyUp={handleWalletSubmit}
-              className="bg-transparent border-b-2 border-terminal-green focus:outline-none focus:border-terminal-blue w-full text-terminal-green font-bold uppercase"
-              placeholder="0x..."
-              autoFocus
-            />
-          </div>
-          {walletError && (
-            <p className="text-terminal-red mt-2 font-bold">{walletError}</p>
-          )}
-          <div className="flex justify-between">
-            <button
-              onClick={handleWalletConnection}
-              disabled={isWalletLoading}
-              className="mt-4 bg-black border border-4 border-terminal-blue px-4 py-2 font-bold text-terminal-blue hover:bg-terminal-blue hover:text-black animate-pulse cursor-pointer"
-            >
-              {isConnected ? "DISCONNECT WALLET" : "CONNECT WALLET"}
-            </button>
-            <button
-              onClick={handleButtonSubmit}
-              className="mt-4 bg-terminal-blue border border-4 border-terminal-blue px-4 py-2 font-bold text-black hover:bg-black hover:text-terminal-blue animate-pulse cursor-pointer"
-            >
-              SAVE YOUR HIGH SCORE
-            </button>
-          </div>
-        </div>
-      )}
-
-      {/* Leaderboard - 80s Highscore Table */}
+      {/* Leaderboard */}
       <PaginationContextProvider
         initialPage={1}
-        fetchData={async () => { }}
+        fetchData={async () => {}}
         pageSize={50}
       >
         {({ currentPage, setCurrentPage }) => (
           <>
-            <div className="leaderboard mt-8 border border-6 border-terminal-green p-2 bg-black/10">
+            <div className="mt-8 border border-6 border-terminal-green p-2 bg-black/10">
               <div className="text-terminal-green font-bold mb-2 text-center border-b border-b-terminal-green pb-2 flex items-center justify-between relative">
                 <div />
-                <p>== TOP PLAYERS LEADERBOARD == </p>
+                <p>== TOP PLAYERS LEADERBOARD ==</p>
                 <div className="flex items-center">
                   <Input
                     className="h-8 w-48 absolute right-0 border border-terminal-green/50 hover:border-terminal-green focus:border-terminal-green bg-terminal-bg text-terminal-green placeholder:text-terminal-green focus:ring-0"
@@ -224,46 +101,35 @@ credentials: "include",
                   />
                 </div>
               </div>
-{leaderboard.map((entry: LeaderboardEntry, index: number) => (
-  <div
-    key={index}
-    className="leaderboard-entry grid grid-cols-4 items-center gap-4 border-b border-dashed border-terminal-green/30 py-2"
-  >
-    <div className="flex items-center space-x-2">
-      <span
-        className="text-terminal-blue font-bold"
-        title="Rank"
-      >
-        {index + 1}.
-      </span>
-      <span
-        className="text-terminal-red font-bold truncate animate-flicker-slow"
-        title="Name"
-      >
-        {entry.player.name}
-      </span>
-    </div>
-    <span
-      className="text-terminal-blue font-bold truncate animate-flicker-slow"
-      title="Address"
-    >
-      {entry.player.walletAddress}
-    </span>
-    <span
-      className="text-terminal-green font-bold text-right col-start-4 justify-self-end"
-      title="Score"
-    >
-      {entry.score}
-    </span>
-  </div>
-                ),
-              )}
+
+              {MOCK_LEADERBOARD.map((entry, index) => (
+                <div
+                  key={entry.id}
+                  className="grid grid-cols-4 items-center gap-4 border-b border-dashed border-terminal-green/30 py-2"
+                >
+                  <div className="flex items-center space-x-2">
+                    <span className="text-terminal-blue font-bold">
+                      {index + 1}.
+                    </span>
+                    <span className="text-terminal-red font-bold truncate animate-flicker-slow">
+                      {entry.player.name}
+                    </span>
+                  </div>
+                  <span className="text-terminal-blue font-bold truncate animate-flicker-slow">
+                    {entry.player.walletAddress}
+                  </span>
+                  <span className="text-terminal-green font-bold text-right col-start-4 justify-self-end">
+                    {entry.score}
+                  </span>
+                </div>
+              ))}
             </div>
+
             <div className="mt-4 flex justify-center">
               <Pagination
                 currentPage={currentPage}
                 onChange={setCurrentPage}
-                totalPages={100}
+                totalPages={1}
               />
             </div>
           </>
@@ -271,13 +137,11 @@ credentials: "include",
       </PaginationContextProvider>
 
       <div className="mt-6 border-t border-dashed border-terminal-blue pt-4 flex items-center">
-        <div className="w-3 h-3 bg-terminal-green animate-ping mr-2"/>
+        <div className="w-3 h-3 bg-terminal-green animate-ping mr-2" />
         <p className="text-terminal-green font-bold">
           {"> PRESS [ ESC ] TO EXIT SIMULATOR"}
         </p>
       </div>
-    </div>
+        </QueryClientProvider>
   );
 };
-
-export default MiniGame;

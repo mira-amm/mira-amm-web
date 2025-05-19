@@ -1,45 +1,64 @@
-'use client'
+import { motion } from "motion/react"
 
-import {useEffect, useState} from "react";
-import {ASCII_LOGO, BOOT_MESSAGES} from "../../lib/constants";
+const ASCII_LOGO = `
+    __  ____                      __          _          ____  __    __  ___   __  ___   ____  ____  ____
+   /  |/  (_)_____________  _____/ /_  ____ _(_)___     / __ \\/ /   /  |/  / _/_/ |__ \\ / __ \\/ __ \\/ __ \\
+  / /|_/ / / ___/ ___/ __ \\/ ___/ __ \\/ __ \`/ / __ \\   / / / / /   / /|_/ /_/_/   __/ // / / / / / / / / /
+ / /  / / / /__/ /  / /_/ / /__/ / / / /_/ / / / / /  / /_/ / /___/ /  / //_/  _ / __// /_/ / /_/ / /_/ /
+/_/  /_/_/\\___/_/   \\____/\\___/_/ /_/\\__,_/_/_/ /_/  /_____/_____/_/  /_/_/   (_)____/\\____/\\____/\\____/
+                     T-REX TECHNOLOGIES    DLM-2000 PROTOTYPE    CEO: DEREK DINO `;
 
-const BootSequence = () => {
-  const [visibleMessages, setVisibleMessages] = useState<string[]>([]);
 
-  useEffect(() => {
-    // Animate boot messages appearing one by one
-    let currentIndex = 0;
+const BOOT_MESSAGES = [
+  "> LOADING MICROCHAIN DLM-2000 PROTOTYPE v1.9.8.5...",
+  "> INITIALIZING 640K MEMORY BANKS...... OK",
+  '> SYSTEM CHECK: 5.25" FLOPPY DRIVE... READY',
+  "> LOADING DECENTRALIZED FINANCE MODULE...",
+  "> BLOCKCHAIN GRID RENDERING... CONFIRMED!",
+  "> WALL STREET NETWORK HANDSHAKE ESTABLISHED",
+  "> WELCOME T-REX CEO: DEREK DINO",
+  "> WARNING: CLASSIFIED PROJECT DATA",
+  "> SECURITY CLEARANCE REQUIRED - ENTER PASSWORD",
+];
 
-    const interval = setInterval(() => {
-      if (currentIndex < BOOT_MESSAGES.length) {
-        setVisibleMessages((prev) => [...prev, BOOT_MESSAGES[currentIndex]]);
-        currentIndex++;
-      } else {
-        clearInterval(interval);
-      }
-    }, 300);
+const containerVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.2,
+    },
+  },
+};
 
-    return () => clearInterval(interval);
-  }, []);
+const itemVariants = {
+  hidden: { opacity: 0, x: 0 },
+  visible: { opacity: 1, x: 0 },
+};
 
+export const BootSequence = () => {
   return (
     <>
-      <pre className="boot-logo text-terminal-green font-bold text-center">
+      <pre className="text-terminal-green font-bold text-center">
         {ASCII_LOGO}
       </pre>
 
-      <div className="boot-messages opacity-80">
+      <motion.div
+        className="opacity-80"
+        variants={containerVariants}
+        initial="hidden"
+        animate="visible"
+      >
         {BOOT_MESSAGES.map((message, index) => (
-          <p
+          <motion.p
             key={index}
-            className={`boot-message ${message.includes("NOTICE") ? "text-terminal-yellow" : ""}`}
+            variants={itemVariants}
+            className={`${message.includes("NOTICE") ? "text-terminal-yellow" : ""}`}
           >
             {message}
-          </p>
+          </motion.p>
         ))}
-      </div>
+      </motion.div>
     </>
   );
 };
-
-export default BootSequence;

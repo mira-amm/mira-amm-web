@@ -59,7 +59,8 @@ in pkgs.mkShell {
     #                      PORTS
     #====================================================
     export APP_DEV_SERVER_PORT="3000"
-    export MICROGAME_DEV_SERVER_PORT="8000"
+    export ADMIN_DEV_SERVER_PORT="8000"
+    export MICROGAME_DEV_SERVER_PORT="4200"
     export API_SERVER_PORT="8080"
     export STORYBOOK_DEV_SERVER_PORT="6006"
     export DOCS_DEV_SERVER_PORT="4000"
@@ -74,7 +75,8 @@ in pkgs.mkShell {
     export LOCALHOST_STRING="http://localhost"
 
     export APP_LOCAL_URL="$LOCALHOST_STRING:$APP_DEV_SERVER_PORT"
-    export MICROGAME_LOCAL_URL="$LOCALHOST_STRING:$MICROGAME_DEV_SERVER_PORT"
+    export ADMIN_LOCAL_URL="$LOCALHOST_STRING:$ADMIN_DEV_SERVER_PORT"
+    export MICROGAME_LOCAL_URL="$LOCALHOST_STRING:MICROGAME_DEV_SERVER_PORT"
     export API_SERVER_LOCAL_URL="$LOCALHOST_STRING:$API_SERVER_PORT"
     export STORYBOOK_LOCAL_URL="$LOCALHOST_STRING:$ARCHITECTURE_DEV_SERVER_PORT"
     export DOCS_LOCAL_URL="$LOCALHOST_STRING:$DOCS_DEV_SERVER_PORT"
@@ -85,8 +87,8 @@ in pkgs.mkShell {
     export SENTIO_API_URL="https://app.sentio.xyz/api/v1/analytics/fuellabs/mira-mainnet/sql/execute"
 
     export PAYLOAD_SECRET="YOUR_SECRET_HERE"
-    export CORS_WHITELIST_ORIGINS="http://localhost:8000,https://microgame.mira.ly,https://microchain.systems,https://x.com,https://api.x.com"
-    export CSRF_WHITELIST_ORIGINS="http://localhost:8000,https://microgame.mira.ly,https://microchain.systems,https://x.com,https://api.x.com"
+    export CORS_WHITELIST_ORIGINS="http://localhost:4200,http://localhost:8000,https://microgame.mira.ly,https://admin.mira.ly,https://microchain.systems,https://x.com,https://api.x.com"
+    export CSRF_WHITELIST_ORIGINS="http://localhost:4200,http://localhost:8000,https://microgame.mira.ly,https://admin.mira.ly,https://microchain.systems,https://x.com,https://api.x.com"
 
     case "${arg}" in
       doctor)
@@ -99,7 +101,9 @@ in pkgs.mkShell {
     uv tool install --python 3.12 posting
     fi
 
-    pnpm nx dev microscope;
+    # pnpm nx dev microscope;
+
+    zellij --config apps/microvisor/zellij.config.kdl -n apps/microvisor/zellij.layout.kdl
 
     zellij ka -y;
     zellij da -y;

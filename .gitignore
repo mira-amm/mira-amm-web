@@ -30,7 +30,7 @@ libs/api/documentation
 #====================================================
 .nx/cache
 .nx/workspace-data
-apps/microgame/media
+apps/admin/media
 libs/db/data/*
 **/postgresql.log
 logs

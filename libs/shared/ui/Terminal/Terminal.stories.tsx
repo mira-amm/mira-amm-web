@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react'
 import Terminal from './Terminal'
 
 const meta = {
-  title: '🕹 Microgame/Terminal',
+  title: '🕹 Admin/Terminal',
   component: Terminal,
   tags: ['autodocs'],
   parameters: {

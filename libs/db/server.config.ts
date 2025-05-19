@@ -172,8 +172,8 @@ export const serverConfig = {
   secret: process.env.PAYLOAD_SECRET,
   serverURL:
     process.env.NODE_ENV === "development"
-      ? process.env.MICROGAME_LOCAL_URL
-      : process.env.MICROGAME_PUBLIC_URL,
+      ? process.env.ADMIN_LOCAL_URL
+      : process.env.ADMIN_PUBLIC_URL,
   cors: process.env.CORS_WHITELIST_ORIGINS
     ? process.env.CORS_WHITELIST_ORIGINS.split(",")
     : [],

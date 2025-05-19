@@ -18,7 +18,7 @@ export const Settings: GlobalConfig = {
   admin: {
     group: navAccordions.globals,
     livePreview: {
-      url: process.env.NODE_ENV === "development" ? 'http://localhost:8000' : 'https://microgame.mira.ly',
+      url: process.env.NODE_ENV === "development" ? 'http://localhost:4200' : 'https://microgame.mira.ly',
       breakpoints: [
         {label: "Mobile", name: "mobile", width: 320, height: 568},
       ],

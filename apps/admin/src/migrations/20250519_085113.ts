@@ -4,10 +4,9 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   await db.execute(sql`
    CREATE TYPE "public"."enum_brands_status" AS ENUM('draft', 'published');
   CREATE TYPE "public"."enum__brands_v_version_status" AS ENUM('draft', 'published');
-  CREATE TYPE "public"."enum_games_status" AS ENUM('draft', 'published');
-  CREATE TYPE "public"."enum__games_v_version_status" AS ENUM('draft', 'published');
-  CREATE TYPE "public"."enum_constants_status" AS ENUM('draft', 'published');
-  CREATE TYPE "public"."enum__constants_v_version_status" AS ENUM('draft', 'published');
+  CREATE TYPE "public"."enum_users_roles" AS ENUM('admin', 'user');
+  CREATE TYPE "public"."enum_settings_status" AS ENUM('draft', 'published');
+  CREATE TYPE "public"."enum__settings_v_version_status" AS ENUM('draft', 'published');
   CREATE TABLE IF NOT EXISTS "brands_links" (
   	"_order" integer NOT NULL,
   	"_parent_id" integer NOT NULL,
@@ -73,29 +72,16 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   CREATE TABLE IF NOT EXISTS "games" (
   	"id" serial PRIMARY KEY NOT NULL,
   	"player_id" integer,
-  	"score" numeric,
-  	"updated_at" timestamp(3) with time zone DEFAULT now() NOT NULL,
-  	"created_at" timestamp(3) with time zone DEFAULT now() NOT NULL,
-  	"_status" "enum_games_status" DEFAULT 'draft'
-  );
-  
-  CREATE TABLE IF NOT EXISTS "_games_v" (
-  	"id" serial PRIMARY KEY NOT NULL,
-  	"parent_id" integer,
-  	"version_player_id" integer,
-  	"version_score" numeric,
-  	"version_updated_at" timestamp(3) with time zone,
-  	"version_created_at" timestamp(3) with time zone,
-  	"version__status" "enum__games_v_version_status" DEFAULT 'draft',
-  	"created_at" timestamp(3) with time zone DEFAULT now() NOT NULL,
-  	"updated_at" timestamp(3) with time zone DEFAULT now() NOT NULL,
-  	"latest" boolean
-  );
-  
-  CREATE TABLE IF NOT EXISTS "leaderboards" (
-  	"id" serial PRIMARY KEY NOT NULL,
+  	"score" numeric NOT NULL,
   	"updated_at" timestamp(3) with time zone DEFAULT now() NOT NULL,
   	"created_at" timestamp(3) with time zone DEFAULT now() NOT NULL
+  );
+  
+  CREATE TABLE IF NOT EXISTS "users_roles" (
+  	"order" integer NOT NULL,
+  	"parent_id" integer NOT NULL,
+  	"value" "enum_users_roles",
+  	"id" serial PRIMARY KEY NOT NULL
   );
   
   CREATE TABLE IF NOT EXISTS "users" (
@@ -134,7 +120,6 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"brands_id" integer,
   	"media_id" integer,
   	"games_id" integer,
-  	"leaderboards_id" integer,
   	"users_id" integer
   );
   
@@ -162,7 +147,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"created_at" timestamp(3) with time zone DEFAULT now() NOT NULL
   );
   
-  CREATE TABLE IF NOT EXISTS "constants_microgame_login_text" (
+  CREATE TABLE IF NOT EXISTS "settings_microgame_login_text" (
   	"_order" integer NOT NULL,
   	"_parent_id" integer NOT NULL,
   	"id" varchar PRIMARY KEY NOT NULL,
@@ -170,7 +155,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"text" varchar
   );
   
-  CREATE TABLE IF NOT EXISTS "constants_microgame_options" (
+  CREATE TABLE IF NOT EXISTS "settings_microgame_options" (
   	"_order" integer NOT NULL,
   	"_parent_id" integer NOT NULL,
   	"id" varchar PRIMARY KEY NOT NULL,
@@ -178,7 +163,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"description" varchar
   );
   
-  CREATE TABLE IF NOT EXISTS "constants_microgame_notes" (
+  CREATE TABLE IF NOT EXISTS "settings_microgame_notes" (
   	"_order" integer NOT NULL,
   	"_parent_id" integer NOT NULL,
   	"id" varchar PRIMARY KEY NOT NULL,
@@ -186,14 +171,14 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"description" varchar
   );
   
-  CREATE TABLE IF NOT EXISTS "constants_microgame_instructions" (
+  CREATE TABLE IF NOT EXISTS "settings_microgame_instructions" (
   	"_order" integer NOT NULL,
   	"_parent_id" integer NOT NULL,
   	"id" varchar PRIMARY KEY NOT NULL,
   	"instruction" varchar
   );
   
-  CREATE TABLE IF NOT EXISTS "constants" (
+  CREATE TABLE IF NOT EXISTS "settings" (
   	"id" serial PRIMARY KEY NOT NULL,
   	"microgame_login_logo_id" integer,
   	"microgame_title" varchar,
@@ -204,12 +189,12 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"microgame_section_title" varchar,
   	"microgame_subtitle" varchar,
   	"microgame_trading_instructions_title" varchar,
-  	"_status" "enum_constants_status" DEFAULT 'draft',
+  	"_status" "enum_settings_status" DEFAULT 'draft',
   	"updated_at" timestamp(3) with time zone,
   	"created_at" timestamp(3) with time zone
   );
   
-  CREATE TABLE IF NOT EXISTS "_constants_v_version_microgame_login_text" (
+  CREATE TABLE IF NOT EXISTS "_settings_v_version_microgame_login_text" (
   	"_order" integer NOT NULL,
   	"_parent_id" integer NOT NULL,
   	"id" serial PRIMARY KEY NOT NULL,
@@ -218,7 +203,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"_uuid" varchar
   );
   
-  CREATE TABLE IF NOT EXISTS "_constants_v_version_microgame_options" (
+  CREATE TABLE IF NOT EXISTS "_settings_v_version_microgame_options" (
   	"_order" integer NOT NULL,
   	"_parent_id" integer NOT NULL,
   	"id" serial PRIMARY KEY NOT NULL,
@@ -227,7 +212,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"_uuid" varchar
   );
   
-  CREATE TABLE IF NOT EXISTS "_constants_v_version_microgame_notes" (
+  CREATE TABLE IF NOT EXISTS "_settings_v_version_microgame_notes" (
   	"_order" integer NOT NULL,
   	"_parent_id" integer NOT NULL,
   	"id" serial PRIMARY KEY NOT NULL,
@@ -236,7 +221,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"_uuid" varchar
   );
   
-  CREATE TABLE IF NOT EXISTS "_constants_v_version_microgame_instructions" (
+  CREATE TABLE IF NOT EXISTS "_settings_v_version_microgame_instructions" (
   	"_order" integer NOT NULL,
   	"_parent_id" integer NOT NULL,
   	"id" serial PRIMARY KEY NOT NULL,
@@ -244,7 +229,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"_uuid" varchar
   );
   
-  CREATE TABLE IF NOT EXISTS "_constants_v" (
+  CREATE TABLE IF NOT EXISTS "_settings_v" (
   	"id" serial PRIMARY KEY NOT NULL,
   	"version_microgame_login_logo_id" integer,
   	"version_microgame_title" varchar,
@@ -255,7 +240,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"version_microgame_section_title" varchar,
   	"version_microgame_subtitle" varchar,
   	"version_microgame_trading_instructions_title" varchar,
-  	"version__status" "enum__constants_v_version_status" DEFAULT 'draft',
+  	"version__status" "enum__settings_v_version_status" DEFAULT 'draft',
   	"version_updated_at" timestamp(3) with time zone,
   	"version_created_at" timestamp(3) with time zone,
   	"created_at" timestamp(3) with time zone DEFAULT now() NOT NULL,
@@ -312,13 +297,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   END $$;
   
   DO $$ BEGIN
-   ALTER TABLE "_games_v" ADD CONSTRAINT "_games_v_parent_id_games_id_fk" FOREIGN KEY ("parent_id") REFERENCES "public"."games"("id") ON DELETE set null ON UPDATE no action;
-  EXCEPTION
-   WHEN duplicate_object THEN null;
-  END $$;
-  
-  DO $$ BEGIN
-   ALTER TABLE "_games_v" ADD CONSTRAINT "_games_v_version_player_id_users_id_fk" FOREIGN KEY ("version_player_id") REFERENCES "public"."users"("id") ON DELETE set null ON UPDATE no action;
+   ALTER TABLE "users_roles" ADD CONSTRAINT "users_roles_parent_fk" FOREIGN KEY ("parent_id") REFERENCES "public"."users"("id") ON DELETE cascade ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
@@ -354,12 +333,6 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   END $$;
   
   DO $$ BEGIN
-   ALTER TABLE "payload_locked_documents_rels" ADD CONSTRAINT "payload_locked_documents_rels_leaderboards_fk" FOREIGN KEY ("leaderboards_id") REFERENCES "public"."leaderboards"("id") ON DELETE cascade ON UPDATE no action;
-  EXCEPTION
-   WHEN duplicate_object THEN null;
-  END $$;
-  
-  DO $$ BEGIN
    ALTER TABLE "payload_locked_documents_rels" ADD CONSTRAINT "payload_locked_documents_rels_users_fk" FOREIGN KEY ("users_id") REFERENCES "public"."users"("id") ON DELETE cascade ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
@@ -378,61 +351,61 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   END $$;
   
   DO $$ BEGIN
-   ALTER TABLE "constants_microgame_login_text" ADD CONSTRAINT "constants_microgame_login_text_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."constants"("id") ON DELETE cascade ON UPDATE no action;
+   ALTER TABLE "settings_microgame_login_text" ADD CONSTRAINT "settings_microgame_login_text_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."settings"("id") ON DELETE cascade ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
   
   DO $$ BEGIN
-   ALTER TABLE "constants_microgame_options" ADD CONSTRAINT "constants_microgame_options_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."constants"("id") ON DELETE cascade ON UPDATE no action;
+   ALTER TABLE "settings_microgame_options" ADD CONSTRAINT "settings_microgame_options_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."settings"("id") ON DELETE cascade ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
   
   DO $$ BEGIN
-   ALTER TABLE "constants_microgame_notes" ADD CONSTRAINT "constants_microgame_notes_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."constants"("id") ON DELETE cascade ON UPDATE no action;
+   ALTER TABLE "settings_microgame_notes" ADD CONSTRAINT "settings_microgame_notes_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."settings"("id") ON DELETE cascade ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
   
   DO $$ BEGIN
-   ALTER TABLE "constants_microgame_instructions" ADD CONSTRAINT "constants_microgame_instructions_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."constants"("id") ON DELETE cascade ON UPDATE no action;
+   ALTER TABLE "settings_microgame_instructions" ADD CONSTRAINT "settings_microgame_instructions_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."settings"("id") ON DELETE cascade ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
   
   DO $$ BEGIN
-   ALTER TABLE "constants" ADD CONSTRAINT "constants_microgame_login_logo_id_media_id_fk" FOREIGN KEY ("microgame_login_logo_id") REFERENCES "public"."media"("id") ON DELETE set null ON UPDATE no action;
+   ALTER TABLE "settings" ADD CONSTRAINT "settings_microgame_login_logo_id_media_id_fk" FOREIGN KEY ("microgame_login_logo_id") REFERENCES "public"."media"("id") ON DELETE set null ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
   
   DO $$ BEGIN
-   ALTER TABLE "_constants_v_version_microgame_login_text" ADD CONSTRAINT "_constants_v_version_microgame_login_text_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."_constants_v"("id") ON DELETE cascade ON UPDATE no action;
+   ALTER TABLE "_settings_v_version_microgame_login_text" ADD CONSTRAINT "_settings_v_version_microgame_login_text_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."_settings_v"("id") ON DELETE cascade ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
   
   DO $$ BEGIN
-   ALTER TABLE "_constants_v_version_microgame_options" ADD CONSTRAINT "_constants_v_version_microgame_options_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."_constants_v"("id") ON DELETE cascade ON UPDATE no action;
+   ALTER TABLE "_settings_v_version_microgame_options" ADD CONSTRAINT "_settings_v_version_microgame_options_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."_settings_v"("id") ON DELETE cascade ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
   
   DO $$ BEGIN
-   ALTER TABLE "_constants_v_version_microgame_notes" ADD CONSTRAINT "_constants_v_version_microgame_notes_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."_constants_v"("id") ON DELETE cascade ON UPDATE no action;
+   ALTER TABLE "_settings_v_version_microgame_notes" ADD CONSTRAINT "_settings_v_version_microgame_notes_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."_settings_v"("id") ON DELETE cascade ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
   
   DO $$ BEGIN
-   ALTER TABLE "_constants_v_version_microgame_instructions" ADD CONSTRAINT "_constants_v_version_microgame_instructions_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."_constants_v"("id") ON DELETE cascade ON UPDATE no action;
+   ALTER TABLE "_settings_v_version_microgame_instructions" ADD CONSTRAINT "_settings_v_version_microgame_instructions_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."_settings_v"("id") ON DELETE cascade ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
   
   DO $$ BEGIN
-   ALTER TABLE "_constants_v" ADD CONSTRAINT "_constants_v_version_microgame_login_logo_id_media_id_fk" FOREIGN KEY ("version_microgame_login_logo_id") REFERENCES "public"."media"("id") ON DELETE set null ON UPDATE no action;
+   ALTER TABLE "_settings_v" ADD CONSTRAINT "_settings_v_version_microgame_login_logo_id_media_id_fk" FOREIGN KEY ("version_microgame_login_logo_id") REFERENCES "public"."media"("id") ON DELETE set null ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
@@ -459,19 +432,11 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   CREATE INDEX IF NOT EXISTS "media_created_at_idx" ON "media" USING btree ("created_at");
   CREATE UNIQUE INDEX IF NOT EXISTS "media_filename_idx" ON "media" USING btree ("filename");
   CREATE INDEX IF NOT EXISTS "games_player_idx" ON "games" USING btree ("player_id");
+  CREATE INDEX IF NOT EXISTS "games_score_idx" ON "games" USING btree ("score");
   CREATE INDEX IF NOT EXISTS "games_updated_at_idx" ON "games" USING btree ("updated_at");
   CREATE INDEX IF NOT EXISTS "games_created_at_idx" ON "games" USING btree ("created_at");
-  CREATE INDEX IF NOT EXISTS "games__status_idx" ON "games" USING btree ("_status");
-  CREATE INDEX IF NOT EXISTS "_games_v_parent_idx" ON "_games_v" USING btree ("parent_id");
-  CREATE INDEX IF NOT EXISTS "_games_v_version_version_player_idx" ON "_games_v" USING btree ("version_player_id");
-  CREATE INDEX IF NOT EXISTS "_games_v_version_version_updated_at_idx" ON "_games_v" USING btree ("version_updated_at");
-  CREATE INDEX IF NOT EXISTS "_games_v_version_version_created_at_idx" ON "_games_v" USING btree ("version_created_at");
-  CREATE INDEX IF NOT EXISTS "_games_v_version_version__status_idx" ON "_games_v" USING btree ("version__status");
-  CREATE INDEX IF NOT EXISTS "_games_v_created_at_idx" ON "_games_v" USING btree ("created_at");
-  CREATE INDEX IF NOT EXISTS "_games_v_updated_at_idx" ON "_games_v" USING btree ("updated_at");
-  CREATE INDEX IF NOT EXISTS "_games_v_latest_idx" ON "_games_v" USING btree ("latest");
-  CREATE INDEX IF NOT EXISTS "leaderboards_updated_at_idx" ON "leaderboards" USING btree ("updated_at");
-  CREATE INDEX IF NOT EXISTS "leaderboards_created_at_idx" ON "leaderboards" USING btree ("created_at");
+  CREATE INDEX IF NOT EXISTS "users_roles_order_idx" ON "users_roles" USING btree ("order");
+  CREATE INDEX IF NOT EXISTS "users_roles_parent_idx" ON "users_roles" USING btree ("parent_id");
   CREATE INDEX IF NOT EXISTS "users_avatar_idx" ON "users" USING btree ("avatar_id");
   CREATE INDEX IF NOT EXISTS "users_sub_idx" ON "users" USING btree ("sub");
   CREATE INDEX IF NOT EXISTS "users_updated_at_idx" ON "users" USING btree ("updated_at");
@@ -486,7 +451,6 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   CREATE INDEX IF NOT EXISTS "payload_locked_documents_rels_brands_id_idx" ON "payload_locked_documents_rels" USING btree ("brands_id");
   CREATE INDEX IF NOT EXISTS "payload_locked_documents_rels_media_id_idx" ON "payload_locked_documents_rels" USING btree ("media_id");
   CREATE INDEX IF NOT EXISTS "payload_locked_documents_rels_games_id_idx" ON "payload_locked_documents_rels" USING btree ("games_id");
-  CREATE INDEX IF NOT EXISTS "payload_locked_documents_rels_leaderboards_id_idx" ON "payload_locked_documents_rels" USING btree ("leaderboards_id");
   CREATE INDEX IF NOT EXISTS "payload_locked_documents_rels_users_id_idx" ON "payload_locked_documents_rels" USING btree ("users_id");
   CREATE INDEX IF NOT EXISTS "payload_preferences_key_idx" ON "payload_preferences" USING btree ("key");
   CREATE INDEX IF NOT EXISTS "payload_preferences_updated_at_idx" ON "payload_preferences" USING btree ("updated_at");
@@ -497,29 +461,29 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   CREATE INDEX IF NOT EXISTS "payload_preferences_rels_users_id_idx" ON "payload_preferences_rels" USING btree ("users_id");
   CREATE INDEX IF NOT EXISTS "payload_migrations_updated_at_idx" ON "payload_migrations" USING btree ("updated_at");
   CREATE INDEX IF NOT EXISTS "payload_migrations_created_at_idx" ON "payload_migrations" USING btree ("created_at");
-  CREATE INDEX IF NOT EXISTS "constants_microgame_login_text_order_idx" ON "constants_microgame_login_text" USING btree ("_order");
-  CREATE INDEX IF NOT EXISTS "constants_microgame_login_text_parent_id_idx" ON "constants_microgame_login_text" USING btree ("_parent_id");
-  CREATE INDEX IF NOT EXISTS "constants_microgame_options_order_idx" ON "constants_microgame_options" USING btree ("_order");
-  CREATE INDEX IF NOT EXISTS "constants_microgame_options_parent_id_idx" ON "constants_microgame_options" USING btree ("_parent_id");
-  CREATE INDEX IF NOT EXISTS "constants_microgame_notes_order_idx" ON "constants_microgame_notes" USING btree ("_order");
-  CREATE INDEX IF NOT EXISTS "constants_microgame_notes_parent_id_idx" ON "constants_microgame_notes" USING btree ("_parent_id");
-  CREATE INDEX IF NOT EXISTS "constants_microgame_instructions_order_idx" ON "constants_microgame_instructions" USING btree ("_order");
-  CREATE INDEX IF NOT EXISTS "constants_microgame_instructions_parent_id_idx" ON "constants_microgame_instructions" USING btree ("_parent_id");
-  CREATE INDEX IF NOT EXISTS "constants_microgame_login_microgame_login_logo_idx" ON "constants" USING btree ("microgame_login_logo_id");
-  CREATE INDEX IF NOT EXISTS "constants__status_idx" ON "constants" USING btree ("_status");
-  CREATE INDEX IF NOT EXISTS "_constants_v_version_microgame_login_text_order_idx" ON "_constants_v_version_microgame_login_text" USING btree ("_order");
-  CREATE INDEX IF NOT EXISTS "_constants_v_version_microgame_login_text_parent_id_idx" ON "_constants_v_version_microgame_login_text" USING btree ("_parent_id");
-  CREATE INDEX IF NOT EXISTS "_constants_v_version_microgame_options_order_idx" ON "_constants_v_version_microgame_options" USING btree ("_order");
-  CREATE INDEX IF NOT EXISTS "_constants_v_version_microgame_options_parent_id_idx" ON "_constants_v_version_microgame_options" USING btree ("_parent_id");
-  CREATE INDEX IF NOT EXISTS "_constants_v_version_microgame_notes_order_idx" ON "_constants_v_version_microgame_notes" USING btree ("_order");
-  CREATE INDEX IF NOT EXISTS "_constants_v_version_microgame_notes_parent_id_idx" ON "_constants_v_version_microgame_notes" USING btree ("_parent_id");
-  CREATE INDEX IF NOT EXISTS "_constants_v_version_microgame_instructions_order_idx" ON "_constants_v_version_microgame_instructions" USING btree ("_order");
-  CREATE INDEX IF NOT EXISTS "_constants_v_version_microgame_instructions_parent_id_idx" ON "_constants_v_version_microgame_instructions" USING btree ("_parent_id");
-  CREATE INDEX IF NOT EXISTS "_constants_v_version_microgame_login_version_microgame_login_logo_idx" ON "_constants_v" USING btree ("version_microgame_login_logo_id");
-  CREATE INDEX IF NOT EXISTS "_constants_v_version_version__status_idx" ON "_constants_v" USING btree ("version__status");
-  CREATE INDEX IF NOT EXISTS "_constants_v_created_at_idx" ON "_constants_v" USING btree ("created_at");
-  CREATE INDEX IF NOT EXISTS "_constants_v_updated_at_idx" ON "_constants_v" USING btree ("updated_at");
-  CREATE INDEX IF NOT EXISTS "_constants_v_latest_idx" ON "_constants_v" USING btree ("latest");`)
+  CREATE INDEX IF NOT EXISTS "settings_microgame_login_text_order_idx" ON "settings_microgame_login_text" USING btree ("_order");
+  CREATE INDEX IF NOT EXISTS "settings_microgame_login_text_parent_id_idx" ON "settings_microgame_login_text" USING btree ("_parent_id");
+  CREATE INDEX IF NOT EXISTS "settings_microgame_options_order_idx" ON "settings_microgame_options" USING btree ("_order");
+  CREATE INDEX IF NOT EXISTS "settings_microgame_options_parent_id_idx" ON "settings_microgame_options" USING btree ("_parent_id");
+  CREATE INDEX IF NOT EXISTS "settings_microgame_notes_order_idx" ON "settings_microgame_notes" USING btree ("_order");
+  CREATE INDEX IF NOT EXISTS "settings_microgame_notes_parent_id_idx" ON "settings_microgame_notes" USING btree ("_parent_id");
+  CREATE INDEX IF NOT EXISTS "settings_microgame_instructions_order_idx" ON "settings_microgame_instructions" USING btree ("_order");
+  CREATE INDEX IF NOT EXISTS "settings_microgame_instructions_parent_id_idx" ON "settings_microgame_instructions" USING btree ("_parent_id");
+  CREATE INDEX IF NOT EXISTS "settings_microgame_login_microgame_login_logo_idx" ON "settings" USING btree ("microgame_login_logo_id");
+  CREATE INDEX IF NOT EXISTS "settings__status_idx" ON "settings" USING btree ("_status");
+  CREATE INDEX IF NOT EXISTS "_settings_v_version_microgame_login_text_order_idx" ON "_settings_v_version_microgame_login_text" USING btree ("_order");
+  CREATE INDEX IF NOT EXISTS "_settings_v_version_microgame_login_text_parent_id_idx" ON "_settings_v_version_microgame_login_text" USING btree ("_parent_id");
+  CREATE INDEX IF NOT EXISTS "_settings_v_version_microgame_options_order_idx" ON "_settings_v_version_microgame_options" USING btree ("_order");
+  CREATE INDEX IF NOT EXISTS "_settings_v_version_microgame_options_parent_id_idx" ON "_settings_v_version_microgame_options" USING btree ("_parent_id");
+  CREATE INDEX IF NOT EXISTS "_settings_v_version_microgame_notes_order_idx" ON "_settings_v_version_microgame_notes" USING btree ("_order");
+  CREATE INDEX IF NOT EXISTS "_settings_v_version_microgame_notes_parent_id_idx" ON "_settings_v_version_microgame_notes" USING btree ("_parent_id");
+  CREATE INDEX IF NOT EXISTS "_settings_v_version_microgame_instructions_order_idx" ON "_settings_v_version_microgame_instructions" USING btree ("_order");
+  CREATE INDEX IF NOT EXISTS "_settings_v_version_microgame_instructions_parent_id_idx" ON "_settings_v_version_microgame_instructions" USING btree ("_parent_id");
+  CREATE INDEX IF NOT EXISTS "_settings_v_version_microgame_login_version_microgame_login_logo_idx" ON "_settings_v" USING btree ("version_microgame_login_logo_id");
+  CREATE INDEX IF NOT EXISTS "_settings_v_version_version__status_idx" ON "_settings_v" USING btree ("version__status");
+  CREATE INDEX IF NOT EXISTS "_settings_v_created_at_idx" ON "_settings_v" USING btree ("created_at");
+  CREATE INDEX IF NOT EXISTS "_settings_v_updated_at_idx" ON "_settings_v" USING btree ("updated_at");
+  CREATE INDEX IF NOT EXISTS "_settings_v_latest_idx" ON "_settings_v" USING btree ("latest");`)
 }
 
 export async function down({ db, payload, req }: MigrateDownArgs): Promise<void> {
@@ -530,28 +494,26 @@ export async function down({ db, payload, req }: MigrateDownArgs): Promise<void>
   DROP TABLE "_brands_v" CASCADE;
   DROP TABLE "media" CASCADE;
   DROP TABLE "games" CASCADE;
-  DROP TABLE "_games_v" CASCADE;
-  DROP TABLE "leaderboards" CASCADE;
+  DROP TABLE "users_roles" CASCADE;
   DROP TABLE "users" CASCADE;
   DROP TABLE "payload_locked_documents" CASCADE;
   DROP TABLE "payload_locked_documents_rels" CASCADE;
   DROP TABLE "payload_preferences" CASCADE;
   DROP TABLE "payload_preferences_rels" CASCADE;
   DROP TABLE "payload_migrations" CASCADE;
-  DROP TABLE "constants_microgame_login_text" CASCADE;
-  DROP TABLE "constants_microgame_options" CASCADE;
-  DROP TABLE "constants_microgame_notes" CASCADE;
-  DROP TABLE "constants_microgame_instructions" CASCADE;
-  DROP TABLE "constants" CASCADE;
-  DROP TABLE "_constants_v_version_microgame_login_text" CASCADE;
-  DROP TABLE "_constants_v_version_microgame_options" CASCADE;
-  DROP TABLE "_constants_v_version_microgame_notes" CASCADE;
-  DROP TABLE "_constants_v_version_microgame_instructions" CASCADE;
-  DROP TABLE "_constants_v" CASCADE;
+  DROP TABLE "settings_microgame_login_text" CASCADE;
+  DROP TABLE "settings_microgame_options" CASCADE;
+  DROP TABLE "settings_microgame_notes" CASCADE;
+  DROP TABLE "settings_microgame_instructions" CASCADE;
+  DROP TABLE "settings" CASCADE;
+  DROP TABLE "_settings_v_version_microgame_login_text" CASCADE;
+  DROP TABLE "_settings_v_version_microgame_options" CASCADE;
+  DROP TABLE "_settings_v_version_microgame_notes" CASCADE;
+  DROP TABLE "_settings_v_version_microgame_instructions" CASCADE;
+  DROP TABLE "_settings_v" CASCADE;
   DROP TYPE "public"."enum_brands_status";
   DROP TYPE "public"."enum__brands_v_version_status";
-  DROP TYPE "public"."enum_games_status";
-  DROP TYPE "public"."enum__games_v_version_status";
-  DROP TYPE "public"."enum_constants_status";
-  DROP TYPE "public"."enum__constants_v_version_status";`)
+  DROP TYPE "public"."enum_users_roles";
+  DROP TYPE "public"."enum_settings_status";
+  DROP TYPE "public"."enum__settings_v_version_status";`)
 }
