@@ -1,3 +1,4 @@
+import { Logger, ConsoleLogger } from '@nestjs/common'
 import {ConfigService} from "@nestjs/config";
 import {NestFactory} from "@nestjs/core";
 import {AppModule} from "./app.module.js";
@@ -5,7 +6,12 @@ import {SwaggerModule, DocumentBuilder} from "@nestjs/swagger";
 import {apiReference} from "@scalar/nestjs-api-reference";
 import { express as voyagerMiddleware } from 'graphql-voyager/middleware'
 
-const app = await NestFactory.create(AppModule);
+const app = await NestFactory.create(AppModule, {
+  logger: new ConsoleLogger({
+    json: true,
+    colors: true
+  }),
+});
 
 const config = new DocumentBuilder()
   .setTitle("🦕 Microchain API Reference")
@@ -81,3 +87,5 @@ app.getHttpAdapter().get("/docs/compodoc", (_req, res) => {
 });
 
 await app.listen(port);
+
+Logger.log('🚀 Server running at: http://localhost:8080 🧩')
