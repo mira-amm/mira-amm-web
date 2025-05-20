@@ -15,5 +15,6 @@
     "ms-vsliveshare.vsliveshare",
     "github.vscode-github-actions",
     "statelyai.stately-vscode"
+    "rust-lang.rust-analyzer",
   ]
 }

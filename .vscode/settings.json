@@ -4,6 +4,11 @@
   "[likec4]": {
     "editor.defaultFormatter": "likec4.likec4-vscode"
   },
+  "files.readonlyInclude": {
+    "**/.cargo/registry/src/**/*.rs": true,
+    "**/.cargo/git/checkouts/**/*.rs": true,
+    "**/lib/rustlib/src/rust/library/**/*.rs": true,
+  },
   "deno.enablePaths": [
     "supabase/functions"
   ],
