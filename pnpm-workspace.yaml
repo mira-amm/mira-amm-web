@@ -4,14 +4,14 @@ packages:
   - "libs/**"
 
 onlyBuiltDependencies:
-  - '@apollo/protobufjs'
-  - '@compodoc/compodoc'
-  - '@nestjs/core'
-  - '@parcel/watcher'
-  - '@scarf/scarf'
-  - '@sentry/cli'
-  - '@swc/core'
-  - '@tailwindcss/oxide'
+  - "@apollo/protobufjs"
+  - "@compodoc/compodoc"
+  - "@nestjs/core"
+  - "@parcel/watcher"
+  - "@scarf/scarf"
+  - "@sentry/cli"
+  - "@swc/core"
+  - "@tailwindcss/oxide"
   - bigint-buffer
   - bufferutil
   - core-js
@@ -24,3 +24,14 @@ onlyBuiltDependencies:
   - spawn-sync
   - unrs-resolver
   - utf-8-validate
+
+packageManagerStrict: true
+
+useNodeVersion: 22.15.0
+nodeVersion: 22.15.0
+engineStrict: true
+# sudo rm -rf "$(which nvm npm node yarn pnpm)" "$(where nvm npm node yarn pnpm)"
+# # Answer 'y' for all questions
+# sh <(curl -L https://nixos.org/nix/install) --daemon --yes
+# curl -fsSL https://get.pnpm.io/install.sh | sh -
+# pnpm env use -g 22.15.0
