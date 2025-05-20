@@ -21,5 +21,6 @@
     "fuellabs.sway-vscode-plugin",
     "rust-lang.rust-analyzer",
     "antfu.vite",
+    "timonwong.shellcheck",
   ]
 }
