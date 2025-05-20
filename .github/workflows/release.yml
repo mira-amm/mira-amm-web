@@ -29,13 +29,13 @@ jobs:
           node-version: 22
           cache: pnpm
 
-      - name: 🤖 Run Nx Release (dry run)
+      - name: 🤖 Dry Run Release
         if: github.ref_name != 'main'
         env:
           GH_TOKEN: ${{ secrets.GH_TOKEN }}
         run: pnpm install; pnpm nx release --dry-run
 
-      - name: 🤖 Run Nx Release (actual)
+      - name: 🤖 Create Release and Publish
         if: github.ref_name == 'main' && github.event_name == 'push'
         env:
           GH_TOKEN: ${{ secrets.GH_TOKEN }}
