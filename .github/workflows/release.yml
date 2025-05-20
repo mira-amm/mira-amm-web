@@ -4,6 +4,8 @@ name: Release
 on:
   push:
     branches: "*"
+  pull_request:
+    branches: "*"
 
 jobs:
   release:
@@ -27,10 +29,17 @@ jobs:
           node-version: 22
           cache: pnpm
 
-      - name: 🤖 Run Nx Release
+      - name: 🤖 Run Nx Release (dry run)
+        if: github.ref_name != 'main'
         env:
           GH_TOKEN: ${{ secrets.GH_TOKEN }}
-        run: pnpm i; pnpm nx release --skip-publish -d
+        run: pnpm install; pnpm nx release --dry-run
+
+      - name: 🤖 Run Nx Release (actual)
+        if: github.ref_name == 'main' && github.event_name == 'push'
+        env:
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
+        run: pnpm install; pnpm nx release
 
       - name: 💰 Profit
         run: echo 🐞
