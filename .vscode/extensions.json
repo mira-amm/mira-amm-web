@@ -18,6 +18,7 @@
     "statelyai.stately-vscode"
     "antfu.slidev",
     "graphql.vscode-graphql",
+    "fuellabs.sway-vscode-plugin",
     "rust-lang.rust-analyzer",
   ]
 }
