@@ -1,7 +1,7 @@
 {
   "name": "@microchain/source",
   "description": "The Liquidity Hub on Fuel.",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "type": "module",
   "scripts": {
     "clean": "nx destroy db; pnpm nx reset; # 🧽 Remove any and all files listed in .gitignore except .env and data",
