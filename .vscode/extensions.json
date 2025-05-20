@@ -27,5 +27,6 @@
     "uniquevision.vscode-plpgsql-lsp",
     "tootone.org-mode",
     "antfu.iconify",
+    "antfu.unocss",
   ]
 }
