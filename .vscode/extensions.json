@@ -20,5 +20,6 @@
     "graphql.vscode-graphql",
     "fuellabs.sway-vscode-plugin",
     "rust-lang.rust-analyzer",
+    "antfu.vite",
   ]
 }
