@@ -12,6 +12,8 @@
     "vitest.explorer",
     "likec4.likec4-vscode",
     "tamasfe.even-better-toml",
-    "ms-vsliveshare.vsliveshare"
+    "ms-vsliveshare.vsliveshare",
+    "github.vscode-github-actions",
+    "statelyai.stately-vscode"
   ]
 }
