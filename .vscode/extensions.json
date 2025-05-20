@@ -23,5 +23,6 @@
     "antfu.vite",
     "timonwong.shellcheck",
     "christian-kohler.npm-intellisense",
+    "cweijan.vscode-postgresql-client2",
   ]
 }
