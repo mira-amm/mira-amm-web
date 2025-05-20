@@ -30,5 +30,6 @@
     "antfu.unocss",
     "rphlmr.vscode-drizzle-orm",
     "pulumi.pulumi-vscode-tools",
+    "github.vscode-pull-request-github",
   ]
 }
