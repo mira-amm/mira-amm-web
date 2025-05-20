@@ -3,19 +3,19 @@
     "christian-kohler.path-intellisense",
     "nrwl.angular-console",
     "esbenp.prettier-vscode",
+    "vitest.explorer",
     "ms-playwright.playwright",
     "unifiedjs.vscode-mdx",
     "ms-vscode-remote.remote-wsl",
     "bbenoist.nix",
     "kdl-org.kdl",
     "bradlc.vscode-tailwindcss",
-    "vitest.explorer",
     "likec4.likec4-vscode",
     "tamasfe.even-better-toml",
-    "ms-vsliveshare.vsliveshare",
     "redhat.vscode-yaml",
     "github.vscode-github-actions",
-    "statelyai.stately-vscode"
+    "statelyai.stately-vscode",
+    "ms-vsliveshare.vsliveshare",
     "antfu.slidev",
     "graphql.vscode-graphql",
     "fuellabs.sway-vscode-plugin",
@@ -31,5 +31,6 @@
     "rphlmr.vscode-drizzle-orm",
     "pulumi.pulumi-vscode-tools",
     "github.vscode-pull-request-github",
+    "github.remotehub"
   ]
 }
