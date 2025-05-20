@@ -1,9 +1,9 @@
 {
   "name": "@microchain/swap",
   "version": "0.3.0",
-  "browser": "index.js",
-  "module": "index.js",
-  "types": "index.d.ts",
+  "browser": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
   "description": "Swap using the most efficient AMM on Fuel",
   "license": "GPL-3.0-only",
   "type": "module",
@@ -25,14 +25,14 @@
   ],
   "exports": {
     ".": {
-      "import": "./index.js",
-      "default": "./index.js"
+      "import": "./dist/index.js",
+      "default": "./dist/index.js"
     },
     "./domains": {
-      "import": "./domains.js"
+      "import": "./dist/domains.js"
     },
     "./assets/index.css": {
-      "default": "./assets/index.css"
+      "default": "./dist/assets/index.css"
     }
   },
   "devDependencies": {
