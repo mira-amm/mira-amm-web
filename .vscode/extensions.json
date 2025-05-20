@@ -26,5 +26,6 @@
     "cweijan.vscode-postgresql-client2",
     "uniquevision.vscode-plpgsql-lsp",
     "tootone.org-mode",
+    "antfu.iconify",
   ]
 }
