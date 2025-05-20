@@ -32,7 +32,7 @@ export default defineConfig({
   // Configuration for building your library.
   // See: https://vitejs.dev/guide/build.html#library-mode
   build: {
-    outDir: "../../dist/libs/swap",
+    outDir: "../../libs/swap/dist",
     emptyOutDir: true,
     reportCompressedSize: true,
     commonjsOptions: {
