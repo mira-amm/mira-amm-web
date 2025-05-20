@@ -9,10 +9,10 @@ The status should be success
 The line 3 should be undefined
 End
 
-It "greater than or equal to version 10.10.0"
+It "greater than or equal to version 10.11.0"
 When run pnpm --version
 The status should be success
-The output should include '10.10'
+The output should include '10.11'
 End
 End
 
