@@ -35,3 +35,4 @@ engineStrict: true
 # sh <(curl -L https://nixos.org/nix/install) --daemon --yes
 # curl -fsSL https://get.pnpm.io/install.sh | sh -
 # pnpm env use -g 22.15.0
+# kill $(lsof -ti :3000)
