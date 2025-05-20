@@ -1,10 +1,8 @@
 {
   "name": "@microchain/source",
   "description": "The Liquidity Hub on Fuel.",
-  "license": "GPL-3.0-only",
   "version": "0.0.0",
   "type": "module",
-  "homepage": "https://github.com/mira-amm/mira-amm-web",
   "scripts": {
     "clean": "git clean -fdX -e '!**/.env*' -e '!**/db/data' # 🧽 Remove any and all files listed in .gitignore except .env and data",
     "nuke": "nx destroy db; sudo git clean -fdX; # 🚨 WARNING: REMOVE ANY AND ALL FILES LISTED IN .gitignore INCLUDING .env and data",
@@ -310,15 +308,11 @@
     "fumadocs",
     "likec4"
   ],
-  "engineStrict": true,
-  "devEngines": {
-    "runtime": {
-      "name": "node@22.15.0",
-      "onFail": "error"
-    },
-    "packageManager": {
-      "name": "pnpm@10.10.0",
-      "onFail": "error"
-    }
-  }
+  "license": "GPL-3.0-only",
+  "homepage": "https://github.com/mira-amm/mira-amm-web",
+  "packageManager": "pnpm@10.10.0",
+  "engines": {
+    "node": "22.15.0"
+  },
+  "engineStrict": true
 }
