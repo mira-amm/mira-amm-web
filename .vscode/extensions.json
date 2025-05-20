@@ -28,5 +28,6 @@
     "tootone.org-mode",
     "antfu.iconify",
     "antfu.unocss",
+    "rphlmr.vscode-drizzle-orm",
   ]
 }
