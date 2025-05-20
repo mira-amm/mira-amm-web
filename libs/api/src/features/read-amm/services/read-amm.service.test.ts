@@ -1,10 +1,11 @@
 import assert from 'node:assert/strict';
 import { describe, it } from 'node:test';
 import { ReadAmmService } from './read-amm.service.js';
-import {CONTRACT_ID} from "@/shared/lib/constants"
+// import {CONTRACT_ID} from "@/shared/lib/constants"
 
 describe('ReadAmmService', () => {
   const service = new ReadAmmService();
+  const CONTRACT_ID: string = '0x2E40F2b244B98ed6B8204B3De0156C6961f98525c8162f80162fCF53EEBd90E7';
 
   it('should return the expected AMM contract ID', () => {
     const id = service.getId();
