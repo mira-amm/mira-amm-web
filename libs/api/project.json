@@ -59,7 +59,7 @@
         "cwd": "libs/api"
       }
     },
-    "test-e2e": {
+    "e2e": {
       "command": "tsx --test 'src/**/*.spec.ts'",
       "options": {
         "cwd": "libs/api"
