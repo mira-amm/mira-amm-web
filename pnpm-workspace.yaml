@@ -6,6 +6,7 @@ onlyBuiltDependencies:
   - '@scarf/scarf'
   - '@sentry/cli'
   - '@swc/core'
+  - '@tailwindcss/oxide'
   - bigint-buffer
   - bufferutil
   - core-js
