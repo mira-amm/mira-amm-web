@@ -22,5 +22,6 @@
     "rust-lang.rust-analyzer",
     "antfu.vite",
     "timonwong.shellcheck",
+    "christian-kohler.npm-intellisense",
   ]
 }
