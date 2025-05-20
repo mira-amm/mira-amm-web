@@ -17,6 +17,7 @@
     "github.vscode-github-actions",
     "statelyai.stately-vscode"
     "antfu.slidev",
+    "graphql.vscode-graphql",
     "rust-lang.rust-analyzer",
   ]
 }
