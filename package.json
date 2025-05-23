@@ -12,9 +12,7 @@
     "fix:formatting": "pnpx prettier --write apps/web",
     "prepare": "husky # 🪝 Git Hook",
     "commit": "cz # Commitizen CLI",
-    "postinstall": "nx postinstall microscope",
-    "release": "rm -rf libs/swap/dist && pnpm nx build swap && pnpm nx release",
-    "release:dry": "rm -rf libs/swap/dist && pnpm nx build swap && pnpm nx release --dry-run"
+    "postinstall": "nx postinstall microscope"
   },
   "dependencies": {
     "@apollo/server": "^4.12.1",
