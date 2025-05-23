@@ -1,10 +1,10 @@
-import {EpochConfigService} from "@/src/models/campaigns/interfaces";
+import {Epoch, EpochConfig, EpochConfigService} from "@/src/models/campaigns/interfaces";
 import {
   PointsResponse,
   PointsQueryParams,
   PointsPerUserService,
 } from "@/src/models/points/interfaces";
-import {CacheProvider, createCacheProvider} from "./CacheProvider";
+import {CacheProvider, createCacheProvider, CacheEntry} from "./CacheProvider";
 
 const ONE_HOUR_IN_SECONDS = 60 * 60;
 const ONE_MINUTE_IN_SECONDS = 60;
@@ -31,18 +31,60 @@ export class FileCachedPointsPerUserService implements PointsPerUserService {
   }
 
   async updateLatestPoints(): Promise<PointsResponse[]> {
-    const points = await this.fetchLatestPoints();
+    // get the current epochs from the epochConfigService
+    const epochs = this.epochConfigService.getEpochsByRewardAssetId("Points");
+    console.log("epochs", epochs);
+    const cacheData = new Map<number | "TOTAL", CacheEntry>();
 
-    // add a timestamp to the overall object
-    const pointsCache = {
+    // Fetch and cache points for each epoch
+    for (const epoch of epochs) {
+      const points = await this.fetchLatestPoints(epoch);
+      cacheData.set(epoch.number, {
+        expiresAt: new Date(
+          Date.now() + POINTS_CACHE_EXPIRATION_MS,
+        ).toISOString(),
+        points,
+      });
+    }
+
+    // Calculate and cache total points across all epochs
+    const totalPoints = this.calculateTotalPoints(Array.from(cacheData.values()));
+    cacheData.set("TOTAL", {
       expiresAt: new Date(
         Date.now() + POINTS_CACHE_EXPIRATION_MS,
       ).toISOString(),
-      points,
-    };
+      points: totalPoints,
+    });
 
-    await this.cacheProvider.write(pointsCache);
-    return points;
+    await this.cacheProvider.write(cacheData);
+    return totalPoints;
+  }
+
+  private calculateTotalPoints(cacheEntries: CacheEntry[]): PointsResponse[] {
+    const pointsMap = new Map<string, PointsResponse>();
+
+    // Combine points from all epochs
+    for (const entry of cacheEntries) {
+      for (const point of entry.points) {
+        const existing = pointsMap.get(point.address);
+        if (existing) {
+          existing.points += point.points;
+        } else {
+          pointsMap.set(point.address, { ...point });
+        }
+      }
+    }
+
+    // Convert to array and sort by points
+    const totalPoints = Array.from(pointsMap.values());
+    totalPoints.sort((a, b) => b.points - a.points);
+
+    // Update ranks
+    totalPoints.forEach((point, index) => {
+      point.rank = index + 1;
+    });
+
+    return totalPoints;
   }
 
   async getPoints(
@@ -52,13 +94,10 @@ export class FileCachedPointsPerUserService implements PointsPerUserService {
     let parsedPoints: PointsResponse[] = [];
 
     try {
-      const pointsCache = await this.cacheProvider.read();
-      parsedPoints = pointsCache.points;
+      const cacheData = await this.cacheProvider.read();
+      const totalEntry = cacheData.get("TOTAL");
 
-      if (
-        !pointsCache.expiresAt ||
-        new Date(pointsCache.expiresAt) < new Date(Date.now())
-      ) {
+      if (!totalEntry || new Date(totalEntry.expiresAt) < new Date(Date.now())) {
         console.log(
           `Points cache is older than ${POINTS_CACHE_EXPIRATION_MS / 1000 / ONE_MINUTE_IN_SECONDS} minutes, updating in the background...`,
         );
@@ -67,6 +106,8 @@ export class FileCachedPointsPerUserService implements PointsPerUserService {
           this.updateLatestPoints();
         });
       }
+
+      parsedPoints = totalEntry?.points || [];
       totalCount = parsedPoints.length;
     } catch (e) {
       // If data doesn't exist or can't be read, fetch and save the latest points
@@ -97,9 +138,8 @@ export class FileCachedPointsPerUserService implements PointsPerUserService {
     };
   }
 
-  private async fetchLatestPoints(): Promise<PointsResponse[]> {
+  private async fetchLatestPoints(epoch: EpochConfig): Promise<PointsResponse[]> {
     try {
-      const epoch = this.epochConfigService.getCurrentEpochs()[0];
 
       const epochStart = epoch.startDate;
       const epochEnd = epoch.endDate;
