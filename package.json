@@ -11,7 +11,7 @@
     "storybook": "nx storybook design -p $STORYBOOK_DEV_SERVER_PORT # 🎨 Design System - Storybook",
     "fix:formatting": "pnpx prettier --write apps/web",
     "prepare": "husky # 🪝 Git Hook",
-    "commit": "cz # Commitizen CLI",
+    "commit": "cz #🟢 Commitizen CLI",
     "postinstall": "nx postinstall microscope"
   },
   "dependencies": {
