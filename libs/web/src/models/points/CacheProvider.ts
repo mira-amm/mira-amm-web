@@ -1,10 +1,13 @@
 import {put, del, list} from "@vercel/blob";
 import fs from "fs/promises";
 import {PointsResponse} from "@/src/models/points/interfaces";
-export interface CacheData {
+
+export interface CacheEntry {
   expiresAt: string;
   points: PointsResponse[];
 }
+
+export type CacheData = Map<number | "TOTAL", CacheEntry>;
 
 export interface CacheProvider {
   read(): Promise<CacheData>;
@@ -23,11 +26,24 @@ export class LocalFileCacheProvider implements CacheProvider {
   async read(): Promise<CacheData> {
     try {
       const points = await fs.readFile(this.filePath, "utf8");
-      const data = JSON.parse(points) as CacheData;
-
-      // Validate cache data structure
-      if (!data.expiresAt || !Array.isArray(data.points)) {
-        throw new Error("Invalid cache data structure");
+      const rawData = JSON.parse(points) as Record<string, CacheEntry>;
+      
+      // Convert the object to a Map
+      const data = new Map<number | "TOTAL", CacheEntry>();
+      
+      // Validate and convert each entry
+      for (const [key, value] of Object.entries(rawData)) {
+        if (!value.expiresAt || !Array.isArray(value.points)) {
+          throw new Error(`Invalid cache data structure for key ${key}`);
+        }
+        
+        // Convert string keys to numbers where possible
+        const mapKey = key === "TOTAL" ? "TOTAL" : Number(key);
+        if (mapKey !== "TOTAL" && isNaN(mapKey)) {
+          throw new Error(`Invalid key in cache: ${key}`);
+        }
+        
+        data.set(mapKey, value);
       }
 
       return data;
@@ -41,7 +57,9 @@ export class LocalFileCacheProvider implements CacheProvider {
 
   async write(data: CacheData): Promise<void> {
     try {
-      await fs.writeFile(this.filePath, JSON.stringify(data));
+      // Convert Map to object for JSON serialization
+      const serializableData = Object.fromEntries(data);
+      await fs.writeFile(this.filePath, JSON.stringify(serializableData));
     } catch (error) {
       if (error instanceof Error) {
         throw new Error(`Failed to write cache: ${error.message}`);
@@ -73,11 +91,24 @@ export class VercelBlobCacheProvider implements CacheProvider {
       // Get the most recent blob
       const latestBlob = blobs[0];
       const response = await fetch(latestBlob.url);
-      const data = (await response.json()) as CacheData;
-
-      // Validate cache data structure
-      if (!data.expiresAt || !Array.isArray(data.points)) {
-        throw new Error("Invalid cache data structure");
+      const rawData = await response.json() as Record<string, CacheEntry>;
+      
+      // Convert the object to a Map
+      const data = new Map<number | "TOTAL", CacheEntry>();
+      
+      // Validate and convert each entry
+      for (const [key, value] of Object.entries(rawData)) {
+        if (!value.expiresAt || !Array.isArray(value.points)) {
+          throw new Error(`Invalid cache data structure for key ${key}`);
+        }
+        
+        // Convert string keys to numbers where possible
+        const mapKey = key === "TOTAL" ? "TOTAL" : Number(key);
+        if (mapKey !== "TOTAL" && isNaN(mapKey)) {
+          throw new Error(`Invalid key in cache: ${key}`);
+        }
+        
+        data.set(mapKey, value);
       }
 
       return data;
@@ -95,8 +126,11 @@ export class VercelBlobCacheProvider implements CacheProvider {
       const {blobs} = await list({prefix: this.getFullBlobId()});
       await Promise.all(blobs.map((blob) => del(blob.url)));
 
+      // Convert Map to object for JSON serialization
+      const serializableData = Object.fromEntries(data);
+      
       // Upload the new data
-      await put(this.getFullBlobId(), JSON.stringify(data), {
+      await put(this.getFullBlobId(), JSON.stringify(serializableData), {
         access: "public",
       });
     } catch (error) {
