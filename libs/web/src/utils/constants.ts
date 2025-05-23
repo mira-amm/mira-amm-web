@@ -1,4 +1,4 @@
-import {bn, CHAIN_IDS, TxParams} from "fuels";
+import { bn, CHAIN_IDS, TxParams } from "fuels";
 
 export const DEFAULT_AMM_CONTRACT_ID =
   "0x2e40f2b244b98ed6b8204b3de0156c6961f98525c8162f80162fcf53eebd90e7" as const;
@@ -90,7 +90,7 @@ export const boosterBannerTitle =
 export const POINTS_PROMO_TITLE =
   "Introducing Mira Points, earn points by providing liquidity and engaging in activities.";
 
-export const EPOCH_NUMBER = 4 as const;
+export const EPOCH_NUMBER = 5 as const;
 
 export const POINTS_TOOLTIP =
   "Your points are calculated based on the amount of liquidity you provide and the number of transactions you make.";
