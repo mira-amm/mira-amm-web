@@ -1,7 +1,7 @@
 {
   "name": "@microchain/source",
   "description": "The Liquidity Hub on Fuel.",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "type": "module",
   "scripts": {
     "clean": "nx destroy db; pnpm nx reset; # 🧽 Remove any and all files listed in .gitignore except .env and data",
@@ -11,7 +11,7 @@
     "storybook": "nx storybook design -p $STORYBOOK_DEV_SERVER_PORT # 🎨 Design System - Storybook",
     "fix:formatting": "pnpx prettier --write apps/web",
     "prepare": "husky # 🪝 Git Hook",
-    "commit": "cz # Commitizen CLI",
+    "commit": "cz #🟢 Commitizen CLI",
     "postinstall": "nx postinstall microscope"
   },
   "dependencies": {
