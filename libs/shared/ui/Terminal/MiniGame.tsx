@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useNavigate } from 'react-router';
 import { PaginationContextProvider } from "@/shared/ui/Pagination/PaginationContextProvider";
 import { Pagination } from "@/shared/ui/Pagination/Pagination";
 import { Input } from "@/shared/ui/input";
@@ -12,26 +13,106 @@ interface LeaderboardEntry {
   score: number;
 }
 
-const MOCK_LEADERBOARD: LeaderboardEntry[] = [
+const MOCK_LEADERBOARD = [
   {
-    id: 1,
-    player: { name: "DinoLord", walletAddress: "0xABC...123" },
-    score: 9001,
+    id: 34,
+    player: {
+      name: "Derek Dino",
+      walletAddress: "0x4e8d5D93E8Efa7cB6a22f8Fa728Dcb16eB6D9D5A",
+    },
+    score: 3100,
   },
   {
     id: 2,
-    player: { name: "JurassicFin", walletAddress: "0xDEF...456" },
-    score: 8450,
+    player: {
+      name: "Mattias Lightstone",
+      walletAddress: "0xD93fEb0D9Bd8cBBc38E51F3C03CcDcFec5A49c35",
+    },
+    score: 3000,
   },
   {
-    id: 3,
-    player: { name: "TyrannoTrex", walletAddress: "0x789...XYZ" },
-    score: 8120,
+    id: 25,
+    player: {
+      name: "Mumtahin Farabi",
+      walletAddress: "0x0b7A0EDAfCDE2c7B93f8c1b44A85c167aFE4C654",
+    },
+    score: 2800,
   },
+  {
+    id: 1,
+    player: {
+      name: "Kate Kharitonova",
+      walletAddress: "0xA3f91eC0B5a14cBc8f9a6CdbAf7B6E1eF6A8F1B3",
+    },
+    score: 2000,
+  },
+  {
+    id: 20,
+    player: {
+      name: "Derek Dino",
+      walletAddress: "0x4e8d5D93E8Efa7cB6a22f8Fa728Dcb16eB6D9D5A",
+    },
+    score: 1750,
+  },
+  /* {
+*   id: 46,
+*   player: {
+*     name: "Mumtahin Farabi",
+*     walletAddress: "0x0b7A0EDAfCDE2c7B93f8c1b44A85c167aFE4C654",
+*   },
+*   score: 1550,
+* },
+* {
+*   id: 24,
+*   player: {
+*     name: "Fossil Frank",
+*     walletAddress: "0x9cC0F3a77EfAe92F2Be57d47fCb9FbB23c45e9Fd",
+*   },
+*   score: 1330,
+* },
+* {
+*   id: 41,
+*   player: {
+*     name: "Derek Dino",
+*     walletAddress: "0x4e8d5D93E8Efa7cB6a22f8Fa728Dcb16eB6D9D5A",
+*   },
+*   score: 1150,
+* },
+* {
+*   id: 11,
+*   player: {
+*     name: "Mumtahin Farabi",
+*     walletAddress: "0x0b7A0EDAfCDE2c7B93f8c1b44A85c167aFE4C654",
+*   },
+*   score: 1100,
+* },
+* {
+*   id: 48,
+*   player: {
+*     name: "Derek Dino",
+*     walletAddress: "0x4e8d5D93E8Efa7cB6a22f8Fa728Dcb16eB6D9D5A",
+*   },
+*   score: 1010,
+* }, */
 ];
 
 export const MiniGame = () => {
   const [searchInput, setSearchInput] = useState("");
+
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        navigate('/menu');
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [navigate]);
 
   return (
         <QueryClientProvider client={queryClient}>
