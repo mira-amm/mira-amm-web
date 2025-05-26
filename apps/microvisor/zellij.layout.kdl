@@ -28,7 +28,7 @@ layout {
             pane {
                 name "🕹 Microgame | 4200 | microgame.mira.ly"
                 command "pnpm"
-                args "nx" "dev" "dex"
+                args "nx" "dev" "microgame"
             }
             pane {
                 name "🦕 Web App | 3000 | mira.ly"
