@@ -18,7 +18,7 @@ const getTitle = async (): Promise<string> => {
 
   try {
     const res = await fetch(`${process.env.NODE_ENV==='development' ? process.env.ADMIN_LOCAL_URL : process.env.ADMIN_PUBLIC_URL}
-/api/globals/constants${stringifiedQuery}`, {
+/api/globals/settings${stringifiedQuery}`, {
       cache: "no-store",
     });
 
@@ -49,7 +49,7 @@ export async function TerminalHeader () {
           </div>
           <div className="flex-1 text-center text-terminal-text text-sm">
             {/* {title} */}
-            Hello
+T-REX TECHNOLOGIES: DLM-2000 PROTOTYPE v0.8.5b
           </div>
         </div>
   );
