@@ -10,6 +10,6 @@ export default [
     route("game", "./routes/game.tsx"),
     route("logout", "./routes/logout.tsx"),
   ]),
-  route('/*', 'docs/page.tsx'),
-  route('api/search', 'docs/search.ts'),
+  // route('/*', 'docs/page.tsx'),
+  // route('api/search', 'docs/search.ts'),
 ] satisfies RouteConfig;
