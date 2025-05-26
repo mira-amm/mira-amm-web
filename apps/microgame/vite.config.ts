@@ -19,7 +19,8 @@ export default defineConfig(() => ({
   },
   plugins: [
     reactRouterDevTools(),
-    !process.env.VITEST && reactRouter(),
+    // !process.env.VITEST && reactRouter(),
+    reactRouter(),
     nxViteTsPaths(),
     nxCopyAssetsPlugin(['*.md']),
     tailwindcss(),
