@@ -6,7 +6,7 @@ import { usePathname } from "next/navigation";
 import { clsx } from "clsx";
 
 import Logo from "@/src/components/common/Logo/Logo";
-import MobileMenu from "@/src/components/common/Header/components/MobileMenu/MobileMenu";
+import MobileMenu from "@/src/components/common/Header/MobileMenu";
 import ConnectButton from "@/src/components/common/ConnectButton/ConnectButton";
 import LaunchAppButton from "@/src/components/common/LaunchAppButton/LaunchAppButton";
 import DisconnectMobile from "@/src/components/common/ConnectButton/DisconnectMobile";
