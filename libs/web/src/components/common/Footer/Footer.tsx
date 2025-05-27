@@ -11,7 +11,6 @@ export default function Footer() {
         <Logo />
         <div className="flex flex-col gap-3 text-base leading-[22px] text-[--content-primary] font-normal lg:flex-row lg:justify-between lg:w-[650px] lg:text-lg lg:leading-6">
           <a className="transition-colors duration-300 hover:text-[--content-dimmed-light]" href={DiscordLink}>Support</a>
-          <a className="transition-colors duration-300 hover:text-[--content-dimmed-light]" href="https://docs.mira.ly/resources/media-kit" target="_blank">Media Kit</a>
           <a className="transition-colors duration-300 hover:text-[--content-dimmed-light]" href="https://docs.mira.ly/developer-guides/security-audit" target="_blank">Security Audit</a>
           <a className="transition-colors duration-300 hover:text-[--content-dimmed-light]" href="https://docs.mira.ly" target="_blank">Docs</a>
           <a className="transition-colors duration-300 hover:text-[--content-dimmed-light]" href={BlogLink} target="_blank">Blog</a>
