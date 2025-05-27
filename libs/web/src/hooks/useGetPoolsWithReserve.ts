@@ -10,20 +10,6 @@ type PoolReserveData = {
   reserve1: string;
 };
 
-export type Pool = {
-  assetA: CoinData;
-  assetB: CoinData;
-  poolId: PoolId;
-} & PoolReserveData;
-
-// export type Route = [Pool[], CoinData, CoinData];
-
-export type Route = {
-  pools: Pool[];
-  assetIn: CoinData;
-  assetOut: CoinData;
-};
-
 const useGetPoolsWithReserve = (
   poolKeys: [CoinData, CoinData, PoolId, boolean][],
   assetIn?: CoinData,
@@ -76,16 +62,9 @@ const useGetPoolsWithReserve = (
   const poolsWithReserve = useMemo(
     () =>
       poolReserveData && poolKeys.length
-        ? poolKeys.reduce<Pool[]>((pools, [assetA, assetB, poolId], idx) => {
+        ? poolKeys.reduce<PoolId[]>((pools, [, , poolId], idx) => {
             const alias = String.fromCharCode(97 + idx);
-            return poolReserveData[alias]
-              ? pools.concat({
-                  assetA,
-                  assetB,
-                  poolId,
-                  ...poolReserveData[alias],
-                })
-              : pools;
+            return poolReserveData[alias] ? [...pools, poolId] : pools;
           }, [])
         : [],
     [poolKeys, poolReserveData],
