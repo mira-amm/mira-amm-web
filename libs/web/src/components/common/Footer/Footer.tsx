@@ -14,7 +14,6 @@ export default function Footer() {
           <a className="transition-colors duration-300 hover:text-[--content-dimmed-light]" href="https://docs.mira.ly/developer-guides/security-audit" target="_blank">Security Audit</a>
           <a className="transition-colors duration-300 hover:text-[--content-dimmed-light]" href="https://docs.mira.ly" target="_blank">Docs</a>
           <a className="transition-colors duration-300 hover:text-[--content-dimmed-light]" href={BlogLink} target="_blank">Blog</a>
-          <a className="transition-colors duration-300 hover:text-[--content-dimmed-light]" href="https://docs.mira.ly/resources/careers" target="_blank">Careers</a>
           <a className="transition-colors duration-300 hover:text-[--content-dimmed-light]" href="mailto:help@mira.ly" target="_blank">Contact us</a>
         </div>
         <div className="flex gap-3 lg:gap-4">
