@@ -1,102 +1,76 @@
-import styles from "./PositionsLoader.module.css";
-import clsx from "clsx";
-import mobilePositionStyles from "../../Positions/MobilePositions/MobilePositions.module.css";
-import mobilePositionItemStyles from "../../Positions/MobilePositions/MobilePositionItem/MobilePositionItem.module.css";
-import desktopPositionStyles from "../../Positions/MobilePositions/DesktopPositions/DesktopPositions.module.css";
-
-const PositionsLoader = ({count}: {count: number}) => {
+export default function PositionsLoader({ count }: { count: number }){
   return (
     <>
-      <div className={clsx(mobilePositionStyles.mobilePositions, "mobileOnly")}>
-        {Array.from({length: count}, (_, i) => (
-          <>
-            <div className={mobilePositionItemStyles.mobilePositionItem}>
-              <div className={styles.mobileInfoSection}>
+      {/* Mobile Layout */}
+      <div className="block md:hidden flex flex-col p-4 rounded-2xl bg-gray-800">
+        {Array.from({ length: count }, (_, i) => (
+          <div key={i}>
+            <div className="flex flex-col gap-4">
+              <div className="flex justify-between">
                 <div className="skeleton-avatar" />
                 <div className="skeleton-avatar" />
               </div>
-              <div className={mobilePositionItemStyles.content}>
-                <div className={styles.mobileContentItem}>
-                  <div
-                    className={`skeleton-line line-3 ${styles.mobileActionButton}`}
-                  />
-                </div>
-                <div className={styles.mobileContentItem}>
-                  <div
-                    className={`skeleton-line line-3 ${styles.mobileActionButton}`}
-                  />
-                </div>
-                <div className={styles.mobileContentItem}>
-                  <div
-                    className={`skeleton-line line-3 ${styles.mobileActionButton}`}
-                  />
-                </div>
+
+              <div className="flex items-center justify-between py-2">
+                {[...Array(3)].map((_, index) => (
+                  <div key={index} className="flex flex-col justify-center items-center w-1/4 min-h-[61px]">
+                    <div className="skeleton-line line-3 min-h-[29px]" />
+                  </div>
+                ))}
               </div>
-              <div
-                className={`skeleton-line line-3 ${styles.mobileActionButton} ${styles.marginAuto}`}
-              />
+
+              <div className="skeleton-line line-3 min-h-[29px] mx-auto" />
             </div>
+
             {i !== count - 1 && (
-              <div className={mobilePositionStyles.separator} />
+              <div className="h-px bg-gray-600 my-4 -mx-4" />
             )}
-          </>
+          </div>
         ))}
       </div>
-      <table
-        className={clsx(desktopPositionStyles.desktopPositions, "desktopOnly")}
-      >
+
+      {/* Desktop Layout */}
+      <table className="hidden md:table w-full rounded-3xl border-collapse bg-gray-800">
         <thead>
           <tr>
-            <th>
-              <div
-                className={`skeleton-line line-3 ${styles.tableHeadingText}`}
-              />
+            <th className="text-left min-w-[350px] px-6 py-4 text-sm font-normal text-gray-400 border-b border-gray-700">
+              <div className="skeleton-line line-3 min-h-[19px]" />
             </th>
-            <th>
-              <div
-                className={`skeleton-line line-3 ${styles.tableHeadingText} ${styles.marginAuto}`}
-              />
+            <th className="text-center min-w-[215px] px-6 py-4 text-sm font-normal text-gray-400 border-b border-gray-700">
+              <div className="skeleton-line line-3 min-h-[19px] mx-auto" />
             </th>
-            <th>
-              <div
-                className={`skeleton-line line-3 ${styles.tableHeadingText} ${styles.marginAuto}`}
-              />
+            <th className="text-center min-w-[215px] px-6 py-4 text-sm font-normal text-gray-400 border-b border-gray-700">
+              <div className="skeleton-line line-3 min-h-[19px] mx-auto" />
             </th>
-            <th></th>
+            <th className="text-right px-6 py-4 border-b border-gray-700" />
           </tr>
         </thead>
         <tbody>
-          {Array.from({length: count}, (_, i) => (
+          {Array.from({ length: count }, (_, i) => (
             <tr key={i}>
-              <td>
-                <div className={`skeleton-item ${styles.tableCell}`}>
+              <td className="px-6 py-4 min-w-[350px]">
+                <div className="skeleton-item min-h-[43px] flex items-center gap-2">
                   <div className="skeleton-avatar" />
                   <div className="skeleton-avatar" />
-                  <div className={`skeleton-text ${styles.loaderLineCenter}`}>
-                    <div className={`skeleton-line line-3`} />
-                    <div className={`skeleton-line line-3`} />
+                  <div className="skeleton-text flex flex-col items-center ml-2">
+                    <div className="skeleton-line line-3" />
+                    <div className="skeleton-line line-3" />
                   </div>
                 </div>
               </td>
-              <td>
-                <div className={`skeleton-text ${styles.loaderLineCenter}`}>
-                  <div
-                    className={`skeleton-line line-2 ${styles.loaderLineHeight}`}
-                  />
+              <td className="px-6 py-4 text-center">
+                <div className="skeleton-text flex flex-col items-center">
+                  <div className="skeleton-line line-2 min-h-[20px]" />
                 </div>
               </td>
-              <td>
-                <div className={`skeleton-text ${styles.loaderLineCenter}`}>
-                  <div
-                    className={`skeleton-line line-3 ${styles.loaderLineHeight}`}
-                  />
+              <td className="px-6 py-4 text-center">
+                <div className="skeleton-text flex flex-col items-center">
+                  <div className="skeleton-line line-3 min-h-[20px]" />
                 </div>
               </td>
-              <td>
-                <div style={{minWidth: "100px"}} className="skeleton-text">
-                  <div
-                    className={`skeleton-line line-1 ${styles.loaderLineHeight}`}
-                  />
+              <td className="px-6 py-4 text-right">
+                <div className="skeleton-text min-w-[100px]">
+                  <div className="skeleton-line line-1 min-h-[20px]" />
                 </div>
               </td>
             </tr>
@@ -106,5 +80,3 @@ const PositionsLoader = ({count}: {count: number}) => {
     </>
   );
 };
-
-export default PositionsLoader;

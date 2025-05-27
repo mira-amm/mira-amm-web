@@ -1,6 +1,4 @@
-import {ReactNode} from "react";
-
-import styles from "./PromoBlock.module.css";
+import { ReactNode } from "react";
 
 type Props = {
   icon: ReactNode;
@@ -9,16 +7,23 @@ type Props = {
   linkText: string;
 };
 
-const PromoBlock = ({icon, title, link, linkText}: Props) => {
+export default function PromoBlock({ icon, title, link, linkText }: Props) {
   return (
-    <a href={link} className={styles.promoBlock} target="_blank">
-      <div className={styles.icon}>{icon}</div>
-      <div className={styles.content}>
-        <p className={styles.title}>{title}</p>
-        <p className={styles.text}>{linkText}</p>
+    <a
+      href={link}
+      target="_blank"
+      className="w-full flex gap-2.5 p-3 rounded-lg bg-[var(--background-grey-dark)] group"
+      rel="noopener noreferrer"
+    >
+      <div className="flex items-center justify-center w-11 h-11 rounded bg-gradient-to-r from-[#5872fc] to-[#c41cff] text-[var(--content-primary)]">
+        {icon}
+      </div>
+      <div className="flex-1 flex flex-col justify-center gap-1">
+        <p className="font-medium">{title}</p>
+        <p className="text-sm leading-4 text-[var(--content-dimmed-light)] group-hover:text-[var(--content-primary)]">
+          {linkText}
+        </p>
       </div>
     </a>
   );
-};
-
-export default PromoBlock;
+}

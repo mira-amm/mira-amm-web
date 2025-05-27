@@ -1,12 +1,25 @@
-import ViewPositionPageLayout from "@/web/src/components/pages/view-position-page/ViewPositionPageLayout";
-import {Suspense} from "react";
+"use client";
 
-const ViewPositionPage = () => {
+import { useRouter, useSearchParams } from "next/navigation";
+import { createPoolIdFromPoolKey, isPoolIdValid } from "@/src/utils/common";
+import PositionView from "@/src/components/pages/view-position-page/components/PositionView/PositionView";
+
+export default function Page() {
+  const router = useRouter();
+  const query = useSearchParams();
+  const poolKey = query.get("pool");
+  const poolId = poolKey ? createPoolIdFromPoolKey(poolKey) : null;
+
+  if (!poolId || !isPoolIdValid(poolId)) {
+    router.push("/liquidity");
+    return null;
+  }
+
   return (
-    <Suspense>
-      <ViewPositionPageLayout />
-    </Suspense>
+    <main
+      className="flex flex-col p-4 gap-4 lg:max-w-[716px] lg:mx-auto lg:px-4 lg:py-8"
+    >
+      <PositionView pool={poolId} />
+    </main>
   );
-};
-
-export default ViewPositionPage;
+}

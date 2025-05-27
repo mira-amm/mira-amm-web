@@ -1,13 +1,64 @@
-import {Suspense} from "react";
+'use client';
 
-import CreatePoolPageLayout from "@/src/components/pages/create-pool-page/CreatePoolPageLayout";
+import { useEffect, useRef, useCallback, useState } from 'react';
+import { useRouter } from 'next/navigation';
 
-const CreatePoolPage = () => {
+import BackLink from '@/src/components/common/BackLink/BackLink';
+import IconButton from '@/src/components/common/IconButton/IconButton';
+import CloseIcon from '@/src/components/icons/Close/CloseIcon';
+
+import PreviewCreatePoolDialog, {
+  CreatePoolPreviewData,
+} from '@/src/components/pages/create-pool-page/components/CreatePool/PreviewCreatePoolDialog';
+import CreatePoolDialog from '@/src/components/pages/create-pool-page/components/CreatePool/CreatePoolDialog';
+
+export default function Page() {
+  const router = useRouter();
+  const [previewData, setPreviewData] = useState<CreatePoolPreviewData | null>(null);
+  const mainRef = useRef<HTMLElement>(null);
+
+  useEffect(() => {
+    mainRef.current?.scrollIntoView();
+  }, []);
+
+  const handleBackClick = useCallback(() => {
+    previewData ? setPreviewData(null) : router.back();
+  }, [previewData, router]);
+
+  const handleCloseClick = useCallback(() => {
+    router.push('/liquidity');
+  }, [router]);
+
+  const showPreview = Boolean(previewData);
+
   return (
-    <Suspense>
-      <CreatePoolPageLayout />
-    </Suspense>
-  );
-};
+    <div ref={mainRef} className="flex flex-col gap-4">
+      <BackLink
+        showOnDesktop
+        onClick={handleBackClick}
+        className="z-[5]"
+      />
 
-export default CreatePoolPage;
+      <section className="flex flex-col gap-6 p-4 rounded-2xl w-full max-w-[524px] mx-auto bg-[var(--background-grey-dark)] z-[5]">
+        <div className="flex items-center justify-between border-b border-[var(--background-grey-light)] pb-4 text-[var(--content-grey)] font-medium text-base leading-[19px] gap-2">
+          <p className="flex-1 text-[var(--content-primary)]">Create Pool</p>
+          {showPreview && (
+            <IconButton onClick={handleCloseClick}>
+              <CloseIcon />
+            </IconButton>
+          )}
+        </div>
+
+        {showPreview ? (
+          <PreviewCreatePoolDialog previewData={previewData} />
+        ) : (
+          <CreatePoolDialog setPreviewData={setPreviewData} />
+        )}
+      </section>
+
+      {showPreview && (
+        <div className="fixed inset-0 backdrop-blur-sm z-[4] pointer-events-auto" />
+      )}
+    </div>
+  );
+}

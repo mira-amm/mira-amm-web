@@ -1,34 +1,13 @@
-import {ReactNode} from "react";
-import {Metadata} from "next";
+import { ReactNode } from "react";
 
-type Props = Readonly<{
+type Props = {
   children: ReactNode;
-}>;
-
-export const metadata: Metadata = {
-  title:
-    "Provide Liquidity on MIRA AMM | Earn Rewards with MIRA Liquidity Pools",
-  description:
-    "Contribute to liquidity pools on MIRA AMM. Get rewards for providing liquidity using MIRA protocol. Maximize your earnings with our incentive points program. Join our liquidity providers",
-  openGraph: {
-    title:
-      "Provide Liquidity on MIRA AMM | Earn Rewards with MIRA Liquidity Pools",
-    url: "https://mira.ly/liquidity",
-    description:
-      "Contribute to liquidity pools on MIRA AMM. Get rewards for providing liquidity using MIRA protocol. Maximize your earnings with our incentive points program. Join our liquidity providers",
-    images: "https://mira.ly/images/preview.png",
-  },
-  twitter: {
-    title:
-      "Provide Liquidity on MIRA AMM | Earn Rewards with MIRA Liquidity Pools",
-    description:
-      "Contribute to liquidity pools on MIRA AMM. Get rewards for providing liquidity using MIRA protocol. Maximize your earnings with our incentive points program. Join our liquidity providers",
-    images: "https://mira.ly/images/preview.png",
-  },
 };
 
-const LiquidityLayout = ({children}: Props) => {
-  return <>{children}</>;
-};
-
-export default LiquidityLayout;
+export default function LiquidityLayout({ children }: Props) {
+  return (
+    <main className="flex flex-col gap-6 px-4 pb-20 lg:max-w-[1084px] lg:mx-auto lg:pt-8">
+      {children}
+    </main>
+  );
+}
