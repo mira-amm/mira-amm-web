@@ -2,9 +2,6 @@
 
 import BackLink from "../../common/BackLink/BackLink";
 import Swap from "../../common/Swap/Swap";
-import styles from "../swap-page/SwapPageLayout.module.css"; // styles for Swap
-import pageStyles from "./FueletSwapPageLayout.module.css"; // custom styles for this page
-import {clsx} from "clsx";
 import {useConnect} from "@fuels/react";
 import {FueletWalletConnector} from "@fuels/connectors";
 // import { useRouter } from "next/navigation";
@@ -29,13 +26,12 @@ export const FueletSwapPageLayout = () => {
   }, []);
 
   return (
-    <section className={clsx(pageStyles.page, styles.swapLayout)}>
+    <>
       <BackLink
         title="Powered by mira.ly"
-        className={pageStyles.link}
         href="https://mira.ly"
       />
       <Swap />
-    </section>
+    </>
   );
 };

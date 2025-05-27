@@ -1,3 +1,5 @@
+'use client'
+
 import {useConnectUI, useIsConnected} from "@fuels/react";
 import {clsx} from "clsx";
 import Logo from "@/src/components/common/Logo/Logo";

@@ -24,12 +24,6 @@
   --points-gradient: linear-gradient(170deg, #262f5f 35%, #c41cff 100%);
 }
 
-* {
-  box-sizing: border-box;
-  padding: 0;
-  margin: 0;
-}
-
 html,
 body {
   height: 100%;

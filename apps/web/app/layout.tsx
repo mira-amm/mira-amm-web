@@ -6,6 +6,7 @@ import {metadata} from "./metadata";
 
 import "@/public/css/globals.css";
 import "@/public/css/animations.css";
+import "@/web/styles.css";
 import Providers from "@/src/core/providers/Providers";
 import {useAnimationStore} from "@/src/stores/useGlitchScavengerHunt";
 import GlitchEffects from "@/src/components/common/GlitchEffects/GlitchEffects";
@@ -61,9 +62,13 @@ const RootLayout = ({children}: Props) => {
       <body className={clsx(inter.className, inter.variable, prompt.variable)}>
         <Providers>
           <div style={{position: "relative"}}>
-            <Header />
-            {children}
-            <Footer />
+<div className="flex flex-col min-h-screen">
+  <Header />
+  <main className="flex-1 flex flex-col">{children}</main>
+  <div className="flex lg:justify-center w-full">
+  <Footer />
+  </div>
+</div>
             {glitchScavengerHuntEnabled && <GlitchEffects />}
           </div>
         </Providers>

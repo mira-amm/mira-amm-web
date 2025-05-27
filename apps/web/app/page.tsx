@@ -1,8 +1,12 @@
-import LandingPageLayout from "@/src/components/pages/landing-page/LandingPageLayout";
-import SwapPageLayout from "@/src/components/pages/swap-page/SwapPageLayout";
+import "@/web/styles.css";
+import Swap from "@/src/components/common/Swap/Swap";
 
-const LandingPage = () => {
-  return <SwapPageLayout />;
-};
-
-export default LandingPage;
+export default function Page() {
+  return (
+    <div className="flex flex-1 flex-col items-center w-full md:justify-center">
+      <div className="w-full max-w-lg px-4">
+        <Swap />
+      </div>
+    </div>
+  );
+}
