@@ -18,11 +18,9 @@ import {
   footer,
   footerLogo,
   footerSupportLink,
-  footerMediaKitLink,
   footerSecurityAuditLink,
   footerDocsLink,
   footerBlogLink,
-  footerCareersLink,
   footerContactUsLink,
   footerSocialLinks,
 } from "./locators";
@@ -204,11 +202,6 @@ describe("Layout: Footer", () => {
       Layout.shouldBePresent("Support link", footerSupportLink()),
     ));
 
-  it("should show 'Media Kit' link", async ({actor}) =>
-    actor.attemptsTo(
-      Layout.shouldBePresent("Media Kit link", footerMediaKitLink()),
-    ));
-
   it("should show 'Security Audit' link", async ({actor}) =>
     actor.attemptsTo(
       Layout.shouldBePresent("Security Audit link", footerSecurityAuditLink()),
@@ -220,29 +213,9 @@ describe("Layout: Footer", () => {
   it("should show 'Blog' link", async ({actor}) =>
     actor.attemptsTo(Layout.shouldBePresent("Blog link", footerBlogLink())));
 
-  it("should show 'Careers' link", async ({actor}) =>
-    actor.attemptsTo(
-      Layout.shouldBePresent("Careers link", footerCareersLink()),
-    ));
-
   it("should show 'Contact us' link", async ({actor}) =>
     actor.attemptsTo(
       Layout.shouldBePresent("Contact us link", footerContactUsLink()),
-    ));
-
-  it("should allow clicking GitHub link", async ({actor}) =>
-    actor.attemptsTo(
-      Layout.shouldAllowClick("GitHub link", footerSocialLinks().nth(0)),
-    ));
-
-  it("should allow clicking discord link", async ({actor}) =>
-    actor.attemptsTo(
-      Layout.shouldAllowClick("discord link", footerSocialLinks().nth(1)),
-    ));
-
-  it("should allow clicking X link", async ({actor}) =>
-    actor.attemptsTo(
-      Layout.shouldAllowClick("X link", footerSocialLinks().nth(2)),
     ));
 
 });

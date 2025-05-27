@@ -1,31 +1,87 @@
 @import "tailwindcss";
-@source "./**/*.{ts,tsx}";
 
+@source './**/*.{ts,tsx}';
+
+@custom-variant dark (&:is(.dark *));
 
 @layer base {
-:root {
-  --font-inter: 'Inter';
-  --font-prompt: 'Prompt';
+  :root {
+    --background-primary: #0E111E;
+    --background-secondary: #1B1C23;
+    --background-grey-darker: rgba(255, 255, 255, 0.05);
+    --background-grey-dark: rgba(255, 255, 255, 0.1);
+    --background-grey-light: rgba(255, 255, 255, 0.2);
 
-  --background-primary: #0E111E;
-  --background-secondary: #1B1C23;
-  --background-grey-darker: rgba(255, 255, 255, 0.05);
-  --background-grey-dark: rgba(255, 255, 255, 0.1);
-  --background-grey-light: rgba(255, 255, 255, 0.2);
-  --content-primary: #FFFFFF;
-  --content-secondary: rgba(255, 255, 255, 0.8);
-  --content-tertiary: rgba(255, 255, 255, 0.72);
-  --content-dimmed-light: rgba(255, 255, 255, 0.64);
-  --content-dimmed-dark: rgba(255, 255, 255, 0.4);
-  --content-grey: #9D9D9D;
-  --content-grey-dark: #6D6D6D;
-  --content-inverse: #28282F;
-  --accent-primary: #AEED0D;
-  --accent-secondary: rgba(174, 237, 13, 0.4);
-  --accent-dimmed: rgba(174, 237, 13, 0.1);
-  --accent-warning: #F55353;
-  --accent-alert: #d4b226;
-  --content-positive: #46CC44;
-  --points-gradient: linear-gradient(170deg, #262f5f 35%, #c41cff 100%);
-}
+    --content-primary: #FFFFFF;
+    --content-secondary: rgba(255, 255, 255, 0.8);
+    --content-tertiary: rgba(255, 255, 255, 0.72);
+    --content-dimmed-light: rgba(255, 255, 255, 0.64);
+    --content-dimmed-dark: rgba(255, 255, 255, 0.4);
+    --content-grey: #9D9D9D;
+    --content-grey-dark: #6D6D6D;
+    --content-inverse: #28282F;
+
+    --accent-primary: #AEED0D;
+    --accent-secondary: rgba(174, 237, 13, 0.4);
+    --accent-dimmed: rgba(174, 237, 13, 0.1);
+    --accent-warning: #F55353;
+    --accent-alert: #d4b226;
+    --content-positive: #46CC44;
+
+    --points-gradient: linear-gradient(170deg, #262f5f 35%, #c41cff 100%);
+
+    --font-inter: 'Inter', sans-serif;
+    --font-prompt: 'Prompt', sans-serif;
+  }
+
+  .dark {
+    --background-primary: #0A0B12;
+    --background-secondary: #121318;
+    --background-grey-darker: rgba(255, 255, 255, 0.03);
+    --background-grey-dark: rgba(255, 255, 255, 0.08);
+    --background-grey-light: rgba(255, 255, 255, 0.15);
+
+    --content-primary: #F9FAFB;
+    --content-secondary: rgba(255, 255, 255, 0.85);
+    --content-tertiary: rgba(255, 255, 255, 0.75);
+    --content-dimmed-light: rgba(255, 255, 255, 0.6);
+    --content-dimmed-dark: rgba(255, 255, 255, 0.35);
+    --content-grey: #7B7B7B;
+    --content-grey-dark: #4B4B4B;
+    --content-inverse: #FFFFFF;
+
+    --accent-primary: #AEED0D;
+    --accent-secondary: rgba(174, 237, 13, 0.3);
+    --accent-dimmed: rgba(174, 237, 13, 0.08);
+    --accent-warning: #F87171;
+    --accent-alert: #FFD700;
+    --content-positive: #4ADE80;
+  }
+
+  @theme {
+    --color-background-primary: var(--background-primary);
+    --color-background-secondary: var(--background-secondary);
+    --color-background-grey-darker: var(--background-grey-darker);
+    --color-background-grey-dark: var(--background-grey-dark);
+    --color-background-grey-light: var(--background-grey-light);
+
+    --color-content-primary: var(--content-primary);
+    --color-content-secondary: var(--content-secondary);
+    --color-content-tertiary: var(--content-tertiary);
+    --color-content-dimmed-light: var(--content-dimmed-light);
+    --color-content-dimmed-dark: var(--content-dimmed-dark);
+    --color-content-grey: var(--content-grey);
+    --color-content-grey-dark: var(--content-grey-dark);
+    --color-content-inverse: var(--content-inverse);
+
+    --color-accent-primary: var(--accent-primary);
+    --color-accent-secondary: var(--accent-secondary);
+    --color-accent-dimmed: var(--accent-dimmed);
+    --color-accent-warning: var(--accent-warning);
+    --color-accent-alert: var(--accent-alert);
+    --color-content-positive: var(--content-positive);
+
+    --font-sans: var(--font-inter);
+    --font-alt: var(--font-prompt);
+  }
 }

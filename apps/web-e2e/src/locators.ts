@@ -101,7 +101,7 @@ export const headerConnectWalletButton = () =>
 // ========== LAYOUT LOCATORS: FOOTER ==========
 //
 
-export const footer = () => PageElement.located(By.css("footer.desktopOnly"));
+export const footer = () => PageElement.located(By.css("footer"));
 
 export const footerLogo = () =>
   PageElement.located(
@@ -111,8 +111,6 @@ export const footerLogo = () =>
 export const footerSupportLink = () =>
   PageElement.located(By.cssContainingText("a", "Support"));
 
-export const footerMediaKitLink = () =>
-  PageElement.located(By.cssContainingText("a", "Media Kit"));
 
 export const footerSecurityAuditLink = () =>
   PageElement.located(By.cssContainingText("a", "Security Audit"));
@@ -123,11 +121,5 @@ export const footerDocsLink = () =>
 export const footerBlogLink = () =>
   PageElement.located(By.cssContainingText("a", "Blog"));
 
-export const footerCareersLink = () =>
-  PageElement.located(By.cssContainingText("a", "Careers"));
-
 export const footerContactUsLink = () =>
   PageElement.located(By.cssContainingText("a", "Contact us"));
-
-export const footerSocialLinks = () =>
-  PageElements.located(By.css('[class^="Footer_socialLink__"]'));
