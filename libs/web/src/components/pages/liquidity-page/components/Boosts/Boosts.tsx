@@ -1,3 +1,5 @@
+'use client'
+
 import {useIsConnected} from "@fuels/react";
 import styles from "./Boosts.module.css";
 import BoostsBanner from "./BoostsBanner/BoostsBanner";

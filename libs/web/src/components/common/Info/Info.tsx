@@ -1,3 +1,5 @@
+'use client'
+
 import {memo, useEffect, useRef} from "react";
 
 import styles from "./Info.module.css";
