@@ -1,8 +1,5 @@
 "use client";
 
-import Header from "@/src/components/common/Header/Header";
-import Footer from "@/src/components/common/Footer/Footer";
-
 import styles from "./ViewPositionPageLayout.module.css";
 import {createPoolIdFromPoolKey, isPoolIdValid} from "@/src/utils/common";
 import {useRouter, useSearchParams} from "next/navigation";
@@ -20,13 +17,9 @@ const ViewPositionPageLayout = () => {
   }
 
   return (
-    <>
-      <Header />
-      <main className={styles.viewPositionLayout}>
-        <PositionView pool={poolId} />
-      </main>
-      <Footer />
-    </>
+    <main className={styles.viewPositionLayout}>
+      <PositionView pool={poolId} />
+    </main>
   );
 };
 

@@ -9,6 +9,8 @@ import "@/public/css/animations.css";
 import Providers from "@/src/core/providers/Providers";
 import {useAnimationStore} from "@/src/stores/useGlitchScavengerHunt";
 import GlitchEffects from "@/src/components/common/GlitchEffects/GlitchEffects";
+import Header from "@/src/components/common/Header/Header";
+import Footer from "@/src/components/common/Footer/Footer";
 
 type Props = Readonly<{
   children: ReactNode;
@@ -59,7 +61,9 @@ const RootLayout = ({children}: Props) => {
       <body className={clsx(inter.className, inter.variable, prompt.variable)}>
         <Providers>
           <div style={{position: "relative"}}>
+            <Header />
             {children}
+            <Footer />
             {glitchScavengerHuntEnabled && <GlitchEffects />}
           </div>
         </Providers>

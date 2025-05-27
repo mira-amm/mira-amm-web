@@ -1,3 +1,5 @@
+'use client'
+
 import MobileMenu from "@/src/components/common/Header/components/MobileMenu/MobileMenu";
 import Logo from "@/src/components/common/Logo/Logo";
 

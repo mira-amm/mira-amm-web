@@ -1,8 +1,5 @@
 "use client";
 
-import Header from "@/src/components/common/Header/Header";
-import Footer from "@/src/components/common/Footer/Footer";
-
 import styles from "./AddLiquidityPageLayout.module.css";
 import AddLiquidity from "@/src/components/pages/add-liquidity-page/components/AddLiquidity/AddLiquidity";
 import {useRouter, useSearchParams} from "next/navigation";
@@ -30,13 +27,9 @@ const AddLiquidityPageLayout = () => {
   }
 
   return (
-    <>
-      <Header />
-      <main className={styles.addLiquidityLayout} ref={mainRef}>
-        <AddLiquidity poolId={poolId} poolKey={poolKey || ""} />
-      </main>
-      <Footer />
-    </>
+    <main className={styles.addLiquidityLayout} ref={mainRef}>
+      <AddLiquidity poolId={poolId} poolKey={poolKey || ""} />
+    </main>
   );
 };
 
