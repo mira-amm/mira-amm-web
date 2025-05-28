@@ -1,20 +1,22 @@
-'use client';
+"use client";
 
-import { useEffect, useRef, useCallback, useState } from 'react';
-import { useRouter } from 'next/navigation';
+import {useEffect, useRef, useCallback, useState} from "react";
+import {useRouter} from "next/navigation";
 
-import BackLink from '@/src/components/common/BackLink/BackLink';
-import IconButton from '@/src/components/common/IconButton/IconButton';
-import CloseIcon from '@/src/components/icons/Close/CloseIcon';
+import BackLink from "@/src/components/common/BackLink/BackLink";
+import IconButton from "@/src/components/common/IconButton/IconButton";
+import CloseIcon from "@/src/components/icons/CloseIcon";
 
 import PreviewCreatePoolDialog, {
   CreatePoolPreviewData,
-} from '@/src/components/pages/create-pool-page/components/CreatePool/PreviewCreatePoolDialog';
-import CreatePoolDialog from '@/src/components/pages/create-pool-page/components/CreatePool/CreatePoolDialog';
+} from "@/src/components/pages/create-pool-page/components/CreatePool/PreviewCreatePoolDialog";
+import CreatePoolDialog from "@/src/components/pages/create-pool-page/components/CreatePool/CreatePoolDialog";
 
 export default function Page() {
   const router = useRouter();
-  const [previewData, setPreviewData] = useState<CreatePoolPreviewData | null>(null);
+  const [previewData, setPreviewData] = useState<CreatePoolPreviewData | null>(
+    null,
+  );
   const mainRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
@@ -26,18 +28,14 @@ export default function Page() {
   }, [previewData, router]);
 
   const handleCloseClick = useCallback(() => {
-    router.push('/liquidity');
+    router.push("/liquidity");
   }, [router]);
 
   const showPreview = Boolean(previewData);
 
   return (
     <div ref={mainRef} className="flex flex-col gap-4">
-      <BackLink
-        showOnDesktop
-        onClick={handleBackClick}
-        className="z-[5]"
-      />
+      <BackLink showOnDesktop onClick={handleBackClick} className="z-[5]" />
 
       <section className="flex flex-col gap-6 p-4 rounded-2xl w-full max-w-[524px] mx-auto bg-[var(--background-grey-dark)] z-[5]">
         <div className="flex items-center justify-between border-b border-[var(--background-grey-light)] pb-4 text-[var(--content-grey)] font-medium text-base leading-[19px] gap-2">

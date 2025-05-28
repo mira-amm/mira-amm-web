@@ -1,11 +1,11 @@
-import { DividerText } from "../DividerText/dividerText";
-import { UsedTechs } from "../UsedTechs/UsedTechs";
-import Halborn from "../../icons/Halborn/HalbornIcon";
-import FuelGroup from "../../icons/FuelGroup/FuelGroup";
-import { Divider } from "../Divider/Divider";
-import OttersecIcon from "@/src/components/icons/Ottersec/OttersecIcon";
+import {DividerText} from "../DividerText/dividerText";
+import {UsedTechs} from "../UsedTechs/UsedTechs";
+import Halborn from "../../icons/HalbornIcon";
+import FuelGroup from "../../icons/FuelGroup";
+import {Divider} from "../Divider/Divider";
+import OttersecIcon from "@/src/components/icons/OttersecIcon";
 
-export function TechsDivider(){
+export function TechsDivider() {
   return (
     <Divider className="flex flex-col lg:flex-row items-center justify-center gap-12 lg:gap-[164px] px-6 lg:px-12 py-6">
       <DividerText text="Trade with confidence" dimmed />
@@ -45,4 +45,4 @@ export function TechsDivider(){
       </div>
     </Divider>
   );
-};
+}

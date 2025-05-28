@@ -1,4 +1,4 @@
-import SettingsIcon from "../../icons/Settings/SettingsIcon";
+import SettingsIcon from "../../icons/SettingsIcon";
 import IconButton from "../IconButton/IconButton";
 import styles from "./SlippageSetting.module.css";
 

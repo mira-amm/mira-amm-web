@@ -2,7 +2,7 @@ import {memo} from "react";
 
 import styles from "./Coin.module.css";
 import {clsx} from "clsx";
-import ChevronDownIcon from "@/src/components/icons/ChevronDown/ChevronDownIcon";
+import ChevronDownIcon from "@/src/components/icons/ChevronDownIcon";
 import useAssetMetadata from "@/src/hooks/useAssetMetadata";
 import {useAssetImage} from "@/src/hooks/useAssetImage";
 

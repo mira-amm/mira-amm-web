@@ -1,6 +1,6 @@
 import {clsx} from "clsx";
 import styles from "./SearchBar.module.css";
-import SearchIcon from "../../icons/Search/SearchIcon";
+import SearchIcon from "../../icons/SearchIcon";
 import {SearchBarProps} from "./SearchBarProps";
 
 export const SearchBar: React.FC<SearchBarProps> = ({

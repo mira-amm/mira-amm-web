@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from "react";
-import ExchangeIcon from "@/src/components/icons/Exchange/ExchangeIcon";
+import ExchangeIcon from "@/src/components/icons/ExchangeIcon";
 import styles from "./ExchangeRate.module.css";
 import {calculateFlooredRate} from "./utils";
 interface AssetMetadata {

@@ -1,35 +1,37 @@
 import LaunchAppButton from "@/src/components/common/LaunchAppButton/LaunchAppButton";
 import Swap from "@/src/components/common/Swap/Swap";
-import FuelIcon from "@/src/components/icons/Fuel/FuelIcon";
-import DiscordIcon from "@/src/components/icons/Discord/DiscordIcon";
-import XIcon from "@/src/components/icons/X/XIcon";
-import LockIcon from "@/src/components/icons/LockIcon/LockIcon";
-import VoteIcon from "@/src/components/icons/VoteIcon/VoteIcon";
-import EarnIcon from "@/src/components/icons/EarnIcon/EarnIcon";
-import RoadmapDesktop from "@/src/components/icons/Roadmap/RoadmapDesktopIcon";
-import RoadmapMobile from "@/src/components/icons/Roadmap/RoadmapMobileIcon";
+import FuelIcon from "@/src/components/icons/FuelIcon";
+import DiscordIcon from "@/src/components/icons/DiscordIcon";
+import XIcon from "@/src/components/icons/XIcon";
+import LockIcon from "@/src/components/icons/LockIcon";
+import VoteIcon from "@/src/components/icons/VoteIcon";
+import EarnIcon from "@/src/components/icons/EarnIcon";
+import RoadmapDesktop from "@/src/components/icons/RoadmapDesktopIcon";
+import RoadmapMobile from "@/src/components/icons/RoadmapMobileIcon";
 
-import { TechsDivider } from "@/src/components/common/TechsDivider/TechsDivider";
-import { Divider } from "@/src/components/common/Divider/Divider";
-import { DividerText } from "@/src/components/common/DividerText/dividerText";
-import { MainInfo } from "@/src/components/common/MainInfo/MainInfo";
-import { InfoBlocks } from "@/src/components/common/InfoBlocks/InfoBlocks";
-import { StepsBlock } from "@/src/components/common/StepsBlock/StepsBlock";
-import { RoadMapBlock } from "@/src/components/common/RoadMapBlock/RoadMapBlock";
-import { RoadMapIcon } from "@/src/components/common/RoadMapIcons/RoadMapIcon";
-import { StepsIcon } from "@/src/components/common/StepsIcon/StepsIcon";
-import { MiraApp } from "@/src/components/common/MiraApp/MiraApp";
+import {TechsDivider} from "@/src/components/common/TechsDivider/TechsDivider";
+import {Divider} from "@/src/components/common/Divider/Divider";
+import {DividerText} from "@/src/components/common/DividerText/dividerText";
+import {MainInfo} from "@/src/components/common/MainInfo/MainInfo";
+import {InfoBlocks} from "@/src/components/common/InfoBlocks/InfoBlocks";
+import {StepsBlock} from "@/src/components/common/StepsBlock/StepsBlock";
+import {RoadMapBlock} from "@/src/components/common/RoadMapBlock/RoadMapBlock";
+import {RoadMapIcon} from "@/src/components/common/RoadMapIcons/RoadMapIcon";
+import {StepsIcon} from "@/src/components/common/StepsIcon/StepsIcon";
+import {MiraApp} from "@/src/components/common/MiraApp/MiraApp";
 
-import { DiscordLink, XLink } from "@/src/utils/constants";
+import {DiscordLink, XLink} from "@/src/utils/constants";
 
-export default function Page(){
+export default function Page() {
   return (
     <>
       <main className="flex flex-col gap-[56px] px-4 pt-[84px] pb-[56px] lg:max-w-[1084px] lg:px-4 lg:pt-[100px] lg:pb-[48px] lg:gap-[100px] lg:mx-auto">
         {/* Top Section */}
         <section className="flex flex-col gap-4 items-center lg:flex-row lg:w-full lg:gap-[72px] lg:mb-[-15px]">
           <div className="lg:max-w-[572px] flex flex-col gap-[32px] self-start">
-            <h1 className="text-[58px] leading-[72px]">The Liquidity Hub on Fuel</h1>
+            <h1 className="text-[58px] leading-[72px]">
+              The Liquidity Hub on Fuel
+            </h1>
             <h2 className="font-normal text-[16px] leading-[22px] text-content-secondary mb-[22px] lg:text-[20px] lg:leading-[28px] lg:mb-0">
               Trade, Earn and get Rewards using the most efficient AMM on Fuel
             </h2>
@@ -40,11 +42,9 @@ export default function Page(){
                 href="https://mirror.xyz/miraly.eth/gIYyYWmf4_ofBY3mb9-AwcnwIfe4-1iK6kdUlJMjfn8"
                 target="_blank"
               >
-    <button
-      className="w-full rounded-[12px] py-4 h-[56px] bg-[#2e2e2e] border-none text-[18px] leading-[24px] font-semibold text-content-primary text-center inline-flex justify-center items-center cursor-pointer"
-    >
-      Learn More
-    </button>
+                <button className="w-full rounded-[12px] py-4 h-[56px] bg-[#2e2e2e] border-none text-[18px] leading-[24px] font-semibold text-content-primary text-center inline-flex justify-center items-center cursor-pointer">
+                  Learn More
+                </button>
               </a>
             </div>
             <div className="w-full flex justify-center items-center gap-2 text-[14px] leading-[18px] text-content-dimmed-dark lg:justify-start lg:text-[16px] lg:leading-[22px]">
@@ -101,7 +101,7 @@ export default function Page(){
         {/* Roadmap Section */}
         <section className="flex flex-col items-center mb-6 lg:gap-5 lg:mb-5">
           <MainInfo
-            title="MIRA’s Roadmap"
+            title="MIRA's Roadmap"
             description="Join us in on a journey to the future of the internet"
           >
             <div className="lg:hidden">
@@ -146,7 +146,9 @@ export default function Page(){
         <section className="flex flex-col gap-4 items-center lg:flex-row lg:p-[32px_40px] lg:rounded-[24px] lg:bg-[rgba(80,127,247,0.1)] lg:shadow-[inset_1px_1px_14px_0_rgba(255,255,255,0.05)]">
           <div className="w-full flex flex-col gap-4 text-center lg:w-1/2 lg:text-left">
             <h3 className="text-5xl font-bold">Be early</h3>
-            <p className="text-content-secondary">Connect with our thriving community</p>
+            <p className="text-content-secondary">
+              Connect with our thriving community
+            </p>
           </div>
           <div className="w-full flex flex-col items-center gap-3 lg:flex-row lg:w-1/2 lg:gap-4">
             <a
@@ -172,4 +174,4 @@ export default function Page(){
       </main>
     </>
   );
-};
+}

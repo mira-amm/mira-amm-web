@@ -1,4 +1,4 @@
-import CheckboxIcon from "../../icons/Checkbox/CheckboxIcon";
+import CheckboxIcon from "../../icons/CheckboxIcon";
 
 export const RoadMapBlock: React.FC<{
   logo: React.ReactNode;

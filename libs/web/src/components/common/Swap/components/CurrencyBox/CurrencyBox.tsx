@@ -2,7 +2,7 @@ import {ChangeEvent, memo, useCallback} from "react";
 import {clsx} from "clsx";
 
 import Coin from "@/src/components/common/Coin/Coin";
-import ChevronDownIcon from "@/src/components/icons/ChevronDown/ChevronDownIcon";
+import ChevronDownIcon from "@/src/components/icons/ChevronDownIcon";
 import {CurrencyBoxMode} from "@/src/components/common/Swap/Swap";
 import {CoinName, coinsConfig} from "@/src/utils/coinsConfig";
 

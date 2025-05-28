@@ -1,4 +1,4 @@
-import ChevronLeft from "@/src/components/icons/ChevronLeft/ChevronLeft";
+import ChevronLeft from "@/src/components/icons/ChevronLeft";
 import Link from "next/link";
 
 import styles from "./BackLink.module.css";

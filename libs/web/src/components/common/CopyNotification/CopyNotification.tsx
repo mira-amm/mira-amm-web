@@ -1,5 +1,5 @@
-import {NotificationCheckboxIcon} from "../../icons/Checkbox/NotificationCheckboxIcon";
-import {TransactionsCloseIcon} from "../../icons/Close/TransactionsCloseIcon";
+import {NotificationCheckboxIcon} from "../../icons/NotificationCheckboxIcon";
+import {TransactionsCloseIcon} from "../../icons/TransactionsCloseIcon";
 import styles from "./CopyNotification.module.css";
 
 interface CopyNotificationProps {

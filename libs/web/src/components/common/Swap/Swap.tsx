@@ -1,4 +1,4 @@
-'use client'
+"use client";
 
 import {useConnectUI, useIsConnected} from "@fuels/react";
 import {clsx} from "clsx";
@@ -8,7 +8,7 @@ import {useCallback, useEffect, useMemo, useRef, useState} from "react";
 import ActionButton from "@/src/components/common/ActionButton/ActionButton";
 import IconButton from "@/src/components/common/IconButton/IconButton";
 import CurrencyBox from "@/src/components/common/Swap/components/CurrencyBox/CurrencyBox";
-import ConvertIcon from "@/src/components/icons/Convert/ConvertIcon";
+import ConvertIcon from "@/src/components/icons/ConvertIcon";
 import useModal from "@/src/hooks/useModal/useModal";
 import useSwap from "@/src/hooks/useSwap/useSwap";
 

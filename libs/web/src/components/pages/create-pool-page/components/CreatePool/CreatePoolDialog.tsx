@@ -22,10 +22,10 @@ import CoinsListModal from "@/src/components/common/Swap/components/CoinsListMod
 import {B256Address, BN, bn, formatUnits} from "fuels";
 import useAssetMetadata from "@/src/hooks/useAssetMetadata";
 import {useAssetPrice} from "@/src/hooks/useAssetPrice";
-import SparkleIcon from "@/src/components/icons/Sparkle/SparkleIcon";
+import SparkleIcon from "@/src/components/icons/SparkleIcon";
 import Link from "next/link";
 import useExchangeRateV2 from "@/src/hooks/useExchangeRate/useExchangeRateV2";
-import ExchangeIcon from "@/src/components/icons/Exchange/ExchangeIcon";
+import ExchangeIcon from "@/src/components/icons/ExchangeIcon";
 
 type Props = {
   setPreviewData: Dispatch<SetStateAction<CreatePoolPreviewData | null>>;

@@ -4,8 +4,8 @@ import useWalletTransactions from "@/src/hooks/useWalletTransactions";
 import {FuelAppUrl} from "@/src/utils/constants";
 import {useAccount, useIsConnected} from "@fuels/react";
 import {forwardRef, useMemo} from "react";
-import {TransactionsCloseIcon} from "../../icons/Close/TransactionsCloseIcon";
-import CopyAddressIcon from "../../icons/Copy/CopyAddressIcon";
+import {TransactionsCloseIcon} from "../../icons/TransactionsCloseIcon";
+import CopyAddressIcon from "../../icons/CopyAddressIcon";
 import styles from "./TransactionsHistory.module.css";
 import SkeletonLoader from "../Swap/components/SkeletonLoader/SkeletonLoader";
 

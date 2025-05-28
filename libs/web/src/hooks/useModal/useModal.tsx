@@ -4,7 +4,7 @@ import {createPortal} from "react-dom";
 import styles from "./Modal.module.css";
 import {clsx} from "clsx";
 import IconButton from "@/src/components/common/IconButton/IconButton";
-import CloseIcon from "@/src/components/icons/Close/CloseIcon";
+import CloseIcon from "@/src/components/icons/CloseIcon";
 import {useScrollLock} from "usehooks-ts";
 
 type ModalProps = {

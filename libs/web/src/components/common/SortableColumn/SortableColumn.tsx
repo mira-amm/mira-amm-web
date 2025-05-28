@@ -1,5 +1,5 @@
-import {ArrowDownSmallIcon} from "../../icons/ArrowDown/ArrowDownSmallIcon";
-import {ArrowUpSmallIcon} from "../../icons/ArrowUp/ArrowUpSmallIcon";
+import {ArrowDownSmallIcon} from "../../icons/ArrowDownSmallIcon";
+import {ArrowUpSmallIcon} from "../../icons/ArrowUpSmallIcon";
 import styles from "./SortableColumn.module.css";
 
 type SortableColumnProps = {

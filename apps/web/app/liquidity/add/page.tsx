@@ -1,20 +1,18 @@
 "use client";
 
-import { useRouter, useSearchParams } from "next/navigation";
-import { useEffect, useRef, useState, useCallback } from "react";
-import {
-  createPoolIdFromIdString,
-} from "@/src/utils/common";
-import { isMobile } from "react-device-detect";
+import {useRouter, useSearchParams} from "next/navigation";
+import {useEffect, useRef, useState, useCallback} from "react";
+import {createPoolIdFromIdString} from "@/src/utils/common";
+import {isMobile} from "react-device-detect";
 import PreviewAddLiquidityDialog, {
   AddLiquidityPreviewData,
 } from "@/src/components/pages/add-liquidity-page/components/AddLiquidity/PreviewAddLiquidityDialog";
 import AddLiquidityDialog from "@/src/components/pages/add-liquidity-page/components/AddLiquidity/AddLiquidityDialog";
 import BackLink from "@/src/components/common/BackLink/BackLink";
 import IconButton from "@/src/components/common/IconButton/IconButton";
-import CloseIcon from "@/src/components/icons/Close/CloseIcon";
-import { PoolId } from "mira-dex-ts";
-import { SlippageSetting } from "@/src/components/common/SlippageSetting/SlippageSetting";
+import CloseIcon from "@/src/components/icons/CloseIcon";
+import {PoolId} from "mira-dex-ts";
+import {SlippageSetting} from "@/src/components/common/SlippageSetting/SlippageSetting";
 import SettingsModalContent from "@/src/components/common/Swap/components/SettingsModalContent/SettingsModalContent";
 import useModal from "@/src/hooks/useModal/useModal";
 import {
@@ -66,11 +64,7 @@ export default function AddLiquidityPage() {
       ref={mainRef}
       className="flex flex-col p-4 gap-4 lg:max-w-[524px] lg:mx-auto lg:px-4 lg:py-8"
     >
-      <BackLink
-        showOnDesktop
-        onClick={handleBackClick}
-        className="z-[5]"
-      />
+      <BackLink showOnDesktop onClick={handleBackClick} className="z-[5]" />
       <section className="flex flex-col p-4 rounded-2xl gap-6 bg-[var(--background-grey-dark)] z-[5] w-full max-w-[524px] mx-auto">
         <div className="flex items-center w-full pb-4 border-b border-background-grey-light gap-2.5 font-medium text-sm leading-[19px] text-content-grey">
           <p className="flex-1 text-content-primary text-base font-medium">

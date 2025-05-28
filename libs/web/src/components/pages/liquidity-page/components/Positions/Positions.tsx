@@ -1,14 +1,14 @@
 import MobilePositions from "@/src/components/pages/liquidity-page/components/Positions/MobilePositions/MobilePositions";
 import DesktopPositions from "@/src/components/pages/liquidity-page/components/Positions/MobilePositions/DesktopPositions/DesktopPositions";
-import { useIsConnected } from "@fuels/react";
+import {useIsConnected} from "@fuels/react";
 import usePositions from "@/src/hooks/usePositions";
 import PositionsLoader from "./PositionsLoader/PositionsLoader";
-import DocumentIcon from "@/src/components/icons/Document/DocumentIcon";
-import { POSITIONS_SKELTON_COUNT } from "@/src/utils/constants";
+import DocumentIcon from "@/src/components/icons/DocumentIcon";
+import {POSITIONS_SKELTON_COUNT} from "@/src/utils/constants";
 
-export default function Positions(){
-  const { isConnected } = useIsConnected();
-  const { data, isLoading } = usePositions();
+export default function Positions() {
+  const {isConnected} = useIsConnected();
+  const {data, isLoading} = usePositions();
 
   return (
     <section className="flex flex-col gap-6">
@@ -38,4 +38,4 @@ export default function Positions(){
       )}
     </section>
   );
-};
+}

@@ -21,8 +21,8 @@ import {
 
 import TestnetLabel from "@/src/components/common/TestnetLabel/TestnetLabel";
 import IconButton from "../IconButton/IconButton";
-import CloseIcon from "../../icons/Close/CloseIcon";
-import PointsIcon from "../../icons/Points/PointsIcon";
+import CloseIcon from "../../icons/CloseIcon";
+import PointsIcon from "../../icons/PointsIcon";
 
 type Props = {
   isHomePage?: boolean;

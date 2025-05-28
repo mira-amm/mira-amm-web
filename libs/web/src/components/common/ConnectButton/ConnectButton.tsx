@@ -14,8 +14,8 @@ import {FuelAppUrl} from "@/src/utils/constants";
 import {DropDownButtons} from "@/src/utils/DropDownButtons";
 import {useScrollLock} from "usehooks-ts";
 import {CopyNotification} from "../../common/CopyNotification/CopyNotification";
-import {ArrowDownIcon} from "../../icons/ArrowDown/ArrowDownIcon";
-import {ArrowUpIcon} from "../../icons/ArrowUp/ArrowUpIcon";
+import {ArrowDownIcon} from "../../icons/ArrowDownIcon";
+import {ArrowUpIcon} from "../../icons/ArrowUpIcon";
 import DropDownMenu from "../DropDownMenu/DropDownMenu";
 
 type Props = {

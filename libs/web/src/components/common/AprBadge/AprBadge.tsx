@@ -5,7 +5,7 @@ import useBoostedApr, {RewardsToken} from "@/src/hooks/useBoostedApr";
 import {isMobile} from "react-device-detect";
 import Loader from "../Loader/Loader";
 import {EPOCH_NUMBER} from "@/src/utils/constants";
-import PointsIconSimple from "../../icons/Points/PointsIconSimple";
+import PointsIconSimple from "../../icons/PointsIconSimple";
 
 interface AprBadgeProps {
   aprValue: string | null;

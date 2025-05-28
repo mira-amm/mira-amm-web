@@ -1,9 +1,9 @@
-'use client'
+"use client";
 
 import {memo, useEffect, useRef} from "react";
 
 import styles from "./Info.module.css";
-import InfoIcon from "@/src/components/icons/Info/InfoIcon";
+import InfoIcon from "@/src/components/icons/InfoIcon";
 
 type Props = {
   tooltipText: string;

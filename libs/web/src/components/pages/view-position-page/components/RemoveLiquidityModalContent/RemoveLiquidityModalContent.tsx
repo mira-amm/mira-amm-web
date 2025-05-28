@@ -1,6 +1,6 @@
 import styles from "./RemoveLiquidityModalContent.module.css";
 import CoinPair from "@/src/components/common/CoinPair/CoinPair";
-import WarningIcon from "@/src/components/icons/Warning/WarningIcon";
+import WarningIcon from "@/src/components/icons/WarningIcon";
 import ActionButton from "@/src/components/common/ActionButton/ActionButton";
 import {
   ChangeEvent,

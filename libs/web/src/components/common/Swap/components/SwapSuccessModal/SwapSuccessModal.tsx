@@ -1,4 +1,4 @@
-import SuccessIcon from "@/src/components/icons/Success/SuccessIcon";
+import SuccessIcon from "@/src/components/icons/SuccessIcon";
 import styles from "./SwapSuccessModal.module.css";
 import {SwapState} from "@/src/components/common/Swap/Swap";
 import ActionButton from "@/src/components/common/ActionButton/ActionButton";
