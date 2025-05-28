@@ -6,7 +6,8 @@ import {metadata} from "./metadata";
 
 import "@/public/css/globals.css";
 import "@/public/css/animations.css";
-import "@/web/styles.css";
+/* import "@/web/styles.css"; */
+import '@/meshwave-ui/global.css';
 import Providers from "@/src/core/providers/Providers";
 import {useAnimationStore} from "@/src/stores/useGlitchScavengerHunt";
 import GlitchEffects from "@/src/components/common/GlitchEffects/GlitchEffects";
@@ -52,10 +53,10 @@ export {metadata};
   },
 }; */
 
-const RootLayout = ({children}: Props) => {
+export default function Layout({children}: Props){
   const glitchScavengerHuntEnabled = useAnimationStore.getState().masterEnabled;
   return (
-    <html lang="en">
+    <html lang="en" className="dark">
       <head>
         <link rel="preload" as="image" href="/images/loader.webp" />
       </head>
@@ -83,5 +84,3 @@ const RootLayout = ({children}: Props) => {
     </html>
   );
 };
-
-export default RootLayout;

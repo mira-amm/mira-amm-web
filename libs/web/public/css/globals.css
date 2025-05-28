@@ -1,3 +1,10 @@
+@import "tailwindcss";
+
+@source '../../**/*.{ts,tsx}';
+
+@custom-variant dark (&:is(.dark *));
+
+@layer base {
 :root {
   --font-inter: 'Inter';
   --font-prompt: 'Prompt';
@@ -113,4 +120,5 @@ input:focus {
   filter: blur(2px);
   pointer-events: none;
   user-select: none;
+}
 }
