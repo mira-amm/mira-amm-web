@@ -55,9 +55,10 @@ export default function Header({ isHomePage }: Props) {
   ], [pathname]);
 
   return (
-    <header className="sticky top-0 z-10 text-base lg:text-lg">
+    <header className="sticky top-0 z-10 text-base lg:text-lg backdrop-blur-lg
+        transition-all duration-300 ease-in-out">
       {isPromoShown && (
-        <section className="relative flex items-center justify-between px-4 py-3 bg-[#507ff7] text-white text-sm lg:text-lg lg:justify-center">
+        <section className="relative flex items-center justify-between px-4 py-3 text-white text-sm lg:text-lg lg:justify-center">
           <div className="flex items-center gap-2">
             <PointsIcon className="w-[18px] h-[18px]" />
             <p>
@@ -73,7 +74,7 @@ export default function Header({ isHomePage }: Props) {
         </section>
       )}
 
-      <section className="flex justify-between items-center gap-4 px-4 py-4 bg-[var(--background-primary)] lg:px-10">
+      <section className="flex justify-between items-center gap-4 px-4 py-4 lg:px-10">
         <div className="flex items-center gap-6 lg:gap-10">
           <Logo />
           <nav className="hidden lg:flex gap-6 items-center">
