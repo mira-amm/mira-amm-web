@@ -1,8 +1,9 @@
 import Logo from "@/src/components/common/Logo/Logo";
-import { BlogLink, DiscordLink, XLink } from "@/src/utils/constants";
+import {BlogLink, DiscordLink, XLink} from "@/src/utils/constants";
 import GithubIcon from "../../icons/Github/GithubIcon";
 import DiscordIcon from "../../icons/DiscordIcon/DiscordIcon";
 import X from "../../icons/X/XSocialIcon";
+import {Button} from "@/meshwave-ui/Button";
 
 export default function Footer() {
   return (
@@ -10,16 +11,69 @@ export default function Footer() {
       <div className="flex flex-col gap-4 lg:flex-row lg:justify-between lg:items-center lg:gap-[134px]">
         <Logo />
         <div className="flex flex-col gap-3 text-base leading-[22px] text-[--content-primary] font-normal lg:flex-row lg:justify-between lg:w-[650px] lg:text-lg lg:leading-6">
-          <a className="transition-colors duration-300 hover:text-[--content-dimmed-light]" href={DiscordLink}>Support</a>
-          <a className="transition-colors duration-300 hover:text-[--content-dimmed-light]" href="https://docs.mira.ly/resources/security-audits" target="_blank">Security Audit</a>
-          <a className="transition-colors duration-300 hover:text-[--content-dimmed-light]" href="https://docs.mira.ly" target="_blank">Docs</a>
-          <a className="transition-colors duration-300 hover:text-[--content-dimmed-light]" href={BlogLink} target="_blank">Blog</a>
-          <a className="transition-colors duration-300 hover:text-[--content-dimmed-light]" href="mailto:help@mira.ly" target="_blank">Contact us</a>
+          <Button
+            asChild
+            variant="link"
+            className="text-[--content-primary] hover:text-[--content-dimmed-light]"
+          >
+            <a href={DiscordLink}>Support</a>
+          </Button>
+          <Button
+            asChild
+            variant="link"
+            className="text-[--content-primary] hover:text-[--content-dimmed-light]"
+          >
+            <a
+              href="https://docs.mira.ly/resources/security-audits"
+              target="_blank"
+            >
+              Security Audit
+            </a>
+          </Button>
+          <Button
+            asChild
+            variant="link"
+            className="text-[--content-primary] hover:text-[--content-dimmed-light]"
+          >
+            <a href="https://docs.mira.ly" target="_blank">
+              Docs
+            </a>
+          </Button>
+          <Button
+            asChild
+            variant="link"
+            className="text-[--content-primary] hover:text-[--content-dimmed-light]"
+          >
+            <a href={BlogLink} target="_blank">
+              Blog
+            </a>
+          </Button>
+          <Button
+            asChild
+            variant="link"
+            className="text-[--content-primary] hover:text-[--content-dimmed-light]"
+          >
+            <a href="mailto:help@mira.ly" target="_blank">
+              Contact us
+            </a>
+          </Button>
         </div>
         <div className="flex gap-3 lg:gap-4">
-          <a className="transition-opacity duration-300 hover:opacity-65" href="https://github.com/mira-amm" target="_blank"><GithubIcon /></a>
-          <a className="transition-opacity duration-300 hover:opacity-65" href={DiscordLink} target="_blank"><DiscordIcon /></a>
-          <a className="transition-opacity duration-300 hover:opacity-65" href={XLink} target="_blank"><X /></a>
+          <Button asChild variant="link" className="p-0 hover:opacity-65">
+            <a href="https://github.com/mira-amm" target="_blank">
+              <GithubIcon />
+            </a>
+          </Button>
+          <Button asChild variant="link" className="p-0 hover:opacity-65">
+            <a href={DiscordLink} target="_blank">
+              <DiscordIcon />
+            </a>
+          </Button>
+          <Button asChild variant="link" className="p-0 hover:opacity-65">
+            <a href={XLink} target="_blank">
+              <X />
+            </a>
+          </Button>
         </div>
       </div>
       <div className="text-sm text-center lg:text-right">

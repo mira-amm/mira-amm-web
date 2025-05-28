@@ -6,6 +6,7 @@ export default {
   stories: [
     "../*.@(mdx|stories.@(ts|tsx))",
     "../../../libs/meshwave-ui/**/*.@(mdx|stories.@(ts|tsx))",
+    "../../../libs/web/**/*.@(mdx|stories.@(ts|tsx))",
     "../../../libs/shared/ui/**/*.@(mdx|stories.@(ts|tsx))",
     "../../../libs/external/**/*.@(mdx|stories.@(ts|tsx))",
   ],

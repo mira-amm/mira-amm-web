@@ -40,6 +40,7 @@ const preview: Preview = {
           "📍 Graph",
           "🎯 Branding",
           "💅 Figma",
+          "🪙 Web",
           "🕹 Microgame",
           "Website",
           "🌊 Meshwave UI",
