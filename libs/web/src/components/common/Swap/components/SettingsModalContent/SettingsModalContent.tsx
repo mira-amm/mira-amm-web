@@ -1,4 +1,4 @@
-import { WarningIcon } from "@/src/components/icons"
+import { WarningIcon } from "@/meshwave-ui/icons"
 import styles from "./SettingsModalContent.module.css";
 import {
   ChangeEvent,

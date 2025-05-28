@@ -21,7 +21,7 @@ import {
 
 import TestnetLabel from "@/src/components/common/TestnetLabel/TestnetLabel";
 import IconButton from "../IconButton/IconButton";
-import { CloseIcon, PointsIcon } from "@/src/components/icons";
+import { CloseIcon, PointsIcon } from "@/meshwave-ui/icons";
 
 const PROMO_BANNER_STORAGE_KEY = "fuel-boost-program-promo-banner-closed";
 

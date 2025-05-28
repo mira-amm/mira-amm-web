@@ -1,6 +1,6 @@
 import Logo from "@/src/components/common/Logo/Logo";
 import {BlogLink, DiscordLink, XLink} from "@/src/utils/constants";
-import { DiscordIcon, XSocialIcon, GithubIcon } from "@/src/components/icons";
+import { DiscordIcon, XSocialIcon, GithubIcon } from "@/meshwave-ui/icons";
 import {Button} from "@/meshwave-ui/Button";
 
 export default function Footer() {

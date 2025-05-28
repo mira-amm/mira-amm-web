@@ -1,5 +1,5 @@
 import { clsx } from "clsx";
-import { ChevronDownIcon } from "@/src/components/icons";
+import { ChevronDownIcon } from "@/meshwave-ui/icons";
 import useAssetMetadata from "@/src/hooks/useAssetMetadata";
 import { useAssetImage } from "@/src/hooks/useAssetImage";
 

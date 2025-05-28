@@ -1,4 +1,4 @@
-import {CopyAddressIcon, ExplorerIcon, TransactionsIcon, LogOutIcon} from "@/src/components/icons";
+import {CopyAddressIcon, ExplorerIcon, TransactionsIcon, LogOutIcon} from "@/meshwave-ui/icons";
 
 export const DropDownButtons = [
   {

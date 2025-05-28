@@ -1,7 +1,7 @@
 import React, {useCallback} from "react";
 import IconButton from "@/src/components/common/IconButton/IconButton";
 import styles from "./MiraBlock.module.css";
-import {CopyIcon, LogoIcon} from "@/src/components/icons";
+import {CopyIcon, LogoIcon} from "@/meshwave-ui/icons";
 import {PoolId, getLPAssetId} from "mira-dex-ts";
 import usePositionData from "@/src/hooks/usePositionData";
 import {formatUnits} from "fuels";

@@ -5,7 +5,7 @@ import { clsx } from "clsx";
 import { useCallback, useState, useEffect, useMemo, useRef } from "react";
 import DropDownMenu from "../DropDownMenu/DropDownMenu";
 import { DropDownButtons } from "@/src/utils/DropDownButtons";
-import { CloseIcon, TouchCloseIcon } from "@/src/components/icons";
+import { CloseIcon, TouchCloseIcon } from "@/meshwave-ui/icons";
 import { CopyNotification } from "../../common/CopyNotification/CopyNotification";
 import { openNewTab } from "@/src/utils/common";
 import TransactionsHistory from "@/src/components/common/TransactionsHistory/TransactionsHistory";

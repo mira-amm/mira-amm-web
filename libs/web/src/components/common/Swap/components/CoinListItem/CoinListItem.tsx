@@ -2,7 +2,7 @@ import {clsx} from "clsx";
 import {BN, CoinQuantity} from "fuels";
 import {memo} from "react";
 
-import { SuccessIcon } from "@/src/components/icons";
+import { SuccessIcon } from "@/meshwave-ui/icons";
 import {CoinDataWithPrice} from "@/src/utils/coinsConfig";
 import {Tooltip} from "react-tooltip";
 import "react-tooltip/dist/react-tooltip.css";

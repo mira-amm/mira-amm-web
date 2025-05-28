@@ -7,7 +7,7 @@ import {clsx} from "clsx";
 import Link from "next/link";
 
 import Logo from "@/src/components/common/Logo/Logo";
-import { MenuIcon, CloseIcon } from "@/src/components/icons";
+import { MenuIcon, CloseIcon } from "@/meshwave-ui/icons";
 import {BlogLink, DiscordLink, XLink} from "@/src/utils/constants";
 import useFaucetLink from "@/src/hooks/useFaucetLink";
 

@@ -1,4 +1,4 @@
-import { CheckboxIcon } from "@/src/components/icons";
+import { CheckboxIcon } from "@/meshwave-ui/icons";
 
 export const RoadMapBlock: React.FC<{
   logo: React.ReactNode;

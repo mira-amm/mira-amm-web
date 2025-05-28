@@ -6,7 +6,7 @@ import CoinPair from "@/src/components/common/CoinPair/CoinPair";
 import CoinWithAmount from "@/src/components/common/CoinWithAmount/CoinWithAmount";
 import ActionButton from "@/src/components/common/ActionButton/ActionButton";
 import PromoBlock from "@/src/components/pages/liquidity-page/components/PromoBlock/PromoBlock";
-import { StarsIcon } from "@/src/components/icons"
+import { StarsIcon } from "@/meshwave-ui/icons"
 import {PoolId} from "mira-dex-ts";
 import styles from "./MobilePositionView.module.css";
 import Loader from "@/src/components/common/Loader/Loader";

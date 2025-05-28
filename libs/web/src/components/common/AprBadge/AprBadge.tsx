@@ -5,7 +5,7 @@ import useBoostedApr, {RewardsToken} from "@/src/hooks/useBoostedApr";
 import {isMobile} from "react-device-detect";
 import Loader from "../Loader/Loader";
 import {EPOCH_NUMBER} from "@/src/utils/constants";
-import { PointsIconSimple } from "@/src/components/icons";
+import { PointsIconSimple } from "@/meshwave-ui/icons";
 
 const AprBadge: React.FC<{
   aprValue: string | null;

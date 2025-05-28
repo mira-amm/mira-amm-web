@@ -1,7 +1,7 @@
 import {clsx} from "clsx";
 import {memo} from "react";
 
-import {FuelIcon} from "@/src/components/icons";
+import {FuelIcon} from "@/meshwave-ui/icons";
 
 import styles from "./TestnetLabel.module.css";
 

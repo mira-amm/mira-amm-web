@@ -1,4 +1,4 @@
-import { SettingsIcon } from "@/src/components/icons";
+import { SettingsIcon } from "@/meshwave-ui/icons";
 import IconButton from "@/src/components/common/IconButton/IconButton";
 
 export function SlippageSetting({ slippage, openSettingsModal }: {

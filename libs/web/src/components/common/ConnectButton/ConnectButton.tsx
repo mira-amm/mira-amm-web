@@ -12,7 +12,7 @@ import { FuelAppUrl } from "@/src/utils/constants";
 import { DropDownButtons } from "@/src/utils/DropDownButtons";
 import { useScrollLock } from "usehooks-ts";
 import { CopyNotification } from "../../common/CopyNotification/CopyNotification";
-import { ArrowDownIcon, ArrowUpIcon } from "@/src/components/icons";
+import { ArrowDownIcon, ArrowUpIcon } from "@/meshwave-ui/icons";
 import DropDownMenu from "../DropDownMenu/DropDownMenu";
 
 export default function ConnectButton({ className, isWidget }: { className?: string; isWidget?: boolean }) {

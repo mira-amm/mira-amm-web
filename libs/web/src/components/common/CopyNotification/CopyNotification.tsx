@@ -1,4 +1,4 @@
-import {NotificationCheckboxIcon, TransactionsCloseIcon} from "@/src/components/icons";
+import {NotificationCheckboxIcon, TransactionsCloseIcon} from "@/meshwave-ui/icons";
 import styles from "./CopyNotification.module.css";
 
 export const CopyNotification: React.FC<{

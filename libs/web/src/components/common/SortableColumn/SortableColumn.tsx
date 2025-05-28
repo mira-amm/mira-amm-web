@@ -1,4 +1,4 @@
-import {ArrowDownSmallIcon, ArrowUpSmallIcon} from "@/src/components/icons";
+import {ArrowDownSmallIcon, ArrowUpSmallIcon} from "@/meshwave-ui/icons";
 import styles from "./SortableColumn.module.css";
 
 export default function SortableColumn({

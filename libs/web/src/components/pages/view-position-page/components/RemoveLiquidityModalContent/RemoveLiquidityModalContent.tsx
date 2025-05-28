@@ -1,6 +1,6 @@
 import styles from "./RemoveLiquidityModalContent.module.css";
 import CoinPair from "@/src/components/common/CoinPair/CoinPair";
-import { WarningIcon } from "@/src/components/icons";
+import { WarningIcon } from "@/meshwave-ui/icons";
 import ActionButton from "@/src/components/common/ActionButton/ActionButton";
 import {
   ChangeEvent,

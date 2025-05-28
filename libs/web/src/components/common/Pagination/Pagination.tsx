@@ -1,4 +1,4 @@
-import {ArrowLeftIcon, ArrowRightIcon} from "@/src/components/icons";
+import {ArrowLeftIcon, ArrowRightIcon} from "@/meshwave-ui/icons";
 import styles from "./Pagination.module.css";
 
 export default function Pagination({

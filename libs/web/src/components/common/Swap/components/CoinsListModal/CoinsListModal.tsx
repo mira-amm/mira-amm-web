@@ -1,7 +1,7 @@
 "use client";
 
 import CoinListItem from "@/src/components/common/Swap/components/CoinListItem/CoinListItem";
-import { SearchIcon } from "@/src/components/icons";
+import { SearchIcon } from "@/meshwave-ui/icons";
 import useCoinListModalData from "@/src/hooks/useCoinListModal";
 import {CoinQuantity} from "fuels";
 import {memo, useEffect, useRef} from "react";

@@ -19,6 +19,7 @@
       "@/engine/*": ["libs/engine/*"],
       "@/fumadocs-ui/*": ["libs/external/fumadocs-ui/*"],
       "@/magic-ui/*": ["libs/external/magic-ui/*"],
+      "@/meshwave-ui/icons": ["libs/meshwave-ui/src/components/icons/index.tsx"],
       "@/meshwave-ui/*": ["libs/meshwave-ui/*"],
       "@/microdoctor/*": ["libs/microdoctor/*"],
       "@/platform-vercel/*": ["libs/platform-vercel/*"],

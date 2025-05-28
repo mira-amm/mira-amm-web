@@ -1,6 +1,6 @@
 import { memo } from "react";
 import Link from "next/link";
-import { LogoIcon } from "@/src/components/icons";
+import { LogoIcon } from "@/meshwave-ui/icons";
 
 function Logo(){
   return (

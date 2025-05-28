@@ -22,7 +22,7 @@ import CoinsListModal from "@/src/components/common/Swap/components/CoinsListMod
 import {B256Address, BN, bn, formatUnits} from "fuels";
 import useAssetMetadata from "@/src/hooks/useAssetMetadata";
 import {useAssetPrice} from "@/src/hooks/useAssetPrice";
-import { SparkleIcon, ExchangeIcon } from "@/src/components/icons";
+import { SparkleIcon, ExchangeIcon } from "@/meshwave-ui/icons";
 import Link from "next/link";
 import useExchangeRateV2 from "@/src/hooks/useExchangeRate/useExchangeRateV2";
 

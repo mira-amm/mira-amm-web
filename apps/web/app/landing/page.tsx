@@ -1,4 +1,4 @@
-import miraLogo from "@/src/components/icons/MiraLogo.png";
+import miraLogo from "@/meshwave-ui/src/components/icons/MiraLogo.png";
 import LaunchAppButton from "@/src/components/common/LaunchAppButton/LaunchAppButton";
 import {
   HalbornIcon as Halborn,
@@ -12,7 +12,7 @@ import {
   EarnIcon,
   RoadmapDesktopIcon as RoadmapDesktop,
   RoadmapMobileIcon as RoadmapMobile,
-} from "@/src/components/icons";
+} from "@/meshwave-ui/icons";
 
 import { UsedTechs } from "@/src/components/common/UsedTechs/UsedTechs";
 import { Divider } from "@/src/components/common/Divider/Divider";

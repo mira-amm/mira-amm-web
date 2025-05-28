@@ -5,7 +5,7 @@ import CreatePoolDialog from "./CreatePoolDialog";
 import BackLink from "@/src/components/common/BackLink/BackLink";
 import {useRouter} from "next/navigation";
 import IconButton from "@/src/components/common/IconButton/IconButton";
-import { CloseIcon } from "@/src/components/icons";
+import { CloseIcon } from "@/meshwave-ui/icons";
 import dynamic from "next/dynamic";
 
 const PreviewCreatePoolDialog = dynamic(

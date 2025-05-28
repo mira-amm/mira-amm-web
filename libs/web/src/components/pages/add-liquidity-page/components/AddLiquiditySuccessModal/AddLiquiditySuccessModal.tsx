@@ -1,4 +1,4 @@
-import { SuccessIcon } from "@/src/components/icons";
+import { SuccessIcon } from "@/meshwave-ui/icons";
 import ActionButton from "@/src/components/common/ActionButton/ActionButton";
 import { useCallback } from "react";
 import { openNewTab } from "@/src/utils/common";

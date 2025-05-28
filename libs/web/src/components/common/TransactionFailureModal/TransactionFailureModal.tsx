@@ -1,6 +1,6 @@
 import styles from "./TransactionFailureModal.module.css";
 import ActionButton from "@/src/components/common/ActionButton/ActionButton";
-import { FailureIcon } from "@/src/components/icons";
+import { FailureIcon } from "@/meshwave-ui/icons";
 import {FuelError} from "fuels";
 
 export default function TransactionFailureModal({closeModal, error}: {
