@@ -1,6 +1,12 @@
-import styles from "./Divider.module.css";
-import {DividerProps} from "./DividerProps";
-
-export const Divider: React.FC<DividerProps> = ({children, className}) => {
-  return <ul className={className}>{children}</ul>;
+export const Divider: React.FC<{
+  children: React.ReactNode;
+  className?: string;
+}> = ({ children, className }) => {
+  return (
+    <ul
+      className={`flex justify-center list-none box-border ${className ?? ""}`}
+    >
+      {children}
+    </ul>
+  );
 };
