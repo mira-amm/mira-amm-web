@@ -1,15 +1,14 @@
-import {memo, ReactNode} from "react";
+import { memo, ReactNode } from "react";
 
-import styles from "./TextButton.module.css";
-
-type Props = {
+const TextButton = ({ children, onClick }: {
   children: ReactNode;
   onClick: VoidFunction;
-};
-
-const TextButton = ({children, onClick}: Props) => {
+}) => {
   return (
-    <button className={styles.textButton} onClick={onClick}>
+    <button
+      onClick={onClick}
+      className="border-none bg-transparent p-0 text-[var(--accent-primary)] font-inherit cursor-pointer inline-block transition-opacity duration-200 hover:opacity-80"
+    >
       {children}
     </button>
   );
