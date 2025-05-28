@@ -1,27 +1,25 @@
-import styles from "./InfoBlock.module.css";
-import {clsx} from "clsx";
-
-type Props = {
+export default function InfoBlock({ title, value, type }: {
   title: string;
   value: string | null;
   type?: "positive" | "negative";
-};
+}){
+  const isPositive = type === "positive";
+  const isPending = value === null;
 
-const InfoBlock = ({title, value, type}: Props) => {
   return (
-    <div className={styles.infoBlock}>
+    <div className="flex flex-col gap-[4px] w-[100px] text-left">
       <p>{title}</p>
       <p
-        className={clsx(
-          styles.infoBlockValue,
-          type === "positive" && styles.infoBlockValuePositive,
-          !value && styles.pending,
-        )}
+        className={`whitespace-nowrap overflow-hidden text-ellipsis ${
+          isPending
+            ? "text-[var(--content-dimmed-light)]"
+            : isPositive
+            ? "text-[var(--content-positive)]"
+            : "text-[var(--content-tertiary)]"
+        }`}
       >
         {value ?? "Awaiting data"}
       </p>
     </div>
   );
 };
-
-export default InfoBlock;

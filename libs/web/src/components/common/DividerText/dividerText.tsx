@@ -1,10 +1,15 @@
-import styles from "./dividerText.module.css";
-import {DividerTextProps} from "./DividerTextProps";
-import {clsx} from "clsx";
+import { clsx } from "clsx";
 
-export const DividerText: React.FC<DividerTextProps> = ({text, dimmed}) => {
+export const DividerText: React.FC<{ text: string; dimmed?: boolean }> = ({ text, dimmed }) => {
   return (
-    <li className={clsx(styles.dividerText, dimmed && styles.dimmed)}>
+    <li
+      className={clsx(
+        "text-[20px] leading-6 text-center font-normal m-0 list-none",
+        "max-lg:text-[16px] max-lg:leading-[22px]",
+        "max-[900px]:ml-4",
+        dimmed && "text-[var(--content-dimmed-light)]"
+      )}
+    >
       {text}
     </li>
   );

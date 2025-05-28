@@ -1,10 +1,16 @@
-import styles from "./RoadMapIcon.module.css";
-import {RoadMapIconProps} from "@/src/ts-interfaces/RoadMapIconProps";
-
-export const RoadMapIcon: React.FC<RoadMapIconProps> = ({text}) => {
+export const RoadMapIcon: React.FC<{
+  text: string;
+}> = ({ text }) => {
   return (
-    <div className={styles.background}>
-      <span className={styles.text}>{text}</span>
+    <div
+      className="min-w-[112px] h-10 rounded-full text-[var(--content-primary)] flex justify-center items-center px-[25.5px] py-2 box-border"
+      style={{
+        background: 'linear-gradient(132.04deg, #262f5f 11.87%, #c41cff 176.88%)',
+      }}
+    >
+      <span className="font-medium text-base leading-6 text-center">
+        {text}
+      </span>
     </div>
   );
 };

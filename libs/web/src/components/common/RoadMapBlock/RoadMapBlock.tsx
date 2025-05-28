@@ -1,21 +1,28 @@
 import CheckboxIcon from "../../icons/Checkbox/CheckboxIcon";
-import styles from "./RoadMapBlock.module.css";
-import {InfoBlockProps} from "@/src/ts-interfaces/InfoBlockProps";
 
-export const RoadMapBlock: React.FC<InfoBlockProps> = ({
-  logo,
-  title,
-  description,
-  done,
-}) => {
+export const RoadMapBlock: React.FC<{
+  logo: React.ReactNode;
+  title: string;
+  description: string;
+  done?: boolean;
+}> = ({ logo, title, description, done }) => {
   return (
-    <div className={styles.roadMapBlock}>
+    <div className="bg-[#262934] rounded-xl flex flex-col items-center space-y-10 p-6 w-full lg:max-w-[259px] font-inter">
       {logo}
-      <h3 className={styles.title}>{title}</h3>
-      <div className={styles.checkboxArea}>
-        {""}
-        {done ? <CheckboxIcon /> : ""}
-        <p className={done ? styles.done : styles.description}>{description}</p>
+      <h3 className="text-xl leading-[30px] font-medium text-center min-h-[120px]">
+        {title}
+      </h3>
+      <div className="flex items-center justify-center gap-2 pt-2">
+        {done && <CheckboxIcon />}
+        <p
+          className={`text-sm leading-[22px] font-medium text-center text-nowrap ${
+            done
+              ? "text-[var(--content-positive)]"
+              : "text-[var(--content-grey)]"
+          }`}
+        >
+          {description}
+        </p>
       </div>
     </div>
   );
