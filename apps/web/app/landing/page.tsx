@@ -27,50 +27,56 @@ import { DiscordLink, XLink } from "@/src/utils/constants";
 
 function HeroSection() {
   return (
-    <section className="flex flex-col gap-4 items-center lg:flex-row sm:w-full lg:gap-[72px] lg:mb-[-15px]">
-      <div className="w-full lg:max-w-[572px] flex flex-col gap-[32px] align-center items-center md:self-start">
-        <h1 className="font-bold text-[58px] leading-[72px]">The Liquidity Hub on Fuel</h1>
-        <h2 className="font-normal text-[16px] leading-[22px] text-[var(--content-dimmed-light)] mb-[22px] lg:text-[20px] lg:leading-[28px] lg:mb-0">
+    <header className="flex flex-col gap-4 items-center lg:flex-row sm:w-full lg:gap-16 lg:-mb-4">
+      <div className="w-full lg:max-w-2xl flex flex-col gap-8 items-center md:self-start">
+        <h1 className="font-bold text-5xl leading-tight">The Liquidity Hub on Fuel</h1>
+        <p className="font-normal text-sm lg:self-start leading-5 text-[var(--content-dimmed-light)] mb-5 lg:text-base lg:leading-7 lg:mb-0">
           Trade, Earn and get Rewards using the most efficient AMM on Fuel
-        </h2>
-        <div className="flex flex-col items-center gap-3 w-full lg:flex-row">
+        </p>
+        <nav aria-label="Primary actions" className="flex flex-col items-center gap-3 w-full max-lg:max-w-md lg:flex-row">
           <LaunchAppButton className="w-full" />
-          <a className="w-full" href="https://mirror.xyz/miraly.eth/gIYyYWmf4_ofBY3mb9-AwcnwIfe4-1iK6kdUlJMjfn8" target="_blank">
-            <button className="w-full rounded-[12px] py-4 h-[56px] bg-[#2e2e2e] border-none text-[18px] leading-[24px] font-semibold text-content-primary text-center inline-flex justify-center items-center cursor-pointer">
+          <a
+            className="w-full"
+            href="https://mirror.xyz/miraly.eth/gIYyYWmf4_ofBY3mb9-AwcnwIfe4-1iK6kdUlJMjfn8"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <button className="w-full rounded-lg py-4 h-14 bg-[#2e2e2e] border-none text-lg leading-6 font-semibold text-content-primary text-center inline-flex justify-center items-center cursor-pointer">
               Learn More
             </button>
           </a>
-        </div>
-        <div className="w-full flex justify-center items-center gap-2 text-[14px] leading-[18px] text-content-dimmed-dark lg:justify-start lg:text-[16px] lg:leading-[22px]">
-          <FuelIcon />
+        </nav>
+        <p className="w-full flex justify-center items-center gap-2 text-xs leading-4 text-content-dimmed-dark lg:justify-start lg:text-sm lg:leading-6">
+          <FuelIcon aria-hidden="true" />
           <span>Powered by Fuel</span>
-        </div>
+        </p>
       </div>
-      <div className="w-full max-w-md">
+      <aside className="w-full max-w-md" aria-label="Swap module">
         <Swap />
-      </div>
-    </section>
+      </aside>
+    </header>
   );
 }
 
 function AuditSection() {
   return (
-    <section className="bg-[#1b2749] w-screen self-center lg:py-[28px]">
-      <Divider className="flex flex-col lg:flex-row items-center justify-center gap-12 lg:gap-[164px] px-6 lg:px-12 py-6">
+    <section className="bg-[#1b2749] w-screen self-center lg:py-7" aria-labelledby="audit-title">
+      <Divider className="flex flex-col lg:flex-row items-center justify-center gap-12 lg:gap-40 px-6 lg:px-12 py-6">
+        <h2 id="audit-title" className="sr-only">Security and Support</h2>
         <DividerText text="Trade with confidence" dimmed />
         <div className="flex items-center gap-4">
           <UsedTechs text="Audited by">
-            <a href="https://docs.mira.ly/developer-guides/security-audit" target="_blank" rel="noopener noreferrer" className="transition-opacity duration-300 hover:opacity-65">
+            <a href="https://docs.mira.ly/developer-guides/security-audit" target="_blank" rel="noopener noreferrer">
               <OttersecIcon />
             </a>
-            <a href="https://docs.mira.ly/developer-guides/security-audit" target="_blank" rel="noopener noreferrer" className="transition-opacity duration-300 hover:opacity-65">
+            <a href="https://docs.mira.ly/developer-guides/security-audit" target="_blank" rel="noopener noreferrer">
               <Halborn />
             </a>
           </UsedTechs>
         </div>
         <div className="flex items-center gap-4">
           <UsedTechs text="Supported by">
-            <a href="https://fuel.network" target="_blank" rel="noopener noreferrer" className="transition-opacity duration-300 hover:opacity-65 ml-2">
+            <a href="https://fuel.network" target="_blank" rel="noopener noreferrer" className="ml-2">
               <FuelGroup />
             </a>
           </UsedTechs>
@@ -82,19 +88,22 @@ function AuditSection() {
 
 function MainInfoSection() {
   return (
-    <section className="flex flex-col items-center mb-6 lg:gap-5 lg:mb-5">
-      <div className="mb-10 lg:mb-[20px]">
+    <section className="flex flex-col items-center mb-6 lg:gap-5 lg:mb-5" aria-labelledby="main-info-heading">
+      <div className="mb-10 lg:mb-5">
         <RoadMapIcon text="Coming Soon" />
       </div>
       <MainInfo
         title="Meet the First ve(3,3) DEX on Fuel*"
         description="The highest APR for LPs, with the lowest slippage and fees on swaps among other DEXs"
       >
-        <InfoBlocks title="Simple steps to maximize efficiency">
-          <StepsBlock logo={<StepsIcon icon={<LockIcon />} />} title="Lock" description="Mira can be locked in return for escrowed Mira (veMIRA)" />
-          <StepsBlock logo={<StepsIcon icon={<VoteIcon />} />} title="Vote" description="veMIRA gives you the power to decide which pools should receive more MIRA emissions" />
-          <StepsBlock logo={<StepsIcon icon={<EarnIcon />} />} title="Earn" description="After voting for a specific pool you can claim a share of the weekly incentives and trading fees allocated to that pool" />
-        </InfoBlocks>
+        <article aria-labelledby="main-info-heading">
+          <h2 id="main-info-heading" className="sr-only">How MIRA Works</h2>
+          <InfoBlocks title="Simple steps to maximize efficiency">
+            <StepsBlock logo={<StepsIcon icon={<LockIcon />} />} title="Lock" description="MIRA can be locked in return for escrowed MIRA (veMIRA)" />
+            <StepsBlock logo={<StepsIcon icon={<VoteIcon />} />} title="Vote" description="veMIRA gives you the power to decide which pools should receive more MIRA emissions" />
+            <StepsBlock logo={<StepsIcon icon={<EarnIcon />} />} title="Earn" description="After voting for a specific pool you can claim a share of the weekly incentives and trading fees allocated to that pool" />
+          </InfoBlocks>
+        </article>
       </MainInfo>
     </section>
   );
@@ -102,8 +111,8 @@ function MainInfoSection() {
 
 function AchievementsDivider() {
   return (
-    <section className="bg-[#1b2749] w-screen self-center lg:py-[28px]">
-      <Divider className="p-0 lg:p-5 lg:px-4">
+    <section className="bg-[#1b2749] w-screen self-center lg:py-7" aria-label="AMM Highlight">
+      <Divider className="p-5 lg:px-4">
         <DividerText text="The next-generation AMM for Fuel" />
       </Divider>
     </section>
@@ -112,18 +121,18 @@ function AchievementsDivider() {
 
 function RoadmapSection() {
   return (
-    <section className="flex flex-col items-center mb-6 lg:gap-5 lg:mb-5">
+    <section className="flex flex-col items-center mb-6 lg:gap-5 lg:mb-5" aria-labelledby="roadmap-heading">
       <MainInfo title="MIRA's Roadmap" description="Join us in on a journey to the future of the internet">
-        <div className="lg:hidden">
+        <div className="lg:hidden" role="region" aria-label="Roadmap mobile view">
           <RoadmapMobile />
         </div>
         <InfoBlocks>
           <RoadMapBlock logo={<RoadMapIcon text="Testnet" />} title="Basic AMM with volatile and stable swaps feature complete" description="July 2024" done />
           <RoadMapBlock logo={<RoadMapIcon text="Mainnet" />} title="Basic AMM is live on Fuel L2 Mainnet with Fuel network points" description="Day one of the Fuel mainnet" done />
-          <RoadMapBlock logo={<RoadMapIcon text="Mainnet" />} title="Mira DApps points program" description="After Fuel goes live on the mainnet" />
+          <RoadMapBlock logo={<RoadMapIcon text="Mainnet" />} title="MIRA DApps points program" description="After Fuel goes live on the mainnet" done />
           <RoadMapBlock logo={<RoadMapIcon text="Mainnet" />} title="ve(3,3) features and governance" description="Late 2024 / Early 2025" />
         </InfoBlocks>
-        <div className="hidden lg:block">
+        <div className="hidden lg:block" role="region" aria-label="Roadmap desktop view">
           <RoadmapDesktop />
         </div>
       </MainInfo>
@@ -133,47 +142,49 @@ function RoadmapSection() {
 
 function WelcomeSection() {
   return (
-    <section className="flex flex-col items-center justify-center mb-6">
-      <div className="flex flex-col items-center gap-[20px] mb-5 lg:gap-4">
-        <img className="w-20 h-20" src={miraLogo.src} alt="Mira Logo" />
-        <h2 className="text-[54px] leading-[58px] text-center mt-3 font-[var(--font-prompt)] lg:text-[32px] lg:leading-[40px]" style={{ fontFamily: "var(--font-prompt), sans-serif" }}>
-          Welcome to MIRA
-        </h2>
-        <p className="font-normal text-[20px] leading-[28px] text-center text-[var(--content-dimmed-light)] mb-3 lg:text-[18px] lg:leading-[24px]">
+    <section className="flex flex-col items-center justify-center mb-6" aria-labelledby="welcome-heading">
+      <figure className="flex flex-col items-center gap-5 mb-5 lg:gap-4">
+        <img className="w-20 h-20" src={miraLogo.src} alt="MIRA Logo" />
+        <figcaption>
+          <h2 id="welcome-heading" className="text-5xl leading-tight text-center mt-3 font-[var(--font-prompt)] lg:text-3xl lg:leading-10">
+            Welcome to MIRA
+          </h2>
+        </figcaption>
+        <p className="font-normal text-lg leading-7 text-center text-[var(--content-dimmed-light)] mb-3 lg:text-base lg:leading-6">
           Exceptional capital efficiency with robust liquidity and minimal fees
         </p>
-        <LaunchAppButton className="w-[240px] py-4 lg:w-full lg:text-[18px] lg:leading-[24px]" />
-      </div>
+        <LaunchAppButton className="w-60 py-4 lg:w-full lg:text-base lg:leading-6" />
+      </figure>
     </section>
   );
 }
 
 function SocialSection() {
   return (
-    <section className="flex flex-col gap-4 items-center lg:flex-row lg:p-[32px_40px] lg:rounded-[24px] lg:bg-[rgba(80,127,247,0.1)] lg:shadow-[inset_1px_1px_14px_0_rgba(255,255,255,0.05)]">
+    <section className="flex flex-col gap-4 items-center lg:flex-row lg:px-10 lg:py-8 lg:rounded-2xl lg:bg-[rgba(80,127,247,0.1)] lg:shadow-[inset_1px_1px_14px_0_rgba(255,255,255,0.05)]" aria-labelledby="social-heading">
       <div className="w-full flex flex-col gap-4 text-center lg:w-1/2 lg:text-left">
-        <h3 className="text-5xl font-bold">Be early</h3>
+        <h3 id="social-heading" className="text-5xl font-bold">Be early</h3>
         <p className="text-content-secondary">Connect with our thriving community</p>
       </div>
-      <div className="w-full flex flex-col items-center gap-3 lg:flex-row lg:w-1/2 lg:gap-4">
-        <a href={DiscordLink} className="h-[149px] w-full flex flex-col justify-center items-center gap-3 rounded-[16px] bg-[#32389f] max-w-[350px] lg:w-[230px] lg:h-[230px]" target="_blank">
+      <nav className="w-full flex flex-col items-center gap-3 lg:flex-row lg:w-1/2 lg:gap-4" aria-label="Social links">
+        <a href={DiscordLink} className="h-36 w-full flex flex-col justify-center items-center gap-3 rounded-xl bg-[#32389f] max-w-md lg:w-56 lg:h-56" target="_blank" rel="noopener noreferrer">
           <DiscordIcon />
-          <p>Mira Discord community</p>
+          <p>MIRA Discord community</p>
         </a>
-        <a href={XLink} className="h-[149px] w-full flex flex-col justify-center items-center gap-3 rounded-[16px] bg-[#040305] max-w-[350px] lg:w-[230px] lg:h-[230px]" target="_blank">
-          <div className="py-[7px]">
+        <a href={XLink} className="h-36 w-full flex flex-col justify-center items-center gap-3 rounded-xl bg-[#040305] max-w-md lg:w-56 lg:h-56" target="_blank" rel="noopener noreferrer">
+          <div className="py-2">
             <XIcon />
           </div>
           <p>Follow us on X</p>
         </a>
-      </div>
+      </nav>
     </section>
   );
 }
 
 export default function Page() {
   return (
-    <main className="flex flex-col gap-[56px] px-4 pt-[84px] pb-[56px] lg:max-w-[1084px] lg:px-4 lg:pt-[100px] lg:pb-[48px] lg:gap-[100px] lg:mx-auto">
+    <main className="flex flex-col gap-14 px-4 pt-20 pb-14 lg:max-w-[1084px] lg:px-4 lg:pt-24 lg:pb-12 lg:gap-[100px] lg:mx-auto">
       <HeroSection />
       <AuditSection />
       <MainInfoSection />

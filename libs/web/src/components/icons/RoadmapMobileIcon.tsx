@@ -14,7 +14,13 @@ const RoadmapMobileIcon = () => {
         strokeDasharray="10 10"
       />
       <path
-        d="M111.362 12H331.172"
+        d="M111.362 12H219.81"
+        stroke="#46CC44"
+        strokeWidth="2"
+        strokeDasharray="10 10"
+      />
+      <path
+        d="M219.81 12H331.172"
         stroke="#6D6D6D"
         strokeWidth="2"
         strokeDasharray="10 10"
@@ -33,7 +39,7 @@ const RoadmapMobileIcon = () => {
         strokeWidth="2"
         strokeLinecap="square"
       />
-      <ellipse cx="231.638" cy="12" rx="11.8276" ry="12" fill="#6D6D6D" />
+      <ellipse cx="231.638" cy="12" rx="11.8276" ry="12" fill="#46CC44" />
       <path
         d="M235.811 10L230.477 15.3333L227.811 12.6667"
         stroke="#262934"

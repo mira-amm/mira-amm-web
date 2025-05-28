@@ -14,7 +14,13 @@ const RoadmapDesktopIcon = () => {
         strokeDasharray="12 12"
       />
       <path
-        d="M295 12H848"
+        d="M295 12H550"
+        stroke="#46CC44"
+        strokeWidth="2"
+        strokeDasharray="12 12"
+      />
+      <path
+        d="M550 12H848"
         stroke="#6D6D6D"
         strokeWidth="2"
         strokeDasharray="12 12"
@@ -33,7 +39,7 @@ const RoadmapDesktopIcon = () => {
         strokeWidth="2"
         strokeLinecap="square"
       />
-      <circle cx="561" cy="12" r="12" fill="#6D6D6D" />
+      <circle cx="561" cy="12" r="12" fill="#46CC44" />
       <path
         d="M565 10L559.667 15.3333L557 12.6667"
         stroke="#262934"
