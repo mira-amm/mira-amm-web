@@ -14,8 +14,8 @@ export const LogOutIcon = () => {
       <path
         d="M21.7285 12.6895H12.5732M21.7285 12.6895L17.1509 17.2671M21.7285 12.6895L17.1509 8.11182"
         stroke="var(--content-grey)"
-        stroke-width="1.83105"
-        stroke-linecap="square"
+        strokeWidth="1.83105"
+        strokeLinecap="square"
       />
     </svg>
   );
