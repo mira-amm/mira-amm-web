@@ -18,7 +18,7 @@ export const MainInfo: React.FC<{
         {title}
       </h2>
       <p
-        className="text-[18px] leading-[24px] lg:text-[20px] lg:leading-[28px] m-0 lg:mb-0 text-center font-normal text-[var(--content-dimmed-light)] max-w-[624px] mx-auto mb-[28px] lg:mb-0"
+        className="text-[18px] leading-[24px] lg:text-[20px] lg:leading-[28px] m-0 lg:mb-0 text-center font-normal text-[var(--content-dimmed-light)] w-[350px] mx-auto mb-[28px] lg:mb-0"
       >
         {description}
         <a

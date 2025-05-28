@@ -9,7 +9,7 @@ export const InfoBlocks: React.FC<{
       >
         {title}
       </h3>
-      <ul className="list-none p-0 flex flex-col max-md:items-center gap-[16px] lg:flex-row lg:gap-[16px] w-full lg:w-auto">
+      <ul className="list-none p-0 flex flex-col max-lg:items-center gap-[16px] lg:flex-row lg:gap-[16px] w-full lg:w-auto">
         {children}
       </ul>
     </div>
