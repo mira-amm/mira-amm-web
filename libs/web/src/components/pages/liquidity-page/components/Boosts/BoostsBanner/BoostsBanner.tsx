@@ -6,7 +6,7 @@ import {
   POINTS_BANNER_TITLE,
   POINTS_LEARN_MORE_URL,
 } from "@/src/utils/constants";
-import PointsIcon from "@/src/components/icons/PointsIcon";
+import { PointsIcon } from "@/src/components/icons";
 
 const BoostsBanner = () => {
   return (

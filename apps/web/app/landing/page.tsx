@@ -1,17 +1,18 @@
 import miraLogo from "@/src/components/icons/MiraLogo.png";
 import LaunchAppButton from "@/src/components/common/LaunchAppButton/LaunchAppButton";
-import Halborn from "@/src/components/icons/HalbornIcon";
-import FuelGroup from "@/src/components/icons/FuelGroup";
-import OttersecIcon from "@/src/components/icons/OttersecIcon";
-import Swap from "@/src/components/common/Swap/Swap";
-import FuelIcon from "@/src/components/icons/FuelIcon";
-import DiscordIcon from "@/src/components/icons/DiscordIcon";
-import XIcon from "@/src/components/icons/XIcon";
-import LockIcon from "@/src/components/icons/LockIcon";
-import VoteIcon from "@/src/components/icons/VoteIcon";
-import EarnIcon from "@/src/components/icons/EarnIcon";
-import RoadmapDesktop from "@/src/components/icons/RoadmapDesktopIcon";
-import RoadmapMobile from "@/src/components/icons/RoadmapMobileIcon";
+import {
+  HalbornIcon as Halborn,
+  FuelGroup,
+  OttersecIcon,
+  FuelIcon,
+  DiscordIcon,
+  XIcon,
+  LockIcon,
+  VoteIcon,
+  EarnIcon,
+  RoadmapDesktopIcon as RoadmapDesktop,
+  RoadmapMobileIcon as RoadmapMobile,
+} from "@/src/components/icons";
 
 import { UsedTechs } from "@/src/components/common/UsedTechs/UsedTechs";
 import { Divider } from "@/src/components/common/Divider/Divider";
@@ -24,6 +25,7 @@ import { RoadMapIcon } from "@/src/components/common/RoadMapIcons/RoadMapIcon";
 import { StepsIcon } from "@/src/components/common/StepsIcon/StepsIcon";
 
 import { DiscordLink, XLink } from "@/src/utils/constants";
+import Swap from "@/src/components/common/Swap/Swap";
 
 function HeroSection() {
   return (

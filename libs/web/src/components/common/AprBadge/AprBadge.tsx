@@ -5,17 +5,15 @@ import useBoostedApr, {RewardsToken} from "@/src/hooks/useBoostedApr";
 import {isMobile} from "react-device-detect";
 import Loader from "../Loader/Loader";
 import {EPOCH_NUMBER} from "@/src/utils/constants";
-import PointsIconSimple from "../../icons/PointsIconSimple";
+import { PointsIconSimple } from "@/src/components/icons";
 
-interface AprBadgeProps {
+const AprBadge: React.FC<{
   aprValue: string | null;
   small?: boolean;
   leftAlignValue?: string;
   poolKey: string;
   tvlValue: number;
-}
-
-const AprBadge: React.FC<AprBadgeProps> = ({
+}> = ({
   aprValue,
   small,
   leftAlignValue,
@@ -108,14 +106,13 @@ const AprBadge: React.FC<AprBadgeProps> = ({
 
 export default AprBadge;
 
-type RewardsEnhancementLabel = {
-  label: string;
-  description: string;
-};
 
 const LabelMap: Record<
   Exclude<RewardsToken, undefined>,
-  RewardsEnhancementLabel
+  {
+  label: string;
+  description: string;
+  }
 > = {
   $FUEL: {
     label: "Boost Rewards ($FUEL)",

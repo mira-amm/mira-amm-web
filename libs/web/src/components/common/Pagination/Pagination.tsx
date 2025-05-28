@@ -1,18 +1,15 @@
-import {ArrowLeftIcon} from "../../icons/ArrowLeftIcon";
-import {ArrowRightIcon} from "../../icons/ArrowRightIcon";
+import {ArrowLeftIcon, ArrowRightIcon} from "@/src/components/icons";
 import styles from "./Pagination.module.css";
 
-interface PaginationProps {
-  currentPage: number;
-  totalPages: number;
-  onPageChange: (page: number) => void;
-}
-
-const Pagination = ({
+export default function Pagination({
   currentPage,
   totalPages,
   onPageChange,
-}: PaginationProps) => {
+}: {
+  currentPage: number;
+  totalPages: number;
+  onPageChange: (page: number) => void;
+}){
   const generatePages = () => {
     const pages = [];
     const maxVisiblePages = 5;
@@ -77,5 +74,3 @@ const Pagination = ({
     </div>
   );
 };
-
-export default Pagination;

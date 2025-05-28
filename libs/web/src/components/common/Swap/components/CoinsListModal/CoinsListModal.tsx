@@ -1,6 +1,7 @@
 "use client";
+
 import CoinListItem from "@/src/components/common/Swap/components/CoinListItem/CoinListItem";
-import SearchIcon from "@/src/components/icons/SearchIcon";
+import { SearchIcon } from "@/src/components/icons";
 import useCoinListModalData from "@/src/hooks/useCoinListModal";
 import {CoinQuantity} from "fuels";
 import {memo, useEffect, useRef} from "react";
@@ -9,15 +10,13 @@ import SkeletonLoader from "../SkeletonLoader/SkeletonLoader";
 import UnknownCoinListItem from "../UnknownCoinListItem";
 import styles from "./CoinsListModal.module.css";
 
-type Props = {
+const assetIdRegex = /^0x[0-9a-fA-F]{64}$/;
+
+function CoinsListModal({selectCoin, verifiedAssetsOnly, balances}: {
   balances: CoinQuantity[] | undefined;
   selectCoin: (assetId: string | null) => void;
   verifiedAssetsOnly?: boolean;
-};
-
-const assetIdRegex = /^0x[0-9a-fA-F]{64}$/;
-
-const CoinsListModal = ({selectCoin, verifiedAssetsOnly, balances}: Props) => {
+}){
   const {allCoins, handleFilterChange, isLoading, searchValue} =
     useCoinListModalData(balances, verifiedAssetsOnly);
   const inputRef = useRef<HTMLInputElement>(null);

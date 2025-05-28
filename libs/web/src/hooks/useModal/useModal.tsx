@@ -3,7 +3,7 @@ import { createPortal } from "react-dom";
 import { clsx } from "clsx";
 
 import IconButton from "@/src/components/common/IconButton/IconButton";
-import CloseIcon from "@/src/components/icons/CloseIcon";
+import { CloseIcon } from "@/src/components/icons";
 import { useScrollLock } from "usehooks-ts";
 
 type ReturnType = (props: {

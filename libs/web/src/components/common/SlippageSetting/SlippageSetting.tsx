@@ -1,5 +1,5 @@
-import SettingsIcon from "../../icons/SettingsIcon";
-import IconButton from "../IconButton/IconButton";
+import { SettingsIcon } from "@/src/components/icons";
+import IconButton from "@/src/components/common/IconButton/IconButton";
 
 export function SlippageSetting({ slippage, openSettingsModal }: {
   slippage: number;

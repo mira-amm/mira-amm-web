@@ -11,7 +11,7 @@ import {
 import styles from "./PointsRankTable.module.css";
 import {usePointsRanks} from "@/src/hooks/usePoints/usePoints";
 import LoaderV2 from "@/src/components/common/LoaderV2/LoaderV2";
-import PointsIconSimple from "@/src/components/icons/PointsIconSimple";
+import { PointsIconSimple } from "@/src/components/icons";
 import {DefaultLocale} from "@/src/utils/constants";
 
 // Define the data type for our table

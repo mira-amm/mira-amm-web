@@ -1,4 +1,4 @@
-import WarningIcon from "@/src/components/icons/WarningIcon";
+import { WarningIcon } from "@/src/components/icons"
 import styles from "./SettingsModalContent.module.css";
 import {
   ChangeEvent,
@@ -17,23 +17,21 @@ import {
 } from "@/src/components/common/Swap/Swap";
 import {useAnimationStore} from "@/src/stores/useGlitchScavengerHunt";
 
-type Props = {
-  slippage: number;
-  slippageMode: SlippageMode;
-  setSlippage: Dispatch<SetStateAction<number>>;
-  setSlippageMode: Dispatch<SetStateAction<SlippageMode>>;
-  closeModal: VoidFunction;
-};
-
 const AutoSlippageValues = [10, 50, 100];
 
-const SettingsModalContent = ({
+function SettingsModalContent({
   slippage,
   slippageMode,
   setSlippage,
   setSlippageMode,
   closeModal,
-}: Props) => {
+}: {
+  slippage: number;
+  slippageMode: SlippageMode;
+  setSlippage: Dispatch<SetStateAction<number>>;
+  setSlippageMode: Dispatch<SetStateAction<SlippageMode>>;
+  closeModal: VoidFunction;
+}){
   const [inputValue, setInputValue] = useState(`${slippage / 100}%`);
 
   const inputRef = useRef<HTMLInputElement>(null);

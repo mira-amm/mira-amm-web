@@ -1,5 +1,5 @@
 import { clsx } from "clsx";
-import SearchIcon from "../../icons/SearchIcon";
+import { SearchIcon } from "@/src/components/icons";
 import { RefObject, ChangeEvent } from "react";
 
 export const SearchBar: React.FC<{

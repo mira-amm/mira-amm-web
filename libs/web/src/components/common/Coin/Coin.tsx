@@ -1,5 +1,5 @@
 import { clsx } from "clsx";
-import ChevronDownIcon from "@/src/components/icons/ChevronDownIcon";
+import { ChevronDownIcon } from "@/src/components/icons";
 import useAssetMetadata from "@/src/hooks/useAssetMetadata";
 import { useAssetImage } from "@/src/hooks/useAssetImage";
 

@@ -1,4 +1,4 @@
-import ChevronLeft from "@/src/components/icons/ChevronLeft";
+import { ChevronLeft } from "@/src/components/icons";
 import Link from "next/link";
 import { isMobile } from "react-device-detect";
 import { clsx } from "clsx";

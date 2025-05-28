@@ -1,12 +1,9 @@
-import {NotificationCheckboxIcon} from "../../icons/NotificationCheckboxIcon";
-import {TransactionsCloseIcon} from "../../icons/TransactionsCloseIcon";
+import {NotificationCheckboxIcon, TransactionsCloseIcon} from "@/src/components/icons";
 import styles from "./CopyNotification.module.css";
 
-interface CopyNotificationProps {
+export const CopyNotification: React.FC<{
   onClose: () => void;
-}
-
-export const CopyNotification: React.FC<CopyNotificationProps> = ({
+}> = ({
   onClose,
 }) => {
   return (

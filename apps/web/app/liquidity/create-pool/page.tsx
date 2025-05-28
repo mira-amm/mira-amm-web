@@ -5,7 +5,7 @@ import {useRouter} from "next/navigation";
 
 import BackLink from "@/src/components/common/BackLink/BackLink";
 import IconButton from "@/src/components/common/IconButton/IconButton";
-import CloseIcon from "@/src/components/icons/CloseIcon";
+import {CloseIcon} from "@/src/components/icons";
 
 import PreviewCreatePoolDialog, {
   CreatePoolPreviewData,

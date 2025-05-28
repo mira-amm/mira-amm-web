@@ -21,16 +21,11 @@ import {
 
 import TestnetLabel from "@/src/components/common/TestnetLabel/TestnetLabel";
 import IconButton from "../IconButton/IconButton";
-import CloseIcon from "../../icons/CloseIcon";
-import PointsIcon from "../../icons/PointsIcon";
-
-type Props = {
-  isHomePage?: boolean;
-};
+import { CloseIcon, PointsIcon } from "@/src/components/icons";
 
 const PROMO_BANNER_STORAGE_KEY = "fuel-boost-program-promo-banner-closed";
 
-export default function Header({ isHomePage }: Props) {
+export default function Header( isHomePage?: boolean) {
   const pathname = usePathname();
   const { isConnected } = useIsConnected();
   const [isPromoShown, setIsPromoShown] = useState(false);

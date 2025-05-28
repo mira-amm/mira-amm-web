@@ -4,19 +4,16 @@ import useWalletTransactions from "@/src/hooks/useWalletTransactions";
 import {FuelAppUrl} from "@/src/utils/constants";
 import {useAccount, useIsConnected} from "@fuels/react";
 import {forwardRef, useMemo} from "react";
-import {TransactionsCloseIcon} from "../../icons/TransactionsCloseIcon";
-import CopyAddressIcon from "../../icons/CopyAddressIcon";
+import { CopyAddressIcon, TransactionsCloseIcon } from "@/src/components/icons";
 import styles from "./TransactionsHistory.module.css";
 import SkeletonLoader from "../Swap/components/SkeletonLoader/SkeletonLoader";
 
-interface TransactionsHistoryProps {
-  onClose: () => void;
-  isOpened: boolean;
-}
-
 const TransactionsHistory = forwardRef<
   HTMLDivElement,
-  TransactionsHistoryProps
+ {
+  onClose: () => void;
+  isOpened: boolean;
+ }
 >(function TransactionsHistory({onClose, isOpened}, ref) {
   const {account} = useAccount();
   const {isConnected} = useIsConnected();

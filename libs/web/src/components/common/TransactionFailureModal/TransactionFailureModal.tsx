@@ -1,14 +1,12 @@
 import styles from "./TransactionFailureModal.module.css";
 import ActionButton from "@/src/components/common/ActionButton/ActionButton";
-import FailureIcon from "@/src/components/icons/FailureIcon";
+import { FailureIcon } from "@/src/components/icons";
 import {FuelError} from "fuels";
 
-type Props = {
+export default function TransactionFailureModal({closeModal, error}: {
   error: Error | null;
   closeModal: VoidFunction;
-};
-
-const TransactionFailureModal = ({closeModal, error}: Props) => {
+}){
   const title = error instanceof FuelError ? "Transaction failed" : "Failure";
   let message: string;
   if (error instanceof FuelError) {
@@ -30,4 +28,3 @@ const TransactionFailureModal = ({closeModal, error}: Props) => {
   );
 };
 
-export default TransactionFailureModal;

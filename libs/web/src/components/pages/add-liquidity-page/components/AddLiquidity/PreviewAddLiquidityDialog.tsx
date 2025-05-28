@@ -2,7 +2,6 @@ import styles from "@/src/components/pages/add-liquidity-page/components/AddLiqu
 import CoinPair from "@/src/components/common/CoinPair/CoinPair";
 import Coin from "@/src/components/common/Coin/Coin";
 import ActionButton from "@/src/components/common/ActionButton/ActionButton";
-import {CoinName, coinsConfig} from "@/src/utils/coinsConfig";
 import useAddLiquidity from "@/src/hooks/useAddLiquidity";
 import useModal from "@/src/hooks/useModal/useModal";
 import AddLiquiditySuccessModal from "@/src/components/pages/add-liquidity-page/components/AddLiquiditySuccessModal/AddLiquiditySuccessModal";
@@ -12,27 +11,23 @@ import TransactionFailureModal from "@/src/components/common/TransactionFailureM
 import {BN} from "fuels";
 import useAssetMetadata from "@/src/hooks/useAssetMetadata";
 
-type AssetsData = {
+export type AddLiquidityPreviewData = {
+  assets: {
   assetId: string;
   amount: BN;
-};
-
-export type AddLiquidityPreviewData = {
-  assets: AssetsData[];
+  }[];
   isStablePool: boolean;
 };
 
-type Props = {
-  previewData: AddLiquidityPreviewData;
-  setPreviewData: Dispatch<SetStateAction<AddLiquidityPreviewData | null>>;
-  slippage: number;
-};
-
-const PreviewAddLiquidityDialog = ({
+export default function PreviewAddLiquidityDialog({
   previewData,
   setPreviewData,
   slippage,
-}: Props) => {
+}: {
+  previewData: AddLiquidityPreviewData;
+  setPreviewData: Dispatch<SetStateAction<AddLiquidityPreviewData | null>>;
+  slippage: number;
+}){
   const [SuccessModal, openSuccessModal] = useModal();
   const [FailureModal, openFailureModal, closeFailureModal] = useModal();
 
@@ -187,5 +182,3 @@ const PreviewAddLiquidityDialog = ({
     </>
   );
 };
-
-export default PreviewAddLiquidityDialog;

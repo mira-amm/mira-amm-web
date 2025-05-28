@@ -1,15 +1,13 @@
 import styles from "./SwapFailureModal.module.css";
 import ActionButton from "@/src/components/common/ActionButton/ActionButton";
-import FailureIcon from "@/src/components/icons/FailureIcon";
+import { FailureIcon } from "@/src/components/icons";
 import {ErrorCode, FuelError} from "fuels";
 
-type Props = {
+export default function SwapFailureModal({error, closeModal, customTitle}: {
   error: Error | null;
   closeModal: VoidFunction;
   customTitle?: string;
-};
-
-const SwapFailureModal = ({error, closeModal, customTitle}: Props) => {
+}){
   let message = "An error occurred. Please try again.";
   let title = "Swap failed";
 
@@ -41,5 +39,3 @@ const SwapFailureModal = ({error, closeModal, customTitle}: Props) => {
     </div>
   );
 };
-
-export default SwapFailureModal;

@@ -4,8 +4,7 @@ import BackLink from "@/src/components/common/BackLink/BackLink";
 import Pools from "@/src/components/pages/liquidity-page/components/Pools/Pools";
 import Positions from "@/src/components/pages/liquidity-page/components/Positions/Positions";
 import PromoBlock from "@/src/components/pages/liquidity-page/components/PromoBlock/PromoBlock";
-import StarsIcon from "@/src/components/icons/StarsIcon";
-import CupIcon from "@/src/components/icons/CupIcon";
+import {StarsIcon, CupIcon} from "@/src/components/icons";
 import Boosts from "@/src/components/pages/liquidity-page/components/Boosts/Boosts";
 
 import {

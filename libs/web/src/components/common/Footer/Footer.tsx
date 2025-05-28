@@ -1,8 +1,6 @@
 import Logo from "@/src/components/common/Logo/Logo";
 import {BlogLink, DiscordLink, XLink} from "@/src/utils/constants";
-import GithubIcon from "../../icons/GithubIcon";
-import DiscordIcon from "../../icons/DiscordIcon";
-import X from "../../icons/XSocialIcon";
+import { DiscordIcon, XSocialIcon, GithubIcon } from "@/src/components/icons";
 import {Button} from "@/meshwave-ui/Button";
 
 export default function Footer() {
@@ -71,7 +69,7 @@ export default function Footer() {
           </Button>
           <Button asChild variant="link" className="p-0 hover:opacity-65">
             <a href={XLink} target="_blank">
-              <X />
+              <XSocialIcon />
             </a>
           </Button>
         </div>

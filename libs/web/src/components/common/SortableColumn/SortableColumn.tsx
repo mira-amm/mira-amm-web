@@ -1,20 +1,17 @@
-import {ArrowDownSmallIcon} from "../../icons/ArrowDownSmallIcon";
-import {ArrowUpSmallIcon} from "../../icons/ArrowUpSmallIcon";
+import {ArrowDownSmallIcon, ArrowUpSmallIcon} from "@/src/components/icons";
 import styles from "./SortableColumn.module.css";
 
-type SortableColumnProps = {
-  title: string;
-  columnKey: string;
-  orderBy: string;
-  onSort: (key: string) => void;
-};
-
-const SortableColumn = ({
+export default function SortableColumn({
   title,
   columnKey,
   orderBy,
   onSort,
-}: SortableColumnProps) => {
+}: {
+  title: string;
+  columnKey: string;
+  orderBy: string;
+  onSort: (key: string) => void;
+}){
   const [key, direction] = orderBy.split("_");
   const isActive = key === columnKey;
 
@@ -34,4 +31,3 @@ const SortableColumn = ({
     </th>
   );
 };
-export default SortableColumn;

@@ -1,8 +1,8 @@
 import { memo } from "react";
 import Link from "next/link";
-import LogoIcon from "@/src/components/icons/LogoIcon";
+import { LogoIcon } from "@/src/components/icons";
 
-const Logo = () => {
+function Logo(){
   return (
     <Link
       href="/"

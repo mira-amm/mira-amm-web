@@ -22,16 +22,13 @@ import CoinsListModal from "@/src/components/common/Swap/components/CoinsListMod
 import {B256Address, BN, bn, formatUnits} from "fuels";
 import useAssetMetadata from "@/src/hooks/useAssetMetadata";
 import {useAssetPrice} from "@/src/hooks/useAssetPrice";
-import SparkleIcon from "@/src/components/icons/SparkleIcon";
+import { SparkleIcon, ExchangeIcon } from "@/src/components/icons";
 import Link from "next/link";
 import useExchangeRateV2 from "@/src/hooks/useExchangeRate/useExchangeRateV2";
-import ExchangeIcon from "@/src/components/icons/ExchangeIcon";
 
-type Props = {
+export default function CreatePoolDialog({setPreviewData}: {
   setPreviewData: Dispatch<SetStateAction<CreatePoolPreviewData | null>>;
-};
-
-const CreatePoolDialog = ({setPreviewData}: Props) => {
+}){
   const [AssetsListModal, openAssetsListModal, closeAssetsListModal] =
     useModal();
 
@@ -346,5 +343,3 @@ const CreatePoolDialog = ({setPreviewData}: Props) => {
     </>
   );
 };
-
-export default CreatePoolDialog;

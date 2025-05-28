@@ -1,4 +1,4 @@
-import SuccessIcon from "@/src/components/icons/SuccessIcon";
+import { SuccessIcon } from "@/src/components/icons";
 import { SwapState } from "@/src/components/common/Swap/Swap";
 import ActionButton from "@/src/components/common/ActionButton/ActionButton";
 import { useCallback } from "react";

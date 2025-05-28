@@ -3,7 +3,7 @@ import DesktopPositions from "@/src/components/pages/liquidity-page/components/P
 import {useIsConnected} from "@fuels/react";
 import usePositions from "@/src/hooks/usePositions";
 import PositionsLoader from "./PositionsLoader/PositionsLoader";
-import DocumentIcon from "@/src/components/icons/DocumentIcon";
+import { DocumentIcon } from "@/src/components/icons";
 import {POSITIONS_SKELTON_COUNT} from "@/src/utils/constants";
 
 export default function Positions() {

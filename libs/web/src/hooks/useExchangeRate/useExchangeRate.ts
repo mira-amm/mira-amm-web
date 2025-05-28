@@ -8,10 +8,10 @@ import {coinsConfig} from "@/src/utils/coinsConfig";
 import {DefaultLocale} from "@/src/utils/constants";
 import useAssetMetadata from "../useAssetMetadata";
 
-const useExchangeRate = (
+export default function useExchangeRate(
   swapState: SwapState,
   mode: CurrencyBoxMode = "sell",
-): string | null => {
+): string | null {
   const sellMetadata = useAssetMetadata(swapState.sell.assetId);
   const buyMetadata = useAssetMetadata(swapState.buy.assetId);
 
@@ -47,5 +47,3 @@ const useExchangeRate = (
     mode,
   ]);
 };
-
-export default useExchangeRate;

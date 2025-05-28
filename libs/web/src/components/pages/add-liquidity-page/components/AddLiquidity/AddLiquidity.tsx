@@ -7,7 +7,7 @@ import AddLiquidityDialog from "@/src/components/pages/add-liquidity-page/compon
 import BackLink from "@/src/components/common/BackLink/BackLink";
 import {useRouter} from "next/navigation";
 import IconButton from "@/src/components/common/IconButton/IconButton";
-import CloseIcon from "@/src/components/icons/CloseIcon";
+import { CloseIcon } from "@/src/components/icons";
 import {PoolId} from "mira-dex-ts";
 import {SlippageSetting} from "@/src/components/common/SlippageSetting/SlippageSetting";
 import SettingsModalContent from "@/src/components/common/Swap/components/SettingsModalContent/SettingsModalContent";
@@ -17,12 +17,10 @@ import {
   SlippageMode,
 } from "@/src/components/common/Swap/Swap";
 
-type Props = {
+const AddLiquidity = ({poolId, poolKey}: {
   poolId: PoolId;
   poolKey: string;
-};
-
-const AddLiquidity = ({poolId, poolKey}: Props) => {
+}) => {
   const router = useRouter();
   const [SettingsModal, openSettingsModal, closeSettingsModal] = useModal();
 

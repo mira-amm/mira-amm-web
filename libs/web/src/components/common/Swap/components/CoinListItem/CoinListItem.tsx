@@ -2,20 +2,18 @@ import {clsx} from "clsx";
 import {BN, CoinQuantity} from "fuels";
 import {memo} from "react";
 
-import SuccessIcon from "@/src/components/icons/SuccessIcon";
+import { SuccessIcon } from "@/src/components/icons";
 import {CoinDataWithPrice} from "@/src/utils/coinsConfig";
 import {Tooltip} from "react-tooltip";
 import "react-tooltip/dist/react-tooltip.css";
 import styles from "./CoinListItem.module.css";
 import {useAssetImage} from "@/src/hooks/useAssetImage";
 
-type Props = {
+function CoinListItem({assetData}: {
   assetData: Omit<CoinDataWithPrice, "price"> & {
     userBalance?: CoinQuantity;
   };
-};
-
-const CoinListItem = ({assetData}: Props) => {
+}){
   const {isVerified, userBalance} = assetData;
   const balanceValue = userBalance?.amount ?? new BN(0);
   const fallbackIcon = useAssetImage(

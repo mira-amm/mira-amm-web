@@ -1,13 +1,13 @@
 "use client";
 
 import { memo, useEffect, useRef } from "react";
-import InfoIcon from "@/src/components/icons/InfoIcon";
+import { InfoIcon } from "@/src/components/icons";
 
-const Info = ({ tooltipText, tooltipKey, color }: {
+function Info({ tooltipText, tooltipKey, color }: {
   tooltipText: string;
   tooltipKey: string;
   color?: string;
-}) => {
+}){
   const buttonRef = useRef<HTMLButtonElement>(null);
   const tooltipRef = useRef<HTMLDivElement>(null);
 
