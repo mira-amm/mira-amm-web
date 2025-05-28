@@ -1,27 +1,23 @@
 import ChevronLeft from "@/src/components/icons/ChevronLeft";
 import Link from "next/link";
+import { isMobile } from "react-device-detect";
+import { clsx } from "clsx";
 
-import styles from "./BackLink.module.css";
-import {isMobile} from "react-device-detect";
-import {clsx} from "clsx";
-
-type Props = {
-  href?: string;
-  showOnDesktop?: boolean;
-  title?: string;
-  onClick?: () => void;
-  className?: string;
-  chevron?: boolean;
-};
-
-const BackLink = ({
+export default function BackLink({
   href,
   showOnDesktop,
   title,
   onClick,
   className,
   chevron,
-}: Props) => {
+}: {
+  href?: string;
+  showOnDesktop?: boolean;
+  title?: string;
+  onClick?: () => void;
+  className?: string;
+  chevron?: boolean;
+}){
   if (!isMobile && !showOnDesktop) {
     return null;
   }
@@ -29,9 +25,15 @@ const BackLink = ({
   const hrefToUse = href || "/";
   const titleToUse = title || "Back";
 
+  const baseClasses =
+    "flex items-center gap-2 text-[16px] leading-[22px] text-[var(--content-grey)] hover:text-[var(--content-primary)]";
+
   if (onClick) {
     return (
-      <button onClick={onClick} className={clsx(styles.backLink, className)}>
+      <button
+        onClick={onClick}
+        className={clsx(baseClasses, "bg-none border-none p-0 cursor-pointer", className)}
+      >
         <ChevronLeft />
         {titleToUse}
       </button>
@@ -39,11 +41,9 @@ const BackLink = ({
   }
 
   return (
-    <Link href={hrefToUse} className={clsx(styles.backLink, className)}>
+    <Link href={hrefToUse} className={clsx(baseClasses, className)}>
       {chevron && <ChevronLeft />}
       {titleToUse}
     </Link>
   );
 };
-
-export default BackLink;
