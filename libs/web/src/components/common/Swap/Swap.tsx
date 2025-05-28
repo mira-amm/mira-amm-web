@@ -5,7 +5,7 @@ import {clsx} from "clsx";
 import Logo from "@/src/components/common/Logo/Logo";
 import {useCallback, useEffect, useMemo, useRef, useState} from "react";
 
-import ActionButton from "@/src/components/common/ActionButton/ActionButton";
+import {ActionButton}from "@/src/components/common";
 import IconButton from "@/src/components/common/IconButton/IconButton";
 import CurrencyBox from "@/src/components/common/Swap/components/CurrencyBox/CurrencyBox";
 import { ConvertIcon } from "@/meshwave-ui/icons";

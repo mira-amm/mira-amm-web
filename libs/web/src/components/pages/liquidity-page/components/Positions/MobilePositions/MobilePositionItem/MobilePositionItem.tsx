@@ -10,7 +10,7 @@ import usePoolNameAndMatch from "@/src/hooks/usePoolNameAndMatch";
 import {DefaultLocale} from "@/src/utils/constants";
 import {createPoolKey} from "@/src/utils/common";
 import AprBadge from "@/src/components/common/AprBadge/AprBadge";
-import ActionButton from "@/src/components/common/ActionButton/ActionButton";
+import {ActionButton}from "@/src/components/common";
 import clsx from "clsx";
 
 type Props = {

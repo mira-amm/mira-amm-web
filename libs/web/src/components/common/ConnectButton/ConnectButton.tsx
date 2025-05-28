@@ -3,7 +3,7 @@
 import { clsx } from "clsx";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
-import ActionButton from "@/src/components/common/ActionButton/ActionButton";
+import {ActionButton}from "@/src/components/common";
 import TransactionsHistory from "@/src/components/common/TransactionsHistory/TransactionsHistory";
 import useFormattedAddress from "@/src/hooks/useFormattedAddress/useFormattedAddress";
 import useWeb3React from "@/src/hooks/useWeb3Connection";

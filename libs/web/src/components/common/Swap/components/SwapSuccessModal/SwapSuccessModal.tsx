@@ -1,6 +1,6 @@
 import { SuccessIcon } from "@/meshwave-ui/icons";
 import { SwapState } from "@/src/components/common/Swap/Swap";
-import ActionButton from "@/src/components/common/ActionButton/ActionButton";
+import {ActionButton}from "@/src/components/common";
 import { useCallback } from "react";
 import { openNewTab } from "@/src/utils/common";
 import { FuelAppUrl } from "@/src/utils/constants";

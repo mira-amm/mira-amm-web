@@ -1,5 +1,5 @@
 import styles from "./TransactionFailureModal.module.css";
-import ActionButton from "@/src/components/common/ActionButton/ActionButton";
+import {ActionButton}from "@/src/components/common";
 import { FailureIcon } from "@/meshwave-ui/icons";
 import {FuelError} from "fuels";
 

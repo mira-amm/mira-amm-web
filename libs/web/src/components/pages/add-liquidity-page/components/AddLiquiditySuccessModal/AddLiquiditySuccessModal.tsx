@@ -1,5 +1,5 @@
 import { SuccessIcon } from "@/meshwave-ui/icons";
-import ActionButton from "@/src/components/common/ActionButton/ActionButton";
+import {ActionButton}from "@/src/components/common";
 import { useCallback } from "react";
 import { openNewTab } from "@/src/utils/common";
 import { CoinName } from "@/src/utils/coinsConfig";

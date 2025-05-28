@@ -3,7 +3,7 @@ import clsx from "clsx";
 import Link from "next/link";
 import CoinPair from "@/src/components/common/CoinPair/CoinPair";
 import CoinWithAmount from "@/src/components/common/CoinWithAmount/CoinWithAmount";
-import ActionButton from "@/src/components/common/ActionButton/ActionButton";
+import {ActionButton}from "@/src/components/common";
 import PromoBlock from "@/src/components/pages/liquidity-page/components/PromoBlock/PromoBlock";
 import { StarsIcon } from "@/meshwave-ui/icons";
 import {PoolId} from "mira-dex-ts";

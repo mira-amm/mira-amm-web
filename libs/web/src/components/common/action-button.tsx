@@ -1,5 +1,5 @@
 import { clsx } from "clsx";
-import { forwardRef, memo, ReactNode, useCallback } from "react";
+import { forwardRef,  ReactNode, useCallback } from "react";
 
 import Loader from "@/src/components/common/Loader/Loader";
 
@@ -18,7 +18,7 @@ type Props = {
   fullWidth?: boolean;
 };
 
-const ActionButton = forwardRef<HTMLButtonElement, Props>(function ActionButton(
+export const ActionButton = forwardRef<HTMLButtonElement, Props>(function ActionButton(
   {
     children,
     onClick,
@@ -76,5 +76,3 @@ const ActionButton = forwardRef<HTMLButtonElement, Props>(function ActionButton(
     </button>
   );
 });
-
-export default memo(ActionButton);

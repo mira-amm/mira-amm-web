@@ -3,7 +3,7 @@ import { clsx } from "clsx";
 import { memo } from "react";
 
 import useFormattedAddress from "@/src/hooks/useformattedaddress/useformattedaddress";
-import ActionButton from "@/src/components/common/actionbutton/actionbutton";
+import {ActionButton}from "@/src/components/common";
 
 const DisconnectDesktop = ({ className }: { className?: string }) => {
   const { isConnected } = useIsConnected();

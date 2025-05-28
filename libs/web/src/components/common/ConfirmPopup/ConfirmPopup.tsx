@@ -1,4 +1,4 @@
-import ActionButton from "../ActionButton/ActionButton";
+import {ActionButton}from "..";
 import clsx from "clsx";
 
 export const ConfirmPopup: React.FC<{

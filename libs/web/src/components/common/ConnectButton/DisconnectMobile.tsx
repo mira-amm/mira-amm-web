@@ -1,6 +1,6 @@
 import { useAccount, useDisconnect, useIsConnected } from "@fuels/react";
 import useFormattedAddress from "@/src/hooks/useFormattedAddress/useFormattedAddress";
-import ActionButton from "@/src/components/common/ActionButton/ActionButton";
+import {ActionButton}from "@/src/components/common";
 import { clsx } from "clsx";
 import { useCallback, useState, useEffect, useMemo, useRef } from "react";
 import DropDownMenu from "../DropDownMenu/DropDownMenu";

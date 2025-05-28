@@ -1,6 +1,6 @@
 import styles from "./BoostsRewards.module.css";
 import Link from "next/link";
-import ActionButton from "@/src/components/common/ActionButton/ActionButton";
+import {ActionButton}from "@/src/components/common";
 import Info from "@/src/components/common/Info/Info";
 import {
   POINTS_TOOLTIP,
