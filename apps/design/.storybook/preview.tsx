@@ -1,8 +1,8 @@
-import type {Preview} from "@storybook/react";
+import type {Preview} from "@storybook/nextjs";
 import {withThemeByClassName} from "@storybook/addon-themes"; // Wide button with a pen and text. Toggles both Preview Components and Preview Background
 
-import {DocsContainer, type DocsContextProps} from "@storybook/blocks";
-import {themes, type ThemeVars} from "@storybook/theming";
+import {DocsContainer, type DocsContextProps} from "@storybook/addon-docs/blocks";
+import {themes, type ThemeVars} from "storybook/theming";
 import {ThemeProvider} from "next-themes";
 import React from "react";
 
@@ -119,7 +119,9 @@ const preview: Preview = {
       }) => {
         // eslint-disable-next-line react-hooks/rules-of-hooks
         const [isDark, setDark] = React.useState(true);
-        props.context.channel.on(DARK_MODE_EVENT_NAME, (state) =>
+        props.context.channel.on(
+          DARK_MODE_EVENT_NAME,
+          (state) =>
           setDark(state),
         );
         const currentProps = {...props};
