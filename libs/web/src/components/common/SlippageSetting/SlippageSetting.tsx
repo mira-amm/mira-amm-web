@@ -1,17 +1,19 @@
 import SettingsIcon from "../../icons/SettingsIcon";
 import IconButton from "../IconButton/IconButton";
-import styles from "./SlippageSetting.module.css";
 
-type Props = {
+export function SlippageSetting({ slippage, openSettingsModal }: {
   slippage: number;
   openSettingsModal: () => void;
-};
-
-export const SlippageSetting = ({slippage, openSettingsModal}: Props) => {
+}){
   return (
     <>
-      <p className={styles.slippageLabel}>{slippage / 100}% slippage</p>
-      <IconButton onClick={openSettingsModal} className={styles.settingsButton}>
+      <p className="px-2 py-1 text-[13px] leading-4 font-normal rounded-lg bg-[var(--background-grey-light)] text-[var(--content-dimmed-light)]">
+        {slippage / 100}% slippage
+      </p>
+      <IconButton
+        onClick={openSettingsModal}
+        className="hover:text-[var(--content-primary)]"
+      >
         <SettingsIcon />
       </IconButton>
     </>
