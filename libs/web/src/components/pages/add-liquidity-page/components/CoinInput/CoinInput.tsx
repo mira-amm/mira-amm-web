@@ -1,24 +1,10 @@
 import Coin from "@/src/components/common/Coin/Coin";
-import {CoinName, coinsConfig} from "@/src/utils/coinsConfig";
-
-import styles from "./CoinInput.module.css";
-import {clsx} from "clsx";
-import {ChangeEvent, memo, useCallback} from "react";
+import { ChangeEvent, memo, useCallback } from "react";
 import TextButton from "@/src/components/common/TextButton/TextButton";
-import {DefaultLocale, MinEthValueBN} from "@/src/utils/constants";
-import {BN} from "fuels";
+import { MinEthValueBN } from "@/src/utils/constants";
+import { BN } from "fuels";
 import useAssetMetadata from "@/src/hooks/useAssetMetadata";
 import fiatValueFormatter from "@/src/utils/abbreviateNumber";
-
-type Props = {
-  assetId: string | null;
-  value: string;
-  loading: boolean;
-  setAmount: (amount: string) => void;
-  balance: BN;
-  usdRate: number | undefined;
-  onAssetClick?: VoidFunction;
-};
 
 const CoinInput = ({
   assetId,
@@ -28,14 +14,21 @@ const CoinInput = ({
   balance,
   usdRate,
   onAssetClick,
-}: Props) => {
+}: {
+  assetId: string | null;
+  value: string;
+  loading: boolean;
+  setAmount: (amount: string) => void;
+  balance: BN;
+  usdRate: number | undefined;
+  onAssetClick?: VoidFunction;
+}) => {
   const metadata = useAssetMetadata(assetId);
   const balanceValue = balance.formatUnits(metadata.decimals || 0);
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const inputValue = e.target.value.replace(",", ".");
     const re = new RegExp(`^[0-9]*[.]?[0-9]{0,${metadata.decimals || 0}}$`);
-
     if (re.test(inputValue)) {
       setAmount(inputValue);
     }
@@ -51,7 +44,6 @@ const CoinInput = ({
     } else {
       amountStringToSet = balanceValue;
     }
-
     setAmount(amountStringToSet);
   }, [metadata, balance, setAmount]);
 
@@ -62,10 +54,9 @@ const CoinInput = ({
       : null;
 
   return (
-    <div className={styles.coinInput}>
-      <div className={clsx(styles.coinInputLine, styles.leftColumn)}>
+    <div className="min-h-[65px] flex items-center gap-1 p-3 rounded-[10px] bg-background-secondary">
+      <div className="flex flex-col gap-1 items-start flex-1">
         <input
-          className={styles.input}
           type="text"
           inputMode="decimal"
           pattern="^[0-9]*[.,]?[0-9]*$"
@@ -74,21 +65,24 @@ const CoinInput = ({
           value={value}
           disabled={loading}
           onChange={handleChange}
+          className="w-full font-medium text-content-primary text-sm leading-4 bg-transparent border-none disabled:text-content-dimmed-dark lg:text-base lg:leading-[19px]"
         />
         {usdValue !== null && (
-          <p className={clsx(styles.balance, styles.rate)}>{usdValue}</p>
+          <p className="min-h-[16px] text-xs leading-4 text-content-tertiary lg:min-h-[18px] lg:text-sm lg:leading-[18px]">
+            {usdValue}
+          </p>
         )}
       </div>
-      <div className={clsx(styles.coinInputLine, styles.rightColumn)}>
+
+      <div className="flex flex-col gap-1 items-end [&_svg]:w-4 [&_svg]:h-4 [&_img]:w-4 [&_img]:h-4">
         <Coin
           assetId={assetId}
-          className={styles.coinName}
+          className="text-sm leading-4 lg:text-base lg:leading-[19px]"
           onClick={onAssetClick}
         />
         {balance.gt(0) && (
-          <span className={styles.balance}>
-            Balance: {balanceValue}
-            &nbsp;
+          <span className="text-xs leading-4 text-content-tertiary lg:text-sm lg:leading-[18px]">
+            Balance: {balanceValue}&nbsp;
             <TextButton onClick={handleMaxClick}>Max</TextButton>
           </span>
         )}

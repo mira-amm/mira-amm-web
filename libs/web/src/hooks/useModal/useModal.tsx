@@ -1,45 +1,41 @@
-import {ReactNode, ReactPortal, useCallback, useEffect, useState} from "react";
-import {createPortal} from "react-dom";
+import { ReactNode, ReactPortal, useCallback, useEffect, useState } from "react";
+import { createPortal } from "react-dom";
+import { clsx } from "clsx";
 
-import styles from "./Modal.module.css";
-import {clsx} from "clsx";
 import IconButton from "@/src/components/common/IconButton/IconButton";
 import CloseIcon from "@/src/components/icons/CloseIcon";
-import {useScrollLock} from "usehooks-ts";
+import { useScrollLock } from "usehooks-ts";
 
-type ModalProps = {
+type ReturnType = (props: {
   title: string | ReactNode;
   titleClassName?: string;
   children: ReactNode;
   className?: string;
   onClose?: VoidFunction;
-};
+}) => ReactPortal | null;
 
-type ReturnType = (props: ModalProps) => ReactPortal | null;
 
-const useModal = (): [ReturnType, () => void, () => void] => {
+export default function useModal(): [ReturnType, () => void, () => void]{
   const [isOpen, setIsOpen] = useState(false);
-
-  const {lock, unlock} = useScrollLock({autoLock: false});
+  const { lock, unlock } = useScrollLock({ autoLock: false });
 
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
       if (event.key === "Escape") {
         setIsOpen(false);
+        unlock();
       }
     };
 
     window.addEventListener("keydown", handleKeyDown);
-
-    return () => {
-      window.removeEventListener("keydown", handleKeyDown);
-    };
-  }, []);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [unlock]);
 
   const openModal = useCallback(() => {
     setIsOpen(true);
     lock();
   }, [lock]);
+
   const closeModal = useCallback(() => {
     setIsOpen(false);
     unlock();
@@ -51,29 +47,39 @@ const useModal = (): [ReturnType, () => void, () => void] => {
     children,
     className,
     onClose,
-  }: ModalProps) =>
+  }: {
+  title: string | ReactNode;
+  titleClassName?: string;
+  children: ReactNode;
+  className?: string;
+  onClose?: VoidFunction;
+  }) =>
     isOpen
       ? createPortal(
           <>
+            {/* Backdrop */}
             <div
-              className={styles.modalBackdrop}
+              className="fixed inset-0 bg-black/35 backdrop-blur-sm z-10"
               onClick={() => {
-                if (onClose) {
-                  onClose();
-                }
+                if (onClose) onClose();
                 closeModal();
               }}
             />
-            <div className={clsx(styles.modalWindow, className)}>
-              <div className={styles.modalHeading}>
-                <div className={clsx(styles.modalTitle, titleClassName)}>
-                  {title}
-                </div>
+            {/* Modal Window */}
+            <div
+              className={clsx(
+                "fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-20",
+                "flex flex-col gap-4 p-4 bg-[#262834] rounded-[12px] w-[90%] max-h-[80%] overflow-auto",
+                "lg:max-w-[460px]",
+                className
+              )}
+            >
+              {/* Header */}
+              <div className="flex justify-between items-center font-medium text-[18px] leading-[22px] lg:text-[20px] lg:leading-[24px]">
+                <div className={clsx("flex-1", titleClassName)}>{title}</div>
                 <IconButton
                   onClick={() => {
-                    if (onClose) {
-                      onClose();
-                    }
+                    if (onClose) onClose();
                     closeModal();
                   }}
                 >
@@ -83,11 +89,9 @@ const useModal = (): [ReturnType, () => void, () => void] => {
               {children}
             </div>
           </>,
-          document.body,
+          document.body
         )
       : null;
 
   return [Modal, openModal, closeModal];
-};
-
-export default useModal;
+}

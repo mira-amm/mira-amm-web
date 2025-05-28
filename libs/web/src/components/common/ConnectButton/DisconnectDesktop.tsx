@@ -1,21 +1,14 @@
-import {useAccount, useDisconnect, useIsConnected} from "@fuels/react";
-import {clsx} from "clsx";
+import { useAccount, useDisconnect, useIsConnected } from "@fuels/react";
+import { clsx } from "clsx";
+import { memo } from "react";
 
-import useFormattedAddress from "@/src/hooks/useFormattedAddress/useFormattedAddress";
-import ActionButton from "@/src/components/common/ActionButton/ActionButton";
+import useFormattedAddress from "@/src/hooks/useformattedaddress/useformattedaddress";
+import ActionButton from "@/src/components/common/actionbutton/actionbutton";
 
-import styles from "./ConnectButton.module.css";
-import {memo} from "react";
-
-type Props = {
-  className?: string;
-};
-
-const DisconnectDesktop = ({className}: Props) => {
-  const {isConnected} = useIsConnected();
-  const {account} = useAccount();
-  const {disconnect} = useDisconnect();
-
+const DisconnectDesktop = ({ className }: { className?: string }) => {
+  const { isConnected } = useIsConnected();
+  const { account } = useAccount();
+  const { disconnect } = useDisconnect();
   const formattedAddress = useFormattedAddress(account);
 
   if (!isConnected) {
@@ -24,13 +17,23 @@ const DisconnectDesktop = ({className}: Props) => {
 
   return (
     <ActionButton
-      className={clsx(className, styles.connected)}
+      className={clsx(
+        className,
+        "flex items-center gap-[10px] px-2 py-4 text-content-primary border border-accent-primary bg-transparent shadow-none hover:shadow-none active:bg-transparent"
+      )}
       onClick={disconnect}
     >
-      {isConnected && <img src="/images/avatar.png" width="24" height="24" />}
+      <img src="/images/avatar.png" width="24" height="24" />
       {formattedAddress}
       {isConnected && (
-        <span className={styles.disconnectLabel}>Disconnect</span>
+        <span className={clsx(
+          "rounded-[20px] font-medium text-[10px] leading-[14px] text-background-primary bg-accent-primary",
+          "opacity-0 max-w-0 p-0 ml-0",
+          "transition-[opacity,max-width,padding,margin-left] duration-500",
+          "group-hover:opacity-100 group-hover:max-w-[200px] group-hover:px-2 group-hover:py-[3px] group-hover:ml-1"
+        )}>
+          disconnect
+        </span>
       )}
     </ActionButton>
   );
