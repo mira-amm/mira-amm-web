@@ -1,9 +1,9 @@
 import {useMemo} from "react";
 import {ReadonlyMiraAmm} from "mira-dex-ts";
-import useProvider from "@/src/hooks/useProvider/useProvider";
+import { useProvider } from "@/src/hooks";
 import {DEFAULT_AMM_CONTRACT_ID} from "@/src/utils/constants";
 
-const useReadonlyMira = () => {
+export function useReadonlyMira() {
   const provider = useProvider();
 
   return useMemo(() => {
@@ -12,5 +12,3 @@ const useReadonlyMira = () => {
     }
   }, [provider]);
 };
-
-export default useReadonlyMira;

@@ -1,4 +1,4 @@
-import useAssetMetadata from "@/src/hooks/useAssetMetadata";
+import { useAssetMetadata } from "@/src/hooks";
 import {B256Address, formatUnits} from "fuels";
 import {buildPoolId} from "mira-dex-ts";
 import styles from "./DesktopPosition.module.css";

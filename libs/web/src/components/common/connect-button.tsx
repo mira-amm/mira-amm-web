@@ -5,7 +5,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
 import {ActionButton, DropDownMenu, CopyNotification } from "@/src/components/common";
 import TransactionsHistory from "@/src/components/common/TransactionsHistory/TransactionsHistory";
-import useFormattedAddress from "@/src/hooks/useFormattedAddress/useFormattedAddress";
+import { useFormattedAddress } from "@/src/hooks";
 import useWeb3React from "@/src/hooks/useWeb3Connection";
 import { openNewTab } from "@/src/utils/common";
 import { FuelAppUrl } from "@/src/utils/constants";

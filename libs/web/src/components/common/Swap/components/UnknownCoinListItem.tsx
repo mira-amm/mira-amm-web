@@ -1,4 +1,4 @@
-import useAssetMetadata from "@/src/hooks/useAssetMetadata";
+import { useAssetMetadata } from "@/src/hooks";
 import CoinListItem from "./CoinListItem/CoinListItem";
 import {CoinQuantity} from "fuels";
 import styles from "./CoinsListModal/CoinsListModal.module.css";

@@ -1,5 +1,5 @@
 import { useAccount, useDisconnect, useIsConnected } from "@fuels/react";
-import useFormattedAddress from "@/src/hooks/useFormattedAddress/useFormattedAddress";
+import { useFormattedAddress } from "@/src/hooks";
 import {CopyNotification, ActionButton, DropDownMenu} from "@/src/components/common";
 import { clsx } from "clsx";
 import { useCallback, useState, useEffect, useMemo, useRef } from "react";

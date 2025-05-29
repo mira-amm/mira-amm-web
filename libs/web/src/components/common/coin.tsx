@@ -1,6 +1,6 @@
 import { clsx } from "clsx";
 import { ChevronDownIcon } from "@/meshwave-ui/icons";
-import useAssetMetadata from "@/src/hooks/useAssetMetadata";
+import { useAssetMetadata } from "@/src/hooks";
 import { useAssetImage } from "@/src/hooks/useAssetImage";
 
 export function Coin({ assetId, className, onClick }: {

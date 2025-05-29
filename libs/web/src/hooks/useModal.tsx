@@ -1,3 +1,5 @@
+"use client"
+
 import { ReactNode, ReactPortal, useCallback, useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import { clsx } from "clsx";
@@ -15,7 +17,7 @@ type ReturnType = (props: {
 }) => ReactPortal | null;
 
 
-export default function useModal(): [ReturnType, () => void, () => void]{
+export function useModal(): [ReturnType, () => void, () => void]{
   const [isOpen, setIsOpen] = useState(false);
   const { lock, unlock } = useScrollLock({ autoLock: false });
 

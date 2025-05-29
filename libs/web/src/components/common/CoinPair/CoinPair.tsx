@@ -3,7 +3,7 @@ import {clsx} from "clsx";
 import {memo} from "react";
 import {useAssetImage} from "@/src/hooks/useAssetImage";
 import {B256Address} from "fuels";
-import useAssetMetadata from "@/src/hooks/useAssetMetadata";
+import { useAssetMetadata } from "@/src/hooks";
 
 type Props = {
   firstCoin: B256Address;

@@ -1,5 +1,5 @@
 import defaultImage from "@/assets/unknown-asset.svg";
-import useFormattedAddress from "@/src/hooks/useFormattedAddress/useFormattedAddress";
+import { useFormattedAddress } from "@/src/hooks";
 import useWalletTransactions from "@/src/hooks/useWalletTransactions";
 import {FuelAppUrl} from "@/src/utils/constants";
 import {useAccount, useIsConnected} from "@fuels/react";

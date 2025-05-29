@@ -3,7 +3,7 @@ import CoinPair from "@/src/components/common/CoinPair/CoinPair";
 import CoinInput from "@/src/components/pages/add-liquidity-page/components/CoinInput/CoinInput";
 import {clsx} from "clsx";
 import {Info, ActionButton, TransactionFailureModal} from "@/src/components/common";
-import useBalances from "@/src/hooks/useBalances/useBalances";
+import { useBalances } from "@/src/hooks";
 import useAssetBalance from "@/src/hooks/useAssetBalance";
 import {useConnectUI, useIsConnected} from "@fuels/react";
 import usePreviewAddLiquidity from "@/src/hooks/usePreviewAddLiquidity";
@@ -15,7 +15,7 @@ import {
   useState,
 } from "react";
 import {useDebounceCallback} from "usehooks-ts";
-import useCheckEthBalance from "@/src/hooks/useCheckEthBalance/useCheckEthBalance";
+import { useCheckEthBalance } from "@/src/hooks";
 import useFaucetLink from "@/src/hooks/useFaucetLink";
 import {openNewTab} from "@/src/utils/common";
 import useCheckActiveNetwork from "@/src/hooks/useCheckActiveNetwork";
@@ -28,10 +28,10 @@ import {
   StablePoolTooltip,
   VolatilePoolTooltip,
 } from "@/src/components/pages/add-liquidity-page/components/AddLiquidity/addLiquidityTooltips";
-import useModal from "@/src/hooks/useModal/useModal";
+import { useModal } from "@/src/hooks";
 import {BN, bn} from "fuels";
 import usePoolsMetadata from "@/src/hooks/usePoolsMetadata";
-import useAssetMetadata from "@/src/hooks/useAssetMetadata";
+import { useAssetMetadata } from "@/src/hooks";
 import {useAssetPrice} from "@/src/hooks/useAssetPrice";
 import AprBadge from "@/src/components/common/AprBadge/AprBadge";
 import usePoolNameAndMatch from "@/src/hooks/usePoolNameAndMatch";

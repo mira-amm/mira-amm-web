@@ -14,7 +14,7 @@ import {
   useState,
 } from "react";
 import {useDebounceCallback} from "usehooks-ts";
-import useAssetMetadata from "@/src/hooks/useAssetMetadata";
+import { useAssetMetadata } from "@/src/hooks";
 import {B256Address} from "fuels";
 import LoaderV2 from "@/src/components/common/LoaderV2/LoaderV2";
 

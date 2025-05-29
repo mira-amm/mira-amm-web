@@ -1,5 +1,5 @@
-import useBalances from "@/src/hooks/useBalances/useBalances";
-import useReadonlyMira from "@/src/hooks/useReadonlyMira";
+import { useBalances } from "@/src/hooks";
+import { useReadonlyMira } from "@/src/hooks";
 import {useQuery} from "@tanstack/react-query";
 import request, {gql} from "graphql-request";
 import {Asset, PoolId} from "mira-dex-ts";

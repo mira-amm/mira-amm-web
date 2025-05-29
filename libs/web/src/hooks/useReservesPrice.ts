@@ -1,9 +1,9 @@
-import useReadonlyMira from "@/src/hooks/useReadonlyMira";
+import { useReadonlyMira } from "@/src/hooks";
 import {CoinName, coinsConfig} from "@/src/utils/coinsConfig";
 import {PoolId} from "mira-dex-ts";
 import {useQuery} from "@tanstack/react-query";
 import {B256Address} from "fuels";
-import useAssetMetadata from "./useAssetMetadata";
+import { useAssetMetadata } from "./useAssetMetadata";
 
 type Props = {
   pools: PoolId[] | undefined;

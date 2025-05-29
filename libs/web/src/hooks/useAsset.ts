@@ -1,5 +1,5 @@
 import {CoinData} from "../utils/coinsConfig";
-import useAssetMetadata from "./useAssetMetadata";
+import { useAssetMetadata } from "@/src/hooks";
 
 /**
  * This hook is just a wrapper for useAssestMetadata to return asset as Coindata type.

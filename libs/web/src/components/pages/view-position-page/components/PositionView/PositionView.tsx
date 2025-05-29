@@ -2,7 +2,7 @@
 
 import { BackLink, TransactionFailureModal } from "@/src/components/common";
 import styles from "./PositionView.module.css";
-import useModal from "@/src/hooks/useModal/useModal";
+import { useModal } from "@/src/hooks";
 import RemoveLiquidityModalContent from "@/src/components/pages/view-position-page/components/RemoveLiquidityModalContent/RemoveLiquidityModalContent";
 import usePositionData from "@/src/hooks/usePositionData";
 import {createPoolKey, floorToTwoSignificantDigits} from "@/src/utils/common";
@@ -16,12 +16,12 @@ import useCheckActiveNetwork from "@/src/hooks/useCheckActiveNetwork";
 import usePoolAPR from "@/src/hooks/usePoolAPR";
 
 import {bn, formatUnits} from "fuels";
-import useAssetMetadata from "@/src/hooks/useAssetMetadata";
+import { useAssetMetadata } from "@/src/hooks";
 
 import DesktopPositionView from "./DesktopPositionView/DesktopPositionView";
 import MobilePositionView from "./MobilePositionView/MobilePositionView";
 import {DEFAULT_AMM_CONTRACT_ID, DefaultLocale} from "@/src/utils/constants";
-import useFormattedAddress from "@/src/hooks/useFormattedAddress/useFormattedAddress";
+import { useFormattedAddress } from "@/src/hooks";
 
 type Props = {
   pool: PoolId;

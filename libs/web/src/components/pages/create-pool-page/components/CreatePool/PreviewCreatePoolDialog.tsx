@@ -2,12 +2,12 @@ import styles from "@/src/components/pages/add-liquidity-page/components/AddLiqu
 import CoinPair from "@/src/components/common/CoinPair/CoinPair";
 import { Coin } from "@/src/components/common";
 import {ActionButton}from "@/src/components/common";
-import useModal from "@/src/hooks/useModal/useModal";
+import { useModal } from "@/src/hooks";
 import CreatePoolSuccessModal from "../CreatePoolSuccessModal/CreatePoolSuccessModal";
 import {useRouter} from "next/navigation";
 import {useCallback} from "react";
 import useCreatePool from "@/src/hooks/useCreatePool";
-import useAssetMetadata from "@/src/hooks/useAssetMetadata";
+import { useAssetMetadata } from "@/src/hooks";
 
 type AssetsData = {
   assetId: string;

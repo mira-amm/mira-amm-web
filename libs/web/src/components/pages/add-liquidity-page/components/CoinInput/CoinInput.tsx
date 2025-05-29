@@ -3,7 +3,7 @@ import { ChangeEvent, memo, useCallback } from "react";
 import { TextButton } from "@/src/components/common";
 import { MinEthValueBN } from "@/src/utils/constants";
 import { BN } from "fuels";
-import useAssetMetadata from "@/src/hooks/useAssetMetadata";
+import { useAssetMetadata } from "@/src/hooks";
 import fiatValueFormatter from "@/src/utils/abbreviateNumber";
 
 const CoinInput = ({

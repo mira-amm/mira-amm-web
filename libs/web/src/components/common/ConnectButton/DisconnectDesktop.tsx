@@ -2,7 +2,7 @@ import { useAccount, useDisconnect, useIsConnected } from "@fuels/react";
 import { clsx } from "clsx";
 import { memo } from "react";
 
-import useFormattedAddress from "@/src/hooks/useformattedaddress/useformattedaddress";
+import { useFormattedAddress } from "@/src/hooks";
 import {ActionButton}from "@/src/components/common";
 
 const DisconnectDesktop = ({ className }: { className?: string }) => {

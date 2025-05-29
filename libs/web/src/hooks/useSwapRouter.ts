@@ -1,7 +1,7 @@
 import {useQueries} from "@tanstack/react-query";
 import {type BN, bn} from "fuels";
 import {CoinData} from "../utils/coinsConfig";
-import useReadonlyMira from "./useReadonlyMira";
+import { useReadonlyMira } from ".";
 import useRoutablePools from "./useRoutablePools";
 import {useMemo} from "react";
 import {Route} from "./useGetPoolsWithReserve";

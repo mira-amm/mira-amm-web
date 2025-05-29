@@ -6,7 +6,7 @@ import type {
 } from "@/src/components/common/Swap/Swap";
 import {coinsConfig} from "@/src/utils/coinsConfig";
 import {DefaultLocale} from "@/src/utils/constants";
-import useAssetMetadata from "../useAssetMetadata";
+import { useAssetMetadata } from "@/src/hooks";
 
 export default function useExchangeRate(
   swapState: SwapState,

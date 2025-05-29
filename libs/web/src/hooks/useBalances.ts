@@ -1,7 +1,9 @@
+"use client"
+
 import {useAccount, useWallet} from "@fuels/react";
 import {useQuery} from "@tanstack/react-query";
 
-const useBalances = () => {
+export function useBalances(){
   const {account} = useAccount();
   const {wallet} = useWallet({account});
 
@@ -23,5 +25,3 @@ const useBalances = () => {
     refetchBalances: refetch,
   };
 };
-
-export default useBalances;

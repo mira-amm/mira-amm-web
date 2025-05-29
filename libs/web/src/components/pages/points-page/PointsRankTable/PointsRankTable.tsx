@@ -9,7 +9,7 @@ import {
   useReactTable,
 } from "@tanstack/react-table";
 import styles from "./PointsRankTable.module.css";
-import {usePointsRanks} from "@/src/hooks/usePoints/usePoints";
+import {usePointsRanks} from "@/src/hooks";
 import LoaderV2 from "@/src/components/common/LoaderV2/LoaderV2";
 import { PointsIconSimple } from "@/meshwave-ui/icons";
 import {DefaultLocale} from "@/src/utils/constants";

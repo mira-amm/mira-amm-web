@@ -1,9 +1,11 @@
+"use client"
+
 import {useWallet} from "@fuels/react";
 import {MiraAmm} from "mira-dex-ts";
 import {useMemo} from "react";
 import {DEFAULT_AMM_CONTRACT_ID} from "@/src/utils/constants";
 
-const useMiraDex = () => {
+export function useMiraDex(){
   const {wallet} = useWallet();
 
   return useMemo(() => {
@@ -12,5 +14,3 @@ const useMiraDex = () => {
     }
   }, [wallet]);
 };
-
-export default useMiraDex;

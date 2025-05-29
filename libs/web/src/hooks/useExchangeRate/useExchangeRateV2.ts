@@ -1,7 +1,7 @@
 import {useMemo} from "react";
 
 import {DefaultLocale} from "@/src/utils/constants";
-import useAssetMetadata from "../useAssetMetadata";
+import { useAssetMetadata } from "@/src/hooks";
 
 type Props = {
   firstAssetId: string | null;

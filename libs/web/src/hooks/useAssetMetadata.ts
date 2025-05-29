@@ -13,9 +13,9 @@ interface AssetMetadata {
 
 const providerPromise = new Provider(NetworkUrl);
 
-const useAssetMetadata = (
+export function useAssetMetadata(
   assetId: B256Address | null,
-): AssetMetadata & {isLoading: boolean} => {
+): AssetMetadata & {isLoading: boolean}{
   const {assets} = useAssetList();
 
   const {contractId, isLoading: contractLoading} =
@@ -72,5 +72,3 @@ const useAssetMetadata = (
     ? {...data, isLoading}
     : {name: undefined, symbol: undefined, decimals: undefined, isLoading};
 };
-
-export default useAssetMetadata;

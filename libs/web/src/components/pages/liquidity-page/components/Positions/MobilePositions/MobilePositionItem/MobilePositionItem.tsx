@@ -2,7 +2,7 @@ import CoinPair from "@/src/components/common/CoinPair/CoinPair";
 
 import styles from "./MobilePositionItem.module.css";
 import {formatUnits} from "fuels";
-import useAssetMetadata from "@/src/hooks/useAssetMetadata";
+import { useAssetMetadata } from "@/src/hooks";
 import {Position} from "@/src/hooks/usePositions";
 import usePoolAPR from "@/src/hooks/usePoolAPR";
 import {buildPoolId} from "mira-dex-ts";

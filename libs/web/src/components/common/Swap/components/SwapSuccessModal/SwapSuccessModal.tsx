@@ -4,7 +4,7 @@ import {ActionButton}from "@/src/components/common";
 import { useCallback } from "react";
 import { openNewTab } from "@/src/utils/common";
 import { FuelAppUrl } from "@/src/utils/constants";
-import useAssetMetadata from "@/src/hooks/useAssetMetadata";
+import { useAssetMetadata } from "@/src/hooks";
 
 export default function SwapSuccessModal({ swapState, transactionHash }: {
   swapState: SwapState;

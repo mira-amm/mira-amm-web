@@ -1,17 +1,19 @@
+"use client"
+
 import {useAccount} from "@fuels/react";
 import pointsRewards from "@/src/models/campaigns.json";
 import {EPOCH_NUMBER} from "@/src/utils/constants";
 import {useMemo} from "react";
 import {getRewardsPoolsId} from "@/src/utils/common";
-import {useRewards} from "../useRewards";
+import {useRewards} from "@/src/hooks/useRewards";
 import {useQuery} from "@tanstack/react-query";
 import {PointsResponse} from "@/src/models/points/interfaces";
 
-export const usePoints = (): {
+export function usePoints(): {
   rewardsAmount: number;
   isLoading: boolean;
   error: string | undefined;
-} => {
+}{
   const {account} = useAccount();
 
   // look up the rewards data for the current epoch
@@ -39,7 +41,7 @@ export const usePoints = (): {
   };
 };
 
-export const usePointsRanks = (page: number, pageSize: number) => {
+export function usePointsRanks(page: number, pageSize: number){
   const offset = (page - 1) * pageSize;
 
   return useQuery({

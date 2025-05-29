@@ -1,7 +1,7 @@
 import {useMemo} from "react";
 import {B256Address} from "fuels";
 
-const useFormattedAddress = (address: B256Address | null) => {
+export function useFormattedAddress(address: B256Address | null){
   return useMemo(() => {
     if (!address) {
       return "";
@@ -11,4 +11,3 @@ const useFormattedAddress = (address: B256Address | null) => {
   }, [address]);
 };
 
-export default useFormattedAddress;

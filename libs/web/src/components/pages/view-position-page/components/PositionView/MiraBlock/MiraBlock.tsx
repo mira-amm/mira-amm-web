@@ -6,7 +6,7 @@ import {PoolId, getLPAssetId} from "mira-dex-ts";
 import usePositionData from "@/src/hooks/usePositionData";
 import {formatUnits} from "fuels";
 import {DEFAULT_AMM_CONTRACT_ID} from "@/src/utils/constants";
-import useFormattedAddress from "@/src/hooks/useFormattedAddress/useFormattedAddress";
+import { useFormattedAddress } from "@/src/hooks";
 
 interface MiraBlockProps {
   pool: PoolId;
