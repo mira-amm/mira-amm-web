@@ -23,11 +23,9 @@ import MobilePositionView from "./MobilePositionView/MobilePositionView";
 import {DEFAULT_AMM_CONTRACT_ID, DefaultLocale} from "@/src/utils/constants";
 import { useFormattedAddress } from "@/src/hooks";
 
-type Props = {
+const PositionView = ({pool}: {
   pool: PoolId;
-};
-
-const PositionView = ({pool}: Props) => {
+}) => {
   const [
     RemoveLiquidityModal,
     openRemoveLiquidityModal,
@@ -143,7 +141,7 @@ const PositionView = ({pool}: Props) => {
 
   return (
     <>
-      <BackLink showOnDesktop href="/liquidity" chevron />
+      <BackLink href="/liquidity"/>
       <MobilePositionView
         pool={pool}
         isStablePool={isStablePool}

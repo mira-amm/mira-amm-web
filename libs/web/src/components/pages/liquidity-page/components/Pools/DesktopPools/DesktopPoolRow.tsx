@@ -1,25 +1,21 @@
-import {usePoolDetails} from "../usePoolDetails";
+import { usePoolDetails } from "../usePoolDetails";
 import CoinPair from "@/src/components/common/CoinPair/CoinPair";
-import {ActionButton}from "@/src/components/common";
+import { ActionButton } from "@/src/components/common";
 import Link from "next/link";
 import styles from "./DesktopPools.module.css";
 import clsx from "clsx";
-import {PoolData} from "@/src/hooks/usePoolsData";
+import { PoolData } from "@/src/hooks/usePoolsData";
 import AprBadge from "@/src/components/common/AprBadge/AprBadge";
 import usePoolNameAndMatch from "@/src/hooks/usePoolNameAndMatch";
 
-type Props = {
+const DesktopPoolRow = ({ poolData }: {
   poolData: PoolData;
-};
-
-const DesktopPoolRow = ({poolData}: Props) => {
-  const {poolKey, aprValue, volumeValue, tvlValue, isStablePool, poolId} =
+}) => {
+  const { poolKey, aprValue, volumeValue, tvlValue, isStablePool, poolId } =
     usePoolDetails(poolData);
 
   const tvlActual = parseInt(tvlValue?.replace(/[^0-9]+/g, ""), 10);
-
-  //Checks if the pool with rewards matches the current pool
-  const {isMatching} = usePoolNameAndMatch(poolKey);
+  const { isMatching } = usePoolNameAndMatch(poolKey);
 
   return (
     <tr key={poolKey}>
@@ -31,19 +27,22 @@ const DesktopPoolRow = ({poolData}: Props) => {
           withPoolDescription
         />
       </td>
-      {isMatching ? (
-        <div className={styles.aprTd}>
+
+      <td className={clsx(styles.aprTd, !isMatching && !aprValue && styles.pending)}>
+        {isMatching ? (
           <AprBadge
             aprValue={aprValue}
             poolKey={poolKey}
             tvlValue={tvlActual}
           />
-        </div>
-      ) : (
-        <td className={clsx(!aprValue && styles.pending)}>{aprValue}</td>
-      )}
+        ) : (
+          aprValue
+        )}
+      </td>
+
       <td>{volumeValue}</td>
       <td>{tvlValue}</td>
+
       <td>
         <Link href={`/liquidity/add?pool=${poolKey}`}>
           <ActionButton

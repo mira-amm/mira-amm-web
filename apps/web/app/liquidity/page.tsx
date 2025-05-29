@@ -13,7 +13,6 @@ import {
 export default function Page() {
   return (
     <>
-      <BackLink />
       <Boosts />
       <Positions />
       <Pools />
