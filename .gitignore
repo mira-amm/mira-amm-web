@@ -23,6 +23,7 @@ libs/api/documentation
 **/.env
 **/.env.sentry-build-plugin
 **/.vercel
+**/.netlify
 **/.drizzle
 
 #====================================================

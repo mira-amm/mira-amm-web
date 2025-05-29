@@ -1,6 +1,4 @@
 import type { Route } from './+types/home';
-import { HomeLayout } from 'fumadocs-ui/layouts/home';
-import { baseOptions } from '../root';
 import {TerminalHeader} from "@/shared/ui/Terminal/TerminalHeader"
 import { userFlowActor } from '@/engine/actors/user';
 import { Outlet } from "react-router";
@@ -19,8 +17,7 @@ if (typeof window !== 'undefined') {
 }
 
   return (
-    <HomeLayout {...baseOptions} >
-      <div className="flex dark:bg-black h-screen -mt-15 justify-center items-center text-terminal-green font-['VT323',monospace]">
+      <div className="flex dark:bg-black h-screen justify-center items-center text-terminal-green font-['VT323',monospace]">
       <div className="relative w-full max-w-7xl h-[calc(100vh-20rem)] bg-terminal-bg rounded-md border border-terminal-text/30 overflow-hidden shadow-[0_35px_35px_rgba(27,254,174,0.15)] ">
         <TerminalHeader/>
         <div className="scanlines relative h-[calc(100%-2rem)] overflow-hidden">
@@ -31,6 +28,5 @@ if (typeof window !== 'undefined') {
         </div>
       </div>
       </div>
-    </HomeLayout>
   );
 }

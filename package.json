@@ -4,8 +4,8 @@
   "version": "0.3.1",
   "type": "module",
   "scripts": {
-    "clean": "nx destroy db; pnpm nx reset; # 🧽 Remove any and all files listed in .gitignore except .env and data",
-    "nuke": "nx destroy db; sudo git clean -fdX; # 🚨 WARNING: REMOVE ANY AND ALL FILES LISTED IN .gitignore INCLUDING .env and data",
+    "clean": "nx destroy db; git clean -fdX -e '!**/.env*'; # 🧽 Remove any and all files listed in .gitignore except .env",
+    "nuke": "nx destroy db; sudo git clean -fdX; # 🚨 WARNING: REMOVE ANY AND ALL FILES LISTED IN .gitignore INCLUDING .env",
     "ri": "pnpm clean; pnpm i; pnpm d; # 🧹 Perform a clean install",
     "d": "nx shell microdoctor # 💊 Get a check-up from Microdoctor",
     "storybook": "nx storybook design -p $STORYBOOK_DEV_SERVER_PORT # 🎨 Design System - Storybook",
@@ -105,6 +105,7 @@
     "zustand": "^5.0.5"
   },
   "devDependencies": {
+    "@netlify/vite-plugin-react-router": "^1.0.1",
     "@antfu/eslint-config": "^4.13.2",
     "@babel/core": "^7.27.3",
     "@babel/preset-react": "^7.26.3",
