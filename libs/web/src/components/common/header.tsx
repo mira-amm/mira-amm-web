@@ -5,7 +5,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { clsx } from "clsx";
 
-import { ConnectButton, LaunchAppButton, Logo, MobileMenu, TestnetLabel } from "@/src/components/common";
+import { ConnectButton, Logo, MobileMenu, MainnetLabel } from "@/src/components/common";
 import DisconnectMobile from "@/src/components/common/ConnectButton/DisconnectMobile";
 import { useIsConnected } from "@fuels/react";
 
@@ -102,30 +102,10 @@ export function Header( isHomePage?: boolean) {
         </div>
 
         <div className="hidden lg:flex items-center gap-6">
-          {isHomePage ? (
-            <>
-              <a href="https://docs.mira.ly" target="_blank" className="hover:text-[var(--content-dimmed-light)] transition">
-                Docs
-              </a>
-              <a href={BlogLink} target="_blank" className="hover:text-[var(--content-dimmed-light)] transition">
-                Blog
-              </a>
-            </>
-          ) : (
-            <TestnetLabel />
-          )}
-
-          {isHomePage ? (
+            <MainnetLabel />
             <div className="flex items-center gap-6">
-              {isConnected ? (
                 <ConnectButton className="min-w-[158px] h-10 text-base leading-6" />
-              ) : (
-                <LaunchAppButton className="min-w-[158px] h-10 text-base leading-6" />
-              )}
             </div>
-          ) : (
-            <ConnectButton className="min-w-[158px] h-10 text-base leading-6" />
-          )}
         </div>
       </section>
     </header>
