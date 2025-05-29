@@ -8,7 +8,7 @@ import {
 } from "@/src/utils/constants";
 import { PointsIcon } from "@/meshwave-ui/icons";
 
-const BoostsBanner = () => {
+export function BoostsBanner(){
   return (
     <div className={styles.banner}>
       <PointsIcon />
@@ -24,5 +24,3 @@ const BoostsBanner = () => {
     </div>
   );
 };
-
-export default BoostsBanner;

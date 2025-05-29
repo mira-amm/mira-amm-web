@@ -2,10 +2,10 @@
 
 import {useIsConnected} from "@fuels/react";
 import styles from "./Boosts.module.css";
-import BoostsBanner from "./BoostsBanner/BoostsBanner";
-import BoostsRewards from "./BoostsRewards/BoostsRewards";
+import { BoostsBanner } from "./BoostsBanner/BoostsBanner";
+import { BoostsRewards } from "./BoostsRewards/BoostsRewards";
 
-const Boosts = () => {
+export function Boosts(){
   const {isConnected, isPending: isConnecting} = useIsConnected();
 
   return (
@@ -14,5 +14,3 @@ const Boosts = () => {
     </section>
   );
 };
-
-export default Boosts;

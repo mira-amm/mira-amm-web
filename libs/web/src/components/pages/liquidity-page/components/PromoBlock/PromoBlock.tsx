@@ -1,13 +1,11 @@
 import { ReactNode } from "react";
 
-type Props = {
+export default function PromoBlock({ icon, title, link, linkText }: {
   icon: ReactNode;
   title: string;
   link: string;
   linkText: string;
-};
-
-export default function PromoBlock({ icon, title, link, linkText }: Props) {
+}) {
   return (
     <a
       href={link}

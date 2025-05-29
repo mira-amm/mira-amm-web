@@ -1,5 +1,4 @@
 import styles from "./DesktopPools.module.css";
-import {useRouter} from "next/navigation";
 import {clsx} from "clsx";
 import {PoolData} from "@/src/hooks/usePoolsData";
 import DesktopPoolRow from "./DesktopPoolRow";
@@ -7,14 +6,11 @@ import {ActionButton}from "@/src/components/common";
 import Link from "next/link";
 import SortableColumn from "@/src/components/common/SortableColumn/SortableColumn";
 
-type Props = {
+export function DesktopPools({poolsData, orderBy, handleSort}: {
   poolsData: PoolData[] | undefined;
   orderBy: string;
   handleSort: (key: string) => void;
-};
-
-const DesktopPools = ({poolsData, orderBy, handleSort}: Props) => {
-  const router = useRouter();
+}){
 
   if (!poolsData) {
     return null;
@@ -64,5 +60,3 @@ const DesktopPools = ({poolsData, orderBy, handleSort}: Props) => {
     </table>
   );
 };
-
-export default DesktopPools;

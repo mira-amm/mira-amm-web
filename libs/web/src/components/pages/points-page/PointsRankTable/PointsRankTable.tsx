@@ -14,14 +14,6 @@ import LoaderV2 from "@/src/components/common/LoaderV2/LoaderV2";
 import { PointsIconSimple } from "@/meshwave-ui/icons";
 import {DefaultLocale} from "@/src/utils/constants";
 
-// Define the data type for our table
-type PointsRankData = {
-  rank: number;
-  address: string;
-  points: number;
-};
-
-// Add this helper function inside the component or outside as a utility
 const truncateAddress = (address: string) => {
   if (!address) return "";
   if (address.length <= 10) return address;
@@ -29,21 +21,21 @@ const truncateAddress = (address: string) => {
 };
 
 export default function PointsRankTable() {
-  // State for pagination
   const [pagination, setPagination] = useState({
-    pageIndex: 0, // 0-based index
+    pageIndex: 0,
     pageSize: 50,
   });
 
-  // Calculate API parameters from pagination state
-  const page = pagination.pageIndex + 1; // Convert to 1-based index for API
+  const page = pagination.pageIndex + 1;
   const pageSize = pagination.pageSize;
 
-  // Fetch data with pagination parameters
   const {data: response, isLoading, error} = usePointsRanks(page, pageSize);
 
-  // Column definitions
-  const columnHelper = createColumnHelper<PointsRankData>();
+  const columnHelper = createColumnHelper<{
+  rank: number;
+  address: string;
+  points: number;
+  }>();
 
   const columns = [
     columnHelper.accessor("rank", {
@@ -79,7 +71,6 @@ export default function PointsRankTable() {
     }),
   ];
 
-  // Create the table instance
   const table = useReactTable({
     data: response?.data || [],
     columns,

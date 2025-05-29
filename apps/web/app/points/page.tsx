@@ -1,7 +1,7 @@
-import Boosts from "@/src/components/pages/liquidity-page/components/Boosts/Boosts";
+import { Boosts } from "@/src/components/pages/liquidity-page/components/Boosts/Boosts";
 import PointsRankTable from "@/src/components/pages/points-page/PointsRankTable/PointsRankTable";
 
-export default function PointsPage() {
+export default function Page() {
   return (
     <main className="flex flex-col w-full max-w-6xl p-8 mx-auto space-y-4">
       <Boosts />

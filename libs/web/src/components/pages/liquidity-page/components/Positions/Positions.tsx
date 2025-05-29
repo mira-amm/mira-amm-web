@@ -1,3 +1,5 @@
+"use client"
+
 import MobilePositions from "@/src/components/pages/liquidity-page/components/Positions/MobilePositions/MobilePositions";
 import DesktopPositions from "@/src/components/pages/liquidity-page/components/Positions/MobilePositions/DesktopPositions/DesktopPositions";
 import {useIsConnected} from "@fuels/react";
@@ -6,7 +8,7 @@ import PositionsLoader from "./PositionsLoader/PositionsLoader";
 import { DocumentIcon } from "@/meshwave-ui/icons";
 import {POSITIONS_SKELTON_COUNT} from "@/src/utils/constants";
 
-export default function Positions() {
+export function Positions() {
   const {isConnected} = useIsConnected();
   const {data, isLoading} = usePositions();
 

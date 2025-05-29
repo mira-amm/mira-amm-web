@@ -1,3 +1,5 @@
+"use client"
+
 import MobilePositionItem from "@/src/components/pages/liquidity-page/components/Positions/MobilePositions/MobilePositionItem/MobilePositionItem";
 
 import styles from "./MobilePositions.module.css";

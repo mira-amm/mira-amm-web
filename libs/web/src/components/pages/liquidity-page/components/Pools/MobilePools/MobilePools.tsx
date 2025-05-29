@@ -6,13 +6,11 @@ import {clsx} from "clsx";
 import {PoolData} from "@/src/hooks/usePoolsData";
 import SortableColumn from "@/src/components/common/SortableColumn/SortableColumn";
 
-type Props = {
+export function MobilePools({poolsData, orderBy, handleSort}: {
   poolsData: PoolData[] | undefined;
   orderBy: string;
   handleSort: (key: string) => void;
-};
-
-const MobilePools = ({poolsData, orderBy, handleSort}: Props) => {
+}){
   if (!poolsData) {
     return null;
   }
@@ -57,5 +55,3 @@ const MobilePools = ({poolsData, orderBy, handleSort}: Props) => {
     </div>
   );
 };
-
-export default MobilePools;

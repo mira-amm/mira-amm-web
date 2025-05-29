@@ -11,7 +11,8 @@ import { Loader } from "@/src/components/common";
 import {usePointsRank} from "@/src/hooks";
 import pointsStyles from "@/src/components/pages/points-page/PointsStyles.module.css";
 import { PointsIcon } from "@/meshwave-ui/icons";
-const BoostsRewards = () => {
+
+export function BoostsRewards(){
   const {data: pointsRankArray, isLoading, error} = usePointsRank();
 
   if (error) {
@@ -92,5 +93,3 @@ const BoostsRewards = () => {
     </div>
   );
 };
-
-export default BoostsRewards;

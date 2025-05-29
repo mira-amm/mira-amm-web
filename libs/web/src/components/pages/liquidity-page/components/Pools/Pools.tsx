@@ -1,8 +1,10 @@
-import {useCallback, useEffect, useState} from "react";
-import {useRouter} from "next/navigation";
+"use client"
 
-import MobilePools from "@/src/components/pages/liquidity-page/components/Pools/MobilePools/MobilePools";
-import DesktopPools from "@/src/components/pages/liquidity-page/components/Pools/DesktopPools/DesktopPools";
+import {useCallback, useEffect, useState} from "react";
+
+import { MobilePools } from "@/src/components/pages/liquidity-page/components/Pools/MobilePools/MobilePools";
+import { DesktopPools } from "@/src/components/pages/liquidity-page/components/Pools/DesktopPools/DesktopPools";
+import Link from "next/link";
 import LoaderV2 from "@/src/components/common/LoaderV2/LoaderV2";
 import {ActionButton, SearchBar} from "@/src/components/common";
 import Pagination from "@/src/components/common/Pagination/Pagination";
@@ -12,8 +14,7 @@ import useDebounce from "@/src/hooks/useDebounce";
 import clsx from "clsx";
 import styles from "./Pools.module.css";
 
-const Pools = () => {
-  const router = useRouter();
+export function Pools(){
   const {data, isLoading, moreInfo} = usePoolsData();
 
   const {
@@ -26,29 +27,20 @@ const Pools = () => {
   const [searchInput, setSearchInput] = useState(search || "");
   const debouncedSearchTerm = useDebounce(searchInput, 300);
 
-  // Navigate to "Create Pool" page
-  const handleCreatePoolClick = useCallback(() => {
-    router.push("/liquidity/create-pool");
-  }, [router]);
-
-  // Initialize query variables on component mount
   useEffect(() => {
     setQueryVariables({page: page || DEFAULT_PAGE});
   }, [page, setQueryVariables]);
 
-  // Update search query when debounced value changes
   useEffect(() => {
     if (search !== debouncedSearchTerm) {
       setQueryVariables({search: debouncedSearchTerm, page: DEFAULT_PAGE});
     }
   }, [debouncedSearchTerm, setQueryVariables, search]);
 
-  // Handle search input changes
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchInput(e.target.value);
   };
 
-  // Handle sorting by toggling ASC/DESC
   const handleSort = (key: string) => {
     setQueryVariables(() => {
       const [prevKey, prevDirection] = orderBy.split("_");
@@ -58,22 +50,20 @@ const Pools = () => {
     });
   };
 
-  // Render pagination
   const handlePageChange = (page: number) => setQueryVariables({page: page});
 
   return (
     <section className={styles.pools}>
-      {/* Action Button */}
       <div className={styles.actionButtonDiv}>
+        <Link href="/liquidity/create-pool">
         <ActionButton
           className={clsx("mobileOnly", styles.createButton)}
-          onClick={handleCreatePoolClick}
         >
           Create Pool
         </ActionButton>
+        </Link>
       </div>
 
-      {/* Header with Search Bar */}
       <div className={styles.poolsHeader}>
         <p className={styles.poolsTitle}>All Pools</p>
         <SearchBar
@@ -84,7 +74,6 @@ const Pools = () => {
         />
       </div>
 
-      {/* Pools List (Mobile and Desktop) */}
       <MobilePools poolsData={data} orderBy={orderBy} handleSort={handleSort} />
       <DesktopPools
         poolsData={data}
@@ -92,7 +81,6 @@ const Pools = () => {
         handleSort={handleSort}
       />
 
-      {/* Loading State */}
       {isLoading && (
         <div className={styles.loadingFallback}>
           <LoaderV2 />
@@ -100,7 +88,6 @@ const Pools = () => {
         </div>
       )}
 
-      {/* Pagination */}
       {data && data.length > 0 && (
         <div className={styles.pagination}>
           <p className={clsx("desktopOnly")}>
@@ -116,5 +103,3 @@ const Pools = () => {
     </section>
   );
 };
-
-export default Pools;
