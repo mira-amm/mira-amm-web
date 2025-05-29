@@ -2,7 +2,7 @@
 
 import {useConnectUI, useIsConnected} from "@fuels/react";
 import {clsx} from "clsx";
-import { Logo, ConnectButton, ActionButton, IconButton, Loader, SlippageSetting } from "@/src/components/common";
+import { CoinsListModal, SwapSuccessModal, Logo, ConnectButton, ActionButton, IconButton, Loader, SlippageSetting } from "@/src/components/common";
 import {useCallback, useEffect, useMemo, useRef, useState} from "react";
 
 import CurrencyBox from "@/src/components/common/Swap/components/CurrencyBox/CurrencyBox";
@@ -15,14 +15,12 @@ import ExchangeRate from "@/src/components/common/Swap/components/ExchangeRate/E
 import useExchangeRate from "@/src/hooks/useExchangeRate/useExchangeRate";
 import {createPoolKey, openNewTab} from "@/src/utils/common";
 import { useBalances } from "@/src/hooks";
-import CoinsListModal from "@/src/components/common/Swap/components/CoinsListModal/CoinsListModal";
-import SwapSuccessModal from "@/src/components/common/Swap/components/SwapSuccessModal/SwapSuccessModal";
 import SettingsModalContent from "@/src/components/common/Swap/components/SettingsModalContent/SettingsModalContent";
 import { useCheckEthBalance } from "@/src/hooks";
 import useInitialSwapState from "@/src/hooks/useInitialSwapState/useInitialSwapState";
 import useCheckActiveNetwork from "@/src/hooks/useCheckActiveNetwork";
 import usePreview from "@/src/hooks/useSwapPreviewV2";
-import PriceImpact from "@/src/components/common/Swap/components/PriceImpact/PriceImpact";
+import { PriceImpact } from "@/src/components/common/Swap/components/price-impact";
 import {FuelAppUrl} from "@/src/utils/constants";
 import useReservesPrice from "@/src/hooks/useReservesPrice";
 import SwapFailureModal from "@/src/components/common/Swap/components/SwapFailureModal/SwapFailureModal";

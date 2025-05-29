@@ -1,21 +1,18 @@
 import { useAssetMetadata } from "@/src/hooks";
-import CoinListItem from "./CoinListItem/CoinListItem";
 import {CoinQuantity} from "fuels";
 import styles from "./CoinsListModal/CoinsListModal.module.css";
-import SkeletonLoader from "./SkeletonLoader/SkeletonLoader";
+import { SkeletonLoader, CoinListItem } from "@/web/src/components/common";
 import useAsset from "@/src/hooks/useAsset";
 
-interface Props {
-  assetId: string;
-  balance: CoinQuantity | undefined;
-  onClick: () => void;
-}
-
-export default function UnknownCoinListItem({
+export function UnknownCoinListItem({
   assetId,
   balance,
   onClick,
-}: Props) {
+}: {
+  assetId: string;
+  balance: CoinQuantity | undefined;
+  onClick: () => void;
+}) {
   const {asset: metadata, isLoading} = useAsset(assetId);
 
   const assetData = metadata && {

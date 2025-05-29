@@ -18,7 +18,7 @@ import {buildPoolId} from "mira-dex-ts";
 import {StablePoolTooltip, VolatilePoolTooltip} from "./CreatePoolTooltips";
 import usePoolsMetadata from "@/src/hooks/usePoolsMetadata";
 import { useModal } from "@/src/hooks";
-import CoinsListModal from "@/src/components/common/Swap/components/CoinsListModal/CoinsListModal";
+import { CoinsListModal } from "@/src/components/common";
 import {B256Address, BN, bn, formatUnits} from "fuels";
 import { useAssetMetadata } from "@/src/hooks";
 import {useAssetPrice} from "@/src/hooks/useAssetPrice";

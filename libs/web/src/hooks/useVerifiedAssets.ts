@@ -1,5 +1,5 @@
 import {useQuery} from "@tanstack/react-query";
-import {VerifiedAssets} from "../components/common/Swap/components/CoinListItem/checkIfCoinVerified";
+import {VerifiedAssets} from "../utils/checkIfCoinVerified";
 
 export const useVerifiedAssets = () => {
   const {data: verifiedAssetData, isLoading} = useQuery({

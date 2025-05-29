@@ -1,22 +1,16 @@
+import Link from "next/link"
 import { SuccessIcon } from "@/meshwave-ui/icons";
 import { SwapState } from "@/src/components/common/Swap/Swap";
 import {ActionButton}from "@/src/components/common";
-import { useCallback } from "react";
-import { openNewTab } from "@/src/utils/common";
 import { FuelAppUrl } from "@/src/utils/constants";
 import { useAssetMetadata } from "@/src/hooks";
 
-export default function SwapSuccessModal({ swapState, transactionHash }: {
+export function SwapSuccessModal({ swapState, transactionHash }: {
   swapState: SwapState;
   transactionHash: string | undefined;
 }){
   const sellMetadata = useAssetMetadata(swapState.sell.assetId);
   const buyMetadata = useAssetMetadata(swapState.buy.assetId);
-
-  const handleViewTransactionClick = useCallback(() => {
-    if (!transactionHash) return;
-    openNewTab(`${FuelAppUrl}/tx/${transactionHash}/simple`);
-  }, [transactionHash]);
 
   const subText = `${swapState.sell.amount} ${sellMetadata.symbol} for ${swapState.buy.amount} ${buyMetadata.symbol}`;
 
@@ -27,9 +21,11 @@ export default function SwapSuccessModal({ swapState, transactionHash }: {
       <p className="text-[14px] leading-[16px] text-content-dimmed-dark text-center">
         {subText}
       </p>
-      <ActionButton onClick={handleViewTransactionClick} className="w-full">
+      <Link href={`${FuelAppUrl}/tx/${transactionHash}/simple`} target="_blank" className="w-full">
+      <ActionButton className="w-full">
         View transaction
       </ActionButton>
+      </Link>
     </div>
   );
 };

@@ -6,7 +6,7 @@ import {useAccount, useIsConnected} from "@fuels/react";
 import {forwardRef, useMemo} from "react";
 import { CopyAddressIcon, TransactionsCloseIcon } from "@/meshwave-ui/icons";
 import styles from "./TransactionsHistory.module.css";
-import SkeletonLoader from "../Swap/components/SkeletonLoader/SkeletonLoader";
+import { SkeletonLoader } from "@/web/src/components/common";
 
 const TransactionsHistory = forwardRef<
   HTMLDivElement,

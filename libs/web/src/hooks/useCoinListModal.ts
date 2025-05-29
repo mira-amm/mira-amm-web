@@ -3,7 +3,7 @@ import {useAssetList} from "./useAssetList";
 import {useVerifiedAssets} from "./useVerifiedAssets";
 import {CoinDataWithPrice} from "../utils/coinsConfig";
 import {BN, CoinQuantity} from "fuels";
-import {checkIfCoinVerified} from "../components/common/Swap/components/CoinListItem/checkIfCoinVerified";
+import {checkIfCoinVerified} from "../utils/checkIfCoinVerified";
 import {useFetchMultiAssetImages} from "./useAssetImage";
 
 const priorityOrder: string[] = ["ETH", "USDC", "USDT", "FUEL"];

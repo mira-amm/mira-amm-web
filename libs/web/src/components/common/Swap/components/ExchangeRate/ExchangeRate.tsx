@@ -1,35 +1,30 @@
-import {memo, useState} from "react";
-import {CurrencyBoxMode, SwapState} from "@/src/components/common/Swap/Swap";
+import { useState } from "react";
+import { CurrencyBoxMode, SwapState } from "@/src/components/common/Swap/Swap";
 import { ExchangeIcon } from "@/meshwave-ui/icons";
 import useExchangeRate from "@/src/hooks/useExchangeRate/useExchangeRate";
+import { useAnimationStore } from "@/src/stores/useGlitchScavengerHunt";
 
-import styles from "./ExchangeRate.module.css";
-import {useAnimationStore} from "@/src/stores/useGlitchScavengerHunt";
-
-type Props = {
-  swapState: SwapState;
-};
-
-const ExchangeRate = ({swapState}: Props) => {
+function ExchangeRate({ swapState }: { swapState: SwapState }) {
   const [mode, setMode] = useState<CurrencyBoxMode>("sell");
 
   const handleClick = () => {
-    setMode((prevMode) => (prevMode === "sell" ? "buy" : "sell"));
+    setMode((prev) => (prev === "sell" ? "buy" : "sell"));
     useAnimationStore.getState().handleMagicTripleClickCurrency();
   };
 
   const rate = useExchangeRate(swapState, mode);
 
-  if (!rate) {
-    return null;
-  }
+  if (!rate) return null;
 
   return (
-    <button className={styles.exchangeRate} onClick={handleClick}>
+    <button
+      onClick={handleClick}
+      className="w-fit flex items-center gap-[10px] text-xs leading-[18px] text-[var(--content-dimmed-light)] bg-transparent border-none cursor-pointer lg:text-[13px]"
+    >
       {rate}
       <ExchangeIcon />
     </button>
   );
-};
+}
 
-export default memo(ExchangeRate);
+export default ExchangeRate;
