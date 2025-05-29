@@ -74,7 +74,7 @@ export const BoostsLearnMoreUrl =
   "https://mirror.xyz/miraly.eth/X-80QWbrq4f17L67Yy8QyQBdE5y2okxTzcfJIL-SHCQ" as const;
 
 export const LIQUIDITY_PROVIDING_DOC_URL =
-  "https://docs.mira.ly/user-guides/how-to-add-liquidity" as const;
+  "https://docs.mira.ly/users/how-to-add-liquidity" as const;
 
 export const BoostsRewardsTooltip =
   "These are the total Fuel tokens earned that will be distributed at the end of the season. The exact dollar amount will change based on Fuel’s current price. The exact token amount might change.";
@@ -85,7 +85,7 @@ export const boostsEpochTooltip =
 export const RewardsApiUrl = "/api/rewards" as const;
 
 export const boosterBannerTitle =
-  " Introducing Boost Rewards, earn $FUEL by providing liquidity.";
+  "Introducing Boost Rewards, earn $FUEL by providing liquidity.";
 
 export const POINTS_PROMO_TITLE =
   "Introducing Mira Points, earn points by providing liquidity and engaging in activities.";
