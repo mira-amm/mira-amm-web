@@ -1,6 +1,6 @@
 "use client";
 
-import BackLink from "@/src/components/common/BackLink/BackLink";
+import { BackLink, TransactionFailureModal } from "@/src/components/common";
 import styles from "./PositionView.module.css";
 import useModal from "@/src/hooks/useModal/useModal";
 import RemoveLiquidityModalContent from "@/src/components/pages/view-position-page/components/RemoveLiquidityModalContent/RemoveLiquidityModalContent";
@@ -14,7 +14,6 @@ import {getLPAssetId, PoolId} from "mira-dex-ts";
 
 import useCheckActiveNetwork from "@/src/hooks/useCheckActiveNetwork";
 import usePoolAPR from "@/src/hooks/usePoolAPR";
-import TransactionFailureModal from "@/src/components/common/TransactionFailureModal/TransactionFailureModal";
 
 import {bn, formatUnits} from "fuels";
 import useAssetMetadata from "@/src/hooks/useAssetMetadata";

@@ -1,5 +1,4 @@
 import miraLogo from "@/meshwave-ui/src/components/icons/MiraLogo.png";
-import LaunchAppButton from "@/src/components/common/LaunchAppButton/LaunchAppButton";
 import {
   HalbornIcon as Halborn,
   FuelGroup,
@@ -14,15 +13,7 @@ import {
   RoadmapMobileIcon as RoadmapMobile,
 } from "@/meshwave-ui/icons";
 
-import { UsedTechs } from "@/src/components/common/UsedTechs/UsedTechs";
-import { Divider } from "@/src/components/common/Divider/Divider";
-import { DividerText } from "@/src/components/common/DividerText/dividerText";
-import { MainInfo } from "@/src/components/common/MainInfo/MainInfo";
-import { InfoBlocks } from "@/src/components/common/InfoBlocks/InfoBlocks";
-import { StepsBlock } from "@/src/components/common/StepsBlock/StepsBlock";
-import { RoadMapBlock } from "@/src/components/common/RoadMapBlock/RoadMapBlock";
-import { RoadMapIcon } from "@/src/components/common/RoadMapIcons/RoadMapIcon";
-import { StepsIcon } from "@/src/components/common/StepsIcon/StepsIcon";
+import { UsedTechs, LaunchAppButton, Divider, DividerText, MainInfo, InfoBlocks, StepsBlock, RoadMapBlock, RoadMapIcon, StepsIcon } from "@/src/components/common";
 
 import { DiscordLink, XLink } from "@/src/utils/constants";
 import Swap from "@/src/components/common/Swap/Swap";

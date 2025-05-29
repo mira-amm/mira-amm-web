@@ -1,9 +1,9 @@
-import { memo, ReactNode } from "react";
+import { ReactNode } from "react";
 
-const TextButton = ({ children, onClick }: {
+export function TextButton({ children, onClick }: {
   children: ReactNode;
   onClick: VoidFunction;
-}) => {
+}){
   return (
     <button
       onClick={onClick}
@@ -13,5 +13,3 @@ const TextButton = ({ children, onClick }: {
     </button>
   );
 };
-
-export default memo(TextButton);

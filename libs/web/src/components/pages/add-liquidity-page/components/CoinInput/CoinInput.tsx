@@ -1,6 +1,6 @@
-import Coin from "@/src/components/common/Coin/Coin";
+import { Coin } from "@/src/components/common";
 import { ChangeEvent, memo, useCallback } from "react";
-import TextButton from "@/src/components/common/TextButton/TextButton";
+import { TextButton } from "@/src/components/common";
 import { MinEthValueBN } from "@/src/utils/constants";
 import { BN } from "fuels";
 import useAssetMetadata from "@/src/hooks/useAssetMetadata";

@@ -1,7 +1,7 @@
 import { clsx } from "clsx";
 import { forwardRef,  ReactNode, useCallback } from "react";
 
-import Loader from "@/src/components/common/Loader/Loader";
+import { Loader } from "@/src/components/common";
 
 type ButtonType = "button" | "submit" | "reset";
 type ButtonVariant = "primary" | "secondary" | "outlined";

@@ -1,9 +1,9 @@
 "use client";
 
-import { memo, useEffect, useRef } from "react";
+import { useEffect, useRef } from "react";
 import { InfoIcon } from "@/meshwave-ui/icons";
 
-function Info({ tooltipText, tooltipKey, color }: {
+export function Info({ tooltipText, tooltipKey, color }: {
   tooltipText: string;
   tooltipKey: string;
   color?: string;
@@ -61,5 +61,3 @@ function Info({ tooltipText, tooltipKey, color }: {
     </div>
   );
 };
-
-export default memo(Info);

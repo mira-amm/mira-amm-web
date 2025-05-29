@@ -1,5 +1,5 @@
 import React, {useCallback} from "react";
-import IconButton from "@/src/components/common/IconButton/IconButton";
+import { IconButton } from "@/src/components/common";
 import styles from "./MiraBlock.module.css";
 import {CopyIcon, LogoIcon} from "@/meshwave-ui/icons";
 import {PoolId, getLPAssetId} from "mira-dex-ts";

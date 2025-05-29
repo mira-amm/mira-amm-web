@@ -1,6 +1,6 @@
 "use client";
 
-import BackLink from "@/src/components/common/BackLink/BackLink";
+import { BackLink } from "@/src/components/common";
 import Pools from "@/src/components/pages/liquidity-page/components/Pools/Pools";
 import Positions from "@/src/components/pages/liquidity-page/components/Positions/Positions";
 import PromoBlock from "@/src/components/pages/liquidity-page/components/PromoBlock/PromoBlock";

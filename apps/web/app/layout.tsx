@@ -11,7 +11,7 @@ import '@/meshwave-ui/global.css';
 import Providers from "@/src/core/providers/Providers";
 import {useAnimationStore} from "@/src/stores/useGlitchScavengerHunt";
 import GlitchEffects from "@/src/components/common/GlitchEffects/GlitchEffects";
-import Header from "@/src/components/common/Header/Header";
+import { Header } from "@/src/components/common";
 import Footer from "@/src/components/common/Footer/Footer";
 
 type Props = Readonly<{

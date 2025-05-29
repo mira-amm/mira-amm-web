@@ -1,14 +1,13 @@
 import styles from "./BoostsRewards.module.css";
 import Link from "next/link";
-import {ActionButton}from "@/src/components/common";
-import Info from "@/src/components/common/Info/Info";
+import {ActionButton, Info}from "@/src/components/common";
 import {
   POINTS_TOOLTIP,
   POINTS_RANK_TOOLTIP,
   POINTS_LEARN_MORE_URL,
   DefaultLocale,
 } from "@/src/utils/constants";
-import Loader from "@/src/components/common/Loader/Loader";
+import { Loader } from "@/src/components/common";
 import {usePointsRank} from "@/src/hooks/usePoints/usePoints";
 import pointsStyles from "@/src/components/pages/points-page/PointsStyles.module.css";
 import { PointsIcon } from "@/meshwave-ui/icons";

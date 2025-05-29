@@ -3,7 +3,7 @@
 import { clsx } from "clsx";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
-import {ActionButton}from "@/src/components/common";
+import {ActionButton, DropDownMenu, CopyNotification } from "@/src/components/common";
 import TransactionsHistory from "@/src/components/common/TransactionsHistory/TransactionsHistory";
 import useFormattedAddress from "@/src/hooks/useFormattedAddress/useFormattedAddress";
 import useWeb3React from "@/src/hooks/useWeb3Connection";
@@ -11,11 +11,9 @@ import { openNewTab } from "@/src/utils/common";
 import { FuelAppUrl } from "@/src/utils/constants";
 import { DropDownButtons } from "@/src/utils/DropDownButtons";
 import { useScrollLock } from "usehooks-ts";
-import { CopyNotification } from "../../common/CopyNotification/CopyNotification";
 import { ArrowDownIcon, ArrowUpIcon } from "@/meshwave-ui/icons";
-import DropDownMenu from "../DropDownMenu/DropDownMenu";
 
-export default function ConnectButton({ className, isWidget }: { className?: string; isWidget?: boolean }) {
+export function ConnectButton({ className, isWidget }: { className?: string; isWidget?: boolean }) {
   const { account, connect, disconnect, isConnected, isWalletLoading } = useWeb3React();
   const { lock, unlock } = useScrollLock({ autoLock: false });
 

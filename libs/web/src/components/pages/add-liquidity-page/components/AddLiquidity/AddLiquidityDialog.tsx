@@ -2,7 +2,7 @@ import styles from "@/src/components/pages/add-liquidity-page/components/AddLiqu
 import CoinPair from "@/src/components/common/CoinPair/CoinPair";
 import CoinInput from "@/src/components/pages/add-liquidity-page/components/CoinInput/CoinInput";
 import {clsx} from "clsx";
-import {ActionButton}from "@/src/components/common";
+import {Info, ActionButton, TransactionFailureModal} from "@/src/components/common";
 import useBalances from "@/src/hooks/useBalances/useBalances";
 import useAssetBalance from "@/src/hooks/useAssetBalance";
 import {useConnectUI, useIsConnected} from "@fuels/react";
@@ -21,7 +21,6 @@ import {openNewTab} from "@/src/utils/common";
 import useCheckActiveNetwork from "@/src/hooks/useCheckActiveNetwork";
 import usePoolAPR from "@/src/hooks/usePoolAPR";
 import {DefaultLocale, FuelAppUrl} from "@/src/utils/constants";
-import Info from "@/src/components/common/Info/Info";
 import {AddLiquidityPreviewData} from "@/src/components/pages/add-liquidity-page/components/AddLiquidity/PreviewAddLiquidityDialog";
 import {PoolId} from "mira-dex-ts";
 import {
@@ -30,7 +29,6 @@ import {
   VolatilePoolTooltip,
 } from "@/src/components/pages/add-liquidity-page/components/AddLiquidity/addLiquidityTooltips";
 import useModal from "@/src/hooks/useModal/useModal";
-import TransactionFailureModal from "@/src/components/common/TransactionFailureModal/TransactionFailureModal";
 import {BN, bn} from "fuels";
 import usePoolsMetadata from "@/src/hooks/usePoolsMetadata";
 import useAssetMetadata from "@/src/hooks/useAssetMetadata";

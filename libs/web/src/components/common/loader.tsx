@@ -1,12 +1,10 @@
-import styles from "./Loader.module.css";
+import styles from "./loader.module.css";
 import {clsx} from "clsx";
 
-type Props = {
+export function Loader({variant, color}: {
   variant?: "primary" | "secondary" | "outlined";
   color?: "gray"; //Add more color options if required
-};
-
-const Loader = ({variant, color}: Props) => {
+}){
   return (
     <div
       className={clsx(
@@ -17,5 +15,3 @@ const Loader = ({variant, color}: Props) => {
     />
   );
 };
-
-export default Loader;

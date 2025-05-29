@@ -4,9 +4,8 @@ import {useRouter} from "next/navigation";
 import MobilePools from "@/src/components/pages/liquidity-page/components/Pools/MobilePools/MobilePools";
 import DesktopPools from "@/src/components/pages/liquidity-page/components/Pools/DesktopPools/DesktopPools";
 import LoaderV2 from "@/src/components/common/LoaderV2/LoaderV2";
-import {ActionButton}from "@/src/components/common";
+import {ActionButton, SearchBar} from "@/src/components/common";
 import Pagination from "@/src/components/common/Pagination/Pagination";
-import {SearchBar} from "@/src/components/common/SearchBar/SearchBar";
 import usePoolsData, {DEFAULT_PAGE} from "@/src/hooks/usePoolsData";
 import useDebounce from "@/src/hooks/useDebounce";
 

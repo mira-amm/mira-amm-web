@@ -4,12 +4,12 @@ import PreviewAddLiquidityDialog, {
   AddLiquidityPreviewData,
 } from "@/src/components/pages/add-liquidity-page/components/AddLiquidity/PreviewAddLiquidityDialog";
 import AddLiquidityDialog from "@/src/components/pages/add-liquidity-page/components/AddLiquidity/AddLiquidityDialog";
-import BackLink from "@/src/components/common/BackLink/BackLink";
+import { BackLink } from "@/src/components/common";
 import {useRouter} from "next/navigation";
-import IconButton from "@/src/components/common/IconButton/IconButton";
+import { IconButton } from "@/src/components/common";
 import { CloseIcon } from "@/meshwave-ui/icons";
 import {PoolId} from "mira-dex-ts";
-import {SlippageSetting} from "@/src/components/common/SlippageSetting/SlippageSetting";
+import {SlippageSetting} from "@/src/components/common";
 import SettingsModalContent from "@/src/components/common/Swap/components/SettingsModalContent/SettingsModalContent";
 import useModal from "@/src/hooks/useModal/useModal";
 import {

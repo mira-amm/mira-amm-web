@@ -1,4 +1,4 @@
-export default function InfoBlock({ title, value, type }: {
+export function InfoBlock({ title, value, type }: {
   title: string;
   value: string | null;
   type?: "positive" | "negative";

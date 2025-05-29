@@ -2,11 +2,9 @@
 
 import {useConnectUI, useIsConnected} from "@fuels/react";
 import {clsx} from "clsx";
-import Logo from "@/src/components/common/Logo/Logo";
+import { Logo, ConnectButton, ActionButton, IconButton, Loader, SlippageSetting } from "@/src/components/common";
 import {useCallback, useEffect, useMemo, useRef, useState} from "react";
 
-import {ActionButton}from "@/src/components/common";
-import IconButton from "@/src/components/common/IconButton/IconButton";
 import CurrencyBox from "@/src/components/common/Swap/components/CurrencyBox/CurrencyBox";
 import { ConvertIcon } from "@/meshwave-ui/icons";
 import useModal from "@/src/hooks/useModal/useModal";
@@ -40,9 +38,6 @@ import {PoolId} from "mira-dex-ts";
 import {useAssetImage} from "@/src/hooks/useAssetImage";
 import {useAssetPrice} from "@/src/hooks/useAssetPrice";
 import useAssetMetadata from "@/src/hooks/useAssetMetadata";
-import {SlippageSetting} from "../SlippageSetting/SlippageSetting";
-import Loader from "@/src/components/common/Loader/Loader";
-import ConnectButton from "@/src/components/common/ConnectButton/ConnectButton";
 import {TradeState} from "@/src/hooks/useSwapRouter";
 import {useAnimationStore} from "@/src/stores/useGlitchScavengerHunt";
 import {triggerClassAnimation} from "../GlitchEffects/ClassAnimationTrigger";

@@ -3,7 +3,7 @@ import Link from "next/link";
 import { isMobile } from "react-device-detect";
 import { clsx } from "clsx";
 
-export default function BackLink({
+export function BackLink({
   href,
   showOnDesktop,
   title,

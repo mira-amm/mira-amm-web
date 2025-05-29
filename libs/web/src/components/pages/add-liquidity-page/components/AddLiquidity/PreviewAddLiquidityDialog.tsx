@@ -1,13 +1,11 @@
 import styles from "@/src/components/pages/add-liquidity-page/components/AddLiquidity/AddLiquidity.module.css";
 import CoinPair from "@/src/components/common/CoinPair/CoinPair";
-import Coin from "@/src/components/common/Coin/Coin";
-import {ActionButton}from "@/src/components/common";
+import { Coin, TransactionFailureModal, ActionButton } from "@/src/components/common";
 import useAddLiquidity from "@/src/hooks/useAddLiquidity";
 import useModal from "@/src/hooks/useModal/useModal";
 import AddLiquiditySuccessModal from "@/src/components/pages/add-liquidity-page/components/AddLiquiditySuccessModal/AddLiquiditySuccessModal";
 import {useRouter} from "next/navigation";
 import {Dispatch, SetStateAction, useCallback} from "react";
-import TransactionFailureModal from "@/src/components/common/TransactionFailureModal/TransactionFailureModal";
 import {BN} from "fuels";
 import useAssetMetadata from "@/src/hooks/useAssetMetadata";
 

@@ -6,12 +6,12 @@ import {useIsClient, useScrollLock} from "usehooks-ts";
 import {clsx} from "clsx";
 import Link from "next/link";
 
-import Logo from "@/src/components/common/Logo/Logo";
+import { Logo } from "@/src/components/common";
 import { MenuIcon, CloseIcon } from "@/meshwave-ui/icons";
 import {BlogLink, DiscordLink, XLink} from "@/src/utils/constants";
 import useFaucetLink from "@/src/hooks/useFaucetLink";
 
-export default function MobileMenu() {
+export function MobileMenu() {
   const [expanded, setExpanded] = useState(false);
   const {lock, unlock} = useScrollLock({autoLock: false});
   const isClient = useIsClient();

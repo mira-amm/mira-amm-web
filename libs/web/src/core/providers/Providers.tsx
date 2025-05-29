@@ -11,12 +11,8 @@ import {
 import {createSyncStoragePersister} from "@tanstack/query-sync-storage-persister";
 import {ReactQueryDevtools} from "@tanstack/react-query-devtools";
 import FuelProviderWrapper from "@/src/core/providers/FuelProviderWrapper";
-import DisclaimerWrapper from "@/src/core/providers/DisclaimerWrapper";
+import { DisclaimerWrapper } from "@/src/core/providers/DisclaimerWrapper";
 import AssetsConfigProvider from "@/src/core/providers/AssetsConfigProvider";
-
-type Props = {
-  children: ReactNode;
-};
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -40,7 +36,9 @@ const defaultPersistOptions: PersistQueryClientOptions = {
   },
 };
 
-const Providers = ({children}: Props) => {
+const Providers = ({children}: {
+  children: ReactNode;
+}) => {
   const [persistOptions, setPersistOptions] =
     useState<PersistQueryClientOptions>(defaultPersistOptions);
 

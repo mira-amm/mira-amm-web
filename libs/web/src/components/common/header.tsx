@@ -5,10 +5,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { clsx } from "clsx";
 
-import Logo from "@/src/components/common/Logo/Logo";
-import MobileMenu from "@/src/components/common/Header/MobileMenu";
-import ConnectButton from "@/src/components/common/ConnectButton/ConnectButton";
-import LaunchAppButton from "@/src/components/common/LaunchAppButton/LaunchAppButton";
+import { ConnectButton, LaunchAppButton, Logo, MobileMenu, TestnetLabel } from "@/src/components/common";
 import DisconnectMobile from "@/src/components/common/ConnectButton/DisconnectMobile";
 import { useIsConnected } from "@fuels/react";
 
@@ -19,13 +16,12 @@ import {
   POINTS_PROMO_TITLE,
 } from "@/src/utils/constants";
 
-import TestnetLabel from "@/src/components/common/TestnetLabel/TestnetLabel";
-import IconButton from "../IconButton/IconButton";
+import { IconButton } from "@/src/components/common";
 import { CloseIcon, PointsIcon } from "@/meshwave-ui/icons";
 
 const PROMO_BANNER_STORAGE_KEY = "fuel-boost-program-promo-banner-closed";
 
-export default function Header( isHomePage?: boolean) {
+export function Header( isHomePage?: boolean) {
   const pathname = usePathname();
   const { isConnected } = useIsConnected();
   const [isPromoShown, setIsPromoShown] = useState(false);

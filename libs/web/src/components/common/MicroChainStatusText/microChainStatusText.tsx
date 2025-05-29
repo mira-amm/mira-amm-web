@@ -3,7 +3,7 @@
 import {motion, AnimatePresence} from "framer-motion";
 import styles from "./MicroChainStatusText.module.css";
 import {useAnimationStore} from "@/src/stores/useGlitchScavengerHunt";
-import IconButton from "../IconButton/IconButton";
+import { IconButton } from "@/src/components/common";
 import {useEffect, useState} from "react";
 import ScrambleEffect from "../GlitchEffects/ScrambleEffect";
 import GlitchAndScanLines from "../GlitchEffects/GlitchAndScanLines";

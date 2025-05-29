@@ -1,8 +1,8 @@
 import React from "react";
-import CoinWithAmount from "@/src/components/common/CoinWithAmount/CoinWithAmount";
+import { CoinWithAmount } from "@/src/components/common";
 import styles from "./ReserveItem.module.css";
 import {useFormattedReserveValue} from "./useFormattedReserveValue";
-import Loader from "@/src/components/common/Loader/Loader";
+import { Loader } from "@/src/components/common";
 
 interface ReserveItemsProps {
   assetId: string;

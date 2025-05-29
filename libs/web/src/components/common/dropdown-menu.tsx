@@ -1,7 +1,7 @@
 import React, { forwardRef } from "react";
 import clsx from "clsx";
 
- const DropDownMenu = forwardRef<HTMLUListElement, {
+ export const DropDownMenu = forwardRef<HTMLUListElement, {
   buttons: {
     icon: React.FC;
     text: string;
@@ -63,5 +63,3 @@ import clsx from "clsx";
     );
   }
 );
-
-export default DropDownMenu;

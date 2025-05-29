@@ -1,12 +1,12 @@
-import { memo, ReactNode } from "react";
+import { ReactNode } from "react";
 import { clsx } from "clsx";
 
-const IconButton = ({ children, onClick, className, type }: {
+export function IconButton({ children, onClick, className, type }: {
   children: ReactNode;
   onClick: () => void;
   className?: string;
   type?: "button" | "submit" | "reset";
-}) => {
+}){
   return (
     <button
       type={type ?? "button"}
@@ -20,5 +20,3 @@ const IconButton = ({ children, onClick, className, type }: {
     </button>
   );
 };
-
-export default memo(IconButton);

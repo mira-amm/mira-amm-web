@@ -3,7 +3,7 @@ import { ChevronDownIcon } from "@/meshwave-ui/icons";
 import useAssetMetadata from "@/src/hooks/useAssetMetadata";
 import { useAssetImage } from "@/src/hooks/useAssetImage";
 
-export default function Coin({ assetId, className, onClick }: {
+export function Coin({ assetId, className, onClick }: {
   assetId: string | null;
   className?: string;
   onClick?: VoidFunction;

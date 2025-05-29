@@ -1,8 +1,7 @@
-import { memo } from "react";
 import Link from "next/link";
 import { LogoIcon } from "@/meshwave-ui/icons";
 
-function Logo(){
+export function Logo(){
   return (
     <Link
       href="/"
@@ -12,5 +11,3 @@ function Logo(){
     </Link>
   );
 };
-
-export default memo(Logo);

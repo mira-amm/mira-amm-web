@@ -1,6 +1,6 @@
 "use client";
 
-import BackLink from "@/src/components/common/BackLink/BackLink";
+import {BackLink} from "@/src/components/common";
 import Swap from "@/src/components/common/Swap/Swap";
 import {useConnect} from "@fuels/react";
 import {FueletWalletConnector} from "@fuels/connectors";

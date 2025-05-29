@@ -2,7 +2,7 @@ import { ReactNode, ReactPortal, useCallback, useEffect, useState } from "react"
 import { createPortal } from "react-dom";
 import { clsx } from "clsx";
 
-import IconButton from "@/src/components/common/IconButton/IconButton";
+import { IconButton } from "@/src/components/common";
 import { CloseIcon } from "@/meshwave-ui/icons";
 import { useScrollLock } from "usehooks-ts";
 

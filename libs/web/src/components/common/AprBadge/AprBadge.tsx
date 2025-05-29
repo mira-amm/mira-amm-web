@@ -3,7 +3,7 @@ import styles from "./AprBadge.module.css";
 import {clsx} from "clsx";
 import useBoostedApr, {RewardsToken} from "@/src/hooks/useBoostedApr";
 import {isMobile} from "react-device-detect";
-import Loader from "../Loader/Loader";
+import { Loader } from "@/src/components/common";
 import {EPOCH_NUMBER} from "@/src/utils/constants";
 import { PointsIconSimple } from "@/meshwave-ui/icons";
 

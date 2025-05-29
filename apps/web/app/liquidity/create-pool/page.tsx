@@ -3,8 +3,8 @@
 import {useEffect, useRef, useCallback, useState} from "react";
 import {useRouter} from "next/navigation";
 
-import BackLink from "@/src/components/common/BackLink/BackLink";
-import IconButton from "@/src/components/common/IconButton/IconButton";
+import {BackLink} from "@/src/components/common";
+import { IconButton } from "@/src/components/common";
 import {CloseIcon} from "@/meshwave-ui/icons";
 
 import PreviewCreatePoolDialog, {

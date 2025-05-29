@@ -12,7 +12,7 @@ import useCheckEthBalance from "@/src/hooks/useCheckEthBalance/useCheckEthBalanc
 import useFaucetLink from "@/src/hooks/useFaucetLink";
 import {createPoolKey, openNewTab} from "@/src/utils/common";
 import useCheckActiveNetwork from "@/src/hooks/useCheckActiveNetwork";
-import Info from "@/src/components/common/Info/Info";
+import { Info } from "@/src/components/common";
 import {CreatePoolPreviewData} from "./PreviewCreatePoolDialog";
 import {buildPoolId} from "mira-dex-ts";
 import {StablePoolTooltip, VolatilePoolTooltip} from "./CreatePoolTooltips";

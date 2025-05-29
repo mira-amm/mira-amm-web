@@ -2,9 +2,9 @@ import styles from "../../../add-liquidity-page/components/AddLiquidity/AddLiqui
 import {useCallback, useState} from "react";
 import {CreatePoolPreviewData} from "@/src/components/pages/create-pool-page/components/CreatePool/PreviewCreatePoolDialog";
 import CreatePoolDialog from "./CreatePoolDialog";
-import BackLink from "@/src/components/common/BackLink/BackLink";
+import { BackLink } from "@/src/components/common";
 import {useRouter} from "next/navigation";
-import IconButton from "@/src/components/common/IconButton/IconButton";
+import { IconButton } from "@/src/components/common";
 import { CloseIcon } from "@/meshwave-ui/icons";
 import dynamic from "next/dynamic";
 

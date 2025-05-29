@@ -3,11 +3,9 @@
 import {useRouter} from "next/navigation";
 import {ActionButton}from "@/src/components/common";
 
-type Props = {
+export function LaunchAppButton({className}: {
   className?: string;
-};
-
-const LaunchAppButton = ({className}: Props) => {
+}){
   const router = useRouter();
 
   const handleLaunchApp = () => {
@@ -20,5 +18,3 @@ const LaunchAppButton = ({className}: Props) => {
     </ActionButton>
   );
 };
-
-export default LaunchAppButton;
