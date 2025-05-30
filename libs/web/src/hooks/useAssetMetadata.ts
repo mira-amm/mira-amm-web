@@ -24,7 +24,7 @@ export function useAssetMetadata(
   const {data, isLoading: metadataLoading} = useQuery({
     queryKey: ["assetMetadata", contractId, assetId],
     queryFn: async () => {
-      const asset = assets.find(
+      const asset = assets?.find(
         (asset) => asset.assetId.toLowerCase() === assetId?.toLowerCase(),
       );
 

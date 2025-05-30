@@ -20,7 +20,7 @@ const useCoinListModalData = (
     useVerifiedAssets();
 
   const assetsWithOutIcon = assets
-    .filter((asset) => !asset.icon)
+    ?.filter((asset) => !asset.icon)
     .map((asset) => asset.assetId);
 
   const {data: assetImages, isLoading: isAssetImagesLoading} =
