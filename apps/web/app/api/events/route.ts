@@ -1,9 +1,8 @@
 /**
  * @api {get} /events Get all available events from one block to another (including all in between)
  */
-import {NextRequest, NextResponse} from "next/server";
-import {request, gql} from "graphql-request";
-import {SQDIndexerUrl} from "../../../../../libs/web/src/utils/constants";
+import { request, gql } from "graphql-request";
+import { SQDIndexerUrl } from "../../../../../libs/web/src/utils/constants";
 import {
   GeckoTerminalQueryResponses,
   SQDIndexerResponses,
@@ -12,274 +11,151 @@ import {
   GeckoTerminalTypes,
   SQDIndexerTypes,
 } from "../../../../../libs/web/shared/constants";
-import {formatUnits} from "fuels";
+import { formatUnits } from "fuels";
 
-interface FetchEventsParams {
-  fromBlock: number;
-  toBlock: number;
-}
+const MAX_BLOCK_RANGE = 5000;
 
-// Helper function to fetch and process events data for a block range
-async function fetchEventsForBlockRange({
-  fromBlock,
-  toBlock,
-}: FetchEventsParams): Promise<SQDIndexerResponses.Actions> {
-  const query = gql`
-    query GetActions($fromBlock: Int!, $toBlock: Int!) {
-      actions(where: {blockNumber_gt: $fromBlock, blockNumber_lt: $toBlock}) {
-        pool {
-          id
-        }
-        asset0 {
-          id
-          decimals
-        }
-        asset1 {
-          id
-          decimals
-        }
-        amount1Out
-        amount1In
-        amount0Out
-        amount0In
-        reserves0After
-        reserves1After
-        type
-        transaction
-        recipient
-        timestamp
-        blockNumber
-      }
+const ACTIONS_QUERY = gql`
+  query GetActions($fromBlock: Int!, $toBlock: Int!) {
+    actions(where: { blockNumber_gt: $fromBlock, blockNumber_lt: $toBlock }) {
+      pool { id }
+      asset0 { id decimals }
+      asset1 { id decimals }
+      amount1Out
+      amount1In
+      amount0Out
+      amount0In
+      reserves0After
+      reserves1After
+      type
+      transaction
+      recipient
+      timestamp
+      blockNumber
     }
-  `;
-
-  try {
-    // Send the GraphQL request to fetch actions
-    const actionsData = await request<SQDIndexerResponses.Actions>({
-      url: SQDIndexerUrl,
-      document: query,
-      variables: {fromBlock, toBlock},
-    });
-
-    return actionsData;
-  } catch (error) {
-    console.error(
-      `Error fetching events for block range ${fromBlock} - ${toBlock}:`,
-      error,
-    );
-    throw new Error(
-      `Error fetching events for block range ${fromBlock} - ${toBlock}:`,
-    );
   }
+`;
+
+async function fetchActions(fromBlock: number, toBlock: number) {
+  return request<SQDIndexerResponses.Actions>({
+    url: SQDIndexerUrl,
+    document: ACTIONS_QUERY,
+    variables: { fromBlock, toBlock },
+  });
 }
 
-function createEventDataForJoinExitEvent(
-  action: SQDIndexerResponses.Action,
-  actionType:
-    | SQDIndexerTypes.ActionTypes.JOIN
-    | SQDIndexerTypes.ActionTypes.EXIT,
-): GeckoTerminalQueryResponses.JoinExitEvent {
-  const asset0Decimals = action.asset0.decimals;
-  const asset1Decimals = action.asset1.decimals;
-  //decimalizing based on asset's decimals
+function formatAmount(value: string, decimals: number): string {
+  return formatUnits(value || "0", decimals);
+}
 
-  const decimalizedReserves0After = formatUnits(
-    action.reserves0After,
-    asset0Decimals,
-  );
-  const decimalizedReserves1After = formatUnits(
-    action.reserves1After,
-    asset1Decimals,
-  );
-  let _amount0: number | string;
-  let _amount1: number | string;
+function createEventData(action: SQDIndexerResponses.Action):
+  | (GeckoTerminalQueryResponses.SwapEvent | GeckoTerminalQueryResponses.JoinExitEvent & { block: GeckoTerminalQueryResponses.Block })
+  | null {
 
-  //calculating amount0
-  if (action.amount0In && action.amount0In != "0") {
-    _amount0 = action.amount0In;
-  } else if (action.amount0Out && action.amount0Out != "0") {
-    _amount0 = action.amount0Out;
-  } else {
-    throw new Error(`Invalid swap event data: ${JSON.stringify(action)}`);
-  }
+  const { asset0, asset1, pool, type, blockNumber, timestamp, transaction, recipient } = action;
+  const block = { blockNumber, blockTimestamp: timestamp };
 
-  // calculation amount1
-  if (action.amount1In && action.amount1In != "0") {
-    _amount1 = action.amount1In;
-  } else if (action.amount1Out && action.amount1Out != "0") {
-    _amount1 = action.amount1Out;
-  } else {
-    throw new Error(`Invalid swap event data: ${JSON.stringify(action)}`);
-  }
-
-  //decimalizing based on asset's decimals
-  const decimalizedAmount0 = formatUnits(_amount0, asset0Decimals);
-  const decimalizedAmount1 = formatUnits(_amount1, asset1Decimals);
-
-  const eventType =
-    actionType == SQDIndexerTypes.ActionTypes.JOIN
-      ? GeckoTerminalTypes.EventTypes.JOIN
-      : GeckoTerminalTypes.EventTypes.EXIT;
-
-  return {
-    eventType: eventType,
-    txnId: action.transaction,
-    txnIndex: 0,
-    eventIndex: 0,
-    maker: action.recipient,
-    pairId: action.pool.id,
-    reserves: {
-      asset0: decimalizedReserves0After,
-      asset1: decimalizedReserves1After,
-    },
-    amount0: decimalizedAmount0,
-    amount1: decimalizedAmount1,
+  const reserves = {
+    asset0: formatAmount(action.reserves0After, asset0.decimals),
+    asset1: formatAmount(action.reserves1After, asset1.decimals),
   };
-}
 
-function createEventDataForSwapEvent(
-  action: SQDIndexerResponses.Action,
-): GeckoTerminalQueryResponses.SwapEvent {
-  const asset0Decimals = action.asset0.decimals;
-  const asset1Decimals = action.asset1.decimals;
+  if (type === SQDIndexerTypes.ActionTypes.SWAP) {
+    const amount0In = action.amount0In;
+    const amount1Out = action.amount1Out;
+    const amount1In = action.amount1In;
+    const amount0Out = action.amount0Out;
 
-  const decimalizedReserves0After = formatUnits(
-    action.reserves0After,
-    asset0Decimals,
-  );
-  const decimalizedReserves1After = formatUnits(
-    action.reserves1After,
-    asset1Decimals,
-  );
-  let event = {
-    eventType: "swap",
-    txnId: action.transaction,
-    txnIndex: 0,
-    eventIndex: 0,
-    maker: action.recipient,
-    pairId: action.pool.id,
-    reserves: {
-      asset0: decimalizedReserves0After,
-      asset1: decimalizedReserves1After,
-    },
-  } as GeckoTerminalQueryResponses.SwapEvent;
-
-  // not adding "0" value to the output as per the Gecko Terminal spec( only one pair should be present at any given)
-  if (
-    action.amount0In &&
-    action.amount0In != "0" &&
-    action.amount1Out &&
-    action.amount1Out != "0"
-  ) {
-    event = {
-      ...event,
-      asset0In: formatUnits(action.amount0In, asset0Decimals),
-      asset1Out: formatUnits(action.amount1Out, asset1Decimals),
-      priceNative:
-        parseFloat(formatUnits(action.amount0In, asset0Decimals)) /
-        parseFloat(formatUnits(action.amount1Out, asset1Decimals)),
+    const eventBase = {
+      eventType: "swap" as const,
+      txnId: transaction,
+      txnIndex: 0,
+      eventIndex: 0,
+      maker: recipient,
+      pairId: pool.id,
+      reserves,
+      block,
     };
-  } else if (
-    action.amount1In &&
-    action.amount1In != "0" &&
-    action.amount0Out &&
-    action.amount0Out != "0"
-  ) {
-    event = {
-      ...event,
-      asset1In: formatUnits(action.amount1In, asset1Decimals),
-      asset0Out: formatUnits(action.amount0Out, asset0Decimals),
-      priceNative:
-        parseFloat(formatUnits(action.amount1In, asset1Decimals)) /
-        parseFloat(formatUnits(action.amount0Out, asset0Decimals)),
-    };
-  } else {
-    throw new Error(`Invalid swap event data: ${JSON.stringify(action)}`);
+
+    if (amount0In && amount1Out) {
+      const formatted0In = formatAmount(amount0In, asset0.decimals);
+      const formatted1Out = formatAmount(amount1Out, asset1.decimals);
+      return {
+        ...eventBase,
+        asset0In: formatted0In,
+        asset1Out: formatted1Out,
+        priceNative: parseFloat(formatted0In) / parseFloat(formatted1Out),
+      };
+    }
+
+    if (amount1In && amount0Out) {
+      const formatted1In = formatAmount(amount1In, asset1.decimals);
+      const formatted0Out = formatAmount(amount0Out, asset0.decimals);
+      return {
+        ...eventBase,
+        asset1In: formatted1In,
+        asset0Out: formatted0Out,
+        priceNative: parseFloat(formatted1In) / parseFloat(formatted0Out),
+      };
+    }
+
+    return null;
   }
-  return event;
+
+  if (type === SQDIndexerTypes.ActionTypes.JOIN || type === SQDIndexerTypes.ActionTypes.EXIT) {
+    const amount0 = action.amount0In || action.amount0Out;
+    const amount1 = action.amount1In || action.amount1Out;
+
+    if (!amount0 || !amount1) return null;
+
+    return {
+      eventType:
+        type === SQDIndexerTypes.ActionTypes.JOIN
+          ? GeckoTerminalTypes.EventTypes.JOIN
+          : GeckoTerminalTypes.EventTypes.EXIT,
+      txnId: transaction,
+      txnIndex: 0,
+      eventIndex: 0,
+      maker: recipient,
+      pairId: pool.id,
+      amount0: formatAmount(amount0, asset0.decimals),
+      amount1: formatAmount(amount1, asset1.decimals),
+      reserves,
+      block,
+    };
+  }
+
+  return null;
 }
 
-// Handle GET requests for /api/events
 export async function GET(req: NextRequest) {
   try {
-    // Extract query parameters from the request URL
     const url = new URL(req.url);
     const fromBlock = parseInt(url.searchParams.get("fromBlock") || "0", 10);
     const toBlock = parseInt(url.searchParams.get("toBlock") || "0", 10);
 
-    // Return a 400 error if fromBlock or toBlock is not provided
-    if (!fromBlock || !toBlock) {
-      return NextResponse.json(
-        {error: "Both 'fromBlock' and 'toBlock' are required"},
-        {status: 400},
-      );
+    if (!fromBlock || !toBlock || fromBlock >= toBlock) {
+      return NextResponse.json({ error: "'fromBlock' and 'toBlock' must be valid and ordered" }, { status: 400 });
     }
 
-    // Fetch events data for the given block range
-    const actionsData = await fetchEventsForBlockRange({fromBlock, toBlock});
-    // If no actions are found, return empty events list
-    if (actionsData.actions.length === 0) {
-      return NextResponse.json({events: []});
+    const events: GeckoTerminalQueryResponses.Event[] = [];
+
+    for (let start = fromBlock; start < toBlock; start += MAX_BLOCK_RANGE) {
+      const end = Math.min(start + MAX_BLOCK_RANGE, toBlock);
+      const { actions } = await fetchActions(start, end);
+
+      for (const action of actions) {
+        const eventData = createEventData(action);
+        if (eventData) {
+          const { block, ...rest } = eventData;
+          events.push({ ...rest, block });
+        }
+      }
     }
 
-    // Process the fetched events and map them to the expected format
-    const events = actionsData.actions
-      .map((action: SQDIndexerResponses.Action) => {
-        // Create block from actions object
-        const block: GeckoTerminalQueryResponses.Block = {
-          blockNumber: action.blockNumber,
-          blockTimestamp: action.timestamp,
-        };
-
-        // Identify event type
-        const isJoinExitEvent =
-          action.type === SQDIndexerTypes.ActionTypes.JOIN ||
-          action.type === SQDIndexerTypes.ActionTypes.EXIT;
-        const isSwapEvent = action.type === SQDIndexerTypes.ActionTypes.SWAP;
-        let eventData:
-          | GeckoTerminalQueryResponses.JoinExitEvent
-          | GeckoTerminalQueryResponses.SwapEvent
-          | null = null;
-        // Extracting necessary data from action and creating respective event(join/swap)
-        if (isJoinExitEvent) {
-          eventData = createEventDataForJoinExitEvent(
-            action,
-            action.type as
-              | SQDIndexerTypes.ActionTypes.JOIN
-              | SQDIndexerTypes.ActionTypes.EXIT,
-          );
-        } else if (isSwapEvent) {
-          eventData = createEventDataForSwapEvent(action);
-        }
-
-        // Return null when eventData is not created
-        if (!eventData) {
-          console.warn(`Unknown event type: ${action.type}. Possible reasons: 
-              1. Malformed data (e.g., missing properties: ${JSON.stringify(action)}) 
-              2. Unexpected event type (action.type is not 'JOIN or EXIT' or 'SWAP')
-              3. Issue with event creation functions.`);
-          return null;
-        }
-
-        return {
-          block,
-          ...eventData,
-        };
-      })
-      // filtering out null items in the events list
-      .filter((event): event is Exclude<typeof event, null> => event !== null);
-
-    const eventsResponse: GeckoTerminalQueryResponses.EventsResponse = {
-      events,
-    };
-
-    // Return the formatted events data
-    return NextResponse.json(eventsResponse);
+    return NextResponse.json({ events });
   } catch (error) {
     console.error("Error fetching events:", error);
-    return NextResponse.json(
-      {error: "Failed to fetch events data"},
-      {status: 500},
-    );
+    return NextResponse.json({ error: "Failed to fetch events data" }, { status: 500 });
   }
 }
