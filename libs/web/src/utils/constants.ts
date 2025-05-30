@@ -82,8 +82,6 @@ export const BoostsRewardsTooltip =
 export const boostsEpochTooltip =
   "The current season is 7 days long. All remaining rewards will be distributed at the end of the season.";
 
-export const RewardsApiUrl = "/api/rewards" as const;
-
 export const boosterBannerTitle =
   "Introducing Boost Rewards, earn $FUEL by providing liquidity.";
 
