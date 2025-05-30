@@ -5,8 +5,8 @@ import { useTerminal } from "../../hooks/useTerminal";
 import { BootSequence } from "@/shared/ui/Terminal/BootSequence";
 import {PasswordPrompt} from "@/shared/ui/Terminal/PasswordPrompt";
 import {AuthenticatedTerminal} from "@/shared/ui/Terminal/AuthenticatedTerminal";
-import {SecretNotes} from "@/shared/ui/Terminal/SecretNotes";
-import {CountdownTimer} from "@/shared/ui/Terminal/CountdownTimer";
+// import {SecretNotes} from "@/shared/ui/Terminal/SecretNotes";
+// import {CountdownTimer} from "@/shared/ui/Terminal/CountdownTimer";
 import {MiniGame} from "@/shared/ui/Terminal/MiniGame";
 import { cn } from '@/shadcn-ui/utils'
 
@@ -53,9 +53,9 @@ const Terminal = () => {
 
             {state.currentView === "authenticated" && <AuthenticatedTerminal terminal={terminal} />}
 
-            {state.currentView === "notes" && <SecretNotes onReturn={returnToTerminal} />}
+            {/* {state.currentView === "notes" && <SecretNotes onReturn={returnToTerminal} />} */}
 
-            {state.currentView === "timer" && <CountdownTimer onReturn={returnToTerminal} />}
+            {/* {state.currentView === "timer" && <CountdownTimer onReturn={returnToTerminal} />} */}
 
             {state.currentView === "game" && <MiniGame terminal={terminal} />}
     </div>
