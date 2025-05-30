@@ -5,8 +5,7 @@ import { Prompt, Inter } from "next/font/google";
 
 import { metadata } from "./metadata";
 
-import "@/public/css/globals.css";
-import "@/public/css/animations.css";
+import "@/web/styles.css"
 import "@/meshwave-ui/global.css";
 
 import { Providers } from "@/src/core/providers/Providers";
