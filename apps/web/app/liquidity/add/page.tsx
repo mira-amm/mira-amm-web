@@ -3,7 +3,6 @@
 import {useRouter, useSearchParams} from "next/navigation";
 import {useEffect, useRef, useState, useCallback} from "react";
 import {createPoolIdFromIdString} from "@/src/utils/common";
-import {isMobile} from "react-device-detect";
 import PreviewAddLiquidityDialog, {
   AddLiquidityPreviewData,
 } from "@/src/components/pages/add-liquidity-page/components/AddLiquidity/PreviewAddLiquidityDialog";
@@ -26,7 +25,6 @@ export default function AddLiquidityPage() {
   const poolKey = query.get("pool");
   const poolId = poolKey ? createPoolIdFromIdString(poolKey) : null;
 
-  const mainRef = useRef<HTMLElement>(null);
 
   const [SettingsModal, openSettingsModal, closeSettingsModal] = useModal();
   const [previewData, setPreviewData] =
@@ -46,12 +44,6 @@ export default function AddLiquidityPage() {
     router.push("/liquidity");
   }, [router]);
 
-  useEffect(() => {
-    if (!isMobile && mainRef.current) {
-      mainRef.current.scrollIntoView();
-    }
-  }, []);
-
   if (!poolId) {
     router.push("/liquidity");
     return null;
@@ -61,7 +53,6 @@ export default function AddLiquidityPage() {
 
   return (
     <main
-      ref={mainRef}
       className="flex flex-col p-4 gap-4 lg:max-w-[524px] lg:mx-auto lg:px-4 lg:py-8"
     >
       <BackLink showOnDesktop onClick={handleBackClick} className="z-[5]" />

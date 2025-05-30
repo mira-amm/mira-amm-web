@@ -1,6 +1,6 @@
 "use client";
 
-import {useEffect, useRef, useCallback, useState} from "react";
+import {useEffect, useCallback, useState} from "react";
 import {useRouter} from "next/navigation";
 
 import {BackLink} from "@/src/components/common";
@@ -17,11 +17,6 @@ export default function Page() {
   const [previewData, setPreviewData] = useState<CreatePoolPreviewData | null>(
     null,
   );
-  const mainRef = useRef<HTMLElement>(null);
-
-  useEffect(() => {
-    mainRef.current?.scrollIntoView();
-  }, []);
 
   const handleBackClick = useCallback(() => {
     previewData ? setPreviewData(null) : router.back();
@@ -34,7 +29,7 @@ export default function Page() {
   const showPreview = Boolean(previewData);
 
   return (
-    <div ref={mainRef} className="flex flex-col gap-4">
+    <div className="flex flex-col gap-4">
       <BackLink showOnDesktop onClick={handleBackClick} className="z-[5]" />
 
       <section className="flex flex-col gap-6 p-4 rounded-2xl w-full max-w-[524px] mx-auto bg-[var(--background-grey-dark)] z-[5]">
