@@ -1,12 +1,13 @@
 "use client";
 
-import {useRouter} from "next/navigation";
 import {ActionButton}from "@/src/components/common";
+import { useCurrentRouter } from "@/src/hooks/useCurrentRouter";
 
-export function LaunchAppButton({className}: {
+export function LaunchAppButton({className, route}: {
   className?: string;
+  route?: string[] 
 }){
-  const router = useRouter();
+  const router = route ?? useCurrentRouter();
 
   const handleLaunchApp = () => {
     router.push("/swap");
