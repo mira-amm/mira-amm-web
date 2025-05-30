@@ -2,7 +2,6 @@
 
 import { useEffect, useState, useCallback, useMemo } from "react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
 import { clsx } from "clsx";
 
 import { ConnectButton, Logo, MobileMenu, MainnetLabel } from "@/src/components/common";
@@ -16,14 +15,21 @@ import {
   POINTS_PROMO_TITLE,
 } from "@/src/utils/constants";
 
-import { IconButton } from "@/src/components/common";
-import { CloseIcon, PointsIcon } from "@/meshwave-ui/icons";
+import {IconButton} from "@/src/components/common";
+import {CloseIcon, PointsIcon} from "@/meshwave-ui/icons";
+import {useCurrentPath} from "@/src/hooks/useCurrentPath";
 
 const PROMO_BANNER_STORAGE_KEY = "fuel-boost-program-promo-banner-closed";
 
-export function Header( isHomePage?: boolean) {
-  const pathname = usePathname();
-  const { isConnected } = useIsConnected();
+export function Header({
+  isHomePage,
+  pathName,
+}: {
+  isHomePage?: boolean;
+  pathName?: string;
+}) {
+  const pathname = pathName ?? useCurrentPath();
+  const {isConnected} = useIsConnected();
   const [isPromoShown, setIsPromoShown] = useState(false);
 
   useEffect(() => {
