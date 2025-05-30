@@ -1,4 +1,3 @@
-import "@/web/styles.css";
 import Swap from "@/src/components/common/Swap/Swap";
 
 export default function Page() {
