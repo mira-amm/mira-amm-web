@@ -30,7 +30,7 @@ export default function Page() {
 
   return (
     <div className="flex flex-col gap-4">
-      <BackLink showOnDesktop onClick={handleBackClick} className="z-[5]" />
+      <BackLink onClick={handleBackClick} className="z-[5]" />
 
       <section className="flex flex-col gap-6 p-4 rounded-2xl w-full max-w-[524px] mx-auto bg-[var(--background-grey-dark)] z-[5]">
         <div className="flex items-center justify-between border-b border-[var(--background-grey-light)] pb-4 text-[var(--content-grey)] font-medium text-base leading-[19px] gap-2">

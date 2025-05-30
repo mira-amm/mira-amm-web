@@ -2,10 +2,10 @@ import styles from "../../../add-liquidity-page/components/AddLiquidity/AddLiqui
 import {useCallback, useState} from "react";
 import {CreatePoolPreviewData} from "@/src/components/pages/create-pool-page/components/CreatePool/PreviewCreatePoolDialog";
 import CreatePoolDialog from "./CreatePoolDialog";
-import { BackLink } from "@/src/components/common";
+import {BackLink} from "@/src/components/common";
 import {useRouter} from "next/navigation";
-import { IconButton } from "@/src/components/common";
-import { CloseIcon } from "@/meshwave-ui/icons";
+import {IconButton} from "@/src/components/common";
+import {CloseIcon} from "@/meshwave-ui/icons";
 import dynamic from "next/dynamic";
 
 const PreviewCreatePoolDialog = dynamic(
@@ -39,11 +39,7 @@ const CreatePool = () => {
 
   return (
     <>
-      <BackLink
-        showOnDesktop
-        onClick={handleBackClick}
-        className={styles.backLink}
-      />
+      <BackLink onClick={handleBackClick} className={styles.backLink} />
       <section className={styles.addLiquidity}>
         <div className={styles.addLiquidityHeading}>
           <p className={styles.title}>Create Pool</p>
