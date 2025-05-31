@@ -7,16 +7,13 @@ import {useCallback, useEffect, useMemo, useRef, useState} from "react";
 
 import CurrencyBox from "@/src/components/common/Swap/components/CurrencyBox/CurrencyBox";
 import { ConvertIcon } from "@/meshwave-ui/icons";
-import { useModal, useSwap } from "@/src/hooks";
 
 import styles from "./Swap.module.css";
 
 import ExchangeRate from "@/src/components/common/Swap/components/ExchangeRate/ExchangeRate";
 import useExchangeRate from "@/src/hooks/useExchangeRate/useExchangeRate";
 import {createPoolKey, openNewTab} from "@/src/utils/common";
-import { useBalances } from "@/src/hooks";
 import SettingsModalContent from "@/src/components/common/Swap/components/SettingsModalContent/SettingsModalContent";
-import { useCheckEthBalance } from "@/src/hooks";
 import useInitialSwapState from "@/src/hooks/useInitialSwapState/useInitialSwapState";
 import useCheckActiveNetwork from "@/src/hooks/useCheckActiveNetwork";
 import usePreview from "@/src/hooks/useSwapPreviewV2";
@@ -32,13 +29,10 @@ import {
   TransactionCost,
 } from "fuels";
 import {PoolId} from "mira-dex-ts";
-import {useAssetImage} from "@/src/hooks/useAssetImage";
-import {useAssetPrice} from "@/src/hooks/useAssetPrice";
-import { useAssetMetadata } from "@/src/hooks";
+import {useIsClient, useAssetMetadata,useCheckEthBalance, useBalances,useModal, useSwap, useAssetImage, useAssetPrice } from "@/src/hooks";
 import {TradeState} from "@/src/hooks/useSwapRouter";
 import {useAnimationStore} from "@/src/stores/useGlitchScavengerHunt";
 import {triggerClassAnimation} from "../GlitchEffects/ClassAnimationTrigger";
-import {useIsClient} from "@/src/hooks/useIsClient";
 
 export type CurrencyBoxMode = "buy" | "sell";
 export type CurrencyBoxState = {
