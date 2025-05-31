@@ -15,7 +15,6 @@ import {
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import CurrencyBox from "@/src/components/common/Swap/components/CurrencyBox/CurrencyBox";
 import { ConvertIcon } from "@/meshwave-ui/icons";
-import styles from "./Swap.module.css";
 import ExchangeRate from "@/src/components/common/Swap/components/ExchangeRate/ExchangeRate";
 import useExchangeRate from "@/src/hooks/useExchangeRate/useExchangeRate";
 import { createPoolKey, openNewTab } from "@/src/utils/common";
@@ -66,11 +65,19 @@ function SwapRouteItem({ pool }: { pool: PoolId }) {
   const fee = pool[2] ? 0.05 : 0.3;
 
   return (
-    <>
-      <img src={firstAssetIcon || ""} alt={firstAssetMetadata.symbol} />
-      <img src={secondAssetIcon || ""} alt={secondAssetMetadata.symbol} />
+    <div className="flex items-center gap-1">
+      <img
+        src={firstAssetIcon || ""}
+        alt={firstAssetMetadata.symbol}
+        className="-mr-2 h-4 w-4"
+      />
+      <img
+        src={secondAssetIcon || ""}
+        alt={secondAssetMetadata.symbol}
+        className="h-4 w-4"
+      />
       <p>({fee}%)</p>
-    </>
+    </div>
   );
 }
 
@@ -81,7 +88,6 @@ const Swap = ({ isWidget }: { isWidget?: boolean }) => {
   const [FailureModal, openFailure, closeFailureModal] = useModal();
 
   const isClient = useIsClient();
-
   const initialSwapState = useInitialSwapState(isWidget);
 
   const [swapState, setSwapState] = useState<SwapState>(initialSwapState);
@@ -124,7 +130,6 @@ const Swap = ({ isWidget }: { isWidget?: boolean }) => {
   const buyMetadata = useAssetMetadata(swapState.buy.assetId);
 
   const isValidNetwork = useCheckActiveNetwork();
-
   const { trade, tradeState, error: previewError } = usePreview(swapState, activeMode);
 
   const pools = useMemo(() => trade?.bestRoute?.pools.map((p) => p.poolId) ?? [], [
@@ -213,7 +218,6 @@ const Swap = ({ isWidget }: { isWidget?: boolean }) => {
     }
   }, [isWidget, setSwapCoins]);
 
-  // Select a coin for a given mode
   const selectCoin = useCallback(
     (mode: CurrencyBoxMode) =>
       (assetId: B256Address | null) => {
@@ -324,7 +328,6 @@ const Swap = ({ isWidget }: { isWidget?: boolean }) => {
   }, [sellValue, buyValue]);
 
   const sufficientEthBalance = useCheckEthBalance(swapState.sell);
-
   const exchangeRate = useExchangeRate(swapState);
 
   const fetchCost = useCallback(async () => {
@@ -415,6 +418,7 @@ const Swap = ({ isWidget }: { isWidget?: boolean }) => {
       }, 0) ?? 0
     );
   }, [trade?.bestRoute?.pools]);
+
   const feeValue = useMemo(() => {
     if (!sellValue || !sellMetadata.decimals) return "0";
     const sellNum = parseFloat(sellValue);
@@ -422,7 +426,6 @@ const Swap = ({ isWidget }: { isWidget?: boolean }) => {
     return raw.toFixed(sellMetadata.decimals);
   }, [sellValue, sellMetadata.decimals, feePercent]);
 
-  // Determine if Swap button should be disabled
   const swapDisabled = useMemo(() => {
     return (
       !isValidNetwork ||
@@ -508,6 +511,7 @@ const Swap = ({ isWidget }: { isWidget?: boolean }) => {
     amountMissing,
     showInsufficientBalance,
   ]);
+
   const isActionLoading = useMemo(() => {
     return (
       balancesPending ||
@@ -527,7 +531,7 @@ const Swap = ({ isWidget }: { isWidget?: boolean }) => {
 
   if (!isClient) {
     return (
-      <div className={styles.swapPlaceholder}>
+      <div className="flex flex-col gap-3 lg:gap-4">
         <Loader color="gray" />
       </div>
     );
@@ -535,20 +539,22 @@ const Swap = ({ isWidget }: { isWidget?: boolean }) => {
 
   return (
     <>
-      <div className={styles.swapAndRate}>
+      <div className="flex flex-col gap-3 lg:gap-4">
         <div
           className={clsx(
-            styles.swapContainer,
-            isWidget && styles.widgetSwapContainer,
-            swapPending && styles.swapContainerLoading
+            "flex flex-col gap-4 p-4 pb-[18px] rounded-2xl bg-[var(--background-grey-dark)]",
+            isWidget && "bg-[var(--background-primary)]",
+            swapPending && "z-[5]"
           )}
         >
-          <div className={styles.heading}>
-            <div className={styles.title}>
+          <div className="flex items-center gap-[10px] font-medium text-[16px] leading-[19px] text-[var(--content-grey)] lg:text-[20px] lg:leading-[24px]">
+            <div className="flex-1 text-[var(--content-primary)]">
               {isWidget ? <Logo /> : <p>Swap</p>}
             </div>
             <SlippageSetting slippage={slippage} openSettingsModal={openSettingsModal} />
-            {isWidget && <ConnectButton className={styles.connectWallet} isWidget />}
+            {isWidget && (
+              <ConnectButton className="w-[100px] h-[20px] text-[10px] leading-[24px]" isWidget />
+            )}
           </div>
 
           <CurrencyBox
@@ -560,12 +566,12 @@ const Swap = ({ isWidget }: { isWidget?: boolean }) => {
             loading={inputPreviewLoading || swapPending}
             onCoinSelectorClick={handleCoinSelectorClick}
             usdRate={sellAssetPrice.price}
-            className={isWidget ? styles.widgetBoxBg : undefined}
+            className={isWidget ? "bg-[var(--background-grey-dark)]" : undefined}
           />
 
-          <div className={styles.splitter}>
-            <IconButton onClick={swapAssets} className={styles.convertButton}>
-              <ConvertIcon />
+          <div className="relative w-full h-px bg-[var(--background-grey-dark)] my-4">
+            <IconButton className="group absolute top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2 w-8 h-8 flex justify-center items-center rounded-full bg-[var(--background-primary)] text-[var(--content-grey)] hover:text-[var(--content-primary)]" onClick={swapAssets}>
+              <ConvertIcon className="transition-transform duration-300 group-hover:rotate-180" />
             </IconButton>
           </div>
 
@@ -578,12 +584,12 @@ const Swap = ({ isWidget }: { isWidget?: boolean }) => {
             loading={outputPreviewLoading || swapPending}
             onCoinSelectorClick={handleCoinSelectorClick}
             usdRate={buyAssetPrice.price}
-            className={isWidget ? styles.widgetBoxBg : undefined}
+            className={isWidget ? "bg-[var(--background-grey-dark)]" : undefined}
           />
 
           {review && (
-            <div className={styles.summary}>
-              <div className={styles.summaryEntry}>
+            <div className="flex flex-col gap-2 text-[var(--content-tertiary)] text-[12px] leading-[16px] lg:text-[13px] lg:leading-[18px]">
+              <div className="flex justify-between">
                 <p>Rate</p>
                 {previewLoading || tradeState === TradeState.REEFETCHING ? (
                   <Loader color="gray" />
@@ -592,23 +598,23 @@ const Swap = ({ isWidget }: { isWidget?: boolean }) => {
                 )}
               </div>
 
-              <div className={styles.summaryEntry}>
+              <div className="flex justify-between">
                 <p>Order routing</p>
-                <div className={styles.feeLine}>
+                <div className="flex flex-wrap items-center gap-1">
                   {previewLoading || tradeState === TradeState.REEFETCHING ? (
                     <Loader color="gray" />
                   ) : (
                     pools.map((pool, i) => (
-                      <div className={styles.poolsFee} key={createPoolKey(pool)}>
+                      <div className="flex items-center gap-1" key={createPoolKey(pool)}>
                         <SwapRouteItem pool={pool} />
-                        {i !== pools.length - 1 && "+"}
+                        {i !== pools.length - 1 && <span>+</span>}
                       </div>
                     ))
                   )}
                 </div>
               </div>
 
-              <div className={styles.summaryEntry}>
+              <div className="flex justify-between">
                 <p>Estimated fees</p>
                 {previewLoading || tradeState === TradeState.REEFETCHING ? (
                   <Loader color="gray" />
@@ -619,7 +625,7 @@ const Swap = ({ isWidget }: { isWidget?: boolean }) => {
                 )}
               </div>
 
-              <div className={styles.summaryEntry}>
+              <div className="flex justify-between">
                 <p>Network cost</p>
                 {txCostPending ? (
                   <Loader color="gray" />
@@ -638,7 +644,7 @@ const Swap = ({ isWidget }: { isWidget?: boolean }) => {
             <ActionButton
               variant="primary"
               disabled={isActionDisabled}
-              className={isWidget && isActionDisabled ? styles.widgetBoxBg : undefined}
+              className={isWidget && isActionDisabled ? "bg-[var(--background-grey-dark)]" : undefined}
               onClick={handleSwapClick}
               loading={isActionLoading}
             >
@@ -647,13 +653,15 @@ const Swap = ({ isWidget }: { isWidget?: boolean }) => {
           )}
         </div>
 
-        <div className={styles.rates}>
+        <div className="flex justify-between">
           <PriceImpact reservesPrice={reservesPrice} previewPrice={previewPrice} />
           <ExchangeRate swapState={swapState} />
         </div>
       </div>
 
-      {swapPending && <div className={styles.loadingOverlay} />}
+      {swapPending && (
+        <div className="fixed inset-0 w-full h-full backdrop-blur-[5px] z-[4]" />
+      )}
 
       <SettingsModal title="Settings">
         <SettingsModalContent
