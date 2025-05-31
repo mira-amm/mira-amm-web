@@ -36,7 +36,7 @@ export {useDidUpdate} from "./useDidUpdate";
 export {default as useFaucetLink} from "./useFaucetLink";
 // this is already exported above, probably delete this file eventually, the logic is same with ./useAssetPriceFromIndexer
 // export {useAssetPriceFromIndexer} from "./useFuelPrice";
-export {default as useGetPoolsWithReserve} from "./useGetPoolsWithReserve";
+export {useGetPoolsWithReserve} from "./useGetPoolsWithReserve";
 export {useIsClient} from "./useIsClient";
 export {default as usePoolAPR} from "./usePoolAPR";
 export {default as usePoolNameAndMatch} from "./usePoolNameAndMatch";

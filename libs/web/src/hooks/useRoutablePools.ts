@@ -2,7 +2,7 @@ import {useMemo} from "react";
 import {CoinData} from "../utils/coinsConfig";
 import {useAllAssetsCombination} from "./useAllAssetsCombination";
 import {buildPoolId, PoolId} from "mira-dex-ts";
-import useGetPoolsWithReserve, {Pool, Route} from "./useGetPoolsWithReserve";
+import {useGetPoolsWithReserve, Pool, Route} from "./useGetPoolsWithReserve";
 
 const involvesAssetInPool = (pool: Pool, asset: CoinData): boolean =>
   pool.assetA.assetId === asset.assetId ||

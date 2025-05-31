@@ -24,12 +24,12 @@ export type Route = {
   assetOut: CoinData;
 };
 
-const useGetPoolsWithReserve = (
+export function useGetPoolsWithReserve(
   poolKeys: [CoinData, CoinData, PoolId, boolean][],
   assetIn?: CoinData,
   assetOut?: CoinData,
   shouldFetchPools: boolean = false,
-) => {
+){
   const poolQueries = poolKeys
     .map(([, , [assetA, assetB], stable], idx) => {
       const poolId = `${assetA.bits}-${assetB.bits}-${stable}`;
@@ -98,5 +98,3 @@ const useGetPoolsWithReserve = (
     refetch,
   };
 };
-
-export default useGetPoolsWithReserve;
