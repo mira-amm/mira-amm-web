@@ -1,7 +1,7 @@
 import {useQueries} from "@tanstack/react-query";
 import {type BN, bn} from "fuels";
 import {CoinData} from "../utils/coinsConfig";
-import { useReadonlyMira } from ".";
+import {useReadonlyMira} from ".";
 import useRoutablePools from "./useRoutablePools";
 import {useMemo} from "react";
 import {Route} from "./useGetPoolsWithReserve";
@@ -38,22 +38,18 @@ const getSwapQuotes = (
   route: Route,
   miraAmm: ReadonlyMiraAmm,
 ) => {
-  if (tradeType === TradeType.EXACT_IN)
+  if (tradeType === TradeType.EXACT_IN) {
     return miraAmm.previewSwapExactInput(
-      {
-        bits: route.assetIn.assetId,
-      },
+      {bits: route.assetIn.assetId},
       inputAmount,
-      route.pools.map((pool) => pool.poolId),
+      route.pools.map((p) => p.poolId),
     );
+  }
 
-  // exact out
   return miraAmm.previewSwapExactOutput(
-    {
-      bits: route.assetOut.assetId,
-    },
+    {bits: route.assetOut.assetId},
     inputAmount,
-    route.pools.map((pool) => pool.poolId),
+    route.pools.map((p) => p.poolId),
   );
 };
 
@@ -65,14 +61,32 @@ const useSwapRouter = (
 ): SwapPreviewState => {
   const miraAmm = useReadonlyMira();
 
-  const shouldFetchPools = !!assetIn && !!assetOut && amountSpecified.gt(0);
+  const shouldFetchPools = useMemo(() => {
+    return !!assetIn && !!assetOut && amountSpecified.gt(0);
+  }, [assetIn, assetOut, amountSpecified]);
 
   const {
     isLoading: isRoutesLoading,
     routes,
     isRefetching: isRoutesRefetching,
-    // refetch: refetchRoute,
   } = useRoutablePools(assetIn, assetOut, shouldFetchPools);
+
+  // Prioritize top 5 routes using a simple reserve heuristic (assumes larger reserves = better)
+  const prioritizedRoutes = useMemo(() => {
+    if (!routes || !routes.length) return [];
+
+    return [...routes]
+      .map((r) => ({
+        route: r,
+        totalReserves: r.pools.reduce(
+          (sum, p) => sum + Number(p.reserve0 || 0) + Number(p.reserve1 || 0),
+          0,
+        ),
+      }))
+      .sort((a, b) => b.totalReserves - a.totalReserves)
+      .slice(0, 5)
+      .map((r) => r.route);
+  }, [routes]);
 
   const {
     data: quoteResults,
@@ -80,8 +94,8 @@ const useSwapRouter = (
     isRefetching,
   } = useQueries({
     queries:
-      routes.length && miraAmm && shouldFetchPools
-        ? routes.map((route) => ({
+      prioritizedRoutes.length && miraAmm && shouldFetchPools
+        ? prioritizedRoutes.map((route) => ({
             queryFn: () =>
               getSwapQuotes(amountSpecified, tradeType, route, miraAmm),
             queryKey: [
@@ -89,28 +103,27 @@ const useSwapRouter = (
               route,
               tradeType,
               amountSpecified.toString(),
-              assetIn.assetId,
-              assetOut.assetId,
+              assetIn?.assetId,
+              assetOut?.assetId,
             ],
           }))
         : [],
     combine: (results) => ({
-      isRefetching: results.some((result) => result.isRefetching),
-      data: results.map((result, idx) =>
-        result.data
+      isRefetching: results.some((r) => r.isRefetching),
+      data: results.map((r, i) =>
+        r.data
           ? {
-              amountOut: result.data[1],
-              route: routes[idx],
+              amountOut: r.data[1],
+              route: prioritizedRoutes[i],
             }
           : undefined,
       ),
-      pending: results.some((result) => result.isPending),
-      isLoading: results.some((result) => result.isLoading),
-      isSuccess: results.every((result) => result.isSuccess),
+      pending: results.some((r) => r.isPending),
+      isLoading: results.some((r) => r.isLoading),
+      isSuccess: results.every((r) => r.isSuccess),
     }),
   });
 
-  // find the best route out of all routes
   return useMemo(() => {
     if (isLoading || isRoutesLoading)
       return {
@@ -126,12 +139,13 @@ const useSwapRouter = (
         error: null,
       };
 
-    // This can also happen when query throws an error
     if (!quoteResults.length)
       return {
         tradeState: TradeState.NO_ROUTE_FOUND,
         trade: undefined,
-        error: amountSpecified.gt(0) ? "No route found for this trade" : null,
+        error: amountSpecified.gt(0)
+          ? "No route found for this trade"
+          : null,
       };
 
     const {bestRoute, amountIn, amountOut} = quoteResults.reduce<{
@@ -141,16 +155,18 @@ const useSwapRouter = (
     }>(
       (currentBest, quote) => {
         if (!quote) return currentBest;
+
         if (tradeType === TradeType.EXACT_IN) {
           if (
             currentBest.amountOut === null ||
             currentBest.amountOut.lt(quote.amountOut)
-          )
+          ) {
             return {
               bestRoute: quote.route,
               amountIn: amountSpecified,
               amountOut: quote.amountOut,
             };
+          }
         } else {
           if (
             currentBest.amountIn === null ||
@@ -163,6 +179,7 @@ const useSwapRouter = (
             };
           }
         }
+
         return currentBest;
       },
       {
@@ -172,7 +189,6 @@ const useSwapRouter = (
       },
     );
 
-    // Situation of no liquidity
     if (!bestRoute || !amountIn || !amountOut)
       return {
         tradeState: TradeState.INVALID,
@@ -180,7 +196,6 @@ const useSwapRouter = (
         error: "Insufficient reserves in pool",
       };
 
-    // When refetching, return the previous route
     if (isRefetching || isRoutesRefetching)
       return {
         tradeState: TradeState.REEFETCHING,
@@ -204,13 +219,13 @@ const useSwapRouter = (
   }, [
     isLoading,
     isRoutesLoading,
-    assetIn,
-    assetOut,
-    quoteResults,
     isRefetching,
     isRoutesRefetching,
+    quoteResults,
     tradeType,
     amountSpecified,
+    assetIn,
+    assetOut,
   ]);
 };
 
