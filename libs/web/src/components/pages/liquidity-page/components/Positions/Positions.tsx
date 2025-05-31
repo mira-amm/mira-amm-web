@@ -160,7 +160,7 @@ function PositionRow({
 <div className="col-span-3 md:col-span-1 flex lg:justify-end">
           <ActionButton
             variant="secondary"
-            className="w-full lg:max-w-[165px] px-4 py-2 text-content-primary text-base font-medium leading-[19px]"
+            className="w-full lg:max-w-[165px] text-[var(--accent-primary)] text-xs text-nowrap font-medium leading-[19px]"
           >
             Manage position
           </ActionButton>
