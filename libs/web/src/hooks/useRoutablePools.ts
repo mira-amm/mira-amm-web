@@ -22,7 +22,7 @@ function computeAllRoutes(
   currentPath: Pool[] = [],
   allPaths: Route[] = [],
   startAssetIn: CoinData = assetIn,
-  maxHops = 2, // maximum number of intermediate assets (or pools) allowed for the swap
+  maxHops = 2,
 ): Route[] {
   if (!assetIn || !assetOut) throw new Error("Missing tokenIn/tokenOut");
 
@@ -35,12 +35,13 @@ function computeAllRoutes(
 
     const outputToken =
       pool.assetA.assetId === assetIn.assetId ? pool.assetB : pool.assetA;
+
     if (outputToken.assetId === assetOut.assetId) {
       allPaths.push({
         pools: [...currentPath, pool],
         assetIn: startAssetIn,
         assetOut,
-      }); // pools and tokenIn and tokenOut for each route
+      });
     } else if (maxHops > 1) {
       computeAllRoutes(
         outputToken,
@@ -65,24 +66,35 @@ const useRoutablePools = (
   const allAssetsCombination = useAllAssetsCombination(assetIn, assetOut);
 
   const allAssetsPairsWithPoolId: [CoinData, CoinData, PoolId, boolean][] =
-    useMemo(
-      () =>
-        allAssetsCombination.flatMap(([assetA, assetB]) => [
-          [
-            assetA,
-            assetB,
-            buildPoolId(assetA.assetId, assetB.assetId, true),
-            true, // stable pool
-          ],
-          [
-            assetA,
-            assetB,
-            buildPoolId(assetA.assetId, assetB.assetId, false),
-            false, // volatile pool
-          ],
-        ]),
-      [allAssetsCombination],
-    );
+    useMemo(() => {
+      const seen = new Set<string>();
+
+      return allAssetsCombination.flatMap(([assetA, assetB]) => {
+        const result: [CoinData, CoinData, PoolId, boolean][] = [];
+
+        const poolIdStable = buildPoolId(assetA.assetId, assetB.assetId, true);
+        const poolIdVolatile = buildPoolId(
+          assetA.assetId,
+          assetB.assetId,
+          false,
+        );
+
+        const stableKey = `${assetA.assetId}-${assetB.assetId}-true`;
+        const volatileKey = `${assetA.assetId}-${assetB.assetId}-false`;
+
+        if (!seen.has(stableKey)) {
+          seen.add(stableKey);
+          result.push([assetA, assetB, poolIdStable, true]);
+        }
+
+        if (!seen.has(volatileKey)) {
+          seen.add(volatileKey);
+          result.push([assetA, assetB, poolIdVolatile, false]);
+        }
+
+        return result;
+      });
+    }, [allAssetsCombination]);
 
   const {pools, isLoading, isRefetching, refetch} = useGetPoolsWithReserve(
     allAssetsPairsWithPoolId,
@@ -94,18 +106,8 @@ const useRoutablePools = (
   const routes = useMemo(() => {
     if (!pools || !assetIn || !assetOut) return [];
 
-    const routes = computeAllRoutes(
-      assetIn,
-      assetOut,
-      pools,
-      [],
-      [],
-      assetIn,
-      2,
-    );
-
-    return routes;
-  }, [assetIn, assetOut, pools]);
+    return computeAllRoutes(assetIn, assetOut, pools, [], [], assetIn, 2);
+  }, [pools, assetIn, assetOut]);
 
   return {
     isRefetching,
