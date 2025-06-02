@@ -61,7 +61,7 @@ type InputsState = Record<CurrencyBoxMode, { amount: string }>;
 export type SwapState = Record<CurrencyBoxMode, CurrencyBoxState>;
 export type SlippageMode = "auto" | "custom";
 
-const DefaultSlippageValue = 100;
+export const DefaultSlippageValue = 100;
 const initialInputsState: InputsState = { sell: { amount: "" }, buy: { amount: "" } };
 
 const swapAndRateClasses = "flex flex-col gap-3 lg:gap-4";
