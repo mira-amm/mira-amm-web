@@ -1,6 +1,6 @@
 "use client";
 
-import { ReactNode } from "react";
+import { ReactNode, Suspense } from "react";
 import NextAdapterApp from "next-query-params/app";
 import { QueryParamProvider } from "use-query-params";
 import { QueryClient } from "@tanstack/react-query";
@@ -13,6 +13,7 @@ import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 
 import { FuelProviderWrapper } from "@/src/core/providers/FuelProviderWrapper";
 import { DisclaimerWrapper } from "@/src/core/providers/DisclaimerWrapper";
+import { Loader } from "@/src/components/common";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -21,6 +22,16 @@ const queryClient = new QueryClient({
     },
   },
 });
+
+function QueryParamProviderWrapper({children}: {children: ReactNode}) {
+  return (
+    <Suspense fallback={<Loader />}>
+      <QueryParamProvider adapter={NextAdapterApp}>
+        {children}
+      </QueryParamProvider>
+    </Suspense>
+  );
+}
 
 const persister = typeof window !== "undefined"
   ? createSyncStoragePersister({ storage: window.localStorage })
@@ -39,13 +50,13 @@ export function Providers({ children }: { children: ReactNode }){
   return (
     <PersistQueryClientProvider client={queryClient} persistOptions={persistOptions}>
       <ReactQueryDevtools initialIsOpen={false} />
-      <QueryParamProvider adapter={NextAdapterApp}>
+      <QueryParamProviderWrapper>
         <FuelProviderWrapper>
           <DisclaimerWrapper>
             {children}
           </DisclaimerWrapper>
         </FuelProviderWrapper>
-      </QueryParamProvider>
+      </QueryParamProviderWrapper>
     </PersistQueryClientProvider>
   );
 };
