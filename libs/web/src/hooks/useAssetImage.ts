@@ -11,9 +11,10 @@ export interface AssetImageData {
 export type AssetImageMap = Record<string, AssetImageData>;
 
 export const useAssetImage = (assetId: string | null): string => {
-  const {assets} = useAssetList();
-  const {data} = useQuery<string | null>({
-    queryKey: ["assetImage", assetId],
+  const {assets, isLoading: isLoadingAsset} = useAssetList();
+
+  const {data, isLoading, error} = useQuery<string | null>({
+    queryKey: ["assetImage", assetId, assets?.length],
     queryFn: async () => {
       const asset = assets?.find(
         (asset) => asset.assetId.toLowerCase() === assetId?.toLowerCase(),
@@ -43,7 +44,7 @@ export const useAssetImage = (assetId: string | null): string => {
       return null;
     },
     staleTime: Infinity,
-    enabled: assetId !== null,
+    enabled: assetId !== null && !isLoadingAsset && assets !== undefined,
     meta: {persist: true},
   });
 

@@ -15,14 +15,14 @@ const providerPromise = new Provider(NetworkUrl);
 
 export function useAssetMetadata(
   assetId: B256Address | null,
-): AssetMetadata & {isLoading: boolean}{
-  const {assets} = useAssetList();
+): AssetMetadata & {isLoading: boolean} {
+  const {assets, isLoading: isLoadingAsset} = useAssetList();
 
   const {contractId, isLoading: contractLoading} =
     useAssetMinterContract(assetId);
 
   const {data, isLoading: metadataLoading} = useQuery({
-    queryKey: ["assetMetadata", contractId, assetId],
+    queryKey: ["assetMetadata", contractId, assetId, assets?.length],
     queryFn: async () => {
       const asset = assets?.find(
         (asset) => asset.assetId.toLowerCase() === assetId?.toLowerCase(),
@@ -62,13 +62,14 @@ export function useAssetMetadata(
         decimals: result.value[2],
       };
     },
-    enabled: !!assetId && !!contractId,
+    enabled:
+      !!assetId && !!contractId && !isLoadingAsset && assets !== undefined,
     staleTime: Infinity,
   });
 
-  const isLoading = contractLoading || metadataLoading;
+  const isLoading = contractLoading || metadataLoading || isLoadingAsset;
 
   return data
     ? {...data, isLoading}
     : {name: undefined, symbol: undefined, decimals: undefined, isLoading};
-};
+}
