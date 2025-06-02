@@ -4,7 +4,7 @@ import {useEffect, useCallback, useState} from "react";
 import {useRouter} from "next/navigation";
 
 import {BackLink} from "@/src/components/common";
-import { IconButton } from "@/src/components/common";
+import {IconButton} from "@/src/components/common";
 import {CloseIcon} from "@/meshwave-ui/icons";
 
 import PreviewCreatePoolDialog, {
@@ -42,7 +42,7 @@ export default function Page() {
           )}
         </div>
 
-        {showPreview ? (
+        {showPreview && previewData ? (
           <PreviewCreatePoolDialog previewData={previewData} />
         ) : (
           <CreatePoolDialog setPreviewData={setPreviewData} />
