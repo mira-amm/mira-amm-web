@@ -1,6 +1,6 @@
 import {useQuery} from "@tanstack/react-query";
 import {useAccount} from "@fuels/react";
-import {toBech32} from "fuels";
+import {Address} from "fuels";
 import {ApiBaseUrl} from "@/src/utils/constants";
 import useSHA256Hash from "@/src/hooks/useSHA256Hash";
 
@@ -12,7 +12,7 @@ type SignatureData = {
 const useSavedSignatures = (message: string) => {
   const {account} = useAccount();
 
-  const address = account !== null ? toBech32(account) : null;
+  const address = account !== null ? Address.toB256(account) : null;
   const {hash} = useSHA256Hash(message);
 
   const {data, isLoading, refetch} = useQuery({
