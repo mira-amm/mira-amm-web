@@ -81,7 +81,7 @@
     "mermaid": "^11.6.0",
     "mira-dex-ts": "^1.1.42",
     "motion": "^12.15.0",
-    "next": "^15.3.1",
+    "next": "^15.3.3",
     "next-query-params": "^5.1.0",
     "payload": "^3.39.1",
     "payload-oauth2": "^1.0.15",
@@ -105,7 +105,6 @@
     "zustand": "^5.0.5"
   },
   "devDependencies": {
-    "@netlify/vite-plugin-react-router": "^1.0.1",
     "@antfu/eslint-config": "^4.13.2",
     "@babel/core": "^7.27.3",
     "@babel/preset-react": "^7.26.3",
@@ -123,6 +122,7 @@
     "@nestjs/serve-static": "^5.0.3",
     "@nestjs/swagger": "^11.2.0",
     "@nestjs/testing": "^11.1.2",
+    "@netlify/vite-plugin-react-router": "^1.0.1",
     "@next/eslint-plugin-next": "^15.3.1",
     "@nx/devkit": "21.1.2",
     "@nx/eslint": "21.1.2",
