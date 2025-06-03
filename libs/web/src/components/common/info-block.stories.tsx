@@ -11,7 +11,7 @@ const meta = {
   },
   decorators: [
     (Story) => (
-      <div className="bg-[var(--background-primary)] p-4">
+      <div className="bg-background-primary p-4">
         <Story />
       </div>
     ),
@@ -25,6 +25,6 @@ export const Default: Story = {
   args: {
     title: "TVL",
     value: "value",
-    type: "positive"
+    type: "positive",
   },
 };

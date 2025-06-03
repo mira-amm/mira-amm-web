@@ -19,7 +19,7 @@ const meta = {
         <FuelProvider
           fuelConfig={{connectors: defaultConnectors({devMode: true})}}
         >
-          <div className="bg-[var(--background-primary)] p-4">
+          <div className="bg-background-primary p-4">
             <Story />
           </div>
         </FuelProvider>

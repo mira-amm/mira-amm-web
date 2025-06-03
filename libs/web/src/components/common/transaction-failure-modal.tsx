@@ -1,6 +1,6 @@
-import { ActionButton } from "@/src/components/common";
-import { FailureIcon } from "@/meshwave-ui/icons";
-import { FuelError } from "fuels";
+import {ActionButton} from "@/src/components/common";
+import {FailureIcon} from "@/meshwave-ui/icons";
+import {FuelError} from "fuels";
 
 export function TransactionFailureModal({
   closeModal,
@@ -18,8 +18,10 @@ export function TransactionFailureModal({
   return (
     <div className="flex flex-col items-center gap-3 lg:gap-6">
       <FailureIcon className="w-[40px] h-[40px] lg:w-[80px] lg:h-[80px]" />
-      <p className="font-medium text-[22px] leading-[26px] text-center">{title}</p>
-      <p className="text-[14px] leading-[16px] text-[var(--content-dimmed-dark)] text-center">
+      <p className="font-medium text-[22px] leading-[26px] text-center">
+        {title}
+      </p>
+      <p className="text-[14px] leading-[16px] text-content-dimmed-dark text-center">
         {message}
       </p>
       <ActionButton onClick={closeModal} className="w-full">

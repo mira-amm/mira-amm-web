@@ -23,7 +23,7 @@ export function CoinListItem({
   return (
     <span
       className={clsx(
-        "flex gap-2 text-[color:var(--content-primary)]",
+        "flex gap-2 text-content-primary",
         !assetData?.name && "items-center"
       )}
     >
@@ -41,7 +41,7 @@ export function CoinListItem({
           <p className="text-base font-normal leading-[22px]">{assetData.symbol}</p>
           {isVerified && (
 <span
-  className="ml-[3px] mt-[2px] inline-flex items-center justify-center w-[14px] h-[14px] rounded-full"
+  className="ml-[3px] mt-[2px] inline-flex items-center justify-center w-6 h-6 rounded-full"
   data-tooltip-id="verified-tooltip"
   data-tooltip-content="Verified asset from Fuel's official asset list."
 >
@@ -49,13 +49,13 @@ export function CoinListItem({
 </span>
           )}
         </div>
-        <p className="text-sm leading-4 text-[color:var(--content-dimmed-light)]">
+        <p className="text-sm leading-4 text-content-dimmed-light">
           {assetData.name}
         </p>
       </div>
 
       {balanceValue.gt(0) && (
-        <p className="text-sm leading-4 text-[color:var(--content-dimmed-dark)]">
+        <p className="text-sm leading-4 text-content-dimmed-dark">
           {balanceValue.formatUnits(assetData.decimals || 0)}
         </p>
       )}

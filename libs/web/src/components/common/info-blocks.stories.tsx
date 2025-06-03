@@ -1,8 +1,8 @@
 import type {Meta, StoryObj} from "@storybook/react";
 import "../../../styles.css";
 import {InfoBlocks} from "./info-blocks";
-import { RoadMapBlock } from "./roadmap-block";
-import { RoadMapIcon } from "./roadmap-icon";
+import {RoadMapBlock} from "./roadmap-block";
+import {RoadMapIcon} from "./roadmap-icon";
 
 const meta = {
   title: "🪙 Web/Info Blocks",
@@ -13,7 +13,7 @@ const meta = {
   },
   decorators: [
     (Story) => (
-      <div className="bg-[var(--background-primary)] p-4">
+      <div className="bg-background-primary p-4">
         <Story />
       </div>
     ),

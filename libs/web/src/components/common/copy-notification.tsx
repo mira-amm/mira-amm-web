@@ -5,11 +5,11 @@ import {
 
 export const CopyNotification: React.FC<{
   onClose: () => void;
-}> = ({ onClose }) => {
+}> = ({onClose}) => {
   return (
     <div
       className={`
-        bg-[var(--content-positive)]
+        bg-content-positive
         w-[480px]
         rounded-[10px]
         flex justify-between items-center
@@ -26,7 +26,7 @@ export const CopyNotification: React.FC<{
     >
       <div className="flex gap-4 items-center">
         <NotificationCheckboxIcon />
-        <span className="text-[16px] leading-[24px] font-normal text-[var(--content-primary)] m-0">
+        <span className="text-[16px] leading-[24px] font-normal text-content-primary m-0">
           Copied address
         </span>
       </div>

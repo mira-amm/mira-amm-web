@@ -1,9 +1,9 @@
-import { SuccessIcon } from "@/meshwave-ui/icons";
-import {ActionButton}from "@/src/components/common";
-import { useCallback } from "react";
-import { openNewTab } from "@/src/utils/common";
-import { CoinName } from "@/src/utils/coinsConfig";
-import { FuelAppUrl } from "@/src/utils/constants";
+import {SuccessIcon} from "@/meshwave-ui/icons";
+import {ActionButton} from "@/src/components/common";
+import {useCallback} from "react";
+import {openNewTab} from "@/src/utils/common";
+import {CoinName} from "@/src/utils/coinsConfig";
+import {FuelAppUrl} from "@/src/utils/constants";
 
 export default function RemoveLiquiditySuccessModal({
   coinA,
@@ -17,7 +17,7 @@ export default function RemoveLiquiditySuccessModal({
   firstCoinAmount: string;
   secondCoinAmount: string;
   transactionHash: string | undefined;
-}){
+}) {
   const handleViewTransactionClick = useCallback(() => {
     if (!transactionHash) return;
     openNewTab(`${FuelAppUrl}/tx/${transactionHash}/simple`);
@@ -33,15 +33,12 @@ export default function RemoveLiquiditySuccessModal({
       <p className="font-medium text-[22px] leading-[26px] text-center">
         Success
       </p>
-      <p className="text-[14px] leading-[16px] text-[var(--content-dimmed-dark)] text-center">
+      <p className="text-[14px] leading-[16px] text-content-dimmed-dark text-center">
         {subText}
       </p>
-      <ActionButton
-        onClick={handleViewTransactionClick}
-        className="w-full"
-      >
+      <ActionButton onClick={handleViewTransactionClick} className="w-full">
         View transaction
       </ActionButton>
     </div>
   );
-};
+}

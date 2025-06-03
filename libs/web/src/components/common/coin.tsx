@@ -1,13 +1,17 @@
-import { clsx } from "clsx";
-import { ChevronDownIcon } from "@/meshwave-ui/icons";
-import { useAssetMetadata } from "@/src/hooks";
-import { useAssetImage } from "@/src/hooks/useAssetImage";
+import {clsx} from "clsx";
+import {ChevronDownIcon} from "@/meshwave-ui/icons";
+import {useAssetMetadata} from "@/src/hooks";
+import {useAssetImage} from "@/src/hooks/useAssetImage";
 
-export function Coin({ assetId, className, onClick }: {
+export function Coin({
+  assetId,
+  className,
+  onClick,
+}: {
   assetId: string | null;
   className?: string;
   onClick?: VoidFunction;
-}){
+}) {
   const metadata = useAssetMetadata(assetId);
   const icon = useAssetImage(assetId);
 
@@ -17,9 +21,9 @@ export function Coin({ assetId, className, onClick }: {
 
   const newPool = Boolean(onClick);
 
-  const baseClasses = "flex items-center gap-2 text-[var(--content-primary)]";
+  const baseClasses = "flex items-center gap-2 text-content-primary";
   const clickableClasses =
-    "rounded px-2 py-1 cursor-pointer hover:bg-[var(--background-grey-light)] active:bg-[var(--background-grey-dark)]";
+    "rounded px-2 py-1 cursor-pointer hover:background-grey-light active:bg-background-grey-dark";
   const nameClasses = "text-[18px] font-medium leading-[19px]";
 
   return (
@@ -34,4 +38,4 @@ export function Coin({ assetId, className, onClick }: {
       {newPool && <ChevronDownIcon />}
     </div>
   );
-};
+}

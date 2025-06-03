@@ -1,11 +1,11 @@
-import {ActionButton}from "@/src/components/common";
+import {ActionButton} from "@/src/components/common";
 import clsx from "clsx";
 
 export const ConfirmPopup: React.FC<{
   onConfirm: VoidFunction;
   onDeny: VoidFunction;
   disconnectIsPending: boolean;
-}> = ({ onConfirm, onDeny, disconnectIsPending }) => {
+}> = ({onConfirm, onDeny, disconnectIsPending}) => {
   return (
     <section className="fixed top-0 left-0 z-[47] flex flex-col justify-center items-center w-screen h-screen bg-[#00000059] backdrop-blur-md">
       <form
@@ -13,9 +13,7 @@ export const ConfirmPopup: React.FC<{
         max-[768px]:w-[343px] max-[768px]:h-[525px]"
       >
         {/* Header */}
-        <div
-          className="sticky top-0 left-0 z-[48] w-full px-[28px] pt-[20px] pb-[16px] flex justify-between items-center bg-[#262834] shadow-[1px_0px_2px_0px_#faf8f830]"
-        >
+        <div className="sticky top-0 left-0 z-[48] w-full px-[28px] pt-[20px] pb-[16px] flex justify-between items-center bg-[#262834] shadow-[1px_0px_2px_0px_#faf8f830]">
           <h2 className="text-[24px] leading-[32px] font-normal max-[768px]:text-[22px] max-[768px]:leading-[28px]">
             Disclaimer
           </h2>
@@ -33,7 +31,7 @@ export const ConfirmPopup: React.FC<{
             incorporated in, or has a registered office in the United States of
             America or any other Prohibited Localities, as defined in the{" "}
             <a
-              className="text-[var(--content-dimmed-light)] hover:text-[var(--content-primary)]"
+              className="text-content-dimmed-light hover:text-content-primary"
               href="https://docs.mira.ly/resources/terms-and-conditions"
               target="_blank"
             >
@@ -58,7 +56,7 @@ export const ConfirmPopup: React.FC<{
             I understand the risks associated with using decentralized
             protocols, including the Mira Protocol, as outlined in the{" "}
             <a
-              className="text-[var(--content-dimmed-light)] hover:text-[var(--content-primary)]"
+              className="text-content-dimmed-light hover:text-content-primary"
               href="https://docs.mira.ly/resources/terms-and-conditions"
               target="_blank"
             >
@@ -66,7 +64,7 @@ export const ConfirmPopup: React.FC<{
             </a>{" "}
             and{" "}
             <a
-              className="text-[var(--content-dimmed-light)] hover:text-[var(--content-primary)]"
+              className="text-content-dimmed-light hover:text-content-primary"
               href="https://docs.mira.ly/resources/privacy-policy"
               target="_blank"
             >
@@ -77,11 +75,11 @@ export const ConfirmPopup: React.FC<{
         </ul>
 
         {/* Buttons */}
-        <div
-          className="sticky bottom-0 left-0 z-[48] w-full bg-[#262834] px-[28px] py-[24px] flex gap-[12px] shadow-[1px_0px_2px_0px_#faf8f830]"
-        >
+        <div className="sticky bottom-0 left-0 z-[48] w-full bg-[#262834] px-[28px] py-[24px] flex gap-[12px] shadow-[1px_0px_2px_0px_#faf8f830]">
           <ActionButton
-            className={clsx("w-full h-[48px] text-[var(--accent-primary)] bg-transparent")}
+            className={clsx(
+              "w-full h-[48px] text-accent-primary bg-transparent",
+            )}
             variant="outlined"
             onClick={onDeny}
             loading={disconnectIsPending}

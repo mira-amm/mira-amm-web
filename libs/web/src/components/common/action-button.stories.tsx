@@ -1,5 +1,5 @@
-import type { Meta, StoryObj } from "@storybook/react";
-import { ActionButton } from ".";
+import type {Meta, StoryObj} from "@storybook/react";
+import {ActionButton} from ".";
 import "../../../styles.css";
 
 const meta = {
@@ -11,7 +11,7 @@ const meta = {
   },
   decorators: [
     (Story) => (
-      <div className="bg-[var(--background-primary)] p-4">
+      <div className="bg-background-primary p-4">
         <Story />
       </div>
     ),

@@ -1,5 +1,5 @@
 import type {Meta, StoryObj} from "@storybook/react";
-import { ConfirmPopup } from ".";
+import {ConfirmPopup} from ".";
 import "../../../styles.css";
 
 const meta: Meta<typeof ConfirmPopup> = {
@@ -11,7 +11,7 @@ const meta: Meta<typeof ConfirmPopup> = {
   },
   decorators: [
     (Story) => (
-      <div className="bg-[var(--background-primary)] p-4">
+      <div className="bg-background-primary p-4">
         <Story />
       </div>
     ),

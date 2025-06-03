@@ -1,25 +1,25 @@
 "use client";
 
-import { useIsConnected } from "@fuels/react";
+import {useIsConnected} from "@fuels/react";
 import usePositions from "@/src/hooks/usePositions";
-import { useAssetMetadata } from "@/src/hooks";
-import { formatUnits } from "fuels";
-import { buildPoolId } from "mira-dex-ts";
+import {useAssetMetadata} from "@/src/hooks";
+import {formatUnits} from "fuels";
+import {buildPoolId} from "mira-dex-ts";
 import usePoolAPR from "@/src/hooks/usePoolAPR";
 import usePoolNameAndMatch from "@/src/hooks/usePoolNameAndMatch";
-import { createPoolKey } from "@/src/utils/common";
-import { DefaultLocale, POSITIONS_SKELTON_COUNT } from "@/src/utils/constants";
+import {createPoolKey} from "@/src/utils/common";
+import {DefaultLocale, POSITIONS_SKELTON_COUNT} from "@/src/utils/constants";
 import Link from "next/link";
 
 import CoinPair from "@/src/components/common/CoinPair/CoinPair";
 import AprBadge from "@/src/components/common/AprBadge/AprBadge";
-import { ActionButton } from "@/src/components/common";
-import { DocumentIcon } from "@/meshwave-ui/icons";
-import { PositionsLoader } from "./PositionsLoader";
+import {ActionButton} from "@/src/components/common";
+import {DocumentIcon} from "@/meshwave-ui/icons";
+import {PositionsLoader} from "./PositionsLoader";
 
 export function Positions() {
-  const { isConnected } = useIsConnected();
-  const { data, isLoading } = usePositions();
+  const {isConnected} = useIsConnected();
+  const {data, isLoading} = usePositions();
 
   if (!isConnected || data?.length === 0) {
     return (
@@ -49,9 +49,9 @@ export function Positions() {
       {!data || isLoading ? (
         <PositionsLoader count={POSITIONS_SKELTON_COUNT} />
       ) : (
-        <div className="flex flex-col gap-4 bg-[var(--background-grey-dark)] rounded-[24px] p-4">
+        <div className="flex flex-col gap-4 bg-background-grey-dark rounded-[24px] p-4">
           {/* Headers */}
-          <div className="grid grid-cols-3 md:grid-cols-4 gap-4 px-2 pb-4 border-b border-[var(--background-grey-darker)] text-[var(--content-tertiary)] text-sm font-normal">
+          <div className="grid grid-cols-3 md:grid-cols-4 gap-4 px-2 pb-4 border-b border-background-grey-darkertext-content-tertiary text-sm font-normal">
             <div className="text-left">Pools</div>
             <div className="text-center">APR</div>
             <div className="text-center">Position size</div>
@@ -113,10 +113,11 @@ function PositionRow({
 
   const coinAAmount = formatUnits(amountA, assetAMetadata.decimals);
   const coinBAmount = formatUnits(amountB, assetBMetadata.decimals);
-  const size = parseFloat(coinAAmount) * priceA + parseFloat(coinBAmount) * priceB;
+  const size =
+    parseFloat(coinAAmount) * priceA + parseFloat(coinBAmount) * priceB;
 
-  const { apr } = usePoolAPR(poolId);
-  const { isMatching } = usePoolNameAndMatch(poolKey);
+  const {apr} = usePoolAPR(poolId);
+  const {isMatching} = usePoolNameAndMatch(poolKey);
   const aprValue = apr
     ? `${apr.apr.toLocaleString(DefaultLocale, {
         minimumFractionDigits: 2,
@@ -130,7 +131,7 @@ function PositionRow({
 
   return (
     <Link href={path} className="block">
-      <div className="grid grid-cols-3 md:grid-cols-4 gap-4 items-center py-4 hover:bg-[var(--background-grey-darker)] transition rounded-lg px-2">
+      <div className="grid grid-cols-3 md:grid-cols-4 gap-4 items-center py-4 hover:bg-background-grey-darkertransition rounded-lg px-2">
         <div className="flex flex-col gap-1 min-w-[150px]">
           <CoinPair
             firstCoin={assetIdA}
@@ -140,7 +141,7 @@ function PositionRow({
           />
         </div>
 
-        <div className="text-center text-[14px] text-[var(--content-positive)]">
+        <div className="text-center text-[14px] text-content-positive">
           {isMatching ? (
             <AprBadge
               aprValue={aprValue}
@@ -153,14 +154,14 @@ function PositionRow({
           )}
         </div>
 
-        <div className="text-center text-[14px] text-[var(--content-tertiary)]">
+        <div className="text-center text-[14px] text-content-tertiary">
           {size ? `$${size.toFixed(2)}` : "checking..."}
         </div>
 
-<div className="col-span-3 md:col-span-1 flex lg:justify-end">
+        <div className="col-span-3 md:col-span-1 flex lg:justify-end">
           <ActionButton
             variant="secondary"
-            className="w-full lg:max-w-[165px] text-[var(--accent-primary)] text-xs text-nowrap font-medium leading-[19px]"
+            className="w-full lg:max-w-[165px] text-accent-primary text-xs text-nowrap font-medium leading-[19px]"
           >
             Manage position
           </ActionButton>

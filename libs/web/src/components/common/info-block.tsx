@@ -1,8 +1,12 @@
-export function InfoBlock({ title, value, type }: {
+export function InfoBlock({
+  title,
+  value,
+  type,
+}: {
   title: string;
   value: string | null;
   type?: "positive" | "negative";
-}){
+}) {
   const isPositive = type === "positive";
   const isPending = value === null;
 
@@ -12,14 +16,14 @@ export function InfoBlock({ title, value, type }: {
       <p
         className={`whitespace-nowrap overflow-hidden text-ellipsis ${
           isPending
-            ? "text-[var(--content-dimmed-light)]"
+            ? "text-content-dimmed-light"
             : isPositive
-            ? "text-[var(--content-positive)]"
-            : "text-[var(--content-tertiary)]"
+              ? "text-content-positive"
+              : "text-content-tertiary"
         }`}
       >
         {value ?? "Awaiting data"}
       </p>
     </div>
   );
-};
+}

@@ -38,9 +38,9 @@ export default function Page() {
         Back
       </button>
 
-      <section className="flex flex-col gap-6 p-4 rounded-2xl w-full max-w-[524px] mx-auto bg-[var(--background-grey-dark)] z-[5]">
-        <div className="flex items-center justify-between border-b border-[var(--background-grey-light)] pb-4 text-[var(--content-grey)] font-medium text-base leading-[19px] gap-2">
-          <p className="flex-1 text-[var(--content-primary)]">Create Pool</p>
+      <section className="flex flex-col gap-6 p-4 rounded-2xl w-full max-w-lg mx-auto bg-background-grey-dark z-[5]">
+        <div className="flex items-center justify-between border-b border-background-grey-light pb-4 text-content-grey font-medium text-base leading-5 gap-2">
+          <p className="flex-1 text-content-primary">Create Pool</p>
           {showPreview && (
             <IconButton onClick={handleCloseClick}>
               <CloseIcon />

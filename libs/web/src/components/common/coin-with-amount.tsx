@@ -25,19 +25,19 @@ export function CoinWithAmount({
       )}
       {!withName ? (
         <div className="flex flex-col gap-1">
-          <p className="font-medium text-[18px] leading-[22px] text-[var(--content-primary)]">
+          <p className="font-medium text-[18px] leading-[22px] text-content-primary">
             {amount}
           </p>
-          <p className="font-normal text-[15px] leading-[18px] text-[var(--content-dimmed-light)]">
+          <p className="font-normal text-[15px] leading-[18px] text-content-dimmed-light">
             {metadata.symbol}
           </p>
         </div>
       ) : (
         <div className="flex flex-col gap-1">
-          <p className="font-medium text-[18px] leading-[22px] text-[var(--content-primary)]">
+          <p className="font-medium text-[18px] leading-[22px] text-content-primary">
             {metadata.symbol}
           </p>
-          <p className="font-normal text-[15px] leading-[18px] text-[var(--content-dimmed-light)]">
+          <p className="font-normal text-[15px] leading-[18px] text-content-dimmed-light">
             {metadata.name}
           </p>
         </div>

@@ -83,6 +83,17 @@
 
     --font-sans: var(--font-inter);
     --font-alt: var(--font-prompt);
+
+    --color-old-mira-btn: #2e2e2e;
+    --color-old-mira-audit: #1b2749;
+    --color-old-mira-social: rgba(80, 127, 247, 0.1);
+    --color-old-mira-discord: #32389f;
+    --color-old-mira-x: #040305;
+
+    --color-old-mira-bg-hover: #97cf061a;
+    --color-old-mira-bg-active: #b6fa081a;
+    --color-old-mira-active-btn: #9fd908;
+    --color-old-mira-text: #28282f;
   }
 
   html,

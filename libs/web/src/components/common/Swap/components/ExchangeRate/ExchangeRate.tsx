@@ -1,10 +1,10 @@
-import { useState } from "react";
-import { CurrencyBoxMode, SwapState } from "@/src/components/common/Swap/Swap";
-import { ExchangeIcon } from "@/meshwave-ui/icons";
+import {useState} from "react";
+import {CurrencyBoxMode, SwapState} from "@/src/components/common/Swap/Swap";
+import {ExchangeIcon} from "@/meshwave-ui/icons";
 import useExchangeRate from "@/src/hooks/useExchangeRate/useExchangeRate";
-import { useAnimationStore } from "@/src/stores/useGlitchScavengerHunt";
+import {useAnimationStore} from "@/src/stores/useGlitchScavengerHunt";
 
-function ExchangeRate({ swapState }: { swapState: SwapState }) {
+function ExchangeRate({swapState}: {swapState: SwapState}) {
   const [mode, setMode] = useState<CurrencyBoxMode>("sell");
 
   const handleClick = () => {
@@ -19,7 +19,7 @@ function ExchangeRate({ swapState }: { swapState: SwapState }) {
   return (
     <button
       onClick={handleClick}
-      className="w-fit flex items-center gap-[10px] text-xs leading-[18px] text-[var(--content-dimmed-light)] bg-transparent border-none cursor-pointer lg:text-[13px]"
+      className="w-fit flex items-center gap-[10px] text-xs leading-[18px] text-content-dimmed-light bg-transparent border-none cursor-pointer lg:text-[13px]"
     >
       {rate}
       <ExchangeIcon />

@@ -1,11 +1,11 @@
-import { CheckboxIcon } from "@/meshwave-ui/icons";
+import {CheckboxIcon} from "@/meshwave-ui/icons";
 
 export const RoadMapBlock: React.FC<{
   logo: React.ReactNode;
   title: string;
   description: string;
   done?: boolean;
-}> = ({ logo, title, description, done }) => {
+}> = ({logo, title, description, done}) => {
   return (
     <div className="bg-[#262934] rounded-xl flex flex-col items-center space-y-10 p-6 w-[350px] lg:w-[280px] font-inter">
       {logo}
@@ -16,9 +16,7 @@ export const RoadMapBlock: React.FC<{
         {done && <CheckboxIcon />}
         <p
           className={`text-sm leading-[22px] font-medium text-center text-nowrap ${
-            done
-              ? "text-[var(--content-positive)]"
-              : "text-[var(--content-grey)]"
+            done ? "text-content-positive" : "text-content-grey"
           }`}
         >
           {description}

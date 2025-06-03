@@ -4,13 +4,13 @@ import Footer from "./Footer";
 const meta: Meta<typeof Footer> = {
   title: "🪙 Web/Footer",
   component: Footer,
-  tags: ['autodocs'],
+  tags: ["autodocs"],
   parameters: {
-    layout: 'centered',
+    layout: "centered",
   },
   decorators: [
     (Story) => (
-      <div className="min-h-screen bg-[var(--background-primary)]">
+      <div className="min-h-screen bg-background-primary">
         <div className="flex flex-col min-h-screen">
           <div className="flex-grow" />
           <Story />

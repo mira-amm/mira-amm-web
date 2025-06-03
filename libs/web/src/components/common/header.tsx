@@ -1,12 +1,17 @@
-'use client';
+"use client";
 
-import { useEffect, useState, useCallback, useMemo } from "react";
+import {useEffect, useState, useCallback, useMemo} from "react";
 import Link from "next/link";
-import { clsx } from "clsx";
+import {clsx} from "clsx";
 
-import { ConnectButton, Logo, MobileMenu, MainnetLabel } from "@/src/components/common";
+import {
+  ConnectButton,
+  Logo,
+  MobileMenu,
+  MainnetLabel,
+} from "@/src/components/common";
 import DisconnectMobile from "@/src/components/common/ConnectButton/DisconnectMobile";
-import { useIsConnected } from "@fuels/react";
+import {useIsConnected} from "@fuels/react";
 
 import {
   BlogLink,
@@ -44,28 +49,48 @@ export function Header({
     localStorage.setItem(PROMO_BANNER_STORAGE_KEY, "true");
   }, []);
 
-  const navLinks = useMemo(() => [
-    { href: "/", label: "Swap", match: pathname === "/" },
-    { href: "/liquidity", label: "Liquidity", match: pathname.includes("/liquidity") },
-    { href: "/points", label: "Points", match: pathname.includes("/points") },
-    { href: `${FuelAppUrl}/bridge?from=eth&to=fuel&auto_close=true&=true`, label: "Bridge", external: true },
-  ], [pathname]);
+  const navLinks = useMemo(
+    () => [
+      {href: "/", label: "Swap", match: pathname === "/"},
+      {
+        href: "/liquidity",
+        label: "Liquidity",
+        match: pathname.includes("/liquidity"),
+      },
+      {href: "/points", label: "Points", match: pathname.includes("/points")},
+      {
+        href: `${FuelAppUrl}/bridge?from=eth&to=fuel&auto_close=true&=true`,
+        label: "Bridge",
+        external: true,
+      },
+    ],
+    [pathname],
+  );
 
   return (
-    <header className="sticky top-0 z-10 text-base lg:text-lg backdrop-blur-lg
-        transition-all duration-300 ease-in-out">
+    <header
+      className="sticky top-0 z-10 text-base lg:text-lg backdrop-blur-lg
+        transition-all duration-300 ease-in-out"
+    >
       {isPromoShown && (
         <section className="relative flex items-center justify-between px-4 py-3 text-white text-sm lg:text-lg lg:justify-center">
           <div className="flex items-center gap-2">
             <PointsIcon className="w-[18px] h-[18px]" />
             <p>
               {POINTS_PROMO_TITLE}
-              <Link href={POINTS_LEARN_MORE_URL} target="_blank" className="ml-1 underline">
+              <Link
+                href={POINTS_LEARN_MORE_URL}
+                target="_blank"
+                className="ml-1 underline"
+              >
                 Learn More
               </Link>
             </p>
           </div>
-          <IconButton onClick={handleCloseBanner} className="absolute right-4 top-3">
+          <IconButton
+            onClick={handleCloseBanner}
+            className="absolute right-4 top-3"
+          >
             <CloseIcon />
           </IconButton>
         </section>
@@ -75,14 +100,14 @@ export function Header({
         <div className="flex items-center gap-6 lg:gap-10">
           <Logo />
           <nav className="hidden lg:flex gap-6 items-center">
-            {navLinks.map(({ href, label, match, external }) =>
+            {navLinks.map(({href, label, match, external}) =>
               external ? (
                 <a
                   key={label}
                   href={href}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="px-3 py-1 rounded-full transition hover:bg-[var(--background-grey-light)]"
+                  className="px-3 py-1 rounded-full transition hover:background-grey-light"
                 >
                   {label}
                 </a>
@@ -91,13 +116,13 @@ export function Header({
                   key={label}
                   href={href}
                   className={clsx(
-                    "px-3 py-1 rounded-full transition hover:bg-[var(--background-grey-light)]",
-                    match && "bg-[var(--background-grey-light)]"
+                    "px-3 py-1 rounded-full transition hover:background-grey-light",
+                    match && "bg-background-grey-light",
                   )}
                 >
                   {label}
                 </Link>
-              )
+              ),
             )}
           </nav>
         </div>
@@ -108,10 +133,10 @@ export function Header({
         </div>
 
         <div className="hidden lg:flex items-center gap-6">
-            <MainnetLabel />
-            <div className="flex items-center gap-6">
-                <ConnectButton className="min-w-[158px] h-10 text-base leading-6" />
-            </div>
+          <MainnetLabel />
+          <div className="flex items-center gap-6">
+            <ConnectButton className="min-w-[158px] h-10 text-base leading-6" />
+          </div>
         </div>
       </section>
     </header>

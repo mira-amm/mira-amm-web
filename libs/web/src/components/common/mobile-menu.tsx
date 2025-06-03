@@ -6,8 +6,8 @@ import {useIsClient, useScrollLock} from "usehooks-ts";
 import {clsx} from "clsx";
 import Link from "next/link";
 
-import { Logo } from "@/src/components/common";
-import { MenuIcon, CloseIcon } from "@/meshwave-ui/icons";
+import {Logo} from "@/src/components/common";
+import {MenuIcon, CloseIcon} from "@/meshwave-ui/icons";
 import {BlogLink, DiscordLink, XLink} from "@/src/utils/constants";
 import useFaucetLink from "@/src/hooks/useFaucetLink";
 
@@ -28,7 +28,7 @@ export function MobileMenu() {
   const menu = (
     <div
       className={clsx(
-        "fixed top-0 right-0 z-10 h-full w-screen overflow-auto bg-[var(--background-primary)] transition-transform duration-400 ease-in-out",
+        "fixed top-0 right-0 z-10 h-full w-screen overflow-auto bg-background-primary transition-transform duration-400 ease-in-out",
         expanded ? "translate-x-0 shadow-md" : "translate-x-full",
       )}
     >
@@ -36,7 +36,7 @@ export function MobileMenu() {
         <Logo />
         <button
           onClick={toggleExpanded}
-          className="flex items-center justify-center border-none bg-transparent text-[var(--content-primary)]"
+          className="flex items-center justify-center border-none bg-transparent text-content-primary"
           aria-label="Close mobile menu"
         >
           <CloseIcon />
@@ -101,7 +101,7 @@ export function MobileMenu() {
     <>
       <button
         onClick={toggleExpanded}
-        className="flex justify-center items-center bg-transparent border-none text-[var(--content-primary)]"
+        className="flex justify-center items-center bg-transparent border-none text-content-primary"
         aria-label="Open mobile menu"
       >
         <MenuIcon />

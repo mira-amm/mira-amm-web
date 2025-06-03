@@ -1,6 +1,6 @@
 import type {Meta, StoryObj} from "@storybook/react";
 import "../../../styles.css";
-import { IconButton } from "./icon-button";
+import {IconButton} from "./icon-button";
 
 const meta = {
   title: "🪙 Web/Icon Button",
@@ -11,7 +11,7 @@ const meta = {
   },
   decorators: [
     (Story) => (
-      <div className="bg-[var(--background-primary)] p-4">
+      <div className="bg-background-primary p-4">
         <Story />
       </div>
     ),

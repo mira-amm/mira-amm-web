@@ -12,7 +12,7 @@ const meta = {
   },
   decorators: [
     (Story) => (
-      <div className="bg-[var(--background-primary)] p-4 absolute top-0 -left-10 w-full">
+      <div className="bg-background-primary p-4 absolute top-0 -left-10 w-full">
         <Story />
       </div>
     ),

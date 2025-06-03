@@ -1,6 +1,6 @@
 import type {Meta, StoryObj} from "@storybook/react";
 import "../../../styles.css";
-import { Logo } from "./logo";
+import {Logo} from "./logo";
 
 const meta = {
   title: "🪙 Web/Logo",
@@ -11,7 +11,7 @@ const meta = {
   },
   decorators: [
     (Story) => (
-      <div className="bg-[var(--background-primary)] p-4">
+      <div className="bg-background-primary p-4">
         <Story />
       </div>
     ),

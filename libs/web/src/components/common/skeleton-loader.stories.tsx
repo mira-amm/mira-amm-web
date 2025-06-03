@@ -1,6 +1,6 @@
 import type {Meta, StoryObj} from "@storybook/react";
 import "../../../styles.css";
-import { SkeletonLoader } from "./skeleton-loader";
+import {SkeletonLoader} from "./skeleton-loader";
 
 const meta = {
   title: "🪙 Web/Skeleton Loader",
@@ -11,7 +11,7 @@ const meta = {
   },
   decorators: [
     (Story) => (
-      <div className="bg-[var(--background-primary)] p-4">
+      <div className="bg-background-primary p-4">
         <Story />
       </div>
     ),

@@ -1,21 +1,32 @@
 "use client";
 
-import { clsx } from "clsx";
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import {clsx} from "clsx";
+import {useCallback, useEffect, useMemo, useRef, useState} from "react";
 
-import {ActionButton, DropDownMenu, CopyNotification } from "@/src/components/common";
+import {
+  ActionButton,
+  DropDownMenu,
+  CopyNotification,
+} from "@/src/components/common";
 import TransactionsHistory from "@/src/components/common/TransactionsHistory/TransactionsHistory";
-import { useFormattedAddress } from "@/src/hooks";
+import {useFormattedAddress} from "@/src/hooks";
 import useWeb3React from "@/src/hooks/useWeb3Connection";
-import { openNewTab } from "@/src/utils/common";
-import { FuelAppUrl } from "@/src/utils/constants";
-import { DropDownButtons } from "@/src/utils/DropDownButtons";
-import { useScrollLock } from "usehooks-ts";
-import { ArrowDownIcon, ArrowUpIcon } from "@/meshwave-ui/icons";
+import {openNewTab} from "@/src/utils/common";
+import {FuelAppUrl} from "@/src/utils/constants";
+import {DropDownButtons} from "@/src/utils/DropDownButtons";
+import {useScrollLock} from "usehooks-ts";
+import {ArrowDownIcon, ArrowUpIcon} from "@/meshwave-ui/icons";
 
-export function ConnectButton({ className, isWidget }: { className?: string; isWidget?: boolean }) {
-  const { account, connect, disconnect, isConnected, isWalletLoading } = useWeb3React();
-  const { lock, unlock } = useScrollLock({ autoLock: false });
+export function ConnectButton({
+  className,
+  isWidget,
+}: {
+  className?: string;
+  isWidget?: boolean;
+}) {
+  const {account, connect, disconnect, isConnected, isWalletLoading} =
+    useWeb3React();
+  const {lock, unlock} = useScrollLock({autoLock: false});
 
   const [isMenuOpened, setMenuOpened] = useState(false);
   const [isHistoryOpened, setHistoryOpened] = useState(false);
@@ -84,7 +95,10 @@ export function ConnectButton({ className, isWidget }: { className?: string; isW
 
   const formattedAddress = useFormattedAddress(account);
 
-  const title = useMemo(() => (isConnected ? formattedAddress : "Connect Wallet"), [isConnected, formattedAddress]);
+  const title = useMemo(
+    () => (isConnected ? formattedAddress : "Connect Wallet"),
+    [isConnected, formattedAddress],
+  );
 
   const handleCopy = useCallback(async () => {
     if (isConnected && account) {
@@ -98,7 +112,8 @@ export function ConnectButton({ className, isWidget }: { className?: string; isW
     }
   }, [account, isConnected]);
 
-  const handleExplorerClick = () => openNewTab(`${FuelAppUrl}/account/${account}/transactions`);
+  const handleExplorerClick = () =>
+    openNewTab(`${FuelAppUrl}/account/${account}/transactions`);
 
   const handleHistoryOpen = () => {
     setHistoryOpened(true);
@@ -126,8 +141,10 @@ export function ConnectButton({ className, isWidget }: { className?: string; isW
   );
 
   const filterButtons = useCallback(
-    (button: { text: string }) =>
-      !isWidget || button.text === "Disconnect" || button.text === "Copy Address",
+    (button: {text: string}) =>
+      !isWidget ||
+      button.text === "Disconnect" ||
+      button.text === "Copy Address",
     [isWidget],
   );
 
@@ -152,22 +169,30 @@ export function ConnectButton({ className, isWidget }: { className?: string; isW
           className={clsx(
             className,
             isConnected &&
-              "flex items-center gap-[10px] px-[8px] py-[16px] text-[var(--content-primary)] bg-transparent border border-[var(--accent-primary)] hover:shadow-none active:bg-transparent"
+              "flex items-center gap-[10px] px-[8px] py-[16px] text-content-primary bg-transparent border border-accent-primary hover:shadow-none active:bg-transparent",
           )}
           onClick={handleClick}
           loading={isWalletLoading}
           ref={buttonRef}
         >
-          {isConnected && <img src="/images/avatar.png" width="24" height="24" />}
+          {isConnected && (
+            <img src="/images/avatar.png" width="24" height="24" />
+          )}
           {title}
           {isConnected && (!isMenuOpened ? <ArrowDownIcon /> : <ArrowUpIcon />)}
         </ActionButton>
 
         {isMenuOpened && <DropDownMenu buttons={menuButtons} ref={menuRef} />}
-        <TransactionsHistory onClose={handleHistoryClose} isOpened={isHistoryOpened} ref={transactionsRef} />
+        <TransactionsHistory
+          onClose={handleHistoryClose}
+          isOpened={isHistoryOpened}
+          ref={transactionsRef}
+        />
       </div>
 
-      {isAddressCopied && <CopyNotification onClose={() => setAddressCopied(false)} />}
+      {isAddressCopied && (
+        <CopyNotification onClose={() => setAddressCopied(false)} />
+      )}
     </>
   );
 }

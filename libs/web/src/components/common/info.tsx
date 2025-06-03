@@ -1,13 +1,17 @@
 "use client";
 
-import { useEffect, useRef } from "react";
-import { InfoIcon } from "@/meshwave-ui/icons";
+import {useEffect, useRef} from "react";
+import {InfoIcon} from "@/meshwave-ui/icons";
 
-export function Info({ tooltipText, tooltipKey, color }: {
+export function Info({
+  tooltipText,
+  tooltipKey,
+  color,
+}: {
   tooltipText: string;
   tooltipKey: string;
   color?: string;
-}){
+}) {
   const buttonRef = useRef<HTMLButtonElement>(null);
   const tooltipRef = useRef<HTMLDivElement>(null);
 
@@ -39,8 +43,8 @@ export function Info({ tooltipText, tooltipKey, color }: {
       <button
         id={buttonId}
         ref={buttonRef}
-        className="w-4 h-4 p-0 border-none bg-transparent cursor-pointer text-[var(--content-grey-dark)] hover:text-[var(--content-grey)] active:text-[var(--content-dimmed-dark)]"
-        style={{ anchorName: `--${buttonId}` }}
+        className="w-4 h-4 p-0 border-none bg-transparent cursor-pointer text-content-grey-dark hover:text-content-grey active:text-content-dimmed-dark"
+        style={{anchorName: `--${buttonId}`}}
       >
         <InfoIcon color={color} />
       </button>
@@ -48,7 +52,7 @@ export function Info({ tooltipText, tooltipKey, color }: {
       <div
         id={tooltipId}
         ref={tooltipRef}
-        className="fixed max-w-[200px] text-sm leading-4 font-normal p-2 rounded-lg bg-[var(--background-secondary)] text-[var(--content-dimmed-dark)] z-[1000] invisible transition-opacity duration-200 ease-in-out"
+        className="fixed max-w-[200px] text-sm leading-4 font-normal p-2 rounded-lg bg-background-secondary text-content-dimmed-dark z-[1000] invisible transition-opacity duration-200 ease-in-out"
         style={{
           positionAnchor: `--${buttonId}`,
           top: "anchor(50%)",
@@ -60,4 +64,4 @@ export function Info({ tooltipText, tooltipKey, color }: {
       </div>
     </div>
   );
-};
+}
