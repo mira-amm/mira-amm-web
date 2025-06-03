@@ -1,8 +1,8 @@
 "use client";
 
-import { BackLink, TransactionFailureModal } from "@/src/components/common";
+import {TransactionFailureModal} from "@/src/components/common";
 import styles from "./PositionView.module.css";
-import { useModal } from "@/src/hooks";
+import {useModal} from "@/src/hooks";
 import RemoveLiquidityModalContent from "@/src/components/pages/view-position-page/components/RemoveLiquidityModalContent/RemoveLiquidityModalContent";
 import usePositionData from "@/src/hooks/usePositionData";
 import {createPoolKey, floorToTwoSignificantDigits} from "@/src/utils/common";
@@ -16,16 +16,16 @@ import useCheckActiveNetwork from "@/src/hooks/useCheckActiveNetwork";
 import usePoolAPR from "@/src/hooks/usePoolAPR";
 
 import {bn, formatUnits} from "fuels";
-import { useAssetMetadata } from "@/src/hooks";
+import {useAssetMetadata} from "@/src/hooks";
 
 import DesktopPositionView from "./DesktopPositionView/DesktopPositionView";
 import MobilePositionView from "./MobilePositionView/MobilePositionView";
 import {DEFAULT_AMM_CONTRACT_ID, DefaultLocale} from "@/src/utils/constants";
-import { useFormattedAddress } from "@/src/hooks";
+import {useFormattedAddress} from "@/src/hooks";
+import {ChevronLeft} from "lucide-react";
+import Link from "next/link";
 
-const PositionView = ({pool}: {
-  pool: PoolId;
-}) => {
+const PositionView = ({pool}: {pool: PoolId}) => {
   const [
     RemoveLiquidityModal,
     openRemoveLiquidityModal,
@@ -141,7 +141,13 @@ const PositionView = ({pool}: {
 
   return (
     <>
-      <BackLink href="/liquidity"/>
+      <Link
+        href="/liquidity"
+        className="flex items-center text-base leading-5 text-content-grey hover:text-content-primary cursor-pointer"
+      >
+        <ChevronLeft className="size-5" />
+        Back
+      </Link>
       <MobilePositionView
         pool={pool}
         isStablePool={isStablePool}

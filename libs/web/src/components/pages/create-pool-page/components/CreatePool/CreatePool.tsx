@@ -2,11 +2,11 @@ import styles from "../../../add-liquidity-page/components/AddLiquidity/AddLiqui
 import {useCallback, useState} from "react";
 import {CreatePoolPreviewData} from "@/src/components/pages/create-pool-page/components/CreatePool/PreviewCreatePoolDialog";
 import CreatePoolDialog from "./CreatePoolDialog";
-import {BackLink} from "@/src/components/common";
 import {useRouter} from "next/navigation";
 import {IconButton} from "@/src/components/common";
 import {CloseIcon} from "@/meshwave-ui/icons";
 import dynamic from "next/dynamic";
+import {ChevronLeft} from "lucide-react";
 
 const PreviewCreatePoolDialog = dynamic(
   () =>
@@ -39,7 +39,13 @@ const CreatePool = () => {
 
   return (
     <>
-      <BackLink onClick={handleBackClick} className={styles.backLink} />
+      <button
+        onClick={handleBackClick}
+        className="flex items-center text-base leading-5 text-content-grey hover:text-content-primary cursor-pointer"
+      >
+        <ChevronLeft className="size-5" />
+        Back
+      </button>
       <section className={styles.addLiquidity}>
         <div className={styles.addLiquidityHeading}>
           <p className={styles.title}>Create Pool</p>

@@ -1,9 +1,8 @@
 "use client";
 
-import {useEffect, useCallback, useState} from "react";
+import {useCallback, useState} from "react";
 import {useRouter} from "next/navigation";
 
-import {BackLink} from "@/src/components/common";
 import {IconButton} from "@/src/components/common";
 import {CloseIcon} from "@/meshwave-ui/icons";
 
@@ -11,6 +10,7 @@ import PreviewCreatePoolDialog, {
   CreatePoolPreviewData,
 } from "@/src/components/pages/create-pool-page/components/CreatePool/PreviewCreatePoolDialog";
 import CreatePoolDialog from "@/src/components/pages/create-pool-page/components/CreatePool/CreatePoolDialog";
+import {ChevronLeft} from "lucide-react";
 
 export default function Page() {
   const router = useRouter();
@@ -30,7 +30,13 @@ export default function Page() {
 
   return (
     <div className="flex flex-col gap-4">
-      <BackLink onClick={handleBackClick} className="z-[5]" />
+      <button
+        onClick={handleBackClick}
+        className="flex items-center text-base leading-5 text-content-grey hover:text-content-primary cursor-pointer"
+      >
+        <ChevronLeft className="size-5" />
+        Back
+      </button>
 
       <section className="flex flex-col gap-6 p-4 rounded-2xl w-full max-w-[524px] mx-auto bg-[var(--background-grey-dark)] z-[5]">
         <div className="flex items-center justify-between border-b border-[var(--background-grey-light)] pb-4 text-[var(--content-grey)] font-medium text-base leading-[19px] gap-2">
