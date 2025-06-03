@@ -4,7 +4,6 @@ import {clsx} from "clsx";
 import {useCallback, useEffect, useMemo, useRef, useState} from "react";
 
 import {
-  ActionButton,
   DropDownMenu,
   CopyNotification,
 } from "@/src/components/common";
@@ -16,6 +15,7 @@ import {FuelAppUrl} from "@/src/utils/constants";
 import {DropDownButtons} from "@/src/utils/DropDownButtons";
 import {useScrollLock} from "usehooks-ts";
 import {ArrowDownIcon, ArrowUpIcon} from "@/meshwave-ui/icons";
+import {Button} from "@/meshwave-ui/Button";
 
 export function ConnectButton({
   className,
@@ -165,11 +165,14 @@ export function ConnectButton({
   return (
     <>
       <div className="relative">
-        <ActionButton
+        <Button
           className={clsx(
             className,
             isConnected &&
-              "flex items-center gap-[10px] px-[8px] py-[16px] text-content-primary bg-transparent border border-accent-primary hover:shadow-none active:bg-transparent",
+              "flex items-center gap-2.5 px-2 py-4 text-content-primary bg-transparent border border-accent-primary hover:shadow-none active:bg-transparent",
+            "hover:bg-transaparent",
+            !isConnected &&
+              "bg-accent-primary text-old-mira-text border border-accent-primary shadow-[1px_1px_20px_0_#a1db0b4d] hover:shadow-[1px_1px_30px_0_#a1db0b4d] hover:bg-old-mira-active-btn cursor-pointer",
           )}
           onClick={handleClick}
           loading={isWalletLoading}
@@ -180,7 +183,7 @@ export function ConnectButton({
           )}
           {title}
           {isConnected && (!isMenuOpened ? <ArrowDownIcon /> : <ArrowUpIcon />)}
-        </ActionButton>
+        </Button>
 
         {isMenuOpened && <DropDownMenu buttons={menuButtons} ref={menuRef} />}
         <TransactionsHistory

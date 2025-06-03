@@ -15,7 +15,6 @@ import {
 
 import {
   UsedTechs,
-  LaunchAppButton,
   Divider,
   DividerText,
   MainInfo,
@@ -28,6 +27,8 @@ import {
 
 import {DiscordLink, XLink} from "@/src/utils/constants";
 import Swap from "@/src/components/common/Swap/Swap";
+import {Button} from "@/meshwave-ui/Button";
+import Link from "next/link";
 
 function HeroSection() {
   return (
@@ -43,16 +44,20 @@ function HeroSection() {
           aria-label="Primary actions"
           className="flex flex-col items-center gap-3 w-full max-lg:max-w-md lg:flex-row"
         >
-          <LaunchAppButton className="w-full" />
+          <a href="/swap" className="w-full">
+            <Button className="w-full h-14 bg-accent-primary text-old-mira-text border border-accent-primary shadow-[1px_1px_20px_0_#a1db0b4d] hover:shadow-[1px_1px_30px_0_#a1db0b4d] hover:bg-old-mira-active-btn cursor-pointer">
+              Launch App
+            </Button>
+          </a>
           <a
             className="w-full"
             href="https://mirror.xyz/miraly.eth/gIYyYWmf4_ofBY3mb9-AwcnwIfe4-1iK6kdUlJMjfn8"
             target="_blank"
             rel="noopener noreferrer"
           >
-            <button className="w-full rounded-lg py-4 h-14 bg-old-mira-btn border-none text-lg leading-6 font-semibold text-content-primary text-center inline-flex justify-center items-center cursor-pointer">
+            <Button className="w-full rounded-lg py-4 h-14 bg-old-mira-btn border-none text-lg leading-6 font-semibold text-content-primary text-center inline-flex justify-center items-center cursor-pointer hover:bg-old-mira-btn">
               Learn More
-            </button>
+            </Button>
           </a>
         </nav>
         <p className="w-full flex justify-center items-center gap-2 text-xs leading-4 text-content-dimmed-dark lg:justify-start lg:text-sm lg:leading-6">
@@ -239,7 +244,14 @@ function WelcomeSection() {
         <p className="font-normal text-lg leading-7 text-center text-content-dimmed-light mb-3 lg:text-base lg:leading-6">
           Exceptional capital efficiency with robust liquidity and minimal fees
         </p>
-        <LaunchAppButton className="w-60 py-4 lg:w-full lg:text-base lg:leading-6" />
+        <a
+          href="/swap"
+          className="py-4 lg:w-full lg:text-base lg:leading-6 flex justify-center"
+        >
+          <Button className="w-60 h-14 bg-accent-primary text-old-mira-text border border-accent-primary shadow-[1px_1px_20px_0_#a1db0b4d] hover:shadow-[1px_1px_30px_0_#a1db0b4d] hover:bg-old-mira-active-btn cursor-pointer">
+            Launch App
+          </Button>
+        </a>
       </figure>
     </section>
   );

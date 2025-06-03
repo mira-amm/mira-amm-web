@@ -2,33 +2,37 @@ import styles from "@/src/components/pages/add-liquidity-page/components/AddLiqu
 import CoinPair from "@/src/components/common/CoinPair/CoinPair";
 import CoinInput from "@/src/components/pages/add-liquidity-page/components/CoinInput/CoinInput";
 import {clsx} from "clsx";
-import {ActionButton}from "@/src/components/common";
-import { useBalances } from "@/src/hooks";
+import {ActionButton} from "@/src/components/common";
+import {useBalances} from "@/src/hooks";
 import useAssetBalance from "@/src/hooks/useAssetBalance";
 import {useConnectUI, useIsConnected} from "@fuels/react";
 import {Dispatch, SetStateAction, useCallback, useRef, useState} from "react";
 import {useDebounceCallback} from "usehooks-ts";
-import { useCheckEthBalance } from "@/src/hooks";
+import {useCheckEthBalance} from "@/src/hooks";
 import useFaucetLink from "@/src/hooks/useFaucetLink";
 import {createPoolKey, openNewTab} from "@/src/utils/common";
 import useCheckActiveNetwork from "@/src/hooks/useCheckActiveNetwork";
-import { Info } from "@/src/components/common";
+import {Info} from "@/src/components/common";
 import {CreatePoolPreviewData} from "./PreviewCreatePoolDialog";
 import {buildPoolId} from "mira-dex-ts";
 import {StablePoolTooltip, VolatilePoolTooltip} from "./CreatePoolTooltips";
 import usePoolsMetadata from "@/src/hooks/usePoolsMetadata";
-import { useModal } from "@/src/hooks";
-import { CoinsListModal } from "@/src/components/common";
-import {B256Address, BN, bn, formatUnits} from "fuels";
-import { useAssetMetadata } from "@/src/hooks";
+import {useModal} from "@/src/hooks";
+import {CoinsListModal} from "@/src/components/common";
+import {B256Address, bn} from "fuels";
+import {useAssetMetadata} from "@/src/hooks";
 import {useAssetPrice} from "@/src/hooks/useAssetPrice";
-import { SparkleIcon, ExchangeIcon } from "@/meshwave-ui/icons";
+import {SparkleIcon, ExchangeIcon} from "@/meshwave-ui/icons";
 import Link from "next/link";
 import useExchangeRateV2 from "@/src/hooks/useExchangeRate/useExchangeRateV2";
+import {Button} from "@/meshwave-ui/Button";
+import {cn} from "@/src/utils/cn";
 
-export default function CreatePoolDialog({setPreviewData}: {
+export default function CreatePoolDialog({
+  setPreviewData,
+}: {
   setPreviewData: Dispatch<SetStateAction<CreatePoolPreviewData | null>>;
-}){
+}) {
   const [AssetsListModal, openAssetsListModal, closeAssetsListModal] =
     useModal();
 
@@ -325,21 +329,30 @@ export default function CreatePoolDialog({setPreviewData}: {
         </div>
       )}
       {!isConnected ? (
-        <ActionButton
-          variant="secondary"
+        <Button
+          className="bg-accent-dimmed text-accent-primary border-none shadow-none hover:bg-old-mira-bg-hover active:bg-old-mira-bg-active cursor-pointer"
           onClick={connect}
           loading={isConnecting}
         >
           Connect Wallet
-        </ActionButton>
+        </Button>
       ) : (
-        <ActionButton disabled={buttonDisabled} onClick={handleButtonClick}>
+        <Button
+          disabled={buttonDisabled}
+          onClick={handleButtonClick}
+          className={cn(
+            buttonDisabled &&
+              "bg-background-secondary border-background-secondary text-content-dimmed-dark shadow-none",
+            !buttonDisabled &&
+              "bg-accent-primary text-old-mira-text border border-accent-primary shadow-[1px_1px_20px_0_#a1db0b4d] hover:shadow-[1px_1px_30px_0_#a1db0b4d] hover:bg-old-mira-active-btn cursor-pointer",
+          )}
+        >
           {buttonTitle}
-        </ActionButton>
+        </Button>
       )}
       <AssetsListModal title="Choose token">
         <CoinsListModal selectCoin={handleAssetSelection} balances={balances} />
       </AssetsListModal>
     </>
   );
-};
+}

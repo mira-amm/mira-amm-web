@@ -1,6 +1,6 @@
 import { useAccount, useDisconnect, useIsConnected } from "@fuels/react";
 import { useFormattedAddress } from "@/src/hooks";
-import {CopyNotification, ActionButton, DropDownMenu} from "@/src/components/common";
+import {CopyNotification, DropDownMenu} from "@/src/components/common";
 import { clsx } from "clsx";
 import { useCallback, useState, useEffect, useMemo, useRef } from "react";
 import { DropDownButtons } from "@/src/utils/DropDownButtons";
@@ -9,6 +9,7 @@ import { openNewTab } from "@/src/utils/common";
 import TransactionsHistory from "@/src/components/common/TransactionsHistory/TransactionsHistory";
 import { FuelAppUrl } from "@/src/utils/constants";
 import { useScrollLock } from "usehooks-ts";
+import {Button} from "@/meshwave-ui/Button";
 
 export default function DisconnectMobile({ className }: {
   className?: string;
@@ -113,16 +114,16 @@ export default function DisconnectMobile({ className }: {
 
   return (
     <>
-      <ActionButton
+      <Button
         className={clsx(
           className,
-          "flex items-center gap-2 px-3 py-2 text-content-primary border border-accent-primary bg-transparent shadow-none hover:shadow-none"
+          "flex items-center gap-2 px-3 py-2 text-content-primary border border-accent-primary bg-transparent shadow-none hover:shadow-none hover:bg-transaparent"
         )}
         onClick={handleClick}
       >
         <img src="/images/avatar.png" width="16" height="16" />
         {formattedAddress}
-      </ActionButton>
+      </Button>
 
       {isMenuOpened && (
         <div className="absolute top-0 left-0 z-[100] w-full h-screen bg-black/35 backdrop-blur-sm">

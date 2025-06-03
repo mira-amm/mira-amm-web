@@ -1,16 +1,17 @@
 import styles from "@/src/components/pages/add-liquidity-page/components/AddLiquidity/AddLiquidity.module.css";
 import CoinPair from "@/src/components/common/CoinPair/CoinPair";
-import { Coin, TransactionFailureModal, ActionButton } from "@/src/components/common";
-import { useAddLiquidity, useModal, useAssetMetadata } from "@/src/hooks";
+import {Coin, TransactionFailureModal} from "@/src/components/common";
+import {useAddLiquidity, useModal, useAssetMetadata} from "@/src/hooks";
 import AddLiquiditySuccessModal from "@/src/components/pages/add-liquidity-page/components/AddLiquiditySuccessModal/AddLiquiditySuccessModal";
 import {useRouter} from "next/navigation";
 import {Dispatch, SetStateAction, useCallback} from "react";
 import {BN} from "fuels";
+import {Button} from "@/meshwave-ui/Button";
 
 export type AddLiquidityPreviewData = {
   assets: {
-  assetId: string;
-  amount: BN;
+    assetId: string;
+    amount: BN;
   }[];
   isStablePool: boolean;
 };
@@ -23,7 +24,7 @@ export default function PreviewAddLiquidityDialog({
   previewData: AddLiquidityPreviewData;
   setPreviewData: Dispatch<SetStateAction<AddLiquidityPreviewData | null>>;
   slippage: number;
-}){
+}) {
   const [SuccessModal, openSuccessModal] = useModal();
   const [FailureModal, openFailureModal, closeFailureModal] = useModal();
 
@@ -157,9 +158,13 @@ export default function PreviewAddLiquidityDialog({
           </p>
         </div>
       </div> */}
-      <ActionButton loading={isPending} onClick={handleAddLiquidity}>
+      <Button
+        className="bg-accent-primary text-old-mira-text border border-accent-primary shadow-[1px_1px_20px_0_#a1db0b4d] hover:shadow-[1px_1px_30px_0_#a1db0b4d] hover:bg-old-mira-active-btn cursor-pointer"
+        loading={isPending}
+        onClick={handleAddLiquidity}
+      >
         Add Liquidity
-      </ActionButton>
+      </Button>
       <SuccessModal title={<></>} onClose={redirectToLiquidity}>
         <AddLiquiditySuccessModal
           coinA={firstAssetMetadata.symbol || null}
@@ -177,4 +182,4 @@ export default function PreviewAddLiquidityDialog({
       </FailureModal>
     </>
   );
-};
+}

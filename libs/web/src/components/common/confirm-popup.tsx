@@ -1,5 +1,5 @@
-import {ActionButton} from "@/src/components/common";
 import clsx from "clsx";
+import {Button} from "@/meshwave-ui/Button";
 
 export const ConfirmPopup: React.FC<{
   onConfirm: VoidFunction;
@@ -76,19 +76,22 @@ export const ConfirmPopup: React.FC<{
 
         {/* Buttons */}
         <div className="sticky bottom-0 left-0 z-[48] w-full bg-[#262834] px-[28px] py-[24px] flex gap-[12px] shadow-[1px_0px_2px_0px_#faf8f830]">
-          <ActionButton
+          <Button
             className={clsx(
-              "w-full h-[48px] text-accent-primary bg-transparent",
+              "w-full h-[48px] text-accent-primary bg-transparent border border-accent-primary hover:shadow-none active:bg-transparent",
             )}
             variant="outlined"
             onClick={onDeny}
             loading={disconnectIsPending}
           >
             Deny and Disconnect
-          </ActionButton>
-          <ActionButton className="w-full h-[48px]" onClick={onConfirm}>
+          </Button>
+          <Button
+            className="w-full h-[48px] bg-accent-primary text-old-mira-text border border-accent-primary shadow-[1px_1px_20px_0_#a1db0b4d] hover:shadow-[1px_1px_30px_0_#a1db0b4d] hover:bg-old-mira-active-btn cursor-pointer"
+            onClick={onConfirm}
+          >
             Sign and Confirm
-          </ActionButton>
+          </Button>
         </div>
       </form>
     </section>

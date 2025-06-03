@@ -2,8 +2,8 @@ import styles from "@/src/components/pages/add-liquidity-page/components/AddLiqu
 import CoinPair from "@/src/components/common/CoinPair/CoinPair";
 import CoinInput from "@/src/components/pages/add-liquidity-page/components/CoinInput/CoinInput";
 import {clsx} from "clsx";
-import {Info, ActionButton, TransactionFailureModal} from "@/src/components/common";
-import { useBalances } from "@/src/hooks";
+import {Info, TransactionFailureModal} from "@/src/components/common";
+import {useBalances} from "@/src/hooks";
 import useAssetBalance from "@/src/hooks/useAssetBalance";
 import {useConnectUI, useIsConnected} from "@fuels/react";
 import usePreviewAddLiquidity from "@/src/hooks/usePreviewAddLiquidity";
@@ -15,7 +15,7 @@ import {
   useState,
 } from "react";
 import {useDebounceCallback} from "usehooks-ts";
-import { useCheckEthBalance } from "@/src/hooks";
+import {useCheckEthBalance} from "@/src/hooks";
 import useFaucetLink from "@/src/hooks/useFaucetLink";
 import {openNewTab} from "@/src/utils/common";
 import useCheckActiveNetwork from "@/src/hooks/useCheckActiveNetwork";
@@ -28,13 +28,15 @@ import {
   StablePoolTooltip,
   VolatilePoolTooltip,
 } from "@/src/components/pages/add-liquidity-page/components/AddLiquidity/addLiquidityTooltips";
-import { useModal } from "@/src/hooks";
+import {useModal} from "@/src/hooks";
 import {BN, bn} from "fuels";
 import usePoolsMetadata from "@/src/hooks/usePoolsMetadata";
-import { useAssetMetadata } from "@/src/hooks";
+import {useAssetMetadata} from "@/src/hooks";
 import {useAssetPrice} from "@/src/hooks/useAssetPrice";
 import AprBadge from "@/src/components/common/AprBadge/AprBadge";
 import usePoolNameAndMatch from "@/src/hooks/usePoolNameAndMatch";
+import {Button} from "@/meshwave-ui/Button";
+import {cn} from "@/src/utils/cn";
 
 type Props = {
   poolId: PoolId;
@@ -328,17 +330,26 @@ const AddLiquidityDialog = ({poolId, setPreviewData, poolKey}: Props) => {
         </div>
       </div>
       {!isConnected ? (
-        <ActionButton
-          variant="secondary"
+        <Button
           onClick={connect}
           loading={isConnecting}
+          className="bg-accent-dimmed text-accent-primary border-none shadow-none hover:bg-old-mira-bg-hover active:bg-old-mira-bg-active cursor-pointer"
         >
           Connect Wallet
-        </ActionButton>
+        </Button>
       ) : (
-        <ActionButton disabled={buttonDisabled} onClick={handleButtonClick}>
+        <Button
+          disabled={buttonDisabled}
+          onClick={handleButtonClick}
+          className={cn(
+            buttonDisabled &&
+              "bg-background-secondary border-background-secondary text-content-dimmed-dark shadow-none",
+            !buttonDisabled &&
+              "bg-accent-primary text-old-mira-text border border-accent-primary shadow-[1px_1px_20px_0_#a1db0b4d] hover:shadow-[1px_1px_30px_0_#a1db0b4d] hover:bg-old-mira-active-btn cursor-pointer",
+          )}
+        >
           {buttonTitle}
-        </ActionButton>
+        </Button>
       )}
       <FailureModal title={<></>}>
         <TransactionFailureModal

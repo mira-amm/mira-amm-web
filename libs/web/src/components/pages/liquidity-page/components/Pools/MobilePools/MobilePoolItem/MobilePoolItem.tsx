@@ -1,11 +1,12 @@
 import {usePoolDetails} from "../../usePoolDetails";
 import CoinPair from "@/src/components/common/CoinPair/CoinPair";
-import {ActionButton, InfoBlock}from "@/src/components/common";
+import {ActionButton, InfoBlock} from "@/src/components/common";
 import {useRouter} from "next/navigation";
 import styles from "./MobilePoolItem.module.css";
 import {PoolData} from "@/src/hooks/usePoolsData";
 import AprBadge from "@/src/components/common/AprBadge/AprBadge";
 import usePoolNameAndMatch from "@/src/hooks/usePoolNameAndMatch";
+import {Button} from "@/meshwave-ui/Button";
 
 type Props = {
   poolData: PoolData;
@@ -61,14 +62,13 @@ const MobilePoolItem = ({poolData}: Props) => {
         </div>
         <p className={styles.poolDescription}>{poolDescription}</p>
       </div>
-      <ActionButton
-        className={styles.addButton}
+      <Button
         variant="secondary"
         onClick={handleAddClick}
-        fullWidth
+        className="w-full bg-accent-dimmed text-accent-primary border-none shadow-none hover:bg-old-mira-bg-hover active:bg-old-mira-bg-active cursor-pointer"
       >
         Add Liquidity
-      </ActionButton>
+      </Button>
     </div>
   );
 };

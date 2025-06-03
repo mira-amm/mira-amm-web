@@ -1,21 +1,19 @@
-import { usePoolDetails } from "../usePoolDetails";
+import {usePoolDetails} from "../usePoolDetails";
 import CoinPair from "@/src/components/common/CoinPair/CoinPair";
-import { ActionButton } from "@/src/components/common";
 import Link from "next/link";
 import styles from "./DesktopPools.module.css";
 import clsx from "clsx";
-import { PoolData } from "@/src/hooks/usePoolsData";
+import {PoolData} from "@/src/hooks/usePoolsData";
 import AprBadge from "@/src/components/common/AprBadge/AprBadge";
 import usePoolNameAndMatch from "@/src/hooks/usePoolNameAndMatch";
+import {Button} from "@/meshwave-ui/Button";
 
-const DesktopPoolRow = ({ poolData }: {
-  poolData: PoolData;
-}) => {
-  const { poolKey, aprValue, volumeValue, tvlValue, isStablePool, poolId } =
+const DesktopPoolRow = ({poolData}: {poolData: PoolData}) => {
+  const {poolKey, aprValue, volumeValue, tvlValue, isStablePool, poolId} =
     usePoolDetails(poolData);
 
   const tvlActual = parseInt(tvlValue?.replace(/[^0-9]+/g, ""), 10);
-  const { isMatching } = usePoolNameAndMatch(poolKey);
+  const {isMatching} = usePoolNameAndMatch(poolKey);
 
   return (
     <tr key={poolKey}>
@@ -28,7 +26,12 @@ const DesktopPoolRow = ({ poolData }: {
         />
       </td>
 
-      <td className={clsx(styles.aprTd, !isMatching && !aprValue && styles.pending)}>
+      <td
+        className={clsx(
+          styles.aprTd,
+          !isMatching && !aprValue && styles.pending,
+        )}
+      >
         {isMatching ? (
           <AprBadge
             aprValue={aprValue}
@@ -45,13 +48,13 @@ const DesktopPoolRow = ({ poolData }: {
 
       <td>
         <Link href={`/liquidity/add?pool=${poolKey}`}>
-          <ActionButton
-            className={styles.addButton}
-            variant="secondary"
-            fullWidth
+          <Button
+            className={
+              "bg-accent-dimmed text-accent-primary border-none shadow-none hover:bg-old-mira-bg-hover active:bg-old-mira-bg-active cursor-pointer"
+            }
           >
             Add Liquidity
-          </ActionButton>
+          </Button>
         </Link>
       </td>
     </tr>

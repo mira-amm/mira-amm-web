@@ -2,16 +2,19 @@ import styles from "./DesktopPools.module.css";
 import {clsx} from "clsx";
 import {PoolData} from "@/src/hooks/usePoolsData";
 import DesktopPoolRow from "./DesktopPoolRow";
-import {ActionButton}from "@/src/components/common";
 import Link from "next/link";
 import SortableColumn from "@/src/components/common/SortableColumn/SortableColumn";
+import {Button} from "@/meshwave-ui/Button";
 
-export function DesktopPools({poolsData, orderBy, handleSort}: {
+export function DesktopPools({
+  poolsData,
+  orderBy,
+  handleSort,
+}: {
   poolsData: PoolData[] | undefined;
   orderBy: string;
   handleSort: (key: string) => void;
-}){
-
+}) {
   if (!poolsData) {
     return null;
   }
@@ -37,9 +40,9 @@ export function DesktopPools({poolsData, orderBy, handleSort}: {
           />
           <th>
             <Link href="/liquidity/create-pool">
-              <ActionButton className={styles.createButton}>
+              <Button className="bg-accent-primary text-old-mira-text border border-accent-primary shadow-[1px_1px_20px_0_#a1db0b4d] hover:shadow-[1px_1px_30px_0_#a1db0b4d] hover:bg-old-mira-active-btn cursor-pointer">
                 Create Pool
-              </ActionButton>
+              </Button>
             </Link>
           </th>
         </tr>
@@ -59,4 +62,4 @@ export function DesktopPools({poolsData, orderBy, handleSort}: {
       </tbody>
     </table>
   );
-};
+}

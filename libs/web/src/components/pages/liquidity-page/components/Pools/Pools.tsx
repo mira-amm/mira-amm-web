@@ -1,20 +1,21 @@
-"use client"
+"use client";
 
-import {useCallback, useEffect, useState} from "react";
+import {useEffect, useState} from "react";
 
-import { MobilePools } from "@/src/components/pages/liquidity-page/components/Pools/MobilePools/MobilePools";
-import { DesktopPools } from "@/src/components/pages/liquidity-page/components/Pools/DesktopPools/DesktopPools";
+import {MobilePools} from "@/src/components/pages/liquidity-page/components/Pools/MobilePools/MobilePools";
+import {DesktopPools} from "@/src/components/pages/liquidity-page/components/Pools/DesktopPools/DesktopPools";
 import Link from "next/link";
 import LoaderV2 from "@/src/components/common/LoaderV2/LoaderV2";
 import {ActionButton, SearchBar} from "@/src/components/common";
 import Pagination from "@/src/components/common/Pagination/Pagination";
 import usePoolsData, {DEFAULT_PAGE} from "@/src/hooks/usePoolsData";
 import useDebounce from "@/src/hooks/useDebounce";
+import {Button} from "@/meshwave-ui/Button";
 
 import clsx from "clsx";
 import styles from "./Pools.module.css";
 
-export function Pools(){
+export function Pools() {
   const {data, isLoading, moreInfo} = usePoolsData();
 
   const {
@@ -56,11 +57,13 @@ export function Pools(){
     <section className={styles.pools}>
       <div className={styles.actionButtonDiv}>
         <Link href="/liquidity/create-pool">
-        <ActionButton
-          className={clsx("mobileOnly", styles.createButton)}
-        >
-          Create Pool
-        </ActionButton>
+          <Button
+            className={clsx(
+              "mobileOnly bg-accent-primary text-old-mira-text border border-accent-primary shadow-[1px_1px_20px_0_#a1db0b4d] hover:shadow-[1px_1px_30px_0_#a1db0b4d] hover:bg-old-mira-active-btn cursor-pointer",
+            )}
+          >
+            Create Pool
+          </Button>
         </Link>
       </div>
 
@@ -102,4 +105,4 @@ export function Pools(){
       )}
     </section>
   );
-};
+}

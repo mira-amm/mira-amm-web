@@ -1,13 +1,14 @@
 import styles from "@/src/components/pages/add-liquidity-page/components/AddLiquidity/AddLiquidity.module.css";
 import CoinPair from "@/src/components/common/CoinPair/CoinPair";
-import { Coin } from "@/src/components/common";
-import {ActionButton}from "@/src/components/common";
-import { useModal } from "@/src/hooks";
+import {Coin} from "@/src/components/common";
+import {ActionButton} from "@/src/components/common";
+import {useModal} from "@/src/hooks";
 import CreatePoolSuccessModal from "../CreatePoolSuccessModal/CreatePoolSuccessModal";
 import {useRouter} from "next/navigation";
 import {useCallback} from "react";
 import useCreatePool from "@/src/hooks/useCreatePool";
-import { useAssetMetadata } from "@/src/hooks";
+import {useAssetMetadata} from "@/src/hooks";
+import {Button} from "@/meshwave-ui/Button";
 
 type AssetsData = {
   assetId: string;
@@ -134,12 +135,13 @@ const PreviewCreatePoolDialog = ({previewData}: Props) => {
           </p>
         </div>
       </div> */}
-      <ActionButton
+      <Button
+        className="bg-accent-primary text-old-mira-text border border-accent-primary shadow-[1px_1px_20px_0_#a1db0b4d] hover:shadow-[1px_1px_30px_0_#a1db0b4d] hover:bg-old-mira-active-btn cursor-pointer"
         loading={isPoolCreationPending}
         onClick={handleCreateLiquidity}
       >
         Create pool
-      </ActionButton>
+      </Button>
       <SuccessModal title={<></>} onClose={redirectToLiquidity}>
         <CreatePoolSuccessModal
           coinA={firstAssetMetadata.symbol || null}

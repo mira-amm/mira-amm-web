@@ -1,18 +1,19 @@
 import styles from "./BoostsRewards.module.css";
 import Link from "next/link";
-import {ActionButton, Info}from "@/src/components/common";
+import {ActionButton, Info} from "@/src/components/common";
 import {
   POINTS_TOOLTIP,
   POINTS_RANK_TOOLTIP,
   POINTS_LEARN_MORE_URL,
   DefaultLocale,
 } from "@/src/utils/constants";
-import { Loader } from "@/src/components/common";
+import {Loader} from "@/src/components/common";
 import {usePointsRank} from "@/src/hooks";
 import pointsStyles from "@/src/components/pages/points-page/PointsStyles.module.css";
-import { PointsIcon } from "@/meshwave-ui/icons";
+import {PointsIcon} from "@/meshwave-ui/icons";
+import {Button} from "@/meshwave-ui/Button";
 
-export function BoostsRewards(){
+export function BoostsRewards() {
   const {data: pointsRankArray, isLoading, error} = usePointsRank();
 
   if (error) {
@@ -34,13 +35,11 @@ export function BoostsRewards(){
       <div className={styles.boostsHeader}>
         <p className={pointsStyles.pointsTitle}>Points Program</p>
         <Link href={POINTS_LEARN_MORE_URL} target="_blank">
-          <ActionButton
-            className={styles.learnMoreButton}
-            variant="secondary"
-            fullWidth
+          <Button
+            className="bg-accent-dimmed text-accent-primary border-none shadow-none hover:bg-old-mira-bg-hover active:bg-old-mira-bg-active cursor-pointer"
           >
             Learn more
-          </ActionButton>
+          </Button>
         </Link>
       </div>
 
@@ -92,4 +91,4 @@ export function BoostsRewards(){
       </div>
     </div>
   );
-};
+}
