@@ -14,7 +14,6 @@ import DisconnectMobile from "@/src/components/common/ConnectButton/DisconnectMo
 import {useIsConnected} from "@fuels/react";
 
 import {
-  BlogLink,
   FuelAppUrl,
   POINTS_LEARN_MORE_URL,
   POINTS_PROMO_TITLE,
@@ -23,6 +22,7 @@ import {
 import {IconButton} from "@/src/components/common";
 import {CloseIcon, PointsIcon} from "@/meshwave-ui/icons";
 import {useCurrentPath} from "@/src/hooks/useCurrentPath";
+import {ConnectWallet} from "./connect-wallet";
 
 const PROMO_BANNER_STORAGE_KEY = "fuel-boost-program-promo-banner-closed";
 
@@ -134,9 +134,7 @@ export function Header({
 
         <div className="hidden lg:flex items-center gap-6">
           <MainnetLabel />
-          <div className="flex items-center gap-6">
-            <ConnectButton className="min-w-[158px] h-10 text-base leading-6" />
-          </div>
+          <ConnectWallet />
         </div>
       </section>
     </header>
