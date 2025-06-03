@@ -18,6 +18,13 @@ type Props = {
   fullWidth?: boolean;
 };
 
+/**
+ * @deprecated
+ * Swap component has a reference to this component but i've removed it from surrounding components
+ * however, liquidity page still uses it becuase it stuck in an infinte loading loop
+ * Remove this component the above is resolved.
+ */
+
 export const ActionButton = forwardRef<HTMLButtonElement, Props>(
   function ActionButton(
     {

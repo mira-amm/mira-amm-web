@@ -3,10 +3,7 @@
 import {clsx} from "clsx";
 import {useCallback, useEffect, useMemo, useRef, useState} from "react";
 
-import {
-  DropDownMenu,
-  CopyNotification,
-} from "@/src/components/common";
+import {DropDownMenu, CopyNotification} from "@/src/components/common";
 import TransactionsHistory from "@/src/components/common/TransactionsHistory/TransactionsHistory";
 import {useFormattedAddress} from "@/src/hooks";
 import useWeb3React from "@/src/hooks/useWeb3Connection";
@@ -16,6 +13,12 @@ import {DropDownButtons} from "@/src/utils/DropDownButtons";
 import {useScrollLock} from "usehooks-ts";
 import {ArrowDownIcon, ArrowUpIcon} from "@/meshwave-ui/icons";
 import {Button} from "@/meshwave-ui/Button";
+
+/**
+ * @deprecated
+ * Only Swap component has a reference to this component
+ * Remove this component once it's no longer needed
+ */
 
 export function ConnectButton({
   className,
