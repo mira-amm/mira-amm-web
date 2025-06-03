@@ -2,7 +2,6 @@ import styles from "@/src/components/pages/add-liquidity-page/components/AddLiqu
 import CoinPair from "@/src/components/common/CoinPair/CoinPair";
 import CoinInput from "@/src/components/pages/add-liquidity-page/components/CoinInput/CoinInput";
 import {clsx} from "clsx";
-import {ActionButton} from "@/src/components/common";
 import {useBalances} from "@/src/hooks";
 import useAssetBalance from "@/src/hooks/useAssetBalance";
 import {useConnectUI, useIsConnected} from "@fuels/react";
@@ -22,11 +21,11 @@ import {CoinsListModal} from "@/src/components/common";
 import {B256Address, bn} from "fuels";
 import {useAssetMetadata} from "@/src/hooks";
 import {useAssetPrice} from "@/src/hooks/useAssetPrice";
-import {SparkleIcon, ExchangeIcon} from "@/meshwave-ui/icons";
 import Link from "next/link";
 import useExchangeRateV2 from "@/src/hooks/useExchangeRate/useExchangeRateV2";
 import {Button} from "@/meshwave-ui/Button";
 import {cn} from "@/src/utils/cn";
+import { ArrowLeftRight, Sparkle } from "lucide-react";
 
 export default function CreatePoolDialog({
   setPreviewData,
@@ -304,7 +303,7 @@ export default function CreatePoolDialog({
       {poolExists && (
         <div className={styles.existingPoolBlock}>
           <div className={styles.sparkleIcon}>
-            <SparkleIcon />
+            <Sparkle />
           </div>
           <p className={styles.existingPoolText}>This pool already exists</p>
           <Link
@@ -320,7 +319,7 @@ export default function CreatePoolDialog({
           <p>Starting price</p>
           <div className={styles.priceBlock} onClick={handleExchangeRateSwap}>
             <p>{exchangeRate}</p>
-            <ExchangeIcon />
+            <ArrowLeftRight />
           </div>
           <p className={styles.priceWarning}>
             This is the price of the pool on inception. Always double check

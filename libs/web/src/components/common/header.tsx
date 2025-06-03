@@ -20,9 +20,10 @@ import {
 } from "@/src/utils/constants";
 
 import {IconButton} from "@/src/components/common";
-import {CloseIcon, PointsIcon} from "@/meshwave-ui/icons";
+import {PointsIcon} from "@/meshwave-ui/icons";
 import {useCurrentPath} from "@/src/hooks/useCurrentPath";
 import {ConnectWallet} from "./connect-wallet";
+import {X} from "lucide-react";
 
 const PROMO_BANNER_STORAGE_KEY = "fuel-boost-program-promo-banner-closed";
 
@@ -91,7 +92,7 @@ export function Header({
             onClick={handleCloseBanner}
             className="absolute right-4 top-3"
           >
-            <CloseIcon />
+            <X />
           </IconButton>
         </section>
       )}

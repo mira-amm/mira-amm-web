@@ -4,9 +4,8 @@ import {CreatePoolPreviewData} from "@/src/components/pages/create-pool-page/com
 import CreatePoolDialog from "./CreatePoolDialog";
 import {useRouter} from "next/navigation";
 import {IconButton} from "@/src/components/common";
-import {CloseIcon} from "@/meshwave-ui/icons";
 import dynamic from "next/dynamic";
-import {ChevronLeft} from "lucide-react";
+import {ChevronLeft, X} from "lucide-react";
 
 const PreviewCreatePoolDialog = dynamic(
   () =>
@@ -51,7 +50,7 @@ const CreatePool = () => {
           <p className={styles.title}>Create Pool</p>
           {showPreview && (
             <IconButton onClick={handleCloseClick}>
-              <CloseIcon />
+              <X />
             </IconButton>
           )}
         </div>

@@ -1,4 +1,3 @@
-import { WarningIcon } from "@/meshwave-ui/icons"
 import styles from "./SettingsModalContent.module.css";
 import {
   ChangeEvent,
@@ -16,6 +15,7 @@ import {
   SlippageMode,
 } from "@/src/components/common/Swap/Swap";
 import {useAnimationStore} from "@/src/stores/useGlitchScavengerHunt";
+import { Info } from "lucide-react";
 
 const AutoSlippageValues = [10, 50, 100];
 
@@ -148,7 +148,7 @@ function SettingsModalContent({
       {isCustomMode && (
         <div className={styles.settingsSection}>
           <p className={styles.infoHeading}>
-            <WarningIcon />
+            <Info />
             Pay attention
           </p>
           <p className={styles.settingsText}>

@@ -1,6 +1,5 @@
 import styles from "./RemoveLiquidityModalContent.module.css";
 import CoinPair from "@/src/components/common/CoinPair/CoinPair";
-import { WarningIcon } from "@/meshwave-ui/icons";
 import {ActionButton}from "@/src/components/common";
 import {
   ChangeEvent,
@@ -16,7 +15,7 @@ import {
 import {useDebounceCallback} from "usehooks-ts";
 import { useAssetMetadata } from "@/src/hooks";
 import {B256Address} from "fuels";
-import LoaderV2 from "@/src/components/common/LoaderV2/LoaderV2";
+import { Info } from "lucide-react";
 
 type Props = {
   coinA: B256Address;
@@ -142,7 +141,7 @@ const RemoveLiquidityModalContent = ({
       </div>
       <div className={styles.textBlock}>
         <p className={styles.infoBlockTitle}>
-          <WarningIcon />
+          <Info />
           Pay attention
         </p>
         <p className={styles.infoBlockText}>

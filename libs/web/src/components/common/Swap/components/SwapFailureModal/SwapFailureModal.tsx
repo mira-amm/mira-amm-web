@@ -1,7 +1,7 @@
 import styles from "./SwapFailureModal.module.css";
 import {ActionButton}from "@/src/components/common";
-import { FailureIcon } from "@/meshwave-ui/icons";
 import {ErrorCode, FuelError} from "fuels";
+import { CircleX } from "lucide-react";
 
 export default function SwapFailureModal({error, closeModal, customTitle}: {
   error: Error | null;
@@ -28,7 +28,7 @@ export default function SwapFailureModal({error, closeModal, customTitle}: {
 
   return (
     <div className={styles.claimFailureModal}>
-      <FailureIcon />
+      <CircleX />
       <p className={styles.mainText}>
         {customTitle && customTitle.length > 0 ? customTitle : title}
       </p>

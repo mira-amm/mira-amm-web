@@ -1,5 +1,5 @@
-import {ArrowDownSmallIcon, ArrowUpSmallIcon} from "@/meshwave-ui/icons";
 import styles from "./SortableColumn.module.css";
+import { ArrowDown, ArrowUp } from "lucide-react";
 
 export default function SortableColumn({
   title,
@@ -22,9 +22,9 @@ export default function SortableColumn({
         <span className={styles.sortIcon}>
           {isActive &&
             (direction === "DESC" ? (
-              <ArrowDownSmallIcon />
+              <ArrowDown className="size-4" />
             ) : (
-              <ArrowUpSmallIcon />
+              <ArrowUp className="size-4" />
             ))}
         </span>
       </div>

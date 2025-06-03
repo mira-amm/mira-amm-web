@@ -4,12 +4,13 @@ import {CopyNotification, DropDownMenu} from "@/src/components/common";
 import { clsx } from "clsx";
 import { useCallback, useState, useEffect, useMemo, useRef } from "react";
 import { DropDownButtons } from "@/src/utils/DropDownButtons";
-import { CloseIcon, TouchCloseIcon } from "@/meshwave-ui/icons";
+import { TouchCloseIcon } from "@/meshwave-ui/icons";
 import { openNewTab } from "@/src/utils/common";
 import TransactionsHistory from "@/src/components/common/TransactionsHistory/TransactionsHistory";
 import { FuelAppUrl } from "@/src/utils/constants";
 import { useScrollLock } from "usehooks-ts";
 import {Button} from "@/meshwave-ui/Button";
+import { X } from "lucide-react";
 
 export default function DisconnectMobile({ className }: {
   className?: string;
@@ -135,7 +136,7 @@ export default function DisconnectMobile({ className }: {
               className="absolute top-4 right-4 bg-transparent border-none p-0"
               onClick={handleCloseMenu}
             >
-              <CloseIcon />
+              <X />
             </button>
           </DropDownMenu>
         </div>

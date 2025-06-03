@@ -6,7 +6,6 @@ import PreviewAddLiquidityDialog, {
 import AddLiquidityDialog from "@/src/components/pages/add-liquidity-page/components/AddLiquidity/AddLiquidityDialog";
 import {useRouter} from "next/navigation";
 import {IconButton} from "@/src/components/common";
-import {CloseIcon} from "@/meshwave-ui/icons";
 import {PoolId} from "mira-dex-ts";
 import {SlippageSetting} from "@/src/components/common";
 import SettingsModalContent from "@/src/components/common/Swap/components/SettingsModalContent/SettingsModalContent";
@@ -15,7 +14,7 @@ import {
   DefaultSlippageValue,
   SlippageMode,
 } from "@/src/components/common/Swap/Swap";
-import {ChevronLeft} from "lucide-react";
+import {ChevronLeft, X} from "lucide-react";
 
 const AddLiquidity = ({poolId, poolKey}: {poolId: PoolId; poolKey: string}) => {
   const router = useRouter();
@@ -58,7 +57,7 @@ const AddLiquidity = ({poolId, poolKey}: {poolId: PoolId; poolKey: string}) => {
           />
           {showPreview && (
             <IconButton onClick={handleCloseClick}>
-              <CloseIcon />
+              <X />
             </IconButton>
           )}
         </div>

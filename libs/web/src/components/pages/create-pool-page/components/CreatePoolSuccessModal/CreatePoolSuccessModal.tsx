@@ -1,9 +1,9 @@
-import {SuccessIcon} from "@/meshwave-ui/icons";
 import {useCallback} from "react";
 import {openNewTab} from "@/src/utils/common";
 import {CoinName} from "@/src/utils/coinsConfig";
 import {FuelAppUrl} from "@/src/utils/constants";
 import {Button} from "@/meshwave-ui/Button";
+import {CheckCircle} from "lucide-react";
 
 export default function CreatePoolSuccessModal({
   coinA,
@@ -28,7 +28,7 @@ export default function CreatePoolSuccessModal({
   return (
     <div className="flex flex-col items-center gap-[12px] lg:gap-[24px]">
       <div className="lg:w-[80px] lg:h-[80px]">
-        <SuccessIcon />
+        <CheckCircle />
       </div>
       <p className="text-[22px] leading-[26px] font-medium text-center">
         Success

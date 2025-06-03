@@ -1,11 +1,11 @@
 "use client";
 
 import {useEffect, useMemo, useCallback, useRef} from "react";
-import {SearchIcon} from "@/meshwave-ui/icons";
 import useCoinListModalData from "@/src/hooks/useCoinListModal";
 import {CoinQuantity} from "fuels";
 import {SkeletonLoader, CoinListItem} from "@/web/src/components/common";
 import {UnknownCoinListItem} from "@/web/src/components/common/Swap/components/UnknownCoinListItem";
+import { Search } from "lucide-react";
 
 const assetIdRegex = /^0x[0-9a-fA-F]{64}$/;
 
@@ -43,7 +43,7 @@ export function CoinsListModal({
   return (
     <>
       <div className="flex gap-[10px] p-[14px_12px] rounded-lg text-content-grey bg-background-grey-dark">
-        <SearchIcon />
+        <Search />
         <input
           ref={inputRef}
           type="text"

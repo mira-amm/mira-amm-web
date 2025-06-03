@@ -1,4 +1,4 @@
-import {ArrowLeftIcon, ArrowRightIcon} from "@/meshwave-ui/icons";
+import { ArrowLeft, ArrowRight } from "lucide-react";
 import styles from "./Pagination.module.css";
 
 export default function Pagination({
@@ -9,7 +9,7 @@ export default function Pagination({
   currentPage: number;
   totalPages: number;
   onPageChange: (page: number) => void;
-}){
+}) {
   const generatePages = () => {
     const pages = [];
     const maxVisiblePages = 5;
@@ -48,7 +48,7 @@ export default function Pagination({
         onClick={() => onPageChange(currentPage - 1)}
         disabled={currentPage === 1}
       >
-        <ArrowLeftIcon />
+        <ArrowLeft />
         <span>Previous</span>
       </button>
       {generatePages().map((page, index) => (
@@ -68,9 +68,9 @@ export default function Pagination({
         onClick={() => onPageChange(currentPage + 1)}
         disabled={currentPage === totalPages}
       >
-        <ArrowRightIcon />
+        <ArrowRight />
         <span>Next</span>
       </button>
     </div>
   );
-};
+}

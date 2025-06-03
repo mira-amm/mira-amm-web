@@ -1,23 +1,23 @@
-import {CopyAddressIcon, ExplorerIcon, TransactionsIcon, LogOutIcon} from "@/meshwave-ui/icons";
+import {ArrowLeftRight, Copy, ExternalLink, LogOut} from "lucide-react";
 
 export const DropDownButtons = [
   {
-    icon: CopyAddressIcon,
+    icon: Copy,
     text: "Copy Address",
     onClick: () => {},
   },
   {
-    icon: ExplorerIcon,
+    icon: ExternalLink,
     text: "View in Explorer",
     onClick: () => {},
   },
   {
-    icon: TransactionsIcon,
+    icon: ArrowLeftRight,
     text: "Transaction History",
     onClick: () => {},
   },
   {
-    icon: LogOutIcon,
+    icon: LogOut,
     text: "Disconnect",
     onClick: () => {},
   },

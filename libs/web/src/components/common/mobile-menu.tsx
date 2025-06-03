@@ -7,9 +7,9 @@ import {clsx} from "clsx";
 import Link from "next/link";
 
 import {Logo} from "@/src/components/common";
-import {MenuIcon, CloseIcon} from "@/meshwave-ui/icons";
 import {BlogLink, DiscordLink, XLink} from "@/src/utils/constants";
 import useFaucetLink from "@/src/hooks/useFaucetLink";
+import {Menu, X} from "lucide-react";
 
 export function MobileMenu() {
   const [expanded, setExpanded] = useState(false);
@@ -39,7 +39,7 @@ export function MobileMenu() {
           className="flex items-center justify-center border-none bg-transparent text-content-primary"
           aria-label="Close mobile menu"
         >
-          <CloseIcon />
+          <X />
         </button>
       </div>
 
@@ -104,7 +104,7 @@ export function MobileMenu() {
         className="flex justify-center items-center bg-transparent border-none text-content-primary"
         aria-label="Open mobile menu"
       >
-        <MenuIcon />
+        <Menu />
       </button>
 
       {isClient && createPortal(menu, document.body)}

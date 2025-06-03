@@ -4,9 +4,9 @@ import useWalletTransactions from "@/src/hooks/useWalletTransactions";
 import {FuelAppUrl} from "@/src/utils/constants";
 import {useAccount, useIsConnected} from "@fuels/react";
 import {forwardRef, useMemo} from "react";
-import { CopyAddressIcon, TransactionsCloseIcon } from "@/meshwave-ui/icons";
 import styles from "./TransactionsHistory.module.css";
 import { SkeletonLoader } from "@/web/src/components/common";
+import { Copy, X } from "lucide-react";
 
 const TransactionsHistory = forwardRef<
   HTMLDivElement,
@@ -54,7 +54,7 @@ const TransactionsHistory = forwardRef<
             className={styles.transactionCloseButton}
             onClick={onClose}
           >
-            <TransactionsCloseIcon />
+            <X />
           </button>
         </div>
         <div className={styles.accountInfo}>
@@ -73,7 +73,7 @@ const TransactionsHistory = forwardRef<
               type="button"
               onClick={handleCopy}
             >
-              <CopyAddressIcon />
+              <Copy className="size-4" />
             </button>
           </div>
           {/*<span className={styles.accountBalance}>$4,789.06</span>*/}

@@ -5,8 +5,8 @@ import { createPortal } from "react-dom";
 import { clsx } from "clsx";
 
 import { IconButton } from "@/src/components/common";
-import { CloseIcon } from "@/meshwave-ui/icons";
 import { useScrollLock } from "usehooks-ts";
+import { X } from "lucide-react";
 
 type ReturnType = (props: {
   title: string | ReactNode;
@@ -85,7 +85,7 @@ export function useModal(): [ReturnType, () => void, () => void]{
                     closeModal();
                   }}
                 >
-                  <CloseIcon />
+                  <X />
                 </IconButton>
               </div>
               {children}

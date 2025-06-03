@@ -1,5 +1,5 @@
-import {SettingsIcon} from "@/meshwave-ui/icons";
 import {IconButton} from "@/src/components/common";
+import {Settings} from "lucide-react";
 
 export function SlippageSetting({
   slippage,
@@ -17,7 +17,7 @@ export function SlippageSetting({
         onClick={openSettingsModal}
         className="hover:text-content-primary"
       >
-        <SettingsIcon />
+        <Settings />
       </IconButton>
     </>
   );

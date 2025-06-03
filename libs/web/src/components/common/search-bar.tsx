@@ -1,6 +1,6 @@
 import {clsx} from "clsx";
-import {SearchIcon} from "@/meshwave-ui/icons";
 import {RefObject, ChangeEvent} from "react";
+import { Search } from "lucide-react";
 
 export const SearchBar: React.FC<{
   placeholder: string;
@@ -16,7 +16,7 @@ export const SearchBar: React.FC<{
         className,
       )}
     >
-      <SearchIcon />
+      <Search />
       <input
         type="text"
         placeholder={placeholder}

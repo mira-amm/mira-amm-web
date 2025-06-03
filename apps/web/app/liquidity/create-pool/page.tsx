@@ -4,13 +4,12 @@ import {useCallback, useState} from "react";
 import {useRouter} from "next/navigation";
 
 import {IconButton} from "@/src/components/common";
-import {CloseIcon} from "@/meshwave-ui/icons";
 
 import PreviewCreatePoolDialog, {
   CreatePoolPreviewData,
 } from "@/src/components/pages/create-pool-page/components/CreatePool/PreviewCreatePoolDialog";
 import CreatePoolDialog from "@/src/components/pages/create-pool-page/components/CreatePool/CreatePoolDialog";
-import {ChevronLeft} from "lucide-react";
+import {ChevronLeft, X} from "lucide-react";
 
 export default function Page() {
   const router = useRouter();
@@ -43,7 +42,7 @@ export default function Page() {
           <p className="flex-1 text-content-primary">Create Pool</p>
           {showPreview && (
             <IconButton onClick={handleCloseClick}>
-              <CloseIcon />
+              <X />
             </IconButton>
           )}
         </div>

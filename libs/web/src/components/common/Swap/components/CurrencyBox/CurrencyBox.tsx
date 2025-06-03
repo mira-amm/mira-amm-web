@@ -1,16 +1,16 @@
 import {ChangeEvent, memo, useCallback} from "react";
 import {clsx} from "clsx";
 
-import { Coin } from "@/src/components/common";
-import { ChevronDownIcon } from "@/meshwave-ui/icons";
+import {Coin} from "@/src/components/common";
 import {CurrencyBoxMode} from "@/src/components/common/Swap/Swap";
 
 import styles from "./CurrencyBox.module.css";
-import { TextButton } from "@/src/components/common";
-import { MinEthValueBN} from "@/src/utils/constants";
+import {TextButton} from "@/src/components/common";
+import {MinEthValueBN} from "@/src/utils/constants";
 import {B256Address, BN} from "fuels";
-import { useAssetMetadata } from "@/src/hooks";
+import {useAssetMetadata} from "@/src/hooks";
 import fiatValueFormatter from "@/src/utils/abbreviateNumber";
+import {ChevronDown} from "lucide-react";
 
 function CurrencyBox({
   value,
@@ -34,7 +34,7 @@ function CurrencyBox({
   usdRate: number | null;
   previewError?: string | null;
   className?: string;
-}){
+}) {
   const metadata = useAssetMetadata(assetId);
   const balanceValue = balance.formatUnits(metadata.decimals || 0);
 
@@ -111,7 +111,7 @@ function CurrencyBox({
           ) : (
             <Coin assetId={assetId} />
           )}
-          <ChevronDownIcon />
+          <ChevronDown />
         </button>
       </div>
       <div className={styles.estimateAndBalance}>
@@ -126,6 +126,6 @@ function CurrencyBox({
       </div>
     </div>
   );
-};
+}
 
 export default memo(CurrencyBox);

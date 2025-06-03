@@ -1,7 +1,7 @@
 import {clsx} from "clsx";
-import {ChevronDownIcon} from "@/meshwave-ui/icons";
 import {useAssetMetadata} from "@/src/hooks";
 import {useAssetImage} from "@/src/hooks/useAssetImage";
+import { ChevronDown } from "lucide-react";
 
 export function Coin({
   assetId,
@@ -35,7 +35,7 @@ export function Coin({
       <p className={clsx(nameClasses, className)}>
         {metadata.symbol ?? "Choose Asset"}
       </p>
-      {newPool && <ChevronDownIcon />}
+      {newPool && <ChevronDown />}
     </div>
   );
 }

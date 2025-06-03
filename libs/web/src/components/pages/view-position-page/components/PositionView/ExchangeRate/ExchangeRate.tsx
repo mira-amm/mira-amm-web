@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from "react";
-import { ExchangeIcon } from "@/meshwave-ui/icons";
 import styles from "./ExchangeRate.module.css";
 import {calculateFlooredRate} from "./utils";
+import { ArrowLeftRight } from "lucide-react";
 interface AssetMetadata {
   name?: string;
   symbol?: string;
@@ -58,7 +58,7 @@ const ExchangeRate = ({
             ? `1 ${assetBMetadata.symbol} ≈ ${flooredRate} ${assetAMetadata.symbol}`
             : `1 ${assetAMetadata.symbol} ≈ ${flooredRate} ${assetBMetadata.symbol}`}
           <span className={styles.exchangeIcon}>
-            <ExchangeIcon />
+            <ArrowLeftRight />
           </span>
         </p>
       </div>

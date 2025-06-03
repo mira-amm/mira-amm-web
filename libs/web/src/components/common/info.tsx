@@ -1,7 +1,7 @@
 "use client";
 
+import {CircleHelp} from "lucide-react";
 import {useEffect, useRef} from "react";
-import {InfoIcon} from "@/meshwave-ui/icons";
 
 export function Info({
   tooltipText,
@@ -46,7 +46,7 @@ export function Info({
         className="w-4 h-4 p-0 border-none bg-transparent cursor-pointer text-content-grey-dark hover:text-content-grey active:text-content-dimmed-dark"
         style={{anchorName: `--${buttonId}`}}
       >
-        <InfoIcon color={color} />
+        <CircleHelp color={color} className="size-4" />
       </button>
 
       <div

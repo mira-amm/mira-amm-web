@@ -6,7 +6,6 @@ import CoinPair from "@/src/components/common/CoinPair/CoinPair";
 import { CoinWithAmount } from "@/src/components/common";
 import {ActionButton}from "@/src/components/common";
 import PromoBlock from "@/src/components/pages/liquidity-page/components/PromoBlock/PromoBlock";
-import { StarsIcon } from "@/meshwave-ui/icons"
 import {PoolId} from "mira-dex-ts";
 import styles from "./MobilePositionView.module.css";
 import { Loader } from "@/src/components/common";
@@ -15,6 +14,7 @@ import ReserveItem from "../ReserveItem/ReserveItem";
 import ExchangeRate from "../ExchangeRate/ExchangeRate";
 import MiraBlock from "../MiraBlock/MiraBlock";
 import {formatDisplayAmount} from "@/src/utils/common";
+import { Sparkles } from "lucide-react";
 
 interface AssetMetadata {
   name?: string;
@@ -122,7 +122,7 @@ const MobilePositionView = ({
       </div>
 
       <PromoBlock
-        icon={<StarsIcon />}
+        icon={<Sparkles />}
         title="Learn about providing liquidity"
         link="https://mirror.xyz/miraly.eth"
         linkText="Click here and check our v3 LP walkthrough"

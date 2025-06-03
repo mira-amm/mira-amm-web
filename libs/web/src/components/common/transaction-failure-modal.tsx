@@ -1,7 +1,7 @@
 import {ActionButton} from "@/src/components/common";
-import {FailureIcon} from "@/meshwave-ui/icons";
 import {FuelError} from "fuels";
 import {Button} from "@/meshwave-ui/Button";
+import { CircleX } from "lucide-react";
 
 export function TransactionFailureModal({
   closeModal,
@@ -18,7 +18,7 @@ export function TransactionFailureModal({
 
   return (
     <div className="flex flex-col items-center gap-3 lg:gap-6">
-      <FailureIcon className="w-[40px] h-[40px] lg:w-[80px] lg:h-[80px]" />
+      <CircleX className="w-[40px] h-[40px] lg:w-[80px] lg:h-[80px]" />
       <p className="font-medium text-[22px] leading-[26px] text-center">
         {title}
       </p>

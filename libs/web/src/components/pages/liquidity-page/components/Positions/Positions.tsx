@@ -14,8 +14,8 @@ import Link from "next/link";
 import CoinPair from "@/src/components/common/CoinPair/CoinPair";
 import AprBadge from "@/src/components/common/AprBadge/AprBadge";
 import {ActionButton} from "@/src/components/common";
-import {DocumentIcon} from "@/meshwave-ui/icons";
 import {PositionsLoader} from "./PositionsLoader";
+import { FileText } from "lucide-react";
 
 export function Positions() {
   const {isConnected} = useIsConnected();
@@ -34,7 +34,7 @@ export function Positions() {
                   "linear-gradient(96.75deg, #befa15 -106.79%, #5872fc 48.13%, #c41cff 168.79%)",
               }}
             >
-              <DocumentIcon />
+              <FileText />
             </div>
             <p>Your liquidity will appear here</p>
           </div>

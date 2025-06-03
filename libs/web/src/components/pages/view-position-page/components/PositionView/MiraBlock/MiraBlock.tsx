@@ -1,12 +1,13 @@
 import React, {useCallback} from "react";
-import { IconButton } from "@/src/components/common";
+import {IconButton} from "@/src/components/common";
 import styles from "./MiraBlock.module.css";
-import {CopyIcon, LogoIcon} from "@/meshwave-ui/icons";
+import {LogoIcon} from "@/meshwave-ui/icons";
 import {PoolId, getLPAssetId} from "mira-dex-ts";
 import usePositionData from "@/src/hooks/usePositionData";
 import {formatUnits} from "fuels";
 import {DEFAULT_AMM_CONTRACT_ID} from "@/src/utils/constants";
-import { useFormattedAddress } from "@/src/hooks";
+import {useFormattedAddress} from "@/src/hooks";
+import {Copy} from "lucide-react";
 
 interface MiraBlockProps {
   pool: PoolId;
@@ -33,7 +34,7 @@ const MiraBlock = ({pool}: MiraBlockProps) => {
       <p className={styles.numberAndCopy}>
         Asset ID: {formattedLpTokenAssetId}
         <IconButton onClick={handleCopy}>
-          <CopyIcon />
+          <Copy />
         </IconButton>
       </p>
     </div>

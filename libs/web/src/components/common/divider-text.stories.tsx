@@ -1,7 +1,6 @@
 import type {Meta, StoryObj} from "@storybook/react";
 import "../../../styles.css";
 import {DividerText} from "./divider-text";
-import {SearchIcon} from "@/meshwave-ui/icons";
 
 const meta = {
   title: "🪙 Web/Divider Text",
