@@ -1,17 +1,16 @@
-import styles from "./BoostsRewards.module.css";
 import Link from "next/link";
-import {Info} from "@/src/components/common";
+import {Info, Loader} from "@/src/components/common";
 import {
   POINTS_TOOLTIP,
   POINTS_RANK_TOOLTIP,
   POINTS_LEARN_MORE_URL,
   DefaultLocale,
 } from "@/src/utils/constants";
-import {Loader} from "@/src/components/common";
 import {usePointsRank} from "@/src/hooks";
 import pointsStyles from "@/src/components/pages/points-page/PointsStyles.module.css";
 import {PointsIcon} from "@/meshwave-ui/icons";
 import {Button} from "@/meshwave-ui/Button";
+import clsx from "clsx";
 
 export function BoostsRewards() {
   const {data: pointsRankArray, isLoading, error} = usePointsRank();
@@ -31,18 +30,23 @@ export function BoostsRewards() {
   }
 
   return (
-    <div className={styles.boosts}>
-      <div className={styles.boostsHeader}>
+    <div className="flex flex-col gap-6 max-[480px]:gap-4">
+      <div className="flex justify-between items-center">
         <p className={pointsStyles.pointsTitle}>Points Program</p>
         <Link href={POINTS_LEARN_MORE_URL} target="_blank">
           <Button variant="secondary">Learn more</Button>
         </Link>
       </div>
 
-      {/* Boosts rewards details */}
-      <div className={styles.boostsFallback}>
-        <div className={styles.rewardsItem}>
-          <div className={styles.rewardsLabel}>
+      <div
+        className={clsx(
+          "flex justify-between items-center gap-4",
+          "rounded-[10px] min-h-[110px] bg-[var(--points-gradient)]",
+          "p-6 max-[480px]:p-4 max-[480px]:flex-col max-[480px]:items-stretch max-[480px]:gap-3",
+        )}
+      >
+        <div className="flex flex-col gap-2">
+          <div className="flex items-center gap-1 text-base font-normal text-white/72 max-[768px]:text-sm max-[768px]:items-start">
             <p>Your Points</p>
             <Info
               tooltipText={POINTS_TOOLTIP}
@@ -50,13 +54,13 @@ export function BoostsRewards() {
               color="#D1D4F9"
             />
           </div>
-          <div className={styles.rewardsValue}>
+          <div className="flex items-center gap-2 h-[25px]">
             {isLoading ? (
               <Loader color="gray" />
             ) : (
               <>
                 <PointsIcon />
-                <p>
+                <p className="text-[26px] font-normal max-[768px]:text-[20px]">
                   {pointsRank?.points.toLocaleString(DefaultLocale, {
                     maximumFractionDigits: 0,
                   })}
@@ -65,10 +69,11 @@ export function BoostsRewards() {
             )}
           </div>
         </div>
-        <div className={styles.rankSection}>
-          <div className={styles.divider}></div>
-          <div className={styles.rankItem}>
-            <div className={styles.rewardsLabel}>
+
+        <div className="flex items-center gap-9 max-[480px]:gap-4">
+          <div className="w-0.5 bg-white/20 h-14" />
+          <div className="flex flex-col gap-2 mr-[30px]">
+            <div className="flex items-center gap-1 text-base font-normal text-white/72">
               <p>Your rank</p>
               <Info
                 tooltipText={POINTS_RANK_TOOLTIP}
@@ -76,11 +81,10 @@ export function BoostsRewards() {
                 color="#D1D4F9"
               />
             </div>
-
             {isLoading ? (
               <Loader color="gray" />
             ) : (
-              <p className={styles.rank}>{pointsRank?.rank}</p>
+              <p className="text-[20px] font-normal">{pointsRank?.rank}</p>
             )}
           </div>
         </div>
