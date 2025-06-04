@@ -1,4 +1,3 @@
-import styles from "@/src/components/pages/add-liquidity-page/components/AddLiquidity/AddLiquidity.module.css";
 import CoinPair from "@/src/components/common/CoinPair/CoinPair";
 import {Coin} from "@/src/components/common";
 import {useModal} from "@/src/hooks";
@@ -43,10 +42,6 @@ const PreviewCreatePoolDialog = ({previewData}: Props) => {
   const firstCoinAmount = previewData.assets[0].amount;
   const secondCoinAmount = previewData.assets[1].amount;
 
-  // const rate = (
-  //   parseFloat(firstCoinAmount) / parseFloat(secondCoinAmount)
-  // ).toLocaleString(DefaultLocale, { minimumFractionDigits: 2 });
-
   const handleCreateLiquidity = useCallback(async () => {
     const data = await createPool();
 
@@ -63,80 +58,34 @@ const PreviewCreatePoolDialog = ({previewData}: Props) => {
 
   return (
     <>
-      <div className={styles.section}>
-        <div className={styles.previewCoinPair}>
+      <div className="flex flex-col gap-4">
+        <div className="flex justify-between">
           <CoinPair
             firstCoin={previewData.assets[0].assetId}
             secondCoin={previewData.assets[1].assetId}
             isStablePool={isStablePool}
           />
         </div>
-        <div className={styles.inputsPreview}>
-          <div className={styles.inputPreviewRow}>
+        <div className="flex flex-col gap-3 bg-[var(--background-secondary)] p-3 rounded-md">
+          <div className="flex justify-between items-center">
             <Coin assetId={previewData.assets[0].assetId} />
-            <p>{firstCoinAmount}</p>
+            <p className="text-sm font-medium leading-4">{firstCoinAmount}</p>
           </div>
-          <div className={styles.inputPreviewRow}>
+          <div className="flex justify-between items-center">
             <Coin assetId={previewData.assets[1].assetId} />
-            <p>{secondCoinAmount}</p>
+            <p className="text-sm font-medium leading-4">{secondCoinAmount}</p>
           </div>
-          <div className={styles.inputPreviewRow}>
-            <p>Fee tier</p>
-            <p>{feeText}</p>
-          </div>
-        </div>
-      </div>
-      {/* <div className={styles.section}>
-        <p>Selected Price</p>
-        <div className={styles.sectionContent}>
-          <div className={styles.previewPriceBlocks}>
-            <div className={styles.previewPriceBlock}>
-              <p className={styles.previewPriceBlockTitle}>
-                Low price
-              </p>
-              <p className={styles.previewPriceBlockValue}>
-                0
-              </p>
-              <p className={styles.previewPriceBlockExchange}>
-                {coinA} per {coinB}
-              </p>
-              <p className={styles.previewPriceBlockDescription}>
-                Your position will be 100% composed of {coinA} at this price
-              </p>
-            </div>
-            <div className={styles.previewPriceBlock}>
-              <p className={styles.previewPriceBlockTitle}>
-                High price
-              </p>
-              <p className={styles.previewPriceBlockValue}>
-                ∞
-              </p>
-              <p className={styles.previewPriceBlockExchange}>
-                {coinA} per {coinB}
-              </p>
-              <p className={styles.previewPriceBlockDescription}>
-                Your position will be 100% composed of {coinB} at this price
-              </p>
-            </div>
+          <div className="flex justify-between items-center border-t border-[var(--background-grey-dark)] pt-3">
+            <p className="text-sm font-medium leading-4">Fee tier</p>
+            <p className="text-sm font-medium leading-4">{feeText}</p>
           </div>
         </div>
       </div>
-      <div className={styles.section}>
-        <div className={styles.previewCurrentPriceBlock}>
-          <p className={styles.previewPriceBlockTitle}>
-            Current Price
-          </p>
-          <p className={styles.previewPriceBlockValue}>
-            {rate}
-          </p>
-          <p className={styles.previewPriceBlockExchange}>
-            {coinA} per {coinB}
-          </p>
-        </div>
-      </div> */}
+
       <Button loading={isPoolCreationPending} onClick={handleCreateLiquidity}>
         Create pool
       </Button>
+
       <SuccessModal title={<></>} onClose={redirectToLiquidity}>
         <CreatePoolSuccessModal
           coinA={firstAssetMetadata.symbol || null}

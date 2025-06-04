@@ -31,7 +31,7 @@ export function Coin({
       className={clsx(baseClasses, newPool && clickableClasses)}
       onClick={handleClick}
     >
-      {icon && <img src={icon} alt={`${metadata.symbol} icon`} />}
+      {icon && <img src={icon} alt={`${metadata.symbol} icon`} className="size-5" />}
       <p className={clsx(nameClasses, className)}>
         {metadata.symbol ?? "Choose Asset"}
       </p>

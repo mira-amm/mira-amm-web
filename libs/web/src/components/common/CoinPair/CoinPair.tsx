@@ -1,9 +1,8 @@
-import styles from "./CoinPair.module.css";
 import {clsx} from "clsx";
 import {memo} from "react";
 import {useAssetImage} from "@/src/hooks/useAssetImage";
 import {B256Address} from "fuels";
-import { useAssetMetadata } from "@/src/hooks";
+import {useAssetMetadata} from "@/src/hooks";
 
 type Props = {
   firstCoin: B256Address;
@@ -32,33 +31,55 @@ const CoinPair = ({
 
   return (
     <div
-      className={clsx(
-        styles.coinPair,
-        withFeeBelow && styles.coinPairAlignStart,
-      )}
+      className={clsx("flex gap-2 items-center", withFeeBelow && "items-start")}
     >
-      <div className={styles.coinPairIcons}>
+      <div className="flex items-center w-16 h-9">
         {firstCoinIcon && (
-          <img src={firstCoinIcon} alt={`${firstSymbol} icon`} />
+          <img
+            src={firstCoinIcon}
+            alt={`${firstSymbol} icon`}
+            className="w-full h-full rounded-full"
+          />
         )}
         {secondCoinIcon && (
-          <img src={secondCoinIcon} alt={`${secondSymbol} icon`} />
+          <img
+            src={secondCoinIcon}
+            alt={`${secondSymbol} icon`}
+            className="-ml-2 w-full h-full rounded-full"
+          />
         )}
       </div>
-      <div className={styles.namesAndFee}>
+
+      <div className="flex flex-col gap-1">
         {firstSymbol && secondSymbol ? (
-          <p className={styles.coinNames} data-identifier="coin-pair">
+          <p
+            className="font-medium text-[14px] leading-[16px] lg:text-[16px] lg:leading-[19px]"
+            data-identifier="coin-pair"
+          >
             {firstSymbol}/{secondSymbol}
           </p>
         ) : (
-          <p className={styles.loadingText}>loading...</p>
+          <p className="text-[14px] text-muted">loading...</p>
         )}
-        {withFeeBelow && <p className={styles.coinPairFee}>{feeText}</p>}
+
+        {withFeeBelow && (
+          <p className="text-xs leading-[14px] text-content-tertiary lg:text-sm lg:leading-[16px]">
+            {feeText}
+          </p>
+        )}
+
         {withPoolDescription && (
-          <p className={styles.poolDescription}>{poolDescription}</p>
+          <p className="text-xs leading-[14px] text-[#d4b226]">
+            {poolDescription}
+          </p>
         )}
       </div>
-      {withFee && <p className={styles.coinPairFee}>{feeText}</p>}
+
+      {withFee && (
+        <p className="text-xs leading-[14px] text-content-tertiary lg:text-sm lg:leading-[16px]">
+          {feeText}
+        </p>
+      )}
     </div>
   );
 };
