@@ -1,4 +1,3 @@
-import styles from "./SettingsModalContent.module.css";
 import {
   ChangeEvent,
   Dispatch,
@@ -15,7 +14,7 @@ import {
   SlippageMode,
 } from "@/src/components/common/Swap/Swap";
 import {useAnimationStore} from "@/src/stores/useGlitchScavengerHunt";
-import { Info } from "lucide-react";
+import {Info} from "lucide-react";
 
 const AutoSlippageValues = [10, 50, 100];
 
@@ -31,17 +30,14 @@ function SettingsModalContent({
   setSlippage: Dispatch<SetStateAction<number>>;
   setSlippageMode: Dispatch<SetStateAction<SlippageMode>>;
   closeModal: VoidFunction;
-}){
+}) {
   const [inputValue, setInputValue] = useState(`${slippage / 100}%`);
-
   const inputRef = useRef<HTMLInputElement>(null);
 
   const handleSlippageChange = (event: ChangeEvent<HTMLInputElement>) => {
     const value = event.target.value.replace("%", "");
     setInputValue(value + "%");
-    useAnimationStore
-      .getState()
-      .handleMagicInput(event.target.value.replace("%", ""));
+    useAnimationStore.getState().handleMagicInput(value);
   };
 
   const handleInputBlur = (event: FocusEvent<HTMLInputElement>) => {
@@ -51,10 +47,7 @@ function SettingsModalContent({
       setSlippage(DefaultSlippageValue);
       return;
     }
-    const formattedValue = numericValue * 100;
-    const fixedToTwo = formattedValue.toFixed(2);
-    const flooredValue = Math.floor(Number(fixedToTwo));
-    setSlippage(flooredValue);
+    setSlippage(Math.floor(Number((numericValue * 100).toFixed(2))));
   };
 
   const handleKeyDown = (event: KeyboardEvent<HTMLInputElement>) => {
@@ -64,7 +57,6 @@ function SettingsModalContent({
       setInputValue(value + "%");
       event.preventDefault();
     }
-
     if (event.key === "Enter") {
       inputRef.current?.blur();
     }
@@ -86,19 +78,20 @@ function SettingsModalContent({
   const isCustomMode = slippageMode === "custom";
 
   return (
-    <div className={styles.settingsContainer}>
-      <div className={styles.settingsSection}>
+    <div className="flex flex-col gap-4">
+      <div className="flex flex-col gap-2">
         <p>Slippage Tolerance</p>
-        <p className={styles.settingsText}>
+        <p className="text-content-dimmed-light">
           The amount the price can change unfavorably before the trade reverts
         </p>
       </div>
-      <div className={styles.settingsSection}>
-        <div className={styles.slippageButtons}>
+
+      <div className="flex flex-col gap-2">
+        <div className="flex gap-2">
           <button
             className={clsx(
-              styles.slippageButton,
-              isAutoMode && styles.slippageButtonActive,
+              "w-full px-3 py-[14px] rounded-lg text-content-dimmed-light bg-background-grey-dark hover:border hover:border-accent-primary",
+              isAutoMode && "border-accent-primary border",
             )}
             onClick={() => handleSlippageModeChange("auto")}
           >
@@ -106,38 +99,39 @@ function SettingsModalContent({
           </button>
           <button
             className={clsx(
-              styles.slippageButton,
-              isCustomMode && styles.slippageButtonActive,
+              "w-full px-3 py-[14px] rounded-lg text-content-dimmed-light bg-background-grey-dark hover:border hover:border-accent-primary",
+              isCustomMode && "border-accent-primary border",
             )}
             onClick={() => handleSlippageModeChange("custom")}
           >
             Custom
           </button>
         </div>
+
         {isCustomMode && (
           <input
             type="text"
-            className={styles.slippageInput}
             inputMode="decimal"
             pattern="^[0-9]*[.,]?[0-9]*$"
+            className="w-full px-3 py-[14px] rounded-lg text-content-dimmed-light bg-background-grey-dark focus:border-accent-primary focus:text-content-primary"
             value={inputValue}
             onChange={handleSlippageChange}
             onKeyDown={handleKeyDown}
             onBlur={handleInputBlur}
-            key="input"
             ref={inputRef}
           />
         )}
+
         {isAutoMode && (
-          <div className={styles.slippageButtons}>
+          <div className="flex gap-2">
             {AutoSlippageValues.map((value) => (
               <button
+                key={value}
                 className={clsx(
-                  styles.slippageButton,
-                  slippage === value && styles.slippageButtonActive,
+                  "w-full px-3 py-[14px] rounded-lg text-content-dimmed-light bg-background-grey-dark hover:text-content-primary hover:border hover:border-accent-primary",
+                  slippage === value && "border-accent-primary border",
                 )}
                 onClick={() => handleSlippageButtonClick(value)}
-                key={value}
               >
                 {value / 100}%
               </button>
@@ -145,13 +139,13 @@ function SettingsModalContent({
           </div>
         )}
       </div>
+
       {isCustomMode && (
-        <div className={styles.settingsSection}>
-          <p className={styles.infoHeading}>
-            <Info />
-            Pay attention
+        <div className="flex flex-col gap-2">
+          <p className="flex items-center gap-2">
+            <Info /> Pay attention
           </p>
-          <p className={styles.settingsText}>
+          <p className="text-content-dimmed-light">
             Customized price impact limit may lead to loss of funds. Use it at
             your own risk
           </p>
@@ -159,6 +153,6 @@ function SettingsModalContent({
       )}
     </div>
   );
-};
+}
 
 export default memo(SettingsModalContent);

@@ -1,17 +1,20 @@
-import styles from "./loader.module.css";
 import {clsx} from "clsx";
 
-export function Loader({variant, color}: {
+export function Loader({
+  variant = "outlined",
+  color = "gray",
+}: {
   variant?: "primary" | "secondary" | "outlined";
-  color?: "gray"; //Add more color options if required
-}){
+  color?: "gray";
+}) {
   return (
     <div
       className={clsx(
-        styles.loader,
-        variant === "outlined" && styles.outlined,
-        color && styles[`${color}`],
+        "inline-block animate-spin rounded-full box-border w-5 h-5 border-2 border-b-transparent",
+        variant === "outlined" && "border-2 border-accent-primary",
+        color === "gray" &&
+          "border-2 border-content-tertiary border-b-transparent",
       )}
     />
   );
-};
+}
