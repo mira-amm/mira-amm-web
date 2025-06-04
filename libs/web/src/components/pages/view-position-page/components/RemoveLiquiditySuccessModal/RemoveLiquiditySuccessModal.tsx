@@ -36,10 +36,7 @@ export default function RemoveLiquiditySuccessModal({
       <p className="text-[14px] leading-[16px] text-content-dimmed-dark text-center">
         {subText}
       </p>
-      <Button
-        onClick={handleViewTransactionClick}
-        className="w-full bg-accent-primary text-old-mira-text border border-accent-primary shadow-[1px_1px_20px_0_#a1db0b4d] hover:shadow-[1px_1px_30px_0_#a1db0b4d] hover:bg-old-mira-active-btn cursor-pointer"
-      >
+      <Button onClick={handleViewTransactionClick} block>
         View transaction
       </Button>
     </div>

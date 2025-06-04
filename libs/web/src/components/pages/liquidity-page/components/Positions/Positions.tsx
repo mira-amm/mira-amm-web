@@ -14,7 +14,7 @@ import Link from "next/link";
 import CoinPair from "@/src/components/common/CoinPair/CoinPair";
 import AprBadge from "@/src/components/common/AprBadge/AprBadge";
 import {PositionsLoader} from "./PositionsLoader";
-import { FileText } from "lucide-react";
+import {FileText} from "lucide-react";
 import {Button} from "@/meshwave-ui/Button";
 
 export function Positions() {
@@ -159,9 +159,7 @@ function PositionRow({
         </div>
 
         <div className="col-span-3 md:col-span-1 flex lg:justify-end">
-          <Button
-            className="w-full lg:max-w-[165px] bg-accent-primary text-old-mira-text border border-accent-primary shadow-[1px_1px_20px_0_#a1db0b4d] hover:shadow-[1px_1px_30px_0_#a1db0b4d] hover:bg-old-mira-active-btn cursor-pointer text-xs text-nowrap font-medium leading-[19px]"
-          >
+          <Button className="lg:max-w-[165px]" variant="secondary" block>
             Manage
           </Button>
         </div>

@@ -31,9 +31,7 @@ export function SwapSuccessModal({
         target="_blank"
         className="w-full"
       >
-        <Button className="w-full bg-accent-primary text-old-mira-text border border-accent-primary shadow-[1px_1px_20px_0_#a1db0b4d] hover:shadow-[1px_1px_30px_0_#a1db0b4d] hover:bg-old-mira-active-btn cursor-pointer">
-          View transaction
-        </Button>
+        <Button block>View transaction</Button>
       </Link>
     </div>
   );

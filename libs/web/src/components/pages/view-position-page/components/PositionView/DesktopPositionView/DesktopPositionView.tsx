@@ -56,16 +56,11 @@ const DesktopPositionView = ({
           />
         </div>
         <div className={styles.actionBtnDiv}>
-          <Button
-            className="bg-accent-dimmed text-accent-primary border-none shadow-none hover:bg-old-mira-bg-hover active:bg-old-mira-bg-active cursor-pointer"
-            onClick={handleWithdrawLiquidity}
-          >
+          <Button variant="secondary" onClick={handleWithdrawLiquidity}>
             Remove Liquidity
           </Button>
           <Link href={positionPath}>
-            <Button className="bg-accent-primary text-old-mira-text border border-accent-primary shadow-[1px_1px_20px_0_#a1db0b4d] hover:shadow-[1px_1px_30px_0_#a1db0b4d] hover:bg-old-mira-active-btn cursor-pointer">
-              Add Liquidity
-            </Button>
+            <Button>Add Liquidity</Button>
           </Link>
         </div>
       </div>

@@ -62,11 +62,7 @@ const MobilePoolItem = ({poolData}: Props) => {
         </div>
         <p className={styles.poolDescription}>{poolDescription}</p>
       </div>
-      <Button
-        variant="secondary"
-        onClick={handleAddClick}
-        className="w-full bg-accent-dimmed text-accent-primary border-none shadow-none hover:bg-old-mira-bg-hover active:bg-old-mira-bg-active cursor-pointer"
-      >
+      <Button variant="secondary" onClick={handleAddClick}>
         Add Liquidity
       </Button>
     </div>

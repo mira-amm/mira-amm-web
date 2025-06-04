@@ -105,21 +105,11 @@ const MobilePositionView = ({
 
       <div className={styles.sticky}>
         <Link href={positionPath}>
-          <Button
-            className={
-              "w-full bg-accent-primary text-old-mira-text border border-accent-primary shadow-[1px_1px_20px_0_#a1db0b4d] hover:shadow-[1px_1px_30px_0_#a1db0b4d] hover:bg-old-mira-active-btn cursor-pointer"
-            }
-          >
-            Add Liquidity
-          </Button>
+          <Button block>Add Liquidity</Button>
         </Link>
       </div>
       <div className={styles.nonSticky}>
-        <Button
-          className="w-full bg-accent-dimmed text-accent-primary border-none shadow-none hover:bg-old-mira-bg-hover active:bg-old-mira-bg-active cursor-pointer"
-          onClick={handleWithdrawLiquidity}
-          fullWidth
-        >
+        <Button variant="secondary" onClick={handleWithdrawLiquidity} block>
           Remove Liquidity
         </Button>
       </div>

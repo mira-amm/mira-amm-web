@@ -734,22 +734,17 @@ const Swap = ({isWidget}: {isWidget?: boolean}) => {
             <Button
               onClick={connect}
               loading={isConnecting}
-              className="h-12 bg-accent-dimmed text-accent-primary border-none shadow-none hover:bg-old-mira-bg-hover active:bg-old-mira-bg-active cursor-pointer"
+              variant="secondary"
+              size="2xl"
             >
               Connect Wallet
             </Button>
           ) : (
             <Button
               disabled={isActionDisabled}
-              className={cn(
-                ((isWidget && isActionDisabled) || isActionDisabled) &&
-                  "h-12 bg-background-secondary border-background-secondary text-content-dimmed-dark shadow-none",
-                !isWidget &&
-                  !isActionDisabled &&
-                  "h-12 bg-accent-primary text-old-mira-text border border-accent-primary shadow-[1px_1px_20px_0_#a1db0b4d] hover:shadow-[1px_1px_30px_0_#a1db0b4d] hover:bg-old-mira-active-btn cursor-pointer",
-              )}
               onClick={handleSwapClick}
               loading={isActionLoading}
+              size="2xl"
             >
               {swapButtonTitle}
             </Button>

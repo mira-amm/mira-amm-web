@@ -37,10 +37,7 @@ export default function SwapFailureModal({
         {customTitle && customTitle.length > 0 ? customTitle : title}
       </p>
       <p className={styles.subText}>{message}</p>
-      <Button
-        onClick={closeModal}
-        clasName="w-full bg-accent-primary text-old-mira-text border border-accent-primary shadow-[1px_1px_20px_0_#a1db0b4d] hover:shadow-[1px_1px_30px_0_#a1db0b4d] hover:bg-old-mira-active-btn cursor-pointer"
-      >
+      <Button onClick={closeModal} block>
         Try again
       </Button>
     </div>

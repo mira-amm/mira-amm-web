@@ -134,11 +134,7 @@ const PreviewCreatePoolDialog = ({previewData}: Props) => {
           </p>
         </div>
       </div> */}
-      <Button
-        className="bg-accent-primary text-old-mira-text border border-accent-primary shadow-[1px_1px_20px_0_#a1db0b4d] hover:shadow-[1px_1px_30px_0_#a1db0b4d] hover:bg-old-mira-active-btn cursor-pointer"
-        loading={isPoolCreationPending}
-        onClick={handleCreateLiquidity}
-      >
+      <Button loading={isPoolCreationPending} onClick={handleCreateLiquidity}>
         Create pool
       </Button>
       <SuccessModal title={<></>} onClose={redirectToLiquidity}>

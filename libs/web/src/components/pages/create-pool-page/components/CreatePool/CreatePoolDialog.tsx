@@ -25,7 +25,7 @@ import Link from "next/link";
 import useExchangeRateV2 from "@/src/hooks/useExchangeRate/useExchangeRateV2";
 import {Button} from "@/meshwave-ui/Button";
 import {cn} from "@/src/utils/cn";
-import { ArrowLeftRight, Sparkle } from "lucide-react";
+import {ArrowLeftRight, Sparkle} from "lucide-react";
 
 export default function CreatePoolDialog({
   setPreviewData,
@@ -328,24 +328,11 @@ export default function CreatePoolDialog({
         </div>
       )}
       {!isConnected ? (
-        <Button
-          className="bg-accent-dimmed text-accent-primary border-none shadow-none hover:bg-old-mira-bg-hover active:bg-old-mira-bg-active cursor-pointer"
-          onClick={connect}
-          loading={isConnecting}
-        >
+        <Button variant="secondary" onClick={connect} loading={isConnecting}>
           Connect Wallet
         </Button>
       ) : (
-        <Button
-          disabled={buttonDisabled}
-          onClick={handleButtonClick}
-          className={cn(
-            buttonDisabled &&
-              "bg-background-secondary border-background-secondary text-content-dimmed-dark shadow-none",
-            !buttonDisabled &&
-              "bg-accent-primary text-old-mira-text border border-accent-primary shadow-[1px_1px_20px_0_#a1db0b4d] hover:shadow-[1px_1px_30px_0_#a1db0b4d] hover:bg-old-mira-active-btn cursor-pointer",
-          )}
-        >
+        <Button disabled={buttonDisabled} onClick={handleButtonClick}>
           {buttonTitle}
         </Button>
       )}

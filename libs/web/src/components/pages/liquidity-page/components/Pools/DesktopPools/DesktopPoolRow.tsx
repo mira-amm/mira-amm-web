@@ -48,13 +48,7 @@ const DesktopPoolRow = ({poolData}: {poolData: PoolData}) => {
 
       <td>
         <Link href={`/liquidity/add?pool=${poolKey}`}>
-          <Button
-            className={
-              "bg-accent-dimmed text-accent-primary border-none shadow-none hover:bg-old-mira-bg-hover active:bg-old-mira-bg-active cursor-pointer"
-            }
-          >
-            Add Liquidity
-          </Button>
+          <Button variant="secondary">Add Liquidity</Button>
         </Link>
       </td>
     </tr>

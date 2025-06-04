@@ -1,6 +1,6 @@
 import {FuelError} from "fuels";
 import {Button} from "@/meshwave-ui/Button";
-import { CircleX } from "lucide-react";
+import {CircleX} from "lucide-react";
 
 export function TransactionFailureModal({
   closeModal,
@@ -24,10 +24,7 @@ export function TransactionFailureModal({
       <p className="text-[14px] leading-[16px] text-content-dimmed-dark text-center">
         {message}
       </p>
-      <Button
-        className="w-full bg-accent-primary text-old-mira-text border border-accent-primary shadow-[1px_1px_20px_0_#a1db0b4d] hover:shadow-[1px_1px_30px_0_#a1db0b4d] hover:bg-old-mira-active-btn cursor-pointer"
-        onClick={closeModal}
-      >
+      <Button onClick={closeModal} block>
         Try again
       </Button>
     </div>

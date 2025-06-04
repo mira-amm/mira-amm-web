@@ -330,24 +330,11 @@ const AddLiquidityDialog = ({poolId, setPreviewData, poolKey}: Props) => {
         </div>
       </div>
       {!isConnected ? (
-        <Button
-          onClick={connect}
-          loading={isConnecting}
-          className="bg-accent-dimmed text-accent-primary border-none shadow-none hover:bg-old-mira-bg-hover active:bg-old-mira-bg-active cursor-pointer"
-        >
+        <Button onClick={connect} loading={isConnecting} variant="secondary">
           Connect Wallet
         </Button>
       ) : (
-        <Button
-          disabled={buttonDisabled}
-          onClick={handleButtonClick}
-          className={cn(
-            buttonDisabled &&
-              "bg-background-secondary border-background-secondary text-content-dimmed-dark shadow-none",
-            !buttonDisabled &&
-              "bg-accent-primary text-old-mira-text border border-accent-primary shadow-[1px_1px_20px_0_#a1db0b4d] hover:shadow-[1px_1px_30px_0_#a1db0b4d] hover:bg-old-mira-active-btn cursor-pointer",
-          )}
-        >
+        <Button disabled={buttonDisabled} onClick={handleButtonClick}>
           {buttonTitle}
         </Button>
       )}

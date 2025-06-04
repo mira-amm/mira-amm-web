@@ -77,19 +77,15 @@ export const ConfirmPopup: React.FC<{
         {/* Buttons */}
         <div className="sticky bottom-0 left-0 z-[48] w-full bg-[#262834] px-[28px] py-[24px] flex gap-[12px] shadow-[1px_0px_2px_0px_#faf8f830]">
           <Button
-            className={clsx(
-              "w-full h-[48px] text-accent-primary bg-transparent border border-accent-primary hover:shadow-none active:bg-transparent",
-            )}
-            variant="outlined"
+            className="h-[48px]"
+            variant="outline"
             onClick={onDeny}
             loading={disconnectIsPending}
+            block
           >
             Deny and Disconnect
           </Button>
-          <Button
-            className="w-full h-[48px] bg-accent-primary text-old-mira-text border border-accent-primary shadow-[1px_1px_20px_0_#a1db0b4d] hover:shadow-[1px_1px_30px_0_#a1db0b4d] hover:bg-old-mira-active-btn cursor-pointer"
-            onClick={onConfirm}
-          >
+          <Button className="h-[48px]" onClick={onConfirm} block>
             Sign and Confirm
           </Button>
         </div>

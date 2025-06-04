@@ -18,7 +18,7 @@ import TransactionsHistory from "./TransactionsHistory/TransactionsHistory";
 import {FuelAppUrl} from "@/src/utils/constants";
 import {openNewTab} from "@/src/utils/common";
 import {CopyNotification} from "./copy-notification";
-import {Button} from "@/meshwave-ui/Button"
+import {Button} from "@/meshwave-ui/Button";
 
 export function ConnectWallet() {
   const {account, connect, disconnect, isConnected, isWalletLoading} =
@@ -70,11 +70,7 @@ export function ConnectWallet() {
   return (
     <>
       {!isConnected && (
-        <Button
-          onClick={connect}
-          disabled={isWalletLoading}
-          className="h-10 bg-accent-primary text-old-mira-text border border-accent-primary shadow-[1px_1px_20px_0_#a1db0b4d] hover:shadow-[1px_1px_30px_0_#a1db0b4d] hover:bg-old-mira-active-btn cursor-pointer"
-        >
+        <Button onClick={connect} disabled={isWalletLoading} size="lg">
           Connect Wallet
         </Button>
       )}

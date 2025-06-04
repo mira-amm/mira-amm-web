@@ -44,7 +44,7 @@ function HeroSection() {
           className="flex flex-col items-center gap-3 w-full max-lg:max-w-md lg:flex-row"
         >
           <a href="/swap" className="w-full">
-            <Button className="w-full h-14 bg-accent-primary text-old-mira-text border border-accent-primary shadow-[1px_1px_20px_0_#a1db0b4d] hover:shadow-[1px_1px_30px_0_#a1db0b4d] hover:bg-old-mira-active-btn cursor-pointer">
+            <Button className="h-14" block>
               Launch App
             </Button>
           </a>
@@ -247,7 +247,7 @@ function WelcomeSection() {
           href="/swap"
           className="py-4 lg:w-full lg:text-base lg:leading-6 flex justify-center"
         >
-          <Button className="w-60 h-14 bg-accent-primary text-old-mira-text border border-accent-primary shadow-[1px_1px_20px_0_#a1db0b4d] hover:shadow-[1px_1px_30px_0_#a1db0b4d] hover:bg-old-mira-active-btn cursor-pointer">
+          <Button className="w-60 h-14">
             Launch App
           </Button>
         </a>

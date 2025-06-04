@@ -57,13 +57,7 @@ export function Pools() {
     <section className={styles.pools}>
       <div className={styles.actionButtonDiv}>
         <Link href="/liquidity/create-pool">
-          <Button
-            className={clsx(
-              "mobileOnly bg-accent-primary text-old-mira-text border border-accent-primary shadow-[1px_1px_20px_0_#a1db0b4d] hover:shadow-[1px_1px_30px_0_#a1db0b4d] hover:bg-old-mira-active-btn cursor-pointer",
-            )}
-          >
-            Create Pool
-          </Button>
+          <Button className="mobileOnly">Create Pool</Button>
         </Link>
       </div>
 
