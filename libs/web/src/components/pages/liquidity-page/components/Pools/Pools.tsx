@@ -13,7 +13,6 @@ import useDebounce from "@/src/hooks/useDebounce";
 import {Button} from "@/meshwave-ui/Button";
 
 import clsx from "clsx";
-import styles from "./Pools.module.css";
 
 export function Pools() {
   const {data, isLoading, moreInfo} = usePoolsData();
@@ -54,18 +53,18 @@ export function Pools() {
   const handlePageChange = (page: number) => setQueryVariables({page: page});
 
   return (
-    <section className={styles.pools}>
-      <div className={styles.actionButtonDiv}>
+    <section className="flex flex-col gap-[14px]">
+      <div className="flex justify-end">
         <Link href="/liquidity/create-pool">
           <Button className="mobileOnly">Create Pool</Button>
         </Link>
       </div>
 
-      <div className={styles.poolsHeader}>
-        <p className={styles.poolsTitle}>All Pools</p>
+      <div className="flex justify-between items-center">
+        <p className="text-[20px] leading-[24px]">All Pools</p>
         <SearchBar
           placeholder="Symbol or address..."
-          className={styles.poolsSearchBar}
+          className=""
           value={searchInput}
           onChange={handleSearchChange}
         />
@@ -79,15 +78,15 @@ export function Pools() {
       />
 
       {isLoading && (
-        <div className={styles.loadingFallback}>
+        <div className="flex flex-col items-center gap-4 py-7 px-4 lg:p-8 rounded-2xl bg-background-grey-dark">
           <LoaderV2 />
           <p>Loading pools...</p>
         </div>
       )}
 
       {data && data.length > 0 && (
-        <div className={styles.pagination}>
-          <p className={clsx("desktopOnly")}>
+        <div className="flex justify-center items-center lg:justify-between lg:items-center">
+          <p className={clsx("desktopOnly", "text-sm")}>
             Showing {data.length} out of {totalCount} pools...
           </p>
           <Pagination

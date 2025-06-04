@@ -1,12 +1,15 @@
 import {usePoolDetails} from "../usePoolDetails";
 import CoinPair from "@/src/components/common/CoinPair/CoinPair";
 import Link from "next/link";
-import styles from "./DesktopPools.module.css";
 import clsx from "clsx";
 import {PoolData} from "@/src/hooks/usePoolsData";
 import AprBadge from "@/src/components/common/AprBadge/AprBadge";
 import usePoolNameAndMatch from "@/src/hooks/usePoolNameAndMatch";
 import {Button} from "@/meshwave-ui/Button";
+import {TableCell, TableRow} from "@/meshwave-ui/Table";
+
+const cellBase =
+  "px-6 py-4 whitespace-nowrap overflow-hidden text-ellipsis text-center";
 
 const DesktopPoolRow = ({poolData}: {poolData: PoolData}) => {
   const {poolKey, aprValue, volumeValue, tvlValue, isStablePool, poolId} =
@@ -16,20 +19,21 @@ const DesktopPoolRow = ({poolData}: {poolData: PoolData}) => {
   const {isMatching} = usePoolNameAndMatch(poolKey);
 
   return (
-    <tr key={poolKey}>
-      <td>
+    <TableRow key={poolKey}>
+      <TableCell className={clsx(cellBase, "text-left")}>
         <CoinPair
           firstCoin={poolId[0].bits}
           secondCoin={poolId[1].bits}
           isStablePool={isStablePool}
           withPoolDescription
         />
-      </td>
+      </TableCell>
 
-      <td
+      <TableCell
         className={clsx(
-          styles.aprTd,
-          !isMatching && !aprValue && styles.pending,
+          cellBase,
+          "overflow-visible mt-[26px] flex justify-center items-center",
+          !isMatching && !aprValue && "text-content-dimmed-light",
         )}
       >
         {isMatching ? (
@@ -41,17 +45,17 @@ const DesktopPoolRow = ({poolData}: {poolData: PoolData}) => {
         ) : (
           aprValue
         )}
-      </td>
+      </TableCell>
 
-      <td>{volumeValue}</td>
-      <td>{tvlValue}</td>
+      <TableCell className={cellBase}>{volumeValue}</TableCell>
+      <TableCell className={cellBase}>{tvlValue}</TableCell>
 
-      <td>
+      <TableCell className={cellBase}>
         <Link href={`/liquidity/add?pool=${poolKey}`}>
           <Button variant="secondary">Add Liquidity</Button>
         </Link>
-      </td>
-    </tr>
+      </TableCell>
+    </TableRow>
   );
 };
 

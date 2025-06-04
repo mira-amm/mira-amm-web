@@ -1,57 +1,62 @@
 import MobilePoolItem from "@/src/components/pages/liquidity-page/components/Pools/MobilePools/MobilePoolItem/MobilePoolItem";
-
-import styles from "./MobilePools.module.css";
 import {Fragment} from "react";
 import {clsx} from "clsx";
 import {PoolData} from "@/src/hooks/usePoolsData";
 import SortableColumn from "@/src/components/common/SortableColumn/SortableColumn";
+import {Table, TableHead, TableHeader, TableRow} from "@/meshwave-ui/Table";
 
-export function MobilePools({poolsData, orderBy, handleSort}: {
+export function MobilePools({
+  poolsData,
+  orderBy,
+  handleSort,
+}: {
   poolsData: PoolData[] | undefined;
   orderBy: string;
   handleSort: (key: string) => void;
-}){
+}) {
   if (!poolsData) {
     return null;
   }
 
   return (
-    <div className={clsx("mobileOnly")}>
-      <table className={clsx(styles.mobilePoolsSort, "mobileOnly")}>
-        <thead>
-          <tr>
-            <th>SORT BY:</th>
-            {/* <SortableColumn
-              title="24H Volume"
-              columnKey="volumeUSD"
-              orderBy={orderBy}
-              onSort={handleSort}
-            /> */}
+    <div className="mobileOnly">
+      <Table
+        className={clsx(
+          "mobileOnly text-slate-400 text-sm bg-[var(--background-grey-dark)]",
+          "rounded-lg px-2 px-5 py-2 mb-2",
+        )}
+      >
+        <TableHeader>
+          <TableRow className="flex items-center">
+            <TableHead className="font-medium flex items-center text-content-dimmed-dark">
+              SORT BY:
+            </TableHead>
             <SortableColumn
               title="TVL"
               columnKey="tvlUSD"
               orderBy={orderBy}
               onSort={handleSort}
             />
-          </tr>
-        </thead>
-      </table>
-      <div className={clsx(styles.mobilePools, "mobileOnly")}>
-        {poolsData && poolsData.length > 0 ? (
-          poolsData.map((poolData) => {
-            return (
-              <Fragment key={poolData.id}>
-                <MobilePoolItem poolData={poolData} />
-                {poolsData.indexOf(poolData) !== poolsData.length - 1 && (
-                  <div className={styles.separator} />
-                )}
-              </Fragment>
-            );
-          })
+          </TableRow>
+        </TableHeader>
+      </Table>
+
+      <div className="mobileOnly flex flex-col p-4 rounded-md bg-[var(--background-grey-dark)]">
+        {poolsData.length > 0 ? (
+          poolsData.map((poolData, index) => (
+            <Fragment key={poolData.id}>
+              <MobilePoolItem poolData={poolData} />
+              {index !== poolsData.length - 1 && (
+                <div className="h-px bg-[var(--background-grey-light)] my-4 -mx-4" />
+              )}
+            </Fragment>
+          ))
         ) : (
-          <p className={styles.noData}>No pools available</p>
+          <p className="text-center text-[16px] font-medium text-[color:var(--content-tertiary)]">
+            No pools available
+          </p>
         )}
       </div>
     </div>
   );
-};
+}
