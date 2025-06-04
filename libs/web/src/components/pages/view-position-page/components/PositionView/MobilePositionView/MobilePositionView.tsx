@@ -3,18 +3,18 @@ import clsx from "clsx";
 import Link from "next/link";
 
 import CoinPair from "@/src/components/common/CoinPair/CoinPair";
-import { CoinWithAmount } from "@/src/components/common";
-import {ActionButton}from "@/src/components/common";
+import {CoinWithAmount} from "@/src/components/common";
 import PromoBlock from "@/src/components/pages/liquidity-page/components/PromoBlock/PromoBlock";
 import {PoolId} from "mira-dex-ts";
 import styles from "./MobilePositionView.module.css";
-import { Loader } from "@/src/components/common";
+import {Loader} from "@/src/components/common";
 import AprDisplay from "../AprDisplay/AprDisplay";
 import ReserveItem from "../ReserveItem/ReserveItem";
 import ExchangeRate from "../ExchangeRate/ExchangeRate";
 import MiraBlock from "../MiraBlock/MiraBlock";
 import {formatDisplayAmount} from "@/src/utils/common";
-import { Sparkles } from "lucide-react";
+import {Sparkles} from "lucide-react";
+import {Button} from "@/meshwave-ui/Button";
 
 interface AssetMetadata {
   name?: string;
@@ -105,20 +105,23 @@ const MobilePositionView = ({
 
       <div className={styles.sticky}>
         <Link href={positionPath}>
-          <ActionButton variant="primary" className={styles.withdrawButton}>
+          <Button
+            className={
+              "w-full bg-accent-primary text-old-mira-text border border-accent-primary shadow-[1px_1px_20px_0_#a1db0b4d] hover:shadow-[1px_1px_30px_0_#a1db0b4d] hover:bg-old-mira-active-btn cursor-pointer"
+            }
+          >
             Add Liquidity
-          </ActionButton>
+          </Button>
         </Link>
       </div>
       <div className={styles.nonSticky}>
-        <ActionButton
-          className={styles.withdrawButton}
-          variant="secondary"
+        <Button
+          className="w-full bg-accent-dimmed text-accent-primary border-none shadow-none hover:bg-old-mira-bg-hover active:bg-old-mira-bg-active cursor-pointer"
           onClick={handleWithdrawLiquidity}
           fullWidth
         >
           Remove Liquidity
-        </ActionButton>
+        </Button>
       </div>
 
       <PromoBlock

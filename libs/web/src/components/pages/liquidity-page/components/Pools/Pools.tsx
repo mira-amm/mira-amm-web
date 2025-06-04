@@ -6,7 +6,7 @@ import {MobilePools} from "@/src/components/pages/liquidity-page/components/Pool
 import {DesktopPools} from "@/src/components/pages/liquidity-page/components/Pools/DesktopPools/DesktopPools";
 import Link from "next/link";
 import LoaderV2 from "@/src/components/common/LoaderV2/LoaderV2";
-import {ActionButton, SearchBar} from "@/src/components/common";
+import {SearchBar} from "@/src/components/common";
 import Pagination from "@/src/components/common/Pagination/Pagination";
 import usePoolsData, {DEFAULT_PAGE} from "@/src/hooks/usePoolsData";
 import useDebounce from "@/src/hooks/useDebounce";

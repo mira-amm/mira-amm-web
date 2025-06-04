@@ -1,6 +1,6 @@
 import styles from "./BoostsRewards.module.css";
 import Link from "next/link";
-import {ActionButton, Info} from "@/src/components/common";
+import {Info} from "@/src/components/common";
 import {
   POINTS_TOOLTIP,
   POINTS_RANK_TOOLTIP,
@@ -35,9 +35,7 @@ export function BoostsRewards() {
       <div className={styles.boostsHeader}>
         <p className={pointsStyles.pointsTitle}>Points Program</p>
         <Link href={POINTS_LEARN_MORE_URL} target="_blank">
-          <Button
-            className="bg-accent-dimmed text-accent-primary border-none shadow-none hover:bg-old-mira-bg-hover active:bg-old-mira-bg-active cursor-pointer"
-          >
+          <Button className="bg-accent-dimmed text-accent-primary border-none shadow-none hover:bg-old-mira-bg-hover active:bg-old-mira-bg-active cursor-pointer">
             Learn more
           </Button>
         </Link>

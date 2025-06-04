@@ -1,7 +1,6 @@
 import styles from "@/src/components/pages/add-liquidity-page/components/AddLiquidity/AddLiquidity.module.css";
 import CoinPair from "@/src/components/common/CoinPair/CoinPair";
 import {Coin} from "@/src/components/common";
-import {ActionButton} from "@/src/components/common";
 import {useModal} from "@/src/hooks";
 import CreatePoolSuccessModal from "../CreatePoolSuccessModal/CreatePoolSuccessModal";
 import {useRouter} from "next/navigation";

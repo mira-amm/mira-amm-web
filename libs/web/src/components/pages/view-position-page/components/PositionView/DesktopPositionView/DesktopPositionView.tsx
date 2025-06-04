@@ -2,8 +2,7 @@ import React from "react";
 import clsx from "clsx";
 import Link from "next/link";
 import CoinPair from "@/src/components/common/CoinPair/CoinPair";
-import { CoinWithAmount } from "@/src/components/common";
-import {ActionButton}from "@/src/components/common";
+import {CoinWithAmount} from "@/src/components/common";
 import PromoBlock from "@/src/components/pages/liquidity-page/components/PromoBlock/PromoBlock";
 import {PoolId} from "mira-dex-ts";
 import styles from "./DesktopPositionView.module.css";
@@ -12,7 +11,8 @@ import ReserveItem from "../ReserveItem/ReserveItem";
 import ExchangeRate from "../ExchangeRate/ExchangeRate";
 import MiraBlock from "../MiraBlock/MiraBlock";
 import {formatDisplayAmount} from "@/src/utils/common";
-import { Sparkles } from "lucide-react";
+import {Sparkles} from "lucide-react";
+import {Button} from "@/meshwave-ui/Button";
 
 interface AssetMetadata {
   name?: string;
@@ -56,17 +56,16 @@ const DesktopPositionView = ({
           />
         </div>
         <div className={styles.actionBtnDiv}>
-          <ActionButton
-            variant="secondary"
-            className={styles.withdrawButton}
+          <Button
+            className="bg-accent-dimmed text-accent-primary border-none shadow-none hover:bg-old-mira-bg-hover active:bg-old-mira-bg-active cursor-pointer"
             onClick={handleWithdrawLiquidity}
           >
             Remove Liquidity
-          </ActionButton>
+          </Button>
           <Link href={positionPath}>
-            <ActionButton variant="primary" className={styles.withdrawButton}>
+            <Button className="bg-accent-primary text-old-mira-text border border-accent-primary shadow-[1px_1px_20px_0_#a1db0b4d] hover:shadow-[1px_1px_30px_0_#a1db0b4d] hover:bg-old-mira-active-btn cursor-pointer">
               Add Liquidity
-            </ActionButton>
+            </Button>
           </Link>
         </div>
       </div>

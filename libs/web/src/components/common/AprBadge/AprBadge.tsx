@@ -1,13 +1,13 @@
-"use client"
+"use client";
 
 import React, {useState, useEffect} from "react";
 import styles from "./AprBadge.module.css";
 import {clsx} from "clsx";
 import useBoostedApr, {RewardsToken} from "@/src/hooks/useBoostedApr";
 import {isMobile} from "react-device-detect";
-import { Loader } from "@/src/components/common";
+import {Loader} from "@/src/components/common";
 import {EPOCH_NUMBER} from "@/src/utils/constants";
-import { PointsIconSimple } from "@/meshwave-ui/icons";
+import {PointsIconSimple} from "@/meshwave-ui/icons";
 
 const AprBadge: React.FC<{
   aprValue: string | null;
@@ -15,13 +15,7 @@ const AprBadge: React.FC<{
   leftAlignValue?: string;
   poolKey: string;
   tvlValue: number;
-}> = ({
-  aprValue,
-  small,
-  leftAlignValue,
-  poolKey,
-  tvlValue,
-}) => {
+}> = ({aprValue, small, leftAlignValue, poolKey, tvlValue}) => {
   const [isHovered, setIsHovered] = useState(false);
 
   const {boostedApr, boostReward, rewardsToken} = useBoostedApr(
@@ -108,12 +102,11 @@ const AprBadge: React.FC<{
 
 export default AprBadge;
 
-
 const LabelMap: Record<
   Exclude<RewardsToken, undefined>,
   {
-  label: string;
-  description: string;
+    label: string;
+    description: string;
   }
 > = {
   $FUEL: {

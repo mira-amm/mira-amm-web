@@ -6,7 +6,6 @@ import {
   CoinsListModal,
   SwapSuccessModal,
   Logo,
-  ActionButton,
   IconButton,
   Loader,
   SlippageSetting,
@@ -47,6 +46,8 @@ import {TradeState} from "@/src/hooks/useSwapRouter";
 import {useAnimationStore} from "@/src/stores/useGlitchScavengerHunt";
 import {triggerClassAnimation} from "../GlitchEffects/ClassAnimationTrigger";
 import {ConnectWallet} from "../connect-wallet";
+import {Button} from "@/meshwave-ui/Button";
+import {cn} from "@/src/utils/cn";
 
 export type CurrencyBoxMode = "buy" | "sell";
 export type CurrencyBoxState = {assetId: string | null; amount: string};
@@ -730,25 +731,28 @@ const Swap = ({isWidget}: {isWidget?: boolean}) => {
           )}
 
           {!isConnected ? (
-            <ActionButton
-              variant="secondary"
+            <Button
               onClick={connect}
               loading={isConnecting}
+              className="h-12 bg-accent-dimmed text-accent-primary border-none shadow-none hover:bg-old-mira-bg-hover active:bg-old-mira-bg-active cursor-pointer"
             >
               Connect Wallet
-            </ActionButton>
+            </Button>
           ) : (
-            <ActionButton
-              variant="primary"
+            <Button
               disabled={isActionDisabled}
-              className={
-                isWidget && isActionDisabled ? currencyBoxWidgetBg : undefined
-              }
+              className={cn(
+                ((isWidget && isActionDisabled) || isActionDisabled) &&
+                  "h-12 bg-background-secondary border-background-secondary text-content-dimmed-dark shadow-none",
+                !isWidget &&
+                  !isActionDisabled &&
+                  "h-12 bg-accent-primary text-old-mira-text border border-accent-primary shadow-[1px_1px_20px_0_#a1db0b4d] hover:shadow-[1px_1px_30px_0_#a1db0b4d] hover:bg-old-mira-active-btn cursor-pointer",
+              )}
               onClick={handleSwapClick}
               loading={isActionLoading}
             >
               {swapButtonTitle}
-            </ActionButton>
+            </Button>
           )}
         </div>
 

@@ -1,6 +1,5 @@
 import styles from "./RemoveLiquidityModalContent.module.css";
 import CoinPair from "@/src/components/common/CoinPair/CoinPair";
-import {ActionButton}from "@/src/components/common";
 import {
   ChangeEvent,
   Dispatch,
@@ -13,9 +12,10 @@ import {
   useState,
 } from "react";
 import {useDebounceCallback} from "usehooks-ts";
-import { useAssetMetadata } from "@/src/hooks";
+import {useAssetMetadata} from "@/src/hooks";
 import {B256Address} from "fuels";
-import { Info } from "lucide-react";
+import {Info} from "lucide-react";
+import {Button} from "@/meshwave-ui/Button";
 
 type Props = {
   coinA: B256Address;
@@ -151,20 +151,24 @@ const RemoveLiquidityModalContent = ({
         </p>
       </div>
       <div className={styles.buttons}>
-        <ActionButton
+        <Button
           onClick={handleRemoveLiquidity}
+          className={
+            "bg-accent-primary text-old-mira-text border border-accent-primary shadow-[1px_1px_20px_0_#a1db0b4d] hover:shadow-[1px_1px_30px_0_#a1db0b4d] hover:bg-old-mira-active-btn cursor-pointer"
+          }
           disabled={withdrawalDisabled}
           loading={isLoading}
         >
           {buttonTitle}
-        </ActionButton>
-        <ActionButton
-          variant="outlined"
+        </Button>
+        <Button
+          variant="outline"
+          className="text-accent-primary bg-transparent border border-accent-primary hover:shadow-none hover:text-none active:bg-transparent hover:bg-transaparent"
           onClick={closeModal}
           disabled={isLoading}
         >
           Cancel
-        </ActionButton>
+        </Button>
       </div>
     </div>
   );
