@@ -41,7 +41,7 @@ export function BoostsRewards() {
       <div
         className={clsx(
           "flex justify-between items-center gap-4",
-          "rounded-[10px] min-h-[110px] bg-[var(--points-gradient)]",
+          "rounded-[10px] min-h-[110px] points-gradient",
           "p-6 max-[480px]:p-4 max-[480px]:flex-col max-[480px]:items-stretch max-[480px]:gap-3",
         )}
       >

@@ -345,3 +345,8 @@
     opacity: 0;
   }
 }
+
+/* added this here becuase it wasn't working in tailwind */
+.points-gradient {
+  background: linear-gradient(170deg, #262f5f 35%, #c41cff 100%);
+}
