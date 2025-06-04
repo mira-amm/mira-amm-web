@@ -7,7 +7,6 @@ import {
   DefaultLocale,
 } from "@/src/utils/constants";
 import {usePointsRank} from "@/src/hooks";
-import pointsStyles from "@/src/components/pages/points-page/PointsStyles.module.css";
 import {PointsIcon} from "@/meshwave-ui/icons";
 import {Button} from "@/meshwave-ui/Button";
 import clsx from "clsx";
@@ -32,7 +31,7 @@ export function BoostsRewards() {
   return (
     <div className="flex flex-col gap-6 max-[480px]:gap-4">
       <div className="flex justify-between items-center">
-        <p className={pointsStyles.pointsTitle}>Points Program</p>
+        <p className="text-2xl">Points Program</p>
         <Link href={POINTS_LEARN_MORE_URL} target="_blank">
           <Button variant="secondary">Learn more</Button>
         </Link>
@@ -40,13 +39,11 @@ export function BoostsRewards() {
 
       <div
         className={clsx(
-          "flex justify-between items-center gap-4",
-          "rounded-[10px] min-h-[110px] points-gradient",
-          "p-6 max-[480px]:p-4 max-[480px]:flex-col max-[480px]:items-stretch max-[480px]:gap-3",
+          "flex justify-between items-center gap-4 rounded-[10px] min-h-[110px] points-gradient p-6",
         )}
       >
         <div className="flex flex-col gap-2">
-          <div className="flex items-center gap-1 text-base font-normal text-white/72 max-[768px]:text-sm max-[768px]:items-start">
+          <div className="flex items-center gap-1 text-base font-normal text-white/72">
             <p>Your Points</p>
             <Info
               tooltipText={POINTS_TOOLTIP}
@@ -70,7 +67,7 @@ export function BoostsRewards() {
           </div>
         </div>
 
-        <div className="flex items-center gap-9 max-[480px]:gap-4">
+        <div className="flex items-center gap-9 ">
           <div className="w-0.5 bg-white/20 h-14" />
           <div className="flex flex-col gap-2 mr-[30px]">
             <div className="flex items-center gap-1 text-base font-normal text-white/72">
