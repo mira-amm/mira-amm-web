@@ -6,7 +6,6 @@ import {
   CoinsListModal,
   SwapSuccessModal,
   Logo,
-  ConnectButton,
   ActionButton,
   IconButton,
   Loader,
@@ -47,6 +46,7 @@ import {
 import {TradeState} from "@/src/hooks/useSwapRouter";
 import {useAnimationStore} from "@/src/stores/useGlitchScavengerHunt";
 import {triggerClassAnimation} from "../GlitchEffects/ClassAnimationTrigger";
+import {ConnectWallet} from "../connect-wallet";
 
 export type CurrencyBoxMode = "buy" | "sell";
 export type CurrencyBoxState = {assetId: string | null; amount: string};
@@ -682,12 +682,7 @@ const Swap = ({isWidget}: {isWidget?: boolean}) => {
               slippage={slippage}
               openSettingsModal={openSettingsModal}
             />
-            {isWidget && (
-              <ConnectButton
-                className="w-[100px] h-[20px] text-[10px] leading-[24px]"
-                isWidget
-              />
-            )}
+            {isWidget && <ConnectWallet />}
           </div>
 
           <CurrencyBox
