@@ -350,3 +350,43 @@
 .points-gradient {
   background: linear-gradient(170deg, #262f5f 35%, #c41cff 100%);
 }
+
+
+/* remove liquidity range slider start */
+.remove-liquidity-slider {
+  -webkit-appearance: none;
+  width: 100%;
+  height: 8px;
+  background: #ddd;
+  background: linear-gradient(
+    to right,
+    var(--accent-primary) var(--value, 50%),
+    #ddd var(--value, 50%)
+  );
+  outline: none;
+  opacity: 1;
+  transition: opacity 0.2s;
+  border-radius: 4px;
+}
+
+.remove-liquidity-slider:hover {
+  opacity: 0.85;
+}
+
+.remove-liquidity-slider::-webkit-slider-runnable-track {
+  width: 100%;
+  height: 8px;
+  cursor: pointer;
+}
+
+.remove-liquidity-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 16px;
+  height: 16px;
+  background: var(--accent-primary);
+  cursor: pointer;
+  border-radius: 50%;
+  margin-top: -4px;
+}
+/* remove liquidity range slider end */

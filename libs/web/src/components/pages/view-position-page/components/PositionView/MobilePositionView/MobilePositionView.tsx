@@ -1,12 +1,9 @@
 import React from "react";
-import clsx from "clsx";
 import Link from "next/link";
-
 import CoinPair from "@/src/components/common/CoinPair/CoinPair";
 import {CoinWithAmount} from "@/src/components/common";
 import PromoBlock from "@/src/components/pages/liquidity-page/components/PromoBlock/PromoBlock";
 import {PoolId} from "mira-dex-ts";
-import styles from "./MobilePositionView.module.css";
 import {Loader} from "@/src/components/common";
 import AprDisplay from "../AprDisplay/AprDisplay";
 import ReserveItem from "../ReserveItem/ReserveItem";
@@ -50,8 +47,8 @@ const MobilePositionView = ({
   const loading = <Loader variant="outlined" color="gray" />;
 
   return (
-    <section className={clsx(styles.contentSection, "mobileOnly")}>
-      <div className={styles.coinPairAndLabel}>
+    <section className="flex flex-col gap-3 mobileOnly">
+      <div className="flex items-start justify-between">
         <CoinPair
           firstCoin={pool[0].bits}
           secondCoin={pool[1].bits}
@@ -60,10 +57,10 @@ const MobilePositionView = ({
         />
       </div>
 
-      <div className={styles.infoBlock}>
-        <p className={styles.subheading}>Your position</p>
+      <div className="flex flex-col gap-[15px] p-4 rounded-2xl bg-background-grey-dark">
+        <p className="text-[16px] font-bold leading-[19px]">Your position</p>
         <AprDisplay pool={pool} />
-        <div className={styles.coinsData}>
+        <div className="flex justify-between">
           <CoinWithAmount
             assetId={pool[0].bits}
             amount={formatDisplayAmount(assetA.amount)}
@@ -77,8 +74,8 @@ const MobilePositionView = ({
 
       <MiraBlock pool={pool} />
 
-      <div className={styles.priceBlocks}>
-        <p className={styles.subheading}>Pool reserves</p>
+      <div className="flex flex-col gap-3 my-[10px]">
+        <p className="text-[16px] font-bold leading-[19px]">Pool reserves</p>
         <ReserveItem
           reserve={assetA.reserve}
           assetId={pool[0].bits}
@@ -90,9 +87,11 @@ const MobilePositionView = ({
           amount={assetB.amount}
         />
 
-        <div className={styles.divider}></div>
-        <div className={styles.reserveItems}>
-          <p>Total value locked</p>
+        <div className="w-full h-px border border-white opacity-10" />
+        <div className="flex items-center justify-between">
+          <p className="text-[16px] font-normal leading-[19px]">
+            Total value locked
+          </p>
           {formattedTvlValue ? <p>${formattedTvlValue}</p> : loading}
         </div>
         <ExchangeRate
@@ -103,12 +102,12 @@ const MobilePositionView = ({
         />
       </div>
 
-      <div className={styles.sticky}>
+      <div className="w-full self-start">
         <Link href={positionPath}>
           <Button block>Add Liquidity</Button>
         </Link>
       </div>
-      <div className={styles.nonSticky}>
+      <div className="w-full self-start">
         <Button variant="secondary" onClick={handleWithdrawLiquidity} block>
           Remove Liquidity
         </Button>

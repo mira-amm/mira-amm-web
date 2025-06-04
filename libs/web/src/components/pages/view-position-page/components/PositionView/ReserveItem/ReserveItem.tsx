@@ -1,8 +1,7 @@
 import React from "react";
-import { CoinWithAmount } from "@/src/components/common";
-import styles from "./ReserveItem.module.css";
+import {CoinWithAmount} from "@/src/components/common";
 import {useFormattedReserveValue} from "./useFormattedReserveValue";
-import { Loader } from "@/src/components/common";
+import {Loader} from "@/src/components/common";
 
 interface ReserveItemsProps {
   assetId: string;
@@ -18,12 +17,16 @@ const ReserveItem = ({assetId, amount, reserve}: ReserveItemsProps) => {
   );
 
   return (
-    <div className={styles.reserveItems}>
+    <div className="flex items-center justify-between">
       <CoinWithAmount assetId={assetId} amount={coinAmount} withName />
       {usdValue && reserve ? (
-        <div className={styles.reserveValues}>
-          <p>{Number(reserve?.toFixed(2)).toLocaleString()}</p>
-          {usdValue && <p>${usdValue === "NaN" ? "~0" : usdValue}</p>}
+        <div className="flex flex-col items-end">
+          <p className="font-medium text-[18px] leading-[21px]">
+            {Number(reserve?.toFixed(2)).toLocaleString()}
+          </p>
+          <p className="opacity-64 font-normal text-[15px] leading-[18px]">
+            ${usdValue === "NaN" ? "~0" : usdValue}
+          </p>
         </div>
       ) : (
         <Loader color="gray" />

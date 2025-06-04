@@ -1,12 +1,10 @@
 import React from "react";
 import clsx from "clsx";
 import AprBadge from "@/src/components/common/AprBadge/AprBadge";
-import styles from "./AprDisplay.module.css";
 import usePoolAPR from "@/src/hooks/usePoolAPR";
 import {PoolId} from "mira-dex-ts";
-import {createPoolKey} from "@/src/utils/common";
+import {createPoolKey, formatAprValue} from "@/src/utils/common";
 import usePoolNameAndMatch from "@/src/hooks/usePoolNameAndMatch";
-import {formatAprValue} from "@/src/utils/common";
 
 interface AprDiplayProps {
   pool: PoolId;
@@ -23,8 +21,8 @@ const AprDisplay = ({pool}: AprDiplayProps) => {
   return (
     <>
       {isMatching ? (
-        <div className={styles.aprBadge}>
-          <p>APR &nbsp;</p>
+        <div className="flex items-center">
+          <p className="text-base font-bold leading-[19px]">APR&nbsp;</p>
           <AprBadge
             aprValue={aprValue}
             poolKey={poolKey}
@@ -33,9 +31,14 @@ const AprDisplay = ({pool}: AprDiplayProps) => {
           />
         </div>
       ) : (
-        <p>
-          APR &nbsp;
-          <span className={clsx(styles.pending, !aprValue && "blurredText")}>
+        <p className="text-base font-bold leading-[19px]">
+          APR&nbsp;
+          <span
+            className={clsx(
+              "text-[var(--content-dimmed-light)]",
+              !aprValue && "blur-[2px]",
+            )}
+          >
             {aprValue ?? "33.33%"}
           </span>
         </p>

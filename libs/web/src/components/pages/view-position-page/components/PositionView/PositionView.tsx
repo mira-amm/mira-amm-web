@@ -1,7 +1,6 @@
 "use client";
 
 import {TransactionFailureModal} from "@/src/components/common";
-import styles from "./PositionView.module.css";
 import {useModal} from "@/src/hooks";
 import RemoveLiquidityModalContent from "@/src/components/pages/view-position-page/components/RemoveLiquidityModalContent/RemoveLiquidityModalContent";
 import usePositionData from "@/src/hooks/usePositionData";
@@ -185,7 +184,7 @@ const PositionView = ({pool}: {pool: PoolId}) => {
 
       <RemoveLiquidityModal
         title="Remove Liquidity"
-        titleClassName={styles.withdrawLiquidityTitle}
+        titleClassName="text-center"
       >
         <RemoveLiquidityModalContent
           coinA={pool[0].bits}

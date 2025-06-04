@@ -1,6 +1,4 @@
-import styles from "./RemoveLiquidityModalContent.module.css";
-import CoinPair from "@/src/components/common/CoinPair/CoinPair";
-import {
+import React, {
   ChangeEvent,
   Dispatch,
   memo,
@@ -11,11 +9,20 @@ import {
   useRef,
   useState,
 } from "react";
+import CoinPair from "@/src/components/common/CoinPair/CoinPair";
 import {useDebounceCallback} from "usehooks-ts";
 import {useAssetMetadata} from "@/src/hooks";
 import {B256Address} from "fuels";
 import {Info} from "lucide-react";
 import {Button} from "@/meshwave-ui/Button";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/meshwave-ui/Table";
 
 type Props = {
   coinA: B256Address;
@@ -53,8 +60,8 @@ const RemoveLiquidityModalContent = ({
   const coinBMetadata = useAssetMetadata(coinB);
 
   const sliderRef = useRef<HTMLInputElement>(null);
-
   const debouncedSetValue = useDebounceCallback(setLiquidityValue, 500);
+
   const handleMouseUp = (
     e: MouseEvent<HTMLInputElement> | TouchEvent<HTMLInputElement>,
   ) => {
@@ -82,28 +89,29 @@ const RemoveLiquidityModalContent = ({
   };
 
   const withdrawalDisabled = !isValidNetwork;
-
-  let buttonTitle = "Confirm";
-  if (withdrawalDisabled) {
-    buttonTitle = "Incorrect network";
-  }
+  const buttonTitle = withdrawalDisabled ? "Incorrect network" : "Confirm";
 
   return (
-    <div className={styles.removeLiquidityContent}>
+    <div className="flex flex-col gap-4">
       <CoinPair
         firstCoin={coinA}
         secondCoin={coinB}
         isStablePool={isStablePool}
       />
-      <div className={styles.valueAndMax}>
-        <p className={styles.value}>{displayValue}%</p>
-        <button className={styles.maxButton} onClick={handleMax}>
+
+      <div className="flex justify-between items-center">
+        <p className="font-medium text-2xl leading-[28px]">{displayValue}%</p>
+        <button
+          className="uppercase text-[12px] leading-4 px-2 py-1 border border-accent-primary text-accent-primary rounded hover:opacity-80 transition-opacity"
+          onClick={handleMax}
+        >
           Max
         </button>
       </div>
+
       <input
         type="range"
-        className={styles.slider}
+        className="remove-liquidity-slider"
         min={0}
         max={100}
         defaultValue={liquidityValue}
@@ -112,59 +120,64 @@ const RemoveLiquidityModalContent = ({
         onChange={handleChange}
         ref={sliderRef}
       />
-      {/*<div className={styles.someText}>*/}
-      {/*  <p className={styles.dimmed}>Withdraw fees only</p>*/}
-      {/*  <button className={styles.feesButton} onClick={handleFeesOnly}>Fees only</button>*/}
-      {/*</div>*/}
-      <div className={styles.tableWrapper}>
-        <table className={styles.liquidityTable}>
-          <thead>
-            <tr>
-              <th />
-              <th>{coinAMetadata.symbol}</th>
-              <th>{coinBMetadata.symbol}</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>Current position</td>
-              <td>{currentCoinAValue}</td>
-              <td>{currentCoinBValue}</td>
-            </tr>
-            <tr className={styles.lastRow}>
-              <td>Remove</td>
-              <td>{coinAValueToWithdraw}</td>
-              <td>{coinBValueToWithdraw}</td>
-            </tr>
-          </tbody>
-        </table>
+
+      <div className="px-2 rounded bg-background-secondary">
+        <Table className="w-full text-[14px] leading-4 text-content-tertiary">
+          <TableHeader>
+            <TableRow>
+              <TableHead></TableHead>
+              <TableHead className="py-4">{coinAMetadata.symbol}</TableHead>
+              <TableHead className="text-right py-4">
+                {coinBMetadata.symbol}
+              </TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            <TableRow clasName="border-none">
+              <TableCell className="py-4">Current position</TableCell>
+              <TableCell className="py-4">{currentCoinAValue}</TableCell>
+              <TableCell className="text-right py-4">
+                {currentCoinBValue}
+              </TableCell>
+            </TableRow>
+            <TableRow className="font-medium text-content-primary border-t border-background-grey-dark">
+              <TableCell className="py-4">Remove</TableCell>
+              <TableCell className="py-4">{coinAValueToWithdraw}</TableCell>
+              <TableCell className="py-4 text-right">
+                {coinBValueToWithdraw}
+              </TableCell>
+            </TableRow>
+          </TableBody>
+        </Table>
       </div>
-      <div className={styles.textBlock}>
-        <p className={styles.infoBlockTitle}>
-          <Info />
-          Pay attention
+
+      <div className="flex flex-col gap-2">
+        <p className="flex items-center gap-2 text-accent-primary">
+          <Info /> Pay attention
         </p>
-        <p className={styles.infoBlockText}>
+        <p className="text-sm leading-4 text-content-tertiary">
           This based on the current price of the pool. Your fees earned will
           always increase, but the principal amount may change with the price of
           the pool
         </p>
       </div>
-      <div className={styles.buttons}>
+
+      <div className="flex gap-2 w-full">
+        <Button
+          variant="outline"
+          onClick={closeModal}
+          disabled={isLoading}
+          block
+        >
+          Cancel
+        </Button>
         <Button
           onClick={handleRemoveLiquidity}
           disabled={withdrawalDisabled}
           loading={isLoading}
+          block
         >
           {buttonTitle}
-        </Button>
-        <Button
-          variant="outline"
-          className="text-accent-primary bg-transparent border border-accent-primary hover:shadow-none hover:text-none active:bg-transparent hover:bg-transaparent"
-          onClick={closeModal}
-          disabled={isLoading}
-        >
-          Cancel
         </Button>
       </div>
     </div>
