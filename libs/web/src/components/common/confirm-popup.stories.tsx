@@ -3,7 +3,7 @@ import {ConfirmPopup} from ".";
 import "../../../styles.css";
 
 const meta: Meta<typeof ConfirmPopup> = {
-  title: "🪙 Web/Confirm Popup",
+  title: "🪙 Web/Modals & Popups/Confirm Popup",
   component: ConfirmPopup,
   tags: ["autodocs"],
   parameters: {

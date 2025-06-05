@@ -3,7 +3,7 @@ import "../../../styles.css";
 import {TransactionFailureModal} from "./transaction-failure-modal";
 
 const meta = {
-  title: "🪙 Web/Transaction Failure Modal",
+  title: "🪙 Web/Modals & Popups/Transaction Failure Modal",
   component: TransactionFailureModal,
   tags: ["autodocs"],
   parameters: {

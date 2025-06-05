@@ -3,7 +3,7 @@ import "../../../styles.css";
 import {Info} from "./info";
 
 const meta = {
-  title: "🪙 Web/Info",
+  title: "🪙 Web/UI components/Info",
   component: Info,
   tags: ["autodocs"],
   parameters: {

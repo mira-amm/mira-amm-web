@@ -4,7 +4,7 @@ import {DropDownMenu} from "./dropdown-menu";
 import {CopyAddressIcon, TransactionsIcon} from "@/meshwave-ui/icons";
 
 const meta = {
-  title: "🪙 Web/Dropdown menu",
+  title: "🪙 Web/Layout & Navigation/Dropdown menu",
   component: DropDownMenu,
   tags: ["autodocs"],
   parameters: {

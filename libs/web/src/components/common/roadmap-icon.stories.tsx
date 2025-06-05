@@ -3,7 +3,7 @@ import "../../../styles.css";
 import {RoadMapIcon} from "./roadmap-icon";
 
 const meta = {
-  title: "🪙 Web/Road Map Icon",
+  title: "🪙 Web/Landing/Road Map Icon",
   component: RoadMapIcon,
   tags: ["autodocs"],
   parameters: {

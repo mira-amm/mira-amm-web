@@ -3,7 +3,7 @@ import "../../../styles.css";
 import {SkeletonLoader} from "./skeleton-loader";
 
 const meta = {
-  title: "🪙 Web/Skeleton Loader",
+  title: "🪙 Web/Loading & Feedback/Skeleton Loader",
   component: SkeletonLoader,
   tags: ["autodocs"],
   parameters: {

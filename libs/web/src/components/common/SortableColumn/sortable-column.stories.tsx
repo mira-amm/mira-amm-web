@@ -3,7 +3,7 @@ import "../../../../styles.css";
 import SortableColumn from "./SortableColumn";
 
 const meta = {
-  title: "🪙 Web/Sortable Column",
+  title: "🪙 Web/UI Components/Sortable Column",
   component: SortableColumn,
   tags: ["autodocs"],
   parameters: {

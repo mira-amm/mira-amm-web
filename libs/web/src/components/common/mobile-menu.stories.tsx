@@ -7,7 +7,7 @@ import {defaultConnectors} from "@fuels/connectors";
 const queryClient = new QueryClient();
 
 const meta = {
-  title: "🪙 Web/Mobile Menu",
+  title: "🪙 Web/Layout & Navigation/Mobile Menu",
   component: MobileMenu,
   tags: ["autodocs"],
   parameters: {

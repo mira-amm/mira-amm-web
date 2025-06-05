@@ -3,7 +3,7 @@ import "../../../styles.css";
 import {Divider} from "./divider";
 
 const meta = {
-  title: "🪙 Web/Divider",
+  title: "🪙 Web/UI Components/Divider",
   component: Divider,
   tags: ["autodocs"],
   parameters: {

@@ -4,7 +4,7 @@ import {UsedTechs} from "./used-techs";
 import {FuelGroup} from "@/meshwave-ui/icons";
 
 const meta = {
-  title: "🪙 Web/Used Techs",
+  title: "🪙 Web/Metadata/Used Techs",
   component: UsedTechs,
   tags: ["autodocs"],
   parameters: {

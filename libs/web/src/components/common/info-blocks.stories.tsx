@@ -5,7 +5,7 @@ import {RoadMapBlock} from "./roadmap-block";
 import {RoadMapIcon} from "./roadmap-icon";
 
 const meta = {
-  title: "🪙 Web/Info Blocks",
+  title: "🪙 Web/Landing/Info Blocks",
   component: InfoBlocks,
   tags: ["autodocs"],
   parameters: {

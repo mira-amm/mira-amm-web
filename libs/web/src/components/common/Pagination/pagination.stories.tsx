@@ -3,7 +3,7 @@ import "../../../../styles.css";
 import Pagination from "./Pagination";
 
 const meta = {
-  title: "🪙 Web/Pagination",
+  title: "🪙 Web/UI Components/Pagination",
   component: Pagination,
   tags: ["autodocs"],
   parameters: {

@@ -7,7 +7,7 @@ import {QueryClient, QueryClientProvider} from "@tanstack/react-query";
 const queryClient = new QueryClient();
 
 const meta = {
-  title: "🪙 Web/Coins List Modal",
+  title: "🪙 Web/Modals & Popups/Coins List Modal",
   component: CoinsListModal,
   tags: ["autodocs"],
   parameters: {

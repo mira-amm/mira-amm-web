@@ -3,7 +3,7 @@ import "../../../styles.css";
 import {MainnetLabel} from "./mainnet-label";
 
 const meta = {
-  title: "🪙 Web/Mainnet Label",
+  title: "🪙 Web/Wallet & Connection/Mainnet Label",
   component: MainnetLabel,
   tags: ["autodocs"],
   parameters: {

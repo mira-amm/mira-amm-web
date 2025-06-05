@@ -7,7 +7,7 @@ import {QueryClient, QueryClientProvider} from "@tanstack/react-query";
 const queryClient = new QueryClient();
 
 const meta = {
-  title: "🪙 Web/Coin List Item",
+  title: "🪙 Web/Trading & Swap/Coin List Item",
   component: CoinListItem,
   tags: ["autodocs"],
   parameters: {

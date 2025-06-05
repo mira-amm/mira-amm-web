@@ -8,7 +8,7 @@ import {ConnectWallet} from "./connect-wallet";
 const queryClient = new QueryClient();
 
 const meta = {
-  title: "🪙 Web/Connect Wallet",
+  title: "🪙 Web/Wallet & Connection/Connect Wallet",
   component: ConnectWallet,
   tags: ["autodocs"],
   parameters: {

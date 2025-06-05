@@ -3,7 +3,7 @@ import "../../../styles.css";
 import {SlippageSetting} from "./slippage-setting";
 
 const meta = {
-  title: "🪙 Web/Slippage Settings",
+  title: "🪙 Web/Trading & Swap/Slippage Settings",
   component: SlippageSetting,
   tags: ["autodocs"],
   parameters: {

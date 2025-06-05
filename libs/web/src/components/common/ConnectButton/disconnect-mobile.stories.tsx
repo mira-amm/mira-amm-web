@@ -8,7 +8,7 @@ import {defaultConnectors} from "@fuels/connectors";
 const queryClient = new QueryClient();
 
 const meta = {
-  title: "🪙 Web/Disconnect Mobile",
+  title: "🪙 Web/Wallet & Connection/Disconnect Mobile",
   component: DisconnectMobile,
   tags: ["autodocs"],
   parameters: {

@@ -3,7 +3,7 @@ import "../../../styles.css";
 import {CopyNotification} from "./copy-notification";
 
 const meta = {
-  title: "🪙 Web/Copy Notification",
+  title: "🪙 Web/Loading & Feedback/Copy Notification",
   component: CopyNotification,
   tags: ["autodocs"],
   parameters: {

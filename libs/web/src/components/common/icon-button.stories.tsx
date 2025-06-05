@@ -3,7 +3,7 @@ import "../../../styles.css";
 import {IconButton} from "./icon-button";
 
 const meta = {
-  title: "🪙 Web/Icon Button",
+  title: "🪙 Web/UI Components/Icon Button",
   component: IconButton,
   tags: ["autodocs"],
   parameters: {

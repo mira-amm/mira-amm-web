@@ -8,7 +8,7 @@ import TransactionsHistory from "./TransactionsHistory";
 const queryClient = new QueryClient();
 
 const meta = {
-  title: "🪙 Web/Transaction History",
+  title: "🪙 Web/Transaction Management/Transaction History",
   component: TransactionsHistory,
   tags: ["autodocs"],
   parameters: {

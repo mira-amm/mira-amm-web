@@ -6,7 +6,7 @@ import AprBadge from "./AprBadge";
 const queryClient = new QueryClient();
 
 const meta = {
-  title: "🪙 Web/Apr Badge",
+  title: "🪙 Web/Trading & Swap/Apr Badge",
   component: AprBadge,
   tags: ["autodocs"],
   parameters: {

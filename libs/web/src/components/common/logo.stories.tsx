@@ -3,7 +3,7 @@ import "../../../styles.css";
 import {Logo} from "./logo";
 
 const meta = {
-  title: "🪙 Web/Logo",
+  title: "🪙 Web/UI Components/Logo",
   component: Logo,
   tags: ["autodocs"],
   parameters: {

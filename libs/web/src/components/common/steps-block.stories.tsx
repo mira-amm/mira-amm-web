@@ -5,7 +5,7 @@ import {StepsIcon} from "./steps-icon";
 import {LockIcon} from "@/meshwave-ui/icons";
 
 const meta = {
-  title: "🪙 Web/Steps Block",
+  title: "🪙 Web/Landing/Steps Block",
   component: StepsBlock,
   tags: ["autodocs"],
   parameters: {

@@ -3,7 +3,7 @@ import "../../../styles.css";
 import {TextButton} from "./text-button";
 
 const meta = {
-  title: "🪙 Web/Text Button",
+  title: "🪙 Web/UI Components/Text Button",
   component: TextButton,
   tags: ["autodocs"],
   parameters: {

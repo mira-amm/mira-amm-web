@@ -3,7 +3,7 @@ import "../../../styles.css";
 import {SearchBar} from "./search-bar";
 
 const meta = {
-  title: "🪙 Web/SearchBar",
+  title: "🪙 Web/UI Components/SearchBar",
   component: SearchBar,
   tags: ["autodocs"],
   parameters: {

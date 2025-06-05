@@ -3,7 +3,7 @@ import "../../../styles.css";
 import {InfoBlock} from "./info-block";
 
 const meta = {
-  title: "🪙 Web/Info Block",
+  title: "🪙 Web/Trading & Swap/Info Block",
   component: InfoBlock,
   tags: ["autodocs"],
   parameters: {

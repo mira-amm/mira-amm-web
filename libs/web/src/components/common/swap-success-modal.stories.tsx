@@ -5,7 +5,7 @@ import {QueryClient, QueryClientProvider} from "@tanstack/react-query";
 const queryClient = new QueryClient();
 
 const meta = {
-  title: "🪙 Web/Swap Success Modal",
+  title: "🪙 Web/Modals & Popups/Swap Success Modal",
   component: SwapSuccessModal,
   tags: ["autodocs"],
   parameters: {

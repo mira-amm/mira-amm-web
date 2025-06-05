@@ -3,7 +3,7 @@ import "../../../../styles.css";
 import LoaderV2 from "./LoaderV2";
 
 const meta = {
-  title: "🪙 Web/Loader v2",
+  title: "🪙 Web/Loading & Feedback/Loader v2",
   component: LoaderV2,
   tags: ["autodocs"],
   parameters: {

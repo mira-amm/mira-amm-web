@@ -6,7 +6,7 @@ import CoinPair from "./CoinPair";
 const queryClient = new QueryClient();
 
 const meta = {
-  title: "🪙 Web/Coin Pair",
+  title: "🪙 Web/Trading & Swap/Coin Pair",
   component: CoinPair,
   tags: ["autodocs"],
   parameters: {

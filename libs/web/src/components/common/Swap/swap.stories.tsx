@@ -8,7 +8,7 @@ import Swap from "./Swap";
 const queryClient = new QueryClient();
 
 const meta = {
-  title: "🪙 Web/Swap",
+  title: "🪙 Web/Trading & Swap/Swap",
   component: Swap,
   tags: ["autodocs"],
   parameters: {

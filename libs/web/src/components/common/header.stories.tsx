@@ -8,7 +8,7 @@ import {defaultConnectors} from "@fuels/connectors";
 const queryClient = new QueryClient();
 
 const meta = {
-  title: "🪙 Web/Header",
+  title: "🪙 Web/Layout & Navigation/Header",
   component: Header,
   tags: ["autodocs"],
   parameters: {
