@@ -9,24 +9,23 @@ export const walletOption = (walletName: string) =>
   );
 
 export const swapModule = () =>
-  PageElement.located(By.css("div[class^='Swap_swapAndRate__']"));
+  PageElement.located(By.cssContainingText("p", "Swap"));
 
 export const sellInput = () =>
-  PageElements.located(By.css("[class^='CurrencyBox_input__']")).first();
+  PageElements.located(By.css("div input")).first();
 
 export const buyInput = () =>
-  PageElements.located(By.css("[class^='CurrencyBox_input__']")).last();
+  PageElements.located(By.css("div input")).last();
 
 export const sellCoinButton = () =>
-  PageElements.located(By.css("[class^='CurrencyBox_selector__']")).first();
+  PageElements.located(By.css("main input+button")).first();
 
 export const buyCoinButton = () =>
-  PageElements.located(By.css("[class^='CurrencyBox_selector__']")).last();
+  PageElements.located(By.css("main input+button")).last();
 
 export const swapConvertButton = () =>
-  PageElement.located(
-    By.css("[class^='IconButton_iconButton__'][class*='Swap_convertButton__']"),
-  );
+  PageElements.located(By.css("main button svg"))
+    .nth(3);
 
 export const searchInput = () =>
   PageElement.located(By.css("input[placeholder^='Search by token or paste address']"));
@@ -36,13 +35,13 @@ export const searchResults = () =>
     By.css("div:has(> input[placeholder^='Search by token or paste address']) + div > div"));
 
 export const slippageLabel = () =>
-  PageElement.located(By.css("[class^='SlippageSetting_slippageLabel__']"));
+  PageElement.located(By.cssContainingText("p", "% slippage"));
 
 export const slippageSettingsButton = () =>
-  PageElement.located(By.css("div [class^='Swap_heading__'] > button"));
+  PageElement.located(By.css("button svg.lucide-settings"));
 
 export const slippageSettingsModal = () =>
-  PageElement.located(By.css("[class^='Modal_modalWindow__']"));
+  PageElement.located(By.cssContainingText("div", "Settings"));
 
 export const slippageSettingsModalPercentageButton = (percentage: string) =>
   PageElement.located(By.cssContainingText("button", `${percentage}%`));
@@ -51,9 +50,7 @@ export const slippageSettingsModalCustomButton = () =>
   PageElement.located(By.cssContainingText("button", "Custom"));
 
 export const slippageSettingsInput = () =>
-  PageElement.located(
-    By.css("[class^='SettingsModalContent_slippageInput__']"),
-  );
+  PageElements.located(By.css("input")).last();
 
 //
 // ========== LIQUIDITY LOCATORS ==========
@@ -101,9 +98,7 @@ export const headerConnectWalletButton = () =>
 export const footer = () => PageElement.located(By.css("footer"));
 
 export const footerLogo = () =>
-  PageElement.located(
-    By.css("div.Footer_content__BowRn>a.Logo_logo__J4dc0"),
-  ).of(footer());
+  PageElement.located(By.css("footer div a"));
 
 export const footerSupportLink = () =>
   PageElement.located(By.cssContainingText("a", "Support"));

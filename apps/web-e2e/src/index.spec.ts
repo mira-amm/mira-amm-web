@@ -34,17 +34,27 @@ import {
   TOKENS,
 } from "./tasks";
 
-describe("Wallets", () => {
-  [
-    "Bako Safe",
-    "Fuel Wallet",
-    "Fuelet Wallet",
-    "Ethereum Wallets",
-    "Solana Wallets",
-  ].forEach((wallet) => {
-    it(`should see option to connect '${wallet}'`, async ({actor}) => {
-      await actor.attemptsTo(Connect.toWallet(wallet));
+describe("Swap", () => {
+  beforeEach(async ({actor}) => {
+    await actor.attemptsTo(Navigate.to("/"));
+  });
+
+  ["0.1", "0.5"].forEach((value) => {
+    it(`should be able to adjust slippage to ${value}%`, async ({actor}) => {
+      await actor.attemptsTo(AdjustSlippage.to(value));
     });
+  });
+
+  it("should be able to adjust custom slippage", async ({actor}) => {
+    await actor.attemptsTo(AdjustSlippage.toCustom("0.7"));
+  });
+
+  it("should be able to sell ETH for USDC", async ({actor}) => {
+    await actor.attemptsTo(Swap.sell("2", TOKENS.Base), Swap.buy(TOKENS.Quote));
+  });
+
+  it("should be able to swap buy and sell currencies", async ({actor}) => {
+    await actor.attemptsTo(Swap.sell("2", TOKENS.Base), Swap.convert());
   });
 });
 
@@ -116,34 +126,6 @@ describe("Liquidity", () => {
   });
 });
 
-describe("Swap", () => {
-  beforeEach(async ({actor}) => {
-    await actor.attemptsTo(Navigate.to("/"));
-  });
-
-  it("should see swap module", async ({actor}) => {
-    await actor.attemptsTo(Wait.until(swapModule(), isPresent()));
-  });
-
-  ["0.1", "0.5"].forEach((value) => {
-    it(`should be able to adjust slippage to ${value}%`, async ({actor}) => {
-      await actor.attemptsTo(AdjustSlippage.to(value));
-    });
-  });
-
-  it("should be able to adjust custom slippage", async ({actor}) => {
-    await actor.attemptsTo(AdjustSlippage.toCustom("0.7"));
-  });
-
-  it("should be able to sell ETH for USDC", async ({actor}) => {
-    await actor.attemptsTo(Swap.sell("2", TOKENS.Base), Swap.buy(TOKENS.Quote));
-  });
-
-  it("should be able to swap buy and sell currencies", async ({actor}) => {
-    await actor.attemptsTo(Swap.sell("2", TOKENS.Base), Swap.convert());
-  });
-});
-
 describe("Points", () => {
   it("should be able to see leaderboard", async ({actor}) =>
     actor.attemptsTo(
@@ -153,6 +135,43 @@ describe("Points", () => {
         not(isVisible()),
       ),
     ));
+});
+
+describe("Navigation", () => {
+  it("should see swap module at '/'", async ({actor}) => {
+    await actor.attemptsTo(
+      Navigate.to("/landing"),
+      Wait.until(swapModule(), isPresent()));
+  });
+
+  it("should see landing page at '/landing'", async ({actor}) =>
+    actor.attemptsTo(
+      Navigate.to("/landing"),
+      Wait.until(
+        PageElement.located(By.cssContainingText("h1", "The Liquidity Hub on Fuel")),
+        isVisible(),
+      ),
+    ));
+
+  it("should see swap module at '/landing'", async ({actor}) => {
+    await actor.attemptsTo(
+      Navigate.to("/landing"),
+      Wait.until(swapModule(), isPresent()));
+  });
+});
+
+describe("Wallets", () => {
+  [
+    "Bako Safe",
+    "Fuel Wallet",
+    "Fuelet Wallet",
+    "Ethereum Wallets",
+    "Solana Wallets",
+  ].forEach((wallet) => {
+    it(`should see option to connect '${wallet}'`, async ({actor}) => {
+      await actor.attemptsTo(Connect.toWallet(wallet));
+    });
+  });
 });
 
 describe("Layout", () => {
@@ -196,7 +215,7 @@ describe("Layout", () => {
     it("should show section", async ({ actor }) =>
       actor.attemptsTo(Layout.shouldBePresent("footer", footer())));
 
-    it.skip("should show footer logo", async ({ actor }) =>
+    it("should show footer logo", async ({ actor }) =>
       actor.attemptsTo(Layout.shouldBePresent("footer logo", footerLogo())));
 
     it("should show 'Support' link", async ({ actor }) =>

@@ -114,8 +114,12 @@ export const SelectToken = {
         `#actor selects token ${token}`,
         Click.on(button),
         Wait.until(searchInput(), isVisible()),
-        Enter.theValue(token).into(searchInput()),
+        Enter.theValue('').into(searchInput()),
+        ...token
+          .split('')
+          .flatMap(char => [Press.the(char), Wait.for(Duration.ofMilliseconds(50))]),
         Press.the("Enter"),
+        Wait.until(searchResults(), isPresent()),
         Wait.until(searchResults().first(), isVisible()),
         Click.on(searchResults().first()),
         Wait.until(button, isVisible()),
@@ -146,6 +150,7 @@ export const AdjustSlippage = {
       Wait.until(slippageSettingsModal(), isPresent()),
       Wait.until(slippageSettingsModalCustomButton(), isPresent()),
       Click.on(slippageSettingsModalCustomButton()),
+      Wait.until(slippageSettingsInput(), isPresent()),
       slippageSettingsInput().enterValue(`${value}%`),
       Press.the("Enter"),
       Press.the("Escape"),
@@ -186,6 +191,6 @@ export const Swap = {
     Task.where(
       `#actor swaps sell/buy tokens`,
       Click.on(swapConvertButton()),
-      Wait.until(Text.of(buyCoinButton()), includes(TOKENS.Base)),
+      Wait.until(Text.of(buyCoinButton()), includes(TOKENS.Quote)),
     ),
 };
