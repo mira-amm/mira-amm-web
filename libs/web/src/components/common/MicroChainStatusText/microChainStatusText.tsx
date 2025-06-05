@@ -1,13 +1,13 @@
 "use client";
 
 import {motion, AnimatePresence} from "framer-motion";
-import styles from "./MicroChainStatusText.module.css";
 import {useAnimationStore} from "@/src/stores/useGlitchScavengerHunt";
-import { IconButton } from "@/src/components/common";
+import {IconButton} from "@/src/components/common";
 import {useEffect, useState} from "react";
 import ScrambleEffect from "../GlitchEffects/ScrambleEffect";
 import GlitchAndScanLines from "../GlitchEffects/GlitchAndScanLines";
 import {triggerClassAnimation} from "../GlitchEffects/ClassAnimationTrigger";
+import "./microchain-status-text.css";
 
 const SHOW_MENU = false;
 
@@ -26,26 +26,24 @@ const MicroChainStatusText = () => {
   }, []);
 
   useEffect(() => {
-    // While the page reloads and count is 3 show green texts
     if (!isTriggeredManually && count === 3) {
-      setGlowClass(styles.greenFinal);
+      setGlowClass("greenFinal");
       return;
     }
 
-    // Manual path with blinking
     if ((count === 1 || count === 2 || count === 3) && isTriggeredManually) {
       const totalDelay = count === 3 ? 2200 : 1900;
 
       const blinkTimeout = setTimeout(() => {
-        setGlowClass(styles.briefGreenGlow);
+        setGlowClass("briefGreenGlow");
 
         const finalTimeout = setTimeout(() => {
           if (count === 3) {
-            setGlowClass(styles.greenFinal);
+            setGlowClass("greenFinal");
           } else {
             setGlowClass("");
           }
-        }, 3000); // Duration of briefGreenGlow
+        }, 3000);
 
         return () => clearTimeout(finalTimeout);
       }, totalDelay);
@@ -53,7 +51,6 @@ const MicroChainStatusText = () => {
       return () => clearTimeout(blinkTimeout);
     }
 
-    // Reset in other cases
     setGlowClass("");
   }, [count, isTriggeredManually]);
 
@@ -130,7 +127,7 @@ const MicroChainStatusText = () => {
           reset
         </button>
       </div>
-      <div className={`${styles.widget}`}>
+      <div className="widget">
         <div
           style={{display: "flex", gap: "3px", height: "24px"}}
           className={glowClass}
@@ -144,7 +141,7 @@ const MicroChainStatusText = () => {
 
           {/* Remaining Underscores */}
           {Array.from({length}).map((_, index) => (
-            <span key={`empty-${index}`} className={styles.emptyChar}>
+            <span key={`empty-${index}`} className="emptyChar">
               _
             </span>
           ))}
@@ -153,7 +150,7 @@ const MicroChainStatusText = () => {
             <div>
               <IconButton
                 onClick={() => useAnimationStore.getState().stopRadioAudio()}
-                className={styles.muteButton}
+                className="muteButton"
               >
                 <img
                   src="/images/Sound.gif"
@@ -168,7 +165,7 @@ const MicroChainStatusText = () => {
         <AnimatePresence>
           {hintText && (
             <motion.p
-              className={styles.hintText}
+              className="hintText"
               initial={{opacity: 0}}
               animate={{opacity: 1}}
               exit={{opacity: 0}}
