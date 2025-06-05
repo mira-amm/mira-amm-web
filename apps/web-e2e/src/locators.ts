@@ -29,10 +29,11 @@ export const swapConvertButton = () =>
   );
 
 export const searchInput = () =>
-  PageElement.located(By.css("[class^='CoinsListModal_tokenSearchInput__']"));
+  PageElement.located(By.css("input[placeholder^='Search by token or paste address']"));
 
 export const searchResults = () =>
-  PageElements.located(By.deepCss("[class^='CoinsListModal_tokenListItem__']"));
+  PageElements.located(
+    By.css("div:has(> input[placeholder^='Search by token or paste address']) + div > div"));
 
 export const slippageLabel = () =>
   PageElement.located(By.css("[class^='SlippageSetting_slippageLabel__']"));
@@ -68,11 +69,7 @@ export const poolTypeOption = (type: "Volatile" | "Stable") =>
   PageElements.located(By.cssContainingText("div", `${type} pool`)).first();
 
 export const addLiquidityButton = () =>
-  PageElements.located(
-    By.css(
-      'button[class^="ActionButton_btn__"][class*="ActionButton_secondary__"][class*="ActionButton_fullWidth__"]',
-    ),
-  ).nth(12);
+PageElement.located(By.css('tr:has(td:has-text("FUEL/USDC")) button:has-text("Add Liquidity")'))
 
 //
 // ========== LAYOUT LOCATORS: HEADER ==========

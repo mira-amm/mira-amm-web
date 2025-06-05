@@ -1,4 +1,5 @@
-import {Task, Duration, Wait} from "@serenity-js/core";
+import {Check, Task, Duration, Wait} from "@serenity-js/core";
+
 import {
   Click,
   By,
@@ -9,6 +10,7 @@ import {
   Text,
   isVisible,
 } from "@serenity-js/web";
+
 import {
   Ensure,
   equals,
@@ -54,30 +56,51 @@ export const Connect = {
 };
 
 export const CreatePool = {
-  ofType: (type: "Volatile" | "Stable") => ({
+  ofType: (type: 'Volatile' | 'Stable') => ({
     withAssets: (base: string, quote: string) =>
       Task.where(
         `#actor creates a ${type} pool with ${base} and ${quote}`,
-        Navigate.to("/liquidity"),
+
+        Navigate.to('/liquidity'),
+
         Wait.upTo(Duration.ofSeconds(10)).until(
-          PageElement.located(By.css("Loading pools...")),
+          PageElement.located(By.css('Loading pools...')),
           not(isVisible()),
         ),
+
         Wait.until(createPoolButton(), isVisible()),
         Click.on(createPoolButton()),
+
         Wait.until(chooseAssetButtons().first(), isVisible()),
         Click.on(chooseAssetButtons().first()),
+
         Wait.until(searchInput(), isVisible()),
-        Enter.theValue(base).into(searchInput()),
-        Press.the("Enter"),
+
+        // NOTE: type base asset character by character, or else search results are blank
+        Enter.theValue('').into(searchInput()),
+        ...base
+          .split('')
+          .flatMap(char => [Press.the(char), Wait.for(Duration.ofMilliseconds(50))]),
+
+        Press.the('Enter'),
+
         Wait.until(searchResults().first(), isVisible()),
         Click.on(searchResults().first()),
+
         Click.on(chooseAssetButtons().last()),
-        Wait.until(searchResults().first(), isVisible()),
-        Enter.theValue(quote).into(searchInput()),
-        Press.the("Enter"),
+
+        Wait.until(searchInput(), isVisible()),
+
+        Enter.theValue('').into(searchInput()),
+        ...quote
+          .split('')
+          .flatMap(char => [Press.the(char), Wait.for(Duration.ofMilliseconds(50))]),
+
+        Press.the('Enter'),
+
         Wait.until(searchResults().first(), isVisible()),
         Click.on(searchResults().first()),
+
         Wait.until(poolTypeOption(type), isVisible()),
         Click.on(poolTypeOption(type)),
       ),

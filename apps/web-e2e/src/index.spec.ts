@@ -65,19 +65,19 @@ describe("Liquidity", () => {
     );
   });
 
-  it("should be able to create volatile pool", async ({actor}) => {
+  it("should be able to create volatile pool (ETH/USDC)", async ({actor}) => {
     await actor.attemptsTo(
       CreatePool.ofType("Volatile").withAssets(TOKENS.Base, TOKENS.Quote),
     );
   });
 
-  it("should be able to create stable pool", async ({actor}) => {
+  it("should be able to create stable pool (ETH/USDC)", async ({actor}) => {
     await actor.attemptsTo(
       CreatePool.ofType("Stable").withAssets(TOKENS.Base, TOKENS.Quote),
     );
   });
 
-  it("should be able to add liquidity to existing pool", async ({actor}) => {
+  it("should be able to add liquidity to existing pool (FUEL/USDC)", async ({actor}) => {
     await actor.attemptsTo(
       Wait.upTo(Duration.ofSeconds(10)).until(
         PageElement.located(By.css("Loading pools...")),
