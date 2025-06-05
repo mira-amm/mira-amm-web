@@ -155,69 +155,74 @@ describe("Points", () => {
     ));
 });
 
-describe("Layout: Header", () => {
-  beforeEach(async ({actor}) => {
+describe("Layout", () => {
+  beforeEach(async ({ actor }) => {
     await actor.attemptsTo(Navigate.to("/"));
   });
 
-  it("should show header", async ({actor}) =>
-    actor.attemptsTo(Layout.shouldShow("header", header())));
+  describe("Header", () => {
+    it("should show section", async ({ actor }) =>
+      actor.attemptsTo(Layout.shouldShow("header", header())));
 
-  it("should show logo", async ({actor}) =>
-    actor.attemptsTo(Layout.shouldShow("logo", headerLogo())));
+    it("should show logo", async ({ actor }) =>
+      actor.attemptsTo(Layout.shouldShow("logo", headerLogo())));
 
-  it("should show 'Swap' link", async ({actor}) =>
-    actor.attemptsTo(Layout.shouldShow("'Swap' link", headerSwapLink())));
+    it("should show 'Swap' link", async ({ actor }) =>
+      actor.attemptsTo(Layout.shouldShow("'Swap' link", headerSwapLink())));
 
-  it("should show 'Liquidity' link", async ({actor}) =>
-    actor.attemptsTo(
-      Layout.shouldShow("'Liquidity' link", headerLiquidityLink()),
-    ));
+    it("should show 'Liquidity' link", async ({ actor }) =>
+      actor.attemptsTo(
+        Layout.shouldShow("'Liquidity' link", headerLiquidityLink()),
+      ));
 
-  it("should show 'Bridge' link", async ({actor}) =>
-    actor.attemptsTo(Layout.shouldShow("'Bridge' link", headerBridgeLink())));
+    it("should show 'Bridge' link", async ({ actor }) =>
+      actor.attemptsTo(Layout.shouldShow("'Bridge' link", headerBridgeLink())));
 
-  it("should show 'Mainnet' text", async ({actor}) =>
-    actor.attemptsTo(Layout.shouldShow("'Mainnet' text", headerMainnetText())));
+    it("should show 'Mainnet' text", async ({ actor }) =>
+      actor.attemptsTo(
+        Layout.shouldShow("'Mainnet' text", headerMainnetText()),
+      ));
 
-  it("should show 'Connect Wallet' button", async ({actor}) =>
-    actor.attemptsTo(
-      Layout.shouldShow("'Connect Wallet' button", headerConnectWalletButton()),
-    ));
-});
-
-describe("Layout: Footer", () => {
-  beforeEach(async ({actor}) => {
-    await actor.attemptsTo(Navigate.to("/"));
+    it("should show 'Connect Wallet' button", async ({ actor }) =>
+      actor.attemptsTo(
+        Layout.shouldShow(
+          "'Connect Wallet' button",
+          headerConnectWalletButton(),
+        ),
+      ));
   });
 
-  it("should show footer", async ({actor}) =>
-    actor.attemptsTo(Layout.shouldBePresent("footer", footer())));
+  describe("Footer", () => {
+    it("should show section", async ({ actor }) =>
+      actor.attemptsTo(Layout.shouldBePresent("footer", footer())));
 
-  it.skip("should show footer logo", async ({actor}) =>
-    actor.attemptsTo(Layout.shouldBePresent("footer logo", footerLogo())));
+    it.skip("should show footer logo", async ({ actor }) =>
+      actor.attemptsTo(Layout.shouldBePresent("footer logo", footerLogo())));
 
-  it("should show 'Support' link", async ({actor}) =>
-    actor.attemptsTo(
-      Layout.shouldBePresent("Support link", footerSupportLink()),
-    ));
+    it("should show 'Support' link", async ({ actor }) =>
+      actor.attemptsTo(
+        Layout.shouldBePresent("Support link", footerSupportLink()),
+      ));
 
-  it("should show 'Security Audit' link", async ({actor}) =>
-    actor.attemptsTo(
-      Layout.shouldBePresent("Security Audit link", footerSecurityAuditLink()),
-    ));
+    it("should show 'Security Audit' link", async ({ actor }) =>
+      actor.attemptsTo(
+        Layout.shouldBePresent(
+          "Security Audit link",
+          footerSecurityAuditLink(),
+        ),
+      ));
 
-  it("should show 'Docs' link", async ({actor}) =>
-    actor.attemptsTo(Layout.shouldBePresent("Docs link", footerDocsLink())));
+    it("should show 'Docs' link", async ({ actor }) =>
+      actor.attemptsTo(Layout.shouldBePresent("Docs link", footerDocsLink())));
 
-  it("should show 'Blog' link", async ({actor}) =>
-    actor.attemptsTo(Layout.shouldBePresent("Blog link", footerBlogLink())));
+    it("should show 'Blog' link", async ({ actor }) =>
+      actor.attemptsTo(Layout.shouldBePresent("Blog link", footerBlogLink())));
 
-  it("should show 'Contact us' link", async ({actor}) =>
-    actor.attemptsTo(
-      Layout.shouldBePresent("Contact us link", footerContactUsLink()),
-    ));
-
+    it("should show 'Contact us' link", async ({ actor }) =>
+      actor.attemptsTo(
+        Layout.shouldBePresent("Contact us link", footerContactUsLink()),
+      ));
+  });
 });
 
 describe.skip("API Endpoints", () => {
