@@ -50,7 +50,7 @@ export default function AddLiquidityPage() {
   const showPreview = Boolean(previewData);
 
   return (
-    <main className="flex flex-col p-4 gap-4 lg:max-w-lg lg:mx-auto lg:px-4 lg:py-8">
+    <main className="flex flex-col p-4 gap-4 min-w-lg mx-auto lg:px-4 lg:py-8">
       <button
         onClick={handleBackClick}
         className="flex items-center text-base leading-5 text-content-grey hover:text-content-primary cursor-pointer"

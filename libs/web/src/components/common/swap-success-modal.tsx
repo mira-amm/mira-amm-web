@@ -18,7 +18,7 @@ export function SwapSuccessModal({
   const subText = `${swapState.sell.amount} ${sellMetadata.symbol} for ${swapState.buy.amount} ${buyMetadata.symbol}`;
 
   return (
-    <div className="flex flex-col items-center gap-3 lg:gap-6">
+    <div className="flex flex-col items-center gap-3 lg:gap-6 min-w-lg">
       <SuccessIcon className="lg:w-20 lg:h-20" />
       <p className="font-medium text-[22px] leading-[26px] text-center">
         Swap success

@@ -58,7 +58,7 @@ export type SlippageMode = "auto" | "custom";
 export const DefaultSlippageValue = 100;
 const initialInputsState: InputsState = {sell: {amount: ""}, buy: {amount: ""}};
 
-const swapAndRateClasses = "flex flex-col gap-3 lg:gap-4";
+const swapAndRateClasses = "flex flex-col gap-3 lg:gap-4 min-w-md";
 const swapContainerBaseClasses =
   "flex flex-col gap-4 p-4 pb-[18px] rounded-2xl bg-background-grey-dark";
 const swapContainerWidgetClasses = "bg-background-primary";
