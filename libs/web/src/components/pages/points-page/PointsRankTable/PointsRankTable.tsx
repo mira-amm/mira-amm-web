@@ -19,7 +19,7 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/meshwave-ui/Table";
+} from "@/meshwave-ui/table";
 
 const truncateAddress = (address: string) => {
   if (!address) return "";

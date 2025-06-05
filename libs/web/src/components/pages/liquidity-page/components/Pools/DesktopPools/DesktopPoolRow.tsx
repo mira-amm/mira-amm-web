@@ -6,7 +6,7 @@ import {PoolData} from "@/src/hooks/usePoolsData";
 import AprBadge from "@/src/components/common/AprBadge/AprBadge";
 import usePoolNameAndMatch from "@/src/hooks/usePoolNameAndMatch";
 import {Button} from "@/meshwave-ui/Button";
-import {TableCell, TableRow} from "@/meshwave-ui/Table";
+import {TableCell, TableRow} from "@/meshwave-ui/table";
 
 const cellBase =
   "px-6 py-4 whitespace-nowrap overflow-hidden text-ellipsis text-center";

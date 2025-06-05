@@ -22,7 +22,7 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/meshwave-ui/Table";
+} from "@/meshwave-ui/table";
 
 type Props = {
   coinA: B256Address;

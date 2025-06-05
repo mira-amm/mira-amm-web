@@ -11,7 +11,7 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/meshwave-ui/Table";
+} from "@/meshwave-ui/table";
 
 export function DesktopPools({
   poolsData,

@@ -3,7 +3,7 @@ import {Fragment} from "react";
 import {clsx} from "clsx";
 import {PoolData} from "@/src/hooks/usePoolsData";
 import SortableColumn from "@/src/components/common/SortableColumn/SortableColumn";
-import {Table, TableHead, TableHeader, TableRow} from "@/meshwave-ui/Table";
+import {Table, TableHead, TableHeader, TableRow} from "@/meshwave-ui/table";
 
 export function MobilePools({
   poolsData,
