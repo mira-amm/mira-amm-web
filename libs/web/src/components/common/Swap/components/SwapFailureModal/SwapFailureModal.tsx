@@ -1,4 +1,3 @@
-import styles from "./SwapFailureModal.module.css";
 import {ErrorCode, FuelError} from "fuels";
 import {CircleX} from "lucide-react";
 import {Button} from "@/meshwave-ui/Button";
@@ -31,12 +30,14 @@ export default function SwapFailureModal({
   }
 
   return (
-    <div className={styles.claimFailureModal}>
-      <CircleX />
-      <p className={styles.mainText}>
-        {customTitle && customTitle.length > 0 ? customTitle : title}
+    <div className="flex flex-col items-center gap-3 lg:gap-6 pb-3">
+      <CircleX className="w-6 h-6 lg:w-20 lg:h-20 text-red-400" />
+      <p className="font-medium text-[22px] leading-[26px] text-center">
+        {customTitle?.length ? customTitle : title}
       </p>
-      <p className={styles.subText}>{message}</p>
+      <p className="text-sm leading-4 text-content-dimmed-dark text-center">
+        {message}
+      </p>
       <Button onClick={closeModal} block>
         Try again
       </Button>

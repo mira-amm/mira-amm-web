@@ -1,7 +1,5 @@
-import { useAssetMetadata } from "@/src/hooks";
 import {CoinQuantity} from "fuels";
-import styles from "./CoinsListModal/CoinsListModal.module.css";
-import { SkeletonLoader, CoinListItem } from "@/web/src/components/common";
+import {SkeletonLoader, CoinListItem} from "@/web/src/components/common";
 import useAsset from "@/src/hooks/useAsset";
 
 export function UnknownCoinListItem({
@@ -23,7 +21,10 @@ export function UnknownCoinListItem({
 
   if (assetData) {
     return (
-      <div className={styles.tokenListItem} onClick={onClick}>
+      <div
+        onClick={onClick}
+        className="px-4 py-2 rounded-lg hover:bg-background-grey-dark cursor-pointer"
+      >
         <CoinListItem assetData={assetData} />
       </div>
     );
@@ -33,5 +34,5 @@ export function UnknownCoinListItem({
     return <SkeletonLoader isLoading={true} count={1} textLines={1} />;
   }
 
-  return <div style={{padding: "8px 16px"}}>Asset not found</div>;
+  return <div className="px-4 py-2">Asset not found</div>;
 }

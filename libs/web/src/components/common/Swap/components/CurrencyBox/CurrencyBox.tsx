@@ -3,8 +3,6 @@ import {clsx} from "clsx";
 
 import {Coin} from "@/src/components/common";
 import {CurrencyBoxMode} from "@/src/components/common/Swap/Swap";
-
-import styles from "./CurrencyBox.module.css";
 import {TextButton} from "@/src/components/common";
 import {MinEthValueBN} from "@/src/utils/constants";
 import {B256Address, BN} from "fuels";
@@ -41,7 +39,6 @@ function CurrencyBox({
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const inputValue = e.target.value.replace(",", ".");
     const re = new RegExp(`^[0-9]*[.]?[0-9]{0,${metadata.decimals || 0}}$`);
-
     if (re.test(inputValue)) {
       setAmount(inputValue);
     }
@@ -55,7 +52,6 @@ function CurrencyBox({
 
   const handleMaxClick = useCallback(() => {
     let amountStringToSet;
-    // TODO ETH AssetId
     if (metadata.symbol === "ETH" && mode === "sell") {
       const amountWithoutGasFee = balance.sub(MinEthValueBN);
       amountStringToSet = amountWithoutGasFee.gt(0)
@@ -64,7 +60,6 @@ function CurrencyBox({
     } else {
       amountStringToSet = balanceValue;
     }
-
     setAmount(amountStringToSet);
   }, [assetId, mode, balance, setAmount, metadata]);
 
@@ -77,16 +72,30 @@ function CurrencyBox({
       : null;
 
   return (
-    <div className={clsx(styles.currencyBox, className)}>
-      <p className={styles.title}>{mode === "buy" ? "Buy" : "Sell"}</p>
-      <div className={styles.content}>
+    <div
+      className={clsx(
+        "flex flex-col gap-2.5 rounded-[10px] border border-transparent bg-background-secondary px-3 py-3 lg:px-4 focus-within:border-accent-secondary",
+        className,
+      )}
+    >
+      <p className="text-xs leading-4 text-content-tertiary lg:text-sm lg:leading-[18px]">
+        {mode === "buy" ? "Buy" : "Sell"}
+      </p>
+
+      <div className="min-h-[44px] flex items-center gap-2">
         {previewError ? (
-          <div className={styles.warningBox}>
-            <p className={styles.warningLabel}>{previewError}</p>
+          <div className="flex-1 bg-[rgba(255,235,59,0.1)] border border-[rgba(255,235,59,0.3)] rounded-lg px-3 py-2">
+            <p className="text-[#d4a900] text-sm font-medium leading-[1.4] lg:text-[15px]">
+              {previewError}
+            </p>
           </div>
         ) : (
           <input
-            className={clsx(styles.input, loading && "blurredTextLight")}
+            className={clsx(
+              "flex-1 w-0 font-semibold text-[20px] leading-6 border-none bg-transparent outline-none",
+              "text-content-secondary font-inter",
+              loading && "text-content-dimmed-dark",
+            )}
             type="text"
             inputMode="decimal"
             pattern="^[0-9]*[.,]?[0-9]*$"
@@ -99,27 +108,31 @@ function CurrencyBox({
         )}
 
         <button
-          className={clsx(
-            styles.selector,
-            coinNotSelected && styles.selectorHighlighted,
-          )}
           onClick={handleCoinSelectorClick}
           disabled={loading}
+          className={clsx(
+            "flex items-center gap-2 px-2.5 py-1.5 rounded-lg bg-transparent text-content-grey",
+            "hover:bg-background-grey-dark disabled:cursor-default",
+            coinNotSelected &&
+              "bg-background-grey-dark hover:bg-background-grey-light cursor-pointer",
+          )}
         >
           {coinNotSelected ? (
-            <p className={styles.chooseCoin}>Choose coin</p>
+            <p className="font-medium text-[16px] leading-[19px] text-content-primary">
+              Choose coin
+            </p>
           ) : (
             <Coin assetId={assetId} />
           )}
-          <ChevronDown />
+          <ChevronDown className="w-4 h-4 lg:w-6 lg:h-6" />
         </button>
       </div>
-      <div className={styles.estimateAndBalance}>
-        <p className={styles.estimate}>{usdValue !== null && usdValue}</p>
+
+      <div className="min-h-[16px] lg:min-h-[18px] flex justify-between items-center text-content-dimmed-light">
+        <p className="text-xs leading-4">{usdValue !== null && usdValue}</p>
         {balance.gt(0) && (
-          <span className={styles.balance}>
-            Balance: {balanceValue}
-            &nbsp;
+          <span className="text-xs leading-4 lg:text-sm">
+            Balance: {balanceValue}{" "}
             <TextButton onClick={handleMaxClick}>Max</TextButton>
           </span>
         )}
