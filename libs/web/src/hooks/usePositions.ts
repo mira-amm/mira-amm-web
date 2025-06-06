@@ -61,42 +61,54 @@ const usePositions = (): {
         document: query,
       });
 
-      const pools = await Promise.all(
+      const settledPools = await Promise.allSettled(
         result.pools.map(async (pool: any) => {
           const poolId = createPoolIdFromIdString(pool.id);
           const lpBalance = balances!.find(
             (balance) => balance.assetId === pool.lpToken.id,
           );
-          const [token0Position, token1Position] =
-            await mira!.getLiquidityPosition(
+
+          try {
+            const [token0Position, token1Position] =
+              await mira!.getLiquidityPosition(
+                poolId,
+                lpBalance!.amount.toString(),
+              );
+
+            const price1 = pool.asset0.price;
+            const price2 = pool.asset1.price;
+
+            const token0Price = parseFloat(parseFloat(price1).toFixed(2));
+            const token1Price = parseFloat(parseFloat(price2).toFixed(2));
+
+            const token0Item = {
+              token0Position: token0Position,
+              price: token0Price,
+            };
+            const token1Item = {
+              token1Position: token1Position,
+              price: token1Price,
+            };
+
+            return {
               poolId,
-              lpBalance!.amount.toString(),
-            );
-
-          const price1 = pool.asset0.price;
-          const price2 = pool.asset1.price;
-
-          const token0Price = parseFloat(parseFloat(price1).toFixed(2));
-          const token1Price = parseFloat(parseFloat(price2).toFixed(2));
-
-          const token0Item = {
-            token0Position: token0Position,
-            price: token0Price,
-          };
-          const token1Item = {
-            token1Position: token1Position,
-            price: token1Price,
-          };
-
-          return {
-            poolId,
-            lpAssetId: pool.lpToken.id,
-            isStable: pool.isStable,
-            token0Item,
-            token1Item,
-          };
+              lpAssetId: pool.lpToken.id,
+              isStable: pool.isStable,
+              token0Item,
+              token1Item,
+            };
+          } catch (error) {
+            console.error(`Failed to fetch position for pool ${poolId}:`, error);
+            throw error;
+          }
         }),
       );
+
+      const pools = settledPools
+        .filter((result): result is PromiseFulfilledResult<Position> => 
+          result.status === 'fulfilled'
+        )
+        .map(result => result.value);
 
       return pools;
     },
