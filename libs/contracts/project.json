@@ -1,0 +1,11 @@
+{
+  "name": "contracts",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "metadata": {
+    "description": "v1 Core Smart Contracts for the Mira Protocol."
+  },
+  "sourceRoot": "libs/contracts",
+  "projectType": "library",
+  "implicitDependencies": ["!libs/web"],
+  "tags": ["contracts", "rust"]
+}

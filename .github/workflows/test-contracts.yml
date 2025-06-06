@@ -1,0 +1,21 @@
+name: Run tests
+
+on:
+  - push
+  - workflow_dispatch
+
+jobs:
+  tests:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout the repository
+        uses: actions/checkout@v4
+
+      - uses: ./.github/actions/initialize
+
+      - name: Run sway tests
+        run: forc test
+
+      - name: Run rust tests
+        run: cargo test

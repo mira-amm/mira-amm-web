@@ -1,8 +1,8 @@
-import { createConfig } from 'fuels';
+import {createConfig} from "fuels";
 
 export default createConfig({
-  workspace: './tmp_abis/mira-v1-periphery',
-  output: './sway_abis',
-  forcBuildFlags: ['--release'],
-  privateKey: '0x001'
+  contracts: ["../contracts"],
+  scripts: ["../scripts"],
+  output: "./src/sdk/typegen",
+  forcBuildFlags: ["--release"],
 });

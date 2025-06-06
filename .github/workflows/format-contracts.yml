@@ -1,0 +1,21 @@
+name: Check formatting
+
+on:
+  - push
+  - workflow_dispatch
+
+jobs:
+  tests:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout the repository
+        uses: actions/checkout@v4
+
+      - uses: ./.github/actions/initialize
+
+      - name: Check sway formatting
+        run: forc fmt --check
+
+      - name: Check rust formatting
+        run: cargo fmt --check
