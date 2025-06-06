@@ -1,8 +1,12 @@
-import {describe, it, beforeEach} from "@serenity-js/playwright-test";
 import { CallAnApi, DeleteRequest, GetRequest, LastResponse, PostRequest, Send } from '@serenity-js/rest'
 import {Duration, Wait} from "@serenity-js/core";
 import {Navigate, PageElement, By, Click, isVisible} from "@serenity-js/web";
 import { Ensure, property, equals, and, startsWith, isPresent, not} from "@serenity-js/assertions";
+import { chromium, type BrowserContext } from '@playwright/test';
+import {BrowseTheWebWithPlaywright,} from "@serenity-js/playwright"
+import { Cast } from '@serenity-js/core'
+import { useFixtures, } from "@serenity-js/playwright-test";
+import { downloadFuel, seedWallet, FuelWalletTestHelper } from '@fuels/playwright-utils';
 
 import {
   connectWalletButton,
@@ -33,6 +37,93 @@ import {
   Swap,
   TOKENS,
 } from "./tasks";
+
+type TestScopeFixtures = {
+  context: BrowserContext;
+  extensionId: string;
+  actors: Cast;
+};
+
+// const wallet = new FuelWalletTestHelper()
+
+const pathToExtension = await downloadFuel('0.55.2');
+
+const context = await chromium.launchPersistentContext('', {
+  channel: 'chromium',
+  // headless: false,
+  args: [
+    `--disable-extensions-except=${pathToExtension}`,
+    `--load-extension=${pathToExtension}`,
+  ],
+});
+
+const FUEL_MNEMONIC = "demand fashion unaware upgrade upon heart bright august panel kangaroo want gaze";
+const FUEL_WALLET_PASSWORD = "$123Ran123Dom123!";
+
+// static async walletSetup(
+//     context: BrowserContext,
+//     fuelExtensionId: string,
+//     fuelProviderUrl: "https://mainnet.fuel.network/v1/graphql",
+//     chainName: string,
+//     mnemonic: string = FUEL_MNEMONIC,
+//     password: string = FUEL_WALLET_PASSWORD
+// ): Promise<FuelWalletTestHelper>
+
+export const { describe, it, beforeEach, afterEach, test } = useFixtures<TestScopeFixtures>({
+  // context: async ({}, use) => {
+  //   const pathToExtension = await downloadFuel('0.55.2');
+
+  //   const context = await chromium.launchPersistentContext('', {
+  //     channel: 'chromium',
+  //     // headless: false,
+  //     args: [
+  //       `--disable-extensions-except=${pathToExtension}`,
+  //       `--load-extension=${pathToExtension}`,
+  //     ],
+  //   });
+  //   await use(context);
+  //   await context.close();
+  // },
+
+  actors: async ({browser }, use) => {
+    const cast = Cast.where(actor =>
+      actor.whoCan(BrowseTheWebWithPlaywright.using(browser, {
+        ...context,
+        userAgent: actor.name,
+        extensionId: async ({ context }, use) => {
+          let [background] = context.serviceWorkers();
+          if (!background) background = await context.waitForEvent('serviceworker');
+          const extensionId = background.url().split('/')[2];
+          await use(extensionId);
+        },
+      }))
+    );
+
+    // let [background] = context.serviceWorkers();
+    // if (!background) background = await context.waitForEvent('serviceworker');
+
+    // const extensionId = background.url().split('/')[2];
+
+    // await use(context);
+    // await use(extensionId);
+    await use(cast);
+    // await context.close();
+  },
+});
+
+describe("Connect to wallet", () => {
+    it("should be able to connect to fuel wallet", async ({actor, context}, use) => {
+      await actor.attemptsTo(
+        Navigate.to("/"),
+        Wait.until(connectWalletButton(), isVisible()),
+        Click.on(connectWalletButton()),
+        Wait.until(PageElement.located(By.cssContainingText("div.fuel-connectors-connector-item", "Fuel Wallet")), isVisible()),
+        Click.on(PageElement.located(By.cssContainingText("div.fuel-connectors-connector-item", "Fuel Wallet"))),
+        Wait.until(PageElement.located(By.cssContainingText("a", "Install")), isVisible()),
+        Click.on(PageElement.located(By.cssContainingText("a", "Install")))
+      );
+    });
+});
 
 describe("Swap", () => {
   beforeEach(async ({actor}) => {
