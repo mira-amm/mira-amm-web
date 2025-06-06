@@ -5,15 +5,15 @@
 /* eslint-disable @typescript-eslint/consistent-type-imports */
 
 /*
-  Fuels version: 0.96.1
+  Fuels version: 0.100.3
 */
 
-import { Contract, Interface } from "fuels";
+import { Contract as __Contract, Interface } from "fuels";
 import type {
   Provider,
   Account,
-  Address,
   StorageSlot,
+  Address,
   BigNumberish,
   BN,
   Bytes,
@@ -1230,12 +1230,12 @@ const abi = {
     {
       "name": "LP_FEE_VOLATILE",
       "concreteTypeId": "1506e6f44c1d6291cdf46395a8e573276a4fa79e8ace3fc891e092ef32d1b0a0",
-      "offset": 62440
+      "offset": 62416
     },
     {
       "name": "LP_FEE_STABLE",
       "concreteTypeId": "1506e6f44c1d6291cdf46395a8e573276a4fa79e8ace3fc891e092ef32d1b0a0",
-      "offset": 62432
+      "offset": 62408
     }
   ]
 };
@@ -1284,7 +1284,7 @@ export class MiraAmmContractInterface extends Interface {
   };
 }
 
-export class MiraAmmContract extends Contract {
+export class MiraAmmContract extends __Contract {
   static readonly abi = abi;
   static readonly storageSlots = storageSlots;
 

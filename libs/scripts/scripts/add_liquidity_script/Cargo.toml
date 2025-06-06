@@ -1,0 +1,16 @@
+[package]
+name = "add_liquidity_script"
+version = "0.0.0"
+authors = ["Fuel Labs <contact@fuel.sh>"]
+edition = "2021"
+license = "Apache-2.0"
+
+[dev-dependencies]
+fuels = { workspace = true }
+test-harness = { path = "../../test-harness" }
+tokio = { workspace = true }
+
+[[test]]
+harness = true
+name = "tests"
+path = "tests/harness.rs"

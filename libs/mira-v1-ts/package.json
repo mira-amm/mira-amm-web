@@ -9,6 +9,9 @@
   ],
   "scripts": {
     "test": "jest",
+    "typegen:predicates": "fuels typegen -i '../scripts/scripts/*/out/release/*-abi.json' -o ./src/sdk/typegen --script",
+    "typegen:contracts": "fuels typegen -i '../contracts/contracts/*/out/release/*-abi.json' -o './src/sdk/typegen'",
+    "typegen": "pnpm typegen:predicates && pnpm typegen:contracts",
     "build": "tsc",
     "prepare": "pnpm run build",
     "pub": "pnpm publish --access public"

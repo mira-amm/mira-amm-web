@@ -1,0 +1,11 @@
+{
+  "name": "mira-v1-ts",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "metadata": {
+    "description": "TypeScript SDK for Mira AMM."
+  },
+  "sourceRoot": "libs/mira-v1-ts",
+  "projectType": "library",
+  "implicitDependencies": ["!libs/web"],
+  "tags": ["sdk", "TypeScript"]
+}

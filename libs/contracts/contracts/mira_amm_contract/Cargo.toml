@@ -1,0 +1,14 @@
+[package]
+name = "mira_amm_contract"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+test-harness = { path = "../../test-harness" }
+tokio = { workspace = true }
+fuels = { workspace = true }
+
+[[test]]
+harness = true
+name = "tests"
+path = "tests/harness.rs"

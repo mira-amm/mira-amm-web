@@ -1,0 +1,34 @@
+name: Initialize
+description: Common steps for initialization
+
+runs:
+  using: composite
+
+  steps:
+    - name: Setup Rust
+      uses: dtolnay/rust-toolchain@stable
+
+    - name: Add wasm32-unknown-unknown target
+      shell: bash
+      run: rustup target add wasm32-unknown-unknown
+
+    - name: Setup Fuelup
+      shell: bash
+      run: |
+        curl https://install.fuel.network | sh
+        echo "$HOME/.fuelup/bin:${GITHUB_PATH}" >> $GITHUB_PATH
+
+    - name: Set default testnet toolchain
+      shell: bash
+      run: |
+        fuelup update
+        fuelup toolchain install testnet
+        fuelup default testnet
+
+    - name: Build the contracts
+      shell: bash
+      run: forc build
+
+    - name: Cargo build
+      shell: bash
+      run: cargo build

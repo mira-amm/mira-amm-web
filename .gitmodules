@@ -1,0 +1,6 @@
+[submodule "mira-v1-core"]
+	path = mira-v1-core
+	url = git@github.com:mira-amm/mira-v1-core.git
+[submodule "mira-v1-periphery"]
+	path = mira-v1-periphery
+	url = git@github.com:mira-amm/mira-v1-periphery.git
