@@ -119,6 +119,7 @@
     "@eslint/config-inspector": "^1.0.2",
     "@eslint/eslintrc": "^3.3.1",
     "@eslint/js": "^9.25.1",
+    "@fuels/playwright-utils": "^0.20.0",
     "@nestia/editor": "^6.0.6",
     "@nestjs/serve-static": "^5.0.3",
     "@nestjs/swagger": "^11.2.0",

@@ -318,6 +318,9 @@ importers:
       '@eslint/js':
         specifier: ^9.25.1
         version: 9.27.0
+      '@fuels/playwright-utils':
+        specifier: ^0.20.0
+        version: 0.20.0(@playwright/test@1.52.0)(fuels@0.100.3(encoding@0.1.13)(vitest@3.1.4))
       '@nestia/editor':
         specifier: ^6.0.6
         version: 6.0.6(@emotion/react@11.13.3(@types/react@19.1.6)(react@19.1.0))(@emotion/styled@11.13.0(@emotion/react@11.13.3(@types/react@19.1.6)(react@19.1.0))(@types/react@19.1.6)(react@19.1.0))(@mui/icons-material@5.16.7(@mui/material@5.16.7(@emotion/react@11.13.3(@types/react@19.1.6)(react@19.1.0))(@emotion/styled@11.13.0(@emotion/react@11.13.3(@types/react@19.1.6)(react@19.1.0))(@types/react@19.1.6)(react@19.1.0))(@types/react@19.1.6)(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(@types/react@19.1.6)(react@19.1.0))(@types/react@19.1.6)(prop-types@15.8.1)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)(typescript@5.8.3)
@@ -3517,6 +3520,12 @@ packages:
     resolution: {integrity: sha512-CLpLo6M+2xWhkYAcwJBFFYXmrXayFZr0nTHz7WIvfd+ByfnG78yIniE4L4vROMP7aQW/wfzT2MD7Zeo+vkpK7Q==}
     peerDependencies:
       fuels: 0.100.0
+
+  '@fuels/playwright-utils@0.20.0':
+    resolution: {integrity: sha512-26vikCWdvyrVM/tME9zpd0K61MD9kYxVPQWlwX4FSZXHV3WPgueaESMfzTUos0ehrJv552q7nnJ/iwF96gZkMA==}
+    peerDependencies:
+      '@playwright/test': ^1.39.0
+      fuels: '>=0.86.0'
 
   '@fuels/react@0.40.0':
     resolution: {integrity: sha512-D0AbduS1IKsbQG1DonN5WUDZHnBYSZccfQCFZ2TrvMkUQba6LwLhXsrMjP6przSIuMSqMdkknMG6Zr0OVkqsqQ==}
@@ -24454,6 +24463,12 @@ snapshots:
       - utf-8-validate
       - vue
       - zod
+
+  '@fuels/playwright-utils@0.20.0(@playwright/test@1.52.0)(fuels@0.100.3(encoding@0.1.13)(vitest@3.1.4))':
+    dependencies:
+      '@playwright/test': 1.52.0
+      adm-zip: 0.5.16
+      fuels: 0.100.3(encoding@0.1.13)(vitest@3.1.4)
 
   '@fuels/react@0.40.0(@tanstack/react-query@5.77.2(react@19.1.0))(@types/react-dom@19.1.5(@types/react@19.1.6))(@types/react@19.1.6)(fuels@0.100.3(encoding@0.1.13)(vitest@3.1.4))(react-dom@19.1.0(react@19.1.0))(react@19.1.0)':
     dependencies:
