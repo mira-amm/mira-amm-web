@@ -29,6 +29,11 @@ libs/api/documentation
 #====================================================
 #                 Caches & Logs
 #====================================================
+.devenv*
+devenv.local.nix
+**/.direnv/
+**.qcow2
+.pre-commit-config.yaml
 .nx/cache
 .nx/workspace-data
 apps/admin/media
