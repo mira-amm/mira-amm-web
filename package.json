@@ -4,13 +4,14 @@
   "version": "0.3.1",
   "type": "module",
   "scripts": {
+    "dev": "nx dev:tui microvisor; process-compose down; zellij ka -y; zellij da -y;",
+    "start": "nx dev microscope --outputStyle=tui; process-compose down; zellij ka -y; zellij da -y;",
     "clean": "nx destroy db; git clean -fdX -e '!**/.env*'; # 🧽 Remove any and all files listed in .gitignore except .env",
     "nuke": "nx destroy db; sudo git clean -fdX; # 🚨 WARNING: REMOVE ANY AND ALL FILES LISTED IN .gitignore INCLUDING .env",
     "ri": "pnpm clean; pnpm i; pnpm d; # 🧹 Perform a clean install",
     "d": "nx shell microdoctor # 💊 Get a check-up from Microdoctor",
     "storybook": "nx storybook design -p $STORYBOOK_DEV_SERVER_PORT # 🎨 Design System - Storybook",
     "fix:formatting": "pnpx prettier --write apps/web",
-    "prepare": "husky # 🪝 Git Hook",
     "commit": "cz #🟢 Commitizen CLI",
     "postinstall": "nx postinstall microscope"
   },
@@ -219,7 +220,6 @@
     "fumadocs-docgen": "^2.0.0",
     "fumadocs-mdx": "11.6.7",
     "fumadocs-ui": "15.5.1",
-    "husky": "^9.1.7",
     "inquirer": "^12.6.3",
     "jest": "^29.7.0",
     "jiti": "2.4.2",
