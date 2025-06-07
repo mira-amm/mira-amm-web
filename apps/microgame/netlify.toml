@@ -1,0 +1,6 @@
+[build]
+command = "pnpm nx build microgame"
+publish = "apps/microgame/build/client"
+
+# [dev]
+# command = "react-router dev"

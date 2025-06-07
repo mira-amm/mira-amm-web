@@ -1,0 +1,61 @@
+{
+  "name": "mira-v1-ts",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "metadata": {
+    "description": "TypeScript SDK for Mira AMM."
+  },
+  "sourceRoot": "libs/mira-v1-ts/src",
+  "projectType": "library",
+  "implicitDependencies": [
+    "!libs/web"
+  ],
+  "tags": [
+    "sdk",
+    "typescript",
+    "v1"
+  ],
+  "targets": {
+    "test": {
+      "command": "jest",
+      "options": {
+        "cwd": "libs/mira-v1-ts"
+      }
+    },
+    "typegen:predicates": {
+      "command": "fuels typegen -i '../scripts/scripts/*/out/release/*-abi.json' -o ./src/sdk/typegen --script",
+      "options": {
+        "cwd": "libs/mira-v1-ts"
+      }
+    },
+    "typegen:contracts": {
+      "command": "fuels typegen -i '../contracts/contracts/*/out/release/*-abi.json' -o './src/sdk/typegen'",
+      "options": {
+        "cwd": "libs/mira-v1-ts"
+      }
+    },
+    "typegen": {
+      "command": "pnpm typegen:predicates && pnpm typegen:contracts",
+      "options": {
+        "cwd": "libs/mira-v1-ts"
+      }
+    },
+    "build": {
+      "command": "tsc",
+      "options": {
+        "cwd": "libs/mira-v1-ts"
+      }
+    },
+    "prepare": {
+      "command": "pnpm run build",
+      "options": {
+        "cwd": "libs/mira-v1-ts"
+      }
+    },
+    "pub": {
+      "command": "pnpm publish --access public",
+      "options": {
+        "cwd": "libs/mira-v1-ts"
+      }
+    },
+  }
+}

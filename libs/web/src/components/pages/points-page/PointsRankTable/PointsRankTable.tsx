@@ -8,20 +8,19 @@ import {
   getPaginationRowModel,
   useReactTable,
 } from "@tanstack/react-table";
-import styles from "./PointsRankTable.module.css";
-import {usePointsRanks} from "@/src/hooks/usePoints/usePoints";
+import {usePointsRanks} from "@/src/hooks";
 import LoaderV2 from "@/src/components/common/LoaderV2/LoaderV2";
-import PointsIconSimple from "@/src/components/icons/Points/PointsIconSimple";
+import {PointsIconSimple} from "@/meshwave-ui/icons";
 import {DefaultLocale} from "@/src/utils/constants";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/meshwave-ui/table";
 
-// Define the data type for our table
-type PointsRankData = {
-  rank: number;
-  address: string;
-  points: number;
-};
-
-// Add this helper function inside the component or outside as a utility
 const truncateAddress = (address: string) => {
   if (!address) return "";
   if (address.length <= 10) return address;
@@ -29,21 +28,21 @@ const truncateAddress = (address: string) => {
 };
 
 export default function PointsRankTable() {
-  // State for pagination
   const [pagination, setPagination] = useState({
-    pageIndex: 0, // 0-based index
+    pageIndex: 0,
     pageSize: 50,
   });
 
-  // Calculate API parameters from pagination state
-  const page = pagination.pageIndex + 1; // Convert to 1-based index for API
+  const page = pagination.pageIndex + 1;
   const pageSize = pagination.pageSize;
 
-  // Fetch data with pagination parameters
   const {data: response, isLoading, error} = usePointsRanks(page, pageSize);
 
-  // Column definitions
-  const columnHelper = createColumnHelper<PointsRankData>();
+  const columnHelper = createColumnHelper<{
+    rank: number;
+    address: string;
+    points: number;
+  }>();
 
   const columns = [
     columnHelper.accessor("rank", {
@@ -56,10 +55,8 @@ export default function PointsRankTable() {
         const address = info.getValue();
         return (
           <>
-            <span className={styles.desktopAddress}>{address}</span>
-            <span className={styles.mobileAddress}>
-              {truncateAddress(address)}
-            </span>
+            <span className="hidden lg:block">{address}</span>
+            <span className="block lg:hidden">{truncateAddress(address)}</span>
           </>
         );
       },
@@ -67,8 +64,8 @@ export default function PointsRankTable() {
     columnHelper.accessor("points", {
       header: "Points",
       cell: (info) => (
-        <div className={styles.pointsCell}>
-          <span className={styles.pointsIcon}>
+        <div className="flex items-center">
+          <span className="text-[var(--accent-primary)] flex items-center">
             <PointsIconSimple />
           </span>
           {info.getValue().toLocaleString(DefaultLocale, {
@@ -79,13 +76,12 @@ export default function PointsRankTable() {
     }),
   ];
 
-  // Create the table instance
   const table = useReactTable({
     data: response?.data || [],
     columns,
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
-    manualPagination: true, // We're handling pagination on the server
+    manualPagination: true,
     pageCount: response?.totalCount
       ? Math.ceil(response.totalCount / pageSize)
       : 10,
@@ -101,7 +97,7 @@ export default function PointsRankTable() {
 
   if (isLoading) {
     return (
-      <div className={styles.loadingFallback}>
+      <div className="flex flex-col items-center gap-4 p-7 rounded-2xl bg-background-grey-dark">
         <LoaderV2 />
         <p>Loading points leaderboard...</p>
       </div>
@@ -109,36 +105,46 @@ export default function PointsRankTable() {
   }
 
   return (
-    <div className={styles.tableContainer}>
-      <table className={styles.table}>
-        <thead>
+    <div className="w-full overflow-x-auto rounded-xl bg-background-grey-dark p-4">
+      <Table className="w-full border-collapse text-content-primary">
+        <TableHeader>
           {table.getHeaderGroups().map((headerGroup) => (
-            <tr key={headerGroup.id}>
+            <TableRow key={headerGroup.id}>
               {headerGroup.headers.map((header) => (
-                <th key={header.id} className={styles.tableHeader}>
+                <TableHead
+                  key={header.id}
+                  className="p-4 text-left font-normal text-base text-content-tertiary border-b border-background-grey-darker"
+                >
                   {header.isPlaceholder
                     ? null
                     : flexRender(
                         header.column.columnDef.header,
                         header.getContext(),
                       )}
-                </th>
+                </TableHead>
               ))}
-            </tr>
+            </TableRow>
           ))}
-        </thead>
-        <tbody>
+        </TableHeader>
+        <TableBody>
           {table.getRowModel().rows.map((row) => (
-            <tr key={row.id} className={styles.tableRow}>
-              {row.getVisibleCells().map((cell) => (
-                <td key={cell.id} className={styles.tableCell}>
+            <TableRow key={row.id} className="transition-colors">
+              {row.getVisibleCells().map((cell, idx) => (
+                <TableCell
+                  key={cell.id}
+                  className={`p-4 text-base border-b border-[#2a2b35] ${
+                    idx === 1
+                      ? "overflow-hidden text-ellipsis whitespace-nowrap"
+                      : ""
+                  } ${idx === 2 ? "text-nowrap" : ""}`}
+                >
                   {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                </td>
+                </TableCell>
               ))}
-            </tr>
+            </TableRow>
           ))}
-        </tbody>
-      </table>
+        </TableBody>
+      </Table>
     </div>
   );
 }

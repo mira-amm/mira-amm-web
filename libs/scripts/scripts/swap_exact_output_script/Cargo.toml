@@ -1,0 +1,14 @@
+[package]
+name = "swap-exact-output-script"
+version.workspace = true
+edition.workspace = true
+
+[dev-dependencies]
+fuels = { workspace = true }
+test-harness = { path = "../../test-harness" }
+tokio = { workspace = true }
+
+[[test]]
+harness = true
+name = "tests"
+path = "tests/harness.rs"

@@ -1,9 +1,9 @@
 {
-  "name": "dex",
+  "name": "microgame",
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "sourceRoot": "apps/microgame/src",
   "projectType": "application",
   "tags": [],
-  "// targets": "to see all targets run: nx show project dex --web",
+  "// targets": "to see all targets run: nx show project microgame --web",
   "targets": {}
 }

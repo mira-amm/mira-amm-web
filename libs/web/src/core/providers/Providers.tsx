@@ -1,22 +1,19 @@
 "use client";
 
-import {ReactNode, Suspense, useEffect, useState} from "react";
+import { ReactNode, Suspense } from "react";
 import NextAdapterApp from "next-query-params/app";
-import {QueryParamProvider} from "use-query-params";
-import {QueryClient} from "@tanstack/react-query";
+import { QueryParamProvider } from "use-query-params";
+import { QueryClient } from "@tanstack/react-query";
 import {
-  PersistQueryClientOptions,
   PersistQueryClientProvider,
+  PersistQueryClientOptions,
 } from "@tanstack/react-query-persist-client";
-import {createSyncStoragePersister} from "@tanstack/query-sync-storage-persister";
-import {ReactQueryDevtools} from "@tanstack/react-query-devtools";
-import FuelProviderWrapper from "@/src/core/providers/FuelProviderWrapper";
-import DisclaimerWrapper from "@/src/core/providers/DisclaimerWrapper";
-import AssetsConfigProvider from "@/src/core/providers/AssetsConfigProvider";
+import { createSyncStoragePersister } from "@tanstack/query-sync-storage-persister";
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 
-type Props = {
-  children: ReactNode;
-};
+import { FuelProviderWrapper } from "@/src/core/providers/FuelProviderWrapper";
+import { DisclaimerWrapper } from "@/src/core/providers/DisclaimerWrapper";
+import { Loader } from "@/src/components/common";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -26,52 +23,40 @@ const queryClient = new QueryClient({
   },
 });
 
-const localStoragePersistor = createSyncStoragePersister({
-  storage: undefined,
-});
+function QueryParamProviderWrapper({children}: {children: ReactNode}) {
+  return (
+    <Suspense fallback={<Loader />}>
+      <QueryParamProvider adapter={NextAdapterApp}>
+        {children}
+      </QueryParamProvider>
+    </Suspense>
+  );
+}
 
-const defaultPersistOptions: PersistQueryClientOptions = {
-  // @ts-ignore
+const persister = typeof window !== "undefined"
+  ? createSyncStoragePersister({ storage: window.localStorage })
+  : undefined;
+
+const persistOptions: PersistQueryClientOptions = {
   queryClient,
-  persister: localStoragePersistor,
+  persister,
   maxAge: 1000 * 60 * 60 * 12,
   dehydrateOptions: {
     shouldDehydrateQuery: (query) => !!query.meta?.persist,
   },
 };
 
-const Providers = ({children}: Props) => {
-  const [persistOptions, setPersistOptions] =
-    useState<PersistQueryClientOptions>(defaultPersistOptions);
-
-  useEffect(() => {
-    const persister = createSyncStoragePersister({
-      storage: window.localStorage,
-    });
-
-    setPersistOptions({
-      ...defaultPersistOptions,
-      persister,
-    });
-  }, []);
-
+export function Providers({ children }: { children: ReactNode }){
   return (
-    <Suspense>
-      <PersistQueryClientProvider
-        client={queryClient}
-        persistOptions={persistOptions}
-      >
-        <ReactQueryDevtools initialIsOpen={false} />
-        <QueryParamProvider adapter={NextAdapterApp}>
-          <FuelProviderWrapper>
-            <DisclaimerWrapper>
-              <AssetsConfigProvider>{children}</AssetsConfigProvider>
-            </DisclaimerWrapper>
-          </FuelProviderWrapper>
-        </QueryParamProvider>
-      </PersistQueryClientProvider>
-    </Suspense>
+    <PersistQueryClientProvider client={queryClient} persistOptions={persistOptions}>
+      <ReactQueryDevtools initialIsOpen={false} />
+      <QueryParamProviderWrapper>
+        <FuelProviderWrapper>
+          <DisclaimerWrapper>
+            {children}
+          </DisclaimerWrapper>
+        </FuelProviderWrapper>
+      </QueryParamProviderWrapper>
+    </PersistQueryClientProvider>
   );
 };
-
-export default Providers;

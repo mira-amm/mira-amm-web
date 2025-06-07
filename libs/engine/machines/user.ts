@@ -1,5 +1,5 @@
 // github.com/darrylhebbes/awesome_xstate?tab=readme-ov-file
-import { createMachine } from 'xstate';
+import { setup } from "xstate"
 
 export enum UserStates {
   IDLE = 'idle',
@@ -23,7 +23,11 @@ export enum UserEvents {
   ESCAPE = 'ESCAPE',
 }
 
-export const userFlowMachine = createMachine({
+export const userFlowMachine = setup({
+types:{
+  events: {} as Event,
+}
+}).createMachine({
   id: 'userFlow',
   initial: UserStates.IDLE,
   states: {

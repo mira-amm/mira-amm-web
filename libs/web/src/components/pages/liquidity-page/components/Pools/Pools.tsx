@@ -1,20 +1,20 @@
-import {useCallback, useEffect, useState} from "react";
-import {useRouter} from "next/navigation";
+"use client";
 
-import MobilePools from "@/src/components/pages/liquidity-page/components/Pools/MobilePools/MobilePools";
-import DesktopPools from "@/src/components/pages/liquidity-page/components/Pools/DesktopPools/DesktopPools";
+import {useEffect, useState} from "react";
+
+import {MobilePools} from "@/src/components/pages/liquidity-page/components/Pools/MobilePools/MobilePools";
+import {DesktopPools} from "@/src/components/pages/liquidity-page/components/Pools/DesktopPools/DesktopPools";
+import Link from "next/link";
 import LoaderV2 from "@/src/components/common/LoaderV2/LoaderV2";
-import ActionButton from "@/src/components/common/ActionButton/ActionButton";
+import {SearchBar} from "@/src/components/common";
 import Pagination from "@/src/components/common/Pagination/Pagination";
-import {SearchBar} from "@/src/components/common/SearchBar/SearchBar";
 import usePoolsData, {DEFAULT_PAGE} from "@/src/hooks/usePoolsData";
 import useDebounce from "@/src/hooks/useDebounce";
+import {Button} from "@/meshwave-ui/Button";
 
 import clsx from "clsx";
-import styles from "./Pools.module.css";
 
-const Pools = () => {
-  const router = useRouter();
+export function Pools() {
   const {data, isLoading, moreInfo} = usePoolsData();
 
   const {
@@ -27,29 +27,20 @@ const Pools = () => {
   const [searchInput, setSearchInput] = useState(search || "");
   const debouncedSearchTerm = useDebounce(searchInput, 300);
 
-  // Navigate to "Create Pool" page
-  const handleCreatePoolClick = useCallback(() => {
-    router.push("/liquidity/create-pool");
-  }, [router]);
-
-  // Initialize query variables on component mount
   useEffect(() => {
     setQueryVariables({page: page || DEFAULT_PAGE});
   }, [page, setQueryVariables]);
 
-  // Update search query when debounced value changes
   useEffect(() => {
     if (search !== debouncedSearchTerm) {
       setQueryVariables({search: debouncedSearchTerm, page: DEFAULT_PAGE});
     }
   }, [debouncedSearchTerm, setQueryVariables, search]);
 
-  // Handle search input changes
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchInput(e.target.value);
   };
 
-  // Handle sorting by toggling ASC/DESC
   const handleSort = (key: string) => {
     setQueryVariables(() => {
       const [prevKey, prevDirection] = orderBy.split("_");
@@ -59,33 +50,26 @@ const Pools = () => {
     });
   };
 
-  // Render pagination
   const handlePageChange = (page: number) => setQueryVariables({page: page});
 
   return (
-    <section className={styles.pools}>
-      {/* Action Button */}
-      <div className={styles.actionButtonDiv}>
-        <ActionButton
-          className={clsx("mobileOnly", styles.createButton)}
-          onClick={handleCreatePoolClick}
-        >
-          Create Pool
-        </ActionButton>
+    <section className="flex flex-col gap-[14px]">
+      <div className="flex justify-end">
+        <Link href="/liquidity/create-pool">
+          <Button className="mobileOnly">Create Pool</Button>
+        </Link>
       </div>
 
-      {/* Header with Search Bar */}
-      <div className={styles.poolsHeader}>
-        <p className={styles.poolsTitle}>All Pools</p>
+      <div className="flex justify-between items-center">
+        <p className="text-[20px] leading-[24px]">All Pools</p>
         <SearchBar
           placeholder="Symbol or address..."
-          className={styles.poolsSearchBar}
+          className=""
           value={searchInput}
           onChange={handleSearchChange}
         />
       </div>
 
-      {/* Pools List (Mobile and Desktop) */}
       <MobilePools poolsData={data} orderBy={orderBy} handleSort={handleSort} />
       <DesktopPools
         poolsData={data}
@@ -93,18 +77,16 @@ const Pools = () => {
         handleSort={handleSort}
       />
 
-      {/* Loading State */}
       {isLoading && (
-        <div className={styles.loadingFallback}>
+        <div className="flex flex-col items-center gap-4 py-7 px-4 lg:p-8 rounded-2xl bg-background-grey-dark">
           <LoaderV2 />
           <p>Loading pools...</p>
         </div>
       )}
 
-      {/* Pagination */}
       {data && data.length > 0 && (
-        <div className={styles.pagination}>
-          <p className={clsx("desktopOnly")}>
+        <div className="flex justify-center items-center lg:justify-between lg:items-center">
+          <p className={clsx("desktopOnly", "text-sm")}>
             Showing {data.length} out of {totalCount} pools...
           </p>
           <Pagination
@@ -116,6 +98,4 @@ const Pools = () => {
       )}
     </section>
   );
-};
-
-export default Pools;
+}

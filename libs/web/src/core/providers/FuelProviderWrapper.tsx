@@ -16,13 +16,6 @@ import {mainnet} from "@wagmi/core/chains";
 import {walletConnect} from "@wagmi/connectors";
 import {NetworkUrl} from "@/src/utils/constants";
 
-type ExternalConnectorConfig = Partial<{
-  chainId: number;
-  fuelProvider: Provider;
-}>;
-type Props = {
-  children: ReactNode;
-};
 const networks: Array<Network> = [
   {
     chainId: CHAIN_IDS.fuel.mainnet,
@@ -55,7 +48,11 @@ const FUEL_CONFIG = createFuelConfig(() => {
 
   const fuelProvider = new Provider(NetworkUrl);
 
-  const externalConnectorConfig: ExternalConnectorConfig = {
+  const externalConnectorConfig:
+    Partial<{
+  chainId: number;
+  fuelProvider: Provider;
+}> = {
     chainId: CHAIN_IDS.fuel.mainnet,
     fuelProvider,
   };
@@ -87,7 +84,9 @@ const FUEL_CONFIG = createFuelConfig(() => {
   };
 });
 
-const FuelProviderWrapper = ({children}: Props) => {
+export function FuelProviderWrapper({children}: {
+  children: ReactNode;
+}){
   return (
     <FuelProvider
       networks={networks}
@@ -99,5 +98,3 @@ const FuelProviderWrapper = ({children}: Props) => {
     </FuelProvider>
   );
 };
-
-export default FuelProviderWrapper;

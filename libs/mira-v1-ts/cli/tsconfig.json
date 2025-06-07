@@ -1,0 +1,15 @@
+{
+  "extends": "@fuels/ts-config/base.json",
+  "module": "es2022",
+  "target": "es2022",
+  "compilerOptions": {
+    "outDir": "./dist",
+    "baseUrl": ".",
+    "declaration": true,
+    "paths": {
+      "src/*": ["./src/*"]
+    },
+    "strictPropertyInitialization": false
+  },
+  "exclude": ["dist", "tests", "examples"]
+}

@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from "react";
-import ExchangeIcon from "@/src/components/icons/Exchange/ExchangeIcon";
-import styles from "./ExchangeRate.module.css";
 import {calculateFlooredRate} from "./utils";
+import {ArrowLeftRight} from "lucide-react";
+
 interface AssetMetadata {
   name?: string;
   symbol?: string;
@@ -47,18 +47,18 @@ const ExchangeRate = ({
   }
 
   return (
-    <div className={styles.reserveItems}>
-      <p>Price</p>
+    <div className="flex items-center justify-between">
+      <p className="text-[16px] font-normal leading-[19px]">Price</p>
       <div
-        className={styles.exchangeRate}
+        className="flex cursor-pointer"
         onClick={() => setIsBaseCoinA(!isBaseCoinA)}
       >
-        <p className={styles.exchangeRate}>
+        <p className="flex items-center">
           {isBaseCoinA
             ? `1 ${assetBMetadata.symbol} ≈ ${flooredRate} ${assetAMetadata.symbol}`
             : `1 ${assetAMetadata.symbol} ≈ ${flooredRate} ${assetBMetadata.symbol}`}
-          <span className={styles.exchangeIcon}>
-            <ExchangeIcon />
+          <span className="ml-[4px]">
+            <ArrowLeftRight />
           </span>
         </p>
       </div>

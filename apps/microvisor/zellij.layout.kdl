@@ -14,89 +14,23 @@ layout {
     }
     tab name="🧮 SERVERS" split_direction="vertical" {
             pane {
-                name "🍿 Admin | 8000 | admin.mira.ly"
-                command "pnpm"
-                args "nx" "dev" "admin"
+                name "❄ devenv"
+                command "process-compose"
+                args "up"
+                size "60%"
             }
-            pane {
-            split_direction "horizontal"
-                 /- pane {
-                    name "🔬 Microscope"
-                    command "pnpm"
-                    args "nx" "dev" "microscope"
-                }
-            pane {
-                name "🕹 Microgame | 4200 | microgame.mira.ly"
-                command "pnpm"
-                args "nx" "dev" "dex"
-            }
-            pane {
-                name "🦕 Web App | 3000 | mira.ly"
-                command "pnpm"
-                args "nx" "dev" "web"
-                start_suspended true
-            }
-            }
-
             pane split_direction="horizontal" {
                 pane {
-                    command "pnpm"
-                    name "🧩 Core API | 8080 | api.mira.ly"
-                    args "nx" "dev" "api"
-                    start_suspended true
-                }
-            pane split_direction="vertical" {
-                pane {
-                    command "pnpm"
-                    name "🎨 Storybook | 6006 | design.mira.ly"
-                    args "storybook"
-                    start_suspended true
-                }
-                pane {
-                    name "📚 Docs | 4000 | docs.mira.ly"
-                    command "pnpm"
-                    args "nx" "dev" "docs"
-                    start_suspended true
-                }
-              }
-
-            pane split_direction="vertical" {
-                pane {
-                    name "🗺 Project Graph - Nx | 4211 | graph.mira.ly"
-                    focus true
-                    command "pnpm"
-                    args "nx" "graph" "--view=projects" "--affected"
-                    start_suspended true
-                }
-                pane {
-                    command "pnpm"
-                    name "🏛 Architecture | 5173 | arch.mira.ly"
-                    args "nx" "dev" "arch"
-                    start_suspended true
-                }
-                }
-            pane split_direction="vertical" {
-                pane {
-                    name "📊 Drizzle Studio | local.drizzle.studio + 👀 Schema Visualizer | 5600"
-                    command "pnpm"
-                    args "nx" "view" "db"
-                    start_suspended true
-                }
-                pane {
-                    name "📦 Node Modules Inspector | 7000"
-                    command "pnpm"
-                    args "node-modules-inspector" "--depth=7" "--port=7000"
-                    start_suspended true
-                }
+                name "🐞 Process Interactive Kill - pik"
+                command "pik"
+                args "-F" ":"
+                size "30%"
             }
-            }
-
-        floating_panes {
             pane {
                 name "🩺 System Health - btop"
                 command "btop"
             }
-        }
+            }
     }
 
     tab name="🟩 STATUS" split_direction="vertical"  {
@@ -124,48 +58,16 @@ layout {
     tab name="🔍🤨 INSPECT" split_direction="vertical" {
         pane {
             name "🔌 API"
-            command "pnpm"
-            args "nx" "posting" "api"
+            command "posting"
+            args "-e" "libs/api/posting/dev.env" "--collection" "libs/api/posting"
         }
         pane {
             name "💿 DATABASE"
             command "lazysql"
             args "postgresql://postgres:postgres@127.0.0.1:54322/postgres?sslmode=disable"
             // args "./libs/db/sqlite.db"
+            start_suspended true
         }
-    }
-    tab name="🧪 TESTING" split_direction="vertical" {
-            pane split_direction="vertical" {
-              pane {
-                  name "🎭 Web | E2E(ui)"
-                  command "pnpm"
-                  args "nx" "e2e" "web-e2e" "--ui"
-                  start_suspended true
-              }
-              pane {
-                  name "🧩 Core API | Unit"
-                  command "pnpm"
-                  args "nx" "test" "api"
-                  start_suspended true
-              }
-            }
-            pane split_direction="horizontal" {
-                size "30%"
-            pane {
-                name "💊 Microdoctor"
-                command "pnpm"
-                args "nx" "check" "microdoctor"
-                start_suspended true
-            }
-            }
-    }
-    tab name="☁ DEPLOYMENTS" split_direction="vertical" {
-            pane {
-                name "🔺 Vercel"
-                command "pnpm"
-                args "nx" "dev" "platform-vercel"
-                start_suspended true
-            }
     }
     tab name="🐳 CONTAINERS" split_direction="vertical" {
             pane {

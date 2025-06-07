@@ -1,61 +1,61 @@
 import {usePoolDetails} from "../usePoolDetails";
 import CoinPair from "@/src/components/common/CoinPair/CoinPair";
-import ActionButton from "@/src/components/common/ActionButton/ActionButton";
 import Link from "next/link";
-import styles from "./DesktopPools.module.css";
 import clsx from "clsx";
 import {PoolData} from "@/src/hooks/usePoolsData";
 import AprBadge from "@/src/components/common/AprBadge/AprBadge";
 import usePoolNameAndMatch from "@/src/hooks/usePoolNameAndMatch";
+import {Button} from "@/meshwave-ui/Button";
+import {TableCell, TableRow} from "@/meshwave-ui/table";
 
-type Props = {
-  poolData: PoolData;
-};
+const cellBase =
+  "px-6 py-4 whitespace-nowrap overflow-hidden text-ellipsis text-center";
 
-const DesktopPoolRow = ({poolData}: Props) => {
+const DesktopPoolRow = ({poolData}: {poolData: PoolData}) => {
   const {poolKey, aprValue, volumeValue, tvlValue, isStablePool, poolId} =
     usePoolDetails(poolData);
 
   const tvlActual = parseInt(tvlValue?.replace(/[^0-9]+/g, ""), 10);
-
-  //Checks if the pool with rewards matches the current pool
   const {isMatching} = usePoolNameAndMatch(poolKey);
 
   return (
-    <tr key={poolKey}>
-      <td>
+    <TableRow key={poolKey}>
+      <TableCell className={clsx(cellBase, "text-left")}>
         <CoinPair
           firstCoin={poolId[0].bits}
           secondCoin={poolId[1].bits}
           isStablePool={isStablePool}
           withPoolDescription
         />
-      </td>
-      {isMatching ? (
-        <div className={styles.aprTd}>
+      </TableCell>
+
+      <TableCell
+        className={clsx(
+          cellBase,
+          "overflow-visible mt-[26px] flex justify-center items-center",
+          !isMatching && !aprValue && "text-content-dimmed-light",
+        )}
+      >
+        {isMatching ? (
           <AprBadge
             aprValue={aprValue}
             poolKey={poolKey}
             tvlValue={tvlActual}
           />
-        </div>
-      ) : (
-        <td className={clsx(!aprValue && styles.pending)}>{aprValue}</td>
-      )}
-      <td>{volumeValue}</td>
-      <td>{tvlValue}</td>
-      <td>
+        ) : (
+          aprValue
+        )}
+      </TableCell>
+
+      <TableCell className={cellBase}>{volumeValue}</TableCell>
+      <TableCell className={cellBase}>{tvlValue}</TableCell>
+
+      <TableCell className={cellBase}>
         <Link href={`/liquidity/add?pool=${poolKey}`}>
-          <ActionButton
-            className={styles.addButton}
-            variant="secondary"
-            fullWidth
-          >
-            Add Liquidity
-          </ActionButton>
+          <Button variant="secondary">Add Liquidity</Button>
         </Link>
-      </td>
-    </tr>
+      </TableCell>
+    </TableRow>
   );
 };
 

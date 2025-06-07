@@ -1,12 +1,13 @@
-import AddLiquidityPageLayout from "@/src/components/pages/add-liquidity-page/AddLiquidityPageLayout";
 import {Suspense} from "react";
+import AddLiquidityPage from "./add-liquidity-page";
+import {Loader} from "@/src/components/common";
 
-const AddLiquidityPage = () => {
+const Page = () => {
   return (
-    <Suspense>
-      <AddLiquidityPageLayout />
+    <Suspense fallback={<Loader color="gray" />}>
+      <AddLiquidityPage />
     </Suspense>
   );
 };
 
-export default AddLiquidityPage;
+export default Page;

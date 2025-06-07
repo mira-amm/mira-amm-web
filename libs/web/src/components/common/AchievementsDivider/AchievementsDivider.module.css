@@ -1,9 +1,0 @@
-.divider {
-  padding: 0;
-}
-
-@media (max-width: 1024px) {
-  .divider {
-    padding: 20px 16px;
-  }
-}

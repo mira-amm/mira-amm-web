@@ -1,37 +1,35 @@
-import styles from "@/src/components/pages/add-liquidity-page/components/AddLiquidity/AddLiquidity.module.css";
 import CoinPair from "@/src/components/common/CoinPair/CoinPair";
 import CoinInput from "@/src/components/pages/add-liquidity-page/components/CoinInput/CoinInput";
 import {clsx} from "clsx";
-import ActionButton from "@/src/components/common/ActionButton/ActionButton";
-import useBalances from "@/src/hooks/useBalances/useBalances";
+import {useBalances} from "@/src/hooks";
 import useAssetBalance from "@/src/hooks/useAssetBalance";
 import {useConnectUI, useIsConnected} from "@fuels/react";
 import {Dispatch, SetStateAction, useCallback, useRef, useState} from "react";
 import {useDebounceCallback} from "usehooks-ts";
-import useCheckEthBalance from "@/src/hooks/useCheckEthBalance/useCheckEthBalance";
+import {useCheckEthBalance} from "@/src/hooks";
 import useFaucetLink from "@/src/hooks/useFaucetLink";
 import {createPoolKey, openNewTab} from "@/src/utils/common";
 import useCheckActiveNetwork from "@/src/hooks/useCheckActiveNetwork";
-import Info from "@/src/components/common/Info/Info";
+import {Info} from "@/src/components/common";
 import {CreatePoolPreviewData} from "./PreviewCreatePoolDialog";
 import {buildPoolId} from "mira-dex-ts";
 import {StablePoolTooltip, VolatilePoolTooltip} from "./CreatePoolTooltips";
 import usePoolsMetadata from "@/src/hooks/usePoolsMetadata";
-import useModal from "@/src/hooks/useModal/useModal";
-import CoinsListModal from "@/src/components/common/Swap/components/CoinsListModal/CoinsListModal";
-import {B256Address, BN, bn, formatUnits} from "fuels";
-import useAssetMetadata from "@/src/hooks/useAssetMetadata";
+import {useModal} from "@/src/hooks";
+import {CoinsListModal} from "@/src/components/common";
+import {B256Address, bn} from "fuels";
+import {useAssetMetadata} from "@/src/hooks";
 import {useAssetPrice} from "@/src/hooks/useAssetPrice";
-import SparkleIcon from "@/src/components/icons/Sparkle/SparkleIcon";
 import Link from "next/link";
 import useExchangeRateV2 from "@/src/hooks/useExchangeRate/useExchangeRateV2";
-import ExchangeIcon from "@/src/components/icons/Exchange/ExchangeIcon";
+import {Button} from "@/meshwave-ui/Button";
+import {ArrowLeftRight, Sparkle} from "lucide-react";
 
-type Props = {
+export default function CreatePoolDialog({
+  setPreviewData,
+}: {
   setPreviewData: Dispatch<SetStateAction<CreatePoolPreviewData | null>>;
-};
-
-const CreatePoolDialog = ({setPreviewData}: Props) => {
+}) {
   const [AssetsListModal, openAssetsListModal, closeAssetsListModal] =
     useModal();
 
@@ -230,10 +228,10 @@ const CreatePoolDialog = ({setPreviewData}: Props) => {
 
   return (
     <>
-      <div className={styles.section}>
-        <p>Selected pair</p>
-        <div className={styles.sectionContent}>
-          <div className={styles.coinPair}>
+      <div className="flex flex-col gap-4">
+        <p className="text-base text-content-primary">Selected pair</p>
+        <div className="flex flex-col gap-3">
+          <div className="flex justify-between">
             {!oneOfAssetsIsNotSelected && (
               <CoinPair
                 firstCoin={firstAssetId}
@@ -242,17 +240,18 @@ const CreatePoolDialog = ({setPreviewData}: Props) => {
               />
             )}
           </div>
-          <div className={styles.poolStability}>
+          <div className="flex w-full gap-2">
             <div
               className={clsx(
-                styles.poolStabilityButton,
-                !isStablePool && styles.poolStabilityButtonActive,
+                "flex flex-col items-start w-full rounded-md px-3 py-3 gap-2 bg-background-secondary text-content-dimmed-light cursor-pointer",
+                !isStablePool &&
+                  "text-content-primary border-accent-primary border",
               )}
               onClick={() => handleStabilityChange(false)}
               role="button"
             >
-              <div className={styles.poolStabilityButtonTitle}>
-                <p>Volatile pool</p>
+              <div className="flex w-full">
+                <p className="flex-1 text-left">Volatile pool</p>
                 <Info
                   tooltipText={VolatilePoolTooltip}
                   tooltipKey="volatilePool"
@@ -260,16 +259,18 @@ const CreatePoolDialog = ({setPreviewData}: Props) => {
               </div>
               <p>0.30% fee tier</p>
             </div>
+
             <button
               className={clsx(
-                styles.poolStabilityButton,
-                isStablePool && styles.poolStabilityButtonActive,
+                "flex flex-col items-start w-full rounded-md px-3 py-3 gap-2 bg-background-secondary text-content-dimmed-light cursor-pointer",
+                isStablePool &&
+                  "text-content-primary border-accent-primary border",
               )}
               onClick={() => handleStabilityChange(true)}
               role="button"
             >
-              <div className={styles.poolStabilityButtonTitle}>
-                <p>Stable pool</p>
+              <div className="flex w-full">
+                <p className="flex-1 text-left">Stable pool</p>
                 <Info tooltipText={StablePoolTooltip} tooltipKey="stablePool" />
               </div>
               <p>0.05% fee tier</p>
@@ -277,9 +278,9 @@ const CreatePoolDialog = ({setPreviewData}: Props) => {
           </div>
         </div>
       </div>
-      <div className={styles.section}>
-        <p>Deposit amount</p>
-        <div className={styles.sectionContent}>
+      <div className="flex flex-col gap-4">
+        <p className="text-base text-content-primary">Deposit amount</p>
+        <div className="flex flex-col gap-3">
           <CoinInput
             assetId={firstAssetId}
             value={firstAmountInput}
@@ -300,51 +301,49 @@ const CreatePoolDialog = ({setPreviewData}: Props) => {
           />
         </div>
       </div>
+
       {poolExists && (
-        <div className={styles.existingPoolBlock}>
-          <div className={styles.sparkleIcon}>
-            <SparkleIcon />
+        <div className="flex items-center gap-2 p-3 rounded-[10px] bg-gradient-to-r from-[#5872fc] via-[#6142ba] to-[#c41cff]">
+          <div className="w-5 h-5 flex items-center justify-center rounded-full bg-[var(--content-dimmed-dark)]">
+            <Sparkle className="size-3" />
           </div>
-          <p className={styles.existingPoolText}>This pool already exists</p>
+          <p className="flex-1 text-sm text-white">This pool already exists</p>
           <Link
             href={`/liquidity/add/?pool=${existingPoolKey}`}
-            className={styles.addLiquidityLink}
+            className="underline hover:text-content-secondary"
           >
             Add liquidity →
           </Link>
         </div>
       )}
       {!poolExists && !oneOfAssetsIsNotSelected && !oneOfAmountsIsEmpty && (
-        <div className={styles.section}>
-          <p>Starting price</p>
-          <div className={styles.priceBlock} onClick={handleExchangeRateSwap}>
-            <p>{exchangeRate}</p>
-            <ExchangeIcon />
+        <div className="flex flex-col gap-4">
+          <p className="text-base text-content-primary">Starting price</p>
+          <div
+            className="flex justify-between items-center px-4 py-3 rounded-md bg-[var(--background-grey-darker)] cursor-pointer"
+            onClick={handleExchangeRateSwap}
+          >
+            <p className="text-sm font-medium">{exchangeRate}</p>
+            <ArrowLeftRight className="w-4 h-4" />
           </div>
-          <p className={styles.priceWarning}>
+          <p className="text-sm text-[#ffb800] leading-[17px]">
             This is the price of the pool on inception. Always double check
             before deploying a pool.
           </p>
         </div>
       )}
       {!isConnected ? (
-        <ActionButton
-          variant="secondary"
-          onClick={connect}
-          loading={isConnecting}
-        >
+        <Button variant="secondary" onClick={connect} loading={isConnecting}>
           Connect Wallet
-        </ActionButton>
+        </Button>
       ) : (
-        <ActionButton disabled={buttonDisabled} onClick={handleButtonClick}>
+        <Button disabled={buttonDisabled} onClick={handleButtonClick}>
           {buttonTitle}
-        </ActionButton>
+        </Button>
       )}
       <AssetsListModal title="Choose token">
         <CoinsListModal selectCoin={handleAssetSelection} balances={balances} />
       </AssetsListModal>
     </>
   );
-};
-
-export default CreatePoolDialog;
+}

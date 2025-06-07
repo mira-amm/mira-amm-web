@@ -1,8 +1,7 @@
 "use client";
 
-import BackLink from "@/src/components/common/BackLink/BackLink";
-import styles from "./PositionView.module.css";
-import useModal from "@/src/hooks/useModal/useModal";
+import {TransactionFailureModal} from "@/src/components/common";
+import {useModal} from "@/src/hooks";
 import RemoveLiquidityModalContent from "@/src/components/pages/view-position-page/components/RemoveLiquidityModalContent/RemoveLiquidityModalContent";
 import usePositionData from "@/src/hooks/usePositionData";
 import {createPoolKey, floorToTwoSignificantDigits} from "@/src/utils/common";
@@ -14,21 +13,18 @@ import {getLPAssetId, PoolId} from "mira-dex-ts";
 
 import useCheckActiveNetwork from "@/src/hooks/useCheckActiveNetwork";
 import usePoolAPR from "@/src/hooks/usePoolAPR";
-import TransactionFailureModal from "@/src/components/common/TransactionFailureModal/TransactionFailureModal";
 
 import {bn, formatUnits} from "fuels";
-import useAssetMetadata from "@/src/hooks/useAssetMetadata";
+import {useAssetMetadata} from "@/src/hooks";
 
 import DesktopPositionView from "./DesktopPositionView/DesktopPositionView";
 import MobilePositionView from "./MobilePositionView/MobilePositionView";
 import {DEFAULT_AMM_CONTRACT_ID, DefaultLocale} from "@/src/utils/constants";
-import useFormattedAddress from "@/src/hooks/useFormattedAddress/useFormattedAddress";
+import {useFormattedAddress} from "@/src/hooks";
+import {ChevronLeft} from "lucide-react";
+import Link from "next/link";
 
-type Props = {
-  pool: PoolId;
-};
-
-const PositionView = ({pool}: Props) => {
+const PositionView = ({pool}: {pool: PoolId}) => {
   const [
     RemoveLiquidityModal,
     openRemoveLiquidityModal,
@@ -144,7 +140,13 @@ const PositionView = ({pool}: Props) => {
 
   return (
     <>
-      <BackLink showOnDesktop href="/liquidity" chevron />
+      <Link
+        href="/liquidity"
+        className="flex items-center text-base leading-5 text-content-grey hover:text-content-primary cursor-pointer"
+      >
+        <ChevronLeft className="size-5" />
+        Back
+      </Link>
       <MobilePositionView
         pool={pool}
         isStablePool={isStablePool}
@@ -182,7 +184,7 @@ const PositionView = ({pool}: Props) => {
 
       <RemoveLiquidityModal
         title="Remove Liquidity"
-        titleClassName={styles.withdrawLiquidityTitle}
+        titleClassName="text-center"
       >
         <RemoveLiquidityModalContent
           coinA={pool[0].bits}

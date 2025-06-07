@@ -1,13 +1,12 @@
 import React, {useCallback} from "react";
-import IconButton from "@/src/components/common/IconButton/IconButton";
-import LogoIcon from "@/src/components/icons/Logo/LogoIcon";
-import styles from "./MiraBlock.module.css";
-import {CopyIcon} from "@/src/components/icons/Copy/CopyIcon";
+import {IconButton} from "@/src/components/common";
+import {LogoIcon} from "@/meshwave-ui/icons";
 import {PoolId, getLPAssetId} from "mira-dex-ts";
 import usePositionData from "@/src/hooks/usePositionData";
 import {formatUnits} from "fuels";
 import {DEFAULT_AMM_CONTRACT_ID} from "@/src/utils/constants";
-import useFormattedAddress from "@/src/hooks/useFormattedAddress/useFormattedAddress";
+import {useFormattedAddress} from "@/src/hooks";
+import {Copy} from "lucide-react";
 
 interface MiraBlockProps {
   pool: PoolId;
@@ -24,17 +23,15 @@ const MiraBlock = ({pool}: MiraBlockProps) => {
   }, [lpTokenAssetId.bits]);
 
   return (
-    <div className={styles.miraBlock}>
-      <div className={styles.miraLogo}>
+    <div className="flex flex-1 flex-col justify-end rounded-2xl bg-gradient-to-r from-[#5872fc] via-[#6142ba] to-[#c41cff] p-4">
+      <div className="mb-3 h-8 w-16">
         <LogoIcon />
       </div>
-      <p className={styles.tokenDisplayValue}>
-        {lpTokenDisplayValue} LP tokens
-      </p>
-      <p className={styles.numberAndCopy}>
+      <p className="text-base">{lpTokenDisplayValue} LP tokens</p>
+      <p className="text-base flex justify-between items-center">
         Asset ID: {formattedLpTokenAssetId}
         <IconButton onClick={handleCopy}>
-          <CopyIcon />
+          <Copy className="w-4 h-4" />
         </IconButton>
       </p>
     </div>

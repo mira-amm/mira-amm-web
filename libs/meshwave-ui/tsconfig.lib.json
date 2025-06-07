@@ -3,12 +3,14 @@
   "compilerOptions": {
     "types": [
       "node",
-      "@nx/react/typings/cssmodule.d.ts",
       "@nx/react/typings/image.d.ts"
     ],
     "outDir": "../../../dist/out-tsc"
   },
-  "include": ["**/*.js", "**/*.jsx", "**/*.ts", "**/*.tsx"],
+  "include": [
+    "**/*.ts",
+    "**/*.tsx"
+  ],
   "exclude": [
     "jest.config.ts",
     "src/**/*.spec.ts",

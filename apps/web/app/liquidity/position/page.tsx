@@ -1,12 +1,13 @@
-import ViewPositionPageLayout from "@/web/src/components/pages/view-position-page/ViewPositionPageLayout";
-import {Suspense} from "react";
+"use client";
 
-const ViewPositionPage = () => {
+import {Suspense} from "react";
+import PositionPage from "./position-page";
+import {Loader} from "@/src/components/common";
+
+export default function Page() {
   return (
-    <Suspense>
-      <ViewPositionPageLayout />
+    <Suspense fallback={<Loader color="gray" />}>
+      <PositionPage />
     </Suspense>
   );
-};
-
-export default ViewPositionPage;
+}

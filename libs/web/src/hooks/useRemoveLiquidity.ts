@@ -1,4 +1,4 @@
-import useMiraDex from "@/src/hooks/useMiraDex/useMiraDex";
+import { useMiraDex } from "@/src/hooks";
 import {useMutation} from "@tanstack/react-query";
 import {useCallback} from "react";
 import {PoolId} from "mira-dex-ts";

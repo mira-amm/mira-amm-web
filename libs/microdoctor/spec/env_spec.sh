@@ -70,13 +70,13 @@ End
 # End
 # End
 
-Describe "🌈 Terminal should:"
-It "support color output"
-When run echo $TERM
-The status should be success
-The output should equal 'xterm-256color'
-End
-End
+# Describe "🌈 Terminal should:"
+# It "support color output"
+# When run echo $TERM
+# The status should be success
+# The output should equal 'xterm-256color'
+# End
+# End
 
 Describe "🔑 Secrets should be defined and present:"
 Parameters

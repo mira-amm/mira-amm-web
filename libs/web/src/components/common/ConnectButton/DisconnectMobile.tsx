@@ -1,29 +1,25 @@
-import {useAccount, useDisconnect, useIsConnected} from "@fuels/react";
-import useFormattedAddress from "@/src/hooks/useFormattedAddress/useFormattedAddress";
-import ActionButton from "@/src/components/common/ActionButton/ActionButton";
-import {clsx} from "clsx";
-import styles from "./ConnectButton.module.css";
-import {useCallback, useState, useEffect, useMemo, useRef} from "react";
-import DropDownMenu from "../DropDownMenu/DropDownMenu";
-import {DropDownButtons} from "@/src/utils/DropDownButtons";
-import {TouchCloseIcon} from "../../icons/DropDownClose/TouchCloseIcon";
-import {CloseIcon} from "../../icons/DropDownClose/CloseIcon";
-import {CopyNotification} from "../../common/CopyNotification/CopyNotification";
-import {openNewTab} from "@/src/utils/common";
+import { useAccount, useDisconnect, useIsConnected } from "@fuels/react";
+import { useFormattedAddress } from "@/src/hooks";
+import {CopyNotification, DropDownMenu} from "@/src/components/common";
+import { clsx } from "clsx";
+import { useCallback, useState, useEffect, useMemo, useRef } from "react";
+import { DropDownButtons } from "@/src/utils/DropDownButtons";
+import { TouchCloseIcon } from "@/meshwave-ui/icons";
+import { openNewTab } from "@/src/utils/common";
 import TransactionsHistory from "@/src/components/common/TransactionsHistory/TransactionsHistory";
-import {FuelAppUrl} from "@/src/utils/constants";
-import {useScrollLock} from "usehooks-ts";
+import { FuelAppUrl } from "@/src/utils/constants";
+import { useScrollLock } from "usehooks-ts";
+import {Button} from "@/meshwave-ui/Button";
+import { X } from "lucide-react";
 
-type Props = {
+export default function DisconnectMobile({ className }: {
   className?: string;
-};
+}){
+  const { isConnected } = useIsConnected();
+  const { account } = useAccount();
+  const { disconnect } = useDisconnect();
 
-const DisconnectMobile = ({className}: Props) => {
-  const {isConnected} = useIsConnected();
-  const {account} = useAccount();
-  const {disconnect} = useDisconnect();
-
-  const {lock, unlock} = useScrollLock({autoLock: false});
+  const { lock, unlock } = useScrollLock({ autoLock: false });
 
   const [isMenuOpened, setMenuOpened] = useState(false);
   const [isHistoryOpened, setHistoryOpened] = useState(false);
@@ -119,34 +115,41 @@ const DisconnectMobile = ({className}: Props) => {
 
   return (
     <>
-      <ActionButton
-        className={clsx(className, styles.connected)}
+      <Button
+        className={clsx(
+          className,
+          "flex items-center gap-2 px-3 py-2 text-content-primary border border-accent-primary bg-transparent shadow-none hover:shadow-none hover:bg-transaparent"
+        )}
         onClick={handleClick}
       >
-        {isConnected && <img src="/images/avatar.png" width="16" height="16" />}
+        <img src="/images/avatar.png" width="16" height="16" />
         {formattedAddress}
-      </ActionButton>
+      </Button>
+
       {isMenuOpened && (
-        <div className={styles.dropDownOverlay}>
+        <div className="absolute top-0 left-0 z-[100] w-full h-screen bg-black/35 backdrop-blur-sm">
           <DropDownMenu buttons={menuButtons} ref={menuRef}>
-            <button className={styles.dropDownTouchClose}>
+            <button className="absolute top-2 left-1/2 transform -translate-x-1/2 bg-transparent border-none p-0">
               <TouchCloseIcon />
             </button>
-            <button className={styles.dropDownClose} onClick={handleCloseMenu}>
-              <CloseIcon />
+            <button
+              className="absolute top-4 right-4 bg-transparent border-none p-0"
+              onClick={handleCloseMenu}
+            >
+              <X />
             </button>
           </DropDownMenu>
         </div>
       )}
+
       <TransactionsHistory
         onClose={handleHistoryClose}
         isOpened={isHistoryOpened}
       />
+
       {isAddressCopied && (
         <CopyNotification onClose={() => setAddressCopied(false)} />
       )}
     </>
   );
 };
-
-export default DisconnectMobile;

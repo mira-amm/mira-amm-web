@@ -1,5 +1,5 @@
 import {useQuery} from "@tanstack/react-query";
-import useReadonlyMira from "@/src/hooks/useReadonlyMira";
+import { useReadonlyMira } from "@/src/hooks";
 import {buildPoolId} from "mira-dex-ts";
 import {BN} from "fuels";
 

@@ -1,28 +1,28 @@
+"use client"
+
 import {useMutation} from "@tanstack/react-query";
-import useMiraDex from "@/src/hooks/useMiraDex/useMiraDex";
+import { useMiraDex } from "@/src/hooks";
 import {useCallback} from "react";
 import {useWallet} from "@fuels/react";
 import {DefaultTxParams, MaxDeadline} from "@/src/utils/constants";
 import {bn, BN} from "fuels";
 import {buildPoolId} from "mira-dex-ts";
 
-type Props = {
-  firstAsset: string;
-  firstAssetAmount: BN;
-  secondAsset: string;
-  secondAssetAmount: BN;
-  isPoolStable: boolean;
-  slippage: number;
-};
-
-const useAddLiquidity = ({
+export function useAddLiquidity({
   firstAsset,
   firstAssetAmount,
   secondAsset,
   secondAssetAmount,
   isPoolStable,
   slippage,
-}: Props) => {
+}: {
+  firstAsset: string;
+  firstAssetAmount: BN;
+  secondAsset: string;
+  secondAssetAmount: BN;
+  isPoolStable: boolean;
+  slippage: number;
+}){
   const mira = useMiraDex();
   const {wallet} = useWallet();
 
@@ -88,5 +88,3 @@ const useAddLiquidity = ({
 
   return {data, mutateAsync, isPending, error};
 };
-
-export default useAddLiquidity;
