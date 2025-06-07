@@ -7,15 +7,12 @@
     "tools"
   ],
   "targets": {
-    "check": {
+    "shell": {
       "command": "shellspec --format documentation",
       "options": {
         "cwd": "libs/microdoctor"
       },
       "description": "System environment health check.",
-    },
-    "shell": {
-      "command": "nix-shell --argstr arg 'doctor'",
     },
   }
 }

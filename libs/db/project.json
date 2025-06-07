@@ -14,13 +14,13 @@
   ],
   "targets": {
     "start": {
-      "command": "if [ ${SUPABASE:-false} = true ]; then supabase start; elif [ ! -d data ]; then pg_ctl init -o '--username=postgres'; pg_ctl start -o '-c config_file=postgresql.conf -c unix_socket_directories=$PGDATA'; else pg_ctl start -o '-c config_file=postgresql.conf -c unix_socket_directories=$PGDATA'; fi",
+      "command": "if [ ${SUPABASE:-false} = true ]; then supabase start; fi",
       "options": {
         "cwd": "libs/db"
       }
     },
     "stop": {
-      "command": "if [ ${SUPABASE:-false} = true ]; then supabase stop; else pg_ctl stop; fi",
+      "command": "if [ ${SUPABASE:-false} = true ]; then supabase stop; fi",
       "options": {
         "cwd": "libs/db"
       }

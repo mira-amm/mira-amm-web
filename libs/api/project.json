@@ -15,12 +15,6 @@
   ],
   "// targets": "to see all targets run: nx show project api --web",
   "targets": {
-    "posting": {
-      "command": "posting -e ./dev.env --collection ./",
-      "options": {
-        "cwd": "libs/api/posting"
-      },
-    },
     "dev": {
       "dependsOn": [
         "compodoc"

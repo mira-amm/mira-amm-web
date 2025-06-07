@@ -20,7 +20,7 @@
           "target": "start"
         },
       ],
-      "command": "ascii-image-converter ../../libs/shared/assets/charthouse-labs-symbol.png --color --complex; next dev -p $ADMIN_DEV_SERVER_PORT",
+      "command": "chafa ../../libs/shared/assets/charthouse-labs-symbol.png; next dev -p $ADMIN_DEV_SERVER_PORT",
       "options": {
         "cwd": "apps/admin",
         "env": {
