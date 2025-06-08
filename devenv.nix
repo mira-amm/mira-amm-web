@@ -58,6 +58,7 @@
 
         # ============= 🧑‍💻🐞‍ ================
         git
+        gh
         btop
         ncdu
         lazygit
@@ -198,13 +199,6 @@
               description = "🦕 Web App | 3000 | mira.ly";
               is_tty = true;
               ready_log_line = "Ready in";
-              # readiness_probe = {
-              #   http_get = {
-              #     port = "3000";
-              #     host = "localhost";
-              #     scheme = "http";
-              #   };
-              # };
               namespace = "🧮 SERVERS";
             };
             api = {
@@ -237,15 +231,9 @@
             };
             docs = {
               command = "pnpm nx dev docs";
-              is_tty = true;
-              readiness_probe = {
-                http_get = {
-                  port = "4000";
-                  host = "localhost";
-                  scheme = "http";
-                };
-              };
               description = "📚 Docs | 4000 | docs.mira.ly";
+              is_tty = true;
+              ready_log_line = "Ready in";
               namespace = "🧮 SERVERS";
               disabled = true;
             };
