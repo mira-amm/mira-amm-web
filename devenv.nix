@@ -176,13 +176,6 @@
               namespace = "🧮 SERVERS";
               disabled = true;
             };
-            microscope = {
-              command = "pnpm nx dev microscope";
-              description = "🔬 Microscope";
-              is_tty = true;
-              namespace = "🧮 SERVERS";
-              disabled = true;
-            };
             microgame = {
               command = "pnpm nx dev microgame";
               is_tty = true;

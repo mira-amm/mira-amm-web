@@ -770,10 +770,6 @@ importers:
 
   apps/microgame: {}
 
-  apps/microscope: {}
-
-  apps/microvisor: {}
-
   apps/web: {}
 
   libs/api: {}
