@@ -1,4 +1,4 @@
-console.log("Microscope extension background script loaded");
+console.log("Microvisor extension background script loaded");
 console.log(browser.runtime.id)
 
 // github.com/wxt-dev/wxt/blob/main/packages/browser/src/gen/index.d.ts
@@ -13,39 +13,27 @@ export default defineBackground(() => {
     });
 
     await browser.tabs.create({
-      url: "http://localhost:8000",
+      url: "http://localhost:3000",
       active: false,
       index: 1,
     });
 
     await browser.tabs.create({
-      url: "http://localhost:8000/admin",
+      url: "http://localhost:8000",
       active: false,
       index: 2,
     });
 
     await browser.tabs.create({
-      url: "http://localhost:3000",
+      url: "http://localhost:8080",
       active: false,
       index: 3,
     });
 
     await browser.tabs.create({
-      url: "http://localhost:8000/api/docs/swagger",
+      url: "http://localhost:4000",
       active: false,
       index: 4,
-    });
-
-    await browser.tabs.create({
-      url: "http://localhost:8000/api/docs/redoc",
-      active: false,
-      index: 5,
-    });
-
-    await browser.tabs.create({
-      url: "http://localhost:8000/api/docs/rapidoc",
-      active: false,
-      index: 6,
     });
 
     const tabs = await browser.tabs.query({currentWindow: true})
@@ -58,8 +46,6 @@ export default defineBackground(() => {
       title: '🦕 APPS',
       color: 'green',
     });
-
-
 
     await browser.fontSettings.setFont({
       genericFamily: 'sansserif',
@@ -83,7 +69,7 @@ export default defineBackground(() => {
       pixelSize: 18,
     });
 
-    // TODO: feat(microscope): create get started page
+    // TODO: feat(microvisor): create get started page
     // await browser.tabs.create({
       // url: browser.runtime.getURL("/get-started.html"),
     // });

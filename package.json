@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "nx dev:tui microvisor; process-compose down; zellij ka -y; zellij da -y;",
-    "start": "nx dev microscope --outputStyle=tui; process-compose down; zellij ka -y; zellij da -y;",
+    "start": "nx dev microvisor --outputStyle=tui; process-compose down; zellij ka -y; zellij da -y;",
     "clean": "nx destroy db; git clean -fdX -e '!**/.env*'; # 🧽 Remove any and all files listed in .gitignore except .env",
     "nuke": "nx destroy db; sudo git clean -fdX; # 🚨 WARNING: REMOVE ANY AND ALL FILES LISTED IN .gitignore INCLUDING .env",
     "ri": "pnpm clean; pnpm i; pnpm d; # 🧹 Perform a clean install",
@@ -13,7 +13,7 @@
     "storybook": "nx storybook design -p $STORYBOOK_DEV_SERVER_PORT # 🎨 Design System - Storybook",
     "fix:formatting": "pnpx prettier --write apps/web",
     "commit": "cz #🟢 Commitizen CLI",
-    "postinstall": "nx postinstall microscope"
+    "postinstall": "nx postinstall microvisor"
   },
   "dependencies": {
     "@apollo/server": "^4.12.2",

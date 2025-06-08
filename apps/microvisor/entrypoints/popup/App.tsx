@@ -14,7 +14,7 @@ function App() {
 
       <div className="space-y-2">
       <h1 className="text-2xl font-bold text-white font-sora">
-        Microscope
+        Microvisor
       </h1>
       <p className="text-black text-sm">
         Dissecting Fuel’s liquidity, one molecule at a time.

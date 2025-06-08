@@ -11,10 +11,10 @@ export default defineConfig({
     grayscaleOnDevelopment: false,
   },
   manifest: {
-    name: 'Microscope',
+    name: 'Microvisor',
     description: 'Microchain Browser Extension',
     action: {
-      default_title: 'Microscope',
+      default_title: 'Microvisor',
     },
     version: '0.0.0',
     permissions: [
@@ -46,7 +46,7 @@ export default defineConfig({
     startUrls: [
       process.env.SUPABASE
         ? process.env.SUPABASE_STUDIO_URL
-        : 'https://chromewebstore.google.com/detail/dldjpboieedgcmpkchcjcbijingjcgok?utm_source=item-share-cb',
+        : 'https://github.com/mira-amm/mira-amm-web/pulls',
     ],
     // chromiumArgs: ['--user-data-dir=./.wxt/chrome-data'],
   },
