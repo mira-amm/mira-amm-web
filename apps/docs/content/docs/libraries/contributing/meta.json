@@ -1,5 +1,5 @@
 {
-  "title": "Contribution Guidelines",
+  "title": "Contributing",
   "icon": "Code",
   "root": true,
   "pages": ["installation", "packages", "concepts"]
