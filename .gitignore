@@ -82,3 +82,13 @@ vitest.config.*.timestamp*
 
 # Sentry Config File
 .env.sentry-build-plugin
+
+# Devenv
+.devenv*
+devenv.local.nix
+
+# direnv
+.direnv
+
+# pre-commit
+.pre-commit-config.yaml
