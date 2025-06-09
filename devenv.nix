@@ -6,21 +6,10 @@
   ...
 }:
 
-let
-  rosettaPkgs = pkgs.pkgsx86_64Darwin;
-in
   {
     name = "microchain-dev-env";
 
     languages = {
-      shell.enable = true;
-      nix.enable = true;
-      rust = {
-        enable = true;
-        channel = "stable";
-        targets = [ "wasm32-unknown-unknown" ];
-        components = [ "rustc" "cargo" "clippy" "rustfmt" "rust-analyzer" ];
-      };
       javascript = {
         enable = true;
         # bun = {
@@ -37,70 +26,11 @@ in
         enable = true;
         uv.enable = true;
       };
-      ruby = { # needed for lolcat
-        enable = true;
-        bundler.enable = true;
-      };
     };
 
-    starship.enable = true;
-    starship.config = {
-      enable = true;
-      path = "${config.env.DEVENV_ROOT}/libs/meshwave-ui/starship.toml";
-    };
-
-    packages = with pkgs; lib.concatLists [
+    packages = [
       # ============= 🧑‍💻🐞‍ ================
-      [
-        vim
-        neovim
-        zellij
-        nerd-fonts.jetbrains-mono
-        git
-        gh
-        btop
-        lazygit
-        lazysql
-        yazi
-        tgpt
-        shellspec
-        docker
-        lazydocker
-        supabase-cli
-        ttyd
-        pik
-      ]
-
-      # ============== 🤪 =================
-      [
-        bat
-        eza
-        chafa
-        ansi
-        glibcLocales
-        ncurses
-        figlet
-        lolcat
-        fastfetch
-      ]
-
-      (lib.optionals stdenv.isLinux [
-        ncdu
-        termshark
-        inotify-tools
-        kmon
-        lazyjournal
-        netscanner
-        systemctl-tui
-      ])
-
-      (lib.optionals stdenv.isDarwin [
-        libiconv
-      ])
-
-      (lib.optionals (stdenv.isDarwin && stdenv.isAarch64) [
-        rosettaPkgs.dmd
-      ])
+      pkgs.git
     ];
 
 
@@ -131,7 +61,6 @@ in
 
           scripts.hello.exec = ''
             # figlet  Hello from $GREET | lolcat
-            chafa ${config.env.DEVENV_ROOT}/libs/shared/assets/devenv-symbol-dark-bg.png
             echo 👋🧩
           '';
 
@@ -152,9 +81,6 @@ in
             echo "Running tests"
 
             git --version | grep --color=auto "${pkgs.git.version}"
-
-            cargo --version
-            rustc --version
 
             process-compose down
 
@@ -323,23 +249,6 @@ in
                 max_restarts = 5;
               };
             };
-          };
-
-          # difftastic.enable = true;
-          delta.enable = true;
-          git-hooks.hooks = {
-            # shellcheck.enable = true;
-            # eslint.enable = true;
-            # cargo-check.enable = true;
-            # check-json.enable = true;
-            # check-toml.enable = true;
-            # check-yaml.enable = true;
-            commitizen.enable = true;
-            # eclint.enable = true;
-            # html-tidy.enable = true;
-            # rustfmt.enable = true;
-            # clippy.enable = true;
-            # actionlint.enable = true;
           };
 
           # devcontainer.enable = true;
