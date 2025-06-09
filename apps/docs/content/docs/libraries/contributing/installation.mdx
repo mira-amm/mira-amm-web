@@ -44,11 +44,15 @@ allowFullScreen>
 
 <Tabs groupId="nix-installation-commands" items={['macOS', 'Linux']} persist>
   <Tab value="macOS">
-    You may have to [uninstall your existing Nix installation](https://nix.dev/manual/nix/2.21/installation/uninstall).
+
+   ```sh title="Shell"
+   sudo chmod -R 664 /etc/nix/nix.conf /var/root/.nix-channels
+   ```
 
    ```sh title="Shell"
     curl -L https://github.com/NixOS/experimental-nix-installer/releases/download/0.27.0/nix-installer.sh | sh -s -- install
    ```
+
    Upgrade bash.
    ```sh title="Shell"
     nix-env --install --attr bashInteractive -f https://github.com/NixOS/nixpkgs/tarball/nixpkgs-unstable
