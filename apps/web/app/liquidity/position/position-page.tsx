@@ -16,7 +16,7 @@ const PositionPage = () => {
   }
 
   return (
-    <main className="flex flex-col p-4 gap-4 lg:max-w-[716px] lg:mx-auto lg:px-4 lg:py-8">
+    <main className="flex flex-col gap-4 mx-auto lg:w-[716px] w-full lg:px-4 lg:py-8">
       <PositionView pool={poolId} />
     </main>
   );

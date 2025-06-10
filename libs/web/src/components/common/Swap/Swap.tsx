@@ -12,7 +12,6 @@ import {
 } from "@/src/components/common";
 import {useCallback, useEffect, useMemo, useRef, useState, memo} from "react";
 import CurrencyBox from "@/src/components/common/Swap/components/CurrencyBox/CurrencyBox";
-import {ConvertIcon} from "@/meshwave-ui/icons";
 import ExchangeRate from "@/src/components/common/Swap/components/ExchangeRate/ExchangeRate";
 import useExchangeRate from "@/src/hooks/useExchangeRate/useExchangeRate";
 import {createPoolKey, openNewTab} from "@/src/utils/common";
@@ -27,7 +26,6 @@ import SwapFailureModal from "@/src/components/common/Swap/components/SwapFailur
 import {
   B256Address,
   bn,
-  BN,
   ScriptTransactionRequest,
   TransactionCost,
 } from "fuels";
@@ -47,7 +45,7 @@ import {useAnimationStore} from "@/src/stores/useGlitchScavengerHunt";
 import {triggerClassAnimation} from "../GlitchEffects/ClassAnimationTrigger";
 import {ConnectWallet} from "../connect-wallet";
 import {Button} from "@/meshwave-ui/Button";
-import {cn} from "@/src/utils/cn";
+import {ArrowUpDown, LoaderCircle} from "lucide-react";
 
 export type CurrencyBoxMode = "buy" | "sell";
 export type CurrencyBoxState = {assetId: string | null; amount: string};
@@ -58,9 +56,9 @@ export type SlippageMode = "auto" | "custom";
 export const DefaultSlippageValue = 100;
 const initialInputsState: InputsState = {sell: {amount: ""}, buy: {amount: ""}};
 
-const swapAndRateClasses = "flex flex-col gap-3 lg:gap-4 min-w-md";
+const swapAndRateClasses = "flex flex-col gap-3 lg:gap-4";
 const swapContainerBaseClasses =
-  "flex flex-col gap-4 p-4 pb-[18px] rounded-2xl bg-background-grey-dark";
+  "flex flex-col gap-4 p-4 pb-[18px] rounded-[10px] bg-background-grey-dark";
 const swapContainerWidgetClasses = "bg-background-primary";
 const swapContainerLoadingClasses = "z-[5]";
 const headerBaseClasses =
@@ -80,22 +78,12 @@ const overlayClasses = "fixed inset-0 w-full h-full backdrop-blur-[5px] z-[4]";
 const SwapRouteItem = memo(function SwapRouteItem({pool}: {pool: PoolId}) {
   const firstAssetIcon = useAssetImage(pool[0].bits);
   const secondAssetIcon = useAssetImage(pool[1].bits);
-  const firstAssetMetadata = useAssetMetadata(pool[0].bits);
-  const secondAssetMetadata = useAssetMetadata(pool[1].bits);
   const fee = pool[2] ? 0.05 : 0.3;
 
   return (
     <div className="flex items-center gap-1">
-      <img
-        src={firstAssetIcon || ""}
-        alt={firstAssetMetadata.symbol}
-        className="-mr-2 h-4 w-4"
-      />
-      <img
-        src={secondAssetIcon || ""}
-        alt={secondAssetMetadata.symbol}
-        className="h-4 w-4"
-      />
+      <img src={firstAssetIcon || ""} className="-mr-2 h-4 w-4" />
+      <img src={secondAssetIcon || ""} className="h-4 w-4" />
       <p>({fee}%)</p>
     </div>
   );
@@ -700,7 +688,7 @@ const Swap = ({isWidget}: {isWidget?: boolean}) => {
 
           <div className={lineSplitterClasses}>
             <IconButton className={convertButtonClasses} onClick={swapAssets}>
-              <ConvertIcon className="transition-transform duration-300 group-hover:rotate-180" />
+              <ArrowUpDown className="transition-transform duration-300 group-hover:rotate-180 text-content-dimmed-dark" />
             </IconButton>
           </div>
 
@@ -746,7 +734,11 @@ const Swap = ({isWidget}: {isWidget?: boolean}) => {
               loading={isActionLoading}
               size="2xl"
             >
-              {swapButtonTitle}
+              {isActionLoading ? (
+                <LoaderCircle className="animate-spin size-4" />
+              ) : (
+                swapButtonTitle
+              )}
             </Button>
           )}
         </div>

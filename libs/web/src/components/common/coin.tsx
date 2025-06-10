@@ -1,7 +1,7 @@
 import {clsx} from "clsx";
 import {useAssetMetadata} from "@/src/hooks";
 import {useAssetImage} from "@/src/hooks/useAssetImage";
-import { ChevronDown } from "lucide-react";
+import {ChevronDown} from "lucide-react";
 
 export function Coin({
   assetId,
@@ -31,7 +31,7 @@ export function Coin({
       className={clsx(baseClasses, newPool && clickableClasses)}
       onClick={handleClick}
     >
-      {icon && <img src={icon} alt={`${metadata.symbol} icon`} className="size-5" />}
+      {icon && <img src={icon} className="size-5" />}
       <p className={clsx(nameClasses, className)}>
         {metadata.symbol ?? "Choose Asset"}
       </p>

@@ -1,9 +1,9 @@
 import Link from "next/link";
-import {SuccessIcon} from "@/meshwave-ui/icons";
 import {SwapState} from "@/src/components/common/Swap/Swap";
 import {FuelAppUrl} from "@/src/utils/constants";
 import {useAssetMetadata} from "@/src/hooks";
 import {Button} from "@/meshwave-ui/Button";
+import {CircleCheck} from "lucide-react";
 
 export function SwapSuccessModal({
   swapState,
@@ -18,8 +18,8 @@ export function SwapSuccessModal({
   const subText = `${swapState.sell.amount} ${sellMetadata.symbol} for ${swapState.buy.amount} ${buyMetadata.symbol}`;
 
   return (
-    <div className="flex flex-col items-center gap-3 lg:gap-6 min-w-lg">
-      <SuccessIcon className="lg:w-20 lg:h-20" />
+    <div className="flex flex-col items-center gap-3 pb-3">
+      <CircleCheck className="w-12 h-12 text-green-500" />
       <p className="font-medium text-[22px] leading-[26px] text-center">
         Swap success
       </p>

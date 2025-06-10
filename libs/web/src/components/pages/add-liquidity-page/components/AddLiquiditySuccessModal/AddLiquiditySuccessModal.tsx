@@ -3,7 +3,7 @@ import {openNewTab} from "@/src/utils/common";
 import {CoinName} from "@/src/utils/coinsConfig";
 import {FuelAppUrl} from "@/src/utils/constants";
 import {Button} from "@/meshwave-ui/Button";
-import {CheckCircle} from "lucide-react";
+import {CircleCheck} from "lucide-react";
 
 export default function AddLiquiditySuccessModal({
   coinA,
@@ -26,10 +26,8 @@ export default function AddLiquiditySuccessModal({
   const subText = `Added ${firstCoinAmount} ${coinA} and ${secondCoinAmount} ${coinB}`;
 
   return (
-    <div className="flex flex-col items-center gap-[12px] lg:gap-[24px]">
-      <div className="lg:w-[80px] lg:h-[80px]">
-        <CheckCircle />
-      </div>
+    <div className="flex flex-col items-center gap-3 pb-3">
+      <CircleCheck className="w-12 h-12 text-green-500" />
       <p className="text-[22px] leading-[26px] font-medium text-center">
         Success
       </p>

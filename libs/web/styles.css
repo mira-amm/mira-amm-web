@@ -45,7 +45,7 @@
     --content-secondary: rgba(255, 255, 255, 0.85);
     --content-tertiary: rgba(255, 255, 255, 0.75);
     --content-dimmed-light: rgba(255, 255, 255, 0.6);
-    --content-dimmed-dark: rgba(255, 255, 255, 0.35);
+    --content-dimmed-dark: rgba(255, 255, 255, 0.7);
     --content-grey: #7b7b7b;
     --content-grey-dark: #4b4b4b;
     --content-inverse: #ffffff;
@@ -94,6 +94,8 @@
     --color-old-mira-bg-active: #b6fa081a;
     --color-old-mira-active-btn: #9fd908;
     --color-old-mira-text: #28282f;
+
+    --color-old-mira-promo-bg: #507ff7;
   }
 
   html,

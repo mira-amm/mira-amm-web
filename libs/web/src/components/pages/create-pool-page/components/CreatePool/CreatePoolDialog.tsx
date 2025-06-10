@@ -304,7 +304,7 @@ export default function CreatePoolDialog({
 
       {poolExists && (
         <div className="flex items-center gap-2 p-3 rounded-[10px] bg-gradient-to-r from-[#5872fc] via-[#6142ba] to-[#c41cff]">
-          <div className="w-5 h-5 flex items-center justify-center rounded-full bg-[var(--content-dimmed-dark)]">
+          <div className="w-5 h-5 flex items-center justify-center rounded-full bg-content-dimmed-dark">
             <Sparkle className="size-3" />
           </div>
           <p className="flex-1 text-sm text-white">This pool already exists</p>
@@ -320,7 +320,7 @@ export default function CreatePoolDialog({
         <div className="flex flex-col gap-4">
           <p className="text-base text-content-primary">Starting price</p>
           <div
-            className="flex justify-between items-center px-4 py-3 rounded-md bg-[var(--background-grey-darker)] cursor-pointer"
+            className="flex justify-between items-center px-4 py-3 rounded-md bg-background-grey-darker cursor-pointer"
             onClick={handleExchangeRateSwap}
           >
             <p className="text-sm font-medium">{exchangeRate}</p>

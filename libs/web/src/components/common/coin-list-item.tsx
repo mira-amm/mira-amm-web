@@ -33,7 +33,6 @@ export function CoinListItem({
 
       <img
         src={assetData.icon || fallbackIcon}
-        alt={`${assetData.name} icon`}
         fetchPriority="high"
         className="w-7 h-7 lg:w-8 lg:h-8 rounded-full"
       />
