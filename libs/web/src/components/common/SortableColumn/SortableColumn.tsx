@@ -1,17 +1,20 @@
 import {ArrowDown, ArrowUp} from "lucide-react";
 import {TableHead} from "@/meshwave-ui/table";
 import {clsx} from "clsx";
+import {cn} from "@/src/utils/cn";
 
 export default function SortableColumn({
   title,
   columnKey,
   orderBy,
   onSort,
+  className,
 }: {
   title: string;
   columnKey: string;
   orderBy: string;
   onSort: (key: string) => void;
+  className?: string;
 }) {
   const [key, direction] = orderBy.split("_");
   const isActive = key === columnKey;
@@ -19,10 +22,9 @@ export default function SortableColumn({
   return (
     <TableHead
       onClick={() => onSort(columnKey)}
-      className={clsx(
-        "cursor-pointer select-none transition-colors",
-        "text-content-dimmed-dark",
-        "gap-2 text-center flex items-center",
+      className={cn(
+        "cursor-pointer select-none transition-colors text-content-dimmed-dark gap-2 text-center flex items-center",
+        className,
       )}
     >
       <div

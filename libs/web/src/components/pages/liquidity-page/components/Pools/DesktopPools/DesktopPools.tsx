@@ -1,4 +1,3 @@
-import {clsx} from "clsx";
 import {PoolData} from "@/src/hooks/usePoolsData";
 import DesktopPoolRow from "./DesktopPoolRow";
 import Link from "next/link";
@@ -12,6 +11,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/meshwave-ui/table";
+import {cn} from "@/src/utils/cn";
 
 export function DesktopPools({
   poolsData,
@@ -25,31 +25,32 @@ export function DesktopPools({
   if (!poolsData) return null;
 
   const thBase =
-    "px-6 py-4 text-[16px] leading-[19px] font-medium text-[color:var(--content-tertiary)] " +
-    "border-b border-[color:var(--background-grey-darker)] whitespace-nowrap overflow-hidden text-ellipsis";
-
+    "px-6 py-4 text-[16px] leading-[19px] font-medium text-content-tertiary whitespace-nowrap overflow-hidden text-ellipsis";
   return (
     <Table className="md:table w-full table-fixed border-collapse rounded-2xl bg-background-grey-dark desktopOnly">
       <TableHeader>
         <TableRow>
-          <TableHead className={clsx(thBase, "w-[30%] text-left")}>
+          <TableHead className={cn(thBase, "w-[30%] text-left")}>
             Pools
           </TableHead>
-          <TableHead className={clsx(thBase, "w-[20%] text-center")}>
+          <TableHead className={cn(thBase, "w-[20%] text-center")}>
             APR
           </TableHead>
-          <TableHead className={clsx(thBase, "w-[15%] text-center")}>
+          <TableHead className={cn(thBase, "w-[15%] text-center")}>
             24H Volume
           </TableHead>
-          <TableHead className={clsx(thBase, "w-[15%] text-center")}>
+          <TableHead
+            className={cn(thBase, "w-[15%] flex w-full h-full justify-center")}
+          >
             <SortableColumn
-              title="TVL"
+              title="$ TVL"
               columnKey="tvlUSD"
               orderBy={orderBy}
               onSort={handleSort}
+              className=""
             />
           </TableHead>
-          <TableHead className={clsx(thBase, "w-[20%] text-center")}>
+          <TableHead className={cn(thBase, "w-[20%] text-center")}>
             <Link href="/liquidity/create-pool">
               <Button>Create Pool</Button>
             </Link>

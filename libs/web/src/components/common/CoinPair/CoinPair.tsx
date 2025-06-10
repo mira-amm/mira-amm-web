@@ -37,14 +37,12 @@ const CoinPair = ({
         {firstCoinIcon && (
           <img
             src={firstCoinIcon}
-            alt={`${firstSymbol} icon`}
             className="w-full h-full rounded-full"
           />
         )}
         {secondCoinIcon && (
           <img
             src={secondCoinIcon}
-            alt={`${secondSymbol} icon`}
             className="-ml-2 w-full h-full rounded-full"
           />
         )}
