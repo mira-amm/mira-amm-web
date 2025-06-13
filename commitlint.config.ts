@@ -34,7 +34,7 @@ const Configuration: UserConfig = {
     'subject-empty': [RuleConfigSeverity.Error, 'never'],
   },
   helpUrl:
-    'https://docs.mira.ly/contribution-guidelines/conventional-commits',
+    'https://docs.mira.ly/contributing/conventional-commits',
   prompt: {
     settings: {
       enableMultipleScopes: true,

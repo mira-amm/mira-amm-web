@@ -4,7 +4,7 @@ import type {
   SwapState,
 } from "@/src/components/common/Swap/Swap";
 import useSwapData from "@/src/hooks/useAssetPair/useSwapData";
-import useReadonlyMira from "@/src/hooks/useReadonlyMira";
+import { useReadonlyMira } from "@/src/hooks";
 import {buildPoolId} from "mira-dex-ts";
 
 type Props = {

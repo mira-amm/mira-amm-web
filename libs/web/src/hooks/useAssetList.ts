@@ -3,11 +3,24 @@ import {SQDIndexerUrl} from "../utils/constants";
 import {useQuery} from "@tanstack/react-query";
 import {CoinDataWithPrice, coinsConfig} from "../utils/coinsConfig";
 
+type Assets = {
+  image: string;
+  name: string;
+  symbol: string;
+  id: string;
+  decimals: number;
+  numPools: string | number;
+  l1Address: string;
+  price: number;
+  contractId: string;
+  subId: string;
+}[];
+
 export const useAssetList = (): {
-  assets: CoinDataWithPrice[];
+  assets?: CoinDataWithPrice[];
   isLoading: boolean;
 } => {
-  const {data, isLoading} = useQuery<any>({
+  const {data, isLoading} = useQuery({
     queryKey: ["assets"],
     queryFn: async () => {
       const query = gql`
@@ -27,12 +40,12 @@ export const useAssetList = (): {
         }
       `;
 
-      const results = await request<{assets: any}>({
+      const results = await request<{assets: Assets}>({
         url: SQDIndexerUrl,
         document: query,
       });
 
-      const assets = results.assets.map((asset: any): CoinDataWithPrice => {
+      const assets = results.assets.map((asset): CoinDataWithPrice => {
         const config = coinsConfig.get(asset.id);
 
         return {

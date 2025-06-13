@@ -1,0 +1,12 @@
+[workspace.package]
+name = "mira-v1-core"
+version = "0.1.0"
+edition = "2021"
+
+[workspace]
+resolver = "2"
+members = ["./contracts/mira_amm_contract", "./test-harness"]
+
+[workspace.dependencies]
+fuels = { version = "0.66.5", features = ["fuel-core-lib"] }
+tokio = { version = "1.12", features = ["rt", "macros"] }

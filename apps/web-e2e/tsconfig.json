@@ -1,7 +1,15 @@
 {
   "extends": "../../tsconfig.base.json",
   "compilerOptions": {
-    "outDir": "../../dist/out-tsc"
+    "target": "ESNext",
+    "outDir": "../../dist/out-tsc",
+    "moduleResolution": "node",
+    "types": [
+      "playwright",
+     "@playwright/test"
+    ],
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true
   },
   "include": [
     "**/*.ts",

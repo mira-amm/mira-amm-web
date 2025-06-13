@@ -1,6 +1,0 @@
-{
-  "title": "Contribution Guidelines",
-  "icon": "Code",
-  "root": true,
-  "pages": ["installation", "packages", "concepts"]
-}

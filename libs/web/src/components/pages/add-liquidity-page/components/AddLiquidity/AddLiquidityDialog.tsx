@@ -1,9 +1,8 @@
-import styles from "@/src/components/pages/add-liquidity-page/components/AddLiquidity/AddLiquidity.module.css";
 import CoinPair from "@/src/components/common/CoinPair/CoinPair";
 import CoinInput from "@/src/components/pages/add-liquidity-page/components/CoinInput/CoinInput";
 import {clsx} from "clsx";
-import ActionButton from "@/src/components/common/ActionButton/ActionButton";
-import useBalances from "@/src/hooks/useBalances/useBalances";
+import {Info, TransactionFailureModal} from "@/src/components/common";
+import {useBalances} from "@/src/hooks";
 import useAssetBalance from "@/src/hooks/useAssetBalance";
 import {useConnectUI, useIsConnected} from "@fuels/react";
 import usePreviewAddLiquidity from "@/src/hooks/usePreviewAddLiquidity";
@@ -15,13 +14,12 @@ import {
   useState,
 } from "react";
 import {useDebounceCallback} from "usehooks-ts";
-import useCheckEthBalance from "@/src/hooks/useCheckEthBalance/useCheckEthBalance";
+import {useCheckEthBalance} from "@/src/hooks";
 import useFaucetLink from "@/src/hooks/useFaucetLink";
 import {openNewTab} from "@/src/utils/common";
 import useCheckActiveNetwork from "@/src/hooks/useCheckActiveNetwork";
 import usePoolAPR from "@/src/hooks/usePoolAPR";
 import {DefaultLocale, FuelAppUrl} from "@/src/utils/constants";
-import Info from "@/src/components/common/Info/Info";
 import {AddLiquidityPreviewData} from "@/src/components/pages/add-liquidity-page/components/AddLiquidity/PreviewAddLiquidityDialog";
 import {PoolId} from "mira-dex-ts";
 import {
@@ -29,14 +27,14 @@ import {
   StablePoolTooltip,
   VolatilePoolTooltip,
 } from "@/src/components/pages/add-liquidity-page/components/AddLiquidity/addLiquidityTooltips";
-import useModal from "@/src/hooks/useModal/useModal";
-import TransactionFailureModal from "@/src/components/common/TransactionFailureModal/TransactionFailureModal";
+import {useModal} from "@/src/hooks";
 import {BN, bn} from "fuels";
 import usePoolsMetadata from "@/src/hooks/usePoolsMetadata";
-import useAssetMetadata from "@/src/hooks/useAssetMetadata";
+import {useAssetMetadata} from "@/src/hooks";
 import {useAssetPrice} from "@/src/hooks/useAssetPrice";
 import AprBadge from "@/src/components/common/AprBadge/AprBadge";
 import usePoolNameAndMatch from "@/src/hooks/usePoolNameAndMatch";
+import {Button} from "@/meshwave-ui/Button";
 
 type Props = {
   poolId: PoolId;
@@ -230,22 +228,22 @@ const AddLiquidityDialog = ({poolId, setPreviewData, poolKey}: Props) => {
 
   return (
     <>
-      <div className={styles.section}>
-        <p>Selected pair</p>
-        <div className={styles.sectionContent}>
-          <div className={styles.coinPair}>
+      <div className="flex flex-col gap-4">
+        <p className="text-base text-[var(--content-primary)]">Selected pair</p>
+        <div className="flex flex-col gap-3">
+          <div className="flex justify-between">
             <CoinPair
               firstCoin={firstAssetId}
               secondCoin={secondAssetId}
               isStablePool={isStablePool}
             />
-            <div className={styles.APR}>
-              <div className={styles.aprText}>
-                <p>Estimated APR</p>
+            <div className="flex flex-col items-end gap-1 pb-1 text-[12px] leading-[14px] lg:flex-row">
+              <div className="flex items-center gap-1">
+                <p className="text-sm">Estimated APR</p>
                 <Info tooltipText={APRTooltip} tooltipKey="apr" />
               </div>
               {isMatching ? (
-                <div className={styles.aprDiv}>
+                <div>
                   <AprBadge
                     aprValue={
                       aprValue === "NaN"
@@ -254,8 +252,8 @@ const AddLiquidityDialog = ({poolId, setPreviewData, poolKey}: Props) => {
                           ? `${aprValue}%`
                           : "pending"
                     }
-                    small={true}
-                    leftAlignValue={"-200px"}
+                    small
+                    leftAlignValue="-200px"
                     poolKey={poolKey}
                     tvlValue={tvlValue}
                   />
@@ -263,8 +261,8 @@ const AddLiquidityDialog = ({poolId, setPreviewData, poolKey}: Props) => {
               ) : (
                 <span
                   className={clsx(
-                    aprValue && styles.highlight,
-                    !aprValue && styles.pending,
+                    aprValue && "text-content-positive pb-[2px]",
+                    !aprValue && "text-content-dimmed-dark",
                   )}
                 >
                   {aprValue ? `${aprValue}%` : "Awaiting data"}
@@ -272,17 +270,17 @@ const AddLiquidityDialog = ({poolId, setPreviewData, poolKey}: Props) => {
               )}
             </div>
           </div>
-          <div className={styles.poolStability}>
+          <div className="flex w-full gap-2">
             <div
-              className={clsx(
-                styles.poolStabilityButton,
-                !isStablePool && styles.poolStabilityButtonActive,
-                styles.poolStabilityButtonDisabled,
-              )}
               role="button"
+              className={clsx(
+                "flex w-full flex-col items-start gap-[10px] rounded-md bg-background-secondary p-[10px_12px] text-content-dimmed-light cursor-not-allowed",
+                !isStablePool &&
+                  "border border-accent-primary text-content-primary",
+              )}
             >
-              <div className={styles.poolStabilityButtonTitle}>
-                <p>Volatile pool</p>
+              <div className="flex w-full">
+                <p className="flex-1 text-left">Volatile pool</p>
                 <Info
                   tooltipText={VolatilePoolTooltip}
                   tooltipKey="volatilePool"
@@ -292,15 +290,15 @@ const AddLiquidityDialog = ({poolId, setPreviewData, poolKey}: Props) => {
             </div>
 
             <div
-              className={clsx(
-                styles.poolStabilityButton,
-                isStablePool && styles.poolStabilityButtonActive,
-                styles.poolStabilityButtonDisabled,
-              )}
               role="button"
+              className={clsx(
+                "flex w-full flex-col items-start gap-[10px] rounded-md bg-background-secondary p-[10px_12px] text-content-dimmed-light cursor-not-allowed",
+                isStablePool &&
+                  "border border-accent-primary text-content-primary",
+              )}
             >
-              <div className={styles.poolStabilityButtonTitle}>
-                <p>Stable pool</p>
+              <div className="flex w-full">
+                <p className="flex-1 text-left">Stable pool</p>
                 <Info tooltipText={StablePoolTooltip} tooltipKey="stablePool" />
               </div>
               <p>0.05% fee tier</p>
@@ -308,9 +306,9 @@ const AddLiquidityDialog = ({poolId, setPreviewData, poolKey}: Props) => {
           </div>
         </div>
       </div>
-      <div className={styles.section}>
-        <p>Deposit amount</p>
-        <div className={styles.sectionContent}>
+      <div className="flex flex-col gap-4">
+        <p className="text-base text-content-primary">Deposit amount</p>
+        <div className="flex flex-col gap-3">
           <CoinInput
             assetId={firstAssetId}
             value={firstAmountInput}
@@ -330,17 +328,13 @@ const AddLiquidityDialog = ({poolId, setPreviewData, poolKey}: Props) => {
         </div>
       </div>
       {!isConnected ? (
-        <ActionButton
-          variant="secondary"
-          onClick={connect}
-          loading={isConnecting}
-        >
+        <Button onClick={connect} loading={isConnecting} variant="secondary">
           Connect Wallet
-        </ActionButton>
+        </Button>
       ) : (
-        <ActionButton disabled={buttonDisabled} onClick={handleButtonClick}>
+        <Button disabled={buttonDisabled} onClick={handleButtonClick}>
           {buttonTitle}
-        </ActionButton>
+        </Button>
       )}
       <FailureModal title={<></>}>
         <TransactionFailureModal

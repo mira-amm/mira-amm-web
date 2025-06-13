@@ -1,15 +1,26 @@
 /**
  * @api {get} /api/rewards Get rewards for a given user and epoch based on their LP tokens
  */
-import {JSONEpochConfigService} from "@/src/models/campaigns/JSONEpochConfigService";
-import {SentioJSONUserRewardsService} from "@/src/models/rewards/UserRewards";
-import {NotFoundError} from "@/src/utils/errors";
-import {NextRequest, NextResponse} from "next/server";
+import { JSONEpochConfigService } from "@/src/models/campaigns/JSONEpochConfigService";
+import { SentioJSONUserRewardsService } from "@/src/models/rewards/UserRewards";
+import { NotFoundError } from "@/src/utils/errors";
+import { NextRequest, NextResponse } from "next/server";
 import path from "path";
 
-// Cache header settings
-const CACHE_DURATION = 3600; // 60 minutes
-const CACHE_STALE_WHILE_REVALIDATE = 1800;
+const CACHE_HEADERS = {
+  "Content-Type": "application/json",
+  "Cache-Control": "public, max-age=3600, stale-while-revalidate=1800",
+};
+
+function createErrorResponse(status: number, message: string | object) {
+  return new NextResponse(
+    JSON.stringify(typeof message === "string" ? { message } : message),
+    {
+      status,
+      headers: CACHE_HEADERS,
+    }
+  );
+}
 
 // Example query
 // Key consideration, poolId does not include the hex prefix '0x'
@@ -22,81 +33,63 @@ const CACHE_STALE_WHILE_REVALIDATE = 1800;
 // poolIds and epochNumbers are comma separated,
 // eg: epochNumbers=1,2,3&...
 export async function GET(request: NextRequest) {
-  try {
-    if (!process.env.SENTIO_API_KEY) {
-      throw new Error("No Sentio API key configured");
-    }
-    if (!process.env.SENTIO_API_URL) {
-      throw new Error("No Sentio API URL configured");
-    }
-    const searchParams = request.nextUrl.searchParams;
-    const epochNumbers = searchParams.get("epochNumbers");
-    const poolIds = searchParams.get("poolIds");
-    const userId = searchParams.get("userId");
+  if (!process.env.SENTIO_API_KEY || !process.env.SENTIO_API_URL) {
+    return createErrorResponse(500, "Sentio API environment variables are not set.");
+  }
 
-    const missingParams = [];
-    if (!epochNumbers) missingParams.push("epochNumbers");
-    if (!poolIds) missingParams.push("poolIds");
-    if (!userId) missingParams.push("userId");
+  const searchParams = request.nextUrl.searchParams;
+  const userId = searchParams.get("userId");
+  const epochNumbersParam = searchParams.get("epochNumbers");
+  const poolIdsParam = searchParams.get("poolIds");
 
-    if (missingParams.length > 0) {
-      return new NextResponse(
-        JSON.stringify({
-          message: `Missing required parameters: ${missingParams.join(", ")}`,
-        }),
-        {
-          status: 400,
-          headers: {
-            "Content-Type": "application/json",
-            "Cache-Control": `public, max-age=${CACHE_DURATION}, stale-while-revalidate=${CACHE_STALE_WHILE_REVALIDATE}`,
-          },
-        },
-      );
-    }
+  const missingParams = [];
+  if (!userId) missingParams.push("userId");
+  if (!epochNumbersParam) missingParams.push("epochNumbers");
+  if (!poolIdsParam) missingParams.push("poolIds");
 
-    const userRewardsService = new SentioJSONUserRewardsService(
-      process.env.SENTIO_API_URL,
-      process.env.SENTIO_API_KEY,
-      new JSONEpochConfigService(
-        path.join(
-          process.cwd(),
-          "../../libs/web/src",
-          "models",
-          "campaigns.json",
-        ),
-      ),
+  if (missingParams.length > 0) {
+    return createErrorResponse(
+      400,
+      `Missing required parameters: ${missingParams.join(", ")}`
     );
+  }
+
+  const epochNumbers = epochNumbersParam!.split(",").map(Number);
+  const poolIds = poolIdsParam!.split(",");
+
+  const userRewardsService = new SentioJSONUserRewardsService(
+    process.env.SENTIO_API_URL,
+    process.env.SENTIO_API_KEY,
+    new JSONEpochConfigService(
+      path.join(
+        process.cwd(),
+        "../../libs/web/src",
+        "models",
+        "campaigns.json"
+      )
+    )
+  );
+
+  try {
     const rewards = await userRewardsService.getRewards({
-      epochNumbers: epochNumbers!.split(",").map(Number),
-      poolIds: poolIds!.split(","),
-      userId: userId!,
+      userId,
+      epochNumbers,
+      poolIds,
     });
 
     return new NextResponse(JSON.stringify(rewards), {
       status: 200,
-      headers: {
-        "Content-Type": "application/json",
-        "Cache-Control": `public, max-age=${CACHE_DURATION}, stale-while-revalidate=${CACHE_STALE_WHILE_REVALIDATE}`,
-      },
+      headers: CACHE_HEADERS,
     });
   } catch (e) {
     if (e instanceof NotFoundError) {
-      // return empty value
       return new NextResponse(JSON.stringify({}), {
         status: 200,
-        headers: {
-          "Content-Type": "application/json",
-          "Cache-Control": `public, max-age=${CACHE_DURATION}, stale-while-revalidate=${CACHE_STALE_WHILE_REVALIDATE}`,
-        },
-      });
-    } else {
-      return new NextResponse(JSON.stringify({message: (e as Error).message}), {
-        status: 500,
-        headers: {
-          "Content-Type": "application/json",
-          "Cache-Control": `public, max-age=${CACHE_DURATION}, stale-while-revalidate=${CACHE_STALE_WHILE_REVALIDATE}`,
-        },
+        headers: CACHE_HEADERS,
       });
     }
+
+    console.error("Unhandled error in /api/rewards:", e);
+    return createErrorResponse(500, (e as Error).message);
   }
 }

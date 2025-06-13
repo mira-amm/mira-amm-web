@@ -4,7 +4,7 @@ import {
   EnvelopeOpenIcon,
   ReloadIcon,
 } from '@radix-ui/react-icons'
-import { fn } from '@storybook/test'
+import { fn } from 'storybook/test'
 import { Button } from './Button'
 
 const meta = {

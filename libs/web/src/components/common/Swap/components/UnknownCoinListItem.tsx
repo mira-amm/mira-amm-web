@@ -1,21 +1,16 @@
-import useAssetMetadata from "@/src/hooks/useAssetMetadata";
-import CoinListItem from "./CoinListItem/CoinListItem";
 import {CoinQuantity} from "fuels";
-import styles from "./CoinsListModal/CoinsListModal.module.css";
-import SkeletonLoader from "./SkeletonLoader/SkeletonLoader";
+import {SkeletonLoader, CoinListItem} from "@/web/src/components/common";
 import useAsset from "@/src/hooks/useAsset";
 
-interface Props {
-  assetId: string;
-  balance: CoinQuantity | undefined;
-  onClick: () => void;
-}
-
-export default function UnknownCoinListItem({
+export function UnknownCoinListItem({
   assetId,
   balance,
   onClick,
-}: Props) {
+}: {
+  assetId: string;
+  balance: CoinQuantity | undefined;
+  onClick: () => void;
+}) {
   const {asset: metadata, isLoading} = useAsset(assetId);
 
   const assetData = metadata && {
@@ -26,7 +21,10 @@ export default function UnknownCoinListItem({
 
   if (assetData) {
     return (
-      <div className={styles.tokenListItem} onClick={onClick}>
+      <div
+        onClick={onClick}
+        className="px-4 py-2 rounded-lg hover:bg-background-grey-dark cursor-pointer"
+      >
         <CoinListItem assetData={assetData} />
       </div>
     );
@@ -36,5 +34,5 @@ export default function UnknownCoinListItem({
     return <SkeletonLoader isLoading={true} count={1} textLines={1} />;
   }
 
-  return <div style={{padding: "8px 16px"}}>Asset not found</div>;
+  return <div className="px-4 py-2">Asset not found</div>;
 }

@@ -37,10 +37,10 @@ export const AuthenticatedTerminal = () => {
       return;
     }
 
-    if (lower === 'clear') {
-      setOutputs([]);
-      return;
-    }
+if (lower === 'clear') {
+  setOutputs(INITIAL_OUTPUTS);
+  return;
+}
 
     const validStateCommands = ['notes', 'timer', 'game', 'logout'];
 

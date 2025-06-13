@@ -13,7 +13,7 @@ export const useAssetMinterContract = (
   }
 
   const {data, isLoading} = useQuery({
-    queryKey: ["assetMinter", assetId],
+    queryKey: ["assetMinter", assetId, assets?.length],
     queryFn: async () => {
       if (assetId === ETH_ASSET_ID) {
         return {
@@ -22,12 +22,14 @@ export const useAssetMinterContract = (
         };
       }
 
-      for (const asset of assets) {
-        if (asset.assetId === assetId) {
-          return {
-            contractId: asset.contractId!,
-            subId: asset.subId!,
-          };
+      if (assets) {
+        for (const asset of assets) {
+          if (asset.assetId === assetId) {
+            return {
+              contractId: asset.contractId!,
+              subId: asset.subId!,
+            };
+          }
         }
       }
 

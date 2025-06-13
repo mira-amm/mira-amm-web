@@ -1,13 +1,11 @@
 import {ReactNode, useCallback, useEffect} from "react";
-import {ConfirmPopup} from "@/src/components/common/ConfirmPopup/ConfirmPopup";
+import {ConfirmPopup} from "@/src/components/common";
 import {useLocalStorage, useScrollLock} from "usehooks-ts";
 import {useDisconnect, useIsConnected} from "@fuels/react";
 
-type Props = {
+export function DisclaimerWrapper({children}: {
   children: ReactNode;
-};
-
-const DisclaimerWrapper = ({children}: Props) => {
+}){
   const {lock, unlock} = useScrollLock({autoLock: false});
 
   const {isConnected} = useIsConnected();
@@ -49,5 +47,3 @@ const DisclaimerWrapper = ({children}: Props) => {
     </>
   );
 };
-
-export default DisclaimerWrapper;

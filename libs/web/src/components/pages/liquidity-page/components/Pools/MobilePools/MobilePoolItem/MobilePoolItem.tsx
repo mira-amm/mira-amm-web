@@ -1,12 +1,11 @@
 import {usePoolDetails} from "../../usePoolDetails";
 import CoinPair from "@/src/components/common/CoinPair/CoinPair";
-import ActionButton from "@/src/components/common/ActionButton/ActionButton";
-import InfoBlock from "@/src/components/common/InfoBlock/InfoBlock";
+import {InfoBlock} from "@/src/components/common";
 import {useRouter} from "next/navigation";
-import styles from "./MobilePoolItem.module.css";
 import {PoolData} from "@/src/hooks/usePoolsData";
 import AprBadge from "@/src/components/common/AprBadge/AprBadge";
 import usePoolNameAndMatch from "@/src/hooks/usePoolNameAndMatch";
+import {Button} from "@/meshwave-ui/Button";
 
 type Props = {
   poolData: PoolData;
@@ -27,6 +26,7 @@ const MobilePoolItem = ({poolData}: Props) => {
   const handleAddClick = () => {
     router.push(`/liquidity/add?pool=${poolKey}`);
   };
+
   const tvlActual = tvlValue
     ? parseInt(tvlValue?.replace(/[^0-9]+/g, ""), 10)
     : 0;
@@ -35,17 +35,17 @@ const MobilePoolItem = ({poolData}: Props) => {
   const {isMatching} = usePoolNameAndMatch(poolKey);
 
   return (
-    <div className={styles.mobilePoolItem}>
-      <div className={styles.infoSection}>
+    <div className="flex flex-col gap-6">
+      <div className="flex flex-col gap-4">
         <CoinPair
           firstCoin={poolId[0].bits}
           secondCoin={poolId[1].bits}
           isStablePool={isStablePool}
         />
-        <div className={styles.infoBlocks}>
+        <div className="flex justify-between gap-4">
           {isMatching ? (
-            <div>
-              <p>{"APR"}</p>
+            <div className="">
+              <p className="">APR</p>
               <AprBadge
                 small={true}
                 aprValue={aprValue}
@@ -54,22 +54,29 @@ const MobilePoolItem = ({poolData}: Props) => {
               />
             </div>
           ) : (
-            <InfoBlock title="APR" value={aprValue} type="positive" />
+            <div className="">
+              <InfoBlock title="APR" value={aprValue} type="positive" />
+            </div>
           )}
-
-          <InfoBlock title="24H Volume" value={volumeValue} />
-          <InfoBlock title="TVL" value={tvlValue} />
+          <div className="">
+            <InfoBlock title="24H Volume" value={volumeValue} />
+          </div>
+          <div className="">
+            <InfoBlock title="TVL" value={tvlValue} />
+          </div>
         </div>
-        <p className={styles.poolDescription}>{poolDescription}</p>
+        <p className="text-[12px] leading-[14px] text-[#d4b226]">
+          {poolDescription}
+        </p>
       </div>
-      <ActionButton
-        className={styles.addButton}
+
+      <Button
         variant="secondary"
         onClick={handleAddClick}
-        fullWidth
+        className="font-medium text-[16px] leading-[19px] py-3"
       >
         Add Liquidity
-      </ActionButton>
+      </Button>
     </div>
   );
 };

@@ -1,0 +1,11 @@
+{
+  "name": "scripts",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "metadata": {
+    "description": "v1 Periphery Scripts for the Mira Protocol."
+  },
+  "sourceRoot": "libs/scripts",
+  "projectType": "library",
+  "implicitDependencies": ["!libs/web"],
+  "tags": ["scripts", "rust"]
+}

@@ -1,9 +1,12 @@
 {
-  "plugins": ["prettier"],
+  "plugins": [
+    "prettier"
+  ],
   "extends": [
     "next/core-web-vitals",
     "plugin:@typescript-eslint/recommended",
-    "plugin:prettier/recommended"
+    "plugin:prettier/recommended",
+    "plugin:storybook/recommended"
   ],
   "env": {
     "es6": true,
@@ -31,7 +34,6 @@
     "no-console": "warn",
     "no-debugger": "warn",
     "no-eval": "error"
-
     // Formatting-related rules
     // "comma-dangle": ["error", "always-multiline"], // Enforces trailing commas for multiline statements
     // "semi": ["error", "always"], // Enforces semicolons

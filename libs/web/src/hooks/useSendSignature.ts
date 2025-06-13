@@ -2,7 +2,7 @@ import {useMutation} from "@tanstack/react-query";
 import {ApiBaseUrl} from "../utils/constants";
 import {useAccount, useCurrentConnector, useWallet} from "@fuels/react";
 import {useCallback} from "react";
-import {Account, FuelConnector, toBech32} from "fuels";
+import {Account, FuelConnector, Address} from "fuels";
 import {calculateSHA256Hash} from "@/src/utils/common";
 import {hasSignMessageCustomCurve} from "@fuels/connectors";
 
@@ -34,7 +34,7 @@ const useSendSignature = (message: string) => {
       return;
     }
 
-    const address = toBech32(account);
+    const address = Address.toB256(account);
     const [curve, signature] = await signMessage(
       wallet,
       currentConnector,

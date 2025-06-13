@@ -1,19 +1,14 @@
 import { useState, useRef, useEffect, useCallback } from 'react';
 import { useNavigate } from "react-router";
-import { UserMachineContext } from '../root';
-import { UserEvents, UserStates } from '@/engine/machines/user';
 
-export default function Menu(){
+export default function Menu() {
   const [commandInput, setCommandInput] = useState('');
   const [outputs, setOutputs] = useState<string[]>(INITIAL_OUTPUTS);
   const inputRef = useRef<HTMLInputElement>(null);
   const outputRef = useRef<HTMLDivElement>(null);
-
-  const currentState = UserMachineContext.useSelector((state: UserStates) => state.value);
-  const userActorRef = UserMachineContext.useActorRef();
   const navigate = useNavigate();
 
-const handleCommand = useCallback((rawCommand: string) => {
+  const handleCommand = useCallback((rawCommand: string) => {
     const trimmed = rawCommand.trim();
     const lower = trimmed.toLowerCase();
     const echo = `> ${trimmed.toUpperCase()}`;
@@ -22,35 +17,27 @@ const handleCommand = useCallback((rawCommand: string) => {
 
     switch (lower) {
       case 'help':
-        userActorRef.send(UserEvents.HELP);
         setOutputs((prev) => [...prev, ...HELP_TEXT]);
         break;
-
       case 'clear':
-        userActorRef.send(UserEvents.CLEAR);
         setOutputs([]);
         break;
-
       case 'notes':
-        userActorRef.send(UserEvents.NOTES);
+        navigate('/notes');
         break;
-
       case 'timer':
-        userActorRef.send(UserEvents.TIMER);
+        navigate('/countdown');
         break;
-
       case 'game':
-        userActorRef.send(UserEvents.GAME);
+        navigate('/game');
         break;
-
       case 'logout':
-        userActorRef.send(UserEvents.LOGOUT);
+        navigate('/login');
         break;
-
       default:
         setOutputs((prev) => [...prev, '> COMMAND NOT RECOGNIZED']);
     }
-  }, [userActorRef]);
+  }, [navigate]);
 
   const handleKeyUp = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter' && commandInput.trim()) {
@@ -65,41 +52,30 @@ const handleCommand = useCallback((rawCommand: string) => {
     }
   }, [outputs]);
 
- useEffect(() => {
-    if (outputRef.current) {
-      outputRef.current.scrollTop = outputRef.current.scrollHeight;
-    }
-  }, [outputs]);
-
-  useEffect(() => {
-    switch (currentState) {
-      case UserStates.NOTES:
-        navigate('/notes');
-        break;
-      case UserStates.TIMER:
-        navigate('/countdown');
-        break;
-      case UserStates.GAME:
-        navigate('/game');
-        break;
-      case UserStates.LOGOUT:
-        navigate('/login');
-        break;
-    }
-  }, [currentState, navigate]);
-
   return (
     <>
-      {renderHeader()}
-      {renderMenu()}
+      <Header />
+      <div className="mb-6">
+        <p className="text-terminal-red font-bold mb-2">
+          == EXECUTIVE COMMAND OPTIONS ==
+        </p>
+        <ul className="space-y-1 ml-4">
+          <li>{"> "}<span className="text-terminal-green font-bold">notes</span> - Access confidential project files</li>
+          <li>{"> "}<span className="text-terminal-green font-bold">timer</span> - View DLM-2000 product launch countdown</li>
+          <li>{"> "}<span className="text-terminal-green font-bold">game</span> - Test the Decentralized Market Simulator</li>
+          <li>{"> "}<span className="text-terminal-green font-bold">help</span> - Show T-REX command options</li>
+          <li>{"> "}<span className="text-terminal-green font-bold">clear</span> - Purge screen data [CLASSIFIED]</li>
+          <li>{"> "}<span className="text-terminal-green font-bold">logout</span> - Engage T-REX security lockdown</li>
+        </ul>
+      </div>
       {renderOutput(outputs, outputRef)}
       {renderPrompt(commandInput, setCommandInput, handleKeyUp, inputRef)}
     </>
   );
-};
+}
 
 // ─── Render Sections ───────────────────────────────────────────
-const renderHeader = () => (
+const Header = () => (
   <div className="mb-6 border-b border-terminal-green/30 pb-2">
     <p className="text-terminal-green mb-2 animate-text-glow font-bold">
       CEO ACCESS GRANTED - WELCOME TO DLM-2000, UNKNOWN USER
@@ -107,22 +83,6 @@ const renderHeader = () => (
     <p className="text-terminal-blue">
       {"> Last login: 4/20/2025, 4:20:00 PM on T-REX SECURE NETWORK"}
     </p>
-  </div>
-);
-
-const renderMenu = () => (
-  <div className="mb-6">
-    <p className="text-terminal-red font-bold mb-2">
-      == EXECUTIVE COMMAND OPTIONS ==
-    </p>
-    <ul className="space-y-1 ml-4">
-      <li>{"> "}<span className="text-terminal-green font-bold">notes</span> - Access confidential project files</li>
-      <li>{"> "}<span className="text-terminal-green font-bold">timer</span> - View DLM-2000 product launch countdown</li>
-      <li>{"> "}<span className="text-terminal-green font-bold">game</span> - Test the Decentralized Market Simulator</li>
-      <li>{"> "}<span className="text-terminal-green font-bold">help</span> - Show T-REX command options</li>
-      <li>{"> "}<span className="text-terminal-green font-bold">clear</span> - Purge screen data [CLASSIFIED]</li>
-      <li>{"> "}<span className="text-terminal-green font-bold">logout</span> - Engage T-REX security lockdown</li>
-    </ul>
   </div>
 );
 
@@ -160,6 +120,7 @@ const renderPrompt = (
   </div>
 );
 
+// ─── Constants ────────────────────────────────────────────────
 const INITIAL_OUTPUTS = [
   "Authentication successful. Welcome to MICROCHAIN SYSTEMS.",
   "Type 'help' to see available commands.",

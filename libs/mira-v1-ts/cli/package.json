@@ -1,0 +1,21 @@
+{
+  "name": "mira-v1-ts-cli",
+  "version": "1.0.0",
+  "description": "Mira DEX cli",
+  "type": "module",
+  "main": "./dist/index.cjs",
+  "devDependencies": {
+    "@fuels/ts-config": "^0.20.0",
+    "typescript": "^5.2.2"
+  },
+  "dependencies": {
+    "mira-v1-ts": "file:..",
+    "fuels": "^0.96.1",
+    "commander": "^12.1.0",
+    "dotenv": "^16.4.5",
+    "envalid": "^8.0.0",
+    "inquirer": "^10.1.0",
+    "ts-node": "^10.9.2",
+    "vite-node": "^2.0.3"
+  }
+}
