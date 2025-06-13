@@ -58,7 +58,7 @@ const initialInputsState: InputsState = {sell: {amount: ""}, buy: {amount: ""}};
 
 const swapAndRateClasses = "flex flex-col gap-3 lg:gap-4";
 const swapContainerBaseClasses =
-  "flex flex-col gap-4 p-4 pb-[18px] rounded-2xl bg-background-grey-dark";
+  "flex flex-col gap-4 p-4 pb-[18px] rounded-[10px] bg-background-grey-dark";
 const swapContainerWidgetClasses = "bg-background-primary";
 const swapContainerLoadingClasses = "z-[5]";
 const headerBaseClasses =

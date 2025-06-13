@@ -141,7 +141,7 @@ function PositionRow({
           />
         </div>
 
-        <div className="text-center text-[14px] text-content-positive">
+        <div className="text-center mx-auto text-[14px]">
           {isMatching ? (
             <AprBadge
               aprValue={aprValue}

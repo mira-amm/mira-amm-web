@@ -58,7 +58,7 @@ const ExchangeRate = ({
             ? `1 ${assetBMetadata.symbol} ≈ ${flooredRate} ${assetAMetadata.symbol}`
             : `1 ${assetAMetadata.symbol} ≈ ${flooredRate} ${assetBMetadata.symbol}`}
           <span className="ml-[4px]">
-            <ArrowLeftRight />
+            <ArrowLeftRight className="size-4" />
           </span>
         </p>
       </div>

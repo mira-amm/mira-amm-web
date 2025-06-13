@@ -4,12 +4,7 @@ import {useEffect, useState, useCallback, useMemo} from "react";
 import Link from "next/link";
 import {clsx} from "clsx";
 
-import {
-  ConnectButton,
-  Logo,
-  MobileMenu,
-  MainnetLabel,
-} from "@/src/components/common";
+import {Logo, MobileMenu, MainnetLabel} from "@/src/components/common";
 import DisconnectMobile from "@/src/components/common/ConnectButton/DisconnectMobile";
 import {useIsConnected} from "@fuels/react";
 
@@ -74,8 +69,8 @@ export function Header({
         transition-all duration-300 ease-in-out"
     >
       {isPromoShown && (
-        <section className="relative flex items-center justify-between px-4 py-3 text-white text-sm lg:text-lg lg:justify-center">
-          <div className="flex items-center gap-2">
+        <section className="relative flex items-center justify-between px-4 py-3 gap-4 text-white text-sm lg:text-lg lg:justify-center bg-old-mira-promo-bg">
+          <div className="flex items-center gap-2 mx-auto">
             <PointsIcon className="w-[18px] h-[18px]" />
             <p>
               {POINTS_PROMO_TITLE}

@@ -6,8 +6,8 @@ export default function Page() {
     <main className="flex flex-col w-full max-w-6xl p-8 mx-auto space-y-4">
       <Boosts />
       <section>
-        <p className="text-4xl font-semibold mb-2">Leaderboard</p>
-        <div>
+        <p className="text-2xl font-semibold mb-2">Leaderboard</p>
+        <div className="flex justify-between flex-col md:flex-row">
           <h4 className="text-base text-gray-300">
             See the top participants of the points program.
           </h4>
