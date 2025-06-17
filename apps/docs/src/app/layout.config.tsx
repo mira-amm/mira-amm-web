@@ -1,6 +1,5 @@
 import type {BaseLayoutProps} from "fumadocs-ui/layouts/shared";
 import type {HomeLayoutProps} from "fumadocs-ui/layouts/home";
-import Image from "next/image";
 
 import {Figma as BrandIcon, Rss as BlogIcon, Twitter} from "lucide-react";
 
@@ -10,15 +9,7 @@ export const baseOptions: BaseLayoutProps = {
   nav: {
     title: (
       <>
-        <Image
-          src="/mira_stripes.png"
-          alt="Mira Stripes"
-          height={48}
-          width={48}
-        />
-        <span className="text-lg font-bold text-[#01EC97]">
-          Mira <span className="text-[#F95465]">Docs</span>
-        </span>
+        <span className="text-lg font-bold text-[#01EC97]">Mira Docs</span>
       </>
     ),
     url: "/",
