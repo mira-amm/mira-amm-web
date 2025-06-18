@@ -1,17 +1,16 @@
-import { ReactNode } from "react";
-import Script from "next/script";
-import { clsx } from "clsx";
-import { Prompt, Inter } from "next/font/google";
+import {ReactNode} from "react";
+import {clsx} from "clsx";
+import {Prompt, Inter} from "next/font/google";
 
-import { metadata } from "./metadata";
+import {metadata} from "./metadata";
 
-import "./styles.css"
+import "../styles.css";
 import "@/meshwave-ui/global.css";
 
-import { Providers } from "@/src/core/providers/Providers";
-import { useAnimationStore } from "@/src/stores/useGlitchScavengerHunt";
+import {Providers} from "@/src/core/providers/Providers";
+import {useAnimationStore} from "@/src/stores/useGlitchScavengerHunt";
 import GlitchEffects from "@/src/components/common/GlitchEffects/GlitchEffects";
-import { Header } from "@/src/components/common";
+import {Header} from "@/src/components/common";
 import Footer from "@/src/components/common/Footer/Footer";
 
 const prompt = Prompt({
@@ -25,11 +24,9 @@ const inter = Inter({
   variable: "--font-inter",
 });
 
-export { metadata };
+export {metadata};
 
-export default function Layout({ children }: {
-  readonly children: ReactNode;
-}) {
+export default function Layout({children}: {readonly children: ReactNode}) {
   const glitchScavengerHuntEnabled = useAnimationStore.getState().masterEnabled;
 
   return (
