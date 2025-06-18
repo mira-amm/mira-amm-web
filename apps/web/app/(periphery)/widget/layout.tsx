@@ -20,7 +20,7 @@ const inter = Inter({
 
 export default function Layout({children}: {readonly children: ReactNode}) {
   return (
-    <html lang="en">
+    <html lang="en" className="dark">
       <head>
         <link rel="preload" as="image" href="/images/loader.webp" />
       </head>
