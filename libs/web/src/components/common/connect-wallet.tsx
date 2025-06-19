@@ -1,9 +1,11 @@
+"use client"
+
 import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/meshwave-ui/dropdown-menu";
+  useEffect,
+  useRef,
+  useState
+} from "react";
+
 import {
   ArrowLeftRight,
   ChevronDown,
@@ -11,14 +13,21 @@ import {
   ExternalLink,
   LogOutIcon,
 } from "lucide-react";
+
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/meshwave-ui/dropdown-menu";
+import {Button} from "@/meshwave-ui/Button";
+
 import useWeb3React from "@/src/hooks/useWeb3Connection";
 import {useFormattedAddress} from "@/src/hooks";
-import {useEffect, useRef, useState} from "react";
-import TransactionsHistory from "./TransactionsHistory/TransactionsHistory";
+import TransactionsHistory from "@/src/components/common/TransactionsHistory/TransactionsHistory";
+import {CopyNotification} from "@/src/components/common";
 import {FuelAppUrl} from "@/src/utils/constants";
 import {openNewTab} from "@/src/utils/common";
-import {CopyNotification} from "./copy-notification";
-import {Button} from "@/meshwave-ui/Button";
 
 export function ConnectWallet() {
   const {account, connect, disconnect, isConnected, isWalletLoading} =

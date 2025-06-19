@@ -59,3 +59,4 @@ export {default as useUSDRate} from "./useUSDRate";
 export {useVerifiedAssets} from "./useVerifiedAssets";
 export {default as useWeb3Connection} from "./useWeb3Connection";
 export {default as useWalletTransactions} from "./useWalletTransactions";
+export {TradeState} from "./useSwapRouter"
