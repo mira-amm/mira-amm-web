@@ -52,7 +52,7 @@ export function Info({
       <div
         id={tooltipId}
         ref={tooltipRef}
-        className="fixed max-w-[200px] text-sm leading-4 font-normal p-2 rounded-lg bg-background-secondary text-content-dimmed-dark z-[1000] invisible transition-opacity duration-200 ease-in-out"
+        className="fixed max-w-[200px] text-sm leading-4 font-normal p-2 rounded-lg bg-background-secondary text-black dark:text-content-dimmed-dark z-[1000] invisible transition-opacity duration-200 ease-in-out"
         style={{
           positionAnchor: `--${buttonId}`,
           top: "anchor(50%)",

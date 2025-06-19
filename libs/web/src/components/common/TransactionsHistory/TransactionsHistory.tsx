@@ -38,7 +38,7 @@ const TransactionsHistory = forwardRef<
       }
     >
       <div
-        className={`bg-[#262834] flex flex-col gap-6 fixed top-[72px] right-0 h-[calc(100vh-197px)] w-full max-w-[472px] px-5 py-4 z-[200] transition-transform duration-300 ease-in-out overflow-y-auto overflow-x-hidden ${isOpened ? "translate-x-0" : "translate-x-full"} lg:rounded-xl`}
+        className={`bg-background-grey-dark border-border-secondary border-[12px] dark:border-0 dark:bg-background-grey-dark flex flex-col gap-6 fixed top-[72px] right-0 h-[calc(100vh-197px)] w-full max-w-[472px] px-5 py-4 z-[200] transition-transform duration-300 ease-in-out overflow-y-auto overflow-x-hidden ${isOpened ? "translate-x-0" : "translate-x-full"} lg:rounded-xl`}
         ref={ref}
       >
         <div className="flex justify-between">
@@ -63,12 +63,12 @@ const TransactionsHistory = forwardRef<
               width={40}
               height={40}
             />
-            <span className="text-base leading-6 font-normal">
+            <span className="text-base leading-6 font-normal text-white">
               {walletAddress}
             </span>
             <button
               onClick={handleCopy}
-              className="hover:opacity-65 cursor-pointer"
+              className="hover:opacity-65 cursor-pointer text-white"
             >
               <Copy className="w-4 h-4" />
             </button>

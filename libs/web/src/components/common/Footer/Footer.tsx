@@ -1,25 +1,25 @@
-import { Logo } from "@/src/components/common";
+import {Logo} from "@/src/components/common";
 import {BlogLink, DiscordLink, XLink} from "@/src/utils/constants";
-import { DiscordIcon, XSocialIcon, GithubIcon } from "@/meshwave-ui/icons";
+import {DiscordIcon, XSocialIcon, GithubIcon} from "@/meshwave-ui/icons";
 import {Button} from "@/meshwave-ui/Button";
 
 export default function Footer() {
   return (
-    <footer className="flex flex-col text-[--content-dimmed-light] border-t border-white/10 box-border w-full py-4 px-4 max-w-6xl mx-auto gap-6">
+    <footer className="flex flex-col text-content-dimmed-light border-t border-white/10 box-border w-full py-4 px-4 max-w-6xl mx-auto gap-6">
       <div className="flex flex-col gap-4 lg:flex-row lg:justify-between lg:items-center lg:gap-[134px]">
-        <Logo />
-        <div className="flex flex-col gap-3 text-base leading-[22px] text-[--content-primary] font-normal lg:flex-row lg:justify-between lg:w-[650px] lg:text-lg lg:leading-6">
+        <Logo isFooter />
+        <div className="flex flex-col gap-3 text-base leading-[22px] text-content-tertiary font-normal lg:flex-row lg:justify-between lg:w-[650px] lg:text-lg lg:leading-6">
           <Button
             asChild
             variant="link"
-            className="text-[--content-primary] hover:text-[--content-dimmed-light]"
+            className="text-content-tertiary hover:text-content-dimmed-light"
           >
             <a href={DiscordLink}>Support</a>
           </Button>
           <Button
             asChild
             variant="link"
-            className="text-[--content-primary] hover:text-[--content-dimmed-light]"
+            className="text-content-tertiary hover:text-content-dimmed-light"
           >
             <a
               href="https://docs.mira.ly/resources/security-audits"
@@ -31,7 +31,7 @@ export default function Footer() {
           <Button
             asChild
             variant="link"
-            className="text-[--content-primary] hover:text-[--content-dimmed-light]"
+            className="text-content-tertiary hover:text-content-dimmed-light"
           >
             <a href="https://docs.mira.ly" target="_blank">
               Docs
@@ -40,7 +40,7 @@ export default function Footer() {
           <Button
             asChild
             variant="link"
-            className="text-[--content-primary] hover:text-[--content-dimmed-light]"
+            className="text-content-tertiary hover:text-content-dimmed-light"
           >
             <a href={BlogLink} target="_blank">
               Blog
@@ -49,7 +49,7 @@ export default function Footer() {
           <Button
             asChild
             variant="link"
-            className="text-[--content-primary] hover:text-[--content-dimmed-light]"
+            className="text-content-tertiary hover:text-content-dimmed-light"
           >
             <a href="mailto:help@mira.ly" target="_blank">
               Contact us

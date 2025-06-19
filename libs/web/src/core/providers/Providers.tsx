@@ -1,19 +1,20 @@
 "use client";
 
-import { ReactNode, Suspense } from "react";
+import {ReactNode, Suspense} from "react";
 import NextAdapterApp from "next-query-params/app";
-import { QueryParamProvider } from "use-query-params";
-import { QueryClient } from "@tanstack/react-query";
+import {QueryParamProvider} from "use-query-params";
+import {QueryClient} from "@tanstack/react-query";
 import {
   PersistQueryClientProvider,
   PersistQueryClientOptions,
 } from "@tanstack/react-query-persist-client";
-import { createSyncStoragePersister } from "@tanstack/query-sync-storage-persister";
-import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
+import {createSyncStoragePersister} from "@tanstack/query-sync-storage-persister";
+import {ReactQueryDevtools} from "@tanstack/react-query-devtools";
 
-import { FuelProviderWrapper } from "@/src/core/providers/FuelProviderWrapper";
-import { DisclaimerWrapper } from "@/src/core/providers/DisclaimerWrapper";
-import { Loader } from "@/src/components/common";
+import {FuelProviderWrapper} from "@/src/core/providers/FuelProviderWrapper";
+import {DisclaimerWrapper} from "@/src/core/providers/DisclaimerWrapper";
+import {Loader} from "@/src/components/common";
+import {ThemeProvider} from "./theme-provider";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -33,9 +34,10 @@ function QueryParamProviderWrapper({children}: {children: ReactNode}) {
   );
 }
 
-const persister = typeof window !== "undefined"
-  ? createSyncStoragePersister({ storage: window.localStorage })
-  : undefined;
+const persister =
+  typeof window !== "undefined"
+    ? createSyncStoragePersister({storage: window.localStorage})
+    : undefined;
 
 const persistOptions: PersistQueryClientOptions = {
   queryClient,
@@ -46,17 +48,27 @@ const persistOptions: PersistQueryClientOptions = {
   },
 };
 
-export function Providers({ children }: { children: ReactNode }){
+export function Providers({children}: {children: ReactNode}) {
   return (
-    <PersistQueryClientProvider client={queryClient} persistOptions={persistOptions}>
+    <PersistQueryClientProvider
+      client={queryClient}
+      persistOptions={persistOptions}
+    >
       <ReactQueryDevtools initialIsOpen={false} />
       <QueryParamProviderWrapper>
         <FuelProviderWrapper>
           <DisclaimerWrapper>
-            {children}
+            <ThemeProvider
+              attribute="class"
+              defaultTheme="system"
+              enableSystem
+              disableTransitionOnChange
+            >
+              {children}
+            </ThemeProvider>
           </DisclaimerWrapper>
         </FuelProviderWrapper>
       </QueryParamProviderWrapper>
     </PersistQueryClientProvider>
   );
-};
+}

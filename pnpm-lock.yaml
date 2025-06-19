@@ -19869,6 +19869,9 @@ packages:
   third-party-web@0.26.6:
     resolution: {integrity: sha512-GsjP92xycMK8qLTcQCacgzvffYzEqe29wyz3zdKVXlfRD5Kz1NatCTOZEeDaSd6uCZXvGd2CNVtQ89RNIhJWvA==}
 
+  third-party-web@0.27.0:
+    resolution: {integrity: sha512-h0JYX+dO2Zr3abCQpS6/uFjujaOjA1DyDzGQ41+oFn9VW/ARiq9g5ln7qEP9+BTzDpOMyIfsfj4OvfgXAsMUSA==}
+
   thread-stream@0.15.2:
     resolution: {integrity: sha512-UkEhKIg2pD+fjkHQKyJO3yoIvAP3N6RlNFt2dUhcS1FGvCD1cQa1M/PGknCLFIyZdtJOWQjejp7bdNqmN7zwdA==}
 
@@ -28850,7 +28853,7 @@ snapshots:
   '@paulirish/trace_engine@0.0.52':
     dependencies:
       legacy-javascript: 0.0.1
-      third-party-web: 0.26.6
+      third-party-web: 0.27.0
 
   '@paulmillr/qr@0.2.1': {}
 
@@ -47814,6 +47817,8 @@ snapshots:
       tslib: 2.8.1
 
   third-party-web@0.26.6: {}
+
+  third-party-web@0.27.0: {}
 
   thread-stream@0.15.2:
     dependencies:

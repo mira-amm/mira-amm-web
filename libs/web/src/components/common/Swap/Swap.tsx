@@ -1,7 +1,6 @@
 "use client";
 
 import {useConnectUI, useIsConnected} from "@fuels/react";
-import {clsx} from "clsx";
 import {
   CoinsListModal,
   SwapSuccessModal,
@@ -46,6 +45,7 @@ import {triggerClassAnimation} from "../GlitchEffects/ClassAnimationTrigger";
 import {ConnectWallet} from "../connect-wallet";
 import {Button} from "@/meshwave-ui/Button";
 import {ArrowUpDown, LoaderCircle} from "lucide-react";
+import {cn} from "@/src/utils/cn";
 
 export type CurrencyBoxMode = "buy" | "sell";
 export type CurrencyBoxState = {assetId: string | null; amount: string};
@@ -56,17 +56,7 @@ export type SlippageMode = "auto" | "custom";
 export const DefaultSlippageValue = 100;
 const initialInputsState: InputsState = {sell: {amount: ""}, buy: {amount: ""}};
 
-const swapAndRateClasses = "flex flex-col gap-3 lg:gap-4";
-const swapContainerBaseClasses =
-  "flex flex-col gap-4 p-4 pb-[18px] rounded-[10px] bg-background-grey-dark";
-const swapContainerWidgetClasses = "bg-background-primary";
-const swapContainerLoadingClasses = "z-[5]";
-const headerBaseClasses =
-  "flex items-center gap-[10px] font-medium text-[16px] leading-[19px] text-content-grey lg:text-[20px] lg:leading-[24px]";
-const headerTitleClasses = "flex-1 text-content-primary";
 const lineSplitterClasses = "relative w-full h-px bg-background-grey-dark my-4";
-const convertButtonClasses =
-  "group absolute top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2 w-8 h-8 flex justify-center items-center rounded-full bg-background-primary text-content-grey hover:text-content-primary";
 const currencyBoxWidgetBg = "bg-background-grey-dark";
 const summaryBaseClasses =
   "flex flex-col gap-2 text-content-tertiary text-[12px] leading-[16px] lg:text-[13px] lg:leading-[18px]";
@@ -647,7 +637,7 @@ const Swap = ({isWidget}: {isWidget?: boolean}) => {
 
   if (!isClient) {
     return (
-      <div className={swapAndRateClasses}>
+      <div className="flex justify-center items-center gap-3 lg:gap-4">
         <Loader color="gray" />
       </div>
     );
@@ -655,16 +645,16 @@ const Swap = ({isWidget}: {isWidget?: boolean}) => {
 
   return (
     <>
-      <div className={swapAndRateClasses}>
+      <div className="flex flex-col gap-3 lg:gap-4">
         <div
-          className={clsx(
-            swapContainerBaseClasses,
-            isWidget && swapContainerWidgetClasses,
-            swapPending && swapContainerLoadingClasses,
+          className={cn(
+            "flex flex-col gap-4 p-4 pb-[18px] rounded-[10px] bg-background-grey-dark border-border-secondary border-[12px] dark:border-0 dark:bg-background-grey-dark",
+            isWidget && "bg-background-primary",
+            swapPending && "z-[5]",
           )}
         >
-          <div className={headerBaseClasses}>
-            <div className={headerTitleClasses}>
+          <div className="flex items-center gap-[10px] font-medium text-[16px] leading-[19px] text-content-grey lg:text-[20px] lg:leading-[24px]">
+            <div className="flex-1 text-black dark:text-content-primary">
               {isWidget ? <Logo /> : <p>Swap</p>}
             </div>
             <SlippageSetting
@@ -687,8 +677,11 @@ const Swap = ({isWidget}: {isWidget?: boolean}) => {
           />
 
           <div className={lineSplitterClasses}>
-            <IconButton className={convertButtonClasses} onClick={swapAssets}>
-              <ArrowUpDown className="transition-transform duration-300 group-hover:rotate-180 text-content-dimmed-dark" />
+            <IconButton
+              className="group absolute top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2 w-8 h-8 flex justify-center items-center rounded-full dark:bg-background-primary dark:text-content-grey hover:text-content-primary bg-background-primary p-2"
+              onClick={swapAssets}
+            >
+              <ArrowUpDown className="transition-transform duration-300 group-hover:rotate-180 text-white dark:text-content-dimmed-dark" />
             </IconButton>
           </div>
 
@@ -719,12 +712,7 @@ const Swap = ({isWidget}: {isWidget?: boolean}) => {
           )}
 
           {!isConnected ? (
-            <Button
-              onClick={connect}
-              loading={isConnecting}
-              variant="secondary"
-              size="2xl"
-            >
+            <Button onClick={connect} loading={isConnecting} size="2xl">
               Connect Wallet
             </Button>
           ) : (

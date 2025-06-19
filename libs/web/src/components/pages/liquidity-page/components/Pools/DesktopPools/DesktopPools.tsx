@@ -27,7 +27,7 @@ export function DesktopPools({
   const thBase =
     "px-6 py-4 text-[16px] leading-[19px] font-medium text-content-tertiary whitespace-nowrap overflow-hidden text-ellipsis";
   return (
-    <Table className="md:table w-full table-fixed border-collapse rounded-2xl bg-background-grey-dark desktopOnly">
+    <Table className="md:table w-full table-fixed rounded-2xl bg-background-grey-dark border-border-secondary border-[12px] dark:border-0 dark:bg-background-grey-dark desktopOnly">
       <TableHeader>
         <TableRow>
           <TableHead className={cn(thBase, "w-[30%] text-left")}>
