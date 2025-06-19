@@ -33,10 +33,10 @@ End
 End
 
 Describe "🎭 Playwright should be:"
-It "greater than or equal to version 1.52.0"
+It "greater than or equal to version 1.53.1"
 When run playwright --version
 The status should be success
-The output should include '1.52'
+The output should include '1.53'
 End
 
 It "installed by pnpm"
