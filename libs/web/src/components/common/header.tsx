@@ -2,11 +2,19 @@
 
 import {useEffect, useState, useCallback, useMemo} from "react";
 import Link from "next/link";
+import {X} from "lucide-react";
 import {clsx} from "clsx";
 
-import {Logo, MobileMenu, MainnetLabel} from "@/src/components/common";
-import DisconnectMobile from "@/src/components/common/ConnectButton/DisconnectMobile";
 import {useIsConnected} from "@fuels/react";
+
+import {
+  Logo,
+  MobileMenu,
+  MainnetLabel,
+  DisconnectMobile,
+  IconButton,
+  ConnectWallet
+} from "@/src/components/common";
 
 import {
   FuelAppUrl,
@@ -14,11 +22,8 @@ import {
   POINTS_PROMO_TITLE,
 } from "@/src/utils/constants";
 
-import {IconButton} from "@/src/components/common";
 import {PointsIcon} from "@/meshwave-ui/icons";
 import {useCurrentPath} from "@/src/hooks/useCurrentPath";
-import {ConnectWallet} from "./connect-wallet";
-import {X} from "lucide-react";
 
 const PROMO_BANNER_STORAGE_KEY = "fuel-boost-program-promo-banner-closed";
 
