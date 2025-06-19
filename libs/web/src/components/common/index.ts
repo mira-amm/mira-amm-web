@@ -34,3 +34,6 @@ export {LogoNew} from "./logo-new"
 export {default as MicrochainTextLogo} from "./Logo/MicrochainTextLogo"
 export {default as LogoIconFooter} from "./Logo/LogoIconFooter"
 export {default as LogoIcon} from "./Logo/LogoIcon";
+export {PriceImpact} from "./Swap/components/price-impact";
+export {ConnectWallet} from "./connect-wallet";
+export {triggerClassAnimation} from "./GlitchEffects/ClassAnimationTrigger";
