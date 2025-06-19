@@ -150,26 +150,51 @@ export class ReadonlyMiraAmm {
     if (assetAmount.isNeg() || assetAmount.isZero()) {
       throw new Error('Non positive input amount');
     }
+
     const fees = await this.fees();
 
-    let assetIn = assetIdIn;
-    let amountIn = assetAmount;
-    const amountsOut: Asset[] = [[assetIn, amountIn]];
-    for (let poolId of pools) {
-      poolId = reorderPoolId(poolId);
-      const pool = await this.poolMetadata(poolId);
+    const reorderedPoolIds = pools.map(reorderPoolId);
+    const poolMetadataList = await Promise.all(
+      reorderedPoolIds.map((poolId) => this.poolMetadata(poolId))
+    );
+
+    poolMetadataList.forEach((pool) => {
       if (!pool) {
         throw new Error('Pool not found');
       }
-      amountIn = subtractFee(poolId, amountIn, fees);
-      let [assetOut, reserveIn, reserveOut, decimalsIn, decimalsOut] = arrangePoolParams(pool, assetIn);
-      let amountOut = getAmountOut(poolId[2], reserveIn, reserveOut, powDecimals(decimalsIn), powDecimals(decimalsOut), amountIn);
+    });
 
-      assetIn = assetOut;
-      amountIn = amountOut;
-      amountsOut.push([assetIn, amountIn]);
-    }
-    return amountsOut;
+    const initialState = {
+      assetIn: assetIdIn,
+      amountIn: assetAmount,
+      amountsOut: [[assetIdIn, assetAmount]] as Asset[],
+    };
+
+    const result = reorderedPoolIds.reduce((state, poolId, i) => {
+      const pool = poolMetadataList[i]!;
+
+      const amountInAfterFee = subtractFee(poolId, state.amountIn, fees);
+
+      const [assetOut, reserveIn, reserveOut, decimalsIn, decimalsOut] =
+        arrangePoolParams(pool, state.assetIn);
+
+      const amountOut = getAmountOut(
+        poolId[2],
+        reserveIn,
+        reserveOut,
+        powDecimals(decimalsIn),
+        powDecimals(decimalsOut),
+        amountInAfterFee
+      );
+
+      state.assetIn = assetOut;
+      state.amountIn = amountOut;
+      state.amountsOut.push([assetOut, amountOut]);
+
+      return state;
+    }, initialState);
+
+    return result.amountsOut;
   }
 
   async getAmountsIn(
@@ -181,26 +206,51 @@ export class ReadonlyMiraAmm {
     if (assetAmount.isNeg() || assetAmount.isZero()) {
       throw new Error('Non positive input amount');
     }
+
     const fees = await this.fees();
 
-    let assetOut = assetIdOut;
-    let amountOut = assetAmount;
-    const amountsIn: Asset[] = [[assetOut, amountOut]];
-    for (let poolId of pools.reverse()) {
-      poolId = reorderPoolId(poolId);
-      const pool = await this.poolMetadata(poolId);
+    const reversedPools = [...pools].reverse();
+    const reorderedPoolIds = reversedPools.map(reorderPoolId);
+    const poolMetadataList = await Promise.all(
+      reorderedPoolIds.map((poolId) => this.poolMetadata(poolId))
+    );
+
+    poolMetadataList.forEach((pool) => {
       if (!pool) {
         throw new Error('Pool not found');
       }
-      let [assetIn, reserveOut, reserveIn, decimalsOut, decimalsIn] = arrangePoolParams(pool, assetOut);
-      let amountIn = getAmountIn(poolId[2], reserveIn, reserveOut, powDecimals(decimalsIn), powDecimals(decimalsOut), amountOut);
+    });
+
+    const initialState = {
+      assetOut: assetIdOut,
+      amountOut: assetAmount,
+      amountsIn: [[assetIdOut, assetAmount]] as Asset[],
+    };
+
+    const result = reorderedPoolIds.reduce((state, poolId, i) => {
+      const pool = poolMetadataList[i]!;
+      const [assetIn, reserveOut, reserveIn, decimalsOut, decimalsIn] =
+        arrangePoolParams(pool, state.assetOut);
+
+      let amountIn = getAmountIn(
+        poolId[2],
+        reserveIn,
+        reserveOut,
+        powDecimals(decimalsIn),
+        powDecimals(decimalsOut),
+        state.amountOut
+      );
+
       amountIn = addFee(poolId, amountIn, fees);
 
-      assetOut = assetIn;
-      amountOut = amountIn;
-      amountsIn.push([assetOut, amountOut]);
-    }
-    return amountsIn;
+      state.assetOut = assetIn;
+      state.amountOut = amountIn;
+      state.amountsIn.push([assetIn, amountIn]);
+
+      return state;
+    }, initialState);
+
+    return result.amountsIn;
   }
 
   async previewSwapExactInput(
