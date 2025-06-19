@@ -88,6 +88,15 @@ const useSwapRouter = (
       .map((r) => r.route);
   }, [routes]);
 
+  // TODO: Consider bringing routing off chain, try to avoid calls to the fuel node.
+  // State needs to be re-created and indexed. State can become stale.
+  // Need to consider indexing performance, as indexer is also now making routing decisions.
+  // Right now we're doing single simulation per-request.
+  // There's a middle ground. Fuel has script transactions.
+  // Script transactions allow creating multicalls without modifying contracts in a single RPC request.
+  // We can create small script that does this simulation of the swap in order to get the quote across each pool.
+  // Instead of making a contract call per RPC request, we can lump them all into single script request (also called multicall), then we can return array of quotes and find correct route through array of quotes. This is the quick and dierty method. We're not changing any business logic, we're just reducing the number of round trips.
+
   const {
     data: quoteResults,
     isLoading,
