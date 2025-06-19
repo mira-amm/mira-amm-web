@@ -24,8 +24,10 @@ import {Button} from "@/meshwave-ui/Button";
 
 import useWeb3React from "@/src/hooks/useWeb3Connection";
 import {useFormattedAddress} from "@/src/hooks";
-import TransactionsHistory from "@/src/components/common/TransactionsHistory/TransactionsHistory";
-import {CopyNotification} from "@/src/components/common";
+import {
+  CopyNotification,
+  TransactionsHistory
+} from "@/src/components/common";
 import {FuelAppUrl} from "@/src/utils/constants";
 import {openNewTab} from "@/src/utils/common";
 

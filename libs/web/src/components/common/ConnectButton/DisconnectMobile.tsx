@@ -1,16 +1,29 @@
+import {
+  useCallback,
+  useState,
+  useEffect,
+  useMemo,
+  useRef
+} from "react";
+import {Button} from "@/meshwave-ui/Button";
+import { X } from "lucide-react";
+
 import { useAccount, useDisconnect, useIsConnected } from "@fuels/react";
+
+import { useScrollLock } from "usehooks-ts";
 import { useFormattedAddress } from "@/src/hooks";
-import {CopyNotification, DropDownMenu} from "@/src/components/common";
+
+import {
+  CopyNotification,
+  DropDownMenu,
+  TransactionsHistory
+} from "@/src/components/common";
+
 import { clsx } from "clsx";
-import { useCallback, useState, useEffect, useMemo, useRef } from "react";
 import { DropDownButtons } from "@/src/utils/DropDownButtons";
 import { TouchCloseIcon } from "@/meshwave-ui/icons";
 import { openNewTab } from "@/src/utils/common";
-import TransactionsHistory from "@/src/components/common/TransactionsHistory/TransactionsHistory";
 import { FuelAppUrl } from "@/src/utils/constants";
-import { useScrollLock } from "usehooks-ts";
-import {Button} from "@/meshwave-ui/Button";
-import { X } from "lucide-react";
 
 export default function DisconnectMobile({ className }: {
   className?: string;
