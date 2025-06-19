@@ -7,6 +7,7 @@ import {formatUnits} from "fuels";
 import {DEFAULT_AMM_CONTRACT_ID} from "@/src/utils/constants";
 import {useFormattedAddress} from "@/src/hooks";
 import {Copy} from "lucide-react";
+import MicrochainTextLogo from "@/src/components/common/Logo/MicrochainTextLogo";
 
 interface MiraBlockProps {
   pool: PoolId;
@@ -23,12 +24,21 @@ const MiraBlock = ({pool}: MiraBlockProps) => {
   }, [lpTokenAssetId.bits]);
 
   return (
-    <div className="flex flex-1 flex-col justify-end rounded-2xl bg-gradient-to-r from-[#5872fc] via-[#6142ba] to-[#c41cff] p-4">
-      <div className="mb-3 h-8 w-16">
+    <div
+      className="flex flex-1 flex-col justify-end rounded-2xl p-4"
+      style={{
+        background: "linear-gradient(to right, #b4311a, #cf9e35, #1f2226)",
+      }}
+    >
+      {/* <div className="flex flex-1 flex-col justify-end rounded-2xl bg-gradient-to-r from-[#5872fc] via-[#6142ba] to-[#c41cff] p-4"> */}
+      {/* <div className="mb-3 h-8 w-16 text-white">
         <LogoIcon />
+      </div> */}
+      <div className="mb-3 h-8 w-16">
+        <MicrochainTextLogo />
       </div>
-      <p className="text-base">{lpTokenDisplayValue} LP tokens</p>
-      <p className="text-base flex justify-between items-center">
+      <p className="text-base text-white">{lpTokenDisplayValue} LP tokens</p>
+      <p className="text-base flex justify-between items-center text-white">
         Asset ID: {formattedLpTokenAssetId}
         <IconButton onClick={handleCopy}>
           <Copy className="w-4 h-4" />

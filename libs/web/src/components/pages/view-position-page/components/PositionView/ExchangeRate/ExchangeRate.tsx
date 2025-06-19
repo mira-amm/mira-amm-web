@@ -47,7 +47,7 @@ const ExchangeRate = ({
   }
 
   return (
-    <div className="flex items-center justify-between">
+    <div className="flex items-center justify-between text-content-tertiary">
       <p className="text-[16px] font-normal leading-[19px]">Price</p>
       <div
         className="flex cursor-pointer"

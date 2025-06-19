@@ -80,10 +80,8 @@ function SettingsModalContent({
   return (
     <div className="flex flex-col gap-4">
       <div className="flex flex-col gap-2">
-        <p className="text-content-tertiary dark:text-white">
-          Slippage Tolerance
-        </p>
-        <p className="text-content-tertiary dark:text-content-dimmed-light">
+        <p>Slippage Tolerance</p>
+        <p className="text-content-dimmed-light">
           The amount the price can change unfavorably before the trade reverts
         </p>
       </div>
@@ -92,9 +90,8 @@ function SettingsModalContent({
         <div className="flex gap-2">
           <button
             className={clsx(
-              "w-full px-3 py-[14px] rounded-lg text-content-dimmed-light bg-background-grey-dark hover:border dark:hover:border-accent-primary hover:border-black",
-              isAutoMode &&
-                "dark:border-accent-primary border border-content-tertiary bg-black dark:bg-background-grey-dark text-white",
+              "w-full px-3 py-[14px] rounded-lg text-content-dimmed-light bg-background-grey-dark hover:border hover:border-accent-primary",
+              isAutoMode && "border-accent-primary border",
             )}
             onClick={() => handleSlippageModeChange("auto")}
           >
@@ -102,9 +99,8 @@ function SettingsModalContent({
           </button>
           <button
             className={clsx(
-              "w-full px-3 py-[14px] rounded-lg text-content-dimmed-light bg-background-grey-dark hover:border dark:hover:border-accent-primary hover:border-black",
-              isCustomMode &&
-                "dark:border-accent-primary border border-content-tertiary bg-black dark:bg-background-grey-dark text-white",
+              "w-full px-3 py-[14px] rounded-lg text-content-dimmed-light bg-background-grey-dark hover:border hover:border-accent-primary",
+              isCustomMode && "border-accent-primary border",
             )}
             onClick={() => handleSlippageModeChange("custom")}
           >
@@ -132,9 +128,8 @@ function SettingsModalContent({
               <button
                 key={value}
                 className={clsx(
-                  "w-full px-3 py-[14px] rounded-lg text-content-dimmed-light bg-background-grey-dark hover:border dark:hover:text-content-primary hover:border-accent-primary dark:hover:border-accent-primary hover:border-black",
-                  slippage === value &&
-                    "dark:border-accent-primary border border-content-tertiary bg-black dark:bg-background-grey-dark text-white",
+                  "w-full px-3 py-[14px] rounded-lg text-content-dimmed-light bg-background-grey-dark hover:text-content-primary hover:border hover:border-accent-primary",
+                  slippage === value && "border-accent-primary border",
                 )}
                 onClick={() => handleSlippageButtonClick(value)}
               >
@@ -147,10 +142,10 @@ function SettingsModalContent({
 
       {isCustomMode && (
         <div className="flex flex-col gap-2">
-          <p className="flex items-center gap-2 text-content-tertiary dark:text-white">
+          <p className="flex items-center gap-2">
             <Info /> Pay attention
           </p>
-          <p className="text-content-tertiary dark:text-content-dimmed-light">
+          <p className="text-content-dimmed-light">
             Customized price impact limit may lead to loss of funds. Use it at
             your own risk
           </p>

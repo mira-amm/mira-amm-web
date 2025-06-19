@@ -52,7 +52,7 @@ const DesktopPoolRow = ({poolData}: {poolData: PoolData}) => {
 
       <TableCell className={cellBase}>
         <Link href={`/liquidity/add?pool=${poolKey}`}>
-          <Button variant="secondary">Add Liquidity</Button>
+          <Button variant="outline">Add Liquidity</Button>
         </Link>
       </TableCell>
     </TableRow>

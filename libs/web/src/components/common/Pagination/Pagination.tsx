@@ -43,10 +43,8 @@ export default function Pagination({
   };
 
   const buttonBaseClasses =
-    "px-[12px] py-[8px] text-white text-sm font-medium rounded cursor-pointer transition-colors duration-200 bg-[#2a2a3c] hover:bg-[#3b3b4e]";
-  const activeClasses = "bg-accent-dimmed text-accent-primary font-bold";
-  const disabledClasses = "opacity-50 cursor-not-allowed";
-
+    "px-[12px] py-[8px]  text-sm font-medium rounded cursor-pointer transition-colors duration-200 bg-none border border-black bg-background-grey-dark text-black hover:bg-black dark:hover:bg-background-grey-dark hover:text-white dark:text-white";
+  const disabledClasses = "opacity-50 cursor-not-allowed text-content-tertiary";
   const navButtonResponsive =
     "w-[32px] h-[32px] p-0 justify-center items-center sm:w-auto sm:h-auto sm:px-[12px] sm:py-[8px]";
 
@@ -71,7 +69,9 @@ export default function Pagination({
           key={index}
           className={cn(
             buttonBaseClasses,
-            typeof page === "number" && page === currentPage && activeClasses,
+            typeof page === "number" &&
+              page === currentPage &&
+              "dark:bg-accent-dimmed dark:text-accent-primary font-bold bg-black text-white",
             typeof page !== "number" && disabledClasses,
           )}
           onClick={() => typeof page === "number" && onPageChange(page)}
