@@ -31,6 +31,29 @@ export class ReadonlyMiraAmm {
     }
   }
 
+  async poolMetadataBatch(poolIds: PoolId[]): Promise<(PoolMetadata | null)[]> {
+    const poolIdTransactions = poolIds
+      .map(poolId => (
+      this.ammContract
+        .functions.pool_metadata(poolIdInput(poolId))
+    ))
+
+    const results = await this.ammContract
+      .multiCall(poolIdTransactions)
+      .get();
+
+    return poolIds.map((poolId, index) => {
+      const value = results.value[index]
+      return {
+          poolId: poolId,
+          reserve0: value.reserve_0,
+          reserve1: value.reserve_1,
+          liquidity: [value.liquidity.id, value.liquidity.amount],
+          decimals0: value.decimals_0,
+          decimals1: value.decimals_1,
+    }})
+  }
+
   async poolMetadata(poolId: PoolId): Promise<PoolMetadata | null> {
     poolId = reorderPoolId(poolId);
     const result = await this.ammContract.functions.pool_metadata(poolIdInput(poolId)).get();
@@ -49,6 +72,7 @@ export class ReadonlyMiraAmm {
   }
 
   async fees(): Promise<AmmFees> {
+    // we're doing a 2nd set of calls
     const result = await this.ammContract.functions.fees().get();
     const [lpFeeVolatile, lpFeeStable, protocolFeeVolatile, protocolFeeStable] = result.value;
     return {
@@ -154,9 +178,16 @@ export class ReadonlyMiraAmm {
     const fees = await this.fees();
 
     const reorderedPoolIds = pools.map(reorderPoolId);
-    const poolMetadataList = await Promise.all(
-      reorderedPoolIds.map((poolId) => this.poolMetadata(poolId))
-    );
+
+    // const poolMetadataList = await Promise.all(
+    //   reorderedPoolIds.map((poolId) => this.poolMetadata(poolId))
+    // );
+
+    console.log("Helloooooo")
+
+    const poolMetadataList = await this.poolMetadataBatch(reorderedPoolIds);
+
+    console.log(`poolMetadataList is: ${poolMetadataList}`)
 
     poolMetadataList.forEach((pool) => {
       if (!pool) {
@@ -211,6 +242,7 @@ export class ReadonlyMiraAmm {
 
     const reversedPools = [...pools].reverse();
     const reorderedPoolIds = reversedPools.map(reorderPoolId);
+
     const poolMetadataList = await Promise.all(
       reorderedPoolIds.map((poolId) => this.poolMetadata(poolId))
     );
