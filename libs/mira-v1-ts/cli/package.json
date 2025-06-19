@@ -6,16 +6,16 @@
   "main": "./dist/index.cjs",
   "devDependencies": {
     "@fuels/ts-config": "^0.20.0",
-    "typescript": "^5.2.2"
+    "typescript": "^5.8.3"
   },
   "dependencies": {
-    "mira-v1-ts": "file:..",
-    "fuels": "^0.96.1",
     "commander": "^12.1.0",
     "dotenv": "^16.4.5",
     "envalid": "^8.0.0",
+    "fuels": "0.101.2",
     "inquirer": "^10.1.0",
+    "mira-v1-ts": "file:..",
     "ts-node": "^10.9.2",
-    "vite-node": "^2.0.3"
+    "vite-node": "^3.2.3"
   }
 }
