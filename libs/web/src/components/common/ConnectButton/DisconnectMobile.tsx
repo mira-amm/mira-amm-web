@@ -1,3 +1,5 @@
+"use client"
+
 import {
   useCallback,
   useState,
@@ -6,6 +8,8 @@ import {
   useRef
 } from "react";
 import {Button} from "@/meshwave-ui/Button";
+import { clsx } from "clsx";
+import { TouchCloseIcon } from "@/meshwave-ui/icons";
 import { X } from "lucide-react";
 
 import { useAccount, useDisconnect, useIsConnected } from "@fuels/react";
@@ -19,13 +23,11 @@ import {
   TransactionsHistory
 } from "@/src/components/common";
 
-import { clsx } from "clsx";
 import { DropDownButtons } from "@/src/utils/DropDownButtons";
-import { TouchCloseIcon } from "@/meshwave-ui/icons";
 import { openNewTab } from "@/src/utils/common";
 import { FuelAppUrl } from "@/src/utils/constants";
 
-export default function DisconnectMobile({ className }: {
+export function DisconnectMobile({ className }: {
   className?: string;
 }){
   const { isConnected } = useIsConnected();
