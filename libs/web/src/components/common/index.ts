@@ -28,3 +28,8 @@ export {SkeletonLoader} from "./skeleton-loader"
 export {CoinsListModal} from "./coins-list-modal"
 export {SwapSuccessModal} from "./swap-success-modal"
 export {CoinListItem} from "./coin-list-item"
+export {PriceImpact} from "./Swap/components/price-impact";
+export {ConnectWallet} from "./connect-wallet";
+export {triggerClassAnimation} from "./GlitchEffects/ClassAnimationTrigger";
+export { TransactionsHistory } from "./TransactionsHistory/TransactionsHistory"
+export { DisconnectMobile } from "./ConnectButton/DisconnectMobile";

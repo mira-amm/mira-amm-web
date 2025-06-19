@@ -1,9 +1,9 @@
-import {AssetId, BigNumberish, BN, Provider} from "fuels";
-import {DEFAULT_AMM_CONTRACT_ID} from "./constants";
-import {MiraAmmContract} from "./typegen/MiraAmmContract";
-import {AmmFees, AmmMetadata, Asset, LpAssetInfo, PoolId, PoolMetadata} from "./model";
-import {arrangePoolParams, assetInput, poolContainsAsset, poolIdInput, reorderPoolId} from "./utils";
-import {addFee, BASIS_POINTS, getAmountIn, getAmountOut, powDecimals, subtractFee} from "./math";
+import { AssetId, BigNumberish, BN, Provider } from "fuels";
+import { DEFAULT_AMM_CONTRACT_ID } from "./constants";
+import { MiraAmmContract } from "./typegen/MiraAmmContract";
+import { AmmFees, AmmMetadata, Asset, LpAssetInfo, PoolId, PoolMetadata } from "./model";
+import { arrangePoolParams, assetInput, poolContainsAsset, poolIdInput, reorderPoolId } from "./utils";
+import { addFee, BASIS_POINTS, getAmountIn, getAmountOut, powDecimals, subtractFee } from "./math";
 
 const DECIMALS_PRECISION = 1000000000000
 
@@ -31,6 +31,30 @@ export class ReadonlyMiraAmm {
     }
   }
 
+  async poolMetadataBatch(poolIds: PoolId[]): Promise<(PoolMetadata | null)[]> {
+    const poolIdTransactions = poolIds
+      .map(poolId => (
+        this.ammContract
+          .functions.pool_metadata(poolIdInput(poolId))
+      ))
+
+    const results = await this.ammContract
+      .multiCall(poolIdTransactions)
+      .get();
+
+    return poolIds.map((poolId, index) => {
+      const value = results.value[index]
+      return {
+        poolId: poolId,
+        reserve0: value.reserve_0,
+        reserve1: value.reserve_1,
+        liquidity: [value.liquidity.id, value.liquidity.amount],
+        decimals0: value.decimals_0,
+        decimals1: value.decimals_1,
+      }
+    })
+  }
+
   async poolMetadata(poolId: PoolId): Promise<PoolMetadata | null> {
     poolId = reorderPoolId(poolId);
     const result = await this.ammContract.functions.pool_metadata(poolIdInput(poolId)).get();
@@ -49,6 +73,7 @@ export class ReadonlyMiraAmm {
   }
 
   async fees(): Promise<AmmFees> {
+    // we're doing a 2nd set of calls
     const result = await this.ammContract.functions.fees().get();
     const [lpFeeVolatile, lpFeeStable, protocolFeeVolatile, protocolFeeStable] = result.value;
     return {
@@ -150,26 +175,58 @@ export class ReadonlyMiraAmm {
     if (assetAmount.isNeg() || assetAmount.isZero()) {
       throw new Error('Non positive input amount');
     }
+
     const fees = await this.fees();
 
-    let assetIn = assetIdIn;
-    let amountIn = assetAmount;
-    const amountsOut: Asset[] = [[assetIn, amountIn]];
-    for (let poolId of pools) {
-      poolId = reorderPoolId(poolId);
-      const pool = await this.poolMetadata(poolId);
+    const reorderedPoolIds = pools.map(reorderPoolId);
+
+    // const poolMetadataList = await Promise.all(
+    //   reorderedPoolIds.map((poolId) => this.poolMetadata(poolId))
+    // );
+
+    console.log("Helloooooo")
+
+    const poolMetadataList = await this.poolMetadataBatch(reorderedPoolIds);
+
+    console.log(`poolMetadataList is: ${poolMetadataList}`)
+
+    poolMetadataList.forEach((pool) => {
       if (!pool) {
         throw new Error('Pool not found');
       }
-      amountIn = subtractFee(poolId, amountIn, fees);
-      let [assetOut, reserveIn, reserveOut, decimalsIn, decimalsOut] = arrangePoolParams(pool, assetIn);
-      let amountOut = getAmountOut(poolId[2], reserveIn, reserveOut, powDecimals(decimalsIn), powDecimals(decimalsOut), amountIn);
+    });
 
-      assetIn = assetOut;
-      amountIn = amountOut;
-      amountsOut.push([assetIn, amountIn]);
-    }
-    return amountsOut;
+    const initialState = {
+      assetIn: assetIdIn,
+      amountIn: assetAmount,
+      amountsOut: [[assetIdIn, assetAmount]] as Asset[],
+    };
+
+    const result = reorderedPoolIds.reduce((state, poolId, i) => {
+      const pool = poolMetadataList[i]!;
+
+      const amountInAfterFee = subtractFee(poolId, state.amountIn, fees);
+
+      const [assetOut, reserveIn, reserveOut, decimalsIn, decimalsOut] =
+        arrangePoolParams(pool, state.assetIn);
+
+      const amountOut = getAmountOut(
+        poolId[2],
+        reserveIn,
+        reserveOut,
+        powDecimals(decimalsIn),
+        powDecimals(decimalsOut),
+        amountInAfterFee
+      );
+
+      state.assetIn = assetOut;
+      state.amountIn = amountOut;
+      state.amountsOut.push([assetOut, amountOut]);
+
+      return state;
+    }, initialState);
+
+    return result.amountsOut;
   }
 
   async getAmountsIn(
@@ -181,26 +238,60 @@ export class ReadonlyMiraAmm {
     if (assetAmount.isNeg() || assetAmount.isZero()) {
       throw new Error('Non positive input amount');
     }
-    const fees = await this.fees();
 
-    let assetOut = assetIdOut;
-    let amountOut = assetAmount;
-    const amountsIn: Asset[] = [[assetOut, amountOut]];
-    for (let poolId of pools.reverse()) {
-      poolId = reorderPoolId(poolId);
-      const pool = await this.poolMetadata(poolId);
+    const feesPromise = this.fees();
+
+    const reversedPools = [...pools].reverse();
+    const reorderedPoolIds = reversedPools.map(reorderPoolId);
+
+    const poolMetadataList = await this.poolMetadataBatch(reorderedPoolIds);
+
+    poolMetadataList.forEach((pool) => {
       if (!pool) {
         throw new Error('Pool not found');
       }
-      let [assetIn, reserveOut, reserveIn, decimalsOut, decimalsIn] = arrangePoolParams(pool, assetOut);
-      let amountIn = getAmountIn(poolId[2], reserveIn, reserveOut, powDecimals(decimalsIn), powDecimals(decimalsOut), amountOut);
+    });
+
+    const initialState = {
+      assetOut: assetIdOut,
+      amountOut: assetAmount,
+      amountsIn: [[assetIdOut, assetAmount]] as Asset[],
+    };
+
+    const fees = await feesPromise;
+    const result = reorderedPoolIds.reduce((state, poolId, i) => {
+      const pool = poolMetadataList[i]!;
+      const [assetIn, reserveOut, reserveIn, decimalsOut, decimalsIn] =
+        arrangePoolParams(pool, state.assetOut);
+
+      let amountIn = getAmountIn(
+        poolId[2],
+        reserveIn,
+        reserveOut,
+        powDecimals(decimalsIn),
+        powDecimals(decimalsOut),
+        state.amountOut
+      );
+
       amountIn = addFee(poolId, amountIn, fees);
 
-      assetOut = assetIn;
-      amountOut = amountIn;
-      amountsIn.push([assetOut, amountOut]);
-    }
-    return amountsIn;
+      state.assetOut = assetIn;
+      state.amountOut = amountIn;
+      state.amountsIn.push([assetIn, amountIn]);
+
+      return state;
+    }, initialState);
+
+    return result.amountsIn;
+  }
+
+  async previewSwapExactInputBatch(
+    assetIdIn: AssetId,
+    assetAmountIn: BigNumberish,
+    routes: PoolId[][]
+  ): Promise<Asset[]> {
+    const amountsOut = await Promise.all(routes.map(route => this.getAmountsOut(assetIdIn, assetAmountIn, route)));
+    return amountsOut.map(amounts => amounts[amounts.length - 1]);
   }
 
   async previewSwapExactInput(
@@ -208,7 +299,9 @@ export class ReadonlyMiraAmm {
     assetAmountIn: BigNumberish,
     pools: PoolId[]
   ): Promise<Asset> {
+    console.log('Starting previewSwapExactInput')
     const amountsOut = await this.getAmountsOut(assetIdIn, assetAmountIn, pools);
+    console.log('Ending previewSwapExactInput')
     return amountsOut[amountsOut.length - 1];
   }
 
@@ -217,8 +310,19 @@ export class ReadonlyMiraAmm {
     assetAmountOut: BigNumberish,
     pools: PoolId[]
   ): Promise<Asset> {
+    console.log('Starting previewSwapExactoutput')
     const amountsIn = await this.getAmountsIn(assetIdOut, assetAmountOut, pools);
+    console.log('Ending previewSwapExactoutput')
     return amountsIn[amountsIn.length - 1];
+  }
+
+  async previewSwapExactOutputBatch(
+    assetIdOut: AssetId,
+    assetAmountOut: BigNumberish,
+    routes: PoolId[][]
+  ): Promise<Asset[]> {
+    const amountsIn = await Promise.all(routes.map(route => this.getAmountsOut(assetIdOut, assetAmountOut, route)));
+    return amountsIn.map(amounts => amounts[amounts.length - 1]);
   }
 
   // Returns the price of the provided assetId retrieved through the provided pools

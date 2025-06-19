@@ -2,17 +2,20 @@ packages:
   - apps/*
   - libs/*
   - libs/**
+linkWorkspacePackages: true
+packageManagerStrict: true
 engineStrict: true
 nodeVersion: 22.15.0
+useNodeVersion: 22.15.0
 onlyBuiltDependencies:
-  - '@apollo/protobufjs'
-  - '@compodoc/compodoc'
-  - '@nestjs/core'
-  - '@parcel/watcher'
-  - '@scarf/scarf'
-  - '@sentry/cli'
-  - '@swc/core'
-  - '@tailwindcss/oxide'
+  - "@apollo/protobufjs"
+  - "@compodoc/compodoc"
+  - "@nestjs/core"
+  - "@parcel/watcher"
+  - "@scarf/scarf"
+  - "@sentry/cli"
+  - "@swc/core"
+  - "@tailwindcss/oxide"
   - bigint-buffer
   - bufferutil
   - core-js
@@ -25,5 +28,3 @@ onlyBuiltDependencies:
   - spawn-sync
   - unrs-resolver
   - utf-8-validate
-packageManagerStrict: true
-useNodeVersion: 22.15.0
