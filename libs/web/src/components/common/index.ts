@@ -37,3 +37,4 @@ export {default as LogoIcon} from "./Logo/LogoIcon";
 export {PriceImpact} from "./Swap/components/price-impact";
 export {ConnectWallet} from "./connect-wallet";
 export {triggerClassAnimation} from "./GlitchEffects/ClassAnimationTrigger";
+export { TransactionsHistory } from "./TransactionsHistory/TransactionsHistory"

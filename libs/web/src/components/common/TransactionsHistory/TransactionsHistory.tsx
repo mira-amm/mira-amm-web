@@ -1,13 +1,15 @@
+"use client"
+
+import {forwardRef, useMemo} from "react";
+import {Copy, X} from "lucide-react";
+import {useAccount, useIsConnected} from "@fuels/react";
 import defaultImage from "@/assets/unknown-asset.svg";
 import {useFormattedAddress} from "@/src/hooks";
 import useWalletTransactions from "@/src/hooks/useWalletTransactions";
 import {FuelAppUrl} from "@/src/utils/constants";
-import {useAccount, useIsConnected} from "@fuels/react";
-import {forwardRef, useMemo} from "react";
 import {SkeletonLoader} from "@/web/src/components/common";
-import {Copy, X} from "lucide-react";
 
-const TransactionsHistory = forwardRef<
+export const TransactionsHistory = forwardRef<
   HTMLDivElement,
   {
     onClose: () => void;
@@ -150,5 +152,3 @@ const TransactionsHistory = forwardRef<
     </div>
   );
 });
-
-export default TransactionsHistory;

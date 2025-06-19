@@ -4,7 +4,7 @@ import "../../../../styles.css";
 import {QueryClient, QueryClientProvider} from "@tanstack/react-query";
 import {FuelProvider} from "@fuels/react";
 import {defaultConnectors} from "@fuels/connectors";
-import TransactionsHistory from "./TransactionsHistory";
+import { TransactionsHistory } from "@/src/components/common";
 const queryClient = new QueryClient();
 
 const meta = {
