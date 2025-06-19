@@ -74,11 +74,11 @@ function CurrencyBox({
   return (
     <div
       className={clsx(
-        "flex flex-col gap-2.5 rounded-[10px] border border-transparent bg-background-secondary px-3 py-3 lg:px-4 focus-within:border-accent-secondary",
+        "flex flex-col gap-2.5 rounded-[10px] border border-transparent bg-background-tertiary dark:bg-background-secondary px-3 py-3 lg:px-4 focus-within:border-accent-secondary",
         className,
       )}
     >
-      <p className="text-xs leading-4 text-content-tertiary lg:text-sm lg:leading-[18px]">
+      <p className="text-xs leading-4 text-content-tertiary dark:text-content-tertiary lg:text-sm lg:leading-[18px]">
         {mode === "buy" ? "Buy" : "Sell"}
       </p>
 
@@ -93,7 +93,7 @@ function CurrencyBox({
           <input
             className={clsx(
               "flex-1 w-0 font-semibold text-[20px] leading-6 border-none bg-transparent outline-none",
-              "text-content-secondary font-inter",
+              "text-content-secondary dark:text-content-secondary font-inter",
               loading && "text-gray-400/40",
             )}
             type="text"
@@ -112,7 +112,7 @@ function CurrencyBox({
           disabled={loading}
           className={clsx(
             "flex items-center gap-2 px-2.5 py-1.5 rounded-lg bg-transparent text-content-grey",
-            "hover:bg-background-grey-dark disabled:cursor-default",
+            "hover:bg-background-grey-light dark:hover:bg-background-grey-dark disabled:cursor-default",
             coinNotSelected &&
               "bg-background-grey-dark hover:bg-background-grey-light cursor-pointer",
           )}
@@ -128,7 +128,7 @@ function CurrencyBox({
         </button>
       </div>
 
-      <div className="min-h-[16px] lg:min-h-[18px] flex justify-between items-center text-content-dimmed-light">
+      <div className="min-h-[16px] lg:min-h-[18px] flex justify-between items-center text-content-tertiary dark:text-content-tertiary">
         <p className="text-xs leading-4">{usdValue !== null && usdValue}</p>
         {balance.gt(0) && (
           <span className="text-xs leading-4 lg:text-sm">

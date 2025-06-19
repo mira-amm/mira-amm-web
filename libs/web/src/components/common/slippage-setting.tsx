@@ -10,7 +10,7 @@ export function SlippageSetting({
 }) {
   return (
     <>
-      <p className="px-2 py-1 text-[13px] leading-4 font-normal rounded-lg bg-background-grey-light text-content-dimmed-light">
+      <p className="px-2 py-1 text-[13px] leading-4 font-normal rounded-lg bg-background-grey-light dark:bg-background-grey-light text-content-dimmed-light dark:text-content-dimmed-light">
         {slippage / 100}% slippage
       </p>
       <IconButton

@@ -9,11 +9,11 @@ const buttonVariants = cva(
     variants: {
       variant: {
         default:
-          "bg-accent-primary text-old-mira-text border border-accent-primary hover:bg-old-mira-active-btn cursor-pointer",
+          "bg-accent-primary text-old-mira-text border border-accent-primary hover:bg-accent-primary/80 dark:hover:bg-old-mira-active-btn cursor-pointer",
         destructive:
           "bg-destructive text-destructive-foreground shadow-sm hover:bg-destructive/90",
         outline:
-          "text-accent-primary bg-transparent border border-accent-primary hover:shadow-none active:bg-transparent",
+          "text-black dark:text-accent-primary bg-transparent border border-black dark:border-accent-primary hover:shadow-none active:bg-transparent",
         secondary:
           "bg-accent-dimmed text-accent-primary border-none shadow-none hover:bg-old-mira-bg-hover active:bg-old-mira-bg-active cursor-pointer",
         ghost: "hover:bg-accent hover:text-accent-foreground",
@@ -22,6 +22,7 @@ const buttonVariants = cva(
       size: {
         default: "h-9 px-4 py-2",
         sm: "h-8 rounded-[10px] px-3 text-xs",
+        xs: "h-7 rounded-[10px] px-3 text-xs",
         lg: "h-10 rounded-[10px] px-8",
         icon: "h-9 w-9",
         xl: "h-11",
@@ -31,7 +32,7 @@ const buttonVariants = cva(
         true: "w-full",
       },
       disabled: {
-        true: "bg-background-secondary border-background-secondary text-content-dimmed-dark shadow-none hover:bg-background-secondary",
+        true: "bg-background-secondary border-background-secondary border-black dark:text-content-dimmed-dark text-content-tertiary shadow-none hover:bg-background-secondary",
       },
     },
     defaultVariants: {

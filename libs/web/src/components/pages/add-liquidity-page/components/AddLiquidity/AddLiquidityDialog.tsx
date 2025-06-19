@@ -35,6 +35,7 @@ import {useAssetPrice} from "@/src/hooks/useAssetPrice";
 import AprBadge from "@/src/components/common/AprBadge/AprBadge";
 import usePoolNameAndMatch from "@/src/hooks/usePoolNameAndMatch";
 import {Button} from "@/meshwave-ui/Button";
+import {cn} from "@/src/utils/cn";
 
 type Props = {
   poolId: PoolId;
@@ -273,10 +274,10 @@ const AddLiquidityDialog = ({poolId, setPreviewData, poolKey}: Props) => {
           <div className="flex w-full gap-2">
             <div
               role="button"
-              className={clsx(
-                "flex w-full flex-col items-start gap-[10px] rounded-md bg-background-secondary p-[10px_12px] text-content-dimmed-light cursor-not-allowed",
+              className={cn(
+                "flex w-full flex-col items-start gap-[10px] rounded-md bg-background-secondary dark:bg-background-secondary p-[10px_12px] text-content-dimmed-light cursor-not-allowed",
                 !isStablePool &&
-                  "border border-accent-primary text-content-primary",
+                  "border dark:border-accent-primary dark:text-content-primary bg-background-primary text-white",
               )}
             >
               <div className="flex w-full">
@@ -291,10 +292,10 @@ const AddLiquidityDialog = ({poolId, setPreviewData, poolKey}: Props) => {
 
             <div
               role="button"
-              className={clsx(
-                "flex w-full flex-col items-start gap-[10px] rounded-md bg-background-secondary p-[10px_12px] text-content-dimmed-light cursor-not-allowed",
+              className={cn(
+                "flex w-full flex-col items-start gap-[10px] rounded-md bg-background-secondary dark:bg-background-secondary p-[10px_12px] text-content-dimmed-light cursor-not-allowed",
                 isStablePool &&
-                  "border border-accent-primary text-content-primary",
+                  "border dark:border-accent-primary dark:text-content-primary bg-background-primary text-white",
               )}
             >
               <div className="flex w-full">
@@ -328,11 +329,16 @@ const AddLiquidityDialog = ({poolId, setPreviewData, poolKey}: Props) => {
         </div>
       </div>
       {!isConnected ? (
-        <Button onClick={connect} loading={isConnecting} variant="secondary">
+        <Button
+          onClick={connect}
+          loading={isConnecting}
+          variant="secondary"
+          size="lg"
+        >
           Connect Wallet
         </Button>
       ) : (
-        <Button disabled={buttonDisabled} onClick={handleButtonClick}>
+        <Button disabled={buttonDisabled} onClick={handleButtonClick} size="lg">
           {buttonTitle}
         </Button>
       )}

@@ -9,9 +9,9 @@ import {Button} from "@/meshwave-ui/Button";
 
 export function BoostsBanner() {
   return (
-    <div className="flex flex-col justify-between gap-2.5 p-4 rounded-[10px] points-gradient">
+    <div className="flex flex-col justify-between gap-2.5 p-4 rounded-[10px] bg-background-primary dark:bg-[linear-gradient(170deg,#262f5f_35%,#c41cff_100%)]">
       <PointsIcon />
-      <h2>{POINTS_BANNER_TITLE}</h2>
+      <h2 className="text-white">{POINTS_BANNER_TITLE}</h2>
       <div className="flex flex-wrap justify-between items-start gap-3">
         <p className="text-white text-base font-normal mr-2 text-left">
           {POINTS_BANNER_SUBHEADER}

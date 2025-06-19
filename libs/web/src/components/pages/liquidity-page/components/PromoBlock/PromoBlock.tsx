@@ -15,7 +15,7 @@ export default function PromoBlock({
     <a
       href={link}
       target="_blank"
-      className="w-full flex gap-2.5 p-3 rounded-lg bg-background-grey-dark group"
+      className="w-full flex gap-2.5 p-3 rounded-lg bg-background-grey-dark border-border-secondary border-[12px] dark:border-0 dark:bg-background-grey-dark group"
       rel="noopener noreferrer"
     >
       <div className="flex items-center justify-center w-11 h-11 rounded bg-gradient-to-r from-[#5872fc] to-[#c41cff] text-content-primary">

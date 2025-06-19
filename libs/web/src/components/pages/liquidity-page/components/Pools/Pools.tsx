@@ -13,6 +13,7 @@ import useDebounce from "@/src/hooks/useDebounce";
 import {Button} from "@/meshwave-ui/Button";
 
 import clsx from "clsx";
+import { LoaderCircle } from "lucide-react";
 
 export function Pools() {
   const {data, isLoading, moreInfo} = usePoolsData();
@@ -79,7 +80,7 @@ export function Pools() {
 
       {isLoading && (
         <div className="flex flex-col items-center gap-4 py-7 px-4 lg:p-8 rounded-2xl bg-background-grey-dark">
-          <LoaderV2 />
+          <LoaderCircle className="animate-spin size-7" />
           <p>Loading pools...</p>
         </div>
       )}
