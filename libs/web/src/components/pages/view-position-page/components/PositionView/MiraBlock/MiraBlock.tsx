@@ -1,13 +1,17 @@
 import React, {useCallback} from "react";
-import {IconButton} from "@/src/components/common";
+import {
+  FeatureGuard,
+  IconButton,
+  MicrochainTextLogo,
+} from "@/src/components/common";
 import {LogoIcon} from "@/meshwave-ui/icons";
 import {PoolId, getLPAssetId} from "mira-dex-ts";
 import usePositionData from "@/src/hooks/usePositionData";
 import {formatUnits} from "fuels";
 import {DEFAULT_AMM_CONTRACT_ID} from "@/src/utils/constants";
-import {useFormattedAddress} from "@/src/hooks";
+import {useFormattedAddress, useIsRebrandEnabled} from "@/src/hooks";
 import {Copy} from "lucide-react";
-import MicrochainTextLogo from "@/src/components/common/Logo/MicrochainTextLogo";
+import {cn} from "@/src/utils/cn";
 
 interface MiraBlockProps {
   pool: PoolId;
@@ -23,20 +27,33 @@ const MiraBlock = ({pool}: MiraBlockProps) => {
     await navigator.clipboard.writeText(lpTokenAssetId.bits);
   }, [lpTokenAssetId.bits]);
 
+  const isEnabled = useIsRebrandEnabled();
+
   return (
     <div
-      className="flex flex-1 flex-col justify-end rounded-2xl p-4"
+      className={cn(
+        isEnabled && "flex flex-1 flex-col justify-end rounded-2xl p-4",
+        !isEnabled &&
+          "flex flex-1 flex-col justify-end rounded-2xl bg-gradient-to-r from-[#5872fc] via-[#6142ba] to-[#c41cff] p-4",
+      )}
       style={{
-        background: "linear-gradient(to right, #b4311a, #cf9e35, #1f2226)",
+        ...(isEnabled && {
+          background: "linear-gradient(to right, #b4311a, #cf9e35, #1f2226)",
+        }),
       }}
     >
-      {/* <div className="flex flex-1 flex-col justify-end rounded-2xl bg-gradient-to-r from-[#5872fc] via-[#6142ba] to-[#c41cff] p-4"> */}
-      {/* <div className="mb-3 h-8 w-16 text-white">
-        <LogoIcon />
-      </div> */}
-      <div className="mb-3 h-8 w-16">
-        <MicrochainTextLogo />
-      </div>
+      <FeatureGuard
+        fallback={
+          <div className="mb-3 h-8 w-16 text-white">
+            <LogoIcon />
+          </div>
+        }
+      >
+        <div className="mb-3 h-8 w-16">
+          <MicrochainTextLogo />
+        </div>
+      </FeatureGuard>
+
       <p className="text-base text-white">{lpTokenDisplayValue} LP tokens</p>
       <p className="text-base flex justify-between items-center text-white">
         Asset ID: {formattedLpTokenAssetId}

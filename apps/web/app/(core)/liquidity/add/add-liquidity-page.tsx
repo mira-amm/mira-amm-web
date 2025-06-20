@@ -7,7 +7,7 @@ import PreviewAddLiquidityDialog, {
   AddLiquidityPreviewData,
 } from "@/src/components/pages/add-liquidity-page/components/AddLiquidity/PreviewAddLiquidityDialog";
 import AddLiquidityDialog from "@/src/components/pages/add-liquidity-page/components/AddLiquidity/AddLiquidityDialog";
-import {IconButton} from "@/src/components/common";
+import {FeatureGuard, IconButton} from "@/src/components/common";
 import {PoolId} from "mira-dex-ts";
 import {SlippageSetting} from "@/src/components/common";
 import SettingsModalContent from "@/src/components/common/Swap/components/SettingsModalContent/SettingsModalContent";
@@ -17,6 +17,7 @@ import {
   SlippageMode,
 } from "@/src/components/common/Swap/Swap";
 import {ChevronLeft, X} from "lucide-react";
+import SettingsModalContentNew from "@/src/components/common/Swap/components/SettingsModalContent/SettingsModalContentNew";
 
 export default function AddLiquidityPage() {
   const router = useRouter();
@@ -93,15 +94,27 @@ export default function AddLiquidityPage() {
         <div className="fixed top-0 left-0 w-full h-full backdrop-blur-sm z-[4] pointer-events-auto" />
       )}
 
-      <SettingsModal title="Settings">
-        <SettingsModalContent
-          slippage={slippage}
-          slippageMode={slippageMode}
-          setSlippage={setSlippage}
-          setSlippageMode={setSlippageMode}
-          closeModal={closeSettingsModal}
-        />
-      </SettingsModal>
+      <FeatureGuard
+        fallback={
+          <SettingsModal title="Settings">
+            <SettingsModalContent
+              slippage={slippage}
+              slippageMode={slippageMode}
+              setSlippage={setSlippage}
+              setSlippageMode={setSlippageMode}
+              closeModal={closeSettingsModal}
+            />
+          </SettingsModal>
+        }
+      >
+        <SettingsModal title="Slippage tolerance">
+          <SettingsModalContentNew
+            slippage={slippage}
+            setSlippage={setSlippage}
+            closeModal={closeSettingsModal}
+          />
+        </SettingsModal>
+      </FeatureGuard>
     </main>
   );
 }

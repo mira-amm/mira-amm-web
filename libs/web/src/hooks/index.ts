@@ -1,4 +1,4 @@
-"use client"
+"use client";
 export {useAddLiquidity} from "./useAddLiquidity";
 export {useModal} from "./useModal";
 export {useAssetMetadata} from "./useAssetMetadata";
@@ -59,3 +59,4 @@ export {default as useUSDRate} from "./useUSDRate";
 export {useVerifiedAssets} from "./useVerifiedAssets";
 export {default as useWeb3Connection} from "./useWeb3Connection";
 export {default as useWalletTransactions} from "./useWalletTransactions";
+export {useIsRebrandEnabled} from "./useIsRebrandEnabled";

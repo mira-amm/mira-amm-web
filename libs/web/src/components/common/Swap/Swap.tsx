@@ -8,6 +8,7 @@ import {
   IconButton,
   Loader,
   SlippageSetting,
+  FeatureGuard,
 } from "@/src/components/common";
 import {useCallback, useEffect, useMemo, useRef, useState, memo} from "react";
 import CurrencyBox from "@/src/components/common/Swap/components/CurrencyBox/CurrencyBox";
@@ -46,6 +47,8 @@ import {ConnectWallet} from "../connect-wallet";
 import {Button} from "@/meshwave-ui/Button";
 import {ArrowUpDown, LoaderCircle} from "lucide-react";
 import {cn} from "@/src/utils/cn";
+import SettingsModalContentNew from "./components/SettingsModalContent/SettingsModalContentNew";
+import {ConnectWalletNew} from "../connect-wallet-new";
 
 export type CurrencyBoxMode = "buy" | "sell";
 export type CurrencyBoxState = {assetId: string | null; amount: string};
@@ -58,11 +61,6 @@ const initialInputsState: InputsState = {sell: {amount: ""}, buy: {amount: ""}};
 
 const lineSplitterClasses = "relative w-full h-px bg-background-grey-dark my-4";
 const currencyBoxWidgetBg = "bg-background-grey-dark";
-const summaryBaseClasses =
-  "flex flex-col gap-2 text-content-tertiary text-[12px] leading-[16px] lg:text-[13px] lg:leading-[18px]";
-const summaryEntryClasses = "flex justify-between";
-const routingLineClasses = "flex flex-wrap items-center gap-1";
-const poolsFeeClasses = "flex items-center gap-1";
 const overlayClasses = "fixed inset-0 w-full h-full backdrop-blur-[5px] z-[4]";
 
 const SwapRouteItem = memo(function SwapRouteItem({pool}: {pool: PoolId}) {
@@ -103,9 +101,9 @@ const PreviewSummary = memo(function PreviewSummary({
   createPoolKeyFn: (pool: PoolId) => string;
 }) {
   return (
-    <div className={summaryBaseClasses}>
-      <div className={summaryEntryClasses}>
-        <p>Rate</p>
+    <div className="flex bg-background-primary dark:bg-background-secondary p-4 rounded-[10px] flex-col gap-2 text-accent-primary dark:text-content-tertiary text-[12px] leading-[16px] lg:text-[13px] lg:leading-[18px]">
+      <div className="flex justify-between">
+        <p>Rate:</p>
         {previewLoading || tradeState === TradeState.REEFETCHING ? (
           <Loader color="gray" />
         ) : (
@@ -113,14 +111,17 @@ const PreviewSummary = memo(function PreviewSummary({
         )}
       </div>
 
-      <div className={summaryEntryClasses}>
-        <p>Order routing</p>
-        <div className={routingLineClasses}>
+      <div className="flex justify-between">
+        <p>Routing:</p>
+        <div className="flex flex-wrap items-center gap-1">
           {previewLoading || tradeState === TradeState.REEFETCHING ? (
             <Loader color="gray" />
           ) : (
             pools.map((pool, i) => (
-              <div className={poolsFeeClasses} key={createPoolKeyFn(pool)}>
+              <div
+                className="flex items-center gap-1"
+                key={createPoolKeyFn(pool)}
+              >
                 <SwapRouteItem pool={pool} />
                 {i !== pools.length - 1 && <span>+</span>}
               </div>
@@ -129,8 +130,8 @@ const PreviewSummary = memo(function PreviewSummary({
         </div>
       </div>
 
-      <div className={summaryEntryClasses}>
-        <p>Estimated fees</p>
+      <div className="flex justify-between">
+        <p>Estimated fees:</p>
         {previewLoading || tradeState === TradeState.REEFETCHING ? (
           <Loader color="gray" />
         ) : (
@@ -140,8 +141,8 @@ const PreviewSummary = memo(function PreviewSummary({
         )}
       </div>
 
-      <div className={summaryEntryClasses}>
-        <p>Network cost</p>
+      <div className="flex justify-between">
+        <p>Gas cost:</p>
         {txCostPending ? (
           <Loader color="gray" />
         ) : (
@@ -646,10 +647,15 @@ const Swap = ({isWidget}: {isWidget?: boolean}) => {
   return (
     <>
       <div className="flex flex-col gap-3 lg:gap-4">
+        {isWidget && (
+          <FeatureGuard fallback={<ConnectWallet />}>
+            <ConnectWalletNew />
+          </FeatureGuard>
+        )}
+
         <div
           className={cn(
             "flex flex-col gap-4 p-4 pb-[18px] rounded-[10px] bg-background-grey-dark border-border-secondary border-[12px] dark:border-0 dark:bg-background-grey-dark",
-            isWidget && "bg-background-primary",
             swapPending && "z-[5]",
           )}
         >
@@ -661,7 +667,6 @@ const Swap = ({isWidget}: {isWidget?: boolean}) => {
               slippage={slippage}
               openSettingsModal={openSettingsModal}
             />
-            {isWidget && <ConnectWallet />}
           </div>
 
           <CurrencyBox
@@ -740,15 +745,27 @@ const Swap = ({isWidget}: {isWidget?: boolean}) => {
 
       {swapPending && <div className={overlayClasses} />}
 
-      <SettingsModal title="Settings">
-        <SettingsModalContent
-          slippage={slippage}
-          slippageMode={slippageMode}
-          setSlippage={setSlippage}
-          setSlippageMode={setSlippageMode}
-          closeModal={closeSettingsModal}
-        />
-      </SettingsModal>
+      <FeatureGuard
+        fallback={
+          <SettingsModal title="Settings">
+            <SettingsModalContent
+              slippage={slippage}
+              slippageMode={slippageMode}
+              setSlippage={setSlippage}
+              setSlippageMode={setSlippageMode}
+              closeModal={closeSettingsModal}
+            />
+          </SettingsModal>
+        }
+      >
+        <SettingsModal title="Slippage tolerance">
+          <SettingsModalContentNew
+            slippage={slippage}
+            setSlippage={setSlippage}
+            closeModal={closeSettingsModal}
+          />
+        </SettingsModal>
+      </FeatureGuard>
 
       <CoinsModal title="Choose token">
         <CoinsListModal selectCoin={handleCoinSelection} balances={balances} />
