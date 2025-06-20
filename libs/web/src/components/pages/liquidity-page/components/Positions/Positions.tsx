@@ -25,7 +25,7 @@ export function Positions() {
     return (
       <section className="flex flex-col gap-6">
         <p className="text-[20px] leading-6">Your Positions</p>
-        <div className="flex flex-col items-center gap-2 rounded-2xl px-4 py-7 bg-background-grey-dark">
+        <div className="flex flex-col items-center gap-2 rounded-2xl px-4 py-7  bg-background-grey-dark border-border-secondary border-[12px] dark:border-0 dark:bg-background-grey-dark">
           <div className="flex flex-col items-center gap-4">
             <div
               className="h-11 w-11 flex items-center justify-center rounded-full text-content-primary"
@@ -36,7 +36,7 @@ export function Positions() {
             >
               <FileText />
             </div>
-            <p>Your liquidity will appear here</p>
+            <p className="text-content-tertiary">Your liquidity will appear here</p>
           </div>
         </div>
       </section>
@@ -49,7 +49,7 @@ export function Positions() {
       {!data || isLoading ? (
         <PositionsLoader count={POSITIONS_SKELTON_COUNT} />
       ) : (
-        <div className="flex flex-col gap-4 bg-background-grey-dark rounded-[24px] p-4">
+        <div className="flex flex-col gap-4 bg-background-grey-dark border-border-secondary border-[12px] dark:border-0 dark:bg-background-grey-dark rounded-[24px] p-4">
           {/* Headers */}
           <div className="grid grid-cols-3 md:grid-cols-4 gap-4 px-2 pb-4 border-b border-background-grey-darkertext-content-tertiary text-sm font-normal">
             <div className="text-left">Pools</div>
@@ -159,7 +159,7 @@ function PositionRow({
         </div>
 
         <div className="col-span-3 md:col-span-1 flex lg:justify-end">
-          <Button className="lg:max-w-[165px]" variant="secondary" block>
+          <Button className="lg:max-w-[165px]" variant="outline" block>
             Manage
           </Button>
         </div>

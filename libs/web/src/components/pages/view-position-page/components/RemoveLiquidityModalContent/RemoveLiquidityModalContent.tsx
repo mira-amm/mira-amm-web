@@ -152,10 +152,10 @@ const RemoveLiquidityModalContent = ({
       </div>
 
       <div className="flex flex-col gap-2">
-        <p className="flex items-center gap-2 text-accent-primary">
+        <p className="flex items-center gap-2 text-accent-alert dark:text-accent-primary">
           <Info /> Pay attention
         </p>
-        <p className="text-sm leading-4 text-content-tertiary">
+        <p className="text-sm leading-4 text-accent-alert dark:text-content-tertiary">
           This based on the current price of the pool. Your fees earned will
           always increase, but the principal amount may change with the price of
           the pool

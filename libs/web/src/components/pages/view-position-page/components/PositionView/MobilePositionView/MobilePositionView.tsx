@@ -57,7 +57,7 @@ const MobilePositionView = ({
         />
       </div>
 
-      <div className="flex flex-col gap-[15px] p-4 rounded-2xl bg-background-grey-dark">
+      <div className="flex flex-col gap-[15px] p-4 rounded-2xl bg-background-grey-dark border-border-secondary border-[12px] dark:border-0 dark:bg-background-grey-dark">
         <p className="text-[16px] font-bold leading-[19px]">Your position</p>
         <AprDisplay pool={pool} />
         <div className="flex justify-between">
@@ -88,11 +88,15 @@ const MobilePositionView = ({
         />
 
         <div className="w-full h-px border border-white opacity-10" />
-        <div className="flex items-center justify-between">
+        <div className="flex items-center justify-between text-content-tertiary">
           <p className="text-[16px] font-normal leading-[19px]">
             Total value locked
           </p>
-          {formattedTvlValue ? <p>${formattedTvlValue}</p> : loading}
+          {formattedTvlValue ? (
+            <p className="text-content-tertiary">${formattedTvlValue}</p>
+          ) : (
+            loading
+          )}
         </div>
         <ExchangeRate
           assetBMetadata={assetB.metadata}
@@ -104,11 +108,18 @@ const MobilePositionView = ({
 
       <div className="w-full self-start">
         <Link href={positionPath}>
-          <Button block>Add Liquidity</Button>
+          <Button size="lg" block>
+            Add Liquidity
+          </Button>
         </Link>
       </div>
       <div className="w-full self-start">
-        <Button variant="secondary" onClick={handleWithdrawLiquidity} block>
+        <Button
+          variant="outline"
+          onClick={handleWithdrawLiquidity}
+          size="lg"
+          block
+        >
           Remove Liquidity
         </Button>
       </div>

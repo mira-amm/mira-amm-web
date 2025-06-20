@@ -20,6 +20,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/meshwave-ui/table";
+import { LoaderCircle } from "lucide-react";
 
 const truncateAddress = (address: string) => {
   if (!address) return "";
@@ -98,14 +99,14 @@ export default function PointsRankTable() {
   if (isLoading) {
     return (
       <div className="flex flex-col items-center gap-4 p-7 rounded-2xl bg-background-grey-dark">
-        <LoaderV2 />
+        <LoaderCircle className="animate-spin size-7" />
         <p>Loading points leaderboard...</p>
       </div>
     );
   }
 
   return (
-    <div className="w-full overflow-x-auto rounded-xl bg-background-grey-dark p-4">
+    <div className="w-full overflow-x-auto rounded-xl bg-background-grey-dark border-border-secondary border-[12px] dark:border-0 dark:bg-background-grey-dark p-4">
       <Table className="w-full border-collapse text-content-primary">
         <TableHeader>
           {table.getHeaderGroups().map((headerGroup) => (
@@ -113,7 +114,7 @@ export default function PointsRankTable() {
               {headerGroup.headers.map((header) => (
                 <TableHead
                   key={header.id}
-                  className="p-4 text-left font-normal text-base text-content-tertiary border-b border-background-grey-darker"
+                  className="p-4 text-left font-normal text-base text-content-tertiary border-b  border-background-grey-light dark:border-background-grey-darker"
                 >
                   {header.isPlaceholder
                     ? null
@@ -132,7 +133,7 @@ export default function PointsRankTable() {
               {row.getVisibleCells().map((cell, idx) => (
                 <TableCell
                   key={cell.id}
-                  className={`p-4 text-base border-b border-[#2a2b35] ${
+                  className={`p-4 text-base border-b border-background-grey-light dark:border-background-grey-darker ${
                     idx === 1
                       ? "overflow-hidden text-ellipsis whitespace-nowrap"
                       : ""

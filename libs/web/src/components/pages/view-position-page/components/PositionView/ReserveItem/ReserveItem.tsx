@@ -20,7 +20,7 @@ const ReserveItem = ({assetId, amount, reserve}: ReserveItemsProps) => {
     <div className="flex items-center justify-between">
       <CoinWithAmount assetId={assetId} amount={coinAmount} withName />
       {usdValue && reserve ? (
-        <div className="flex flex-col items-end">
+        <div className="flex flex-col items-end gap-y-2">
           <p className="font-medium text-[18px] leading-[21px]">
             {Number(reserve?.toFixed(2)).toLocaleString()}
           </p>

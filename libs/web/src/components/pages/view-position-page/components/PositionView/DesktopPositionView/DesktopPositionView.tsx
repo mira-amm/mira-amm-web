@@ -54,7 +54,7 @@ const DesktopPositionView = ({
           />
         </div>
         <div className="flex items-center gap-2.5">
-          <Button variant="secondary" onClick={handleWithdrawLiquidity}>
+          <Button variant="outline" onClick={handleWithdrawLiquidity}>
             Remove Liquidity
           </Button>
           <Link href={positionPath}>
@@ -65,8 +65,8 @@ const DesktopPositionView = ({
 
       <div className="flex gap-3 w-full">
         <MiraBlock pool={pool} />
-        <div className="flex flex-col min-w-[350px] flex-1 w-full">
-          <div className="flex flex-col gap-[15px] p-4 rounded-[16px] bg-background-grey-dark">
+        <div className="flex flex-col min-w-[350px] flex-1 w-full rounded-[10px] bg-background-grey-dark border-border-secondary border-[12px] dark:border-0 dark:bg-background-grey-dark">
+          <div className="flex flex-col gap-[15px] p-4">
             <p className="text-[16px] font-semibold leading-[19px]">
               Your position
             </p>
@@ -85,8 +85,8 @@ const DesktopPositionView = ({
         </div>
       </div>
 
-      <div className="w-full p-4 rounded-[12px] flex flex-col gap-4 bg-background-grey-dark">
-        <p className="text-[16px] font-semibold leading-[19px]">
+      <div className="w-full p-4 rounded-[12px] flex flex-col gap-4 bg-background-grey-dark border-border-secondary border-[12px] dark:border-0 dark:bg-background-grey-dark">
+        <p className="text-[16px] font-semibold leading-[19px] border-b border-content-grey-dark/40 pb-3">
           Pool reserves
         </p>
         <ReserveItem
@@ -100,10 +100,10 @@ const DesktopPositionView = ({
           reserve={assetB.reserve}
         />
         {formattedTvlValue && (
-          <div className="w-full h-px border border-white opacity-10" />
+          <div className="w-full h-0.5 bg-content-grey-dark dark:bg-white opacity-10" />
         )}
         <div className="flex flex-col gap-[10px]">
-          <div className="flex items-center justify-between">
+          <div className="flex items-center justify-between text-content-tertiary">
             {formattedTvlValue && <p>Total value locked</p>}
             {formattedTvlValue && <p>${formattedTvlValue}</p>}
           </div>

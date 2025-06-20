@@ -12,7 +12,7 @@ export const SearchBar: React.FC<{
   return (
     <div
       className={clsx(
-        "flex gap-[10px] p-[14px_12px] rounded-lg text-content-grey bg-background-grey-dark",
+        "flex gap-[10px] p-[14px_12px] rounded-lg text-content-grey bg-background-secondary dark:bg-background-grey-dark",
         className,
       )}
     >

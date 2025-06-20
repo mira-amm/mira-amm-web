@@ -19,7 +19,7 @@ export function MobilePools({
   }
 
   return (
-    <div className="mobileOnly">
+    <div className="mobileOnly rounded-2xl bg-background-grey-dark border-border-secondary border-[12px] dark:border-0 dark:bg-background-grey-dark">
       <Table
         className={clsx(
           "mobileOnly text-slate-400 text-sm bg-[var(--background-grey-dark)]",

@@ -8,7 +8,7 @@ export default function Page() {
       <section>
         <p className="text-2xl font-semibold mb-2">Leaderboard</p>
         <div className="flex justify-between flex-col md:flex-row">
-          <h4 className="text-base text-gray-300">
+          <h4 className="text-base text-content-tertiary">
             See the top participants of the points program.
           </h4>
           <h4 className="text-sm text-yellow-400 mt-1">

@@ -4,31 +4,83 @@
 
 @custom-variant dark (&:is(.dark *));
 
+@theme {
+  --color-background-primary: var(--background-primary);
+  --color-background-secondary: var(--background-secondary);
+  --color-background-grey-darker: var(--background-grey-darker);
+  --color-background-grey-dark: var(--background-grey-dark);
+  --color-background-grey-light: var(--background-grey-light);
+  --color-background-tertiary: var(--background-tertiary);
+
+  --color-content-primary: var(--content-primary);
+  --color-content-secondary: var(--content-secondary);
+  --color-content-tertiary: var(--content-tertiary);
+  --color-content-dimmed-light: var(--content-dimmed-light);
+  --color-content-dimmed-dark: var(--content-dimmed-dark);
+  --color-content-grey: var(--content-grey);
+  --color-content-grey-dark: var(--content-grey-dark);
+  --color-content-inverse: var(--content-inverse);
+
+  --color-accent-primary: var(--accent-primary);
+  --color-accent-secondary: var(--accent-secondary);
+  --color-accent-dimmed: var(--accent-dimmed);
+  --color-accent-warning: var(--accent-warning);
+  --color-accent-alert: var(--accent-alert);
+  --color-content-positive: var(--content-positive);
+  --color-border-secondary: var(--border-secondary);
+  --color-page-background: var(--page-background);
+
+  --font-sans: var(--font-inter);
+  --font-alt: var(--font-prompt);
+
+  --color-old-mira-btn: #2e2e2e;
+  --color-old-mira-audit: #1b2749;
+  --color-old-mira-social: rgba(80, 127, 247, 0.1);
+  --color-old-mira-discord: #32389f;
+  --color-old-mira-x: #040305;
+
+  --color-old-mira-bg-hover: #97cf061a;
+  --color-old-mira-bg-active: #b6fa081a;
+  --color-old-mira-active-btn: #9fd908;
+  --color-old-mira-text: #28282f;
+
+  --color-old-mira-promo-bg: #507ff7;
+
+  --color-accent-primary: var(--accent-primary);
+  --color-accent-primary-1: var(--accent-primary-1);
+  --color-accent-primary-2: var(--accent-primary-2);
+}
+
 @layer base {
   :root {
+    --page-background: #fdfdfd;
     --background-primary: #0e111e;
-    --background-secondary: #1b1c23;
+    --background-secondary: #ecedf0;
     --background-grey-darker: rgba(255, 255, 255, 0.05);
-    --background-grey-dark: rgba(255, 255, 255, 0.1);
-    --background-grey-light: rgba(255, 255, 255, 0.2);
+    --background-grey-dark: #f5f5f5;
+    --background-grey-light: #e0e2e7;
+    --background-tertiary: #ecedf0;
 
-    --content-primary: #ffffff;
-    --content-secondary: rgba(255, 255, 255, 0.8);
-    --content-tertiary: rgba(255, 255, 255, 0.72);
-    --content-dimmed-light: rgba(255, 255, 255, 0.64);
+    --border-secondary: #ecedf0;
+
+    --content-primary: #0e111e;
+    --content-secondary: #0e111e;
+    --content-tertiary: #8a8b8e;
+    --content-dimmed-light: #8a8b8e;
     --content-dimmed-dark: rgba(255, 255, 255, 0.4);
     --content-grey: #9d9d9d;
     --content-grey-dark: #6d6d6d;
     --content-inverse: #28282f;
 
-    --accent-primary: #aeed0d;
+    --accent-primary: #01ec97;
+    --accent-primary-1: #19bd82;
+    --accent-primary-2: #015537;
+
     --accent-secondary: rgba(174, 237, 13, 0.4);
     --accent-dimmed: rgba(174, 237, 13, 0.1);
     --accent-warning: #f55353;
     --accent-alert: #d4b226;
     --content-positive: #46cc44;
-
-    --points-gradient: linear-gradient(170deg, #262f5f 35%, #c41cff 100%);
 
     --font-inter: "Inter", sans-serif;
     --font-prompt: "Prompt", sans-serif;
@@ -51,51 +103,14 @@
     --content-inverse: #ffffff;
 
     --accent-primary: #aeed0d;
+    --accent-primary-1: #19bd82;
+    --accent-primary-2: #015537;
+
     --accent-secondary: rgba(174, 237, 13, 0.3);
     --accent-dimmed: rgba(174, 237, 13, 0.08);
     --accent-warning: #f87171;
     --accent-alert: #ffd700;
     --content-positive: #4ade80;
-  }
-
-  @theme {
-    --color-background-primary: var(--background-primary);
-    --color-background-secondary: var(--background-secondary);
-    --color-background-grey-darker: var(--background-grey-darker);
-    --color-background-grey-dark: var(--background-grey-dark);
-    --color-background-grey-light: var(--background-grey-light);
-
-    --color-content-primary: var(--content-primary);
-    --color-content-secondary: var(--content-secondary);
-    --color-content-tertiary: var(--content-tertiary);
-    --color-content-dimmed-light: var(--content-dimmed-light);
-    --color-content-dimmed-dark: var(--content-dimmed-dark);
-    --color-content-grey: var(--content-grey);
-    --color-content-grey-dark: var(--content-grey-dark);
-    --color-content-inverse: var(--content-inverse);
-
-    --color-accent-primary: var(--accent-primary);
-    --color-accent-secondary: var(--accent-secondary);
-    --color-accent-dimmed: var(--accent-dimmed);
-    --color-accent-warning: var(--accent-warning);
-    --color-accent-alert: var(--accent-alert);
-    --color-content-positive: var(--content-positive);
-
-    --font-sans: var(--font-inter);
-    --font-alt: var(--font-prompt);
-
-    --color-old-mira-btn: #2e2e2e;
-    --color-old-mira-audit: #1b2749;
-    --color-old-mira-social: rgba(80, 127, 247, 0.1);
-    --color-old-mira-discord: #32389f;
-    --color-old-mira-x: #040305;
-
-    --color-old-mira-bg-hover: #97cf061a;
-    --color-old-mira-bg-active: #b6fa081a;
-    --color-old-mira-active-btn: #9fd908;
-    --color-old-mira-text: #28282f;
-
-    --color-old-mira-promo-bg: #507ff7;
   }
 
   html,
@@ -349,10 +364,9 @@
 }
 
 /* added this here becuase it wasn't working in tailwind */
-.points-gradient {
+/* .points-gradient {
   background: linear-gradient(170deg, #262f5f 35%, #c41cff 100%);
-}
-
+} */
 
 /* remove liquidity range slider start */
 .remove-liquidity-slider {

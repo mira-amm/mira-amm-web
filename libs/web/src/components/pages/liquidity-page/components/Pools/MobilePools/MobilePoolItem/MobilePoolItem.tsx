@@ -71,9 +71,10 @@ const MobilePoolItem = ({poolData}: Props) => {
       </div>
 
       <Button
-        variant="secondary"
+        variant="outline"
         onClick={handleAddClick}
-        className="font-medium text-[16px] leading-[19px] py-3"
+        className="font-medium leading-[19px]"
+        size="lg"
       >
         Add Liquidity
       </Button>

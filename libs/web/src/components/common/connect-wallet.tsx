@@ -87,35 +87,35 @@ export function ConnectWallet() {
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent
-            className="w-56 bg-[#262834] border-0 px-2 py-2.5"
+            className="w-56 dark:bg-[#262834] border-0 px-2 py-2.5"
             align="start"
           >
             <DropdownMenuItem
               onClick={handleCopy}
               className="hover:bg-background-grey-dark hover:text-content-primary py-3 cursor-pointer"
             >
-              <CopyIcon className="text-content-grey" />
+              <CopyIcon />
               Copy Address
             </DropdownMenuItem>
             <DropdownMenuItem
               onClick={handleExplorerClick}
               className="hover:bg-background-grey-dark hover:text-content-primary py-3 cursor-pointer"
             >
-              <ExternalLink className="text-content-grey" />
+              <ExternalLink />
               View in Explorer
             </DropdownMenuItem>
             <DropdownMenuItem
               onClick={handleTxHistoryClick}
               className="hover:bg-background-grey-dark hover:text-content-primary py-3 cursor-pointer"
             >
-              <ArrowLeftRight className="text-content-grey" />
+              <ArrowLeftRight />
               Transaction History
             </DropdownMenuItem>
             <DropdownMenuItem
               className="hover:bg-background-grey-dark hover:text-content-primary py-3 cursor-pointer"
               onClick={disconnect}
             >
-              <LogOutIcon className="text-content-grey" />
+              <LogOutIcon />
               Disconnect
             </DropdownMenuItem>
           </DropdownMenuContent>

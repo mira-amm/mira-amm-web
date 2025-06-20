@@ -1,13 +1,21 @@
 import Link from "next/link";
 import {LogoIcon} from "@/meshwave-ui/icons";
+import {FeatureGuard} from "./feature-guard";
+import {LogoNew} from "./logo-new";
 
 export function Logo() {
   return (
-    <Link
-      href="/"
-      className="w-16 h-8 flex flex-col justify-center text-content-primary hover:text-content-primary"
+    <FeatureGuard
+      fallback={
+        <Link
+          href="/"
+          className="w-16 h-8 flex flex-col justify-center text-content-primary hover:text-content-primary"
+        >
+          <LogoIcon />
+        </Link>
+      }
     >
-      <LogoIcon />
-    </Link>
+      <LogoNew />
+    </FeatureGuard>
   );
 }
