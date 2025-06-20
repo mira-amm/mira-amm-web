@@ -25,7 +25,6 @@ import {PointsIcon} from "@/meshwave-ui/icons";
 import {useCurrentPath} from "@/src/hooks/useCurrentPath";
 import {ConnectWallet} from "./connect-wallet";
 import {X} from "lucide-react";
-import {ModeToggle} from "./toggle-mode";
 
 const PROMO_BANNER_STORAGE_KEY = "fuel-boost-program-promo-banner-closed";
 
@@ -136,7 +135,6 @@ export function Header({
         </div>
 
         <div className="hidden lg:flex items-center gap-6">
-          <ModeToggle />
           <MainnetLabel />
           <ConnectWallet />
         </div>

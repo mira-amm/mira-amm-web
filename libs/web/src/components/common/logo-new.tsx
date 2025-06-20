@@ -9,7 +9,7 @@ type Props = {
 
 export function LogoNew({isFooter = false}: Props) {
   return (
-    <Link href="/" className={cn(!isFooter && "w-[150px]")}>
+    <Link href="/" className={cn(!isFooter && "w-[150px]", "dark:text-white")}>
       {isFooter ? <LogoIconFooter /> : <LogoIcon />}
     </Link>
   );

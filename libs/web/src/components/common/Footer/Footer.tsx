@@ -5,7 +5,7 @@ import {Button} from "@/meshwave-ui/Button";
 
 export default function Footer() {
   return (
-    <footer className="flex flex-col text-content-dimmed-light border-t border-white/10 box-border w-full py-4 px-4 max-w-6xl mx-auto gap-6">
+    <footer className="flex flex-col border-t border-white/10 box-border w-full py-4 px-4 max-w-6xl mx-auto gap-6">
       <div className="flex flex-col gap-4 lg:flex-row lg:justify-between lg:items-center lg:gap-[134px]">
         <Logo isFooter />
         <div className="flex flex-col gap-3 text-base leading-[22px] text-content-tertiary font-normal lg:flex-row lg:justify-between lg:w-[650px] lg:text-lg lg:leading-6">
