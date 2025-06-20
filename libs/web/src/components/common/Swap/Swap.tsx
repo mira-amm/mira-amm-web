@@ -89,6 +89,8 @@ const PreviewSummary = memo(function PreviewSummary({
   txCost,
   txCostPending,
   createPoolKeyFn,
+  reservesPrice,
+  previewPrice,
 }: {
   previewLoading: boolean;
   tradeState: TradeState;
@@ -99,6 +101,8 @@ const PreviewSummary = memo(function PreviewSummary({
   txCost: number | null;
   txCostPending: boolean;
   createPoolKeyFn: (pool: PoolId) => string;
+  reservesPrice: number | undefined;
+  previewPrice: number | undefined;
 }) {
   return (
     <div className="flex bg-background-primary dark:bg-background-secondary p-4 rounded-[10px] flex-col gap-2 text-accent-primary dark:text-content-tertiary text-[12px] leading-[16px] lg:text-[13px] lg:leading-[18px]">
@@ -149,6 +153,8 @@ const PreviewSummary = memo(function PreviewSummary({
           <p>{txCost?.toFixed(9)} ETH</p>
         )}
       </div>
+
+      <PriceImpact reservesPrice={reservesPrice} previewPrice={previewPrice} />
     </div>
   );
 });
@@ -156,17 +162,12 @@ const PreviewSummary = memo(function PreviewSummary({
 PreviewSummary.displayName = "PreviewSummary";
 
 const PriceAndRate = memo(function PriceAndRate({
-  reservesPrice,
-  previewPrice,
   swapState,
 }: {
-  reservesPrice: number | undefined;
-  previewPrice: number | undefined;
   swapState: SwapState;
 }) {
   return (
-    <div className="flex justify-between">
-      <PriceImpact reservesPrice={reservesPrice} previewPrice={previewPrice} />
+    <div className="flex justify-end">
       <ExchangeRate swapState={swapState} />
     </div>
   );
@@ -713,6 +714,8 @@ const Swap = ({isWidget}: {isWidget?: boolean}) => {
               txCost={txCost}
               txCostPending={txCostPending}
               createPoolKeyFn={createPoolKey}
+              reservesPrice={reservesPrice}
+              previewPrice={previewPrice}
             />
           )}
 
@@ -736,11 +739,7 @@ const Swap = ({isWidget}: {isWidget?: boolean}) => {
           )}
         </div>
 
-        <PriceAndRate
-          reservesPrice={reservesPrice}
-          previewPrice={previewPrice}
-          swapState={swapState}
-        />
+        <PriceAndRate swapState={swapState} />
       </div>
 
       {swapPending && <div className={overlayClasses} />}
