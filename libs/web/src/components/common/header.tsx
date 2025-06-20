@@ -4,13 +4,7 @@ import {useEffect, useState, useCallback, useMemo} from "react";
 import Link from "next/link";
 import {clsx} from "clsx";
 
-import {
-  Logo,
-  MobileMenu,
-  MainnetLabel,
-  FeatureGuard,
-  LogoNew,
-} from "@/src/components/common";
+import {Logo, MobileMenu, MainnetLabel} from "@/src/components/common";
 import DisconnectMobile from "@/src/components/common/ConnectButton/DisconnectMobile";
 import {useIsConnected} from "@fuels/react";
 
@@ -99,8 +93,8 @@ export function Header({
       )}
 
       <section className="flex justify-between items-center gap-4 px-4 py-4 lg:px-10">
-        <Logo />
         <div className="flex items-center gap-6 lg:gap-10">
+          <Logo />
           <nav className="hidden lg:flex gap-6 items-center">
             {navLinks.map(({href, label, match, external}) =>
               external ? (
