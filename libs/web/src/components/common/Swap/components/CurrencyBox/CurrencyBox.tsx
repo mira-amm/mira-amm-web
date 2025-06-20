@@ -84,7 +84,7 @@ function CurrencyBox({
 
       <div className="min-h-[44px] flex items-center gap-2">
         {previewError ? (
-          <div className="flex-1 bg-[rgba(255,235,59,0.1)] border border-[rgba(255,235,59,0.3)] rounded-lg px-3 py-2">
+          <div className="flex-1 bg-yellow-100/30 dark:bg-[rgba(255,235,59,0.1)] border border-yellow-500 dark:border-[rgba(255,235,59,0.3)] rounded-lg px-3 py-2">
             <p className="text-[#d4a900] text-sm font-medium leading-[1.4] lg:text-[15px]">
               {previewError}
             </p>
@@ -94,7 +94,7 @@ function CurrencyBox({
             className={clsx(
               "flex-1 w-0 font-semibold text-[20px] leading-6 border-none bg-transparent outline-none",
               "text-content-secondary dark:text-content-secondary font-inter",
-              loading && "text-gray-400/40",
+              loading && "text-gray-400/40 dark:text-content-tertiary/40",
             )}
             type="text"
             inputMode="decimal"
