@@ -66,7 +66,7 @@ export function HeaderNew({
 
   return (
     <header
-      className="sticky top-0 z-10 text-base lg:text-lg backdrop-blur-lg
+      className="md:sticky top-0 z-10 text-base lg:text-lg backdrop-blur-lg
         transition-all duration-300 ease-in-out"
     >
       {isPromoShown && (
@@ -94,7 +94,7 @@ export function HeaderNew({
       )}
 
       <section className="flex justify-between items-center gap-4 px-4 py-4 lg:px-10">
-        <div className="flex items-center gap-6 lg:gap-10">
+        <div className="flex items-center gap-6 lg:gap-10 flex-1">
           <Logo />
         </div>
 
@@ -126,14 +126,20 @@ export function HeaderNew({
           )}
         </nav>
 
-        <div className="flex  items-center">
+        <div className="flex items-center flex-1 justify-end gap-2">
           <ModeToggle />
-          <ConnectWalletNew />
+          <div className="hidden lg:flex">
+            <ConnectWalletNew />
+          </div>
         </div>
       </section>
 
-      <div className="lg:hidden flex pb-4">
-        <nav className="flex gap-6 items-center mx-auto">
+      <div className="lg:hidden flex flex-col pb-4">
+        <div className="pb-4 mx-auto">
+          <ConnectWalletNew />
+        </div>
+
+        <nav className="flex gap-2 sm:gap-6 items-center mx-auto flex-wrap justify-center">
           {navLinks.map(({href, label, match, external}) =>
             external ? (
               <a
@@ -141,7 +147,7 @@ export function HeaderNew({
                 href={href}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="px-3 py-1 rounded-full transition hover:bg-background-grey-light text-content-tertiary"
+                className="px-3 py-1 rounded-full transition hover:bg-background-grey-light text-content-tertiary text-sm sm:text-base"
               >
                 {label}
               </a>
@@ -149,8 +155,8 @@ export function HeaderNew({
               <Link
                 key={label}
                 href={href}
-                className={clsx(
-                  "px-3 py-1 rounded-full transition hover:background-grey-light hover:bg-background-grey-light text-content-tertiary",
+                className={cn(
+                  "px-3 py-1 rounded-full transition hover:bg-background-grey-light text-content-tertiary text-sm sm:text-base",
                   match &&
                     "bg-background-primary text-white dark:bg-background-grey-light hover:bg-background-primary",
                 )}

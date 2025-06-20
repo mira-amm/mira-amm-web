@@ -1,4 +1,3 @@
-import clsx from "clsx";
 import {Button} from "@/meshwave-ui/Button";
 
 export const ConfirmPopup: React.FC<{
@@ -9,11 +8,11 @@ export const ConfirmPopup: React.FC<{
   return (
     <section className="fixed top-0 left-0 z-[47] flex flex-col justify-center items-center w-screen h-screen bg-[#00000059] backdrop-blur-md">
       <form
-        className="relative z-[48] w-[500px] h-[450px] overflow-y-scroll overflow-x-hidden bg-[#262834] rounded-[16px] flex flex-col text-[16px] leading-[24px] font-light
+        className="relative z-[48] w-[500px] h-[450px] overflow-y-scroll overflow-x-hidden bg-background-grey-dark border-transparent border-[12px] dark:border-0 dark:bg-[#262834]  rounded-[16px] flex flex-col text-[16px] leading-[24px] font-light
         max-[768px]:w-[343px] max-[768px]:h-[525px]"
       >
         {/* Header */}
-        <div className="sticky top-0 left-0 z-[48] w-full px-[28px] pt-[20px] pb-[16px] flex justify-between items-center bg-[#262834] shadow-[1px_0px_2px_0px_#faf8f830]">
+        <div className="sticky top-0 left-0 z-[48] w-full px-[28px] pt-[20px] pb-[16px] flex justify-between items-center dark:bg-[#262834]  bg-background-grey-dark shadow-[1px_0px_2px_0px_#faf8f830]">
           <h2 className="text-[24px] leading-[32px] font-normal max-[768px]:text-[22px] max-[768px]:leading-[28px]">
             Disclaimer
           </h2>
@@ -75,7 +74,7 @@ export const ConfirmPopup: React.FC<{
         </ul>
 
         {/* Buttons */}
-        <div className="sticky bottom-0 left-0 z-[48] w-full bg-[#262834] px-[28px] py-[24px] flex gap-[12px] shadow-[1px_0px_2px_0px_#faf8f830]">
+        <div className="sticky bottom-0 left-0 z-[48] w-full dark:bg-[#262834]  bg-background-grey-dark px-[28px] py-[24px] flex gap-[12px] shadow-[1px_0px_2px_0px_#faf8f830]">
           <Button
             className="h-[48px]"
             variant="outline"
