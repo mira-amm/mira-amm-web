@@ -70,88 +70,56 @@ export function ConnectWallet() {
   return (
     <>
       {!isConnected && (
-        <div className="rounded-[10px] bg-background-grey-dark border-border-secondary border-[12px] dark:border-0 dark:bg-background-grey-dark">
-          <div className="flex gap-x-3 bg-background-grey-dark p-3 rounded-[10px]">
-            <div className="">
-              <div className="flex justify-between items-center mb-0.5">
-                <span>Power</span>
-                <div className="h-2 w-5 bg-accent-primary-2"></div>
-              </div>
-              <Button
-                onClick={connect}
-                disabled={isWalletLoading}
-                size="xs"
-                className="rounded uppercase px-4"
-              >
-                Connect
-              </Button>
-            </div>
-            <div className="bg-black rounded-[10px] text-accent-primary uppercase px-3 tracking-tight flex justify-center items-center text-sm">
-              No wallet connected
-            </div>
-          </div>
-        </div>
+        <Button onClick={connect} disabled={isWalletLoading} size="lg">
+          Connect Wallet
+        </Button>
       )}
       {isConnected && (
-        <div className="rounded-[10px] bg-background-grey-dark border-border-secondary border-[12px] dark:border-0 dark:bg-background-grey-dark">
-          <div className="flex gap-x-3 bg-background-grey-dark p-3 rounded-[10px]">
-            <div className="">
-              <div className="flex justify-between items-center mb-0.5">
-                <span>Power</span>
-                <div className="h-2 w-5 bg-accent-primary"></div>
-              </div>
-              <Button
-                onClick={disconnect}
-                size="xs"
-                className="rounded uppercase px-4 text-black"
-                variant="destructive"
-              >
-                Disconnect
-              </Button>
-            </div>
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <div className="bg-black rounded-[10px] text-accent-primary uppercase px-3 tracking-tight flex justify-center items-center text-sm">
-                  {formattedAddress}
-                  <ChevronDown className="text-content-dimmed-dark" />
-                </div>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent
-                className="w-56 dark:bg-[#262834] border-0 px-2 py-2.5"
-                align="start"
-              >
-                <DropdownMenuItem
-                  onClick={handleCopy}
-                  className="hover:bg-background-grey-dark hover:text-content-primary py-3 cursor-pointer group"
-                >
-                  <CopyIcon />
-                  Copy Address
-                </DropdownMenuItem>
-                <DropdownMenuItem
-                  onClick={handleExplorerClick}
-                  className="hover:bg-background-grey-dark hover:text-content-primary py-3 cursor-pointer"
-                >
-                  <ExternalLink />
-                  View in Explorer
-                </DropdownMenuItem>
-                <DropdownMenuItem
-                  onClick={handleTxHistoryClick}
-                  className="hover:bg-background-grey-dark hover:text-content-primary py-3 cursor-pointer"
-                >
-                  <ArrowLeftRight />
-                  Transaction History
-                </DropdownMenuItem>
-                <DropdownMenuItem
-                  className="hover:bg-background-grey-dark hover:text-content-primary py-3 cursor-pointer"
-                  onClick={disconnect}
-                >
-                  <LogOutIcon />
-                  Disconnect
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
-          </div>
-        </div>
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button
+              variant="outline"
+              className="flex items-center gap-2.5 px-2 py-4 h-10 text-content-primary bg-transparent border border-accent-primary hover:shadow-none hover:text-none active:bg-transparent hover:bg-transaparent"
+            >
+              <img src="/images/avatar.png" width="24" height="24" />
+              {formattedAddress}
+              <ChevronDown className="text-content-dimmed-dark" />
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent
+            className="w-56 dark:bg-[#262834] border-0 px-2 py-2.5"
+            align="start"
+          >
+            <DropdownMenuItem
+              onClick={handleCopy}
+              className="hover:bg-background-grey-dark hover:text-content-primary py-3 cursor-pointer"
+            >
+              <CopyIcon />
+              Copy Address
+            </DropdownMenuItem>
+            <DropdownMenuItem
+              onClick={handleExplorerClick}
+              className="hover:bg-background-grey-dark hover:text-content-primary py-3 cursor-pointer"
+            >
+              <ExternalLink />
+              View in Explorer
+            </DropdownMenuItem>
+            <DropdownMenuItem
+              onClick={handleTxHistoryClick}
+              className="hover:bg-background-grey-dark hover:text-content-primary py-3 cursor-pointer"
+            >
+              <ArrowLeftRight />
+              Transaction History
+            </DropdownMenuItem>
+            <DropdownMenuItem
+              className="hover:bg-background-grey-dark hover:text-content-primary py-3 cursor-pointer"
+              onClick={disconnect}
+            >
+              <LogOutIcon />
+              Disconnect
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
       )}
 
       <TransactionsHistory

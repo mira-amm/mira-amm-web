@@ -4,8 +4,7 @@ import {useEffect, useState, useCallback, useMemo} from "react";
 import Link from "next/link";
 import {clsx} from "clsx";
 
-import {Logo, MobileMenu, MainnetLabel} from "@/src/components/common";
-import DisconnectMobile from "@/src/components/common/ConnectButton/DisconnectMobile";
+import {Logo} from "@/src/components/common";
 import {useIsConnected} from "@fuels/react";
 
 import {
@@ -17,13 +16,14 @@ import {
 import {IconButton} from "@/src/components/common";
 import {PointsIcon} from "@/meshwave-ui/icons";
 import {useCurrentPath} from "@/src/hooks/useCurrentPath";
-import {ConnectWallet} from "./connect-wallet";
 import {X} from "lucide-react";
 import {ModeToggle} from "./toggle-mode";
+import {cn} from "@/src/utils/cn";
+import {ConnectWalletNew} from "./connect-wallet-new";
 
 const PROMO_BANNER_STORAGE_KEY = "fuel-boost-program-promo-banner-closed";
 
-export function Header({
+export function HeaderNew({
   isHomePage,
   pathName,
 }: {
@@ -96,48 +96,71 @@ export function Header({
       <section className="flex justify-between items-center gap-4 px-4 py-4 lg:px-10">
         <div className="flex items-center gap-6 lg:gap-10">
           <Logo />
-          <nav className="hidden lg:flex gap-6 items-center">
-            {navLinks.map(({href, label, match, external}) =>
-              external ? (
-                <a
-                  key={label}
-                  href={href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="px-3 py-1 rounded-full transition hover:background-grey-light"
-                >
-                  {label}
-                </a>
-              ) : (
-                <Link
-                  key={label}
-                  href={href}
-                  className={clsx(
-                    "px-3 py-1 rounded-full transition hover:background-grey-light",
-                    match && "bg-background-grey-light",
-                  )}
-                >
-                  {label}
-                </Link>
-              ),
-            )}
-          </nav>
         </div>
 
-        <div>
+        <nav className="hidden lg:flex gap-6 items-center mx-auto">
+          {navLinks.map(({href, label, match, external}) =>
+            external ? (
+              <a
+                key={label}
+                href={href}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="px-3 py-1 rounded-full transition hover:bg-background-grey-light text-content-tertiary"
+              >
+                {label}
+              </a>
+            ) : (
+              <Link
+                key={label}
+                href={href}
+                className={cn(
+                  "px-3 py-1 rounded-full transition hover:bg-background-grey-light text-content-tertiary",
+                  match &&
+                    "bg-background-primary text-white dark:bg-background-grey-light hover:bg-background-primary",
+                )}
+              >
+                {label}
+              </Link>
+            ),
+          )}
+        </nav>
+
+        <div className="flex  items-center">
           <ModeToggle />
-        </div>
-
-        <div className="flex lg:hidden items-center gap-3">
-          <DisconnectMobile className="gap-1 px-2 py-1 text-sm font-medium leading-4" />
-          <MobileMenu />
-        </div>
-
-        <div className="hidden lg:flex items-center gap-6">
-          <MainnetLabel />
-          <ConnectWallet />
+          <ConnectWalletNew />
         </div>
       </section>
+
+      <div className="lg:hidden flex pb-4">
+        <nav className="flex gap-6 items-center mx-auto">
+          {navLinks.map(({href, label, match, external}) =>
+            external ? (
+              <a
+                key={label}
+                href={href}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="px-3 py-1 rounded-full transition hover:bg-background-grey-light text-content-tertiary"
+              >
+                {label}
+              </a>
+            ) : (
+              <Link
+                key={label}
+                href={href}
+                className={clsx(
+                  "px-3 py-1 rounded-full transition hover:background-grey-light hover:bg-background-grey-light text-content-tertiary",
+                  match &&
+                    "bg-background-primary text-white dark:bg-background-grey-light hover:bg-background-primary",
+                )}
+              >
+                {label}
+              </Link>
+            ),
+          )}
+        </nav>
+      </div>
     </header>
   );
 }
