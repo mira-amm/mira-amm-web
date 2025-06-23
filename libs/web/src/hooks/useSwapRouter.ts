@@ -12,7 +12,7 @@ export enum TradeState {
   INVALID,
   NO_ROUTE_FOUND,
   VALID,
-  REEFETCHING,
+  REFETCHING,
 }
 
 export enum TradeType {
@@ -188,7 +188,7 @@ export function useSwapRouter(
 
     if (isRefetching || isRoutesRefetching)
       return {
-        tradeState: TradeState.REEFETCHING,
+        tradeState: TradeState.REFETCHING,
         trade: {
           bestRoute,
           amountIn,
