@@ -1,47 +1,38 @@
-import {useMemo} from "react";
-import {BASE_ASSETS, CoinData} from "../utils/coinsConfig";
+import { useMemo } from "react";
+import { BASE_ASSETS, CoinData } from "../utils/coinsConfig";
+
+const BASE_PAIRS: [CoinData, CoinData][] = BASE_ASSETS.flatMap((base) =>
+  BASE_ASSETS.map((otherBase) => [base, otherBase] as [CoinData, CoinData]),
+).filter(([a, b]) => a.assetId !== b.assetId);
 
 export const useAllAssetsCombination = (
   assetA?: CoinData,
   assetB?: CoinData,
 ): [CoinData, CoinData][] => {
-  const basePairs: [CoinData, CoinData][] = BASE_ASSETS.flatMap(
-    (base): [CoinData, CoinData][] =>
-      BASE_ASSETS.map((otherBase) => [base, otherBase]),
-  ).filter(([a0, a1]) => a0.assetId !== a1.assetId);
+  return useMemo(() => {
+    if (!assetA || !assetB) return [];
 
-  return useMemo(
-    () =>
-      assetA && assetB
-        ? [
-            // the direct pair
-            [assetA, assetB] as [CoinData, CoinData],
-            // token A against all bases
-            ...BASE_ASSETS.map((base): [CoinData, CoinData] => [assetA, base]),
-            // token B against all bases
-            ...BASE_ASSETS.map((base): [CoinData, CoinData] => [assetB, base]),
-            // each base against all bases
-            ...basePairs,
-          ]
-            // filter out invalid pairs comprised of the same asset
-            .filter(([t0, t1]) => t0.assetId !== t1.assetId)
-            // filter out duplicate pairs
-            .filter(([t0, t1], i, otherPairs) => {
-              // find the first index in the array at which there are the same 2 tokens as the current
-              const firstIndexInOtherPairs = otherPairs.findIndex(
-                ([t0Other, t1Other]) => {
-                  return (
-                    (t0.assetId === t0Other.assetId &&
-                      t1.assetId === t1Other.assetId) ||
-                    (t0.assetId === t1Other.assetId &&
-                      t1.assetId === t0Other.assetId)
-                  );
-                },
-              );
-              // only accept the first occurrence of the same 2 tokens
-              return firstIndexInOtherPairs === i;
-            })
-        : [],
-    [assetA, assetB, basePairs],
-  );
+    const seen = new Set<string>();
+    const addPair = (a: CoinData, b: CoinData, acc: [CoinData, CoinData][]) => {
+      if (a.assetId === b.assetId) return acc;
+      const key = [a.assetId, b.assetId].sort().join("-");
+      if (!seen.has(key)) {
+        seen.add(key);
+        acc.push([a, b]);
+      }
+      return acc;
+    };
+
+    let combinations: [CoinData, CoinData][] = [];
+
+    addPair(assetA, assetB, combinations);
+
+    BASE_ASSETS.forEach((base) => addPair(assetA, base, combinations));
+
+    BASE_ASSETS.forEach((base) => addPair(assetB, base, combinations));
+
+    BASE_PAIRS.forEach(([a, b]) => addPair(a, b, combinations));
+
+    return combinations;
+  }, [assetA, assetB]);
 };
