@@ -9,10 +9,10 @@ The status should be success
 The line 3 should be undefined
 End
 
-It "greater than or equal to version 10.11.0"
+It "greater than or equal to version 10.12.0"
 When run pnpm --version
 The status should be success
-The output should include '10.11'
+The output should include '10.12'
 End
 End
 
@@ -46,12 +46,11 @@ The output should end with '/node_modules/.bin/playwright'
 End
 End
 
-# https://nix.dev/manual/nix/2.17/installation/upgrading
-Describe "❄ Nix should be:"
-It "greater than or equal to version 2.28.0"
+Describe "❄ Lix should be:"
+It "greater than or equal to version 2.93.0"
 When run nix --version
 The status should be success
-The output should include '2.28'
+The output should include '2.93'
 End
 End
 

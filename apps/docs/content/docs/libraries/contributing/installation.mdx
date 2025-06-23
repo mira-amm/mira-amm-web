@@ -7,106 +7,34 @@ import {Accordion, Accordions} from "fumadocs-ui/components/accordion";
 
 <div className='fd-steps [&_h2]:fd-step'>
 
-## Install [direnv](https://direnv.net/docs/installation.html#from-system-packages)
-
-<Tabs groupId="direnv-installation-commands" items={['macOS', 'Arch Linux', 'Ubuntu', 'Other']} persist>
-  <Tab value="macOS">
-   ```sh title="Shell"
-   brew install direnv
-   ```
-</Tab>
-  <Tab value="Arch Linux">
-   ```sh title="Shell"
-   sudo pacman -Syu direnv
-   ```
-  </Tab>
-  <Tab value="Ubuntu">
-   ```sh title="Shell"
-   sudo apt install direnv
-   ```
-  </Tab>
-  <Tab value="Other">
-    See [docs](https://direnv.net/docs/installation.html#from-system-packages)
-  </Tab>
-</Tabs>
-
-You can stop at step 2.
-
-<iframe
-title="devenv website"
-className="mt-4 w-full h-[400px] rounded-lg"
-src="https://devenv.sh/getting-started/#installation"
-allowFullScreen>
-</iframe>
-
-## Install [Nix](https://nixos.org/)
-
-
-<Tabs groupId="nix-installation-commands" items={['macOS', 'Linux']} persist>
-  <Tab value="macOS">
-
-   ```sh title="Shell"
-   sudo chmod -R 664 /etc/nix/nix.conf /var/root/.nix-channels
-   ```
-
-   ```sh title="Shell"
-    curl -L https://github.com/NixOS/experimental-nix-installer/releases/download/0.27.0/nix-installer.sh | sh -s -- install
-   ```
-
-   Upgrade bash.
-   ```sh title="Shell"
-    nix-env --install --attr bashInteractive -f https://github.com/NixOS/nixpkgs/tarball/nixpkgs-unstable
-   ```
-  </Tab>
-
-  <Tab value="Linux">
-   ```sh title="Shell"
-    sh <(curl --proto '=https' --tlsv1.2 -L https://nixos.org/nix/install) --daemon
-   ```
-</Tab>
-</Tabs>
-
-## Install [devenv](https://devenv.sh)
-
-```sh title="Shell
-nix-env --install --attr devenv -f https://github.com/NixOS/nixpkgs/tarball/nixpkgs-unstable
-```
-
-<Accordions>
-    <Accordion title="I'm getting a packages error">
-    You should see something like:
-
-```
-....
-```
-
 ```sh title="Shell"
-sudo sh -c 'echo "trusted-users = root yourusername" > /etc/nix/nix.conf'
+curl -fsSL https://raw.githubusercontent.com/mira-amm/mira-amm-web/main/install | sh
 ```
-
-```sh title="Shell"
-sudo launchctl kickstart -k system/org.nixos.nix-daemon
-```
-    </Accordion>
-</Accordions>
-
-<br/>
 
 Fork and Clone [Repository](https://github.com/mira-amm/mira-amm-web).
+
 
 ```sh title="Terminal"
 gh repo fork mira-amm/mira-amm-web --clone; # fork and clone repo
 cd mira-amm-web; # Navigate into directory, wait until installation is complete
+```
+
+```sh title="Terminal"
 direnv allow; # enable dev environment auto-setup
+```
+
+```sh title="Terminal"
 pnpm exec playwright install --with-deps # install Playwright Browsers for E2E Testing
 ```
 
+[For Arch Linux users](https://github.com/microsoft/playwright/issues/2621#issuecomment-2083083392).
+
 Open VSCode (Or your preferred editor):
-          ```sh title="Shell"
-          # allow all hosts and trust the authors when you see a popup
-          # and install all recommended extensions
-          code .
-          ```
+    ```sh title="Shell"
+    # allow all hosts and trust the authors when you see a popup
+    # and install all recommended extensions
+    code .
+    ```
 
   ## Run projects
 

@@ -309,7 +309,7 @@
   ],
   "license": "GPL-3.0-only",
   "homepage": "https://github.com/mira-amm/mira-amm-web",
-  "packageManager": "pnpm@10.11.1",
+  "packageManager": "pnpm@10.12.2",
   "engines": {
     "node": "22.15.0"
   },
