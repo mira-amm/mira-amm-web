@@ -1,3 +1,5 @@
+"use client"
+
 import {
   ChangeEvent,
   Dispatch,
@@ -8,17 +10,20 @@ import {
   FocusEvent,
   useRef,
 } from "react";
+
+import {Info} from "lucide-react";
 import {clsx} from "clsx";
+
 import {
   DefaultSlippageValue,
   SlippageMode,
 } from "@/src/components/common/Swap/Swap";
+
 import {useAnimationStore} from "@/src/stores/useGlitchScavengerHunt";
-import {Info} from "lucide-react";
 
 const AutoSlippageValues = [10, 50, 100];
 
-function SettingsModalContent({
+export function SettingsModalContent({
   slippage,
   slippageMode,
   setSlippage,
@@ -159,5 +164,3 @@ function SettingsModalContent({
     </div>
   );
 }
-
-export default memo(SettingsModalContent);

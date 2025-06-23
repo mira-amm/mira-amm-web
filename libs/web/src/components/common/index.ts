@@ -27,6 +27,10 @@ export {CopyNotification} from "./copy-notification"
 export {SkeletonLoader} from "./skeleton-loader"
 export {CoinsListModal} from "./coins-list-modal"
 export {SwapSuccessModal} from "./swap-success-modal"
+export {SwapFailureModal} from "./swap-failure-modal"
+export { CurrencyBox } from "./currency-box";
+export { ExchangeRate } from "./exchange-rate";
+export { SettingsModalContent } from "./settings-modal-content";
 export {CoinListItem} from "./coin-list-item"
 export {FeatureGuard} from "./feature-guard"
 export {HeaderNew} from "./header-new"

@@ -1,16 +1,24 @@
-import {ChangeEvent, memo, useCallback} from "react";
-import {clsx} from "clsx";
+import {
+  memo,
+  ChangeEvent,
+  useCallback
+} from "react";
 
-import {Coin} from "@/src/components/common";
-import {CurrencyBoxMode} from "@/src/components/common/Swap/Swap";
-import {TextButton} from "@/src/components/common";
-import {MinEthValueBN} from "@/src/utils/constants";
+import {clsx} from "clsx";
 import {B256Address, BN} from "fuels";
-import {useAssetMetadata} from "@/src/hooks";
-import fiatValueFormatter from "@/src/utils/abbreviateNumber";
 import {ChevronDown} from "lucide-react";
 
-function CurrencyBox({
+import {
+  Coin,
+  TextButton
+} from "@/src/components/common";
+
+import {CurrencyBoxMode} from "@/src/components/common/Swap/Swap";
+import {MinEthValueBN} from "@/src/utils/constants";
+import {useAssetMetadata} from "@/src/hooks";
+import fiatValueFormatter from "@/src/utils/abbreviateNumber";
+
+export function CurrencyBox({
   value,
   assetId,
   mode,
@@ -140,5 +148,3 @@ function CurrencyBox({
     </div>
   );
 }
-
-export default memo(CurrencyBox);
