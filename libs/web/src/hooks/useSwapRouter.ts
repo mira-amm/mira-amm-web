@@ -60,12 +60,12 @@ const getSwapQuotesBatch = (
   );
 }
 
-const useSwapRouter = (
+export function useSwapRouter(
   tradeType: TradeType,
   amountSpecified: BN = bn(0),
   assetIn?: CoinData,
   assetOut?: CoinData,
-): SwapPreviewState => {
+): SwapPreviewState {
   const miraAmm = useReadonlyMira();
 
   const shouldFetchPools = useMemo(() => {
@@ -218,5 +218,3 @@ const useSwapRouter = (
     assetOut,
   ]);
 };
-
-export default useSwapRouter;
