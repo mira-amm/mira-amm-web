@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { type BN, bn } from "fuels";
+import { type BN, type AssetId, bn } from "fuels";
 import { CoinData } from "../utils/coinsConfig";
 import { useReadonlyMira } from ".";
 import useRoutablePools from "./useRoutablePools";
@@ -20,44 +20,52 @@ export enum TradeType {
   EXACT_OUT = "EXACT_OUT",
 }
 
-type SwapPreviewState = {
-  tradeState: TradeState;
-  trade: {
-    bestRoute: null | Route;
-    amountIn: null | BN;
-    amountOut: null | BN;
-  } | undefined;
-  error: string | null;
-};
-
-type Quote = {
-  outputAmount?: BN,
-  inputAmount?: BN,
-  tradeType: TradeType,
+type Quote = Promise<{
   route: Route,
-  asset: Asset,
-}
+  amountIn: BN,
+  amountOut: BN,
+  assetIdIn: AssetId,
+  assetIdOut: AssetId,
+  tradeType: TradeType,
+}[]>
 
-const getSwapQuotesBatch = (
-  inputAmount: BN,
+const getSwapQuotesBatch = async (
+  providedAmount: BN,
   tradeType: TradeType,
   routes: Route[],
   miraAmm: ReadonlyMiraAmm,
-) => {
+): Quote => {
   if (tradeType === TradeType.EXACT_IN) {
-    return miraAmm.previewSwapExactInputBatch(
-      // TODO: not production code
+    const returnOne = (await miraAmm.previewSwapExactInputBatch(
       { bits: routes[0].assetIn.assetId },
-      inputAmount,
+      providedAmount,
       routes.map((route) => route.pools.map((p) => p.poolId)),
-    );
+    )).map((asset: Asset, index: number)=> ({
+     tradeType,
+      route: routes[index],
+      assetIn: routes[index].assetIn.assetId,
+      assetOut: routes[index].assetOut.assetId,
+      amountIn: providedAmount,
+      amountOut: asset[1]
+    }));
+
+    return returnOne;
   }
 
-  return miraAmm.previewSwapExactOutputBatch(
+  const returnTwo = (await miraAmm.previewSwapExactOutputBatch(
     { bits: routes[0].assetOut.assetId },
-    inputAmount,
+    providedAmount,
     routes.map((route) => route.pools.map((p) => p.poolId)),
-  );
+    )).map((asset: Asset, index: number)=> ({
+     tradeType,
+      route: routes[index],
+      assetIn: routes[index].assetIn.assetId,
+      assetOut: routes[index].assetOut.assetId,
+      amountIn: asset[1],
+      amountOut: providedAmount,
+    }));
+
+  return returnTwo;
 }
 
 export function useSwapRouter(
@@ -65,7 +73,15 @@ export function useSwapRouter(
   amountSpecified: BN = bn(0),
   assetIn?: CoinData,
   assetOut?: CoinData,
-): SwapPreviewState {
+): {
+  tradeState: TradeState;
+  trade: {
+    bestRoute: null | Route;
+    amountIn: null | BN;
+    amountOut: null | BN;
+  } | undefined;
+  error: string | null;
+} {
   const miraAmm = useReadonlyMira();
 
   const shouldFetchPools = useMemo(() => {
@@ -85,6 +101,7 @@ export function useSwapRouter(
   } = useQuery(
     {
       queryKey: [
+        "routes",
         routes,
         tradeType,
         amountSpecified.toString(),
@@ -100,15 +117,7 @@ export function useSwapRouter(
           tradeType,
           routes,
           miraAmm
-        ).then((result) => (
-          result.map((asset, index) => ({
-            route: routes[index],
-            asset,
-            tradeType,
-            outputAmount: asset.amountOut,
-            inputAmount: asset.amountIn,
-          })) as Quote[]
-        ))
+        )
       },
       initialData: []
     }
@@ -148,23 +157,23 @@ export function useSwapRouter(
 
         if (
           tradeType === TradeType.EXACT_IN &&
-          quote.outputAmount !== undefined &&
-          (currentBest.amountOut === null || currentBest.amountOut.lt(quote.outputAmount))
+          quote.amountOut !== undefined &&
+          (currentBest.amountOut === null || currentBest.amountOut.lt(quote.amountOut))
         ) {
           return {
             bestRoute: quote.route,
-            amountIn: amountSpecified,
-            amountOut: quote.outputAmount,
+            amountIn: quote.amountIn,
+            amountOut: quote.amountOut,
           };
         } else if (
           tradeType === TradeType.EXACT_OUT &&
-          quote.inputAmount !== undefined &&
-          (currentBest.amountIn === null || currentBest.amountIn.gt(quote.inputAmount))
+          quote.amountIn !== undefined &&
+          (currentBest.amountIn === null || currentBest.amountIn.gt(quote.amountIn))
         ) {
           return {
             bestRoute: quote.route,
-            amountIn: quote.inputAmount,
-            amountOut: amountSpecified,
+            amountIn: quote.amountIn,
+            amountOut: quote.amountOut,
           };
         }
 
