@@ -20,7 +20,7 @@ export enum TradeType {
   EXACT_OUT = "EXACT_OUT",
 }
 
-type OptimialTrade = {
+type OptimalTrade = {
   bestRoute: null | Route;
   amountIn: null | BN;
   amountOut: null | BN;
@@ -28,7 +28,7 @@ type OptimialTrade = {
 
 type SwapPreviewState = {
   tradeState: TradeState;
-  trade: OptimialTrade | undefined;
+  trade: OptimalTrade | undefined;
   error: string | null;
 };
 
