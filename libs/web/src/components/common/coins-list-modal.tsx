@@ -1,11 +1,16 @@
 "use client";
 
-import {useEffect, useMemo, useCallback, useRef} from "react";
-import useCoinListModalData from "@/src/hooks/useCoinListModal";
+import {
+  useEffect,
+  useMemo,
+  useCallback,
+  useRef
+} from "react";
+import { Search } from "lucide-react";
 import {CoinQuantity} from "fuels";
 import {SkeletonLoader, CoinListItem} from "@/web/src/components/common";
 import {UnknownCoinListItem} from "@/web/src/components/common/Swap/components/UnknownCoinListItem";
-import { Search } from "lucide-react";
+import useCoinListModalData from "@/src/hooks/useCoinListModal";
 
 const assetIdRegex = /^0x[0-9a-fA-F]{64}$/;
 
