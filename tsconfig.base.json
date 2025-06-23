@@ -2,13 +2,19 @@
   "compilerOptions": {
     "target": "es2015",
     "lib": ["es2020", "dom"],
-    "emitDecoratorMetadata": true,
-    "experimentalDecorators": true,
-    "baseUrl": ".",
-    "rootDir": ".",
     "module": "esnext",
     "moduleResolution": "node",
+    "baseUrl": ".",
+    "rootDir": ".",
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "importHelpers": true,
+    "sourceMap": true,
+    "declaration": false,
+    "skipDefaultLibCheck": true,
+    "skipLibCheck": true,
     "paths": {
+      "mira-dex-ts": ["libs/mira-v1-ts/src/index.ts"],
       "@/*": ["libs/web/*"],
       "@/aceternity/*": ["libs/external/aceternity-ui/*"],
       "@/api/*": ["libs/api/*"],
@@ -29,13 +35,7 @@
       "@/web": ["libs/web/index.ts"],
       "@/web/*": ["libs/web/*"],
       "@payload-config": ["apps/admin/src/payload.config.ts"]
-    },
-    "declaration": false,
-    "importHelpers": true,
-    "sourceMap": true,
-    "skipDefaultLibCheck": true,
-    "skipLibCheck": true
+    }
   },
-  "exclude": ["node_modules", "tmp"],
-  "compileOnSave": false
+  "exclude": ["node_modules", "tmp"]
 }

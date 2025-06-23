@@ -1,13 +1,15 @@
 {
-  "extends":"../../tsconfig.base.json",
+  "extends": "../../tsconfig.base.json",
   "compilerOptions": {
     "target": "es2022",
     "module": "es2022",
-    "moduleResolution": "bundler",
+    "moduleResolution": "node",
     "declaration": true,
+    "declarationMap": true,
     "sourceMap": true,
     "rootDir": "./src",
-    "outDir": "./dist",
+    "outDir": "../../dist/out-tsc/libs/mira-dex-ts",
+    "composite": true,
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
     "strict": true,
