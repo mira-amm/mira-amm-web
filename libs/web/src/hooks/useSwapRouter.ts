@@ -1,4 +1,4 @@
-import { useQueries, useQuery } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import { type BN, bn } from "fuels";
 import { CoinData } from "../utils/coinsConfig";
 import { useReadonlyMira } from ".";
@@ -105,8 +105,8 @@ export function useSwapRouter(
             route: routes[index],
             asset,
             tradeType,
-            outputAmount: tradeType === TradeType.EXACT_IN ? amountSpecified : undefined,
-            inputAmount: tradeType === TradeType.EXACT_OUT ? amountSpecified : undefined,
+            outputAmount: asset.amountOut,
+            inputAmount: asset.amountIn,
           })) as Quote[]
         ))
       },
@@ -146,28 +146,26 @@ export function useSwapRouter(
       (currentBest, quote) => {
         if (!quote) return currentBest;
 
-        if (tradeType === TradeType.EXACT_IN) {
-          if (
-            currentBest.amountOut === null ||
-            currentBest.amountOut.lt(quote.amountOut)
-          ) {
-            return {
-              bestRoute: quote.route,
-              amountIn: amountSpecified,
-              amountOut: quote.amountOut,
-            };
-          }
-        } else {
-          if (
-            currentBest.amountIn === null ||
-            currentBest.amountIn.gt(quote.amountOut)
-          ) {
-            return {
-              bestRoute: quote.route,
-              amountIn: quote.amountOut,
-              amountOut: amountSpecified,
-            };
-          }
+        if (
+          tradeType === TradeType.EXACT_IN &&
+          quote.outputAmount !== undefined &&
+          (currentBest.amountOut === null || currentBest.amountOut.lt(quote.outputAmount))
+        ) {
+          return {
+            bestRoute: quote.route,
+            amountIn: amountSpecified,
+            amountOut: quote.outputAmount,
+          };
+        } else if (
+          tradeType === TradeType.EXACT_OUT &&
+          quote.inputAmount !== undefined &&
+          (currentBest.amountIn === null || currentBest.amountIn.gt(quote.inputAmount))
+        ) {
+          return {
+            bestRoute: quote.route,
+            amountIn: quote.inputAmount,
+            amountOut: amountSpecified,
+          };
         }
 
         return currentBest;
