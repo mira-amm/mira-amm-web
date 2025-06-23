@@ -204,7 +204,7 @@ importers:
         specifier: ^11.6.0
         version: 11.6.0
       mira-dex-ts:
-        specifier: ^1.1.42
+        specifier: workspace:*
         version: link:libs/mira-v1-ts
       motion:
         specifier: ^12.18.1

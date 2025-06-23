@@ -1,10 +1,15 @@
+"use client"
+
 import {useState} from "react";
-import {CurrencyBoxMode, SwapState} from "@/src/components/common/Swap/Swap";
 import {ExchangeIcon} from "@/meshwave-ui/icons";
+import {
+  CurrencyBoxMode,
+  SwapState
+} from "@/src/components/common/Swap/Swap";
 import useExchangeRate from "@/src/hooks/useExchangeRate/useExchangeRate";
 import {useAnimationStore} from "@/src/stores/useGlitchScavengerHunt";
 
-function ExchangeRate({swapState}: {swapState: SwapState}) {
+export function ExchangeRate({swapState}: {swapState: SwapState}) {
   const [mode, setMode] = useState<CurrencyBoxMode>("sell");
 
   const handleClick = () => {
@@ -26,5 +31,3 @@ function ExchangeRate({swapState}: {swapState: SwapState}) {
     </button>
   );
 }
-
-export default ExchangeRate;

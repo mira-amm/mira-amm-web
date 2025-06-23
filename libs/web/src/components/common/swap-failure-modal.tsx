@@ -1,8 +1,10 @@
+"use client"
+
 import {ErrorCode, FuelError} from "fuels";
 import {CircleX} from "lucide-react";
 import {Button} from "@/meshwave-ui/Button";
 
-export default function SwapFailureModal({
+export function SwapFailureModal({
   error,
   closeModal,
   customTitle,

@@ -169,43 +169,6 @@ const useSwapRouter = (
     }
   )
 
-
-  // const {
-  //   data: quoteResults,
-  //   isLoading,
-  //   isRefetching,
-  // } = useQueries({
-  //   queries:
-  //     prioritizedRoutes.length && miraAmm && shouldFetchPools
-  //       ? prioritizedRoutes.map((route) => ({
-  //         queryFn: () =>
-  //           getSwapQuotes(amountSpecified, tradeType, route, miraAmm),
-  //         queryKey: [
-  //           "swap-route-quote",
-  //           route.pools.map((pool) => pool.poolId).join('->'),
-  //           tradeType,
-  //           amountSpecified.toString(),
-  //           assetIn?.assetId,
-  //           assetOut?.assetId,
-  //         ],
-  //       }))
-  //       : [],
-  //   combine: (results) => ({
-  //     isRefetching: results.some((r) => r.isRefetching),
-  //     data: results.map((r, i) =>
-  //       r.data
-  //         ? {
-  //           amountOut: r.data[1],
-  //           route: prioritizedRoutes[i],
-  //         }
-  //         : undefined,
-  //     ),
-  //     pending: results.some((r) => r.isPending),
-  //     isLoading: results.some((r) => r.isLoading),
-  //     isSuccess: results.every((r) => r.isSuccess),
-  //   }),
-  // });
-
   return useMemo(() => {
     if (isLoading || isRoutesLoading)
       return {
