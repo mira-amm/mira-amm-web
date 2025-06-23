@@ -1,16 +1,16 @@
-import {CurrencyBoxMode, SwapState} from "@/src/components/common/Swap/Swap";
+import { CurrencyBoxMode, SwapState } from "@/src/components/common/Swap/Swap";
 import useSwapData from "./useAssetPair/useSwapData";
 import useAsset from "./useAsset";
-import {useMemo} from "react";
-import {bn} from "fuels";
-import useSwapRouter, {TradeType} from "./useSwapRouter";
+import { useMemo } from "react";
+import { bn } from "fuels";
+import { useSwapRouter, TradeType } from "./useSwapRouter";
 import useDebounce from "./useDebounce";
 
 const useSwapPreview = (swapState: SwapState, mode: CurrencyBoxMode) => {
-  const {sellAssetId, buyAssetId} = useSwapData(swapState);
+  const { sellAssetId, buyAssetId } = useSwapData(swapState);
 
-  const {asset: assetIn} = useAsset(sellAssetId);
-  const {asset: assetOut} = useAsset(buyAssetId);
+  const { asset: assetIn } = useAsset(sellAssetId);
+  const { asset: assetOut } = useAsset(buyAssetId);
 
   const tradeType = mode === "buy" ? TradeType.EXACT_OUT : TradeType.EXACT_IN;
 

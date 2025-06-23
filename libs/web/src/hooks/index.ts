@@ -54,7 +54,6 @@ export {default as useSHA256Hash} from "./useSHA256Hash";
 export {default as useStableWallet} from "./useStableWallet";
 export {default as useSwapPreview} from "./useSwapPreview";
 export {default as useSwapPreviewV2} from "./useSwapPreviewV2";
-export {default as useSwapRouter} from "./useSwapRouter";
 export {default as useUSDRate} from "./useUSDRate";
 export {useVerifiedAssets} from "./useVerifiedAssets";
 export {default as useWeb3Connection} from "./useWeb3Connection";
