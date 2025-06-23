@@ -1,10 +1,10 @@
 /// <reference types='vitest' />
-import { reactRouter } from "@react-router/dev/vite";
+// import { reactRouter } from "@react-router/dev/vite";
 import tailwindcss from '@tailwindcss/vite';
 import { defineConfig } from "vite";
 // import tsconfigPaths from "vite-tsconfig-paths";
 import netlifyPlugin from "@netlify/vite-plugin-react-router";
-import { reactRouterDevTools } from "react-router-devtools";
+// import { reactRouterDevTools } from "react-router-devtools";
 import { nxViteTsPaths } from '@nx/vite/plugins/nx-tsconfig-paths.plugin';
 import { nxCopyAssetsPlugin } from '@nx/vite/plugins/nx-copy-assets.plugin';
 
@@ -20,8 +20,8 @@ export default defineConfig(() => ({
     host: 'localhost',
   },
   plugins: [
-    process.env.NODE_ENV === 'development' && reactRouterDevTools(),
-    !process.env.VITEST && reactRouter(),
+    // process.env.NODE_ENV === 'development' && reactRouterDevTools(),
+    // !process.env.VITEST && reactRouter(),
     nxViteTsPaths(),
     nxCopyAssetsPlugin(['*.md']),
     tailwindcss(),

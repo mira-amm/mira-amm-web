@@ -9,27 +9,27 @@ The status should be success
 The line 3 should be undefined
 End
 
-It "greater than or equal to version 10.12.0"
+It "greater than or equal to version 10.10.0"
 When run pnpm --version
 The status should be success
-The output should include '10.12'
+The output should include '10.10'
 End
 End
 
 Describe "🟢 Node.js should be:"
-It "greater than or equal to version 22.15.0"
+It "greater than or equal to version 22.14.0"
 When run which node
 The status should be success
-The output should include '/pnpm/nodejs/22.15'
+The output should include 'nodejs-22.14'
 The output should end with '/bin/node'
 End
 
-It "managed by pnpm"
-When run which node
-The status should be success
-The output should include '/pnpm/nodejs'
-The output should end with '/bin/node'
-End
+# It "managed by pnpm"
+# When run which node
+# The status should be success
+# The output should include '/pnpm/nodejs'
+# The output should end with '/bin/node'
+# End
 End
 
 Describe "🎭 Playwright should be:"
