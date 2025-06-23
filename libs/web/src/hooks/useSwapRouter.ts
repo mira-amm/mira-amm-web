@@ -20,15 +20,13 @@ export enum TradeType {
   EXACT_OUT = "EXACT_OUT",
 }
 
-type OptimalTrade = {
-  bestRoute: null | Route;
-  amountIn: null | BN;
-  amountOut: null | BN;
-};
-
 type SwapPreviewState = {
   tradeState: TradeState;
-  trade: OptimalTrade | undefined;
+  trade: {
+    bestRoute: null | Route;
+    amountIn: null | BN;
+    amountOut: null | BN;
+  } | undefined;
   error: string | null;
 };
 
@@ -62,28 +60,6 @@ const getSwapQuotesBatch = (
   );
 }
 
-const getSwapQuotes = (
-  inputAmount: BN,
-  tradeType: TradeType,
-  route: Route,
-  miraAmm: ReadonlyMiraAmm,
-) => {
-  console.log('gettingSwapQuotesFor', route);
-  if (tradeType === TradeType.EXACT_IN) {
-    return miraAmm.previewSwapExactInput(
-      { bits: route.assetIn.assetId },
-      inputAmount,
-      route.pools.map((p) => p.poolId),
-    );
-  }
-
-  return miraAmm.previewSwapExactOutput(
-    { bits: route.assetOut.assetId },
-    inputAmount,
-    route.pools.map((p) => p.poolId),
-  );
-};
-
 const useSwapRouter = (
   tradeType: TradeType,
   amountSpecified: BN = bn(0),
@@ -102,37 +78,6 @@ const useSwapRouter = (
     isRefetching: isRoutesRefetching,
   } = useRoutablePools(assetIn, assetOut, shouldFetchPools);
 
-  // Prioritize top 5 routes using a simple reserve heuristic (assumes larger reserves = better)
-  const prioritizedRoutes = useMemo(() => {
-    console.log('prioritizing routes')
-    if (!routes || !routes.length) return [];
-
-    const rts = [...routes]
-      .map((r) => ({
-        route: r,
-        totalReserves: r.pools.reduce(
-          (sum, p) => sum + Number(p.reserve0 || 0) + Number(p.reserve1 || 0),
-          0,
-        ),
-      }))
-      .sort((a, b) => b.totalReserves - a.totalReserves)
-      .slice(0, 5)
-      .map((r) => r.route);
-
-    console.log('prioritized routes')
-    return rts;
-  }, [routes]);
-
-  // TODO: Consider bringing routing off chain, try to avoid calls to the fuel node.
-  // State needs to be re-created and indexed. State can become stale.
-  // Need to consider indexing performance, as indexer is also now making routing decisions.
-  // Right now we're doing single simulation per-request.
-  // There's a middle ground. Fuel has script transactions.
-  // Script transactions allow creating multicalls without modifying contracts in a single RPC request.
-  // We can create small script that does this simulation of the swap in order to get the quote across each pool.
-  // Instead of making a contract call per RPC request, we can lump them all into single script request (also called multicall), then we can return array of quotes and find correct route through array of quotes. This is the quick and dierty method. We're not changing any business logic, we're just reducing the number of round trips.
-  //
-  //
   const {
     data: quoteResults,
     isLoading,
