@@ -1,57 +1,54 @@
-import {SwapState} from "@/src/components/common/Swap/Swap";
-import {ETH_ASSET_ID, USDC_ASSET_ID} from "@/src/utils/constants";
-import {useEffect, useMemo, useState} from "react";
+import { useEffect, useMemo, useState } from "react";
+import { SwapState } from "@/src/components/common/Swap/Swap";
+import { ETH_ASSET_ID, FUEL_ASSET_ID } from "@/src/utils/constants";
 
-const b256Regex = /0x[0-9a-fA-F]{64}/;
+const b256Regex = /^0x[0-9a-fA-F]{64}$/;
 
 export enum SWAP_ASSETS_KEYS {
   ASSET_IN = "assetIn",
   ASSET_OUT = "assetOut",
 }
 
+const getValidAsset = (asset: string | null, fallback: string) =>
+  b256Regex.test(asset || "") ? asset! : fallback;
+
 const useInitialSwapState = (isWidget?: boolean): SwapState => {
-  const [assetIn, setAssetIn] = useState<string | null>(null);
-  const [assetOut, setAssetOut] = useState<string | null>(null);
-  const [localStorageCoins, setLocalStorageCoins] = useState<{
-    sell: string | null;
-    buy: string | null;
-  }>({sell: null, buy: null});
+  const [assets, setAssets] = useState<{ sell: string; buy: string }>({
+    sell: FUEL_ASSET_ID,
+    buy: ETH_ASSET_ID,
+  });
 
   useEffect(() => {
-    const params = new URLSearchParams(window.location.search);
-    setAssetIn(params.get(SWAP_ASSETS_KEYS.ASSET_IN));
-    setAssetOut(params.get(SWAP_ASSETS_KEYS.ASSET_OUT));
+    const urlParams = new URLSearchParams(window.location.search);
 
-    const local = localStorage.getItem("swapCoins");
+    const paramAssetIn = urlParams.get(SWAP_ASSETS_KEYS.ASSET_IN);
+    const paramAssetOut = urlParams.get(SWAP_ASSETS_KEYS.ASSET_OUT);
+
+    let local: { sell?: string; buy?: string } = {};
     try {
-      setLocalStorageCoins(
-        JSON.parse(local ?? "null") ?? {
-          sell: ETH_ASSET_ID,
-          buy: USDC_ASSET_ID,
-        },
-      );
+      local = JSON.parse(localStorage.getItem("swapCoins") || "{}");
     } catch {
-      setLocalStorageCoins({sell: ETH_ASSET_ID, buy: USDC_ASSET_ID});
+      // FALLBACK DEFAULTS ALREADY HANDLED
     }
-  }, []);
 
-  return useMemo(() => {
-    const getValidAsset = (asset: string | null, defaultAsset: string) =>
-      asset && b256Regex.test(asset) ? asset : defaultAsset;
+    const sell = isWidget
+      ? getValidAsset(paramAssetIn, FUEL_ASSET_ID)
+      : getValidAsset(local.sell ?? null, FUEL_ASSET_ID);
 
-    const sellAsset = isWidget
-      ? getValidAsset(assetIn, ETH_ASSET_ID)
-      : getValidAsset(localStorageCoins.sell, ETH_ASSET_ID);
+    const buy = isWidget
+      ? getValidAsset(paramAssetOut, ETH_ASSET_ID)
+      : getValidAsset(local.buy ?? null, ETH_ASSET_ID);
 
-    const buyAsset = isWidget
-      ? getValidAsset(assetOut, USDC_ASSET_ID)
-      : getValidAsset(localStorageCoins.buy, USDC_ASSET_ID);
+    setAssets({ sell, buy });
+  }, [isWidget]);
 
-    return {
-      sell: {assetId: sellAsset, amount: ""},
-      buy: {assetId: buyAsset, amount: ""},
-    };
-  }, [assetIn, assetOut, localStorageCoins, isWidget]);
+  return useMemo(
+    () => ({
+      sell: { assetId: assets.sell, amount: "" },
+      buy: { assetId: assets.buy, amount: "" },
+    }),
+    [assets],
+  );
 };
 
 export default useInitialSwapState;
