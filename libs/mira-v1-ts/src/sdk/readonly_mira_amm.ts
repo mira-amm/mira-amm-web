@@ -180,15 +180,7 @@ export class ReadonlyMiraAmm {
 
     const reorderedPoolIds = pools.map(reorderPoolId);
 
-    // const poolMetadataList = await Promise.all(
-    //   reorderedPoolIds.map((poolId) => this.poolMetadata(poolId))
-    // );
-
-    console.log("Helloooooo")
-
     const poolMetadataList = await this.poolMetadataBatch(reorderedPoolIds);
-
-    console.log(`poolMetadataList is: ${poolMetadataList}`)
 
     poolMetadataList.forEach((pool) => {
       if (!pool) {
@@ -285,23 +277,12 @@ export class ReadonlyMiraAmm {
     return result.amountsIn;
   }
 
-  async previewSwapExactInputBatch(
-    assetIdIn: AssetId,
-    assetAmountIn: BigNumberish,
-    routes: PoolId[][]
-  ): Promise<Asset[]> {
-    const amountsOut = await Promise.all(routes.map(route => this.getAmountsOut(assetIdIn, assetAmountIn, route)));
-    return amountsOut.map(amounts => amounts[amounts.length - 1]);
-  }
-
   async previewSwapExactInput(
     assetIdIn: AssetId,
     assetAmountIn: BigNumberish,
     pools: PoolId[]
   ): Promise<Asset> {
-    console.log('Starting previewSwapExactInput')
     const amountsOut = await this.getAmountsOut(assetIdIn, assetAmountIn, pools);
-    console.log('Ending previewSwapExactInput')
     return amountsOut[amountsOut.length - 1];
   }
 
@@ -310,10 +291,17 @@ export class ReadonlyMiraAmm {
     assetAmountOut: BigNumberish,
     pools: PoolId[]
   ): Promise<Asset> {
-    console.log('Starting previewSwapExactoutput')
     const amountsIn = await this.getAmountsIn(assetIdOut, assetAmountOut, pools);
-    console.log('Ending previewSwapExactoutput')
     return amountsIn[amountsIn.length - 1];
+  }
+
+  async previewSwapExactInputBatch(
+    assetIdIn: AssetId,
+    assetAmountIn: BigNumberish,
+    routes: PoolId[][]
+  ): Promise<Asset[]> {
+    const amountsOut = await Promise.all(routes.map(route => this.getAmountsIn(assetIdIn, assetAmountIn, route)));
+    return amountsOut.map(amounts => amounts[amounts.length - 1]);
   }
 
   async previewSwapExactOutputBatch(
@@ -325,7 +313,6 @@ export class ReadonlyMiraAmm {
     return amountsIn.map(amounts => amounts[amounts.length - 1]);
   }
 
-  // Returns the price of the provided assetId retrieved through the provided pools
   async getCurrentRate(
     assetId: AssetId,
     pools: PoolId[]

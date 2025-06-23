@@ -24,27 +24,31 @@ export function getAmountOut(
   reserveOut: BN,
   powDecimalsIn: BN,
   powDecimalsOut: BN,
-  inputAmount: BN
+  inputAmount: BN,
 ): BN {
   if (inputAmount.lte(0)) {
     throw new InvalidAmountError();
   }
   if (isStable) {
-    const xy: BN = k(true, reserveIn, reserveOut, powDecimalsIn, powDecimalsOut);
+    const xy: BN = k(
+      true,
+      reserveIn,
+      reserveOut,
+      powDecimalsIn,
+      powDecimalsOut,
+    );
 
     const amountInAdjusted = adjust(inputAmount, powDecimalsIn);
     const reserveInAdjusted = adjust(reserveIn, powDecimalsIn);
     const reserveOutAdjusted = adjust(reserveOut, powDecimalsOut);
 
-    const y = reserveOutAdjusted.sub(getY(
-      amountInAdjusted.add(reserveInAdjusted),
-      xy,
-      reserveOutAdjusted
-    ));
+    const y = reserveOutAdjusted.sub(
+      getY(amountInAdjusted.add(reserveInAdjusted), xy, reserveOutAdjusted),
+    );
 
     return y.mul(powDecimalsOut).div(ONE_E_18);
   } else {
-    return inputAmount.mul(reserveOut).div((reserveIn.add(inputAmount)));
+    return inputAmount.mul(reserveOut).div(reserveIn.add(inputAmount));
   }
 }
 
@@ -54,7 +58,7 @@ export function getAmountIn(
   reserveOut: BN,
   powDecimalsIn: BN,
   powDecimalsOut: BN,
-  outputAmount: BN
+  outputAmount: BN,
 ): BN {
   if (outputAmount.gte(reserveOut)) {
     throw new InsufficientReservesError();
@@ -63,7 +67,13 @@ export function getAmountIn(
     throw new InvalidAmountError();
   }
   if (isStable) {
-    const xy: BN = k(true, reserveIn, reserveOut, powDecimalsIn, powDecimalsOut);
+    const xy: BN = k(
+      true,
+      reserveIn,
+      reserveOut,
+      powDecimalsIn,
+      powDecimalsOut,
+    );
 
     const amountOutAdjusted = adjust(outputAmount, powDecimalsOut);
     const reserveInAdjusted = adjust(reserveIn, powDecimalsIn);
@@ -72,14 +82,14 @@ export function getAmountIn(
     const y = getY(
       reserveOutAdjusted.sub(amountOutAdjusted),
       xy,
-      reserveInAdjusted
+      reserveInAdjusted,
     ).sub(reserveInAdjusted);
 
     return roundingUpDivision(y.mul(powDecimalsIn), ONE_E_18);
   } else {
     return roundingUpDivision(
       outputAmount.mul(reserveIn),
-      reserveOut.sub(outputAmount)
+      reserveOut.sub(outputAmount),
     );
   }
 }
@@ -93,7 +103,7 @@ function k(
   x: BN,
   y: BN,
   powDecimalsX: BN,
-  powDecimalsY: BN
+  powDecimalsY: BN,
 ): BN {
   if (isStable) {
     const _x: BN = x.mul(ONE_E_18).div(powDecimalsX);
@@ -107,12 +117,16 @@ function k(
 }
 
 function f(x0: BN, y: BN): BN {
-  return x0.mul(y.mul(y).div(ONE_E_18).mul(y).div(ONE_E_18))
+  return x0
+    .mul(y.mul(y).div(ONE_E_18).mul(y).div(ONE_E_18))
     .add(x0.mul(x0).div(ONE_E_18).mul(x0).div(ONE_E_18).mul(y));
 }
 
 function d(x0: BN, y: BN): BN {
-  return new BN(3).mul(x0).mul(y.mul(y).div(ONE_E_18)).div(ONE_E_18)
+  return new BN(3)
+    .mul(x0)
+    .mul(y.mul(y).div(ONE_E_18))
+    .div(ONE_E_18)
     .add(x0.mul(x0).div(ONE_E_18).mul(x0).div(ONE_E_18));
 }
 
@@ -150,19 +164,18 @@ function getY(x0: BN, xy: BN, y: BN): BN {
   return y;
 }
 
-
 export function subtractFee(poolId: PoolId, amount: BN, ammFees: AmmFees): BN {
-  const feeBP = poolId[2] ?
-    ammFees.lpFeeStable.add(ammFees.protocolFeeStable) :
-    ammFees.lpFeeVolatile.add(ammFees.protocolFeeVolatile);
+  const feeBP = poolId[2]
+    ? ammFees.lpFeeStable.add(ammFees.protocolFeeStable)
+    : ammFees.lpFeeVolatile.add(ammFees.protocolFeeVolatile);
   const fee = calculateFeeToSubtract(amount, feeBP);
   return amount.sub(fee);
 }
 
 export function addFee(poolId: PoolId, amount: BN, ammFees: AmmFees): BN {
-  const feeBP = poolId[2] ?
-    ammFees.lpFeeStable.add(ammFees.protocolFeeStable) :
-    ammFees.lpFeeVolatile.add(ammFees.protocolFeeVolatile);
+  const feeBP = poolId[2]
+    ? ammFees.lpFeeStable.add(ammFees.protocolFeeStable)
+    : ammFees.lpFeeVolatile.add(ammFees.protocolFeeVolatile);
   const fee = calculateFeeToAdd(amount, feeBP);
   return amount.add(fee);
 }
