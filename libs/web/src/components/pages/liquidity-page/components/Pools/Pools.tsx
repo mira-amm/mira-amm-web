@@ -9,7 +9,7 @@ import LoaderV2 from "@/src/components/common/LoaderV2/LoaderV2";
 import {SearchBar} from "@/src/components/common";
 import Pagination from "@/src/components/common/Pagination/Pagination";
 import usePoolsData, {DEFAULT_PAGE} from "@/src/hooks/usePoolsData";
-import useDebounce from "@/src/hooks/useDebounce";
+import { useDebounce } from "@/src/hooks/useDebounce";
 import {Button} from "@/meshwave-ui/Button";
 
 import clsx from "clsx";

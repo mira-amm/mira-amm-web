@@ -12,7 +12,7 @@ export enum SWAP_ASSETS_KEYS {
 const getValidAsset = (asset: string | null, fallback: string) =>
   b256Regex.test(asset || "") ? asset! : fallback;
 
-const useInitialSwapState = (isWidget?: boolean): SwapState => {
+export function useInitialSwapState(isWidget?: boolean): SwapState {
   const [assets, setAssets] = useState<{ sell: string; buy: string }>({
     sell: ETH_ASSET_ID,
     buy: FUEL_ASSET_ID,
@@ -50,5 +50,3 @@ const useInitialSwapState = (isWidget?: boolean): SwapState => {
     [assets],
   );
 };
-
-export default useInitialSwapState;

@@ -11,7 +11,7 @@ import RemoveLiquiditySuccessModal from "@/src/components/pages/view-position-pa
 
 import {getLPAssetId, PoolId} from "mira-dex-ts";
 
-import useCheckActiveNetwork from "@/src/hooks/useCheckActiveNetwork";
+import { useCheckActiveNetwork } from "@/src/hooks/useCheckActiveNetwork";
 import usePoolAPR from "@/src/hooks/usePoolAPR";
 
 import {bn, formatUnits} from "fuels";

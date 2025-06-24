@@ -2,7 +2,7 @@ import {useEffect, useState} from "react";
 
 // see https://github.com/tannerlinsley/react-query/issues/293
 // see https://usehooks.com/useDebounce/
-export default function useDebounce<T extends number | string | null>(
+export function useDebounce<T extends number | string | null>(
   value: T,
   delay: number,
 ): T {
