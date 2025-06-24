@@ -308,5 +308,6 @@
     "likec4"
   ],
   "license": "GPL-3.0-only",
-  "homepage": "https://github.com/mira-amm/mira-amm-web"
+  "homepage": "https://github.com/mira-amm/mira-amm-web",
+  "packageManager": "pnpm@10.10.0"
 }
