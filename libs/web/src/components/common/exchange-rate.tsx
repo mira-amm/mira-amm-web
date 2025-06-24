@@ -6,8 +6,8 @@ import {
   CurrencyBoxMode,
   SwapState
 } from "@/src/components/common/Swap/Swap";
-import useExchangeRate from "@/src/hooks/useExchangeRate/useExchangeRate";
-import {useAnimationStore} from "@/src/stores/useGlitchScavengerHunt";
+import { useExchangeRate } from "@/src/hooks/useExchangeRate";
+import { useAnimationStore } from "@/src/stores/useGlitchScavengerHunt";
 
 export function ExchangeRate({swapState}: {swapState: SwapState}) {
   const [mode, setMode] = useState<CurrencyBoxMode>("sell");

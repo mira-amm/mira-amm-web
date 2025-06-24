@@ -1,15 +1,9 @@
+"use client"
+
 import {useMemo} from "react";
 
-import {DefaultLocale} from "@/src/utils/constants";
+import { DefaultLocale } from "@/src/utils/constants";
 import { useAssetMetadata } from "@/src/hooks";
-
-type Props = {
-  firstAssetId: string | null;
-  secondAssetId: string | null;
-  firstAssetAmount: string;
-  secondAssetAmount: string;
-  baseAssetId: string | null;
-};
 
 const useExchangeRateV2 = ({
   firstAssetId,
@@ -17,7 +11,13 @@ const useExchangeRateV2 = ({
   firstAssetAmount,
   secondAssetAmount,
   baseAssetId,
-}: Props): string | null => {
+}: {
+  firstAssetId: string | null;
+  secondAssetId: string | null;
+  firstAssetAmount: string;
+  secondAssetAmount: string;
+  baseAssetId: string | null;
+}): string | null => {
   const firstAssetMetadata = useAssetMetadata(firstAssetId);
   const secondAssetMetadata = useAssetMetadata(secondAssetId);
 
@@ -36,6 +36,7 @@ const useExchangeRateV2 = ({
     const activeModeAmountValue = parseFloat(
       firstAssetIsBase ? firstAssetAmount : secondAssetAmount,
     );
+
     if (activeModeAmountValue === 0) {
       return null;
     }

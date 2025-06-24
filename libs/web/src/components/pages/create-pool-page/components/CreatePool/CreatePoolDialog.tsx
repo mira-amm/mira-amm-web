@@ -1,27 +1,25 @@
+import {Dispatch, SetStateAction, useCallback, useRef, useState} from "react";
+import {B256Address, bn} from "fuels";
+import {useConnectUI, useIsConnected} from "@fuels/react";
+
+import {clsx} from "clsx";
+import Link from "next/link";
+
 import CoinPair from "@/src/components/common/CoinPair/CoinPair";
 import CoinInput from "@/src/components/pages/add-liquidity-page/components/CoinInput/CoinInput";
-import {clsx} from "clsx";
-import {useBalances} from "@/src/hooks";
 import useAssetBalance from "@/src/hooks/useAssetBalance";
-import {useConnectUI, useIsConnected} from "@fuels/react";
-import {Dispatch, SetStateAction, useCallback, useRef, useState} from "react";
+import usePoolsMetadata from "@/src/hooks/usePoolsMetadata";
 import {useDebounceCallback} from "usehooks-ts";
-import {useCheckEthBalance} from "@/src/hooks";
 import useFaucetLink from "@/src/hooks/useFaucetLink";
 import {createPoolKey, openNewTab} from "@/src/utils/common";
-import useCheckActiveNetwork from "@/src/hooks/useCheckActiveNetwork";
-import {Info} from "@/src/components/common";
+import {Info, CoinsListModal } from "@/src/components/common";
 import {CreatePoolPreviewData} from "./PreviewCreatePoolDialog";
 import {buildPoolId} from "mira-dex-ts";
 import {StablePoolTooltip, VolatilePoolTooltip} from "./CreatePoolTooltips";
-import usePoolsMetadata from "@/src/hooks/usePoolsMetadata";
 import {useModal} from "@/src/hooks";
-import {CoinsListModal} from "@/src/components/common";
-import {B256Address, bn} from "fuels";
-import {useAssetMetadata} from "@/src/hooks";
-import {useAssetPrice} from "@/src/hooks/useAssetPrice";
-import Link from "next/link";
-import useExchangeRateV2 from "@/src/hooks/useExchangeRate/useExchangeRateV2";
+import {useCheckEthBalance, useAssetPrice, useAssetMetadata, useCheckActiveNetwork, useBalances} from "@/src/hooks";
+import useExchangeRateV2 from "@/src/hooks/useExchangeRateV2";
+
 import {Button} from "@/meshwave-ui/Button";
 import {ArrowLeftRight, Sparkle} from "lucide-react";
 
