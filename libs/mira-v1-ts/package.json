@@ -2,7 +2,7 @@
   "name": "mira-dex-ts",
   "version": "1.1.42",
   "description": "TypeScript SDK for Mira DEX",
-  "license": "ISC",
+  "license": "GPL-3.0-only",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "files": [
