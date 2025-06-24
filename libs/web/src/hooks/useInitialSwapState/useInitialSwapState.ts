@@ -14,8 +14,8 @@ const getValidAsset = (asset: string | null, fallback: string) =>
 
 const useInitialSwapState = (isWidget?: boolean): SwapState => {
   const [assets, setAssets] = useState<{ sell: string; buy: string }>({
-    sell: FUEL_ASSET_ID,
-    buy: ETH_ASSET_ID,
+    sell: ETH_ASSET_ID,
+    buy: FUEL_ASSET_ID,
   });
 
   useEffect(() => {
@@ -32,12 +32,12 @@ const useInitialSwapState = (isWidget?: boolean): SwapState => {
     }
 
     const sell = isWidget
-      ? getValidAsset(paramAssetIn, FUEL_ASSET_ID)
-      : getValidAsset(local.sell ?? null, FUEL_ASSET_ID);
+      ? getValidAsset(paramAssetIn, ETH_ASSET_ID)
+      : getValidAsset(local.sell ?? null, ETH_ASSET_ID);
 
     const buy = isWidget
-      ? getValidAsset(paramAssetOut, ETH_ASSET_ID)
-      : getValidAsset(local.buy ?? null, ETH_ASSET_ID);
+      ? getValidAsset(paramAssetOut, FUEL_ASSET_ID)
+      : getValidAsset(local.buy ?? null, FUEL_ASSET_ID);
 
     setAssets({ sell, buy });
   }, [isWidget]);
