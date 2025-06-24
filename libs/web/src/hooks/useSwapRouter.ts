@@ -1,11 +1,11 @@
+import { useMemo } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { type BN, type AssetId, bn } from "fuels";
+import type { Asset, ReadonlyMiraAmm } from "mira-dex-ts";
 import { CoinData } from "../utils/coinsConfig";
 import { useReadonlyMira } from ".";
 import useRoutablePools from "./useRoutablePools";
-import { useMemo } from "react";
 import { Route } from "./useGetPoolsWithReserve";
-import type { Asset, ReadonlyMiraAmm } from "mira-dex-ts";
 
 export enum TradeState {
   LOADING,
@@ -20,208 +20,142 @@ export enum TradeType {
   EXACT_OUT = "EXACT_OUT",
 }
 
-type Quote = Promise<{
-  route: Route,
-  amountIn: BN,
-  amountOut: BN,
-  assetIdIn: AssetId,
-  assetIdOut: AssetId,
-  tradeType: TradeType,
-}[]>
+type SwapQuote = {
+  route: Route;
+  amountIn: BN;
+  amountOut: BN;
+  assetIdIn: AssetId;
+  assetIdOut: AssetId;
+  tradeType: TradeType;
+};
 
 const getSwapQuotesBatch = async (
-  providedAmount: BN,
+  amount: BN,
   tradeType: TradeType,
   routes: Route[],
-  miraAmm: ReadonlyMiraAmm,
-): Quote => {
-  if (tradeType === TradeType.EXACT_IN) {
-    const returnOne = (await miraAmm.previewSwapExactInputBatch(
-      { bits: routes[0].assetIn.assetId },
-      providedAmount,
-      routes.map((route) => route.pools.map((p) => p.poolId)),
-    )).map((asset: Asset, index: number)=> ({
-     tradeType,
-      route: routes[index],
-      assetIn: routes[index].assetIn.assetId,
-      assetOut: routes[index].assetOut.assetId,
-      amountIn: providedAmount,
-      amountOut: asset[1]
-    }));
+  amm: ReadonlyMiraAmm
+): Promise<SwapQuote[]> => {
+  const isExactIn = tradeType === TradeType.EXACT_IN;
+  const assetKey = isExactIn ? routes[0].assetIn.assetId : routes[0].assetOut.assetId;
+  const poolPaths = routes.map((r) => r.pools.map((p) => p.poolId));
 
-    return returnOne;
-  }
+  const results = isExactIn
+    ? await amm.previewSwapExactInputBatch({ bits: assetKey }, amount, poolPaths)
+    : await amm.previewSwapExactOutputBatch({ bits: assetKey }, amount, poolPaths);
 
-  const returnTwo = (await miraAmm.previewSwapExactOutputBatch(
-    { bits: routes[0].assetOut.assetId },
-    providedAmount,
-    routes.map((route) => route.pools.map((p) => p.poolId)),
-    )).map((asset: Asset, index: number)=> ({
-     tradeType,
-      route: routes[index],
-      assetIn: routes[index].assetIn.assetId,
-      assetOut: routes[index].assetOut.assetId,
-      amountIn: asset[1],
-      amountOut: providedAmount,
-    }));
-
-  return returnTwo;
-}
+  return results.map((asset: Asset, i) => ({
+    tradeType,
+    route: routes[i],
+    assetIdIn: routes[i].assetIn.assetId,
+    assetIdOut: routes[i].assetOut.assetId,
+    amountIn: isExactIn ? amount : asset[1],
+    amountOut: isExactIn ? asset[1] : amount,
+  }));
+};
 
 export function useSwapRouter(
   tradeType: TradeType,
   amountSpecified: BN = bn(0),
   assetIn?: CoinData,
-  assetOut?: CoinData,
+  assetOut?: CoinData
 ): {
   tradeState: TradeState;
-  trade: {
-    bestRoute: null | Route;
-    amountIn: null | BN;
-    amountOut: null | BN;
-  } | undefined;
+  trade?: {
+    bestRoute: Route;
+    amountIn: BN;
+    amountOut: BN;
+  };
   error: string | null;
 } {
-  const miraAmm = useReadonlyMira();
+  const amm = useReadonlyMira();
 
-  const shouldFetchPools = useMemo(() => {
-    return !!assetIn && !!assetOut && amountSpecified.gt(0);
-  }, [assetIn, assetOut, amountSpecified]);
+  const shouldFetch = useMemo(
+    () => !!assetIn && !!assetOut && amountSpecified.gt(0),
+    [assetIn, assetOut, amountSpecified]
+  );
 
   const {
-    isLoading: isRoutesLoading,
     routes,
-    isRefetching: isRoutesRefetching,
-  } = useRoutablePools(assetIn, assetOut, shouldFetchPools);
+    isLoading: routesLoading,
+    isRefetching: routesRefetching,
+  } = useRoutablePools(assetIn, assetOut, shouldFetch);
 
   const {
-    data: quoteResults,
+    data: quotes = [],
     isLoading,
-    isRefetching
-  } = useQuery(
-    {
-      queryKey: [
-        "routes",
-        routes,
-        tradeType,
-        amountSpecified.toString(),
-        assetIn?.assetId,
-        assetOut?.assetId,
-      ],
-      queryFn: () => {
-        if (!miraAmm) {
-          return []
-        }
-        return getSwapQuotesBatch(
-          amountSpecified,
-          tradeType,
-          routes,
-          miraAmm
-        )
-      },
-      initialData: []
-    }
-  )
+    isRefetching,
+  } = useQuery({
+    queryKey: [
+      "swapQuotes",
+      tradeType,
+      amountSpecified.toString(),
+      assetIn?.assetId,
+      assetOut?.assetId,
+      routes,
+    ],
+    queryFn: () =>
+      amm && routes.length
+        ? getSwapQuotesBatch(amountSpecified, tradeType, routes, amm)
+        : Promise.resolve([]),
+    initialData: [],
+  });
 
+    // NOTE: could've done return-foo, used 'if' statements to keep it debuggable in case it explodes later
   return useMemo(() => {
-    if (isLoading || isRoutesLoading)
-      return {
-        tradeState: TradeState.LOADING,
-        trade: undefined,
-        error: null,
-      };
+    if (isLoading || routesLoading) {
+      return { tradeState: TradeState.LOADING, error: null };
+    }
 
-    if (!assetIn || !assetOut)
-      return {
-        tradeState: TradeState.INVALID,
-        trade: undefined,
-        error: null,
-      };
+    if (!assetIn || !assetOut) {
+      return { tradeState: TradeState.INVALID, error: null };
+    }
 
-    if (!quoteResults.length)
+    if (!quotes.length) {
       return {
         tradeState: TradeState.NO_ROUTE_FOUND,
-        trade: undefined,
-        error: amountSpecified.gt(0)
-          ? "No route found for this trade"
-          : null,
+        error: amountSpecified.gt(0) ? "No route found for this trade" : null,
       };
+    }
 
-    const { bestRoute, amountIn, amountOut } = quoteResults.reduce<{
-      bestRoute: null | Route;
-      amountIn: null | BN;
-      amountOut: null | BN;
-    }>(
-      (currentBest, quote) => {
-        if (!quote) return currentBest;
+    const best = quotes.reduce<SwapQuote | null>((best, current) => {
+      if (!best) return current;
 
-        if (
-          tradeType === TradeType.EXACT_IN &&
-          quote.amountOut !== undefined &&
-          (currentBest.amountOut === null || currentBest.amountOut.lt(quote.amountOut))
-        ) {
-          return {
-            bestRoute: quote.route,
-            amountIn: quote.amountIn,
-            amountOut: quote.amountOut,
-          };
-        } else if (
-          tradeType === TradeType.EXACT_OUT &&
-          quote.amountIn !== undefined &&
-          (currentBest.amountIn === null || currentBest.amountIn.gt(quote.amountIn))
-        ) {
-          return {
-            bestRoute: quote.route,
-            amountIn: quote.amountIn,
-            amountOut: quote.amountOut,
-          };
-        }
+      if (tradeType === TradeType.EXACT_IN) {
+        return current.amountOut.gt(best.amountOut) ? current : best;
+      }
 
-        return currentBest;
-      },
-      {
-        bestRoute: null,
-        amountIn: null,
-        amountOut: null,
-      },
-    );
+      return current.amountIn.lt(best.amountIn) ? current : best;
+    }, null);
 
-    if (!bestRoute || !amountIn || !amountOut)
+    if (!best) {
       return {
         tradeState: TradeState.INVALID,
-        trade: undefined,
         error: "Insufficient reserves in pool",
       };
+    }
 
-    if (isRefetching || isRoutesRefetching)
-      return {
-        tradeState: TradeState.REFETCHING,
-        trade: {
-          bestRoute,
-          amountIn,
-          amountOut,
-        },
-        error: null,
-      };
+    const tradeState = isRefetching || routesRefetching
+      ? TradeState.REFETCHING
+      : TradeState.VALID;
 
     return {
-      tradeState: TradeState.VALID,
+      tradeState,
       trade: {
-        bestRoute,
-        amountIn,
-        amountOut,
+        bestRoute: best.route,
+        amountIn: best.amountIn,
+        amountOut: best.amountOut,
       },
       error: null,
     };
   }, [
     isLoading,
-    isRoutesLoading,
+    routesLoading,
     isRefetching,
-    isRoutesRefetching,
-    quoteResults,
+    routesRefetching,
+    quotes,
     tradeType,
     amountSpecified,
     assetIn,
     assetOut,
   ]);
-};
+}
