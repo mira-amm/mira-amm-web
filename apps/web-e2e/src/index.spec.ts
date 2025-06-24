@@ -173,7 +173,7 @@ describe("Swap", () => {
     await actor.attemptsTo(AdjustSlippage.toCustom("0.7"));
   });
 
-  it("should be able to sell ETH for USDC", async ({actor}) => {
+  it("should be able to sell ETH for FUEL", async ({actor}) => {
     await actor.attemptsTo(Swap.sell("2", TOKENS.Base), Swap.buy(TOKENS.Quote));
   });
 
