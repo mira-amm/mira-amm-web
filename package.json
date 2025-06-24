@@ -20,7 +20,6 @@
     "@fuels/connectors": "0.40.0",
     "@fuels/react": "0.40.0",
     "@fumadocs/mdx-remote": "^1.3.3",
-    "@hookform/resolvers": "^3.10.0",
     "@mkvlrn/result": "^1.1.4",
     "@nestjs/apollo": "^13.1.0",
     "@nestjs/common": "^11.1.3",
