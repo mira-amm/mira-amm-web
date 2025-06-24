@@ -43,7 +43,7 @@ export const useAssetImage = (assetId: string | null): string => {
       // TODO: get images from L1 address
       return null;
     },
-    staleTime: Infinity,
+    staleTime: 3 * 60 * 60 * 1000, // 3 hours
     enabled: assetId !== null && !isLoadingAsset && assets !== undefined,
     meta: {persist: true},
   });
