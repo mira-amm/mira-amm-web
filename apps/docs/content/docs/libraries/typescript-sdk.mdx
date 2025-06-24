@@ -41,25 +41,30 @@ The SDK is built on top of the `fuels` library and supports both transaction-bas
 ## Installation
 
 ```package-install
-npm i fuels
-npm i mira-dex-ts
+npm i fuels mira-dex-ts
 ```
 
 ## Setup
 
-To start using the SDK, you need to instantiate the `MiraAmm` or `ReadonlyMiraAmm` classes by providing the appropriate parameters like `Account` for signing transactions or `Provider` for read-only operations.
-
-```typescript title="Example"
+```typescript title="example.ts"
 import {MiraAmm, ReadonlyMiraAmm} from "mira-dex-ts";
 import {Account, Provider} from "fuels";
 
-// For transaction-based operations
-const provider = await Provider.create(RPC);
+const FUEL_MAINNET_NETWORK_URL = "https://mainnet.fuel.network/v1/graphql";
+
+// ===========================================
+//        TRANSACTION-BASED OPERATIONS
+// ===========================================
+
+const provider = new Provider(FUEL_MAINNET_NETWORK_URL);
 const wallet = new WalletUnlocked(SECRET_KEY, provider);
 const miraAmm = new MiraAmm(wallet);
 
-// For readonly operations
-const readonlyMiraAmm = new ReadonlyMiraAmm(provider);
+// ===========================================
+//            READ-ONLY OPERATIONS
+// ===========================================
+
+const readOnlyMiraAmm = new ReadonlyMiraAmm(provider);
 ```
 
 ## Data Types
