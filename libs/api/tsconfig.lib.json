@@ -2,8 +2,7 @@
   "extends": "../../tsconfig.base.json",
   // credit: https://github.com/mkvlrn/template-nest
   "compilerOptions": {
-    // no transpiling
-    "noEmit": true,
+    "noEmit": true, // no transpiling
     // no funny business
     "erasableSyntaxOnly": true,
     "verbatimModuleSyntax": true,

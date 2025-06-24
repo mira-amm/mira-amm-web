@@ -9,6 +9,6 @@
   "output": "./documentation",
   "name": "🦕 Microchain API Reference",
   "assets": "../../libs/shared/assets",
-  "customFavicon": "../../apps/docs/public/favicon.ico",
+  "customFavicon": "./public/favicon.ico",
   "customLogo": "../../libs/shared/assets/microchain-symbol.svg"
 }
