@@ -104,6 +104,19 @@ const initAdditionalAssetsConfig = () => {
         "0x0000000000000000000000000000000000000000000000000000000000000023",
       isVerified: false,
     },
+    {
+      name: "Liquid Staked FUEL",
+      symbol: "stFUEL",
+      icon: "/images/stfuel.svg",
+      decimals: 9,
+      assetId:
+        "0x5505d0f58bea82a052bc51d2f67ab82e9735f0a98ca5d064ecb964b8fd30c474",
+      contractId:
+        "0x2181f1b8e00756672515807cab7de10c70a9b472a4a9b1b6ca921435b0a1f49b",
+      subId:
+        "0x0000000000000000000000000000000000000000000000000000000000000000",
+      isVerified: false,
+    },
   ];
 
   for (const asset of additionalAssets) {

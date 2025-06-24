@@ -64,7 +64,7 @@ export const useAssetList = (): {
 
       return assets;
     },
-    staleTime: Infinity,
+    staleTime: 3 * 60 * 60 * 1000, // 3 hours
     meta: {persist: true},
   });
 
