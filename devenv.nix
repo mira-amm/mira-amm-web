@@ -27,6 +27,7 @@
 
   packages = [
     # ============= 🧑‍💻🐞‍ ================
+      pkgs.figlet
       pkgs.git
       pkgs.lazygit
       pkgs.lazysql
