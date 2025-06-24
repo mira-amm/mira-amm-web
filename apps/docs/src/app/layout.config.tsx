@@ -1,8 +1,12 @@
 import type {BaseLayoutProps} from "fumadocs-ui/layouts/shared";
 import type {HomeLayoutProps} from "fumadocs-ui/layouts/home";
 
-import {Figma as BrandIcon, Rss as BlogIcon, Twitter} from "lucide-react";
 import Image from "next/image";
+import {
+  /* Figma as BrandIcon, */
+  Rss as BlogIcon,
+  Twitter
+} from "lucide-react";
 
 import {AiOutlineDiscord as DiscordIcon} from "react-icons/ai";
 
@@ -63,13 +67,13 @@ export const baseOptions: BaseLayoutProps = {
       icon: <Twitter />,
       external: true,
     },
-    {
-      type: "icon",
-      text: "Brand",
-      url: "https://figma.com",
-      external: true,
-      icon: <BrandIcon />,
-    },
+    /* {
+*   type: "icon",
+*   text: "Brand",
+*   url: "https://figma.com",
+*   external: true,
+*   icon: <BrandIcon />,
+* }, */
   ],
   githubUrl: "https://github.com/mira-amm/mira-amm-web",
 };
