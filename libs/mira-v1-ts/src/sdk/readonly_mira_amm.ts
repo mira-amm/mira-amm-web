@@ -299,18 +299,25 @@ export class ReadonlyMiraAmm {
     assetIdIn: AssetId,
     assetAmountIn: BigNumberish,
     routes: PoolId[][]
-  ): Promise<Asset[]> {
-    const amountsOut = await Promise.all(routes.map(route => this.getAmountsIn(assetIdIn, assetAmountIn, route)));
-    return amountsOut.map(amounts => amounts[amounts.length - 1]);
-  }
+  ): Promise<(Asset | undefined)[]> {
+    const results = await Promise.allSettled(
+      routes.map((route) => this.getAmountsIn(assetIdIn, assetAmountIn, route))
+    );
+    return results
+      .map((r) => r.status === "fulfilled" ? r.value[r.value.length - 1] : undefined);
+   }
 
   async previewSwapExactOutputBatch(
     assetIdOut: AssetId,
     assetAmountOut: BigNumberish,
     routes: PoolId[][]
-  ): Promise<Asset[]> {
-    const amountsIn = await Promise.all(routes.map(route => this.getAmountsOut(assetIdOut, assetAmountOut, route)));
-    return amountsIn.map(amounts => amounts[amounts.length - 1]);
+   ): Promise<(Asset | undefined)[]> {
+    const results = await Promise.allSettled(
+      routes.map((route) => this.getAmountsOut(assetIdOut, assetAmountOut, route))
+    );
+
+    return results
+      .map((r) => r.status === "fulfilled" ? r.value[r.value.length - 1] : undefined);
   }
 
   async getCurrentRate(

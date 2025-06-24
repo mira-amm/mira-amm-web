@@ -35,6 +35,8 @@ const getSwapQuotesBatch = async (
   routes: Route[],
   amm: ReadonlyMiraAmm
 ): Promise<SwapQuote[]> => {
+  if (!routes.length) return [];
+
   const isExactIn = tradeType === TradeType.EXACT_IN;
   const assetKey = isExactIn ? routes[0].assetIn.assetId : routes[0].assetOut.assetId;
   const poolPaths = routes.map((r) => r.pools.map((p) => p.poolId));
@@ -43,14 +45,17 @@ const getSwapQuotesBatch = async (
     ? await amm.previewSwapExactInputBatch({ bits: assetKey }, amount, poolPaths)
     : await amm.previewSwapExactOutputBatch({ bits: assetKey }, amount, poolPaths);
 
-  return results.map((asset: Asset, i) => ({
+    return results
+      .map((asset, i)=> asset ? {
+
     tradeType,
     route: routes[i],
-    assetIdIn: routes[i].assetIn.assetId,
-    assetIdOut: routes[i].assetOut.assetId,
+    assetIdIn: { bits: routes[i].assetIn.assetId },
+    assetIdOut: { bits: routes[i].assetOut.assetId },
     amountIn: isExactIn ? amount : asset[1],
     amountOut: isExactIn ? asset[1] : amount,
-  }));
+  }: null)
+      .filter((quote): quote is SwapQuote => quote !== null);
 };
 
 export function useSwapRouter(
@@ -97,10 +102,10 @@ export function useSwapRouter(
       amm && routes.length
         ? getSwapQuotesBatch(amountSpecified, tradeType, routes, amm)
         : Promise.resolve([]),
-    initialData: [],
+    initialData: shouldFetch ? undefined: [],
   });
 
-    // NOTE: could've done return-foo, used 'if' statements to keep it debuggable in case it explodes later
+  // NOTE: could've done return-foo, used 'if' statements to keep it debuggable in case it explodes later
   return useMemo(() => {
     if (isLoading || routesLoading) {
       return { tradeState: TradeState.LOADING, error: null };
