@@ -4,6 +4,7 @@ icon: House
 ---
 
 import { NeonGradientCard } from "@/meshwave-ui/neon-gradient-card/neon-gradient-card";
+import {Coins, Scale, Trophy, Leaf} from "lucide-react"
 
 👋 MIRA is an
 open-source, decentralized platform designed to seamlessly match
@@ -11,10 +12,9 @@ open-source, decentralized platform designed to seamlessly match
 <span className="animate-color-cycle-rose">liquidity providers (LPs)</span>, and
 <span className="animate-color-cycle-blue">protocols</span>.
 
-Launching initially as a basic Automated Market Maker (AMM), MIRA will evolve into a ve(3,3) model to maximize capital efficiency and user incentives.
+Launching initially as a basic Automated Market Maker (AMM), MIRA is evolving into a [ve(3,3)](https://medium.com/@chaisomsri96/introduction-to-ve-3-3-4c873841e4ac) model to maximize capital efficiency and user incentives.
 
-Learn more about MIRA on [X (twitter)](https://x.com/MiraProtocol) and join community on [Discord](https://discord.gg/6pHdTY6rYq).
-
+Learn more about MIRA on [X (twitter)](https://x.com/MiraProtocol) and join the community on [Discord](https://discord.gg/6pHdTY6rYq).
 
 <NeonGradientCard
   className="animate-background-position-spin flex items-center justify-center h-auto z-5"
@@ -34,12 +34,6 @@ The goal of MIRA is to create a dynamic and customizable liquidity landscape.
 
 By enabling permissionless incentive mechanisms, protocols can boost their liquidity through bribes and other incentives, resulting in deeper markets and a better trading environment for all users.
 
-## Roadmap
-
-1. **Phase 1 - Basic AMM (Current):** Deploying as a basic Automated Market Maker to establish the foundational platform.
-
-2. **Phase 2 - Transition to ve(3,3):** Evolving into a ve(3,3) model to introduce advanced governance and incentive mechanisms for long-term sustainability.
-
 <div className="w-full h-auto overflow-hidden rounded-sm bg-transparent">
   <img
     className="not-prose block w-full h-full object-cover p-0"
@@ -48,9 +42,41 @@ By enabling permissionless incentive mechanisms, protocols can boost their liqui
   />
 </div>
 
-## Building on Fuel
+## Phases
 
-To revolutionize global finance, we need blockchains that can scale efficiently while maintaining strong performance and security. Low latency and high throughput are a must!
+<div className='fd-steps [&_h2]:fd-step'>
+
+## Basic AMM Deployment
+
+<Cards>
+  <Card
+    title="Establish Platform"
+    icon={<Coins />}
+  />
+</Cards>
+
+## Transition to [ve(3,3)](https://medium.com/@chaisomsri96/introduction-to-ve-3-3-4c873841e4ac) model
+
+<Cards>
+  <Card
+    title="Advanced Governance"
+    icon={<Scale />}
+  />
+  <Card
+    title="Incentive Mechanisms"
+    icon={<Trophy />}
+  />
+  <Card
+    title="Long-term Sustainability"
+    icon={<Leaf />}
+  />
+</Cards>
+
+</div>
+
+## Why build on [Fuel](https://fuel.network)?
+
+To revolutionize global finance, we need blockchains that can scale efficiently while maintaining strong performance and security. Low latency and high throughput are non-negotiable.
 
 Fuel fits this profile perfectly. It tackles the key challenges that Web3 developers face today, including performance, scalability, interoperability, and state management.
 
