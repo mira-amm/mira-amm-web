@@ -1,6 +1,16 @@
 #====================================================
+#              Environment Variables
+#====================================================
+.env
+.env*.local
+.env.sentry-build-plugin
+
+#====================================================
 #               Build/Test Outputs
 #====================================================
+libs/db/data/*
+libs/api/documentation
+apps/admin/media
 **/dist
 **/bin
 **/.swc
@@ -9,7 +19,6 @@
 **/.react-router
 **/out
 **/build
-libs/api/documentation
 **/generated
 **/playwright-report
 **/test-results
@@ -29,21 +38,20 @@ libs/api/documentation
 #====================================================
 #                 Caches & Logs
 #====================================================
-.devenv*
-devenv.local.nix
-**/.direnv/
-**.qcow2
 .pre-commit-config.yaml
 .nx/cache
 .nx/workspace-data
-apps/admin/media
-libs/db/data/*
+libs/db/supabase/.branches
+libs/db/supabase/.temp
+.devenv*
+devenv.local.nix
+.direnv
+**/.direnv/
+**.qcow2
 **/postgresql.log
 logs
 *.log
 pnpm-debug.log*
-libs/db/supabase/.branches
-libs/db/supabase/.temp
 **/.temp
 **/.tmp
 **/temp
@@ -73,22 +81,3 @@ vitest.config.*.timestamp*
 .settings
 !.vscode/extensions.json
 !.vscode/settings-example.json
-
-#====================================================
-#              Environment Variables
-#====================================================
-.env
-.env*.local
-
-# Sentry Config File
-.env.sentry-build-plugin
-
-# Devenv
-.devenv*
-devenv.local.nix
-
-# direnv
-.direnv
-
-# pre-commit
-.pre-commit-config.yaml
