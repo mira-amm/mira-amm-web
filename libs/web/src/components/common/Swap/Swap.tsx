@@ -18,6 +18,8 @@ import {
 import { useConnectUI, useIsConnected } from "@fuels/react";
 import { PoolId } from "mira-dex-ts";
 
+import { clsx } from "clsx";
+
 import {
   CoinsListModal,
   CurrencyBox,
@@ -773,7 +775,7 @@ const Swap = ({ isWidget }: { isWidget?: boolean }) => {
             <Button
               disabled={isActionDisabled}
               onClick={handleSwapClick}
-              loading={isActionLoading}
+              loading={isActionLoading.toString()}
               size="2xl"
             >
               {isActionLoading ? (
