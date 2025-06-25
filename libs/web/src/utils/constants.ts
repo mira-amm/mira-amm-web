@@ -88,7 +88,7 @@ export const boosterBannerTitle =
 export const POINTS_PROMO_TITLE =
   "Introducing Mira Points, earn points by providing liquidity and engaging in activities.";
 
-export const EPOCH_NUMBER = 5 as const;
+export const EPOCH_NUMBER = 6 as const;
 
 export const POINTS_TOOLTIP =
   "Your points are calculated based on the amount of liquidity you provide and the number of transactions you make.";
