@@ -20,10 +20,10 @@ export interface Position {
   };
 }
 
-const usePositions = (): {
+export function usePositions(): {
   data: Position[] | undefined;
   isLoading: boolean;
-} => {
+}{
   const mira = useReadonlyMira();
   const {balances} = useBalances();
 
@@ -117,5 +117,3 @@ const usePositions = (): {
 
   return {data, isLoading};
 };
-
-export default usePositions;

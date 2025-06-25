@@ -1,15 +1,15 @@
 "use client";
 
+import Link from "next/link";
 import {useState, useCallback} from "react";
+import {Menu, X} from "lucide-react";
 import {createPortal} from "react-dom";
 import {useIsClient, useScrollLock} from "usehooks-ts";
 import {clsx} from "clsx";
-import Link from "next/link";
 
 import {LogoIcon} from "@/meshwave-ui/icons";
 import {BlogLink, DiscordLink, XLink} from "@/src/utils/constants";
-import useFaucetLink from "@/src/hooks/useFaucetLink";
-import {Menu, X} from "lucide-react";
+import { useFaucetLink } from "@/src/hooks/useFaucetLink";
 
 export function MobileMenu() {
   const [expanded, setExpanded] = useState(false);

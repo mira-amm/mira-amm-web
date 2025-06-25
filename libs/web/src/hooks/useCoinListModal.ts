@@ -1,18 +1,16 @@
 import {type ChangeEvent, useMemo, useState} from "react";
-import {useAssetList} from "./useAssetList";
-import {useVerifiedAssets} from "./useVerifiedAssets";
 import {CoinDataWithPrice} from "../utils/coinsConfig";
 import {BN, CoinQuantity} from "fuels";
 import {checkIfCoinVerified} from "../utils/checkIfCoinVerified";
-import {useFetchMultiAssetImages} from "./useAssetImage";
+import {useFetchMultiAssetImages, useVerifiedAssets, useAssetList} from "@/src/hooks";
 
 const priorityOrder: string[] = ["ETH", "USDC", "USDT", "FUEL"];
 const lowPriorityOrder: string[] = ["DUCKY"];
 
-const useCoinListModalData = (
+export function useCoinListModal(
   balances: CoinQuantity[] | undefined,
   verifiedAssetsOnly?: boolean,
-) => {
+){
   const [value, setValue] = useState("");
 
   const {assets, isLoading} = useAssetList();
@@ -155,5 +153,3 @@ const useCoinListModalData = (
     searchValue: value,
   };
 };
-
-export default useCoinListModalData;

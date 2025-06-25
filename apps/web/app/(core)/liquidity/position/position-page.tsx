@@ -2,7 +2,7 @@
 
 import {useRouter, useSearchParams} from "next/navigation";
 import {createPoolIdFromPoolKey, isPoolIdValid} from "@/src/utils/common";
-import PositionView from "@/src/components/pages/view-position-page/components/PositionView/PositionView";
+import { PositionView } from "@/src/components/pages/view-position-page/components/PositionView/PositionView";
 
 const PositionPage = () => {
   const router = useRouter();

@@ -2,7 +2,7 @@ import {useQuery} from "@tanstack/react-query";
 import { useReadonlyMira } from "@/src/hooks";
 import {PoolId} from "mira-dex-ts";
 
-const usePoolsMetadata = (pools: PoolId[] | undefined) => {
+export function usePoolsMetadata(pools: PoolId[] | undefined){
   const mira = useReadonlyMira();
   const miraExists = Boolean(mira);
 
@@ -20,5 +20,3 @@ const usePoolsMetadata = (pools: PoolId[] | undefined) => {
 
   return {poolsMetadata: data, poolsMetadataPending: isPending};
 };
-
-export default usePoolsMetadata;

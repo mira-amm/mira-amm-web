@@ -13,11 +13,11 @@ import {useFormattedAddress, useIsRebrandEnabled} from "@/src/hooks";
 import {Copy} from "lucide-react";
 import {cn} from "@/src/utils/cn";
 
-interface MiraBlockProps {
-  pool: PoolId;
-}
+import {DEFAULT_AMM_CONTRACT_ID} from "@/src/utils/constants";
 
-const MiraBlock = ({pool}: MiraBlockProps) => {
+export function MiraBlock({pool}: {
+  pool: PoolId
+}) {
   const {lpTokenBalance} = usePositionData({pool});
   const lpTokenDisplayValue = formatUnits(lpTokenBalance || "0", 9);
   const lpTokenAssetId = getLPAssetId(DEFAULT_AMM_CONTRACT_ID, pool);
@@ -64,5 +64,3 @@ const MiraBlock = ({pool}: MiraBlockProps) => {
     </div>
   );
 };
-
-export default MiraBlock;

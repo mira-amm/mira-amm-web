@@ -1,20 +1,26 @@
 "use client";
 
-import React, {useState, useEffect} from "react";
+import {useState, useEffect} from "react";
 import {clsx} from "clsx";
-import useBoostedApr, {RewardsToken} from "@/src/hooks/useBoostedApr";
+import {useBoostedApr, RewardsToken} from "@/src/hooks/useBoostedApr";
 import {isMobile} from "react-device-detect";
 import {Loader} from "@/src/components/common";
 import {EPOCH_NUMBER} from "@/src/utils/constants";
 import {PointsIconSimple} from "@/meshwave-ui/icons";
 
-const AprBadge: React.FC<{
+export function AprBadge({
+  aprValue,
+  small,
+  leftAlignValue,
+  poolKey,
+  tvlValue,
+}: {
   aprValue: string | null;
   small?: boolean;
   leftAlignValue?: string;
   poolKey: string;
   tvlValue: number;
-}> = ({aprValue, small, leftAlignValue, poolKey, tvlValue}) => {
+}) {
   const [isHovered, setIsHovered] = useState(false);
 
   const {boostedApr, boostReward, rewardsToken} = useBoostedApr(
@@ -104,8 +110,6 @@ const AprBadge: React.FC<{
   );
 };
 
-export default AprBadge;
-
 const LabelMap: Record<
   Exclude<RewardsToken, undefined>,
   {
@@ -123,16 +127,22 @@ const LabelMap: Record<
   },
 };
 
-const AprLabel: React.FC<{
+
+export function AprLabel ({
+  rewardsToken,
+  boostedApr,
+  boostReward,
+  baseApr,
+  aprElement,
+}: {
   rewardsToken: RewardsToken;
   boostedApr: number;
   boostReward: number;
   baseApr: string;
   aprElement: React.ReactNode;
-}> = ({rewardsToken, boostedApr, boostReward, baseApr, aprElement}) => {
-  if (!rewardsToken) {
-    return null;
-  }
+}){
+
+ if (!rewardsToken) return null;
 
   const {label, description} = LabelMap[rewardsToken];
 

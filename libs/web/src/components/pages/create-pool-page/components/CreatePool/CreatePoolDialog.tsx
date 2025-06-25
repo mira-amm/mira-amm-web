@@ -1,35 +1,27 @@
 import {Dispatch, SetStateAction, useCallback, useRef, useState} from "react";
 import {B256Address, bn} from "fuels";
 import {useConnectUI, useIsConnected} from "@fuels/react";
+import {ArrowLeftRight, Sparkle} from "lucide-react";
+import {Button} from "@/meshwave-ui/Button";
 
 import {clsx} from "clsx";
 import Link from "next/link";
+import {buildPoolId} from "mira-dex-ts";
 
 import CoinPair from "@/src/components/common/CoinPair/CoinPair";
 import CoinInput from "@/src/components/pages/add-liquidity-page/components/CoinInput/CoinInput";
-import useAssetBalance from "@/src/hooks/useAssetBalance";
-import usePoolsMetadata from "@/src/hooks/usePoolsMetadata";
 import {useDebounceCallback} from "usehooks-ts";
-import useFaucetLink from "@/src/hooks/useFaucetLink";
 import {createPoolKey, openNewTab} from "@/src/utils/common";
 import {Info, CoinsListModal } from "@/src/components/common";
-import {CreatePoolPreviewData} from "./PreviewCreatePoolDialog";
-import {buildPoolId} from "mira-dex-ts";
 import {StablePoolTooltip, VolatilePoolTooltip} from "./CreatePoolTooltips";
-import {useModal} from "@/src/hooks";
-import {useCheckEthBalance, useAssetPrice, useAssetMetadata, useCheckActiveNetwork, useBalances} from "@/src/hooks";
-import useExchangeRateV2 from "@/src/hooks/useExchangeRateV2";
+import {CreatePoolPreviewData} from "./PreviewCreatePoolDialog";
 
-import {Button} from "@/meshwave-ui/Button";
-import {ArrowLeftRight, Sparkle} from "lucide-react";
+import {useAssetBalance, useExchangeRateV2, useFaucetLink, useModal, usePoolsMetadata, useCheckEthBalance, useAssetPrice, useAssetMetadata, useCheckActiveNetwork, useBalances} from "@/src/hooks";
 
-export default function CreatePoolDialog({
-  setPreviewData,
-}: {
+export function CreatePoolDialog({setPreviewData}: {
   setPreviewData: Dispatch<SetStateAction<CreatePoolPreviewData | null>>;
 }) {
-  const [AssetsListModal, openAssetsListModal, closeAssetsListModal] =
-    useModal();
+  const [AssetsListModal, openAssetsListModal, closeAssetsListModal] = useModal();
 
   const {isConnected, isPending: isConnecting} = useIsConnected();
   const {connect} = useConnectUI();

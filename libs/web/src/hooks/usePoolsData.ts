@@ -40,12 +40,13 @@ export type MoreInfo = {
 export type PoolsData = {
   pools: PoolData[];
 };
+
 const ITEMS_IN_PAGE = 10;
 const DEFAULT_ORDER_BY = "tvlUSD_DESC";
 const DEFAULT_SEARCH = "";
 export const DEFAULT_PAGE = 1;
 
-export const usePoolsData = () => {
+export function usePoolsData(){
   const [queryVariables, setQueryVariables] = useQueryParams({
     page: withDefault(NumberParam, DEFAULT_PAGE),
     search: withDefault(StringParam, DEFAULT_SEARCH),
@@ -157,5 +158,3 @@ export const usePoolsData = () => {
     },
   };
 };
-
-export default usePoolsData;

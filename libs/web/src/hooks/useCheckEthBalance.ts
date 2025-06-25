@@ -3,7 +3,7 @@ import {useMemo} from "react";
 import {ETH_ASSET_ID, EthDecimals, MinEthValueBN} from "@/src/utils/constants";
 import {CurrencyBoxState} from "@/src/components/common/Swap/Swap";
 import {bn, BN} from "fuels";
-import useAssetBalance from "@/src/hooks/useAssetBalance";
+import { useAssetBalance } from "@/src/hooks/useAssetBalance";
 
 export function useCheckEthBalance(sellCoin?: CurrencyBoxState){
   const {balances} = useBalances();

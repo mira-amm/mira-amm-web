@@ -1,27 +1,25 @@
-import { useMiraDex } from "@/src/hooks";
-import {useMutation} from "@tanstack/react-query";
-import {useWallet} from "@fuels/react";
 import {useCallback} from "react";
-import {DefaultTxParams, MaxDeadline} from "@/src/utils/constants";
 import {bn} from "fuels";
+import {useWallet} from "@fuels/react";
+import {useMutation} from "@tanstack/react-query";
+
+import {DefaultTxParams, MaxDeadline} from "@/src/utils/constants";
 import {useAssetMinterContract} from "./useAssetMinterContract";
-import { useAssetMetadata } from "@/src/hooks";
+import { useAssetMetadata, useMiraDex } from "@/src/hooks";
 
-type Props = {
-  firstAsset: string;
-  firstAssetAmount: string;
-  secondAsset: string;
-  secondAssetAmount: string;
-  isPoolStable: boolean;
-};
-
-const useCreatePool = ({
+export function useCreatePool({
   firstAsset,
   firstAssetAmount,
   secondAsset,
   secondAssetAmount,
   isPoolStable,
-}: Props) => {
+}: {
+  firstAsset: string;
+  firstAssetAmount: string;
+  secondAsset: string;
+  secondAssetAmount: string;
+  isPoolStable: boolean;
+}){
   const mira = useMiraDex();
   const {wallet} = useWallet();
   const firstAssetContract = useAssetMinterContract(firstAsset);
@@ -87,5 +85,3 @@ const useCreatePool = ({
     isPoolCreationPending: isPending,
   };
 };
-
-export default useCreatePool;

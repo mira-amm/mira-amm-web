@@ -1,30 +1,23 @@
 "use client";
 
-import {TransactionFailureModal} from "@/src/components/common";
-import {useModal} from "@/src/hooks";
-import RemoveLiquidityModalContent from "@/src/components/pages/view-position-page/components/RemoveLiquidityModalContent/RemoveLiquidityModalContent";
-import usePositionData from "@/src/hooks/usePositionData";
-import {createPoolKey, floorToTwoSignificantDigits} from "@/src/utils/common";
+import Link from "next/link";
 import {useCallback, useRef, useState} from "react";
-import useRemoveLiquidity from "@/src/hooks/useRemoveLiquidity";
+import {ChevronLeft} from "lucide-react";
+import {getLPAssetId, PoolId} from "mira-dex-ts";
+import {bn, formatUnits} from "fuels";
+
+import {TransactionFailureModal} from "@/src/components/common";
+import {createPoolKey, floorToTwoSignificantDigits} from "@/src/utils/common";
+import RemoveLiquidityModalContent from "@/src/components/pages/view-position-page/components/RemoveLiquidityModalContent/RemoveLiquidityModalContent";
 import RemoveLiquiditySuccessModal from "@/src/components/pages/view-position-page/components/RemoveLiquiditySuccessModal/RemoveLiquiditySuccessModal";
 
-import {getLPAssetId, PoolId} from "mira-dex-ts";
+import {useRemoveLiquidity, usePositionData, useModal, useFormattedAddress, useCheckActiveNetwork, useAssetMetadata, usePoolAPR} from "@/src/hooks";
 
-import { useCheckActiveNetwork } from "@/src/hooks/useCheckActiveNetwork";
-import usePoolAPR from "@/src/hooks/usePoolAPR";
-
-import {bn, formatUnits} from "fuels";
-import {useAssetMetadata} from "@/src/hooks";
-
-import DesktopPositionView from "./DesktopPositionView/DesktopPositionView";
-import MobilePositionView from "./MobilePositionView/MobilePositionView";
+import { DesktopPositionView } from "./desktop-position-view";
+import { MobilePositionView } from "./mobile-position-view";
 import {DEFAULT_AMM_CONTRACT_ID, DefaultLocale} from "@/src/utils/constants";
-import {useFormattedAddress} from "@/src/hooks";
-import {ChevronLeft} from "lucide-react";
-import Link from "next/link";
 
-const PositionView = ({pool}: {pool: PoolId}) => {
+export function PositionView ({pool}: {pool: PoolId}) {
   const [
     RemoveLiquidityModal,
     openRemoveLiquidityModal,
@@ -221,4 +214,3 @@ const PositionView = ({pool}: {pool: PoolId}) => {
   );
 };
 
-export default PositionView;

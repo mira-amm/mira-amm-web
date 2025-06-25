@@ -1,28 +1,22 @@
+import {useCallback} from "react";
+import {useRouter} from "next/navigation";
+import {Button} from "@/meshwave-ui/Button";
 import CoinPair from "@/src/components/common/CoinPair/CoinPair";
 import {Coin} from "@/src/components/common";
-import {useModal} from "@/src/hooks";
+import {useCreatePool, useModal, useAssetMetadata} from "@/src/hooks";
 import CreatePoolSuccessModal from "../CreatePoolSuccessModal/CreatePoolSuccessModal";
-import {useRouter} from "next/navigation";
-import {useCallback} from "react";
-import useCreatePool from "@/src/hooks/useCreatePool";
-import {useAssetMetadata} from "@/src/hooks";
-import {Button} from "@/meshwave-ui/Button";
-
-type AssetsData = {
-  assetId: string;
-  amount: string;
-};
 
 export type CreatePoolPreviewData = {
-  assets: AssetsData[];
+  assets: {
+  assetId: string;
+  amount: string;
+  }[];
   isStablePool: boolean;
 };
 
-type Props = {
-  previewData: CreatePoolPreviewData;
-};
-
-const PreviewCreatePoolDialog = ({previewData}: Props) => {
+const PreviewCreatePoolDialog = ({previewData}: {
+  previewData: CreatePoolPreviewData
+}) => {
   const [SuccessModal, openSuccessModal, closeSuccessModal] = useModal();
   const firstAssetMetadata = useAssetMetadata(previewData.assets[0].assetId);
   const secondAssetMetadata = useAssetMetadata(previewData.assets[1].assetId);

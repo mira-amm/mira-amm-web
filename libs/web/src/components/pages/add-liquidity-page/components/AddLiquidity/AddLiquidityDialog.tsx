@@ -1,11 +1,3 @@
-import CoinPair from "@/src/components/common/CoinPair/CoinPair";
-import CoinInput from "@/src/components/pages/add-liquidity-page/components/CoinInput/CoinInput";
-import {clsx} from "clsx";
-import {Info, TransactionFailureModal} from "@/src/components/common";
-import {useBalances} from "@/src/hooks";
-import useAssetBalance from "@/src/hooks/useAssetBalance";
-import {useConnectUI, useIsConnected} from "@fuels/react";
-import usePreviewAddLiquidity from "@/src/hooks/usePreviewAddLiquidity";
 import {
   Dispatch,
   SetStateAction,
@@ -13,15 +5,24 @@ import {
   useEffect,
   useState,
 } from "react";
+import {Button} from "@/meshwave-ui/Button";
+import {BN, bn} from "fuels";
+import {useConnectUI, useIsConnected} from "@fuels/react";
+import {PoolId} from "mira-dex-ts";
 import {useDebounceCallback} from "usehooks-ts";
-import {useCheckEthBalance} from "@/src/hooks";
-import useFaucetLink from "@/src/hooks/useFaucetLink";
+import {clsx} from "clsx";
+
+import CoinInput from "@/src/components/pages/add-liquidity-page/components/CoinInput/CoinInput";
 import {openNewTab} from "@/src/utils/common";
-import useCheckActiveNetwork from "@/src/hooks/useCheckActiveNetwork";
-import usePoolAPR from "@/src/hooks/usePoolAPR";
+import {Info, TransactionFailureModal} from "@/src/components/common";
+import CoinPair from "@/src/components/common/CoinPair/CoinPair";
+import { AprBadge } from "@/src/components/common/AprBadge/AprBadge";
+import { usePoolNameAndMatch } from "@/src/hooks/usePoolNameAndMatch";
+
+import {usePreviewAddLiquidity, useAssetBalance, usePoolAPR, usePoolsMetadata, useFaucetLink, useAssetMetadata, useAssetPrice, useModal, useCheckEthBalance, useCheckActiveNetwork, useBalances} from "@/src/hooks";
 import {DefaultLocale, FuelAppUrl} from "@/src/utils/constants";
 import {AddLiquidityPreviewData} from "@/src/components/pages/add-liquidity-page/components/AddLiquidity/PreviewAddLiquidityDialog";
-import {PoolId} from "mira-dex-ts";
+
 import {
   APRTooltip,
   StablePoolTooltip,
@@ -37,13 +38,12 @@ import usePoolNameAndMatch from "@/src/hooks/usePoolNameAndMatch";
 import {Button} from "@/meshwave-ui/Button";
 import {cn} from "@/src/utils/cn";
 
-type Props = {
+const AddLiquidityDialog = ({poolId, setPreviewData, poolKey}: {
   poolId: PoolId;
   setPreviewData: Dispatch<SetStateAction<AddLiquidityPreviewData | null>>;
   poolKey: string;
-};
 
-const AddLiquidityDialog = ({poolId, setPreviewData, poolKey}: Props) => {
+}) => {
   const [FailureModal, openFailureModal, closeFailureModal] = useModal();
 
   const {isConnected, isPending: isConnecting} = useIsConnected();

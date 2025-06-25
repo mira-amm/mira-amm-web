@@ -1,11 +1,13 @@
-import { useMemo } from "react";
-import { useQuery } from "@tanstack/react-query";
-import { type BN, type AssetId, bn } from "fuels";
-import type { Asset, ReadonlyMiraAmm } from "mira-dex-ts";
-import { CoinData } from "../utils/coinsConfig";
-import { useReadonlyMira } from ".";
-import useRoutablePools from "./useRoutablePools";
-import { Route } from "./useGetPoolsWithReserve";
+import {useMemo} from "react";
+import {useQuery} from "@tanstack/react-query";
+import {type BN, type AssetId, bn} from "fuels";
+import {
+  getSwapQuotesBatch,
+  type SwapQuote,
+  TradeType,
+} from "./get-swap-quotes-batch";
+import {useReadonlyMira} from ".";
+import {type Route, useRoutablePools} from "@/src/hooks";
 
 export enum TradeState {
   LOADING,
@@ -15,54 +17,11 @@ export enum TradeState {
   REFETCHING,
 }
 
-export enum TradeType {
-  EXACT_IN = "EXACT_IN",
-  EXACT_OUT = "EXACT_OUT",
-}
-
-type SwapQuote = {
-  route: Route;
-  amountIn: BN;
-  amountOut: BN;
-  assetIdIn: AssetId;
-  assetIdOut: AssetId;
-  tradeType: TradeType;
-};
-
-const getSwapQuotesBatch = async (
-  amount: BN,
-  tradeType: TradeType,
-  routes: Route[],
-  amm: ReadonlyMiraAmm
-): Promise<SwapQuote[]> => {
-  if (!routes.length) return [];
-
-  const isExactIn = tradeType === TradeType.EXACT_IN;
-  const assetKey = isExactIn ? routes[0].assetIn.assetId : routes[0].assetOut.assetId;
-  const poolPaths = routes.map((r) => r.pools.map((p) => p.poolId));
-
-  const results = isExactIn
-    ? await amm.previewSwapExactInputBatch({ bits: assetKey }, amount, poolPaths)
-    : await amm.previewSwapExactOutputBatch({ bits: assetKey }, amount, poolPaths);
-
-    return results
-      .map((asset, i)=> asset ? {
-
-    tradeType,
-    route: routes[i],
-    assetIdIn: { bits: routes[i].assetIn.assetId },
-    assetIdOut: { bits: routes[i].assetOut.assetId },
-    amountIn: isExactIn ? amount : asset[1],
-    amountOut: isExactIn ? asset[1] : amount,
-  }: null)
-      .filter((quote): quote is SwapQuote => quote !== null);
-};
-
 export function useSwapRouter(
   tradeType: TradeType,
   amountSpecified: BN = bn(0),
   assetIn?: CoinData,
-  assetOut?: CoinData
+  assetOut?: CoinData,
 ): {
   tradeState: TradeState;
   trade?: {
@@ -76,7 +35,7 @@ export function useSwapRouter(
 
   const shouldFetch = useMemo(
     () => !!assetIn && !!assetOut && amountSpecified.gt(0),
-    [assetIn, assetOut, amountSpecified]
+    [assetIn, assetOut, amountSpecified],
   );
 
   const {
@@ -102,17 +61,17 @@ export function useSwapRouter(
       amm && routes.length
         ? getSwapQuotesBatch(amountSpecified, tradeType, routes, amm)
         : Promise.resolve([]),
-    initialData: shouldFetch ? undefined: [],
+    initialData: shouldFetch ? undefined : [],
   });
 
   // NOTE: could've done return-foo, used 'if' statements to keep it debuggable in case it explodes later
   return useMemo(() => {
     if (isLoading || routesLoading) {
-      return { tradeState: TradeState.LOADING, error: null };
+      return {tradeState: TradeState.LOADING, error: null};
     }
 
     if (!assetIn || !assetOut) {
-      return { tradeState: TradeState.INVALID, error: null };
+      return {tradeState: TradeState.INVALID, error: null};
     }
 
     if (!quotes.length) {
@@ -139,9 +98,10 @@ export function useSwapRouter(
       };
     }
 
-    const tradeState = isRefetching || routesRefetching
-      ? TradeState.REFETCHING
-      : TradeState.VALID;
+    const tradeState =
+      isRefetching || routesRefetching
+        ? TradeState.REFETCHING
+        : TradeState.VALID;
 
     return {
       tradeState,

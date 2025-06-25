@@ -10,7 +10,7 @@ import { Search } from "lucide-react";
 import {CoinQuantity} from "fuels";
 import {SkeletonLoader, CoinListItem} from "@/web/src/components/common";
 import {UnknownCoinListItem} from "@/web/src/components/common/Swap/components/UnknownCoinListItem";
-import useCoinListModalData from "@/src/hooks/useCoinListModal";
+import { useCoinListModal } from "@/src/hooks/useCoinListModal";
 
 const assetIdRegex = /^0x[0-9a-fA-F]{64}$/;
 
@@ -24,7 +24,7 @@ export function CoinsListModal({
   verifiedAssetsOnly?: boolean;
 }) {
   const {allCoins, handleFilterChange, isLoading, searchValue} =
-    useCoinListModalData(balances, verifiedAssetsOnly);
+    useCoinListModal(balances, verifiedAssetsOnly);
 
   const inputRef = useRef<HTMLInputElement>(null);
 
