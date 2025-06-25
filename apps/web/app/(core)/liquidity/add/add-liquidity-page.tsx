@@ -33,7 +33,7 @@ export default function AddLiquidityPage() {
   const [SettingsModal, openSettingsModal, closeSettingsModal] = useModal();
   const [previewData, setPreviewData] =
     useState<AddLiquidityPreviewData | null>(null);
-  const [slippage, setSlippage] = useState<number>(DefaultSlippageValue);
+  const [slippage, setSlippage] = useState<number>(100);
   const [slippageMode, setSlippageMode] = useState<SlippageMode>("auto");
 
   const handleBackClick = useCallback(() => {

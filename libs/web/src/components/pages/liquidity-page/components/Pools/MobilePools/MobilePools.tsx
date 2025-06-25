@@ -1,4 +1,4 @@
-import MobilePoolItem from "@/src/components/pages/liquidity-page/components/Pools/MobilePools/MobilePoolItem/MobilePoolItem";
+import { MobilePoolItem } from "@/src/components/pages/liquidity-page/components/Pools/MobilePools/MobilePoolItem/MobilePoolItem";
 import {Fragment} from "react";
 import {clsx} from "clsx";
 import {PoolData} from "@/src/hooks/usePoolsData";

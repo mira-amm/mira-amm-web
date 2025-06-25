@@ -4,7 +4,7 @@ import {createPoolIdString} from "@/src/utils/common";
 import {SQDIndexerUrl} from "@/src/utils/constants";
 import request, {gql} from "graphql-request";
 
-const usePoolAPR = (pool: PoolId) => {
+export function usePoolAPR (pool: PoolId) {
   const poolIdString = createPoolIdString(pool);
 
   const {data, isPending} = useQuery({
@@ -49,4 +49,3 @@ const usePoolAPR = (pool: PoolId) => {
   return {apr: data, isPending};
 };
 
-export default usePoolAPR;

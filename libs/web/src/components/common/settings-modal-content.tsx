@@ -14,10 +14,7 @@ import {
 import {Info} from "lucide-react";
 import {clsx} from "clsx";
 
-import {
-  DefaultSlippageValue,
-  SlippageMode,
-} from "@/src/components/common/Swap/Swap";
+import {SlippageMode} from "@/src/components/common/Swap/Swap";
 
 import {useAnimationStore} from "@/src/stores/useGlitchScavengerHunt";
 
@@ -49,7 +46,7 @@ export function SettingsModalContent({
     const value = event.target.value.replace("%", "");
     const numericValue = parseFloat(value.replace(",", "."));
     if (isNaN(numericValue) || numericValue <= 0 || numericValue >= 100) {
-      setSlippage(DefaultSlippageValue);
+      setSlippage(100);
       return;
     }
     setSlippage(Math.floor(Number((numericValue * 100).toFixed(2))));
@@ -75,7 +72,7 @@ export function SettingsModalContent({
   const handleSlippageModeChange = (mode: SlippageMode) => {
     setSlippageMode(mode);
     if (mode === "auto" && !AutoSlippageValues.includes(slippage)) {
-      setSlippage(DefaultSlippageValue);
+      setSlippage(100);
     }
   };
 

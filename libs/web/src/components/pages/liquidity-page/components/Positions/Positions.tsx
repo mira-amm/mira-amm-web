@@ -1,21 +1,20 @@
 "use client";
 
-import {useIsConnected} from "@fuels/react";
-import usePositions from "@/src/hooks/usePositions";
-import {useAssetMetadata} from "@/src/hooks";
-import {formatUnits} from "fuels";
-import {buildPoolId} from "mira-dex-ts";
-import usePoolAPR from "@/src/hooks/usePoolAPR";
-import usePoolNameAndMatch from "@/src/hooks/usePoolNameAndMatch";
-import {createPoolKey} from "@/src/utils/common";
-import {DefaultLocale, POSITIONS_SKELTON_COUNT} from "@/src/utils/constants";
 import Link from "next/link";
-
-import CoinPair from "@/src/components/common/CoinPair/CoinPair";
-import AprBadge from "@/src/components/common/AprBadge/AprBadge";
-import {PositionsLoader} from "./PositionsLoader";
+import {formatUnits} from "fuels";
+import {useIsConnected} from "@fuels/react";
+import {buildPoolId} from "mira-dex-ts";
 import {FileText} from "lucide-react";
 import {Button} from "@/meshwave-ui/Button";
+
+import { usePoolNameAndMatch } from "@/src/hooks/usePoolNameAndMatch";
+import { usePoolAPR, useAssetMetadata, usePositions} from "@/src/hooks";
+
+import {createPoolKey} from "@/src/utils/common";
+import CoinPair from "@/src/components/common/CoinPair/CoinPair";
+import { AprBadge } from "@/src/components/common/AprBadge/AprBadge";
+
+import {DefaultLocale} from "@/src/utils/constants";
 
 export function Positions() {
   const {isConnected} = useIsConnected();
@@ -47,7 +46,7 @@ export function Positions() {
     <section className="flex flex-col gap-6">
       <p className="text-[20px] leading-6">Your Positions</p>
       {!data || isLoading ? (
-        <PositionsLoader count={POSITIONS_SKELTON_COUNT} />
+        <PositionsLoader />
       ) : (
         <div className="flex flex-col gap-4 bg-background-grey-dark border-border-secondary border-[12px] dark:border-0 dark:bg-background-grey-dark rounded-[24px] p-4">
           {/* Headers */}
@@ -124,10 +123,8 @@ function PositionRow({
         maximumFractionDigits: 2,
       })}%`
     : null;
-  const tvlValue = apr?.tvlUSD;
 
-  const poolTypeText = isStablePool ? "Stable" : "Volatile";
-  const feeText = isStablePool ? "0.05%" : "0.3%";
+  const tvlValue = apr?.tvlUSD;
 
   return (
     <Link href={path} className="block">
@@ -165,5 +162,56 @@ function PositionRow({
         </div>
       </div>
     </Link>
+  );
+}
+
+function PositionsLoader({ count = 3 }: { count?: number }) {
+  return (
+    <div className="flex flex-col gap-4 bg-gray-800 rounded-3xl p-4 w-full">
+      <div className="hidden md:grid grid-cols-4 gap-4 px-2 pb-4 border-b border-gray-700 text-gray-400 text-sm font-normal">
+        <div className="text-left">
+          <div className="bg-gray-600 animate-pulse h-3 line-3" />
+        </div>
+        <div className="text-center">
+          <div className="bg-gray-600 animate-pulse h-3 w-[75%] line-3 mx-auto" />
+        </div>
+        <div className="text-center">
+          <div className="bg-gray-600 animate-pulse h-3 w-[75%] line-3 mx-auto" />
+        </div>
+        <div className="text-right">
+          <div className="bg-gray-600 animate-pulse h-3 w-[75%] line-3 ml-auto" />
+        </div>
+      </div>
+
+      {Array.from({length: count}, (_, i) => (
+        <div
+          key={i}
+          className="grid grid-cols-1 sm:grid-cols-3 md:grid-cols-4 gap-4 items-center py-4 hover:bg-gray-700 transition rounded-lg px-2"
+        >
+          <div className="flex flex-col gap-2 w-full">
+            <div className="flex gap-2 items-center">
+              <div className="bg-gray-600 animate-pulse w-8 h-8 rounded-full" />
+              <div className="bg-gray-600 animate-pulse w-8 h-8 rounded-full" />
+              <div className="flex flex-col gap-1 ml-2">
+                <div className="bg-gray-600 animate-pulse w-28 h-3" />
+                <div className="bg-gray-600 animate-pulse w-28 h-3" />
+              </div>
+            </div>
+          </div>
+
+          <div className="text-center">
+            <div className="bg-gray-600 animate-pulse w-[75%] h-4 mx-auto" />
+          </div>
+
+          <div className="text-center">
+            <div className="bg-gray-600 animate-pulse w-[75%] h-4 mx-auto" />
+          </div>
+
+          <div className="col-span-2 sm:col-span-3 md:col-span-1 flex justify-end">
+            <div className="bg-gray-600 animate-pulse w-[75%] h-4" />
+          </div>
+        </div>
+      ))}
+    </div>
   );
 }

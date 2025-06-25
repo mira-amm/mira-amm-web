@@ -1,12 +1,20 @@
-import {CurrencyBoxMode, SwapState} from "@/src/components/common/Swap/Swap";
-import useSwapData from "./useAssetPair/useSwapData";
-import useAsset from "./useAsset";
 import {useMemo} from "react";
 import {BN, bn} from "fuels";
-import {useDebounce, useSwapRouter, TradeType, TradeState} from "@/src/hooks";
-import {Route} from "./useGetPoolsWithReserve";
+import {CurrencyBoxMode, SwapState} from "@/src/components/common/Swap/Swap";
+import {
+  useSwapData,
+  useAsset,
+  useDebounce,
+  useSwapRouter,
+  TradeType,
+  TradeState,
+} from "@/src/hooks";
+import {Route} from "@/src/hooks/useGetPoolsWithReserve";
 
-export type SwapPreview = {
+export function useSwapPreview(
+  swapState: SwapState,
+  mode: CurrencyBoxMode,
+): {
   tradeState: TradeState;
   trade?: {
     bestRoute: Route;
@@ -14,14 +22,8 @@ export type SwapPreview = {
     amountOut: BN;
   };
   error: string | null;
-};
-
-export function useSwapPreview(
-  swapState: SwapState,
-  mode: CurrencyBoxMode,
-): SwapPreview {
+} {
   const {sellAssetId, buyAssetId} = useSwapData(swapState);
-
   const {asset: assetIn} = useAsset(sellAssetId);
   const {asset: assetOut} = useAsset(buyAssetId);
 

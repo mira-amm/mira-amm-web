@@ -92,7 +92,6 @@ const SwapRouteItem = memo(function SwapRouteItem({ pool }: { pool: PoolId }) {
   );
 });
 
-
 const PreviewSummary = memo(function PreviewSummary({
   previewLoading,
   tradeState,
@@ -214,14 +213,8 @@ export function Swap({ isWidget }: { isWidget?: boolean }) {
   const [CoinsModal, openCoinsModal, closeCoinsModal] = useModal();
   const [SuccessModal, openSuccess] = useModal();
   const [FailureModal, openFailure, closeFailureModal] = useModal();
-
-  const isClient = useIsClient();
-
-  const initialSwapState = useInitialSwapState(isWidget);
-
   const [swapState, setSwapState] = useState<SwapState>(initialSwapState);
-  const [inputsState, setInputsState] =
-    useState<InputsState>(initialInputsState);
+  const [inputsState, setInputsState] = useState<InputsState>(initialInputsState);
   const [activeMode, setActiveMode] = useState<CurrencyBoxMode>("sell");
   const [slippage, setSlippage] = useState<number>(100);
   const [slippageMode, setSlippageMode] = useState<SlippageMode>("auto");
@@ -539,12 +532,9 @@ export function Swap({ isWidget }: { isWidget?: boolean }) {
   ]);
 
   useEffect(() => {
-    if (!sellMetadata.decimals) {
-      setShowInsufficientBalance(false);
-      return;
-    }
     try {
-      const parsedSell = bn.parseUnits(sellValue || "0", sellMetadata.decimals);
+      const decimals = sellMetadata.decimals;
+      const parsedSell = bn.parseUnits(sellValue || "0", decimals);
       const insufficient = sellBalance.lt(parsedSell);
       setShowInsufficientBalance(insufficient);
     } catch {
@@ -659,7 +649,7 @@ export function Swap({ isWidget }: { isWidget?: boolean }) {
       tradeState === TradeState.REFETCHING ||
       (previewLoading && swapButtonTitle !== "Insufficient balance") ||
       (!amountMissing && !showInsufficientBalance && txCostPending)
-    );
+    )
   }, [
     balancesPending,
     tradeState,
@@ -668,126 +658,123 @@ export function Swap({ isWidget }: { isWidget?: boolean }) {
     amountMissing,
     showInsufficientBalance,
     txCostPending,
-  ]);
-
-  if (!isClient) {
-    return (
-      <div className="flex justify-center items-center gap-3 lg:gap-4">
-        <Loader color="gray" />
-      </div>
-    );
-  }
+  ])
 
   return (
-    <>
-      <div className="flex flex-col gap-3 lg:gap-4">
-        {isWidget && (
-          <FeatureGuard fallback={<ConnectWallet />}>
-            <ConnectWalletNew />
-          </FeatureGuard>
-        )}
-
-        <div
-          className={cn(
-            "flex flex-col gap-4 p-4 pb-[18px] rounded-[10px] bg-background-grey-dark border-border-secondary border-[12px] dark:border-0 dark:bg-background-grey-dark",
-            swapPending && "z-[5]",
+    !isClient ?
+      <div className="flex justify-center items-center gap-3 lg:gap-4">
+        <Loader color="gray" />
+      </div> :
+      <>
+        <div className="flex flex-col gap-3 lg:gap-4">
+          {isWidget && (
+            <FeatureGuard fallback={<ConnectWallet />}>
+              <ConnectWalletNew />
+            </FeatureGuard>
           )}
-        >
-          <div className="flex items-center gap-[10px] font-medium text-[16px] leading-[19px] text-content-grey lg:text-[20px] lg:leading-[24px]">
-            <div className="flex-1 text-black dark:text-content-primary">
-              {isWidget ? <Logo /> : <p>Swap</p>}
+
+          <div
+            className={cn(
+              "flex flex-col gap-4 p-4 pb-[18px] rounded-[10px] bg-background-grey-dark border-border-secondary border-[12px] dark:border-0 dark:bg-background-grey-dark",
+              swapPending && "z-[5]",
+            )}
+          >
+            <div className="flex items-center gap-[10px] font-medium text-[16px] leading-[19px] text-content-grey lg:text-[20px] lg:leading-[24px]">
+              <div className="flex-1 text-black dark:text-content-primary">
+                {isWidget ? <Logo /> : <p>Swap</p>}
+              </div>
+              <SlippageSetting
+                slippage={slippage}
+                openSettingsModal={openSettingsModal}
+              />
             </div>
-            <SlippageSetting
-              slippage={slippage}
-              openSettingsModal={openSettingsModal}
+
+            <CurrencyBox
+              value={sellValue}
+              assetId={swapState.sell.assetId}
+              mode="sell"
+              balance={sellBalance}
+              setAmount={setAmount("sell")}
+              loading={inputPreviewLoading || swapPending}
+              onCoinSelectorClick={handleCoinSelectorClick}
+              usdRate={sellAssetPrice.price}
+              className={isWidget ? currencyBoxWidgetBg : undefined}
             />
+
+            <div className={lineSplitterClasses}>
+              <IconButton
+                className="group absolute top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2 w-8 h-8 flex justify-center items-center rounded-full dark:bg-background-primary dark:text-content-grey hover:text-content-primary bg-background-primary p-2"
+                onClick={swapAssets}
+              >
+                <ArrowUpDown className="transition-transform duration-300 group-hover:rotate-180 text-white dark:text-content-dimmed-dark" />
+              </IconButton>
+            </div>
+
+            <CurrencyBox
+              value={buyValue}
+              assetId={swapState.buy.assetId}
+              mode="buy"
+              balance={buyBalance}
+              setAmount={setAmount("buy")}
+              loading={outputPreviewLoading || swapPending}
+              onCoinSelectorClick={handleCoinSelectorClick}
+              usdRate={buyAssetPrice.price}
+              className={isWidget ? currencyBoxWidgetBg : undefined}
+            />
+
+            {review && (
+              <PreviewSummary
+                previewLoading={previewLoading}
+                tradeState={tradeState}
+                exchangeRate={exchangeRate}
+                pools={pools}
+                feeValue={feeValue}
+                sellMetadataSymbol={sellMetadata.symbol}
+                txCost={txCost}
+                txCostPending={txCostPending}
+                createPoolKeyFn={createPoolKey}
+                reservesPrice={reservesPrice}
+                previewPrice={previewPrice}
+              />
+            )}
+
+            <FeatureGuard>
+              <Rate swapState={swapState} />
+            </FeatureGuard>
+
+            {!isConnected ? (
+              <Button onClick={connect} loading={isConnecting} size="2xl">
+                Connect Wallet
+              </Button>
+            ) : (
+              <Button
+                disabled={isActionDisabled}
+                onClick={handleSwapClick}
+                loading={isActionLoading}
+                size="2xl"
+              >
+                {isActionLoading ? (
+                  <LoaderCircle className="animate-spin size-4" />
+                ) : (
+                  swapButtonTitle
+                )}
+              </Button>
+            )}
           </div>
 
-          <CurrencyBox
-            value={sellValue}
-            assetId={swapState.sell.assetId}
-            mode="sell"
-            balance={sellBalance}
-            setAmount={setAmount("sell")}
-            loading={inputPreviewLoading || swapPending}
-            onCoinSelectorClick={handleCoinSelectorClick}
-            usdRate={sellAssetPrice.price}
-            className={isWidget ? currencyBoxWidgetBg : undefined}
-          />
+  <FeatureGuard
+    fallback={
+      <PriceAndRate
+        reservesPrice={reservesPrice}
+        previewPrice={previewPrice}
+        swapState={swapState}
+      />
+    }
+  />
+      </div >
 
-          <div className={lineSplitterClasses}>
-            <IconButton
-              className="group absolute top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2 w-8 h-8 flex justify-center items-center rounded-full dark:bg-background-primary dark:text-content-grey hover:text-content-primary bg-background-primary p-2"
-              onClick={swapAssets}
-            >
-              <ArrowUpDown className="transition-transform duration-300 group-hover:rotate-180 text-white dark:text-content-dimmed-dark" />
-            </IconButton>
-          </div>
-
-          <CurrencyBox
-            value={buyValue}
-            assetId={swapState.buy.assetId}
-            mode="buy"
-            balance={buyBalance}
-            setAmount={setAmount("buy")}
-            loading={outputPreviewLoading || swapPending}
-            onCoinSelectorClick={handleCoinSelectorClick}
-            usdRate={buyAssetPrice.price}
-            className={isWidget ? currencyBoxWidgetBg : undefined}
-          />
-
-          {review && (
-            <PreviewSummary
-              previewLoading={previewLoading}
-              tradeState={tradeState}
-              exchangeRate={exchangeRate}
-              pools={pools}
-              feeValue={feeValue}
-              sellMetadataSymbol={sellMetadata.symbol}
-              txCost={txCost}
-              txCostPending={txCostPending}
-              createPoolKeyFn={createPoolKey}
-              reservesPrice={reservesPrice}
-              previewPrice={previewPrice}
-            />
-          )}
-
-          <FeatureGuard>
-            <Rate swapState={swapState} />
-          </FeatureGuard>
-
-          {!isConnected ? (
-            <Button onClick={connect} loading={isConnecting} size="2xl">
-              Connect Wallet
-            </Button>
-          ) : (
-            <Button
-              disabled={isActionDisabled}
-              onClick={handleSwapClick}
-              loading={isActionLoading}
-              size="2xl"
-            >
-              {isActionLoading ? (
-                <LoaderCircle className="animate-spin size-4" />
-              ) : (
-                swapButtonTitle
-              )}
-            </Button>
-          )}
-        </div>
-
-        <FeatureGuard
-          fallback={
-            <PriceAndRate
-              reservesPrice={reservesPrice}
-              previewPrice={previewPrice}
-              swapState={swapState}
-            />
-          }
-        />
-      </div>
-
-      {swapPending && <div className={overlayClasses} />}
+    { swapPending && <div className={overlayClasses} />
+}
 
       <FeatureGuard
         fallback={
@@ -830,5 +817,4 @@ export function Swap({ isWidget }: { isWidget?: boolean }) {
         />
       </FailureModal>
     </>
-  );
-};
+  )}

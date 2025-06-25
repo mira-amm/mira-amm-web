@@ -1,41 +1,31 @@
 import React from "react";
 import Link from "next/link";
-import CoinPair from "@/src/components/common/CoinPair/CoinPair";
-import {CoinWithAmount} from "@/src/components/common";
-import PromoBlock from "@/src/components/pages/liquidity-page/components/PromoBlock/PromoBlock";
 import {PoolId} from "mira-dex-ts";
-import {Loader} from "@/src/components/common";
-import AprDisplay from "../AprDisplay/AprDisplay";
-import ReserveItem from "../ReserveItem/ReserveItem";
-import ExchangeRate from "../ExchangeRate/ExchangeRate";
-import MiraBlock from "../MiraBlock/MiraBlock";
-import {formatDisplayAmount} from "@/src/utils/common";
 import {Sparkles} from "lucide-react";
-import {Button} from "@/meshwave-ui/Button";
 
-interface AssetMetadata {
-  name?: string;
-  symbol?: string;
-  decimals?: number;
-}
+import {Button} from "@/meshwave-ui/Button";
+import CoinPair from "@/src/components/common/CoinPair/CoinPair";
+import {Loader, CoinWithAmount} from "@/src/components/common";
+import PromoBlock from "@/src/components/pages/liquidity-page/components/PromoBlock/PromoBlock";
+
+import { AprDisplay } from "./apr-display";
+import { ReserveItem } from "./reserve-item";
+import { ExchangeRate } from "./exchange-rate";
+import { MiraBlock } from "./mira-block";
+
+import {formatDisplayAmount} from "@/src/utils/common";
 
 interface AssetData {
   amount: string;
-  metadata: AssetMetadata & {isLoading: boolean};
+  metadata: {
+  name?: string;
+  symbol?: string;
+  decimals?: number;
+  } & {isLoading: boolean};
   reserve?: number;
 }
 
-interface MobilePositionViewProps {
-  pool: PoolId;
-  isStablePool: boolean;
-  formattedTvlValue: string;
-  positionPath: string;
-  assetA: AssetData;
-  assetB: AssetData;
-  handleWithdrawLiquidity: () => void;
-}
-
-const MobilePositionView = ({
+export function MobilePositionView({
   pool,
   isStablePool,
   formattedTvlValue,
@@ -43,8 +33,16 @@ const MobilePositionView = ({
   assetA,
   assetB,
   handleWithdrawLiquidity,
-}: MobilePositionViewProps) => {
-  const loading = <Loader variant="outlined" color="gray" />;
+}: {
+  pool: PoolId;
+  isStablePool: boolean;
+  formattedTvlValue: string;
+  positionPath: string;
+  assetA: AssetData;
+  assetB: AssetData;
+  handleWithdrawLiquidity: () => void;
+  
+}){
 
   return (
     <section className="flex flex-col gap-3 mobileOnly">
@@ -133,5 +131,3 @@ const MobilePositionView = ({
     </section>
   );
 };
-
-export default MobilePositionView;

@@ -1,26 +1,24 @@
-import { useMiraDex } from "@/src/hooks";
-import {useMutation} from "@tanstack/react-query";
 import {useCallback} from "react";
+import {bn, BN} from "fuels";
+import {useWallet} from "@fuels/react";
+import {useMutation} from "@tanstack/react-query";
+import { useMiraDex } from "@/src/hooks";
 import {PoolId} from "mira-dex-ts";
 import {DefaultTxParams, MaxDeadline} from "@/src/utils/constants";
-import {useWallet} from "@fuels/react";
-import {bn, BN} from "fuels";
 
-type Props = {
-  pool: PoolId;
-  liquidityPercentage: number;
-  lpTokenBalance: BN | undefined;
-  coinAAmountToWithdraw: BN;
-  coinBAmountToWithdraw: BN;
-};
-
-const useRemoveLiquidity = ({
+export function useRemoveLiquidity({
   pool,
   liquidityPercentage,
   lpTokenBalance,
   coinAAmountToWithdraw,
   coinBAmountToWithdraw,
-}: Props) => {
+}: {
+  pool: PoolId;
+  liquidityPercentage: number;
+  lpTokenBalance: BN | undefined;
+  coinAAmountToWithdraw: BN;
+  coinBAmountToWithdraw: BN;
+}){
   const mira = useMiraDex();
   const {wallet} = useWallet();
 
@@ -60,5 +58,3 @@ const useRemoveLiquidity = ({
 
   return {data, removeLiquidity: mutateAsync, error, isPending};
 };
-
-export default useRemoveLiquidity;

@@ -5,7 +5,7 @@ import {useMemo} from "react";
 import { DefaultLocale } from "@/src/utils/constants";
 import { useAssetMetadata } from "@/src/hooks";
 
-const useExchangeRateV2 = ({
+export function useExchangeRateV2({
   firstAssetId,
   secondAssetId,
   firstAssetAmount,
@@ -17,7 +17,7 @@ const useExchangeRateV2 = ({
   firstAssetAmount: string;
   secondAssetAmount: string;
   baseAssetId: string | null;
-}): string | null => {
+}): string | null {
   const firstAssetMetadata = useAssetMetadata(firstAssetId);
   const secondAssetMetadata = useAssetMetadata(secondAssetId);
 
@@ -64,5 +64,3 @@ const useExchangeRateV2 = ({
     secondAssetId,
   ]);
 };
-
-export default useExchangeRateV2;

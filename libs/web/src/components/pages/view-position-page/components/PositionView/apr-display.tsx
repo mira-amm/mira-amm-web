@@ -1,16 +1,15 @@
 import React from "react";
-import clsx from "clsx";
-import AprBadge from "@/src/components/common/AprBadge/AprBadge";
-import usePoolAPR from "@/src/hooks/usePoolAPR";
 import {PoolId} from "mira-dex-ts";
+import clsx from "clsx";
+
 import {createPoolKey, formatAprValue} from "@/src/utils/common";
-import usePoolNameAndMatch from "@/src/hooks/usePoolNameAndMatch";
+import { AprBadge } from "@/src/components/common/AprBadge/AprBadge";
+import { usePoolNameAndMatch } from "@/src/hooks/usePoolNameAndMatch";
+import { usePoolAPR } from "@/src/hooks/usePoolAPR";
 
-interface AprDiplayProps {
-  pool: PoolId;
-}
-
-const AprDisplay = ({pool}: AprDiplayProps) => {
+export function AprDisplay ({pool}: {
+ pool: PoolId
+}) {
   const {apr} = usePoolAPR(pool);
   const aprValue = formatAprValue(apr);
 
@@ -47,4 +46,3 @@ const AprDisplay = ({pool}: AprDiplayProps) => {
   );
 };
 
-export default AprDisplay;

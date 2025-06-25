@@ -1,11 +1,10 @@
 "use client";
 
 import {useEffect, useState, useCallback, useMemo} from "react";
+import {usePathname} from "next/navigation";
 import Link from "next/link";
 import {X} from "lucide-react";
 import {clsx} from "clsx";
-
-import {useIsConnected} from "@fuels/react";
 
 import {
   Logo,
@@ -23,19 +22,16 @@ import {
 } from "@/src/utils/constants";
 
 import {PointsIcon} from "@/meshwave-ui/icons";
-import {useCurrentPath} from "@/src/hooks/useCurrentPath";
 
 const PROMO_BANNER_STORAGE_KEY = "fuel-boost-program-promo-banner-closed";
 
 export function Header({
-  isHomePage,
   pathName,
 }: {
   isHomePage?: boolean;
   pathName?: string;
 }) {
-  const pathname = pathName ?? useCurrentPath();
-  const {isConnected} = useIsConnected();
+  const pathname = pathName ?? usePathname();
   const [isPromoShown, setIsPromoShown] = useState(false);
 
   useEffect(() => {

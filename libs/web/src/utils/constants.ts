@@ -107,5 +107,3 @@ export const POINTS_BANNER_SUBHEADER =
 
 export const SENTIO_POINTS_ENDPOINT =
   "https://endpoint.sentio.xyz/fuellabs/mira-mainnet/points-per-user-from-balance-table/async";
-
-export const POSITIONS_SKELTON_COUNT = 3;

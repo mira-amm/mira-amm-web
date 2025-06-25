@@ -3,26 +3,22 @@
 import {useCallback} from "react";
 import {bn, ScriptTransactionRequest} from "fuels";
 import {useWallet} from "@fuels/react";
+import {PoolId} from "mira-dex-ts";
 import {useMutation} from "@tanstack/react-query";
 
 import type {
   CurrencyBoxMode,
   SwapState,
 } from "@/src/components/common/Swap/Swap";
-import { useMiraDex } from "@/src/hooks";
-import useSwapData from "@/src/hooks/useAssetPair/useSwapData";
+import { useMiraDex, useSwapData, useReadonlyMira } from "@/src/hooks";
 import {DefaultTxParams, MaxDeadline} from "@/src/utils/constants";
-import {PoolId} from "mira-dex-ts";
-import { useReadonlyMira } from "@/src/hooks";
 
-type Props = {
+export function useSwap({swapState, mode, slippage, pools}: {
   swapState: SwapState;
   mode: CurrencyBoxMode;
   slippage: number;
   pools: PoolId[] | undefined;
-};
-
-export function useSwap({swapState, mode, slippage, pools}: Props){
+}){
   const {wallet} = useWallet();
   const miraDex = useMiraDex();
   const readonlyMira = useReadonlyMira();

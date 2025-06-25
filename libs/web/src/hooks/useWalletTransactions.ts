@@ -253,13 +253,13 @@ const createTransactionObject = (
   };
 };
 
-const useWalletTransactions = (
+export function useWalletTransactions(
   account: B256Address | null,
   fetchCondition: boolean,
 ): {
   transactions: Record<string, TransactionProps[]>;
   isLoading: boolean;
-} => {
+}{
   const {assets, isLoading: isAssetsLoading} = useAssetList();
 
   const query = gql`
@@ -320,5 +320,3 @@ const useWalletTransactions = (
 
   return {transactions, isLoading: isAssetsLoading || isLoading};
 };
-
-export default useWalletTransactions;

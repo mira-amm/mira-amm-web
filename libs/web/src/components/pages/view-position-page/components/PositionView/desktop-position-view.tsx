@@ -1,39 +1,30 @@
 import React from "react";
 import Link from "next/link";
-import CoinPair from "@/src/components/common/CoinPair/CoinPair";
-import {CoinWithAmount} from "@/src/components/common";
-import PromoBlock from "@/src/components/pages/liquidity-page/components/PromoBlock/PromoBlock";
-import {PoolId} from "mira-dex-ts";
-import AprDisplay from "../AprDisplay/AprDisplay";
-import ReserveItem from "../ReserveItem/ReserveItem";
-import ExchangeRate from "../ExchangeRate/ExchangeRate";
-import MiraBlock from "../MiraBlock/MiraBlock";
-import {formatDisplayAmount} from "@/src/utils/common";
 import {Sparkles} from "lucide-react";
 import {Button} from "@/meshwave-ui/Button";
+import {PoolId} from "mira-dex-ts";
 
-interface AssetMetadata {
+import {formatDisplayAmount} from "@/src/utils/common";
+import {CoinWithAmount} from "@/src/components/common";
+import CoinPair from "@/src/components/common/CoinPair/CoinPair";
+import PromoBlock from "@/src/components/pages/liquidity-page/components/PromoBlock/PromoBlock";
+
+import { AprDisplay } from "./apr-display";
+import { ReserveItem } from "./reserve-item";
+import { ExchangeRate } from "./exchange-rate";
+import { MiraBlock } from "./mira-block";
+
+interface AssetData {
+  amount: string;
+  metadata: {
   name?: string;
   symbol?: string;
   decimals?: number;
-}
-interface AssetData {
-  amount: string;
-  metadata: AssetMetadata & {isLoading: boolean};
+  } & {isLoading: boolean};
   reserve?: number;
 }
 
-interface DesktopPositionViewProps {
-  pool: PoolId;
-  isStablePool: boolean;
-  formattedTvlValue: string;
-  positionPath: string;
-  assetA: AssetData;
-  assetB: AssetData;
-  handleWithdrawLiquidity: () => void;
-}
-
-const DesktopPositionView = ({
+export function DesktopPositionView ({
   pool,
   isStablePool,
   formattedTvlValue,
@@ -41,7 +32,15 @@ const DesktopPositionView = ({
   assetA,
   assetB,
   handleWithdrawLiquidity,
-}: DesktopPositionViewProps) => {
+}: {
+  pool: PoolId;
+  isStablePool: boolean;
+  formattedTvlValue: string;
+  positionPath: string;
+  assetA: AssetData;
+  assetB: AssetData;
+  handleWithdrawLiquidity: () => void;
+}) {
   return (
     <section className="flex flex-col gap-3 desktopOnly">
       <div className="flex justify-between items-center">
@@ -125,5 +124,3 @@ const DesktopPositionView = ({
     </section>
   );
 };
-
-export default DesktopPositionView;

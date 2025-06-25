@@ -22,8 +22,7 @@ import {
 } from "@/meshwave-ui/dropdown-menu";
 import {Button} from "@/meshwave-ui/Button";
 
-import useWeb3React from "@/src/hooks/useWeb3Connection";
-import {useFormattedAddress} from "@/src/hooks";
+import {useFormattedAddress, useWeb3Connection} from "@/src/hooks";
 import {
   CopyNotification,
   TransactionsHistory
@@ -33,7 +32,7 @@ import {openNewTab} from "@/src/utils/common";
 
 export function ConnectWallet() {
   const {account, connect, disconnect, isConnected, isWalletLoading} =
-    useWeb3React();
+    useWeb3Connection();
   const formattedAddress = useFormattedAddress(account);
   const [isHistoryOpened, setHistoryOpened] = useState(false);
   const transactionsRef = useRef<HTMLDivElement>(null);

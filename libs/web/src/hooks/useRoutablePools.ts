@@ -1,8 +1,8 @@
 import {useMemo} from "react";
-import {CoinData} from "../utils/coinsConfig";
-import {useAllAssetsCombination} from "./useAllAssetsCombination";
 import {buildPoolId, PoolId} from "mira-dex-ts";
-import {useGetPoolsWithReserve, Pool, Route} from "./useGetPoolsWithReserve";
+import {CoinData} from "../utils/coinsConfig";
+import {useAllAssetsCombination, useGetPoolsWithReserve, Route} from "@/src/hooks";
+import { Pool } from "./useGetPoolsWithReserve";
 
 const involvesAssetInPool = (pool: Pool, asset: CoinData): boolean =>
   pool.assetA.assetId === asset.assetId ||
@@ -58,11 +58,31 @@ function computeAllRoutes(
   return allPaths;
 }
 
-const useRoutablePools = (
+export const getRoutes = (
+  assetIn: CoinData,
+  assetOut: CoinData,
+  assetCombinations: [CoinData, CoinData][],
+): Route[] => {
+  return assetCombinations.flatMap(([assetA, assetB]) => {
+    const baseKey = `${assetA.assetId}-${assetB.assetId}`;
+    const stableKey = `${baseKey}-true`;
+    const volatileKey = `${baseKey}-false`;
+
+    const poolIdStable = buildPoolId(assetA.assetId, assetB.assetId, true);
+    const poolIdVolatile = buildPoolId(assetA.assetId, assetB.assetId, false);
+
+    return [
+      [assetA, assetB, poolIdStable, true],
+      [assetA, assetB, poolIdVolatile, false],
+    ];
+  });
+};
+
+export function useRoutablePools(
   assetIn?: CoinData,
   assetOut?: CoinData,
   shouldFetchPools = false,
-) => {
+){
   const allAssetsCombination = useAllAssetsCombination(assetIn, assetOut);
 
   const allAssetsPairsWithPoolId: [CoinData, CoinData, PoolId, boolean][] =
@@ -116,5 +136,3 @@ const useRoutablePools = (
     isLoading,
   };
 };
-
-export default useRoutablePools;

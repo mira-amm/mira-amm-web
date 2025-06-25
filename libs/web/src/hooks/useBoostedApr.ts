@@ -1,11 +1,11 @@
 import boostRewards from "@/src/models/campaigns.json";
-import {useAssetPriceFromIndexer} from "./useAssetPriceFromIndexer";
+import {useAssetPriceFromIndexer} from "@/src/hooks/useAssetPriceFromIndexer";
 import {getBoostReward} from "../utils/common";
 import {FUEL_ASSET_ID} from "../utils/constants";
 
 export type RewardsToken = "$FUEL" | "Points" | undefined;
 
-const useBoostedApr = (
+export function useBoostedApr(
   poolKey: string,
   tvlValue: number,
   epochNumber: number,
@@ -13,7 +13,7 @@ const useBoostedApr = (
   boostedApr: number;
   boostReward: number;
   rewardsToken: RewardsToken;
-} => {
+}{
   const boostEpoch = boostRewards.find((epoch) => epoch.number === epochNumber);
   const rewardsData = boostEpoch?.campaigns;
   const {price: fuelToUsdRate} = useAssetPriceFromIndexer(FUEL_ASSET_ID);
@@ -42,5 +42,3 @@ const useBoostedApr = (
     rewardsToken: "$FUEL",
   };
 };
-
-export default useBoostedApr;

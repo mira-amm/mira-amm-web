@@ -1,16 +1,27 @@
-import React from "react";
-import {CoinWithAmount} from "@/src/components/common";
-import {useFormattedReserveValue} from "./useFormattedReserveValue";
-import {Loader} from "@/src/components/common";
-import {formatNumber} from "@/src/utils/formatMoney";
+import {useAssetPriceFromIndexer} from "@/src/hooks/useAssetPriceFromIndexer";
+import {formatDisplayAmount} from "@/src/utils/common";
+import {CoinWithAmount, Loader} from "@/src/components/common";
+import {formatMoney, formatNumber} from "@/src/utils/formatMoney";
 
-interface ReserveItemsProps {
+const useFormattedReserveValue = (
+  assetId: string,
+  amount: string,
+  reserve: number | undefined,
+) => {
+  const {price: usdPrice} = useAssetPriceFromIndexer(assetId);
+ const valueOfAsset = reserve && usdPrice ? usdPrice * reserve : 0;
+  const usdValue = formatMoney(valueOfAsset);
+  return {
+    usdValue,
+    coinAmount: formatDisplayAmount(amount),
+  };
+};
+
+export function ReserveItem({assetId, amount, reserve}: {
   assetId: string;
   amount: string;
   reserve: number | undefined;
-}
-
-const ReserveItem = ({assetId, amount, reserve}: ReserveItemsProps) => {
+}) {
   const {usdValue, coinAmount} = useFormattedReserveValue(
     assetId,
     amount,
@@ -35,5 +46,3 @@ const ReserveItem = ({assetId, amount, reserve}: ReserveItemsProps) => {
     </div>
   );
 };
-
-export default ReserveItem;

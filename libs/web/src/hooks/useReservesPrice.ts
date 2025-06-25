@@ -1,17 +1,14 @@
-import { useReadonlyMira } from "@/src/hooks";
-import { PoolId } from "mira-dex-ts";
+import { useMemo } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { B256Address } from "fuels";
-import { useAssetMetadata } from "./useAssetMetadata";
-import { useMemo } from "react";
+import { PoolId } from "mira-dex-ts";
+import { useReadonlyMira, useAssetMetadata } from "@/src/hooks";
 
-type Props = {
+export const useReservesPrice = ({ pools, sellAssetId, buyAssetId }: {
   pools: PoolId[] | undefined;
   sellAssetId: B256Address | null;
   buyAssetId: B256Address | null;
-};
-
-const useReservesPrice = ({ pools, sellAssetId, buyAssetId }: Props) => {
+}) => {
   const miraAmm = useReadonlyMira();
   const sellMetadata = useAssetMetadata(sellAssetId);
   const buyMetadata = useAssetMetadata(buyAssetId);
@@ -56,5 +53,3 @@ const useReservesPrice = ({ pools, sellAssetId, buyAssetId }: Props) => {
     isError,
   };
 };
-
-export default useReservesPrice;
