@@ -26,7 +26,7 @@ import {
 } from "@/src/components/common";
 
 import {DiscordLink, XLink} from "@/src/utils/constants";
-import Swap from "@/src/components/common/Swap/Swap";
+import { Swap } from "@/src/components/common/Swap/Swap";
 import {Button} from "@/meshwave-ui/Button";
 
 function HeroSection() {
