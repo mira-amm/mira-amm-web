@@ -9,16 +9,20 @@ import {
   memo
 } from "react";
 
+import {ArrowUpDown, LoaderCircle} from "lucide-react";
+
+import {clsx} from "clsx";
+
 import {
   B256Address,
   bn,
   ScriptTransactionRequest,
   TransactionCost,
 } from "fuels";
-import { useConnectUI, useIsConnected } from "@fuels/react";
-import { PoolId } from "mira-dex-ts";
 
-import { clsx } from "clsx";
+import {useConnectUI, useIsConnected} from "@fuels/react";
+
+import {PoolId} from "mira-dex-ts";
 
 import {
   CoinsListModal,
@@ -32,22 +36,30 @@ import {
   SlippageSetting,
   FeatureGuard,
   SettingsModalContent,
+  PriceImpact,
   ConnectWallet,
   triggerClassAnimation
 } from "@/src/components/common";
 
 import {
+  createPoolKey,
+  openNewTab
+} from "@/src/utils/common";
+
+import useExchangeRate from "@/src/hooks/useExchangeRate/useExchangeRate";
+import useInitialSwapState from "@/src/hooks/useInitialSwapState/useInitialSwapState";
+import useCheckActiveNetwork from "@/src/hooks/useCheckActiveNetwork";
+import usePreview from "@/src/hooks/useSwapPreviewV2";
+import {
   PriceImpact,
   PriceImpactNew,
 } from "@/src/components/common/Swap/components/price-impact";
+import {FuelAppUrl} from "@/src/utils/constants";
+import useReservesPrice from "@/src/hooks/useReservesPrice";
 
+import {FuelAppUrl} from "@/src/utils/constants";
 
 import {
-  useSwapPreview,
-  useExchangeRate,
-  useInitialSwapState,
-  useCheckActiveNetwork,
-  useReservesPrice,
   useIsClient,
   useAssetMetadata,
   useCheckEthBalance,
@@ -59,33 +71,27 @@ import {
   TradeState
 } from "@/src/hooks";
 
-import { FuelAppUrl } from "@/src/utils/constants";
-import {
-  createPoolKey,
-  openNewTab
-} from "@/src/utils/common";
-
-import { useAnimationStore } from "@/src/stores/useGlitchScavengerHunt";
-import { Button } from "@/meshwave-ui/Button";
-import { ArrowUpDown, LoaderCircle } from "lucide-react";
-import { cn } from "@/src/utils/cn";
+import {useAnimationStore} from "@/src/stores/useGlitchScavengerHunt";
+import {Button} from "@/meshwave-ui/Button";
+import {ArrowUpDown, LoaderCircle} from "lucide-react";
+import {cn} from "@/src/utils/cn";
 import SettingsModalContentNew from "./components/SettingsModalContent/SettingsModalContentNew";
-import { ConnectWalletNew } from "../connect-wallet-new";
+import {ConnectWalletNew} from "../connect-wallet-new";
 
 export type CurrencyBoxMode = "buy" | "sell";
-export type CurrencyBoxState = { assetId: string | null; amount: string };
-type InputsState = Record<CurrencyBoxMode, { amount: string }>;
+export type CurrencyBoxState = {assetId: string | null; amount: string};
+type InputsState = Record<CurrencyBoxMode, {amount: string}>;
 export type SwapState = Record<CurrencyBoxMode, CurrencyBoxState>;
 export type SlippageMode = "auto" | "custom";
 
 export const DefaultSlippageValue = 100;
-const initialInputsState: InputsState = { sell: { amount: "" }, buy: { amount: "" } };
+const initialInputsState: InputsState = {sell: {amount: ""}, buy: {amount: ""}};
 
 const lineSplitterClasses = "relative w-full h-px bg-background-grey-dark my-4";
 const currencyBoxWidgetBg = "bg-background-grey-dark";
 const overlayClasses = "fixed inset-0 w-full h-full backdrop-blur-[5px] z-[4]";
 
-const SwapRouteItem = memo(function SwapRouteItem({ pool }: { pool: PoolId }) {
+const SwapRouteItem = memo(function SwapRouteItem({pool}: {pool: PoolId}) {
   const firstAssetIcon = useAssetImage(pool[0].bits);
   const secondAssetIcon = useAssetImage(pool[1].bits);
   const fee = pool[2] ? 0.05 : 0.3;
@@ -140,7 +146,7 @@ const PreviewSummary = memo(function PreviewSummary({
       <div className="flex justify-between">
         <p className="text-sm">Routing:</p>
         <div className="flex flex-wrap items-center gap-1">
-          {previewLoading || tradeState === TradeState.REFETCHING ? (
+          {previewLoading || tradeState === TradeState.REEFETCHING ? (
             <Loader color="gray" />
           ) : (
             pools.map((pool, i) => (
@@ -158,7 +164,7 @@ const PreviewSummary = memo(function PreviewSummary({
 
       <div className="flex justify-between">
         <p className="text-sm">Estimated fees:</p>
-        {previewLoading || tradeState === TradeState.REFETCHING ? (
+        {previewLoading || tradeState === TradeState.REEFETCHING ? (
           <Loader color="gray" />
         ) : (
           <p className="text-sm">
@@ -209,7 +215,7 @@ const PriceAndRate = memo(function PriceAndRate({
 
 PriceAndRate.displayName = "PriceAndRate";
 
-const Rate = memo(function Rate({ swapState }: { swapState: SwapState }) {
+const Rate = memo(function Rate({swapState}: {swapState: SwapState}) {
   return (
     <div className="flex justify-end">
       <ExchangeRate swapState={swapState} />
@@ -219,7 +225,7 @@ const Rate = memo(function Rate({ swapState }: { swapState: SwapState }) {
 
 Rate.displayName = "Rate";
 
-const Swap = ({ isWidget }: { isWidget?: boolean }) => {
+const Swap = ({isWidget}: {isWidget?: boolean}) => {
   // Modal hooks
   const [SettingsModal, openSettingsModal, closeSettingsModal] = useModal();
   const [CoinsModal, openCoinsModal, closeCoinsModal] = useModal();
@@ -253,10 +259,10 @@ const Swap = ({ isWidget }: { isWidget?: boolean }) => {
   const isConnectedFromHook = useIsConnected();
   const connectUI = useConnectUI();
   const isConnected = isClient ? isConnectedFromHook.isConnected : false;
-  const connect = isClient ? connectUI.connect : () => { };
+  const connect = isClient ? connectUI.connect : () => {};
   const isConnecting = isClient ? connectUI.isConnecting : false;
 
-  const { balances, balancesPending, refetchBalances } = useBalances();
+  const {balances, balancesPending, refetchBalances} = useBalances();
   const sellBalance = useMemo(
     () =>
       balances?.find((b) => b.assetId === swapState.sell.assetId)?.amount ??
@@ -278,7 +284,7 @@ const Swap = ({ isWidget }: { isWidget?: boolean }) => {
     trade,
     tradeState,
     error: previewError,
-  } = useSwapPreview(swapState, activeMode);
+  } = usePreview(swapState, activeMode);
 
   const pools = useMemo(
     () => trade?.bestRoute?.pools.map((p) => p.poolId) ?? [],
@@ -328,7 +334,7 @@ const Swap = ({ isWidget }: { isWidget?: boolean }) => {
       if (currentOppInput === previewValueString) return prev;
       return {
         ...prev,
-        [anotherMode]: { amount: previewValueString },
+        [anotherMode]: {amount: previewValueString},
       };
     });
   }, [previewValueString, anotherMode]);
@@ -338,7 +344,7 @@ const Swap = ({ isWidget }: { isWidget?: boolean }) => {
 
   const setSwapCoins = useCallback(
     (
-      updater: (prev: { sell: string | null; buy: string | null }) => {
+      updater: (prev: {sell: string | null; buy: string | null}) => {
         sell: string | null;
         buy: string | null;
       },
@@ -356,17 +362,17 @@ const Swap = ({ isWidget }: { isWidget?: boolean }) => {
   );
 
   const swapAssets = useCallback(() => {
-    setSwapState(({ sell, buy }) => ({
-      sell: { ...buy },
-      buy: { ...sell },
+    setSwapState(({sell, buy}) => ({
+      sell: {...buy},
+      buy: {...sell},
     }));
-    setInputsState(({ sell, buy }) => ({
-      sell: { ...buy },
-      buy: { ...sell },
+    setInputsState(({sell, buy}) => ({
+      sell: {...buy},
+      buy: {...sell},
     }));
     setActiveMode("sell");
     if (!isWidget) {
-      setSwapCoins(({ sell, buy }) => ({ sell: buy, buy: sell }));
+      setSwapCoins(({sell, buy}) => ({sell: buy, buy: sell}));
       useAnimationStore.getState().handleMagicTripleClickToken();
     }
   }, [isWidget, setSwapCoins]);
@@ -383,14 +389,14 @@ const Swap = ({ isWidget }: { isWidget?: boolean }) => {
       const amount = inputsState[mode].amount;
       setSwapState((prev) => ({
         ...prev,
-        [mode]: { assetId, amount },
+        [mode]: {assetId, amount},
       }));
       setInputsState((prev) => ({
         ...prev,
-        [mode]: { amount },
+        [mode]: {amount},
       }));
       if (!isWidget) {
-        setSwapCoins((prev) => ({ ...prev, [mode]: assetId }));
+        setSwapCoins((prev) => ({...prev, [mode]: assetId}));
       }
       setActiveMode(mode);
     },
@@ -401,8 +407,8 @@ const Swap = ({ isWidget }: { isWidget?: boolean }) => {
     (mode: CurrencyBoxMode) => (amount: string) => {
       if (!amount) {
         setSwapState((prev) => ({
-          sell: { ...prev.sell, amount: "" },
-          buy: { ...prev.buy, amount: "" },
+          sell: {...prev.sell, amount: ""},
+          buy: {...prev.buy, amount: ""},
         }));
         setInputsState(initialInputsState);
         setActiveMode(mode);
@@ -411,13 +417,13 @@ const Swap = ({ isWidget }: { isWidget?: boolean }) => {
       const other = mode === "buy" ? "sell" : "buy";
       setSwapState((prev) => ({
         ...prev,
-        [mode]: { ...prev[mode], amount },
-        [other]: { ...prev[other], amount: "" },
+        [mode]: {...prev[mode], amount},
+        [other]: {...prev[other], amount: ""},
       }));
       setInputsState((prev) => ({
         ...prev,
-        [mode]: { amount },
-        [other]: { amount: "" },
+        [mode]: {amount},
+        [other]: {amount: ""},
       }));
       if (mode !== activeMode) {
         setActiveMode(mode);
@@ -453,7 +459,7 @@ const Swap = ({ isWidget }: { isWidget?: boolean }) => {
     swapResult,
     swapError,
     resetSwap,
-  } = useSwap({ swapState, mode: activeMode, slippage, pools });
+  } = useSwap({swapState, mode: activeMode, slippage, pools});
 
   const resetSwapErrors = useCallback(() => {
     resetTxCost();
@@ -565,7 +571,7 @@ const Swap = ({ isWidget }: { isWidget?: boolean }) => {
 
   const feePercent = useMemo(() => {
     return (
-      trade?.bestRoute?.pools.reduce((acc, { poolId }) => {
+      trade?.bestRoute?.pools.reduce((acc, {poolId}) => {
         return acc + (poolId[2] ? 0.05 : 0.3);
       }, 0) ?? 0
     );
@@ -629,7 +635,7 @@ const Swap = ({ isWidget }: { isWidget?: boolean }) => {
   const inputPreviewLoading = previewLoading && activeMode === "buy";
   const outputPreviewLoading = previewLoading && activeMode === "sell";
 
-  const { reservesPrice } = useReservesPrice({
+  const {reservesPrice} = useReservesPrice({
     pools,
     sellAssetId: swapState.sell.assetId,
     buyAssetId: swapState.buy.assetId,
@@ -775,7 +781,7 @@ const Swap = ({ isWidget }: { isWidget?: boolean }) => {
             <Button
               disabled={isActionDisabled}
               onClick={handleSwapClick}
-              loading={isActionLoading.toString()}
+              loading={isActionLoading}
               size="2xl"
             >
               {isActionLoading ? (
