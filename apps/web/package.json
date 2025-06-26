@@ -5,8 +5,6 @@
   "scripts": {
     "lint": "next lint",
     "lint:fix": "next lint --fix",
-    "test:e2e": "playwright test --ui",
-    "test:e2e-ci": "playwright test",
     "rewards": "tsx scripts/getAllCampaignRewardsForEpoch.ts"
   }
 }

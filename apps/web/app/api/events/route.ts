@@ -1,3 +1,4 @@
+import { NextRequest, NextResponse } from "next/server";
 /**
  * @api {get} /events Get all available events from one block to another (including all in between)
  */

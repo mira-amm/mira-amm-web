@@ -1,6 +1,6 @@
 import { type BN, type AssetId } from "fuels";
 import type { ReadonlyMiraAmm } from "mira-dex-ts";
-import { Route } from "./useGetPoolsWithReserve";
+import { Route } from ".";
 
 export enum TradeType {
   EXACT_IN = "EXACT_IN",
