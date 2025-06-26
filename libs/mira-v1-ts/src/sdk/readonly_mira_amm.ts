@@ -166,115 +166,60 @@ export class ReadonlyMiraAmm {
     return [[pool.poolId[0], amount0], [pool.poolId[1], amount1]];
   }
 
-  async getAmountsOut(
-    assetIdIn: AssetId,
-    assetAmountIn: BigNumberish,
-    pools: PoolId[]
+  private async computeSwapPath(
+    direction: "IN" | "OUT",
+    assetId: AssetId,
+    amount: BN,
+    pools: PoolId[],
+    fees: AmmFees
   ): Promise<Asset[]> {
-    const assetAmount = new BN(assetAmountIn);
-    if (assetAmount.isNeg() || assetAmount.isZero()) {
-      throw new Error('Non positive input amount');
-    }
+    const orderedPools = direction === "IN" ? pools : [...pools].reverse();
+    const poolMetadataList = await this.poolMetadataBatch(orderedPools.map(reorderPoolId));
 
-    const fees = await this.fees();
+    let currentAsset = assetId;
+    let currentAmount = amount;
+    const result: Asset[] = [[currentAsset, currentAmount]];
 
-    const reorderedPoolIds = pools.map(reorderPoolId);
-
-    const poolMetadataList = await this.poolMetadataBatch(reorderedPoolIds);
-
-    poolMetadataList.forEach((pool) => {
-      if (!pool) {
-        throw new Error('Pool not found');
-      }
-    });
-
-    const initialState = {
-      assetIn: assetIdIn,
-      amountIn: assetAmount,
-      amountsOut: [[assetIdIn, assetAmount]] as Asset[],
-    };
-
-    const result = reorderedPoolIds.reduce((state, poolId, i) => {
+    for (let i = 0; i < orderedPools.length; i++) {
       const pool = poolMetadataList[i]!;
-
-      const amountInAfterFee = subtractFee(poolId, state.amountIn, fees);
+      const poolId = orderedPools[i];
 
       const [assetOut, reserveIn, reserveOut, decimalsIn, decimalsOut] =
-        arrangePoolParams(pool, state.assetIn);
+        arrangePoolParams(pool, currentAsset);
 
-      const amountOut = getAmountOut(
-        poolId[2],
-        reserveIn,
-        reserveOut,
-        powDecimals(decimalsIn),
-        powDecimals(decimalsOut),
-        amountInAfterFee
-      );
+      let amount = direction === "IN"
+        ? subtractFee(poolId, currentAmount, fees)
+        : currentAmount;
 
-      state.assetIn = assetOut;
-      state.amountIn = amountOut;
-      state.amountsOut.push([assetOut, amountOut]);
+      let swapAmount = direction === "IN"
+        ? getAmountOut(poolId[2], reserveIn, reserveOut, powDecimals(decimalsIn), powDecimals(decimalsOut), amount)
+        : getAmountIn(poolId[2], reserveIn, reserveOut, powDecimals(decimalsIn), powDecimals(decimalsOut), amount);
 
-      return state;
-    }, initialState);
+      if (direction === "OUT") {
+        swapAmount = addFee(poolId, swapAmount, fees);
+      }
 
-    return result.amountsOut;
-  }
-
-  async getAmountsIn(
-    assetIdOut: AssetId,
-    assetAmountOut: BigNumberish,
-    pools: PoolId[]
-  ): Promise<Asset[]> {
-    const assetAmount = new BN(assetAmountOut);
-    if (assetAmount.isNeg() || assetAmount.isZero()) {
-      throw new Error('Non positive input amount');
+      result.push([assetOut, swapAmount]);
+      currentAsset = assetOut;
+      currentAmount = swapAmount;
     }
 
-    const feesPromise = this.fees();
+    return result;
+  }
 
-    const reversedPools = [...pools].reverse();
-    const reorderedPoolIds = reversedPools.map(reorderPoolId);
 
-    const poolMetadataList = await this.poolMetadataBatch(reorderedPoolIds);
+  async getAmountsOut(assetIdIn: AssetId, assetAmountIn: BigNumberish, pools: PoolId[]) {
+    const amount = new BN(assetAmountIn);
+    if (amount.isNeg() || amount.isZero()) throw new Error("Non positive input amount");
+    const fees = await this.fees();
+    return this.computeSwapPath("IN", assetIdIn, amount, pools, fees);
+  }
 
-    poolMetadataList.forEach((pool) => {
-      if (!pool) {
-        throw new Error('Pool not found');
-      }
-    });
-
-    const initialState = {
-      assetOut: assetIdOut,
-      amountOut: assetAmount,
-      amountsIn: [[assetIdOut, assetAmount]] as Asset[],
-    };
-
-    const fees = await feesPromise;
-    const result = reorderedPoolIds.reduce((state, poolId, i) => {
-      const pool = poolMetadataList[i]!;
-      const [assetIn, reserveOut, reserveIn, decimalsOut, decimalsIn] =
-        arrangePoolParams(pool, state.assetOut);
-
-      let amountIn = getAmountIn(
-        poolId[2],
-        reserveIn,
-        reserveOut,
-        powDecimals(decimalsIn),
-        powDecimals(decimalsOut),
-        state.amountOut
-      );
-
-      amountIn = addFee(poolId, amountIn, fees);
-
-      state.assetOut = assetIn;
-      state.amountOut = amountIn;
-      state.amountsIn.push([assetIn, amountIn]);
-
-      return state;
-    }, initialState);
-
-    return result.amountsIn;
+  async getAmountsIn(assetIdOut: AssetId, assetAmountOut: BigNumberish, pools: PoolId[]) {
+    const amount = new BN(assetAmountOut);
+    if (amount.isNeg() || amount.isZero()) throw new Error("Non positive input amount");
+    const fees = await this.fees();
+    return this.computeSwapPath("OUT", assetIdOut, amount, pools, fees);
   }
 
   async previewSwapExactInput(
