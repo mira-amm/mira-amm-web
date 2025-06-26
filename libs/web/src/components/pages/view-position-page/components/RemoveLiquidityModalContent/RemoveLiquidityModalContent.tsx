@@ -121,35 +121,36 @@ const RemoveLiquidityModalContent = ({
         ref={sliderRef}
       />
 
-      <div className="px-2 rounded bg-background-secondary">
-        <Table className="w-full text-[14px] leading-4 text-content-tertiary">
-          <TableHeader>
-            <TableRow>
-              <TableHead></TableHead>
-              <TableHead className="py-4">{coinAMetadata.symbol}</TableHead>
-              <TableHead className="text-right py-4">
-                {coinBMetadata.symbol}
-              </TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            <TableRow clasName="border-none">
-              <TableCell className="py-4">Current position</TableCell>
-              <TableCell className="py-4">{currentCoinAValue}</TableCell>
-              <TableCell className="text-right py-4">
-                {currentCoinBValue}
-              </TableCell>
-            </TableRow>
-            <TableRow className="font-medium text-content-primary border-t border-background-grey-dark">
-              <TableCell className="py-4">Remove</TableCell>
-              <TableCell className="py-4">{coinAValueToWithdraw}</TableCell>
-              <TableCell className="py-4 text-right">
-                {coinBValueToWithdraw}
-              </TableCell>
-            </TableRow>
-          </TableBody>
-        </Table>
-      </div>
+      <Table
+        className="text-[14px] leading-4 text-content-tertiary"
+        tableParentClassName="border-0 p-2 dark:p-0 rounded-lg"
+      >
+        <TableHeader>
+          <TableRow>
+            <TableHead></TableHead>
+            <TableHead className="py-4">{coinAMetadata.symbol}</TableHead>
+            <TableHead className="text-right py-4">
+              {coinBMetadata.symbol}
+            </TableHead>
+          </TableRow>
+        </TableHeader>
+        <TableBody>
+          <TableRow clasName="border-none">
+            <TableCell className="py-4">Current position</TableCell>
+            <TableCell className="py-4">{currentCoinAValue}</TableCell>
+            <TableCell className="text-right py-4">
+              {currentCoinBValue}
+            </TableCell>
+          </TableRow>
+          <TableRow className="font-medium text-content-primary border-t border-background-grey-dark">
+            <TableCell className="py-4">Remove</TableCell>
+            <TableCell className="py-4">{coinAValueToWithdraw}</TableCell>
+            <TableCell className="py-4 text-right">
+              {coinBValueToWithdraw}
+            </TableCell>
+          </TableRow>
+        </TableBody>
+      </Table>
 
       <div className="flex flex-col gap-2">
         <p className="flex items-center gap-2 text-accent-alert dark:text-accent-primary">
