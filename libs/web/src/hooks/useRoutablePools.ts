@@ -11,7 +11,7 @@ const involvesAssetInPool = (pool: Pool, asset: CoinData): boolean =>
 const poolEquals = (poolA: Pool, poolB: Pool): boolean => {
   return (
     poolA === poolB ||
-    poolA.poolId.every((id, index) => id === poolB.poolId[index])
+    JSON.stringify(poolA.poolId) === JSON.stringify(poolB.poolId)
   );
 };
 
@@ -30,8 +30,9 @@ function computeAllRoutes(
     if (
       !involvesAssetInPool(pool, assetIn) ||
       currentPath.find((pathPool) => poolEquals(pool, pathPool))
-    )
+    ) {
       continue;
+    }
 
     const outputToken =
       pool.assetA.assetId === assetIn.assetId ? pool.assetB : pool.assetA;
@@ -58,23 +59,31 @@ function computeAllRoutes(
   return allPaths;
 }
 
-export const getRoutes = (
-  assetIn: CoinData,
-  assetOut: CoinData,
+const getPoolIdCombinations = (
   assetCombinations: [CoinData, CoinData][],
-): Route[] => {
+): [CoinData, CoinData, PoolId, boolean][] => {
+  const seen = new Set<string>();
+
   return assetCombinations.flatMap(([assetA, assetB]) => {
-    const baseKey = `${assetA.assetId}-${assetB.assetId}`;
-    const stableKey = `${baseKey}-true`;
-    const volatileKey = `${baseKey}-false`;
+    const result: [CoinData, CoinData, PoolId, boolean][] = [];
+
+    const stableKey = `${assetA.assetId}-${assetB.assetId}-true`;
+    const volatileKey = `${assetA.assetId}-${assetB.assetId}-false`;
 
     const poolIdStable = buildPoolId(assetA.assetId, assetB.assetId, true);
     const poolIdVolatile = buildPoolId(assetA.assetId, assetB.assetId, false);
 
-    return [
-      [assetA, assetB, poolIdStable, true],
-      [assetA, assetB, poolIdVolatile, false],
-    ];
+    if (!seen.has(stableKey)) {
+      seen.add(stableKey);
+      result.push([assetA, assetB, poolIdStable, true]);
+    }
+
+    if (!seen.has(volatileKey)) {
+      seen.add(volatileKey);
+      result.push([assetA, assetB, poolIdVolatile, false]);
+    }
+
+    return result;
   });
 };
 
@@ -82,41 +91,15 @@ export function useRoutablePools(
   assetIn?: CoinData,
   assetOut?: CoinData,
   shouldFetchPools = false,
-){
+) {
   const allAssetsCombination = useAllAssetsCombination(assetIn, assetOut);
 
   const allAssetsPairsWithPoolId: [CoinData, CoinData, PoolId, boolean][] =
     useMemo(() => {
-      const seen = new Set<string>();
-
-      return allAssetsCombination.flatMap(([assetA, assetB]) => {
-        const result: [CoinData, CoinData, PoolId, boolean][] = [];
-
-        const poolIdStable = buildPoolId(assetA.assetId, assetB.assetId, true);
-        const poolIdVolatile = buildPoolId(
-          assetA.assetId,
-          assetB.assetId,
-          false,
-        );
-
-        const stableKey = `${assetA.assetId}-${assetB.assetId}-true`;
-        const volatileKey = `${assetA.assetId}-${assetB.assetId}-false`;
-
-        if (!seen.has(stableKey)) {
-          seen.add(stableKey);
-          result.push([assetA, assetB, poolIdStable, true]);
-        }
-
-        if (!seen.has(volatileKey)) {
-          seen.add(volatileKey);
-          result.push([assetA, assetB, poolIdVolatile, false]);
-        }
-
-        return result;
-      });
+      return getPoolIdCombinations(allAssetsCombination);
     }, [allAssetsCombination]);
 
-  const {pools, isLoading, isRefetching, refetch} = useGetPoolsWithReserve(
+  const { pools, isLoading, isRefetching, refetch } = useGetPoolsWithReserve(
     allAssetsPairsWithPoolId,
     assetIn,
     assetOut,
@@ -135,4 +118,4 @@ export function useRoutablePools(
     routes,
     isLoading,
   };
-};
+}
