@@ -301,7 +301,7 @@ export class ReadonlyMiraAmm {
     routes: PoolId[][]
   ): Promise<(Asset | undefined)[]> {
     const results = await Promise.allSettled(
-      routes.map((route) => this.getAmountsIn(assetIdIn, assetAmountIn, route))
+      routes.map((route) => this.getAmountsOut(assetIdIn, assetAmountIn, route))
     );
     return results
       .map((r) => r.status === "fulfilled" ? r.value[r.value.length - 1] : undefined);
