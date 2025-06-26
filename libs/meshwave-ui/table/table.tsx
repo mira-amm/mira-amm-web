@@ -3,15 +3,24 @@
 import {cn} from "@/shadcn-ui/utils";
 import * as React from "react";
 
-function Table({className, ...props}: React.ComponentProps<"table">) {
+function Table({
+  className,
+  tableParentClassName,
+  ...props
+}: React.ComponentProps<"table"> & {
+  tableParentClassName?: string;
+}) {
   return (
     <div
       data-slot="table-container"
-      className="relative w-full overflow-x-auto rounded-2xl dark:rounded-none"
+      className={cn(
+        "relative w-full overflow-x-auto rounded-2xl bg-background-grey-dark dark:bg-transparent border-border-secondary border-[12px] dark:border-0",
+        tableParentClassName,
+      )}
     >
       <table
         data-slot="table"
-        className={cn("w-full caption-bottom text-sm", className)}
+        className={cn("w-full caption-bottom text-sm rounded-2xl bg-background-grey-dark dark:bg-background-grey-dark", className)}
         {...props}
       />
     </div>
