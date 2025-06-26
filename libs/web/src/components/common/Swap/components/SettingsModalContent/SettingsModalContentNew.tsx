@@ -34,9 +34,15 @@ function SettingsModalContentNew({
 
   const handleInputBlur = (event: FocusEvent<HTMLInputElement>) => {
     const value = event.target.value.replace("%", "");
-    const numericValue = parseFloat(value.replace(",", "."));
-    if (isNaN(numericValue) || numericValue <= 0 || numericValue >= 100) {
+    const numericValue = parseFloat(value.replace(",", ".").trim());
+    if (
+      isNaN(numericValue) ||
+      numericValue <= 0 ||
+      numericValue >= 100 ||
+      !Number.isFinite(numericValue)
+    ) {
       setSlippage(DefaultSlippageValue);
+      setInputValue(`${DefaultSlippageValue / 100}%`);
       return;
     }
     setSlippage(Math.floor(Number((numericValue * 100).toFixed(2))));
@@ -45,8 +51,12 @@ function SettingsModalContentNew({
   const handleKeyDown = (event: KeyboardEvent<HTMLInputElement>) => {
     if (event.key === "Backspace") {
       let value = inputValue.replace("%", "");
+      if (value.length === 0) return;
       value = value.slice(0, -1);
       setInputValue(value + "%");
+      if (value.length > 0) {
+        useAnimationStore.getState().handleMagicInput(value);
+      }
       event.preventDefault();
     }
     if (event.key === "Enter") {
