@@ -28,8 +28,8 @@ export const PriceImpact: FC<{
         className={clsx(
           "flex justify-between items-center text-xs leading-[18px] bg-transparent border-none cursor-pointer",
           "lg:text-[13px]",
-          highPriceImpact && "text-[#e43d4b]",
-          mediumPriceImpact && "text-[#d4b226]",
+          highPriceImpact && "text-accent-warning",
+          mediumPriceImpact && "text-accent-alert",
           isHidden && "opacity-0",
         )}
       >
@@ -40,7 +40,7 @@ export const PriceImpact: FC<{
         <p
           className={clsx(
             "leading-[18px] bg-transparent border-none cursor-pointer lg:text-[13px]",
-            highPriceImpact ? "text-[#e43d4b]" : "text-[#d4b226]",
+            highPriceImpact ? "text-accent-warning" : "text-accent-alert",
           )}
         >
           WARNING: {highPriceImpact ? "Large" : "Medium"} Price impact detected
