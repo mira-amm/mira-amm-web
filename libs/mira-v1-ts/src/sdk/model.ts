@@ -29,9 +29,9 @@ export type AmmFees = {
 }
 
 export type LpAssetInfo = {
-  assetId: AssetId,
-  name: String,
-  symbol: String,
-  decimals: number,
-  totalSupply: BN,
-}
+  assetId: AssetId;
+  name: string;
+  symbol: string;
+  decimals: number;
+  totalSupply: BN;
+};

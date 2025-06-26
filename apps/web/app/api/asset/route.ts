@@ -1,14 +1,16 @@
-/**
- * @api {get} /api/asset Get details of an asset by ID
- */
 import { NextRequest, NextResponse } from "next/server";
 import { GeckoTerminalQueryResponses } from "@/web/shared/types";
-import { MainnetUrl } from "../../../../../libs/web/src/utils/constants";
+// import { MainnetUrl } from "../../../../../libs/web/src/utils/constants";
+
+export const MainnetUrl = "https://mainnet-explorer.fuel.network";
 
 const cache = new Map<string, GeckoTerminalQueryResponses.AssetResponse>();
 const CACHE_TTL = 60 * 1000;
 const cacheTimestamps = new Map<string, number>();
 
+/**
+ * @api {get} /api/asset Get details of an asset by ID
+ */
 export async function GET(req: NextRequest) {
   const assetId = new URL(req.url).searchParams.get("id");
 

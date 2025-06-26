@@ -10,7 +10,7 @@ import {
 } from "../../../../../libs/web/shared/types";
 import { NotFoundError } from "../../../../../libs/web/src/utils/errors";
 
-const fetchPoolById = async (
+export const fetchPoolById = async (
   poolId: string
 ): Promise<SQDIndexerResponses.Pool> => {
   const query = gql`
@@ -39,7 +39,7 @@ const fetchPoolById = async (
   return poolById;
 };
 
-const createPairFromPool = (
+export const createPairFromPool = (
   pool: SQDIndexerResponses.Pool
 ): GeckoTerminalQueryResponses.Pair => ({
   id: pool.id,

@@ -9,7 +9,7 @@ import {
   TradeType,
   TradeState,
 } from "@/src/hooks";
-import {Route} from "@/src/hooks/useGetPoolsWithReserve";
+import {type Route} from "@/src/hooks";
 
 export function useSwapPreview(
   swapState: SwapState,

@@ -7,7 +7,7 @@
   "// targets": "to see all targets run: nx show project web --web",
   "targets": {
     "test": {
-      "command": "jest",
+      "command": "vitest",
       "options": {
         "cwd": "apps/web"
       }

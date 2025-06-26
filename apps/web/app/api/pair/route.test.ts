@@ -1,112 +1,139 @@
-import {GET} from "./route";
-import {NextRequest} from "next/server";
-import {request} from "graphql-request";
-import {SQDIndexerUrl} from "../../../../../libs/web/src/utils/constants";
-import {NotFoundError} from "../../../../../libs/web/src/utils/errors";
+import { vi } from 'vitest'
+import {
+  describe, it, expect,
+  beforeAll, afterAll,
+  beforeEach, afterEach,
+} from 'vitest'
+import { NextRequest } from 'next/server'
+import { NotFoundError } from '../../../../../libs/web/src/utils/errors'
+import {
+  fetchPoolById,
+  createPairFromPool,
+  GET,
+} from './route'
 
-jest.mock("../../../../../libs/web/src/utils/constants", () => ({
-  SQDIndexerUrl: "https://mock-squid-indexer.com",
-}));
 
-jest.mock("graphql-request", () => ({
-  request: jest.fn(),
-  gql: jest.fn((query) => "dummy_pool_query"),
-}));
+const INDEXER_URL = 'https://mira-dex.squids.live/mira-indexer@v3/api/graphql'
 
-describe("test for GET /api/pair", () => {
-  const mockRequest = request as jest.Mock;
-  const mockPoolId = "pool1";
-  const mockPoolData = {
-    id: mockPoolId,
-    asset0: {
-      id: "mock-asset-0-id",
-    },
-    asset1: {
-      id: "mock-asset-1-id",
-    },
-    creationBlock: 123456,
-    creationTime: 1638384745,
-    creationTx: "mock-tx-id",
-  };
+const mockRequest = vi.fn()
+const mockGql     = vi.fn((q: string) => q.trim())
 
-  const mockPairData = {
-    pair: {
-      id: mockPoolId,
-      dexKey: "mira",
-      asset0Id: mockPoolData.asset0.id,
-      asset1Id: mockPoolData.asset1.id,
-      createdAtBlockNumber: mockPoolData.creationBlock,
-      createdAtBlockTimestamp: mockPoolData.creationTime,
-      createdAtTxnId: mockPoolData.creationTx,
-    },
-  };
+vi.mock('graphql-request', () => ({
+  request: mockRequest,
+  gql:     mockGql,
+}))
 
-  afterEach(() => {
-    jest.clearAllMocks();
-  });
+const poolId   = 'pool-xyz'
+const rawPool  = {
+  id:              poolId,
+  asset0:          { id: '0xa' },
+  asset1:          { id: '0xb' },
+  creationBlock:   100,
+  creationTime:    1_610_000_000,
+  creationTx:      '0xtx',
+}
+const expectedPair = {
+  id:                       poolId,
+  dexKey:                   'mira',
+  asset0Id:                 rawPool.asset0.id,
+  asset1Id:                 rawPool.asset1.id,
+  createdAtBlockNumber:     rawPool.creationBlock,
+  createdAtBlockTimestamp:  rawPool.creationTime,
+  createdAtTxnId:           rawPool.creationTx,
+}
 
-  it("should return 400 if 'id' query parameter is missing", async () => {
-    const req = new NextRequest("https://mock-api.com/api/pair");
-    const res = await GET(req);
+beforeAll(() => {
+  // gql mock already returns trimmed query
+})
 
-    expect(res.status).toBe(400);
-    const jsonResponse = await res.json();
-    expect(jsonResponse).toEqual({error: "Pool ID(param: id) is required"});
-  });
+afterAll(() => {
+  vi.restoreAllMocks()
+})
 
-  it("should return 404 if the pool is not found", async () => {
-    const req = new NextRequest(
-      `https://mock-api.com/api/pair?id=${mockPoolId}`,
-    );
+beforeEach(() => {
+  vi.clearAllMocks()
+})
 
-    mockRequest.mockRejectedValueOnce(
-      new NotFoundError(`Pool with ID: ${mockPoolId} not found`),
-    );
-    const res = await GET(req);
-    expect(res.status).toBe(404);
+afterEach(() => {
+  // no extra teardown
+})
 
-    const jsonResponse = await res.json();
-    console.log(jsonResponse);
-    expect(jsonResponse).toEqual({
-      error: `Pool with ID: ${mockPoolId} not found`,
-    });
-  });
+describe('fetchPoolById()', () => {
+  it('sends correct GraphQL request and returns pool', async () => {
+    mockRequest.mockResolvedValueOnce({ poolById: rawPool })
 
-  it("should return 500 if there is an error fetching pool data", async () => {
-    mockRequest.mockRejectedValueOnce(new Error("Network error"));
+    const result = await fetchPoolById(poolId)
 
-    const req = new NextRequest(
-      `https://mock-api.com/api/pair?id=${mockPoolId}`,
-    );
-    const res = await GET(req);
-
-    expect(res.status).toBe(500);
-    const jsonResponse = await res.json();
-    expect(jsonResponse).toEqual({
-      error: "An unexpected error occurred while fetching pair data",
-    });
-  });
-
-  it("should return 200 with transformed pool data", async () => {
-    const req = new NextRequest(
-      `https://mock-api.com/api/pair?id=${mockPoolId}`,
-    );
-
-    const mockPoolResponse = {poolById: mockPoolData};
-
-    mockRequest.mockResolvedValueOnce(mockPoolResponse);
-
-    const response = await GET(req);
-    expect(response.status).toBe(200);
-
-    const jsonResponse = await response.json();
-
-    expect(jsonResponse).toEqual(mockPairData);
+    expect(mockGql).toHaveBeenCalledOnce()
 
     expect(mockRequest).toHaveBeenCalledWith({
-      url: SQDIndexerUrl,
-      document: "dummy_pool_query",
-      variables: {id: mockPoolId},
-    });
-  });
-});
+      url:       INDEXER_URL,
+      document:  mockGql.mock.results[0].value,
+      variables: { id: poolId },
+    })
+
+    expect(result).toEqual(rawPool)
+  })
+
+  it('throws NotFoundError if indexer returns null', async () => {
+    mockRequest.mockResolvedValueOnce({ poolById: null })
+    await expect(fetchPoolById(poolId)).rejects.toBeInstanceOf(NotFoundError)
+  })
+
+  it('propagates network errors', async () => {
+    mockRequest.mockRejectedValueOnce(new Error('network fail'))
+    await expect(fetchPoolById(poolId)).rejects.toThrow('network fail')
+  })
+})
+
+describe('createPairFromPool()', () => {
+  it('maps Pool → Pair correctly', () => {
+    const pair = createPairFromPool(rawPool)
+    expect(pair).toEqual(expectedPair)
+  })
+})
+
+describe('GET /api/pair', () => {
+  const baseUrl = 'https://test/api/pair'
+  let consoleSpy: ReturnType<typeof vi.spyOn>
+
+  beforeEach(() => {
+    consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => {})
+  })
+
+  afterEach(() => {
+    consoleSpy.mockRestore()
+  })
+
+  it('400 when id param is missing', async () => {
+    const res = await GET(new NextRequest(baseUrl))
+    expect(res.status).toBe(400)
+    expect(await res.json()).toEqual({ error: 'Pool ID(param: id) is required' })
+  })
+
+  it('404 when fetchPoolById throws NotFoundError', async () => {
+    mockRequest.mockRejectedValueOnce(new NotFoundError('no pool'))
+    const res = await GET(new NextRequest(`${baseUrl}?id=${poolId}`))
+    expect(res.status).toBe(404)
+    expect(await res.json()).toEqual({ error: 'no pool' })
+    expect(consoleSpy).toHaveBeenCalled()
+  })
+
+  it('500 on unexpected error', async () => {
+    mockRequest.mockRejectedValueOnce(new Error('boom'))
+    const res = await GET(new NextRequest(`${baseUrl}?id=${poolId}`))
+    expect(res.status).toBe(500)
+    expect(await res.json()).toEqual({
+      error: 'An unexpected error occurred while fetching pair data',
+    })
+    expect(consoleSpy).toHaveBeenCalled()
+  })
+
+  it('200 + correct body on success', async () => {
+    mockRequest.mockResolvedValueOnce({ poolById: rawPool })
+    const res = await GET(new NextRequest(`${baseUrl}?id=${poolId}`))
+    expect(res.status).toBe(200)
+    expect(await res.json()).toEqual({ pair: expectedPair })
+    expect(consoleSpy).not.toHaveBeenCalled()
+  })
+})

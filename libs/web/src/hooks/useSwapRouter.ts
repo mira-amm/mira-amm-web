@@ -1,6 +1,6 @@
 import {useMemo} from "react";
 import {useQuery} from "@tanstack/react-query";
-import {type BN, type AssetId, bn} from "fuels";
+import {type BN, bn} from "fuels";
 import {
   getSwapQuotesBatch,
   type SwapQuote,
@@ -8,6 +8,7 @@ import {
 } from "./get-swap-quotes-batch";
 import {useReadonlyMira} from ".";
 import {type Route, useRoutablePools} from "@/src/hooks";
+import { CoinData } from "../utils/coinsConfig";
 
 export enum TradeState {
   LOADING,
@@ -44,6 +45,8 @@ export function useSwapRouter(
     isRefetching: routesRefetching,
   } = useRoutablePools(assetIn, assetOut, shouldFetch);
 
+  // debugger;
+
   const {
     data: quotes = [],
     isLoading,
@@ -57,10 +60,17 @@ export function useSwapRouter(
       assetOut?.assetId,
       routes,
     ],
+
     queryFn: () =>
       amm && routes.length
         ? getSwapQuotesBatch(amountSpecified, tradeType, routes, amm)
         : Promise.resolve([]),
+
+    staleTime: 0,
+    cacheTime: 0,
+    refetchOnWindowFocus: true,
+    refetchOnMount: true,
+    enabled: shouldFetch,
     initialData: shouldFetch ? undefined : [],
   });
 
@@ -77,7 +87,7 @@ export function useSwapRouter(
     if (!quotes.length) {
       return {
         tradeState: TradeState.NO_ROUTE_FOUND,
-        error: amountSpecified.gt(0) ? "No route found for this trade" : null,
+
       };
     }
 

@@ -38,21 +38,25 @@ export class ReadonlyMiraAmm {
           .functions.pool_metadata(poolIdInput(poolId))
       ))
 
-    const results = await this.ammContract
+    const { value } = await this.ammContract
       .multiCall(poolIdTransactions)
       .get();
 
+    if (!value || value.length !== poolIds.length) {
+      throw new Error("Mismatch between pools and metadata results while fetching pool metadata in batch.");
+    }
+
     return poolIds.map((poolId, index) => {
-      const value = results.value[index]
+      const pool = value[index];
       return {
         poolId: poolId,
-        reserve0: value.reserve_0,
-        reserve1: value.reserve_1,
-        liquidity: [value.liquidity.id, value.liquidity.amount],
-        decimals0: value.decimals_0,
-        decimals1: value.decimals_1,
-      }
-    })
+        reserve0: pool.reserve_0,
+        reserve1: pool.reserve_1,
+        liquidity: [pool.liquidity.id, pool.liquidity.amount],
+        decimals0: pool.decimals_0,
+        decimals1: pool.decimals_1,
+      };
+    });
   }
 
   async poolMetadata(poolId: PoolId): Promise<PoolMetadata | null> {
@@ -62,6 +66,7 @@ export class ReadonlyMiraAmm {
     if (!value) {
       return null;
     }
+
     return {
       poolId: poolId,
       reserve0: value.reserve_0,
