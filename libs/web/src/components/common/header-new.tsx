@@ -36,14 +36,23 @@ export function HeaderNew({
 
   useEffect(() => {
     if (typeof window !== "undefined") {
-      const bannerClosed = localStorage.getItem(PROMO_BANNER_STORAGE_KEY);
-      setIsPromoShown(!bannerClosed);
+      try {
+        const bannerClosed = localStorage.getItem(PROMO_BANNER_STORAGE_KEY);
+        setIsPromoShown(!bannerClosed);
+      } catch (error) {
+        console.warn("Failed to access localStorage:", error);
+        setIsPromoShown(true);
+      }
     }
   }, []);
 
   const handleCloseBanner = useCallback(() => {
     setIsPromoShown(false);
-    localStorage.setItem(PROMO_BANNER_STORAGE_KEY, "true");
+    try {
+      localStorage.setItem(PROMO_BANNER_STORAGE_KEY, "true");
+    } catch (error) {
+      console.warn("Failed to save banner state:", error);
+    }
   }, []);
 
   const navLinks = useMemo(
