@@ -1,5 +1,5 @@
 import {FC} from "react";
-import {clsx} from "clsx";
+import {cn} from "@/src/utils/cn";
 
 const getPriceImpact = (
   reservesPrice?: number,
@@ -16,7 +16,8 @@ const getPriceImpact = (
 export const PriceImpact: FC<{
   reservesPrice?: number;
   previewPrice?: number;
-}> = ({reservesPrice, previewPrice}) => {
+  showWarning?: boolean;
+}> = ({reservesPrice, previewPrice, showWarning = false}) => {
   const impact = getPriceImpact(reservesPrice, previewPrice);
   const isHidden = impact === -1;
   const highPriceImpact = impact > 5;
@@ -25,21 +26,21 @@ export const PriceImpact: FC<{
   return (
     <>
       <p
-        className={clsx(
-          "flex justify-between items-center text-xs leading-[18px] bg-transparent border-none cursor-pointer",
-          "lg:text-[13px]",
+        className={cn(
+          "flex justify-between items-center leading-[18px] bg-transparent border-none cursor-pointer",
           highPriceImpact && "text-accent-warning",
           mediumPriceImpact && "text-accent-alert",
           isHidden && "opacity-0",
         )}
       >
-        <span>Price impact:</span> <span>{impact.toFixed(2)}%</span>
+        <span className="mr-1 text-xs lg:text-[13px]">Price impact: </span>
+        <span className="text-xs lg:text-[13px]">{impact.toFixed(2)}%</span>
       </p>
 
-      {(highPriceImpact || mediumPriceImpact) && (
+      {showWarning && (highPriceImpact || mediumPriceImpact) && (
         <p
-          className={clsx(
-            "leading-[18px] bg-transparent border-none cursor-pointer lg:text-[13px]",
+          className={cn(
+            "leading-[18px] bg-transparent border-none cursor-pointer text-xs lg:text-[13px]",
             highPriceImpact ? "text-accent-warning" : "text-accent-alert",
           )}
         >
@@ -49,3 +50,8 @@ export const PriceImpact: FC<{
     </>
   );
 };
+
+export const PriceImpactNew: FC<{
+  reservesPrice?: number;
+  previewPrice?: number;
+}> = (props) => <PriceImpact {...props} showWarning={true} />;

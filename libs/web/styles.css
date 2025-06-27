@@ -78,7 +78,7 @@
 
     --accent-secondary: rgba(174, 237, 13, 0.4);
     --accent-dimmed: rgba(174, 237, 13, 0.1);
-    --accent-warning: #f55353;
+    --accent-warning: #e43d4b;
     --accent-alert: #d4b226;
     --content-positive: #46cc44;
 
@@ -108,7 +108,7 @@
 
     --accent-secondary: rgba(174, 237, 13, 0.3);
     --accent-dimmed: rgba(174, 237, 13, 0.08);
-    --accent-warning: #f87171;
+    --accent-warning: #e43d4b;
     --accent-alert: #ffd700;
     --content-positive: #4ade80;
   }

@@ -19,7 +19,10 @@ import SettingsModalContent from "@/src/components/common/Swap/components/Settin
 import useInitialSwapState from "@/src/hooks/useInitialSwapState/useInitialSwapState";
 import useCheckActiveNetwork from "@/src/hooks/useCheckActiveNetwork";
 import usePreview from "@/src/hooks/useSwapPreviewV2";
-import {PriceImpact} from "@/src/components/common/Swap/components/price-impact";
+import {
+  PriceImpact,
+  PriceImpactNew,
+} from "@/src/components/common/Swap/components/price-impact";
 import {FuelAppUrl} from "@/src/utils/constants";
 import useReservesPrice from "@/src/hooks/useReservesPrice";
 import SwapFailureModal from "@/src/components/common/Swap/components/SwapFailureModal/SwapFailureModal";
@@ -72,7 +75,7 @@ const SwapRouteItem = memo(function SwapRouteItem({pool}: {pool: PoolId}) {
     <div className="flex items-center gap-1">
       <img src={firstAssetIcon || ""} className="-mr-2 h-4 w-4" />
       <img src={secondAssetIcon || ""} className="h-4 w-4" />
-      <p>({fee}%)</p>
+      <p className="text-sm">({fee}%)</p>
     </div>
   );
 });
@@ -105,18 +108,18 @@ const PreviewSummary = memo(function PreviewSummary({
   previewPrice: number | undefined;
 }) {
   return (
-    <div className="flex bg-background-primary dark:bg-background-secondary p-4 rounded-[10px] flex-col gap-2 text-accent-primary dark:text-content-tertiary text-[12px] leading-[16px] lg:text-[13px] lg:leading-[18px]">
+    <div className="flex bg-background-primary dark:bg-background-secondary p-4 rounded-[10px] flex-col gap-2 text-accent-primary dark:text-content-tertiary leading-[16px]">
       <div className="flex justify-between">
-        <p>Rate:</p>
+        <p className="text-sm">Rate:</p>
         {previewLoading || tradeState === TradeState.REEFETCHING ? (
           <Loader color="gray" />
         ) : (
-          <p>{exchangeRate}</p>
+          <p className="text-sm">{exchangeRate}</p>
         )}
       </div>
 
       <div className="flex justify-between">
-        <p>Routing:</p>
+        <p className="text-sm">Routing:</p>
         <div className="flex flex-wrap items-center gap-1">
           {previewLoading || tradeState === TradeState.REEFETCHING ? (
             <Loader color="gray" />
@@ -135,26 +138,31 @@ const PreviewSummary = memo(function PreviewSummary({
       </div>
 
       <div className="flex justify-between">
-        <p>Estimated fees:</p>
+        <p className="text-sm">Estimated fees:</p>
         {previewLoading || tradeState === TradeState.REEFETCHING ? (
           <Loader color="gray" />
         ) : (
-          <p>
+          <p className="text-sm">
             {feeValue} {sellMetadataSymbol}
           </p>
         )}
       </div>
 
       <div className="flex justify-between">
-        <p>Gas cost:</p>
+        <p className="text-sm">Gas cost:</p>
         {txCostPending ? (
           <Loader color="gray" />
         ) : (
-          <p>{txCost?.toFixed(9)} ETH</p>
+          <p className="text-sm">{txCost?.toFixed(9)} ETH</p>
         )}
       </div>
 
-      <PriceImpact reservesPrice={reservesPrice} previewPrice={previewPrice} />
+      <FeatureGuard>
+        <PriceImpactNew
+          reservesPrice={reservesPrice}
+          previewPrice={previewPrice}
+        />
+      </FeatureGuard>
     </div>
   );
 });
@@ -163,9 +171,26 @@ PreviewSummary.displayName = "PreviewSummary";
 
 const PriceAndRate = memo(function PriceAndRate({
   swapState,
+  reservesPrice,
+  previewPrice,
 }: {
   swapState: SwapState;
+  reservesPrice: number | undefined;
+  previewPrice: number | undefined;
 }) {
+  return (
+    <div className="flex justify-between">
+      <PriceImpact reservesPrice={reservesPrice} previewPrice={previewPrice} />
+      <div className="flex justify-end">
+        <ExchangeRate swapState={swapState} />
+      </div>
+    </div>
+  );
+});
+
+PriceAndRate.displayName = "PriceAndRate";
+
+const Rate = memo(function Rate({swapState}: {swapState: SwapState}) {
   return (
     <div className="flex justify-end">
       <ExchangeRate swapState={swapState} />
@@ -173,7 +198,7 @@ const PriceAndRate = memo(function PriceAndRate({
   );
 });
 
-PriceAndRate.displayName = "PriceAndRate";
+Rate.displayName = "Rate";
 
 const Swap = ({isWidget}: {isWidget?: boolean}) => {
   // Modal hooks
@@ -719,6 +744,10 @@ const Swap = ({isWidget}: {isWidget?: boolean}) => {
             />
           )}
 
+          <FeatureGuard>
+            <Rate swapState={swapState} />
+          </FeatureGuard>
+
           {!isConnected ? (
             <Button onClick={connect} loading={isConnecting} size="2xl">
               Connect Wallet
@@ -739,7 +768,15 @@ const Swap = ({isWidget}: {isWidget?: boolean}) => {
           )}
         </div>
 
-        <PriceAndRate swapState={swapState} />
+        <FeatureGuard
+          fallback={
+            <PriceAndRate
+              reservesPrice={reservesPrice}
+              previewPrice={previewPrice}
+              swapState={swapState}
+            />
+          }
+        />
       </div>
 
       {swapPending && <div className={overlayClasses} />}
