@@ -26,7 +26,7 @@ import {
 } from "@/src/components/common";
 
 import {DiscordLink, XLink} from "@/src/utils/constants";
-import { Swap } from "@/src/components/common/Swap/Swap";
+import {Swap} from "@/src/components/common/Swap/Swap";
 import {Button} from "@/meshwave-ui/Button";
 
 function HeroSection() {
@@ -247,9 +247,7 @@ function WelcomeSection() {
           href="/swap"
           className="py-4 lg:w-full lg:text-base lg:leading-6 flex justify-center"
         >
-          <Button className="w-60 h-14">
-            Launch App
-          </Button>
+          <Button className="w-60 h-14">Launch App</Button>
         </a>
       </figure>
     </section>

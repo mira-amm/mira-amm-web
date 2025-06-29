@@ -1,5 +1,5 @@
-import { NextRequest, NextResponse } from "next/server";
-import { GeckoTerminalQueryResponses } from "@/web/shared/types";
+import {NextRequest, NextResponse} from "next/server";
+import {GeckoTerminalQueryResponses} from "@/web/shared/types";
 // import { MainnetUrl } from "../../../../../libs/web/src/utils/constants";
 
 export const MainnetUrl = "https://mainnet-explorer.fuel.network";
@@ -15,7 +15,7 @@ export async function GET(req: NextRequest) {
   const assetId = new URL(req.url).searchParams.get("id");
 
   if (!assetId) {
-    return NextResponse.json({ error: "Asset ID is required" }, { status: 400 });
+    return NextResponse.json({error: "Asset ID is required"}, {status: 400});
   }
 
   const now = Date.now();
@@ -36,14 +36,14 @@ export async function GET(req: NextRequest) {
 
   try {
     const response = await fetch(assetUrl, {
-      next: { revalidate: 60 },
+      next: {revalidate: 60},
     });
 
     if (!response.ok) {
       if (response.status === 404) {
         return NextResponse.json(
-          { error: `Asset with ID: ${assetId} not found` },
-          { status: 404 }
+          {error: `Asset with ID: ${assetId} not found`},
+          {status: 404},
         );
       }
       throw new Error(`Failed to fetch asset data: ${response.statusText}`);
@@ -75,8 +75,8 @@ export async function GET(req: NextRequest) {
   } catch (error) {
     console.error("Error fetching asset data:", error);
     return NextResponse.json(
-      { error: "Failed to fetch asset data" },
-      { status: 500 }
+      {error: "Failed to fetch asset data"},
+      {status: 500},
     );
   }
 }

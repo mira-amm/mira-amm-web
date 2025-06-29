@@ -1,4 +1,4 @@
-import { Boosts } from "@/src/components/pages/liquidity-page/components/Boosts/Boosts";
+import {Boosts} from "@/src/components/pages/liquidity-page/components/Boosts/Boosts";
 import PointsRankTable from "@/src/components/pages/points-page/PointsRankTable/PointsRankTable";
 
 export default function Page() {
@@ -19,4 +19,4 @@ export default function Page() {
       <PointsRankTable />
     </main>
   );
-};
+}

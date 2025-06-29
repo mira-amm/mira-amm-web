@@ -2,9 +2,9 @@
  * @api {get} /latest-block Get latest block data (only if events data available for the block)
  */
 
-import { NextRequest, NextResponse } from "next/server";
-import { request, gql } from "graphql-request";
-import { DateTime } from "fuels";
+import {NextRequest, NextResponse} from "next/server";
+import {request, gql} from "graphql-request";
+import {DateTime} from "fuels";
 
 import {
   SQDIndexerUrl,
@@ -27,7 +27,9 @@ const fetchSquidStatus = async (
     }
   `;
 
-  const { squidStatus } = await request<{ squidStatus: SQDIndexerResponses.SquidStatus }>({
+  const {squidStatus} = await request<{
+    squidStatus: SQDIndexerResponses.SquidStatus;
+  }>({
     url,
     document: query,
   });
@@ -49,10 +51,10 @@ const fetchBlockByHeight = async (
     }
   `;
 
-  const { block } = await request<{ block: FuelAPIResponses.BlockByHeight }>({
+  const {block} = await request<{block: FuelAPIResponses.BlockByHeight}>({
     url,
     document: query,
-    variables: { height },
+    variables: {height},
   });
 
   return block;
@@ -60,25 +62,32 @@ const fetchBlockByHeight = async (
 
 export async function GET(req: NextRequest) {
   try {
-    const { finalizedHeight: blockNumber } = await fetchSquidStatus(SQDIndexerUrl);
+    const {finalizedHeight: blockNumber} =
+      await fetchSquidStatus(SQDIndexerUrl);
 
-    const { header } = await fetchBlockByHeight(NetworkUrl, blockNumber.toString());
+    const {header} = await fetchBlockByHeight(
+      NetworkUrl,
+      blockNumber.toString(),
+    );
 
-    const blockTimestamp = DateTime.fromTai64(header.time.toString()).toUnixSeconds();
+    const blockTimestamp = DateTime.fromTai64(
+      header.time.toString(),
+    ).toUnixSeconds();
 
     const block: GeckoTerminalQueryResponses.Block = {
       blockNumber,
       blockTimestamp,
     };
 
-    const latestBlockResponse: GeckoTerminalQueryResponses.LatestBlockResponse = { block };
+    const latestBlockResponse: GeckoTerminalQueryResponses.LatestBlockResponse =
+      {block};
 
     return NextResponse.json(latestBlockResponse);
   } catch (error) {
     console.error("error fetching latest block:", error);
     return NextResponse.json(
-      { error: "An unexpected error occurred while fetching latest block" },
-      { status: 500 },
+      {error: "An unexpected error occurred while fetching latest block"},
+      {status: 500},
     );
   }
 }

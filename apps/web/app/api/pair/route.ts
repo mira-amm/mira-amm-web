@@ -1,24 +1,28 @@
 /**
  * @api {get} /pair Get pair details by id
  */
-import { NextRequest, NextResponse } from "next/server";
-import { request, gql } from "graphql-request";
-import { SQDIndexerUrl } from "../../../../../libs/web/src/utils/constants";
+import {NextRequest, NextResponse} from "next/server";
+import {request, gql} from "graphql-request";
+import {SQDIndexerUrl} from "../../../../../libs/web/src/utils/constants";
 import {
   SQDIndexerResponses,
   GeckoTerminalQueryResponses,
 } from "../../../../../libs/web/shared/types";
-import { NotFoundError } from "../../../../../libs/web/src/utils/errors";
+import {NotFoundError} from "../../../../../libs/web/src/utils/errors";
 
 export const fetchPoolById = async (
-  poolId: string
+  poolId: string,
 ): Promise<SQDIndexerResponses.Pool> => {
   const query = gql`
     query GetPoolById($id: String!) {
       poolById(id: $id) {
         id
-        asset0 { id }
-        asset1 { id }
+        asset0 {
+          id
+        }
+        asset1 {
+          id
+        }
         creationBlock
         creationTime
         creationTx
@@ -26,10 +30,10 @@ export const fetchPoolById = async (
     }
   `;
 
-  const { poolById } = await request<{ poolById: SQDIndexerResponses.Pool }>({
+  const {poolById} = await request<{poolById: SQDIndexerResponses.Pool}>({
     url: SQDIndexerUrl,
     document: query,
-    variables: { id: poolId },
+    variables: {id: poolId},
   });
 
   if (!poolById) {
@@ -40,7 +44,7 @@ export const fetchPoolById = async (
 };
 
 export const createPairFromPool = (
-  pool: SQDIndexerResponses.Pool
+  pool: SQDIndexerResponses.Pool,
 ): GeckoTerminalQueryResponses.Pair => ({
   id: pool.id,
   dexKey: "mira",
@@ -57,8 +61,8 @@ export async function GET(req: NextRequest) {
 
     if (!poolId) {
       return NextResponse.json(
-        { error: "Pool ID(param: id) is required" },
-        { status: 400 }
+        {error: "Pool ID(param: id) is required"},
+        {status: 400},
       );
     }
 
@@ -66,19 +70,19 @@ export async function GET(req: NextRequest) {
 
     const pair: GeckoTerminalQueryResponses.Pair = createPairFromPool(pool);
 
-    const pairResponse: GeckoTerminalQueryResponses.PairResponse = { pair };
+    const pairResponse: GeckoTerminalQueryResponses.PairResponse = {pair};
 
     return NextResponse.json(pairResponse);
   } catch (error) {
     console.error("Error fetching pair data:", error);
 
     if (error instanceof NotFoundError) {
-      return NextResponse.json({ error: error.message }, { status: 404 });
+      return NextResponse.json({error: error.message}, {status: 404});
     }
 
     return NextResponse.json(
-      { error: "An unexpected error occurred while fetching pair data" },
-      { status: 500 }
+      {error: "An unexpected error occurred while fetching pair data"},
+      {status: 500},
     );
   }
 }

@@ -1,13 +1,13 @@
-import { Pools } from "@/src/components/pages/liquidity-page/components/Pools/Pools";
-import { Positions } from "@/src/components/pages/liquidity-page/components/Positions/Positions";
+import {Pools} from "@/src/components/pages/liquidity-page/components/Pools/Pools";
+import {Positions} from "@/src/components/pages/liquidity-page/components/Positions/Positions";
 import PromoBlock from "@/src/components/pages/liquidity-page/components/PromoBlock/PromoBlock";
-import { Boosts } from "@/src/components/pages/liquidity-page/components/Boosts/Boosts";
+import {Boosts} from "@/src/components/pages/liquidity-page/components/Boosts/Boosts";
 
 import {
   LIQUIDITY_PROVIDING_DOC_URL,
   POINTS_LEARN_MORE_URL,
 } from "@/src/utils/constants";
-import { Sparkles, Trophy } from "lucide-react";
+import {Sparkles, Trophy} from "lucide-react";
 
 export default function Page() {
   return (

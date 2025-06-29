@@ -1,9 +1,9 @@
 /**
  * @api {get} /campaigns Get list of epochs and their campaigns
  */
-import { SentioJSONCampaignService } from "@/src/models/campaigns/Campaign";
-import { JSONEpochConfigService } from "@/src/models/campaigns/JSONEpochConfigService";
-import { NextRequest, NextResponse } from "next/server";
+import {SentioJSONCampaignService} from "@/src/models/campaigns/Campaign";
+import {JSONEpochConfigService} from "@/src/models/campaigns/JSONEpochConfigService";
+import {NextRequest, NextResponse} from "next/server";
 import path from "path";
 
 const CACHE_DURATION = 300;
@@ -22,16 +22,17 @@ const CACHE_HEADERS = {
 };
 
 const epochConfigService = new JSONEpochConfigService(
-  path.join(process.cwd(), "../../libs/web/src", "models", "campaigns.json")
+  path.join(process.cwd(), "../../libs/web/src", "models", "campaigns.json"),
 );
 
-const campaignService = process.env.SENTIO_API_KEY && process.env.SENTIO_API_URL
-  ? new SentioJSONCampaignService(
-      process.env.SENTIO_API_URL,
-      process.env.SENTIO_API_KEY,
-      epochConfigService
-    )
-  : null;
+const campaignService =
+  process.env.SENTIO_API_KEY && process.env.SENTIO_API_URL
+    ? new SentioJSONCampaignService(
+        process.env.SENTIO_API_URL,
+        process.env.SENTIO_API_KEY,
+        epochConfigService,
+      )
+    : null;
 
 export async function GET(request: NextRequest): Promise<NextResponse> {
   try {
@@ -56,7 +57,7 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
     });
   } catch (e) {
     console.error("Error in /api/campaigns:", e);
-    return new NextResponse(JSON.stringify({ message: (e as Error).message }), {
+    return new NextResponse(JSON.stringify({message: (e as Error).message}), {
       status: 500,
       headers: CACHE_HEADERS,
     });
