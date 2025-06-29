@@ -1,10 +1,10 @@
 /**
  * @api {get} /api/rewards Get rewards for a given user and epoch based on their LP tokens
  */
-import { JSONEpochConfigService } from "@/src/models/campaigns/JSONEpochConfigService";
-import { SentioJSONUserRewardsService } from "@/src/models/rewards/UserRewards";
-import { NotFoundError } from "@/src/utils/errors";
-import { NextRequest, NextResponse } from "next/server";
+import {JSONEpochConfigService} from "@/src/models/campaigns/JSONEpochConfigService";
+import {SentioJSONUserRewardsService} from "@/src/models/rewards/UserRewards";
+import {NotFoundError} from "@/src/utils/errors";
+import {NextRequest, NextResponse} from "next/server";
 import path from "path";
 
 const CACHE_HEADERS = {
@@ -14,11 +14,11 @@ const CACHE_HEADERS = {
 
 function createErrorResponse(status: number, message: string | object) {
   return new NextResponse(
-    JSON.stringify(typeof message === "string" ? { message } : message),
+    JSON.stringify(typeof message === "string" ? {message} : message),
     {
       status,
       headers: CACHE_HEADERS,
-    }
+    },
   );
 }
 
@@ -34,7 +34,10 @@ function createErrorResponse(status: number, message: string | object) {
 // eg: epochNumbers=1,2,3&...
 export async function GET(request: NextRequest) {
   if (!process.env.SENTIO_API_KEY || !process.env.SENTIO_API_URL) {
-    return createErrorResponse(500, "Sentio API environment variables are not set.");
+    return createErrorResponse(
+      500,
+      "Sentio API environment variables are not set.",
+    );
   }
 
   const searchParams = request.nextUrl.searchParams;
@@ -50,7 +53,7 @@ export async function GET(request: NextRequest) {
   if (missingParams.length > 0) {
     return createErrorResponse(
       400,
-      `Missing required parameters: ${missingParams.join(", ")}`
+      `Missing required parameters: ${missingParams.join(", ")}`,
     );
   }
 
@@ -65,9 +68,9 @@ export async function GET(request: NextRequest) {
         process.cwd(),
         "../../libs/web/src",
         "models",
-        "campaigns.json"
-      )
-    )
+        "campaigns.json",
+      ),
+    ),
   );
 
   try {

@@ -1,4 +1,4 @@
-import { Swap } from "@/src/components/common/Swap/Swap";
+import {Swap} from "@/src/components/common/Swap/Swap";
 
 export default function Page() {
   return (

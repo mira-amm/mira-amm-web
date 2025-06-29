@@ -1,9 +1,9 @@
-import { NextRequest, NextResponse } from "next/server";
+import {NextRequest, NextResponse} from "next/server";
 /**
  * @api {get} /events Get all available events from one block to another (including all in between)
  */
-import { request, gql } from "graphql-request";
-import { SQDIndexerUrl } from "../../../../../libs/web/src/utils/constants";
+import {request, gql} from "graphql-request";
+import {SQDIndexerUrl} from "../../../../../libs/web/src/utils/constants";
 import {
   GeckoTerminalQueryResponses,
   SQDIndexerResponses,
@@ -12,16 +12,24 @@ import {
   GeckoTerminalTypes,
   SQDIndexerTypes,
 } from "../../../../../libs/web/shared/constants";
-import { formatUnits } from "fuels";
+import {formatUnits} from "fuels";
 
 const MAX_BLOCK_RANGE = 5000;
 
 const ACTIONS_QUERY = gql`
   query GetActions($fromBlock: Int!, $toBlock: Int!) {
-    actions(where: { blockNumber_gt: $fromBlock, blockNumber_lt: $toBlock }) {
-      pool { id }
-      asset0 { id decimals }
-      asset1 { id decimals }
+    actions(where: {blockNumber_gt: $fromBlock, blockNumber_lt: $toBlock}) {
+      pool {
+        id
+      }
+      asset0 {
+        id
+        decimals
+      }
+      asset1 {
+        id
+        decimals
+      }
       amount1Out
       amount1In
       amount0Out
@@ -41,7 +49,7 @@ async function fetchActions(fromBlock: number, toBlock: number) {
   return request<SQDIndexerResponses.Actions>({
     url: SQDIndexerUrl,
     document: ACTIONS_QUERY,
-    variables: { fromBlock, toBlock },
+    variables: {fromBlock, toBlock},
   });
 }
 
@@ -50,11 +58,24 @@ function formatAmount(value: string, decimals: number): string {
 }
 
 function createEventData(action: SQDIndexerResponses.Action):
-  | (GeckoTerminalQueryResponses.SwapEvent | GeckoTerminalQueryResponses.JoinExitEvent & { block: GeckoTerminalQueryResponses.Block })
+  | (
+      | GeckoTerminalQueryResponses.SwapEvent
+      | (GeckoTerminalQueryResponses.JoinExitEvent & {
+          block: GeckoTerminalQueryResponses.Block;
+        })
+    )
   | null {
-
-  const { asset0, asset1, pool, type, blockNumber, timestamp, transaction, recipient } = action;
-  const block = { blockNumber, blockTimestamp: timestamp };
+  const {
+    asset0,
+    asset1,
+    pool,
+    type,
+    blockNumber,
+    timestamp,
+    transaction,
+    recipient,
+  } = action;
+  const block = {blockNumber, blockTimestamp: timestamp};
 
   const reserves = {
     asset0: formatAmount(action.reserves0After, asset0.decimals),
@@ -103,7 +124,10 @@ function createEventData(action: SQDIndexerResponses.Action):
     return null;
   }
 
-  if (type === SQDIndexerTypes.ActionTypes.JOIN || type === SQDIndexerTypes.ActionTypes.EXIT) {
+  if (
+    type === SQDIndexerTypes.ActionTypes.JOIN ||
+    type === SQDIndexerTypes.ActionTypes.EXIT
+  ) {
     const amount0 = action.amount0In || action.amount0Out;
     const amount1 = action.amount1In || action.amount1Out;
 
@@ -136,27 +160,33 @@ export async function GET(req: NextRequest) {
     const toBlock = parseInt(url.searchParams.get("toBlock") || "0", 10);
 
     if (!fromBlock || !toBlock || fromBlock >= toBlock) {
-      return NextResponse.json({ error: "'fromBlock' and 'toBlock' must be valid and ordered" }, { status: 400 });
+      return NextResponse.json(
+        {error: "'fromBlock' and 'toBlock' must be valid and ordered"},
+        {status: 400},
+      );
     }
 
     const events: GeckoTerminalQueryResponses.Event[] = [];
 
     for (let start = fromBlock; start < toBlock; start += MAX_BLOCK_RANGE) {
       const end = Math.min(start + MAX_BLOCK_RANGE, toBlock);
-      const { actions } = await fetchActions(start, end);
+      const {actions} = await fetchActions(start, end);
 
       for (const action of actions) {
         const eventData = createEventData(action);
         if (eventData) {
-          const { block, ...rest } = eventData;
-          events.push({ ...rest, block });
+          const {block, ...rest} = eventData;
+          events.push({...rest, block});
         }
       }
     }
 
-    return NextResponse.json({ events });
+    return NextResponse.json({events});
   } catch (error) {
     console.error("Error fetching events:", error);
-    return NextResponse.json({ error: "Failed to fetch events data" }, { status: 500 });
+    return NextResponse.json(
+      {error: "Failed to fetch events data"},
+      {status: 500},
+    );
   }
 }

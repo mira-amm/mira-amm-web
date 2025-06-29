@@ -9,7 +9,7 @@ import {IconButton} from "@/src/components/common";
 import PreviewCreatePoolDialog, {
   CreatePoolPreviewData,
 } from "@/src/components/pages/create-pool-page/components/CreatePool/PreviewCreatePoolDialog";
-import { CreatePoolDialog } from "@/src/components/pages/create-pool-page/components/CreatePool/CreatePoolDialog";
+import {CreatePoolDialog} from "@/src/components/pages/create-pool-page/components/CreatePool/CreatePoolDialog";
 
 export default function Page() {
   const router = useRouter();
