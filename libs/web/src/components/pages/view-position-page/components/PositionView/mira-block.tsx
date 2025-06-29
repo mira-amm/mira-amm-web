@@ -6,14 +6,11 @@ import {
 } from "@/src/components/common";
 import {LogoIcon} from "@/meshwave-ui/icons";
 import {PoolId, getLPAssetId} from "mira-dex-ts";
-import usePositionData from "@/src/hooks/usePositionData";
 import {formatUnits} from "fuels";
 import {DEFAULT_AMM_CONTRACT_ID} from "@/src/utils/constants";
-import {useFormattedAddress, useIsRebrandEnabled} from "@/src/hooks";
+import {usePositionData, useFormattedAddress, useIsRebrandEnabled} from "@/src/hooks";
 import {Copy} from "lucide-react";
 import {cn} from "@/src/utils/cn";
-
-import {DEFAULT_AMM_CONTRACT_ID} from "@/src/utils/constants";
 
 export function MiraBlock({pool}: {
   pool: PoolId

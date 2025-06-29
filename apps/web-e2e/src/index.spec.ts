@@ -2,47 +2,47 @@ import { chromium, type BrowserContext } from '@playwright/test';
 import { downloadFuel, seedWallet, FuelWalletTestHelper } from '@fuels/playwright-utils';
 
 import {
-    Duration,
-    Wait,
-    Cast
+  Duration,
+  Wait,
+  Cast
 } from "@serenity-js/core";
 
 import {
-    Navigate,
-    PageElement,
-    By,
-    Click,
-    isVisible
+  Navigate,
+  PageElement,
+  By,
+  Click,
+  isVisible
 } from "@serenity-js/web";
 
 import {
-    Ensure,
-    property,
-    equals,
-    and,
-    startsWith,
-    isPresent,
-    not
+  Ensure,
+  property,
+  equals,
+  and,
+  startsWith,
+  isPresent,
+  not
 } from "@serenity-js/assertions";
 
 import { BrowseTheWebWithPlaywright } from "@serenity-js/playwright";
 
 import {
-    useFixtures,
-    describe,
-    it,
-    beforeEach,
-    afterEach,
-    test
+  useFixtures,
+  describe,
+  it,
+  beforeEach,
+  afterEach,
+  test
 } from "@serenity-js/playwright-test";
 
 import {
-    CallAnApi,
-    DeleteRequest,
-    GetRequest,
-    LastResponse,
-    PostRequest,
-    Send
+  CallAnApi,
+  DeleteRequest,
+  GetRequest,
+  LastResponse,
+  PostRequest,
+  Send
 } from '@serenity-js/rest';
 
 import {
@@ -145,49 +145,49 @@ type TestScopeFixtures = {
 // });
 
 describe("Connect to wallet", () => {
-    it("should be able to connect to fuel wallet", async ({actor, context}, use) => {
-      await actor.attemptsTo(
-        Navigate.to("/"),
-        Wait.until(connectWalletButton(), isVisible()),
-        Click.on(connectWalletButton()),
-        Wait.until(PageElement.located(By.cssContainingText("div.fuel-connectors-connector-item", "Fuel Wallet")), isVisible()),
-        Click.on(PageElement.located(By.cssContainingText("div.fuel-connectors-connector-item", "Fuel Wallet"))),
-        Wait.until(PageElement.located(By.cssContainingText("a", "Install")), isVisible()),
-        Click.on(PageElement.located(By.cssContainingText("a", "Install")))
-      );
-    });
+  it("should be able to connect to fuel wallet", async ({ actor, context }, use) => {
+    await actor.attemptsTo(
+      Navigate.to("/"),
+      Wait.until(connectWalletButton(), isVisible()),
+      Click.on(connectWalletButton()),
+      Wait.until(PageElement.located(By.cssContainingText("div.fuel-connectors-connector-item", "Fuel Wallet")), isVisible()),
+      Click.on(PageElement.located(By.cssContainingText("div.fuel-connectors-connector-item", "Fuel Wallet"))),
+      Wait.until(PageElement.located(By.cssContainingText("a", "Install")), isVisible()),
+      Click.on(PageElement.located(By.cssContainingText("a", "Install")))
+    );
+  });
 });
 
 describe("Swap", () => {
-  beforeEach(async ({actor}) => {
+  beforeEach(async ({ actor }) => {
     await actor.attemptsTo(Navigate.to("/"));
   });
 
   ["0.1", "0.5"].forEach((value) => {
-    it(`should be able to adjust slippage to ${value}%`, async ({actor}) => {
+    it(`should be able to adjust slippage to ${value}%`, async ({ actor }) => {
       await actor.attemptsTo(AdjustSlippage.to(value));
     });
   });
 
-  it("should be able to adjust custom slippage", async ({actor}) => {
+  it("should be able to adjust custom slippage", async ({ actor }) => {
     await actor.attemptsTo(AdjustSlippage.toCustom("0.7"));
   });
 
-  it("should be able to sell ETH for FUEL", async ({actor}) => {
+  it("should be able to sell ETH for FUEL", async ({ actor }) => {
     await actor.attemptsTo(Swap.sell("2", TOKENS.Base), Swap.buy(TOKENS.Quote));
   });
 
-  it("should be able to swap buy and sell currencies", async ({actor}) => {
+  it("should be able to swap buy and sell currencies", async ({ actor }) => {
     await actor.attemptsTo(Swap.sell("2", TOKENS.Base), Swap.convert());
   });
 });
 
 describe("Liquidity", () => {
-  beforeEach(async ({actor}) => {
+  beforeEach(async ({ actor }) => {
     await actor.attemptsTo(Navigate.to("/liquidity"));
   });
 
-  it("should be able to learn more about points program", async ({actor}) => {
+  it("should be able to learn more about points program", async ({ actor }) => {
     await actor.attemptsTo(
       Wait.upTo(Duration.ofSeconds(10)).until(
         PageElement.located(By.cssContainingText("button", "Learn More ")),
@@ -199,19 +199,19 @@ describe("Liquidity", () => {
     );
   });
 
-  it("should be able to create volatile pool (ETH/USDC)", async ({actor}) => {
+  it("should be able to create volatile pool (ETH/FUEL)", async ({ actor }) => {
     await actor.attemptsTo(
       CreatePool.ofType("Volatile").withAssets(TOKENS.Base, TOKENS.Quote),
     );
   });
 
-  it("should be able to create stable pool (ETH/USDC)", async ({actor}) => {
+  it("should be able to create stable pool (ETH/FUEL)", async ({ actor }) => {
     await actor.attemptsTo(
       CreatePool.ofType("Stable").withAssets(TOKENS.Base, TOKENS.Quote),
     );
   });
 
-  it("should be able to add liquidity to existing pool (FUEL/USDC)", async ({actor}) => {
+  it("should be able to add liquidity to existing pool (FUEL/ETH)", async ({ actor }) => {
     await actor.attemptsTo(
       Wait.upTo(Duration.ofSeconds(10)).until(
         PageElement.located(By.css("Loading pools...")),
@@ -251,7 +251,7 @@ describe("Liquidity", () => {
 });
 
 describe("Points", () => {
-  it("should be able to see leaderboard", async ({actor}) =>
+  it("should be able to see leaderboard", async ({ actor }) =>
     actor.attemptsTo(
       Navigate.to("/points"),
       Wait.upTo(Duration.ofSeconds(10)).until(
@@ -262,13 +262,13 @@ describe("Points", () => {
 });
 
 describe("Navigation", () => {
-  it("should see swap module at '/'", async ({actor}) => {
+  it("should see swap module at '/'", async ({ actor }) => {
     await actor.attemptsTo(
       Navigate.to("/landing"),
       Wait.until(swapModule(), isPresent()));
   });
 
-  it("should see landing page at '/landing'", async ({actor}) =>
+  it("should see landing page at '/landing'", async ({ actor }) =>
     actor.attemptsTo(
       Navigate.to("/landing"),
       Wait.until(
@@ -277,7 +277,7 @@ describe("Navigation", () => {
       ),
     ));
 
-  it("should see swap module at '/landing'", async ({actor}) => {
+  it("should see swap module at '/landing'", async ({ actor }) => {
     await actor.attemptsTo(
       Navigate.to("/landing"),
       Wait.until(swapModule(), isPresent()));
@@ -292,7 +292,7 @@ describe("Wallets", () => {
     "Ethereum Wallets",
     "Solana Wallets",
   ].forEach((wallet) => {
-    it(`should see option to connect '${wallet}'`, async ({actor}) => {
+    it(`should see option to connect '${wallet}'`, async ({ actor }) => {
       await actor.attemptsTo(Connect.toWallet(wallet));
     });
   });
@@ -369,58 +369,58 @@ describe("Layout", () => {
 });
 
 describe.skip("API Endpoints", () => {
-//   beforeEach(async ({actor}) => {
-//     await actor.attemptsTo(
-//       Navigate.to("/"),
-// );
-//   });
+  //   beforeEach(async ({actor}) => {
+  //     await actor.attemptsTo(
+  //       Navigate.to("/"),
+  // );
+  //   });
 
-  it("asset", async ({actor}) =>
-actor.attemptsTo(
-    Send.a(GetRequest.to('/api/asset?id=123456')),
-    Ensure.that(LastResponse.status(), equals(200)),
-    Ensure.that(LastResponse.body(), isPresent()),
-));
+  it("asset", async ({ actor }) =>
+    actor.attemptsTo(
+      Send.a(GetRequest.to('/api/asset?id=123456')),
+      Ensure.that(LastResponse.status(), equals(200)),
+      Ensure.that(LastResponse.body(), isPresent()),
+    ));
 
-  it("campaigns", async ({actor}) =>
-actor.attemptsTo(
-    Send.a(GetRequest.to('/api/campaigns')),
-    Ensure.that(LastResponse.status(), equals(200)),
-    Ensure.that(LastResponse.body(), isPresent()),
-));
+  it("campaigns", async ({ actor }) =>
+    actor.attemptsTo(
+      Send.a(GetRequest.to('/api/campaigns')),
+      Ensure.that(LastResponse.status(), equals(200)),
+      Ensure.that(LastResponse.body(), isPresent()),
+    ));
 
-  it("events", async ({actor}) =>
-actor.attemptsTo(
-    Send.a(GetRequest.to('/api/events?fromBlock=100&toBlock=200')),
-    Ensure.that(LastResponse.status(), equals(200)),
-    Ensure.that(LastResponse.body(), isPresent()),
-));
+  it("events", async ({ actor }) =>
+    actor.attemptsTo(
+      Send.a(GetRequest.to('/api/events?fromBlock=100&toBlock=200')),
+      Ensure.that(LastResponse.status(), equals(200)),
+      Ensure.that(LastResponse.body(), isPresent()),
+    ));
 
-  it("latest-block", async ({actor}) =>
-actor.attemptsTo(
-    Send.a(GetRequest.to('/api/latest-block')),
-    Ensure.that(LastResponse.status(), equals(200)),
-    Ensure.that(LastResponse.body(), isPresent()),
-));
+  it("latest-block", async ({ actor }) =>
+    actor.attemptsTo(
+      Send.a(GetRequest.to('/api/latest-block')),
+      Ensure.that(LastResponse.status(), equals(200)),
+      Ensure.that(LastResponse.body(), isPresent()),
+    ));
 
-  it("pair", async ({actor}) =>
-actor.attemptsTo(
-    Send.a(GetRequest.to('/api/pair?id=pool1')),
-    Ensure.that(LastResponse.status(), equals(200)),
-    Ensure.that(LastResponse.body(), isPresent()),
-));
+  it("pair", async ({ actor }) =>
+    actor.attemptsTo(
+      Send.a(GetRequest.to('/api/pair?id=pool1')),
+      Ensure.that(LastResponse.status(), equals(200)),
+      Ensure.that(LastResponse.body(), isPresent()),
+    ));
 
-  it("points", async ({actor}) =>
-actor.attemptsTo(
-    Send.a(GetRequest.to('/api/points')),
-    Ensure.that(LastResponse.status(), equals(200)),
-    Ensure.that(LastResponse.body(), isPresent()),
-));
+  it("points", async ({ actor }) =>
+    actor.attemptsTo(
+      Send.a(GetRequest.to('/api/points')),
+      Ensure.that(LastResponse.status(), equals(200)),
+      Ensure.that(LastResponse.body(), isPresent()),
+    ));
 
-  it("rewards", async ({actor}) =>
-actor.attemptsTo(
-    Send.a(GetRequest.to('/api/rewards?poolIds=286c479da40dc953bddc3bb4c453b608bba2e0ac483b077bd475174115395e6b-f8f8b6283d7fa5b672b530cbb84fcccb4ff8dc40f8176ef4544ddb1f1952ad07-false&epochNumbers=1&userId=0x69e6223f2adf576dfefb21873b78e31ba228b094d05f74f59ea60cbd1bf87d0d')),
-    Ensure.that(LastResponse.status(), equals(200)),
-    Ensure.that(LastResponse.body(), isPresent()),
-));
+  it("rewards", async ({ actor }) =>
+    actor.attemptsTo(
+      Send.a(GetRequest.to('/api/rewards?poolIds=286c479da40dc953bddc3bb4c453b608bba2e0ac483b077bd475174115395e6b-f8f8b6283d7fa5b672b530cbb84fcccb4ff8dc40f8176ef4544ddb1f1952ad07-false&epochNumbers=1&userId=0x69e6223f2adf576dfefb21873b78e31ba228b094d05f74f59ea60cbd1bf87d0d')),
+      Ensure.that(LastResponse.status(), equals(200)),
+      Ensure.that(LastResponse.body(), isPresent()),
+    ));
 });

@@ -1,4 +1,4 @@
-import {Check, Task, Duration, Wait} from "@serenity-js/core";
+import { Check, Task, Duration, Wait } from "@serenity-js/core";
 
 import {
   Click,
@@ -41,7 +41,7 @@ import {
 
 export const TOKENS = {
   Base: "ETH",
-  Quote: "USDC",
+  Quote: "FUEL",
 };
 
 export const Connect = {

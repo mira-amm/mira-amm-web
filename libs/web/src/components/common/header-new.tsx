@@ -2,7 +2,7 @@
 
 import {useEffect, useState, useCallback, useMemo} from "react";
 import Link from "next/link";
-import {clsx} from "clsx";
+import { usePathname} from "next/navigation"
 
 import {Logo} from "@/src/components/common";
 import {useIsConnected} from "@fuels/react";
@@ -15,7 +15,6 @@ import {
 
 import {IconButton} from "@/src/components/common";
 import {PointsIcon} from "@/meshwave-ui/icons";
-import {useCurrentPath} from "@/src/hooks/useCurrentPath";
 import {X} from "lucide-react";
 import {ModeToggle} from "./toggle-mode";
 import {cn} from "@/src/utils/cn";
@@ -30,7 +29,7 @@ export function HeaderNew({
   isHomePage?: boolean;
   pathName?: string;
 }) {
-  const pathname = pathName ?? useCurrentPath();
+  const pathname = pathName ?? usePathname();
   const {isConnected} = useIsConnected();
   const [isPromoShown, setIsPromoShown] = useState(false);
 
