@@ -1,12 +1,10 @@
 import { CurrencyBoxMode, SwapState } from "@/src/components/common/Swap/Swap";
-import useSwapData from "./useAssetPair/useSwapData";
-import useAsset from "./useAsset";
+import { useSwapData, useAsset, useDebounce, TradeType } from "@/src/hooks";
 import { useMemo } from "react";
 import { bn } from "fuels";
-import { useSwapRouter, TradeType } from "./useSwapRouter";
-import useDebounce from "./useDebounce";
+import { useSwapRouter } from "./useSwapRouter";
 
-const useSwapPreview = (swapState: SwapState, mode: CurrencyBoxMode) => {
+export function useSwapPreview(swapState: SwapState, mode: CurrencyBoxMode){
   const { sellAssetId, buyAssetId } = useSwapData(swapState);
 
   const { asset: assetIn } = useAsset(sellAssetId);
@@ -44,5 +42,3 @@ const useSwapPreview = (swapState: SwapState, mode: CurrencyBoxMode) => {
 
   return useSwapRouter(tradeType, bn(debouncedValue), assetIn, assetOut);
 };
-
-export default useSwapPreview;

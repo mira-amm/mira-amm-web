@@ -11,10 +11,9 @@ import {
   ExternalLink,
   LogOutIcon,
 } from "lucide-react";
-import useWeb3React from "@/src/hooks/useWeb3Connection";
-import {useFormattedAddress} from "@/src/hooks";
+import {useWeb3Connection, useFormattedAddress} from "@/src/hooks";
 import {useEffect, useRef, useState} from "react";
-import TransactionsHistory from "./TransactionsHistory/TransactionsHistory";
+import { TransactionsHistory } from "./TransactionsHistory/TransactionsHistory";
 import {FuelAppUrl} from "@/src/utils/constants";
 import {openNewTab} from "@/src/utils/common";
 import {CopyNotification} from "./copy-notification";
@@ -22,7 +21,7 @@ import {Button} from "@/meshwave-ui/Button";
 
 export function ConnectWalletNew() {
   const {account, connect, disconnect, isConnected, isWalletLoading} =
-    useWeb3React();
+    useWeb3Connection();
   const formattedAddress = useFormattedAddress(account);
   const [isHistoryOpened, setHistoryOpened] = useState(false);
   const transactionsRef = useRef<HTMLDivElement>(null);

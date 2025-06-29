@@ -1,13 +1,7 @@
 "use client";
+
 import {useIsRebrandEnabled} from "@/src/hooks";
 import {PropsWithChildren, ReactNode} from "react";
-
-type Props = {
-  /**
-   * The UI to render when the feature is disabled.
-   */
-  fallback?: ReactNode;
-};
 
 /**
  * FeatureGuard conditionally renders children based on useIsRebrandEnabled status.
@@ -18,14 +12,15 @@ type Props = {
 export const FeatureGuard = ({
   fallback,
   children,
-}: PropsWithChildren<Props>) => {
+}: PropsWithChildren<
+  {
+  fallback?: ReactNode;
+  }>) => {
   const isRebrandEnabled = useIsRebrandEnabled();
 
-  // Show new UI when feature is enabled
   if (isRebrandEnabled) {
     return children;
   }
 
-  // Show old UI (fallback) when feature is disabled
   return fallback;
 };

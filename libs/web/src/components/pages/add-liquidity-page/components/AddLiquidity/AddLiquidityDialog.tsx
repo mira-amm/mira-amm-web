@@ -28,14 +28,6 @@ import {
   StablePoolTooltip,
   VolatilePoolTooltip,
 } from "@/src/components/pages/add-liquidity-page/components/AddLiquidity/addLiquidityTooltips";
-import {useModal} from "@/src/hooks";
-import {BN, bn} from "fuels";
-import usePoolsMetadata from "@/src/hooks/usePoolsMetadata";
-import {useAssetMetadata} from "@/src/hooks";
-import {useAssetPrice} from "@/src/hooks/useAssetPrice";
-import AprBadge from "@/src/components/common/AprBadge/AprBadge";
-import usePoolNameAndMatch from "@/src/hooks/usePoolNameAndMatch";
-import {Button} from "@/meshwave-ui/Button";
 import {cn} from "@/src/utils/cn";
 
 const AddLiquidityDialog = ({poolId, setPreviewData, poolKey}: {

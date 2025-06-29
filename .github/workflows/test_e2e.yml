@@ -26,7 +26,7 @@ jobs:
         run: git fetch origin main # Explicitly fetch the 'main' branch to ensure it's available
 
       - name: Install dependencies
-        run: pnpm i --frozen-lockfile
+        run: pnpm i --frozen-lockfile; pnpx playwright install chromium --with-deps
 
       - name: Run End-to-End tests
         env:

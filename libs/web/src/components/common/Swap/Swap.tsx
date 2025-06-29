@@ -37,19 +37,18 @@ import {
   openNewTab
 } from "@/src/utils/common";
 
-import useExchangeRate from "@/src/hooks/useExchangeRate/useExchangeRate";
-import useInitialSwapState from "@/src/hooks/useInitialSwapState/useInitialSwapState";
-import useCheckActiveNetwork from "@/src/hooks/useCheckActiveNetwork";
-import usePreview from "@/src/hooks/useSwapPreviewV2";
 import {
   PriceImpactNew,
 } from "@/src/components/common/Swap/components/price-impact";
-import useReservesPrice from "@/src/hooks/useReservesPrice";
 
 import { FuelAppUrl } from "@/src/utils/constants";
 
 import {
+ useExchangeRate,
+  useSwapPreview,
   useIsClient,
+  useReservesPrice,
+  useCheckActiveNetwork,
   useAssetMetadata,
   useCheckEthBalance,
   useBalances,
@@ -57,13 +56,14 @@ import {
   useSwap,
   useAssetImage,
   useAssetPrice,
-  TradeState
+  TradeState,
+  useInitialSwapState
 } from "@/src/hooks";
 
 import { useAnimationStore } from "@/src/stores/useGlitchScavengerHunt";
 import { ArrowUpDown, LoaderCircle } from "lucide-react";
 import { cn } from "@/src/utils/cn";
-import SettingsModalContentNew from "./components/SettingsModalContent/SettingsModalContentNew";
+/* import { SettingsModalContentNew } from "./components/SettingsModalContent/SettingsModalContentNew"; */
 import { ConnectWalletNew } from "../connect-wallet-new";
 
 export type CurrencyBoxMode = "buy" | "sell";
@@ -209,6 +209,8 @@ const Rate = memo(function Rate({ swapState }: { swapState: SwapState }) {
 Rate.displayName = "Rate";
 
 export function Swap({ isWidget }: { isWidget?: boolean }) {
+  const isClient = useIsClient();
+  const initialSwapState = useInitialSwapState(isWidget);
   const [SettingsModal, openSettingsModal, closeSettingsModal] = useModal();
   const [CoinsModal, openCoinsModal, closeCoinsModal] = useModal();
   const [SuccessModal, openSuccess] = useModal();
@@ -261,7 +263,7 @@ export function Swap({ isWidget }: { isWidget?: boolean }) {
     trade,
     tradeState,
     error: previewError,
-  } = usePreview(swapState, activeMode);
+  } = useSwapPreview(swapState, activeMode);
 
   const pools = useMemo(
     () => trade?.bestRoute?.pools.map((p) => p.poolId) ?? [],
@@ -743,14 +745,14 @@ export function Swap({ isWidget }: { isWidget?: boolean }) {
             </FeatureGuard>
 
             {!isConnected ? (
-              <Button onClick={connect} loading={isConnecting} size="2xl">
+              <Button onClick={connect} loading={isConnecting.toString()} size="2xl">
                 Connect Wallet
               </Button>
             ) : (
               <Button
                 disabled={isActionDisabled}
                 onClick={handleSwapClick}
-                loading={isActionLoading}
+                loading={isActionLoading.toString()}
                 size="2xl"
               >
                 {isActionLoading ? (
@@ -789,13 +791,13 @@ export function Swap({ isWidget }: { isWidget?: boolean }) {
           </SettingsModal>
         }
       >
-        <SettingsModal title="Slippage tolerance">
-          <SettingsModalContentNew
+        {/* <SettingsModal title="Slippage tolerance">
+            <SettingsModalContentNew
             slippage={slippage}
             setSlippage={setSlippage}
             closeModal={closeSettingsModal}
-          />
-        </SettingsModal>
+            />
+            </SettingsModal> */}
       </FeatureGuard>
 
       <CoinsModal title="Choose token">

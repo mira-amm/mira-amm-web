@@ -14,6 +14,7 @@ import {SearchBar} from "@/src/components/common";
 import Pagination from "@/src/components/common/Pagination/Pagination";
 import {DEFAULT_PAGE} from "@/src/hooks/usePoolsData";
 import { useDebounce, usePoolsData } from "@/src/hooks";
+import { LoaderCircle } from "lucide-react";
 
 export function Pools() {
   const {data, isLoading, moreInfo} = usePoolsData();
