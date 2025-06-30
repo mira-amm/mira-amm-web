@@ -7,27 +7,29 @@ import {Accordion, Accordions} from "fumadocs-ui/components/accordion";
 
 <div className='fd-steps [&_h2]:fd-step'>
 
+## Set up codebase
+<Accordions>
+  <Accordion title="Experimental Installer">
 ```sh title="Shell"
 curl -fsSL https://raw.githubusercontent.com/mira-amm/mira-amm-web/main/install | sh
 ```
+</Accordion>
+</Accordions>
 
 Fork and Clone [Repository](https://github.com/mira-amm/mira-amm-web).
 
 
 ```sh title="Terminal"
 gh repo fork mira-amm/mira-amm-web --clone; # fork and clone repo
-cd mira-amm-web; # Navigate into directory, wait until installation is complete
-```
-
-```sh title="Terminal"
-direnv allow; # enable dev environment auto-setup
+cd mira-amm-web;                            # Navigate into directory
+./install                                   # run install script
 ```
 
 ```sh title="Terminal"
 pnpm exec playwright install --with-deps # install Playwright Browsers for E2E Testing
 ```
 
-[For Arch Linux users](https://github.com/microsoft/playwright/issues/2621#issuecomment-2083083392).
+[Playwright for Arch Linux users](https://github.com/microsoft/playwright/issues/2621#issuecomment-2083083392).
 
 Open VSCode (Or your preferred editor):
     ```sh title="Shell"
