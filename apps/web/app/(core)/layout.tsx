@@ -30,7 +30,12 @@ export default function Layout({children}: {readonly children: ReactNode}) {
   const glitchScavengerHuntEnabled = useAnimationStore.getState().masterEnabled;
 
   return (
-    <html lang="en" className="dark" suppressHydrationWarning>
+    <html
+      lang="en"
+      className="dark"
+      suppressHydrationWarning
+      style={{colorScheme: "dark"}}
+    >
       <head>
         <link rel="preload" as="image" href="/images/loader.webp" />
       </head>
