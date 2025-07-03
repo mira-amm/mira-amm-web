@@ -1,4 +1,3 @@
-import {ArrowLeft, ArrowRight} from "lucide-react";
 import {clsx} from "clsx";
 import {cn} from "@/src/utils/cn";
 
@@ -46,7 +45,7 @@ export default function Pagination({
     "px-[12px] py-[8px]  text-sm font-medium rounded cursor-pointer transition-colors duration-200 bg-none border border-black bg-background-grey-dark text-black hover:bg-black dark:hover:bg-background-grey-dark hover:text-white dark:text-white";
   const disabledClasses = "opacity-50 cursor-not-allowed text-content-tertiary";
   const navButtonResponsive =
-    "w-[32px] h-[32px] p-0 justify-center items-center sm:w-auto sm:h-auto sm:px-[12px] sm:py-[8px]";
+    "h-[32px] p-0 justify-center items-center sm:w-auto sm:h-auto sm:px-[12px] sm:py-[8px]";
 
   return (
     <div className="flex flex-wrap items-center justify-center gap-[8px] sm:gap-[4px] p-[8px]">
@@ -60,7 +59,6 @@ export default function Pagination({
         onClick={() => onPageChange(currentPage - 1)}
         disabled={currentPage === 1}
       >
-        <ArrowLeft className="sm:hidden" />
         <span className={clsx(buttonBaseClasses)}>Previous</span>
       </button>
 
@@ -91,7 +89,6 @@ export default function Pagination({
         onClick={() => onPageChange(currentPage + 1)}
         disabled={currentPage === totalPages}
       >
-        <ArrowRight className="sm:hidden" />
         <span className={clsx(buttonBaseClasses)}>Next</span>
       </button>
     </div>
