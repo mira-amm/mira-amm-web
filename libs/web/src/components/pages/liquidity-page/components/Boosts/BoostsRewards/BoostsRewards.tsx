@@ -57,7 +57,7 @@ export function BoostsRewards() {
             ) : (
               <>
                 <PointsIcon />
-                <p className="text-[26px] font-normal max-[768px]:text-[20px]">
+                <p className="text-[26px] font-normal max-[768px]:text-[20px] text-white">
                   {pointsRank?.points.toLocaleString(DefaultLocale, {
                     maximumFractionDigits: 0,
                   })}
@@ -81,7 +81,9 @@ export function BoostsRewards() {
             {isLoading ? (
               <Loader color="gray" />
             ) : (
-              <p className="text-[20px] font-normal">{pointsRank?.rank}</p>
+              <p className="text-[20px] font-normal text-white">
+                {pointsRank?.rank}
+              </p>
             )}
           </div>
         </div>
