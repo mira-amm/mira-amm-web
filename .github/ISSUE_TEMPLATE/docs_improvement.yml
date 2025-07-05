@@ -22,7 +22,3 @@ body:
     id: reason
     attributes:
       label: Why is this change important?
-  - type: textarea
-    id: extra
-    attributes:
-      label: Additional context / screenshots

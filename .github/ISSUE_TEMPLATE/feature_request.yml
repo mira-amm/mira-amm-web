@@ -36,7 +36,3 @@ body:
     id: alternatives
     attributes:
       label: Alternatives considered
-  - type: textarea
-    id: extra
-    attributes:
-      label: Additional context / mock-ups

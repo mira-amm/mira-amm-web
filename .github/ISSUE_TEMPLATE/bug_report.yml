@@ -46,13 +46,3 @@ body:
     attributes:
       label: Relevant log output / screenshots
       description: "Paste console logs or attach images (drag & drop)."
-  - type: dropdown
-    id: severity
-    attributes:
-      label: Severity
-      options:
-        - High – blocks core functionality
-        - Medium – major annoyance / wrong data
-        - Low – cosmetic or minor
-    validations:
-      required: true
