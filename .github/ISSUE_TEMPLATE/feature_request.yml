@@ -1,0 +1,42 @@
+name: "✨ Feature / Enhancement request"
+description: "Suggest an idea to make mira-amm-web better"
+title: "[Feat]: <short description>"
+labels: ["enhancement"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thank you for taking the time to propose a feature. Please answer the questions below.
+  - type: textarea
+    id: problem
+    attributes:
+      label: What problem does this solve?
+      description: "Describe the current limitation or user pain."
+      placeholder: "Numeric precision over BN becomes inaccurate for >10^18 values."
+    validations:
+      required: true
+  - type: textarea
+    id: solution
+    attributes:
+      label: Proposed solution
+      placeholder: "Integrate xyz-precision library and refactor Amount.ts."
+    validations:
+      required: true
+  - type: textarea
+    id: acceptance
+    attributes:
+      label: Acceptance criteria
+      description: "Clear, testable goals to consider the feature done."
+      placeholder: |
+        - [ ] Support 64-decimal precision for swaps  
+        - [ ] Unit tests pass with new edge cases
+    validations:
+      required: true
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives considered
+  - type: textarea
+    id: extra
+    attributes:
+      label: Additional context / mock-ups

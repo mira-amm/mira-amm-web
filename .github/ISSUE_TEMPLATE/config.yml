@@ -1,0 +1,5 @@
+blank_issues_enabled: false
+contact_links:
+  - name: 💬 Discussions
+    url: https://github.com/mira-amm/mira-amm-web/discussions
+    about: "Open-ended questions or ideas? Start a discussion instead."

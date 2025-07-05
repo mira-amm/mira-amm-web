@@ -1,0 +1,28 @@
+name: "📚 Documentation update"
+description: "Report missing, outdated, or confusing docs"
+title: "[Docs]: <short description>"
+labels: ["Docs"]
+body:
+  - type: textarea
+    id: location
+    attributes:
+      label: Page or section
+      placeholder: "README > Quick Start > Step 3"
+    validations:
+      required: true
+  - type: textarea
+    id: change
+    attributes:
+      label: Suggested changes
+      placeholder: |
+        The command is `pnpm dev`, not `npm run dev`.
+    validations:
+      required: true
+  - type: textarea
+    id: reason
+    attributes:
+      label: Why is this change important?
+  - type: textarea
+    id: extra
+    attributes:
+      label: Additional context / screenshots
