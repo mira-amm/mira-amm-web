@@ -22,5 +22,5 @@ body:
     attributes:
       label: Definition of done
       placeholder: |
-        - Hook runs on staged files  
+        - Hook runs on staged files
         - README updated with setup instructions

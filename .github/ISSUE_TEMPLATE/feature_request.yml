@@ -28,7 +28,7 @@ body:
       label: Acceptance criteria
       description: "Clear, testable goals to consider the feature done."
       placeholder: |
-        - [ ] Support 64-decimal precision for swaps  
+        - [ ] Support 64-decimal precision for swaps
         - [ ] Unit tests pass with new edge cases
     validations:
       required: true
