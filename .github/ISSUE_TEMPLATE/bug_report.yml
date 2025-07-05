@@ -1,0 +1,48 @@
+name: "🐛 Bug report"
+description: "Report a reproducible problem in mira-amm-web"
+title: "[Bug]: <short description>"
+labels: ["Bug", "Needs triage"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for reporting a bug! Please fill out all required sections so we can reproduce and fix it quickly.
+  - type: input
+    id: env
+    attributes:
+      label: Environment
+      description: "Browser, OS, network (mainnet/testnet), wallet extension versions, etc."
+      placeholder: "e.g. Chrome 126 / macOS 14.2 / Fuel Wallet 0.40.0"
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      description: "Be as precise as possible and include screenshots or screen recordings if helpful."
+      placeholder: |
+        1. Go to 'Add Liquidity'
+        2. Select ETH / USDC
+        3. Set slippage to 0.5 %
+        4. Observe the displayed value
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behavior
+      placeholder: "It should display 0.5 % under Slippage."
+    validations:
+      required: true
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual behavior
+      placeholder: "It displays 0 %."
+    validations:
+      required: true
+  - type: textarea
+    id: logs
+    attributes:
+      label: Relevant log output / screenshots
+      description: "Paste console logs or attach images (drag & drop)."
