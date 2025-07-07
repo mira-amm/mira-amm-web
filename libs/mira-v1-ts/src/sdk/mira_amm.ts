@@ -46,20 +46,20 @@ export class MiraAmm {
     this.account = account;
     this.ammContract = new MiraAmmContract(contractId, account);
     this.addLiquidityScriptLoader = new AddLiquidityScriptLoader(
-      account
+      account,
     ).setConfigurableConstants(contractIdConfigurables);
     this.createPoolAndAddLiquidityScriptLoader =
       new CreatePoolAndAddLiquidityScriptLoader(
-        account
+        account,
       ).setConfigurableConstants(contractIdConfigurables);
     this.removeLiquidityScriptLoader = new RemoveLiquidityScriptLoader(
-      account
+      account,
     ).setConfigurableConstants(contractIdConfigurables);
     this.swapExactInputScriptLoader = new SwapExactInputScriptLoader(
-      account
+      account,
     ).setConfigurableConstants(contractIdConfigurables);
     this.swapExactOutputScriptLoader = new SwapExactOutputScriptLoader(
-      account
+      account,
     ).setConfigurableConstants(contractIdConfigurables);
   }
 
@@ -70,7 +70,7 @@ export class MiraAmm {
       "Deployed MiraAmm contract with status:",
       transactionResult.status,
       "and id:",
-      contract.id.toB256()
+      contract.id.toB256(),
     );
     return new MiraAmm(wallet, contract.id.toB256());
   }
@@ -102,7 +102,7 @@ export class MiraAmm {
         amount0Min,
         amount1Min,
         addressInput(this.account.address),
-        deadline
+        deadline,
       )
       .addContracts([this.ammContract])
       .txParams(txParams ?? {})
@@ -139,7 +139,7 @@ export class MiraAmm {
         tokenASubId,
         tokenBContract,
         tokenBSubId,
-        isStable
+        isStable,
       );
     const [amount0Desired, amount1Desired] =
       tokenAContract === token0Contract
@@ -155,7 +155,7 @@ export class MiraAmm {
         amount0Desired,
         amount1Desired,
         addressInput(this.account.address),
-        deadline
+        deadline,
       )
       .addContracts([this.ammContract])
       .txParams(txParams ?? {})
@@ -194,7 +194,7 @@ export class MiraAmm {
         tokenASubId,
         tokenBContract,
         tokenBSubId,
-        isStable
+        isStable,
       );
     let request = await this.ammContract.functions
       .create_pool(
@@ -202,7 +202,7 @@ export class MiraAmm {
         token0SubId,
         contractIdInput(token1Contract),
         token1SubId,
-        isStable
+        isStable,
       )
       .txParams(txParams ?? {})
       .getTransactionRequest();
@@ -210,7 +210,7 @@ export class MiraAmm {
       request,
       0,
       [],
-      [token0Contract, token1Contract]
+      [token0Contract, token1Contract],
     );
   }
 
@@ -235,7 +235,7 @@ export class MiraAmm {
         amount0Min,
         amount1Min,
         addressInput(this.account.address),
-        deadline
+        deadline,
       )
       .addContracts([this.ammContract])
       .txParams(txParams ?? {})
@@ -266,7 +266,7 @@ export class MiraAmm {
         amountOutMin,
         pools.map(poolIdInput),
         addressInput(this.account.address),
-        deadline
+        deadline,
       )
       .addContracts([this.ammContract])
       .txParams(txParams ?? {})
@@ -297,7 +297,7 @@ export class MiraAmm {
         amountInMax,
         pools.map(poolIdInput),
         addressInput(this.account.address),
-        deadline
+        deadline,
       )
       .addContracts([this.ammContract])
       .txParams(txParams ?? {})
@@ -344,7 +344,7 @@ export class MiraAmm {
   }
 
   private async fundRequest(
-    request: ScriptTransactionRequest
+    request: ScriptTransactionRequest,
   ): Promise<ScriptTransactionRequest> {
     const gasCost = await this.account.getTransactionCost(request);
     return await this.account.fund(request, gasCost);
@@ -354,17 +354,17 @@ export class MiraAmm {
     request: ScriptTransactionRequest,
     variableOutputs: number = 0,
     inputAssets: CoinQuantityLike[] = [],
-    inputContracts: string[] = []
+    inputContracts: string[] = [],
   ): Promise<ScriptTransactionRequest> {
     if (variableOutputs > 0) {
       request.addVariableOutputs(variableOutputs);
     }
     request.addResources(
       // TODO: should not be here
-      await this.account.getResourcesToSpend(inputAssets)
+      await this.account.getResourcesToSpend(inputAssets),
     );
     const uniqueContracts = new Set(
-      inputContracts.map((c) => Address.fromAddressOrString(c))
+      inputContracts.map((c) => Address.fromAddressOrString(c)),
     );
     for (const contract of uniqueContracts) {
       request.addContractInputAndOutput(contract);
