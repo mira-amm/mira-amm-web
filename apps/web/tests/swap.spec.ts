@@ -113,18 +113,23 @@ describe("Swap Routes & Quotes (headless)", () => {
   });
 
   it("fetches a quote for 20 ETH → FUEL", async () => {
-    // headless ETH→FUEL swap-quote test
     const provider = new Provider(NetworkUrl);
     const amm = new ReadonlyMiraAmm(provider);
 
     const ETH = BASE_ASSETS[0];
     const FUEL = BASE_ASSETS[1];
-    const poolId = buildPoolId(ETH, FUEL, false);
 
-    const route = {assetIn: ETH, assetOut: FUEL, pools: [{poolId}]} as Route;
+    const amount = bn(testContext.amount);
+    const poolId = buildPoolId(FUEL, ETH, false);
+
+    const route: Route = {
+      assetIn: {assetId: ETH},
+      assetOut: {assetId: FUEL},
+      pools: [{poolId}],
+    };
 
     const quotes = await getSwapQuotesBatch(
-      bn(testContext.amount),
+      amount,
       TradeType.EXACT_IN,
       [route],
       amm,

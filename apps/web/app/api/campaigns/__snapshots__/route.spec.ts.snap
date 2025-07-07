@@ -1,0 +1,28 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`GET /api/campaigns > response JSON matches snapshot 1`] = `
+[
+  {
+    "epoch": {
+      "endDate": "2025-06-08T00:00:00.000Z",
+      "number": 7,
+      "startDate": "2025-06-01T00:00:00.000Z",
+    },
+    "pool": {
+      "id": "pool-id",
+      "lpToken": "0xabc",
+      "symbols": [
+        "USDC",
+        "FUEL",
+      ],
+    },
+    "rewards": [
+      {
+        "assetId": "0xfee",
+        "dailyAmount": 123,
+      },
+    ],
+    "status": "inprogress",
+  },
+]
+`;
