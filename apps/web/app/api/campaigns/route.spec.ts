@@ -2,58 +2,60 @@ import {describe, it, test, expect, beforeEach, afterEach, vi} from "vitest";
 import {NextRequest} from "next/server";
 import path from "path";
 
-const mockGetCampaigns = vi.fn();
+// Use vi.hoisted to create mocks that can be used in vi.mock factories
+const {
+  mockGetCampaigns,
+  MockJSONEpochConfigService,
+  MockSentioJSONCampaignService,
+} = vi.hoisted(() => {
+  const mockGetCampaigns = vi.fn();
+  const MockJSONEpochConfigService = vi.fn().mockImplementation(() => ({}));
+  const MockSentioJSONCampaignService = vi.fn().mockImplementation(() => ({
+    getCampaigns: mockGetCampaigns,
+  }));
 
-vi.mock("@/src/models/campaigns/Campaign", () => {
   return {
-    SentioJSONCampaignService: class {
-      constructor(
-        public apiUrl: string,
-        public apiKey: string,
-        public epochConfigService: unknown,
-      ) {}
-      getCampaigns = mockGetCampaigns;
-    },
+    mockGetCampaigns,
+    MockJSONEpochConfigService,
+    MockSentioJSONCampaignService,
   };
 });
 
-vi.mock("@/src/models/campaigns/JSONEpochConfigService", () => {
-  return {
-    JSONEpochConfigService: class {
-      constructor(public configPath: string) {}
-    },
-  };
-});
+// Mock the modules BEFORE importing the route
+vi.mock("@/src/models/campaigns/Campaign", () => ({
+  SentioJSONCampaignService: MockSentioJSONCampaignService,
+}));
+
+vi.mock("@/src/models/campaigns/JSONEpochConfigService", () => ({
+  JSONEpochConfigService: MockJSONEpochConfigService,
+}));
 
 vi.stubEnv("SENTIO_API_KEY", "fake-key");
 vi.stubEnv("SENTIO_API_URL", "https://fake.api");
-
-import {GET} from "./route";
 
 const EXPECTED_CACHE_CONTROL =
   "public, max-age=300, stale-while-revalidate=150";
 const EXPECTED_CONTENT_TYPE = "application/json";
 
 describe("GET /api/campaigns", () => {
-  beforeEach(() => {
+  let GET: typeof import("./route").GET;
+
+  beforeEach(async () => {
     vi.clearAllMocks();
-  });
-  afterEach(() => {
-    vi.restoreAllMocks();
+    vi.resetModules(); // ensure a clean slate for every test
+    const routeModule = await import("./route");
+    GET = routeModule.GET;
   });
 
   it("instantiates JSONEpochConfigService with the correct path", () => {
-    const {
-      JSONEpochConfigService,
-    } = require("@/src/models/campaigns/JSONEpochConfigService");
-    expect(JSONEpochConfigService).toHaveBeenCalledOnce();
+    expect(MockJSONEpochConfigService).toHaveBeenCalledOnce();
     const expectedPath = path.join(
       process.cwd(),
       "../../libs/web/src",
       "models",
       "campaigns.json",
     );
-    expect(JSONEpochConfigService).toHaveBeenCalledWith(expectedPath);
+    expect(MockJSONEpochConfigService).toHaveBeenCalledWith(expectedPath);
   });
 
   it("returns 200 and calls getCampaigns() with no filters when no query params", async () => {
@@ -154,11 +156,14 @@ describe("GET /api/campaigns", () => {
 
     const req = new NextRequest("https://example.com/api/campaigns");
     vi.useFakeTimers();
-    const promise = GET(req);
-    vi.advanceTimersByTime(500);
-    const res = await promise;
-    expect(res.status).toBe(200);
-    expect(await res.json()).toEqual(delayedResult);
-    vi.useRealTimers();
+    try {
+      const promise = GET(req);
+      vi.advanceTimersByTime(500);
+      const res = await promise;
+      expect(res.status).toBe(200);
+      expect(await res.json()).toEqual(delayedResult);
+    } finally {
+      vi.useRealTimers();
+    }
   });
 });

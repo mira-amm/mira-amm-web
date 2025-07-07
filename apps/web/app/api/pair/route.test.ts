@@ -10,17 +10,29 @@ import {
 } from "vitest";
 import {NextRequest} from "next/server";
 import {NotFoundError} from "../../../../../libs/web/src/utils/errors";
+
+// Mock graphql-request module
+vi.mock("graphql-request", () => ({
+  request: vi.fn(),
+  gql: vi.fn((strings: TemplateStringsArray, ...values: any[]) => {
+    // Handle template literal properly
+    return strings
+      .reduce((result, string, i) => {
+        return result + string + (values[i] || "");
+      }, "")
+      .trim();
+  }),
+}));
+
+// Import the mocked functions after mocking
+import {request, gql} from "graphql-request";
 import {fetchPoolById, createPairFromPool, GET} from "./route";
 
+// Cast to mocked functions for better type safety
+const mockRequest = vi.mocked(request);
+const mockGql = vi.mocked(gql);
+
 const INDEXER_URL = "https://mira-dex.squids.live/mira-indexer@v3/api/graphql";
-
-const mockRequest = vi.fn();
-const mockGql = vi.fn((q: string) => q.trim());
-
-vi.mock("graphql-request", () => ({
-  request: mockRequest,
-  gql: mockGql,
-}));
 
 const poolId = "pool-xyz";
 const rawPool = {
