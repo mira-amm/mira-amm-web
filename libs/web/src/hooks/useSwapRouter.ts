@@ -1,5 +1,4 @@
 import {useMemo} from "react";
-import {useQuery} from "@tanstack/react-query";
 import {type BN, bn} from "fuels";
 import {
   getSwapQuotesBatch,
@@ -9,6 +8,7 @@ import {
 import {useReadonlyMira} from ".";
 import {type Route, useRoutablePools} from "@/src/hooks";
 import {CoinData} from "../utils/coinsConfig";
+import {useQuery} from "@tanstack/react-query";
 
 export enum TradeState {
   LOADING,
@@ -67,7 +67,7 @@ export function useSwapRouter(
         : Promise.resolve([]),
 
     staleTime: 0,
-    cacheTime: 0,
+    gcTime: 0,
     refetchOnWindowFocus: true,
     refetchOnMount: true,
     enabled: shouldFetch,
@@ -87,6 +87,7 @@ export function useSwapRouter(
     if (!quotes.length) {
       return {
         tradeState: TradeState.NO_ROUTE_FOUND,
+        error: null,
       };
     }
 
