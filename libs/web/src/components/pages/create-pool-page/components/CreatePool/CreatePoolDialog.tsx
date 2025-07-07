@@ -323,7 +323,7 @@ export function CreatePoolDialog({setPreviewData}: {
         </div>
       )}
       {!isConnected ? (
-        <Button variant="secondary" onClick={connect} loading={isConnecting}>
+        <Button variant="secondary" onClick={connect} disabled={isConnecting}>
           Connect Wallet
         </Button>
       ) : (

@@ -13,7 +13,7 @@ import {
 } from "lucide-react";
 import {useWeb3Connection, useFormattedAddress} from "@/src/hooks";
 import {useEffect, useRef, useState} from "react";
-import { TransactionsHistory } from "./TransactionsHistory/TransactionsHistory";
+import {TransactionsHistory} from "./TransactionsHistory/TransactionsHistory";
 import {FuelAppUrl} from "@/src/utils/constants";
 import {openNewTab} from "@/src/utils/common";
 import {CopyNotification} from "./copy-notification";
@@ -100,7 +100,7 @@ export function ConnectWalletNew() {
                 <div className="h-2 w-5 bg-accent-primary"></div>
               </div>
               <Button
-                onClick={disconnect}
+                onClick={() => disconnect()}
                 size="xs"
                 className="rounded uppercase px-4 text-black"
                 variant="destructive"
@@ -142,7 +142,7 @@ export function ConnectWalletNew() {
                 </DropdownMenuItem>
                 <DropdownMenuItem
                   className="hover:bg-background-grey-dark hover:text-content-primary py-3 cursor-pointer"
-                  onClick={disconnect}
+                  onClick={() => disconnect()}
                 >
                   <LogOutIcon />
                   Disconnect

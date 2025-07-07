@@ -1,10 +1,6 @@
-"use client"
+"use client";
 
-import {
-  useEffect,
-  useRef,
-  useState
-} from "react";
+import {useEffect, useRef, useState} from "react";
 
 import {
   ArrowLeftRight,
@@ -23,10 +19,7 @@ import {
 import {Button} from "@/meshwave-ui/Button";
 
 import {useFormattedAddress, useWeb3Connection} from "@/src/hooks";
-import {
-  CopyNotification,
-  TransactionsHistory
-} from "@/src/components/common";
+import {CopyNotification, TransactionsHistory} from "@/src/components/common";
 import {FuelAppUrl} from "@/src/utils/constants";
 import {openNewTab} from "@/src/utils/common";
 
@@ -123,7 +116,7 @@ export function ConnectWallet() {
             </DropdownMenuItem>
             <DropdownMenuItem
               className="hover:bg-background-grey-dark hover:text-content-primary py-3 cursor-pointer"
-              onClick={disconnect}
+              onClick={() => disconnect()}
             >
               <LogOutIcon />
               Disconnect

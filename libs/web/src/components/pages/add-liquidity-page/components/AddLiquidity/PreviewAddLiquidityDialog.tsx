@@ -111,7 +111,7 @@ export default function PreviewAddLiquidityDialog({
           </div>
         </div>
 
-        <Button loading={isPending} onClick={handleAddLiquidity}>
+        <Button disabled={isPending} onClick={handleAddLiquidity}>
           Add Liquidity
         </Button>
 

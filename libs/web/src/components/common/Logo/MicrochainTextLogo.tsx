@@ -1,6 +1,8 @@
-import {ColorProps} from "../SvgPropTypes";
-
-const MicrochainTextLogo = ({primaryColor = "#fff"}: ColorProps) => {
+const MicrochainTextLogo = ({
+  primaryColor = "#fff",
+}: {
+  primaryColor?: string;
+}) => {
   return (
     <svg
       width="180"
