@@ -58,4 +58,9 @@ export default defineConfig({
       },
     },
   },
+  resolve: {
+    alias: {
+      "mira-dex-ts": path.resolve(__dirname, "../mira-v1-ts/src/index.ts"),
+    },
+  },
 });
