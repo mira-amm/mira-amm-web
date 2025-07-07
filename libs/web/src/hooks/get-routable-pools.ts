@@ -1,6 +1,7 @@
 import {buildPoolId, PoolId} from "mira-dex-ts";
 import {CoinData} from "../utils/coinsConfig";
-import type {Pool, Route} from "./useGetPoolsWithReserve";
+import type {Route} from "./useGetPoolsWithReserve";
+import type {Pool} from "./get-pools-with-reserve";
 
 // Check if a given pool involves the specified asset
 function involvesAssetInPool(pool: Pool, asset: CoinData): boolean {

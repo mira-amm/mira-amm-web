@@ -116,7 +116,7 @@ export function ConnectWallet() {
             </DropdownMenuItem>
             <DropdownMenuItem
               className="hover:bg-background-grey-dark hover:text-content-primary py-3 cursor-pointer"
-              onClick={disconnect}
+              onClick={() => disconnect()}
             >
               <LogOutIcon />
               Disconnect

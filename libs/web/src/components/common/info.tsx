@@ -2,6 +2,13 @@
 
 import {CircleHelp} from "lucide-react";
 import {useEffect, useRef} from "react";
+import {CSSProperties} from "react";
+
+// Extend CSSProperties to include anchor positioning properties
+interface ExtendedCSSProperties extends CSSProperties {
+  anchorName?: string;
+  positionAnchor?: string;
+}
 
 export function Info({
   tooltipText,
@@ -44,7 +51,7 @@ export function Info({
         id={buttonId}
         ref={buttonRef}
         className="w-4 h-4 p-0 border-none bg-transparent cursor-pointer text-content-grey-dark hover:text-content-grey active:text-content-dimmed-dark"
-        style={{anchorName: `--${buttonId}`}}
+        style={{anchorName: `--${buttonId}`} as ExtendedCSSProperties}
       >
         <CircleHelp color={color} className="size-4" />
       </button>
@@ -53,12 +60,14 @@ export function Info({
         id={tooltipId}
         ref={tooltipRef}
         className="fixed max-w-[200px] text-sm leading-4 font-normal p-2 rounded-lg bg-background-secondary text-black dark:text-content-dimmed-dark z-[1000] invisible transition-opacity duration-200 ease-in-out"
-        style={{
-          positionAnchor: `--${buttonId}`,
-          top: "anchor(50%)",
-          left: "anchor(50%)",
-          color: color,
-        }}
+        style={
+          {
+            positionAnchor: `--${buttonId}`,
+            top: "anchor(50%)",
+            left: "anchor(50%)",
+            color: color,
+          } as ExtendedCSSProperties
+        }
       >
         {tooltipText}
       </div>

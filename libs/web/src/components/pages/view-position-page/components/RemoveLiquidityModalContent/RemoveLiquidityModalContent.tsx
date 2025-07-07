@@ -135,7 +135,7 @@ const RemoveLiquidityModalContent = ({
           </TableRow>
         </TableHeader>
         <TableBody>
-          <TableRow clasName="border-none">
+          <TableRow className="border-none">
             <TableCell className="py-4">Current position</TableCell>
             <TableCell className="py-4">{currentCoinAValue}</TableCell>
             <TableCell className="text-right py-4">
@@ -174,8 +174,7 @@ const RemoveLiquidityModalContent = ({
         </Button>
         <Button
           onClick={handleRemoveLiquidity}
-          disabled={withdrawalDisabled}
-          loading={isLoading}
+          disabled={withdrawalDisabled || isLoading}
           block
         >
           {buttonTitle}

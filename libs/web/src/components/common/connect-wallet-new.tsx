@@ -100,7 +100,7 @@ export function ConnectWalletNew() {
                 <div className="h-2 w-5 bg-accent-primary shadow-[0_0_10px_#01ec97,0_0_20px_#01ec97aa]"></div>
               </div>
               <Button
-                onClick={disconnect}
+                onClick={() => disconnect()}
                 size="xs"
                 className="bg-[#F95465] rounded uppercase px-4 text-black"
                 variant="destructive"
@@ -142,7 +142,7 @@ export function ConnectWalletNew() {
                 </DropdownMenuItem>
                 <DropdownMenuItem
                   className="hover:bg-background-grey-dark hover:text-content-primary py-3 cursor-pointer"
-                  onClick={disconnect}
+                  onClick={() => disconnect()}
                 >
                   <LogOutIcon />
                   Disconnect

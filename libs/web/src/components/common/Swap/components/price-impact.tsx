@@ -2,8 +2,8 @@ import {FC} from "react";
 import {cn} from "@/src/utils/cn";
 
 const getPriceImpact = (
-  reservesPrice?: number | unknown,
-  previewPrice?: number
+  reservesPrice?: number,
+  previewPrice?: number,
 ): number => {
   if (!reservesPrice || previewPrice === undefined) return -1;
   if (reservesPrice <= previewPrice) return 0;
@@ -14,7 +14,7 @@ const getPriceImpact = (
 };
 
 export const PriceImpact: FC<{
-  reservesPrice?: number | unknown;
+  reservesPrice?: number;
   previewPrice?: number;
   showWarning?: boolean;
 }> = ({reservesPrice, previewPrice, showWarning = false}) => {

@@ -338,7 +338,7 @@ const AddLiquidityDialog = ({
       {!isConnected ? (
         <Button
           onClick={connect}
-          loading={isConnecting}
+          disabled={isConnecting}
           variant="secondary"
           size="lg"
         >

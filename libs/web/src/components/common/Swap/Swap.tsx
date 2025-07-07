@@ -100,7 +100,7 @@ const PreviewSummary = memo(function PreviewSummary({
 }: {
   previewLoading: boolean;
   tradeState: TradeState;
-  exchangeRate: string | undefined;
+  exchangeRate: string | null;
   pools: PoolId[];
   feeValue: string;
   sellMetadataSymbol: string;
@@ -124,7 +124,7 @@ const PreviewSummary = memo(function PreviewSummary({
       <div className="flex justify-between">
         <p className="text-sm">Routing:</p>
         <div className="flex flex-wrap items-center gap-1">
-          {previewLoading || tradeState === TradeState.REEFETCHING ? (
+          {previewLoading || tradeState === TradeState.REFETCHING ? (
             <Loader color="gray" />
           ) : (
             pools.map((pool, i) => (
@@ -142,7 +142,7 @@ const PreviewSummary = memo(function PreviewSummary({
 
       <div className="flex justify-between">
         <p className="text-sm">Estimated fees:</p>
-        {previewLoading || tradeState === TradeState.REEFETCHING ? (
+        {previewLoading || tradeState === TradeState.REFETCHING ? (
           <Loader color="gray" />
         ) : (
           <p className="text-sm">
@@ -467,7 +467,13 @@ export function Swap({isWidget}: {isWidget?: boolean}) {
     try {
       const data = await fetchTxCost();
       setTxCostData(data);
-      setTxCost(data?.txCost.gasPrice.toNumber() / 10 ** 9 || null);
+      
+      if (data?.txCost?.gasPrice) {
+        setTxCost(data.txCost.gasPrice.toNumber() / 10 ** 9);
+      } else {
+        setTxCost(null);
+      }
+      
       setCustomErrorTitle("");
     } catch {
       setCustomErrorTitle("Review failed, please try again");
@@ -686,6 +692,65 @@ export function Swap({isWidget}: {isWidget?: boolean}) {
               slippage={slippage}
               openSettingsModal={openSettingsModal}
             />
+
+            <div className={lineSplitterClasses}>
+              <IconButton
+                className="group absolute top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2 w-8 h-8 flex justify-center items-center rounded-full dark:bg-background-primary dark:text-content-grey hover:text-content-primary bg-background-primary p-2"
+                onClick={swapAssets}
+              >
+                <ArrowUpDown className="transition-transform duration-300 group-hover:rotate-180 text-white dark:text-content-dimmed-dark" />
+              </IconButton>
+            </div>
+
+            <CurrencyBox
+              value={buyValue}
+              assetId={swapState.buy.assetId}
+              mode="buy"
+              balance={buyBalance}
+              setAmount={setAmount("buy")}
+              loading={outputPreviewLoading || swapPending}
+              onCoinSelectorClick={handleCoinSelectorClick}
+              usdRate={buyAssetPrice.price}
+              className={isWidget ? currencyBoxWidgetBg : undefined}
+            />
+
+            {review && (
+              <PreviewSummary
+                previewLoading={previewLoading}
+                tradeState={tradeState}
+                exchangeRate={exchangeRate}
+                pools={pools}
+                feeValue={feeValue}
+                sellMetadataSymbol={sellMetadata.symbol ?? ""}
+                txCost={txCost}
+                txCostPending={txCostPending}
+                createPoolKeyFn={createPoolKey}
+                reservesPrice={reservesPrice}
+                previewPrice={previewPrice}
+              />
+            )}
+
+            <FeatureGuard>
+              <Rate swapState={swapState} />
+            </FeatureGuard>
+
+            {!isConnected ? (
+              <Button onClick={connect} disabled={isConnecting} size="2xl">
+                Connect Wallet
+              </Button>
+            ) : (
+              <Button
+                disabled={isActionDisabled}
+                onClick={handleSwapClick}
+                size="2xl"
+              >
+                {isActionLoading ? (
+                  <LoaderCircle className="animate-spin size-4" />
+                ) : (
+                  swapButtonTitle
+                )}
+              </Button>
+            )}
           </div>
 
           <CurrencyBox

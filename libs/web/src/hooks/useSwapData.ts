@@ -1,8 +1,8 @@
 import {useMemo} from "react";
-import {AssetIdInput} from "mira-dex-ts";
 
 import {SwapState} from "@/src/components/common/Swap/Swap";
 import {useAssetMetadata} from "@/src/hooks";
+import {AssetIdInput} from "libs/mira-v1-ts/src/sdk/typegen/contracts/MiraAmmContract";
 
 export function useSwapData(swapState: SwapState): {
   sellAssetId: string;

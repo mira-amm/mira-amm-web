@@ -31,9 +31,6 @@ const buttonVariants = cva(
       block: {
         true: "w-full",
       },
-      disabled: {
-        true: "bg-background-secondary border-background-secondary border-black dark:text-content-dimmed-dark text-content-tertiary shadow-none hover:bg-background-secondary",
-      },
     },
     defaultVariants: {
       variant: "default",
@@ -41,6 +38,10 @@ const buttonVariants = cva(
     },
   }
 );
+
+// Create a separate variant for disabled styles
+const disabledStyles =
+  "bg-background-secondary border-background-secondary border-black dark:text-content-dimmed-dark text-content-tertiary shadow-none hover:bg-background-secondary";
 
 export interface ButtonProps
   extends React.ButtonHTMLAttributes<HTMLButtonElement>,
@@ -57,7 +58,9 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     return (
       <Comp
         className={cn(
-          buttonVariants({variant, size, block, disabled, className})
+          buttonVariants({variant, size, block}),
+          disabled && disabledStyles,
+          className,
         )}
         disabled={disabled}
         ref={ref}

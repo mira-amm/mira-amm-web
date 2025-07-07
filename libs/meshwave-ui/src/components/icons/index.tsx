@@ -829,7 +829,7 @@ export function OttersecIcon() {
   );
 }
 
-export function PointsIcon() {
+export function PointsIcon({className}: {className?: string}) {
   return (
     <svg
       width="20"
@@ -837,6 +837,7 @@ export function PointsIcon() {
       viewBox="0 0 20 20"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
+      className={className}
     >
       {/* Circle background */}
       <rect width="20" height="20" rx="10" fill="white" fillOpacity="0.4" />

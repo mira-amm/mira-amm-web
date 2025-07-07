@@ -79,7 +79,7 @@ export const ConfirmPopup: React.FC<{
             className="h-[48px]"
             variant="outline"
             onClick={onDeny}
-            loading={disconnectIsPending}
+            disabled={disconnectIsPending}
             block
           >
             Deny and Disconnect

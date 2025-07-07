@@ -78,7 +78,7 @@ const PreviewCreatePoolDialog = ({
         </div>
       </div>
 
-      <Button loading={isPoolCreationPending} onClick={handleCreateLiquidity}>
+      <Button disabled={isPoolCreationPending} onClick={handleCreateLiquidity}>
         Create pool
       </Button>
 
