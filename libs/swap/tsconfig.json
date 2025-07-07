@@ -1,31 +1,11 @@
 {
   "extends": "../../tsconfig.base.json",
   "compilerOptions": {
-    "types": ["jest"],
-    "lib": ["dom", "dom.iterable", "esnext"],
-    "allowJs": true,
-    "skipLibCheck": true,
+    "jsx": "react-jsx",
+    "allowJs": false,
+    "esModuleInterop": false,
+    "allowSyntheticDefaultImports": true,
     "strict": true,
-    "noEmit": true,
-    "esModuleInterop": true,
-    "module": "esnext",
-    "moduleResolution": "node",
-    "resolveJsonModule": true,
-    "isolatedModules": true,
-    "jsx": "preserve",
-    "incremental": true,
-    "target": "ES2017",
-    "plugins": [
-      {
-        "name": "next"
-      }
-    ]
-  },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
-  "exclude": ["node_modules"],
-  "references": [
-    {
-      "path": "../../libs/mira-v1-ts"
-    }
-  ]
+    "resolveJsonModule": true
+  }
 }
