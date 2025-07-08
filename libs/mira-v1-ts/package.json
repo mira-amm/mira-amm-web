@@ -8,8 +8,5 @@
   "types": "dist/index.d.ts",
   "files": [
     "dist"
-  ],
-  "peerDependencies": {
-    "fuels": "^0.100.3"
-  }
+  ]
 }

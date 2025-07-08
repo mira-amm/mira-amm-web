@@ -14,7 +14,6 @@ onlyBuiltDependencies:
   - '@tailwindcss/oxide'
   - bigint-buffer
   - bufferutil
-  - core-js
   - core-js-pure
   - esbuild
   - keccak

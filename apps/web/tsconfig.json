@@ -47,9 +47,6 @@
   ],
   "references": [
     {
-      "path": "../../libs/mira-v1-ts"
-    },
-    {
       "path": "./tsconfig.spec.json"
     }
   ]

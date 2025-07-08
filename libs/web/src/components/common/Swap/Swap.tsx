@@ -4,6 +4,7 @@ import {useCallback, useEffect, useMemo, useRef, useState, memo} from "react";
 
 import {
   B256Address,
+  BN,
   bn,
   ScriptTransactionRequest,
   TransactionCost,
@@ -216,7 +217,7 @@ export function Swap({isWidget}: {isWidget?: boolean}) {
   const [slippageMode, setSlippageMode] = useState<SlippageMode>("auto");
   const [txCostData, setTxCostData] = useState<{
     tx: ScriptTransactionRequest;
-    txCost: TransactionCost;
+    txCost: BN;
   }>();
   const [txCost, setTxCost] = useState<number | null>(null);
   const [swapButtonTitle, setSwapButtonTitle] = useState<string>("Review");
@@ -467,13 +468,13 @@ export function Swap({isWidget}: {isWidget?: boolean}) {
     try {
       const data = await fetchTxCost();
       setTxCostData(data);
-      
-      if (data?.txCost?.gasPrice) {
-        setTxCost(data.txCost.gasPrice.toNumber() / 10 ** 9);
+
+      if (data?.txCost) {
+        setTxCost(data.txCost.toNumber() / 10 ** 9);
       } else {
         setTxCost(null);
       }
-      
+
       setCustomErrorTitle("");
     } catch {
       setCustomErrorTitle("Review failed, please try again");
@@ -692,65 +693,6 @@ export function Swap({isWidget}: {isWidget?: boolean}) {
               slippage={slippage}
               openSettingsModal={openSettingsModal}
             />
-
-            <div className={lineSplitterClasses}>
-              <IconButton
-                className="group absolute top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2 w-8 h-8 flex justify-center items-center rounded-full dark:bg-background-primary dark:text-content-grey hover:text-content-primary bg-background-primary p-2"
-                onClick={swapAssets}
-              >
-                <ArrowUpDown className="transition-transform duration-300 group-hover:rotate-180 text-white dark:text-content-dimmed-dark" />
-              </IconButton>
-            </div>
-
-            <CurrencyBox
-              value={buyValue}
-              assetId={swapState.buy.assetId}
-              mode="buy"
-              balance={buyBalance}
-              setAmount={setAmount("buy")}
-              loading={outputPreviewLoading || swapPending}
-              onCoinSelectorClick={handleCoinSelectorClick}
-              usdRate={buyAssetPrice.price}
-              className={isWidget ? currencyBoxWidgetBg : undefined}
-            />
-
-            {review && (
-              <PreviewSummary
-                previewLoading={previewLoading}
-                tradeState={tradeState}
-                exchangeRate={exchangeRate}
-                pools={pools}
-                feeValue={feeValue}
-                sellMetadataSymbol={sellMetadata.symbol ?? ""}
-                txCost={txCost}
-                txCostPending={txCostPending}
-                createPoolKeyFn={createPoolKey}
-                reservesPrice={reservesPrice}
-                previewPrice={previewPrice}
-              />
-            )}
-
-            <FeatureGuard>
-              <Rate swapState={swapState} />
-            </FeatureGuard>
-
-            {!isConnected ? (
-              <Button onClick={connect} disabled={isConnecting} size="2xl">
-                Connect Wallet
-              </Button>
-            ) : (
-              <Button
-                disabled={isActionDisabled}
-                onClick={handleSwapClick}
-                size="2xl"
-              >
-                {isActionLoading ? (
-                  <LoaderCircle className="animate-spin size-4" />
-                ) : (
-                  swapButtonTitle
-                )}
-              </Button>
-            )}
           </div>
 
           <CurrencyBox
@@ -793,7 +735,7 @@ export function Swap({isWidget}: {isWidget?: boolean}) {
               exchangeRate={exchangeRate}
               pools={pools}
               feeValue={feeValue}
-              sellMetadataSymbol={sellMetadata.symbol}
+              sellMetadataSymbol={sellMetadata.symbol ?? ""}
               txCost={txCost}
               txCostPending={txCostPending}
               createPoolKeyFn={createPoolKey}
@@ -807,18 +749,13 @@ export function Swap({isWidget}: {isWidget?: boolean}) {
           </FeatureGuard>
 
           {!isConnected ? (
-            <Button
-              onClick={connect}
-              loading={isConnecting.toString()}
-              size="2xl"
-            >
+            <Button onClick={connect} disabled={isConnecting} size="2xl">
               Connect Wallet
             </Button>
           ) : (
             <Button
               disabled={isActionDisabled}
               onClick={handleSwapClick}
-              loading={isActionLoading.toString()}
               size="2xl"
             >
               {isActionLoading ? (
