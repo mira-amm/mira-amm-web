@@ -8,7 +8,7 @@
     "declarationMap": true,
     "sourceMap": true,
     "rootDir": "./src",
-    "outDir": "../../dist/out-tsc/libs/mira-dex-ts",
+    "outDir": "dist",
     "composite": true,
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,

@@ -2,20 +2,18 @@ packages:
   - apps/*
   - libs/*
   - libs/**
-
 linkWorkspacePackages: true
 onlyBuiltDependencies:
-  - "@apollo/protobufjs"
-  - "@compodoc/compodoc"
-  - "@nestjs/core"
-  - "@parcel/watcher"
-  - "@scarf/scarf"
-  - "@sentry/cli"
-  - "@swc/core"
-  - "@tailwindcss/oxide"
+  - '@apollo/protobufjs'
+  - '@compodoc/compodoc'
+  - '@nestjs/core'
+  - '@parcel/watcher'
+  - '@scarf/scarf'
+  - '@sentry/cli'
+  - '@swc/core'
+  - '@tailwindcss/oxide'
   - bigint-buffer
   - bufferutil
-  - core-js
   - core-js-pure
   - esbuild
   - keccak
