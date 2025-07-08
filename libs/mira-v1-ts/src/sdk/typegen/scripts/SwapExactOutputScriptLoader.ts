@@ -5,7 +5,7 @@
 /* eslint-disable @typescript-eslint/consistent-type-imports */
 
 /*
-  Fuels version: 0.96.1
+  Fuels version: 0.101.2
 */
 
 import {
@@ -13,7 +13,7 @@ import {
   BigNumberish,
   BN,
   decompressBytecode,
-  Script,
+  Script as __Script,
   StrSlice,
 } from "fuels";
 
@@ -35,17 +35,17 @@ export type AssetIdOutput = AssetIdInput;
 export type ContractIdInput = {bits: string};
 export type ContractIdOutput = ContractIdInput;
 
-export type SwapExactInputScriptLoaderInputs = [
-  amount_in: BigNumberish,
-  asset_in: AssetIdInput,
-  amount_out_min: BigNumberish,
+export type SwapExactOutputScriptLoaderInputs = [
+  amount_out: BigNumberish,
+  asset_out: AssetIdInput,
+  amount_in_max: BigNumberish,
   pools: Vec<[AssetIdInput, AssetIdInput, boolean]>,
   recipient: IdentityInput,
   deadline: BigNumberish,
 ];
-export type SwapExactInputScriptLoaderOutput = Vec<[BN, AssetIdOutput]>;
+export type SwapExactOutputScriptLoaderOutput = Vec<[BN, AssetIdOutput]>;
 
-export type SwapExactInputScriptLoaderConfigurables = Partial<{
+export type SwapExactOutputScriptLoaderConfigurables = Partial<{
   AMM_CONTRACT_ID: ContractIdInput;
 }>;
 
@@ -255,17 +255,17 @@ const abi = {
     {
       inputs: [
         {
-          name: "amount_in",
+          name: "amount_out",
           concreteTypeId:
             "1506e6f44c1d6291cdf46395a8e573276a4fa79e8ace3fc891e092ef32d1b0a0",
         },
         {
-          name: "asset_in",
+          name: "asset_out",
           concreteTypeId:
             "c0710b6731b1dd59799cf6bef33eee3b3b04a2e40e80a0724090215bbf2ca974",
         },
         {
-          name: "amount_out_min",
+          name: "amount_in_max",
           concreteTypeId:
             "1506e6f44c1d6291cdf46395a8e573276a4fa79e8ace3fc891e092ef32d1b0a0",
         },
@@ -309,13 +309,13 @@ const abi = {
   ],
 };
 
-const bytecode = decompressBytecode(
-  "H4sIAAAAAAAAA5NyMGAIcGQwkHIJYNjlycBg5MDSCOQrxALZQJoDyG9ScBVmCHIVYPFyYWDgOqfMztL5bF35lcl9Vlfsy6zk0gI08sqdZm+uiFFZfu8EAxgwzYDQ+MF/IHBJTUzJycxLVShILC5OTWEIyi8tSS2yUvD0C3P08XSJD3AM8QCpTUtNLSbGzIL8/Jz43NSSxJTEkkQgPwDIV8jLL1EoKEotTs0r8cwrLk1Ly0zOBLIVgHYVlJYoJObml+aVQPQXlycWwNwGAmfAgIEJwmNg7FE9bdbmpjcLyicEGHFJ8D7Ytnl5CkH9zPil1QUgtO0UKD0HSq+B0FZHILTlAQhtkAChtRZA6QaoOVCXqN6B0II7oDTUPMEcKA2OCyCtAqEFvkDpECitAaH5oeL8FyA07xko7QOhefZAaaj9PFBzeaD6eXggNPcbCM31AEJzguOGgYED6l/2K1DaAkKz9UBpqP1sUPtZofaz2QAAT+4ohvACAAA="
-);
+const bytecode = decompressBytecode('H4sIAAAAAAAAA5NyMGAIcGQwkHIJYNjlycBg5MDSCOQrxALZQJoDyG9ScBVmCHIVYPFyYWBwSq/euVdsBd8z59qYxeUau9U4+VfE7b25+Kygwpcnl6xLGMCAqQNC4wf/gcAlNTElJzMvVaEgsbg4NYUhKL+0JLXISsHTL8zRx9MlPsAxxAOkNi01tZgYMwvy83Pic1NLElMSSxKB/AAgXyEvv0ShoCi1ODUP6j5cQF3AtSI5NTUlMy9dITOvoLREITE3vxSkq7g8sQDmZhA4AwYMTBAeA2OP6mmzNje9WVA+IcCIS4L3wbbNy1MI6meGUPbAGAHTPlA6BkLbQP1pPQFCG16B0DosEFr7CYTWmAHzN4SWnwKhBZZAaWg8CkRAaRMoDVXP/wBK20BpqDjfHSi9A0LzbIHSUP3cUPdwa0Borg9Q+gKUhqrngrqHE6qPE0IxcELdxXEEQrND7WdLgNCsC6A0CwDJwp/j4AIAAA==');
 
-export class SwapExactInputScriptLoader extends Script<
-  SwapExactInputScriptLoaderInputs,
-  SwapExactInputScriptLoaderOutput
+export class SwapExactOutputScriptLoader extends __Script<SwapExactOutputScriptLoaderInputs, SwapExactOutputScriptLoaderOutput> {
+
+export class SwapExactOutputScriptLoader extends Script<
+  SwapExactOutputScriptLoaderInputs,
+  SwapExactOutputScriptLoaderOutput
 > {
   static readonly abi = abi;
   static readonly bytecode = bytecode;

@@ -17,7 +17,7 @@ import {
   SwapExactInputScriptLoader,
   SwapExactOutputScriptLoader,
 } from "./typegen";
-import {MiraAmmContract} from "./typegen/MiraAmmContract";
+import {MiraAmmContract, MiraAmmContractFactory} from "./typegen";
 import {PoolId} from "./model";
 import {
   addressInput,
@@ -29,7 +29,6 @@ import {
   reorderAssetContracts,
   reorderPoolId,
 } from "./utils";
-import {MiraAmmContractFactory} from "./typegen/MiraAmmContractFactory";
 
 import {hexlify, bn} from "fuels";
 

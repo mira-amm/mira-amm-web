@@ -5,7 +5,7 @@
 /* eslint-disable @typescript-eslint/consistent-type-imports */
 
 /*
-  Fuels version: 0.96.1
+  Fuels version: 0.101.2
 */
 
 import {
@@ -13,7 +13,7 @@ import {
   BigNumberish,
   BN,
   decompressBytecode,
-  Script,
+  Script as __Script,
   StrSlice,
 } from "fuels";
 
@@ -240,9 +240,9 @@ const abi = {
   ],
 };
 
-const bytecode = decompressBytecode(
-  "H4sIAAAAAAAAA5NyMGAIcGQwkHIJYNjlycBg5MDSCOQrxALZQJoDyG9ScBVmCHIVYPFyYWAoK/60Zs5Wn8siNfY5BpX2Lh5LPWKWi34+9mbBCYuzZfYWDBBwAErjBf+BwCU1MSUnMy9VoSCxuDg1hSG5KDWxJDW+ID8/hxgjGHIz80pgZoHAGTBgYOpRPW3W5qY3CyIKk2dghOiSmgGlY6B0C4QWOwOhBUUAGn66fRgBAAA="
-);
+const bytecode = decompressBytecode('H4sIAAAAAAAAA5NyMGAIcGQwkHIJYNjlycBg5MDSCOQrxALZQJoDyG9ScBVmCHIVYPFyYWAoK/60Zs5Wn8siNfY5BpX2Lh5LPWKWi34+9mbBCYuzZfYWDBBwAErjBf+BwCU1MSUnMy9VoSCxuDg1hSG5KDWxJDW+ID8/hxgjGHIz80pgZoHAGTBgYOpRPW3W5qY3CyIKk2dghOiSmgGlY6B0C4QWOwOhBUUAGn66fRgBAAA=');
+
+export class CreatePoolAndAddLiquidityScriptLoader extends __Script<CreatePoolAndAddLiquidityScriptLoaderInputs, CreatePoolAndAddLiquidityScriptLoaderOutput> {
 
 export class CreatePoolAndAddLiquidityScriptLoader extends Script<
   CreatePoolAndAddLiquidityScriptLoaderInputs,
