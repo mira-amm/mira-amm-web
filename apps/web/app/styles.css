@@ -1,3 +1,5 @@
 @import "../../../libs/web/styles.css";
 
-@source '../../../libs/**/*.{ts,tsx}';
+@source './**/*.{ts,tsx}';
+@source '../../../libs/web/**/*.{ts,tsx}';
+@source '../../../libs/meshwave-ui/**/*.{ts,tsx}';
