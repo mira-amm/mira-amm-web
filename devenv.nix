@@ -132,7 +132,7 @@
               #   };
               # };
               namespace = "🧮 SERVERS";
-              disabled = true;
+              disabled = false;
         };
         microgame = {
           command = "pnpm nx dev microgame";
@@ -149,7 +149,7 @@
             };
             description = "🕹 Microgame | 4200 | microgame.mira.ly";
             namespace = "🧮 SERVERS";
-            disabled = true;
+            disabled = false;
         };
         web = {
           command = "pnpm nx dev web";
@@ -157,6 +157,7 @@
           is_tty = true;
           ready_log_line = "Ready in";
           namespace = "🧮 SERVERS";
+          disabled = true;
         };
         api = {
           command = "pnpm nx dev api";
