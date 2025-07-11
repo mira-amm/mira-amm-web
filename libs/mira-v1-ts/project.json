@@ -22,31 +22,35 @@
       }
     },
     "typegen:predicates": {
+      "cache": true,
       "command": "fuels typegen -i '../scripts/scripts/*/out/release/*-abi.json' -o ./src/sdk/typegen --script",
       "options": {
         "cwd": "libs/mira-v1-ts"
       }
     },
     "typegen:contracts": {
+      "cache": true,
       "command": "fuels typegen -i '../contracts/contracts/*/out/release/*-abi.json' -o './src/sdk/typegen'",
       "options": {
         "cwd": "libs/mira-v1-ts"
       }
     },
     "typegen": {
+      "cache": true,
       "command": "pnpm typegen:predicates && pnpm typegen:contracts",
       "options": {
         "cwd": "libs/mira-v1-ts"
       }
     },
     "build": {
+      "cache": true,
       "command": "tsc",
       "options": {
         "cwd": "libs/mira-v1-ts"
       }
     },
     "prepare": {
-      "command": "pnpm run build",
+      "command": "pnpm build",
       "options": {
         "cwd": "libs/mira-v1-ts"
       }
