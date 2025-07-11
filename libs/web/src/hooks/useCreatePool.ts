@@ -1,3 +1,4 @@
+"use client";
 import {useCallback} from "react";
 import {bn} from "fuels";
 import {useWallet} from "@fuels/react";
@@ -5,7 +6,7 @@ import {useMutation} from "@tanstack/react-query";
 
 import {DefaultTxParams, MaxDeadline} from "@/src/utils/constants";
 import {useAssetMinterContract} from "./useAssetMinterContract";
-import { useAssetMetadata, useMiraDex } from "@/src/hooks";
+import {useAssetMetadata, useMiraDex} from "@/src/hooks";
 
 export function useCreatePool({
   firstAsset,
@@ -19,7 +20,7 @@ export function useCreatePool({
   secondAsset: string;
   secondAssetAmount: string;
   isPoolStable: boolean;
-}){
+}) {
   const mira = useMiraDex();
   const {wallet} = useWallet();
   const firstAssetContract = useAssetMinterContract(firstAsset);
@@ -48,20 +49,22 @@ export function useCreatePool({
       secondAssetMetadata.decimals || 0,
     );
 
-    const txRequest = await mira.createPoolAndAddLiquidity(
-      firstAssetContract.contractId,
-      firstAssetContract.subId,
-      secondAssetContract.contractId,
-      secondAssetContract.subId,
-      isPoolStable,
-      firstCoinAmountToUse,
-      secondCoinAmountToUse,
-      MaxDeadline,
-      DefaultTxParams,
-    );
-    const gasCost = await wallet.getTransactionCost(txRequest);
-    const fundedTx = await wallet.fund(txRequest, gasCost);
-    const tx = await wallet.sendTransaction(fundedTx);
+    const {transactionRequest: txRequest} =
+      await mira.createPoolAndAddLiquidity(
+        firstAssetContract.contractId,
+        firstAssetContract.subId,
+        secondAssetContract.contractId,
+        secondAssetContract.subId,
+        isPoolStable,
+        firstCoinAmountToUse,
+        secondCoinAmountToUse,
+        MaxDeadline,
+        DefaultTxParams,
+        {
+          useAssembleTx: true,
+        },
+      );
+    const tx = await wallet.sendTransaction(txRequest);
     return await tx.waitForResult();
   }, [
     mira,
@@ -84,4 +87,4 @@ export function useCreatePool({
     createPool: mutateAsync,
     isPoolCreationPending: isPending,
   };
-};
+}

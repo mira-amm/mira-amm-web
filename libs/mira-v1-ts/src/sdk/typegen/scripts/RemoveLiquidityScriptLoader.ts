@@ -5,26 +5,20 @@
 /* eslint-disable @typescript-eslint/consistent-type-imports */
 
 /*
-  Fuels version: 0.100.3
+  Fuels version: 0.101.2
 */
 
-import { Contract as __Contract, Interface } from "fuels";
-import type {
-  Provider,
+import {
   Account,
-  StorageSlot,
-  Address,
   BigNumberish,
   BN,
-  FunctionFragment,
-  InvokeFunction,
+  decompressBytecode,
+  Script as __Script,
   StrSlice,
 } from 'fuels';
 
 import type { Enum } from "./common";
 
-export type AmmErrorInput = Enum<{ InsufficientLiquidity: undefined, NoLiquidityAdded: undefined, CannotAddLessThanMinimumLiquidity: undefined, CurveInvariantViolation: [] }>;
-export type AmmErrorOutput = Enum<{ InsufficientLiquidity: void, NoLiquidityAdded: void, CannotAddLessThanMinimumLiquidity: void, CurveInvariantViolation: [] }>;
 export type IdentityInput = Enum<{ Address: AddressInput, ContractId: ContractIdInput }>;
 export type IdentityOutput = Enum<{ Address: AddressOutput, ContractId: ContractIdOutput }>;
 
@@ -35,33 +29,32 @@ export type AssetIdOutput = AssetIdInput;
 export type ContractIdInput = { bits: string };
 export type ContractIdOutput = ContractIdInput;
 
-export type MiraValidationHookConfigurables = Partial<{
+export type RemoveLiquidityScriptLoaderInputs = [pool_id: [AssetIdInput, AssetIdInput, boolean], liquidity: BigNumberish, amount_0_min: BigNumberish, amount_1_min: BigNumberish, recipient: IdentityInput, deadline: BigNumberish];
+export type RemoveLiquidityScriptLoaderOutput = [BN, BN];
+
+export type RemoveLiquidityScriptLoaderConfigurables = Partial<{
   AMM_CONTRACT_ID: ContractIdInput;
 }>;
 
 const abi = {
-  "programType": "contract",
+  "programType": "script",
   "specVersion": "1",
   "encodingVersion": "1",
   "concreteTypes": [
-    {
-      "type": "()",
-      "concreteTypeId": "2e38e77b22c314a449e91fafed92a43826ac6aa403ae6a8acb6cf58239fbaf5d"
-    },
     {
       "type": "(struct std::asset_id::AssetId, struct std::asset_id::AssetId, bool)",
       "concreteTypeId": "a95e1fcceb1451b8a76471f593f66c4a52ca04bde3c227c746ad7aaf988de5c6",
       "metadataTypeId": 1
     },
     {
-      "type": "enum interfaces::errors::AmmError",
-      "concreteTypeId": "75021c092fbe6c5da8e67b3bb45d05bac56d20ca3deb794f199db139578eee3b",
-      "metadataTypeId": 4
+      "type": "(u64, u64)",
+      "concreteTypeId": "41bd1a98f0a59642d8f824c805b798a5f268d1f7d05808eb05c4189c493f1be0",
+      "metadataTypeId": 0
     },
     {
       "type": "enum std::identity::Identity",
       "concreteTypeId": "ab7cd04e05be58e3fc15d424c2c4a57f824a2a2d97d67252440a3925ebdc1335",
-      "metadataTypeId": 5
+      "metadataTypeId": 4
     },
     {
       "type": "str",
@@ -70,7 +63,11 @@ const abi = {
     {
       "type": "struct std::contract_id::ContractId",
       "concreteTypeId": "29c10735d33b5159f0c71ee1dbd17b36a3e69e41f00fab0d42e1bd9f428d8a54",
-      "metadataTypeId": 8
+      "metadataTypeId": 7
+    },
+    {
+      "type": "u32",
+      "concreteTypeId": "d7649d428b9ff33d188ecbf38a7e4d8fd167fa01b2e10fe9a8f9308e52f1d7cc"
     },
     {
       "type": "u64",
@@ -84,11 +81,11 @@ const abi = {
       "components": [
         {
           "name": "__tuple_element",
-          "typeId": 9
+          "typeId": "1506e6f44c1d6291cdf46395a8e573276a4fa79e8ace3fc891e092ef32d1b0a0"
         },
         {
           "name": "__tuple_element",
-          "typeId": 9
+          "typeId": "1506e6f44c1d6291cdf46395a8e573276a4fa79e8ace3fc891e092ef32d1b0a0"
         }
       ]
     },
@@ -98,11 +95,11 @@ const abi = {
       "components": [
         {
           "name": "__tuple_element",
-          "typeId": 7
+          "typeId": 6
         },
         {
           "name": "__tuple_element",
-          "typeId": 7
+          "typeId": 6
         },
         {
           "name": "__tuple_element",
@@ -119,44 +116,22 @@ const abi = {
       "metadataTypeId": 3
     },
     {
-      "type": "enum interfaces::errors::AmmError",
+      "type": "enum std::identity::Identity",
       "metadataTypeId": 4,
       "components": [
         {
-          "name": "InsufficientLiquidity",
-          "typeId": "2e38e77b22c314a449e91fafed92a43826ac6aa403ae6a8acb6cf58239fbaf5d"
-        },
-        {
-          "name": "NoLiquidityAdded",
-          "typeId": "2e38e77b22c314a449e91fafed92a43826ac6aa403ae6a8acb6cf58239fbaf5d"
-        },
-        {
-          "name": "CannotAddLessThanMinimumLiquidity",
-          "typeId": "2e38e77b22c314a449e91fafed92a43826ac6aa403ae6a8acb6cf58239fbaf5d"
-        },
-        {
-          "name": "CurveInvariantViolation",
-          "typeId": 0
-        }
-      ]
-    },
-    {
-      "type": "enum std::identity::Identity",
-      "metadataTypeId": 5,
-      "components": [
-        {
           "name": "Address",
-          "typeId": 6
+          "typeId": 5
         },
         {
           "name": "ContractId",
-          "typeId": 8
+          "typeId": 7
         }
       ]
     },
     {
       "type": "struct std::address::Address",
-      "metadataTypeId": 6,
+      "metadataTypeId": 5,
       "components": [
         {
           "name": "bits",
@@ -166,7 +141,7 @@ const abi = {
     },
     {
       "type": "struct std::asset_id::AssetId",
-      "metadataTypeId": 7,
+      "metadataTypeId": 6,
       "components": [
         {
           "name": "bits",
@@ -176,17 +151,13 @@ const abi = {
     },
     {
       "type": "struct std::contract_id::ContractId",
-      "metadataTypeId": 8,
+      "metadataTypeId": 7,
       "components": [
         {
           "name": "bits",
           "typeId": 2
         }
       ]
-    },
-    {
-      "type": "u256",
-      "metadataTypeId": 9
     }
   ],
   "functions": [
@@ -197,52 +168,32 @@ const abi = {
           "concreteTypeId": "a95e1fcceb1451b8a76471f593f66c4a52ca04bde3c227c746ad7aaf988de5c6"
         },
         {
-          "name": "sender",
+          "name": "liquidity",
+          "concreteTypeId": "1506e6f44c1d6291cdf46395a8e573276a4fa79e8ace3fc891e092ef32d1b0a0"
+        },
+        {
+          "name": "amount_0_min",
+          "concreteTypeId": "1506e6f44c1d6291cdf46395a8e573276a4fa79e8ace3fc891e092ef32d1b0a0"
+        },
+        {
+          "name": "amount_1_min",
+          "concreteTypeId": "1506e6f44c1d6291cdf46395a8e573276a4fa79e8ace3fc891e092ef32d1b0a0"
+        },
+        {
+          "name": "recipient",
           "concreteTypeId": "ab7cd04e05be58e3fc15d424c2c4a57f824a2a2d97d67252440a3925ebdc1335"
         },
         {
-          "name": "to",
-          "concreteTypeId": "ab7cd04e05be58e3fc15d424c2c4a57f824a2a2d97d67252440a3925ebdc1335"
-        },
-        {
-          "name": "asset_0_in",
-          "concreteTypeId": "1506e6f44c1d6291cdf46395a8e573276a4fa79e8ace3fc891e092ef32d1b0a0"
-        },
-        {
-          "name": "asset_1_in",
-          "concreteTypeId": "1506e6f44c1d6291cdf46395a8e573276a4fa79e8ace3fc891e092ef32d1b0a0"
-        },
-        {
-          "name": "asset_0_out",
-          "concreteTypeId": "1506e6f44c1d6291cdf46395a8e573276a4fa79e8ace3fc891e092ef32d1b0a0"
-        },
-        {
-          "name": "asset_1_out",
-          "concreteTypeId": "1506e6f44c1d6291cdf46395a8e573276a4fa79e8ace3fc891e092ef32d1b0a0"
-        },
-        {
-          "name": "lp_token",
-          "concreteTypeId": "1506e6f44c1d6291cdf46395a8e573276a4fa79e8ace3fc891e092ef32d1b0a0"
+          "name": "deadline",
+          "concreteTypeId": "d7649d428b9ff33d188ecbf38a7e4d8fd167fa01b2e10fe9a8f9308e52f1d7cc"
         }
       ],
-      "name": "hook",
-      "output": "2e38e77b22c314a449e91fafed92a43826ac6aa403ae6a8acb6cf58239fbaf5d",
-      "attributes": [
-        {
-          "name": "storage",
-          "arguments": [
-            "read",
-            "write"
-          ]
-        }
-      ]
+      "name": "main",
+      "output": "41bd1a98f0a59642d8f824c805b798a5f268d1f7d05808eb05c4189c493f1be0",
+      "attributes": null
     }
   ],
   "loggedTypes": [
-    {
-      "logId": "8431332278172281949",
-      "concreteTypeId": "75021c092fbe6c5da8e67b3bb45d05bac56d20ca3deb794f199db139578eee3b"
-    },
     {
       "logId": "10098701174489624218",
       "concreteTypeId": "8c25cb3686462e9a86d2883c5688a22fe738b0bbc85f458d2d2b5f3f667c6d5a"
@@ -253,36 +204,19 @@ const abi = {
     {
       "name": "AMM_CONTRACT_ID",
       "concreteTypeId": "29c10735d33b5159f0c71ee1dbd17b36a3e69e41f00fab0d42e1bd9f428d8a54",
-      "offset": 10304
+      "offset": 88
     }
   ]
 };
 
-const storageSlots: StorageSlot[] = [];
+const bytecode = decompressBytecode('H4sIAAAAAAAAA5NyMGAIcGQwkHIJYNjlycBg5MDSCOQrxALZQJoDyG9ScBVmCHIVYPFyYWBo0zphtK15kfLCWzN+vIp221zq0Xr763S2qNlONVmL7qQtZ4CAA1AaL/gPBC6piSk5mXmpCgWJxcWpKQT1JJUW5YFoz7zi0rS0zOTM1LwShcTc/NK8ErD8GTBgYAKZDQI9qqfN2tz0ZkF4MFPEX0DpDxBaggNCC3VAaM4fADSL2yUYAQAA');
 
-export class MiraValidationHookInterface extends Interface {
-  constructor() {
-    super(abi);
-  }
+export class RemoveLiquidityScriptLoader extends __Script<RemoveLiquidityScriptLoaderInputs, RemoveLiquidityScriptLoaderOutput> {
 
-  declare functions: {
-    hook: FunctionFragment;
-  };
-}
-
-export class MiraValidationHook extends __Contract {
   static readonly abi = abi;
-  static readonly storageSlots = storageSlots;
+  static readonly bytecode = bytecode;
 
-  declare interface: MiraValidationHookInterface;
-  declare functions: {
-    hook: InvokeFunction<[pool_id: [AssetIdInput, AssetIdInput, boolean], sender: IdentityInput, to: IdentityInput, asset_0_in: BigNumberish, asset_1_in: BigNumberish, asset_0_out: BigNumberish, asset_1_out: BigNumberish, lp_token: BigNumberish], void>;
-  };
-
-  constructor(
-    id: string | Address,
-    accountOrProvider: Account | Provider,
-  ) {
-    super(id, abi, accountOrProvider);
+  constructor(wallet: Account) {
+    super(bytecode, abi, wallet);
   }
 }

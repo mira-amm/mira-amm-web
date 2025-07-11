@@ -19,7 +19,7 @@ export function usePoints(): {
 
   const isEnabled = Boolean(account) && poolIds.length > 0 && campaigns.length > 0;
 
-  const queryKey = ["rewards", account, EPOCH_NUMBER, poolIds.join(",")];
+  const queryKey = ["rewards", account, EPOCH_NUMBER, poolIds];
 
   const { data, isLoading, error } = useQuery({
     queryKey,
@@ -28,7 +28,7 @@ export function usePoints(): {
       const params = new URLSearchParams({
         userId: account!,
         epochNumbers: String(EPOCH_NUMBER),
-        poolIds: poolIds.join(","),
+        poolIds: poolIds,
       });
 
       const res = await fetch(`/api/rewards?${params.toString()}`);
