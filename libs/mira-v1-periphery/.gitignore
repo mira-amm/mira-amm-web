@@ -1,0 +1,13 @@
+target
+**/.DS_Store
+.idea
+.env
+node_modules
+dist
+**/out/deployments/
+**/out/release/
+
+
+# Added by cargo
+
+/target

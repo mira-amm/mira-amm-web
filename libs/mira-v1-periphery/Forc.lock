@@ -1,0 +1,79 @@
+[[package]]
+name = "add_liquidity_script"
+source = "member"
+dependencies = [
+    "interfaces",
+    "math",
+    "std",
+    "utils",
+]
+
+[[package]]
+name = "core"
+source = "path+from-root-8357A6DDC5F39D14"
+
+[[package]]
+name = "create_pool_and_add_liquidity_script"
+source = "member"
+dependencies = [
+    "interfaces",
+    "std",
+    "utils",
+]
+
+[[package]]
+name = "interfaces"
+source = "member"
+dependencies = ["std"]
+
+[[package]]
+name = "math"
+source = "member"
+dependencies = [
+    "interfaces",
+    "std",
+    "utils",
+]
+
+[[package]]
+name = "remove_liquidity_script"
+source = "member"
+dependencies = [
+    "interfaces",
+    "math",
+    "std",
+    "utils",
+]
+
+[[package]]
+name = "std"
+source = "git+https://github.com/fuellabs/sway?tag=v0.65.2#66bb430395daf5b8f7205f7b9d8d008e2e812d54"
+dependencies = ["core"]
+
+[[package]]
+name = "swap_exact_input_script"
+source = "member"
+dependencies = [
+    "interfaces",
+    "math",
+    "std",
+    "utils",
+]
+
+[[package]]
+name = "swap_exact_output_script"
+source = "member"
+dependencies = [
+    "interfaces",
+    "math",
+    "std",
+    "utils",
+]
+
+[[package]]
+name = "utils"
+source = "member"
+dependencies = [
+    "interfaces",
+    "std",
+]

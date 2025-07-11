@@ -1,0 +1,10 @@
+[project]
+authors = ["Mira AMM"]
+entry = "main.sw"
+license = "Apache-2.0"
+name = "swap_exact_input_script"
+
+[dependencies]
+interfaces = { path = "../../libraries/interfaces" }
+math = { path = "../../libraries/math" }
+utils = { path = "../../libraries/utils" }
