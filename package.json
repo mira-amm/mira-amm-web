@@ -128,6 +128,7 @@
     "@next/eslint-plugin-next": "^15.3.4",
     "@nx/devkit": "21.2.1",
     "@nx/eslint": "21.2.1",
+    "@monodon/rust": "^2.3.0",
     "@nx/eslint-plugin": "21.2.1",
     "@nx/js": "21.2.1",
     "@nx/next": "21.2.1",
