@@ -10,6 +10,12 @@
   name = "microchain-dev-env";
 
   languages = {
+    rust = {
+      enable = true;
+      channel = "stable";
+      targets = [ "wasm32-unknown-unknown" ];
+      components = [ "rustc" "cargo" "clippy" "rustfmt" "rust-analyzer"];
+    };
     javascript = {
       enable = true;
       package = pkgs.nodejs_22;
