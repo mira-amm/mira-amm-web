@@ -1,0 +1,11 @@
+{
+  "name": "mira-v1-periphery",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/mira-v1-periphery",
+  "projectType": "library",
+  "tags": [
+    "sway",
+    "rust",
+    "v1"
+  ]
+}

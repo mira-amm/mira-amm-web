@@ -13,7 +13,6 @@ homepage = "https://mira.ly/"
 readme = "README.md"
 license = "Apache-2.0"
 repository = "https://github.com/mira-amm/mira-amm-web"
-rust-version = "1.79.0"
 
 [workspace.dependencies]
 fuels = "0.66.7"
