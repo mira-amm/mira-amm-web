@@ -3,9 +3,9 @@ name: End-to-End Tests
 
 on:
   push:
-    branches: "*"
+    branches: ["*"]
   pull_request:
-    branches: "*"
+    branches: ["*"]
 
 jobs:
   e2e:
@@ -26,7 +26,7 @@ jobs:
         run: git fetch origin main # Explicitly fetch the 'main' branch to ensure it's available
 
       - name: Install dependencies
-        run: pnpm i --frozen-lockfile; pnpx playwright install chromium --with-deps
+        run: pnpm i --frozen-lockfile
 
       - name: Run End-to-End tests
         env:
