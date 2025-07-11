@@ -45,5 +45,11 @@ jobs:
       - name: 📦 Install dependencies
         run: pnpm i
 
+      - name: 🧩 Build API
+        run: pnpm nx build api --verbose
+
       - name: 🦀 Build Rust SDK
         run: pnpm nx build rust-sdk --verbose
+
+      - name: 🐞 TypeScript SDK
+        run: pnpm nx build mira-v1-ts --verbose
