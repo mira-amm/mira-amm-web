@@ -34,7 +34,8 @@ fn adjust(amount: U256, pow_decimals: U256) -> U256 {
 }
 
 fn d(x_0: U256, y: U256) -> U256 {
-    U256::from(3) * x_0 * (y * y / one_e_18()) / one_e_18() + (x_0 * x_0 / one_e_18() * x_0 / one_e_18())
+    U256::from(3) * x_0 * (y * y / one_e_18()) / one_e_18()
+        + (x_0 * x_0 / one_e_18() * x_0 / one_e_18())
 }
 
 fn f(x_0: U256, y: U256) -> U256 {
@@ -93,18 +94,12 @@ fn get_y(x_0: U256, xy: U256, y: U256) -> Result<U256, Error> {
     Ok(y)
 }
 
-fn k(
-    is_stable: bool,
-    x: U256,
-    y: U256,
-    pow_decimals_x: U256,
-    pow_decimals_y: U256,
-) -> U256 {
-    if (is_stable) {
+fn k(is_stable: bool, x: U256, y: U256, pow_decimals_x: U256, pow_decimals_y: U256) -> U256 {
+    if is_stable {
         let _x: U256 = x * one_e_18() / pow_decimals_x;
         let _y: U256 = y * one_e_18() / pow_decimals_y;
         let _a: U256 = (_x * _y) / one_e_18();
-        let _b: U256 = ((_x * _x) / one_e_18() + (_y * _y) / one_e_18());
+        let _b: U256 = (_x * _x) / one_e_18() + (_y * _y) / one_e_18();
         _a * _b // x3y+y3x >= k
     } else {
         x * y // xy >= k
@@ -132,11 +127,12 @@ pub fn get_amount_out(
         let amount_in_adjusted = adjust(input_amount, pow_decimals_in);
         let reserve_in_adjusted = adjust(reserve_in, pow_decimals_in);
         let reserve_out_adjusted = adjust(reserve_out, pow_decimals_out);
-        let y = reserve_out_adjusted - get_y(
-            amount_in_adjusted + reserve_in_adjusted,
-            xy,
-            reserve_out_adjusted,
-        )?;
+        let y = reserve_out_adjusted
+            - get_y(
+                amount_in_adjusted + reserve_in_adjusted,
+                xy,
+                reserve_out_adjusted,
+            )?;
         Ok(y * pow_decimals_out / one_e_18())
     } else {
         Ok(input_amount * reserve_out / (reserve_in + input_amount))
@@ -170,13 +166,12 @@ pub fn get_amount_in(
             xy,
             reserve_in_adjusted,
         )? - reserve_in_adjusted;
-        Ok(
-            rounding_up_division(y * pow_decimals_in, one_e_18())
-        )
+        Ok(rounding_up_division(y * pow_decimals_in, one_e_18()))
     } else {
-        Ok(
-            rounding_up_division(output_amount * reserve_in, reserve_out - output_amount)
-        )
+        Ok(rounding_up_division(
+            output_amount * reserve_in,
+            reserve_out - output_amount,
+        ))
     }
 }
 
@@ -189,8 +184,16 @@ pub fn get_amounts_out(
 ) -> Result<Vec<(u64, AssetId)>, Error> {
     ensure!(pools.len() >= 1, "Router: INVALID_PATH");
 
-    let AmmFees { lp_fee_volatile, lp_fee_stable, protocol_fee_volatile, protocol_fee_stable } = fees;
-    let (stable_fee, volatile_fee) = (lp_fee_stable + protocol_fee_stable, lp_fee_volatile + protocol_fee_volatile);
+    let AmmFees {
+        lp_fee_volatile,
+        lp_fee_stable,
+        protocol_fee_volatile,
+        protocol_fee_stable,
+    } = fees;
+    let (stable_fee, volatile_fee) = (
+        lp_fee_stable + protocol_fee_stable,
+        lp_fee_volatile + protocol_fee_volatile,
+    );
 
     let mut amounts: Vec<(u64, AssetId)> = Vec::new();
     amounts.push((amount_in, asset_in));
@@ -198,7 +201,10 @@ pub fn get_amounts_out(
     while i < pools.len() {
         let pool_id = pools.get(i).unwrap();
         let pool_opt = pools_metadata.get(pool_id);
-        ensure!(pool_opt.is_some(), format!("Pool {:?} not present", pool_id));
+        ensure!(
+            pool_opt.is_some(),
+            format!("Pool {:?} not present", pool_id)
+        );
         let pool = pool_opt.unwrap();
         let (amount_in, asset_in) = *amounts.get(i).unwrap();
         let fee = if is_stable(pool_id) {
@@ -248,8 +254,16 @@ pub fn get_amounts_in(
 ) -> Result<Vec<(u64, AssetId)>, Error> {
     ensure!(pools.len() >= 1, "Router: INVALID_PATH");
 
-    let AmmFees { lp_fee_volatile, lp_fee_stable, protocol_fee_volatile, protocol_fee_stable } = fees;
-    let (stable_fee, volatile_fee) = (lp_fee_stable + protocol_fee_stable, lp_fee_volatile + protocol_fee_volatile);
+    let AmmFees {
+        lp_fee_volatile,
+        lp_fee_stable,
+        protocol_fee_volatile,
+        protocol_fee_stable,
+    } = fees;
+    let (stable_fee, volatile_fee) = (
+        lp_fee_stable + protocol_fee_stable,
+        lp_fee_volatile + protocol_fee_volatile,
+    );
 
     let mut amounts: Vec<(u64, AssetId)> = Vec::new();
     amounts.push((amount_out, asset_out));
@@ -257,7 +271,10 @@ pub fn get_amounts_in(
     while i < pools.len() {
         let pool_id = pools.get(pools.len() - 1 - i).unwrap();
         let pool_opt = pools_metadata.get(pool_id);
-        ensure!(pool_opt.is_some(), format!("Pool {:?} not present", pool_id));
+        ensure!(
+            pool_opt.is_some(),
+            format!("Pool {:?} not present", pool_id)
+        );
         let pool = pool_opt.unwrap();
         let (amount_out, asset_out) = *amounts.get(i).unwrap();
         let fee = if is_stable(pool_id) {
