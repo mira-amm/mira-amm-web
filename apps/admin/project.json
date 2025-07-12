@@ -30,7 +30,13 @@
     },
     "start": {
       "dependsOn": [
-        "build"
+        "build",
+        {
+          "projects": [
+            "db"
+          ],
+          "target": "start"
+        },
       ],
       "command": "cross-env NODE_OPTIONS=--no-deprecation next start -p $ADMIN_DEV_SERVER_PORT",
       "options": {
