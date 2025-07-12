@@ -8,7 +8,7 @@ inputs:
       nixpkgs:
         follows: nixpkgs
 
-# If you're using non-OSS software, you can set allowUnfree to true.
+# if you're using non-OSS software
 allowUnfree: true
 
 # If you're willing to use a package that's vulnerable
@@ -16,4 +16,5 @@ allowUnfree: true
 #  - "openssl-1.1.1w"
 
 imports:
+  - ./libs/db
   - ./libs/microdoctor

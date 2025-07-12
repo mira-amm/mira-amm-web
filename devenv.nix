@@ -284,8 +284,8 @@
     #====================================================
     #                      FLAGS
     #====================================================
-    # SUPABASE=true; # Requires Docker
-    # SQLITE=true;
+    # SUPABASE="true"; # Requires Docker
+    # SQLITE="true";
     NX_VERBOSE_LOGGING = "true";
     NEXT_PUBLIC_ENABLE_AUTOLOGIN = "true";
     # TERM = "xterm-256color";
@@ -323,7 +323,7 @@
     LOCALHOST_STRING = "http://localhost";
 
     APP_LOCAL_URL = "$LOCALHOST_STRING:$APP_DEV_SERVER_PORT";
-    ADMIN_LOCAL_URL = "$LOCALHOST_STRING:$ADMIN_DEV_SERVER_PORT";
+    ADMIN_LOCAL_URL = "http://localhost:8000";
     MICROGAME_LOCAL_URL = "$LOCALHOST_STRING:$MICROGAME_DEV_SERVER_PORT";
     API_SERVER_LOCAL_URL = "$LOCALHOST_STRING:$API_SERVER_PORT";
     STORYBOOK_LOCAL_URL = "$LOCALHOST_STRING:$ARCHITECTURE_DEV_SERVER_PORT";
