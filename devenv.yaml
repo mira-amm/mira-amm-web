@@ -15,6 +15,5 @@ allowUnfree: true
 # permittedInsecurePackages:
 #  - "openssl-1.1.1w"
 
-# If you have more than one devenv you can merge them
-#imports:
-# - ./backend
+imports:
+  - ./libs/microdoctor
