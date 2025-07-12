@@ -46,7 +46,6 @@
       pkgs.btop
       pkgs.pik
       pkgs.lolcat
-      pkgs.shellspec
       pkgs.chafa
   ];
 
