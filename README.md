@@ -92,7 +92,7 @@ The codebase is self-documenting.
 | :-: | :-: | :-: | :-: | :-: |
 | ![OpenAPI JSON](apps/docs/public/screenshots/openapi-json.webp) | ![OpenAPI Swagger](apps/docs/public/screenshots/openapi-swagger.webp) | ![OpenAPI Redoc](apps/docs/public/screenshots/openapi-redoc.webp) | ![OpenAPI Rapidoc](apps/docs/public/screenshots/openapi-rapidoc.webp) | ![OpenAPI Fumadocs](apps/docs/public/screenshots/openapi-fumadocs.webp) |
 
-See [docs](https://docs.mira.ly/installation) for instructions.
+See [docs](https://docs.mira.ly/libraries/contributing/installation) for instructions.
 
 ## Socials/Contact
 - [Twitter/X - @MiraProtocol](https://x.com/MiraProtocol)
