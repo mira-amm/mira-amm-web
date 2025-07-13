@@ -14,8 +14,8 @@ layout {
     }
     tab name="🧮 SERVERS" split_direction="vertical" {
             pane {
-                name "❄ devenv"
-                command "process-compose"
+                name "🎉 kernel"
+                command "kernel"
                 args "up"
                 size "60%"
             }

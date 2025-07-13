@@ -83,3 +83,4 @@ vitest.config.*.timestamp*
 .settings
 !.vscode/extensions.json
 !.vscode/settings-example.json
+apps/microvisor/services/supabase/.branches

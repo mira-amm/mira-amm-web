@@ -21,10 +21,8 @@
 
   # NOTE: uses native nixos test syntax | nixos.org/manual/nixos/stable/#sec-writing-nixos-tests
   enterTest = ''
-    # set -ex
-    figlet "Running tests"
-    process-compose down
-    doctor
+    set -ex
+    # process-compose down
   '';
 
   enterShell = ''
