@@ -12,14 +12,6 @@
   "tags": [],
   "targets": {
     "dev": {
-      "dependsOn": [
-        {
-          "projects": [
-            "db"
-          ],
-          "target": "start"
-        },
-      ],
       "command": "chafa ../../libs/shared/assets/charthouse-labs-symbol.png; next dev -p $ADMIN_DEV_SERVER_PORT",
       "options": {
         "cwd": "apps/admin",
@@ -31,12 +23,6 @@
     "start": {
       "dependsOn": [
         "build",
-        {
-          "projects": [
-            "db"
-          ],
-          "target": "start"
-        },
       ],
       "command": "cross-env NODE_OPTIONS=--no-deprecation next start -p $ADMIN_DEV_SERVER_PORT",
       "options": {

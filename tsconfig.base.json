@@ -27,7 +27,6 @@
       "@/magic-ui/*": ["libs/external/magic-ui/*"],
       "@/meshwave-ui/icons": ["libs/meshwave-ui/src/components/icons/index.tsx"],
       "@/meshwave-ui/*": ["libs/meshwave-ui/*"],
-      "@/microdoctor/*": ["libs/microdoctor/*"],
       "@/platform-vercel/*": ["libs/platform-vercel/*"],
       "@/shadcn-ui/*": ["libs/external/shadcn-ui/*"],
       "@/shared": ["libs/shared/index.ts"],

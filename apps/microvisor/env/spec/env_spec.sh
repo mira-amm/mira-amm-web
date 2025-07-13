@@ -1,7 +1,3 @@
-figlet -cf slant "💊 Microdoctor"
-
-# fastfetch -c all.jsonc
-
 Describe "📦 Pnpm should be:"
 It "installed via standalone script only"
 When run which pnpm
@@ -23,59 +19,7 @@ The status should be success
 The output should include 'nodejs-22.14'
 The output should end with '/bin/node'
 End
-
-# It "managed by pnpm"
-# When run which node
-# The status should be success
-# The output should include '/pnpm/nodejs'
-# The output should end with '/bin/node'
-# End
 End
-
-Describe "🎭 Playwright should be:"
-It "greater than or equal to version 1.53.1"
-When run playwright --version
-The status should be success
-The output should include '1.53'
-End
-
-It "installed by pnpm"
-When run which playwright
-The status should be success
-The output should end with '/node_modules/.bin/playwright'
-End
-End
-
-Describe "❄ Lix should be:"
-It "greater than or equal to version 2.93.0"
-When run nix --version
-The status should be success
-The output should include '2.93'
-End
-End
-
-# uv tool uninstall --python 3.12 posting
-# Describe "🐍 uv should be:"
-# It "greater than or equal to version 0.4.30"
-# When run which uv
-# The status should be success
-# The second word of stdout should include '0.4.30'
-# End
-
-# It "installed by Nix"
-# When run which uv
-# The status should be success
-# The output should start with '/nix/store'
-# End
-# End
-
-# Describe "🌈 Terminal should:"
-# It "support color output"
-# When run echo $TERM
-# The status should be success
-# The output should equal 'xterm-256color'
-# End
-# End
 
 Describe "🔑 Secrets should be defined and present:"
 Parameters
