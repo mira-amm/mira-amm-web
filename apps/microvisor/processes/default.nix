@@ -60,15 +60,15 @@
       };
     };
 
-    "🟩 supabase -h" = {
-      exec = "supabase -h";
+    "🟩 supabase start" = {
+      exec = "process-compose process stop postgres; supabase start --workdir apps/microvisor/services";
       process-compose = {
         description = "🟩 Supabase | 54323";
         is_tty = true;
         depends_on = {
-          postgres.condition = "process_healthy";
+          postgres.condition = "process_complete";
         };
-        ready_log_line = "Ready in";
+        ready_log_line = "Started supabase local development setup.";
         namespace = "📀 DATABASES";
         disabled = true;
       };

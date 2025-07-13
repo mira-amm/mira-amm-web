@@ -4,8 +4,8 @@
   "version": "0.3.1",
   "type": "module",
   "scripts": {
-    "dev": "NX_TUI='false' nx dev:tui microvisor; process-compose down; zellij ka -y; zellij da -y;",
-    "start": "nx dev microvisor; process-compose down; zellij ka -y; zellij da -y;",
+    "dev": "NX_TUI='false' nx dev:tui microvisor; process-compose down; supabase stop --all; zellij ka -y; zellij da -y;",
+    "start": "nx dev microvisor --outputStyle=tui; process-compose down; supabase stop --all; zellij ka -y; zellij da -y;",
     "storybook": "nx storybook design -p $STORYBOOK_DEV_SERVER_PORT # 🎨 Design System - Storybook",
     "fix:formatting": "pnpx prettier --write apps/web",
     "commit": "cz #🟢 Commitizen CLI",
