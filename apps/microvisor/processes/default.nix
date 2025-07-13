@@ -1,6 +1,6 @@
 {
   processes = {
-    microdoctor = {
+    "💊 Microdoctor" = {
       exec = "doctor";
       process-compose = {
         description = "💊 Microdoctor";
@@ -10,7 +10,7 @@
       };
     };
 
-    "fastfetch -C all.jsonc" = {
+    "🔮 fastfetch -C all.jsonc" = {
       exec = "fastfetch -C all.jsonc";
       process-compose = {
         namespace = "🩺 HEALTH CHECK";
@@ -19,10 +19,10 @@
       };
     };
 
-    "dev admin" = {
+    "🛞 dev admin" = {
       exec = "pnpm nx dev admin";
       process-compose = {
-        description = "🍿 Admin | 8000 | admin.mira.ly";
+        description = "🛞 Admin | 8000 | admin.mira.ly";
         is_tty = true;
         depends_on = {
           postgres.condition = "process_healthy";
@@ -33,7 +33,7 @@
       };
     };
 
-    "dev microgame" = {
+    "🕹 dev microgame" = {
       exec = "pnpm nx dev microgame";
       process-compose = {
         is_tty = true;
@@ -50,7 +50,7 @@
       };
     };
 
-    "supabase -h" = {
+    "🟩 supabase -h" = {
       exec = "supabase -h";
       process-compose = {
         description = "🟩 Supabase | 54323";
@@ -64,7 +64,7 @@
       };
     };
 
-    "dev web" = {
+    "🦕 dev web" = {
       exec = "pnpm nx dev web";
       process-compose = {
         description = "🦕 Web App | 3000 | mira.ly";
@@ -75,7 +75,7 @@
       };
     };
 
-    "dev api" = {
+    "🧩 dev api" = {
       exec = "pnpm nx dev api";
       process-compose = {
         description = "🧩 Core API | 8080 | api.mira.ly";
@@ -92,7 +92,7 @@
       };
     };
 
-    storybook = {
+    "🎨 storybook" = {
       exec = "pnpm storybook";
       process-compose = {
         description = "🎨 Storybook | 6006 | design.mira.ly";
@@ -102,7 +102,7 @@
       };
     };
 
-    docs = {
+    "📚 dev docs" = {
       exec = "pnpm nx dev docs";
       process-compose = {
         description = "📚 Docs | 4000 | docs.mira.ly";
@@ -113,10 +113,10 @@
       };
     };
 
-    graph = {
+    "📍 graph --view=project --groupByFolder --affected" = {
       exec = "pnpm nx graph --view=projects --affected";
       process-compose = {
-        description = "🗺 Project Graph - Nx | 4211 | graph.mira.ly";
+        description = "📍 Project Graph - Nx | 4211 | graph.mira.ly";
         is_tty = true;
         readiness_probe = {
           http_get = {
@@ -130,7 +130,7 @@
       };
     };
 
-    arch = {
+    "🏛 dev arch" = {
       exec = "pnpm nx dev arch";
       process-compose = {
         description = "🏛 Architecture | 5173 | arch.mira.ly";
@@ -147,16 +147,16 @@
       };
     };
 
-    hello = {
+    "👋 hello" = {
       exec = "hello";
       process-compose = {
         description = "👋🧩 Show the Devenv logo art and a friendly greeting";
         namespace = "🩺 HEALTH CHECK";
-        disabled = true;
+        disabled = false;
       };
     };
 
-    console = {
+    "🕹 console" = {
       exec        = ''
          ttyd --writable --browser --url-arg --once devenv up
       '';
@@ -167,7 +167,7 @@
       };
     };
 
-    "view db" = {
+    "📊 view db" = {
       exec = "pnpm nx view db";
       process-compose = {
         description = "📊 Drizzle Studio | Schema Visualizer | 5600";
@@ -176,7 +176,7 @@
       };
     };
 
-    "node-modules-inspector --depth=7 --port=7000" = {
+    "📦 node-modules-inspector --depth=7 --port=7000" = {
       exec = "pnpm node-modules-inspector --depth=7 --port=7000";
       process-compose = {
         description = "📦 Node Modules Inspector | 7000";
@@ -188,79 +188,79 @@
             scheme = "http";
           };
         };
-        namespace = "🧮 VIEWS";
+        namespace = "📦 DEPS";
         disabled = true;
       };
     };
 
-    "repo" = {
+    "🌕 repo" = {
       exec = "repo";
       process-compose = {
         description = "🌕 List top-level packages in the monorepo";
         is_tty = true;
-        namespace = "📦 DEPENDENCY MANAGEMENT";
+        namespace = "📦 DEPS";
         disabled = false;
       };
     };
 
-    "e2e web-e2e --ui" = {
+    "🧐 e2e web-e2e --ui" = {
       exec = "pnpm nx e2e web-e2e --ui";
       process-compose = {
         description = "🎭 Web | E2E (UI)";
-        namespace = "🧪 TESTING";
+        namespace = "🎭 E2E";
         disabled = true;
       };
     };
 
-    "test api" = {
+    "⚗ test api" = {
       exec = "pnpm nx test api";
       process-compose = {
         description = "🧩 Core API | Unit";
-        namespace = "🧪 TESTING";
-        disabled = true;
+        namespace = "🔬 UNIT";
+        disabled = false;
       };
     };
 
-    "e2e api" = {
+    "🧐 e2e api" = {
       exec = "pnpm nx e2e api";
       process-compose = {
         description = "🧩 Core API | E2E";
-        namespace = "🧪 TESTING";
-        disabled = true;
+        namespace = "🎭 E2E";
+        disabled = false;
       };
     };
 
-    "pnpm i; doctor" = {
+    "🔮 pnpm i; doctor" = {
       exec = "pi";
       process-compose = {
         description = "🟨 Install pnpm packages";
         is_tty = true;
-        namespace = "📦 DEPENDENCY MANAGEMENT";
+        namespace = "📦 DEPS";
         disabled = true;
       };
     };
 
-    "clean; pnpm i; doctor" = {
+    "🌪 clean; pnpm i; doctor" = {
       exec = "pri";
       process-compose = {
         description = "🧹 Re-install pnpm packages";
         is_tty = true;
-        namespace = "📦 DEPENDENCY MANAGEMENT";
+        namespace = "📦 DEPS";
         disabled = true;
       };
     };
 
-    "devenv info" = {
+    "ℹ devenv info" = {
       exec = "devenv info";
       process-compose = {
-        description = "❄ devenv info log";
+        description = "❄ devenv info";
         is_tty = true;
         namespace = "🩺 HEALTH CHECK";
         disabled = false;
       };
     };
 
-    vercel = {
+    "🔺 dev platform-vercel"  = {
       exec = "pnpm nx dev platform-vercel";
       process-compose = {
         description = "🔺 Vercel";
