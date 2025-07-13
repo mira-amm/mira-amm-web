@@ -7,6 +7,13 @@
   ];
 
   scripts = {
+    build = {
+      description = "🏗 Build with pnpm & Nx with any args passed through";
+      exec        = ''
+        pnpm nx build "$@"
+      '';
+    };
+
     console = {
       description = "🕹 Fire up the Microvisor Console";
       exec        = ''
