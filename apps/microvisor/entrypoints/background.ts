@@ -7,7 +7,7 @@ export default defineBackground(() => {
     if (reason !== "install") return;
 
     await browser.tabs.create({
-      url: "http://localhost:7681/?fontFamily=JetBrainsMono%20Nerd%20Font&fontSize=20&enableSixel=true&enableTrzsz=true&fontSize=18&disableLeaveAlert=false&titleFixed=💻%20Microvisor",
+      url: "http://localhost:7681/?fontFamily=JetBrainsMono%20Nerd%20Font&fontSize=20&enableSixel=true&enableTrzsz=true&fontSize=18&disableLeaveAlert=false&titleFixed=🕹%20Microvisor",
       active: true,
       index: 0,
     });
@@ -34,6 +34,12 @@ export default defineBackground(() => {
       url: "http://localhost:4000",
       active: false,
       index: 4,
+    });
+
+    await browser.tabs.create({
+      url: "http://localhost:1212",
+      active: false,
+      index: 5,
     });
 
     const tabs = await browser.tabs.query({currentWindow: true})

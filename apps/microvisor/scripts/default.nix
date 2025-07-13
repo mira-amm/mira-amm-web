@@ -21,6 +21,13 @@
       '';
     };
 
+    ai = {
+      description = "🤖 Use the GPT LLM of your choice";
+      exec        = ''
+        open-webui serve --port 1212
+      '';
+    };
+
     console = {
       description = "🕹 Fire up the Microvisor Console";
       exec        = ''

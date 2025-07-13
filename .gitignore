@@ -38,6 +38,8 @@ apps/admin/media
 #====================================================
 #                 Caches & Logs
 #====================================================
+.open-webui
+.webui_secret_key
 .pre-commit-config.yaml
 .nx/cache
 .nx/workspace-data
