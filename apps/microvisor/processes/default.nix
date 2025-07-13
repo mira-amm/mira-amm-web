@@ -113,6 +113,17 @@
       };
     };
 
+    "🏗 build mira-v1-ts" = {
+      exec = "pnpm nx build mira-v1-ts";
+      process-compose = {
+        description = "🔌 TypeScript SDK";
+        is_tty = true;
+        # ready_log_line = "Ready in";
+        namespace = "📦 DEPS";
+        disabled = true;
+      };
+    };
+
     "📍 graph --view=project --groupByFolder --affected" = {
       exec = "pnpm nx graph --view=projects --affected";
       process-compose = {
