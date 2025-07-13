@@ -212,6 +212,15 @@
       };
     };
 
+    "🏗 build api" = {
+      exec = "pnpm nx build api";
+      process-compose = {
+        description = "🧩 Core API | Build";
+        namespace = "📦 DEPS";
+        disabled = false;
+      };
+    };
+
     "⚗ test api" = {
       exec = "pnpm nx test api";
       process-compose = {
