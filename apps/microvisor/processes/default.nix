@@ -75,6 +75,15 @@
       };
     };
 
+    "⚗ test web" = {
+      exec = "pnpm nx test web --run --cache --no-color=false";
+      process-compose = {
+        is_tty = true;
+        namespace = "🔬 UNIT";
+        disabled = false;
+      };
+    };
+
     "🧩 dev api" = {
       exec = "pnpm nx dev api";
       process-compose = {
