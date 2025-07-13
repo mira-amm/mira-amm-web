@@ -19,6 +19,16 @@
       };
     };
 
+    "🤖 open-webui serve --port 1212" = {
+      exec = "open-webui serve --port 1212";
+      process-compose = {
+        description = "🤖 Use the GPT LLM of your choice";
+        namespace = "🧮 VIEWS";
+        disabled = false;
+        is_tty = true;
+      };
+    };
+
     "🛞 dev admin" = {
       exec = "pnpm nx dev admin";
       process-compose = {
