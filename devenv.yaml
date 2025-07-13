@@ -9,8 +9,13 @@ inputs:
     inputs:
       nixpkgs:
         follows: nixpkgs
+  # TODO: investigate usage & gotchas of venv
+  # nixpkgs-python:
+  #   url: github:cachix/nixpkgs-python
+  #   inputs:
+  #     nixpkgs:
+  #       follows: nixpkgs
   # NOTE: pinned to playwright@1.53.1
-  # see search.nixos.org/packages?channel=unstable&from=0&size=50&sort=relevance&type=packages&query=playwright
   nixpkgs-unstable-playwright:
     url: github:NixOS/nixpkgs/2d02dc9fc19492c35e94c7419567e6991eefc16e
 
