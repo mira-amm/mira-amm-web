@@ -14,6 +14,13 @@
       '';
     };
 
+    start = {
+      description = "🚂 Serve with pnpm & Nx with any args passed through";
+      exec        = ''
+        pnpm nx start "$@"
+      '';
+    };
+
     console = {
       description = "🕹 Fire up the Microvisor Console";
       exec        = ''
