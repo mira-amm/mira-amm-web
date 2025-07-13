@@ -113,6 +113,17 @@
       };
     };
 
+    "🏗 build docs" = {
+      exec = "pnpm nx build docs";
+      process-compose = {
+        description = "📚 Docs | 4000 | docs.mira.ly";
+        is_tty = true;
+        # ready_log_line = "Ready in";
+        namespace = "📦 DEPS";
+        disabled = true;
+      };
+    };
+
     "🏗 build mira-v1-ts" = {
       exec = "pnpm nx build mira-v1-ts";
       process-compose = {
