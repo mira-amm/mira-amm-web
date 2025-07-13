@@ -58,8 +58,8 @@ layout {
     tab name="🔍🤨 INSPECT" split_direction="vertical" {
         pane {
             name "🔌 API"
-            command "posting"
-            args "-e" "libs/api/posting/dev.env" "--collection" "libs/api/posting"
+            command "uvx"
+            args "--python" "3.13" "posting" "-e" "libs/api/posting/dev.env" "--collection" "libs/api/posting"
         }
         pane {
             name "💿 DATABASE"

@@ -9,6 +9,8 @@
   ];
 
   packages = with pkgs; [
+    curl
+    wget
     pulumi
     pulumi-esc
   ] ++ lib.optionals (stdenv.isLinux) [

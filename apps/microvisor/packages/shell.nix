@@ -2,8 +2,8 @@
 
 {
   packages = with pkgs; [
+    zsh
     eza
-    posting
     yazi
     ttyd
     zellij
