@@ -3,7 +3,7 @@ import type {GetProjectResult, GetDeploymentResult} from "@pulumiverse/vercel";
 import {PROJECTS, PROJECT_OUTPUTS, DEPLOYMENT_OUTPUTS, table} from "./config";
 import chalk from "chalk";
 
-const createHeader = () => {
+function createHeader(){
   table.push([
     {
       content: chalk.bold.yellowBright("🌐 Project"),
@@ -56,10 +56,10 @@ const createHeader = () => {
   ]);
 };
 
-const createProjectRow = (
+function createProjectRow(
   project: GetProjectResult,
   projectData: {name: string; emoji: string; domain: string},
-) => {
+){
   return [
     {
       content: `${projectData.emoji} ${chalk.bold.underline.yellow(projectData.name)}`,

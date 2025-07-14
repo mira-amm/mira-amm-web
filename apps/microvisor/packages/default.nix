@@ -13,6 +13,8 @@
     wget
     pulumi
     pulumi-esc
+    pulumiPackages.pulumi-nodejs
+    pulumiPackages.pulumi-command
   ] ++ lib.optionals (stdenv.isLinux) [
     vips
   ] ++ lib.optionals (stdenv.isDarwin && stdenv.isAarch64) [
