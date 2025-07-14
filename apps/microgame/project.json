@@ -1,9 +1,19 @@
 {
   "name": "microgame",
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
-  "sourceRoot": "apps/microgame/src",
+  "sourceRoot": "apps/microgame",
   "projectType": "application",
+  "implicitDependencies": [
+    "!libs/web"
+  ],
   "tags": [],
   "// targets": "to see all targets run: nx show project microgame --web",
-  "targets": {}
+  "targets": {
+    "dev:netlify": {
+      "command": "netlify dev",
+      "options": {
+        "cwd": "apps/microgame"
+      }
+    }
+  }
 }
