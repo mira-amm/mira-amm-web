@@ -1,11 +1,16 @@
 {
+  "extends": "../../tsconfig.base.json",
   "compilerOptions": {
     "jsx": "react-jsx",
     "allowJs": false,
     "esModuleInterop": false,
     "allowSyntheticDefaultImports": true,
     "strict": true,
-    "types": ["vite/client", "vitest", "@react-router/node"],
+    "types": [
+      "vite/client",
+      "vitest",
+      "@react-router/node"
+    ],
     "moduleResolution": "bundler"
   },
   "files": [],
@@ -18,5 +23,4 @@
       "path": "./tsconfig.spec.json"
     }
   ],
-  "extends": "../../tsconfig.base.json"
 }

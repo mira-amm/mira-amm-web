@@ -2,5 +2,6 @@
 command = "pnpm nx build microgame"
 publish = "apps/microgame/build/client"
 
-# [dev]
-# command = "react-router dev"
+[dev]
+command = "react-router dev"
+# targetPort = 4200
