@@ -11,16 +11,29 @@ const TWITTER_SCOPES = ["users.email", "users.read", "tweet.read"];
 export const baseConfig = {
   serverURL: BASE_URL,
   authCollection: "users",
-  successRedirect: (req: PayloadRequest) => {
-    const user = req.user;
-    // TODO: implement role-based-access-control
-    return user?.roles?.includes("admin") ? "/admin" : "/";
-  },
+successRedirect: (req: PayloadRequest) => {
+  const user = req.user;
+  const returnTo = req.query.returnTo as string;
+
+  // TODO: create whitelisted URLs
+  if (returnTo && returnTo.startsWith("/") && !returnTo.startsWith("//")) {
+    return `http://localhost:4200${returnTo}`;
+  }
+
+  return user?.roles?.includes("admin")
+    ? `${process.env.ADMIN_LOCAL_URL}/admin`
+    : "http://localhost:4200/game";
+},
 
   failureRedirect: (req: PayloadRequest, err: unknown) => {
     req.payload.logger.error(err);
-    return "/";
-  },
+    const returnTo = req.query.returnTo as string;
+
+    // TODO: create whitelisted URLs
+    if (returnTo && returnTo.startsWith("/") && !returnTo.startsWith("//")) {
+      return `http://localhost:4200${returnTo}`;
+    }
+    },
 };
 
 export const twitterStrategyConfig = {

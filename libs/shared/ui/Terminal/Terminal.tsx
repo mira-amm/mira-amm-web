@@ -10,19 +10,17 @@ import {AuthenticatedTerminal} from "@/shared/ui/Terminal/AuthenticatedTerminal"
 import {MiniGame} from "@/shared/ui/Terminal/MiniGame";
 import { cn } from '@/shadcn-ui/utils'
 
-const Terminal = () => {
+export function Terminal(){
   const terminal = useTerminal();
   const { state, validatePassword, returnToTerminal } = terminal;
   const [passwordError, setPasswordError] = useState(false);
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      // Handle Escape key to return to main terminal from game
       if (e.key === "Escape" && state.currentView === "game") {
         returnToTerminal();
       }
 
-      // Handle Enter key to return to main terminal from notes or timer
       if (e.key === "Enter" && (state.currentView === "notes" || state.currentView === "timer")) {
         returnToTerminal();
       }
@@ -61,5 +59,3 @@ const Terminal = () => {
     </div>
   );
 };
-
-export default Terminal;
