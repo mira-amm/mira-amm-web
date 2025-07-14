@@ -43,8 +43,8 @@
       }
     },
     "build": {
+      "command": "tsx scripts/build.ts",
       "cache": true,
-      "command": "tsc",
       "options": {
         "cwd": "libs/mira-v1-ts"
       }
