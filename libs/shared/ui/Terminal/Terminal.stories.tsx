@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react'
-import Terminal from './Terminal'
+import { Terminal } from './Terminal'
 
 const meta = {
   title: '🕹 Admin/Terminal',
