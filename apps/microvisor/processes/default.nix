@@ -43,7 +43,7 @@
       };
     };
 
-    "🕹 dev microgame" = {
+    "🕹  dev microgame" = {
       exec = "pnpm nx dev microgame";
       process-compose = {
         is_tty = true;
@@ -132,7 +132,7 @@
       };
     };
 
-    "🏗 build docs" = {
+    "🏗  build docs" = {
       exec = "pnpm nx build docs";
       process-compose = {
         description = "📚 Docs | 4000 | docs.mira.ly";
@@ -143,7 +143,7 @@
       };
     };
 
-    "🏗 build mira-v1-ts" = {
+    "🏗  build mira-v1-ts" = {
       exec = "pnpm nx build mira-v1-ts";
       process-compose = {
         description = "🔌 TypeScript SDK";
@@ -171,7 +171,7 @@
       };
     };
 
-    "🏛 dev arch" = {
+    "🏛  dev arch" = {
       exec = "pnpm nx dev arch";
       process-compose = {
         description = "🏛 Architecture | 5173 | arch.mira.ly";
@@ -197,7 +197,7 @@
       };
     };
 
-    "🕹 console" = {
+    "🕹  console" = {
       exec        = ''
          ttyd --writable --browser --url-arg --once devenv up
       '';
@@ -253,7 +253,7 @@
       };
     };
 
-    "🏗 build api" = {
+    "🏗  build api" = {
       exec = "pnpm nx build api";
       process-compose = {
         description = "🧩 Core API | Build";
@@ -290,7 +290,7 @@
       };
     };
 
-    "🌪 clean; pnpm i; doctor" = {
+    "🌪  clean; pnpm i; doctor" = {
       exec = "pri";
       process-compose = {
         description = "🧹 Re-install pnpm packages";
