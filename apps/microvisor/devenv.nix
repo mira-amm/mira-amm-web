@@ -1,12 +1,4 @@
 {
-  pkgs,
-  lib,
-  config,
-  inputs,
-  ...
-}:
-
-{
   name = "🧮 microvisor 🧮";
 
   imports = [
