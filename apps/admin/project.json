@@ -1,9 +1,6 @@
 {
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "name": "admin",
-  "metadata": {
-    "description": "Terminal minigame created ahead of the microchain launch."
-  },
   "sourceRoot": "apps/admin/src",
   "implicitDependencies": [
     "!libs/web"
@@ -12,7 +9,7 @@
   "tags": [],
   "targets": {
     "dev": {
-      "command": "chafa ../../libs/shared/assets/charthouse-labs-symbol.png; next dev -p $ADMIN_DEV_SERVER_PORT",
+      "command": "next dev -p $ADMIN_DEV_SERVER_PORT",
       "options": {
         "cwd": "apps/admin",
         "env": {
@@ -24,76 +21,85 @@
       "dependsOn": [
         "build",
       ],
-      "command": "cross-env NODE_OPTIONS=--no-deprecation next start -p $ADMIN_DEV_SERVER_PORT",
+      "command": "next start -p $ADMIN_DEV_SERVER_PORT",
       "options": {
-        "cwd": "apps/admin"
+        "cwd": "apps/admin",
+        "env": {
+          "NODE_OPTIONS": "--no-deprecation"
+        },
       }
     },
     "build": {
-      "command": "cross-env NODE_OPTIONS=--no-deprecation next build",
+      "command": "next build",
       "cache": true,
       "options": {
         "cwd": "apps/admin",
-      }
-    },
-    "lint": {
-      "command": "cross-env NODE_OPTIONS=--no-deprecation next lint",
-      "options": {
-        "cwd": "apps/admin"
+        "env": {
+          "NODE_OPTIONS": "--no-deprecation"
+        },
       }
     },
     "payload": {
-      "command": "cross-env NODE_OPTIONS=--no-deprecation payload",
+      "command": "payload",
       "options": {
-        "cwd": "apps/admin"
+        "cwd": "apps/admin",
+        "env": {
+          "NODE_OPTIONS": "--no-deprecation"
+        },
       }
     },
     "importmap": {
-      "command": "cross-env NODE_OPTIONS=--no-deprecation payload generate:importmap",
+      "command": "payload generate:importmap",
       "options": {
-        "cwd": "apps/admin"
+        "cwd": "apps/admin",
+        "env": {
+          "NODE_OPTIONS": "--no-deprecation"
+        },
       }
     },
     "migrate:run": {
-      "command": "cross-env NODE_OPTIONS=--no-deprecation payload migrate",
+      "command": "payload migrate",
       "options": {
-        "cwd": "apps/admin"
+        "cwd": "apps/admin",
+        "env": {
+          "NODE_OPTIONS": "--no-deprecation"
+        },
       }
     },
     "migrate:create": {
-      "command": "cross-env NODE_OPTIONS=--no-deprecation payload migrate:create",
+      "command": "payload migrate:create",
       "options": {
-        "cwd": "apps/admin"
+        "cwd": "apps/admin",
+        "env": {
+          "NODE_OPTIONS": "--no-deprecation"
+        },
       }
     },
     "migrate:status": {
-      "command": "cross-env NODE_OPTIONS=--no-deprecation payload migrate:status",
+      "command": "payload migrate:status",
       "options": {
-        "cwd": "apps/admin"
-      }
-    },
-    "migrate:down": {
-      "command": "cross-env NODE_OPTIONS=--no-deprecation payload migrate:down",
-      "options": {
-        "cwd": "apps/admin"
-      }
-    },
-    "migrate:refresh": {
-      "command": "cross-env NODE_OPTIONS=--no-deprecation payload migrate:refresh",
-      "options": {
-        "cwd": "apps/admin"
-      }
-    },
-    "migrate:reset": {
-      "command": "cross-env NODE_OPTIONS=--no-deprecation payload migrate:reset",
-      "options": {
-        "cwd": "apps/admin"
+        "cwd": "apps/admin",
+        "env": {
+          "NODE_OPTIONS": "--no-deprecation"
+        },
       }
     },
     "migrate:fresh": {
-      "command": "cross-env NODE_OPTIONS=--no-deprecation payload migrate:fresh",
+      "command": "payload migrate:fresh",
       "options": {
-        "cwd": "apps/admin"
+        "cwd": "apps/admin",
+        "env": {
+          "NODE_OPTIONS": "--no-deprecation"
+        },
+      }
+    },
+    "migrate:down": {
+      "command": "payload migrate:down",
+      "options": {
+        "cwd": "apps/admin",
+        "env": {
+          "NODE_OPTIONS": "--no-deprecation"
+        },
       }
     },
   }
