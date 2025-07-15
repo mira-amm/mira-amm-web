@@ -6,6 +6,7 @@
  * and re-run `payload generate:db-schema` to regenerate this file.
  */
 
+import type {} from "@payloadcms/db-postgres";
 import {
   pgTable,
   index,
@@ -277,6 +278,34 @@ export const users_roles = pgTable(
       columns: [columns["parent"]],
       foreignColumns: [users.id],
       name: "users_roles_parent_fk",
+    }).onDelete("cascade"),
+  }),
+);
+
+export const users_sessions = pgTable(
+  "users_sessions",
+  {
+    _order: integer("_order").notNull(),
+    _parentID: integer("_parent_id").notNull(),
+    id: varchar("id").primaryKey(),
+    createdAt: timestamp("created_at", {
+      mode: "string",
+      withTimezone: true,
+      precision: 3,
+    }),
+    expiresAt: timestamp("expires_at", {
+      mode: "string",
+      withTimezone: true,
+      precision: 3,
+    }).notNull(),
+  },
+  (columns) => ({
+    _orderIdx: index("users_sessions_order_idx").on(columns._order),
+    _parentIDIdx: index("users_sessions_parent_id_idx").on(columns._parentID),
+    _parentIDFk: foreignKey({
+      columns: [columns["_parentID"]],
+      foreignColumns: [users.id],
+      name: "users_sessions_parent_id_fk",
     }).onDelete("cascade"),
   }),
 );
@@ -880,6 +909,13 @@ export const relations_users_roles = relations(users_roles, ({one}) => ({
     relationName: "roles",
   }),
 }));
+export const relations_users_sessions = relations(users_sessions, ({one}) => ({
+  _parentID: one(users, {
+    fields: [users_sessions._parentID],
+    references: [users.id],
+    relationName: "sessions",
+  }),
+}));
 export const relations_users = relations(users, ({one, many}) => ({
   roles: many(users_roles, {
     relationName: "roles",
@@ -888,6 +924,9 @@ export const relations_users = relations(users, ({one, many}) => ({
     fields: [users.avatar],
     references: [media.id],
     relationName: "avatar",
+  }),
+  sessions: many(users_sessions, {
+    relationName: "sessions",
   }),
 }));
 export const relations_payload_locked_documents_rels = relations(
@@ -1090,6 +1129,7 @@ type DatabaseSchema = {
   media: typeof media;
   games: typeof games;
   users_roles: typeof users_roles;
+  users_sessions: typeof users_sessions;
   users: typeof users;
   payload_locked_documents: typeof payload_locked_documents;
   payload_locked_documents_rels: typeof payload_locked_documents_rels;
@@ -1113,6 +1153,7 @@ type DatabaseSchema = {
   relations_media: typeof relations_media;
   relations_games: typeof relations_games;
   relations_users_roles: typeof relations_users_roles;
+  relations_users_sessions: typeof relations_users_sessions;
   relations_users: typeof relations_users;
   relations_payload_locked_documents_rels: typeof relations_payload_locked_documents_rels;
   relations_payload_locked_documents: typeof relations_payload_locked_documents;
