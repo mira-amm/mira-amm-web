@@ -1,8 +1,6 @@
 # TODO: check out community.flake.parts/services-flake/llm
 {
   pkgs,
-  lib,
-  config,
   inputs,
   ...
 }:
@@ -10,10 +8,14 @@
 {
   overlays = [
     (final: prev: {
-      open-webui = (import inputs.nixpkgs-unstable {
-        system = prev.stdenv.system;
-        config.allowUnfree = true;
-      }).open-webui;
+      open-webui =
+        (import inputs.nixpkgs-unstable {
+          system = prev.stdenv.system;
+          config = {
+            allowUnfree = true;
+            allowBroken = true;
+          };
+        }).open-webui;
     })
   ];
   packages = with pkgs; [

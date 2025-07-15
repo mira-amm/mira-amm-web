@@ -6,11 +6,13 @@
     package = pkgs.postgresql_17;
     port = 54322;
     listen_addresses = "*";
-    initialDatabases = [{
-      name = "postgres";
-      user = "postgres";
-      pass = "postgres";
-    }];
+    initialDatabases = [
+      {
+        name = "postgres";
+        user = "postgres";
+        pass = "postgres";
+      }
+    ];
     # hbaConf = "pg_hba.conf";
     settings = {
       shared_buffers = "128MB";
@@ -24,5 +26,12 @@
       lc_time = "en_US.UTF-8";
       default_text_search_config = "pg_catalog.english";
     };
+    extensions =
+      extensions: with extensions; [
+        pgvector
+        pgsodium
+        plpgsql_check
+        # pgvectorscale
+      ];
   };
 }
