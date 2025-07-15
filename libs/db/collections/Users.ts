@@ -39,23 +39,23 @@ export const Users: CollectionConfig = {
   },
   fields: [
     {
-      type:"row",
+    type:"row",
     fields:[
     {
       type: "collapsible",
       label: ({ data }) => data?.title || "Personal Information",
       fields: [
-{
-name: "roles",
-type: "select",
-defaultValue: ["user"],
-hasMany: true,
-options: [
-{label: "admin", value: "admin",},
-{label: "user", value: "user",},
-],
-saveToJWT: true,
-},
+        {
+        name: "roles",
+        type: "select",
+        defaultValue: ["user"],
+        hasMany: true,
+        options: [
+          {label: "admin", value: "admin",},
+          {label: "user", value: "user",},
+        ],
+        saveToJWT: true,
+        },
         { name: "name", type: "text", label: "Name" },
         {name: "avatar", type: "upload", relationTo: "media", label: "Avatar"},
       ]},
@@ -115,14 +115,6 @@ export async function seedUsers(payload: Payload, req: PayloadRequest) {
     mediaUrl:
       "https://avatars.githubusercontent.com/u/13684960?v=4",
     walletAddress: "0x4e8d5D93E8Efa7cB6a22f8Fa728Dcb16eB6D9D5A"
-  },
-  {
-    name: "Amal Josea",
-    email: "amal.josea@microchain.systems",
-    xUserName: "joseamal07",
-    mediaUrl:
-      "https://avatars.githubusercontent.com/u/26934320?v=4",
-    walletAddress: "0x6bFd3Cb891aef1Df51F8d2b25D4FbAdB726fe9b7"
   },
   {
     name: "Mattias Lightstone",

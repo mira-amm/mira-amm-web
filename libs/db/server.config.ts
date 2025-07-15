@@ -1,7 +1,7 @@
 // github.com/jhb-software/payload-plugins/tree/main/geocoding
 /* eslint-disable node/prefer-global/process */
 
-import {type Payload} from "payload";
+import {PayloadRequest, type Payload} from "payload";
 import sharp from "sharp";
 
 import {seed} from "@/db/seed";
@@ -148,7 +148,7 @@ export const dbConfig = {
 };
 
 export const serverConfig = {
-  onInit: async (payload: Payload) => {
+  onInit: async (payload: Payload, req: PayloadRequest) => {
     const {totalDocs} = await payload.count({
       collection: "users",
       where: {
@@ -159,7 +159,7 @@ export const serverConfig = {
     });
 
     if (!totalDocs) {
-      seed({payload});
+      seed({payload, req});
     }
   },
   debug: true,

@@ -38,13 +38,13 @@
     "types": {
       "command": "cross-env NODE_OPTIONS=--no-deprecation payload generate:types",
       "options": {
-        "cwd": "apps/microgame"
+        "cwd": "apps/admin"
       }
     },
     "schema": {
       "command": "cross-env NODE_OPTIONS=--no-deprecation payload generate:db-schema",
       "options": {
-        "cwd": "apps/microgame"
+        "cwd": "apps/admin"
       }
     }
   }
