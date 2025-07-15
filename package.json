@@ -195,7 +195,6 @@
     "cli-table3": "^0.6.5",
     "commitizen": "^4.3.1",
     "commitlint": "^19.8.0",
-    "cross-env": "^7.0.3",
     "decimal.js": "^10.5.0",
     "dotenv": "^16.5.0",
     "drizzle-kit": "0.31.2",

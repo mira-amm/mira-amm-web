@@ -36,15 +36,21 @@
       }
     },
     "types": {
-      "command": "cross-env NODE_OPTIONS=--no-deprecation payload generate:types",
+      "command": "payload generate:types",
       "options": {
-        "cwd": "apps/admin"
+        "cwd": "apps/admin",
+        "env": {
+          "NODE_OPTIONS": "--no-deprecation"
+        },
       }
     },
     "schema": {
-      "command": "cross-env NODE_OPTIONS=--no-deprecation payload generate:db-schema",
+      "command": "payload generate:db-schema",
       "options": {
-        "cwd": "apps/admin"
+        "cwd": "apps/admin",
+        "env": {
+          "NODE_OPTIONS": "--no-deprecation"
+        },
       }
     }
   }
