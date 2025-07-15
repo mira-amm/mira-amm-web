@@ -1,26 +1,39 @@
 import {Command} from "commander";
-import * as dotenv from "dotenv";
 import {cleanEnv, str} from "envalid";
-import {Address, formatUnits, Provider, TransactionRequestLike, TxParams, WalletUnlocked} from "fuels";
-import {buildPoolId, getAssetId, MiraAmm, ReadonlyMiraAmm} from "../../src";
+
+import {
+  Address,
+  formatUnits,
+  Provider,
+  TransactionRequestLike,
+  TxParams,
+  WalletUnlocked
+} from "fuels";
+
+import {
+  buildPoolId,
+  getAssetId,
+  MiraAmm,
+  ReadonlyMiraAmm
+} from "mira-dex-ts";
+
 import {futureDeadline} from "./utils";
 
 const FALLBACK_RPC = "https://testnet.fuel.network/v1/graphql";
 
-dotenv.config();
-
 const {SECRET_KEY, RPC, CONTRACT_ADDRESS} = cleanEnv(process.env, {
   SECRET_KEY: str({default: ""}),
-  CONTRACT_ADDRESS: str({default: ""}),
+  CONTRACT_ADDRESS: str({default: "0x2E40F2b244B98ed6B8204B3De0156C6961f98525c8162f80162fCF53EEBd90E7"}),
   RPC: str({default: FALLBACK_RPC}),
 });
 
 const program = new Command();
 
-const provider = await Provider.create(RPC);
+const provider = new Provider(RPC);
 const wallet = new WalletUnlocked(SECRET_KEY, provider);
 const mira = new MiraAmm(wallet, CONTRACT_ADDRESS);
 const readonlyMira = new ReadonlyMiraAmm(provider, CONTRACT_ADDRESS);
+
 const txParams: TxParams = {
   gasLimit: 999_999,
   maxFee: 999_999,
