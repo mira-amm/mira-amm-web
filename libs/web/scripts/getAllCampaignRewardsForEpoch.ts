@@ -1,10 +1,7 @@
-// This script fetches all user rewards for a given epochNumber based on src/models/campaigns.json
-
 import {JSONEpochConfigService} from "../src/models/campaigns/JSONEpochConfigService";
 import {loadFile} from "../src/utils/fileLoader";
 import {writeFileSync, readFileSync} from "fs";
 import path from "path";
-import dotenv from "dotenv";
 import {Decimal} from "decimal.js";
 
 // CONSTANT DECLARATION
@@ -18,17 +15,12 @@ const ORDERED_CSV_SUFFIX = "-ordered.csv";
 const UNAGGREGATED_CSV_SUFFIX = "-unaggregated.csv";
 const AGGREGATED_CSV_SUFFIX = "-aggregated.csv";
 
-// INTERFACE DECLARATION
 interface HourlyUserShare {
   distinct_id: string;
   hourly_user_share: number;
 }
 
-// load env variables from .env file
-dotenv.config();
-
 async function main() {
-  //load campaign data
   const campaignPoolRewardsPerUserPerHourQuery = loadFile(
     path.join(
       process.cwd(),
