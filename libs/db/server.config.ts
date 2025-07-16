@@ -9,7 +9,7 @@ import {seed} from "@/db/seed";
 // import { formBuilderPlugin } from '@payloadcms/plugin-form-builder'
 import {resendAdapter} from "@payloadcms/email-resend";
 import {postgresAdapter} from "@payloadcms/db-postgres";
-import {sqliteAdapter} from "@payloadcms/db-sqlite";
+// import {sqliteAdapter} from "@payloadcms/db-sqlite";
 import {s3Storage} from "@payloadcms/storage-s3";
 
 import {openapi, swaggerUI, redoc, rapidoc} from "payload-oapi";
@@ -131,15 +131,17 @@ export const dbConfig = {
       },
     }),
   ],
-  db: process.env.SQLITE
-    ? sqliteAdapter({
-        client: {
-          url: "file:../../libs/db/sqlite.db",
-          // authToken: process.env.DATABASE_AUTH_TOKEN,
-        },
-        generateSchemaOutputFile: "../../libs/db/schema.ts", // resolves from location of payload.config.ts
-      })
-    : postgresAdapter({
+  // HACK: failing deployments on vercel due to 'Error: Cannot find module 'libsql'
+  // db: process.env.SQLITE
+  //   ? sqliteAdapter({
+  //       client: {
+  //         url: "file:../../libs/db/sqlite.db",
+  //         // authToken: process.env.DATABASE_AUTH_TOKEN,
+  //       },
+  //       generateSchemaOutputFile: "../../libs/db/schema.ts", // resolves from location of payload.config.ts
+  //     })
+    // : postgresAdapter({
+  db : postgresAdapter({
         pool: {
           connectionString: process.env.DATABASE_URI,
         },

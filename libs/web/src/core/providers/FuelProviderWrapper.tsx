@@ -16,13 +16,6 @@ import {mainnet} from "@wagmi/core/chains";
 import {walletConnect} from "@wagmi/connectors";
 import {NetworkUrl} from "@/src/utils/constants";
 
-const networks: Array<Network> = [
-  {
-    chainId: CHAIN_IDS.fuel.mainnet,
-    url: NetworkUrl,
-  },
-];
-
 // Creates a protection for SRR
 const FUEL_CONFIG = createFuelConfig(() => {
   const WalletConnectProjectId = "35b967d8f17700b2de24f0abee77e579";
@@ -48,14 +41,10 @@ const FUEL_CONFIG = createFuelConfig(() => {
 
   const fuelProvider = new Provider(NetworkUrl);
 
-  const externalConnectorConfig:
-    Partial<{
-  chainId: number;
-  fuelProvider: Provider;
-}> = {
-    chainId: CHAIN_IDS.fuel.mainnet,
-    fuelProvider,
-  };
+  const externalConnectorConfig: Partial<{
+    chainId: number;
+    fuelProvider: Provider;
+  }> = {chainId: CHAIN_IDS.fuel.mainnet, fuelProvider};
 
   const fueletWalletConnector = new FueletWalletConnector();
   const burnerWalletConnector = new BurnerWalletConnector({
@@ -84,12 +73,15 @@ const FUEL_CONFIG = createFuelConfig(() => {
   };
 });
 
-export function FuelProviderWrapper({children}: {
-  children: ReactNode;
-}){
+export function FuelProviderWrapper({children}: {children: ReactNode}) {
   return (
     <FuelProvider
-      networks={networks}
+      networks={[
+        {
+          chainId: CHAIN_IDS.fuel.mainnet,
+          url: NetworkUrl,
+        },
+      ]}
       fuelConfig={FUEL_CONFIG}
       uiConfig={{suggestBridge: false}}
       theme="dark"
@@ -97,4 +89,4 @@ export function FuelProviderWrapper({children}: {
       {children}
     </FuelProvider>
   );
-};
+}

@@ -1,5 +1,7 @@
 import { FC, useEffect, useRef } from "react";
 
+
+
 const noop = () => {};
 
 interface GameProps {
@@ -14,6 +16,16 @@ interface GameLauncherProps extends GameProps {
 }
 
 type GameState = "game" | "game-over" | "exit";
+
+
+export function BlindFear(props: GameProps) {
+  return <GameLauncher gameFileName="blind-fear" {...props} />;
+};
+
+
+export function Game(props: GameProps ){
+  return <BlindFear {...props} />;
+};
 
 const GameLauncher: FC<GameLauncherProps> = ({
   gameFileName,
@@ -102,15 +114,4 @@ const GameLauncher: FC<GameLauncherProps> = ({
 };
 
 GameLauncher.displayName = "GameLauncher";
-
-const BlindFear = (props: GameProps) => {
-  return <GameLauncher gameFileName="blind-fear" {...props} />;
-};
-
 GameLauncher.displayName = "BlindFear";
-
-const Game = (props: GameProps) => {
-  return <BlindFear {...props} />;
-};
-
-export { Game };

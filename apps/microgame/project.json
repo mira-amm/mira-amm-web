@@ -9,8 +9,23 @@
   "tags": [],
   "// targets": "to see all targets run: nx show project microgame --web",
   "targets": {
-    "dev:netlify": {
+    "netlify:dev": {
       "command": "netlify dev",
+      "options": {
+        "cwd": "apps/microgame"
+      }
+    },
+    "netlify:build": {
+      "command": "netlify build",
+      "options": {
+        "cwd": "apps/microgame"
+      }
+    },
+    "netlify:deploy": {
+      "dependsOn": [
+        "netlify:build"
+      ],
+      "command": "pnpm netlify deploy",
       "options": {
         "cwd": "apps/microgame"
       }
