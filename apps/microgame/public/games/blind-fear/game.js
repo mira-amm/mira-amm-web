@@ -3573,12 +3573,14 @@
           t)
         ) {
           case "game":
+            localStorage.setItem("game-status", "true")
             h = dt();
             break;
           case "menu":
             h = ct();
             break;
           case "game-over":
+            localStorage.setItem("game-status", "false")
             console.log("game-over", e),
               (h = (function ({ score: t = 0, previous: e = localStorage.getItem("hiScore") || 0 } = {}) {
                 U(["enter"], () => {
