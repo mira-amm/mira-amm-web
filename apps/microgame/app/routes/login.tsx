@@ -7,6 +7,7 @@ import { PasswordPrompt } from '@/shared/ui/Terminal/PasswordPrompt';
 export default function Login() {
   return (
     <>
+      {/* TODO: complete fuel wallet connection to get wallet address */}
         {/* <QueryClientProvider client={queryClient}>
             <FuelProviderWrapper> */}
               <BootSequence />

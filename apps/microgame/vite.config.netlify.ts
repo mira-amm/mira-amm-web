@@ -2,9 +2,11 @@
 import { reactRouter } from "@react-router/dev/vite";
 import tailwindcss from '@tailwindcss/vite';
 import { defineConfig } from "vite";
+// import tsconfigPaths from "vite-tsconfig-paths";
 import { reactRouterDevTools } from "react-router-devtools";
 import { nxViteTsPaths } from '@nx/vite/plugins/nx-tsconfig-paths.plugin';
 import { nxCopyAssetsPlugin } from '@nx/vite/plugins/nx-copy-assets.plugin';
+import netlifyPlugin from "@netlify/vite-plugin-react-router";
 
 export default defineConfig(() => {
   return {
@@ -23,7 +25,8 @@ export default defineConfig(() => {
       !process.env.VITEST && reactRouter(),
       nxViteTsPaths({ debug: true }),
       nxCopyAssetsPlugin(['*.md']),
-      tailwindcss()
+      tailwindcss(),
+      netlifyPlugin(),
     ],
     // Uncomment this if you are using workers.
     worker:  {

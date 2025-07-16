@@ -1,5 +1,5 @@
 [build]
-command = "pnpm nx build microgame"
+command = "react-router build -c apps/microgame/vite.config.netlify.ts"
 publish = "apps/microgame/build/client"
 
 [dev]

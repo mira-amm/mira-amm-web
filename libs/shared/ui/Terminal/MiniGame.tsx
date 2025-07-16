@@ -9,17 +9,44 @@ import { queryClient } from '@/shared/lib/queryClient'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { cn } from "@/shadcn-ui/utils";
 
+const API_URL = process.env.NODE_ENV === 'development'
+? "http://localhost:8000"
+: "https://admin.mira.ly";
+
 export const MiniGame = () => {
+
   const [searchInput, setSearchInput] = useState("");
   const [score, setScore] = useState(0);
+
+
+const [leaderboard, setLeaderboard] = useState<{
+  player: { name: string; walletAddress: string };
+  id: number;
+  score: number;
+}[]>([]);
+const [totalPages, setTotalPages] = useState(1);
+
+const fetchLeaderboardPage = async (page = 1) => {
+  try {
+    /* TODO: use idiomatic react-router 7 functions such loaders and actions instead to take advantage of SSR */
+    const res = await fetch(`${API_URL}/api/games?page=${page}&limit=10`, {
+      credentials: "include",
+    });
+    const data = await res.json();
+    setLeaderboard(data.docs);
+    setTotalPages(data.totalPages || 1);
+  } catch (err) {
+    console.error("Error fetching leaderboard:", err);
+  }
+};
 
   const navigate = useNavigate();
 
   const [user, setUser] = useState(null);
 
   useEffect(() => {
-    fetch('http://localhost:8000/api/users/me', {
-      credentials: 'include',
+   fetch(`${API_URL}/api/users/me`, {
+      credentials: "include",
     })
       .then(res => res.ok ? res.json() : null)
       .then(data => {
@@ -107,16 +134,55 @@ export const MiniGame = () => {
         />
       </div>
 
-      <div className="flex justify-center mb-2">
-        <div className="bg-black px-3 py-1 border border-terminal-green text-terminal-green font-mono font-bold">
+      <div className="flex flex-row justify-center mb-2">
+        <div className="flex bg-black px-3 py-1 border border-terminal-green text-terminal-green font-mono font-bold">
           CURRENT SCORE: {score}
-        <div className="text-right text-xs font-mono text-terminal-green mb-2">
+
+        <RainbowButton
+          size="lg"
+          className="hover:scale-110 text-white"
+          onClick={() => {
+            if (!user) {
+              alert("You must be logged in to submit a score.");
+              return;
+            }
+
+        fetch(`${API_URL}/api/games`, {
+          credentials: 'include',
+          method: 'POST',
+          headers: {
+            accept: "application/json",
+            "content-type": "application/json",
+          },
+          body: JSON.stringify({
+            player: user.id,
+            score: score,
+          })
+        })
+        .then((res) => {
+          if (!res.ok) throw new Error("Failed to submit score");
+          return res.json();
+        })
+        .then((data) => {
+          console.log("Score submitted successfully:", data);
+          alert("Score submitted!");
+        })
+        .catch((err) => {
+          console.error("Error submitting score:", err);
+          alert("Error submitting score.");
+        });
+      }}
+      >
+        Submit Score
+      </RainbowButton>
+
+        <div className="flex text-right text-xs font-mono text-terminal-green mb-2">
 
         {user ? (
           <div className="flex items-center justify-end space-x-2 mb-4">
             {user.avatar?.url && (
               <img
-                src={user.avatar.url}
+                src={`${process.env.NODE_ENV === 'development' ? '' : API_URL}${user.avatar.url}`}
                 alt={user.avatar.alt || user.name || "User"}
                 className="w-8 h-8 rounded-full border border-terminal-green"
               />
@@ -126,12 +192,13 @@ export const MiniGame = () => {
             </span>
           </div>
         ):
+
       <RainbowButton
         size="lg"
         className="hover:scale-110"
         onClick={() => {
           const returnTo = encodeURIComponent(window.location.pathname);
-          window.location.href = `http://localhost:8000/api/users/oauth/twitter?returnTo=${returnTo}`;
+          window.location.href = `${API_URL}/api/users/oauth/twitter?returnTo=${returnTo}`;
         }}
       >
         <img
@@ -157,55 +224,62 @@ export const MiniGame = () => {
 
 
       {/* Leaderboard */}
-      <PaginationContextProvider
-        initialPage={1}
-        fetchData={async () => {}}
-        pageSize={50}
-      >
-        {({ currentPage, setCurrentPage }) => (
-          <>
-            <div className="mt-8 border border-6 border-terminal-green p-2 bg-black/10">
-              <div className="text-terminal-green font-bold mb-2 text-center border-b border-b-terminal-green pb-2 flex items-center justify-between relative">
-                <div />
-                <p>== TOP PLAYERS LEADERBOARD ==</p>
-                <div className="flex items-center">
-                  <Input
-                    className="h-8 w-48 absolute right-0 border border-terminal-green/50 hover:border-terminal-green focus:border-terminal-green bg-terminal-bg text-terminal-green placeholder:text-terminal-green focus:ring-0"
-                    placeholder="Search..."
-                    onChange={(e) => setSearchInput(e.target.value)}
-                    value={searchInput}
-                  />
+        <PaginationContextProvider
+          initialPage={1}
+          pageSize={10}
+          fetchData={async (page) => {
+            await fetchLeaderboardPage(page);
+          }}
+        >
+          {({ currentPage, setCurrentPage }) => (
+            <>
+              <div className="mt-8 border border-6 border-terminal-green p-2 bg-black/10">
+                <div className="text-terminal-green font-bold mb-2 text-center border-b border-b-terminal-green pb-2 flex items-center justify-between relative">
+                  <div />
+                  <p>== TOP PLAYERS LEADERBOARD ==</p>
+                  <div className="flex items-center">
+                    <Input
+                      className="h-8 w-48 absolute right-0 border border-terminal-green/50 hover:border-terminal-green focus:border-terminal-green bg-terminal-bg text-terminal-green placeholder:text-terminal-green focus:ring-0"
+                      placeholder="Search..."
+                      onChange={(e) => setSearchInput(e.target.value)}
+                      value={searchInput}
+                    />
+                  </div>
                 </div>
-              </div>
 
-              {MOCK_LEADERBOARD.map((entry, index) => (
-                <div
-                  key={entry.id}
-                  className="grid grid-cols-4 items-center gap-4 border-b border-dashed border-terminal-green/30 py-2"
-                >
-                  <div className="flex items-center space-x-2">
-                    <span className="text-terminal-blue font-bold">
-                      {index + 1}.
-                    </span>
-                    <span className="text-terminal-red font-bold truncate animate-flicker-slow">
-                      {entry.player.name}
+                {leaderboard
+                  .filter((entry) =>
+                    entry.player.name.toLowerCase().includes(searchInput.toLowerCase())
+                  )
+                  .map((entry, index) => (
+                    <div
+                      key={entry.id}
+                      className="grid grid-cols-4 items-center gap-4 border-b border-dashed border-terminal-green/30 py-2"
+                    >
+                      <div className="flex items-center space-x-2">
+                        <span className="text-terminal-blue font-bold">{index + 1}.</span>
+                        <span className="text-terminal-red font-bold truncate animate-flicker-slow">
+                          {entry.player.name}
+                        </span>
+                      </div>
+                      <span className="text-terminal-blue font-bold truncate animate-flicker-slow">
+                        {entry.player.walletAddress}
+                      </span>
+                      <span className="text-terminal-green font-bold text-right col-start-4 justify-self-end">
+                      {entry.score}
                     </span>
                   </div>
-                  <span className="text-terminal-blue font-bold truncate animate-flicker-slow">
-                    {entry.player.walletAddress}
-                  </span>
-                  <span className="text-terminal-green font-bold text-right col-start-4 justify-self-end">
-                    {entry.score}
-                  </span>
-                </div>
-              ))}
+                ))}
             </div>
 
             <div className="mt-4 flex justify-center">
               <Pagination
                 currentPage={currentPage}
-                onChange={setCurrentPage}
-                totalPages={1}
+                onChange={(page) => {
+                  setCurrentPage(page);
+                  fetchLeaderboardPage(page);
+                }}
+                totalPages={totalPages}
               />
             </div>
           </>
@@ -222,93 +296,4 @@ export const MiniGame = () => {
         </QueryClientProvider>
   );
 };
-
-interface LeaderboardEntry {
-  player: { name: string; walletAddress: string };
-  id: number;
-  score: number;
-}
-
-const MOCK_LEADERBOARD = [
-  {
-    id: 34,
-    player: {
-      name: "Derek Dino",
-      walletAddress: "0x4e8d5D93E8Efa7cB6a22f8Fa728Dcb16eB6D9D5A",
-    },
-    score: 3100,
-  },
-  {
-    id: 2,
-    player: {
-      name: "Mattias Lightstone",
-      walletAddress: "0xD93fEb0D9Bd8cBBc38E51F3C03CcDcFec5A49c35",
-    },
-    score: 3000,
-  },
-  {
-    id: 25,
-    player: {
-      name: "Mumtahin Farabi",
-      walletAddress: "0x0b7A0EDAfCDE2c7B93f8c1b44A85c167aFE4C654",
-    },
-    score: 2800,
-  },
-  {
-    id: 1,
-    player: {
-      name: "Kate Kharitonova",
-      walletAddress: "0xA3f91eC0B5a14cBc8f9a6CdbAf7B6E1eF6A8F1B3",
-    },
-    score: 2000,
-  },
-  {
-    id: 20,
-    player: {
-      name: "Derek Dino",
-      walletAddress: "0x4e8d5D93E8Efa7cB6a22f8Fa728Dcb16eB6D9D5A",
-    },
-    score: 1750,
-  },
-  /* {
-*   id: 46,
-*   player: {
-*     name: "Mumtahin Farabi",
-*     walletAddress: "0x0b7A0EDAfCDE2c7B93f8c1b44A85c167aFE4C654",
-*   },
-*   score: 1550,
-* },
-* {
-*   id: 24,
-*   player: {
-*     name: "Fossil Frank",
-*     walletAddress: "0x9cC0F3a77EfAe92F2Be57d47fCb9FbB23c45e9Fd",
-*   },
-*   score: 1330,
-* },
-* {
-*   id: 41,
-*   player: {
-*     name: "Derek Dino",
-*     walletAddress: "0x4e8d5D93E8Efa7cB6a22f8Fa728Dcb16eB6D9D5A",
-*   },
-*   score: 1150,
-* },
-* {
-*   id: 11,
-*   player: {
-*     name: "Mumtahin Farabi",
-*     walletAddress: "0x0b7A0EDAfCDE2c7B93f8c1b44A85c167aFE4C654",
-*   },
-*   score: 1100,
-* },
-* {
-*   id: 48,
-*   player: {
-*     name: "Derek Dino",
-*     walletAddress: "0x4e8d5D93E8Efa7cB6a22f8Fa728Dcb16eB6D9D5A",
-*   },
-*   score: 1010,
-* }, */
-];
 

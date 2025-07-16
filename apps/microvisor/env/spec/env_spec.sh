@@ -23,6 +23,7 @@ End
 
 Describe "🔑 Secrets should be defined and present:"
 Parameters
+"DATABASE_URI"
 "SENTIO_API_KEY"
 "PAYLOAD_SECRET"
 End
@@ -35,7 +36,7 @@ End
 
 Describe "🖥 The Environment Variables should be defined as:"
 Parameters
-"DATABASE_URI" "postgresql://postgres:postgres@127.0.0.1:54322/postgres"
+# "DATABASE_URI" "postgresql://postgres:postgres@127.0.0.1:54322/postgres"
 "SENTIO_API_URL" "https://app.sentio.xyz/api/v1/analytics/fuellabs/mira-mainnet/sql/execute"
 "NX_VERBOSE_LOGGING" true
 "NEXT_PUBLIC_ENABLE_AUTOLOGIN" "true"

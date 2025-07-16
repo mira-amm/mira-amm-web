@@ -25,7 +25,7 @@ export const Users: CollectionConfig = {
   },
   admin: {
     livePreview: {
-      url: process.env.NODE_ENV === "development" ? 'http://localhost:8000' : 'https://microgame.mira.ly',
+      url: process.env.NODE_ENV === "development" ? 'http://localhost:4200/game' : 'https://microgame-mira.netlify.app/game',
       breakpoints: [
         {label: "Mobile", name: "mobile", width: 320, height: 568},
       ],
@@ -123,6 +123,14 @@ export async function seedUsers(payload: Payload, req: PayloadRequest) {
     mediaUrl:
       "https://avatars.githubusercontent.com/u/19267314?v=4",
     walletAddress: "0xD93fEb0D9Bd8cBBc38E51F3C03CcDcFec5A49c35"
+  },
+  {
+    name: "Gbolahan Olawuyi",
+    xUserName: "gbolahano_",
+    email: "gbolahan@microchain.systems",
+    mediaUrl:
+      "https://avatars.githubusercontent.com/u/29716778?v=4",
+    walletAddress: "0xA93fEb0D8Cd8cBBc38E51F3C03CcDcFec5A49c45"
   },
   {
     name: "Mumtahin Farabi",
