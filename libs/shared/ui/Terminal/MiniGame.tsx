@@ -7,6 +7,7 @@ import { Input } from "@/shared/ui/input";
 import { Game } from "@/shared/ui/Game/Game";
 import { queryClient } from '@/shared/lib/queryClient'
 import { QueryClientProvider } from '@tanstack/react-query'
+import { cn } from "@/shadcn-ui/utils";
 
 export const MiniGame = () => {
   const [searchInput, setSearchInput] = useState("");
@@ -40,8 +41,24 @@ export const MiniGame = () => {
     };
   }, [navigate]);
 
+  const [shouldNotOverflow, setShouldNotOverflow] = useState(false)
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      const status = localStorage.getItem("game-status");
+      if (status === "true") {
+        setShouldNotOverflow(true);
+      } else {
+        setShouldNotOverflow(false);
+      }
+    }, 1000);
+
+    return () => clearInterval(interval);
+  }, []);
+
   return (
         <QueryClientProvider client={queryClient}>
+      <div className={cn("h-full pr-4", shouldNotOverflow && "overflow-y-hidden")}>
       {/* Title & Instructions */}
       <div className="mb-4 border-b border-b-6 border-double border-b-terminal-blue pb-2">
         <div className="flex items-center mb-2">
@@ -200,6 +217,7 @@ export const MiniGame = () => {
         <p className="text-terminal-green font-bold">
           {"> PRESS [ ESC ] TO EXIT SIMULATOR"}
         </p>
+        </div>
         </div>
         </QueryClientProvider>
   );
