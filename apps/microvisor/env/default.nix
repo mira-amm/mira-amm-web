@@ -7,7 +7,7 @@
 
 {
   imports = [
-   ./db.nix
+    ./db.nix
   ];
 
   # NOTE: existing env vars in devenv.nix will have priority
@@ -24,10 +24,11 @@
     #====================================================
     # SUPABASE="true"; # Requires Docker
     # SQLITE="true";
-    NX_TUI="false";
+    NX_TUI = "false";
     NX_VERBOSE_LOGGING = "true";
     NEXT_PUBLIC_ENABLE_AUTOLOGIN = "true";
     NEXT_PUBLIC_ENABLE_REBRAND_UI = "false";
+    NEXT_PUBLIC_ENABLE_GLITCH_SCAVENGER_HUNT = "false";
     # TERM = "xterm-256color";
     ZELLIJ_AUTO_ATTACH = "true";
     ZELLIJ_AUTO_EXIT = "true";
