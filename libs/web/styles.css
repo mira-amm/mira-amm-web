@@ -52,18 +52,6 @@
 }
 
 @layer base {
-  /* Ensure dark mode styles are always applied */
-  * {
-    color-scheme: dark;
-  }
-
-  /* Override any light mode preferences */
-  @media (prefers-color-scheme: light) {
-    :root {
-      color-scheme: dark;
-    }
-  }
-
   :root {
     --page-background: #fdfdfd;
     --background-primary: #0e111e;
