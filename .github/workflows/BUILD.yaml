@@ -57,3 +57,5 @@ jobs:
       - name: 🛞 Build Admin
         run: pnpm nx build admin --verbose
 
+      - name: 🕹 Build Microgame
+        run: pnpm nx build microgame --verbose
