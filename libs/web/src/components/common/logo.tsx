@@ -3,7 +3,7 @@ import {LogoIcon} from "@/meshwave-ui/icons";
 import {FeatureGuard} from "./feature-guard";
 import {LogoNew} from "./logo-new";
 
-export function Logo() {
+export function Logo({isFooter = false}: {isFooter?: boolean}) {
   return (
     <FeatureGuard
       fallback={
@@ -15,7 +15,7 @@ export function Logo() {
         </Link>
       }
     >
-      <LogoNew />
+      <LogoNew isFooter={isFooter} />
     </FeatureGuard>
   );
 }

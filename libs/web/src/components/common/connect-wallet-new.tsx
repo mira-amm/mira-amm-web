@@ -13,7 +13,7 @@ import {
 } from "lucide-react";
 import {useWeb3Connection, useFormattedAddress} from "@/src/hooks";
 import {useEffect, useRef, useState} from "react";
-import { TransactionsHistory } from "./TransactionsHistory/TransactionsHistory";
+import {TransactionsHistory} from "./TransactionsHistory/TransactionsHistory";
 import {FuelAppUrl} from "@/src/utils/constants";
 import {openNewTab} from "@/src/utils/common";
 import {CopyNotification} from "./copy-notification";
@@ -73,7 +73,7 @@ export function ConnectWalletNew() {
           <div className="flex gap-x-3 p-3 rounded-[10px] justify-between bg-background-grey-dark dark:bg-background-grey-dark">
             <div className="">
               <div className="flex justify-between items-center mb-0.5">
-                <span>Power</span>
+                <span className="text-xs">Power</span>
                 <div className="h-2 w-5 bg-accent-primary-2"></div>
               </div>
               <Button
@@ -85,7 +85,7 @@ export function ConnectWalletNew() {
                 Connect
               </Button>
             </div>
-            <div className="bg-black rounded-[10px] text-accent-primary uppercase px-3 tracking-tight flex justify-center items-center text-sm">
+            <div className="w-[239.82px] bg-black rounded-[10px] font-(family-name:--font-jetbrains-mono) text-accent-primary uppercase px-3 tracking-tight flex justify-left items-center text-sm">
               No wallet connected
             </div>
           </div>
@@ -96,13 +96,13 @@ export function ConnectWalletNew() {
           <div className="flex gap-x-3 p-3 rounded-[10px] justify-between bg-background-grey-dark dark:bg-background-grey-dark">
             <div className="">
               <div className="flex justify-between items-center mb-0.5">
-                <span>Power</span>
-                <div className="h-2 w-5 bg-accent-primary"></div>
+                <span className="text-xs">Power</span>
+                <div className="h-2 w-5 bg-accent-primary shadow-[0_0_10px_#01ec97,0_0_20px_#01ec97aa]"></div>
               </div>
               <Button
                 onClick={disconnect}
                 size="xs"
-                className="rounded uppercase px-4 text-black"
+                className="bg-[#F95465] rounded uppercase px-4 text-black"
                 variant="destructive"
               >
                 Disconnect
@@ -110,7 +110,7 @@ export function ConnectWalletNew() {
             </div>
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <div className="bg-black rounded-[10px] text-accent-primary uppercase px-3 tracking-tight flex justify-center items-center text-sm">
+                <div className="bg-black rounded-[10px] w-[239.82px] text-accent-primary font-(family-name:--font-jetbrains-mono) uppercase px-3 tracking-tight flex justify-between items-center text-sm">
                   {formattedAddress}
                   <ChevronDown className="text-content-dimmed-dark" />
                 </div>
