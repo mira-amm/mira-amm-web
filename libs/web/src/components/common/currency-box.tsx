@@ -1,17 +1,10 @@
-import {
-  memo,
-  ChangeEvent,
-  useCallback
-} from "react";
+import {memo, ChangeEvent, useCallback} from "react";
 
 import {clsx} from "clsx";
 import {B256Address, BN} from "fuels";
 import {ChevronDown} from "lucide-react";
 
-import {
-  Coin,
-  TextButton
-} from "@/src/components/common";
+import {Coin, TextButton} from "@/src/components/common";
 
 import {CurrencyBoxMode} from "@/src/components/common/Swap/Swap";
 import {MinEthValueBN} from "@/src/utils/constants";
@@ -32,7 +25,7 @@ export function CurrencyBox({
 }: {
   value: string;
   assetId: B256Address | null;
-  mode: CurrencyBoxMode;
+  mode?: CurrencyBoxMode;
   balance: BN;
   setAmount: (amount: string) => void;
   loading: boolean;
@@ -54,7 +47,9 @@ export function CurrencyBox({
 
   const handleCoinSelectorClick = () => {
     if (!loading) {
-      onCoinSelectorClick(mode);
+      if (mode) {
+        onCoinSelectorClick(mode);
+      }
     }
   };
 
@@ -79,6 +74,16 @@ export function CurrencyBox({
       ? fiatValueFormatter(numericValue * usdRate!)
       : null;
 
+  const renderMode = () => {
+    if (mode) {
+      return (
+        <p className="text-xs leading-4 text-content-tertiary dark:text-content-tertiary lg:text-sm lg:leading-[18px]">
+          {mode === "buy" ? "Buy" : "Sell"}
+        </p>
+      );
+    }
+  };
+
   return (
     <div
       className={clsx(
@@ -86,9 +91,7 @@ export function CurrencyBox({
         className,
       )}
     >
-      <p className="text-xs leading-4 text-content-tertiary dark:text-content-tertiary lg:text-sm lg:leading-[18px]">
-        {mode === "buy" ? "Buy" : "Sell"}
-      </p>
+      {renderMode()}
 
       <div className="min-h-[44px] flex items-center gap-2">
         {previewError ? (

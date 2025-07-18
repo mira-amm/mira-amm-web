@@ -93,7 +93,7 @@ export function MobilePositionView({
           {formattedTvlValue ? (
             <p className="text-content-tertiary">${formattedTvlValue}</p>
           ) : (
-            loading
+            "loading"
           )}
         </div>
         <ExchangeRate

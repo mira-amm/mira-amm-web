@@ -8,13 +8,15 @@ import {LogoIcon} from "@/meshwave-ui/icons";
 import {PoolId, getLPAssetId} from "mira-dex-ts";
 import {formatUnits} from "fuels";
 import {DEFAULT_AMM_CONTRACT_ID} from "@/src/utils/constants";
-import {usePositionData, useFormattedAddress, useIsRebrandEnabled} from "@/src/hooks";
+import {
+  usePositionData,
+  useFormattedAddress,
+  useIsRebrandEnabled,
+} from "@/src/hooks";
 import {Copy} from "lucide-react";
 import {cn} from "@/src/utils/cn";
 
-export function MiraBlock({pool}: {
-  pool: PoolId
-}) {
+export function NewMiraBlock({pool}: {pool: PoolId}) {
   const {lpTokenBalance} = usePositionData({pool});
   const lpTokenDisplayValue = formatUnits(lpTokenBalance || "0", 9);
   const lpTokenAssetId = getLPAssetId(DEFAULT_AMM_CONTRACT_ID, pool);
@@ -60,4 +62,4 @@ export function MiraBlock({pool}: {
       </p>
     </div>
   );
-};
+}
