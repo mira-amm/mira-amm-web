@@ -97,10 +97,15 @@ function SettingsModalContentNew({
         </div>
         <div className="flex items-center justify-center">
           <div className="flex justify-center items-center px-3">or</div>
+          <p id="slippage-description" className="text-content-tertiary dark:text-content-dimmed-light">
+            {/* existing description text */}
+          </p>
           <input
             type="text"
             inputMode="decimal"
             pattern="^[0-9]*[.,]?[0-9]*$"
+            aria-label="Custom slippage percentage"
+            aria-describedby="slippage-description"
             className="w-22 px-3 py-[14px] rounded-lg text-content-dimmed-light bg-background-grey-dark focus:border-accent-primary focus:text-content-primary"
             value={inputValue}
             onChange={handleSlippageChange}
