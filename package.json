@@ -18,7 +18,6 @@
     "dev": "NX_TUI='false' nx dev:tui microvisor; process-compose down; supabase stop --all; zellij ka -y; zellij da -y;",
     "start": "nx dev microvisor --outputStyle=tui; process-compose down; supabase stop --all; zellij ka -y; zellij da -y;",
     "storybook": "nx storybook design -p $STORYBOOK_DEV_SERVER_PORT # 🎨 Design System - Storybook",
-    "fix:formatting": "pnpx prettier --write apps/web",
     "commit": "cz #🟢 Commitizen CLI",
     "postinstall": "nx prepare microvisor"
   },
@@ -289,6 +288,38 @@
           "port": 4873,
           "config": ".verdaccio/config.yml",
           "storage": "tmp/local-registry/storage"
+        }
+      },
+      "format:rust": {
+        "executor": "nx:run-commands",
+        "options": {
+          "command": "find . -name '*.rs' -not -path './target/*' -not -path './node_modules/*' -not -path './.next/*' | xargs rustfmt --edition 2021"
+        }
+      },
+      "format:rust:check": {
+        "executor": "nx:run-commands",
+        "options": {
+          "command": "find . -name '*.rs' -not -path './target/*' -not -path './node_modules/*' -not -path './.next/*' | xargs rustfmt --edition 2021 --check"
+        }
+      },
+      "format:all": {
+        "executor": "nx:run-commands",
+        "options": {
+          "commands": [
+            "nx format:write --all",
+            "nx format:rust"
+          ],
+          "parallel": false
+        }
+      },
+      "format:all:check": {
+        "executor": "nx:run-commands",
+        "options": {
+          "commands": [
+            "nx format:check --all",
+            "nx format:rust:check"
+          ],
+          "parallel": false
         }
       }
     }
