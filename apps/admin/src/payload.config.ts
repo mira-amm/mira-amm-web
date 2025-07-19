@@ -5,6 +5,6 @@ import { clientConfig, adminConfig } from '@/db/ui.config'
 export default buildConfig({
   ...serverConfig,
   ...clientConfig,
-    ...adminConfig,
-...dbConfig
+  ...adminConfig,
+  ...dbConfig
 })

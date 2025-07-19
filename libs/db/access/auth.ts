@@ -2,24 +2,43 @@ import { PayloadRequest } from "payload";
 import { OAuth2Plugin } from "payload-oauth2";
 import { getOrUploadMedia } from "@/db/seed";
 
-const IS_DEV = process.env.NODE_ENV === "development";
-const BASE_URL = IS_DEV
-  ? process.env.ADMIN_LOCAL_URL!
-  : process.env.ADMIN_PUBLIC_URL!;
+const BASE_URL =
+  process.env.NODE_ENV === "development"
+    ? "http://localhost:8000"
+    : "https://admin.mira.ly";
+
+const CLIENT_URL =
+  process.env.NODE_ENV === "development"
+    ? "http://localhost:4200"
+    : "https://microgame-mira.netlify.app";
+
 const TWITTER_SCOPES = ["users.email", "users.read", "tweet.read"];
 
 export const baseConfig = {
   serverURL: BASE_URL,
   authCollection: "users",
+
   successRedirect: (req: PayloadRequest) => {
-    const user = req.user;
-    // TODO: implement role-based-access-control
-    return user?.roles?.includes("admin") ? "/admin" : "/";
+    const returnTo = req.query.returnTo as string;
+
+    if (returnTo?.startsWith("/") && !returnTo.startsWith("//")) {
+      return `${CLIENT_URL}${returnTo}`;
+    }
+
+    return req.user?.roles?.includes("admin")
+      ? `${BASE_URL}/admin`
+      : `${CLIENT_URL}/game`;
   },
 
   failureRedirect: (req: PayloadRequest, err: unknown) => {
     req.payload.logger.error(err);
-    return "/";
+    const returnTo = req.query.returnTo as string;
+
+    if (returnTo?.startsWith("/") && !returnTo.startsWith("//")) {
+      return `${CLIENT_URL}${returnTo}`;
+    }
+
+    return `${CLIENT_URL}/login`;
   },
 };
 

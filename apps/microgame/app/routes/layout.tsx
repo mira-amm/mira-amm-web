@@ -10,8 +10,8 @@ export function meta({}: Route.MetaArgs) {
   ];
 }
 
-
 export default function Layout() {
+
 if (typeof window !== 'undefined') {
     userFlowActor.start()
 }
@@ -22,7 +22,7 @@ if (typeof window !== 'undefined') {
         <TerminalHeader/>
         <div className="scanlines relative h-[calc(100%-2rem)] overflow-hidden">
           <div className="absolute top-0 left-0 w-full h-full bg-terminal-green/5 opacity-30 animate-scanline pointer-events-none z-10"/>
-          <main className="h-full overflow-hidden p-8 text-terminal-text text-lg">
+          <main className="h-full p-8 text-terminal-text text-lg overflow-y-auto">
               <Outlet />
           </main>
         </div>

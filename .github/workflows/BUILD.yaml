@@ -51,5 +51,11 @@ jobs:
       - name: 🦀 Build Rust SDK
         run: pnpm nx build rust-sdk --verbose
 
-      - name: 🐞 TypeScript SDK
+      - name: 🐞 Build TypeScript SDK
         run: pnpm nx build mira-v1-ts --verbose
+
+      - name: 🛞 Build Admin
+        run: pnpm nx build admin --verbose
+
+      - name: 🕹 Build Microgame
+        run: pnpm nx build microgame --verbose

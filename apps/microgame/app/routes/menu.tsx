@@ -74,7 +74,6 @@ export default function Menu() {
   );
 }
 
-// ─── Render Sections ───────────────────────────────────────────
 const Header = () => (
   <div className="mb-6 border-b border-terminal-green/30 pb-2">
     <p className="text-terminal-green mb-2 animate-text-glow font-bold">
@@ -120,7 +119,6 @@ const renderPrompt = (
   </div>
 );
 
-// ─── Constants ────────────────────────────────────────────────
 const INITIAL_OUTPUTS = [
   "Authentication successful. Welcome to MICROCHAIN SYSTEMS.",
   "Type 'help' to see available commands.",

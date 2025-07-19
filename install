@@ -181,21 +181,6 @@ step_enable_direnv() {
   run "direnv allow"
 }
 
-step_install_playwright() {
-  CMD="pnpm exec playwright --version"
-
-  if eval "$CMD" >/dev/null 2>&1; then
-    echo -e "🔍 Checking for Playwright CLI with command:"
-    echo -e "    ${CYAN}${CMD}${NC}"
-    echo -e "${GREEN}✅ Playwright CLI detected.${NC}"
-    confirm "Install Playwright browsers?" && run "pnpm exec playwright install --with-deps"
-  else
-    echo -e "${YELLOW}⚠️ Playwright not found via pnpm. Skipping browser install.${NC}"
-    echo -e "💡 You may need to run: ${CYAN}pnpm install playwright${NC}"
-  fi
-  log_step "checked Playwright browsers" green
-}
-
 step_finish() {
   if [ "$DRY_RUN" = true ]; then
     log_step "Dry run complete. Re-run with -y to execute"
@@ -207,14 +192,12 @@ step_finish() {
 }
 
 # === STEP REGISTRY ===
-
 STEPS="
   step_install_direnv
   step_install_nix
   step_install_devenv
   step_clone_repo
   step_enable_direnv
-  step_install_playwright
   step_finish
 "
 

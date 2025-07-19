@@ -38,6 +38,8 @@ apps/admin/media
 #====================================================
 #                 Caches & Logs
 #====================================================
+.open-webui
+.webui_secret_key
 .pre-commit-config.yaml
 .nx/cache
 .nx/workspace-data
@@ -81,3 +83,4 @@ vitest.config.*.timestamp*
 .settings
 !.vscode/extensions.json
 !.vscode/settings-example.json
+apps/microvisor/services/supabase/.branches

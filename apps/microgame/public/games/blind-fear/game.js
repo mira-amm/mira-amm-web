@@ -88,14 +88,14 @@
         return r
           ? ((a[h] = r), t(r))
           : a[h]
-          ? t(a[h])
-          : (((i = new Image()).onload = () => {
+            ? t(a[h])
+            : (((i = new Image()).onload = () => {
               (s = g(h, window.location.href)), (a[s] = a[h] = i), t(i);
             }),
-            (i.onerror = () => {
-              e();
-            }),
-            void (i.src = h));
+              (i.onerror = () => {
+                e();
+              }),
+              void (i.src = h));
       })
     );
   }
@@ -168,7 +168,7 @@
           ? ((t.fillStyle = e), t.fillRect(0, 0, i, s))
           : t.drawImage(this.spritesheet[0], this.sprite * this.spritesheet[1], 0, i, s, 0, 0, i, s),
         this.hitted &&
-          ((t.globalCompositeOperation = "source-atop"),
+        ((t.globalCompositeOperation = "source-atop"),
           (t.fillStyle = "white"),
           t.fillRect(0, 0, i, s),
           (t.globalCompositeOperation = "source-over"),
@@ -211,7 +211,7 @@
           if (!t.isAlive) return t.update(e);
           t.isAlive() && t.update(e);
         }),
-        this._uf && this._uf());
+          this._uf && this._uf());
     }
     render() {
       this.context.save(),
@@ -257,31 +257,31 @@
               64 === h
                 ? 41
                 : 58 === h
-                ? 40
-                : 33 === h
-                ? 39
-                : 63 === h
-                ? 38
-                : 44 === h
-                ? 37
-                : 46 === h
-                ? 36
-                : 32 === h
-                ? -1
-                : 48 <= h && h <= 57
-                ? h - 22
-                : 65 <= h && h <= 90
-                ? h - 65
-                : 0;
+                  ? 40
+                  : 33 === h
+                    ? 39
+                    : 63 === h
+                      ? 38
+                      : 44 === h
+                        ? 37
+                        : 46 === h
+                          ? 36
+                          : 32 === h
+                            ? -1
+                            : 48 <= h && h <= 57
+                              ? h - 22
+                              : 65 <= h && h <= 90
+                                ? h - 65
+                                : 0;
             -1 !== t &&
               ((h = 8 * t),
-              (s = 8 * e),
-              0,
-              r.drawImage(this.spritesheet, h, 0, 8, 8, s, 0, 8, 8),
-              (r.globalCompositeOperation = "source-atop"),
-              (r.fillStyle = n || "white"),
-              r.fillRect(s, 0, 8, 8),
-              (r.globalCompositeOperation = "source-over"));
+                (s = 8 * e),
+                0,
+                r.drawImage(this.spritesheet, h, 0, 8, 8, s, 0, 8, 8),
+                (r.globalCompositeOperation = "source-atop"),
+                (r.fillStyle = n || "white"),
+                r.fillRect(s, 0, 8, 8),
+                (r.globalCompositeOperation = "source-over"));
           }
           r.restore(), r.translate(0, a);
         }),
@@ -361,10 +361,10 @@
     [].concat(t).map((t) => delete i[t]);
   }
   const F = (...t) => {
-      let e = c.createBufferSource(),
-        i = c.createBuffer(t.length, t[0].length, V);
-      return t.map((t, e) => i.getChannelData(e).set(t)), (e.buffer = i), e.connect(c.destination), e.start(), e;
-    },
+    let e = c.createBufferSource(),
+      i = c.createBuffer(t.length, t[0].length, V);
+    return t.map((t, e) => i.getChannelData(e).set(t)), (e.buffer = i), e.connect(c.destination), e.start(), e;
+  },
     R = (
       t = 1,
       e = 0.05,
@@ -403,16 +403,16 @@
         _;
       for (
         s = 99 + V * s,
-          y *= V,
-          h *= V,
-          r *= V,
-          g *= V,
-          l *= (500 * v) / V ** 3,
-          u *= v / V,
-          d *= v / V,
-          c *= V,
-          p = (V * p) | 0,
-          _ = (s + y + h + r + g) | 0;
+        y *= V,
+        h *= V,
+        r *= V,
+        g *= V,
+        l *= (500 * v) / V ** 3,
+        u *= v / V,
+        d *= v / V,
+        c *= V,
+        p = (V * p) | 0,
+        _ = (s + y + h + r + g) | 0;
         T < _;
         b[T++] = L
       )
@@ -426,22 +426,22 @@
                 : 1 - (((((2 * I) / v) % 2) + 2) % 2)
               : 1 - 4 * Math.abs(Math.round(I / v) - I / v)
             : Math.sin(I)),
-          (L =
-            (p ? 1 - w + w * Math.sin((2 * Math.PI * T) / p) : 1) *
-            (0 < L ? 1 : -1) *
-            Math.abs(L) ** n *
-            t *
-            Q *
-            (T < s
-              ? T / s
-              : T < s + y
-              ? 1 - ((T - s) / y) * (1 - m)
-              : T < s + y + h
-              ? m
-              : T < _ - g
-              ? ((_ - T - g) / r) * m
-              : 0)),
-          (L = g ? L / 2 + (g > T ? 0 : ((T < _ - g ? 1 : (_ - T) / g) * b[(T - g) | 0]) / 2) : L)),
+            (L =
+              (p ? 1 - w + w * Math.sin((2 * Math.PI * T) / p) : 1) *
+              (0 < L ? 1 : -1) *
+              Math.abs(L) ** n *
+              t *
+              Q *
+              (T < s
+                ? T / s
+                : T < s + y
+                  ? 1 - ((T - s) / y) * (1 - m)
+                  : T < s + y + h
+                    ? m
+                    : T < _ - g
+                      ? ((_ - T - g) / r) * m
+                      : 0)),
+            (L = g ? L / 2 + (g > T ? 0 : ((T < _ - g ? 1 : (_ - T) / g) * b[(T - g) | 0]) / 2) : L)),
           (k = (i += o += l) * Math.sin(A * u - E)),
           (I += k - k * f * (1 - ((1e9 * (Math.sin(T) + 1)) % 2))),
           (A += k - k * f * (1 - ((1e9 * (Math.sin(T) ** 2 + 1)) % 2))),
@@ -461,7 +461,7 @@
         imune: !1,
         dying: !1,
         shield: 100,
-        lives: 3,
+        lives: 1,
         score: 0,
         fireLevel: 0,
         firing: !1,
@@ -479,8 +479,8 @@
       F(D.powerup),
         "shield" === t.type && ((this.shield += 50), 100 < this.shield) && (this.shield = 100),
         "fire" === t.type &&
-          (this.fireLevel++, 4 < this.fireLevel && (this.fireLevel = 4), 4 === this.fireLevel) &&
-          (clearTimeout(this.fireTimeout),
+        (this.fireLevel++, 4 < this.fireLevel && (this.fireLevel = 4), 4 === this.fireLevel) &&
+        (clearTimeout(this.fireTimeout),
           j("start-fire-timer"),
           (this.fireTimeout = C(() => {
             j("end-fire-timer"), 4 === this.fireLevel && (this.fireLevel = 3);
@@ -489,24 +489,24 @@
     fire() {
       this.firing ||
         ((this.firing = !0),
-        j("ship-fire", this.x - 1, this.y - 8, H(-0.3, 0.3)),
-        0 < this.fireLevel && j("ship-fire", this.x - 1, this.y - 8, H(-0.5, 0.5)),
-        1 < this.fireLevel &&
+          j("ship-fire", this.x - 1, this.y - 8, H(-0.3, 0.3)),
+          0 < this.fireLevel && j("ship-fire", this.x - 1, this.y - 8, H(-0.5, 0.5)),
+          1 < this.fireLevel &&
           C(() => {
             j("ship-fire", this.x - 1, this.y - 8, H(-0.3, 0.3)), j("ship-fire", this.x - 1, this.y - 8, H(-0.5, 0.5));
           }, 100),
-        2 < this.fireLevel &&
+          2 < this.fireLevel &&
           C(() => {
             j("ship-fire", this.x - 1, this.y - 8, -2), j("ship-fire", this.x - 1, this.y - 8, 2);
           }, 400),
-        3 < this.fireLevel &&
+          3 < this.fireLevel &&
           C(() => {
             j("ship-fire", this.x - 16, this.y - 4, H(-0.1, 0.1)),
               j("ship-fire", this.x + 14, this.y - 4, H(-0.1, 0.1));
           }, 200),
-        C(() => {
-          this.firing = !1;
-        }, 200));
+          C(() => {
+            this.firing = !1;
+          }, 200));
     }
     die() {
       j("ship-die"),
@@ -543,7 +543,7 @@
         h(["d", "arrowright"]) && this.dx < 5 && ((this.ddx = 0.2), (this.sprite = 2)),
         h(["a", "arrowleft"]) && -5 < this.dx && ((this.ddx = -0.2), (this.sprite = 0)),
         this.spawning ||
-          (h(["s", "arrowdown"]) && this.dy < 5 && (this.ddy = 0.2),
+        (h(["s", "arrowdown"]) && this.dy < 5 && (this.ddy = 0.2),
           h(["w", "arrowup"]) && -5 < this.dy && (this.ddy = -0.2)),
         !this.firing && h("space") && this.fire(),
         this.spawning && ((this.ddy = -0.03), (this.scaleX = this.scaleY = _(1, 2, 2 - this.frame / 60))),
@@ -565,7 +565,7 @@
         t.fillRect(this.frame % 10 < 5 ? 3 : 4, 7 + s, 1, s),
         4 === this.fireLevel && ((t.fillStyle = "#FFF"), t.fillRect(18, 4, 2, 2), t.fillRect(-12, 4, 2, 2)),
         this.hitted &&
-          ((t.globalCompositeOperation = "source-atop"),
+        ((t.globalCompositeOperation = "source-atop"),
           (t.fillStyle = "red"),
           t.fillRect(0, 0, e, i),
           (t.globalCompositeOperation = "source-over"));
@@ -610,11 +610,11 @@
     update(e) {
       var i;
       let s = !1;
-      for (let t = this.size; t--; ) (i = this.objects[t]).update(e), i.isAlive() || ((s = !0), this.size--);
+      for (let t = this.size; t--;) (i = this.objects[t]).update(e), i.isAlive() || ((s = !0), this.size--);
       s && this.objects.sort((t, e) => e.isAlive() - t.isAlive());
     }
     render() {
-      for (let t = this.size; t--; ) this.objects[t].render();
+      for (let t = this.size; t--;) this.objects[t].render();
     }
   }
 
@@ -722,8 +722,8 @@
       let i = new Set();
       return this._s.length && this._b
         ? (A(e, this.bounds).map((t) => {
-            this._s[t].get(e).map((t) => i.add(t));
-          }),
+          this._s[t].get(e).map((t) => i.add(t));
+        }),
           Array.from(i))
         : this._o.filter((t) => t !== e);
     }
@@ -733,8 +733,8 @@
           ? this._a(t)
           : (this._o.push(t),
             this._o.length > this.maxObjects &&
-              this._d < this.maxDepth &&
-              (this._sp(), this._o.map((t) => this._a(t)), (this._o.length = 0)));
+            this._d < this.maxDepth &&
+            (this._sp(), this._o.map((t) => this._a(t)), (this._o.length = 0)));
       });
     }
     _a(e) {
@@ -801,8 +801,8 @@
             (this.y = Math.floor(t.y)),
             this.rotate && (this.rotation = k(90) + Math.atan2(e.y - t.y, e.x - t.x)))
           : ((this.x =
-              this.parent.x +
-              Math.cos(this.frame / this.parent.childrenSpeed + this.anglePlacement) * this.parent.childrenRadius),
+            this.parent.x +
+            Math.cos(this.frame / this.parent.childrenSpeed + this.anglePlacement) * this.parent.childrenRadius),
             (this.y =
               this.parent.y +
               Math.sin(this.frame / this.parent.childrenSpeed + this.anglePlacement) * this.parent.childrenRadius)),
@@ -812,9 +812,9 @@
         1 <= this.scaleX && (this.imune = !1),
         1 == this.scaleX && this.frame % this.fireRate == 0 && this.fire(),
         this.path &&
-          this.frame * this.speed >= this.path.getTotalLength() &&
-          this.loop &&
-          ((this.frame = 0), (this.firstRun = !1)),
+        this.frame * this.speed >= this.path.getTotalLength() &&
+        this.loop &&
+        ((this.frame = 0), (this.firstRun = !1)),
         this.frame++,
         this.ttl--;
     }
@@ -881,7 +881,7 @@
       var t, e;
       super.draw(),
         this.showStatus &&
-          ((t = this["context"]),
+        ((t = this["context"]),
           (e = (20 * this.shield) / this.maxShield),
           t.save(),
           t.translate(this.width / 2, this.height / 2),
@@ -956,7 +956,7 @@
       8 < this.x && ((this.dx = 0), (this.x = 8)),
         this.y < -16 && ((this.dx = 0), (this.x = -16)),
         0 != this.texts.length &&
-          ((this.talking = !1),
+        ((this.talking = !1),
           " " !== (t = this.texts[this.textsIndex] + "      ")[this.textIndex] && (this.talking = !0),
           this.frame % 5 == 0 && (this.textIndex++, " " !== t[this.textIndex]) && F(D.typing),
           this.textsIndex < this.texts.length && (this.text.text = t.slice(0, this.textIndex)),
@@ -991,10 +991,10 @@
             e.y < i.y + i.height &&
             e.y + e.height > i.y &&
             ("ship-bullet" != s.name || t.imune || ((s.ttl = 0), t.hit(1)),
-            "ship" != s.name || ("asteroid" != t.name && "boss" != t.name) || (s.die(), (s.ttl = 0), t.hit(5)),
-            "ship" == s.name && "enemy" == t.name && (t.die(), (t.ttl = 0), s.hit(50)),
-            "ship" == s.name && "enemy-bullet" == t.name && ((t.ttl = 0), s.hit(10)),
-            "ship" != s.name || "powerup" != t.name || t.taken || (t.die(), s.powerUp(t))));
+              "ship" != s.name || ("asteroid" != t.name && "boss" != t.name) || (s.die(), (s.ttl = 0), t.hit(5)),
+              "ship" == s.name && "enemy" == t.name && (t.die(), (t.ttl = 0), s.hit(50)),
+              "ship" == s.name && "enemy-bullet" == t.name && ((t.ttl = 0), s.hit(10)),
+              "ship" != s.name || "powerup" != t.name || t.taken || (t.die(), s.powerUp(t))));
       });
   }
   class at extends i {
@@ -1031,7 +1031,7 @@
         t.fillRect(3, 3, 10, 10),
         t.drawImage(this.spritesheet[0], 8 * r, 0, 8, 8, 4, 4, 8, 8),
         i &&
-          ((t.globalAlpha = 1 - this.frame / 10),
+        ((t.globalAlpha = 1 - this.frame / 10),
           t.strokeRect(-this.frame, -this.frame, 16 + 2 * this.frame, 16 + 2 * this.frame),
           (t.globalAlpha = 1));
     }
@@ -1396,7 +1396,7 @@
       await c.suspend(), this.audio().off();
     },
     async unmute() {
-      await c.resume(), this.audio().on();
+      await c.resume(), this.audio().off();
     },
     async toggleMute() {
       this.audio().isOn() ? this.mute() : this.unmute();
@@ -1426,9 +1426,9 @@
       $.set("song1"),
       $.play();
     const r = new tt({
-        x: 120,
-        y: 248,
-      }),
+      x: 120,
+      y: 248,
+    }),
       e = X(20),
       i = rt(),
       s = rt();
@@ -1442,9 +1442,9 @@
       p = !1,
       f;
     const u = W({
-        create: q,
-        maxSize: 400,
-      }),
+      create: q,
+      maxSize: 400,
+    }),
       x = W({
         create: Y,
         maxSize: 40,
@@ -1726,13 +1726,13 @@
       N("set-dialog", (t, e) => {
         t
           ? s.start({
-              texts: e,
-              pauseOnTalk: !0,
-            })
+            texts: e,
+            pauseOnTalk: !0,
+          })
           : i.start({
-              texts: e,
-              pauseOnTalk: !1,
-            });
+            texts: e,
+            pauseOnTalk: !1,
+          });
       }),
       N("next-level", (t) => {
         (d = !1),
@@ -1792,8 +1792,8 @@
               r.lives <= 0 && !this.gameOver
                 ? ((this.gameOver = !0), C(() => j("game-over"), 1e3))
                 : (x.getAliveObjects().forEach((t) => {
-                    R.clear(), R.add(t, m.getAliveObjects(), y.getAliveObjects(), w.getAliveObjects()), K(t, R.get(t));
-                  }),
+                  R.clear(), R.add(t, m.getAliveObjects(), y.getAliveObjects(), w.getAliveObjects()), K(t, R.get(t));
+                }),
                   M.clear(),
                   M.add(
                     r,
@@ -1877,57 +1877,57 @@
     );
   }
   var pt = (i, s, h, t = 125) => {
-      let r,
-        a,
-        n,
-        o,
-        l,
-        d,
-        c,
-        p,
-        f,
-        u,
-        x,
-        g,
-        m,
-        y,
-        w = 0,
-        v = [],
-        S = [],
-        E = [],
-        O = 0,
-        b = 0,
-        I = 1,
-        A = {},
-        T = ((V / t) * 60) >> 2;
-      for (; I; O++)
-        (v = [(I = p = g = 0)]),
-          h.map((t, e) => {
+    let r,
+      a,
+      n,
+      o,
+      l,
+      d,
+      c,
+      p,
+      f,
+      u,
+      x,
+      g,
+      m,
+      y,
+      w = 0,
+      v = [],
+      S = [],
+      E = [],
+      O = 0,
+      b = 0,
+      I = 1,
+      A = {},
+      T = ((V / t) * 60) >> 2;
+    for (; I; O++)
+      (v = [(I = p = g = 0)]),
+        h.map((t, e) => {
+          for (
+            c = s[t][O] || [0, 0, 0],
+            I |= !!s[t][O],
+            y = g + (s[t][0].length - 2 - !p) * T,
+            m = e == h.length - 1,
+            a = 2,
+            o = g;
+            a < c.length + m;
+            p = ++a
+          ) {
             for (
-              c = s[t][O] || [0, 0, 0],
-                I |= !!s[t][O],
-                y = g + (s[t][0].length - 2 - !p) * T,
-                m = e == h.length - 1,
-                a = 2,
-                o = g;
-              a < c.length + m;
-              p = ++a
-            ) {
-              for (
-                l = c[a], f = (a == c.length + m - 1 && m) || (u != (c[0] || 0)) | l | 0, n = 0;
-                n < T && p;
-                n++ > T - 99 && f && (x += (x < 1) / 99)
-              )
-                (d = ((1 - x) * v[w++]) / 2 || 0), (S[o] = (S[o] || 0) - d * b + d), (E[o] = (E[o++] || 0) + d * b + d);
-              l &&
-                ((x = l % 1), (b = c[1] || 0), (l |= 0)) &&
-                (v = A[[(u = c[(w = 0)] || 0), l]] =
-                  A[[u, l]] || (((r = [...i[u]])[2] *= 2 ** ((l - 12) / 12)), 0 < l ? R(...r) : []));
-            }
-            g = y;
-          });
-      return [S, E];
-    },
+              l = c[a], f = (a == c.length + m - 1 && m) || (u != (c[0] || 0)) | l | 0, n = 0;
+              n < T && p;
+              n++ > T - 99 && f && (x += (x < 1) / 99)
+            )
+              (d = ((1 - x) * v[w++]) / 2 || 0), (S[o] = (S[o] || 0) - d * b + d), (E[o] = (E[o++] || 0) + d * b + d);
+            l &&
+              ((x = l % 1), (b = c[1] || 0), (l |= 0)) &&
+              (v = A[[(u = c[(w = 0)] || 0), l]] =
+                A[[u, l]] || (((r = [...i[u]])[2] *= 2 ** ((l - 12) / 12)), 0 < l ? R(...r) : []));
+          }
+          g = y;
+        });
+    return [S, E];
+  },
     ft = [
       [
         [, 0, 77, , , 0.7, 2, 0.41, , , , , , , , 0.06],
@@ -3551,8 +3551,8 @@
     vt = [2.3, , 330, , 0.06, 0.17, 2, 3.7, , , , , 0.05, 0.4, 2, 0.5, 0.13, 0.89, 0.05, 0.17],
     u =
       ((u = document.getElementById("c").getContext("2d")),
-      (window.zyxplay = window.zyxplay || {}),
-      (window.zyxplay.context = u));
+        (window.zyxplay = window.zyxplay || {}),
+        (window.zyxplay.context = u));
   (u.imageSmoothingEnabled = !1),
     u.setTransform(1, 0, 0, 1, 0, 0),
     (async () => {
@@ -3566,19 +3566,21 @@
       function i(t, e) {
         var i, s;
         switch (
-          ((i = ["change-scene"]),
+        ((i = ["change-scene"]),
           (s = Object.keys(r).reduce((t, e) => (i.includes(e) && (t[e] = r[e]), t), {})),
           (r = s),
           $.stop(),
           t)
         ) {
           case "game":
+            localStorage.setItem("game-status", "true")
             h = dt();
             break;
           case "menu":
             h = ct();
             break;
           case "game-over":
+            localStorage.setItem("game-status", "false")
             console.log("game-over", e),
               (h = (function ({ score: t = 0, previous: e = localStorage.getItem("hiScore") || 0 } = {}) {
                 U(["enter"], () => {
@@ -3599,9 +3601,9 @@
                   });
                 var i = X(1);
                 const a = W({
-                    create: q,
-                    maxSize: 400,
-                  }),
+                  create: q,
+                  maxSize: 400,
+                }),
                   s = G({
                     x: 128,
                     y: 32,
@@ -3679,9 +3681,9 @@
                     o.add(p2);
                   }, 2750),
                   e < t &&
-                    C(() => {
-                      o.add(n), j("explosion", 128, 132, 60, 4, "yellow");
-                    }, 3e3),
+                  C(() => {
+                    o.add(n), j("explosion", 128, 132, 60, 4, "yellow");
+                  }, 3e3),
                   o
                 );
               })(e));
@@ -3710,7 +3712,7 @@
 
         function n() {
           if ((requestAnimationFrame(n), (h = performance.now()), (r = h - s), (s = h), !(1e3 < r))) {
-            for (i += r; i >= 1e3 / 60; ) t(1 / 60), (i -= 1e3 / 60);
+            for (i += r; i >= 1e3 / 60;) t(1 / 60), (i -= 1e3 / 60);
             a.clearRect(0, 0, a.canvas.width, a.canvas.height), e();
           }
         }
