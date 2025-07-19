@@ -1,6 +1,7 @@
 "use client";
-import {Swap} from "@/src/components/common/Swap/Swap";
 import {useIsConnected} from "@fuels/react";
+import {FeatureGuard} from "@/src/components/common";
+import {Swap} from "@/src/components/common/Swap/Swap";
 
 const SVGComponent = (props) => (
   <svg
@@ -52,13 +53,14 @@ export default function Page() {
   const {isConnected} = useIsConnected();
   return (
     <div className="flex flex-1 flex-col items-center w-full md:justify-center">
-      <div className="w-full max-w-lg px-4 relative">
+      <div className="w-full max-w-lg px-4">
         <Swap />
-        {isConnected && (
-          <SVGComponent className="absolute w-[650px] -bottom-25 -left-18 -z-1" />
-        )}
+        <FeatureGuard>
+          {isConnected && (
+            <SVGComponent className="absolute w-[650px] -bottom-25 -left-18 -z-1" />
+          )}
+        </FeatureGuard>
       </div>
     </div>
   );
 }
-``;
