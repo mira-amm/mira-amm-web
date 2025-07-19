@@ -1,6 +1,6 @@
 import {ReactNode} from "react";
 import {clsx} from "clsx";
-import {Prompt, Inter} from "next/font/google";
+import {Prompt, Inter, JetBrains_Mono} from "next/font/google";
 
 import {metadata} from "./metadata";
 
@@ -24,22 +24,29 @@ const inter = Inter({
   variable: "--font-inter",
 });
 
+const jetBrainsMono = JetBrains_Mono({
+  subsets: ["latin"],
+  variable: "--font-jetbrains-mono",
+});
+
 export {metadata};
 
 export default function Layout({children}: {readonly children: ReactNode}) {
   const glitchScavengerHuntEnabled = useAnimationStore.getState().masterEnabled;
 
   return (
-    <html
-      lang="en"
-      className="dark"
-      suppressHydrationWarning
-      style={{colorScheme: "dark"}}
-    >
+    <html lang="en" className="dark" suppressHydrationWarning>
       <head>
         <link rel="preload" as="image" href="/images/loader.webp" />
       </head>
-      <body className={clsx(inter.className, inter.variable, prompt.variable)}>
+      <body
+        className={clsx(
+          inter.className,
+          inter.variable,
+          prompt.variable,
+          jetBrainsMono.variable,
+        )}
+      >
         <Providers>
           <div className="flex flex-col min-h-screen relative">
             <FeatureGuard fallback={<Header />}>

@@ -18,11 +18,8 @@ import {
 } from "@/src/components/common";
 import {useModal} from "@/src/hooks";
 
-import {
-  /* DefaultSlippageValue, */
-  SlippageMode,
-} from "@/src/components/common/Swap/Swap";
-/* import { SettingsModalContentNew } from "@/src/components/common/Swap/components/SettingsModalContent/SettingsModalContentNew"; */
+import {SlippageMode} from "@/src/components/common/Swap/Swap";
+import SettingsModalContentNew from "@/src/components/common/settings-modal-content-new";
 
 export default function AddLiquidityPage() {
   const router = useRouter();
@@ -112,13 +109,13 @@ export default function AddLiquidityPage() {
           </SettingsModal>
         }
       >
-        {/* <SettingsModal title="Slippage tolerance">
+        <SettingsModal title="Slippage tolerance">
           <SettingsModalContentNew
             slippage={slippage}
             setSlippage={setSlippage}
             closeModal={closeSettingsModal}
           />
-        </SettingsModal> */}
+        </SettingsModal>
       </FeatureGuard>
     </main>
   );

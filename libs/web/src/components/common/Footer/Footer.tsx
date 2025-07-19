@@ -2,13 +2,14 @@ import {Logo} from "@/src/components/common";
 import {BlogLink, DiscordLink, XLink} from "@/src/utils/constants";
 import {DiscordIcon, XSocialIcon, GithubIcon} from "@/meshwave-ui/icons";
 import {Button} from "@/meshwave-ui/Button";
+import {ModeToggle} from "@/src/components/common/toggle-mode";
 
 export default function Footer() {
   return (
-    <footer className="flex flex-col border-t border-white/10 box-border w-full py-4 px-4 max-w-6xl mx-auto gap-6">
+    <footer className="flex flex-col border-t border-white/10 box-border w-full py-4 px-4 max-w-6xl mx-auto">
       <div className="flex flex-col gap-4 lg:flex-row lg:justify-between lg:items-center lg:gap-[134px]">
         <Logo isFooter />
-        <div className="flex flex-col gap-3 text-base leading-[22px] text-content-tertiary font-normal lg:flex-row lg:justify-between lg:w-[650px] lg:text-lg lg:leading-6">
+        <div className="flex gap-3 text-base leading-[22px] text-content-tertiary font-normal lg:w-[650px] lg:text-lg lg:leading-6">
           <Button
             asChild
             variant="link"
@@ -56,6 +57,7 @@ export default function Footer() {
             </a>
           </Button>
         </div>
+        <ModeToggle />
         <div className="flex gap-3 lg:gap-4">
           <Button asChild variant="link" className="p-0 hover:opacity-65">
             <a href="https://github.com/mira-amm" target="_blank">
