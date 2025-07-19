@@ -1,0 +1,26 @@
+name: "⚙️ DevOps / Chore"
+description: "CI, tooling, infra, or code-health tasks"
+title: "[Chore]: <short description>"
+labels: ["☁️ DevOps/Infrastructure"]
+body:
+  - type: textarea
+    id: task
+    attributes:
+      label: Task description
+      placeholder: "Add pre-commit hook to auto-run `pnpm fix:formatting`"
+    validations:
+      required: true
+  - type: textarea
+    id: motivation
+    attributes:
+      label: Why is this needed?
+      placeholder: "To prevent style violations from reaching CI."
+    validations:
+      required: true
+  - type: textarea
+    id: done
+    attributes:
+      label: Definition of done
+      placeholder: |
+        - Hook runs on staged files
+        - README updated with setup instructions
