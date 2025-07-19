@@ -346,7 +346,10 @@ export function Swap({isWidget}: {isWidget?: boolean}) {
     setActiveMode("sell");
     if (!isWidget) {
       setSwapCoins(({sell, buy}) => ({sell: buy, buy: sell}));
-      useAnimationStore.getState().handleMagicTripleClickToken();
+      // Delay the glitch effect to ensure it captures the updated state
+      setTimeout(() => {
+        useAnimationStore.getState().handleMagicTripleClickToken();
+      }, 0);
     }
   }, [isWidget, setSwapCoins]);
 

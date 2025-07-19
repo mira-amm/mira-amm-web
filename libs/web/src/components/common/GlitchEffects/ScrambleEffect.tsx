@@ -24,62 +24,65 @@ const ScrambleEffect = (): void => {
     scrambleMap: {char: string; countdown: number}[];
   }[] = [];
 
-  // Walk through the DOM and find all text nodes that need scrambling
-  (function walk(node: Node) {
-    if (node.nodeType === Node.TEXT_NODE) {
-      const text = node.nodeValue || "";
-      if (text.trim()) {
-        const scrambleMap = Array.from(text).map((char) => ({
-          char,
-          countdown: Math.floor(Math.random() * MAX_SCRAMBLE_FRAMES),
-        }));
-        scrambleTargets.push({
-          node: node as Text,
-          original: text,
-          scrambleMap,
-        });
+  // Use requestAnimationFrame to ensure DOM has been updated before capturing text
+  requestAnimationFrame(() => {
+    // Walk through the DOM and find all text nodes that need scrambling
+    (function walk(node: Node) {
+      if (node.nodeType === Node.TEXT_NODE) {
+        const text = node.nodeValue || "";
+        if (text.trim()) {
+          const scrambleMap = Array.from(text).map((char) => ({
+            char,
+            countdown: Math.floor(Math.random() * MAX_SCRAMBLE_FRAMES),
+          }));
+          scrambleTargets.push({
+            node: node as Text,
+            original: text,
+            scrambleMap,
+          });
+        }
+      } else if (node.nodeType === Node.ELEMENT_NODE) {
+        node.childNodes.forEach(walk);
       }
-    } else if (node.nodeType === Node.ELEMENT_NODE) {
-      node.childNodes.forEach(walk);
+    })(document.body);
+
+    function scrambleFrame() {
+      const now = Date.now();
+      const elapsedTime = now - startTime;
+      let stillScrambling = false;
+
+      if (elapsedTime < DURATION) {
+        // Scramble only during the effect duration
+        for (const target of scrambleTargets) {
+          const updatedText = target.scrambleMap
+            .map(({char, countdown}, i) => {
+              if (countdown > 0) {
+                stillScrambling = true;
+                target.scrambleMap[i].countdown--;
+                return String.fromCharCode(Math.floor(Math.random() * 94 + 33));
+              }
+              return char;
+            })
+            .join("");
+
+          target.node.nodeValue = updatedText;
+        }
+
+        if (stillScrambling) {
+          setTimeout(scrambleFrame, DELAY_BW_FRAMES); // Run the next frame after a small delay
+        }
+      } else {
+        // Ensure full restore after effect ends
+        for (const target of scrambleTargets) {
+          target.node.nodeValue = target.original;
+        }
+        blocker.remove();
+      }
     }
-  })(document.body);
 
-  function scrambleFrame() {
-    const now = Date.now();
-    const elapsedTime = now - startTime;
-    let stillScrambling = false;
-
-    if (elapsedTime < DURATION) {
-      // Scramble only during the effect duration
-      for (const target of scrambleTargets) {
-        const updatedText = target.scrambleMap
-          .map(({char, countdown}, i) => {
-            if (countdown > 0) {
-              stillScrambling = true;
-              target.scrambleMap[i].countdown--;
-              return String.fromCharCode(Math.floor(Math.random() * 94 + 33));
-            }
-            return char;
-          })
-          .join("");
-
-        target.node.nodeValue = updatedText;
-      }
-
-      if (stillScrambling) {
-        setTimeout(scrambleFrame, DELAY_BW_FRAMES); // Run the next frame after a small delay
-      }
-    } else {
-      // Ensure full restore after effect ends
-      for (const target of scrambleTargets) {
-        target.node.nodeValue = target.original;
-      }
-      blocker.remove();
-    }
-  }
-
-  // Start the scrambling animation
-  scrambleFrame();
+    // Start the scrambling animation
+    scrambleFrame();
+  });
 };
 
 export default ScrambleEffect;
