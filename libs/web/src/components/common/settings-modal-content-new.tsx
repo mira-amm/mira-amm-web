@@ -31,17 +31,20 @@ function SettingsModalContentNew({
     useAnimationStore.getState().handleMagicInput(value);
   };
 
+  const DEFAULT_SLIPPAGE = 100;
+  const MAX_SLIPPAGE = 99.99;
+
   const handleInputBlur = (event: FocusEvent<HTMLInputElement>) => {
     const value = event.target.value.replace("%", "");
     const numericValue = parseFloat(value.replace(",", ".").trim());
     if (
       isNaN(numericValue) ||
       numericValue <= 0 ||
-      numericValue >= 100 ||
+      numericValue > MAX_SLIPPAGE ||
       !Number.isFinite(numericValue)
     ) {
-      setSlippage(100);
-      setInputValue(`${100 / 100}%`);
+      setSlippage(DEFAULT_SLIPPAGE);
+      setInputValue(`${DEFAULT_SLIPPAGE / 100}%`);
       return;
     }
     setSlippage(Math.floor(Number((numericValue * 100).toFixed(2))));
