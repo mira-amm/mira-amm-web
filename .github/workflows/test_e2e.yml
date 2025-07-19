@@ -3,9 +3,9 @@ name: 🧪 End-to-End Tests
 
 on:
   push:
-    branches: ["*"]
+    branches: ['*']
   pull_request:
-    branches: ["*"]
+    branches: ['*']
 
 jobs:
   e2e:

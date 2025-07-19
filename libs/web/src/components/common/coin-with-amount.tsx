@@ -1,6 +1,6 @@
-import { B256Address } from "fuels";
-import { useAssetImage } from "@/src/hooks/useAssetImage";
-import { useAssetMetadata } from "@/src/hooks";
+import {B256Address} from "fuels";
+import {useAssetImage} from "@/src/hooks/useAssetImage";
+import {useAssetMetadata} from "@/src/hooks";
 
 export function CoinWithAmount({
   amount,

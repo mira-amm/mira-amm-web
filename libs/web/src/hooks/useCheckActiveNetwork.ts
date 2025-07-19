@@ -1,9 +1,9 @@
-import { useState, useEffect } from "react";
-import { useWallet } from "@fuels/react";
-import { ValidNetworkChainId } from "@/src/utils/constants";
+import {useState, useEffect} from "react";
+import {useWallet} from "@fuels/react";
+import {ValidNetworkChainId} from "@/src/utils/constants";
 
-export function useCheckActiveNetwork(){
-  const { wallet } = useWallet();
+export function useCheckActiveNetwork() {
+  const {wallet} = useWallet();
   const [isValid, setIsValid] = useState(false);
 
   useEffect(() => {
@@ -18,4 +18,4 @@ export function useCheckActiveNetwork(){
   }, [wallet]);
 
   return isValid;
-};
+}

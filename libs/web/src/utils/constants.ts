@@ -1,4 +1,4 @@
-import { bn, CHAIN_IDS, TxParams } from "fuels";
+import {bn, CHAIN_IDS, TxParams} from "fuels";
 
 export const DEFAULT_AMM_CONTRACT_ID =
   "0x2e40f2b244b98ed6b8204b3de0156c6961f98525c8162f80162fcf53eebd90e7" as const;
@@ -50,7 +50,7 @@ export const MinEthValueBN = MinEthValue * 10 ** EthDecimals;
 
 export const MAX_U256 = bn(
   "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
-  16,
+  16
 );
 
 export const DefaultLocale = "en-US" as const;

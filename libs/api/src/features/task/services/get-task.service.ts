@@ -1,7 +1,7 @@
-import { Result } from "@mkvlrn/result";
-import { Inject, Injectable } from "@nestjs/common";
-import { FetchService } from "../../../common/http/services/fetch.service.js";
-import type { AppError } from "../../../core/error.js";
+import {Result} from "@mkvlrn/result";
+import {Inject, Injectable} from "@nestjs/common";
+import {FetchService} from "../../../common/http/services/fetch.service.js";
+import type {AppError} from "../../../core/error.js";
 import {
   type GetTaskResponse,
   getTaskResponseSchema,
@@ -17,7 +17,10 @@ export class GetTaskService {
 
   async getTask(taskId: number): Promise<Result<GetTaskResponse, AppError>> {
     const url = `https://jsonplaceholder.typicode.com/todos/${taskId}`;
-    const result = await this.fetchService.fetch<GetTaskResponse>(url, getTaskResponseSchema);
+    const result = await this.fetchService.fetch<GetTaskResponse>(
+      url,
+      getTaskResponseSchema
+    );
 
     if (!result.ok) {
       return Result.error(result.error);

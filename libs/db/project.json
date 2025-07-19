@@ -5,19 +5,12 @@
     "description": "Database models and utilities."
   },
   "sourceRoot": "libs/db",
-  "implicitDependencies": [
-    "!libs/web"
-  ],
+  "implicitDependencies": ["!libs/web"],
   "projectType": "library",
-  "tags": [
-    "libs"
-  ],
+  "tags": ["libs"],
   "targets": {
     "view": {
-      "dependsOn": [
-        "types",
-        "schema"
-      ],
+      "dependsOn": ["types", "schema"],
       "command": "nx run-many -t studio visualizer # 🎙 View database schema at `local.drizzle.studio`, and visualizer at `localhost:5600`",
       "options": {
         "cwd": "libs/db"
@@ -41,7 +34,7 @@
         "cwd": "apps/admin",
         "env": {
           "NODE_OPTIONS": "--no-deprecation"
-        },
+        }
       }
     },
     "schema": {
@@ -50,7 +43,7 @@
         "cwd": "apps/admin",
         "env": {
           "NODE_OPTIONS": "--no-deprecation"
-        },
+        }
       }
     }
   }

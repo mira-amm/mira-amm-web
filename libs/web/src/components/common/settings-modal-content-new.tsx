@@ -87,7 +87,7 @@ function SettingsModalContentNew({
               className={clsx(
                 "w-full px-3 py-[14px] first:rounded-l-lg last:rounded-r-lg text-content-dimmed-light border bg-background-grey-dark hover:border dark:hover:text-content-primary hover:border-accent-primary dark:hover:border-accent-primary hover:border-black",
                 slippage === value &&
-                  "dark:border-accent-primary border border-content-tertiary bg-black dark:bg-background-grey-dark text-white",
+                  "dark:border-accent-primary border border-content-tertiary bg-black dark:bg-background-grey-dark text-white"
               )}
               onClick={() => handleSlippageButtonClick(value)}
             >
@@ -97,7 +97,10 @@ function SettingsModalContentNew({
         </div>
         <div className="flex items-center justify-center">
           <div className="flex justify-center items-center px-3">or</div>
-          <p id="slippage-description" className="text-content-tertiary dark:text-content-dimmed-light">
+          <p
+            id="slippage-description"
+            className="text-content-tertiary dark:text-content-dimmed-light"
+          >
             {/* existing description text */}
           </p>
           <input

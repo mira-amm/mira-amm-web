@@ -16,10 +16,22 @@ import CoinInput from "@/src/components/pages/add-liquidity-page/components/Coin
 import {openNewTab} from "@/src/utils/common";
 import {Info, TransactionFailureModal} from "@/src/components/common";
 import CoinPair from "@/src/components/common/CoinPair/CoinPair";
-import { AprBadge } from "@/src/components/common/AprBadge/AprBadge";
-import { usePoolNameAndMatch } from "@/src/hooks/usePoolNameAndMatch";
+import {AprBadge} from "@/src/components/common/AprBadge/AprBadge";
+import {usePoolNameAndMatch} from "@/src/hooks/usePoolNameAndMatch";
 
-import {usePreviewAddLiquidity, useAssetBalance, usePoolAPR, usePoolsMetadata, useFaucetLink, useAssetMetadata, useAssetPrice, useModal, useCheckEthBalance, useCheckActiveNetwork, useBalances} from "@/src/hooks";
+import {
+  usePreviewAddLiquidity,
+  useAssetBalance,
+  usePoolAPR,
+  usePoolsMetadata,
+  useFaucetLink,
+  useAssetMetadata,
+  useAssetPrice,
+  useModal,
+  useCheckEthBalance,
+  useCheckActiveNetwork,
+  useBalances,
+} from "@/src/hooks";
 import {DefaultLocale, FuelAppUrl} from "@/src/utils/constants";
 import {AddLiquidityPreviewData} from "@/src/components/pages/add-liquidity-page/components/AddLiquidity/PreviewAddLiquidityDialog";
 
@@ -30,11 +42,14 @@ import {
 } from "@/src/components/pages/add-liquidity-page/components/AddLiquidity/addLiquidityTooltips";
 import {cn} from "@/src/utils/cn";
 
-const AddLiquidityDialog = ({poolId, setPreviewData, poolKey}: {
+const AddLiquidityDialog = ({
+  poolId,
+  setPreviewData,
+  poolKey,
+}: {
   poolId: PoolId;
   setPreviewData: Dispatch<SetStateAction<AddLiquidityPreviewData | null>>;
   poolKey: string;
-
 }) => {
   const [FailureModal, openFailureModal, closeFailureModal] = useModal();
 
@@ -62,7 +77,7 @@ const AddLiquidityDialog = ({poolId, setPreviewData, poolKey}: {
 
   const {poolsMetadata} = usePoolsMetadata([poolId]);
   const emptyPool = Boolean(
-    poolsMetadata?.[0]?.reserve0.eq(0) && poolsMetadata?.[0].reserve1.eq(0),
+    poolsMetadata?.[0]?.reserve0.eq(0) && poolsMetadata?.[0].reserve1.eq(0)
   );
 
   //Checks if the pool with rewards matches the current pool
@@ -134,12 +149,12 @@ const AddLiquidityDialog = ({poolId, setPreviewData, poolKey}: {
 
         if (coin === poolId[0].bits) {
           debouncedSetFirstAmount(
-            bn.parseUnits(value, asset0Metadata.decimals),
+            bn.parseUnits(value, asset0Metadata.decimals)
           );
           setFirstAmountInput(value);
         } else {
           debouncedSetSecondAmount(
-            bn.parseUnits(value, asset1Metadata.decimals),
+            bn.parseUnits(value, asset1Metadata.decimals)
           );
           setSecondAmountInput(value);
         }
@@ -152,7 +167,7 @@ const AddLiquidityDialog = ({poolId, setPreviewData, poolKey}: {
       poolId,
       asset0Metadata,
       asset1Metadata,
-    ],
+    ]
   );
 
   const sufficientEthBalanceForFirstCoin = useCheckEthBalance({
@@ -255,7 +270,7 @@ const AddLiquidityDialog = ({poolId, setPreviewData, poolKey}: {
                 <span
                   className={clsx(
                     aprValue && "text-content-positive pb-[2px]",
-                    !aprValue && "text-content-dimmed-dark",
+                    !aprValue && "text-content-dimmed-dark"
                   )}
                 >
                   {aprValue ? `${aprValue}%` : "Awaiting data"}
@@ -269,7 +284,7 @@ const AddLiquidityDialog = ({poolId, setPreviewData, poolKey}: {
               className={cn(
                 "flex w-full flex-col items-start gap-[10px] rounded-md bg-background-secondary dark:bg-background-secondary p-[10px_12px] text-content-dimmed-light cursor-not-allowed",
                 !isStablePool &&
-                  "border dark:border-accent-primary dark:text-content-primary bg-background-primary text-white",
+                  "border dark:border-accent-primary dark:text-content-primary bg-background-primary text-white"
               )}
             >
               <div className="flex w-full">
@@ -287,7 +302,7 @@ const AddLiquidityDialog = ({poolId, setPreviewData, poolKey}: {
               className={cn(
                 "flex w-full flex-col items-start gap-[10px] rounded-md bg-background-secondary dark:bg-background-secondary p-[10px_12px] text-content-dimmed-light cursor-not-allowed",
                 isStablePool &&
-                  "border dark:border-accent-primary dark:text-content-primary bg-background-primary text-white",
+                  "border dark:border-accent-primary dark:text-content-primary bg-background-primary text-white"
               )}
             >
               <div className="flex w-full">

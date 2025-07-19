@@ -81,7 +81,7 @@ describe("Swap Routes & Quotes (headless)", () => {
       bn(testContext.amount),
       TradeType.EXACT_IN,
       testContext.routes,
-      amm,
+      amm
     );
     console.log("Quotes with no routes:", quotes);
     expect(quotes).toEqual([]);
@@ -132,7 +132,7 @@ describe("Swap Routes & Quotes (headless)", () => {
       amount,
       TradeType.EXACT_IN,
       [route],
-      amm,
+      amm
     );
     console.log("📊 ETH→FUEL quotes:", quotes);
     expect(quotes.length).toBeGreaterThan(0);

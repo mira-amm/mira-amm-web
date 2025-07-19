@@ -21,11 +21,7 @@ pub mod common {
         let asset_b = wallet.get_asset_balance(&pool_id.1).await.unwrap();
         let lp_asset = get_lp_asset_id(contract_id, pool_id);
         let liquidity_pool_asset = wallet.get_asset_balance(&lp_asset).await.unwrap();
-        WalletBalances {
-            asset_a,
-            asset_b,
-            liquidity_pool_asset,
-        }
+        WalletBalances { asset_a, asset_b, liquidity_pool_asset }
     }
 
     pub fn get_lp_asset_id(contract_id: ContractId, pool_id: &PoolId) -> AssetId {
@@ -88,14 +84,8 @@ pub mod mock {
     ) -> ContractId {
         let (token_contract_id, token_contract) = mock::deploy_mock_token_contract(wallet).await;
 
-        mock::add_token(&token_contract, name_0, symbol_0, decimals_0)
-            .await
-            .tx_id
-            .unwrap();
-        mock::add_token(&token_contract, name_1, symbol_1, decimals_1)
-            .await
-            .tx_id
-            .unwrap();
+        mock::add_token(&token_contract, name_0, symbol_0, decimals_0).await.tx_id.unwrap();
+        mock::add_token(&token_contract, name_1, symbol_1, decimals_1).await.tx_id.unwrap();
 
         token_contract_id
     }

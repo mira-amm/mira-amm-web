@@ -162,7 +162,7 @@ export async function GET(req: NextRequest) {
     if (!fromBlock || !toBlock || fromBlock >= toBlock) {
       return NextResponse.json(
         {error: "'fromBlock' and 'toBlock' must be valid and ordered"},
-        {status: 400},
+        {status: 400}
       );
     }
 
@@ -186,7 +186,7 @@ export async function GET(req: NextRequest) {
     console.error("Error fetching events:", error);
     return NextResponse.json(
       {error: "Failed to fetch events data"},
-      {status: 500},
+      {status: 500}
     );
   }
 }

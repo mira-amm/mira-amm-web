@@ -2,15 +2,19 @@ import {type ChangeEvent, useMemo, useState} from "react";
 import {CoinDataWithPrice} from "../utils/coinsConfig";
 import {BN, CoinQuantity} from "fuels";
 import {checkIfCoinVerified} from "../utils/checkIfCoinVerified";
-import {useFetchMultiAssetImages, useVerifiedAssets, useAssetList} from "@/src/hooks";
+import {
+  useFetchMultiAssetImages,
+  useVerifiedAssets,
+  useAssetList,
+} from "@/src/hooks";
 
 const priorityOrder: string[] = ["ETH", "USDC", "USDT", "FUEL"];
 const lowPriorityOrder: string[] = ["DUCKY"];
 
 export function useCoinListModal(
   balances: CoinQuantity[] | undefined,
-  verifiedAssetsOnly?: boolean,
-){
+  verifiedAssetsOnly?: boolean
+) {
   const [value, setValue] = useState("");
 
   const {assets, isLoading} = useAssetList();
@@ -30,7 +34,7 @@ export function useCoinListModal(
 
   const filterByVerification = (
     coin: CoinDataWithPrice,
-    verifiedAssetsOnly?: boolean,
+    verifiedAssetsOnly?: boolean
   ) => {
     return !verifiedAssetsOnly || coin.isVerified;
   };
@@ -65,10 +69,10 @@ export function useCoinListModal(
         }
 
         const firstAssetLowPriority = lowPriorityOrder.indexOf(
-          firstAsset.name!,
+          firstAsset.name!
         );
         const secondAssetLowPriority = lowPriorityOrder.indexOf(
-          secondAsset.name!,
+          secondAsset.name!
         );
         const bothAssetsHaveLowPriority =
           firstAssetLowPriority !== -1 && secondAssetLowPriority !== -1;
@@ -112,7 +116,7 @@ export function useCoinListModal(
       .reduce<(CoinDataWithPrice & {userBalance: CoinQuantity | undefined})[]>(
         (acc, eachAsset) => {
           const coinBalance = balances?.find(
-            (balance) => balance.assetId === eachAsset.assetId,
+            (balance) => balance.assetId === eachAsset.assetId
           );
 
           const isVerified =
@@ -143,7 +147,7 @@ export function useCoinListModal(
 
           return acc;
         },
-        [],
+        []
       );
   }, [assets, balances, value, verifiedAssetData, verifiedAssetsOnly]);
   return {
@@ -152,4 +156,4 @@ export function useCoinListModal(
     allCoins: sortedCoinsList,
     searchValue: value,
   };
-};
+}

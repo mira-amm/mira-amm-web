@@ -14,16 +14,9 @@ pub async fn get_transaction_inputs_outputs(
     let mut outputs: Vec<Output> = Vec::with_capacity(assets.len());
 
     for (asset, amount) in assets {
-        let asset_inputs = wallet
-            .get_asset_inputs_for_amount(*asset, *amount, None)
-            .await
-            .unwrap();
+        let asset_inputs = wallet.get_asset_inputs_for_amount(*asset, *amount, None).await.unwrap();
         inputs.extend(asset_inputs);
-        outputs.push(Output::Change {
-            asset_id: *asset,
-            amount: 0,
-            to: wallet.address().into(),
-        });
+        outputs.push(Output::Change { asset_id: *asset, amount: 0, to: wallet.address().into() });
     }
     (inputs, outputs)
 }

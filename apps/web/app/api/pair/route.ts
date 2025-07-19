@@ -11,7 +11,7 @@ import {
 import {NotFoundError} from "../../../../../libs/web/src/utils/errors";
 
 export const fetchPoolById = async (
-  poolId: string,
+  poolId: string
 ): Promise<SQDIndexerResponses.Pool> => {
   const query = gql`
     query GetPoolById($id: String!) {
@@ -44,7 +44,7 @@ export const fetchPoolById = async (
 };
 
 export const createPairFromPool = (
-  pool: SQDIndexerResponses.Pool,
+  pool: SQDIndexerResponses.Pool
 ): GeckoTerminalQueryResponses.Pair => ({
   id: pool.id,
   dexKey: "mira",
@@ -62,7 +62,7 @@ export async function GET(req: NextRequest) {
     if (!poolId) {
       return NextResponse.json(
         {error: "Pool ID(param: id) is required"},
-        {status: 400},
+        {status: 400}
       );
     }
 
@@ -82,7 +82,7 @@ export async function GET(req: NextRequest) {
 
     return NextResponse.json(
       {error: "An unexpected error occurred while fetching pair data"},
-      {status: 500},
+      {status: 500}
     );
   }
 }

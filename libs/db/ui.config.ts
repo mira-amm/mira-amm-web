@@ -1,19 +1,19 @@
-import { lexicalEditor } from "@payloadcms/richtext-lexical";
-import { Users } from "@/db/collections";
+import {lexicalEditor} from "@payloadcms/richtext-lexical";
+import {Users} from "@/db/collections";
 
 export const adminConfig = {
   admin: {
-   autoLogin:
-    process.env.NEXT_PUBLIC_ENABLE_AUTOLOGIN === 'true'
-      ? {
-          email: 'test@mira.ly',
-          password: 'test',
-          prefillOnly: true,
-        }
-      : false,
+    autoLogin:
+      process.env.NEXT_PUBLIC_ENABLE_AUTOLOGIN === "true"
+        ? {
+            email: "test@mira.ly",
+            password: "test",
+            prefillOnly: true,
+          }
+        : false,
     meta: {
-    defaultOGImageType: 'dynamic',
-    applicationName: "Microchain Admin Panel",
+      defaultOGImageType: "dynamic",
+      applicationName: "Microchain Admin Panel",
       titleSuffix: "- Microchain",
       description: "Admin Dashboard & Content Management System for Microchain",
       icons: [
@@ -24,40 +24,41 @@ export const adminConfig = {
         },
       ],
     },
-    components: { // resolves to apps/microgame/src/components, no idea why. Tried to fix it.
+    components: {
+      // resolves to apps/microgame/src/components, no idea why. Tried to fix it.
       // https://payload-visual-guide.vercel.app/
-    routes: {
-      // createFirstUser: '/create-account',
-    },
+      routes: {
+        // createFirstUser: '/create-account',
+      },
       // beforeDashboard: ["/components/before-dashboard#BeforeDashboard"],
       // afterDashboard: ["/components/after-dashboard#AfterDashboard"],
-      beforeLogin: ['/components/BeforeLogin#BeforeLogin'],
+      beforeLogin: ["/components/BeforeLogin#BeforeLogin"],
       afterLogin: ["/components/AfterLogin#AfterLogin"],
       graphics: {
         Icon: "/components/icon#Icon",
         Logo: "/components/logo#Logo",
       },
-      Nav: '/components/Nav#Nav',
+      Nav: "/components/Nav#Nav",
       // https://dev.to/aaronksaunders/payload-cms-add-a-custom-create-account-screen-in-admin-ui-2pdg
       // https://www.youtube.com/watch?v=X-6af837WbY
       views: {
         dashboard: {
-          Component: '/components/Dashboard#Dashboard',
+          Component: "/components/Dashboard#Dashboard",
         },
       },
-    avatar: {
-      Component: '/components/Avatar#Avatar',
+      avatar: {
+        Component: "/components/Avatar#Avatar",
+      },
     },
-  },
     importMap: {
       // baseDir: path.resolve("../../../src"),
       baseDir: "src", // resolves from location of payload.config.ts
     },
     user: Users.slug,
-    theme: 'dark', // CREDITS: github.com/akhrarovsaid/payload-theme-quantum-leap
-    suppressHydrationWarning: true
+    theme: "dark", // CREDITS: github.com/akhrarovsaid/payload-theme-quantum-leap
+    suppressHydrationWarning: true,
   },
-}
+};
 
 export const clientConfig = {
   editor: lexicalEditor({}),
@@ -70,4 +71,4 @@ export const clientConfig = {
     },
     maxPerDoc: 20,
   },
-}
+};

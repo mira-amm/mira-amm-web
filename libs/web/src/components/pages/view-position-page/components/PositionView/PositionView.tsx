@@ -11,13 +11,21 @@ import {createPoolKey, floorToTwoSignificantDigits} from "@/src/utils/common";
 import RemoveLiquidityModalContent from "@/src/components/pages/view-position-page/components/RemoveLiquidityModalContent/RemoveLiquidityModalContent";
 import RemoveLiquiditySuccessModal from "@/src/components/pages/view-position-page/components/RemoveLiquiditySuccessModal/RemoveLiquiditySuccessModal";
 
-import {useRemoveLiquidity, usePositionData, useModal, useFormattedAddress, useCheckActiveNetwork, useAssetMetadata, usePoolAPR} from "@/src/hooks";
+import {
+  useRemoveLiquidity,
+  usePositionData,
+  useModal,
+  useFormattedAddress,
+  useCheckActiveNetwork,
+  useAssetMetadata,
+  usePoolAPR,
+} from "@/src/hooks";
 
-import { DesktopPositionView } from "./desktop-position-view";
-import { MobilePositionView } from "./mobile-position-view";
+import {DesktopPositionView} from "./desktop-position-view";
+import {MobilePositionView} from "./mobile-position-view";
 import {DEFAULT_AMM_CONTRACT_ID, DefaultLocale} from "@/src/utils/constants";
 
-export function PositionView ({pool}: {pool: PoolId}) {
+export function PositionView({pool}: {pool: PoolId}) {
   const [
     RemoveLiquidityModal,
     openRemoveLiquidityModal,
@@ -54,7 +62,7 @@ export function PositionView ({pool}: {pool: PoolId}) {
     .div(bn(100));
   const coinAAmountToWithdrawStr = formatUnits(
     coinAAmountToWithdraw,
-    assetAMetadata.decimals,
+    assetAMetadata.decimals
   );
 
   const coinBAmount = formatUnits(assetB[1], assetBMetadata.decimals);
@@ -64,7 +72,7 @@ export function PositionView ({pool}: {pool: PoolId}) {
     .div(bn(100));
   const coinBAmountToWithdrawStr = formatUnits(
     coinBAmountToWithdraw,
-    assetBMetadata.decimals,
+    assetBMetadata.decimals
   );
 
   const confirmationModalAssetsAmounts = useRef({
@@ -212,5 +220,4 @@ export function PositionView ({pool}: {pool: PoolId}) {
       </FailureModal>
     </>
   );
-};
-
+}

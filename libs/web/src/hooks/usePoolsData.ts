@@ -46,7 +46,7 @@ const DEFAULT_ORDER_BY = "tvlUSD_DESC";
 const DEFAULT_SEARCH = "";
 export const DEFAULT_PAGE = 1;
 
-export function usePoolsData(){
+export function usePoolsData() {
   const [queryVariables, setQueryVariables] = useQueryParams({
     page: withDefault(NumberParam, DEFAULT_PAGE),
     search: withDefault(StringParam, DEFAULT_SEARCH),
@@ -109,7 +109,7 @@ export function usePoolsData(){
   });
 
   const totalPages = Math.ceil(
-    data?.poolsConnection?.totalCount / ITEMS_IN_PAGE,
+    data?.poolsConnection?.totalCount / ITEMS_IN_PAGE
   );
 
   const dataTransformed = data?.poolsConnection?.edges.map(
@@ -118,7 +118,7 @@ export function usePoolsData(){
       // const volume24h = pool.snapshots.reduce((acc: number, snapshot: any) => acc + parseFloat(snapshot.volumeUSD), 0);
       const fees24h = pool.snapshots.reduce(
         (acc: number, snapshot: any) => acc + parseFloat(snapshot.feesUSD),
-        0,
+        0
       );
       const apr = (fees24h / parseFloat(pool.tvlUSD)) * 365 * 100;
 
@@ -135,14 +135,14 @@ export function usePoolsData(){
           volume: pool.snapshots.reduce(
             (acc: number, snapshot: any) =>
               acc + parseFloat(snapshot.volumeUSD),
-            0,
+            0
           ),
           tvl: parseFloat(pool.tvlUSD),
         },
         swap_count: 0,
         create_time: 0,
       };
-    },
+    }
   );
 
   const totalCount = data?.poolsConnection?.totalCount || 0;
@@ -157,4 +157,4 @@ export function usePoolsData(){
       queryVariables,
     },
   };
-};
+}

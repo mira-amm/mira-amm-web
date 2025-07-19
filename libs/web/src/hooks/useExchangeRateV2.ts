@@ -1,9 +1,9 @@
-"use client"
+"use client";
 
 import {useMemo} from "react";
 
-import { DefaultLocale } from "@/src/utils/constants";
-import { useAssetMetadata } from "@/src/hooks";
+import {DefaultLocale} from "@/src/utils/constants";
+import {useAssetMetadata} from "@/src/hooks";
 
 export function useExchangeRateV2({
   firstAssetId,
@@ -34,7 +34,7 @@ export function useExchangeRateV2({
     const firstAssetIsBase = baseAssetId === firstAssetId;
 
     const activeModeAmountValue = parseFloat(
-      firstAssetIsBase ? firstAssetAmount : secondAssetAmount,
+      firstAssetIsBase ? firstAssetAmount : secondAssetAmount
     );
 
     if (activeModeAmountValue === 0) {
@@ -63,4 +63,4 @@ export function useExchangeRateV2({
     secondAssetAmount,
     secondAssetId,
   ]);
-};
+}

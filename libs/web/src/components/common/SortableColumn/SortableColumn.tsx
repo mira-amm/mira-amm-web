@@ -24,13 +24,13 @@ export default function SortableColumn({
       onClick={() => onSort(columnKey)}
       className={cn(
         "cursor-pointer select-none transition-colors text-content-dimmed-dark gap-2 text-center flex items-center",
-        className,
+        className
       )}
     >
       <div
         className={clsx(
           "flex justify-center gap-1",
-          "lg:font-normal font-medium",
+          "lg:font-normal font-medium"
         )}
       >
         {title}
@@ -38,7 +38,7 @@ export default function SortableColumn({
           className={clsx(
             "text-sm text-content-dimmed-dark transition-colors flex items-center",
             isActive && "text-white",
-            "lg:w-4",
+            "lg:w-4"
           )}
         >
           {isActive &&

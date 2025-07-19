@@ -63,7 +63,7 @@ const RemoveLiquidityModalContent = ({
   const debouncedSetValue = useDebounceCallback(setLiquidityValue, 500);
 
   const handleMouseUp = (
-    e: MouseEvent<HTMLInputElement> | TouchEvent<HTMLInputElement>,
+    e: MouseEvent<HTMLInputElement> | TouchEvent<HTMLInputElement>
   ) => {
     // @ts-ignore
     debouncedSetValue(Number(e.target.value));
@@ -73,7 +73,7 @@ const RemoveLiquidityModalContent = ({
     if (sliderRef.current) {
       document.documentElement.style.setProperty(
         "--value",
-        `${sliderRef.current.value}%`,
+        `${sliderRef.current.value}%`
       );
     }
   }, []);

@@ -12,16 +12,30 @@ import CoinPair from "@/src/components/common/CoinPair/CoinPair";
 import CoinInput from "@/src/components/pages/add-liquidity-page/components/CoinInput/CoinInput";
 import {useDebounceCallback} from "usehooks-ts";
 import {createPoolKey, openNewTab} from "@/src/utils/common";
-import {Info, CoinsListModal } from "@/src/components/common";
+import {Info, CoinsListModal} from "@/src/components/common";
 import {StablePoolTooltip, VolatilePoolTooltip} from "./CreatePoolTooltips";
 import {CreatePoolPreviewData} from "./PreviewCreatePoolDialog";
 
-import {useAssetBalance, useExchangeRateV2, useFaucetLink, useModal, usePoolsMetadata, useCheckEthBalance, useAssetPrice, useAssetMetadata, useCheckActiveNetwork, useBalances} from "@/src/hooks";
+import {
+  useAssetBalance,
+  useExchangeRateV2,
+  useFaucetLink,
+  useModal,
+  usePoolsMetadata,
+  useCheckEthBalance,
+  useAssetPrice,
+  useAssetMetadata,
+  useCheckActiveNetwork,
+  useBalances,
+} from "@/src/hooks";
 
-export function CreatePoolDialog({setPreviewData}: {
+export function CreatePoolDialog({
+  setPreviewData,
+}: {
   setPreviewData: Dispatch<SetStateAction<CreatePoolPreviewData | null>>;
 }) {
-  const [AssetsListModal, openAssetsListModal, closeAssetsListModal] = useModal();
+  const [AssetsListModal, openAssetsListModal, closeAssetsListModal] =
+    useModal();
 
   const {isConnected, isPending: isConnecting} = useIsConnected();
   const {connect} = useConnectUI();
@@ -83,7 +97,7 @@ export function CreatePoolDialog({setPreviewData}: {
         setActiveAsset(coin);
       };
     },
-    [debouncedSetFirstAmount, debouncedSetSecondAmount, firstAssetId],
+    [debouncedSetFirstAmount, debouncedSetSecondAmount, firstAssetId]
   );
 
   const sufficientEthBalanceForFirstCoin = useCheckEthBalance({
@@ -119,7 +133,7 @@ export function CreatePoolDialog({setPreviewData}: {
             ],
             isStablePool,
           }
-        : null,
+        : null
     );
   }, [
     sufficientEthBalance,
@@ -177,7 +191,7 @@ export function CreatePoolDialog({setPreviewData}: {
         activeAssetForAssetSelector.current = assetId;
       };
     },
-    [openAssetsListModal],
+    [openAssetsListModal]
   );
 
   const handleAssetSelection = useCallback(
@@ -196,7 +210,7 @@ export function CreatePoolDialog({setPreviewData}: {
 
       closeAssetsListModal();
     },
-    [firstAssetId, secondAssetId, closeAssetsListModal],
+    [firstAssetId, secondAssetId, closeAssetsListModal]
   );
 
   const firstAssetPrice = useAssetPrice(firstAssetId);
@@ -212,7 +226,7 @@ export function CreatePoolDialog({setPreviewData}: {
 
   const handleExchangeRateSwap = () => {
     setActiveAssetId((prevActiveAssetId) =>
-      prevActiveAssetId === firstAssetId ? secondAssetId : firstAssetId,
+      prevActiveAssetId === firstAssetId ? secondAssetId : firstAssetId
     );
   };
 
@@ -235,7 +249,7 @@ export function CreatePoolDialog({setPreviewData}: {
               className={clsx(
                 "flex flex-col items-start w-full rounded-md px-3 py-3 gap-2 bg-background-secondary text-content-dimmed-light cursor-pointer",
                 !isStablePool &&
-                  "text-content-primary border-accent-primary border",
+                  "text-content-primary border-accent-primary border"
               )}
               onClick={() => handleStabilityChange(false)}
               role="button"
@@ -254,7 +268,7 @@ export function CreatePoolDialog({setPreviewData}: {
               className={clsx(
                 "flex flex-col items-start w-full rounded-md px-3 py-3 gap-2 bg-background-secondary text-content-dimmed-light cursor-pointer",
                 isStablePool &&
-                  "text-content-primary border-accent-primary border",
+                  "text-content-primary border-accent-primary border"
               )}
               onClick={() => handleStabilityChange(true)}
               role="button"

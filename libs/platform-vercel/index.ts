@@ -3,7 +3,7 @@ import type {GetProjectResult, GetDeploymentResult} from "@pulumiverse/vercel";
 import {PROJECTS, PROJECT_OUTPUTS, DEPLOYMENT_OUTPUTS, table} from "./config";
 import chalk from "chalk";
 
-function createHeader(){
+function createHeader() {
   table.push([
     {
       content: chalk.bold.yellowBright("🌐 Project"),
@@ -54,12 +54,12 @@ function createHeader(){
       vAlign: "center",
     },
   ]);
-};
+}
 
 function createProjectRow(
   project: GetProjectResult,
-  projectData: {name: string; emoji: string; domain: string},
-){
+  projectData: {name: string; emoji: string; domain: string}
+) {
   return [
     {
       content: `${projectData.emoji} ${chalk.bold.underline.yellow(projectData.name)}`,
@@ -71,7 +71,7 @@ function createProjectRow(
     {content: chalk.white(`'${project.id}'`)},
     {content: chalk.white(`'${projectData.domain}'`)},
   ];
-};
+}
 
 pulumi.all(PROJECT_OUTPUTS).apply((projects: GetProjectResult[]) => {
   createHeader();

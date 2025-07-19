@@ -16,7 +16,7 @@ const MicroChainStatusText = () => {
   const hintText = useAnimationStore((state) => state.hintText);
   const isRadioPlaying = useAnimationStore((state) => state.isRadioPlaying);
   const isTriggeredManually = useAnimationStore(
-    (state) => state.isTriggeredManually,
+    (state) => state.isTriggeredManually
   );
   const [hasMounted, setHasMounted] = useState(false);
   const [glowClass, setGlowClass] = useState("");

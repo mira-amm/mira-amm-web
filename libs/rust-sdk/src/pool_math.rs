@@ -116,23 +116,13 @@ pub fn get_amount_out(
 ) -> Result<U256, Error> {
     ensure!(input_amount > U256::zero(), "Router: ZERO_INPUT_AMOUNT");
     if is_stable {
-        let xy: U256 = k(
-            true,
-            reserve_in,
-            reserve_out,
-            pow_decimals_in,
-            pow_decimals_out,
-        );
+        let xy: U256 = k(true, reserve_in, reserve_out, pow_decimals_in, pow_decimals_out);
 
         let amount_in_adjusted = adjust(input_amount, pow_decimals_in);
         let reserve_in_adjusted = adjust(reserve_in, pow_decimals_in);
         let reserve_out_adjusted = adjust(reserve_out, pow_decimals_out);
         let y = reserve_out_adjusted
-            - get_y(
-                amount_in_adjusted + reserve_in_adjusted,
-                xy,
-                reserve_out_adjusted,
-            )?;
+            - get_y(amount_in_adjusted + reserve_in_adjusted, xy, reserve_out_adjusted)?;
         Ok(y * pow_decimals_out / one_e_18())
     } else {
         Ok(input_amount * reserve_out / (reserve_in + input_amount))
@@ -150,28 +140,16 @@ pub fn get_amount_in(
     ensure!(output_amount > U256::zero(), "Router: ZERO_OUTPUT_AMOUNT");
     ensure!(reserve_out > output_amount, "Router: INVALID_OUTPUT_AMOUNT");
     if is_stable {
-        let xy: U256 = k(
-            true,
-            reserve_in,
-            reserve_out,
-            pow_decimals_in,
-            pow_decimals_out,
-        );
+        let xy: U256 = k(true, reserve_in, reserve_out, pow_decimals_in, pow_decimals_out);
 
         let amount_out_adjusted = adjust(output_amount, pow_decimals_out);
         let reserve_in_adjusted = adjust(reserve_in, pow_decimals_in);
         let reserve_out_adjusted = adjust(reserve_out, pow_decimals_out);
-        let y = get_y(
-            reserve_out_adjusted - amount_out_adjusted,
-            xy,
-            reserve_in_adjusted,
-        )? - reserve_in_adjusted;
+        let y = get_y(reserve_out_adjusted - amount_out_adjusted, xy, reserve_in_adjusted)?
+            - reserve_in_adjusted;
         Ok(rounding_up_division(y * pow_decimals_in, one_e_18()))
     } else {
-        Ok(rounding_up_division(
-            output_amount * reserve_in,
-            reserve_out - output_amount,
-        ))
+        Ok(rounding_up_division(output_amount * reserve_in, reserve_out - output_amount))
     }
 }
 
@@ -184,16 +162,10 @@ pub fn get_amounts_out(
 ) -> Result<Vec<(u64, AssetId)>, Error> {
     ensure!(pools.len() >= 1, "Router: INVALID_PATH");
 
-    let AmmFees {
-        lp_fee_volatile,
-        lp_fee_stable,
-        protocol_fee_volatile,
-        protocol_fee_stable,
-    } = fees;
-    let (stable_fee, volatile_fee) = (
-        lp_fee_stable + protocol_fee_stable,
-        lp_fee_volatile + protocol_fee_volatile,
-    );
+    let AmmFees { lp_fee_volatile, lp_fee_stable, protocol_fee_volatile, protocol_fee_stable } =
+        fees;
+    let (stable_fee, volatile_fee) =
+        (lp_fee_stable + protocol_fee_stable, lp_fee_volatile + protocol_fee_volatile);
 
     let mut amounts: Vec<(u64, AssetId)> = Vec::new();
     amounts.push((amount_in, asset_in));
@@ -201,17 +173,10 @@ pub fn get_amounts_out(
     while i < pools.len() {
         let pool_id = pools.get(i).unwrap();
         let pool_opt = pools_metadata.get(pool_id);
-        ensure!(
-            pool_opt.is_some(),
-            format!("Pool {:?} not present", pool_id)
-        );
+        ensure!(pool_opt.is_some(), format!("Pool {:?} not present", pool_id));
         let pool = pool_opt.unwrap();
         let (amount_in, asset_in) = *amounts.get(i).unwrap();
-        let fee = if is_stable(pool_id) {
-            stable_fee
-        } else {
-            volatile_fee
-        };
+        let fee = if is_stable(pool_id) { stable_fee } else { volatile_fee };
         let amount_out = if asset_in == pool_id.0 {
             get_amount_out(
                 is_stable(pool_id),
@@ -232,11 +197,7 @@ pub fn get_amounts_out(
             )
         }?;
 
-        let asset_out = if pool_id.0 == asset_in {
-            pool_id.1
-        } else {
-            pool_id.0
-        };
+        let asset_out = if pool_id.0 == asset_in { pool_id.1 } else { pool_id.0 };
         let amount_out_u64 = u64::try_from(amount_out);
         ensure!(amount_out_u64.is_ok(), "Router: INVALID_AMOUNT_OUT");
         amounts.push((amount_out_u64.unwrap(), asset_out));
@@ -254,16 +215,10 @@ pub fn get_amounts_in(
 ) -> Result<Vec<(u64, AssetId)>, Error> {
     ensure!(pools.len() >= 1, "Router: INVALID_PATH");
 
-    let AmmFees {
-        lp_fee_volatile,
-        lp_fee_stable,
-        protocol_fee_volatile,
-        protocol_fee_stable,
-    } = fees;
-    let (stable_fee, volatile_fee) = (
-        lp_fee_stable + protocol_fee_stable,
-        lp_fee_volatile + protocol_fee_volatile,
-    );
+    let AmmFees { lp_fee_volatile, lp_fee_stable, protocol_fee_volatile, protocol_fee_stable } =
+        fees;
+    let (stable_fee, volatile_fee) =
+        (lp_fee_stable + protocol_fee_stable, lp_fee_volatile + protocol_fee_volatile);
 
     let mut amounts: Vec<(u64, AssetId)> = Vec::new();
     amounts.push((amount_out, asset_out));
@@ -271,17 +226,10 @@ pub fn get_amounts_in(
     while i < pools.len() {
         let pool_id = pools.get(pools.len() - 1 - i).unwrap();
         let pool_opt = pools_metadata.get(pool_id);
-        ensure!(
-            pool_opt.is_some(),
-            format!("Pool {:?} not present", pool_id)
-        );
+        ensure!(pool_opt.is_some(), format!("Pool {:?} not present", pool_id));
         let pool = pool_opt.unwrap();
         let (amount_out, asset_out) = *amounts.get(i).unwrap();
-        let fee = if is_stable(pool_id) {
-            stable_fee
-        } else {
-            volatile_fee
-        };
+        let fee = if is_stable(pool_id) { stable_fee } else { volatile_fee };
         let amount_in = if asset_out == pool_id.0 {
             get_amount_in(
                 is_stable(pool_id),
@@ -302,11 +250,7 @@ pub fn get_amounts_in(
             )
         }?;
 
-        let asset_in = if pool_id.0 == asset_out {
-            pool_id.1
-        } else {
-            pool_id.0
-        };
+        let asset_in = if pool_id.0 == asset_out { pool_id.1 } else { pool_id.0 };
         let amount_in_u64 = u64::try_from(amount_in);
         ensure!(amount_in_u64.is_ok(), "Router: INVALID_AMOUNT_IN");
         let amount_in_with_fee = add_fee(amount_in_u64.unwrap(), fee);

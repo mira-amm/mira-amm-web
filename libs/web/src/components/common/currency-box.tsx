@@ -78,7 +78,7 @@ export function CurrencyBox({
     <div
       className={clsx(
         "flex flex-col gap-2.5 rounded-[10px] border border-transparent bg-background-tertiary dark:bg-background-secondary px-3 py-3 lg:px-4 focus-within:border-accent-secondary",
-        className,
+        className
       )}
     >
       <p className="text-xs leading-4 text-content-tertiary dark:text-content-tertiary lg:text-sm lg:leading-[18px]">
@@ -100,7 +100,7 @@ export function CurrencyBox({
               rebrandEnabled
                 ? "font-(family-name:--font-jetbrains-mono)"
                 : "font-inter",
-              loading && "text-gray-400/40 dark:text-content-tertiary/40",
+              loading && "text-gray-400/40 dark:text-content-tertiary/40"
             )}
             type="text"
             inputMode="decimal"
@@ -120,7 +120,7 @@ export function CurrencyBox({
             "flex items-center gap-2 px-2.5 py-1.5 rounded-lg bg-transparent text-content-grey",
             "hover:bg-background-grey-light dark:hover:bg-background-grey-dark disabled:cursor-default",
             coinNotSelected &&
-              "bg-background-grey-dark hover:bg-background-grey-light cursor-pointer",
+              "bg-background-grey-dark hover:bg-background-grey-light cursor-pointer"
           )}
         >
           {coinNotSelected ? (

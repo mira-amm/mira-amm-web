@@ -1,5 +1,13 @@
-import { useQuery } from "@tanstack/react-query";
-import { createContext, Dispatch, SetStateAction, useContext, useDeferredValue, useMemo, useState } from "react";
+import {useQuery} from "@tanstack/react-query";
+import {
+  createContext,
+  Dispatch,
+  SetStateAction,
+  useContext,
+  useDeferredValue,
+  useMemo,
+  useState,
+} from "react";
 
 type PaginationContextType = {
   currentPage: number;
@@ -13,12 +21,16 @@ type PaginationContextType = {
   isOnLastPage: boolean;
 };
 
-const PaginationContext = createContext<PaginationContextType>({} as PaginationContextType);
+const PaginationContext = createContext<PaginationContextType>(
+  {} as PaginationContextType
+);
 
 export const usePaginationContext = () => useContext(PaginationContext);
 
 interface PaginationContextProviderProps {
-  children: React.ReactNode | ((value: PaginationContextType) => React.ReactNode);
+  children:
+    | React.ReactNode
+    | ((value: PaginationContextType) => React.ReactNode);
   initialPage: number;
   fetchData: (page: number) => Promise<any>;
   pageSize: number;
@@ -32,7 +44,7 @@ export const PaginationContextProvider = ({
 }: PaginationContextProviderProps) => {
   const [currentPage, setCurrentPage] = useState(initialPage);
 
-  const { data, isLoading, error } = useQuery({
+  const {data, isLoading, error} = useQuery({
     queryKey: ["PAGINATED_DATA", currentPage],
     queryFn: async () => {
       return await fetchData(currentPage);
@@ -56,7 +68,15 @@ export const PaginationContextProvider = ({
       pageSize,
       isOnLastPage: currentPage === totalPages,
     }),
-    [currentPage, currentData, currentLoading, error, totalCount, totalPages, pageSize]
+    [
+      currentPage,
+      currentData,
+      currentLoading,
+      error,
+      totalCount,
+      totalPages,
+      pageSize,
+    ]
   );
 
   return (

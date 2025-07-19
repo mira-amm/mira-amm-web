@@ -20,15 +20,7 @@ pub async fn adds_liquidity_with_equal_deposit_amounts() {
     .await;
 
     let added_liquidity = script_instance
-        .main(
-            pool_id,
-            amount_0_desired,
-            amount_1_desired,
-            0,
-            0,
-            wallet.address().into(),
-            deadline,
-        )
+        .main(pool_id, amount_0_desired, amount_1_desired, 0, 0, wallet.address().into(), deadline)
         .with_contracts(&[&amm.instance])
         .with_inputs(inputs)
         .with_outputs(outputs)
@@ -56,15 +48,7 @@ async fn adds_liquidity_to_make_a_more_valuable() {
     .await;
 
     let added_liquidity = script_instance
-        .main(
-            pool_id,
-            amount_0_desired,
-            amount_1_desired,
-            0,
-            0,
-            wallet.address().into(),
-            deadline,
-        )
+        .main(pool_id, amount_0_desired, amount_1_desired, 0, 0, wallet.address().into(), deadline)
         .with_contracts(&[&amm.instance])
         .with_inputs(inputs)
         .with_outputs(outputs)
@@ -92,15 +76,7 @@ async fn adds_liquidity_to_make_b_more_valuable() {
     .await;
 
     let added_liquidity = script_instance
-        .main(
-            pool_id,
-            amount_0_desired,
-            amount_1_desired,
-            0,
-            0,
-            wallet.address().into(),
-            deadline,
-        )
+        .main(pool_id, amount_0_desired, amount_1_desired, 0, 0, wallet.address().into(), deadline)
         .with_contracts(&[&amm.instance])
         .with_inputs(inputs)
         .with_outputs(outputs)
@@ -126,15 +102,7 @@ async fn adds_further_liquidity_without_extra_deposit_when_a_is_more_valuable() 
     .await;
     // adds initial liquidity
     script_instance
-        .main(
-            pool_id,
-            amount_0_desired,
-            amount_1_desired,
-            0,
-            0,
-            wallet.address().into(),
-            deadline,
-        )
+        .main(pool_id, amount_0_desired, amount_1_desired, 0, 0, wallet.address().into(), deadline)
         .with_contracts(&[&amm.instance])
         .with_inputs(inputs)
         .with_outputs(outputs)
@@ -155,15 +123,7 @@ async fn adds_further_liquidity_without_extra_deposit_when_a_is_more_valuable() 
     .await;
 
     let added_liquidity = script_instance
-        .main(
-            pool_id,
-            amount_0_desired,
-            amount_1_desired,
-            0,
-            0,
-            wallet.address().into(),
-            deadline,
-        )
+        .main(pool_id, amount_0_desired, amount_1_desired, 0, 0, wallet.address().into(), deadline)
         .with_contracts(&[&amm.instance])
         .with_inputs(inputs)
         .with_outputs(outputs)

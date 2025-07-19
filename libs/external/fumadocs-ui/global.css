@@ -1,6 +1,6 @@
-@import "tailwindcss";
-@import "fumadocs-ui/css/black.css";
-@import "fumadocs-ui/css/preset.css";
+@import 'tailwindcss';
+@import 'fumadocs-ui/css/black.css';
+@import 'fumadocs-ui/css/preset.css';
 @import 'fumadocs-openapi/css/preset.css';
 
 @source '../../../node_modules/fumadocs-ui/dist/**/*.js';
@@ -111,8 +111,7 @@
   --radius-md: calc(var(--radius) - 2px);
   --radius-sm: calc(var(--radius) - 4px);
 
-  --animate-background-position-spin: background-position-spin 3000ms infinite
-    alternate;
+  --animate-background-position-spin: background-position-spin 3000ms infinite alternate;
 
   @keyframes background-position-spin {
     0% {

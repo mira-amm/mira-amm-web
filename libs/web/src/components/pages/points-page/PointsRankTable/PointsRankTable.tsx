@@ -118,7 +118,7 @@ export default function PointsRankTable() {
                   ? null
                   : flexRender(
                       header.column.columnDef.header,
-                      header.getContext(),
+                      header.getContext()
                     )}
               </TableHead>
             ))}

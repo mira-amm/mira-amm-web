@@ -5,11 +5,7 @@
     "description": "Shadcn UI"
   },
   "sourceRoot": "libs/external/shadcn-ui",
-  "implicitDependencies": [
-    "!libs/web"
-  ],
+  "implicitDependencies": ["!libs/web"],
   "projectType": "library",
-  "tags": [
-    "libs"
-  ]
-  }
+  "tags": ["libs"]
+}

@@ -1,27 +1,28 @@
 "use client";
 
-import { useQuery } from "@tanstack/react-query";
-import { useAccount } from "@fuels/react";
+import {useQuery} from "@tanstack/react-query";
+import {useAccount} from "@fuels/react";
 import pointsRewards from "@/src/models/campaigns.json";
-import { PointsResponse } from "@/src/models/points/interfaces";
-import { getRewardsPoolsId } from "@/src/utils/common";
-import { EPOCH_NUMBER } from "@/src/utils/constants";
+import {PointsResponse} from "@/src/models/points/interfaces";
+import {getRewardsPoolsId} from "@/src/utils/common";
+import {EPOCH_NUMBER} from "@/src/utils/constants";
 
 export function usePoints(): {
   rewardsAmount: number;
   isLoading: boolean;
   error: string | undefined;
 } {
-  const { account } = useAccount();
+  const {account} = useAccount();
   const epoch = pointsRewards.find((e) => e.number === EPOCH_NUMBER);
   const campaigns = epoch?.campaigns || [];
   const poolIds = getRewardsPoolsId(campaigns);
 
-  const isEnabled = Boolean(account) && poolIds.length > 0 && campaigns.length > 0;
+  const isEnabled =
+    Boolean(account) && poolIds.length > 0 && campaigns.length > 0;
 
   const queryKey = ["rewards", account, EPOCH_NUMBER, poolIds.join(",")];
 
-  const { data, isLoading, error } = useQuery({
+  const {data, isLoading, error} = useQuery({
     queryKey,
     enabled: isEnabled,
     queryFn: async () => {
@@ -33,7 +34,7 @@ export function usePoints(): {
 
       const res = await fetch(`/api/rewards?${params.toString()}`);
       if (!res.ok) throw new Error("Failed to fetch rewards");
-      return res.json() as Promise<{ rewardsAmount: number }>;
+      return res.json() as Promise<{rewardsAmount: number}>;
     },
   });
 
@@ -63,7 +64,7 @@ export function usePointsRanks(page: number, pageSize: number) {
 }
 
 export function usePointsRank() {
-  const { account } = useAccount();
+  const {account} = useAccount();
 
   return useQuery({
     queryKey: ["points-rank", account],

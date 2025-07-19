@@ -26,7 +26,7 @@ export function AprBadge({
   const {boostedApr, boostReward, rewardsToken} = useBoostedApr(
     poolKey,
     tvlValue,
-    EPOCH_NUMBER,
+    EPOCH_NUMBER
   );
 
   useEffect(() => {
@@ -73,7 +73,7 @@ export function AprBadge({
           "justify-center bg-black dark:bg-[linear-gradient(170deg,#262f5f_35%,#c41cff_100%)]",
           small
             ? "min-w-[76px] py-[5px] px-[8px]"
-            : "min-w-[96px] py-[7px] px-[10px] ml-[10px]",
+            : "min-w-[96px] py-[7px] px-[10px] ml-[10px]"
         )}
       >
         <span className="flex items-center justify-center text-white text-[19px]">
@@ -84,7 +84,7 @@ export function AprBadge({
             "text-white whitespace-normal break-words",
             small
               ? "text-[13px] leading-[16px]"
-              : "text-[16px] leading-[19.36px]",
+              : "text-[16px] leading-[19.36px]"
           )}
         >
           {aprElement}
@@ -108,7 +108,7 @@ export function AprBadge({
       </div>
     </div>
   );
-};
+}
 
 const LabelMap: Record<
   Exclude<RewardsToken, undefined>,
@@ -127,8 +127,7 @@ const LabelMap: Record<
   },
 };
 
-
-export function AprLabel ({
+export function AprLabel({
   rewardsToken,
   boostedApr,
   boostReward,
@@ -140,9 +139,8 @@ export function AprLabel ({
   boostReward: number;
   baseApr: string;
   aprElement: React.ReactNode;
-}){
-
- if (!rewardsToken) return null;
+}) {
+  if (!rewardsToken) return null;
 
   const {label, description} = LabelMap[rewardsToken];
 
@@ -190,4 +188,4 @@ export function AprLabel ({
       )}
     </div>
   );
-};
+}

@@ -1,7 +1,7 @@
-import request, { gql } from 'graphql-request';
-import { PoolId } from 'mira-dex-ts';
-import { SQDIndexerUrl } from '../utils/constants';
-import type { CoinData } from '../utils/coinsConfig';
+import request, {gql} from "graphql-request";
+import {PoolId} from "mira-dex-ts";
+import {SQDIndexerUrl} from "../utils/constants";
+import type {CoinData} from "../utils/coinsConfig";
 
 export type PoolReserveData = {
   reserve0: string;
@@ -32,17 +32,19 @@ export async function fetchPoolsWithReserve(
     const aliasMap = keysChunk.map(([a, b, [assetA, assetB, stable]], idx) => {
       const alias = String.fromCharCode(97 + idx);
       const id = `${assetA.bits}-${assetB.bits}-${stable}`;
-      return { alias, a, b, id };
+      return {alias, a, b, id};
     });
 
     const queries = aliasMap
-      .map(({ alias, id }) => `
+      .map(
+        ({alias, id}) => `
         ${alias}: poolById(id: "${id}") {
           reserve0
           reserve1
         }
-      `)
-      .join('\n');
+      `
+      )
+      .join("\n");
 
     const gqlQuery = gql`
       query MultiPoolReserve {
@@ -56,7 +58,7 @@ export async function fetchPoolsWithReserve(
     );
 
     for (let idx = 0; idx < aliasMap.length; idx++) {
-      const { alias, a, b, id: _ } = aliasMap[idx];
+      const {alias, a, b, id: _} = aliasMap[idx];
       const data = response[alias];
       if (data) {
         const poolId = keysChunk[idx][2];

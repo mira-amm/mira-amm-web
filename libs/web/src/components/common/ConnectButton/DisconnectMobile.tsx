@@ -1,40 +1,32 @@
-"use client"
+"use client";
 
-import {
-  useCallback,
-  useState,
-  useEffect,
-  useMemo,
-  useRef
-} from "react";
+import {useCallback, useState, useEffect, useMemo, useRef} from "react";
 import {Button} from "@/meshwave-ui/Button";
-import { clsx } from "clsx";
-import { TouchCloseIcon } from "@/meshwave-ui/icons";
-import { X } from "lucide-react";
+import {clsx} from "clsx";
+import {TouchCloseIcon} from "@/meshwave-ui/icons";
+import {X} from "lucide-react";
 
-import { useAccount, useDisconnect, useIsConnected } from "@fuels/react";
+import {useAccount, useDisconnect, useIsConnected} from "@fuels/react";
 
-import { useScrollLock } from "usehooks-ts";
-import { useFormattedAddress } from "@/src/hooks";
+import {useScrollLock} from "usehooks-ts";
+import {useFormattedAddress} from "@/src/hooks";
 
 import {
   CopyNotification,
   DropDownMenu,
-  TransactionsHistory
+  TransactionsHistory,
 } from "@/src/components/common";
 
-import { DropDownButtons } from "@/src/utils/DropDownButtons";
-import { openNewTab } from "@/src/utils/common";
-import { FuelAppUrl } from "@/src/utils/constants";
+import {DropDownButtons} from "@/src/utils/DropDownButtons";
+import {openNewTab} from "@/src/utils/common";
+import {FuelAppUrl} from "@/src/utils/constants";
 
-export function DisconnectMobile({ className }: {
-  className?: string;
-}){
-  const { isConnected } = useIsConnected();
-  const { account } = useAccount();
-  const { disconnect } = useDisconnect();
+export function DisconnectMobile({className}: {className?: string}) {
+  const {isConnected} = useIsConnected();
+  const {account} = useAccount();
+  const {disconnect} = useDisconnect();
 
-  const { lock, unlock } = useScrollLock({ autoLock: false });
+  const {lock, unlock} = useScrollLock({autoLock: false});
 
   const [isMenuOpened, setMenuOpened] = useState(false);
   const [isHistoryOpened, setHistoryOpened] = useState(false);
@@ -167,4 +159,4 @@ export function DisconnectMobile({ className }: {
       )}
     </>
   );
-};
+}

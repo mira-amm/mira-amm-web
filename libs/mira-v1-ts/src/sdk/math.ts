@@ -24,7 +24,7 @@ export function getAmountOut(
   reserveOut: BN,
   powDecimalsIn: BN,
   powDecimalsOut: BN,
-  inputAmount: BN,
+  inputAmount: BN
 ): BN {
   if (inputAmount.lte(0)) {
     throw new InvalidAmountError();
@@ -35,7 +35,7 @@ export function getAmountOut(
       reserveIn,
       reserveOut,
       powDecimalsIn,
-      powDecimalsOut,
+      powDecimalsOut
     );
 
     const amountInAdjusted = adjust(inputAmount, powDecimalsIn);
@@ -43,7 +43,7 @@ export function getAmountOut(
     const reserveOutAdjusted = adjust(reserveOut, powDecimalsOut);
 
     const y = reserveOutAdjusted.sub(
-      getY(amountInAdjusted.add(reserveInAdjusted), xy, reserveOutAdjusted),
+      getY(amountInAdjusted.add(reserveInAdjusted), xy, reserveOutAdjusted)
     );
 
     return y.mul(powDecimalsOut).div(ONE_E_18);
@@ -58,7 +58,7 @@ export function getAmountIn(
   reserveOut: BN,
   powDecimalsIn: BN,
   powDecimalsOut: BN,
-  outputAmount: BN,
+  outputAmount: BN
 ): BN {
   if (outputAmount.gte(reserveOut)) {
     throw new InsufficientReservesError();
@@ -72,7 +72,7 @@ export function getAmountIn(
       reserveIn,
       reserveOut,
       powDecimalsIn,
-      powDecimalsOut,
+      powDecimalsOut
     );
 
     const amountOutAdjusted = adjust(outputAmount, powDecimalsOut);
@@ -82,14 +82,14 @@ export function getAmountIn(
     const y = getY(
       reserveOutAdjusted.sub(amountOutAdjusted),
       xy,
-      reserveInAdjusted,
+      reserveInAdjusted
     ).sub(reserveInAdjusted);
 
     return roundingUpDivision(y.mul(powDecimalsIn), ONE_E_18);
   } else {
     return roundingUpDivision(
       outputAmount.mul(reserveIn),
-      reserveOut.sub(outputAmount),
+      reserveOut.sub(outputAmount)
     );
   }
 }
@@ -103,7 +103,7 @@ function k(
   x: BN,
   y: BN,
   powDecimalsX: BN,
-  powDecimalsY: BN,
+  powDecimalsY: BN
 ): BN {
   if (isStable) {
     const _x: BN = x.mul(ONE_E_18).div(powDecimalsX);

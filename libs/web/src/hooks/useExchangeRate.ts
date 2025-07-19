@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import {useMemo} from "react";
 
@@ -7,12 +7,12 @@ import type {
   SwapState,
 } from "@/src/components/common/Swap/Swap";
 
-import { DefaultLocale } from "@/src/utils/constants";
-import { useAssetMetadata } from "@/src/hooks";
+import {DefaultLocale} from "@/src/utils/constants";
+import {useAssetMetadata} from "@/src/hooks";
 
 export function useExchangeRate(
   swapState: SwapState,
-  mode: CurrencyBoxMode = "sell",
+  mode: CurrencyBoxMode = "sell"
 ): string | null {
   const sellMetadata = useAssetMetadata(swapState.sell.assetId);
   const buyMetadata = useAssetMetadata(swapState.buy.assetId);
@@ -48,4 +48,4 @@ export function useExchangeRate(
     buyMetadata,
     mode,
   ]);
-};
+}

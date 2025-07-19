@@ -1,11 +1,11 @@
-import { useBalances } from "@/src/hooks";
+import {useBalances} from "@/src/hooks";
 import {useMemo} from "react";
 import {ETH_ASSET_ID, EthDecimals, MinEthValueBN} from "@/src/utils/constants";
 import {CurrencyBoxState} from "@/src/components/common/Swap/Swap";
 import {bn, BN} from "fuels";
-import { useAssetBalance } from "@/src/hooks/useAssetBalance";
+import {useAssetBalance} from "@/src/hooks/useAssetBalance";
 
-export function useCheckEthBalance(sellCoin?: CurrencyBoxState){
+export function useCheckEthBalance(sellCoin?: CurrencyBoxState) {
   const {balances} = useBalances();
 
   const ethBalance = useAssetBalance(balances, ETH_ASSET_ID);
@@ -18,4 +18,4 @@ export function useCheckEthBalance(sellCoin?: CurrencyBoxState){
     const sufficientEthBalance = ethBalance.gte(ethForSell.add(MinEthValueBN));
     return Boolean(sufficientEthBalance);
   }, [ethBalance, sellCoin?.assetId, sellCoin?.amount]);
-};
+}

@@ -2,9 +2,7 @@
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "name": "admin",
   "sourceRoot": "apps/admin/src",
-  "implicitDependencies": [
-    "!libs/web"
-  ],
+  "implicitDependencies": ["!libs/web"],
   "projectType": "application",
   "tags": [],
   "targets": {
@@ -14,19 +12,17 @@
         "cwd": "apps/admin",
         "env": {
           "NODE_OPTIONS": "--no-deprecation"
-        },
+        }
       }
     },
     "start": {
-      "dependsOn": [
-        "build",
-      ],
+      "dependsOn": ["build"],
       "command": "next start -p $ADMIN_DEV_SERVER_PORT",
       "options": {
         "cwd": "apps/admin",
         "env": {
           "NODE_OPTIONS": "--no-deprecation"
-        },
+        }
       }
     },
     "build": {
@@ -36,7 +32,7 @@
         "cwd": "apps/admin",
         "env": {
           "NODE_OPTIONS": "--no-deprecation"
-        },
+        }
       }
     },
     "payload": {
@@ -45,7 +41,7 @@
         "cwd": "apps/admin",
         "env": {
           "NODE_OPTIONS": "--no-deprecation"
-        },
+        }
       }
     },
     "importmap": {
@@ -54,7 +50,7 @@
         "cwd": "apps/admin",
         "env": {
           "NODE_OPTIONS": "--no-deprecation"
-        },
+        }
       }
     },
     "migrate:run": {
@@ -63,7 +59,7 @@
         "cwd": "apps/admin",
         "env": {
           "NODE_OPTIONS": "--no-deprecation"
-        },
+        }
       }
     },
     "migrate:create": {
@@ -72,7 +68,7 @@
         "cwd": "apps/admin",
         "env": {
           "NODE_OPTIONS": "--no-deprecation"
-        },
+        }
       }
     },
     "migrate:status": {
@@ -81,7 +77,7 @@
         "cwd": "apps/admin",
         "env": {
           "NODE_OPTIONS": "--no-deprecation"
-        },
+        }
       }
     },
     "migrate:fresh": {
@@ -90,7 +86,7 @@
         "cwd": "apps/admin",
         "env": {
           "NODE_OPTIONS": "--no-deprecation"
-        },
+        }
       }
     },
     "migrate:down": {
@@ -99,8 +95,8 @@
         "cwd": "apps/admin",
         "env": {
           "NODE_OPTIONS": "--no-deprecation"
-        },
+        }
       }
-    },
+    }
   }
 }

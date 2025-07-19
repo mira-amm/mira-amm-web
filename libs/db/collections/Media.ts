@@ -52,7 +52,7 @@ export async function seedMedia(payload: Payload) {
           },
           data: {alt: media.alt || media.filename},
         });
-      }),
+      })
     );
     payload.logger.info("📸 Media uploaded!");
   } catch (error) {

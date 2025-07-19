@@ -1,13 +1,18 @@
-import { ReactNode } from "react";
-import { clsx } from "clsx";
-import { cn } from "@/src/utils/cn";
+import {ReactNode} from "react";
+import {clsx} from "clsx";
+import {cn} from "@/src/utils/cn";
 
-export function IconButton({ children, onClick, className, type }: {
+export function IconButton({
+  children,
+  onClick,
+  className,
+  type,
+}: {
   children: ReactNode;
   onClick: () => void;
   className?: string;
   type?: "button" | "submit" | "reset";
-}){
+}) {
   return (
     <button
       type={type ?? "button"}
@@ -20,4 +25,4 @@ export function IconButton({ children, onClick, className, type }: {
       {children}
     </button>
   );
-};
+}

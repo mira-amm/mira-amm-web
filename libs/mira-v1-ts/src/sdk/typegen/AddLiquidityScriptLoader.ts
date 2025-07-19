@@ -15,23 +15,37 @@ import {
   decompressBytecode,
   Script,
   StrSlice,
-} from 'fuels';
+} from "fuels";
 
-import type { Enum } from "./common";
+import type {Enum} from "./common";
 
-export type IdentityInput = Enum<{ Address: AddressInput, ContractId: ContractIdInput }>;
-export type IdentityOutput = Enum<{ Address: AddressOutput, ContractId: ContractIdOutput }>;
+export type IdentityInput = Enum<{
+  Address: AddressInput;
+  ContractId: ContractIdInput;
+}>;
+export type IdentityOutput = Enum<{
+  Address: AddressOutput;
+  ContractId: ContractIdOutput;
+}>;
 
-export type AddressInput = { bits: string };
+export type AddressInput = {bits: string};
 export type AddressOutput = AddressInput;
-export type AssetInput = { id: AssetIdInput, amount: BigNumberish };
-export type AssetOutput = { id: AssetIdOutput, amount: BN };
-export type AssetIdInput = { bits: string };
+export type AssetInput = {id: AssetIdInput; amount: BigNumberish};
+export type AssetOutput = {id: AssetIdOutput; amount: BN};
+export type AssetIdInput = {bits: string};
 export type AssetIdOutput = AssetIdInput;
-export type ContractIdInput = { bits: string };
+export type ContractIdInput = {bits: string};
 export type ContractIdOutput = ContractIdInput;
 
-export type AddLiquidityScriptLoaderInputs = [pool_id: [AssetIdInput, AssetIdInput, boolean], amount_0_desired: BigNumberish, amount_1_desired: BigNumberish, amount_0_min: BigNumberish, amount_1_min: BigNumberish, recipient: IdentityInput, deadline: BigNumberish];
+export type AddLiquidityScriptLoaderInputs = [
+  pool_id: [AssetIdInput, AssetIdInput, boolean],
+  amount_0_desired: BigNumberish,
+  amount_1_desired: BigNumberish,
+  amount_0_min: BigNumberish,
+  amount_1_min: BigNumberish,
+  recipient: IdentityInput,
+  deadline: BigNumberish,
+];
 export type AddLiquidityScriptLoaderOutput = AssetOutput;
 
 export type AddLiquidityScriptLoaderConfigurables = Partial<{
@@ -39,186 +53,208 @@ export type AddLiquidityScriptLoaderConfigurables = Partial<{
 }>;
 
 const abi = {
-  "programType": "script",
-  "specVersion": "1",
-  "encodingVersion": "1",
-  "concreteTypes": [
+  programType: "script",
+  specVersion: "1",
+  encodingVersion: "1",
+  concreteTypes: [
     {
-      "type": "(struct std::asset_id::AssetId, struct std::asset_id::AssetId, bool)",
-      "concreteTypeId": "a95e1fcceb1451b8a76471f593f66c4a52ca04bde3c227c746ad7aaf988de5c6",
-      "metadataTypeId": 0
+      type: "(struct std::asset_id::AssetId, struct std::asset_id::AssetId, bool)",
+      concreteTypeId:
+        "a95e1fcceb1451b8a76471f593f66c4a52ca04bde3c227c746ad7aaf988de5c6",
+      metadataTypeId: 0,
     },
     {
-      "type": "enum std::identity::Identity",
-      "concreteTypeId": "ab7cd04e05be58e3fc15d424c2c4a57f824a2a2d97d67252440a3925ebdc1335",
-      "metadataTypeId": 3
+      type: "enum std::identity::Identity",
+      concreteTypeId:
+        "ab7cd04e05be58e3fc15d424c2c4a57f824a2a2d97d67252440a3925ebdc1335",
+      metadataTypeId: 3,
     },
     {
-      "type": "str",
-      "concreteTypeId": "8c25cb3686462e9a86d2883c5688a22fe738b0bbc85f458d2d2b5f3f667c6d5a"
+      type: "str",
+      concreteTypeId:
+        "8c25cb3686462e9a86d2883c5688a22fe738b0bbc85f458d2d2b5f3f667c6d5a",
     },
     {
-      "type": "struct interfaces::data_structures::Asset",
-      "concreteTypeId": "affa437f314a241a60e97d006b83a963a5eaf0e0185484335e9ed03cd078d7f8",
-      "metadataTypeId": 4
+      type: "struct interfaces::data_structures::Asset",
+      concreteTypeId:
+        "affa437f314a241a60e97d006b83a963a5eaf0e0185484335e9ed03cd078d7f8",
+      metadataTypeId: 4,
     },
     {
-      "type": "struct std::contract_id::ContractId",
-      "concreteTypeId": "29c10735d33b5159f0c71ee1dbd17b36a3e69e41f00fab0d42e1bd9f428d8a54",
-      "metadataTypeId": 7
+      type: "struct std::contract_id::ContractId",
+      concreteTypeId:
+        "29c10735d33b5159f0c71ee1dbd17b36a3e69e41f00fab0d42e1bd9f428d8a54",
+      metadataTypeId: 7,
     },
     {
-      "type": "u32",
-      "concreteTypeId": "d7649d428b9ff33d188ecbf38a7e4d8fd167fa01b2e10fe9a8f9308e52f1d7cc"
+      type: "u32",
+      concreteTypeId:
+        "d7649d428b9ff33d188ecbf38a7e4d8fd167fa01b2e10fe9a8f9308e52f1d7cc",
     },
     {
-      "type": "u64",
-      "concreteTypeId": "1506e6f44c1d6291cdf46395a8e573276a4fa79e8ace3fc891e092ef32d1b0a0"
-    }
+      type: "u64",
+      concreteTypeId:
+        "1506e6f44c1d6291cdf46395a8e573276a4fa79e8ace3fc891e092ef32d1b0a0",
+    },
   ],
-  "metadataTypes": [
+  metadataTypes: [
     {
-      "type": "(_, _, _)",
-      "metadataTypeId": 0,
-      "components": [
+      type: "(_, _, _)",
+      metadataTypeId: 0,
+      components: [
         {
-          "name": "__tuple_element",
-          "typeId": 6
+          name: "__tuple_element",
+          typeId: 6,
         },
         {
-          "name": "__tuple_element",
-          "typeId": 6
+          name: "__tuple_element",
+          typeId: 6,
         },
         {
-          "name": "__tuple_element",
-          "typeId": 2
-        }
-      ]
-    },
-    {
-      "type": "b256",
-      "metadataTypeId": 1
-    },
-    {
-      "type": "bool",
-      "metadataTypeId": 2
-    },
-    {
-      "type": "enum std::identity::Identity",
-      "metadataTypeId": 3,
-      "components": [
-        {
-          "name": "Address",
-          "typeId": 5
+          name: "__tuple_element",
+          typeId: 2,
         },
-        {
-          "name": "ContractId",
-          "typeId": 7
-        }
-      ]
-    },
-    {
-      "type": "struct interfaces::data_structures::Asset",
-      "metadataTypeId": 4,
-      "components": [
-        {
-          "name": "id",
-          "typeId": 6
-        },
-        {
-          "name": "amount",
-          "typeId": "1506e6f44c1d6291cdf46395a8e573276a4fa79e8ace3fc891e092ef32d1b0a0"
-        }
-      ]
-    },
-    {
-      "type": "struct std::address::Address",
-      "metadataTypeId": 5,
-      "components": [
-        {
-          "name": "bits",
-          "typeId": 1
-        }
-      ]
-    },
-    {
-      "type": "struct std::asset_id::AssetId",
-      "metadataTypeId": 6,
-      "components": [
-        {
-          "name": "bits",
-          "typeId": 1
-        }
-      ]
-    },
-    {
-      "type": "struct std::contract_id::ContractId",
-      "metadataTypeId": 7,
-      "components": [
-        {
-          "name": "bits",
-          "typeId": 1
-        }
-      ]
-    }
-  ],
-  "functions": [
-    {
-      "inputs": [
-        {
-          "name": "pool_id",
-          "concreteTypeId": "a95e1fcceb1451b8a76471f593f66c4a52ca04bde3c227c746ad7aaf988de5c6"
-        },
-        {
-          "name": "amount_0_desired",
-          "concreteTypeId": "1506e6f44c1d6291cdf46395a8e573276a4fa79e8ace3fc891e092ef32d1b0a0"
-        },
-        {
-          "name": "amount_1_desired",
-          "concreteTypeId": "1506e6f44c1d6291cdf46395a8e573276a4fa79e8ace3fc891e092ef32d1b0a0"
-        },
-        {
-          "name": "amount_0_min",
-          "concreteTypeId": "1506e6f44c1d6291cdf46395a8e573276a4fa79e8ace3fc891e092ef32d1b0a0"
-        },
-        {
-          "name": "amount_1_min",
-          "concreteTypeId": "1506e6f44c1d6291cdf46395a8e573276a4fa79e8ace3fc891e092ef32d1b0a0"
-        },
-        {
-          "name": "recipient",
-          "concreteTypeId": "ab7cd04e05be58e3fc15d424c2c4a57f824a2a2d97d67252440a3925ebdc1335"
-        },
-        {
-          "name": "deadline",
-          "concreteTypeId": "d7649d428b9ff33d188ecbf38a7e4d8fd167fa01b2e10fe9a8f9308e52f1d7cc"
-        }
       ],
-      "name": "main",
-      "output": "affa437f314a241a60e97d006b83a963a5eaf0e0185484335e9ed03cd078d7f8",
-      "attributes": null
-    }
-  ],
-  "loggedTypes": [
+    },
     {
-      "logId": "10098701174489624218",
-      "concreteTypeId": "8c25cb3686462e9a86d2883c5688a22fe738b0bbc85f458d2d2b5f3f667c6d5a"
-    }
-  ],
-  "messagesTypes": [],
-  "configurables": [
+      type: "b256",
+      metadataTypeId: 1,
+    },
     {
-      "name": "AMM_CONTRACT_ID",
-      "concreteTypeId": "29c10735d33b5159f0c71ee1dbd17b36a3e69e41f00fab0d42e1bd9f428d8a54",
-      "offset": 88
-    }
-  ]
+      type: "bool",
+      metadataTypeId: 2,
+    },
+    {
+      type: "enum std::identity::Identity",
+      metadataTypeId: 3,
+      components: [
+        {
+          name: "Address",
+          typeId: 5,
+        },
+        {
+          name: "ContractId",
+          typeId: 7,
+        },
+      ],
+    },
+    {
+      type: "struct interfaces::data_structures::Asset",
+      metadataTypeId: 4,
+      components: [
+        {
+          name: "id",
+          typeId: 6,
+        },
+        {
+          name: "amount",
+          typeId:
+            "1506e6f44c1d6291cdf46395a8e573276a4fa79e8ace3fc891e092ef32d1b0a0",
+        },
+      ],
+    },
+    {
+      type: "struct std::address::Address",
+      metadataTypeId: 5,
+      components: [
+        {
+          name: "bits",
+          typeId: 1,
+        },
+      ],
+    },
+    {
+      type: "struct std::asset_id::AssetId",
+      metadataTypeId: 6,
+      components: [
+        {
+          name: "bits",
+          typeId: 1,
+        },
+      ],
+    },
+    {
+      type: "struct std::contract_id::ContractId",
+      metadataTypeId: 7,
+      components: [
+        {
+          name: "bits",
+          typeId: 1,
+        },
+      ],
+    },
+  ],
+  functions: [
+    {
+      inputs: [
+        {
+          name: "pool_id",
+          concreteTypeId:
+            "a95e1fcceb1451b8a76471f593f66c4a52ca04bde3c227c746ad7aaf988de5c6",
+        },
+        {
+          name: "amount_0_desired",
+          concreteTypeId:
+            "1506e6f44c1d6291cdf46395a8e573276a4fa79e8ace3fc891e092ef32d1b0a0",
+        },
+        {
+          name: "amount_1_desired",
+          concreteTypeId:
+            "1506e6f44c1d6291cdf46395a8e573276a4fa79e8ace3fc891e092ef32d1b0a0",
+        },
+        {
+          name: "amount_0_min",
+          concreteTypeId:
+            "1506e6f44c1d6291cdf46395a8e573276a4fa79e8ace3fc891e092ef32d1b0a0",
+        },
+        {
+          name: "amount_1_min",
+          concreteTypeId:
+            "1506e6f44c1d6291cdf46395a8e573276a4fa79e8ace3fc891e092ef32d1b0a0",
+        },
+        {
+          name: "recipient",
+          concreteTypeId:
+            "ab7cd04e05be58e3fc15d424c2c4a57f824a2a2d97d67252440a3925ebdc1335",
+        },
+        {
+          name: "deadline",
+          concreteTypeId:
+            "d7649d428b9ff33d188ecbf38a7e4d8fd167fa01b2e10fe9a8f9308e52f1d7cc",
+        },
+      ],
+      name: "main",
+      output:
+        "affa437f314a241a60e97d006b83a963a5eaf0e0185484335e9ed03cd078d7f8",
+      attributes: null,
+    },
+  ],
+  loggedTypes: [
+    {
+      logId: "10098701174489624218",
+      concreteTypeId:
+        "8c25cb3686462e9a86d2883c5688a22fe738b0bbc85f458d2d2b5f3f667c6d5a",
+    },
+  ],
+  messagesTypes: [],
+  configurables: [
+    {
+      name: "AMM_CONTRACT_ID",
+      concreteTypeId:
+        "29c10735d33b5159f0c71ee1dbd17b36a3e69e41f00fab0d42e1bd9f428d8a54",
+      offset: 88,
+    },
+  ],
 };
 
-const bytecode = decompressBytecode('H4sIAAAAAAAAA5NyMGAIcGQwkHIJYNjlycBg5MDSCOQrxALZQJoDyG9ScBVmCHIVYPFyYWCoK5+1wuLN5bQjh1otLsfstmyqbMi4PK1L+WOGrY7O5U2KDGDA6ACh8YP/QOCSmpiSk5mXqlCQWFycmsJQkJ+fE5+bWpKYkliSSIQZAUD1Cin5qcV56iUKqRWZxSUQcc+84tK0tMzkzNS8EoXE3PzSPIhESH6+Qm5pckZuJkQA5AYQOAMGDEw9qqfN2tz0ZkFE0czJySwszUzJLKmE6WNghNimwAGlBSC07AQILWMAoaU7oHQGhJZqgdJQeVGoPPcMKN0CALLGHTmYAQAA');
+const bytecode = decompressBytecode(
+  "H4sIAAAAAAAAA5NyMGAIcGQwkHIJYNjlycBg5MDSCOQrxALZQJoDyG9ScBVmCHIVYPFyYWCoK5+1wuLN5bQjh1otLsfstmyqbMi4PK1L+WOGrY7O5U2KDGDA6ACh8YP/QOCSmpiSk5mXqlCQWFycmsJQkJ+fE5+bWpKYkliSSIQZAUD1Cin5qcV56iUKqRWZxSUQcc+84tK0tMzkzNS8EoXE3PzSPIhESH6+Qm5pckZuJkQA5AYQOAMGDEw9qqfN2tz0ZkFE0czJySwszUzJLKmE6WNghNimwAGlBSC07AQILWMAoaU7oHQGhJZqgdJQeVGoPPcMKN0CALLGHTmYAQAA"
+);
 
-export class AddLiquidityScriptLoader extends Script<AddLiquidityScriptLoaderInputs, AddLiquidityScriptLoaderOutput> {
-
+export class AddLiquidityScriptLoader extends Script<
+  AddLiquidityScriptLoaderInputs,
+  AddLiquidityScriptLoaderOutput
+> {
   static readonly abi = abi;
   static readonly bytecode = bytecode;
 

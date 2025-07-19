@@ -53,7 +53,7 @@ describe("GET /api/campaigns", () => {
       process.cwd(),
       "../../libs/web/src",
       "models",
-      "campaigns.json",
+      "campaigns.json"
     );
     expect(MockJSONEpochConfigService).toHaveBeenCalledWith(expectedPath);
   });
@@ -104,7 +104,7 @@ describe("GET /api/campaigns", () => {
     mockGetCampaigns.mockResolvedValueOnce([]);
 
     const req = new NextRequest(
-      `https://example.com/api/campaigns?${queryString}`,
+      `https://example.com/api/campaigns?${queryString}`
     );
     const res = await GET(req);
 
@@ -151,7 +151,7 @@ describe("GET /api/campaigns", () => {
     const delayedResult = [{dummy: true}];
     mockGetCampaigns.mockImplementation(
       () =>
-        new Promise((resolve) => setTimeout(() => resolve(delayedResult), 500)),
+        new Promise((resolve) => setTimeout(() => resolve(delayedResult), 500))
     );
 
     const req = new NextRequest("https://example.com/api/campaigns");

@@ -52,13 +52,13 @@ interface TransactionProps extends AssetsAmounts {
 
 const transformTransactionsDataAndGroupByDate = (
   transactionsData: TransactionsData,
-  assets: CoinDataWithPrice[],
+  assets: CoinDataWithPrice[]
 ): Record<string, TransactionProps[]> => {
   const grouped: Record<string, TransactionProps[]> = {};
 
   // Sort transactions by block time (newest first)
   const transactions = transactionsData.Transaction.toSorted(
-    (txA, txB) => txB.block_time - txA.block_time,
+    (txA, txB) => txB.block_time - txA.block_time
   );
 
   transactions.forEach((transaction) => {
@@ -74,7 +74,7 @@ const transformTransactionsDataAndGroupByDate = (
     const transformedTransaction = createTransactionObject(
       transaction,
       date,
-      assetAmounts,
+      assetAmounts
     );
 
     // Add to grouped results
@@ -99,16 +99,16 @@ const formatDate = (blockTime: number): string => {
 // Helper function to find assets involved in transaction
 const getTransactionAssets = (
   transaction: Transaction,
-  assets: CoinDataWithPrice[],
+  assets: CoinDataWithPrice[]
 ): [CoinDataWithPrice | undefined, CoinDataWithPrice | undefined] => {
   const [firstAssetId, secondAssetId] = transaction.pool_id.split("_");
 
   const firstAsset = assets.find(
-    (asset) => asset.assetId.toLowerCase() === firstAssetId.toLowerCase(),
+    (asset) => asset.assetId.toLowerCase() === firstAssetId.toLowerCase()
   );
 
   const secondAsset = assets.find(
-    (asset) => asset.assetId.toLowerCase() === secondAssetId.toLowerCase(),
+    (asset) => asset.assetId.toLowerCase() === secondAssetId.toLowerCase()
   );
 
   return [firstAsset, secondAsset];
@@ -117,7 +117,7 @@ const getTransactionAssets = (
 // Helper function to calculate asset amounts
 const calculateAssetAmounts = (
   transaction: Transaction,
-  assets: CoinDataWithPrice[],
+  assets: CoinDataWithPrice[]
 ) => {
   const [firstAsset, secondAsset] = getTransactionAssets(transaction, assets);
   if (!firstAsset || !secondAsset) {
@@ -143,7 +143,7 @@ const calculateAssetAmounts = (
     if (transaction.extra.length) {
       // Since as per the current implementation, we only do max 2 hop swap, we can take the first SWAP transaction in the array
       const intermediateSwapTransaction = transaction.extra.find(
-        (eachTransaction) => eachTransaction.transaction_type === "SWAP",
+        (eachTransaction) => eachTransaction.transaction_type === "SWAP"
       );
 
       if (intermediateSwapTransaction) {
@@ -231,7 +231,7 @@ const calculateAssetAmounts = (
 const createTransactionObject = (
   transaction: Transaction,
   date: string,
-  assetAmounts: AssetsAmounts,
+  assetAmounts: AssetsAmounts
 ): TransactionProps => {
   let name: string;
 
@@ -255,11 +255,11 @@ const createTransactionObject = (
 
 export function useWalletTransactions(
   account: B256Address | null,
-  fetchCondition: boolean,
+  fetchCondition: boolean
 ): {
   transactions: Record<string, TransactionProps[]>;
   isLoading: boolean;
-}{
+} {
   const {assets, isLoading: isAssetsLoading} = useAssetList();
 
   const query = gql`
@@ -314,9 +314,9 @@ export function useWalletTransactions(
 
     return transformTransactionsDataAndGroupByDate(
       transactionFormattedWithExtraField,
-      assets,
+      assets
     );
   }, [assets, data]);
 
   return {transactions, isLoading: isAssetsLoading || isLoading};
-};
+}

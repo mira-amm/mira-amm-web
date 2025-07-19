@@ -2,7 +2,7 @@ import {useMemo} from "react";
 import {AssetIdInput} from "mira-dex-ts";
 
 import {SwapState} from "@/src/components/common/Swap/Swap";
-import { useAssetMetadata } from "@/src/hooks";
+import {useAssetMetadata} from "@/src/hooks";
 
 export function useSwapData(swapState: SwapState): {
   sellAssetId: string;
@@ -11,7 +11,6 @@ export function useSwapData(swapState: SwapState): {
   buyDecimals: number;
   sellAssetIdInput: AssetIdInput;
   buyAssetIdInput: AssetIdInput;
-
 } {
   const sellMetadata = useAssetMetadata(swapState.sell.assetId);
   const buyMetadata = useAssetMetadata(swapState.buy.assetId);
@@ -33,4 +32,4 @@ export function useSwapData(swapState: SwapState): {
       buyAssetIdInput,
     };
   }, [swapState, sellMetadata, buyMetadata]);
-};
+}

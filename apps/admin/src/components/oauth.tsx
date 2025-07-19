@@ -1,22 +1,38 @@
 "use client";
 
-import type { AdminViewProps } from "payload";
-import { DefaultTemplate } from "@payloadcms/next/templates";
-import { Gutter, Button, TextInput } from "@payloadcms/ui";
-import { PasswordInput } from "node_modules/@payloadcms/ui/dist/fields/Password/input.js";
-import { useRouter } from "next/navigation";
-import React, { useState } from "react";
+import type {AdminViewProps} from "payload";
+import {DefaultTemplate} from "@payloadcms/next/templates";
+import {Gutter, Button, TextInput} from "@payloadcms/ui";
+import {PasswordInput} from "node_modules/@payloadcms/ui/dist/fields/Password/input.js";
+import {useRouter} from "next/navigation";
+import React, {useState} from "react";
 
 const OAuthProviders = [
-  { name: "Google", url: "/api/users/oauth/google", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/google/google-original.svg" },
-  { name: "LinkedIn", url: "/api/users/oauth/linkedin", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/linkedin/linkedin-original.svg" },
-  { name: "GitHub", url: "/api/users/oauth/github", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/github/github-original.svg" },
-  { name: "Discord", url: "/api/users/oauth/discord", icon: "https://cdn.prod.website-files.com/6257adef93867e50d84d30e2/636e0a69f118df70ad7828d4_icon_clyde_blurple_RGB.svg" },
+  {
+    name: "Google",
+    url: "/api/users/oauth/google",
+    icon: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/google/google-original.svg",
+  },
+  {
+    name: "LinkedIn",
+    url: "/api/users/oauth/linkedin",
+    icon: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/linkedin/linkedin-original.svg",
+  },
+  {
+    name: "GitHub",
+    url: "/api/users/oauth/github",
+    icon: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/github/github-original.svg",
+  },
+  {
+    name: "Discord",
+    url: "/api/users/oauth/discord",
+    icon: "https://cdn.prod.website-files.com/6257adef93867e50d84d30e2/636e0a69f118df70ad7828d4_icon_clyde_blurple_RGB.svg",
+  },
 ];
 
 const OAuthButtons: React.FC = () => (
-  <div style={{ display: "flex", gap: "10px", justifyContent: "center" }}>
-    {OAuthProviders.map(({ name, url, icon }) => (
+  <div style={{display: "flex", gap: "10px", justifyContent: "center"}}>
+    {OAuthProviders.map(({name, url, icon}) => (
       <a key={name} href={url}>
         <button
           className="btn btn--icon-style-without-border btn--size-large btn--withoutPopup btn--style-primary"
@@ -47,13 +63,13 @@ const CreateAccountForm: React.FC = () => {
   const handleCreateAccount = async (e: React.FormEvent) => {
     e.preventDefault(); // Prevent default form submission
 
-    console.log("Creating account...", { email, password });
+    console.log("Creating account...", {email, password});
 
     try {
       const response = await fetch("/api/users", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, password }),
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify({email, password}),
       });
 
       if (response.ok) {
@@ -71,15 +87,33 @@ const CreateAccountForm: React.FC = () => {
   };
 
   return (
-    <form onSubmit={handleCreateAccount} style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
-      <TextInput label="Email" path="email" placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} />
-      <PasswordInput label="Password" path="password" value={password} onChange={(e) => setPassword(e.target.value)} />
+    <form
+      onSubmit={handleCreateAccount}
+      style={{display: "flex", flexDirection: "column", gap: "10px"}}
+    >
+      <TextInput
+        label="Email"
+        path="email"
+        placeholder="Email"
+        value={email}
+        onChange={(e) => setEmail(e.target.value)}
+      />
+      <PasswordInput
+        label="Password"
+        path="password"
+        value={password}
+        onChange={(e) => setPassword(e.target.value)}
+      />
       <Button type="submit">Create Account</Button>
     </form>
   );
 };
 
-export const OAuth: React.FC<AdminViewProps> = ({ initPageResult, params, searchParams }) => {
+export const OAuth: React.FC<AdminViewProps> = ({
+  initPageResult,
+  params,
+  searchParams,
+}) => {
   return (
     <DefaultTemplate
       i18n={initPageResult.req.i18n}

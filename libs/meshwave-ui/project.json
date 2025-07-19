@@ -6,10 +6,6 @@
   },
   "sourceRoot": "libs/meshwave-ui",
   "projectType": "library",
-  "implicitDependencies": [
-    "!libs/web"
-  ],
-  "tags": [
-    "libs"
-  ]
-  }
+  "implicitDependencies": ["!libs/web"],
+  "tags": ["libs"]
+}

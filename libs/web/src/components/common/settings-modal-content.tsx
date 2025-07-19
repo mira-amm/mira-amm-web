@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import {
   ChangeEvent,
@@ -96,7 +96,7 @@ export function SettingsModalContent({
             className={clsx(
               "w-full px-3 py-[14px] rounded-lg text-content-dimmed-light bg-background-grey-dark hover:border dark:hover:border-accent-primary hover:border-black",
               isAutoMode &&
-                "dark:border-accent-primary border border-content-tertiary bg-black dark:bg-background-grey-dark text-white",
+                "dark:border-accent-primary border border-content-tertiary bg-black dark:bg-background-grey-dark text-white"
             )}
             onClick={() => handleSlippageModeChange("auto")}
           >
@@ -106,7 +106,7 @@ export function SettingsModalContent({
             className={clsx(
               "w-full px-3 py-[14px] rounded-lg text-content-dimmed-light bg-background-grey-dark hover:border dark:hover:border-accent-primary hover:border-black",
               isCustomMode &&
-                "dark:border-accent-primary border border-content-tertiary bg-black dark:bg-background-grey-dark text-white",
+                "dark:border-accent-primary border border-content-tertiary bg-black dark:bg-background-grey-dark text-white"
             )}
             onClick={() => handleSlippageModeChange("custom")}
           >
@@ -136,7 +136,7 @@ export function SettingsModalContent({
                 className={clsx(
                   "w-full px-3 py-[14px] rounded-lg text-content-dimmed-light bg-background-grey-dark hover:border dark:hover:text-content-primary hover:border-accent-primary dark:hover:border-accent-primary hover:border-black",
                   slippage === value &&
-                    "dark:border-accent-primary border border-content-tertiary bg-black dark:bg-background-grey-dark text-white",
+                    "dark:border-accent-primary border border-content-tertiary bg-black dark:bg-background-grey-dark text-white"
                 )}
                 onClick={() => handleSlippageButtonClick(value)}
               >

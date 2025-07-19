@@ -1,9 +1,9 @@
-import { useNavigate } from "react-router";
-import { useState, KeyboardEvent, useRef, useEffect } from 'react';
-import { userFlowActor } from '@/engine/actors/user';
+import {useNavigate} from "react-router";
+import {useState, KeyboardEvent, useRef, useEffect} from "react";
+import {userFlowActor} from "@/engine/actors/user";
 
 export const PasswordPrompt = () => {
-  const [password, setPassword] = useState('microchain');
+  const [password, setPassword] = useState("microchain");
   const [error, setError] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
   const navigate = useNavigate();
@@ -15,13 +15,13 @@ export const PasswordPrompt = () => {
   }, []);
 
   const handleKeyUp = (e: KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === 'Enter') {
-      if (password === 'microchain') {
-        userFlowActor.send({ type: 'LOGIN' });
+    if (e.key === "Enter") {
+      if (password === "microchain") {
+        userFlowActor.send({type: "LOGIN"});
         setError(false);
-        navigate('/menu');
+        navigate("/menu");
       } else {
-        setPassword('');
+        setPassword("");
         setError(true);
       }
     }
@@ -42,9 +42,14 @@ export const PasswordPrompt = () => {
         />
       </div>
       {error && (
-        <p className="text-terminal-red mt-2">SECURITY BREACH DETECTED. INVALID EXECUTIVE CREDENTIALS.</p>
+        <p className="text-terminal-red mt-2">
+          SECURITY BREACH DETECTED. INVALID EXECUTIVE CREDENTIALS.
+        </p>
       )}
-      <p className="text-terminal-text/50 mt-6 text-sm">HINT: The DLM-2000 infrastructure is built on this technology...Rhymes with 'blockchain'</p>
+      <p className="text-terminal-text/50 mt-6 text-sm">
+        HINT: The DLM-2000 infrastructure is built on this technology...Rhymes
+        with 'blockchain'
+      </p>
     </div>
   );
 };

@@ -1,7 +1,7 @@
 import {BN} from "fuels";
 import {buildPoolId} from "mira-dex-ts";
 import {useQuery} from "@tanstack/react-query";
-import { useReadonlyMira } from "@/src/hooks";
+import {useReadonlyMira} from "@/src/hooks";
 
 export function usePreviewAddLiquidity({
   firstAssetId,
@@ -17,7 +17,7 @@ export function usePreviewAddLiquidity({
   isFirstToken: boolean;
   isStablePool: boolean;
   fetchCondition?: boolean;
-}){
+}) {
   const mira = useReadonlyMira();
   const miraExists = Boolean(mira);
 
@@ -47,4 +47,4 @@ export function usePreviewAddLiquidity({
   });
 
   return {data, isFetching, error};
-};
+}

@@ -6,19 +6,12 @@
   },
   "sourceRoot": "libs/api/src",
   "projectType": "library",
-  "implicitDependencies": [
-    "!libs/web"
-  ],
-  "tags": [
-    "tools",
-    "back-end"
-  ],
+  "implicitDependencies": ["!libs/web"],
+  "tags": ["tools", "back-end"],
   "// targets": "to see all targets run: nx show project api --web",
   "targets": {
     "dev": {
-      "dependsOn": [
-        "compodoc"
-      ],
+      "dependsOn": ["compodoc"],
       "command": "tsx --watch src/main.ts",
       "options": {
         "cwd": "libs/api"
@@ -28,7 +21,7 @@
       "command": "compodoc",
       "cache": true,
       "options": {
-        "cwd": "libs/api",
+        "cwd": "libs/api"
       }
     },
     "build": {
@@ -39,9 +32,7 @@
       }
     },
     "start": {
-      "dependsOn": [
-        "build",
-      ],
+      "dependsOn": ["build"],
       "command": "node --experimental-specifier-resolution=node build/main.js",
       "options": {
         "cwd": "libs/api"
@@ -64,6 +55,6 @@
       "options": {
         "cwd": "libs/api"
       }
-    },
+    }
   }
 }

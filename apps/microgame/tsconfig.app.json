@@ -1,24 +1,13 @@
 {
   "extends": "./tsconfig.json",
   "compilerOptions": {
-    "lib": [
-      "DOM",
-      "DOM.Iterable",
-      "ES2022"
-    ],
-    "types": [
-      "node",
-      "vite/client",
-      "react"
-    ],
+    "lib": ["DOM", "DOM.Iterable", "ES2022"],
+    "types": ["node", "vite/client", "react"],
     "target": "esnext",
     "module": "esnext",
     "moduleResolution": "bundler",
     "jsx": "react-jsx",
-    "rootDirs": [
-      ".",
-      "./.react-router/types"
-    ],
+    "rootDirs": [".", "./.react-router/types"],
     "baseUrl": ".",
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
@@ -65,5 +54,5 @@
     "**/*.spec.js",
     "**/*.test.jsx",
     "**/*.spec.jsx"
-  ],
+  ]
 }

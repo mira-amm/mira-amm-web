@@ -1,16 +1,16 @@
-import type { Meta, StoryObj } from '@storybook/react'
-import {NavbarDemo} from './navbar-demo'
+import type {Meta, StoryObj} from "@storybook/react";
+import {NavbarDemo} from "./navbar-demo";
 
 const meta = {
-  title: '✨ Aceternity UI/Resizable Navbar',
+  title: "✨ Aceternity UI/Resizable Navbar",
   component: NavbarDemo,
-  tags: ['autodocs'],
+  tags: ["autodocs"],
   parameters: {
-    layout: 'centered',
+    layout: "centered",
   },
-} satisfies Meta<typeof NavbarDemo>
+} satisfies Meta<typeof NavbarDemo>;
 
-export default meta
-type Story = StoryObj<typeof meta>
+export default meta;
+type Story = StoryObj<typeof meta>;
 
-export const Default: Story = {}
+export const Default: Story = {};

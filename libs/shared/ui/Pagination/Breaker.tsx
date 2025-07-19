@@ -1,5 +1,5 @@
-import { Select } from "./Select";
-import { Button } from "../button";
+import {Select} from "./Select";
+import {Button} from "../button";
 
 const range = (start: number, end: number) => {
   const arr = [];
@@ -18,7 +18,7 @@ interface BreakerProps {
   onPageClick: Function;
 }
 
-export const Breaker = ({ start, end, onPageClick }: BreakerProps) => {
+export const Breaker = ({start, end, onPageClick}: BreakerProps) => {
   return (
     <li>
       <Select

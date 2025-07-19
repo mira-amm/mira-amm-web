@@ -74,7 +74,7 @@ export function useModal(): [ReturnType, () => void, () => void] {
                 "flex flex-col gap-4 p-4 bg-white dark:bg-[#262834] rounded-[12px] w-[90%] max-h-[80%] overflow-auto",
                 "lg:max-w-[460px]",
                 "border-border-secondary border-[12px] dark:border-0",
-                className,
+                className
               )}
             >
               {/* Header */}
@@ -92,7 +92,7 @@ export function useModal(): [ReturnType, () => void, () => void] {
               {children}
             </div>
           </>,
-          document.body,
+          document.body
         )
       : null;
 

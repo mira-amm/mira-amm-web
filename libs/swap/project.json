@@ -6,13 +6,8 @@
   },
   "sourceRoot": "libs/swap/src",
   "projectType": "library",
-  "implicitDependencies": [
-    "!libs/web"
-  ],
-  "tags": [
-    "typescript",
-    "react"
-  ],
+  "implicitDependencies": ["!libs/web"],
+  "tags": ["typescript", "react"],
   "targets": {
     "build": {
       "command": "tsc",
@@ -31,6 +26,6 @@
       "options": {
         "cwd": "libs/mira-v1-ts"
       }
-    },
+    }
   }
 }
