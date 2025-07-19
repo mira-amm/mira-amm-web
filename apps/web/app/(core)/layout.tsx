@@ -39,7 +39,14 @@ export default function Layout({children}: {readonly children: ReactNode}) {
       <head>
         <link rel="preload" as="image" href="/images/loader.webp" />
       </head>
-      <body className={clsx(inter.className, inter.variable, prompt.variable, jetBrainsMono.variable)}>
+      <body
+        className={clsx(
+          inter.className,
+          inter.variable,
+          prompt.variable,
+          jetBrainsMono.variable,
+        )}
+      >
         <Providers>
           <div className="flex flex-col min-h-screen relative">
             <FeatureGuard fallback={<Header />}>
