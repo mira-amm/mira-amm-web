@@ -1,5 +1,5 @@
-import type { Meta, StoryObj } from '@storybook/react'
-import { NeonGradientCard } from './neon-gradient-card'
+import type {Meta, StoryObj} from "@storybook/react";
+import {NeonGradientCard} from "./neon-gradient-card";
 
 const defaultChildren = (
   <div className="w-full h-auto overflow-hidden rounded-[calc(19px-3px)] bg-transparent">
@@ -9,52 +9,52 @@ const defaultChildren = (
       alt="Mira GitHub Repo README Banner"
     />
   </div>
-)
+);
 
 const meta: Meta<typeof NeonGradientCard> = {
-  title: '🌊 Meshwave UI/Neon Gradient Card',
+  title: "🌊 Meshwave UI/Neon Gradient Card",
   component: NeonGradientCard,
   parameters: {
-    layout: 'centered',
+    layout: "centered",
   },
-  tags: ['autodocs'],
+  tags: ["autodocs"],
   args: {
     children: defaultChildren,
     borderSize: 5,
     borderRadius: 20,
     neonColors: {
-      firstColor: '#ff00aa',
-      secondColor: '#00FFF1',
+      firstColor: "#ff00aa",
+      secondColor: "#00FFF1",
     },
-    className: '',
+    className: "",
   },
   argTypes: {
-    'children': {
+    children: {
       control: false, // Disable control for this prop
     },
-    'borderSize': {
-      control: { type: 'number', min: 1, max: 20 },
+    borderSize: {
+      control: {type: "number", min: 1, max: 20},
     },
-    'borderRadius': {
-      control: { type: 'number', min: 0, max: 50 },
+    borderRadius: {
+      control: {type: "number", min: 0, max: 50},
     },
-    'neonColors': {
-      control: 'object',
+    neonColors: {
+      control: "object",
     },
-    'neonColors.firstColor': {
-      control: 'color',
+    "neonColors.firstColor": {
+      control: "color",
     },
-    'neonColors.secondColor': {
-      control: 'color',
+    "neonColors.secondColor": {
+      control: "color",
     },
-    'className': {
-      control: 'text',
+    className: {
+      control: "text",
     },
   },
-}
+};
 
-export default meta
+export default meta;
 
-type Story = StoryObj<typeof NeonGradientCard>
+type Story = StoryObj<typeof NeonGradientCard>;
 
-export const Default: Story = {}
+export const Default: Story = {};

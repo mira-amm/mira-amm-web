@@ -25,10 +25,7 @@ pub mod common {
 
         let instance = MiraAMM::new(contract_id.clone(), wallet.clone());
 
-        MiraAMMContract {
-            instance,
-            id: contract_id.into(),
-        }
+        MiraAMMContract { instance, id: contract_id.into() }
     }
 
     pub async fn setup_wallet_and_provider(
@@ -43,9 +40,7 @@ pub mod common {
             asset_parameters.amount_per_coin,
         );
 
-        let provider = setup_test_provider(coins.clone(), vec![], None, None)
-            .await
-            .unwrap();
+        let provider = setup_test_provider(coins.clone(), vec![], None, None).await.unwrap();
 
         wallet.set_provider(provider.clone());
 

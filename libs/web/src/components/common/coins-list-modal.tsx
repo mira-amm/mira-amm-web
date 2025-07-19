@@ -1,16 +1,11 @@
 "use client";
 
-import {
-  useEffect,
-  useMemo,
-  useCallback,
-  useRef
-} from "react";
-import { Search } from "lucide-react";
+import {useEffect, useMemo, useCallback, useRef} from "react";
+import {Search} from "lucide-react";
 import {CoinQuantity} from "fuels";
 import {SkeletonLoader, CoinListItem} from "@/web/src/components/common";
 import {UnknownCoinListItem} from "@/web/src/components/common/Swap/components/UnknownCoinListItem";
-import { useCoinListModal } from "@/src/hooks/useCoinListModal";
+import {useCoinListModal} from "@/src/hooks/useCoinListModal";
 
 const assetIdRegex = /^0x[0-9a-fA-F]{64}$/;
 
@@ -42,7 +37,7 @@ export function CoinsListModal({
 
   const handleSelect = useCallback(
     (assetId: string) => () => selectCoin(assetId),
-    [selectCoin],
+    [selectCoin]
   );
 
   return (

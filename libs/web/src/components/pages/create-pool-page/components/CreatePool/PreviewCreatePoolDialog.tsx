@@ -8,14 +8,16 @@ import CreatePoolSuccessModal from "../CreatePoolSuccessModal/CreatePoolSuccessM
 
 export type CreatePoolPreviewData = {
   assets: {
-  assetId: string;
-  amount: string;
+    assetId: string;
+    amount: string;
   }[];
   isStablePool: boolean;
 };
 
-const PreviewCreatePoolDialog = ({previewData}: {
-  previewData: CreatePoolPreviewData
+const PreviewCreatePoolDialog = ({
+  previewData,
+}: {
+  previewData: CreatePoolPreviewData;
 }) => {
   const [SuccessModal, openSuccessModal, closeSuccessModal] = useModal();
   const firstAssetMetadata = useAssetMetadata(previewData.assets[0].assetId);

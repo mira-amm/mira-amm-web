@@ -4,7 +4,7 @@ import {useEffect, useState} from "react";
 // see https://usehooks.com/useDebounce/
 export function useDebounce<T extends number | string | null>(
   value: T,
-  delay: number,
+  delay: number
 ): T {
   const [debouncedValue, setDebouncedValue] = useState<T>(value);
 

@@ -1,4 +1,4 @@
-import Link from 'next/link';
+import Link from "next/link";
 
 const OAuthProviders = [
   {
@@ -27,10 +27,16 @@ const OAuthProviders = [
   },
 ];
 
-const OAuthButton = ({ href, icon, bgColor, name }) => (
-  <Link href={href} style={{ width: '100%' }}>
-    <button style={{ ...buttonStyles, backgroundColor: bgColor }}>
-      <img src={icon} alt={`${name} logo`} width="24" height="24" style={iconStyle} />
+const OAuthButton = ({href, icon, bgColor, name}) => (
+  <Link href={href} style={{width: "100%"}}>
+    <button style={{...buttonStyles, backgroundColor: bgColor}}>
+      <img
+        src={icon}
+        alt={`${name} logo`}
+        width="24"
+        height="24"
+        style={iconStyle}
+      />
       {/* {name} */}
     </button>
   </Link>
@@ -38,8 +44,14 @@ const OAuthButton = ({ href, icon, bgColor, name }) => (
 
 const OAuthButtons = () => (
   <section style={containerStyle}>
-    {OAuthProviders.map(({ name, url, icon, bgColor }) => (
-      <OAuthButton key={name} href={url} icon={icon} bgColor={bgColor} name={name} />
+    {OAuthProviders.map(({name, url, icon, bgColor}) => (
+      <OAuthButton
+        key={name}
+        href={url}
+        icon={icon}
+        bgColor={bgColor}
+        name={name}
+      />
     ))}
   </section>
 );
@@ -53,34 +65,34 @@ export default function Login() {
 }
 
 const containerStyle = {
-  display: 'flex',
-  flexDirection: 'column',
-  gap: '15px',
-  width: '100%',
+  display: "flex",
+  flexDirection: "column",
+  gap: "15px",
+  width: "100%",
 };
 
 const loginContainerStyle = {
-  display: 'flex',
-  justifyContent: 'center',
-  alignItems: 'center',
-  height: '100vh',
-  width: '20%',
-  margin: 'auto',
+  display: "flex",
+  justifyContent: "center",
+  alignItems: "center",
+  height: "100vh",
+  width: "20%",
+  margin: "auto",
 };
 
 const buttonStyles = {
-  width: '100%',
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'center',
-  border: 'none',
-  padding: '12px 0',
-  cursor: 'pointer',
-  color: 'white',
-  fontSize: '16px',
-  fontWeight: 'bold',
-  borderRadius: '5px',
-  gap: '10px',
+  width: "100%",
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "center",
+  border: "none",
+  padding: "12px 0",
+  cursor: "pointer",
+  color: "white",
+  fontSize: "16px",
+  fontWeight: "bold",
+  borderRadius: "5px",
+  gap: "10px",
 };
 
-const iconStyle = { marginRight: '8px' };
+const iconStyle = {marginRight: "8px"};

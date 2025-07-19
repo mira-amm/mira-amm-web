@@ -44,7 +44,7 @@ export default function Layout({children}: {readonly children: ReactNode}) {
           inter.className,
           inter.variable,
           prompt.variable,
-          jetBrainsMono.variable,
+          jetBrainsMono.variable
         )}
       >
         <Providers>

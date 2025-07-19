@@ -3,5 +3,5 @@ export const AfterListTable = () => {
     <div className="mt-2 text-center">
       "AfterListTable" component renders here.
     </div>
-  )
-}
+  );
+};

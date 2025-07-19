@@ -6,9 +6,7 @@ import src20Abi from "@/src/abis/src20-abi.json";
 
 const providerPromise = new Provider(NetworkUrl);
 
-export function useAssetMetadata(
-  assetId: B256Address | null,
-): {
+export function useAssetMetadata(assetId: B256Address | null): {
   name?: string;
   symbol?: string;
   decimals?: number;
@@ -22,7 +20,7 @@ export function useAssetMetadata(
     queryKey: ["assetMetadata", contractId, assetId, assets?.length],
     queryFn: async () => {
       const asset = assets?.find(
-        (asset) => asset.assetId.toLowerCase() === assetId?.toLowerCase(),
+        (asset) => asset.assetId.toLowerCase() === assetId?.toLowerCase()
       );
 
       // first check if asset in the already fetched list
@@ -48,7 +46,7 @@ export function useAssetMetadata(
           new Contract(
             "0x0ceafc5ef55c66912e855917782a3804dc489fb9e27edfd3621ea47d2a281156",
             src20Abi,
-            provider!,
+            provider!
           ),
         ])
         .get();

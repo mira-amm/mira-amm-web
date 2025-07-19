@@ -1,4 +1,4 @@
-name: "Mira"
+name: 'Mira'
 description: The Mira Platform's Infrastructure-as-Code
 runtime:
   name: nodejs

@@ -1,10 +1,6 @@
 const LoaderV2 = () => {
   return (
-    <img
-      src="/images/loader.webp"
-      alt="Loading..."
-      className="animate-spin"
-    />
+    <img src="/images/loader.webp" alt="Loading..." className="animate-spin" />
   );
 };
 

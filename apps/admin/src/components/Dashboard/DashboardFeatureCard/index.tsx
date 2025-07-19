@@ -1,33 +1,47 @@
-'use client'
-import type { ElementType } from 'react'
+"use client";
+import type {ElementType} from "react";
 
-import React from 'react'
+import React from "react";
 
-import './index.scss'
-import { Button } from '@payloadcms/ui'
+import "./index.scss";
+import {Button} from "@payloadcms/ui";
 
 export type Props = {
-  actions?: React.ReactNode
-  buttonAriaLabel?: string
-  href?: string
-  id?: string
-  Link?: ElementType
-  onClick?: () => void
-  title: string
-  titleAs?: ElementType
-  count?: number
-}
+  actions?: React.ReactNode;
+  buttonAriaLabel?: string;
+  href?: string;
+  id?: string;
+  Link?: ElementType;
+  onClick?: () => void;
+  title: string;
+  titleAs?: ElementType;
+  count?: number;
+};
 
-const baseClass = 'feature-card'
+const baseClass = "feature-card";
 
 export const FeatureCard: React.FC<Props> = (props) => {
-  const { id, actions, buttonAriaLabel, href, Link, onClick, title, titleAs, count } = props
+  const {
+    id,
+    actions,
+    buttonAriaLabel,
+    href,
+    Link,
+    onClick,
+    title,
+    titleAs,
+    count,
+  } = props;
 
-  const classes = [baseClass, id, (onClick || href) && `${baseClass}--has-onclick`]
+  const classes = [
+    baseClass,
+    id,
+    (onClick || href) && `${baseClass}--has-onclick`,
+  ]
     .filter(Boolean)
-    .join(' ')
+    .join(" ");
 
-  const Tag = titleAs ?? 'div'
+  const Tag = titleAs ?? "div";
 
   return (
     <div className={classes} id={id}>
@@ -47,5 +61,5 @@ export const FeatureCard: React.FC<Props> = (props) => {
 
       <h2 className={`${baseClass}__count`}>{count ?? 0}</h2>
     </div>
-  )
-}
+  );
+};

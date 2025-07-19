@@ -31,7 +31,7 @@ export const isPoolKeyValid = (key: string) => {
 
 export const createPoolIdFromPoolKey = (key: string) => {
   const [firstCoinAssetId, secondCoinAssetId, poolStability] = key.split(
-    "-",
+    "-"
   ) as [
     B256Address,
     B256Address,
@@ -47,21 +47,21 @@ export const createPoolIdFromPoolKey = (key: string) => {
   return buildPoolId(
     firstCoinAssetId,
     secondCoinAssetId,
-    poolStability === StablePoolKey,
+    poolStability === StablePoolKey
   );
 };
 
 export const createPoolIdFromAssetNames = (
   firstAssetName: CoinName,
   secondAssetName: CoinName,
-  isStablePool: boolean,
+  isStablePool: boolean
 ) => {
   const firstCoinAsset = coinsConfig.get(firstAssetName)?.assetId;
   const secondCoinAsset = coinsConfig.get(secondAssetName)?.assetId;
 
   if (!firstCoinAsset || !secondCoinAsset) {
     throw new Error(
-      `Invalid asset configuration for ${firstAssetName} or ${secondAssetName}`,
+      `Invalid asset configuration for ${firstAssetName} or ${secondAssetName}`
     );
   }
 
@@ -87,7 +87,7 @@ export const arePoolIdsEqual = (firstPoolId: PoolId, secondPoolId: PoolId) => {
 };
 
 export const floorToTwoSignificantDigits = (
-  value: number | null | undefined,
+  value: number | null | undefined
 ) => {
   if (!value) {
     return 0;
@@ -119,7 +119,7 @@ export const getBoostReward = (
       dailyAmount: number;
       assetId: string;
     }[];
-  }[],
+  }[]
 ): {
   dailyAmount: number;
   assetId: string | undefined;
@@ -132,14 +132,14 @@ export const getBoostReward = (
 export const getRewardsPoolsId = (
   pools: {
     pool: {id: string};
-  }[],
+  }[]
 ): string => {
   return pools.map((pool) => pool.pool.id.replace(/0x/g, "")).join(",");
 };
 
 export const calculateUsdValue = (
   fuelAmount: number,
-  fuelToUsdRate: number,
+  fuelToUsdRate: number
 ): string => {
   const usdValue = fuelAmount * fuelToUsdRate;
   return `~${usdValue.toLocaleString(DefaultLocale, {style: "currency", currency: "USD"})}`;
@@ -147,7 +147,7 @@ export const calculateUsdValue = (
 
 export const calculateEpochDuration = (
   startDate: string,
-  endDate: string,
+  endDate: string
 ): string => {
   const now = new Date().getTime();
   const start = new Date(startDate).getTime();
@@ -179,7 +179,7 @@ export const calculateEpochDuration = (
 export const convertDailyRewardsToTotalRewards = (
   dailyRewards: number,
   epochStart: string,
-  epochEnd: string,
+  epochEnd: string
 ) => {
   const epochDurationDays =
     (new Date(epochEnd).getTime() - new Date(epochStart).getTime()) /

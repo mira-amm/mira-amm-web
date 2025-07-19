@@ -99,7 +99,7 @@ const txRequest = await miraAmm.addLiquidity(
   amount0Min,
   amount1Min,
   deadline,
-  txParams,
+  txParams
 );
 ```
 
@@ -129,7 +129,7 @@ const txRequest = await miraAmm.createPoolAndAddLiquidity(
   amount0Desired,
   amount1Desired,
   deadline,
-  txParams,
+  txParams
 );
 ```
 
@@ -154,7 +154,7 @@ const txRequest = await miraAmm.removeLiquidity(
   amount0Min,
   amount1Min,
   deadline,
-  txParams,
+  txParams
 );
 ```
 
@@ -177,7 +177,7 @@ const txRequest = await miraAmm.swapExactInput(
   amountOutMin,
   pools,
   deadline,
-  txParams,
+  txParams
 );
 ```
 
@@ -202,7 +202,7 @@ const txRequest = await miraAmm.swapExactOutput(
   amountInMax,
   pools,
   deadline,
-  txParams,
+  txParams
 );
 ```
 
@@ -261,7 +261,7 @@ const totalAssets = await readonlyMiraAmm.totalAssets();
 ```typescript
 const liquidityPosition = await readonlyMiraAmm.getLiquidityPosition(
   poolId,
-  lpTokensAmount,
+  lpTokensAmount
 );
 ```
 
@@ -275,7 +275,7 @@ const liquidityPosition = await readonlyMiraAmm.getLiquidityPosition(
 const assetToAdd = await readonlyMiraAmm.getOtherTokenToAddLiquidity(
   poolId,
   amount,
-  isFirstToken,
+  isFirstToken
 );
 ```
 
@@ -291,7 +291,7 @@ const assetToAdd = await readonlyMiraAmm.getOtherTokenToAddLiquidity(
 const expectedOutputAmount = await readonlyMiraAmm.previewSwapExactInput(
   assetIdIn,
   assetAmountIn,
-  pools,
+  pools
 );
 ```
 
@@ -307,7 +307,7 @@ const expectedOutputAmount = await readonlyMiraAmm.previewSwapExactInput(
 const requiredInputAmount = await readonlyMiraAmm.previewSwapExactOutput(
   assetIdOut,
   assetAmountOut,
-  pools,
+  pools
 );
 ```
 

@@ -3,10 +3,5 @@
   "description": "Technical guides",
   "icon": "Code",
   "root": true,
-  "pages": [
-    "typescript-sdk",
-    "swap-widget-integration",
-    "--- 🐞 Contributing ---",
-    "...contributing"
-  ]
+  "pages": ["typescript-sdk", "swap-widget-integration", "--- 🐞 Contributing ---", "...contributing"]
 }

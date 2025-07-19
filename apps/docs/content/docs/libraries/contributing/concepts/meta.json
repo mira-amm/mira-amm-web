@@ -1,6 +1,6 @@
 {
-"title": "🧠 Concepts",
-"defaultOpen": true,
+  "title": "🧠 Concepts",
+  "defaultOpen": true,
   "pages": [
     "monorepo-architecture",
     "trunk-based-development",

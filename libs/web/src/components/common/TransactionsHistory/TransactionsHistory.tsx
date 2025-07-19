@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import {forwardRef, useMemo} from "react";
 import {Copy, X} from "lucide-react";

@@ -35,10 +35,7 @@ const CoinPair = ({
     >
       <div className="flex items-center w-16 h-9">
         {firstCoinIcon && (
-          <img
-            src={firstCoinIcon}
-            className="w-full h-full rounded-full"
-          />
+          <img src={firstCoinIcon} className="w-full h-full rounded-full" />
         )}
         {secondCoinIcon && (
           <img

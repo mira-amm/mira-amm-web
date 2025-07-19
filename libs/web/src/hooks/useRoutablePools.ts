@@ -11,7 +11,7 @@ import {computeAllRoutes, getPoolIdCombinations} from "./get-routable-pools";
 export function useRoutablePools(
   assetIn?: CoinData,
   assetOut?: CoinData,
-  shouldFetchPools = false,
+  shouldFetchPools = false
 ) {
   const pairs = useAllAssetsCombination(assetIn, assetOut);
 
@@ -21,7 +21,7 @@ export function useRoutablePools(
     poolKeys,
     assetIn,
     assetOut,
-    shouldFetchPools,
+    shouldFetchPools
   );
 
   const routes = useMemo(() => {

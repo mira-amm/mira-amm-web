@@ -14,7 +14,6 @@
     "skipDefaultLibCheck": true,
     "skipLibCheck": true,
     "paths": {
-      "mira-dex-ts": ["libs/mira-v1-ts/src/index.ts"],
       "@/*": ["libs/web/*"],
       "@/aceternity/*": ["libs/external/aceternity-ui/*"],
       "@/api/*": ["libs/api/*"],
@@ -25,15 +24,16 @@
       "@/engine/*": ["libs/engine/*"],
       "@/fumadocs-ui/*": ["libs/external/fumadocs-ui/*"],
       "@/magic-ui/*": ["libs/external/magic-ui/*"],
-      "@/meshwave-ui/icons": ["libs/meshwave-ui/src/components/icons/index.tsx"],
       "@/meshwave-ui/*": ["libs/meshwave-ui/*"],
+      "@/meshwave-ui/icons": ["libs/meshwave-ui/src/components/icons/index.tsx"],
       "@/platform-vercel/*": ["libs/platform-vercel/*"],
       "@/shadcn-ui/*": ["libs/external/shadcn-ui/*"],
       "@/shared": ["libs/shared/index.ts"],
       "@/shared/*": ["libs/shared/*"],
       "@/web": ["libs/web/index.ts"],
       "@/web/*": ["libs/web/*"],
-      "@payload-config": ["apps/admin/src/payload.config.ts"]
+      "@payload-config": ["apps/admin/src/payload.config.ts"],
+      "mira-dex-ts": ["libs/mira-v1-ts/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]

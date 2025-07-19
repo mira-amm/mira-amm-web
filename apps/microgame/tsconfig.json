@@ -6,11 +6,7 @@
     "esModuleInterop": false,
     "allowSyntheticDefaultImports": true,
     "strict": true,
-    "types": [
-      "vite/client",
-      "vitest",
-      "@react-router/node"
-    ],
+    "types": ["vite/client", "vitest", "@react-router/node"],
     "moduleResolution": "bundler"
   },
   "files": [],
@@ -22,5 +18,5 @@
     {
       "path": "./tsconfig.spec.json"
     }
-  ],
+  ]
 }

@@ -4,14 +4,14 @@ description: Am I looking at git history or a plate of spaghetti?
 icon: GitBranchPlus
 ---
 
-import { Accordion, Accordions } from "fumadocs-ui/components/accordion";
+import {Accordion, Accordions} from "fumadocs-ui/components/accordion";
 
 <iframe
-title="Conventional Branch Website"
-className="mt-4 w-full h-[400px] rounded-lg"
-src="https://conventional-branch.github.io/"
-allowFullScreen>
-</iframe>
+  title="Conventional Branch Website"
+  className="mt-4 w-full h-[400px] rounded-lg"
+  src="https://conventional-branch.github.io/"
+  allowFullScreen
+></iframe>
 
 Our branch naming convention modifies and extends the [Conventional Branch](https://conventional-branch.github.io/) specification to be extremely straight-forward. It's simply the issue name without the scope.
 
@@ -24,6 +24,7 @@ For example, the branch for issue #1 titled 'feat(portal): add login page' would
 This creates a merge commit unless you fast forward.
 
 Instead, always pull the latest from `main`, check back out to your branch, then do `git rebase main`.
+
 </Callout>
 
 <Accordions>
@@ -34,6 +35,7 @@ Trunk-Based Development keeps branches as short-lived as possible, and produces 
 Create them directly from the [issue page](https://docs.github.com/en/issues/tracking-your-work-with-issues/using-issues/creating-a-branch-for-an-issue), and it'll autofill the issue number and name for you in kebab-case.
 
 Make sure to re-order and match the branch naming convention.
+
   </Accordion>
 </Accordions>
 

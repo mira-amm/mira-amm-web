@@ -13,10 +13,10 @@ export function useGetPoolsWithReserve(
   poolKeys: Array<[CoinData, CoinData, PoolId, boolean]>,
   assetIn?: CoinData,
   assetOut?: CoinData,
-  shouldFetchPools = false,
+  shouldFetchPools = false
 ) {
   const stringifiedKeys = poolKeys.map(
-    ([a, b, poolId, stable]) => `${poolId.join("-")}-${stable}`,
+    ([a, b, poolId, stable]) => `${poolId.join("-")}-${stable}`
   );
 
   const query = useQuery<Pool[], Error>({

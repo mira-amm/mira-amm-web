@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import {ErrorCode, FuelError} from "fuels";
 import {CircleX} from "lucide-react";

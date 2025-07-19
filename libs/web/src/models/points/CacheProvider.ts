@@ -27,22 +27,22 @@ export class LocalFileCacheProvider implements CacheProvider {
     try {
       const points = await fs.readFile(this.filePath, "utf8");
       const rawData = JSON.parse(points) as Record<string, CacheEntry>;
-      
+
       // Convert the object to a Map
       const data = new Map<number | "TOTAL", CacheEntry>();
-      
+
       // Validate and convert each entry
       for (const [key, value] of Object.entries(rawData)) {
         if (!value.expiresAt || !Array.isArray(value.points)) {
           throw new Error(`Invalid cache data structure for key ${key}`);
         }
-        
+
         // Convert string keys to numbers where possible
         const mapKey = key === "TOTAL" ? "TOTAL" : Number(key);
         if (mapKey !== "TOTAL" && isNaN(mapKey)) {
           throw new Error(`Invalid key in cache: ${key}`);
         }
-        
+
         data.set(mapKey, value);
       }
 
@@ -91,23 +91,23 @@ export class VercelBlobCacheProvider implements CacheProvider {
       // Get the most recent blob
       const latestBlob = blobs[0];
       const response = await fetch(latestBlob.url);
-      const rawData = await response.json() as Record<string, CacheEntry>;
-      
+      const rawData = (await response.json()) as Record<string, CacheEntry>;
+
       // Convert the object to a Map
       const data = new Map<number | "TOTAL", CacheEntry>();
-      
+
       // Validate and convert each entry
       for (const [key, value] of Object.entries(rawData)) {
         if (!value.expiresAt || !Array.isArray(value.points)) {
           throw new Error(`Invalid cache data structure for key ${key}`);
         }
-        
+
         // Convert string keys to numbers where possible
         const mapKey = key === "TOTAL" ? "TOTAL" : Number(key);
         if (mapKey !== "TOTAL" && isNaN(mapKey)) {
           throw new Error(`Invalid key in cache: ${key}`);
         }
-        
+
         data.set(mapKey, value);
       }
 
@@ -128,7 +128,7 @@ export class VercelBlobCacheProvider implements CacheProvider {
 
       // Convert Map to object for JSON serialization
       const serializableData = Object.fromEntries(data);
-      
+
       // Upload the new data
       await put(this.getFullBlobId(), JSON.stringify(serializableData), {
         access: "public",
@@ -145,7 +145,7 @@ export class VercelBlobCacheProvider implements CacheProvider {
 // Cached locally in development, cached in Vercel Blobs in production
 // This allows cache to be persisted between deployments
 export function createCacheProvider(
-  config: CacheProviderConfig = {},
+  config: CacheProviderConfig = {}
 ): CacheProvider {
   const {
     localFilePath = "/tmp/latestPoints.json",

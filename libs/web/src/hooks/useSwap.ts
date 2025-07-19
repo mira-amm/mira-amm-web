@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import {useCallback} from "react";
 import {bn, ScriptTransactionRequest} from "fuels";
@@ -10,15 +10,20 @@ import type {
   CurrencyBoxMode,
   SwapState,
 } from "@/src/components/common/Swap/Swap";
-import { useMiraDex, useSwapData, useReadonlyMira } from "@/src/hooks";
+import {useMiraDex, useSwapData, useReadonlyMira} from "@/src/hooks";
 import {DefaultTxParams, MaxDeadline} from "@/src/utils/constants";
 
-export function useSwap({swapState, mode, slippage, pools}: {
+export function useSwap({
+  swapState,
+  mode,
+  slippage,
+  pools,
+}: {
   swapState: SwapState;
   mode: CurrencyBoxMode;
   slippage: number;
   pools: PoolId[] | undefined;
-}){
+}) {
   const {wallet} = useWallet();
   const miraDex = useMiraDex();
   const readonlyMira = useReadonlyMira();
@@ -50,7 +55,7 @@ export function useSwap({swapState, mode, slippage, pools}: {
         buyAmountWithSlippage,
         pools,
         MaxDeadline,
-        DefaultTxParams,
+        DefaultTxParams
       );
     } else {
       const [_sellAsset, simulatedSellAmount] =
@@ -66,7 +71,7 @@ export function useSwap({swapState, mode, slippage, pools}: {
         sellAmountWithSlippage,
         pools,
         MaxDeadline,
-        DefaultTxParams,
+        DefaultTxParams
       );
     }
 
@@ -100,7 +105,7 @@ export function useSwap({swapState, mode, slippage, pools}: {
       });
       return await tx.waitForResult();
     },
-    [wallet],
+    [wallet]
   );
 
   const {
@@ -135,4 +140,4 @@ export function useSwap({swapState, mode, slippage, pools}: {
     resetTxCost,
     resetSwap,
   };
-};
+}

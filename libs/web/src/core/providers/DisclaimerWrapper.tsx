@@ -3,9 +3,7 @@ import {ConfirmPopup} from "@/src/components/common";
 import {useLocalStorage, useScrollLock} from "usehooks-ts";
 import {useDisconnect, useIsConnected} from "@fuels/react";
 
-export function DisclaimerWrapper({children}: {
-  children: ReactNode;
-}){
+export function DisclaimerWrapper({children}: {children: ReactNode}) {
   const {lock, unlock} = useScrollLock({autoLock: false});
 
   const {isConnected} = useIsConnected();
@@ -13,7 +11,7 @@ export function DisclaimerWrapper({children}: {
 
   const [accepted, setAccepted] = useLocalStorage(
     "isDisclaimerAccepted",
-    false,
+    false
   );
 
   const handleConfirmClick = useCallback(() => {
@@ -46,4 +44,4 @@ export function DisclaimerWrapper({children}: {
       {children}
     </>
   );
-};
+}

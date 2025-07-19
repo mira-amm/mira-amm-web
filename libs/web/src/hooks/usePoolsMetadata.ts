@@ -1,8 +1,8 @@
 import {useQuery} from "@tanstack/react-query";
-import { useReadonlyMira } from "@/src/hooks";
+import {useReadonlyMira} from "@/src/hooks";
 import {PoolId} from "mira-dex-ts";
 
-export function usePoolsMetadata(pools: PoolId[] | undefined){
+export function usePoolsMetadata(pools: PoolId[] | undefined) {
   const mira = useReadonlyMira();
   const miraExists = Boolean(mira);
 
@@ -12,11 +12,11 @@ export function usePoolsMetadata(pools: PoolId[] | undefined){
     queryKey: ["poolsMetadata", pools],
     queryFn: async () => {
       return await Promise.all(
-        pools!.map((poolId) => mira?.poolMetadata(poolId)),
+        pools!.map((poolId) => mira?.poolMetadata(poolId))
       );
     },
     enabled: shouldFetch,
   });
 
   return {poolsMetadata: data, poolsMetadataPending: isPending};
-};
+}

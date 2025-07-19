@@ -1,4 +1,4 @@
-import { Meta, ColorPalette, ColorItem } from "@storybook/addon-docs/blocks";
+import {Meta, ColorPalette, ColorItem} from "@storybook/addon-docs/blocks";
 
 <Meta title="📐 Shadcn UI/Semantic Color Palette" />
 
@@ -20,87 +20,108 @@ import { Meta, ColorPalette, ColorItem } from "@storybook/addon-docs/blocks";
     colors={{ primary: 'var(--primary)', 'primary-foreground': 'var(--primary-foreground)' }}
   />
 
-  {/* Secondary & Accent */}
-  <ColorItem
-    title="secondary"
-    subtitle="className='bg-secondary'"
-    colors={{ secondary: 'var(--secondary)', 'secondary-foreground': 'var(--secondary-foreground)' }}
-  />
-  <ColorItem
-    title="accent"
-    subtitle="className='bg-accent'"
-    colors={{ accent: 'var(--accent)', 'accent-foreground': 'var(--accent-foreground)' }}
-  />
+{/* Secondary & Accent */}
 
-  {/* UI Component Colors */}
-  <ColorItem
-    title="card"
-    subtitle="className='bg-card'"
-    colors={{ card: 'var(--card)', 'card-foreground': 'var(--card-foreground)' }}
-  />
-  <ColorItem
-    title="popover"
-    subtitle="className='bg-popover'"
-    colors={{ popover: 'var(--popover)', 'popover-foreground': 'var(--popover-foreground)' }}
-  />
-  <ColorItem
-    title="muted"
-    subtitle="className='bg-muted'"
-    colors={{ muted: 'var(--muted)', 'muted-foreground': 'var(--muted-foreground)' }}
-  />
+<ColorItem
+  title="secondary"
+  subtitle="className='bg-secondary'"
+  colors={{
+    secondary: "var(--secondary)",
+    "secondary-foreground": "var(--secondary-foreground)",
+  }}
+/>
+<ColorItem
+  title="accent"
+  subtitle="className='bg-accent'"
+  colors={{
+    accent: "var(--accent)",
+    "accent-foreground": "var(--accent-foreground)",
+  }}
+/>
 
-  {/* Utility & Form Colors */}
-  <ColorItem
-    title="border"
-    subtitle="className='border-border'"
-    colors={{ border: 'var(--border)' }}
-  />
-  <ColorItem
-    title="input"
-    subtitle="className='bg-input'"
-    colors={{ input: 'var(--input)' }}
-  />
-  <ColorItem
-    title="ring"
-    subtitle="className='ring-ring'"
-    colors={{ ring: 'var(--ring)' }}
-  />
+{/* UI Component Colors */}
 
-  {/* Status & Feedback */}
-  <ColorItem
-    title="destructive"
-    subtitle="className='bg-destructive'"
-    colors={{ destructive: 'var(--destructive)', 'destructive-foreground': 'var(--destructive-foreground)' }}
-  />
+<ColorItem
+  title="card"
+  subtitle="className='bg-card'"
+  colors={{card: "var(--card)", "card-foreground": "var(--card-foreground)"}}
+/>
+<ColorItem
+  title="popover"
+  subtitle="className='bg-popover'"
+  colors={{
+    popover: "var(--popover)",
+    "popover-foreground": "var(--popover-foreground)",
+  }}
+/>
+<ColorItem
+  title="muted"
+  subtitle="className='bg-muted'"
+  colors={{
+    muted: "var(--muted)",
+    "muted-foreground": "var(--muted-foreground)",
+  }}
+/>
 
-  {/* Chart Colors */}
-  <ColorItem
-    title="chart-1"
-    subtitle="Data visualization color"
-    colors={{ 'chart-1': 'var(--chart-1)' }}
-  />
-  <ColorItem
-    title="chart-2"
-    subtitle="Data visualization color"
-    colors={{ 'chart-2': 'var(--chart-2)' }}
-  />
-  <ColorItem
-    title="chart-3"
-    subtitle="Data visualization color"
-    colors={{ 'chart-3': 'var(--chart-3)' }}
-  />
-  <ColorItem
-    title="chart-4"
-    subtitle="Data visualization color"
-    colors={{ 'chart-4': 'var(--chart-4)' }}
-  />
-  <ColorItem
-    title="chart-5"
-    subtitle="Data visualization color"
-    colors={{ 'chart-5': 'var(--chart-5)' }}
-  />
+{/* Utility & Form Colors */}
 
-  {/* Sidebar Colors */}
+<ColorItem
+  title="border"
+  subtitle="className='border-border'"
+  colors={{border: "var(--border)"}}
+/>
+<ColorItem
+  title="input"
+  subtitle="className='bg-input'"
+  colors={{input: "var(--input)"}}
+/>
+<ColorItem
+  title="ring"
+  subtitle="className='ring-ring'"
+  colors={{ring: "var(--ring)"}}
+/>
+
+{/* Status & Feedback */}
+
+<ColorItem
+  title="destructive"
+  subtitle="className='bg-destructive'"
+  colors={{
+    destructive: "var(--destructive)",
+    "destructive-foreground": "var(--destructive-foreground)",
+  }}
+/>
+
+{/* Chart Colors */}
+
+<ColorItem
+  title="chart-1"
+  subtitle="Data visualization color"
+  colors={{"chart-1": "var(--chart-1)"}}
+/>
+<ColorItem
+  title="chart-2"
+  subtitle="Data visualization color"
+  colors={{"chart-2": "var(--chart-2)"}}
+/>
+<ColorItem
+  title="chart-3"
+  subtitle="Data visualization color"
+  colors={{"chart-3": "var(--chart-3)"}}
+/>
+<ColorItem
+  title="chart-4"
+  subtitle="Data visualization color"
+  colors={{"chart-4": "var(--chart-4)"}}
+/>
+<ColorItem
+  title="chart-5"
+  subtitle="Data visualization color"
+  colors={{"chart-5": "var(--chart-5)"}}
+/>
+
+{/* Sidebar Colors */}
+
   <ColorItem
     title="sidebar"
     subtitle="className='bg-sidebar'"

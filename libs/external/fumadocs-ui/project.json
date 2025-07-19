@@ -5,11 +5,7 @@
     "description": "Fumadocs UI"
   },
   "sourceRoot": "libs/external/fumadocs-ui",
-  "implicitDependencies": [
-    "!libs/web"
-  ],
+  "implicitDependencies": ["!libs/web"],
   "projectType": "library",
-  "tags": [
-    "libs"
-  ]
-  }
+  "tags": ["libs"]
+}

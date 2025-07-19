@@ -16,33 +16,25 @@
       "type": "enum std::option::Option<enum standards::src7::Metadata>",
       "concreteTypeId": "fe93748eeb5d91a422fcea06e1b374216ad4ac0b2db01be0a6316af7f90dfa4f",
       "metadataTypeId": 3,
-      "typeArguments": [
-        "f44b531974c6c04e17e66ab54e9868d230b9a24b3710b184399c363f0190180d"
-      ]
+      "typeArguments": ["f44b531974c6c04e17e66ab54e9868d230b9a24b3710b184399c363f0190180d"]
     },
     {
       "type": "enum std::option::Option<struct std::string::String>",
       "concreteTypeId": "7c06d929390a9aeeb8ffccf8173ac0d101a9976d99dda01cce74541a81e75ac0",
       "metadataTypeId": 3,
-      "typeArguments": [
-        "9a7f1d3e963c10e0a4ea70a8e20a4813d1dc5682e28f74cb102ae50d32f7f98c"
-      ]
+      "typeArguments": ["9a7f1d3e963c10e0a4ea70a8e20a4813d1dc5682e28f74cb102ae50d32f7f98c"]
     },
     {
       "type": "enum std::option::Option<u64>",
       "concreteTypeId": "d852149004cc9ec0bbe7dc4e37bffea1d41469b759512b6136f2e865a4c06e7d",
       "metadataTypeId": 3,
-      "typeArguments": [
-        "1506e6f44c1d6291cdf46395a8e573276a4fa79e8ace3fc891e092ef32d1b0a0"
-      ]
+      "typeArguments": ["1506e6f44c1d6291cdf46395a8e573276a4fa79e8ace3fc891e092ef32d1b0a0"]
     },
     {
       "type": "enum std::option::Option<u8>",
       "concreteTypeId": "2da102c46c7263beeed95818cd7bee801716ba8303dddafdcd0f6c9efda4a0f1",
       "metadataTypeId": 3,
-      "typeArguments": [
-        "c89951a24c6ca28c13fd1cfdc646b2b656d69e61a92b91023be7eb58eb914b6b"
-      ]
+      "typeArguments": ["c89951a24c6ca28c13fd1cfdc646b2b656d69e61a92b91023be7eb58eb914b6b"]
     },
     {
       "type": "str",
@@ -370,9 +362,7 @@
       "attributes": [
         {
           "name": "doc-comment",
-          "arguments": [
-            " Returns metadata for the corresponding `asset` and `key`."
-          ]
+          "arguments": [" Returns metadata for the corresponding `asset` and `key`."]
         },
         {
           "name": "doc-comment",
@@ -388,15 +378,11 @@
         },
         {
           "name": "doc-comment",
-          "arguments": [
-            " * `asset`: [AssetId] - The asset of which to query the metadata."
-          ]
+          "arguments": [" * `asset`: [AssetId] - The asset of which to query the metadata."]
         },
         {
           "name": "doc-comment",
-          "arguments": [
-            " * `key`: [String] - The key to the specific metadata."
-          ]
+          "arguments": [" * `key`: [String] - The key to the specific metadata."]
         },
         {
           "name": "doc-comment",
@@ -412,9 +398,7 @@
         },
         {
           "name": "doc-comment",
-          "arguments": [
-            " * [Option<Metadata>] - `Some` metadata that corresponds to the `key` or `None`."
-          ]
+          "arguments": [" * [Option<Metadata>] - `Some` metadata that corresponds to the `key` or `None`."]
         },
         {
           "name": "doc-comment",
@@ -430,9 +414,7 @@
         },
         {
           "name": "doc-comment",
-          "arguments": [
-            " * When the AssetId provided does not match the default SubId."
-          ]
+          "arguments": [" * When the AssetId provided does not match the default SubId."]
         },
         {
           "name": "doc-comment",
@@ -480,9 +462,7 @@
         },
         {
           "name": "doc-comment",
-          "arguments": [
-            "     assert(data.unwrap() == Metadata::String(String::from_ascii_str(\"fuel_network\")));"
-          ]
+          "arguments": ["     assert(data.unwrap() == Metadata::String(String::from_ascii_str(\"fuel_network\")));"]
         },
         {
           "name": "doc-comment",

@@ -8,13 +8,15 @@ import {LogoIcon} from "@/meshwave-ui/icons";
 import {PoolId, getLPAssetId} from "mira-dex-ts";
 import {formatUnits} from "fuels";
 import {DEFAULT_AMM_CONTRACT_ID} from "@/src/utils/constants";
-import {usePositionData, useFormattedAddress, useIsRebrandEnabled} from "@/src/hooks";
+import {
+  usePositionData,
+  useFormattedAddress,
+  useIsRebrandEnabled,
+} from "@/src/hooks";
 import {Copy} from "lucide-react";
 import {cn} from "@/src/utils/cn";
 
-export function MiraBlock({pool}: {
-  pool: PoolId
-}) {
+export function MiraBlock({pool}: {pool: PoolId}) {
   const {lpTokenBalance} = usePositionData({pool});
   const lpTokenDisplayValue = formatUnits(lpTokenBalance || "0", 9);
   const lpTokenAssetId = getLPAssetId(DEFAULT_AMM_CONTRACT_ID, pool);
@@ -31,7 +33,7 @@ export function MiraBlock({pool}: {
       className={cn(
         isEnabled && "flex flex-1 flex-col justify-end rounded-2xl p-4",
         !isEnabled &&
-          "flex flex-1 flex-col justify-end rounded-2xl bg-gradient-to-r from-[#5872fc] via-[#6142ba] to-[#c41cff] p-4",
+          "flex flex-1 flex-col justify-end rounded-2xl bg-gradient-to-r from-[#5872fc] via-[#6142ba] to-[#c41cff] p-4"
       )}
       style={{
         ...(isEnabled && {
@@ -60,4 +62,4 @@ export function MiraBlock({pool}: {
       </p>
     </div>
   );
-};
+}

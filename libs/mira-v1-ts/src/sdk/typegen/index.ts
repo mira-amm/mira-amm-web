@@ -8,12 +8,12 @@
   Fuels version: 0.100.3
 */
 
-export { MiraValidationHook } from './MiraValidationHook';
-export { MiraValidationHookFactory } from './MiraValidationHookFactory';
-export { MiraAmmContract } from './MiraAmmContract';
-export { MiraAmmContractFactory } from './MiraAmmContractFactory';
-export { AddLiquidityScriptLoader } from './AddLiquidityScriptLoader';
-export { CreatePoolAndAddLiquidityScriptLoader } from './CreatePoolAndAddLiquidityScriptLoader';
-export { RemoveLiquidityScriptLoader } from './RemoveLiquidityScriptLoader';
-export { SwapExactInputScriptLoader } from './SwapExactInputScriptLoader';
-export { SwapExactOutputScriptLoader } from './SwapExactOutputScriptLoader';
+export {MiraValidationHook} from "./MiraValidationHook";
+export {MiraValidationHookFactory} from "./MiraValidationHookFactory";
+export {MiraAmmContract} from "./MiraAmmContract";
+export {MiraAmmContractFactory} from "./MiraAmmContractFactory";
+export {AddLiquidityScriptLoader} from "./AddLiquidityScriptLoader";
+export {CreatePoolAndAddLiquidityScriptLoader} from "./CreatePoolAndAddLiquidityScriptLoader";
+export {RemoveLiquidityScriptLoader} from "./RemoveLiquidityScriptLoader";
+export {SwapExactInputScriptLoader} from "./SwapExactInputScriptLoader";
+export {SwapExactOutputScriptLoader} from "./SwapExactOutputScriptLoader";

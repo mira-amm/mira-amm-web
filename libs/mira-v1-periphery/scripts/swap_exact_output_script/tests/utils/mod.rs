@@ -32,20 +32,15 @@ pub async fn setup() -> (
     initialize_ownership(&amm.instance, Identity::Address(wallet.address().into())).await;
     let (token_contract_id, token_contract) = deploy_mock_token_contract(&wallet).await;
 
-    let token_0_id = add_token(&token_contract, "TOKEN_A".to_string(), "TKA".to_string(), 9)
-        .await
-        .value;
-    let token_1_id = add_token(&token_contract, "TOKEN_B".to_string(), "TKB".to_string(), 9)
-        .await
-        .value;
-    let token_2_id = add_token(&token_contract, "TOKEN_C".to_string(), "TKC".to_string(), 9)
-        .await
-        .value;
+    let token_0_id =
+        add_token(&token_contract, "TOKEN_A".to_string(), "TKA".to_string(), 9).await.value;
+    let token_1_id =
+        add_token(&token_contract, "TOKEN_B".to_string(), "TKB".to_string(), 9).await.value;
+    let token_2_id =
+        add_token(&token_contract, "TOKEN_C".to_string(), "TKC".to_string(), 9).await.value;
     let mut all_assets = vec![token_0_id, token_1_id, token_2_id];
     all_assets.sort();
-    let [token_0_id, token_1_id, token_2_id] = all_assets[..] else {
-        todo!()
-    };
+    let [token_0_id, token_1_id, token_2_id] = all_assets[..] else { todo!() };
 
     let token_0_sub_id = get_sub_id(&token_contract, token_0_id).await.value.unwrap();
     let token_1_sub_id = get_sub_id(&token_contract, token_1_id).await.value.unwrap();
@@ -94,10 +89,7 @@ pub async fn setup() -> (
         AddLiquidityScript::new(wallet.clone(), ADD_LIQUIDITY_SCRIPT_BINARY_PATH)
             .with_configurables(add_liquidity_script_configurables);
 
-    add_liquidity_script_instance
-        .convert_into_loader()
-        .await
-        .unwrap();
+    add_liquidity_script_instance.convert_into_loader().await.unwrap();
 
     let swap_exact_output_script_configurables = SwapExactOutputScriptConfigurables::default()
         .with_AMM_CONTRACT_ID(ContractId::from_str(&amm.id.to_string()).unwrap())
@@ -106,10 +98,7 @@ pub async fn setup() -> (
         SwapExactOutputScript::new(wallet.clone(), SWAP_EXACT_OUTPUT_SCRIPT_BINARY_PATH)
             .with_configurables(swap_exact_output_script_configurables);
 
-    swap_exact_output_script_instance
-        .convert_into_loader()
-        .await
-        .unwrap();
+    swap_exact_output_script_instance.convert_into_loader().await.unwrap();
 
     (
         add_liquidity_script_instance,

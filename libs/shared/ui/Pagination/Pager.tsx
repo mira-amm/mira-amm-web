@@ -1,7 +1,7 @@
-import type { FC, JSX } from "react";
+import type {FC, JSX} from "react";
 
-import { PaginationButton, PaginationItem } from "../pagination";
-import { Breaker } from "./Breaker";
+import {PaginationButton, PaginationItem} from "../pagination";
+import {Breaker} from "./Breaker";
 
 /**
  * @callback onChange
@@ -20,12 +20,19 @@ interface PagerProps {
   pageBufferSize: number;
 }
 
-export const Pager: FC<PagerProps> = ({ totalPages, currentPage, onChange, pageBufferSize }) => {
+export const Pager: FC<PagerProps> = ({
+  totalPages,
+  currentPage,
+  onChange,
+  pageBufferSize,
+}) => {
   const getNumber = (page: number) => (
     <PaginationItem key={page}>
       <PaginationButton
         size="sm"
-        variant={currentPage === page ? "terminalGreenOutline" : "terminalGreen"}
+        variant={
+          currentPage === page ? "terminalGreenOutline" : "terminalGreen"
+        }
         onClick={() => onChange(page)}
       >
         {page}
@@ -83,8 +90,17 @@ export const Pager: FC<PagerProps> = ({ totalPages, currentPage, onChange, pageB
     if (right === totalPages - 2) {
       return getNumber(totalPages - 1);
     }
-    return <Breaker start={right + 1} end={totalPages - 1} onPageClick={onChange} key="r" />;
+    return (
+      <Breaker
+        start={right + 1}
+        end={totalPages - 1}
+        onPageClick={onChange}
+        key="r"
+      />
+    );
   })();
 
-  return <>{[firstPager, leftSpillEl, ...middlePagers, rightSpillEl, lastPager]}</>;
+  return (
+    <>{[firstPager, leftSpillEl, ...middlePagers, rightSpillEl, lastPager]}</>
+  );
 };

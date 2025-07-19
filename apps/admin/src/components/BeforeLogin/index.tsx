@@ -1,18 +1,20 @@
-import Image from 'next/image'
+import Image from "next/image";
 
-import './index.scss'
+import "./index.scss";
 
-const baseClass = 'before-login'
+const baseClass = "before-login";
 
 export const BeforeLogin = () => {
   return (
     <aside className={baseClass}>
       <div className={`${baseClass}__image-wrap`}>
-        <Image src="/banner.svg" alt="Admin Login Banner"
-        layout="fill"
-        objectFit="cover"
-           />
+        <Image
+          src="/banner.svg"
+          alt="Admin Login Banner"
+          layout="fill"
+          objectFit="cover"
+        />
       </div>
     </aside>
-  )
-}
+  );
+};

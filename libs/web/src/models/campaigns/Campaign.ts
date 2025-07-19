@@ -15,7 +15,7 @@ import path from "path";
 import {convertDailyRewardsToTotalRewards} from "@/src/utils/common";
 
 const campaignsQuery = loadFile(
-  path.join(process.cwd(), "../../libs/web/src", "queries", "CampaignsAPR.sql"),
+  path.join(process.cwd(), "../../libs/web/src", "queries", "CampaignsAPR.sql")
 );
 
 // Specific implementation for Sentio
@@ -27,7 +27,7 @@ export class SentioJSONCampaignService implements CampaignService {
   constructor(
     apiUrl: string,
     apiKey: string,
-    epochConfigService: EpochConfigService,
+    epochConfigService: EpochConfigService
   ) {
     this.apiUrl = apiUrl;
     this.apiKey = apiKey;
@@ -45,7 +45,7 @@ export class SentioJSONCampaignService implements CampaignService {
   async getCampaigns(params?: CampaignQueryParams): Promise<CampaignsResponse> {
     try {
       const epochConfig = this.epochConfigService.getEpochs(
-        params?.epochNumbers ? params.epochNumbers : undefined,
+        params?.epochNumbers ? params.epochNumbers : undefined
       );
 
       const campaignsWithoutApr: Campaign[] = epochConfig
@@ -117,7 +117,7 @@ export class SentioJSONCampaignService implements CampaignService {
                         intValue: convertDailyRewardsToTotalRewards(
                           campaign.rewards[0].dailyAmount,
                           campaign.epoch.startDate.toISOString(),
-                          campaign.epoch.endDate.toISOString(),
+                          campaign.epoch.endDate.toISOString()
                         ),
                       },
                       campaignRewardToken: {stringValue: "fuel"},
@@ -138,13 +138,13 @@ export class SentioJSONCampaignService implements CampaignService {
 
               if (json.result.rows.length === 0) {
                 throw new Error(
-                  `Failed to fetch APR for campaign ${campaign.pool.id}`,
+                  `Failed to fetch APR for campaign ${campaign.pool.id}`
                 );
               }
 
               if (!json.result.rows[0].APR) {
                 throw new Error(
-                  `Failed to fetch APR for campaign ${campaign.pool.id}`,
+                  `Failed to fetch APR for campaign ${campaign.pool.id}`
                 );
               }
 
@@ -153,7 +153,7 @@ export class SentioJSONCampaignService implements CampaignService {
               // Handle any errors that occur during fetch or processing
               console.error(
                 `Error fetching APR for campaign ${campaign.pool.id}:`,
-                error,
+                error
               );
             }
             return campaign;

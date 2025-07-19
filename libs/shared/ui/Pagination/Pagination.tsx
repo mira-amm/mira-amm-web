@@ -1,7 +1,12 @@
-import type { FC } from "react";
+import type {FC} from "react";
 
-import { PaginationContent, Pagination as PaginationRoot, PaginationNext, PaginationPrevious } from "../pagination";
-import { Pager } from "./Pager";
+import {
+  PaginationContent,
+  Pagination as PaginationRoot,
+  PaginationNext,
+  PaginationPrevious,
+} from "../pagination";
+import {Pager} from "./Pager";
 
 const DEFAULT_PAGE_SIZE = 50;
 
@@ -46,7 +51,12 @@ export const Pagination: FC<PaginationProps> = ({
     <PaginationRoot>
       <PaginationContent>
         <li className="flex items-center justify-center">
-          <PaginationPrevious variant="terminalGreen" size="sm" disabled={!hasPrev} onClick={jumpToPrev} />
+          <PaginationPrevious
+            variant="terminalGreen"
+            size="sm"
+            disabled={!hasPrev}
+            onClick={jumpToPrev}
+          />
         </li>
         <Pager
           currentPage={currentPage}
@@ -56,7 +66,12 @@ export const Pagination: FC<PaginationProps> = ({
           onChange={onChange}
         />
         <li className="flex items-center justify-center">
-          <PaginationNext variant="terminalGreen" size="sm" disabled={!hasNext} onClick={jumpToNext} />
+          <PaginationNext
+            variant="terminalGreen"
+            size="sm"
+            disabled={!hasNext}
+            onClick={jumpToNext}
+          />
         </li>
       </PaginationContent>
     </PaginationRoot>

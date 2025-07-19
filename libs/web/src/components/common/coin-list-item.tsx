@@ -19,14 +19,14 @@ export function CoinListItem({
   const {isVerified, userBalance} = assetData;
   const balanceValue = userBalance?.amount ?? new BN(0);
   const fallbackIcon = useAssetImage(
-    !assetData?.icon ? assetData.assetId : null,
+    !assetData?.icon ? assetData.assetId : null
   );
 
   return (
     <span
       className={clsx(
         "flex gap-2 text-content-primary",
-        !assetData?.name && "items-center",
+        !assetData?.name && "items-center"
       )}
     >
       <Tooltip id="verified-tooltip" />

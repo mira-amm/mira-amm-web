@@ -1,9 +1,10 @@
 # Mira DEX TypeScript SDK
 
-Typescript SDK for [Mira DEX](https://mira.ly/) -
-the Decentralized Exchange on [Fuel blockchain](https://fuel.network/).
+Typescript SDK for [Mira DEX](https://mira.ly/) - the Decentralized Exchange on
+[Fuel blockchain](https://fuel.network/).
 
 ## Table of contents
+
 1. [Overview](#overview)
 2. [Installation](#installation)
 3. [Setup](#setup)
@@ -15,10 +16,10 @@ the Decentralized Exchange on [Fuel blockchain](https://fuel.network/).
 
 ## Overview <a name="overview"></a>
 
-The SDK provides a set of tools to interact with the Mira Decentralized Exchange.
-It allows developers to perform actions such as adding/removing liquidity,
-swapping tokens, querying liquidity pools, and more.
-The SDK is built on top of the `fuels` library and supports both transaction-based and readonly operations.
+The SDK provides a set of tools to interact with the Mira Decentralized Exchange. It allows
+developers to perform actions such as adding/removing liquidity, swapping tokens, querying liquidity
+pools, and more. The SDK is built on top of the `fuels` library and supports both transaction-based
+and readonly operations.
 
 ## Installation <a name="installation"></a>
 
@@ -31,8 +32,9 @@ npm install mira-dex-ts
 
 ## Setup <a name="setup"></a>
 
-To start using the SDK, you need to instantiate the `MiraAmm` or `ReadonlyMiraAmm` classes by providing the appropriate
-parameters like `Account` for signing transactions or `Provider` for read-only operations.
+To start using the SDK, you need to instantiate the `MiraAmm` or `ReadonlyMiraAmm` classes by
+providing the appropriate parameters like `Account` for signing transactions or `Provider` for
+read-only operations.
 
 ### Example Setup
 
@@ -55,7 +57,8 @@ const readonlyMiraAmm = new ReadonlyMiraAmm(provider);
 
 ### PoolId
 
-Identifier of a pool. Consists of two assets and a boolean flag indicating whether the pool is stable.
+Identifier of a pool. Consists of two assets and a boolean flag indicating whether the pool is
+stable.
 
 ```typescript
 export type PoolId = [AssetId, AssetId, boolean];
@@ -81,7 +84,13 @@ Adds liquidity to an existing pool.
 
 ```typescript
 const txRequest = await miraAmm.addLiquidity(
-  poolId, amount0Desired, amount1Desired, amount0Min, amount1Min, deadline, txParams
+  poolId,
+  amount0Desired,
+  amount1Desired,
+  amount0Min,
+  amount1Min,
+  deadline,
+  txParams
 );
 ```
 
@@ -92,10 +101,9 @@ const txRequest = await miraAmm.addLiquidity(
 - `amount1Min`: Minimum amount of token 1.
 - `deadline`: Deadline block for the transaction.
 
-The function will add two assets to the pool in the same proportion as the existing reserves in the pool.
-Desired and min amounts specify the amount of each asset to add.
-The actual amounts would be as close as possible to the desired amounts, not exceeding them and more than the min
-amounts.
+The function will add two assets to the pool in the same proportion as the existing reserves in the
+pool. Desired and min amounts specify the amount of each asset to add. The actual amounts would be
+as close as possible to the desired amounts, not exceeding them and more than the min amounts.
 
 #### createPoolAndAddLiquidity
 
@@ -103,7 +111,15 @@ Creates a new pool and adds liquidity in a single transaction.
 
 ```typescript
 const txRequest = await miraAmm.createPoolAndAddLiquidity(
-  token0Contract, token0SubId, token1Contract, token1SubId, isStable, amount0Desired, amount1Desired, deadline, txParams
+  token0Contract,
+  token0SubId,
+  token1Contract,
+  token1SubId,
+  isStable,
+  amount0Desired,
+  amount1Desired,
+  deadline,
+  txParams
 );
 ```
 
@@ -113,9 +129,8 @@ const txRequest = await miraAmm.createPoolAndAddLiquidity(
 - `amount0Desired`, `amount1Desired`: Desired amounts of token 0 and token 1.
 - `deadline`: Deadline block for the transaction.
 
-The same as `addLiquidity` but creates a new pool.
-The pool is created with the provided tokens and the desired amounts.
-The function will throw an error if the pool already exists.
+The same as `addLiquidity` but creates a new pool. The pool is created with the provided tokens and
+the desired amounts. The function will throw an error if the pool already exists.
 
 #### removeLiquidity
 
@@ -123,7 +138,12 @@ Removes liquidity from a pool.
 
 ```typescript
 const txRequest = await miraAmm.removeLiquidity(
-  poolId, liquidity, amount0Min, amount1Min, deadline, txParams
+  poolId,
+  liquidity,
+  amount0Min,
+  amount1Min,
+  deadline,
+  txParams
 );
 ```
 
@@ -132,8 +152,8 @@ const txRequest = await miraAmm.removeLiquidity(
 - `amount0Min`, `amount1Min`: Minimum numbers of tokens to receive from the pool.
 - `deadline`: Deadline block for the transaction.
 
-Exchanges LP tokens for the underlying assets.
-The LP tokens are burned, and the assets are transferred to the user.
+Exchanges LP tokens for the underlying assets. The LP tokens are burned, and the assets are
+transferred to the user.
 
 #### swapExactInput
 
@@ -141,7 +161,12 @@ Performs a swap where the exact input amount is known.
 
 ```typescript
 const txRequest = await miraAmm.swapExactInput(
-  amountIn, assetIn, amountOutMin, pools, deadline, txParams
+  amountIn,
+  assetIn,
+  amountOutMin,
+  pools,
+  deadline,
+  txParams
 );
 ```
 
@@ -151,7 +176,8 @@ const txRequest = await miraAmm.swapExactInput(
 - `pools`: List of pools to route the swap.
 - `deadline`: Deadline block for the transaction.
 
-Performs the swap specifying the exact number of input tokens. Supports multi-hop swaps if several pools are provided.
+Performs the swap specifying the exact number of input tokens. Supports multi-hop swaps if several
+pools are provided.
 
 #### swapExactOutput
 
@@ -159,7 +185,12 @@ Performs a swap where the exact output amount is known.
 
 ```typescript
 const txRequest = await miraAmm.swapExactOutput(
-  amountOut, assetOut, amountInMax, pools, deadline, txParams
+  amountOut,
+  assetOut,
+  amountInMax,
+  pools,
+  deadline,
+  txParams
 );
 ```
 
@@ -169,7 +200,8 @@ const txRequest = await miraAmm.swapExactOutput(
 - `pools`: List of pools to route the swap.
 - `deadline`: Deadline block for the transaction.
 
-Performs the swap specifying the exact number of output tokens. Supports multi-hop swaps if several pools are provided.
+Performs the swap specifying the exact number of output tokens. Supports multi-hop swaps if several
+pools are provided.
 
 ## ReadonlyMiraAmm Class <a name="readonly-mira-amm"></a>
 
@@ -215,8 +247,8 @@ const lpInfo = await readonlyMiraAmm.lpAssetInfo(assetId);
 
 #### totalAssets
 
-Returns the total number of LP tokens created within the AMM.
-This number equals to the number of creates pools.
+Returns the total number of LP tokens created within the AMM. This number equals to the number of
+creates pools.
 
 ```typescript
 const totalAssets = await readonlyMiraAmm.totalAssets();
@@ -235,8 +267,8 @@ const liquidityPosition = await readonlyMiraAmm.getLiquidityPosition(poolId, lpT
 
 #### getOtherTokenToAddLiquidity
 
-Calculates the required amount of the second asset in a token pair based on the provided amount of the first asset.
-Returns the corresponding amount needed for the second asset to add to the pool. 
+Calculates the required amount of the second asset in a token pair based on the provided amount of
+the first asset. Returns the corresponding amount needed for the second asset to add to the pool.
 
 ```typescript
 const assetToAdd = await readonlyMiraAmm.getOtherTokenToAddLiquidity(poolId, amount, isFirstToken);
@@ -248,10 +280,15 @@ const assetToAdd = await readonlyMiraAmm.getOtherTokenToAddLiquidity(poolId, amo
 
 #### previewSwapExactInput
 
-Calculates the output result of a swap operation with the exact input amount routed through the provided pools.
+Calculates the output result of a swap operation with the exact input amount routed through the
+provided pools.
 
 ```typescript
-const expectedOutputAmount = await readonlyMiraAmm.previewSwapExactInput(assetIdIn, assetAmountIn, pools);
+const expectedOutputAmount = await readonlyMiraAmm.previewSwapExactInput(
+  assetIdIn,
+  assetAmountIn,
+  pools
+);
 ```
 
 - `assetIdIn`: Asset ID of the input token.
@@ -260,11 +297,15 @@ const expectedOutputAmount = await readonlyMiraAmm.previewSwapExactInput(assetId
 
 #### previewSwapExactOutput
 
-Calculates the amount of the input token to perform a swap operation routed through the provided pools
-to receive the specified output number of tokens.
+Calculates the amount of the input token to perform a swap operation routed through the provided
+pools to receive the specified output number of tokens.
 
 ```typescript
-const requiredInputAmount = await readonlyMiraAmm.previewSwapExactOutput(assetIdOut, assetAmountOut, pools);
+const requiredInputAmount = await readonlyMiraAmm.previewSwapExactOutput(
+  assetIdOut,
+  assetAmountOut,
+  pools
+);
 ```
 
 - `assetIdOut`: Asset ID of the output token.
@@ -281,5 +322,5 @@ Testnet contract id: `0x05e5fa8c29cbc326beac9758634946e74f69b293b7e7d326f1b539f3
 
 ## Contributions <a name="contributions"></a>
 
-Contributions are welcome.
-Feel free to open a pull request or an issue on the [GitHub repository](https://github.com/mira-amm/mira-v1-ts).
+Contributions are welcome. Feel free to open a pull request or an issue on the
+[GitHub repository](https://github.com/mira-amm/mira-v1-ts).

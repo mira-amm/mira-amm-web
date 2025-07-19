@@ -4,10 +4,7 @@
     "target": "ESNext",
     "outDir": "../../dist/out-tsc",
     "moduleResolution": "node",
-    "types": [
-      "playwright",
-     "@playwright/test"
-    ],
+    "types": ["playwright", "@playwright/test"],
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true
   },

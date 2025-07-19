@@ -6,10 +6,10 @@ import {formatMoney, formatNumber} from "@/src/utils/formatMoney";
 const useFormattedReserveValue = (
   assetId: string,
   amount: string,
-  reserve: number | undefined,
+  reserve: number | undefined
 ) => {
   const {price: usdPrice} = useAssetPriceFromIndexer(assetId);
- const valueOfAsset = reserve && usdPrice ? usdPrice * reserve : 0;
+  const valueOfAsset = reserve && usdPrice ? usdPrice * reserve : 0;
   const usdValue = formatMoney(valueOfAsset);
   return {
     usdValue,
@@ -17,7 +17,11 @@ const useFormattedReserveValue = (
   };
 };
 
-export function ReserveItem({assetId, amount, reserve}: {
+export function ReserveItem({
+  assetId,
+  amount,
+  reserve,
+}: {
   assetId: string;
   amount: string;
   reserve: number | undefined;
@@ -25,7 +29,7 @@ export function ReserveItem({assetId, amount, reserve}: {
   const {usdValue, coinAmount} = useFormattedReserveValue(
     assetId,
     amount,
-    reserve,
+    reserve
   );
 
   return (
@@ -45,4 +49,4 @@ export function ReserveItem({assetId, amount, reserve}: {
       )}
     </div>
   );
-};
+}

@@ -7,7 +7,7 @@ export function playAudioEffect(
     maxDuration?: number;
     onStart?: () => void;
     onEnd?: () => void;
-  },
+  }
 ) {
   stopCurrentAudio();
 

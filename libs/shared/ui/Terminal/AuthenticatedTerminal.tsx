@@ -1,6 +1,6 @@
-import { useState, useRef, useEffect, useCallback } from 'react';
-import { userFlowActor } from '@/engine/actors/user';
-import { useNavigate } from "react-router";
+import {useState, useRef, useEffect, useCallback} from "react";
+import {userFlowActor} from "@/engine/actors/user";
+import {useNavigate} from "react-router";
 
 const INITIAL_OUTPUTS = [
   "Authentication successful. Welcome to MICROCHAIN SYSTEMS.",
@@ -19,7 +19,7 @@ const HELP_TEXT = [
 ];
 
 export const AuthenticatedTerminal = () => {
-  const [commandInput, setCommandInput] = useState('');
+  const [commandInput, setCommandInput] = useState("");
   const [outputs, setOutputs] = useState<string[]>(INITIAL_OUTPUTS);
   const inputRef = useRef<HTMLInputElement>(null);
   const outputRef = useRef<HTMLDivElement>(null);
@@ -32,33 +32,33 @@ export const AuthenticatedTerminal = () => {
 
     setOutputs((prev) => [...prev, echo]);
 
-    if (lower === 'help') {
+    if (lower === "help") {
       setOutputs((prev) => [...prev, ...HELP_TEXT]);
       return;
     }
 
-if (lower === 'clear') {
-  setOutputs(INITIAL_OUTPUTS);
-  return;
-}
-
-    const validStateCommands = ['notes', 'timer', 'game', 'logout'];
-
-    if (validStateCommands.includes(lower)) {
-      userFlowActor.send({ type: lower.toUpperCase() });
-        /* navigate('/notes');
-* navigate('/timer');
-* navigate('/game'); */
-        return navigate('/logout');
+    if (lower === "clear") {
+      setOutputs(INITIAL_OUTPUTS);
+      return;
     }
 
-    setOutputs((prev) => [...prev, '> COMMAND NOT RECOGNIZED']);
+    const validStateCommands = ["notes", "timer", "game", "logout"];
+
+    if (validStateCommands.includes(lower)) {
+      userFlowActor.send({type: lower.toUpperCase()});
+      /* navigate('/notes');
+       * navigate('/timer');
+       * navigate('/game'); */
+      return navigate("/logout");
+    }
+
+    setOutputs((prev) => [...prev, "> COMMAND NOT RECOGNIZED"]);
   }, []);
 
   const handleKeyUp = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === 'Enter' && commandInput.trim()) {
+    if (e.key === "Enter" && commandInput.trim()) {
       handleCommand(commandInput);
-      setCommandInput('');
+      setCommandInput("");
     }
   };
 
@@ -96,12 +96,36 @@ const renderMenu = () => (
       == EXECUTIVE COMMAND OPTIONS ==
     </p>
     <ul className="space-y-1 ml-4">
-      <li>{"> "}<span className="text-terminal-green font-bold">notes</span> - Access confidential project files</li>
-      <li>{"> "}<span className="text-terminal-green font-bold">timer</span> - View DLM-2000 product launch countdown</li>
-      <li>{"> "}<span className="text-terminal-green font-bold">game</span> - Test the Decentralized Market Simulator</li>
-      <li>{"> "}<span className="text-terminal-green font-bold">help</span> - Show T-REX command options</li>
-      <li>{"> "}<span className="text-terminal-green font-bold">clear</span> - Purge screen data [CLASSIFIED]</li>
-      <li>{"> "}<span className="text-terminal-green font-bold">logout</span> - Engage T-REX security lockdown</li>
+      <li>
+        {"> "}
+        <span className="text-terminal-green font-bold">notes</span> - Access
+        confidential project files
+      </li>
+      <li>
+        {"> "}
+        <span className="text-terminal-green font-bold">timer</span> - View
+        DLM-2000 product launch countdown
+      </li>
+      <li>
+        {"> "}
+        <span className="text-terminal-green font-bold">game</span> - Test the
+        Decentralized Market Simulator
+      </li>
+      <li>
+        {"> "}
+        <span className="text-terminal-green font-bold">help</span> - Show T-REX
+        command options
+      </li>
+      <li>
+        {"> "}
+        <span className="text-terminal-green font-bold">clear</span> - Purge
+        screen data [CLASSIFIED]
+      </li>
+      <li>
+        {"> "}
+        <span className="text-terminal-green font-bold">logout</span> - Engage
+        T-REX security lockdown
+      </li>
     </ul>
   </div>
 );

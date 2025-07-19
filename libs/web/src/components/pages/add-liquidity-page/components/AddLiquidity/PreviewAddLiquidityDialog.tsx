@@ -52,10 +52,10 @@ export default function PreviewAddLiquidityDialog({
   });
 
   const firstAssetAmountString = firstAssetAmount.formatUnits(
-    firstAssetMetadata.decimals,
+    firstAssetMetadata.decimals
   );
   const secondAssetAmountString = secondAssetAmount.formatUnits(
-    secondAssetMetadata.decimals,
+    secondAssetMetadata.decimals
   );
 
   const handleAddLiquidity = useCallback(async () => {

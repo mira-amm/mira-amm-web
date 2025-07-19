@@ -89,7 +89,7 @@ export const useAnimationStore = create<AnimationState>()(
       typeof window !== "undefined"
         ? JSON.parse(
             localStorage.getItem(ANIMATION_CALLS_KEY) ||
-              '{"tripleClickTokenSwap":false,"magicInput":false,"tripleClickCurrencySwap":false}',
+              '{"tripleClickTokenSwap":false,"magicInput":false,"tripleClickCurrencySwap":false}'
           )
         : {
             tripleClickTokenSwap: false,
@@ -172,7 +172,7 @@ export const useAnimationStore = create<AnimationState>()(
 
       const now = Date.now();
       const recentClicks = lastClicks.filter(
-        (t) => now - t < CLICK_DETECTION_WINDOW,
+        (t) => now - t < CLICK_DETECTION_WINDOW
       );
 
       if (recentClicks.length >= 2) {
@@ -182,7 +182,7 @@ export const useAnimationStore = create<AnimationState>()(
           set({isAnimationInProgress: true});
           ScrambleEffect();
           get().subscribers = get().subscribers.filter(
-            (sub) => sub !== animationSubscriber,
+            (sub) => sub !== animationSubscriber
           );
         };
 
@@ -209,7 +209,7 @@ export const useAnimationStore = create<AnimationState>()(
           if (typeof window !== "undefined") {
             localStorage.setItem(
               ANIMATION_CALLS_KEY,
-              JSON.stringify(newCalledAnimations),
+              JSON.stringify(newCalledAnimations)
             );
             localStorage.setItem(ANIMATION_COUNT_KEY, newCount.toString());
           }
@@ -253,7 +253,7 @@ export const useAnimationStore = create<AnimationState>()(
           playRadioAudio();
           set((state) => ({
             subscribers: state.subscribers.filter(
-              (sub) => sub !== magicNumberSubscriber,
+              (sub) => sub !== magicNumberSubscriber
             ),
           }));
         };
@@ -290,7 +290,7 @@ export const useAnimationStore = create<AnimationState>()(
               if (typeof window !== "undefined") {
                 localStorage.setItem(
                   ANIMATION_CALLS_KEY,
-                  JSON.stringify(newCalledAnimations),
+                  JSON.stringify(newCalledAnimations)
                 );
                 localStorage.setItem(ANIMATION_COUNT_KEY, newCount.toString());
               }
@@ -330,7 +330,7 @@ export const useAnimationStore = create<AnimationState>()(
 
       const now = Date.now();
       const recentClicks = lastClicks.filter(
-        (t) => now - t < CLICK_DETECTION_WINDOW,
+        (t) => now - t < CLICK_DETECTION_WINDOW
       );
 
       if (recentClicks.length >= 2) {
@@ -340,7 +340,7 @@ export const useAnimationStore = create<AnimationState>()(
           triggerClassAnimation("rainbowColor");
           set({isAnimationInProgress: true});
           get().subscribers = get().subscribers.filter(
-            (sub) => sub !== animationSubscriber,
+            (sub) => sub !== animationSubscriber
           );
         };
 
@@ -365,7 +365,7 @@ export const useAnimationStore = create<AnimationState>()(
           if (typeof window !== "undefined") {
             localStorage.setItem(
               ANIMATION_CALLS_KEY,
-              JSON.stringify(newCalledAnimations),
+              JSON.stringify(newCalledAnimations)
             );
             localStorage.setItem(ANIMATION_COUNT_KEY, newCount.toString());
           }
@@ -393,7 +393,7 @@ export const useAnimationStore = create<AnimationState>()(
       if (typeof window !== "undefined") {
         localStorage.setItem(
           ANIMATION_CALLS_KEY,
-          JSON.stringify(defaultCalled),
+          JSON.stringify(defaultCalled)
         );
         localStorage.setItem(ANIMATION_COUNT_KEY, "0");
       }
@@ -452,7 +452,7 @@ export const useAnimationStore = create<AnimationState>()(
 
       const store = get();
       const hintListenerCleanup = store.initializeHintListener(
-        store.animationCallCount,
+        store.animationCallCount
       );
       store.startPeriodicGlobalAnimation();
 
@@ -560,7 +560,7 @@ export const useAnimationStore = create<AnimationState>()(
         });
       };
     },
-  })),
+  }))
 );
 
 if (typeof window !== "undefined") {

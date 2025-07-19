@@ -3,7 +3,7 @@ import request, {gql} from "graphql-request";
 import {SQDIndexerUrl} from "../utils/constants";
 
 export const useAssetPriceFromIndexer = (
-  assetId: string,
+  assetId: string
 ): {price: number; isLoading: boolean} => {
   const {data, isLoading} = useQuery<{asset: {price: string} | null}>({
     queryKey: ["price", assetId],

@@ -3,8 +3,8 @@ import CoinPair from "@/src/components/common/CoinPair/CoinPair";
 import Link from "next/link";
 import clsx from "clsx";
 import {PoolData} from "@/src/hooks/usePoolsData";
-import { AprBadge } from "@/src/components/common/AprBadge/AprBadge";
-import { usePoolNameAndMatch } from "@/src/hooks/usePoolNameAndMatch";
+import {AprBadge} from "@/src/components/common/AprBadge/AprBadge";
+import {usePoolNameAndMatch} from "@/src/hooks/usePoolNameAndMatch";
 import {Button} from "@/meshwave-ui/Button";
 import {TableCell, TableRow} from "@/meshwave-ui/table";
 import {cn} from "@/src/utils/cn";
@@ -34,7 +34,7 @@ export function DesktopPoolRow({poolData}: {poolData: PoolData}) {
         className={cn(
           cellBase,
           "overflow-visible",
-          !isMatching && !aprValue && "text-content-dimmed-light",
+          !isMatching && !aprValue && "text-content-dimmed-light"
         )}
       >
         {isMatching ? (
@@ -60,4 +60,4 @@ export function DesktopPoolRow({poolData}: {poolData: PoolData}) {
       </TableCell>
     </TableRow>
   );
-};
+}

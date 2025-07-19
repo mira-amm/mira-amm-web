@@ -6,8 +6,6 @@
   },
   "sourceRoot": "libs/engine",
   "projectType": "library",
-  "implicitDependencies": [
-    "!libs/web"
-  ],
+  "implicitDependencies": ["!libs/web"],
   "tags": []
 }

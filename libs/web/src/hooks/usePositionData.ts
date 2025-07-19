@@ -1,12 +1,10 @@
 import {bn} from "fuels";
 import {getLPAssetId, PoolId} from "mira-dex-ts";
 import {useQuery} from "@tanstack/react-query";
-import { useReadonlyMira, useBalances } from "@/src/hooks";
+import {useReadonlyMira, useBalances} from "@/src/hooks";
 import {DEFAULT_AMM_CONTRACT_ID} from "@/src/utils/constants";
 
-export function usePositionData({pool}: {
-  pool: PoolId;
-}){
+export function usePositionData({pool}: {pool: PoolId}) {
   const mira = useReadonlyMira();
   const lpTokenAssetId = getLPAssetId(DEFAULT_AMM_CONTRACT_ID, pool);
   const {balances} = useBalances();
@@ -24,5 +22,4 @@ export function usePositionData({pool}: {
   });
 
   return {assets: data, lpTokenBalance};
-};
-
+}

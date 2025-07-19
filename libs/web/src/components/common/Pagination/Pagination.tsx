@@ -54,7 +54,7 @@ export default function Pagination({
           buttonBaseClasses,
           navButtonResponsive,
           "flex gap-2 items-center",
-          currentPage === 1 && disabledClasses,
+          currentPage === 1 && disabledClasses
         )}
         onClick={() => onPageChange(currentPage - 1)}
         disabled={currentPage === 1}
@@ -70,7 +70,7 @@ export default function Pagination({
             typeof page === "number" &&
               page === currentPage &&
               "dark:bg-accent-dimmed dark:text-accent-primary font-bold bg-black text-white",
-            typeof page !== "number" && disabledClasses,
+            typeof page !== "number" && disabledClasses
           )}
           onClick={() => typeof page === "number" && onPageChange(page)}
           disabled={page === "..."}
@@ -84,7 +84,7 @@ export default function Pagination({
           buttonBaseClasses,
           navButtonResponsive,
           "flex gap-2 items-center",
-          currentPage === totalPages && disabledClasses,
+          currentPage === totalPages && disabledClasses
         )}
         onClick={() => onPageChange(currentPage + 1)}
         disabled={currentPage === totalPages}

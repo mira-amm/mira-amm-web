@@ -17,7 +17,7 @@ export const useAssetImage = (assetId: string | null): string => {
     queryKey: ["assetImage", assetId, assets?.length],
     queryFn: async () => {
       const asset = assets?.find(
-        (asset) => asset.assetId.toLowerCase() === assetId?.toLowerCase(),
+        (asset) => asset.assetId.toLowerCase() === assetId?.toLowerCase()
       );
       if (asset?.icon) {
         return asset.icon;

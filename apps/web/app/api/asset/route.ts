@@ -43,7 +43,7 @@ export async function GET(req: NextRequest) {
       if (response.status === 404) {
         return NextResponse.json(
           {error: `Asset with ID: ${assetId} not found`},
-          {status: 404},
+          {status: 404}
         );
       }
       throw new Error(`Failed to fetch asset data: ${response.statusText}`);
@@ -76,7 +76,7 @@ export async function GET(req: NextRequest) {
     console.error("Error fetching asset data:", error);
     return NextResponse.json(
       {error: "Failed to fetch asset data"},
-      {status: 500},
+      {status: 500}
     );
   }
 }

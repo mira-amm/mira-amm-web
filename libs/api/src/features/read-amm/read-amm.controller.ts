@@ -1,20 +1,20 @@
-import { Controller, Get, Inject } from "@nestjs/common";
-import { ReadAmmService } from './services/read-amm.service.js';
+import {Controller, Get, Inject} from "@nestjs/common";
+import {ReadAmmService} from "./services/read-amm.service.js";
 
-@Controller('amm')
+@Controller("amm")
 export class ReadAmmController {
-private readonly readAmmService: ReadAmmService
+  private readonly readAmmService: ReadAmmService;
 
   constructor(@Inject(ReadAmmService) readAmmService: ReadAmmService) {
     this.readAmmService = readAmmService;
   }
 
-  @Get('id')
+  @Get("id")
   async id(): Promise<string> {
     return this.readAmmService.getId();
   }
 
-  @Get('metadata')
+  @Get("metadata")
   async getMetadata(): Promise<any> {
     return this.readAmmService.getMetadata();
   }

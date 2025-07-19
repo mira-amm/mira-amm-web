@@ -1,13 +1,13 @@
-import { FUEL_CONFIG, networks } from "@/shared/lib/fuelProvider";
-import { FuelProvider } from "@fuels/react";
-import { ReactNode } from "react";
+import {FUEL_CONFIG, networks} from "@/shared/lib/fuelProvider";
+import {FuelProvider} from "@fuels/react";
+import {ReactNode} from "react";
 
-export const FuelProviderWrapper = ({ children }: { children: ReactNode }) => {
+export const FuelProviderWrapper = ({children}: {children: ReactNode}) => {
   return (
     <FuelProvider
       networks={networks}
       fuelConfig={FUEL_CONFIG}
-      uiConfig={{ suggestBridge: false }}
+      uiConfig={{suggestBridge: false}}
       theme="dark"
     >
       {children}

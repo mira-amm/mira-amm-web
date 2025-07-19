@@ -38,7 +38,7 @@ export const dbConfig = {
       metadata: {
         title: "🕹 Microgame API Reference",
         version: "1.0.0?",
-        description: ([
+        description: [
           "🧩 OpenAPI Spec for Microgame.",
           "",
           "- ✨ [Scalar UI:](/docs): `/docs`",
@@ -52,7 +52,7 @@ export const dbConfig = {
           "- 🛝 [GraphQL Playground:](/api/graphql-playground) `/api/graphql-playground`",
           "",
           "- 🖥 [Admin Panel:](/admin) `/admin`",
-        ].join('\n'))
+        ].join("\n"),
       },
     }),
     swaggerUI({
@@ -140,13 +140,13 @@ export const dbConfig = {
   //       },
   //       generateSchemaOutputFile: "../../libs/db/schema.ts", // resolves from location of payload.config.ts
   //     })
-    // : postgresAdapter({
-  db : postgresAdapter({
-        pool: {
-          connectionString: process.env.DATABASE_URI,
-        },
-        generateSchemaOutputFile: "../../libs/db/schema.ts",
-      }),
+  // : postgresAdapter({
+  db: postgresAdapter({
+    pool: {
+      connectionString: process.env.DATABASE_URI,
+    },
+    generateSchemaOutputFile: "../../libs/db/schema.ts",
+  }),
 };
 
 export const serverConfig = {

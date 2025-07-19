@@ -12,14 +12,14 @@ const cacheControlHeaders = {
 };
 
 const epochConfigService = new JSONEpochConfigService(
-  path.join(process.cwd(), "../../libs/web/src", "models", "campaigns.json"),
+  path.join(process.cwd(), "../../libs/web/src", "models", "campaigns.json")
 );
 
 const pointsService = process.env.SENTIO_API_KEY
   ? new FileCachedPointsPerUserService(
       process.env.SENTIO_API_KEY,
       SENTIO_POINTS_ENDPOINT,
-      epochConfigService,
+      epochConfigService
     )
   : null;
 
@@ -29,7 +29,7 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
       JSON.stringify({
         message: "SENTIO_API_KEY and SENTIO_API_URL must be set",
       }),
-      {status: 500, headers: cacheControlHeaders},
+      {status: 500, headers: cacheControlHeaders}
     );
   }
 

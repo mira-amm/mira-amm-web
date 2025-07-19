@@ -6,26 +6,18 @@
   },
   "sourceRoot": "libs/rust-sdk/src",
   "projectType": "library",
-  "tags": [
-    "sdk",
-    "rust",
-    "v1"
-  ],
+  "tags": ["sdk", "rust", "v1"],
   "targets": {
     "build": {
       "executor": "@monodon/rust:build",
-      "outputs": [
-        "{options.target-dir}"
-      ],
+      "outputs": ["{options.target-dir}"],
       "options": {
         "target-dir": "dist/target/rust"
       }
     },
     "check": {
       "executor": "@monodon/rust:check",
-      "outputs": [
-        "{options.target-dir}"
-      ],
+      "outputs": ["{options.target-dir}"],
       "options": {
         "target-dir": "dist/target/rust"
       }
@@ -33,9 +25,7 @@
     "test": {
       "cache": true,
       "executor": "@monodon/rust:test",
-      "outputs": [
-        "{options.target-dir}"
-      ],
+      "outputs": ["{options.target-dir}"],
       "options": {
         "target-dir": "dist/target/rust"
       },
@@ -48,12 +38,10 @@
     "lint": {
       "cache": true,
       "executor": "@monodon/rust:lint",
-      "outputs": [
-        "{options.target-dir}"
-      ],
+      "outputs": ["{options.target-dir}"],
       "options": {
         "target-dir": "dist/target/rust"
       }
     }
-  },
+  }
 }

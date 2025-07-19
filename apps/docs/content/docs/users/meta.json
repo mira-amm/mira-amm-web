@@ -3,10 +3,5 @@
   "description": "Experience the Liquidity Hub on Fuel.",
   "icon": "Fuel",
   "root": true,
-  "pages": [
-    "protocol",
-    "how-to-swap",
-    "how-to-add-liquidity",
-    "how-to-create-pools"
-  ]
+  "pages": ["protocol", "how-to-swap", "how-to-add-liquidity", "how-to-create-pools"]
 }
