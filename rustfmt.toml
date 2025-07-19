@@ -1,0 +1,13 @@
+# Rustfmt configuration for consistent formatting across all Rust projects
+edition = "2021"
+reorder_imports = true
+use_small_heuristics = "Max"
+use_field_init_shorthand = true
+
+# Unstable features (require nightly Rust - commented out for stable compatibility)
+# imports_granularity = "Crate"
+# comment_width = 100
+# wrap_comments = true
+# binop_separator = "Back"
+# trailing_comma = "Vertical"
+# trailing_semicolon = false
