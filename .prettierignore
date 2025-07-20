@@ -19,3 +19,6 @@ public
 .env
 .env.*
 !.env.example
+
+## MDX formatting breaks sotrybook, ignoring for now
+**/*.mdx
