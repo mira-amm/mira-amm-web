@@ -53,7 +53,7 @@ export default function Page() {
   const {isConnected} = useIsConnected();
   return (
     <div className="flex flex-1 flex-col items-center w-full md:justify-center">
-      <div className="w-full max-w-lg px-4">
+      <div className="w-full max-w-lg px-4 relative">
         <Swap />
         <FeatureGuard>
           {isConnected && (

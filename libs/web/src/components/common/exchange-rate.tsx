@@ -21,7 +21,7 @@ export function ExchangeRate({swapState}: {swapState: SwapState}) {
   return (
     <button
       onClick={handleClick}
-      className="w-fit flex items-center gap-[10px] text-xs leading-[18px] text-content-dimmed-light bg-transparent border-none cursor-pointer lg:text-[13px]"
+      className="w-fit font-alt flex items-center gap-[10px] text-xs leading-[18px] text-content-dimmed-light bg-transparent border-none cursor-pointer lg:text-[13px]"
     >
       {rate}
       <ExchangeIcon />
