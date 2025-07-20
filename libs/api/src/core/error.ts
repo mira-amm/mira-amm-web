@@ -1,4 +1,4 @@
-import type { HttpStatus } from "@nestjs/common";
+import type {HttpStatus} from "@nestjs/common";
 
 type AppErrorName = "NotFoundError" | "InternalError" | "BadGateway";
 

@@ -22,7 +22,7 @@ const CACHE_HEADERS = {
 };
 
 const epochConfigService = new JSONEpochConfigService(
-  path.join(process.cwd(), "../../libs/web/src", "models", "campaigns.json"),
+  path.join(process.cwd(), "../../libs/web/src", "models", "campaigns.json")
 );
 
 const campaignService =
@@ -30,7 +30,7 @@ const campaignService =
     ? new SentioJSONCampaignService(
         process.env.SENTIO_API_URL,
         process.env.SENTIO_API_KEY,
-        epochConfigService,
+        epochConfigService
       )
     : null;
 

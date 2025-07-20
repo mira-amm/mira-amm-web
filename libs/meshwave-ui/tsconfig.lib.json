@@ -1,16 +1,10 @@
 {
   "extends": "./tsconfig.json",
   "compilerOptions": {
-    "types": [
-      "node",
-      "@nx/react/typings/image.d.ts"
-    ],
+    "types": ["node", "@nx/react/typings/image.d.ts"],
     "outDir": "../../../dist/out-tsc"
   },
-  "include": [
-    "**/*.ts",
-    "**/*.tsx"
-  ],
+  "include": ["**/*.ts", "**/*.tsx"],
   "exclude": [
     "jest.config.ts",
     "src/**/*.spec.ts",

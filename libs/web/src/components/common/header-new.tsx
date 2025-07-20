@@ -68,7 +68,7 @@ export function HeaderNew({
         external: true,
       },
     ],
-    [pathname],
+    [pathname]
   );
 
   return (
@@ -124,12 +124,12 @@ export function HeaderNew({
                 className={cn(
                   "px-3 py-1 rounded-full transition hover:bg-background-grey-light text-content-tertiary",
                   match &&
-                    "bg-background-primary text-white dark:bg-background-grey-light hover:bg-background-primary",
+                    "bg-background-primary text-white dark:bg-background-grey-light hover:bg-background-primary"
                 )}
               >
                 {label}
               </Link>
-            ),
+            )
           )}
         </nav>
 
@@ -164,12 +164,12 @@ export function HeaderNew({
                 className={cn(
                   "px-3 py-1 rounded-full transition hover:bg-background-grey-light text-content-tertiary text-sm sm:text-base",
                   match &&
-                    "bg-background-primary text-white dark:bg-background-grey-light hover:bg-background-primary",
+                    "bg-background-primary text-white dark:bg-background-grey-light hover:bg-background-primary"
                 )}
               >
                 {label}
               </Link>
-            ),
+            )
           )}
         </nav>
       </div>

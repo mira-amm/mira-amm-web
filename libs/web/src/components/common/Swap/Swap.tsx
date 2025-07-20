@@ -239,14 +239,14 @@ export function Swap({isWidget}: {isWidget?: boolean}) {
     () =>
       balances?.find((b) => b.assetId === swapState.sell.assetId)?.amount ??
       bn(0),
-    [balances, swapState.sell.assetId],
+    [balances, swapState.sell.assetId]
   );
 
   const buyBalance = useMemo(
     () =>
       balances?.find((b) => b.assetId === swapState.buy.assetId)?.amount ??
       bn(0),
-    [balances, swapState.buy.assetId],
+    [balances, swapState.buy.assetId]
   );
 
   const sellMetadata = useAssetMetadata(swapState.sell.assetId);
@@ -261,13 +261,13 @@ export function Swap({isWidget}: {isWidget?: boolean}) {
 
   const pools = useMemo(
     () => trade?.bestRoute?.pools.map((p) => p.poolId) ?? [],
-    [trade?.bestRoute?.pools],
+    [trade?.bestRoute?.pools]
   );
   const anotherMode = activeMode === "sell" ? "buy" : "sell";
   const decimals = useMemo(
     () =>
       anotherMode === "sell" ? sellMetadata.decimals : buyMetadata.decimals,
-    [anotherMode, sellMetadata.decimals, buyMetadata.decimals],
+    [anotherMode, sellMetadata.decimals, buyMetadata.decimals]
   );
 
   const previewValueString = useMemo(() => {
@@ -320,10 +320,10 @@ export function Swap({isWidget}: {isWidget?: boolean}) {
       updater: (prev: {sell: string | null; buy: string | null}) => {
         sell: string | null;
         buy: string | null;
-      },
+      }
     ) => {
       const stored = JSON.parse(
-        localStorage.getItem("swapCoins") ?? "null",
+        localStorage.getItem("swapCoins") ?? "null"
       ) ?? {
         sell: initialSwapState.sell.assetId,
         buy: initialSwapState.buy.assetId,
@@ -331,7 +331,7 @@ export function Swap({isWidget}: {isWidget?: boolean}) {
       const next = updater(stored);
       localStorage.setItem("swapCoins", JSON.stringify(next));
     },
-    [initialSwapState],
+    [initialSwapState]
   );
 
   const swapAssets = useCallback(() => {
@@ -376,7 +376,7 @@ export function Swap({isWidget}: {isWidget?: boolean}) {
       }
       setActiveMode(mode);
     },
-    [inputsState, isWidget, setSwapCoins, swapAssets, swapState],
+    [inputsState, isWidget, setSwapCoins, swapAssets, swapState]
   );
 
   const setAmount = useCallback(
@@ -405,7 +405,7 @@ export function Swap({isWidget}: {isWidget?: boolean}) {
         setActiveMode(mode);
       }
     },
-    [activeMode],
+    [activeMode]
   );
 
   const handleCoinSelectorClick = useCallback(
@@ -413,7 +413,7 @@ export function Swap({isWidget}: {isWidget?: boolean}) {
       openCoinsModal();
       modeForCoinSelector.current = mode;
     },
-    [openCoinsModal],
+    [openCoinsModal]
   );
 
   const handleCoinSelection = useCallback(
@@ -422,7 +422,7 @@ export function Swap({isWidget}: {isWidget?: boolean}) {
       selectCoin(mode)(assetId as B256Address);
       closeCoinsModal();
     },
-    [selectCoin, closeCoinsModal],
+    [selectCoin, closeCoinsModal]
   );
 
   const {
@@ -444,7 +444,7 @@ export function Swap({isWidget}: {isWidget?: boolean}) {
 
   const coinMissing = useMemo(
     () => !swapState.buy.assetId || !swapState.sell.assetId,
-    [swapState.buy.assetId, swapState.sell.assetId],
+    [swapState.buy.assetId, swapState.sell.assetId]
   );
 
   const amountMissing = useMemo(() => {
@@ -675,7 +675,7 @@ export function Swap({isWidget}: {isWidget?: boolean}) {
         <div
           className={cn(
             "flex flex-col gap-4 p-4 pb-[18px] rounded-[10px] bg-background-grey-dark border-border-secondary border-[12px] dark:border-0 dark:bg-background-grey-dark",
-            swapPending && "z-[5]",
+            swapPending && "z-[5]"
           )}
         >
           <div className="flex items-center gap-[10px] font-medium text-[16px] leading-[19px] text-content-grey lg:text-[20px] lg:leading-[24px]">

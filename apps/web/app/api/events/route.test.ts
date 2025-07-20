@@ -23,7 +23,7 @@ describe("GET /api/events", () => {
 
   it("should return 400 if fromBlock or toBlock is missing", async () => {
     const req = new NextRequest(
-      "http://localhost:3000/api/events/?fromBlock=100",
+      "http://localhost:3000/api/events/?fromBlock=100"
     ); // Missing toBlock
 
     const res = await GET(req);
@@ -35,7 +35,7 @@ describe("GET /api/events", () => {
 
   it("should return 200 with events for the given block range", async () => {
     const req = new NextRequest(
-      "http://localhost:3000/api/events/?fromBlock=100&toBlock=200",
+      "http://localhost:3000/api/events/?fromBlock=100&toBlock=200"
     );
 
     const mockActions = {
@@ -120,7 +120,7 @@ describe("GET /api/events", () => {
 
   it("should return an empty events array if no actions are found", async () => {
     const req = new NextRequest(
-      "http://localhost:3000/api/events/?fromBlock=100&toBlock=200",
+      "http://localhost:3000/api/events/?fromBlock=100&toBlock=200"
     );
 
     mockRequest.mockResolvedValueOnce({actions: []});
@@ -132,7 +132,7 @@ describe("GET /api/events", () => {
 
   it("should return a 500 error if there is an exception", async () => {
     const req = new NextRequest(
-      "http://localhost:3000/api/events/?fromBlock=100&toBlock=200",
+      "http://localhost:3000/api/events/?fromBlock=100&toBlock=200"
     );
 
     mockRequest.mockRejectedValueOnce(new Error("Network error"));

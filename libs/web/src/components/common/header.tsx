@@ -12,7 +12,7 @@ import {
   MainnetLabel,
   DisconnectMobile,
   IconButton,
-  ConnectWallet
+  ConnectWallet,
 } from "@/src/components/common";
 
 import {
@@ -25,12 +25,7 @@ import {PointsIcon} from "@/meshwave-ui/icons";
 
 const PROMO_BANNER_STORAGE_KEY = "fuel-boost-program-promo-banner-closed";
 
-export function Header({
-  pathName,
-}: {
-  isHomePage?: boolean;
-  pathName?: string;
-}) {
+export function Header({pathName}: {isHomePage?: boolean; pathName?: string}) {
   const pathname = pathName ?? usePathname();
   const [isPromoShown, setIsPromoShown] = useState(false);
 
@@ -61,7 +56,7 @@ export function Header({
         external: true,
       },
     ],
-    [pathname],
+    [pathname]
   );
 
   return (
@@ -114,12 +109,12 @@ export function Header({
                   href={href}
                   className={clsx(
                     "px-3 py-1 rounded-full transition hover:background-grey-light",
-                    match && "bg-background-grey-light",
+                    match && "bg-background-grey-light"
                   )}
                 >
                   {label}
                 </Link>
-              ),
+              )
             )}
           </nav>
         </div>

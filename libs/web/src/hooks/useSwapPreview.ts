@@ -13,7 +13,7 @@ import {type Route} from "@/src/hooks";
 
 export function useSwapPreview(
   swapState: SwapState,
-  mode: CurrencyBoxMode,
+  mode: CurrencyBoxMode
 ): {
   tradeState: TradeState;
   trade?: {

@@ -16,12 +16,6 @@
     ],
     "strictNullChecks": true
   },
-  "include": [
-    "**/*.ts",
-    "**/*.tsx",
-    ".next/types/**/*.ts",
-    "dist/apps/admin/types/**/*.ts",
-    "next-env.d.ts"
-  ],
+  "include": ["**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "dist/apps/admin/types/**/*.ts", "next-env.d.ts"],
   "exclude": ["node_modules"]
 }

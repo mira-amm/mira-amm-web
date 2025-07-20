@@ -1,4 +1,4 @@
-@import "tailwindcss";
+@import 'tailwindcss';
 
 @source './**/*.{ts,tsx}';
 
@@ -82,8 +82,8 @@
     --accent-alert: #d4b226;
     --content-positive: #46cc44;
 
-    --font-inter: "Inter", sans-serif;
-    --font-prompt: "Prompt", sans-serif;
+    --font-inter: 'Inter', sans-serif;
+    --font-prompt: 'Prompt', sans-serif;
   }
 
   .dark {
@@ -174,7 +174,7 @@
   }
 
   @media (min-width: 431px) {
-    div[data-state="open"][role="dialog"] {
+    div[data-state='open'][role='dialog'] {
       bottom: unset;
     }
   }

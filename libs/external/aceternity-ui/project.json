@@ -5,11 +5,7 @@
     "description": "Aceternity UI"
   },
   "sourceRoot": "libs/external/aceternity-ui",
-  "implicitDependencies": [
-    "!libs/web"
-  ],
+  "implicitDependencies": ["!libs/web"],
   "projectType": "library",
-  "tags": [
-    "libs"
-  ]
-  }
+  "tags": ["libs"]
+}

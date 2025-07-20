@@ -31,12 +31,10 @@ pub async fn setup() -> (
     initialize_ownership(&amm.instance, Identity::Address(Address::default())).await;
     let (token_contract_id, token_contract) = deploy_mock_token_contract(&wallet).await;
 
-    let token_a_id = add_token(&token_contract, "TOKEN_A".to_string(), "TKA".to_string(), 9)
-        .await
-        .value;
-    let token_b_id = add_token(&token_contract, "TOKEN_B".to_string(), "TKB".to_string(), 9)
-        .await
-        .value;
+    let token_a_id =
+        add_token(&token_contract, "TOKEN_A".to_string(), "TKA".to_string(), 9).await.value;
+    let token_b_id =
+        add_token(&token_contract, "TOKEN_B".to_string(), "TKB".to_string(), 9).await.value;
 
     let token_a_sub_id = get_sub_id(&token_contract, token_a_id).await.value.unwrap();
     let token_b_sub_id = get_sub_id(&token_contract, token_b_id).await.value.unwrap();
@@ -71,10 +69,7 @@ pub async fn setup() -> (
         AddLiquidityScript::new(wallet.clone(), ADD_LIQUIDITY_SCRIPT_BINARY_PATH)
             .with_configurables(add_liquidity_script_configurables);
 
-    add_liquidity_script_instance
-        .convert_into_loader()
-        .await
-        .unwrap();
+    add_liquidity_script_instance.convert_into_loader().await.unwrap();
 
     let remove_liquidity_script_configurables = RemoveLiquidityScriptConfigurables::default()
         .with_AMM_CONTRACT_ID(ContractId::from_str(&amm.id.to_string()).unwrap())
@@ -83,10 +78,7 @@ pub async fn setup() -> (
         RemoveLiquidityScript::new(wallet.clone(), REMOVE_LIQUIDITY_SCRIPT_BINARY_PATH)
             .with_configurables(remove_liquidity_script_configurables);
 
-    remove_liquidity_script_instance
-        .convert_into_loader()
-        .await
-        .unwrap();
+    remove_liquidity_script_instance.convert_into_loader().await.unwrap();
 
     (
         add_liquidity_script_instance,

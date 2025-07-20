@@ -2,12 +2,12 @@ import {useMemo} from "react";
 import {BASE_ASSETS, CoinData} from "../utils/coinsConfig";
 
 const BASE_PAIRS: [CoinData, CoinData][] = BASE_ASSETS.flatMap((base) =>
-  BASE_ASSETS.map((otherBase) => [base, otherBase] as [CoinData, CoinData]),
+  BASE_ASSETS.map((otherBase) => [base, otherBase] as [CoinData, CoinData])
 ).filter(([a, b]) => a.assetId !== b.assetId);
 
 export function getAssetCombination(
   assetA?: CoinData,
-  assetB?: CoinData,
+  assetB?: CoinData
 ): [CoinData, CoinData][] {
   if (!assetA || !assetB) return [];
   const seen = new Set<string>();
@@ -34,7 +34,7 @@ export function getAssetCombination(
 
 export const useAllAssetsCombination = (
   assetA?: CoinData,
-  assetB?: CoinData,
+  assetB?: CoinData
 ): [CoinData, CoinData][] => {
   return useMemo(() => {
     return getAssetCombination(assetA, assetB);

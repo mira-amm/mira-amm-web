@@ -27,15 +27,7 @@ async fn panics_on_removing_zero_liquidity() {
 
     // adds initial liquidity
     let added_liquidity = add_liquidity_script_instance
-        .main(
-            pool_id,
-            amount_0_desired,
-            amount_1_desired,
-            0,
-            0,
-            wallet.address().into(),
-            deadline,
-        )
+        .main(pool_id, amount_0_desired, amount_1_desired, 0, 0, wallet.address().into(), deadline)
         .with_contracts(&[&amm.instance])
         .with_inputs(inputs)
         .with_outputs(outputs)

@@ -1,14 +1,14 @@
-import { CurrencyBoxMode, SwapState } from "@/src/components/common/Swap/Swap";
-import { useSwapData, useAsset, useDebounce, TradeType } from "@/src/hooks";
-import { useMemo } from "react";
-import { bn } from "fuels";
-import { useSwapRouter } from "./useSwapRouter";
+import {CurrencyBoxMode, SwapState} from "@/src/components/common/Swap/Swap";
+import {useSwapData, useAsset, useDebounce, TradeType} from "@/src/hooks";
+import {useMemo} from "react";
+import {bn} from "fuels";
+import {useSwapRouter} from "./useSwapRouter";
 
-export function useSwapPreview(swapState: SwapState, mode: CurrencyBoxMode){
-  const { sellAssetId, buyAssetId } = useSwapData(swapState);
+export function useSwapPreview(swapState: SwapState, mode: CurrencyBoxMode) {
+  const {sellAssetId, buyAssetId} = useSwapData(swapState);
 
-  const { asset: assetIn } = useAsset(sellAssetId);
-  const { asset: assetOut } = useAsset(buyAssetId);
+  const {asset: assetIn} = useAsset(sellAssetId);
+  const {asset: assetOut} = useAsset(buyAssetId);
 
   const tradeType = mode === "buy" ? TradeType.EXACT_OUT : TradeType.EXACT_IN;
 
@@ -41,4 +41,4 @@ export function useSwapPreview(swapState: SwapState, mode: CurrencyBoxMode){
   const debouncedValue = useDebounce(rawUserInputAmount.toString(), 500);
 
   return useSwapRouter(tradeType, bn(debouncedValue), assetIn, assetOut);
-};
+}

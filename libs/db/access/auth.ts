@@ -1,6 +1,6 @@
-import { PayloadRequest } from "payload";
-import { OAuth2Plugin } from "payload-oauth2";
-import { getOrUploadMedia } from "@/db/seed";
+import {PayloadRequest} from "payload";
+import {OAuth2Plugin} from "payload-oauth2";
+import {getOrUploadMedia} from "@/db/seed";
 
 const BASE_URL =
   process.env.NODE_ENV === "development"
@@ -49,11 +49,13 @@ export const twitterStrategyConfig = {
   authorizePath: "/oauth/twitter",
   callbackPath: "/oauth/twitter/callback",
   tokenEndpoint: "https://api.x.com/2/oauth2/token",
-  providerAuthorizationUrl: `https://x.com/i/oauth2/authorize?${new URLSearchParams({
-    state: "state",
-    code_challenge: "challenge",
-    code_challenge_method: "plain", // Should be 'S256' in real usage
-  }).toString()}`,
+  providerAuthorizationUrl: `https://x.com/i/oauth2/authorize?${new URLSearchParams(
+    {
+      state: "state",
+      code_challenge: "challenge",
+      code_challenge_method: "plain", // Should be 'S256' in real usage
+    }
+  ).toString()}`,
   enabled: true,
   ...baseConfig,
 };
@@ -86,7 +88,7 @@ export const twitterOAuth = OAuth2Plugin({
         "Content-Type": "application/x-www-form-urlencoded",
         Accept: "application/json",
         Authorization: `Basic ${Buffer.from(
-          `${process.env.TWITTER_CLIENT_ID}:${process.env.TWITTER_CLIENT_SECRET}`,
+          `${process.env.TWITTER_CLIENT_ID}:${process.env.TWITTER_CLIENT_SECRET}`
         ).toString("base64")}`,
       },
       body: body.toString(),
@@ -103,23 +105,23 @@ export const twitterOAuth = OAuth2Plugin({
 
   getUserInfo: async (accessToken: string, req: PayloadRequest) => {
     try {
-      const headers = { Authorization: `Bearer ${accessToken}` };
+      const headers = {Authorization: `Bearer ${accessToken}`};
 
       const userResponse = await fetch(
         `https://api.x.com/2/users/me?${new URLSearchParams({
           "user.fields":
             "id,confirmed_email,profile_image_url,username,name,is_identity_verified,verified,url",
         })}`,
-        { headers },
+        {headers}
       );
 
       if (!userResponse.ok) {
         throw new Error(
-          `Failed to fetch user data: ${userResponse.status} ${userResponse.statusText}`,
+          `Failed to fetch user data: ${userResponse.status} ${userResponse.statusText}`
         );
       }
 
-      const { data: userData } = await userResponse.json();
+      const {data: userData} = await userResponse.json();
 
       if (!userData?.id || !userData?.username) {
         throw new Error("Incomplete user data from Twitter");
@@ -128,7 +130,7 @@ export const twitterOAuth = OAuth2Plugin({
       const [existingUser] = (
         await req.payload.find({
           collection: "users",
-          where: { sub: { equals: userData.id } },
+          where: {sub: {equals: userData.id}},
           limit: 1,
         })
       ).docs;
@@ -147,7 +149,7 @@ export const twitterOAuth = OAuth2Plugin({
             req,
             userData.profile_image_url,
             `${userData.username.toLowerCase()}-avatar.png`,
-            `${userData.username}'s avatar`,
+            `${userData.username}'s avatar`
           )
         : null;
 
@@ -165,7 +167,7 @@ export const twitterOAuth = OAuth2Plugin({
       };
     } catch (error) {
       req.payload.logger.error(
-        `getUserInfo error: ${error instanceof Error ? error.stack : String(error)}`,
+        `getUserInfo error: ${error instanceof Error ? error.stack : String(error)}`
       );
       throw new Error("Unable to fetch user info from Twitter/X.");
     }

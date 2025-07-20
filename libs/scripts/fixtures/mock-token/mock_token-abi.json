@@ -15,33 +15,25 @@
       "type": "enum std::option::Option<b256>",
       "concreteTypeId": "0c2beb9013490c4f753f2757dfe2d8340b22ce3827d596d81d249b7038033cb6",
       "metadataTypeId": 1,
-      "typeArguments": [
-        "7c5ee1cecf5f8eacd1284feb5f0bf2bdea533a51e2f0c9aabe9236d335989f3b"
-      ]
+      "typeArguments": ["7c5ee1cecf5f8eacd1284feb5f0bf2bdea533a51e2f0c9aabe9236d335989f3b"]
     },
     {
       "type": "enum std::option::Option<struct std::string::String>",
       "concreteTypeId": "7c06d929390a9aeeb8ffccf8173ac0d101a9976d99dda01cce74541a81e75ac0",
       "metadataTypeId": 1,
-      "typeArguments": [
-        "9a7f1d3e963c10e0a4ea70a8e20a4813d1dc5682e28f74cb102ae50d32f7f98c"
-      ]
+      "typeArguments": ["9a7f1d3e963c10e0a4ea70a8e20a4813d1dc5682e28f74cb102ae50d32f7f98c"]
     },
     {
       "type": "enum std::option::Option<u64>",
       "concreteTypeId": "d852149004cc9ec0bbe7dc4e37bffea1d41469b759512b6136f2e865a4c06e7d",
       "metadataTypeId": 1,
-      "typeArguments": [
-        "1506e6f44c1d6291cdf46395a8e573276a4fa79e8ace3fc891e092ef32d1b0a0"
-      ]
+      "typeArguments": ["1506e6f44c1d6291cdf46395a8e573276a4fa79e8ace3fc891e092ef32d1b0a0"]
     },
     {
       "type": "enum std::option::Option<u8>",
       "concreteTypeId": "2da102c46c7263beeed95818cd7bee801716ba8303dddafdcd0f6c9efda4a0f1",
       "metadataTypeId": 1,
-      "typeArguments": [
-        "c89951a24c6ca28c13fd1cfdc646b2b656d69e61a92b91023be7eb58eb914b6b"
-      ]
+      "typeArguments": ["c89951a24c6ca28c13fd1cfdc646b2b656d69e61a92b91023be7eb58eb914b6b"]
     },
     {
       "type": "enum sway_libs::asset::errors::SetMetadataError",
@@ -110,9 +102,7 @@
           "typeId": 3
         }
       ],
-      "typeParameters": [
-        3
-      ]
+      "typeParameters": [3]
     },
     {
       "type": "enum sway_libs::asset::errors::SetMetadataError",
@@ -284,9 +274,7 @@
       "attributes": [
         {
           "name": "storage",
-          "arguments": [
-            "read"
-          ]
+          "arguments": ["read"]
         }
       ]
     },
@@ -302,9 +290,7 @@
       "attributes": [
         {
           "name": "storage",
-          "arguments": [
-            "read"
-          ]
+          "arguments": ["read"]
         }
       ]
     },
@@ -320,9 +306,7 @@
       "attributes": [
         {
           "name": "storage",
-          "arguments": [
-            "read"
-          ]
+          "arguments": ["read"]
         }
       ]
     },
@@ -333,9 +317,7 @@
       "attributes": [
         {
           "name": "storage",
-          "arguments": [
-            "read"
-          ]
+          "arguments": ["read"]
         }
       ]
     },
@@ -351,9 +333,7 @@
       "attributes": [
         {
           "name": "storage",
-          "arguments": [
-            "read"
-          ]
+          "arguments": ["read"]
         }
       ]
     },
@@ -377,10 +357,7 @@
       "attributes": [
         {
           "name": "storage",
-          "arguments": [
-            "read",
-            "write"
-          ]
+          "arguments": ["read", "write"]
         }
       ]
     },
@@ -396,9 +373,7 @@
       "attributes": [
         {
           "name": "storage",
-          "arguments": [
-            "read"
-          ]
+          "arguments": ["read"]
         }
       ]
     },
@@ -418,10 +393,7 @@
       "attributes": [
         {
           "name": "storage",
-          "arguments": [
-            "read",
-            "write"
-          ]
+          "arguments": ["read", "write"]
         }
       ]
     }

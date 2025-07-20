@@ -1,11 +1,11 @@
-"use client"
+"use client";
 
 import {useAccount} from "@fuels/react";
 import {useMemo} from "react";
 import {useIsClient} from "usehooks-ts";
 import {FuelAppUrl} from "@/src/utils/constants";
 
-export function useFaucetLink(){
+export function useFaucetLink() {
   const {account} = useAccount();
   const isBrowser = useIsClient();
 
@@ -31,4 +31,4 @@ export function useFaucetLink(){
 
     return faucetUrl;
   }, [account, isBrowser]);
-};
+}

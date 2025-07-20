@@ -8,19 +8,19 @@ import CoinPair from "@/src/components/common/CoinPair/CoinPair";
 import {Loader, CoinWithAmount} from "@/src/components/common";
 import PromoBlock from "@/src/components/pages/liquidity-page/components/PromoBlock/PromoBlock";
 
-import { AprDisplay } from "./apr-display";
-import { ReserveItem } from "./reserve-item";
-import { ExchangeRate } from "./exchange-rate";
-import { MiraBlock } from "./mira-block";
+import {AprDisplay} from "./apr-display";
+import {ReserveItem} from "./reserve-item";
+import {ExchangeRate} from "./exchange-rate";
+import {MiraBlock} from "./mira-block";
 
 import {formatDisplayAmount} from "@/src/utils/common";
 
 interface AssetData {
   amount: string;
   metadata: {
-  name?: string;
-  symbol?: string;
-  decimals?: number;
+    name?: string;
+    symbol?: string;
+    decimals?: number;
   } & {isLoading: boolean};
   reserve?: number;
 }
@@ -41,9 +41,7 @@ export function MobilePositionView({
   assetA: AssetData;
   assetB: AssetData;
   handleWithdrawLiquidity: () => void;
-  
-}){
-
+}) {
   return (
     <section className="flex flex-col gap-3 mobileOnly">
       <div className="flex items-start justify-between">
@@ -130,4 +128,4 @@ export function MobilePositionView({
       />
     </section>
   );
-};
+}

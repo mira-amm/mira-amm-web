@@ -5,7 +5,7 @@ import Image from "next/image";
 import {
   /* Figma as BrandIcon, */
   Rss as BlogIcon,
-  Twitter
+  Twitter,
 } from "lucide-react";
 
 import {AiOutlineDiscord as DiscordIcon} from "react-icons/ai";
@@ -68,12 +68,12 @@ export const baseOptions: BaseLayoutProps = {
       external: true,
     },
     /* {
-*   type: "icon",
-*   text: "Brand",
-*   url: "https://figma.com",
-*   external: true,
-*   icon: <BrandIcon />,
-* }, */
+     *   type: "icon",
+     *   text: "Brand",
+     *   url: "https://figma.com",
+     *   external: true,
+     *   icon: <BrandIcon />,
+     * }, */
   ],
   githubUrl: "https://github.com/mira-amm/mira-amm-web",
 };

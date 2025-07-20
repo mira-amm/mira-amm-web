@@ -13,25 +13,18 @@ use test_harness::setup::common::{deploy_amm, setup_wallet_and_provider};
 use test_harness::types::PoolId;
 use test_harness::utils::common::order_sub_ids;
 
-pub async fn setup() -> (
-    AddLiquidityScript<WalletUnlocked>,
-    MiraAMMContract,
-    PoolId,
-    WalletUnlocked,
-    u32,
-) {
+pub async fn setup(
+) -> (AddLiquidityScript<WalletUnlocked>, MiraAMMContract, PoolId, WalletUnlocked, u32) {
     let (wallet, _asset_ids, provider) =
         setup_wallet_and_provider(&WalletAssetConfiguration::default()).await;
     let amm = deploy_amm(&wallet).await;
     initialize_ownership(&amm.instance, Identity::Address(Address::default())).await;
     let (token_contract_id, token_contract) = deploy_mock_token_contract(&wallet).await;
 
-    let token_a_id = add_token(&token_contract, "TOKEN_A".to_string(), "TKA".to_string(), 9)
-        .await
-        .value;
-    let token_b_id = add_token(&token_contract, "TOKEN_B".to_string(), "TKB".to_string(), 9)
-        .await
-        .value;
+    let token_a_id =
+        add_token(&token_contract, "TOKEN_A".to_string(), "TKA".to_string(), 9).await.value;
+    let token_b_id =
+        add_token(&token_contract, "TOKEN_B".to_string(), "TKB".to_string(), 9).await.value;
 
     let token_a_sub_id = get_sub_id(&token_contract, token_a_id).await.value.unwrap();
     let token_b_sub_id = get_sub_id(&token_contract, token_b_id).await.value.unwrap();

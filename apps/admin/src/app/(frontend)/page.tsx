@@ -1,4 +1,4 @@
-import { redirect } from "next/navigation";
+import {redirect} from "next/navigation";
 
 export default async function Home() {
   /* const url = process.env.NODE_ENV === 'development'
@@ -13,8 +13,6 @@ export default async function Home() {
 * redirect("/docs");
  } */
 
-  return (
-  redirect("/docs")
+  return redirect("/docs");
   /* redirect("/admin/login") */
- );
 }

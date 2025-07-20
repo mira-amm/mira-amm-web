@@ -9,7 +9,7 @@ const getPriceImpact = (
   if (reservesPrice <= previewPrice) return 0;
   return Math.min(
     ((reservesPrice - previewPrice) / reservesPrice) * 100,
-    99.99,
+    99.99
   );
 };
 
@@ -30,7 +30,7 @@ export const PriceImpact: FC<{
           "flex justify-between items-center leading-[18px] bg-transparent border-none cursor-pointer",
           highPriceImpact && "text-accent-warning",
           mediumPriceImpact && "text-accent-alert",
-          isHidden && "opacity-0",
+          isHidden && "opacity-0"
         )}
       >
         <span className="mr-1 text-xs lg:text-[13px]">Price impact: </span>
@@ -41,7 +41,7 @@ export const PriceImpact: FC<{
         <p
           className={cn(
             "leading-[18px] bg-transparent border-none cursor-pointer text-xs lg:text-[13px]",
-            highPriceImpact ? "text-accent-warning" : "text-accent-alert",
+            highPriceImpact ? "text-accent-warning" : "text-accent-alert"
           )}
         >
           WARNING: {highPriceImpact ? "Large" : "Medium"} Price impact detected

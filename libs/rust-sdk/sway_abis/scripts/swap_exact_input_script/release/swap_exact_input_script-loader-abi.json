@@ -36,17 +36,13 @@
       "type": "struct std::vec::Vec<(struct std::asset_id::AssetId, struct std::asset_id::AssetId, bool)>",
       "concreteTypeId": "a5cbfec6a05585025be4180a09c2bd7944724d54ac729c9bebe421d061ee5378",
       "metadataTypeId": 11,
-      "typeArguments": [
-        "a95e1fcceb1451b8a76471f593f66c4a52ca04bde3c227c746ad7aaf988de5c6"
-      ]
+      "typeArguments": ["a95e1fcceb1451b8a76471f593f66c4a52ca04bde3c227c746ad7aaf988de5c6"]
     },
     {
       "type": "struct std::vec::Vec<(u64, struct std::asset_id::AssetId)>",
       "concreteTypeId": "6f03bcbe6f8a1e01b5dcb5701ab21443606d1b323a888ead4e9a2ecda650ae2e",
       "metadataTypeId": 11,
-      "typeArguments": [
-        "e10d8bfc338a29565debd72645b365f9b0481e462fd7d591848de4a73223d58d"
-      ]
+      "typeArguments": ["e10d8bfc338a29565debd72645b365f9b0481e462fd7d591848de4a73223d58d"]
     },
     {
       "type": "u32",
@@ -163,9 +159,7 @@
           "typeId": "1506e6f44c1d6291cdf46395a8e573276a4fa79e8ace3fc891e092ef32d1b0a0"
         }
       ],
-      "typeParameters": [
-        5
-      ]
+      "typeParameters": [5]
     },
     {
       "type": "struct std::vec::Vec",
@@ -186,9 +180,7 @@
           "typeId": "1506e6f44c1d6291cdf46395a8e573276a4fa79e8ace3fc891e092ef32d1b0a0"
         }
       ],
-      "typeParameters": [
-        5
-      ]
+      "typeParameters": [5]
     }
   ],
   "functions": [

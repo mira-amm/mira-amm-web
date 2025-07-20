@@ -13,7 +13,7 @@ export default function Layout({children}: {children: ReactNode}) {
   return (
     <html lang="en" className={prompt.className} suppressHydrationWarning>
       <body className="flex h-screen justify-center items-center bg-black text-terminal-green font-['VT323',monospace]">
-            {children}
+        {children}
       </body>
     </html>
   );

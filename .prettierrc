@@ -24,11 +24,7 @@
       }
     },
     {
-      "files": [
-        "*.css",
-        "*.scss",
-        "*.sass"
-      ],
+      "files": ["*.css", "*.scss", "*.sass"],
       "options": {
         "singleQuote": true,
         "printWidth": 100

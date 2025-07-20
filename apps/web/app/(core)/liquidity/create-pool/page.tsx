@@ -14,7 +14,7 @@ import {CreatePoolDialog} from "@/src/components/pages/create-pool-page/componen
 export default function Page() {
   const router = useRouter();
   const [previewData, setPreviewData] = useState<CreatePoolPreviewData | null>(
-    null,
+    null
   );
 
   const handleBackClick = useCallback(() => {

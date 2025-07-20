@@ -1,4 +1,4 @@
-import { Check, Task, Duration, Wait } from "@serenity-js/core";
+import {Check, Task, Duration, Wait} from "@serenity-js/core";
 
 import {
   Click,
@@ -51,21 +51,21 @@ export const Connect = {
       Navigate.to("/"),
       Wait.until(connectWalletButton(), isVisible()),
       Click.on(connectWalletButton()),
-      Wait.until(walletOption(walletName), isVisible()),
+      Wait.until(walletOption(walletName), isVisible())
     ),
 };
 
 export const CreatePool = {
-  ofType: (type: 'Volatile' | 'Stable') => ({
+  ofType: (type: "Volatile" | "Stable") => ({
     withAssets: (base: string, quote: string) =>
       Task.where(
         `#actor creates a ${type} pool with ${base} and ${quote}`,
 
-        Navigate.to('/liquidity'),
+        Navigate.to("/liquidity"),
 
         Wait.upTo(Duration.ofSeconds(10)).until(
-          PageElement.located(By.css('Loading pools...')),
-          not(isVisible()),
+          PageElement.located(By.css("Loading pools...")),
+          not(isVisible())
         ),
 
         Wait.until(createPoolButton(), isVisible()),
@@ -77,12 +77,15 @@ export const CreatePool = {
         Wait.until(searchInput(), isVisible()),
 
         // NOTE: type base asset character by character, or else search results are blank
-        Enter.theValue('').into(searchInput()),
+        Enter.theValue("").into(searchInput()),
         ...base
-          .split('')
-          .flatMap(char => [Press.the(char), Wait.for(Duration.ofMilliseconds(50))]),
+          .split("")
+          .flatMap((char) => [
+            Press.the(char),
+            Wait.for(Duration.ofMilliseconds(50)),
+          ]),
 
-        Press.the('Enter'),
+        Press.the("Enter"),
 
         Wait.until(searchResults().first(), isVisible()),
         Click.on(searchResults().first()),
@@ -91,18 +94,21 @@ export const CreatePool = {
 
         Wait.until(searchInput(), isVisible()),
 
-        Enter.theValue('').into(searchInput()),
+        Enter.theValue("").into(searchInput()),
         ...quote
-          .split('')
-          .flatMap(char => [Press.the(char), Wait.for(Duration.ofMilliseconds(50))]),
+          .split("")
+          .flatMap((char) => [
+            Press.the(char),
+            Wait.for(Duration.ofMilliseconds(50)),
+          ]),
 
-        Press.the('Enter'),
+        Press.the("Enter"),
 
         Wait.until(searchResults().first(), isVisible()),
         Click.on(searchResults().first()),
 
         Wait.until(poolTypeOption(type), isVisible()),
-        Click.on(poolTypeOption(type)),
+        Click.on(poolTypeOption(type))
       ),
   }),
 };
@@ -114,16 +120,19 @@ export const SelectToken = {
         `#actor selects token ${token}`,
         Click.on(button),
         Wait.until(searchInput(), isVisible()),
-        Enter.theValue('').into(searchInput()),
+        Enter.theValue("").into(searchInput()),
         ...token
-          .split('')
-          .flatMap(char => [Press.the(char), Wait.for(Duration.ofMilliseconds(50))]),
+          .split("")
+          .flatMap((char) => [
+            Press.the(char),
+            Wait.for(Duration.ofMilliseconds(50)),
+          ]),
         Press.the("Enter"),
         Wait.until(searchResults(), isPresent()),
         Wait.until(searchResults().first(), isVisible()),
         Click.on(searchResults().first()),
         Wait.until(button, isVisible()),
-        Wait.until(Text.of(button), includes(token)),
+        Wait.until(Text.of(button), includes(token))
       ),
   }),
 };
@@ -138,7 +147,7 @@ export const AdjustSlippage = {
       Wait.until(slippageSettingsModal(), isPresent()),
       Wait.until(slippageSettingsModalPercentageButton(value), isPresent()),
       slippageSettingsModalPercentageButton(value).click(),
-      Ensure.that(Text.of(slippageLabel()), equals(`${value}% Slippage`)),
+      Ensure.that(Text.of(slippageLabel()), equals(`${value}% Slippage`))
     ),
 
   toCustom: (value: string) =>
@@ -154,7 +163,7 @@ export const AdjustSlippage = {
       slippageSettingsInput().enterValue(`${value}%`),
       Press.the("Enter"),
       Press.the("Escape"),
-      Ensure.that(Text.of(slippageLabel()), equals(`${value}% Slippage`)),
+      Ensure.that(Text.of(slippageLabel()), equals(`${value}% Slippage`))
     ),
 };
 
@@ -165,7 +174,7 @@ export const Layout = {
   shouldBePresent: (description: string, locator: PageElement<unknown>) =>
     Task.where(
       `#actor sees ${description} present`,
-      Wait.until(locator, isPresent()),
+      Wait.until(locator, isPresent())
     ),
 
   shouldAllowClick: (description: string, locator: PageElement<unknown>) =>
@@ -178,19 +187,19 @@ export const Swap = {
       `#actor sells ${amount} ${token}`,
       Wait.until(sellInput(), isVisible()),
       sellInput().enterValue(amount),
-      SelectToken.called(token).into(sellCoinButton()),
+      SelectToken.called(token).into(sellCoinButton())
     ),
 
   buy: (token: string) =>
     Task.where(
       `#actor selects ${token} to buy`,
-      SelectToken.called(token).into(buyCoinButton()),
+      SelectToken.called(token).into(buyCoinButton())
     ),
 
   convert: () =>
     Task.where(
       `#actor swaps sell/buy tokens`,
       Click.on(swapConvertButton()),
-      Wait.until(Text.of(buyCoinButton()), includes(TOKENS.Quote)),
+      Wait.until(Text.of(buyCoinButton()), includes(TOKENS.Quote))
     ),
 };

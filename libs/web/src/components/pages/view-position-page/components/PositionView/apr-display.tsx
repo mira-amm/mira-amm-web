@@ -3,13 +3,11 @@ import {PoolId} from "mira-dex-ts";
 import clsx from "clsx";
 
 import {createPoolKey, formatAprValue} from "@/src/utils/common";
-import { AprBadge } from "@/src/components/common/AprBadge/AprBadge";
-import { usePoolNameAndMatch } from "@/src/hooks/usePoolNameAndMatch";
-import { usePoolAPR } from "@/src/hooks/usePoolAPR";
+import {AprBadge} from "@/src/components/common/AprBadge/AprBadge";
+import {usePoolNameAndMatch} from "@/src/hooks/usePoolNameAndMatch";
+import {usePoolAPR} from "@/src/hooks/usePoolAPR";
 
-export function AprDisplay ({pool}: {
- pool: PoolId
-}) {
+export function AprDisplay({pool}: {pool: PoolId}) {
   const {apr} = usePoolAPR(pool);
   const aprValue = formatAprValue(apr);
 
@@ -35,7 +33,7 @@ export function AprDisplay ({pool}: {
           <span
             className={clsx(
               "text-[var(--content-dimmed-light)]",
-              !aprValue && "blur-[2px]",
+              !aprValue && "blur-[2px]"
             )}
           >
             {aprValue ?? "33.33%"}
@@ -44,5 +42,4 @@ export function AprDisplay ({pool}: {
       )}
     </>
   );
-};
-
+}

@@ -19,7 +19,7 @@ export const DropDownMenu = forwardRef<
       ref={ref}
       className={clsx(
         "absolute top-[50px] right-[-5px] z-20 max-w-[205px] p-[10px] rounded-[12px] bg-white dark:bg-[#262834] flex flex-col box-border",
-        "max-[1023px]:fixed max-[1023px]:top-auto max-[1023px]:left-0 max-[1023px]:right-0 max-[1023px]:bottom-0 max-[1023px]:w-full max-[1023px]:max-w-full max-[1023px]:rounded-t-[12px] max-[1023px]:pt-[38px]",
+        "max-[1023px]:fixed max-[1023px]:top-auto max-[1023px]:left-0 max-[1023px]:right-0 max-[1023px]:bottom-0 max-[1023px]:w-full max-[1023px]:max-w-full max-[1023px]:rounded-t-[12px] max-[1023px]:pt-[38px]"
       )}
     >
       {buttons.map((button) => (
@@ -31,14 +31,14 @@ export const DropDownMenu = forwardRef<
               "flex items-center w-full gap-[10px] px-[10px] py-[8px] text-left rounded transition-colors",
               button.disabled
                 ? "cursor-default bg-[#262834] text-content-grey"
-                : "cursor-pointer text-content-primary hover:bg-background-grey-dark",
+                : "cursor-pointer text-content-primary hover:bg-background-grey-dark"
             )}
           >
             <button.icon />
             <span
               className={clsx(
                 "font-normal leading-6 whitespace-nowrap",
-                "text-[15px] max-[1023px]:text-[18px]",
+                "text-[15px] max-[1023px]:text-[18px]"
               )}
             >
               {button.text}
@@ -51,7 +51,7 @@ export const DropDownMenu = forwardRef<
                   "bg-accent-primary text-[#292929]",
                   "left-[-60px] top-1/2 translate-y-[-50%] ml-2",
                   "max-[1023px]:left-[210px] max-[1023px]:top-[64%] max-[1023px]:visible",
-                  "invisible group-hover:visible",
+                  "invisible group-hover:visible"
                 )}
               >
                 {button.tooltip}

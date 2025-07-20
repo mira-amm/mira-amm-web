@@ -1,7 +1,7 @@
-"use client"
+"use client";
 
 import {useMutation} from "@tanstack/react-query";
-import { useMiraDex } from "@/src/hooks";
+import {useMiraDex} from "@/src/hooks";
 import {useCallback} from "react";
 import {useWallet} from "@fuels/react";
 import {DefaultTxParams, MaxDeadline} from "@/src/utils/constants";
@@ -22,7 +22,7 @@ export function useAddLiquidity({
   secondAssetAmount: BN;
   isPoolStable: boolean;
   slippage: number;
-}){
+}) {
   const mira = useMiraDex();
   const {wallet} = useWallet();
 
@@ -63,7 +63,7 @@ export function useAddLiquidity({
       minAsset0Amount,
       minAsset1Amount,
       MaxDeadline,
-      DefaultTxParams,
+      DefaultTxParams
     );
     const gasCost = await wallet.getTransactionCost(txRequest);
     const fundedTx = await wallet.fund(txRequest, gasCost);
@@ -87,4 +87,4 @@ export function useAddLiquidity({
   });
 
   return {data, mutateAsync, isPending, error};
-};
+}

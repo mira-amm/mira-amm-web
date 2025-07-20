@@ -1,20 +1,20 @@
-import { useEffect } from 'react';
-import { useNavigate } from 'react-router';
-import clsx from 'clsx';
+import {useEffect} from "react";
+import {useNavigate} from "react-router";
+import clsx from "clsx";
 
 export default function Notes() {
   const navigate = useNavigate();
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === 'Enter') {
-        navigate('/menu');
+      if (e.key === "Enter") {
+        navigate("/menu");
       }
     };
 
-    window.addEventListener('keydown', handleKeyDown);
+    window.addEventListener("keydown", handleKeyDown);
     return () => {
-      window.removeEventListener('keydown', handleKeyDown);
+      window.removeEventListener("keydown", handleKeyDown);
     };
   }, [navigate]);
 
@@ -23,9 +23,13 @@ export default function Notes() {
       <div className="mb-4 border-b border-terminal-red/50 pb-2">
         <div className="flex items-center mb-2">
           <div className="w-4 h-4 bg-terminal-red animate-pulse mr-2" />
-          <p className="text-terminal-red font-bold text-lg">DEREK DINO'S CONFIDENTIAL PROJECT FILES</p>
+          <p className="text-terminal-red font-bold text-lg">
+            DEREK DINO'S CONFIDENTIAL PROJECT FILES
+          </p>
         </div>
-        <p className="text-terminal-blue text-sm font-bold">TOP SECRET // T-REX EXECUTIVE ACCESS // CLEARANCE LEVEL: CEO</p>
+        <p className="text-terminal-blue text-sm font-bold">
+          TOP SECRET // T-REX EXECUTIVE ACCESS // CLEARANCE LEVEL: CEO
+        </p>
       </div>
 
       <div className="space-y-6">
@@ -50,14 +54,15 @@ export default function Notes() {
             content:
               "URGENT: Possible corporate espionage detected. Suspicious T-Rex footprints found near R&D lab. Rival Dino firms getting desperate as our launch approaches. Implementing additional security protocols. TRUST NO ONE OUTSIDE THE CORE TEAM!",
             isHighlighted: true,
-          }
+          },
         ].map((note, index) => (
-          <div key={index}
+          <div
+            key={index}
             className={clsx(
-              'note p-3 border-l border-l-6',
+              "note p-3 border-l border-l-6",
               note.isHighlighted
-                ? 'border-l-terminal-red bg-terminal-red/10 text-terminal-red'
-                : 'border-l-terminal-blue bg-terminal-blue/5'
+                ? "border-l-terminal-red bg-terminal-red/10 text-terminal-red"
+                : "border-l-terminal-blue bg-terminal-blue/5"
             )}
           >
             {note.date && (
@@ -73,7 +78,9 @@ export default function Notes() {
 
       <div className="mt-6 border-t border-dashed border-terminal-blue pt-4 flex items-center">
         <div className="w-3 h-3 bg-terminal-green animate-ping mr-2" />
-        <p className="text-terminal-green font-bold">{"> PRESS [ ENTER ] TO RETURN TO DLM-2000 COMMAND PROMPT"}</p>
+        <p className="text-terminal-green font-bold">
+          {"> PRESS [ ENTER ] TO RETURN TO DLM-2000 COMMAND PROMPT"}
+        </p>
       </div>
     </>
   );

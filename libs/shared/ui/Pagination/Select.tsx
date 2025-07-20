@@ -1,11 +1,17 @@
 import * as React from "react";
-import { Select as SelectRoot, SelectContent, SelectGroup, SelectTrigger, SelectItem } from "../select";
+import {
+  Select as SelectRoot,
+  SelectContent,
+  SelectGroup,
+  SelectTrigger,
+  SelectItem,
+} from "../select";
 
 interface SelectProps {
   /** The value of the select */
   value: string;
   /** The options for the select */
-  options: Array<{ value: string; label: string }>;
+  options: Array<{value: string; label: string}>;
   /** The callback function when the value changes */
   onChange: (value: string) => void;
   /** The placeholder for the select */
@@ -16,7 +22,12 @@ interface SelectProps {
   trigger: React.ReactNode;
 }
 
-export const Select: React.FC<SelectProps> = ({ trigger, options, onChange, value }) => (
+export const Select: React.FC<SelectProps> = ({
+  trigger,
+  options,
+  onChange,
+  value,
+}) => (
   <SelectRoot onValueChange={onChange} value={value}>
     <SelectTrigger>{trigger}</SelectTrigger>
     <SelectContent className="bg-slate-900 text-terminal-green border-terminal-green/30 shadow-lg rounded-md">

@@ -1,45 +1,45 @@
-export {UsedTechs} from "./used-techs"
-export {DividerText} from "./divider-text"
-export {Divider} from "./divider"
-export {MainInfo} from "./main-info"
-export {Logo} from "./logo"
-export {RoadMapIcon} from "./roadmap-icon"
-export {RoadMapBlock} from "./roadmap-block"
-export {Info} from "./info"
-export {InfoBlocks} from "./info-blocks"
-export {InfoBlock} from "./info-block"
-export {StepsBlock} from "./steps-block"
-export {StepsIcon} from "./steps-icon"
-export {IconButton} from "./icon-button"
-export {TextButton} from "./text-button"
-export {Coin} from "./coin"
-export {SlippageSetting} from "./slippage-setting"
-export {SearchBar} from "./search-bar"
-export {MobileMenu} from "./mobile-menu"
-export {Header} from "./header"
-export {ConfirmPopup} from "./confirm-popup"
-export {MainnetLabel} from "./mainnet-label"
-export {Loader} from "./loader"
-export {CoinWithAmount} from "./coin-with-amount"
-export { TransactionFailureModal } from "./transaction-failure-modal"
-export {DropDownMenu} from "./dropdown-menu"
-export {CopyNotification} from "./copy-notification"
-export {SkeletonLoader} from "./skeleton-loader"
-export {CoinsListModal} from "./coins-list-modal"
-export {SwapSuccessModal} from "./swap-success-modal"
-export {SwapFailureModal} from "./swap-failure-modal"
-export { CurrencyBox } from "./currency-box";
-export { ExchangeRate } from "./exchange-rate";
-export { SettingsModalContent } from "./settings-modal-content";
-export {CoinListItem} from "./coin-list-item"
-export {FeatureGuard} from "./feature-guard"
-export {HeaderNew} from "./header-new"
-export {LogoNew} from "./logo-new"
-export {default as MicrochainTextLogo} from "./Logo/MicrochainTextLogo"
-export {default as LogoIconFooter} from "./Logo/LogoIconFooter"
+export {UsedTechs} from "./used-techs";
+export {DividerText} from "./divider-text";
+export {Divider} from "./divider";
+export {MainInfo} from "./main-info";
+export {Logo} from "./logo";
+export {RoadMapIcon} from "./roadmap-icon";
+export {RoadMapBlock} from "./roadmap-block";
+export {Info} from "./info";
+export {InfoBlocks} from "./info-blocks";
+export {InfoBlock} from "./info-block";
+export {StepsBlock} from "./steps-block";
+export {StepsIcon} from "./steps-icon";
+export {IconButton} from "./icon-button";
+export {TextButton} from "./text-button";
+export {Coin} from "./coin";
+export {SlippageSetting} from "./slippage-setting";
+export {SearchBar} from "./search-bar";
+export {MobileMenu} from "./mobile-menu";
+export {Header} from "./header";
+export {ConfirmPopup} from "./confirm-popup";
+export {MainnetLabel} from "./mainnet-label";
+export {Loader} from "./loader";
+export {CoinWithAmount} from "./coin-with-amount";
+export {TransactionFailureModal} from "./transaction-failure-modal";
+export {DropDownMenu} from "./dropdown-menu";
+export {CopyNotification} from "./copy-notification";
+export {SkeletonLoader} from "./skeleton-loader";
+export {CoinsListModal} from "./coins-list-modal";
+export {SwapSuccessModal} from "./swap-success-modal";
+export {SwapFailureModal} from "./swap-failure-modal";
+export {CurrencyBox} from "./currency-box";
+export {ExchangeRate} from "./exchange-rate";
+export {SettingsModalContent} from "./settings-modal-content";
+export {CoinListItem} from "./coin-list-item";
+export {FeatureGuard} from "./feature-guard";
+export {HeaderNew} from "./header-new";
+export {LogoNew} from "./logo-new";
+export {default as MicrochainTextLogo} from "./Logo/MicrochainTextLogo";
+export {default as LogoIconFooter} from "./Logo/LogoIconFooter";
 export {default as LogoIcon} from "./Logo/LogoIcon";
 export {PriceImpact} from "./Swap/components/price-impact";
 export {ConnectWallet} from "./connect-wallet";
 export {triggerClassAnimation} from "./GlitchEffects/ClassAnimationTrigger";
-export { TransactionsHistory } from "./TransactionsHistory/TransactionsHistory"
-export { DisconnectMobile } from "./ConnectButton/DisconnectMobile";
+export {TransactionsHistory} from "./TransactionsHistory/TransactionsHistory";
+export {DisconnectMobile} from "./ConnectButton/DisconnectMobile";
