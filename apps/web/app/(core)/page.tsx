@@ -3,7 +3,7 @@ import {useIsConnected} from "@fuels/react";
 import {FeatureGuard} from "@/src/components/common";
 import {Swap} from "@/src/components/common/Swap/Swap";
 
-const SVGComponent = (props) => (
+const SVGComponent = (props: React.SVGProps<SVGSVGElement>) => (
   <svg
     width={800}
     height={300}

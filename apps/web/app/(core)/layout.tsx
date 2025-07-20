@@ -1,17 +1,23 @@
-import { ReactNode } from "react";
-import { clsx } from "clsx";
-import { Prompt, Inter, JetBrains_Mono, IBM_Plex_Mono, VT323 } from "next/font/google";
-import { useIsRebrandEnabled } from "@/src/hooks/useIsRebrandEnabled";
+import {ReactNode} from "react";
+import {clsx} from "clsx";
+import {
+  Prompt,
+  Inter,
+  JetBrains_Mono,
+  IBM_Plex_Mono,
+  VT323,
+} from "next/font/google";
+import {useIsRebrandEnabled} from "@/src/hooks/useIsRebrandEnabled";
 
-import { metadata } from "./metadata";
+import {metadata} from "./metadata";
 
 import "../styles.css";
 import "@/meshwave-ui/global.css";
 
-import { Providers } from "@/src/core/providers/Providers";
-import { useAnimationStore } from "@/src/stores/useGlitchScavengerHunt";
+import {Providers} from "@/src/core/providers/Providers";
+import {useAnimationStore} from "@/src/stores/useGlitchScavengerHunt";
 import GlitchEffects from "@/src/components/common/GlitchEffects/GlitchEffects";
-import { FeatureGuard, Header, HeaderNew } from "@/src/components/common";
+import {FeatureGuard, Header, HeaderNew} from "@/src/components/common";
 import Footer from "@/src/components/common/Footer/Footer";
 
 const prompt = Prompt({
@@ -42,17 +48,19 @@ export const vt323 = VT323({
   variable: "--font-vt323", // optional: for CSS variables
   display: "swap",
 });
-export { metadata };
+export {metadata};
 
-export default function Layout({ children }: { readonly children: ReactNode }) {
+export default function Layout({children}: {readonly children: ReactNode}) {
   const glitchScavengerHuntEnabled = useAnimationStore.getState().masterEnabled;
   const rebrandEnabled = useIsRebrandEnabled();
 
-  const fontThemeVars = rebrandEnabled ? {
-    '--font-alt': 'var(--font-jetbrains-mono)',
-  } : {
-    '--font-alt': 'var(--font-prompt)',
-  };
+  const fontThemeVars = rebrandEnabled
+    ? {
+        "--font-alt": "var(--font-jetbrains-mono)",
+      }
+    : {
+        "--font-alt": "var(--font-prompt)",
+      };
 
   return (
     <html lang="en" className="dark" suppressHydrationWarning>
