@@ -33,9 +33,6 @@
   --font-sans: var(--font-inter);
   --font-alt: var(--font-prompt);
   --font-mono: var(--font-jetbrains-mono);
-  --font-jetbrains-mono: var(--font-jetbrains-mono);
-  --font-ibm-plex-mono: var(--font-ibm-plex-mono);
-  --font-vt323: var(--font-vt323);
 
   --color-old-mira-btn: #2e2e2e;
   --color-old-mira-audit: #1b2749;

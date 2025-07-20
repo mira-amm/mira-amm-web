@@ -111,7 +111,7 @@ const PreviewSummary = memo(function PreviewSummary({
   previewPrice: number | undefined;
 }) {
   return (
-    <div className="flex bg-background-primary dark:bg-background-secondary p-4 rounded-[10px] flex-col gap-2 text-accent-primary dark:text-content-tertiary leading-[16px]">
+    <div className="flex bg-background-primary dark:bg-background-secondary p-4 rounded-[10px] flex-col gap-2 text-accent-primary font-alt dark:text-content-tertiary leading-[16px]">
       <div className="flex justify-between">
         <p className="text-sm">Rate:</p>
         {previewLoading || tradeState === TradeState.REFETCHING ? (
