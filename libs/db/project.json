@@ -5,37 +5,12 @@
     "description": "Database models and utilities."
   },
   "sourceRoot": "libs/db",
-  "implicitDependencies": [
-    "!libs/web"
-  ],
+  "implicitDependencies": ["!libs/web"],
   "projectType": "library",
-  "tags": [
-    "libs"
-  ],
+  "tags": ["libs"],
   "targets": {
-    "start": {
-      "command": "if [ ${SUPABASE:-false} = true ]; then supabase start; fi",
-      "options": {
-        "cwd": "libs/db"
-      }
-    },
-    "stop": {
-      "command": "if [ ${SUPABASE:-false} = true ]; then supabase stop; fi",
-      "options": {
-        "cwd": "libs/db"
-      }
-    },
-    "destroy": {
-      "command": "rm -rf data",
-      "options": {
-        "cwd": "libs/db"
-      }
-    },
     "view": {
-      "dependsOn": [
-        "types",
-        "schema"
-      ],
+      "dependsOn": ["types", "schema"],
       "command": "nx run-many -t studio visualizer # 🎙 View database schema at `local.drizzle.studio`, and visualizer at `localhost:5600`",
       "options": {
         "cwd": "libs/db"
@@ -54,15 +29,21 @@
       }
     },
     "types": {
-      "command": "cross-env NODE_OPTIONS=--no-deprecation payload generate:types",
+      "command": "payload generate:types",
       "options": {
-        "cwd": "apps/microgame"
+        "cwd": "apps/admin",
+        "env": {
+          "NODE_OPTIONS": "--no-deprecation"
+        }
       }
     },
     "schema": {
-      "command": "cross-env NODE_OPTIONS=--no-deprecation payload generate:db-schema",
+      "command": "payload generate:db-schema",
       "options": {
-        "cwd": "apps/microgame"
+        "cwd": "apps/admin",
+        "env": {
+          "NODE_OPTIONS": "--no-deprecation"
+        }
       }
     }
   }

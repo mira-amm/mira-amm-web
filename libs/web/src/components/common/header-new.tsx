@@ -2,7 +2,7 @@
 
 import {useEffect, useState, useCallback, useMemo} from "react";
 import Link from "next/link";
-import { usePathname} from "next/navigation"
+import {usePathname} from "next/navigation";
 
 import {Logo} from "@/src/components/common";
 import {useIsConnected} from "@fuels/react";
@@ -16,7 +16,6 @@ import {
 import {IconButton} from "@/src/components/common";
 import {PointsIcon} from "@/meshwave-ui/icons";
 import {X} from "lucide-react";
-import {ModeToggle} from "./toggle-mode";
 import {cn} from "@/src/utils/cn";
 import {ConnectWalletNew} from "./connect-wallet-new";
 
@@ -69,7 +68,7 @@ export function HeaderNew({
         external: true,
       },
     ],
-    [pathname],
+    [pathname]
   );
 
   return (
@@ -125,17 +124,16 @@ export function HeaderNew({
                 className={cn(
                   "px-3 py-1 rounded-full transition hover:bg-background-grey-light text-content-tertiary",
                   match &&
-                    "bg-background-primary text-white dark:bg-background-grey-light hover:bg-background-primary",
+                    "bg-background-primary text-white dark:bg-background-grey-light hover:bg-background-primary"
                 )}
               >
                 {label}
               </Link>
-            ),
+            )
           )}
         </nav>
 
         <div className="flex items-center flex-1 justify-end gap-2">
-          <ModeToggle />
           <div className="hidden lg:flex">
             <ConnectWalletNew />
           </div>
@@ -166,12 +164,12 @@ export function HeaderNew({
                 className={cn(
                   "px-3 py-1 rounded-full transition hover:bg-background-grey-light text-content-tertiary text-sm sm:text-base",
                   match &&
-                    "bg-background-primary text-white dark:bg-background-grey-light hover:bg-background-primary",
+                    "bg-background-primary text-white dark:bg-background-grey-light hover:bg-background-primary"
                 )}
               >
                 {label}
               </Link>
-            ),
+            )
           )}
         </nav>
       </div>

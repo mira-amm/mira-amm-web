@@ -1,16 +1,16 @@
-import { createRoutesStub } from 'react-router';
-import { render, screen, waitFor } from '@testing-library/react';
-import App from '../../app/root';
+import {createRoutesStub} from "react-router";
+import {render, screen, waitFor} from "@testing-library/react";
+import App from "../../app/root";
 
-test('renders loader data', async () => {
+test("renders loader data", async () => {
   const ReactRouterStub = createRoutesStub([
     {
-      path: '/',
+      path: "/",
       Component: App,
     },
   ]);
 
   render(<ReactRouterStub />);
 
-  await waitFor(() => screen.findByText('Microchain'));
+  await waitFor(() => screen.findByText("Microchain"));
 });

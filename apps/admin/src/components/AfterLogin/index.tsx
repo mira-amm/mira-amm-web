@@ -1,5 +1,5 @@
-import '@/meshwave-ui/tailwind.scss';
-import {OAuthButton} from "@/meshwave-ui/oauth-button"
+import "@/meshwave-ui/tailwind.scss";
+import {OAuthButton} from "@/meshwave-ui/oauth-button";
 
 export function OAuthButtons() {
   return (
@@ -47,9 +47,9 @@ export const AfterLogin = () => {
 };
 
 const containerStyle = {
-  display: 'flex',
-  flexDirection: 'column',
-  gap: '15px',
-  width: '100%',
-  marginBottom: '30px'
+  display: "flex",
+  flexDirection: "column",
+  gap: "15px",
+  width: "100%",
+  marginBottom: "30px",
 };

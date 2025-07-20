@@ -18,7 +18,7 @@ function createErrorResponse(status: number, message: string | object) {
     {
       status,
       headers: CACHE_HEADERS,
-    },
+    }
   );
 }
 
@@ -36,7 +36,7 @@ export async function GET(request: NextRequest) {
   if (!process.env.SENTIO_API_KEY || !process.env.SENTIO_API_URL) {
     return createErrorResponse(
       500,
-      "Sentio API environment variables are not set.",
+      "Sentio API environment variables are not set."
     );
   }
 
@@ -53,7 +53,7 @@ export async function GET(request: NextRequest) {
   if (missingParams.length > 0) {
     return createErrorResponse(
       400,
-      `Missing required parameters: ${missingParams.join(", ")}`,
+      `Missing required parameters: ${missingParams.join(", ")}`
     );
   }
 
@@ -64,13 +64,8 @@ export async function GET(request: NextRequest) {
     process.env.SENTIO_API_URL,
     process.env.SENTIO_API_KEY,
     new JSONEpochConfigService(
-      path.join(
-        process.cwd(),
-        "../../libs/web/src",
-        "models",
-        "campaigns.json",
-      ),
-    ),
+      path.join(process.cwd(), "../../libs/web/src", "models", "campaigns.json")
+    )
   );
 
   try {

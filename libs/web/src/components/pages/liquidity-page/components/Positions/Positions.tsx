@@ -7,12 +7,12 @@ import {buildPoolId} from "mira-dex-ts";
 import {FileText} from "lucide-react";
 import {Button} from "@/meshwave-ui/Button";
 
-import { usePoolNameAndMatch } from "@/src/hooks/usePoolNameAndMatch";
-import { usePoolAPR, useAssetMetadata, usePositions} from "@/src/hooks";
+import {usePoolNameAndMatch} from "@/src/hooks/usePoolNameAndMatch";
+import {usePoolAPR, useAssetMetadata, usePositions} from "@/src/hooks";
 
 import {createPoolKey} from "@/src/utils/common";
 import CoinPair from "@/src/components/common/CoinPair/CoinPair";
-import { AprBadge } from "@/src/components/common/AprBadge/AprBadge";
+import {AprBadge} from "@/src/components/common/AprBadge/AprBadge";
 
 import {DefaultLocale} from "@/src/utils/constants";
 
@@ -35,7 +35,9 @@ export function Positions() {
             >
               <FileText />
             </div>
-            <p className="text-content-tertiary">Your liquidity will appear here</p>
+            <p className="text-content-tertiary">
+              Your liquidity will appear here
+            </p>
           </div>
         </div>
       </section>
@@ -165,7 +167,7 @@ function PositionRow({
   );
 }
 
-function PositionsLoader({ count = 3 }: { count?: number }) {
+function PositionsLoader({count = 3}: {count?: number}) {
   return (
     <div className="flex flex-col gap-4 bg-gray-800 rounded-3xl p-4 w-full">
       <div className="hidden md:grid grid-cols-4 gap-4 px-2 pb-4 border-b border-gray-700 text-gray-400 text-sm font-normal">

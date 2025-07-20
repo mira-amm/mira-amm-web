@@ -3,13 +3,11 @@ import CoinPair from "@/src/components/common/CoinPair/CoinPair";
 import {InfoBlock} from "@/src/components/common";
 import {useRouter} from "next/navigation";
 import {PoolData} from "@/src/hooks/usePoolsData";
-import { AprBadge } from "@/src/components/common/AprBadge/AprBadge";
-import { usePoolNameAndMatch } from "@/src/hooks/usePoolNameAndMatch";
+import {AprBadge} from "@/src/components/common/AprBadge/AprBadge";
+import {usePoolNameAndMatch} from "@/src/hooks/usePoolNameAndMatch";
 import {Button} from "@/meshwave-ui/Button";
 
-export function MobilePoolItem({poolData}: {
- poolData: PoolData
-}){
+export function MobilePoolItem({poolData}: {poolData: PoolData}) {
   const router = useRouter();
   const {
     poolKey,
@@ -19,7 +17,7 @@ export function MobilePoolItem({poolData}: {
     poolDescription,
     isStablePool,
     poolId,
-  } = usePoolDetails(poolData)
+  } = usePoolDetails(poolData);
 
   const handleAddClick = () => {
     router.push(`/liquidity/add?pool=${poolKey}`);
@@ -78,4 +76,4 @@ export function MobilePoolItem({poolData}: {
       </Button>
     </div>
   );
-};
+}

@@ -1,4 +1,8 @@
-import {Epoch, EpochConfig, EpochConfigService} from "@/src/models/campaigns/interfaces";
+import {
+  Epoch,
+  EpochConfig,
+  EpochConfigService,
+} from "@/src/models/campaigns/interfaces";
 import {
   PointsResponse,
   PointsQueryParams,
@@ -25,7 +29,7 @@ export class FileCachedPointsPerUserService implements PointsPerUserService {
   constructor(
     private readonly apiKey: string,
     private readonly apiUrl: string,
-    private readonly epochConfigService: EpochConfigService,
+    private readonly epochConfigService: EpochConfigService
   ) {
     this.cacheProvider = createCacheProvider();
   }
@@ -41,17 +45,19 @@ export class FileCachedPointsPerUserService implements PointsPerUserService {
       const points = await this.fetchLatestPoints(epoch);
       cacheData.set(epoch.number, {
         expiresAt: new Date(
-          Date.now() + POINTS_CACHE_EXPIRATION_MS,
+          Date.now() + POINTS_CACHE_EXPIRATION_MS
         ).toISOString(),
         points,
       });
     }
 
     // Calculate and cache total points across all epochs
-    const totalPoints = this.calculateTotalPoints(Array.from(cacheData.values()));
+    const totalPoints = this.calculateTotalPoints(
+      Array.from(cacheData.values())
+    );
     cacheData.set("TOTAL", {
       expiresAt: new Date(
-        Date.now() + POINTS_CACHE_EXPIRATION_MS,
+        Date.now() + POINTS_CACHE_EXPIRATION_MS
       ).toISOString(),
       points: totalPoints,
     });
@@ -70,7 +76,7 @@ export class FileCachedPointsPerUserService implements PointsPerUserService {
         if (existing) {
           existing.points += point.points;
         } else {
-          pointsMap.set(point.address, { ...point });
+          pointsMap.set(point.address, {...point});
         }
       }
     }
@@ -88,7 +94,7 @@ export class FileCachedPointsPerUserService implements PointsPerUserService {
   }
 
   async getPoints(
-    queryParams: PointsQueryParams,
+    queryParams: PointsQueryParams
   ): Promise<{data: PointsResponse[]; totalCount: number}> {
     let totalCount = 0;
     let parsedPoints: PointsResponse[] = [];
@@ -97,9 +103,12 @@ export class FileCachedPointsPerUserService implements PointsPerUserService {
       const cacheData = await this.cacheProvider.read();
       const totalEntry = cacheData.get("TOTAL");
 
-      if (!totalEntry || new Date(totalEntry.expiresAt) < new Date(Date.now())) {
+      if (
+        !totalEntry ||
+        new Date(totalEntry.expiresAt) < new Date(Date.now())
+      ) {
         console.log(
-          `Points cache is older than ${POINTS_CACHE_EXPIRATION_MS / 1000 / ONE_MINUTE_IN_SECONDS} minutes, updating in the background...`,
+          `Points cache is older than ${POINTS_CACHE_EXPIRATION_MS / 1000 / ONE_MINUTE_IN_SECONDS} minutes, updating in the background...`
         );
         // update the points cache non-blocking
         Promise.resolve().then(async () => {
@@ -112,7 +121,7 @@ export class FileCachedPointsPerUserService implements PointsPerUserService {
     } catch (e) {
       // If data doesn't exist or can't be read, fetch and save the latest points
       console.log(
-        "Points data not found or invalid, fetching latest points...",
+        "Points data not found or invalid, fetching latest points..."
       );
       parsedPoints = await this.updateLatestPoints();
     }
@@ -120,7 +129,7 @@ export class FileCachedPointsPerUserService implements PointsPerUserService {
     if (queryParams.address) {
       parsedPoints = parsedPoints.filter(
         (point: PointsResponse) =>
-          point.address.toLowerCase() === queryParams.address?.toLowerCase(),
+          point.address.toLowerCase() === queryParams.address?.toLowerCase()
       );
     }
 
@@ -138,15 +147,16 @@ export class FileCachedPointsPerUserService implements PointsPerUserService {
     };
   }
 
-  private async fetchLatestPoints(epoch: EpochConfig): Promise<PointsResponse[]> {
+  private async fetchLatestPoints(
+    epoch: EpochConfig
+  ): Promise<PointsResponse[]> {
     try {
-
       const epochStart = epoch.startDate;
       const epochEnd = epoch.endDate;
 
       const lpTokens = epoch.campaigns.map((campaign) => campaign.pool.lpToken);
       const rewardRates = epoch.campaigns.map(
-        (campaign) => campaign.rewards[0].dailyAmount,
+        (campaign) => campaign.rewards[0].dailyAmount
       );
 
       // trigger the job
@@ -155,7 +165,7 @@ export class FileCachedPointsPerUserService implements PointsPerUserService {
         epochStart,
         epochEnd,
         lpTokens,
-        rewardRates,
+        rewardRates
       );
 
       console.log("Sentio job triggered, resultUrl:", resultUrl);
@@ -172,7 +182,7 @@ export class FileCachedPointsPerUserService implements PointsPerUserService {
     epochStart: string,
     epochEnd: string,
     lpTokens: string[],
-    rewardRates: number[],
+    rewardRates: number[]
   ): Promise<{resultUrl: string}> {
     const queryParams = new URLSearchParams({
       version: "0",
@@ -209,7 +219,7 @@ export class FileCachedPointsPerUserService implements PointsPerUserService {
 
   private async fetchJobResult(
     apiKey: string,
-    resultUrl: string,
+    resultUrl: string
   ): Promise<PointsResponse[]> {
     // try fetching the resultUrl
     const response = await fetch(resultUrl, {
@@ -235,7 +245,7 @@ export class FileCachedPointsPerUserService implements PointsPerUserService {
   private async pollForResults(
     apiKey: string,
     resultUrl: string,
-    maxRetries = RESULT_POLL_RETRIES,
+    maxRetries = RESULT_POLL_RETRIES
   ) {
     for (let attempt = 0; attempt < maxRetries; attempt++) {
       try {
@@ -245,12 +255,12 @@ export class FileCachedPointsPerUserService implements PointsPerUserService {
         }
       } catch (error) {
         console.log(
-          `Attempt ${attempt + 1}/${maxRetries}: Job not finished yet, retrying in ${RESULT_POLL_INTERVAL_MS}ms...`,
+          `Attempt ${attempt + 1}/${maxRetries}: Job not finished yet, retrying in ${RESULT_POLL_INTERVAL_MS}ms...`
         );
       }
 
       await new Promise((resolve) =>
-        setTimeout(resolve, RESULT_POLL_INTERVAL_MS),
+        setTimeout(resolve, RESULT_POLL_INTERVAL_MS)
       );
     }
 

@@ -1,4 +1,4 @@
-import { motion } from "motion/react"
+import {motion} from "motion/react";
 
 const ASCII_LOGO = `
     __  ____                      __          _          ____  __    __  ___   __  ___   ____  ____  ____
@@ -7,7 +7,6 @@ const ASCII_LOGO = `
  / /  / / / /__/ /  / /_/ / /__/ / / / /_/ / / / / /  / /_/ / /___/ /  / //_/  _ / __// /_/ / /_/ / /_/ /
 /_/  /_/_/\\___/_/   \\____/\\___/_/ /_/\\__,_/_/_/ /_/  /_____/_____/_/  /_/_/   (_)____/\\____/\\____/\\____/
                      T-REX TECHNOLOGIES    DLM-2000 PROTOTYPE    CEO: DEREK DINO `;
-
 
 const BOOT_MESSAGES = [
   "> LOADING MICROCHAIN DLM-2000 PROTOTYPE v1.9.8.5...",
@@ -22,7 +21,7 @@ const BOOT_MESSAGES = [
 ];
 
 const containerVariants = {
-  hidden: { opacity: 0 },
+  hidden: {opacity: 0},
   visible: {
     opacity: 1,
     transition: {
@@ -32,8 +31,8 @@ const containerVariants = {
 };
 
 const itemVariants = {
-  hidden: { opacity: 0, x: 0 },
-  visible: { opacity: 1, x: 0 },
+  hidden: {opacity: 0, x: 0},
+  visible: {opacity: 1, x: 0},
 };
 
 export const BootSequence = () => {

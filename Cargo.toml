@@ -1,0 +1,35 @@
+[workspace]
+resolver = '2'
+members = [
+'libs/rust-sdk',
+# "libs/contracts/mira_amm_contract",
+# "libs/contracts/test-harness"
+]
+
+[workspace.package]
+authors = ["Mira AMM"]
+edition = "2021"
+homepage = "https://mira.ly/"
+readme = "README.md"
+license = "Apache-2.0"
+repository = "https://github.com/mira-amm/mira-amm-web"
+
+[workspace.dependencies]
+fuels = "0.66.7"
+tokio = "1.12"
+rand = "0.8.5"
+sha2 = "0.10.8"
+primitive-types = "0.13.1"
+anyhow = "1.0.89"
+
+# [workspace.package]
+# name = "mira-v1-core"
+# version = "0.1.0"
+# edition = "2021"
+
+# fuels = { version = "0.66.5", features = ["fuel-core-lib"] }
+# tokio = { version = "1.12", features = ["rt", "macros"] }
+
+
+[profile.release]
+lto = true

@@ -8,7 +8,7 @@ const NATIVE_BRIDGE_MINTER_CONTRACT =
   "0x4ea6ccef1215d9479f1024dff70fc055ca538215d2c8c348beddffd54583d0e8";
 
 export const useAssetPrice = (
-  assetId: string | null,
+  assetId: string | null
 ): {price: number | null; isLoading: boolean} => {
   const {contractId} = useAssetMinterContract(assetId);
 

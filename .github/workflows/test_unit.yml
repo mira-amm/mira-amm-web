@@ -1,11 +1,11 @@
 # ===== ci(test/unit) ======
-name: Unit Tests
+name: 🔬 Unit Tests
 
 on:
   push:
-    branches: "*"
+    branches: ['*']
   pull_request:
-    branches: "*"
+    branches: ['*']
 
 jobs:
   test:
@@ -31,8 +31,11 @@ jobs:
         with:
           node-version: 22
 
-      - name: Install dependencies
-        run: pnpm i
+      - name: 📦 Install dependencies
+        run: pnpm i --frozen-lockfile
 
-      - name: Run Unit tests
+      - name: 🧐 Run Unit tests - web
         run: pnpm nx test web --verbose
+
+      - name: 🧩 Run Unit tests - api
+        run: pnpm nx test api; pnpm nx e2e api;

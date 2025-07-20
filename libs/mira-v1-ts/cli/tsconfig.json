@@ -1,5 +1,5 @@
 {
-  "extends": "@fuels/ts-config/base.json",
+  "extends": "../../../tsconfig.base.json",
   "module": "es2022",
   "target": "es2022",
   "compilerOptions": {

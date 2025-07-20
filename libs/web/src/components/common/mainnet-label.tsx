@@ -1,7 +1,7 @@
-import { clsx } from "clsx";
-import { FuelIcon } from "@/meshwave-ui/icons";
+import {clsx} from "clsx";
+import {FuelIcon} from "@/meshwave-ui/icons";
 
-export function MainnetLabel({ className }: { className?: string }) {
+export function MainnetLabel({className}: {className?: string}) {
   return (
     <div
       className={clsx(

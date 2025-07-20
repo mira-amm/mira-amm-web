@@ -1,6 +1,6 @@
 import {clsx} from "clsx";
 import {RefObject, ChangeEvent} from "react";
-import { Search } from "lucide-react";
+import {Search} from "lucide-react";
 
 export const SearchBar: React.FC<{
   placeholder: string;
@@ -13,7 +13,7 @@ export const SearchBar: React.FC<{
     <div
       className={clsx(
         "flex gap-[10px] p-[14px_12px] rounded-lg text-content-grey bg-background-secondary dark:bg-background-grey-dark",
-        className,
+        className
       )}
     >
       <Search />

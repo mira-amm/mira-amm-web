@@ -1,9 +1,9 @@
 import assert from "node:assert/strict";
-import { beforeEach, describe, it, mock } from "node:test";
-import { Result } from "@mkvlrn/result";
-import type { FetchService } from "../../../common/http/services/fetch.service.js";
-import { AppError } from "../../../core/error.js";
-import { GetTaskService } from "../../../features/task/services/get-task.service.js";
+import {beforeEach, describe, it, mock} from "node:test";
+import {Result} from "@mkvlrn/result";
+import type {FetchService} from "../../../common/http/services/fetch.service.js";
+import {AppError} from "../../../core/error.js";
+import {GetTaskService} from "../../../features/task/services/get-task.service.js";
 
 describe("GetTaskService", () => {
   let service: GetTaskService;
@@ -33,7 +33,7 @@ describe("GetTaskService", () => {
     assert.strictEqual(fetchSpy.mock.callCount(), 1);
     assert.strictEqual(
       fetchSpy.mock.calls[0]?.arguments[0],
-      "https://jsonplaceholder.typicode.com/todos/5",
+      "https://jsonplaceholder.typicode.com/todos/5"
     );
   });
 
@@ -51,7 +51,7 @@ describe("GetTaskService", () => {
     assert.strictEqual(fetchSpy.mock.callCount(), 1);
     assert.strictEqual(
       fetchSpy.mock.calls[0]?.arguments[0],
-      "https://jsonplaceholder.typicode.com/todos/5",
+      "https://jsonplaceholder.typicode.com/todos/5"
     );
   });
 });

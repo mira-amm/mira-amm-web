@@ -1,11 +1,11 @@
 # ===== ci(test/e2e) ======
-name: End-to-End Tests
+name: 🧪 End-to-End Tests
 
 on:
   push:
-    branches: "*"
+    branches: ['*']
   pull_request:
-    branches: "*"
+    branches: ['*']
 
 jobs:
   e2e:
@@ -22,13 +22,13 @@ jobs:
         with:
           fetch-depth: 1 # Fetch all history for all branches and tags to ensure the 'main' branch is available
 
-      - name: Fetch main branch # Will be used for test splitting later
+      - name: 🌳 Fetch main branch # Will be used for test splitting later
         run: git fetch origin main # Explicitly fetch the 'main' branch to ensure it's available
 
-      - name: Install dependencies
-        run: pnpm i --frozen-lockfile; pnpx playwright install chromium --with-deps
+      - name: 📦 Install dependencies
+        run: pnpm i --frozen-lockfile
 
-      - name: Run End-to-End tests
+      - name: 🧐 Run End-to-End tests
         env:
           SENTIO_API_KEY: ${{ secrets.SENTIO_API_KEY }}
         run: pnpm nx e2e web-e2e --verbose

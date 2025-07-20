@@ -17,14 +17,12 @@
     // esm, the node way
     "esModuleInterop": true,
     "isolatedModules": true,
-    "lib": [
-      "ESNext"
-    ],
+    "lib": ["ESNext"],
     "module": "NodeNext",
     "moduleResolution": "nodenext",
     "target": "esnext",
     // pnpm compatibility
-    "preserveSymlinks": true,
+    // "preserveSymlinks": true,
     "resolveJsonModule": true,
     // don't try to check for errors on imported libs
     "skipLibCheck": true,

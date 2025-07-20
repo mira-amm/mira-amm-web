@@ -3,17 +3,10 @@
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "sourceRoot": "apps/microvisor",
   "projectType": "application",
-  "implicitDependencies": [
-    "microdoctor",
-    "api",
-    "db",
-    "platform-vercel"
-  ],
+  "implicitDependencies": ["api", "db", "platform-vercel"],
   "targets": {
     "dev": {
-      "dependsOn": [
-        "ext"
-      ],
+      "dependsOn": ["ext"],
       "command": "ttyd -aW zellij --config apps/microvisor/zellij.config.kdl -n apps/microvisor/zellij.layout.kdl",
       "continuous": true
     },
@@ -26,49 +19,49 @@
       "continuous": true,
       "options": {
         "cwd": "apps/microvisor"
-      },
+      }
     },
     "build": {
       "command": "wxt build",
       "options": {
         "cwd": "apps/microvisor"
-      },
+      }
     },
     "compile": {
       "command": "tsc --noEmit",
       "options": {
         "cwd": "apps/microvisor"
-      },
+      }
     },
-    "postinstall": {
+    "prepare": {
       "command": "wxt prepare",
       "options": {
         "cwd": "apps/microvisor"
-      },
+      }
     },
     "zip": {
       "command": "wxt zip",
       "options": {
         "cwd": "apps/microvisor"
-      },
+      }
     },
     "dev:firefox": {
       "command": "wxt -b firefox",
       "options": {
         "cwd": "apps/microvisor"
-      },
+      }
     },
     "build:firefox": {
       "command": "wxt build -b firefox",
       "options": {
         "cwd": "apps/microvisor"
-      },
+      }
     },
     "zip:firefox": {
       "command": "wxt zip -b firefox",
       "options": {
         "cwd": "apps/microvisor"
-      },
-    },
+      }
+    }
   }
 }

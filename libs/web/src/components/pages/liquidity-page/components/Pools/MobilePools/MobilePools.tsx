@@ -1,4 +1,4 @@
-import { MobilePoolItem } from "@/src/components/pages/liquidity-page/components/Pools/MobilePools/MobilePoolItem/MobilePoolItem";
+import {MobilePoolItem} from "@/src/components/pages/liquidity-page/components/Pools/MobilePools/MobilePoolItem/MobilePoolItem";
 import {Fragment} from "react";
 import {clsx} from "clsx";
 import {PoolData} from "@/src/hooks/usePoolsData";
@@ -23,7 +23,7 @@ export function MobilePools({
       <Table
         className={clsx(
           "mobileOnly text-slate-400 text-sm bg-[var(--background-grey-dark)]",
-          "rounded-lg px-2 px-5 py-2 mb-2",
+          "rounded-lg px-2 px-5 py-2 mb-2"
         )}
       >
         <TableHeader>

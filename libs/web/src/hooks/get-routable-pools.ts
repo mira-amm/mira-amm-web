@@ -1,6 +1,6 @@
-import { buildPoolId, PoolId } from "mira-dex-ts";
-import { CoinData } from "../utils/coinsConfig";
-import type { Pool, Route } from "./useGetPoolsWithReserve";
+import {buildPoolId, PoolId} from "mira-dex-ts";
+import {CoinData} from "../utils/coinsConfig";
+import type {Pool, Route} from "./useGetPoolsWithReserve";
 
 // Check if a given pool involves the specified asset
 function involvesAssetInPool(pool: Pool, asset: CoinData): boolean {
@@ -24,13 +24,12 @@ export function computeAllRoutes(
 ): Route[] {
   const results: Route[] = [];
 
-  function recurse(
-    current: CoinData,
-    path: Pool[],
-    hopsLeft: number
-  ) {
+  function recurse(current: CoinData, path: Pool[], hopsLeft: number) {
     for (const p of pools) {
-      if (!involvesAssetInPool(p, current) || path.some(pp => poolEquals(pp, p))) {
+      if (
+        !involvesAssetInPool(p, current) ||
+        path.some((pp) => poolEquals(pp, p))
+      ) {
         continue;
       }
       // determine the next token
@@ -39,7 +38,7 @@ export function computeAllRoutes(
       const nextPath = [...path, p];
 
       if (nextToken.assetId === assetOut.assetId) {
-        results.push({ pools: nextPath, assetIn, assetOut });
+        results.push({pools: nextPath, assetIn, assetOut});
       } else if (hopsLeft > 1) {
         recurse(nextToken, nextPath, hopsLeft - 1);
       }

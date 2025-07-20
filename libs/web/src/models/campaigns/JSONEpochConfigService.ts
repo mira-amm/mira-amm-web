@@ -30,15 +30,17 @@ export class JSONEpochConfigService implements EpochConfigService {
   /// Omits any rewards that are not that given assetId, and campaigns that do not have rewards, and epochs that do not have campaigns
   getEpochsByRewardAssetId(assetId: string): EpochConfig[] {
     return this.epochs
-      .map(epoch => ({
+      .map((epoch) => ({
         ...epoch,
         campaigns: epoch.campaigns
-          .map(campaign => ({
+          .map((campaign) => ({
             ...campaign,
-            rewards: campaign.rewards.filter(reward => reward.assetId === assetId)
+            rewards: campaign.rewards.filter(
+              (reward) => reward.assetId === assetId
+            ),
           }))
-          .filter(campaign => campaign.rewards.length > 0)
+          .filter((campaign) => campaign.rewards.length > 0),
       }))
-      .filter(epoch => epoch.campaigns.length > 0);
+      .filter((epoch) => epoch.campaigns.length > 0);
   }
 }

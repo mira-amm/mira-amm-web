@@ -15,23 +15,39 @@ import {
   decompressBytecode,
   Script as __Script,
   StrSlice,
-} from 'fuels';
+} from "fuels";
 
-import type { Enum } from "./common";
+import type {Enum} from "./common";
 
-export type IdentityInput = Enum<{ Address: AddressInput, ContractId: ContractIdInput }>;
-export type IdentityOutput = Enum<{ Address: AddressOutput, ContractId: ContractIdOutput }>;
+export type IdentityInput = Enum<{
+  Address: AddressInput;
+  ContractId: ContractIdInput;
+}>;
+export type IdentityOutput = Enum<{
+  Address: AddressOutput;
+  ContractId: ContractIdOutput;
+}>;
 
-export type AddressInput = { bits: string };
+export type AddressInput = {bits: string};
 export type AddressOutput = AddressInput;
-export type AssetInput = { id: AssetIdInput, amount: BigNumberish };
-export type AssetOutput = { id: AssetIdOutput, amount: BN };
-export type AssetIdInput = { bits: string };
+export type AssetInput = {id: AssetIdInput; amount: BigNumberish};
+export type AssetOutput = {id: AssetIdOutput; amount: BN};
+export type AssetIdInput = {bits: string};
 export type AssetIdOutput = AssetIdInput;
-export type ContractIdInput = { bits: string };
+export type ContractIdInput = {bits: string};
 export type ContractIdOutput = ContractIdInput;
 
-export type CreatePoolAndAddLiquidityScriptInputs = [token_0_contract_id: ContractIdInput, token_0_sub_id: string, token_1_contract_id: ContractIdInput, token_1_sub_id: string, is_stable: boolean, amount_0_desired: BigNumberish, amount_1_desired: BigNumberish, recipient: IdentityInput, deadline: BigNumberish];
+export type CreatePoolAndAddLiquidityScriptInputs = [
+  token_0_contract_id: ContractIdInput,
+  token_0_sub_id: string,
+  token_1_contract_id: ContractIdInput,
+  token_1_sub_id: string,
+  is_stable: boolean,
+  amount_0_desired: BigNumberish,
+  amount_1_desired: BigNumberish,
+  recipient: IdentityInput,
+  deadline: BigNumberish,
+];
 export type CreatePoolAndAddLiquidityScriptOutput = AssetOutput;
 
 export type CreatePoolAndAddLiquidityScriptConfigurables = Partial<{
@@ -39,171 +55,199 @@ export type CreatePoolAndAddLiquidityScriptConfigurables = Partial<{
 }>;
 
 const abi = {
-  "programType": "script",
-  "specVersion": "1",
-  "encodingVersion": "1",
-  "concreteTypes": [
+  programType: "script",
+  specVersion: "1",
+  encodingVersion: "1",
+  concreteTypes: [
     {
-      "type": "b256",
-      "concreteTypeId": "7c5ee1cecf5f8eacd1284feb5f0bf2bdea533a51e2f0c9aabe9236d335989f3b"
+      type: "b256",
+      concreteTypeId:
+        "7c5ee1cecf5f8eacd1284feb5f0bf2bdea533a51e2f0c9aabe9236d335989f3b",
     },
     {
-      "type": "bool",
-      "concreteTypeId": "b760f44fa5965c2474a3b471467a22c43185152129295af588b022ae50b50903"
+      type: "bool",
+      concreteTypeId:
+        "b760f44fa5965c2474a3b471467a22c43185152129295af588b022ae50b50903",
     },
     {
-      "type": "enum std::identity::Identity",
-      "concreteTypeId": "ab7cd04e05be58e3fc15d424c2c4a57f824a2a2d97d67252440a3925ebdc1335",
-      "metadataTypeId": 0
+      type: "enum std::identity::Identity",
+      concreteTypeId:
+        "ab7cd04e05be58e3fc15d424c2c4a57f824a2a2d97d67252440a3925ebdc1335",
+      metadataTypeId: 0,
     },
     {
-      "type": "str",
-      "concreteTypeId": "8c25cb3686462e9a86d2883c5688a22fe738b0bbc85f458d2d2b5f3f667c6d5a"
+      type: "str",
+      concreteTypeId:
+        "8c25cb3686462e9a86d2883c5688a22fe738b0bbc85f458d2d2b5f3f667c6d5a",
     },
     {
-      "type": "struct interfaces::data_structures::Asset",
-      "concreteTypeId": "affa437f314a241a60e97d006b83a963a5eaf0e0185484335e9ed03cd078d7f8",
-      "metadataTypeId": 1
+      type: "struct interfaces::data_structures::Asset",
+      concreteTypeId:
+        "affa437f314a241a60e97d006b83a963a5eaf0e0185484335e9ed03cd078d7f8",
+      metadataTypeId: 1,
     },
     {
-      "type": "struct std::contract_id::ContractId",
-      "concreteTypeId": "29c10735d33b5159f0c71ee1dbd17b36a3e69e41f00fab0d42e1bd9f428d8a54",
-      "metadataTypeId": 4
+      type: "struct std::contract_id::ContractId",
+      concreteTypeId:
+        "29c10735d33b5159f0c71ee1dbd17b36a3e69e41f00fab0d42e1bd9f428d8a54",
+      metadataTypeId: 4,
     },
     {
-      "type": "u32",
-      "concreteTypeId": "d7649d428b9ff33d188ecbf38a7e4d8fd167fa01b2e10fe9a8f9308e52f1d7cc"
+      type: "u32",
+      concreteTypeId:
+        "d7649d428b9ff33d188ecbf38a7e4d8fd167fa01b2e10fe9a8f9308e52f1d7cc",
     },
     {
-      "type": "u64",
-      "concreteTypeId": "1506e6f44c1d6291cdf46395a8e573276a4fa79e8ace3fc891e092ef32d1b0a0"
-    }
+      type: "u64",
+      concreteTypeId:
+        "1506e6f44c1d6291cdf46395a8e573276a4fa79e8ace3fc891e092ef32d1b0a0",
+    },
   ],
-  "metadataTypes": [
+  metadataTypes: [
     {
-      "type": "enum std::identity::Identity",
-      "metadataTypeId": 0,
-      "components": [
+      type: "enum std::identity::Identity",
+      metadataTypeId: 0,
+      components: [
         {
-          "name": "Address",
-          "typeId": 2
+          name: "Address",
+          typeId: 2,
         },
         {
-          "name": "ContractId",
-          "typeId": 4
-        }
-      ]
-    },
-    {
-      "type": "struct interfaces::data_structures::Asset",
-      "metadataTypeId": 1,
-      "components": [
-        {
-          "name": "id",
-          "typeId": 3
+          name: "ContractId",
+          typeId: 4,
         },
-        {
-          "name": "amount",
-          "typeId": "1506e6f44c1d6291cdf46395a8e573276a4fa79e8ace3fc891e092ef32d1b0a0"
-        }
-      ]
-    },
-    {
-      "type": "struct std::address::Address",
-      "metadataTypeId": 2,
-      "components": [
-        {
-          "name": "bits",
-          "typeId": "7c5ee1cecf5f8eacd1284feb5f0bf2bdea533a51e2f0c9aabe9236d335989f3b"
-        }
-      ]
-    },
-    {
-      "type": "struct std::asset_id::AssetId",
-      "metadataTypeId": 3,
-      "components": [
-        {
-          "name": "bits",
-          "typeId": "7c5ee1cecf5f8eacd1284feb5f0bf2bdea533a51e2f0c9aabe9236d335989f3b"
-        }
-      ]
-    },
-    {
-      "type": "struct std::contract_id::ContractId",
-      "metadataTypeId": 4,
-      "components": [
-        {
-          "name": "bits",
-          "typeId": "7c5ee1cecf5f8eacd1284feb5f0bf2bdea533a51e2f0c9aabe9236d335989f3b"
-        }
-      ]
-    }
-  ],
-  "functions": [
-    {
-      "inputs": [
-        {
-          "name": "token_0_contract_id",
-          "concreteTypeId": "29c10735d33b5159f0c71ee1dbd17b36a3e69e41f00fab0d42e1bd9f428d8a54"
-        },
-        {
-          "name": "token_0_sub_id",
-          "concreteTypeId": "7c5ee1cecf5f8eacd1284feb5f0bf2bdea533a51e2f0c9aabe9236d335989f3b"
-        },
-        {
-          "name": "token_1_contract_id",
-          "concreteTypeId": "29c10735d33b5159f0c71ee1dbd17b36a3e69e41f00fab0d42e1bd9f428d8a54"
-        },
-        {
-          "name": "token_1_sub_id",
-          "concreteTypeId": "7c5ee1cecf5f8eacd1284feb5f0bf2bdea533a51e2f0c9aabe9236d335989f3b"
-        },
-        {
-          "name": "is_stable",
-          "concreteTypeId": "b760f44fa5965c2474a3b471467a22c43185152129295af588b022ae50b50903"
-        },
-        {
-          "name": "amount_0_desired",
-          "concreteTypeId": "1506e6f44c1d6291cdf46395a8e573276a4fa79e8ace3fc891e092ef32d1b0a0"
-        },
-        {
-          "name": "amount_1_desired",
-          "concreteTypeId": "1506e6f44c1d6291cdf46395a8e573276a4fa79e8ace3fc891e092ef32d1b0a0"
-        },
-        {
-          "name": "recipient",
-          "concreteTypeId": "ab7cd04e05be58e3fc15d424c2c4a57f824a2a2d97d67252440a3925ebdc1335"
-        },
-        {
-          "name": "deadline",
-          "concreteTypeId": "d7649d428b9ff33d188ecbf38a7e4d8fd167fa01b2e10fe9a8f9308e52f1d7cc"
-        }
       ],
-      "name": "main",
-      "output": "affa437f314a241a60e97d006b83a963a5eaf0e0185484335e9ed03cd078d7f8",
-      "attributes": null
-    }
-  ],
-  "loggedTypes": [
+    },
     {
-      "logId": "10098701174489624218",
-      "concreteTypeId": "8c25cb3686462e9a86d2883c5688a22fe738b0bbc85f458d2d2b5f3f667c6d5a"
-    }
-  ],
-  "messagesTypes": [],
-  "configurables": [
+      type: "struct interfaces::data_structures::Asset",
+      metadataTypeId: 1,
+      components: [
+        {
+          name: "id",
+          typeId: 3,
+        },
+        {
+          name: "amount",
+          typeId:
+            "1506e6f44c1d6291cdf46395a8e573276a4fa79e8ace3fc891e092ef32d1b0a0",
+        },
+      ],
+    },
     {
-      "name": "AMM_CONTRACT_ID",
-      "concreteTypeId": "29c10735d33b5159f0c71ee1dbd17b36a3e69e41f00fab0d42e1bd9f428d8a54",
-      "offset": 7960
-    }
-  ]
+      type: "struct std::address::Address",
+      metadataTypeId: 2,
+      components: [
+        {
+          name: "bits",
+          typeId:
+            "7c5ee1cecf5f8eacd1284feb5f0bf2bdea533a51e2f0c9aabe9236d335989f3b",
+        },
+      ],
+    },
+    {
+      type: "struct std::asset_id::AssetId",
+      metadataTypeId: 3,
+      components: [
+        {
+          name: "bits",
+          typeId:
+            "7c5ee1cecf5f8eacd1284feb5f0bf2bdea533a51e2f0c9aabe9236d335989f3b",
+        },
+      ],
+    },
+    {
+      type: "struct std::contract_id::ContractId",
+      metadataTypeId: 4,
+      components: [
+        {
+          name: "bits",
+          typeId:
+            "7c5ee1cecf5f8eacd1284feb5f0bf2bdea533a51e2f0c9aabe9236d335989f3b",
+        },
+      ],
+    },
+  ],
+  functions: [
+    {
+      inputs: [
+        {
+          name: "token_0_contract_id",
+          concreteTypeId:
+            "29c10735d33b5159f0c71ee1dbd17b36a3e69e41f00fab0d42e1bd9f428d8a54",
+        },
+        {
+          name: "token_0_sub_id",
+          concreteTypeId:
+            "7c5ee1cecf5f8eacd1284feb5f0bf2bdea533a51e2f0c9aabe9236d335989f3b",
+        },
+        {
+          name: "token_1_contract_id",
+          concreteTypeId:
+            "29c10735d33b5159f0c71ee1dbd17b36a3e69e41f00fab0d42e1bd9f428d8a54",
+        },
+        {
+          name: "token_1_sub_id",
+          concreteTypeId:
+            "7c5ee1cecf5f8eacd1284feb5f0bf2bdea533a51e2f0c9aabe9236d335989f3b",
+        },
+        {
+          name: "is_stable",
+          concreteTypeId:
+            "b760f44fa5965c2474a3b471467a22c43185152129295af588b022ae50b50903",
+        },
+        {
+          name: "amount_0_desired",
+          concreteTypeId:
+            "1506e6f44c1d6291cdf46395a8e573276a4fa79e8ace3fc891e092ef32d1b0a0",
+        },
+        {
+          name: "amount_1_desired",
+          concreteTypeId:
+            "1506e6f44c1d6291cdf46395a8e573276a4fa79e8ace3fc891e092ef32d1b0a0",
+        },
+        {
+          name: "recipient",
+          concreteTypeId:
+            "ab7cd04e05be58e3fc15d424c2c4a57f824a2a2d97d67252440a3925ebdc1335",
+        },
+        {
+          name: "deadline",
+          concreteTypeId:
+            "d7649d428b9ff33d188ecbf38a7e4d8fd167fa01b2e10fe9a8f9308e52f1d7cc",
+        },
+      ],
+      name: "main",
+      output:
+        "affa437f314a241a60e97d006b83a963a5eaf0e0185484335e9ed03cd078d7f8",
+      attributes: null,
+    },
+  ],
+  loggedTypes: [
+    {
+      logId: "10098701174489624218",
+      concreteTypeId:
+        "8c25cb3686462e9a86d2883c5688a22fe738b0bbc85f458d2d2b5f3f667c6d5a",
+    },
+  ],
+  messagesTypes: [],
+  configurables: [
+    {
+      name: "AMM_CONTRACT_ID",
+      concreteTypeId:
+        "29c10735d33b5159f0c71ee1dbd17b36a3e69e41f00fab0d42e1bd9f428d8a54",
+      offset: 7960,
+    },
+  ],
 };
 
-const bytecode = decompressBytecode('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');
+const bytecode = decompressBytecode(
+  "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"
+);
 
-export class CreatePoolAndAddLiquidityScript extends __Script<CreatePoolAndAddLiquidityScriptInputs, CreatePoolAndAddLiquidityScriptOutput> {
-
+export class CreatePoolAndAddLiquidityScript extends __Script<
+  CreatePoolAndAddLiquidityScriptInputs,
+  CreatePoolAndAddLiquidityScriptOutput
+> {
   static readonly abi = abi;
   static readonly bytecode = bytecode;
 

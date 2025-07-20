@@ -5,7 +5,7 @@ import {useMutation} from "@tanstack/react-query";
 
 import {DefaultTxParams, MaxDeadline} from "@/src/utils/constants";
 import {useAssetMinterContract} from "./useAssetMinterContract";
-import { useAssetMetadata, useMiraDex } from "@/src/hooks";
+import {useAssetMetadata, useMiraDex} from "@/src/hooks";
 
 export function useCreatePool({
   firstAsset,
@@ -19,7 +19,7 @@ export function useCreatePool({
   secondAsset: string;
   secondAssetAmount: string;
   isPoolStable: boolean;
-}){
+}) {
   const mira = useMiraDex();
   const {wallet} = useWallet();
   const firstAssetContract = useAssetMinterContract(firstAsset);
@@ -41,11 +41,11 @@ export function useCreatePool({
 
     const firstCoinAmountToUse = bn.parseUnits(
       firstAssetAmount,
-      firstAssetMetadata.decimals || 0,
+      firstAssetMetadata.decimals || 0
     );
     const secondCoinAmountToUse = bn.parseUnits(
       secondAssetAmount,
-      secondAssetMetadata.decimals || 0,
+      secondAssetMetadata.decimals || 0
     );
 
     const txRequest = await mira.createPoolAndAddLiquidity(
@@ -57,7 +57,7 @@ export function useCreatePool({
       firstCoinAmountToUse,
       secondCoinAmountToUse,
       MaxDeadline,
-      DefaultTxParams,
+      DefaultTxParams
     );
     const gasCost = await wallet.getTransactionCost(txRequest);
     const fundedTx = await wallet.fund(txRequest, gasCost);
@@ -84,4 +84,4 @@ export function useCreatePool({
     createPool: mutateAsync,
     isPoolCreationPending: isPending,
   };
-};
+}

@@ -1,6 +1,6 @@
 import {clsx} from "clsx";
 
-export function ArrowDownIcon () {
+export function ArrowDownIcon() {
   return (
     <svg
       width="21"
@@ -17,9 +17,9 @@ export function ArrowDownIcon () {
       />
     </svg>
   );
-};
+}
 
-export function ArrowDownSmallIcon () {
+export function ArrowDownSmallIcon() {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -35,9 +35,9 @@ export function ArrowDownSmallIcon () {
       <path d="m6 9 6 6 6-6"></path>
     </svg>
   );
-};
+}
 
-export function ArrowLeftIcon () {
+export function ArrowLeftIcon() {
   return (
     <svg
       focusable="false"
@@ -49,9 +49,9 @@ export function ArrowLeftIcon () {
       <path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"></path>
     </svg>
   );
-};
+}
 
-export function ArrowRightIcon () {
+export function ArrowRightIcon() {
   return (
     <svg
       focusable="false"
@@ -63,9 +63,9 @@ export function ArrowRightIcon () {
       <path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"></path>
     </svg>
   );
-};
+}
 
-export function ArrowUpIcon () {
+export function ArrowUpIcon() {
   return (
     <svg
       width="21"
@@ -82,9 +82,9 @@ export function ArrowUpIcon () {
       />
     </svg>
   );
-};
+}
 
-export function ArrowUpSmallIcon () {
+export function ArrowUpSmallIcon() {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -100,9 +100,9 @@ export function ArrowUpSmallIcon () {
       <path d="m18 15-6-6-6 6"></path>
     </svg>
   );
-};
+}
 
-export function BoostsIcon(){
+export function BoostsIcon() {
   return (
     <svg
       width="20"
@@ -118,10 +118,9 @@ export function BoostsIcon(){
       />
     </svg>
   );
-};
+}
 
-
-export function BoostsRewardsIcon () {
+export function BoostsRewardsIcon() {
   return (
     <svg
       width="22"
@@ -156,10 +155,9 @@ export function BoostsRewardsIcon () {
       </defs>
     </svg>
   );
-};
+}
 
-
-export function CheckboxIcon () {
+export function CheckboxIcon() {
   return (
     <svg
       width="17"
@@ -177,9 +175,9 @@ export function CheckboxIcon () {
       />
     </svg>
   );
-};
+}
 
-export function CheckmarkIcon () {
+export function CheckmarkIcon() {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -196,9 +194,9 @@ export function CheckmarkIcon () {
       />
     </svg>
   );
-};
+}
 
-export function ChevronDownIcon () {
+export function ChevronDownIcon() {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -215,10 +213,9 @@ export function ChevronDownIcon () {
       />
     </svg>
   );
-};
+}
 
-
-export function ChevronLeft () {
+export function ChevronLeft() {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -235,7 +232,7 @@ export function ChevronLeft () {
       />
     </svg>
   );
-};
+}
 
 export function CloseIcon() {
   return (
@@ -256,7 +253,7 @@ export function CloseIcon() {
   );
 }
 
-export function ConvertIcon () {
+export function ConvertIcon() {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -280,10 +277,9 @@ export function ConvertIcon () {
       </defs>
     </svg>
   );
-};
+}
 
-
-export function CopyAddressIcon () {
+export function CopyAddressIcon() {
   return (
     <svg
       width="25"
@@ -310,10 +306,9 @@ export function CopyAddressIcon () {
       />
     </svg>
   );
-};
+}
 
-
-export function CopyIcon () {
+export function CopyIcon() {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -340,9 +335,9 @@ export function CopyIcon () {
       />
     </svg>
   );
-};
+}
 
-export function CupIcon () {
+export function CupIcon() {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -363,10 +358,9 @@ export function CupIcon () {
       />
     </svg>
   );
-};
+}
 
-
-export function DiscordIcon () {
+export function DiscordIcon() {
   return (
     <svg
       width="32"
@@ -382,10 +376,9 @@ export function DiscordIcon () {
       />
     </svg>
   );
-};
+}
 
-
-export function DocumentIcon () {
+export function DocumentIcon() {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -400,10 +393,9 @@ export function DocumentIcon () {
       />
     </svg>
   );
-};
+}
 
-
-export function EarnIcon () {
+export function EarnIcon() {
   return (
     <svg
       width="32"
@@ -424,10 +416,9 @@ export function EarnIcon () {
       />
     </svg>
   );
-};
+}
 
-
-export function EthIcon () {
+export function EthIcon() {
   return (
     <svg
       width="28"
@@ -461,9 +452,9 @@ export function EthIcon () {
       </defs>
     </svg>
   );
-};
+}
 
-export function ExchangeIcon () {
+export function ExchangeIcon() {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -479,10 +470,9 @@ export function ExchangeIcon () {
       />
     </svg>
   );
-};
+}
 
-
-export function ExplorerIcon () {
+export function ExplorerIcon() {
   return (
     <svg
       width="25"
@@ -499,9 +489,9 @@ export function ExplorerIcon () {
       />
     </svg>
   );
-};
+}
 
-export function FailureIcon () {
+export function FailureIcon() {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -518,10 +508,9 @@ export function FailureIcon () {
       />
     </svg>
   );
-};
+}
 
-
-export function FuelGroup () {
+export function FuelGroup() {
   return (
     <svg
       width="71"
@@ -564,10 +553,9 @@ export function FuelGroup () {
       </g>
     </svg>
   );
-};
+}
 
-
-export function FuelIcon () {
+export function FuelIcon() {
   return (
     <svg
       width="16"
@@ -602,10 +590,9 @@ export function FuelIcon () {
       </defs>
     </svg>
   );
-};
+}
 
-
-export function GithubIcon () {
+export function GithubIcon() {
   return (
     <svg
       width="32"
@@ -635,10 +622,9 @@ export function GithubIcon () {
       </defs>
     </svg>
   );
-};
+}
 
-
-export function HalbornIcon () {
+export function HalbornIcon() {
   return (
     <svg
       width="153"
@@ -654,10 +640,9 @@ export function HalbornIcon () {
       />
     </svg>
   );
-};
+}
 
-
-export function InfoIcon({color}: {color: string | undefined}){
+export function InfoIcon({color}: {color: string | undefined}) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -672,10 +657,9 @@ export function InfoIcon({color}: {color: string | undefined}){
       />
     </svg>
   );
-};
+}
 
-
-export function LinkIcon () {
+export function LinkIcon() {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -696,10 +680,9 @@ export function LinkIcon () {
       />
     </svg>
   );
-};
+}
 
-
-export function LockIcon () {
+export function LockIcon() {
   return (
     <svg
       width="32"
@@ -716,10 +699,9 @@ export function LockIcon () {
       />
     </svg>
   );
-};
+}
 
-
-export function LogOutIcon () {
+export function LogOutIcon() {
   return (
     <svg
       width="25"
@@ -740,9 +722,9 @@ export function LogOutIcon () {
       />
     </svg>
   );
-};
+}
 
-export function LogoIcon () {
+export function LogoIcon() {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -757,10 +739,9 @@ export function LogoIcon () {
       />
     </svg>
   );
-};
+}
 
-
-export function MenuIcon () {
+export function MenuIcon() {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -795,10 +776,9 @@ export function MenuIcon () {
       />
     </svg>
   );
-};
+}
 
-
-export function MuteIcon () {
+export function MuteIcon() {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -810,10 +790,9 @@ export function MuteIcon () {
       <path d="M6.717 3.55A.5.5 0 0 1 7 4v8a.5.5 0 0 1-.812.39L3.825 10.5H1.5A.5.5 0 0 1 1 10V6a.5.5 0 0 1 .5-.5h2.325l2.363-1.89a.5.5 0 0 1 .529-.06m7.137 2.096a.5.5 0 0 1 0 .708L12.207 8l1.647 1.646a.5.5 0 0 1-.708.708L11.5 8.707l-1.646 1.647a.5.5 0 0 1-.708-.708L10.793 8 9.146 6.354a.5.5 0 1 1 .708-.708L11.5 7.293l1.646-1.647a.5.5 0 0 1 .708 0" />
     </svg>
   );
-};
+}
 
-
-export function NotificationCheckboxIcon () {
+export function NotificationCheckboxIcon() {
   return (
     <svg
       width="24"
@@ -831,9 +810,9 @@ export function NotificationCheckboxIcon () {
       />
     </svg>
   );
-};
+}
 
-export function OttersecIcon () {
+export function OttersecIcon() {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -848,10 +827,9 @@ export function OttersecIcon () {
       />
     </svg>
   );
-};
+}
 
-
-export function PointsIcon () {
+export function PointsIcon() {
   return (
     <svg
       width="20"
@@ -874,8 +852,7 @@ export function PointsIcon () {
       />
     </svg>
   );
-};
-
+}
 
 export function PointsIconSimple({
   width = 20,
@@ -885,7 +862,7 @@ export function PointsIconSimple({
   width?: number | string;
   height?: number | string;
   className?: string;
-}){
+}) {
   return (
     <svg
       width={width}
@@ -906,10 +883,9 @@ export function PointsIconSimple({
       />
     </svg>
   );
-};
+}
 
-
-export function RetweetIcon () {
+export function RetweetIcon() {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -926,10 +902,9 @@ export function RetweetIcon () {
       />
     </svg>
   );
-};
+}
 
-
-export function RewardsIcon () {
+export function RewardsIcon() {
   return (
     <svg
       width="24"
@@ -953,9 +928,9 @@ export function RewardsIcon () {
       />
     </svg>
   );
-};
+}
 
-export function RoadmapDesktopIcon () {
+export function RoadmapDesktopIcon() {
   return (
     <svg
       width="856"
@@ -1012,10 +987,9 @@ export function RoadmapDesktopIcon () {
       />
     </svg>
   );
-};
+}
 
-
-export function RoadmapMobileIcon () {
+export function RoadmapMobileIcon() {
   return (
     <svg
       width="343"
@@ -1072,10 +1046,9 @@ export function RoadmapMobileIcon () {
       />
     </svg>
   );
-};
+}
 
-
-export function SearchIcon () {
+export function SearchIcon() {
   return (
     <svg xmlns="http://www.w3.org/2000/svg" width={20} height={21} fill="none">
       <path
@@ -1086,10 +1059,9 @@ export function SearchIcon () {
       />
     </svg>
   );
-};
+}
 
-
-export function SettingsIcon () {
+export function SettingsIcon() {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -1104,10 +1076,9 @@ export function SettingsIcon () {
       />
     </svg>
   );
-};
+}
 
-
-export function SparkleIcon () {
+export function SparkleIcon() {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -1122,10 +1093,9 @@ export function SparkleIcon () {
       />
     </svg>
   );
-};
+}
 
-
-export function StarsIcon () {
+export function StarsIcon() {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -1144,10 +1114,9 @@ export function StarsIcon () {
       />
     </svg>
   );
-};
+}
 
-
-export function SubscribeIcon () {
+export function SubscribeIcon() {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -1166,10 +1135,9 @@ export function SubscribeIcon () {
       />
     </svg>
   );
-};
+}
 
-
-export function SuccessIcon () {
+export function SuccessIcon() {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -1186,10 +1154,9 @@ export function SuccessIcon () {
       />
     </svg>
   );
-};
+}
 
-
-export function TouchCloseIcon () {
+export function TouchCloseIcon() {
   return (
     <svg
       width="36"
@@ -1206,9 +1173,9 @@ export function TouchCloseIcon () {
       />
     </svg>
   );
-};
+}
 
-export function TransactionsCloseIcon () {
+export function TransactionsCloseIcon() {
   return (
     <svg
       width="24"
@@ -1225,9 +1192,9 @@ export function TransactionsCloseIcon () {
       />
     </svg>
   );
-};
+}
 
-export function TransactionsIcon () {
+export function TransactionsIcon() {
   return (
     <svg
       width="25"
@@ -1262,9 +1229,9 @@ export function TransactionsIcon () {
       </defs>
     </svg>
   );
-};
+}
 
-export function UsdtIcon () {
+export function UsdtIcon() {
   return (
     <svg
       width="28"
@@ -1288,9 +1255,9 @@ export function UsdtIcon () {
       />
     </svg>
   );
-};
+}
 
-export function VoteIcon () {
+export function VoteIcon() {
   return (
     <svg
       width="32"
@@ -1307,10 +1274,9 @@ export function VoteIcon () {
       />
     </svg>
   );
-};
+}
 
-
-export function WarningIcon () {
+export function WarningIcon() {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -1336,13 +1302,15 @@ export function WarningIcon () {
       <circle cx={12.422} cy={7.371} r={1.25} fill="currentColor" />
     </svg>
   );
-};
+}
 
-
-export function WhiteStarIcon({width, height}: {
+export function WhiteStarIcon({
+  width,
+  height,
+}: {
   width: number;
   height: number;
-}){
+}) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -1358,9 +1326,9 @@ export function WhiteStarIcon({width, height}: {
       />
     </svg>
   );
-};
+}
 
-export function XIcon ({className}: any){
+export function XIcon({className}: any) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -1378,8 +1346,7 @@ export function XIcon ({className}: any){
   );
 }
 
-
-export function XSocialIcon () {
+export function XSocialIcon() {
   return (
     <svg
       width="32"
@@ -1395,4 +1362,4 @@ export function XSocialIcon () {
       />
     </svg>
   );
-};
+}

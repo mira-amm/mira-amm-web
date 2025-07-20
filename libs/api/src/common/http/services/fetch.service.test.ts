@@ -1,11 +1,16 @@
 import assert from "node:assert/strict";
-import { beforeEach, describe, it, mock } from "node:test";
-import { FetchService } from "./fetch.service.js";
-import { AppError } from "../../../core/error.js";
-import { getTaskResponseSchema } from "../../../features/task/dto/get-task-response.js";
+import {beforeEach, describe, it, mock} from "node:test";
+import {FetchService} from "./fetch.service.js";
+import {AppError} from "../../../core/error.js";
+import {getTaskResponseSchema} from "../../../features/task/dto/get-task-response.js";
 
 const MOCK_URL = "https://jsonplaceholder.typicode.com/todos/1";
-const MOCK_BODY = { userId: 1, id: 1, title: "delectus aut autem", completed: false };
+const MOCK_BODY = {
+  userId: 1,
+  id: 1,
+  title: "delectus aut autem",
+  completed: false,
+};
 
 describe("FetchService", () => {
   let service: FetchService;
@@ -15,7 +20,7 @@ describe("FetchService", () => {
   });
 
   it("should return a successful result when fetch is successful", async () => {
-    const mockResponse = new Response(JSON.stringify(MOCK_BODY), { status: 200 });
+    const mockResponse = new Response(JSON.stringify(MOCK_BODY), {status: 200});
     mock.method(global, "fetch", () => {
       return Promise.resolve(mockResponse);
     });
@@ -28,7 +33,7 @@ describe("FetchService", () => {
 
   describe("when fetch returns a non ok status code", () => {
     it("should return an error when fetch returns a 404", async () => {
-      const mockResponse = new Response("not found", { status: 404 });
+      const mockResponse = new Response("not found", {status: 404});
       mock.method(global, "fetch", () => {
         return Promise.resolve(mockResponse);
       });
@@ -42,7 +47,7 @@ describe("FetchService", () => {
     });
 
     it("should return an error when fetch returns a 500", async () => {
-      const mockResponse = new Response("some error", { status: 500 });
+      const mockResponse = new Response("some error", {status: 500});
       mock.method(global, "fetch", () => {
         return Promise.resolve(mockResponse);
       });
@@ -52,7 +57,10 @@ describe("FetchService", () => {
       assert.strictEqual(result.ok, false);
       assert.ok(result.error instanceof AppError);
       assert.strictEqual(result.error.name, "InternalError");
-      assert.strictEqual(result.error.message, "An error occurred while fetching data: some error");
+      assert.strictEqual(
+        result.error.message,
+        "An error occurred while fetching data: some error"
+      );
     });
 
     it("should return an error when fetch returns 200 but data is malformed", async () => {
@@ -83,7 +91,7 @@ describe("FetchService", () => {
       assert.strictEqual(result.error.name, "InternalError");
       assert.strictEqual(
         result.error.message,
-        "An error occurred while fetching data: Network error",
+        "An error occurred while fetching data: Network error"
       );
     });
   });

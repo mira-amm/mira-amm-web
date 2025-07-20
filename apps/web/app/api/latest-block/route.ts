@@ -17,7 +17,7 @@ import {
 } from "@/web/shared/types";
 
 const fetchSquidStatus = async (
-  url: string,
+  url: string
 ): Promise<SQDIndexerResponses.SquidStatus> => {
   const query = gql`
     query GetSquidStatus {
@@ -39,7 +39,7 @@ const fetchSquidStatus = async (
 
 const fetchBlockByHeight = async (
   url: string,
-  height: string,
+  height: string
 ): Promise<FuelAPIResponses.BlockByHeight> => {
   const query = gql`
     query GetBlockByHeight($height: String!) {
@@ -67,11 +67,11 @@ export async function GET(req: NextRequest) {
 
     const {header} = await fetchBlockByHeight(
       NetworkUrl,
-      blockNumber.toString(),
+      blockNumber.toString()
     );
 
     const blockTimestamp = DateTime.fromTai64(
-      header.time.toString(),
+      header.time.toString()
     ).toUnixSeconds();
 
     const block: GeckoTerminalQueryResponses.Block = {
@@ -87,7 +87,7 @@ export async function GET(req: NextRequest) {
     console.error("error fetching latest block:", error);
     return NextResponse.json(
       {error: "An unexpected error occurred while fetching latest block"},
-      {status: 500},
+      {status: 500}
     );
   }
 }

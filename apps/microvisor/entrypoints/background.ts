@@ -1,13 +1,13 @@
 console.log("Microvisor extension background script loaded");
-console.log(browser.runtime.id)
+console.log(browser.runtime.id);
 
 // github.com/wxt-dev/wxt/blob/main/packages/browser/src/gen/index.d.ts
 export default defineBackground(() => {
-  browser.runtime.onInstalled.addListener(async ({ reason }) => {
+  browser.runtime.onInstalled.addListener(async ({reason}) => {
     if (reason !== "install") return;
 
     await browser.tabs.create({
-      url: "http://localhost:7681/?fontFamily=JetBrainsMono%20Nerd%20Font&fontSize=20&enableSixel=true&enableTrzsz=true&fontSize=18&disableLeaveAlert=false&titleFixed=💻%20Microvisor",
+      url: "http://localhost:7681/?fontFamily=JetBrainsMono%20Nerd%20Font&fontSize=20&enableSixel=true&enableTrzsz=true&fontSize=18&disableLeaveAlert=false&titleFixed=🕹%20Microvisor",
       active: true,
       index: 0,
     });
@@ -36,33 +36,39 @@ export default defineBackground(() => {
       index: 4,
     });
 
-    const tabs = await browser.tabs.query({currentWindow: true})
+    await browser.tabs.create({
+      url: "http://localhost:1212",
+      active: false,
+      index: 5,
+    });
 
-    const tabIds = tabs.map(({ id }) => id);
+    const tabs = await browser.tabs.query({currentWindow: true});
+
+    const tabIds = tabs.map(({id}) => id);
 
     const group = await browser.tabs.group({tabIds});
 
     browser.tabGroups.update(group, {
-      title: '🦕 APPS',
-      color: 'green',
+      title: "🦕 APPS",
+      color: "green",
     });
 
     await browser.fontSettings.setFont({
-      genericFamily: 'sansserif',
-      script: 'Zyyy',
-      fontId: 'JetBrainsMono Nerd Font',
+      genericFamily: "sansserif",
+      script: "Zyyy",
+      fontId: "JetBrainsMono Nerd Font",
     });
 
     await browser.fontSettings.setFont({
-      genericFamily: 'serif',
-      script: 'Zyyy',
-      fontId: 'JetBrainsMono Nerd Font'
+      genericFamily: "serif",
+      script: "Zyyy",
+      fontId: "JetBrainsMono Nerd Font",
     });
 
     await browser.fontSettings.setFont({
-      genericFamily: 'standard',
-      script: 'Zyyy',
-      fontId: 'JetBrainsMono Nerd Font'
+      genericFamily: "standard",
+      script: "Zyyy",
+      fontId: "JetBrainsMono Nerd Font",
     });
 
     await browser.fontSettings.setMinimumFontSize({
@@ -71,7 +77,7 @@ export default defineBackground(() => {
 
     // TODO: feat(microvisor): create get started page
     // await browser.tabs.create({
-      // url: browser.runtime.getURL("/get-started.html"),
+    // url: browser.runtime.getURL("/get-started.html"),
     // });
   });
 });

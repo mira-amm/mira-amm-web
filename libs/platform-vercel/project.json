@@ -5,7 +5,7 @@
   "projectType": "library",
   "targets": {
     "dev": {
-      "command": "pulumi preview -e -s 'dev'",
+      "command": "pulumi preview -es dev",
       "options": {
         "cwd": "libs/platform-vercel"
       }

@@ -1,10 +1,7 @@
-// This script fetches all user rewards for a given epochNumber based on src/models/campaigns.json
-
 import {JSONEpochConfigService} from "../src/models/campaigns/JSONEpochConfigService";
 import {loadFile} from "../src/utils/fileLoader";
 import {writeFileSync, readFileSync} from "fs";
 import path from "path";
-import dotenv from "dotenv";
 import {Decimal} from "decimal.js";
 
 // CONSTANT DECLARATION
@@ -18,24 +15,19 @@ const ORDERED_CSV_SUFFIX = "-ordered.csv";
 const UNAGGREGATED_CSV_SUFFIX = "-unaggregated.csv";
 const AGGREGATED_CSV_SUFFIX = "-aggregated.csv";
 
-// INTERFACE DECLARATION
 interface HourlyUserShare {
   distinct_id: string;
   hourly_user_share: number;
 }
 
-// load env variables from .env file
-dotenv.config();
-
 async function main() {
-  //load campaign data
   const campaignPoolRewardsPerUserPerHourQuery = loadFile(
     path.join(
       process.cwd(),
       "src",
       "queries",
-      "CampaignPoolRewardsPerUserPerHour.sql",
-    ),
+      "CampaignPoolRewardsPerUserPerHour.sql"
+    )
   );
 
   // get user input for epochNumber
@@ -44,11 +36,11 @@ async function main() {
   const csvFilePath = path.join(
     process.cwd(),
     "generated",
-    `${CSV_PREFIX}-${epochNumber}.csv`,
+    `${CSV_PREFIX}-${epochNumber}.csv`
   );
 
   const epochConfigService = new JSONEpochConfigService(
-    path.join(process.cwd(), "../../libs/web/src", "models", "campaigns.json"),
+    path.join(process.cwd(), "../../libs/web/src", "models", "campaigns.json")
   );
 
   // overwrite the csv file
@@ -97,7 +89,7 @@ async function main() {
       endDate,
       pool,
       campaignPoolRewardsPerUserPerHourQuery,
-      sentioApiUrl,
+      sentioApiUrl
     );
     // format the results as a csv with the following columns:
     // userId, totalRewardAmount
@@ -105,7 +97,7 @@ async function main() {
     console.log(
       "Number of users for campaign",
       campaign.pool.lpToken,
-      userRewards.length,
+      userRewards.length
     );
 
     // To verify, ensure that the number of hours in the epoch is equal to the sum of all reward portions
@@ -113,13 +105,13 @@ async function main() {
       campaign.pool.lpToken,
       userRewards,
       epochNumberHours,
-      hourlyRewardAmount,
+      hourlyRewardAmount
     );
 
     appendRewardsToFile(
       userRewards,
       hourlyRewardAmount,
-      csvFilePath.replace(".csv", UNAGGREGATED_CSV_SUFFIX),
+      csvFilePath.replace(".csv", UNAGGREGATED_CSV_SUFFIX)
     );
 
     return;
@@ -131,20 +123,20 @@ async function main() {
   // aggregate same address results from the csv file
   aggregateRewardsByAddressAndWriteToFile(
     csvFilePath.replace(".csv", UNAGGREGATED_CSV_SUFFIX),
-    csvFilePath.replace(".csv", AGGREGATED_CSV_SUFFIX),
+    csvFilePath.replace(".csv", AGGREGATED_CSV_SUFFIX)
   );
 
   // calculate the sum of the csv file
   orderByAmountAndWriteToFile(
     csvFilePath.replace(".csv", AGGREGATED_CSV_SUFFIX),
-    csvFilePath.replace(".csv", ORDERED_CSV_SUFFIX),
+    csvFilePath.replace(".csv", ORDERED_CSV_SUFFIX)
   );
 
   // read the ordered csv data
   const totalActualRewards = verifyTotalRewardsAmount(
     csvFilePath.replace(".csv", ORDERED_CSV_SUFFIX),
     campaigns,
-    epochNumberDays,
+    epochNumberDays
   );
 
   console.log("Total rewards:", totalActualRewards.toString());
@@ -158,7 +150,7 @@ function verifyTotalRewardsAmount(
     pool: {id: string; lpToken: string};
     rewards: {dailyAmount: number; assetId: string}[];
   }[],
-  epochNumberDays: Decimal,
+  epochNumberDays: Decimal
 ) {
   const orderedCsvData = readFileSync(inputCsvFilePath, "utf8");
 
@@ -166,9 +158,9 @@ function verifyTotalRewardsAmount(
   const totalExpectedRewards = campaigns.reduce(
     (acc: Decimal, campaign) =>
       acc.plus(
-        new Decimal(campaign.rewards[0].dailyAmount).times(epochNumberDays),
+        new Decimal(campaign.rewards[0].dailyAmount).times(epochNumberDays)
       ),
-    new Decimal(0),
+    new Decimal(0)
   );
 
   const totalActualRewards = orderedCsvData
@@ -187,11 +179,11 @@ function verifyTotalRewardsAmount(
     totalActualRewards.lessThan(totalExpectedRewards)
   ) {
     console.log(
-      "Total actual rewards are less than the total expected rewards, but the margin of error is acceptable",
+      "Total actual rewards are less than the total expected rewards, but the margin of error is acceptable"
     );
   } else {
     throw new Error(
-      `Total actual rewards are not equal to the total expected rewards: ${totalActualRewards.toString()} !== ${totalExpectedRewards.toString()}`,
+      `Total actual rewards are not equal to the total expected rewards: ${totalActualRewards.toString()} !== ${totalExpectedRewards.toString()}`
     );
   }
   return totalActualRewards;
@@ -199,7 +191,7 @@ function verifyTotalRewardsAmount(
 
 function orderByAmountAndWriteToFile(
   inputCsvFilePath: string,
-  outputCsvFilePath: string,
+  outputCsvFilePath: string
 ) {
   const aggregatedCsvData = readFileSync(inputCsvFilePath, "utf8");
 
@@ -209,7 +201,7 @@ function orderByAmountAndWriteToFile(
     .sort((a, b) =>
       new Decimal(b.split(",")[1])
         .minus(new Decimal(a.split(",")[1]))
-        .toNumber(),
+        .toNumber()
     );
 
   // write the ordered csv data to a new file
@@ -218,7 +210,7 @@ function orderByAmountAndWriteToFile(
 
 function aggregateRewardsByAddressAndWriteToFile(
   inputCsvFilePath: string,
-  outputCsvFilePath: string,
+  outputCsvFilePath: string
 ) {
   const unaggregatedCsvData = readFileSync(inputCsvFilePath, "utf8");
 
@@ -237,7 +229,7 @@ function aggregateRewardsByAddressAndWriteToFile(
           : rewardAmount;
         return acc;
       },
-      {},
+      {}
     );
 
   // write the aggregated results to a new csv file
@@ -245,19 +237,19 @@ function aggregateRewardsByAddressAndWriteToFile(
     outputCsvFilePath,
     Object.entries(csvDataLinesWithoutHeaderGroupedByAddress)
       .map(([address, rewardAmount]) => `${address},${rewardAmount}`)
-      .join("\n"),
+      .join("\n")
   );
 }
 
 function appendRewardsToFile(
   userRewards: HourlyUserShare[],
   hourlyRewardAmount: Decimal,
-  csvFilePath: string,
+  csvFilePath: string
 ) {
   const csvData = userRewards
     .map(
       (userReward) =>
-        `${userReward.distinct_id},${new Decimal(userReward.hourly_user_share).times(hourlyRewardAmount).toFixed(FUEL_DECIMALS)}`,
+        `${userReward.distinct_id},${new Decimal(userReward.hourly_user_share).times(hourlyRewardAmount).toFixed(FUEL_DECIMALS)}`
     )
     .join("\n");
 
@@ -271,11 +263,11 @@ function verifyCampaignRewardAmount(
   lpToken: string,
   userRewards: HourlyUserShare[],
   epochNumberHours: Decimal,
-  hourlyRewardAmount: Decimal,
+  hourlyRewardAmount: Decimal
 ) {
   const sumOfAllRewardPortions = userRewards.reduce(
     (acc: Decimal, userReward) => acc.plus(userReward.hourly_user_share),
-    new Decimal(0),
+    new Decimal(0)
   );
   if (!sumOfAllRewardPortions.equals(epochNumberHours)) {
     // calculate margin of error
@@ -286,18 +278,18 @@ function verifyCampaignRewardAmount(
     if (marginOfError.abs().lessThan(ACCEPTABLE_MARGIN_OF_ERROR)) {
       if (sumOfAllRewardPortions.greaterThan(epochNumberHours)) {
         console.log(
-          `\nPool: ${lpToken}\nSum of all reward portions is greater than the number of hours in the epoch, but the margin of error is acceptable: ${sumOfAllRewardPortions.toString()} !== ${epochNumberHours.toString()}, margin of error: ${marginOfError.toString()}\nAdjusting sum of all reward portions to be equal to the number of hours in the epoch: ${sumOfAllRewardPortions.toString()}`,
+          `\nPool: ${lpToken}\nSum of all reward portions is greater than the number of hours in the epoch, but the margin of error is acceptable: ${sumOfAllRewardPortions.toString()} !== ${epochNumberHours.toString()}, margin of error: ${marginOfError.toString()}\nAdjusting sum of all reward portions to be equal to the number of hours in the epoch: ${sumOfAllRewardPortions.toString()}`
         );
         // adjust the sum of all reward portions to be equal to the number of hours in the epoch
         hourlyRewardAmount = hourlyRewardAmount.times(marginOfError.plus(1));
       } else {
         console.log(
-          `\nPool: ${lpToken}\nSum of all reward portions is less than the number of hours in the epoch, but the margin of error is acceptable: ${sumOfAllRewardPortions.toString()} !== ${epochNumberHours.toString()}, margin of error: ${marginOfError.toString()}`,
+          `\nPool: ${lpToken}\nSum of all reward portions is less than the number of hours in the epoch, but the margin of error is acceptable: ${sumOfAllRewardPortions.toString()} !== ${epochNumberHours.toString()}, margin of error: ${marginOfError.toString()}`
         );
       }
     } else {
       throw new Error(
-        `\nPool: ${lpToken}\nSum of all reward portions is not equal to the number of hours in the epoch: ${sumOfAllRewardPortions.toString()} !== ${epochNumberHours.toString()}`,
+        `\nPool: ${lpToken}\nSum of all reward portions is not equal to the number of hours in the epoch: ${sumOfAllRewardPortions.toString()} !== ${epochNumberHours.toString()}`
       );
     }
   }
@@ -310,7 +302,7 @@ async function fetchUserRewardsForCampaign(
   endDate: string,
   pool: {id: string; lpToken: string},
   campaignPoolRewardsPerUserPerHourQuery: string,
-  sentioApiUrl: string,
+  sentioApiUrl: string
 ) {
   const options = {
     method: "POST",

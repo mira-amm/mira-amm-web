@@ -1,4 +1,4 @@
-import type { Route } from "./+types/root";
+import type {Route} from "./+types/root";
 import {
   isRouteErrorResponse,
   Links,
@@ -8,16 +8,16 @@ import {
   ScrollRestoration,
 } from "react-router";
 
-import { userFlowMachine } from '@/engine/machines/user';
-import { createActorContext } from '@xstate/react';
+import {userFlowMachine} from "@/engine/machines/user";
+import {createActorContext} from "@xstate/react";
 
 export const UserMachineContext = createActorContext(userFlowMachine);
 
 /* import stylesheet from '@/meshwave-ui/global.css?url'; */
-import '@/meshwave-ui/global.css';
+import "@/meshwave-ui/global.css";
 
 export const links: Route.LinksFunction = () => [
-  { rel: "preconnect", href: "https://fonts.googleapis.com" },
+  {rel: "preconnect", href: "https://fonts.googleapis.com"},
   {
     rel: "preconnect",
     href: "https://fonts.gstatic.com",
@@ -30,7 +30,7 @@ export const links: Route.LinksFunction = () => [
   /* { rel: "stylesheet", href: stylesheet }, */
 ];
 
-export function Layout({ children }: { children: React.ReactNode }) {
+export function Layout({children}: {children: React.ReactNode}) {
   return (
     <html lang="en" className="dark">
       <head>
@@ -49,16 +49,16 @@ export function Layout({ children }: { children: React.ReactNode }) {
 }
 
 export default function App() {
-    return (
-      <>
+  return (
+    <>
       <UserMachineContext.Provider>
         <Outlet />
       </UserMachineContext.Provider>
     </>
-    )
+  );
 }
 
-export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
+export function ErrorBoundary({error}: Route.ErrorBoundaryProps) {
   let message = "Oops!";
   let details = "An unexpected error occurred.";
   let stack: string | undefined;

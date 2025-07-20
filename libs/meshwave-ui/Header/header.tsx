@@ -1,6 +1,6 @@
 import Image from "next/image";
 
-export function Header () {
+export function Header() {
   return (
     <header className="w-full">
       <div className="max-w-7xl mx-auto">
@@ -12,5 +12,5 @@ export function Header () {
         />
       </div>
     </header>
-  )
+  );
 }

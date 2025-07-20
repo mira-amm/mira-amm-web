@@ -4,7 +4,7 @@ import {BASE_ASSET_CONTRACT, ETH_ASSET_ID} from "../utils/constants";
 import {useAssetList} from "./useAssetList";
 
 export const useAssetMinterContract = (
-  assetId: string | null,
+  assetId: string | null
 ): {contractId: string | null; subId: string | null; isLoading: boolean} => {
   const {assets, isLoading: assetListLoading} = useAssetList();
 
@@ -34,7 +34,7 @@ export const useAssetMinterContract = (
       }
 
       const req = await fetch(
-        `https://mainnet-explorer.fuel.network/assets/${assetId}`,
+        `https://mainnet-explorer.fuel.network/assets/${assetId}`
       );
       const res = await req.json();
 

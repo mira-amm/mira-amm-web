@@ -6,14 +6,8 @@
   },
   "sourceRoot": "libs/mira-v1-ts/src",
   "projectType": "library",
-  "implicitDependencies": [
-    "!libs/web"
-  ],
-  "tags": [
-    "sdk",
-    "typescript",
-    "v1"
-  ],
+  "implicitDependencies": ["!libs/web"],
+  "tags": ["sdk", "typescript", "v1"],
   "targets": {
     "test": {
       "command": "jest",
@@ -22,31 +16,35 @@
       }
     },
     "typegen:predicates": {
+      "cache": true,
       "command": "fuels typegen -i '../scripts/scripts/*/out/release/*-abi.json' -o ./src/sdk/typegen --script",
       "options": {
         "cwd": "libs/mira-v1-ts"
       }
     },
     "typegen:contracts": {
+      "cache": true,
       "command": "fuels typegen -i '../contracts/contracts/*/out/release/*-abi.json' -o './src/sdk/typegen'",
       "options": {
         "cwd": "libs/mira-v1-ts"
       }
     },
     "typegen": {
+      "cache": true,
       "command": "pnpm typegen:predicates && pnpm typegen:contracts",
       "options": {
         "cwd": "libs/mira-v1-ts"
       }
     },
     "build": {
-      "command": "tsc",
+      "command": "tsx scripts/build.ts",
+      "cache": true,
       "options": {
         "cwd": "libs/mira-v1-ts"
       }
     },
     "prepare": {
-      "command": "pnpm run build",
+      "command": "pnpm build",
       "options": {
         "cwd": "libs/mira-v1-ts"
       }
@@ -56,6 +54,6 @@
       "options": {
         "cwd": "libs/mira-v1-ts"
       }
-    },
+    }
   }
 }

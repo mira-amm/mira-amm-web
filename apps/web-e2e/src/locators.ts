@@ -5,7 +5,7 @@ export const connectWalletButton = () =>
 
 export const walletOption = (walletName: string) =>
   PageElement.located(
-    By.cssContainingText("div.fuel-connectors-connector-item", walletName),
+    By.cssContainingText("div.fuel-connectors-connector-item", walletName)
   );
 
 export const swapModule = () =>
@@ -14,8 +14,7 @@ export const swapModule = () =>
 export const sellInput = () =>
   PageElements.located(By.css("div input")).first();
 
-export const buyInput = () =>
-  PageElements.located(By.css("div input")).last();
+export const buyInput = () => PageElements.located(By.css("div input")).last();
 
 export const sellCoinButton = () =>
   PageElements.located(By.css("main input+button")).first();
@@ -24,18 +23,22 @@ export const buyCoinButton = () =>
   PageElements.located(By.css("main input+button")).last();
 
 export const swapConvertButton = () =>
-  PageElements.located(By.css("main button svg"))
-    .nth(3);
+  PageElements.located(By.css("main button svg")).nth(3);
 
 export const searchInput = () =>
-  PageElement.located(By.css("input[placeholder^='Search by token or paste address']"));
+  PageElement.located(
+    By.css("input[placeholder^='Search by token or paste address']")
+  );
 
 export const searchResults = () =>
   PageElements.located(
-    By.css("div:has(> input[placeholder^='Search by token or paste address']) + div > div"));
+    By.css(
+      "div:has(> input[placeholder^='Search by token or paste address']) + div > div"
+    )
+  );
 
 export const slippageLabel = () =>
-  PageElement.located(By.cssContainingText("p", "% slippage"));
+  PageElement.located(By.cssContainingText("p", "% Slippage"));
 
 export const slippageSettingsButton = () =>
   PageElement.located(By.css("button svg.lucide-settings"));
@@ -66,7 +69,9 @@ export const poolTypeOption = (type: "Volatile" | "Stable") =>
   PageElements.located(By.cssContainingText("div", `${type} pool`)).first();
 
 export const addLiquidityButton = () =>
-PageElement.located(By.css('tr:has(td:has-text("FUEL/USDC")) button:has-text("Add Liquidity")'))
+  PageElement.located(
+    By.css('tr:has(td:has-text("FUEL/USDC")) button:has-text("Add Liquidity")')
+  );
 
 //
 // ========== LAYOUT LOCATORS: HEADER ==========
@@ -97,12 +102,10 @@ export const headerConnectWalletButton = () =>
 
 export const footer = () => PageElement.located(By.css("footer"));
 
-export const footerLogo = () =>
-  PageElement.located(By.css("footer div a"));
+export const footerLogo = () => PageElement.located(By.css("footer div a"));
 
 export const footerSupportLink = () =>
   PageElement.located(By.cssContainingText("a", "Support"));
-
 
 export const footerSecurityAuditLink = () =>
   PageElement.located(By.cssContainingText("a", "Security Audit"));

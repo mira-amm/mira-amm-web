@@ -1,0 +1,27 @@
+[package]
+name = "rust-sdk"
+version = "0.1.9"
+authors = { workspace = true }
+edition = { workspace = true }
+license = { workspace = true }
+homepage = { workspace = true }
+repository = { workspace = true }
+description = "Mira AMM Rust SDK"
+include = [
+    "sway-abis/mira_amm_contract/release/*",
+    "sway-abis/add_liquidity_script/release/*",
+    "sway-abis/create_pool_and_add_liquidity_script/release/*",
+    "sway-abis/remove_liquidity_script/release/*",
+    "sway-abis/swap_exact_input_script/release/*",
+    "sway-abis/swap_exact_output_script/release/*",
+    "src/*.rs",
+    "Cargo.toml"
+]
+
+[dependencies]
+tokio = { workspace = true }
+fuels = { workspace = true }
+rand = { workspace = true }
+sha2 = { workspace = true }
+primitive-types = { workspace = true }
+anyhow = { workspace = true }

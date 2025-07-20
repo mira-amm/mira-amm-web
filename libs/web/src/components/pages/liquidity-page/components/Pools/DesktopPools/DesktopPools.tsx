@@ -1,5 +1,5 @@
 import {PoolData} from "@/src/hooks/usePoolsData";
-import { DesktopPoolRow } from "./DesktopPoolRow";
+import {DesktopPoolRow} from "./DesktopPoolRow";
 import Link from "next/link";
 import SortableColumn from "@/src/components/common/SortableColumn/SortableColumn";
 import {Button} from "@/meshwave-ui/Button";

@@ -1,4 +1,4 @@
-@import "tailwindcss";
+@import 'tailwindcss';
 
 @source './**/*.{ts,tsx}';
 
@@ -52,18 +52,6 @@
 }
 
 @layer base {
-  /* Ensure dark mode styles are always applied */
-  * {
-    color-scheme: dark;
-  }
-
-  /* Override any light mode preferences */
-  @media (prefers-color-scheme: light) {
-    :root {
-      color-scheme: dark;
-    }
-  }
-
   :root {
     --page-background: #fdfdfd;
     --background-primary: #0e111e;
@@ -94,8 +82,8 @@
     --accent-alert: #d4b226;
     --content-positive: #46cc44;
 
-    --font-inter: "Inter", sans-serif;
-    --font-prompt: "Prompt", sans-serif;
+    --font-inter: 'Inter', sans-serif;
+    --font-prompt: 'Prompt', sans-serif;
   }
 
   .dark {
@@ -186,7 +174,7 @@
   }
 
   @media (min-width: 431px) {
-    div[data-state="open"][role="dialog"] {
+    div[data-state='open'][role='dialog'] {
       bottom: unset;
     }
   }
@@ -235,7 +223,6 @@
   position: absolute;
   left: 50%;
   top: 100%;
-  transform: translate(-50%, 0);
   transform-origin: 50% 0;
   animation: spin 3.5s ease-in-out infinite forwards;
   animation-fill-mode: forwards;

@@ -1,7 +1,7 @@
 // github.com/jhb-software/payload-plugins/tree/main/geocoding
 /* eslint-disable node/prefer-global/process */
 
-import {type Payload} from "payload";
+import {PayloadRequest, type Payload} from "payload";
 import sharp from "sharp";
 
 import {seed} from "@/db/seed";
@@ -9,7 +9,7 @@ import {seed} from "@/db/seed";
 // import { formBuilderPlugin } from '@payloadcms/plugin-form-builder'
 import {resendAdapter} from "@payloadcms/email-resend";
 import {postgresAdapter} from "@payloadcms/db-postgres";
-import {sqliteAdapter} from "@payloadcms/db-sqlite";
+// import {sqliteAdapter} from "@payloadcms/db-sqlite";
 import {s3Storage} from "@payloadcms/storage-s3";
 
 import {openapi, swaggerUI, redoc, rapidoc} from "payload-oapi";
@@ -38,7 +38,7 @@ export const dbConfig = {
       metadata: {
         title: "🕹 Microgame API Reference",
         version: "1.0.0?",
-        description: ([
+        description: [
           "🧩 OpenAPI Spec for Microgame.",
           "",
           "- ✨ [Scalar UI:](/docs): `/docs`",
@@ -52,7 +52,7 @@ export const dbConfig = {
           "- 🛝 [GraphQL Playground:](/api/graphql-playground) `/api/graphql-playground`",
           "",
           "- 🖥 [Admin Panel:](/admin) `/admin`",
-        ].join('\n'))
+        ].join("\n"),
       },
     }),
     swaggerUI({
@@ -131,24 +131,26 @@ export const dbConfig = {
       },
     }),
   ],
-  db: process.env.SQLITE
-    ? sqliteAdapter({
-        client: {
-          url: "file:../../libs/db/sqlite.db",
-          // authToken: process.env.DATABASE_AUTH_TOKEN,
-        },
-        generateSchemaOutputFile: "../../libs/db/schema.ts", // resolves from location of payload.config.ts
-      })
-    : postgresAdapter({
-        pool: {
-          connectionString: process.env.DATABASE_URI,
-        },
-        generateSchemaOutputFile: "../../libs/db/schema.ts",
-      }),
+  // HACK: failing deployments on vercel due to 'Error: Cannot find module 'libsql'
+  // db: process.env.SQLITE
+  //   ? sqliteAdapter({
+  //       client: {
+  //         url: "file:../../libs/db/sqlite.db",
+  //         // authToken: process.env.DATABASE_AUTH_TOKEN,
+  //       },
+  //       generateSchemaOutputFile: "../../libs/db/schema.ts", // resolves from location of payload.config.ts
+  //     })
+  // : postgresAdapter({
+  db: postgresAdapter({
+    pool: {
+      connectionString: process.env.DATABASE_URI,
+    },
+    generateSchemaOutputFile: "../../libs/db/schema.ts",
+  }),
 };
 
 export const serverConfig = {
-  onInit: async (payload: Payload) => {
+  onInit: async (payload: Payload, req: PayloadRequest) => {
     const {totalDocs} = await payload.count({
       collection: "users",
       where: {
@@ -159,7 +161,7 @@ export const serverConfig = {
     });
 
     if (!totalDocs) {
-      seed({payload});
+      seed({payload, req});
     }
   },
   debug: true,

@@ -28,7 +28,7 @@ describe("e2e", () => {
     assert.strictEqual(response.status, 200);
     assert.strictEqual(
       response.text,
-      "0x2E40F2b244B98ed6B8204B3De0156C6961f98525c8162f80162fCF53EEBd90E7",
+      "0x2E40F2b244B98ed6B8204B3De0156C6961f98525c8162f80162fCF53EEBd90E7"
     );
   });
 

@@ -1,11 +1,11 @@
 # ===== ci(lint) ======
-name: Lint
+name: 🧹 Lint
 
 on:
   push:
-    branches: "*"
+    branches: ['*']
   pull_request:
-    branches: "*"
+    branches: ['*']
 
 jobs:
   lint:
@@ -31,8 +31,8 @@ jobs:
         with:
           node-version: 22
 
-      - name: Install dependencies
-        run: pnpm i
+      - name: 📦 Install dependencies
+        run: pnpm i --frozen-lockfile
 
       - name: 🧹 Lint Projects
         run: pnpx prettier --check apps/web
