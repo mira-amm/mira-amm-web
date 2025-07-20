@@ -1,23 +1,23 @@
-import {usePoolDetails} from "../usePoolDetails";
+import { usePoolDetails } from "../usePoolDetails";
 import CoinPair from "@/src/components/common/CoinPair/CoinPair";
 import Link from "next/link";
 import clsx from "clsx";
-import {PoolData} from "@/src/hooks/usePoolsData";
-import {AprBadge} from "@/src/components/common/AprBadge/AprBadge";
-import {usePoolNameAndMatch} from "@/src/hooks/usePoolNameAndMatch";
-import {Button} from "@/meshwave-ui/Button";
-import {TableCell, TableRow} from "@/meshwave-ui/table";
-import {cn} from "@/src/utils/cn";
+import { PoolData } from "@/src/hooks/usePoolsData";
+import { AprBadge } from "@/src/components/common/AprBadge/AprBadge";
+import { usePoolNameAndMatch } from "@/src/hooks/usePoolNameAndMatch";
+import { Button } from "@/meshwave-ui/Button";
+import { TableCell, TableRow } from "@/meshwave-ui/table";
+import { cn } from "@/src/utils/cn";
 
 const cellBase =
   "px-6 py-4 whitespace-nowrap overflow-hidden text-ellipsis text-center";
 
-export function DesktopPoolRow({poolData}: {poolData: PoolData}) {
-  const {poolKey, aprValue, volumeValue, tvlValue, isStablePool, poolId} =
+export function DesktopPoolRow({ poolData }: { poolData: PoolData }) {
+  const { poolKey, aprValue, volumeValue, tvlValue, isStablePool, poolId } =
     usePoolDetails(poolData);
 
   const tvlActual = parseInt(tvlValue?.replace(/[^0-9]+/g, ""), 10);
-  const {isMatching} = usePoolNameAndMatch(poolKey);
+  const { isMatching } = usePoolNameAndMatch(poolKey);
 
   return (
     <TableRow key={poolKey}>
@@ -33,8 +33,8 @@ export function DesktopPoolRow({poolData}: {poolData: PoolData}) {
       <TableCell
         className={cn(
           cellBase,
-          "overflow-visible",
-          !isMatching && !aprValue && "text-content-dimmed-light"
+          "overflow-visible font-alt",
+          !isMatching && !aprValue && "text-content-dimmed-light",
         )}
       >
         {isMatching ? (
@@ -50,8 +50,8 @@ export function DesktopPoolRow({poolData}: {poolData: PoolData}) {
         )}
       </TableCell>
 
-      <TableCell className={cellBase}>{volumeValue}</TableCell>
-      <TableCell className={cellBase}>{tvlValue}</TableCell>
+      <TableCell className={cn(cellBase, "font-alt")}>{volumeValue}</TableCell>
+      <TableCell className={cn(cellBase, "font-alt")}>{tvlValue}</TableCell>
 
       <TableCell className={cellBase}>
         <Link href={`/liquidity/add?pool=${poolKey}`}>

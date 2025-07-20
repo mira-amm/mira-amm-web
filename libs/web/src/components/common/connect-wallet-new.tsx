@@ -85,7 +85,7 @@ export function ConnectWalletNew() {
                 Connect
               </Button>
             </div>
-            <div className="w-[239.82px] bg-black rounded-[10px] font-(family-name:--font-jetbrains-mono) text-accent-primary uppercase px-3 tracking-tight flex justify-left items-center text-sm">
+            <div className="w-[239.82px] bg-black rounded-[10px] font-alt text-accent-primary uppercase px-3 tracking-tight flex justify-left items-center text-sm">
               No wallet connected
             </div>
           </div>
@@ -110,7 +110,7 @@ export function ConnectWalletNew() {
             </div>
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <div className="bg-black rounded-[10px] w-[239.82px] text-accent-primary font-(family-name:--font-jetbrains-mono) uppercase px-3 tracking-tight flex justify-between items-center text-sm">
+                <div className="bg-black rounded-[10px] w-[239.82px] text-accent-primary font-alt uppercase px-3 tracking-tight flex justify-between items-center text-sm">
                   {formattedAddress}
                   <ChevronDown className="text-content-dimmed-dark" />
                 </div>

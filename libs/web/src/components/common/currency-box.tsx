@@ -1,14 +1,14 @@
-import {memo, ChangeEvent, useCallback} from "react";
+import { memo, ChangeEvent, useCallback } from "react";
 
-import {clsx} from "clsx";
-import {B256Address, BN} from "fuels";
-import {ChevronDown} from "lucide-react";
+import { clsx } from "clsx";
+import { B256Address, BN } from "fuels";
+import { ChevronDown } from "lucide-react";
 
-import {Coin, FeatureGuard, TextButton} from "@/src/components/common";
+import { Coin, FeatureGuard, TextButton } from "@/src/components/common";
 
-import {CurrencyBoxMode} from "@/src/components/common/Swap/Swap";
-import {MinEthValueBN} from "@/src/utils/constants";
-import {useAssetMetadata, useIsRebrandEnabled} from "@/src/hooks";
+import { CurrencyBoxMode } from "@/src/components/common/Swap/Swap";
+import { MinEthValueBN } from "@/src/utils/constants";
+import { useAssetMetadata } from "@/src/hooks";
 import fiatValueFormatter from "@/src/utils/abbreviateNumber";
 
 export function CurrencyBox({
@@ -72,8 +72,6 @@ export function CurrencyBox({
       ? fiatValueFormatter(numericValue * usdRate!)
       : null;
 
-  const rebrandEnabled = useIsRebrandEnabled();
-
   return (
     <div
       className={clsx(
@@ -97,9 +95,7 @@ export function CurrencyBox({
             className={clsx(
               "flex-1 w-0 font-semibold text-[20px] leading-6 border-none bg-transparent outline-none",
               "text-content-secondary dark:text-content-secondary ",
-              rebrandEnabled
-                ? "font-(family-name:--font-jetbrains-mono)"
-                : "font-inter",
+              "font-alt",
               loading && "text-gray-400/40 dark:text-content-tertiary/40"
             )}
             type="text"
@@ -120,7 +116,7 @@ export function CurrencyBox({
             "flex items-center gap-2 px-2.5 py-1.5 rounded-lg bg-transparent text-content-grey",
             "hover:bg-background-grey-light dark:hover:bg-background-grey-dark disabled:cursor-default",
             coinNotSelected &&
-              "bg-background-grey-dark hover:bg-background-grey-light cursor-pointer"
+            "bg-background-grey-dark hover:bg-background-grey-light cursor-pointer"
           )}
         >
           {coinNotSelected ? (
@@ -134,7 +130,7 @@ export function CurrencyBox({
         </button>
       </div>
 
-      <div className="min-h-[16px] lg:min-h-[18px] flex justify-between items-center text-content-tertiary dark:text-content-tertiary">
+      <div className="min-h-[16px] lg:min-h-[18px] flex justify-between items-center text-content-tertiary dark:text-content-tertiary font-alt">
         <p className="text-xs leading-4">{usdValue !== null && usdValue}</p>
         {balance.gt(0) && (
           <span className="text-xs leading-4 lg:text-sm">

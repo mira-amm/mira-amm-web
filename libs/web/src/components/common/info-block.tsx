@@ -14,7 +14,7 @@ export function InfoBlock({
     <div className="flex flex-col gap-[4px] w-[100px] text-left">
       <p>{title}</p>
       <p
-        className={`whitespace-nowrap overflow-hidden text-ellipsis ${
+        className={`whitespace-nowrap overflow-hidden text-ellipsis font-alt ${
           isPending
             ? "text-content-dimmed-light"
             : isPositive
