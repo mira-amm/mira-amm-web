@@ -1,14 +1,14 @@
-import { memo, ChangeEvent, useCallback } from "react";
+import {memo, ChangeEvent, useCallback} from "react";
 
-import { clsx } from "clsx";
-import { B256Address, BN } from "fuels";
-import { ChevronDown } from "lucide-react";
+import {clsx} from "clsx";
+import {B256Address, BN} from "fuels";
+import {ChevronDown} from "lucide-react";
 
-import { Coin, FeatureGuard, TextButton } from "@/src/components/common";
+import {Coin, FeatureGuard, TextButton} from "@/src/components/common";
 
-import { CurrencyBoxMode } from "@/src/components/common/Swap/Swap";
-import { MinEthValueBN } from "@/src/utils/constants";
-import { useAssetMetadata } from "@/src/hooks";
+import {CurrencyBoxMode} from "@/src/components/common/Swap/Swap";
+import {MinEthValueBN} from "@/src/utils/constants";
+import {useAssetMetadata} from "@/src/hooks";
 import fiatValueFormatter from "@/src/utils/abbreviateNumber";
 
 export function CurrencyBox({
@@ -116,7 +116,7 @@ export function CurrencyBox({
             "flex items-center gap-2 px-2.5 py-1.5 rounded-lg bg-transparent text-content-grey",
             "hover:bg-background-grey-light dark:hover:bg-background-grey-dark disabled:cursor-default",
             coinNotSelected &&
-            "bg-background-grey-dark hover:bg-background-grey-light cursor-pointer"
+              "bg-background-grey-dark hover:bg-background-grey-light cursor-pointer"
           )}
         >
           {coinNotSelected ? (

@@ -83,11 +83,11 @@
     --accent-alert: #d4b226;
     --content-positive: #46cc44;
 
-    --font-inter: "Inter", sans-serif;
-    --font-prompt: "Prompt", sans-serif;
-    --font-jetbrains-mono: "JetBrains Mono", monospace;
-    --font-ibm-plex-mono: "IBM Plex Mono", monospace;
-    --font-vt323: "VT323", monospace;
+    --font-inter: 'Inter', sans-serif;
+    --font-prompt: 'Prompt', sans-serif;
+    --font-jetbrains-mono: 'JetBrains Mono', monospace;
+    --font-ibm-plex-mono: 'IBM Plex Mono', monospace;
+    --font-vt323: 'VT323', monospace;
   }
 
   .dark {
