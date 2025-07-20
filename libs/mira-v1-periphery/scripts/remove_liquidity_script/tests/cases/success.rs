@@ -28,15 +28,7 @@ async fn removes_all_liquidity_passing_exact_a_and_b_values() {
 
     // adds initial liquidity
     let added_liquidity = add_liquidity_script_instance
-        .main(
-            pool_id,
-            amount_0_desired,
-            amount_1_desired,
-            0,
-            0,
-            wallet.address().into(),
-            deadline,
-        )
+        .main(pool_id, amount_0_desired, amount_1_desired, 0, 0, wallet.address().into(), deadline)
         .with_contracts(&[&amm.instance])
         .with_inputs(inputs)
         .with_outputs(outputs)
@@ -55,14 +47,7 @@ async fn removes_all_liquidity_passing_exact_a_and_b_values() {
     .await;
 
     let removed_liquidity = remove_liquidity_script_instance
-        .main(
-            pool_id,
-            added_liquidity.amount,
-            0,
-            0,
-            wallet.address().into(),
-            deadline,
-        )
+        .main(pool_id, added_liquidity.amount, 0, 0, wallet.address().into(), deadline)
         .with_contracts(&[&amm.instance])
         .with_inputs(inputs)
         .with_outputs(outputs)
@@ -71,9 +56,7 @@ async fn removes_all_liquidity_passing_exact_a_and_b_values() {
         .await
         .unwrap();
 
-    let log = removed_liquidity
-        .decode_logs_with_type::<BurnEvent>()
-        .unwrap();
+    let log = removed_liquidity.decode_logs_with_type::<BurnEvent>().unwrap();
     let event = log.first().unwrap();
 
     let final_pool_metadata = pool_metadata(&amm.instance, pool_id).await.value.unwrap();
@@ -118,15 +101,7 @@ async fn removes_partial_liquidity() {
 
     // adds initial liquidity
     let added_liquidity = add_liquidity_script_instance
-        .main(
-            pool_id,
-            amount_0_desired,
-            amount_1_desired,
-            0,
-            0,
-            wallet.address().into(),
-            deadline,
-        )
+        .main(pool_id, amount_0_desired, amount_1_desired, 0, 0, wallet.address().into(), deadline)
         .with_contracts(&[&amm.instance])
         .with_inputs(inputs)
         .with_outputs(outputs)
@@ -146,14 +121,7 @@ async fn removes_partial_liquidity() {
             .await;
 
     let removed_liquidity = remove_liquidity_script_instance
-        .main(
-            pool_id,
-            liquidity_to_remove,
-            0,
-            0,
-            wallet.address().into(),
-            deadline,
-        )
+        .main(pool_id, liquidity_to_remove, 0, 0, wallet.address().into(), deadline)
         .with_contracts(&[&amm.instance])
         .with_inputs(inputs)
         .with_outputs(outputs)
@@ -162,9 +130,7 @@ async fn removes_partial_liquidity() {
         .await
         .unwrap();
 
-    let log = removed_liquidity
-        .decode_logs_with_type::<BurnEvent>()
-        .unwrap();
+    let log = removed_liquidity.decode_logs_with_type::<BurnEvent>().unwrap();
     let event = log.first().unwrap();
 
     let final_wallet_balances = pool_assets_balance(&wallet, &pool_id, amm.id).await;
@@ -174,10 +140,7 @@ async fn removes_partial_liquidity() {
         BurnEvent {
             pool_id,
             recipient: wallet.address().into(),
-            liquidity: Asset {
-                amount: liquidity_to_remove,
-                id: added_liquidity.id
-            },
+            liquidity: Asset { amount: liquidity_to_remove, id: added_liquidity.id },
             asset_0_out: removed_liquidity.value.0,
             asset_1_out: removed_liquidity.value.1,
         }

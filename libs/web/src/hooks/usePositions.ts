@@ -1,5 +1,5 @@
-import { useBalances } from "@/src/hooks";
-import { useReadonlyMira } from "@/src/hooks";
+import {useBalances} from "@/src/hooks";
+import {useReadonlyMira} from "@/src/hooks";
 import {useQuery} from "@tanstack/react-query";
 import request, {gql} from "graphql-request";
 import {Asset, PoolId} from "mira-dex-ts";
@@ -23,7 +23,7 @@ export interface Position {
 export function usePositions(): {
   data: Position[] | undefined;
   isLoading: boolean;
-}{
+} {
   const mira = useReadonlyMira();
   const {balances} = useBalances();
 
@@ -65,14 +65,14 @@ export function usePositions(): {
         result.pools.map(async (pool: any) => {
           const poolId = createPoolIdFromIdString(pool.id);
           const lpBalance = balances!.find(
-            (balance) => balance.assetId === pool.lpToken.id,
+            (balance) => balance.assetId === pool.lpToken.id
           );
 
           try {
             const [token0Position, token1Position] =
               await mira!.getLiquidityPosition(
                 poolId,
-                lpBalance!.amount.toString(),
+                lpBalance!.amount.toString()
               );
 
             const price1 = pool.asset0.price;
@@ -98,17 +98,21 @@ export function usePositions(): {
               token1Item,
             };
           } catch (error) {
-            console.error(`Failed to fetch position for pool ${poolId}:`, error);
+            console.error(
+              `Failed to fetch position for pool ${poolId}:`,
+              error
+            );
             throw error;
           }
-        }),
+        })
       );
 
       const pools = settledPools
-        .filter((result): result is PromiseFulfilledResult<Position> => 
-          result.status === 'fulfilled'
+        .filter(
+          (result): result is PromiseFulfilledResult<Position> =>
+            result.status === "fulfilled"
         )
-        .map(result => result.value);
+        .map((result) => result.value);
 
       return pools;
     },
@@ -116,4 +120,4 @@ export function usePositions(): {
   });
 
   return {data, isLoading};
-};
+}

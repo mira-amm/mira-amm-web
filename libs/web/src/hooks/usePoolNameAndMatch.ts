@@ -1,7 +1,7 @@
 import boostRewards from "@/src/models/campaigns.json";
 import {EPOCH_NUMBER} from "../utils/constants";
 
-export function usePoolNameAndMatch(poolKey: string): {isMatching: boolean}{
+export function usePoolNameAndMatch(poolKey: string): {isMatching: boolean} {
   const epoch = boostRewards.find((epoch) => epoch.number === EPOCH_NUMBER);
   const rewardsData = epoch?.campaigns;
 
@@ -10,8 +10,8 @@ export function usePoolNameAndMatch(poolKey: string): {isMatching: boolean}{
   }
 
   const isMatching = rewardsData.some(
-    (pool) => pool.pool.id === poolKey.replace(/0x/g, ""),
+    (pool) => pool.pool.id === poolKey.replace(/0x/g, "")
   );
 
   return {isMatching};
-};
+}

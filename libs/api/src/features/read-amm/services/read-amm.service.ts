@@ -1,6 +1,6 @@
-import { Injectable } from '@nestjs/common';
-import { Provider } from 'fuels';
-import { ReadonlyMiraAmm } from 'mira-dex-ts';
+import {Injectable} from "@nestjs/common";
+import {Provider} from "fuels";
+import {ReadonlyMiraAmm} from "mira-dex-ts";
 // import {NETWORK_URL} from "@/shared/lib/constants" // TODO: Investigate path resolution failure on `start` command, even though dev server and builds are fine
 
 @Injectable()

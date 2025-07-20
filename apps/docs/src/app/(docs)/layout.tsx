@@ -6,11 +6,7 @@ import "katex/dist/katex.css";
 
 export default function Layout({children}: {children: ReactNode}) {
   return (
-    <DocsLayout
-    {...baseOptions}
-    tabMode="navbar"
-    tree={source.pageTree}
-    >
+    <DocsLayout {...baseOptions} tabMode="navbar" tree={source.pageTree}>
       {children}
     </DocsLayout>
   );

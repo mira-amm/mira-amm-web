@@ -32,7 +32,7 @@ export async function seed({
       if (payload.collections[collection].config.versions) {
         await payload.db.deleteVersions({collection, req, where: {}});
       }
-    }),
+    })
   );
 
   const mediaDir = path.resolve("../../../apps/admin/media");
@@ -42,7 +42,7 @@ export async function seed({
     payload.logger.info(`🗑 Deleted media directory: ${mediaDir}`);
   } catch (error) {
     payload.logger.warn(
-      `⚠ Failed to delete media directory: ${error instanceof Error ? error.message : "Unknown error"}`,
+      `⚠ Failed to delete media directory: ${error instanceof Error ? error.message : "Unknown error"}`
     );
   }
 
@@ -53,7 +53,7 @@ export async function seed({
     await seedGames(payload);
   } catch (error) {
     payload.logger.error(
-      `❌ Error seeding initial data: ${error instanceof Error ? error.message : "Unknown error"}`,
+      `❌ Error seeding initial data: ${error instanceof Error ? error.message : "Unknown error"}`
     );
   }
 
@@ -142,7 +142,7 @@ export async function getOrUploadMedia(
   req: PayloadRequest,
   url: string | undefined,
   filename: string,
-  alt: string,
+  alt: string
 ): Promise<File | null> {
   if (!url) return null;
 
@@ -155,7 +155,7 @@ export async function getOrUploadMedia(
 
     if (existingMedia.docs.length > 0) {
       payload.logger.info(
-        `🔄 Reusing existing media: ${filename} (alt: ${alt})`,
+        `🔄 Reusing existing media: ${filename} (alt: ${alt})`
       );
       return existingMedia.docs[0];
     }
@@ -185,7 +185,7 @@ export async function getOrUploadMedia(
     return uploadedFile;
   } catch (error) {
     payload.logger.warn(
-      `⚠ Error handling media (${filename}): ${error instanceof Error ? error.message : "Unknown error"}`,
+      `⚠ Error handling media (${filename}): ${error instanceof Error ? error.message : "Unknown error"}`
     );
     return null;
   }

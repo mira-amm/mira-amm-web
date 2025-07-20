@@ -4,7 +4,7 @@ import {DefaultLocale} from "@/src/utils/constants";
 
 const shouldTrimDecimals = (rate: string, decimalPlaces?: number): boolean => {
   if (!decimalPlaces) return false;
-  const decimalIndex = rate.lastIndexOf('.');
+  const decimalIndex = rate.lastIndexOf(".");
   if (decimalIndex === -1) return false;
   const decimalPortion = rate.slice(decimalIndex + 1);
   return decimalPortion.split("").every((char) => char === "0");
@@ -14,7 +14,7 @@ export const calculateFlooredRate = (
   coinAAmount: string,
   coinBAmount: string,
   isBaseCoinA: boolean,
-  decimals: number | undefined,
+  decimals: number | undefined
 ): string => {
   const rate = isBaseCoinA
     ? parseFloat(coinAAmount) / parseFloat(coinBAmount)
@@ -47,7 +47,7 @@ export function ExchangeRate({
   coinBAmount: string;
   assetAMetadata: AssetMetadata & {isLoading: boolean};
   assetBMetadata: AssetMetadata & {isLoading: boolean};
-}){
+}) {
   const [flooredRate, setFlooredRate] = useState("");
   const [isBaseCoinA, setIsBaseCoinA] = useState(true);
 
@@ -64,8 +64,8 @@ export function ExchangeRate({
         coinAAmount,
         coinBAmount,
         isBaseCoinA,
-        assetAMetadata?.decimals,
-      ),
+        assetAMetadata?.decimals
+      )
     );
   }, [coinAAmount, coinBAmount, isBaseCoinA, assetAMetadata?.decimals]);
 
@@ -91,4 +91,4 @@ export function ExchangeRate({
       </div>
     </div>
   );
-};
+}

@@ -1,16 +1,16 @@
-import type { Meta, StoryObj } from '@storybook/react'
-import { Terminal } from './Terminal'
+import type {Meta, StoryObj} from "@storybook/react";
+import {Terminal} from "./Terminal";
 
 const meta = {
-  title: '🕹 Admin/Terminal',
+  title: "🕹 Admin/Terminal",
   component: Terminal,
-  tags: ['autodocs'],
+  tags: ["autodocs"],
   parameters: {
-    layout: 'centered',
+    layout: "centered",
   },
-} satisfies Meta<typeof Terminal>
+} satisfies Meta<typeof Terminal>;
 
-export default meta
-type Story = StoryObj<typeof meta>
+export default meta;
+type Story = StoryObj<typeof meta>;
 
-export const Default: Story = {}
+export const Default: Story = {};

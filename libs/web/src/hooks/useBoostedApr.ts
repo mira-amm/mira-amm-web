@@ -8,12 +8,12 @@ export type RewardsToken = "$FUEL" | "Points" | undefined;
 export function useBoostedApr(
   poolKey: string,
   tvlValue: number,
-  epochNumber: number,
+  epochNumber: number
 ): {
   boostedApr: number;
   boostReward: number;
   rewardsToken: RewardsToken;
-}{
+} {
   const boostEpoch = boostRewards.find((epoch) => epoch.number === epochNumber);
   const rewardsData = boostEpoch?.campaigns;
   const {price: fuelToUsdRate} = useAssetPriceFromIndexer(FUEL_ASSET_ID);
@@ -41,4 +41,4 @@ export function useBoostedApr(
     boostReward: dailyAmount,
     rewardsToken: "$FUEL",
   };
-};
+}

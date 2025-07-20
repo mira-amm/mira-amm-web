@@ -6,7 +6,7 @@ import {
 } from "@fuels/react";
 import {useMemo} from "react";
 
-export function useWeb3Connection(){
+export function useWeb3Connection() {
   const {isConnected, isFetching} = useIsConnected();
   const {connect, isConnecting, connectors} = useConnectUI();
   const {disconnect, isPending: disconnectLoading} = useDisconnect();
@@ -36,4 +36,4 @@ export function useWeb3Connection(){
     account,
     connectors,
   };
-};
+}

@@ -1,16 +1,16 @@
-import type { Meta, StoryObj } from '@storybook/react'
-import {Header} from './header'
+import type {Meta, StoryObj} from "@storybook/react";
+import {Header} from "./header";
 
 const meta = {
-  title: '🕹 Microgame/Header',
+  title: "🕹 Microgame/Header",
   component: Header,
-  tags: ['autodocs'],
+  tags: ["autodocs"],
   parameters: {
-    layout: 'centered',
+    layout: "centered",
   },
-} satisfies Meta<typeof Header>
+} satisfies Meta<typeof Header>;
 
-export default meta
-type Story = StoryObj<typeof meta>
+export default meta;
+type Story = StoryObj<typeof meta>;
 
-export const Default: Story = {}
+export const Default: Story = {};

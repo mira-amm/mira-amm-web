@@ -1,5 +1,5 @@
-import { useState, useEffect } from "react";
-import { useNavigate } from 'react-router';
+import {useState, useEffect} from "react";
+import {useNavigate} from "react-router";
 
 type Time = {
   days: number;
@@ -20,7 +20,7 @@ const getTimeRemaining = (): Time => {
         minutes: Math.floor((diff / (1000 * 60)) % 60),
         seconds: Math.floor((diff / 1000) % 60),
       }
-    : { days: 0, hours: 0, minutes: 0, seconds: 0 };
+    : {days: 0, hours: 0, minutes: 0, seconds: 0};
 };
 
 const formatNumber = (n: number) => n.toString().padStart(2, "0");
@@ -58,21 +58,20 @@ export default function Countdown() {
     return () => clearInterval(intervalId);
   }, []);
 
-  const { days, hours, minutes, seconds } = timeRemaining;
-
+  const {days, hours, minutes, seconds} = timeRemaining;
 
   const navigate = useNavigate();
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === 'Enter') {
-        navigate('/menu');
+      if (e.key === "Enter") {
+        navigate("/menu");
       }
     };
 
-    window.addEventListener('keydown', handleKeyDown);
+    window.addEventListener("keydown", handleKeyDown);
     return () => {
-      window.removeEventListener('keydown', handleKeyDown);
+      window.removeEventListener("keydown", handleKeyDown);
     };
   }, [navigate]);
 
@@ -121,4 +120,4 @@ export default function Countdown() {
       </div>
     </>
   );
-};
+}

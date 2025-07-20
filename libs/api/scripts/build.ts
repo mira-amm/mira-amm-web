@@ -1,9 +1,9 @@
 // HACK: called from node environment via tsx
 // TODO: run directly via tsup cli instead
 
-import { rm } from "node:fs/promises";
-import { replaceTscAliasPaths } from "tsc-alias";
-import { type Options, build as tsupBuild } from "tsup";
+import {rm} from "node:fs/promises";
+import {replaceTscAliasPaths} from "tsc-alias";
+import {type Options, build as tsupBuild} from "tsup";
 
 async function build(): Promise<void> {
   const outDir = "build";
@@ -24,9 +24,9 @@ async function build(): Promise<void> {
     noExternal: [],
   };
 
-  await rm(outDir, { recursive: true, force: true });
+  await rm(outDir, {recursive: true, force: true});
   await tsupBuild(tsupOptions);
-  await replaceTscAliasPaths({ outDir: outDir });
+  await replaceTscAliasPaths({outDir: outDir});
 }
 
 await build();

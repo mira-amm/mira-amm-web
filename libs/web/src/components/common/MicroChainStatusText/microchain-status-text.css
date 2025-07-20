@@ -39,7 +39,6 @@
 }
 
 @keyframes greenBlink {
-
   0%,
   100% {
     /* Start and end on white (or normal state) */
@@ -95,7 +94,7 @@
 }
 
 .muteButton::after {
-  content: "";
+  content: '';
   position: absolute;
   width: 100%;
   height: 100%;
@@ -127,8 +126,6 @@
     opacity: 0;
   }
 }
-
-
 
 .emptyChar {
   opacity: 0.3;

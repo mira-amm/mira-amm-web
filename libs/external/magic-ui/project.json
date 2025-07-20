@@ -5,11 +5,7 @@
     "description": "Magic UI"
   },
   "sourceRoot": "libs/external/magic-ui",
-  "implicitDependencies": [
-    "!libs/web"
-  ],
+  "implicitDependencies": ["!libs/web"],
   "projectType": "library",
-  "tags": [
-    "libs"
-  ]
-  }
+  "tags": ["libs"]
+}

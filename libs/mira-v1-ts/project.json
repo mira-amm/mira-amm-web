@@ -6,14 +6,8 @@
   },
   "sourceRoot": "libs/mira-v1-ts/src",
   "projectType": "library",
-  "implicitDependencies": [
-    "!libs/web"
-  ],
-  "tags": [
-    "sdk",
-    "typescript",
-    "v1"
-  ],
+  "implicitDependencies": ["!libs/web"],
+  "tags": ["sdk", "typescript", "v1"],
   "targets": {
     "test": {
       "command": "jest",
@@ -60,6 +54,6 @@
       "options": {
         "cwd": "libs/mira-v1-ts"
       }
-    },
+    }
   }
 }

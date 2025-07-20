@@ -28,7 +28,7 @@ export const enum_brands_status = pgEnum("enum_brands_status", [
 ]);
 export const enum__brands_v_version_status = pgEnum(
   "enum__brands_v_version_status",
-  ["draft", "published"],
+  ["draft", "published"]
 );
 export const enum_users_roles = pgEnum("enum_users_roles", ["admin", "user"]);
 export const enum_settings_status = pgEnum("enum_settings_status", [
@@ -37,7 +37,7 @@ export const enum_settings_status = pgEnum("enum_settings_status", [
 ]);
 export const enum__settings_v_version_status = pgEnum(
   "enum__settings_v_version_status",
-  ["draft", "published"],
+  ["draft", "published"]
 );
 
 export const brands_links = pgTable(
@@ -57,7 +57,7 @@ export const brands_links = pgTable(
       foreignColumns: [brands.id],
       name: "brands_links_parent_id_fk",
     }).onDelete("cascade"),
-  }),
+  })
 );
 
 export const brands = pgTable(
@@ -95,7 +95,7 @@ export const brands = pgTable(
     brands_updated_at_idx: index("brands_updated_at_idx").on(columns.updatedAt),
     brands_created_at_idx: index("brands_created_at_idx").on(columns.createdAt),
     brands__status_idx: index("brands__status_idx").on(columns._status),
-  }),
+  })
 );
 
 export const _brands_v_version_links = pgTable(
@@ -111,14 +111,14 @@ export const _brands_v_version_links = pgTable(
   (columns) => ({
     _orderIdx: index("_brands_v_version_links_order_idx").on(columns._order),
     _parentIDIdx: index("_brands_v_version_links_parent_id_idx").on(
-      columns._parentID,
+      columns._parentID
     ),
     _parentIDFk: foreignKey({
       columns: [columns["_parentID"]],
       foreignColumns: [_brands_v.id],
       name: "_brands_v_version_links_parent_id_fk",
     }).onDelete("cascade"),
-  }),
+  })
 );
 
 export const _brands_v = pgTable(
@@ -135,7 +135,7 @@ export const _brands_v = pgTable(
       () => media.id,
       {
         onDelete: "set null",
-      },
+      }
     ),
     version_name: varchar("version_name"),
     version_description: varchar("version_description"),
@@ -171,28 +171,28 @@ export const _brands_v = pgTable(
   (columns) => ({
     _brands_v_parent_idx: index("_brands_v_parent_idx").on(columns.parent),
     _brands_v_version_version_symbol_idx: index(
-      "_brands_v_version_version_symbol_idx",
+      "_brands_v_version_version_symbol_idx"
     ).on(columns.version_symbol),
     _brands_v_version_version_wordmark_idx: index(
-      "_brands_v_version_version_wordmark_idx",
+      "_brands_v_version_version_wordmark_idx"
     ).on(columns.version_wordmark),
     _brands_v_version_version_updated_at_idx: index(
-      "_brands_v_version_version_updated_at_idx",
+      "_brands_v_version_version_updated_at_idx"
     ).on(columns.version_updatedAt),
     _brands_v_version_version_created_at_idx: index(
-      "_brands_v_version_version_created_at_idx",
+      "_brands_v_version_version_created_at_idx"
     ).on(columns.version_createdAt),
     _brands_v_version_version__status_idx: index(
-      "_brands_v_version_version__status_idx",
+      "_brands_v_version_version__status_idx"
     ).on(columns.version__status),
     _brands_v_created_at_idx: index("_brands_v_created_at_idx").on(
-      columns.createdAt,
+      columns.createdAt
     ),
     _brands_v_updated_at_idx: index("_brands_v_updated_at_idx").on(
-      columns.updatedAt,
+      columns.updatedAt
     ),
     _brands_v_latest_idx: index("_brands_v_latest_idx").on(columns.latest),
-  }),
+  })
 );
 
 export const media = pgTable(
@@ -229,7 +229,7 @@ export const media = pgTable(
     media_updated_at_idx: index("media_updated_at_idx").on(columns.updatedAt),
     media_created_at_idx: index("media_created_at_idx").on(columns.createdAt),
     media_filename_idx: uniqueIndex("media_filename_idx").on(columns.filename),
-  }),
+  })
 );
 
 export const games = pgTable(
@@ -260,7 +260,7 @@ export const games = pgTable(
     games_score_idx: index("games_score_idx").on(columns.score),
     games_updated_at_idx: index("games_updated_at_idx").on(columns.updatedAt),
     games_created_at_idx: index("games_created_at_idx").on(columns.createdAt),
-  }),
+  })
 );
 
 export const users_roles = pgTable(
@@ -279,7 +279,7 @@ export const users_roles = pgTable(
       foreignColumns: [users.id],
       name: "users_roles_parent_fk",
     }).onDelete("cascade"),
-  }),
+  })
 );
 
 export const users_sessions = pgTable(
@@ -307,7 +307,7 @@ export const users_sessions = pgTable(
       foreignColumns: [users.id],
       name: "users_sessions_parent_id_fk",
     }).onDelete("cascade"),
-  }),
+  })
 );
 
 export const users = pgTable(
@@ -360,7 +360,7 @@ export const users = pgTable(
     users_updated_at_idx: index("users_updated_at_idx").on(columns.updatedAt),
     users_created_at_idx: index("users_created_at_idx").on(columns.createdAt),
     users_email_idx: uniqueIndex("users_email_idx").on(columns.email),
-  }),
+  })
 );
 
 export const payload_locked_documents = pgTable(
@@ -385,15 +385,15 @@ export const payload_locked_documents = pgTable(
   },
   (columns) => ({
     payload_locked_documents_global_slug_idx: index(
-      "payload_locked_documents_global_slug_idx",
+      "payload_locked_documents_global_slug_idx"
     ).on(columns.globalSlug),
     payload_locked_documents_updated_at_idx: index(
-      "payload_locked_documents_updated_at_idx",
+      "payload_locked_documents_updated_at_idx"
     ).on(columns.updatedAt),
     payload_locked_documents_created_at_idx: index(
-      "payload_locked_documents_created_at_idx",
+      "payload_locked_documents_created_at_idx"
     ).on(columns.createdAt),
-  }),
+  })
 );
 
 export const payload_locked_documents_rels = pgTable(
@@ -411,20 +411,20 @@ export const payload_locked_documents_rels = pgTable(
   (columns) => ({
     order: index("payload_locked_documents_rels_order_idx").on(columns.order),
     parentIdx: index("payload_locked_documents_rels_parent_idx").on(
-      columns.parent,
+      columns.parent
     ),
     pathIdx: index("payload_locked_documents_rels_path_idx").on(columns.path),
     payload_locked_documents_rels_brands_id_idx: index(
-      "payload_locked_documents_rels_brands_id_idx",
+      "payload_locked_documents_rels_brands_id_idx"
     ).on(columns.brandsID),
     payload_locked_documents_rels_media_id_idx: index(
-      "payload_locked_documents_rels_media_id_idx",
+      "payload_locked_documents_rels_media_id_idx"
     ).on(columns.mediaID),
     payload_locked_documents_rels_games_id_idx: index(
-      "payload_locked_documents_rels_games_id_idx",
+      "payload_locked_documents_rels_games_id_idx"
     ).on(columns.gamesID),
     payload_locked_documents_rels_users_id_idx: index(
-      "payload_locked_documents_rels_users_id_idx",
+      "payload_locked_documents_rels_users_id_idx"
     ).on(columns.usersID),
     parentFk: foreignKey({
       columns: [columns["parent"]],
@@ -451,7 +451,7 @@ export const payload_locked_documents_rels = pgTable(
       foreignColumns: [users.id],
       name: "payload_locked_documents_rels_users_fk",
     }).onDelete("cascade"),
-  }),
+  })
 );
 
 export const payload_preferences = pgTable(
@@ -477,15 +477,15 @@ export const payload_preferences = pgTable(
   },
   (columns) => ({
     payload_preferences_key_idx: index("payload_preferences_key_idx").on(
-      columns.key,
+      columns.key
     ),
     payload_preferences_updated_at_idx: index(
-      "payload_preferences_updated_at_idx",
+      "payload_preferences_updated_at_idx"
     ).on(columns.updatedAt),
     payload_preferences_created_at_idx: index(
-      "payload_preferences_created_at_idx",
+      "payload_preferences_created_at_idx"
     ).on(columns.createdAt),
-  }),
+  })
 );
 
 export const payload_preferences_rels = pgTable(
@@ -502,7 +502,7 @@ export const payload_preferences_rels = pgTable(
     parentIdx: index("payload_preferences_rels_parent_idx").on(columns.parent),
     pathIdx: index("payload_preferences_rels_path_idx").on(columns.path),
     payload_preferences_rels_users_id_idx: index(
-      "payload_preferences_rels_users_id_idx",
+      "payload_preferences_rels_users_id_idx"
     ).on(columns.usersID),
     parentFk: foreignKey({
       columns: [columns["parent"]],
@@ -514,7 +514,7 @@ export const payload_preferences_rels = pgTable(
       foreignColumns: [users.id],
       name: "payload_preferences_rels_users_fk",
     }).onDelete("cascade"),
-  }),
+  })
 );
 
 export const payload_migrations = pgTable(
@@ -540,12 +540,12 @@ export const payload_migrations = pgTable(
   },
   (columns) => ({
     payload_migrations_updated_at_idx: index(
-      "payload_migrations_updated_at_idx",
+      "payload_migrations_updated_at_idx"
     ).on(columns.updatedAt),
     payload_migrations_created_at_idx: index(
-      "payload_migrations_created_at_idx",
+      "payload_migrations_created_at_idx"
     ).on(columns.createdAt),
-  }),
+  })
 );
 
 export const settings_microgame_login_text = pgTable(
@@ -559,17 +559,17 @@ export const settings_microgame_login_text = pgTable(
   },
   (columns) => ({
     _orderIdx: index("settings_microgame_login_text_order_idx").on(
-      columns._order,
+      columns._order
     ),
     _parentIDIdx: index("settings_microgame_login_text_parent_id_idx").on(
-      columns._parentID,
+      columns._parentID
     ),
     _parentIDFk: foreignKey({
       columns: [columns["_parentID"]],
       foreignColumns: [settings.id],
       name: "settings_microgame_login_text_parent_id_fk",
     }).onDelete("cascade"),
-  }),
+  })
 );
 
 export const settings_microgame_options = pgTable(
@@ -584,14 +584,14 @@ export const settings_microgame_options = pgTable(
   (columns) => ({
     _orderIdx: index("settings_microgame_options_order_idx").on(columns._order),
     _parentIDIdx: index("settings_microgame_options_parent_id_idx").on(
-      columns._parentID,
+      columns._parentID
     ),
     _parentIDFk: foreignKey({
       columns: [columns["_parentID"]],
       foreignColumns: [settings.id],
       name: "settings_microgame_options_parent_id_fk",
     }).onDelete("cascade"),
-  }),
+  })
 );
 
 export const settings_microgame_notes = pgTable(
@@ -606,14 +606,14 @@ export const settings_microgame_notes = pgTable(
   (columns) => ({
     _orderIdx: index("settings_microgame_notes_order_idx").on(columns._order),
     _parentIDIdx: index("settings_microgame_notes_parent_id_idx").on(
-      columns._parentID,
+      columns._parentID
     ),
     _parentIDFk: foreignKey({
       columns: [columns["_parentID"]],
       foreignColumns: [settings.id],
       name: "settings_microgame_notes_parent_id_fk",
     }).onDelete("cascade"),
-  }),
+  })
 );
 
 export const settings_microgame_instructions = pgTable(
@@ -626,17 +626,17 @@ export const settings_microgame_instructions = pgTable(
   },
   (columns) => ({
     _orderIdx: index("settings_microgame_instructions_order_idx").on(
-      columns._order,
+      columns._order
     ),
     _parentIDIdx: index("settings_microgame_instructions_parent_id_idx").on(
-      columns._parentID,
+      columns._parentID
     ),
     _parentIDFk: foreignKey({
       columns: [columns["_parentID"]],
       foreignColumns: [settings.id],
       name: "settings_microgame_instructions_parent_id_fk",
     }).onDelete("cascade"),
-  }),
+  })
 );
 
 export const settings = pgTable(
@@ -647,7 +647,7 @@ export const settings = pgTable(
       () => media.id,
       {
         onDelete: "set null",
-      },
+      }
     ),
     microgame_title: varchar("microgame_title"),
     microgame_lastLogin: varchar("microgame_last_login"),
@@ -657,7 +657,7 @@ export const settings = pgTable(
     microgame_sectionTitle: varchar("microgame_section_title"),
     microgame_subtitle: varchar("microgame_subtitle"),
     microgame_tradingInstructionsTitle: varchar(
-      "microgame_trading_instructions_title",
+      "microgame_trading_instructions_title"
     ),
     _status: enum_settings_status("_status").default("draft"),
     updatedAt: timestamp("updated_at", {
@@ -673,10 +673,10 @@ export const settings = pgTable(
   },
   (columns) => ({
     settings_microgame_login_microgame_login_logo_idx: index(
-      "settings_microgame_login_microgame_login_logo_idx",
+      "settings_microgame_login_microgame_login_logo_idx"
     ).on(columns.microgame_login_logo),
     settings__status_idx: index("settings__status_idx").on(columns._status),
-  }),
+  })
 );
 
 export const _settings_v_version_microgame_login_text = pgTable(
@@ -691,17 +691,17 @@ export const _settings_v_version_microgame_login_text = pgTable(
   },
   (columns) => ({
     _orderIdx: index("_settings_v_version_microgame_login_text_order_idx").on(
-      columns._order,
+      columns._order
     ),
     _parentIDIdx: index(
-      "_settings_v_version_microgame_login_text_parent_id_idx",
+      "_settings_v_version_microgame_login_text_parent_id_idx"
     ).on(columns._parentID),
     _parentIDFk: foreignKey({
       columns: [columns["_parentID"]],
       foreignColumns: [_settings_v.id],
       name: "_settings_v_version_microgame_login_text_parent_id_fk",
     }).onDelete("cascade"),
-  }),
+  })
 );
 
 export const _settings_v_version_microgame_options = pgTable(
@@ -716,17 +716,17 @@ export const _settings_v_version_microgame_options = pgTable(
   },
   (columns) => ({
     _orderIdx: index("_settings_v_version_microgame_options_order_idx").on(
-      columns._order,
+      columns._order
     ),
     _parentIDIdx: index(
-      "_settings_v_version_microgame_options_parent_id_idx",
+      "_settings_v_version_microgame_options_parent_id_idx"
     ).on(columns._parentID),
     _parentIDFk: foreignKey({
       columns: [columns["_parentID"]],
       foreignColumns: [_settings_v.id],
       name: "_settings_v_version_microgame_options_parent_id_fk",
     }).onDelete("cascade"),
-  }),
+  })
 );
 
 export const _settings_v_version_microgame_notes = pgTable(
@@ -741,17 +741,17 @@ export const _settings_v_version_microgame_notes = pgTable(
   },
   (columns) => ({
     _orderIdx: index("_settings_v_version_microgame_notes_order_idx").on(
-      columns._order,
+      columns._order
     ),
     _parentIDIdx: index("_settings_v_version_microgame_notes_parent_id_idx").on(
-      columns._parentID,
+      columns._parentID
     ),
     _parentIDFk: foreignKey({
       columns: [columns["_parentID"]],
       foreignColumns: [_settings_v.id],
       name: "_settings_v_version_microgame_notes_parent_id_fk",
     }).onDelete("cascade"),
-  }),
+  })
 );
 
 export const _settings_v_version_microgame_instructions = pgTable(
@@ -765,17 +765,17 @@ export const _settings_v_version_microgame_instructions = pgTable(
   },
   (columns) => ({
     _orderIdx: index("_settings_v_version_microgame_instructions_order_idx").on(
-      columns._order,
+      columns._order
     ),
     _parentIDIdx: index(
-      "_settings_v_version_microgame_instructions_parent_id_idx",
+      "_settings_v_version_microgame_instructions_parent_id_idx"
     ).on(columns._parentID),
     _parentIDFk: foreignKey({
       columns: [columns["_parentID"]],
       foreignColumns: [_settings_v.id],
       name: "_settings_v_version_microgame_instructions_parent_id_fk",
     }).onDelete("cascade"),
-  }),
+  })
 );
 
 export const _settings_v = pgTable(
@@ -783,7 +783,7 @@ export const _settings_v = pgTable(
   {
     id: serial("id").primaryKey(),
     version_microgame_login_logo: integer(
-      "version_microgame_login_logo_id",
+      "version_microgame_login_logo_id"
     ).references(() => media.id, {
       onDelete: "set null",
     }),
@@ -795,7 +795,7 @@ export const _settings_v = pgTable(
     version_microgame_sectionTitle: varchar("version_microgame_section_title"),
     version_microgame_subtitle: varchar("version_microgame_subtitle"),
     version_microgame_tradingInstructionsTitle: varchar(
-      "version_microgame_trading_instructions_title",
+      "version_microgame_trading_instructions_title"
     ),
     version__status:
       enum__settings_v_version_status("version__status").default("draft"),
@@ -827,19 +827,19 @@ export const _settings_v = pgTable(
   },
   (columns) => ({
     _settings_v_version_microgame_login_version_microgame_login_logo_idx: index(
-      "_settings_v_version_microgame_login_version_microgame_login_logo_idx",
+      "_settings_v_version_microgame_login_version_microgame_login_logo_idx"
     ).on(columns.version_microgame_login_logo),
     _settings_v_version_version__status_idx: index(
-      "_settings_v_version_version__status_idx",
+      "_settings_v_version_version__status_idx"
     ).on(columns.version__status),
     _settings_v_created_at_idx: index("_settings_v_created_at_idx").on(
-      columns.createdAt,
+      columns.createdAt
     ),
     _settings_v_updated_at_idx: index("_settings_v_updated_at_idx").on(
-      columns.updatedAt,
+      columns.updatedAt
     ),
     _settings_v_latest_idx: index("_settings_v_latest_idx").on(columns.latest),
-  }),
+  })
 );
 
 export const relations_brands_links = relations(brands_links, ({one}) => ({
@@ -872,7 +872,7 @@ export const relations__brands_v_version_links = relations(
       references: [_brands_v.id],
       relationName: "version_links",
     }),
-  }),
+  })
 );
 export const relations__brands_v = relations(_brands_v, ({one, many}) => ({
   parent: one(brands, {
@@ -957,7 +957,7 @@ export const relations_payload_locked_documents_rels = relations(
       references: [users.id],
       relationName: "users",
     }),
-  }),
+  })
 );
 export const relations_payload_locked_documents = relations(
   payload_locked_documents,
@@ -965,7 +965,7 @@ export const relations_payload_locked_documents = relations(
     _rels: many(payload_locked_documents_rels, {
       relationName: "_rels",
     }),
-  }),
+  })
 );
 export const relations_payload_preferences_rels = relations(
   payload_preferences_rels,
@@ -980,7 +980,7 @@ export const relations_payload_preferences_rels = relations(
       references: [users.id],
       relationName: "users",
     }),
-  }),
+  })
 );
 export const relations_payload_preferences = relations(
   payload_preferences,
@@ -988,11 +988,11 @@ export const relations_payload_preferences = relations(
     _rels: many(payload_preferences_rels, {
       relationName: "_rels",
     }),
-  }),
+  })
 );
 export const relations_payload_migrations = relations(
   payload_migrations,
-  () => ({}),
+  () => ({})
 );
 export const relations_settings_microgame_login_text = relations(
   settings_microgame_login_text,
@@ -1002,7 +1002,7 @@ export const relations_settings_microgame_login_text = relations(
       references: [settings.id],
       relationName: "microgame_login_text",
     }),
-  }),
+  })
 );
 export const relations_settings_microgame_options = relations(
   settings_microgame_options,
@@ -1012,7 +1012,7 @@ export const relations_settings_microgame_options = relations(
       references: [settings.id],
       relationName: "microgame_options",
     }),
-  }),
+  })
 );
 export const relations_settings_microgame_notes = relations(
   settings_microgame_notes,
@@ -1022,7 +1022,7 @@ export const relations_settings_microgame_notes = relations(
       references: [settings.id],
       relationName: "microgame_notes",
     }),
-  }),
+  })
 );
 export const relations_settings_microgame_instructions = relations(
   settings_microgame_instructions,
@@ -1032,7 +1032,7 @@ export const relations_settings_microgame_instructions = relations(
       references: [settings.id],
       relationName: "microgame_instructions",
     }),
-  }),
+  })
 );
 export const relations_settings = relations(settings, ({one, many}) => ({
   microgame_login_logo: one(media, {
@@ -1061,7 +1061,7 @@ export const relations__settings_v_version_microgame_login_text = relations(
       references: [_settings_v.id],
       relationName: "version_microgame_login_text",
     }),
-  }),
+  })
 );
 export const relations__settings_v_version_microgame_options = relations(
   _settings_v_version_microgame_options,
@@ -1071,7 +1071,7 @@ export const relations__settings_v_version_microgame_options = relations(
       references: [_settings_v.id],
       relationName: "version_microgame_options",
     }),
-  }),
+  })
 );
 export const relations__settings_v_version_microgame_notes = relations(
   _settings_v_version_microgame_notes,
@@ -1081,7 +1081,7 @@ export const relations__settings_v_version_microgame_notes = relations(
       references: [_settings_v.id],
       relationName: "version_microgame_notes",
     }),
-  }),
+  })
 );
 export const relations__settings_v_version_microgame_instructions = relations(
   _settings_v_version_microgame_instructions,
@@ -1091,7 +1091,7 @@ export const relations__settings_v_version_microgame_instructions = relations(
       references: [_settings_v.id],
       relationName: "version_microgame_instructions",
     }),
-  }),
+  })
 );
 export const relations__settings_v = relations(_settings_v, ({one, many}) => ({
   version_microgame_login_logo: one(media, {
@@ -1112,7 +1112,7 @@ export const relations__settings_v = relations(_settings_v, ({one, many}) => ({
     _settings_v_version_microgame_instructions,
     {
       relationName: "version_microgame_instructions",
-    },
+    }
   ),
 }));
 

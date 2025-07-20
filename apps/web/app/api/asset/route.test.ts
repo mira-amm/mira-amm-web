@@ -45,7 +45,7 @@ describe("GET /api/asset", () => {
     mockFetch.mockResolvedValueOnce({ok: false, status: 404} as Response);
 
     const req = new NextRequest(
-      `https://mock-api.com/api/asset?id=${mockAssetId}`,
+      `https://mock-api.com/api/asset?id=${mockAssetId}`
     );
     const res = await GET(req);
 
@@ -59,7 +59,7 @@ describe("GET /api/asset", () => {
     mockFetch.mockRejectedValueOnce(new Error("Network error"));
 
     const req = new NextRequest(
-      `https://mock-api.com/api/asset?id=${mockAssetId}`,
+      `https://mock-api.com/api/asset?id=${mockAssetId}`
     );
     const res = await GET(req);
 
@@ -74,7 +74,7 @@ describe("GET /api/asset", () => {
     } as Response);
 
     const req = new NextRequest(
-      `https://mock-api.com/api/asset?id=${mockAssetId}`,
+      `https://mock-api.com/api/asset?id=${mockAssetId}`
     );
     const res = await GET(req);
 

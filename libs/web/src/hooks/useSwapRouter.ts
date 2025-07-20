@@ -8,7 +8,7 @@ import {
 } from "./get-swap-quotes-batch";
 import {useReadonlyMira} from ".";
 import {type Route, useRoutablePools} from "@/src/hooks";
-import { CoinData } from "../utils/coinsConfig";
+import {CoinData} from "../utils/coinsConfig";
 
 export enum TradeState {
   LOADING,
@@ -22,7 +22,7 @@ export function useSwapRouter(
   tradeType: TradeType,
   amountSpecified: BN = bn(0),
   assetIn?: CoinData,
-  assetOut?: CoinData,
+  assetOut?: CoinData
 ): {
   tradeState: TradeState;
   trade?: {
@@ -36,7 +36,7 @@ export function useSwapRouter(
 
   const shouldFetch = useMemo(
     () => !!assetIn && !!assetOut && amountSpecified.gt(0),
-    [assetIn, assetOut, amountSpecified],
+    [assetIn, assetOut, amountSpecified]
   );
 
   const {
@@ -87,7 +87,6 @@ export function useSwapRouter(
     if (!quotes.length) {
       return {
         tradeState: TradeState.NO_ROUTE_FOUND,
-
       };
     }
 

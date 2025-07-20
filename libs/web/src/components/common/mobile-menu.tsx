@@ -9,7 +9,7 @@ import {clsx} from "clsx";
 
 import {LogoIcon} from "@/meshwave-ui/icons";
 import {BlogLink, DiscordLink, XLink} from "@/src/utils/constants";
-import { useFaucetLink } from "@/src/hooks/useFaucetLink";
+import {useFaucetLink} from "@/src/hooks/useFaucetLink";
 
 export function MobileMenu() {
   const [expanded, setExpanded] = useState(false);
@@ -29,7 +29,7 @@ export function MobileMenu() {
     <div
       className={clsx(
         "fixed top-0 right-0 z-10 h-full w-screen overflow-auto bg-background-primary text-white transition-transform duration-400 ease-in-out",
-        expanded ? "translate-x-0 shadow-md" : "translate-x-full",
+        expanded ? "translate-x-0 shadow-md" : "translate-x-full"
       )}
     >
       <div className="flex items-center justify-between p-4">

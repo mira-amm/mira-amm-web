@@ -12,10 +12,9 @@ import {PropsWithChildren, ReactNode} from "react";
 export const FeatureGuard = ({
   fallback,
   children,
-}: PropsWithChildren<
-  {
+}: PropsWithChildren<{
   fallback?: ReactNode;
-  }>) => {
+}>) => {
   const isRebrandEnabled = useIsRebrandEnabled();
 
   if (isRebrandEnabled) {

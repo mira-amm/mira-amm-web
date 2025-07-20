@@ -28,7 +28,7 @@ const config = new DocumentBuilder()
       "- 🕸 [GraphQL Voyager:](/docs/voyager) `/docs/voyager`",
       "",
       "- 🛝 [GraphQL Playground - Apollo Server:](/graphql) `/graphql`",
-    ].join("\n"),
+    ].join("\n")
   )
   .setVersion("1.0?")
   .setTermsOfService("https://docs.mira.ly/resources/terms-and-conditions")
@@ -72,7 +72,7 @@ app.use(
     // "none",
     url: "/openapi.json",
     favicon: "https://mira.ly/images/favicon.png",
-  }),
+  })
 );
 
 app.getHttpAdapter().get("/", (_req, res) => {

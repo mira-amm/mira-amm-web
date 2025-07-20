@@ -25,14 +25,8 @@ abigen!(
         name = "SwapExactOutputScript",
         abi = "scripts/swap_exact_output_script/out/debug/swap_exact_output_script-abi.json"
     ),
-    Contract(
-        name = "MiraAMM",
-        abi = "fixtures/mira-amm/mira_amm_contract-abi.json"
-    ),
-    Contract(
-        name = "MockToken",
-        abi = "fixtures/mock-token/mock_token-abi.json"
-    )
+    Contract(name = "MiraAMM", abi = "fixtures/mira-amm/mira_amm_contract-abi.json"),
+    Contract(name = "MockToken", abi = "fixtures/mock-token/mock_token-abi.json")
 );
 
 pub mod amm {
@@ -43,12 +37,7 @@ pub mod amm {
         contract: &MiraAMM<WalletUnlocked>,
         owner: Identity,
     ) -> CallResponse<()> {
-        contract
-            .methods()
-            .transfer_ownership(owner)
-            .call()
-            .await
-            .unwrap()
+        contract.methods().transfer_ownership(owner).call().await.unwrap()
     }
 
     pub async fn create_pool(
@@ -79,12 +68,7 @@ pub mod amm {
         contract: &MiraAMM<WalletUnlocked>,
         pool_id: PoolId,
     ) -> CallResponse<Option<PoolMetadata>> {
-        contract
-            .methods()
-            .pool_metadata(pool_id)
-            .call()
-            .await
-            .unwrap()
+        contract.methods().pool_metadata(pool_id).call().await.unwrap()
     }
 }
 
@@ -94,14 +78,12 @@ pub mod mock {
     pub async fn deploy_mock_token_contract(
         wallet: &WalletUnlocked,
     ) -> (ContractId, MockToken<WalletUnlocked>) {
-        let contract_id = Contract::load_from(
-            MOCK_TOKEN_CONTRACT_BINARY_PATH,
-            LoadConfiguration::default(),
-        )
-        .unwrap()
-        .deploy(wallet, TxPolicies::default())
-        .await
-        .unwrap();
+        let contract_id =
+            Contract::load_from(MOCK_TOKEN_CONTRACT_BINARY_PATH, LoadConfiguration::default())
+                .unwrap()
+                .deploy(wallet, TxPolicies::default())
+                .await
+                .unwrap();
 
         let id = ContractId::from(contract_id.clone());
         let instance = MockToken::new(contract_id, wallet.clone());
@@ -115,12 +97,7 @@ pub mod mock {
         symbol: String,
         decimals: u8,
     ) -> CallResponse<AssetId> {
-        contract
-            .methods()
-            .add_token(name, symbol, decimals)
-            .call()
-            .await
-            .unwrap()
+        contract.methods().add_token(name, symbol, decimals).call().await.unwrap()
     }
 
     pub async fn mint_tokens(
@@ -141,12 +118,7 @@ pub mod mock {
         contract: &MockToken<WalletUnlocked>,
         asset_id: AssetId,
     ) -> CallResponse<Option<Bits256>> {
-        contract
-            .methods()
-            .get_sub_id(asset_id)
-            .call()
-            .await
-            .unwrap()
+        contract.methods().get_sub_id(asset_id).call().await.unwrap()
     }
 }
 
@@ -163,10 +135,8 @@ pub mod scripts {
         let mut outputs: Vec<Output> = Vec::with_capacity(assets.len());
 
         for (asset, amount) in assets {
-            let asset_inputs = wallet
-                .get_asset_inputs_for_amount(*asset, *amount, None)
-                .await
-                .unwrap();
+            let asset_inputs =
+                wallet.get_asset_inputs_for_amount(*asset, *amount, None).await.unwrap();
             inputs.extend(asset_inputs);
             outputs.push(Output::Change {
                 asset_id: *asset,

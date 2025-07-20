@@ -2,7 +2,7 @@ import {useCallback} from "react";
 import {bn, BN} from "fuels";
 import {useWallet} from "@fuels/react";
 import {useMutation} from "@tanstack/react-query";
-import { useMiraDex } from "@/src/hooks";
+import {useMiraDex} from "@/src/hooks";
 import {PoolId} from "mira-dex-ts";
 import {DefaultTxParams, MaxDeadline} from "@/src/utils/constants";
 
@@ -18,7 +18,7 @@ export function useRemoveLiquidity({
   lpTokenBalance: BN | undefined;
   coinAAmountToWithdraw: BN;
   coinBAmountToWithdraw: BN;
-}){
+}) {
   const mira = useMiraDex();
   const {wallet} = useWallet();
 
@@ -41,7 +41,7 @@ export function useRemoveLiquidity({
       minCoinAAmount,
       minCoinBAmount,
       MaxDeadline,
-      DefaultTxParams,
+      DefaultTxParams
     );
     const gasCost = await wallet.getTransactionCost(txRequest);
     const fundedTx = await wallet.fund(txRequest, gasCost);
@@ -57,4 +57,4 @@ export function useRemoveLiquidity({
   });
 
   return {data, removeLiquidity: mutateAsync, error, isPending};
-};
+}

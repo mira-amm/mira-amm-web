@@ -1,4 +1,4 @@
-import { CollectionSlug, GlobalSlug } from 'payload'
+import {CollectionSlug, GlobalSlug} from "payload";
 import {
   Image,
   LucideProps,
@@ -8,8 +8,8 @@ import {
   // Inbox,
   Settings,
   Gamepad,
-} from 'lucide-react'
-import { ExoticComponent } from 'react'
+} from "lucide-react";
+import {ExoticComponent} from "react";
 
 export const navIconMap: Partial<
   Record<CollectionSlug | GlobalSlug, ExoticComponent<LucideProps>>
@@ -21,7 +21,9 @@ export const navIconMap: Partial<
   settings: Settings,
   // forms: MousePointer2,
   // "form-submissions": Inbox,
-}
+};
 
 export const getNavIcon = (slug: string) =>
-  Object.hasOwn(navIconMap, slug) ? navIconMap[slug as CollectionSlug | GlobalSlug] : undefined
+  Object.hasOwn(navIconMap, slug)
+    ? navIconMap[slug as CollectionSlug | GlobalSlug]
+    : undefined;
