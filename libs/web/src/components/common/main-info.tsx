@@ -7,8 +7,7 @@ export const MainInfo: React.FC<{
   return (
     <>
       <h2
-        className="text-[32px] leading-[40px] lg:text-[44px] lg:leading-[52px] m-0 text-center"
-        style={{fontFamily: "var(--font-prompt)"}}
+        className="text-[32px] leading-[40px] lg:text-[44px] lg:leading-[52px] m-0 text-center font-alt"
       >
         {title}
       </h2>
