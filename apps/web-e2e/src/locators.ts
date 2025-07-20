@@ -35,7 +35,7 @@ export const searchResults = () =>
     By.css("div:has(> input[placeholder^='Search by token or paste address']) + div > div"));
 
 export const slippageLabel = () =>
-  PageElement.located(By.cssContainingText("p", "% slippage"));
+  PageElement.located(By.cssContainingText("p", "% Slippage"));
 
 export const slippageSettingsButton = () =>
   PageElement.located(By.css("button svg.lucide-settings"));

@@ -138,7 +138,7 @@ export const AdjustSlippage = {
       Wait.until(slippageSettingsModal(), isPresent()),
       Wait.until(slippageSettingsModalPercentageButton(value), isPresent()),
       slippageSettingsModalPercentageButton(value).click(),
-      Ensure.that(Text.of(slippageLabel()), equals(`${value}% slippage`)),
+      Ensure.that(Text.of(slippageLabel()), equals(`${value}% Slippage`)),
     ),
 
   toCustom: (value: string) =>
@@ -154,7 +154,7 @@ export const AdjustSlippage = {
       slippageSettingsInput().enterValue(`${value}%`),
       Press.the("Enter"),
       Press.the("Escape"),
-      Ensure.that(Text.of(slippageLabel()), equals(`${value}% slippage`)),
+      Ensure.that(Text.of(slippageLabel()), equals(`${value}% Slippage`)),
     ),
 };
 
