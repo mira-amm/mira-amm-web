@@ -127,7 +127,7 @@ const MicroChainStatusText = () => {
           reset
         </button>
       </div>
-      <div className="widget">
+      <div className={`widget ${glowClass ? "greenWidget" : ""}`}>
         <div
           style={{display: "flex", gap: "3px", height: "24px"}}
           className={glowClass}
