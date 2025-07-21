@@ -21,7 +21,7 @@ export function DesktopPoolRow({poolData}: {poolData: PoolData}) {
 
   return (
     <TableRow key={poolKey}>
-      <TableCell className={cn(cellBase, "text-left")}>
+      <TableCell className={cn(cellBase, "text-left w-[230px] truncate")}>
         <CoinPair
           firstCoin={poolId[0].bits}
           secondCoin={poolId[1].bits}
@@ -34,7 +34,7 @@ export function DesktopPoolRow({poolData}: {poolData: PoolData}) {
         className={cn(
           cellBase,
           "overflow-visible",
-          !isMatching && !aprValue && "text-content-dimmed-light",
+          !isMatching && !aprValue && "text-content-dimmed-light"
         )}
       >
         {isMatching ? (
@@ -53,9 +53,9 @@ export function DesktopPoolRow({poolData}: {poolData: PoolData}) {
       <TableCell className={cellBase}>{volumeValue}</TableCell>
       <TableCell className={cellBase}>{tvlValue}</TableCell>
 
-      <TableCell className={cellBase}>
+      <TableCell className="py-4 whitespace-nowrap overflow-hidden text-ellipsis text-center">
         <Link href={`/liquidity/add?pool=${poolKey}`}>
-          <Button variant="outline">Add Liquidity</Button>
+          <Button variant="outline" className="w-[177px]">Add Liquidity</Button>
         </Link>
       </TableCell>
     </TableRow>

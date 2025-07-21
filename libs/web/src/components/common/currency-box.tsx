@@ -96,11 +96,8 @@ export function CurrencyBox({
           <input
             className={clsx(
               "flex-1 w-0 font-semibold text-[20px] leading-6 border-none bg-transparent outline-none",
-              "text-content-secondary dark:text-content-secondary ",
-              rebrandEnabled
-                ? "font-(family-name:--font-jetbrains-mono)"
-                : "font-inter",
-              loading && "text-gray-400/40 dark:text-content-tertiary/40",
+              "text-content-secondary dark:text-content-secondary font-alt",
+              loading && "text-gray-400/40 dark:text-content-tertiary/40"
             )}
             type="text"
             inputMode="decimal"

@@ -58,7 +58,7 @@ export function Pools() {
     <section className="flex flex-col gap-[14px]">
       <div className="flex justify-end">
         <Link href="/liquidity/create-pool">
-          <Button className="mobileOnly">Create Pool</Button>
+          <Button className="mobileOnly w-[177px]">Create Pool</Button>
         </Link>
       </div>
 

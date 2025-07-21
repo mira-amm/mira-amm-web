@@ -27,10 +27,10 @@ export function DesktopPools({
   const thBase =
     "px-6 py-4 text-[16px] leading-[19px] font-medium text-content-tertiary whitespace-nowrap overflow-hidden text-ellipsis";
   return (
-    <Table className="md:table table-fixed desktopOnly">
+    <Table className="md:table table-fixed desktopOnly p-5">
       <TableHeader>
         <TableRow>
-          <TableHead className={cn(thBase, "w-[30%] text-left")}>
+          <TableHead className={cn(thBase, "w-[230px] text-left")}>
             Pools
           </TableHead>
           <TableHead className={cn(thBase, "w-[20%] text-center")}>
@@ -50,9 +50,9 @@ export function DesktopPools({
               className=""
             />
           </TableHead>
-          <TableHead className={cn(thBase, "w-[20%] text-center")}>
+          <TableHead className={cn("py-4 text-[16px] leading-[19px] font-medium text-content-tertiary whitespace-nowrap overflow-hidden text-ellipsis", "w-[20%] text-center")}>
             <Link href="/liquidity/create-pool">
-              <Button>Create Pool</Button>
+              <Button className="w-[177px]">Create Pool</Button>
             </Link>
           </TableHead>
         </TableRow>
