@@ -39,7 +39,7 @@ export function BoostsRewards() {
 
       <div
         className={clsx(
-          "flex justify-between items-center gap-4 rounded-[10px] min-h-[110px] bg-[url('/images/pointsGradientBackground.png')] p-6"
+          "flex justify-between items-center gap-4 rounded-[10px] min-h-[110px] bg-primary-900 bg-[url('/images/pointsGradientBackground.png')] bg-cover bg-center p-6"
         )}
       >
         <div className="flex flex-col gap-2">
