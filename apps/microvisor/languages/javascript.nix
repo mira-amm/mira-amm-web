@@ -11,7 +11,7 @@
       # };
       pnpm = {
         enable = true;
-        install.enable = true;
+        # install.enable = true;
       };
     };
   };
