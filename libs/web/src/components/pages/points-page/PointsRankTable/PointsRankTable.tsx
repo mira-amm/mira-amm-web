@@ -1,7 +1,6 @@
 "use client";
 
 import {useState} from "react";
-import {useIsRebrandEnabled} from "@/src/hooks/useIsRebrandEnabled";
 import {
   createColumnHelper,
   flexRender,
