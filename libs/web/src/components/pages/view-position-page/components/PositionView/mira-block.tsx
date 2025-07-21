@@ -31,15 +31,11 @@ export function MiraBlock({pool}: {pool: PoolId}) {
   return (
     <div
       className={cn(
-        isEnabled && "flex flex-1 flex-col justify-end rounded-2xl p-4",
+        isEnabled &&
+          "flex flex-1 flex-col justify-end rounded-2xl p-4 bg-[url('/images/manage-liquidity-bg.jpg')] bg-cover",
         !isEnabled &&
           "flex flex-1 flex-col justify-end rounded-2xl bg-gradient-to-r from-[#5872fc] via-[#6142ba] to-[#c41cff] p-4"
       )}
-      style={{
-        ...(isEnabled && {
-          background: "linear-gradient(to right, #b4311a, #cf9e35, #1f2226)",
-        }),
-      }}
     >
       <FeatureGuard
         fallback={
