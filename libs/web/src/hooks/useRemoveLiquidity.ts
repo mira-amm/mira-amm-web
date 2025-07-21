@@ -45,7 +45,7 @@ export function useRemoveLiquidity({
       DefaultTxParams,
       {
         useAssembleTx: true,
-      },
+      }
     );
 
     const tx = await wallet.sendTransaction(txRequest);

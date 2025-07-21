@@ -1,6 +1,10 @@
 import {Address, arrayify, AssetId, BN, concat, sha256} from "fuels";
 import {PoolId, PoolMetadata} from "./model";
-import { ContractIdInput, IdentityInput, AssetIdInput } from "./typegen/scripts/SwapExactOutputScriptLoader";
+import {
+  ContractIdInput,
+  IdentityInput,
+  AssetIdInput,
+} from "./typegen/scripts/SwapExactOutputScriptLoader";
 
 export function contractIdInput(contractId: string): ContractIdInput {
   return {bits: contractId};

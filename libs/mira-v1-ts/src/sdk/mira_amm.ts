@@ -59,20 +59,20 @@ export class MiraAmm {
     this.account = account;
     this.ammContract = new MiraAmmContract(contractId, account);
     this.addLiquidityScriptLoader = new AddLiquidityScriptLoader(
-      account,
+      account
     ).setConfigurableConstants(contractIdConfigurables);
     this.createPoolAndAddLiquidityScriptLoader =
       new CreatePoolAndAddLiquidityScriptLoader(
-        account,
+        account
       ).setConfigurableConstants(contractIdConfigurables);
     this.removeLiquidityScriptLoader = new RemoveLiquidityScriptLoader(
-      account,
+      account
     ).setConfigurableConstants(contractIdConfigurables);
     this.swapExactInputScriptLoader = new SwapExactInputScriptLoader(
-      account,
+      account
     ).setConfigurableConstants(contractIdConfigurables);
     this.swapExactOutputScriptLoader = new SwapExactOutputScriptLoader(
-      account,
+      account
     ).setConfigurableConstants(contractIdConfigurables);
   }
 
@@ -83,7 +83,7 @@ export class MiraAmm {
       "Deployed MiraAmm contract with status:",
       transactionResult.status,
       "and id:",
-      contract.id.toB256(),
+      contract.id.toB256()
     );
     return new MiraAmm(wallet, contract.id.toB256());
   }
@@ -100,7 +100,7 @@ export class MiraAmm {
     amountBMin: BigNumberish,
     deadline: BigNumberish,
     txParams?: TxParams,
-    options?: PrepareRequestOptions,
+    options?: PrepareRequestOptions
   ): Promise<TransactionWithGasPrice> {
     const assetA = poolId[0];
     poolId = reorderPoolId(poolId);
@@ -116,7 +116,7 @@ export class MiraAmm {
         amount0Min,
         amount1Min,
         addressInput(this.account.address),
-        deadline,
+        deadline
       )
       .addContracts([this.ammContract])
       .txParams(txParams ?? {})
@@ -145,7 +145,7 @@ export class MiraAmm {
     amountBDesired: BigNumberish,
     deadline: BigNumberish,
     txParams?: TxParams,
-    options?: PrepareRequestOptions,
+    options?: PrepareRequestOptions
   ): Promise<TransactionWithGasPrice> {
     const [token0Contract, token0SubId, token1Contract, token1SubId] =
       reorderAssetContracts(
@@ -153,7 +153,7 @@ export class MiraAmm {
         tokenASubId,
         tokenBContract,
         tokenBSubId,
-        isStable,
+        isStable
       );
     const [amount0Desired, amount1Desired] =
       tokenAContract === token0Contract
@@ -169,7 +169,7 @@ export class MiraAmm {
         amount0Desired,
         amount1Desired,
         addressInput(this.account.address),
-        deadline,
+        deadline
       )
       .addContracts([this.ammContract])
       .txParams(txParams ?? {})
@@ -193,7 +193,7 @@ export class MiraAmm {
       2,
       inputAssets,
       [token0Contract, token1Contract],
-      options,
+      options
     );
   }
 
@@ -203,7 +203,7 @@ export class MiraAmm {
     tokenBContract: string,
     tokenBSubId: string,
     isStable: boolean,
-    txParams?: TxParams,
+    txParams?: TxParams
   ): Promise<TransactionWithGasPrice> {
     const [token0Contract, token0SubId, token1Contract, token1SubId] =
       reorderAssetContracts(
@@ -211,7 +211,7 @@ export class MiraAmm {
         tokenASubId,
         tokenBContract,
         tokenBSubId,
-        isStable,
+        isStable
       );
     let request = await this.ammContract.functions
       .create_pool(
@@ -219,7 +219,7 @@ export class MiraAmm {
         token0SubId,
         contractIdInput(token1Contract),
         token1SubId,
-        isStable,
+        isStable
       )
       .txParams(txParams ?? {})
       .getTransactionRequest();
@@ -230,7 +230,7 @@ export class MiraAmm {
       [token0Contract, token1Contract],
       {
         useAssembleTx: true,
-      },
+      }
     );
   }
 
@@ -241,7 +241,7 @@ export class MiraAmm {
     amountBMin: BigNumberish,
     deadline: BigNumberish,
     txParams?: TxParams,
-    options?: PrepareRequestOptions,
+    options?: PrepareRequestOptions
   ): Promise<TransactionWithGasPrice> {
     const assetA = poolId[0];
     poolId = reorderPoolId(poolId);
@@ -256,7 +256,7 @@ export class MiraAmm {
         amount0Min,
         amount1Min,
         addressInput(this.account.address),
-        deadline,
+        deadline
       )
       .addContracts([this.ammContract])
       .txParams(txParams ?? {})
@@ -279,7 +279,7 @@ export class MiraAmm {
     pools: PoolId[],
     deadline: BigNumberish,
     txParams?: TxParams,
-    options?: PrepareRequestOptions,
+    options?: PrepareRequestOptions
   ): Promise<TransactionWithGasPrice> {
     let request = await this.swapExactInputScriptLoader.functions
       .main(
@@ -288,7 +288,7 @@ export class MiraAmm {
         amountOutMin,
         pools.map(poolIdInput),
         addressInput(this.account.address),
-        deadline,
+        deadline
       )
       .addContracts([this.ammContract])
       .txParams(txParams ?? {})
@@ -311,7 +311,7 @@ export class MiraAmm {
     pools: PoolId[],
     deadline: BigNumberish,
     txParams?: TxParams,
-    options?: PrepareRequestOptions,
+    options?: PrepareRequestOptions
   ): Promise<TransactionWithGasPrice> {
     let request = await this.swapExactOutputScriptLoader.functions
       .main(
@@ -320,7 +320,7 @@ export class MiraAmm {
         amountInMax,
         pools.map(poolIdInput),
         addressInput(this.account.address),
-        deadline,
+        deadline
       )
       .addContracts([this.ammContract])
       .txParams(txParams ?? {})
@@ -346,7 +346,7 @@ export class MiraAmm {
 
   async transferOwnership(
     newOwner: Address,
-    txParams?: TxParams,
+    txParams?: TxParams
   ): Promise<TransactionWithGasPrice> {
     const request = await this.ammContract.functions
       .transfer_ownership(addressInput(newOwner))
@@ -357,7 +357,7 @@ export class MiraAmm {
 
   async setHook(
     newAddress?: string,
-    txParams?: TxParams,
+    txParams?: TxParams
   ): Promise<TransactionWithGasPrice> {
     const request = await this.ammContract.functions
       .set_hook(newAddress ? contractIdInput(newAddress) : undefined)
@@ -367,7 +367,7 @@ export class MiraAmm {
   }
 
   private async fundRequest(
-    request: ScriptTransactionRequest,
+    request: ScriptTransactionRequest
   ): Promise<ScriptTransactionRequest> {
     const gasCost = await this.account.getTransactionCost(request);
     return await this.account.fund(request, gasCost);
@@ -378,14 +378,14 @@ export class MiraAmm {
     variableOutputs: number = 0,
     inputAssets: CoinQuantityLike[] = [],
     inputContracts: string[] = [],
-    options?: PrepareRequestOptions,
+    options?: PrepareRequestOptions
   ): Promise<TransactionWithGasPrice> {
     if (variableOutputs > 0) {
       request.addVariableOutputs(variableOutputs);
     }
 
     const uniqueContracts = new Set(
-      inputContracts.map((c) => Address.fromAddressOrString(c)),
+      inputContracts.map((c) => Address.fromAddressOrString(c))
     );
     for (const contract of uniqueContracts) {
       request.addContractInputAndOutput(contract);
@@ -439,7 +439,7 @@ export class MiraAmm {
           request,
           feePayerAccount: this.account,
           accountCoinQuantities,
-          reserveGas: options.reserveGas
+          reserveGas: options.reserveGas,
         });
 
       return {transactionRequest: assembledRequest, gasPrice};

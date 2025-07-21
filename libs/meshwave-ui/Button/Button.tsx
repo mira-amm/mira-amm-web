@@ -60,7 +60,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
         className={cn(
           buttonVariants({variant, size, block}),
           disabled && disabledStyles,
-          className,
+          className
         )}
         disabled={disabled}
         ref={ref}

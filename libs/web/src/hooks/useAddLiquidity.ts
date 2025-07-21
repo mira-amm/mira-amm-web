@@ -66,7 +66,7 @@ export function useAddLiquidity({
       DefaultTxParams,
       {
         useAssembleTx: true,
-      },
+      }
     );
 
     const tx = await wallet.sendTransaction(txRequest);

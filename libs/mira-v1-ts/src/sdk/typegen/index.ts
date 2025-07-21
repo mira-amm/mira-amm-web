@@ -8,5 +8,5 @@
   Fuels version: 0.101.2
 */
 
-export  *  from './scripts';
-export  *  from './contracts';
+export * from "./scripts";
+export * from "./contracts";

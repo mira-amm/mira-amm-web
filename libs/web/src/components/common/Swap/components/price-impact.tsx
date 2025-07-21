@@ -3,7 +3,7 @@ import {cn} from "@/src/utils/cn";
 
 const getPriceImpact = (
   reservesPrice?: number,
-  previewPrice?: number,
+  previewPrice?: number
 ): number => {
   if (!reservesPrice || previewPrice === undefined) return -1;
   if (reservesPrice <= previewPrice) return 0;

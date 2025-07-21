@@ -8,5 +8,5 @@
   Fuels version: 0.101.2
 */
 
-export { MiraAmmContract } from './MiraAmmContract';
-export { MiraAmmContractFactory } from './MiraAmmContractFactory';
+export {MiraAmmContract} from "./MiraAmmContract";
+export {MiraAmmContractFactory} from "./MiraAmmContractFactory";

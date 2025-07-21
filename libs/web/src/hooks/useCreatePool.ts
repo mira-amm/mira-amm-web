@@ -62,7 +62,7 @@ export function useCreatePool({
         DefaultTxParams,
         {
           useAssembleTx: true,
-        },
+        }
       );
     const tx = await wallet.sendTransaction(txRequest);
     return await tx.waitForResult();

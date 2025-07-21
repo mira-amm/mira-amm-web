@@ -76,9 +76,7 @@ export default function Footer() {
           </Button>
         </div>
       </div>
-      <div className="text-sm text-center">
-        &copy; 2025 Mira Finance
-      </div>
+      <div className="text-sm text-center">&copy; 2025 Mira Finance</div>
     </footer>
   );
 }
