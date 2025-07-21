@@ -5,15 +5,23 @@
   position: fixed;
   bottom: 20px;
   left: 20px;
-  padding: 10px 20px;
+  padding: 22px 20px 18px 20px;
   background-color: var(--background-primary);
   color: var(--content-primary);
-  border: 1px solid var(--background-primary);
+  border: 1px solid var(--content-primary);
   border-radius: 5px;
   z-index: 100;
   transition:
     color 0.5s,
     background-color 0.5s;
+}
+
+.greenWidget {
+  border: 1px solid var(--content-positive);
+  text-shadow:
+    0 0 2px rgba(70, 204, 68, 0.6),
+    0 0 6px rgba(70, 204, 68, 0.4),
+    0 0 12px rgba(70, 204, 68, 0.3);
 }
 
 .incrementButton {
