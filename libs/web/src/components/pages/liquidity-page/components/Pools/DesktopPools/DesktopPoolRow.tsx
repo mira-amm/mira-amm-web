@@ -43,6 +43,7 @@ export function DesktopPoolRow({poolData}: {poolData: PoolData}) {
               aprValue={aprValue}
               poolKey={poolKey}
               tvlValue={tvlActual}
+              background="overlay-5"
             />
           </div>
         ) : (

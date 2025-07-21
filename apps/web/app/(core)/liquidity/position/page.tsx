@@ -6,7 +6,13 @@ import {Loader} from "@/src/components/common";
 
 export default function Page() {
   return (
-    <Suspense fallback={<Loader color="gray" />}>
+    <Suspense
+      fallback={
+        <div className="flex justify-center items-center">
+          <Loader color="gray" />
+        </div>
+      }
+    >
       <PositionPage />
     </Suspense>
   );

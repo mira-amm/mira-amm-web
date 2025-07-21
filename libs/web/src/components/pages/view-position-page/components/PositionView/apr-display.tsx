@@ -19,16 +19,17 @@ export function AprDisplay({pool}: {pool: PoolId}) {
     <>
       {isMatching ? (
         <div className="flex items-center">
-          <p className="text-base font-bold leading-[19px]">APR&nbsp;</p>
+          <p className="text-base leading-[19px]">APR&nbsp;</p>
           <AprBadge
             aprValue={aprValue}
             poolKey={poolKey}
             tvlValue={tvlValue}
             small
+            background="overlay-1"
           />
         </div>
       ) : (
-        <p className="text-base font-bold leading-[19px]">
+        <p className="text-base leading-[19px]">
           APR&nbsp;
           <span
             className={clsx(

@@ -14,6 +14,7 @@ import {ExchangeRate} from "./exchange-rate";
 import {MiraBlock} from "./mira-block";
 
 import {formatDisplayAmount} from "@/src/utils/common";
+import {PromoSparkle} from "@/meshwave-ui/src/components/icons";
 
 interface AssetData {
   amount: string;
@@ -91,7 +92,7 @@ export function MobilePositionView({
           {formattedTvlValue ? (
             <p className="text-content-tertiary">${formattedTvlValue}</p>
           ) : (
-            loading
+            <Loader color="gray" />
           )}
         </div>
         <ExchangeRate
@@ -121,10 +122,11 @@ export function MobilePositionView({
       </div>
 
       <PromoBlock
-        icon={<Sparkles />}
+        icon={<PromoSparkle />}
         title="Learn about providing liquidity"
         link="https://mirror.xyz/miraly.eth"
         linkText="Click here and check our v3 LP walkthrough"
+        background="gradient"
       />
     </section>
   );

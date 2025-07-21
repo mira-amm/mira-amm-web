@@ -13,6 +13,7 @@ import {AprDisplay} from "./apr-display";
 import {ReserveItem} from "./reserve-item";
 import {ExchangeRate} from "./exchange-rate";
 import {MiraBlock} from "./mira-block";
+import {PromoSparkle} from "@/meshwave-ui/src/components/icons";
 
 interface AssetData {
   amount: string;
@@ -66,9 +67,7 @@ export function DesktopPositionView({
         <MiraBlock pool={pool} />
         <div className="flex flex-col min-w-[350px] flex-1 w-full rounded-[10px] bg-background-grey-dark border-border-secondary border-[12px] dark:border-0 dark:bg-background-grey-dark">
           <div className="flex flex-col gap-[15px] p-4">
-            <p className="text-[16px] font-semibold leading-[19px]">
-              Your position
-            </p>
+            <p className="text-[16px] leading-[19px]">Your position</p>
             <AprDisplay pool={pool} />
             <div className="flex justify-between">
               <CoinWithAmount
@@ -116,10 +115,11 @@ export function DesktopPositionView({
       </div>
 
       <PromoBlock
-        icon={<Sparkles />}
+        icon={<PromoSparkle />}
         title="Learn about providing liquidity"
         link="https://mirror.xyz/miraly.eth"
         linkText="Click here and check our v3 LP walkthrough"
+        background="gradient"
       />
     </section>
   );

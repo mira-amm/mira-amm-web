@@ -1,12 +1,7 @@
 import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/meshwave-ui/dropdown-menu";
-import {
   ArrowLeftRight,
   ChevronDown,
+  ChevronUp,
   CopyIcon,
   ExternalLink,
   LogOutIcon,
@@ -66,6 +61,22 @@ export function ConnectWalletNew() {
 
   const handleTxHistoryClick = () => setHistoryOpened(true);
 
+  const [open, setOpen] = useState(false);
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    function handleClickOutside(e: MouseEvent) {
+      if (
+        containerRef.current &&
+        !containerRef.current.contains(e.target as Node)
+      ) {
+        setOpen(false);
+      }
+    }
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
   return (
     <>
       {!isConnected && (
@@ -92,64 +103,84 @@ export function ConnectWalletNew() {
         </div>
       )}
       {isConnected && (
-        <div className="rounded-[10px] border-border-secondary border-[12px] dark:border-0">
-          <div className="flex gap-x-3 p-3 rounded-[10px] justify-between bg-background-grey-dark dark:bg-background-grey-dark">
-            <div className="">
-              <div className="flex justify-between items-center mb-0.5">
-                <span className="text-xs">Power</span>
-                <div className="h-2 w-5 bg-accent-primary shadow-[0_0_10px_#01ec97,0_0_20px_#01ec97aa]"></div>
-              </div>
-              <Button
-                onClick={disconnect}
-                size="xs"
-                className="bg-[#F95465] rounded uppercase px-4 text-black"
-                variant="destructive"
-              >
-                Disconnect
-              </Button>
-            </div>
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <div className="bg-black rounded-[10px] w-[239.82px] text-accent-primary font-alt uppercase px-3 tracking-tight flex justify-between items-center text-sm">
-                  {formattedAddress}
-                  <ChevronDown className="text-content-dimmed-dark" />
+        <div ref={containerRef} className="relative w-[410px]">
+          <div className="rounded-[10px] border-[12px] border-border-secondary dark:border-0">
+            <div className="flex gap-x-3 p-3 rounded-[10px] justify-between bg-background-grey-dark dark:bg-background-grey-dark">
+              <div>
+                <div className="flex justify-between items-center mb-0.5">
+                  <span className="text-xs">Power</span>
+                  <div className="h-2 w-5 bg-accent-primary shadow-[0_0_10px_#01ec97,0_0_20px_#01ec97aa]" />
                 </div>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent
-                className="w-56 dark:bg-[#262834] border-0 px-2 py-2.5"
-                align="start"
-              >
-                <DropdownMenuItem
-                  onClick={handleCopy}
-                  className="hover:bg-background-grey-dark hover:text-content-primary py-3 cursor-pointer group"
+                <Button
+                  onClick={() => {
+                    disconnect();
+                  }}
+                  size="xs"
+                  className="bg-[#F95465] rounded uppercase px-4 text-black"
+                  variant="destructive"
                 >
-                  <CopyIcon />
-                  Copy Address
-                </DropdownMenuItem>
-                <DropdownMenuItem
-                  onClick={handleExplorerClick}
-                  className="hover:bg-background-grey-dark hover:text-content-primary py-3 cursor-pointer"
-                >
-                  <ExternalLink />
-                  View in Explorer
-                </DropdownMenuItem>
-                <DropdownMenuItem
-                  onClick={handleTxHistoryClick}
-                  className="hover:bg-background-grey-dark hover:text-content-primary py-3 cursor-pointer"
-                >
-                  <ArrowLeftRight />
-                  Transaction History
-                </DropdownMenuItem>
-                <DropdownMenuItem
-                  className="hover:bg-background-grey-dark hover:text-content-primary py-3 cursor-pointer"
-                  onClick={disconnect}
-                >
-                  <LogOutIcon />
                   Disconnect
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
+                </Button>
+              </div>
+
+              <div
+                onClick={() => setOpen((prev) => !prev)}
+                className="bg-black rounded-lg w-[239.82px] text-accent-primary font-alt uppercase px-3 tracking-tight flex justify-between items-center text-sm cursor-pointer"
+              >
+                {formattedAddress}
+                {open ? (
+                  <ChevronUp className="text-content-dimmed-dark" />
+                ) : (
+                  <ChevronDown className="text-content-dimmed-dark" />
+                )}
+              </div>
+            </div>
           </div>
+
+          {open && (
+            <div className="absolute left-0 mt-2 w-full border-[12px] border-border-secondary dark:border-0 bg-background-grey-dark dark:bg-[#262834] px-2 py-2.5 rounded-[10px] z-50">
+              <div
+                onClick={() => {
+                  handleCopy();
+                  setOpen(false);
+                }}
+                className="hover:bg-background-tertiary p-2 rounded-lg cursor-pointer flex items-center gap-2"
+              >
+                <CopyIcon className="size-4 dark:text-white" />
+                Copy Address
+              </div>
+              <div
+                onClick={() => {
+                  handleExplorerClick();
+                  setOpen(false);
+                }}
+                className="hover:bg-background-tertiary p-2 rounded-lg cursor-pointer flex items-center gap-2"
+              >
+                <ExternalLink className="size-4 dark:text-white" />
+                View in Explorer
+              </div>
+              <div
+                onClick={() => {
+                  handleTxHistoryClick();
+                  setOpen(false);
+                }}
+                className="hover:bg-background-tertiary p-2 rounded-lg cursor-pointer flex items-center gap-2"
+              >
+                <ArrowLeftRight className="size-4 dark:text-white" />
+                Transaction History
+              </div>
+              <div
+                onClick={() => {
+                  disconnect();
+                  setOpen(false);
+                }}
+                className="hover:bg-background-tertiary p-2 rounded-lg cursor-pointer flex items-center gap-2"
+              >
+                <LogOutIcon className="size-4 dark:text-white" />
+                Disconnect
+              </div>
+            </div>
+          )}
         </div>
       )}
 

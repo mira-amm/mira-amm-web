@@ -264,6 +264,7 @@ const AddLiquidityDialog = ({
                     leftAlignValue="-200px"
                     poolKey={poolKey}
                     tvlValue={tvlValue}
+                    background="overlay-1"
                   />
                 </div>
               ) : (

@@ -1,6 +1,5 @@
 import {ArrowDown, ArrowUp} from "lucide-react";
 import {TableHead} from "@/meshwave-ui/table";
-import {clsx} from "clsx";
 import {cn} from "@/src/utils/cn";
 
 export default function SortableColumn({
@@ -28,14 +27,13 @@ export default function SortableColumn({
       )}
     >
       <div
-        className={clsx(
-          "flex justify-center gap-1",
-          "lg:font-normal font-medium"
+        className={cn(
+          "flex justify-center gap-1 lg:font-normal font-medium text-foreground"
         )}
       >
         {title}
         <span
-          className={clsx(
+          className={cn(
             "text-sm text-content-dimmed-dark transition-colors flex items-center",
             isActive && "text-white",
             "lg:w-4"

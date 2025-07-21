@@ -23,7 +23,7 @@ export function SwapSuccessModal({
       <p className="font-medium text-[22px] leading-[26px] text-center">
         Swap success
       </p>
-      <p className="text-[14px] leading-[16px] text-content-tertiary dark:text-content-dimmed-dark text-center">
+      <p className="text-[14px] leading-[16px] text-content-primary dark:text-content-dimmed-dark text-center">
         {subText}
       </p>
       <Link

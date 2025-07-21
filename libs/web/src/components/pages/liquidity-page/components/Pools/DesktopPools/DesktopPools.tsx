@@ -25,7 +25,7 @@ export function DesktopPools({
   if (!poolsData) return null;
 
   const thBase =
-    "px-6 py-4 text-[16px] leading-[19px] font-medium text-content-tertiary whitespace-nowrap overflow-hidden text-ellipsis";
+    "px-6 py-4 text-[16px] leading-[19px] font-medium text-foreground whitespace-nowrap overflow-hidden text-ellipsis";
   return (
     <Table className="md:table table-fixed desktopOnly p-5">
       <TableHeader>

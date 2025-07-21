@@ -9,7 +9,7 @@ import {
   getPaginationRowModel,
   useReactTable,
 } from "@tanstack/react-table";
-import {usePointsRanks} from "@/src/hooks";
+import {useIsRebrandEnabled, usePointsRanks} from "@/src/hooks";
 import {PointsIconSimple} from "@/meshwave-ui/icons";
 import {DefaultLocale} from "@/src/utils/constants";
 import {
@@ -21,6 +21,7 @@ import {
   TableRow,
 } from "@/meshwave-ui/table";
 import {LoaderCircle} from "lucide-react";
+import LoaderBar from "@/src/components/common/loader-bar";
 
 const truncateAddress = (address: string) => {
   if (!address) return "";
@@ -93,6 +94,8 @@ export default function PointsRankTable() {
     onPaginationChange: setPagination,
   });
 
+  const isRebrandingEnabled = useIsRebrandEnabled();
+
   if (error) {
     return <div>Error: {error.message}</div>;
   }
@@ -100,7 +103,11 @@ export default function PointsRankTable() {
   if (isLoading) {
     return (
       <div className="flex flex-col items-center gap-4 p-7 rounded-2xl bg-background-grey-dark">
-        <LoaderCircle className="animate-spin size-7" />
+        {isRebrandingEnabled ? (
+          <LoaderBar />
+        ) : (
+          <LoaderCircle className="animate-spin size-7" />
+        )}
         <p>Loading points leaderboard...</p>
       </div>
     );

@@ -51,6 +51,7 @@ import {
   useAssetPrice,
   TradeState,
   useInitialSwapState,
+  useIsRebrandEnabled,
 } from "@/src/hooks";
 
 import {useAnimationStore} from "@/src/stores/useGlitchScavengerHunt";
@@ -58,6 +59,7 @@ import {ArrowUpDown, LoaderCircle} from "lucide-react";
 import {cn} from "@/src/utils/cn";
 import {ConnectWalletNew} from "../connect-wallet-new";
 import SettingsModalContentNew from "../settings-modal-content-new";
+import LoaderBar from "../loader-bar";
 
 export type CurrencyBoxMode = "buy" | "sell";
 export type SlippageMode = "auto" | "custom";
@@ -659,6 +661,8 @@ export function Swap({isWidget}: {isWidget?: boolean}) {
     txCostPending,
   ]);
 
+  const isRebrandingEnabled = useIsRebrandEnabled();
+
   return !isClient ? (
     <div className="flex justify-center items-center gap-3 lg:gap-4">
       <Loader color="gray" />
@@ -757,7 +761,11 @@ export function Swap({isWidget}: {isWidget?: boolean}) {
               size="2xl"
             >
               {isActionLoading ? (
-                <LoaderCircle className="animate-spin size-4" />
+                isRebrandingEnabled ? (
+                  <LoaderBar />
+                ) : (
+                  <LoaderCircle className="animate-spin size-4" />
+                )
               ) : (
                 swapButtonTitle
               )}

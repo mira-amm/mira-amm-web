@@ -7,32 +7,34 @@ import {
   LIQUIDITY_PROVIDING_DOC_URL,
   POINTS_LEARN_MORE_URL,
 } from "@/src/utils/constants";
-import {Sparkles, Trophy} from "lucide-react";
+import {PromoSparkle} from "@/meshwave-ui/src/components/icons";
 
 export default function Page() {
   return (
-    <>
+    <div className="flex flex-col w-full gap-y-6">
       <Boosts />
       <Positions />
       <Pools />
       <div className="flex flex-col gap-4 lg:flex-row lg:gap-5 w-full">
         <div className="w-full lg:w-1/2">
           <PromoBlock
-            icon={<Sparkles />}
+            icon={<PromoSparkle />}
             title="Learn about providing liquidity"
             link={LIQUIDITY_PROVIDING_DOC_URL}
             linkText="Click here to see the guide"
+            background="overlay-4"
           />
         </div>
         <div className="w-full lg:w-1/2">
           <PromoBlock
-            icon={<Trophy />}
+            icon={<PromoSparkle />}
             title="Mira Points Program"
             link={POINTS_LEARN_MORE_URL}
             linkText="Learn about Mira Points"
+            background="overlay-1"
           />
         </div>
       </div>
-    </>
+    </div>
   );
 }

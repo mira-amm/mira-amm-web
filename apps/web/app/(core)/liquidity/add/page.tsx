@@ -4,7 +4,13 @@ import {Loader} from "@/src/components/common";
 
 const Page = () => {
   return (
-    <Suspense fallback={<Loader color="gray" />}>
+    <Suspense
+      fallback={
+        <div className="flex justify-center items-center">
+          <Loader color="gray" />
+        </div>
+      }
+    >
       <AddLiquidityPage />
     </Suspense>
   );
