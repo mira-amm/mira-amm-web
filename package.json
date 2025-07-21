@@ -18,6 +18,7 @@
     "dev": "NX_TUI='false' nx dev:tui microvisor; process-compose down; supabase stop --all; zellij ka -y; zellij da -y;",
     "start": "nx dev microvisor --outputStyle=tui; process-compose down; supabase stop --all; zellij ka -y; zellij da -y;",
     "storybook": "nx storybook design -p $STORYBOOK_DEV_SERVER_PORT # 🎨 Design System - Storybook",
+    "fix:formatting": "pnpm nx format:all",
     "commit": "cz #🟢 Commitizen CLI",
     "postinstall": "nx prepare microvisor"
   },
