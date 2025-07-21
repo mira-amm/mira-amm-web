@@ -11,7 +11,8 @@
 
 ### ⚙️ Build & Tooling
 
-- [ ] Project starts successfully using `pnpm dev` or `pnpm start` (verifies build, dependencies, and runtime)
+- [ ] Project starts successfully using `pnpm dev` or `pnpm start` (verifies build, dependencies,
+      and runtime)
 - [ ] Ran `pnpm fix:formatting` to ensure consistent code style
 - [ ] No obvious runtime or import errors (manual verification if needed)
 
