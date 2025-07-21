@@ -247,11 +247,11 @@ const abi = {
   ],
 };
 
-const bytecode = decompressBytecode('H4sIAAAAAAAAA5NyMGAIcGQwkHIJYNjlycBg5MDSCOQrxALZQJoDyG9ScBVmCHIVYPFyYWCoK5+1wuLN5bQjh1otLsfstmyqbMi4PK1L+WOGrY7O5U2KDGDA6ACh8YP/QOCSmpiSk5mXqlCQWFycmsJQkJ+fE5+bWpKYkliSSIQZAUD1Cin5qcV56iUKqRWZxSUQcc+84tK0tMzkzNS8EoXE3PzSPIhESH6+Qm5pckZuJkQA5AYQOAMGDEw9qqfN2tz0ZkFE0czJySwszUzJLKmE6WNghNimwAGlBSC07AQILWMAoaU7oHQGhJZqgdJQeVGoPPcMKN0CALLGHTmYAQAA');
+const bytecode = decompressBytecode(
+  "H4sIAAAAAAAAA5NyMGAIcGQwkHIJYNjlycBg5MDSCOQrxALZQJoDyG9ScBVmCHIVYPFyYWCoK5+1wuLN5bQjh1otLsfstmyqbMi4PK1L+WOGrY7O5U2KDGDA6ACh8YP/QOCSmpiSk5mXqlCQWFycmsJQkJ+fE5+bWpKYkliSSIQZAUD1Cin5qcV56iUKqRWZxSUQcc+84tK0tMzkzNS8EoXE3PzSPIhESH6+Qm5pckZuJkQA5AYQOAMGDEw9qqfN2tz0ZkFE0czJySwszUzJLKmE6WNghNimwAGlBSC07AQILWMAoaU7oHQGhJZqgdJQeVGoPPcMKN0CALLGHTmYAQAA"
+);
 
-export class AddLiquidityScriptLoader extends __Script<AddLiquidityScriptLoaderInputs, AddLiquidityScriptLoaderOutput> {
-
-export class AddLiquidityScriptLoader extends Script<
+export class AddLiquidityScriptLoader extends __Script<
   AddLiquidityScriptLoaderInputs,
   AddLiquidityScriptLoaderOutput
 > {

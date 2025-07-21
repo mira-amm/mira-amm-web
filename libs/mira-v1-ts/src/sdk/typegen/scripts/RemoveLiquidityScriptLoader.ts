@@ -240,11 +240,11 @@ const abi = {
   ],
 };
 
-const bytecode = decompressBytecode('H4sIAAAAAAAAA5NyMGAIcGQwkHIJYNjlycBg5MDSCOQrxALZQJoDyG9ScBVmCHIVYPFyYWBo0zphtK15kfLCWzN+vIp221zq0Xr763S2qNlONVmL7qQtZ4CAA1AaL/gPBC6piSk5mXmpCgWJxcWpKQT1JJUW5YFoz7zi0rS0zOTM1LwShcTc/NK8ErD8GTBgYAKZDQI9qqfN2tz0ZkF4MFPEX0DpDxBaggNCC3VAaM4fADSL2yUYAQAA');
+const bytecode = decompressBytecode(
+  "H4sIAAAAAAAAA5NyMGAIcGQwkHIJYNjlycBg5MDSCOQrxALZQJoDyG9ScBVmCHIVYPFyYWBo0zphtK15kfLCWzN+vIp221zq0Xr763S2qNlONVmL7qQtZ4CAA1AaL/gPBC6piSk5mXmpCgWJxcWpKQT1JJUW5YFoz7zi0rS0zOTM1LwShcTc/NK8ErD8GTBgYAKZDQI9qqfN2tz0ZkF4MFPEX0DpDxBaggNCC3VAaM4fADSL2yUYAQAA"
+);
 
-export class RemoveLiquidityScriptLoader extends __Script<RemoveLiquidityScriptLoaderInputs, RemoveLiquidityScriptLoaderOutput> {
-
-export class RemoveLiquidityScriptLoader extends Script<
+export class RemoveLiquidityScriptLoader extends __Script<
   RemoveLiquidityScriptLoaderInputs,
   RemoveLiquidityScriptLoaderOutput
 > {
