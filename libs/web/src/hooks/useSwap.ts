@@ -51,18 +51,18 @@ export function useSwap({
         .mul(bn(10_000).sub(bn(slippage)))
         .div(bn(10_000));
 
-      const result = await miraDex.swapExactInput(
+      const {transactionRequest, gasPrice} = await miraDex.swapExactInput(
         sellAmount,
         sellAssetIdInput,
         buyAmountWithSlippage,
         pools,
         MaxDeadline,
         DefaultTxParams,
-        {useAssembleTx: true},
+        {useAssembleTx: true}
       );
 
-      tx = result.transactionRequest;
-      txCost = result.gasPrice;
+      tx = transactionRequest;
+      txCost = gasPrice;
     } else {
       const [_sellAsset, simulatedSellAmount] =
         await readonlyMira.previewSwapExactOutput(buyAssetIdInput, buyAmount, [
@@ -71,18 +71,18 @@ export function useSwap({
       const sellAmountWithSlippage = simulatedSellAmount
         .mul(bn(10_000).add(bn(slippage)))
         .div(bn(10_000));
-      const result = await miraDex.swapExactOutput(
+      const {transactionRequest, gasPrice} = await miraDex.swapExactOutput(
         buyAmount,
         buyAssetIdInput,
         sellAmountWithSlippage,
         pools,
         MaxDeadline,
         DefaultTxParams,
-        {useAssembleTx: true},
+        {useAssembleTx: true}
       );
 
-      tx = result.transactionRequest;
-      txCost = result.gasPrice;
+      tx = transactionRequest;
+      txCost = gasPrice;
     }
 
     return {tx, txCost};
@@ -109,14 +109,7 @@ export function useSwap({
 
       const tx = await wallet.sendTransaction(inputTx);
 
-      const {isStatusPreConfirmationSuccess, resolvedOutputs} =
-        await tx.waitForPreConfirmation();
-
-      if (!isStatusPreConfirmationSuccess) {
-        throw new Error(
-          "Pre-confirmation failed. Transaction will not be included.",
-        );
-      }
+      await tx.waitForPreConfirmation();
 
       return await tx.waitForResult();
     },

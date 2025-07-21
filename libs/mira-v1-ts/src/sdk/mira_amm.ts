@@ -421,6 +421,8 @@ export class MiraAmm {
         await this.account.provider.getBaseAssetId()
       ).toString();
 
+      // Ensure the base asset is included to cover transaction fees (gas).
+      // Fallback placeholder amount of 1; the real fee will be estimated during assembleTx
       if (!accountCoinMap.has(baseAssetId)) {
         accountCoinMap.set(baseAssetId, {
           amount: bn(1),
@@ -437,7 +439,7 @@ export class MiraAmm {
           request,
           feePayerAccount: this.account,
           accountCoinQuantities,
-          reserveGas: options.reserveGas ?? undefined,
+          reserveGas: options.reserveGas
         });
 
       return {transactionRequest: assembledRequest, gasPrice};
