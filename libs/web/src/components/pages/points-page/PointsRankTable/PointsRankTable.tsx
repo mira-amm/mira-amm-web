@@ -1,6 +1,7 @@
 "use client";
 
 import {useState} from "react";
+import {useIsRebrandEnabled} from "@/src/hooks/useIsRebrandEnabled";
 import {
   createColumnHelper,
   flexRender,
@@ -28,6 +29,7 @@ const truncateAddress = (address: string) => {
 };
 
 export default function PointsRankTable() {
+  const isRebrandEnabled = useIsRebrandEnabled();
   const [pagination, setPagination] = useState({
     pageIndex: 0,
     pageSize: 50,
@@ -112,7 +114,7 @@ export default function PointsRankTable() {
             {headerGroup.headers.map((header) => (
               <TableHead
                 key={header.id}
-                className="p-4 text-left font-normal text-base text-content-tertiary border-b  border-background-grey-light dark:border-background-grey-darker"
+                className={`p-4 text-left font-normal text-base text-content-tertiary ${!isRebrandEnabled ? "border-b border-background-grey-light dark:border-background-grey-darker" : ""}`}
               >
                 {header.isPlaceholder
                   ? null
@@ -131,7 +133,7 @@ export default function PointsRankTable() {
             {row.getVisibleCells().map((cell, idx) => (
               <TableCell
                 key={cell.id}
-                className={`p-4 text-base border-b border-background-grey-light dark:border-background-grey-darker ${
+                className={`p-4 text-base ${!isRebrandEnabled ? "border-b border-background-grey-light dark:border-background-grey-darker" : ""} ${
                   idx === 1
                     ? "overflow-hidden text-ellipsis whitespace-nowrap"
                     : ""
