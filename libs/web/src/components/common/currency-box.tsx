@@ -8,8 +8,9 @@ import {Coin, FeatureGuard, TextButton} from "@/src/components/common";
 
 import {CurrencyBoxMode} from "@/src/components/common/Swap/Swap";
 import {MinEthValueBN} from "@/src/utils/constants";
-import {useAssetMetadata} from "@/src/hooks";
+import {useAssetMetadata, useIsRebrandEnabled} from "@/src/hooks";
 import fiatValueFormatter from "@/src/utils/abbreviateNumber";
+import {cn} from "@/src/utils/cn";
 
 export function CurrencyBox({
   value,
@@ -72,11 +73,16 @@ export function CurrencyBox({
       ? fiatValueFormatter(numericValue * usdRate!)
       : null;
 
+  const isRebrandEnabled = useIsRebrandEnabled();
+
   return (
     <div
-      className={clsx(
-        "flex flex-col gap-2.5 rounded-[10px] border border-transparent bg-background-tertiary dark:bg-background-secondary px-3 py-3 lg:px-4 focus-within:border-accent-secondary",
-        className
+      className={cn(
+        "flex flex-col gap-2.5 rounded-[10px] border border-transparent bg-background-tertiary dark:bg-background-secondary px-3 py-3 lg:px-4",
+        className,
+        isRebrandEnabled
+          ? "focus-within:border-black"
+          : "focus-within:border-accent-secondary"
       )}
     >
       <p className="text-xs leading-4 text-content-tertiary dark:text-content-tertiary lg:text-sm lg:leading-[18px]">
@@ -92,9 +98,10 @@ export function CurrencyBox({
           </div>
         ) : (
           <input
-            className={clsx(
-              "flex-1 w-0 font-semibold text-[20px] leading-6 border-none bg-transparent outline-none",
-              "text-content-secondary dark:text-content-secondary font-alt",
+            className={cn(
+              "flex-1 w-0 text-[20px] leading-6 border-none bg-transparent outline-none",
+              "text-content-secondary dark:text-content-secondary ",
+              "font-alt",
               loading && "text-gray-400/40 dark:text-content-tertiary/40"
             )}
             type="text"
@@ -111,7 +118,7 @@ export function CurrencyBox({
         <button
           onClick={handleCoinSelectorClick}
           disabled={loading}
-          className={clsx(
+          className={cn(
             "flex items-center gap-2 px-2.5 py-1.5 rounded-lg bg-transparent text-content-grey",
             "hover:bg-background-grey-light dark:hover:bg-background-grey-dark disabled:cursor-default",
             coinNotSelected &&

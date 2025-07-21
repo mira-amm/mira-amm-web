@@ -27,7 +27,7 @@ export const PriceImpact: FC<{
     <>
       <p
         className={cn(
-          "flex justify-between items-center leading-[18px] bg-transparent border-none cursor-pointer",
+          "flex justify-between items-center leading-[18px] bg-transparent border-none cursor-pointer mt-2",
           highPriceImpact && "text-accent-warning",
           mediumPriceImpact && "text-accent-alert",
           isHidden && "opacity-0"

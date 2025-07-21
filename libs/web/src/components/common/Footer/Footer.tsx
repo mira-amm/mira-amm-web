@@ -1,4 +1,4 @@
-import {Logo} from "@/src/components/common";
+import {FeatureGuard, Logo} from "@/src/components/common";
 import {BlogLink, DiscordLink, XLink} from "@/src/utils/constants";
 import {DiscordIcon, XSocialIcon, GithubIcon} from "@/meshwave-ui/icons";
 import {Button} from "@/meshwave-ui/Button";
@@ -57,19 +57,33 @@ export default function Footer() {
             </a>
           </Button>
         </div>
-        <ModeToggle />
+        <FeatureGuard>
+          <ModeToggle />
+        </FeatureGuard>
         <div className="flex gap-3 lg:gap-4">
-          <Button asChild variant="link" className="p-0 hover:opacity-65">
+          <Button
+            asChild
+            variant="link"
+            className="p-0 hover:opacity-65 text-content-primary dark:text-white"
+          >
             <a href="https://github.com/mira-amm" target="_blank">
               <GithubIcon />
             </a>
           </Button>
-          <Button asChild variant="link" className="p-0 hover:opacity-65">
+          <Button
+            asChild
+            variant="link"
+            className="p-0 hover:opacity-65 text-content-primary dark:text-white"
+          >
             <a href={DiscordLink} target="_blank">
               <DiscordIcon />
             </a>
           </Button>
-          <Button asChild variant="link" className="p-0 hover:opacity-65">
+          <Button
+            asChild
+            variant="link"
+            className="p-0 hover:opacity-65 text-content-primary dark:text-white"
+          >
             <a href={XLink} target="_blank">
               <XSocialIcon />
             </a>

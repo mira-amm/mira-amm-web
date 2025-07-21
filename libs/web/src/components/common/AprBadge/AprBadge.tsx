@@ -6,7 +6,9 @@ import {useBoostedApr, RewardsToken} from "@/src/hooks/useBoostedApr";
 import {isMobile} from "react-device-detect";
 import {Loader} from "@/src/components/common";
 import {EPOCH_NUMBER} from "@/src/utils/constants";
-import {PointsIconSimple} from "@/meshwave-ui/icons";
+import {AprIcon, PointsIconSimple} from "@/meshwave-ui/icons";
+import {cn} from "@/src/utils/cn";
+import {useIsRebrandEnabled} from "@/src/hooks";
 
 export function AprBadge({
   aprValue,
@@ -14,12 +16,14 @@ export function AprBadge({
   leftAlignValue,
   poolKey,
   tvlValue,
+  background,
 }: {
   aprValue: string | null;
   small?: boolean;
   leftAlignValue?: string;
   poolKey: string;
   tvlValue: number;
+  background: "overlay-1" | "overlay-5" | "overlay-9";
 }) {
   const [isHovered, setIsHovered] = useState(false);
 
@@ -62,22 +66,32 @@ export function AprBadge({
     aprElement = boostedApr ? <>{showApr}%</> : <Loader color="gray" />;
   }
 
+  const isRebrandEnabled = useIsRebrandEnabled();
+
   return (
     <div className="flex items-center gap-[5px]">
       <div
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
         onClick={handleClick}
-        className={clsx(
+        className={cn(
           "relative flex items-center gap-[5px] rounded-[10px] cursor-pointer",
-          "justify-center bg-black dark:bg-[linear-gradient(170deg,#262f5f_35%,#c41cff_100%)]",
+          "justify-center",
           small
             ? "min-w-[76px] py-[5px] px-[8px]"
-            : "min-w-[96px] py-[7px] px-[10px] ml-[10px]"
+            : "min-w-[96px] py-[7px] px-[10px] ml-[10px]",
+          background === "overlay-1" &&
+            "bg-[url('/images/overlay-1.jpg')] bg-cover",
+          background === "overlay-5" &&
+            "bg-[url('/images/overlay-5.jpg')] bg-cover",
+          background === "overlay-9" &&
+            "bg-[url('/images/overlay-9.jpg')] bg-cover",
+          !isRebrandEnabled &&
+            "bg-black dark:bg-[linear-gradient(170deg,#262f5f_35%,#c41cff_100%)]"
         )}
       >
         <span className="flex items-center justify-center text-white text-[19px]">
-          <PointsIconSimple width={iconWidth} height={iconHeight} />
+          <AprIcon />
         </span>
         <span
           className={clsx(

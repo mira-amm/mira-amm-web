@@ -37,7 +37,7 @@ export function SwapFailureModal({
       <p className="font-medium text-[22px] leading-[26px] text-center">
         {customTitle?.length ? customTitle : title}
       </p>
-      <p className="text-sm leading-4 text-content-dimmed-dark text-center">
+      <p className="text-sm leading-4 text-content-primary dark:text-content-dimmed-dark text-center">
         {message}
       </p>
       <Button onClick={closeModal} block>
