@@ -1,13 +1,13 @@
-name: "📚 Documentation update"
-description: "Report missing, outdated, or confusing docs"
-title: "[Docs]: <short description>"
-labels: ["Docs"]
+name: '📚 Documentation update'
+description: 'Report missing, outdated, or confusing docs'
+title: '[Docs]: <short description>'
+labels: ['Docs']
 body:
   - type: textarea
     id: location
     attributes:
       label: Page or section
-      placeholder: "README > Quick Start > Step 3"
+      placeholder: 'README > Quick Start > Step 3'
     validations:
       required: true
   - type: textarea
