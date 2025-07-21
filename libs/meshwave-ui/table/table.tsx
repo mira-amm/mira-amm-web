@@ -2,6 +2,7 @@
 
 import {cn} from "@/shadcn-ui/utils";
 import * as React from "react";
+import {useIsRebrandEnabled} from "@/src/hooks/useIsRebrandEnabled";
 
 function Table({
   className,
@@ -14,7 +15,7 @@ function Table({
     <div
       data-slot="table-container"
       className={cn(
-        "relative w-full overflow-x-auto rounded-2xl bg-background-grey-dark dark:bg-transparent border-border-secondary border-[12px] dark:border-0",
+        "relative w-full overflow-x-auto rounded-2xl bg-background-grey-dark dark:bg-transparent border-border-secondary border-[12px] dark:border-0 p-5",
         tableParentClassName
       )}
     >
@@ -31,10 +32,12 @@ function Table({
 }
 
 function TableHeader({className, ...props}: React.ComponentProps<"thead">) {
+  const isRebrandEnabled = useIsRebrandEnabled();
+
   return (
     <thead
       data-slot="table-header"
-      className={cn("[&_tr]:border-b", className)}
+      className={cn(!isRebrandEnabled && "[&_tr]:border-b", className)}
       {...props}
     />
   );
@@ -64,11 +67,14 @@ function TableFooter({className, ...props}: React.ComponentProps<"tfoot">) {
 }
 
 function TableRow({className, ...props}: React.ComponentProps<"tr">) {
+  const isRebrandEnabled = useIsRebrandEnabled();
+
   return (
     <tr
       data-slot="table-row"
       className={cn(
-        "hover:bg-muted/50 data-[state=selected]:bg-muted border-b transition-colors",
+        "hover:bg-muted/50 data-[state=selected]:bg-muted transition-colors",
+        !isRebrandEnabled && "border-b",
         className
       )}
       {...props}
