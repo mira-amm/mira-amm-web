@@ -63,7 +63,11 @@ export default function Layout({children}: {readonly children: ReactNode}) {
       };
 
   return (
-    <html lang="en" className="dark" suppressHydrationWarning>
+    <html
+      lang="en"
+      className={rebrandEnabled ? "" : "dark"}
+      suppressHydrationWarning
+    >
       <head>
         <link rel="preload" as="image" href="/images/loader.webp" />
       </head>

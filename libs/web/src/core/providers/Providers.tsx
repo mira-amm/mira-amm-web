@@ -15,6 +15,7 @@ import {FuelProviderWrapper} from "@/src/core/providers/FuelProviderWrapper";
 import {DisclaimerWrapper} from "@/src/core/providers/DisclaimerWrapper";
 import {Loader} from "@/src/components/common";
 import {ThemeProvider} from "./theme-provider";
+import {useIsRebrandEnabled} from "@/src/hooks/useIsRebrandEnabled";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -49,6 +50,8 @@ const persistOptions: PersistQueryClientOptions = {
 };
 
 export function Providers({children}: {children: ReactNode}) {
+  const rebrandEnabled = useIsRebrandEnabled();
+
   return (
     <PersistQueryClientProvider
       client={queryClient}
@@ -60,7 +63,7 @@ export function Providers({children}: {children: ReactNode}) {
           <DisclaimerWrapper>
             <ThemeProvider
               attribute="class"
-              defaultTheme="system"
+              defaultTheme={rebrandEnabled ? "light" : "dark"}
               enableSystem
               disableTransitionOnChange
             >
