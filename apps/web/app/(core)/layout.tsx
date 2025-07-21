@@ -59,7 +59,7 @@ export default function Layout({children}: {readonly children: ReactNode}) {
         "--font-alt": "var(--font-jetbrains-mono)",
       }
     : {
-        "--font-alt": "var(--font-prompt)",
+        "--font-alt": "var(--font-inter)",
       };
 
   return (
