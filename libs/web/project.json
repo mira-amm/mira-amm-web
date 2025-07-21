@@ -3,5 +3,20 @@
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "sourceRoot": "libs/web",
   "projectType": "library",
-  "tags": []
+  "tags": [],
+  "targets": {
+    "test": {
+      "executor": "@nx/vite:test",
+      "outputs": ["{workspaceRoot}/coverage/libs/web"],
+      "options": {
+        "passWithNoTests": true,
+        "reportsDirectory": "../../coverage/libs/web"
+      },
+      "configurations": {
+        "ci": {
+          "exclude": ["**/useWalletTransactions.integration.test.ts"]
+        }
+      }
+    }
+  }
 }
