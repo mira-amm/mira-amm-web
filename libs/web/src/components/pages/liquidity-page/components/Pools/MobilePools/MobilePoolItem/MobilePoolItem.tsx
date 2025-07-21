@@ -69,7 +69,7 @@ export function MobilePoolItem({poolData}: {poolData: PoolData}) {
       <Button
         variant="outline"
         onClick={handleAddClick}
-        className="font-medium leading-[19px] w-[177px]"
+        className="font-medium leading-[19px] w-full md:w-[177px]"
         size="lg"
       >
         Add Liquidity
