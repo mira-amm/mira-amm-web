@@ -9,6 +9,7 @@ import {EPOCH_NUMBER} from "@/src/utils/constants";
 import {AprIcon, PointsIconSimple} from "@/meshwave-ui/icons";
 import {cn} from "@/src/utils/cn";
 import {useIsRebrandEnabled} from "@/src/hooks";
+import {BrandText} from "@/src/components/common";
 
 export function AprBadge({
   aprValue,
@@ -127,7 +128,7 @@ export function AprBadge({
 const LabelMap: Record<
   Exclude<RewardsToken, undefined>,
   {
-    label: string;
+    label: React.ReactNode;
     description: string;
   }
 > = {
@@ -136,7 +137,7 @@ const LabelMap: Record<
     description: "Boost rewards ($FUEL) per day distributed among LPs in pool",
   },
   Points: {
-    label: "Mira Points",
+    label: <BrandText mira="Mira Points" microchain="Microchain Points" />,
     description: "distributed amount LPs in pool per day",
   },
 };

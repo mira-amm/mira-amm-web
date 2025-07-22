@@ -1,4 +1,4 @@
-import {FeatureGuard, Logo} from "@/src/components/common";
+import {FeatureGuard, Logo, BrandText} from "@/src/components/common";
 import {BlogLink, DiscordLink, XLink} from "@/src/utils/constants";
 import {DiscordIcon, XSocialIcon, GithubIcon} from "@/meshwave-ui/icons";
 import {Button} from "@/meshwave-ui/Button";
@@ -91,7 +91,7 @@ export default function Footer() {
         </div>
       </div>
       <div className="text-sm text-center lg:text-right">
-        &copy; 2025 Mira Finance
+        &copy; 2025 <BrandText mira="Mira" microchain="Microchain" /> Finance
       </div>
     </footer>
   );

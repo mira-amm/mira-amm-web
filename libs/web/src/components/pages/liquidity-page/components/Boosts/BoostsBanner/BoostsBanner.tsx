@@ -1,20 +1,17 @@
 import Link from "next/link";
-import {
-  POINTS_BANNER_SUBHEADER,
-  POINTS_BANNER_TITLE,
-  POINTS_LEARN_MORE_URL,
-} from "@/src/utils/constants";
+import {POINTS_LEARN_MORE_URL} from "@/src/utils/constants";
 import {PointsIcon} from "@/meshwave-ui/icons";
 import {Button} from "@/meshwave-ui/Button";
+import {BrandText} from "@/src/components/common";
 
 export function BoostsBanner() {
   return (
     <div className="flex flex-col justify-between gap-2.5 p-4 rounded-[10px] bg-[url('/images/pointsGradientBackground.png')]">
       <PointsIcon />
-      <h2 className="text-white">{POINTS_BANNER_TITLE}</h2>
+      <h2 className="text-white">Introducing Points</h2>
       <div className="flex flex-wrap justify-between items-start gap-3">
         <p className="text-white text-base font-normal mr-2 text-left">
-          {POINTS_BANNER_SUBHEADER}
+          Earn <BrandText mira="MIRA" microchain="MICROCHAIN" /> points by providing liquidity and engaging in activities.
         </p>
         <Link href={POINTS_LEARN_MORE_URL} target="_blank">
           <Button
