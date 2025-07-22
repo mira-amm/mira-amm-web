@@ -45,11 +45,7 @@ export function BoostsRewards() {
         <div className="flex flex-col gap-2">
           <div className="flex items-center gap-1 text-base font-normal text-white/72">
             <p className="text-white">Your Points</p>
-            <Info
-              tooltipText={POINTS_TOOLTIP}
-              tooltipKey="points"
-              color="#D1D4F9"
-            />
+            <Info tooltipText={POINTS_TOOLTIP} />
           </div>
           <div className="flex items-center gap-2 h-[25px]">
             {isLoading ? (
@@ -72,11 +68,7 @@ export function BoostsRewards() {
           <div className="flex flex-col gap-2 mr-[30px]">
             <div className="flex items-center gap-1 text-base font-normal text-white/72">
               <p className="text-white">Your rank</p>
-              <Info
-                tooltipText={POINTS_RANK_TOOLTIP}
-                tooltipKey="rank"
-                color="#D1D4F9"
-              />
+              <Info tooltipText={POINTS_RANK_TOOLTIP} />
             </div>
             {isLoading ? (
               <Loader color="gray" />

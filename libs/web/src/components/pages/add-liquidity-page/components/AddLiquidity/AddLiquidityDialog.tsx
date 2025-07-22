@@ -248,7 +248,7 @@ const AddLiquidityDialog = ({
             <div className="flex flex-col items-end gap-1 pb-1 text-[12px] leading-[14px] lg:flex-row">
               <div className="flex items-center gap-1">
                 <p className="text-sm">Estimated APR</p>
-                <Info tooltipText={APRTooltip} tooltipKey="apr" />
+                <Info tooltipText={APRTooltip} />
               </div>
               {isMatching ? (
                 <div>
@@ -290,10 +290,7 @@ const AddLiquidityDialog = ({
             >
               <div className="flex w-full">
                 <p className="flex-1 text-left">Volatile pool</p>
-                <Info
-                  tooltipText={VolatilePoolTooltip}
-                  tooltipKey="volatilePool"
-                />
+                <Info tooltipText={VolatilePoolTooltip} />
               </div>
               <p>0.30% fee tier</p>
             </div>
@@ -308,7 +305,7 @@ const AddLiquidityDialog = ({
             >
               <div className="flex w-full">
                 <p className="flex-1 text-left">Stable pool</p>
-                <Info tooltipText={StablePoolTooltip} tooltipKey="stablePool" />
+                <Info tooltipText={StablePoolTooltip} />
               </div>
               <p>0.05% fee tier</p>
             </div>
@@ -339,14 +336,18 @@ const AddLiquidityDialog = ({
       {!isConnected ? (
         <Button
           onClick={connect}
-          loading={isConnecting}
+          disabled={isConnecting}
           variant="secondary"
-          size="lg"
+          size="2xl"
         >
           Connect Wallet
         </Button>
       ) : (
-        <Button disabled={buttonDisabled} onClick={handleButtonClick} size="lg">
+        <Button
+          disabled={buttonDisabled}
+          onClick={handleButtonClick}
+          size="2xl"
+        >
           {buttonTitle}
         </Button>
       )}
