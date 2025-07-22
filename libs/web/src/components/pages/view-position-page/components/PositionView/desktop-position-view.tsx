@@ -65,7 +65,7 @@ export function DesktopPositionView({
 
       <div className="flex gap-3 w-full">
         <MiraBlock pool={pool} />
-        <div className="flex flex-col min-w-[350px] flex-1 w-full rounded-[10px] bg-background-grey-dark border-border-secondary border-[12px] dark:border-0 dark:bg-background-grey-dark">
+        <div className="flex flex-col min-w-[350px] flex-1 w-full rounded-lg bg-background-grey-dark border-border-secondary border-[12px] dark:border-0 dark:bg-background-grey-dark">
           <div className="flex flex-col gap-[15px] p-4">
             <p className="text-[16px] leading-[19px]">Your position</p>
             <AprDisplay pool={pool} />
@@ -83,7 +83,7 @@ export function DesktopPositionView({
         </div>
       </div>
 
-      <div className="w-full p-4 rounded-[12px] flex flex-col gap-4 bg-background-grey-dark border-border-secondary border-[12px] dark:border-0 dark:bg-background-grey-dark">
+      <div className="w-full p-4 rounded-xl flex flex-col gap-4 bg-background-grey-dark border-border-secondary border-[12px] dark:border-0 dark:bg-background-grey-dark">
         <p className="text-[16px] font-semibold leading-[19px] border-b border-content-grey-dark/40 pb-3">
           Pool reserves
         </p>

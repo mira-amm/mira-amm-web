@@ -70,7 +70,7 @@ export const TransactionsHistory = forwardRef<
           className={`flex flex-col gap-5 p-3 ${
             isRebrandEnabled
               ? "rounded-xl bg-gradient-to-br from-accent-primary/10 to-accent-primary/5 border border-accent-primary/20"
-              : "rounded-[10px] bg-gradient-to-br from-[#663e92] to-[#29294e]"
+              : "rounded-lg bg-gradient-to-br from-[#663e92] to-[#29294e]"
           }`}
         >
           <div className="flex items-center gap-2.5">

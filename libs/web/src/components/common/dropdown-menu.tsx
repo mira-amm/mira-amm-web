@@ -18,8 +18,8 @@ export const DropDownMenu = forwardRef<
     <ul
       ref={ref}
       className={clsx(
-        "absolute top-[50px] right-[-5px] z-20 max-w-[205px] p-[10px] rounded-[12px] bg-white dark:bg-[#262834] flex flex-col box-border",
-        "max-[1023px]:fixed max-[1023px]:top-auto max-[1023px]:left-0 max-[1023px]:right-0 max-[1023px]:bottom-0 max-[1023px]:w-full max-[1023px]:max-w-full max-[1023px]:rounded-t-[12px] max-[1023px]:pt-[38px]"
+        "absolute top-[50px] right-[-5px] z-20 max-w-[205px] p-[10px] rounded-xl bg-white dark:bg-[#262834] flex flex-col box-border",
+        "max-[1023px]:fixed max-[1023px]:top-auto max-[1023px]:left-0 max-[1023px]:right-0 max-[1023px]:bottom-0 max-[1023px]:w-full max-[1023px]:max-w-full max-[1023px]:rounded-t-xl max-[1023px]:pt-[38px]"
       )}
     >
       {buttons.map((button) => (

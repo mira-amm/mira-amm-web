@@ -78,7 +78,7 @@ export function CurrencyBox({
   return (
     <div
       className={cn(
-        "flex flex-col gap-2.5 rounded-[10px] border border-transparent bg-background-tertiary dark:bg-background-secondary px-3 py-3 lg:px-4",
+        "flex flex-col gap-2.5 rounded-lg border border-transparent bg-background-tertiary dark:bg-background-secondary px-3 py-3 lg:px-4",
         className,
         isRebrandEnabled
           ? "focus-within:border-black"
