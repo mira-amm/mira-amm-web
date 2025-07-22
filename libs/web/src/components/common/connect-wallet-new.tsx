@@ -81,7 +81,7 @@ export function ConnectWalletNew() {
     <>
       {!isConnected && (
         <div className="rounded-[10px] border-border-secondary border-[12px] dark:border-0">
-          <div className="flex gap-x-3 p-3 rounded-[10px] justify-between bg-background-grey-dark dark:bg-background-grey-dark">
+          <div className="flex gap-x-3 p-3 justify-between bg-background-grey-dark dark:bg-background-grey-dark">
             <div className="">
               <div className="flex justify-between items-center mb-0.5">
                 <span className="text-xs">Power</span>
@@ -105,7 +105,7 @@ export function ConnectWalletNew() {
       {isConnected && (
         <div ref={containerRef} className="relative w-[410px]">
           <div className="rounded-[10px] border-[12px] border-border-secondary dark:border-0">
-            <div className="flex gap-x-3 p-3 rounded-[10px] justify-between bg-background-grey-dark dark:bg-background-grey-dark">
+            <div className="flex gap-x-3 p-3 justify-between bg-background-grey-dark dark:bg-background-grey-dark">
               <div>
                 <div className="flex justify-between items-center mb-0.5">
                   <span className="text-xs">Power</span>
