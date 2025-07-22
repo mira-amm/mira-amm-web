@@ -13,14 +13,14 @@ export default function Footer() {
           <Button
             asChild
             variant="link"
-            className="text-content-tertiary hover:text-content-dimmed-light"
+            className="text-content-tertiary hover:text-content-primary hover:no-underline"
           >
             <a href={DiscordLink}>Support</a>
           </Button>
           <Button
             asChild
             variant="link"
-            className="text-content-tertiary hover:text-content-dimmed-light"
+            className="text-content-tertiary hover:text-content-primary hover:no-underline"
           >
             <a
               href="https://docs.mira.ly/resources/security-audits"
@@ -32,7 +32,7 @@ export default function Footer() {
           <Button
             asChild
             variant="link"
-            className="text-content-tertiary hover:text-content-dimmed-light"
+            className="text-content-tertiary hover:text-content-primary hover:no-underline"
           >
             <a href="https://docs.mira.ly" target="_blank">
               Docs
@@ -41,7 +41,7 @@ export default function Footer() {
           <Button
             asChild
             variant="link"
-            className="text-content-tertiary hover:text-content-dimmed-light"
+            className="text-content-tertiary hover:text-content-primary hover:no-underline"
           >
             <a href={BlogLink} target="_blank">
               Blog
@@ -50,7 +50,7 @@ export default function Footer() {
           <Button
             asChild
             variant="link"
-            className="text-content-tertiary hover:text-content-dimmed-light"
+            className="text-content-tertiary hover:text-content-primary hover:no-underline"
           >
             <a href="mailto:help@mira.ly" target="_blank">
               Contact us
@@ -61,33 +61,15 @@ export default function Footer() {
           <ModeToggle />
         </FeatureGuard>
         <div className="flex gap-3 lg:gap-4">
-          <Button
-            asChild
-            variant="link"
-            className="p-0 hover:opacity-65 text-content-primary dark:text-white"
-          >
-            <a href="https://github.com/mira-amm" target="_blank">
-              <GithubIcon />
-            </a>
-          </Button>
-          <Button
-            asChild
-            variant="link"
-            className="p-0 hover:opacity-65 text-content-primary dark:text-white"
-          >
-            <a href={DiscordLink} target="_blank">
-              <DiscordIcon />
-            </a>
-          </Button>
-          <Button
-            asChild
-            variant="link"
-            className="p-0 hover:opacity-65 text-content-primary dark:text-white"
-          >
-            <a href={XLink} target="_blank">
-              <XSocialIcon />
-            </a>
-          </Button>
+          <a href="https://github.com/mira-amm" target="_blank" className="">
+            <GithubIcon />
+          </a>
+          <a href={DiscordLink} target="_blank" className="">
+            <DiscordIcon />
+          </a>
+          <a href={XLink} target="_blank" className="">
+            <XSocialIcon />
+          </a>
         </div>
       </div>
       <div className="text-sm text-center lg:text-right">
