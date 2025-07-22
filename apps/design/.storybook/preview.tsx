@@ -18,6 +18,7 @@ import {
   lightUIStorybook,
 } from "./themes-storybook-ui";
 import "../../../libs/meshwave-ui/global.css";
+import "../../../libs/web/styles.css";
 
 const preview: Preview = {
   parameters: {
