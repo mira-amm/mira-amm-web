@@ -5,6 +5,7 @@ export {useSwapRouter, TradeState} from "./useSwapRouter";
 export {TradeType} from "./get-swap-quotes-batch";
 export {useIsClient} from "./useIsClient";
 export {useIsRebrandEnabled} from "./useIsRebrandEnabled";
+export * from "../utils/brandName";
 export {useVerifiedAssets} from "./useVerifiedAssets";
 export {useAddLiquidity} from "./useAddLiquidity";
 export {useModal} from "./useModal";

@@ -15,10 +15,13 @@ import {createConfig, http, injected} from "@wagmi/core";
 import {mainnet} from "@wagmi/core/chains";
 import {walletConnect} from "@wagmi/connectors";
 import {NetworkUrl} from "@/src/utils/constants";
+import {getBrandText} from "@/src/utils/brandName";
 
 // Creates a protection for SRR
 const FUEL_CONFIG = createFuelConfig(() => {
   const WalletConnectProjectId = "35b967d8f17700b2de24f0abee77e579";
+  const brandText = getBrandText();
+  
   const wagmiConfig = createConfig({
     syncConnectedChain: false,
     chains: [mainnet],
@@ -30,7 +33,7 @@ const FUEL_CONFIG = createFuelConfig(() => {
       walletConnect({
         projectId: WalletConnectProjectId,
         metadata: {
-          name: "Mira DEX",
+          name: brandText.dex,
           description: "The Liquidity Hub on Fuel",
           url: "https://mira.ly/",
           icons: ["https://connectors.fuel.network/logo_white.png"],

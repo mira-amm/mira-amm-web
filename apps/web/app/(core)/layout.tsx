@@ -19,6 +19,7 @@ import {useAnimationStore} from "@/src/stores/useGlitchScavengerHunt";
 import GlitchEffects from "@/src/components/common/GlitchEffects/GlitchEffects";
 import {FeatureGuard, Header, HeaderNew} from "@/src/components/common";
 import Footer from "@/src/components/common/Footer/Footer";
+import {getBrandText} from "@/src/utils/brandName";
 
 const prompt = Prompt({
   subsets: ["latin"],
@@ -53,6 +54,7 @@ export {metadata};
 export default function Layout({children}: {readonly children: ReactNode}) {
   const glitchScavengerHuntEnabled = useAnimationStore.getState().masterEnabled;
   const rebrandEnabled = useIsRebrandEnabled();
+  const brandText = getBrandText();
 
   const fontThemeVars = rebrandEnabled
     ? {
@@ -66,6 +68,7 @@ export default function Layout({children}: {readonly children: ReactNode}) {
     <html
       lang="en"
       className={rebrandEnabled ? "" : "dark"}
+      data-brand={rebrandEnabled ? "microchain" : "mira"}
       suppressHydrationWarning
     >
       <head>
