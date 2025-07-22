@@ -147,26 +147,19 @@ export const useAnimationStore = create<AnimationState>()(
     },
 
     // Handles the magic triple click on the token. If the user clicks the token 3 times within 1 second, it triggers the ScrambleEffect.
-    // Triggers a scramble effect.
-    // Registers the effect and updates progress state.
-    // Queues hint #1 to show after a delay.
-    // Progress Requirement: Only runs when animationCallCount === 0. Then updates to 1.
+    // Triggers a scramble effect that can be repeated unlimited times.
+    // Uses animation lock to prevent overlapping effects.
     handleMagicTripleClickToken: () => {
       const {
         masterEnabled,
         toggles,
         isAnimationInProgress,
         lastClicks,
-        calledAnimations,
-        animationCallCount,
-        initializeHintListener,
       } = get();
       if (
         !masterEnabled ||
         !toggles.tripleClickToken ||
-        isAnimationInProgress ||
-        calledAnimations.tripleClickTokenSwap ||
-        animationCallCount !== 0
+        isAnimationInProgress
       )
         return;
 
@@ -186,33 +179,14 @@ export const useAnimationStore = create<AnimationState>()(
           );
         };
 
-        // Update call tracking
-        const newCalledAnimations = {
-          ...calledAnimations,
-          tripleClickTokenSwap: true,
-        };
-        const newCount = animationCallCount + 1;
-
         get().subscribers.push(animationSubscriber);
         get().triggerAnimations();
 
-        // Update the values only after the user sees the effect.
+        // Reset animation state after effect completes to allow re-triggering
         setTimeout(() => {
           set({
-            calledAnimations: newCalledAnimations,
-            animationCallCount: newCount,
-            isTriggeredManually: true,
             isAnimationInProgress: false,
           });
-          initializeHintListener(newCount);
-
-          if (typeof window !== "undefined") {
-            localStorage.setItem(
-              ANIMATION_CALLS_KEY,
-              JSON.stringify(newCalledAnimations)
-            );
-            localStorage.setItem(ANIMATION_COUNT_KEY, newCount.toString());
-          }
         }, TOKEN_ANIMATION_DELAY);
       } else {
         set({lastClicks: [...recentClicks, now]});
