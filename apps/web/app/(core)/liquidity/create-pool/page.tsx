@@ -28,7 +28,7 @@ export default function Page() {
   const showPreview = Boolean(previewData);
 
   return (
-    <div className="flex flex-col gap-4">
+    <div className="flex flex-col gap-4 min-w-lg mx-auto">
       <button
         onClick={handleBackClick}
         className="flex items-center text-base leading-5 text-content-grey hover:text-content-primary cursor-pointer"
