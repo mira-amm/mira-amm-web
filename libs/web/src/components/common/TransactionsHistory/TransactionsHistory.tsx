@@ -46,7 +46,7 @@ export const TransactionsHistory = forwardRef<
       <div
         className={`${
           isRebrandEnabled
-            ? "bg-background-secondary border border-border-secondary shadow-lg"
+            ? "bg-background-secondary border border-border-secondary dark:border-background-primary shadow-lg"
             : "bg-background-grey-dark border-border-secondary border-[12px] dark:border-0 dark:bg-background-primary"
         } flex flex-col gap-6 fixed top-[72px] right-0 h-[calc(100vh-197px)] w-full max-w-[472px] px-5 py-4 z-[200] transition-transform duration-300 ease-in-out overflow-y-auto overflow-x-hidden ${isOpened ? "translate-x-0" : "translate-x-full"} lg:rounded-xl`}
         ref={ref}
