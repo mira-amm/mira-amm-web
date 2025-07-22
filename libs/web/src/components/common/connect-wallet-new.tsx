@@ -144,7 +144,7 @@ export function ConnectWalletNew() {
                   handleCopy();
                   setOpen(false);
                 }}
-                className="hover:bg-background-tertiary p-2 rounded-lg cursor-pointer flex items-center gap-2"
+                className="hover:bg-background-tertiary dark:hover:bg-background-secondary p-2 rounded-lg cursor-pointer flex items-center gap-2"
               >
                 <CopyIcon className="size-4 dark:text-white" />
                 Copy Address
@@ -154,7 +154,7 @@ export function ConnectWalletNew() {
                   handleExplorerClick();
                   setOpen(false);
                 }}
-                className="hover:bg-background-tertiary p-2 rounded-lg cursor-pointer flex items-center gap-2"
+                className="hover:bg-background-tertiary dark:hover:bg-background-secondary p-2 rounded-lg cursor-pointer flex items-center gap-2"
               >
                 <ExternalLink className="size-4 dark:text-white" />
                 View in Explorer
@@ -164,7 +164,7 @@ export function ConnectWalletNew() {
                   handleTxHistoryClick();
                   setOpen(false);
                 }}
-                className="hover:bg-background-tertiary p-2 rounded-lg cursor-pointer flex items-center gap-2"
+                className="hover:bg-background-tertiary dark:hover:bg-background-secondary p-2 rounded-lg cursor-pointer flex items-center gap-2"
               >
                 <ArrowLeftRight className="size-4 dark:text-white" />
                 Transaction History
@@ -174,7 +174,7 @@ export function ConnectWalletNew() {
                   disconnect();
                   setOpen(false);
                 }}
-                className="hover:bg-background-tertiary p-2 rounded-lg cursor-pointer flex items-center gap-2"
+                className="hover:bg-background-tertiary dark:hover:bg-background-secondary p-2 rounded-lg cursor-pointer flex items-center gap-2"
               >
                 <LogOutIcon className="size-4 dark:text-white" />
                 Disconnect
