@@ -363,8 +363,8 @@ export function CupIcon() {
 export function DiscordIcon() {
   return (
     <svg
-      width="32"
-      height="32"
+      width="24"
+      height="24"
       viewBox="0 0 32 32"
       fill="currentColor"
       xmlns="http://www.w3.org/2000/svg"
@@ -595,8 +595,8 @@ export function FuelIcon() {
 export function GithubIcon() {
   return (
     <svg
-      width="32"
-      height="32"
+      width="24"
+      height="24"
       viewBox="0 0 32 32"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
@@ -1387,8 +1387,8 @@ export function XIcon({className}: any) {
 export function XSocialIcon() {
   return (
     <svg
-      width="32"
-      height="32"
+      width="24"
+      height="24"
       viewBox="0 0 32 32"
       fill="currentColor"
       xmlns="http://www.w3.org/2000/svg"
