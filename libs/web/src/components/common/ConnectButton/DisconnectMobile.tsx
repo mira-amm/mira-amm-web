@@ -11,15 +11,12 @@ import {useAccount, useDisconnect, useIsConnected} from "@fuels/react";
 import {useScrollLock} from "usehooks-ts";
 import {useFormattedAddress} from "@/src/hooks";
 
-import {
-  CopyNotification,
-  DropDownMenu,
-  TransactionsHistory,
-} from "@/src/components/common";
+import {DropDownMenu, TransactionsHistory} from "@/src/components/common";
 
 import {DropDownButtons} from "@/src/utils/DropDownButtons";
 import {openNewTab} from "@/src/utils/common";
 import {FuelAppUrl} from "@/src/utils/constants";
+import {toast} from "sonner";
 
 export function DisconnectMobile({className}: {className?: string}) {
   const {isConnected} = useIsConnected();
@@ -30,7 +27,6 @@ export function DisconnectMobile({className}: {className?: string}) {
 
   const [isMenuOpened, setMenuOpened] = useState(false);
   const [isHistoryOpened, setHistoryOpened] = useState(false);
-  const [isAddressCopied, setAddressCopied] = useState(false);
 
   const menuRef = useRef<HTMLUListElement>(null);
 
@@ -90,8 +86,7 @@ export function DisconnectMobile({className}: {className?: string}) {
     if (isConnected && account) {
       try {
         await navigator.clipboard.writeText(account);
-        setAddressCopied(true);
-        setTimeout(() => setAddressCopied(false), 3000);
+        toast.success("Copied address");
       } catch (error) {
         console.error("Failed to copy address: ", error);
       }
@@ -153,10 +148,6 @@ export function DisconnectMobile({className}: {className?: string}) {
         onClose={handleHistoryClose}
         isOpened={isHistoryOpened}
       />
-
-      {isAddressCopied && (
-        <CopyNotification onClose={() => setAddressCopied(false)} />
-      )}
     </>
   );
 }
