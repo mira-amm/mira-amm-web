@@ -313,7 +313,7 @@ const validateTransactionTypeConsistency = (
   const amount1Out = safeStringToBigInt(action.amount1Out);
 
   switch (action.type) {
-    case "SWAP":
+    case "SWAP": {
       // For swaps, we should have either:
       // - asset0 in and asset1 out (asset0 -> asset1)
       // - asset1 in and asset0 out (asset1 -> asset0)
@@ -321,6 +321,7 @@ const validateTransactionTypeConsistency = (
       const hasInput = amount0In > BigInt(0) || amount1In > BigInt(0);
       const hasOutput = amount0Out > BigInt(0) || amount1Out > BigInt(0);
       return hasInput && hasOutput;
+    }
 
     case "ADD_LIQUIDITY":
       // For adding liquidity, both assets should have input amounts
