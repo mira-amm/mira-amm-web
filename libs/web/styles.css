@@ -46,6 +46,7 @@
   --color-old-mira-text: #28282f;
 
   --color-old-mira-promo-bg: #507ff7;
+  --color-mc-blue: #507ff7;
 
   --color-accent-primary: var(--accent-primary);
   --color-accent-primary-1: var(--accent-primary-1);
@@ -108,7 +109,7 @@
 
     --accent-primary: #aeed0d;
     --accent-primary-1: #19bd82;
-    --accent-primary-2: #015537;
+    --accent-primary-2: #075339;
 
     --accent-secondary: rgba(174, 237, 13, 0.3);
     --accent-dimmed: rgba(174, 237, 13, 0.08);
