@@ -76,7 +76,7 @@ export function AprBadge({
         onMouseLeave={handleMouseLeave}
         onClick={handleClick}
         className={cn(
-          "relative flex items-center gap-[5px] rounded-[10px] cursor-pointer",
+          "relative flex items-center gap-[5px] rounded-lg cursor-pointer",
           "justify-center",
           small
             ? "min-w-[76px] py-[5px] px-[8px]"
@@ -108,7 +108,7 @@ export function AprBadge({
         {isHovered && (
           <div
             onClick={() => setIsHovered(false)}
-            className="absolute top-[140%] left-0 z-[9999] w-[292px] rounded-[10px] p-[25px] text-white text-left shadow-[0_4px_10px_rgba(0,0,0,0.1)] bg-[linear-gradient(170deg,#262f5f_35%,#c41cff_100%)] flex flex-col gap-[10px]"
+            className="absolute top-[140%] left-0 z-[9999] w-[292px] rounded-lg p-[25px] text-white text-left shadow-[0_4px_10px_rgba(0,0,0,0.1)] bg-[linear-gradient(170deg,#262f5f_35%,#c41cff_100%)] flex flex-col gap-[10px]"
             style={{left: leftAlignValue ?? "0"}}
           >
             <AprLabel

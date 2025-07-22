@@ -71,7 +71,7 @@ export function useModal(): [ReturnType, () => void, () => void] {
             <div
               className={clsx(
                 "fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-20",
-                "flex flex-col gap-4 p-4 bg-white dark:bg-[#262834] rounded-[12px] w-[90%] max-h-[80%] overflow-auto",
+                "flex flex-col gap-4 p-4 bg-white dark:bg-[#262834] rounded-xl w-[90%] max-h-[80%] overflow-auto",
                 "lg:max-w-[460px]",
                 "border-border-secondary border-[12px] dark:border-0",
                 className

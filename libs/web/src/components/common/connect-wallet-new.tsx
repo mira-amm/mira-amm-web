@@ -77,7 +77,7 @@ export function ConnectWalletNew() {
   return (
     <>
       {!isConnected && (
-        <div className="rounded-[10px] border-border-secondary border-[12px] dark:border-0">
+        <div className="rounded-lg border-border-secondary border-[12px] dark:border-0">
           <div className="flex gap-x-3 p-3 justify-between bg-background-grey-dark dark:bg-background-grey-dark">
             <div className="">
               <div className="flex justify-between items-center mb-0.5">
@@ -93,7 +93,7 @@ export function ConnectWalletNew() {
                 Connect
               </Button>
             </div>
-            <div className="w-[239.82px] bg-black rounded-[10px] font-alt text-accent-primary uppercase px-3 tracking-tight flex justify-left items-center text-sm">
+            <div className="w-[239.82px] bg-black rounded-lg font-alt text-accent-primary uppercase px-3 tracking-tight flex justify-left items-center text-sm">
               No wallet connected
             </div>
           </div>
@@ -101,7 +101,7 @@ export function ConnectWalletNew() {
       )}
       {isConnected && (
         <div ref={containerRef} className="relative w-[410px]">
-          <div className="rounded-[10px] border-[12px] border-border-secondary dark:border-0">
+          <div className="rounded-lg border-[12px] border-border-secondary dark:border-0">
             <div className="flex gap-x-3 p-3 justify-between bg-background-grey-dark dark:bg-background-grey-dark">
               <div>
                 <div className="flex justify-between items-center mb-0.5">
@@ -134,7 +134,7 @@ export function ConnectWalletNew() {
           </div>
 
           {open && (
-            <div className="absolute left-0 mt-2 w-full border-[12px] border-border-secondary dark:border-0 bg-background-grey-dark dark:bg-[#262834] px-2 py-2.5 rounded-[10px] z-50">
+            <div className="absolute left-0 mt-2 w-full border-[12px] border-border-secondary dark:border-0 bg-background-grey-dark dark:bg-[#262834] px-2 py-2.5 rounded-lg z-50">
               <div
                 onClick={() => {
                   handleCopy();

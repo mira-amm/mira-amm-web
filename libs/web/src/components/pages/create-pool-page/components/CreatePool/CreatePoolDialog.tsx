@@ -313,7 +313,7 @@ export function CreatePoolDialog({
       </div>
 
       {poolExists && (
-        <div className="flex items-center gap-2 p-3 rounded-[10px] bg-gradient-to-r from-[#5872fc] via-[#6142ba] to-[#c41cff]">
+        <div className="flex items-center gap-2 p-3 rounded-lg bg-gradient-to-r from-[#5872fc] via-[#6142ba] to-[#c41cff]">
           <div className="w-5 h-5 flex items-center justify-center rounded-full bg-content-dimmed-dark">
             <Sparkle className="size-3" />
           </div>
