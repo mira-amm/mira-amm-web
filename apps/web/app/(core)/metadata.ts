@@ -1,23 +1,23 @@
 import {Metadata} from "next";
+import {getBrandText} from "@/web";
+
+const brandText = getBrandText();
 
 export const metadata: Metadata = {
-  title: "Swap on MIRA DEX instantly with low slippage | MIRA Swaps",
-  description:
-    "Discover seamless crypto swaps with MIRA DEX. Swap your digital assets instantly and securely on the Fuel blockchain. Enjoy best rates and minimal slippage with our optimized trading protocol",
+  title: brandText.defaultTitle,
+  description: brandText.defaultDescription,
   icons: {
-    icon: "/images/favicon.png",
+    icon: brandText.favicon,
   },
   openGraph: {
-    title: "Swap on MIRA DEX instantly with low slippage | MIRA Swaps",
-    url: "https://mira.ly/swap",
-    description:
-      "Discover seamless crypto swaps with MIRA DEX. Swap your digital assets instantly and securely on the Fuel blockchain. Enjoy best rates and minimal slippage with our optimized trading protocol",
-    images: "https://mira.ly/images/preview.png",
+    title: brandText.defaultTitle,
+    url: `${brandText.baseUrl}/swap`,
+    description: brandText.defaultDescription,
+    images: brandText.defaultImage,
   },
   twitter: {
-    title: "Swap on MIRA DEX instantly with low slippage | MIRA Swaps",
-    description:
-      "Discover seamless crypto swaps with MIRA DEX. Swap your digital assets instantly and securely on the Fuel blockchain. Enjoy best rates and minimal slippage with our optimized trading protocol",
-    images: "https://mira.ly/images/preview.png",
+    title: brandText.defaultTitle,
+    description: brandText.defaultDescription,
+    images: brandText.defaultImage,
   },
 };
