@@ -27,7 +27,9 @@ import {
   useAssetMetadata,
   useCheckActiveNetwork,
   useBalances,
+  useIsRebrandEnabled,
 } from "@/src/hooks";
+import {cn} from "@/src/utils/cn";
 
 export function CreatePoolDialog({
   setPreviewData,
@@ -230,6 +232,8 @@ export function CreatePoolDialog({
     );
   };
 
+  const isRebrandEnabled = useIsRebrandEnabled();
+
   return (
     <>
       <div className="flex flex-col gap-4">
@@ -246,10 +250,12 @@ export function CreatePoolDialog({
           </div>
           <div className="flex w-full gap-2">
             <div
-              className={clsx(
+              className={cn(
                 "flex flex-col items-start w-full rounded-md px-3 py-3 gap-2 bg-background-secondary text-content-dimmed-light cursor-pointer",
-                !isStablePool &&
-                  "text-content-primary border-accent-primary border"
+                !isStablePool && "text-content-primary border",
+                !isStablePool && isRebrandEnabled
+                  ? "border-black"
+                  : "border-accent-primary"
               )}
               onClick={() => handleStabilityChange(false)}
               role="button"
@@ -265,7 +271,10 @@ export function CreatePoolDialog({
               className={clsx(
                 "flex flex-col items-start w-full rounded-md px-3 py-3 gap-2 bg-background-secondary text-content-dimmed-light cursor-pointer",
                 isStablePool &&
-                  "text-content-primary border-accent-primary border"
+                  "text-content-primary border-accent-primary border",
+                isStablePool && isRebrandEnabled
+                  ? "border-black"
+                  : "border-accent-primary"
               )}
               onClick={() => handleStabilityChange(true)}
               role="button"
@@ -334,11 +343,20 @@ export function CreatePoolDialog({
         </div>
       )}
       {!isConnected ? (
-        <Button variant="secondary" onClick={connect} loading={isConnecting}>
+        <Button
+          variant="secondary"
+          onClick={connect}
+          disabled={isConnecting}
+          size="2xl"
+        >
           Connect Wallet
         </Button>
       ) : (
-        <Button disabled={buttonDisabled} onClick={handleButtonClick}>
+        <Button
+          disabled={buttonDisabled}
+          onClick={handleButtonClick}
+          size="2xl"
+        >
           {buttonTitle}
         </Button>
       )}
