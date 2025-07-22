@@ -113,8 +113,7 @@ export function ConnectWalletNew() {
                     disconnect();
                   }}
                   size="xs"
-                  className="bg-[#F95465] rounded uppercase px-4 text-black"
-                  variant="destructive"
+                  className="bg-[#F95465] hover:bg-[#d71b2d] rounded uppercase px-4 text-black transition-colors duration-300"
                 >
                   Disconnect
                 </Button>
@@ -126,9 +125,9 @@ export function ConnectWalletNew() {
               >
                 {formattedAddress}
                 {open ? (
-                  <ChevronUp className="text-content-dimmed-dark" />
+                  <ChevronUp className="text-content-dimmed-dark text-mc-blue" />
                 ) : (
-                  <ChevronDown className="text-content-dimmed-dark" />
+                  <ChevronDown className="text-content-dimmed-dark text-mc-blue" />
                 )}
               </div>
             </div>
