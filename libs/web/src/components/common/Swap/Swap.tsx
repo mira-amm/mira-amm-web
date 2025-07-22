@@ -799,7 +799,7 @@ export function Swap({isWidget}: {isWidget?: boolean}) {
           </SettingsModal>
         }
       >
-        <SettingsModal title="Slippage tolerance">
+        <SettingsModal title={`Slippage tolerance: ${slippage / 100}%`}>
           <SettingsModalContentNew
             slippage={slippage}
             setSlippage={setSlippage}

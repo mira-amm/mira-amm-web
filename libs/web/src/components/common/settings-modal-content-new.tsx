@@ -22,12 +22,12 @@ function SettingsModalContentNew({
   setSlippage: Dispatch<SetStateAction<number>>;
   closeModal: VoidFunction;
 }) {
-  const [inputValue, setInputValue] = useState(`${slippage / 100}%`);
+  const [inputValue, setInputValue] = useState(`${slippage / 100}`);
   const inputRef = useRef<HTMLInputElement>(null);
 
   const handleSlippageChange = (event: ChangeEvent<HTMLInputElement>) => {
-    const value = event.target.value.replace("%", "");
-    setInputValue(value + "%");
+    const value = event.target.value;
+    setInputValue(value);
     useAnimationStore.getState().handleMagicInput(value);
   };
 
@@ -35,7 +35,7 @@ function SettingsModalContentNew({
   const MAX_SLIPPAGE = 99.99;
 
   const handleInputBlur = (event: FocusEvent<HTMLInputElement>) => {
-    const value = event.target.value.replace("%", "");
+    const value = event.target.value;
     const numericValue = parseFloat(value.replace(",", ".").trim());
     if (
       isNaN(numericValue) ||
@@ -44,7 +44,7 @@ function SettingsModalContentNew({
       !Number.isFinite(numericValue)
     ) {
       setSlippage(DEFAULT_SLIPPAGE);
-      setInputValue(`${DEFAULT_SLIPPAGE / 100}%`);
+      setInputValue(`${DEFAULT_SLIPPAGE / 100}`);
       return;
     }
     setSlippage(Math.floor(Number((numericValue * 100).toFixed(2))));
@@ -52,10 +52,10 @@ function SettingsModalContentNew({
 
   const handleKeyDown = (event: KeyboardEvent<HTMLInputElement>) => {
     if (event.key === "Backspace") {
-      let value = inputValue.replace("%", "");
+      let value = inputValue;
       if (value.length === 0) return;
       value = value.slice(0, -1);
-      setInputValue(value + "%");
+      setInputValue(value);
       if (value.length > 0) {
         useAnimationStore.getState().handleMagicInput(value);
       }
@@ -63,6 +63,7 @@ function SettingsModalContentNew({
     }
     if (event.key === "Enter") {
       inputRef.current?.blur();
+      closeModal();
     }
   };
 
@@ -71,6 +72,10 @@ function SettingsModalContentNew({
     closeModal();
   };
 
+  const numericSlippage = parseFloat(inputValue.replace(",", ".").trim());
+  const showSlippageWarning =
+    Number.isFinite(numericSlippage) && numericSlippage >= 20;
+
   return (
     <div className="flex flex-col gap-4">
       <div className="flex flex-col gap-2">
@@ -78,7 +83,6 @@ function SettingsModalContentNew({
           The amount the price can change unfavorably before the trade reverts
         </p>
       </div>
-
       <div className="flex gap-2 items-center">
         <div className="flex flex-1">
           {AutoSlippageValues.map((value) => (
@@ -104,7 +108,8 @@ function SettingsModalContentNew({
             {/* existing description text */}
           </p>
           <input
-            type="text"
+            type="number"
+            step="0.1"
             inputMode="decimal"
             pattern="^[0-9]*[.,]?[0-9]*$"
             aria-label="Custom slippage percentage"
@@ -118,6 +123,11 @@ function SettingsModalContentNew({
           />
         </div>
       </div>
+      {showSlippageWarning && (
+        <div className="text-accent-warning font-medium text-sm">
+          Slippage high, your transaction might be front run.
+        </div>
+      )}
     </div>
   );
 }
