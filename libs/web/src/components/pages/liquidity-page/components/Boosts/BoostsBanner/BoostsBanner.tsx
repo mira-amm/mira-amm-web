@@ -6,7 +6,7 @@ import {BrandText} from "@/src/components/common";
 
 export function BoostsBanner() {
   return (
-    <div className="flex flex-col justify-between gap-2.5 p-4 rounded-[10px] bg-[url('/images/pointsGradientBackground.png')]">
+    <div className="flex flex-col justify-between gap-2.5 p-4 rounded-lg bg-[url('/images/pointsGradientBackground.png')]">
       <PointsIcon />
       <h2 className="text-white">Introducing Points</h2>
       <div className="flex flex-wrap justify-between items-start gap-3">

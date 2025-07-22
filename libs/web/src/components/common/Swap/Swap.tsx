@@ -113,7 +113,7 @@ const PreviewSummary = memo(function PreviewSummary({
   previewPrice: number | undefined;
 }) {
   return (
-    <div className="flex bg-background-primary dark:bg-background-secondary p-4 rounded-[10px] flex-col gap-2 text-accent-primary font-alt dark:text-content-tertiary leading-[16px]">
+    <div className="flex bg-background-primary dark:bg-background-secondary p-4 rounded-lg flex-col gap-2 text-accent-primary font-alt dark:text-content-tertiary leading-[16px]">
       <div className="flex justify-between">
         <p className="text-sm">Rate:</p>
         {previewLoading || tradeState === TradeState.REFETCHING ? (
@@ -678,7 +678,7 @@ export function Swap({isWidget}: {isWidget?: boolean}) {
 
         <div
           className={cn(
-            "flex flex-col gap-4 p-4 pb-[18px] rounded-[10px] bg-background-grey-dark border-border-secondary border-[12px] dark:border-0 dark:bg-background-grey-dark",
+            "flex flex-col gap-4 p-4 pb-[18px] rounded-2xl bg-background-grey-dark border-border-secondary border-[12px] dark:border-0 dark:bg-background-grey-dark",
             swapPending && "z-[5]"
           )}
         >

@@ -54,7 +54,7 @@ const CoinInput = ({
       : null;
 
   return (
-    <div className="min-h-[65px] flex items-center gap-1 p-3 rounded-[10px] bg-background-secondary">
+    <div className="min-h-[65px] flex items-center gap-1 p-3 rounded-lg bg-background-secondary">
       <div className="flex flex-col gap-1 items-start flex-1">
         <input
           type="text"

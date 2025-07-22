@@ -11,7 +11,7 @@ export const CopyNotification: React.FC<{
       className={`
         bg-content-positive
         w-[480px]
-        rounded-[10px]
+        rounded-lg
         flex justify-between items-center
         px-[20px] py-[16px]
         absolute z-[1000]
