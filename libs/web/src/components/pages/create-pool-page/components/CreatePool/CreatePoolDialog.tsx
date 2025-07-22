@@ -256,10 +256,7 @@ export function CreatePoolDialog({
             >
               <div className="flex w-full">
                 <p className="flex-1 text-left">Volatile pool</p>
-                <Info
-                  tooltipText={VolatilePoolTooltip}
-                  tooltipKey="volatilePool"
-                />
+                <Info tooltipText={VolatilePoolTooltip} />
               </div>
               <p>0.30% fee tier</p>
             </div>
@@ -275,7 +272,7 @@ export function CreatePoolDialog({
             >
               <div className="flex w-full">
                 <p className="flex-1 text-left">Stable pool</p>
-                <Info tooltipText={StablePoolTooltip} tooltipKey="stablePool" />
+                <Info tooltipText={StablePoolTooltip} />
               </div>
               <p>0.05% fee tier</p>
             </button>
