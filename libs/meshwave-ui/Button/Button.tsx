@@ -32,7 +32,7 @@ const buttonVariants = cva(
         true: "w-full",
       },
       disabled: {
-        true: "bg-accent-primary-2 border-0 text-accent-primary-1 shadow-none",
+        true: "bg-background-secondary border-background-secondary border-black dark:text-content-dimmed-dark text-content-tertiary shadow-none hover:bg-background-secondary disabled:opacity-50",
       },
     },
     defaultVariants: {
