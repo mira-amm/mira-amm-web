@@ -748,8 +748,13 @@ export function Swap({isWidget}: {isWidget?: boolean}) {
           {!isConnected ? (
             <Button
               onClick={connect}
-              loading={isConnecting.toString()}
+              disabled={isConnecting}
               size="2xl"
+              className={cn(
+                !isConnected &&
+                  isRebrandingEnabled &&
+                  "bg-accent-primary-2 border-0 text-accent-primary-1 shadow-none disabled:opacity-100"
+              )}
             >
               Connect Wallet
             </Button>
@@ -757,8 +762,12 @@ export function Swap({isWidget}: {isWidget?: boolean}) {
             <Button
               disabled={isActionDisabled}
               onClick={handleSwapClick}
-              loading={isActionLoading.toString()}
               size="2xl"
+              className={cn(
+                isActionDisabled &&
+                  isRebrandingEnabled &&
+                  "bg-accent-primary-2 border-0 text-accent-primary-1 shadow-none disabled:opacity-100"
+              )}
             >
               {isActionLoading ? (
                 isRebrandingEnabled ? (
