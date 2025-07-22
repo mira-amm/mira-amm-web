@@ -11,8 +11,8 @@ import {useEffect, useRef, useState} from "react";
 import {TransactionsHistory} from "./TransactionsHistory/TransactionsHistory";
 import {FuelAppUrl} from "@/src/utils/constants";
 import {openNewTab} from "@/src/utils/common";
-import {CopyNotification} from "./copy-notification";
 import {Button} from "@/meshwave-ui/Button";
+import {toast} from "sonner";
 
 export function ConnectWalletNew() {
   const {account, connect, disconnect, isConnected, isWalletLoading} =
@@ -42,8 +42,6 @@ export function ConnectWalletNew() {
     };
   }, [isHistoryOpened]);
 
-  const [isAddressCopied, setAddressCopied] = useState(false);
-
   const handleExplorerClick = () =>
     openNewTab(`${FuelAppUrl}/account/${account}/transactions`);
 
@@ -51,8 +49,7 @@ export function ConnectWalletNew() {
     if (isConnected && account) {
       try {
         await navigator.clipboard.writeText(account);
-        setAddressCopied(true);
-        setTimeout(() => setAddressCopied(false), 3000);
+        toast.success("Copied address");
       } catch (error) {
         console.error("Failed to copy address: ", error);
       }
@@ -189,10 +186,6 @@ export function ConnectWalletNew() {
         isOpened={isHistoryOpened}
         ref={transactionsRef}
       />
-
-      {isAddressCopied && (
-        <CopyNotification onClose={() => setAddressCopied(false)} />
-      )}
     </>
   );
 }

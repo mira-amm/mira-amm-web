@@ -97,6 +97,7 @@
     "rxjs": "^7.8.2",
     "sharp": "^0.34.3",
     "shiki": "^3.6.0",
+    "sonner": "^2.0.6",
     "use-query-params": "^2.2.1",
     "usehooks-ts": "^3.1.1",
     "viem": "^2.31.3",

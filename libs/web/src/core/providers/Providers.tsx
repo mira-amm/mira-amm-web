@@ -10,6 +10,7 @@ import {
 } from "@tanstack/react-query-persist-client";
 import {createSyncStoragePersister} from "@tanstack/query-sync-storage-persister";
 import {ReactQueryDevtools} from "@tanstack/react-query-devtools";
+import {Toaster} from "sonner";
 
 import {FuelProviderWrapper} from "@/src/core/providers/FuelProviderWrapper";
 import {DisclaimerWrapper} from "@/src/core/providers/DisclaimerWrapper";
@@ -67,6 +68,7 @@ export function Providers({children}: {children: ReactNode}) {
               enableSystem
               disableTransitionOnChange
             >
+              <Toaster richColors position="bottom-right" />
               {children}
             </ThemeProvider>
           </DisclaimerWrapper>
