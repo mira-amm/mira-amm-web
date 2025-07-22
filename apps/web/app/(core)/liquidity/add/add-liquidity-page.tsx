@@ -109,7 +109,7 @@ export default function AddLiquidityPage() {
           </SettingsModal>
         }
       >
-        <SettingsModal title="Slippage tolerance">
+        <SettingsModal title={`Slippage tolerance: ${slippage / 100}%`}>
           <SettingsModalContentNew
             slippage={slippage}
             setSlippage={setSlippage}
