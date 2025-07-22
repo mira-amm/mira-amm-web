@@ -28,7 +28,7 @@ export function MobilePools({
       >
         <TableHeader>
           <TableRow className="flex items-center">
-            <TableHead className="font-medium flex items-center text-content-dimmed-dark">
+            <TableHead className="font-medium flex items-center">
               SORT BY:
             </TableHead>
             <SortableColumn

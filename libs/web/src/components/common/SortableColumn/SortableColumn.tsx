@@ -33,17 +33,13 @@ export default function SortableColumn({
       >
         {title}
         <span
-          className={cn(
-            "text-sm text-content-dimmed-dark transition-colors flex items-center",
-            isActive && "text-white",
-            "lg:w-4"
-          )}
+          className={cn("text-sm transition-colors flex items-center lg:w-4")}
         >
           {isActive &&
             (direction === "DESC" ? (
-              <ArrowDown className="size-4 text-content-dimmed-dark" />
+              <ArrowDown className="size-4" />
             ) : (
-              <ArrowUp className="size-4 text-content-dimmed-dark" />
+              <ArrowUp className="size-4" />
             ))}
         </span>
       </div>
