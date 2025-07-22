@@ -3,7 +3,7 @@
   flex-direction: row;
   gap: 4px;
   position: fixed;
-  bottom: 20px;
+  bottom: 80px;
   left: 20px;
   padding: 22px 20px 18px 20px;
   background-color: var(--background-primary);
