@@ -161,13 +161,7 @@ export const useAnimationStore = create<AnimationState>()(
         animationCallCount,
         initializeHintListener,
       } = get();
-      if (
-        !masterEnabled ||
-        !toggles.tripleClickToken ||
-        isAnimationInProgress ||
-        calledAnimations.tripleClickTokenSwap ||
-        animationCallCount !== 0
-      )
+      if (!masterEnabled || !toggles.tripleClickToken || isAnimationInProgress)
         return;
 
       const now = Date.now();
