@@ -155,6 +155,7 @@ export const useAnimationStore = create<AnimationState>()(
         toggles,
         isAnimationInProgress,
         lastClicks,
+        animationCallCount,
       } = get();
       if (
         !masterEnabled ||
@@ -182,11 +183,17 @@ export const useAnimationStore = create<AnimationState>()(
         get().subscribers.push(animationSubscriber);
         get().triggerAnimations();
 
-        // Reset animation state after effect completes to allow re-triggering
+        // Update animation count and reset state after effect completes to allow re-triggering
         setTimeout(() => {
+          const newCount = animationCallCount + 1;
           set({
+            animationCallCount: newCount,
             isAnimationInProgress: false,
           });
+          
+          if (typeof window !== "undefined") {
+            localStorage.setItem(ANIMATION_COUNT_KEY, newCount.toString());
+          }
         }, TOKEN_ANIMATION_DELAY);
       } else {
         set({lastClicks: [...recentClicks, now]});
@@ -195,25 +202,20 @@ export const useAnimationStore = create<AnimationState>()(
 
     // Checks if slippage value matches "19.85". If it does:
     // Triggers scanlines and plays radio audio.
-    // Updates progress once the audio finishes / user mutes.
-    // Progress Requirement: Only runs when animationCallCount === 1.
+    // Can be triggered unlimited times.
     handleMagicInput: (value: string) => {
       const {
         masterEnabled,
         toggles,
         isAnimationInProgress,
         inputBuffer,
-        calledAnimations,
         animationCallCount,
-        initializeHintListener,
         playRadioAudio,
       } = get();
       if (
         !masterEnabled ||
         !toggles.magicNumber ||
-        calledAnimations.magicInput ||
-        isAnimationInProgress ||
-        animationCallCount !== 1
+        isAnimationInProgress
       )
         return;
 
@@ -232,9 +234,6 @@ export const useAnimationStore = create<AnimationState>()(
           }));
         };
 
-        // set calledAnimations now, but NOT animationCallCount
-        const newCalledAnimations = {...calledAnimations, magicInput: true};
-
         set({inputBuffer: ""});
 
         set((state) => ({
@@ -243,29 +242,20 @@ export const useAnimationStore = create<AnimationState>()(
 
         get().triggerAnimations();
 
-        const newCount = animationCallCount + 1;
-
         const waitForRadioToStop = () => {
           const checkInterval = 500; // check every 500ms
 
           const intervalId = setInterval(() => {
             if (!get().isRadioPlaying) {
               clearInterval(intervalId);
-
+              
+              const newCount = animationCallCount + 1;
               set({
-                calledAnimations: newCalledAnimations,
                 animationCallCount: newCount,
-                isTriggeredManually: true,
                 isAnimationInProgress: false,
               });
 
-              initializeHintListener(newCount);
-
               if (typeof window !== "undefined") {
-                localStorage.setItem(
-                  ANIMATION_CALLS_KEY,
-                  JSON.stringify(newCalledAnimations)
-                );
                 localStorage.setItem(ANIMATION_COUNT_KEY, newCount.toString());
               }
             }
@@ -281,24 +271,19 @@ export const useAnimationStore = create<AnimationState>()(
 
     // Detects 3 rapid clicks on swap currency area within 1 second. If valid:
     // Triggers a rainbow CSS class animation.
-    // Updates animation progress and queues hint #3.
-    // Progress Requirement: Only runs when animationCallCount === 2.
+    // Can be triggered unlimited times.
     handleMagicTripleClickCurrency: () => {
       const {
         masterEnabled,
         toggles,
         isAnimationInProgress,
         lastClicks,
-        calledAnimations,
         animationCallCount,
-        initializeHintListener,
       } = get();
       if (
         !masterEnabled ||
         !toggles.tripleClickCurrency ||
-        isAnimationInProgress ||
-        calledAnimations.tripleClickCurrencySwap ||
-        animationCallCount !== 2
+        isAnimationInProgress
       )
         return;
 
@@ -318,29 +303,16 @@ export const useAnimationStore = create<AnimationState>()(
           );
         };
 
-        // Update call tracking
-        const newCalledAnimations = {
-          ...calledAnimations,
-          tripleClickCurrencySwap: true,
-        };
-        const newCount = animationCallCount + 1;
-
         get().subscribers.push(animationSubscriber);
         get().triggerAnimations();
 
         setTimeout(() => {
+          const newCount = animationCallCount + 1;
           set({
-            calledAnimations: newCalledAnimations,
             animationCallCount: newCount,
-            isTriggeredManually: true,
             isAnimationInProgress: false,
           });
-          initializeHintListener(newCount);
           if (typeof window !== "undefined") {
-            localStorage.setItem(
-              ANIMATION_CALLS_KEY,
-              JSON.stringify(newCalledAnimations)
-            );
             localStorage.setItem(ANIMATION_COUNT_KEY, newCount.toString());
           }
         }, OTHER_ANIMATION_DELAY);
