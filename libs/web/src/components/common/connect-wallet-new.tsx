@@ -113,7 +113,7 @@ export function ConnectWalletNew() {
                     disconnect();
                   }}
                   size="xs"
-                  className="bg-[#F95465] hover:bg-[#d71b2d] rounded uppercase px-4 text-black transition-colors duration-300"
+                  className="bg-accent-secondary hover:bg-accent-secondary-1 rounded uppercase px-4 text-black transition-colors duration-300"
                 >
                   Disconnect
                 </Button>
