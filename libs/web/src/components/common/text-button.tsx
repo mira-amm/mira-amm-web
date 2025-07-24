@@ -10,7 +10,7 @@ export function TextButton({
   return (
     <button
       onClick={onClick}
-      className="border-none bg-transparent p-0 text-accent-primary dark:text-accent-primary font-inherit cursor-pointer inline-block transition-opacity duration-200 hover:opacity-80"
+      className="border-none bg-transparent p-0 text-accent-primary-1 dark:text-accent-primary-1 font-inherit cursor-pointer inline-block transition-opacity duration-200 hover:opacity-80"
     >
       {children}
     </button>
