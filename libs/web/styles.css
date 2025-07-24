@@ -51,6 +51,10 @@
   --color-accent-primary: var(--accent-primary);
   --color-accent-primary-1: var(--accent-primary-1);
   --color-accent-primary-2: var(--accent-primary-2);
+
+  --color-accent-secondary: var(--accent-secondary);
+  --color-accent-secondary-1: var(--accent-secondary-1);
+  --color-accent-secondary-2: var(--accent-secondary-2);
 }
 
 @layer base {
@@ -77,6 +81,10 @@
     --accent-primary: #01ec97;
     --accent-primary-1: #19bd82;
     --accent-primary-2: #015537;
+
+    --accent-secondary: #F95465;
+    --accent-secondary-1: #CA4757;
+    --accent-secondary-2: #552533;
 
     --accent-secondary: rgba(174, 237, 13, 0.4);
     --accent-dimmed: rgba(174, 237, 13, 0.1);
