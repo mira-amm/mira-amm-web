@@ -471,7 +471,8 @@ export function Swap({isWidget}: {isWidget?: boolean}) {
       setTxCostData(data);
       setTxCost(data?.txCost.gasPrice.toNumber() / 10 ** 9 || null);
       setCustomErrorTitle("");
-    } catch {
+    } catch (e) {
+      console.error(e);
       setCustomErrorTitle("Review failed, please try again");
       setTxCost(null);
       setReview(false);
