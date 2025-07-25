@@ -82,8 +82,8 @@
     --accent-primary-1: #19bd82;
     --accent-primary-2: #015537;
 
-    --accent-secondary: #F95465;
-    --accent-secondary-1: #CA4757;
+    --accent-secondary: #f95465;
+    --accent-secondary-1: #ca4757;
     --accent-secondary-2: #552533;
 
     --accent-dimmed: rgba(174, 237, 13, 0.1);
@@ -92,7 +92,7 @@
     --content-positive: #46cc44;
 
     --font-inter: 'Inter', sans-serif;
-    --font-inter-variable: "inter-variable", sans-serif;
+    --font-inter-variable: 'inter-variable', sans-serif;
     --font-cartograph-cf: cartograph-cf, monospace;
     --font-prompt: 'Prompt', sans-serif;
     --font-jetbrains-mono: 'JetBrains Mono', monospace;
@@ -102,8 +102,10 @@
 
   /* Font variation settings for custom fonts */
   .font-inter-variable {
-    font-family: "inter-variable", sans-serif;
-    font-variation-settings: "slnt" 0, "wght" 400;
+    font-family: 'inter-variable', sans-serif;
+    font-variation-settings:
+      'slnt' 0,
+      'wght' 400;
   }
 
   .font-cartograph-cf {
@@ -431,12 +433,12 @@
 /* remove liquidity range slider end */
 
 /* Brand switching CSS - SSR safe */
-html[data-brand="mira"] .brand-microchain,
-html:not([data-brand="microchain"]) .brand-microchain {
+html[data-brand='mira'] .brand-microchain,
+html:not([data-brand='microchain']) .brand-microchain {
   display: none !important;
 }
 
-html[data-brand="microchain"] .brand-mira {
+html[data-brand='microchain'] .brand-mira {
   display: none !important;
 }
 

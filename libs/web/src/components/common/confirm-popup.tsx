@@ -21,7 +21,9 @@ export const ConfirmPopup: React.FC<{
 
         {/* Description */}
         <p className="px-[28px] pt-[12px] pb-[16px]">
-          By accessing this website or using the <BrandText mira="Mira Protocol" microchain="Microchain Protocol" />, I confirm that:
+          By accessing this website or using the{" "}
+          <BrandText mira="Mira Protocol" microchain="Microchain Protocol" />, I
+          confirm that:
         </p>
 
         {/* List */}
@@ -40,21 +42,25 @@ export const ConfirmPopup: React.FC<{
             .
           </li>
           <li>
-            I will not access this site or use the <BrandText mira="Mira Protocol" microchain="Microchain Protocol" /> while located
-            within the United States or any Prohibited Localities.
+            I will not access this site or use the{" "}
+            <BrandText mira="Mira Protocol" microchain="Microchain Protocol" />{" "}
+            while located within the United States or any Prohibited Localities.
           </li>
           <li>
             I am not using, and will not use in the future, a VPN or other tools
             to obscure my physical location from a restricted territory.
           </li>
           <li>
-            I am lawfully permitted to access this site and use the <BrandText mira="Mira DEX" microchain="Microchain DEX" />
+            I am lawfully permitted to access this site and use the{" "}
+            <BrandText mira="Mira DEX" microchain="Microchain DEX" />
             protocol under the laws of the jurisdiction in which I reside and am
             located.
           </li>
           <li>
             I understand the risks associated with using decentralized
-            protocols, including the <BrandText mira="Mira Protocol" microchain="Microchain Protocol" />, as outlined in the{" "}
+            protocols, including the{" "}
+            <BrandText mira="Mira Protocol" microchain="Microchain Protocol" />,
+            as outlined in the{" "}
             <a
               className="text-content-dimmed-light hover:text-content-primary"
               href="https://docs.mira.ly/resources/terms-and-conditions"

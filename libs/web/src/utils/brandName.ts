@@ -19,12 +19,14 @@ export function getBrandName(): string {
  */
 export function getBrandText() {
   const rebrandEnabled = isRebrandEnabled();
-  
+
   return {
     name: rebrandEnabled ? "Microchain" : "Mira",
     dex: rebrandEnabled ? "Microchain DEX" : "Mira DEX",
     points: rebrandEnabled ? "Microchain Points" : "Mira Points",
-    pointsProgram: rebrandEnabled ? "Microchain Points Program" : "Mira Points Program",
+    pointsProgram: rebrandEnabled
+      ? "Microchain Points Program"
+      : "Mira Points Program",
     logo: rebrandEnabled ? "Microchain Logo" : "Mira Logo",
   };
 }

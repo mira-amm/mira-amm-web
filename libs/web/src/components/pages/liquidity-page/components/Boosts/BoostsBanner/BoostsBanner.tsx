@@ -11,7 +11,8 @@ export function BoostsBanner() {
       <h2 className="text-white">Introducing Points</h2>
       <div className="flex flex-wrap justify-between items-start gap-3">
         <p className="text-white text-base font-normal mr-2 text-left">
-          Earn <BrandText mira="MIRA" microchain="MICROCHAIN" /> points by providing liquidity and engaging in activities.
+          Earn <BrandText mira="MIRA" microchain="MICROCHAIN" /> points by
+          providing liquidity and engaging in activities.
         </p>
         <Link href={POINTS_LEARN_MORE_URL} target="_blank">
           <Button

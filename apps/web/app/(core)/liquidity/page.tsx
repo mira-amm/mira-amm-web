@@ -29,9 +29,19 @@ export default function Page() {
         <div className="w-full lg:w-1/2">
           <PromoBlock
             icon={<PromoSparkle />}
-            title={<BrandText mira="Mira Points Program" microchain="Microchain Points Program" />}
+            title={
+              <BrandText
+                mira="Mira Points Program"
+                microchain="Microchain Points Program"
+              />
+            }
             link={POINTS_LEARN_MORE_URL}
-            linkText={<BrandText mira="Learn about Mira Points" microchain="Learn about Microchain Points" />}
+            linkText={
+              <BrandText
+                mira="Learn about Mira Points"
+                microchain="Learn about Microchain Points"
+              />
+            }
             background="overlay-1"
           />
         </div>
