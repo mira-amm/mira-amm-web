@@ -3,6 +3,45 @@ import {B256Address} from "fuels";
 import {buildPoolId, PoolId} from "mira-dex-ts";
 import {DefaultLocale} from "./constants";
 
+export const cleanNumberString = (value: string, preserveTyping: boolean = false): string => {
+  if (!value || value === "") return "";
+  
+  // If preserving typing flow, be less aggressive
+  if (preserveTyping) {
+    // Only remove excessive leading zeros (keep one zero before decimal)
+    let cleaned = value.replace(/^0+(?=\d)/, "");
+    
+    // If it starts with a decimal point, add a leading zero
+    if (cleaned.startsWith(".")) {
+      cleaned = "0" + cleaned;
+    }
+    
+    // Don't remove trailing zeros during typing (user might be typing more digits)
+    return cleaned;
+  }
+  
+  // For display/final formatting, be more aggressive
+  if (value === "0") return "";
+  
+  // Remove leading zeros but keep at least one digit before decimal
+  let cleaned = value.replace(/^0+(?=\d)/, "");
+  
+  // If it starts with a decimal point, add a leading zero
+  if (cleaned.startsWith(".")) {
+    cleaned = "0" + cleaned;
+  }
+  
+  // Remove trailing zeros after decimal point
+  if (cleaned.includes(".")) {
+    cleaned = cleaned.replace(/\.?0+$/, "");
+  }
+  
+  // If we end up with just "0." or empty, return empty string
+  if (cleaned === "0." || cleaned === "") return "";
+  
+  return cleaned;
+};
+
 export const openNewTab = (url: string) => {
   window.open(url, "_blank");
 };
