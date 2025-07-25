@@ -58,10 +58,12 @@ export default function Layout({children}: {readonly children: ReactNode}) {
 
   const fontThemeVars = rebrandEnabled
     ? {
-        "--font-alt": "var(--font-jetbrains-mono)",
+        "--font-alt": "var(--font-cartograph-cf)",
+        "--font-sans": "var(--font-inter-variable)",
       }
     : {
         "--font-alt": "var(--font-inter)",
+        "--font-sans": "var(--font-inter)",
       };
 
   return (
@@ -73,6 +75,7 @@ export default function Layout({children}: {readonly children: ReactNode}) {
     >
       <head>
         <link rel="preload" as="image" href="/images/loader.webp" />
+        <link rel="stylesheet" href="https://use.typekit.net/joy1wau.css" />
       </head>
       <body
         className={clsx(

@@ -93,6 +93,8 @@
     --content-positive: #46cc44;
 
     --font-inter: 'Inter', sans-serif;
+    --font-inter-variable: "inter-variable", sans-serif;
+    --font-cartograph-cf: cartograph-cf, monospace;
     --font-prompt: 'Prompt', sans-serif;
     --font-jetbrains-mono: 'JetBrains Mono', monospace;
     --font-ibm-plex-mono: 'IBM Plex Mono', monospace;
