@@ -13,11 +13,13 @@ export const metadata: Metadata = {
     title: `${brandText.name} DEX - The Liquidity Hub on Fuel`,
     url: "https://mira.ly/",
     description: `Trade tokens and provide liquidity on ${brandText.dex}, the most efficient AMM on Fuel Network.`,
-    images: [{
-      url: "/og-image.png",
-      width: 1200,
-      height: 630,
-    }],
+    images: [
+      {
+        url: "/og-image.png",
+        width: 1200,
+        height: 630,
+      },
+    ],
   },
   twitter: {
     title: `${brandText.name} DEX - The Liquidity Hub on Fuel`,

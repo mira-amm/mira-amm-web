@@ -21,7 +21,7 @@ import {getBrandText} from "@/src/utils/brandName";
 const FUEL_CONFIG = createFuelConfig(() => {
   const WalletConnectProjectId = "35b967d8f17700b2de24f0abee77e579";
   const brandText = getBrandText();
-  
+
   const wagmiConfig = createConfig({
     syncConnectedChain: false,
     chains: [mainnet],

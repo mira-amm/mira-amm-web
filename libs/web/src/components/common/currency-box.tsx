@@ -37,7 +37,9 @@ export function CurrencyBox({
   className?: string;
 }) {
   const metadata = useAssetMetadata(assetId);
-  const balanceValue = cleanNumberString(balance.formatUnits(metadata.decimals || 0));
+  const balanceValue = cleanNumberString(
+    balance.formatUnits(metadata.decimals || 0)
+  );
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const inputValue = e.target.value.replace(",", ".");
@@ -68,7 +70,9 @@ export function CurrencyBox({
     if (metadata.symbol === "ETH" && mode === "sell") {
       const amountWithoutGasFee = balance.sub(MinEthValueBN);
       amountStringToSet = amountWithoutGasFee.gt(0)
-        ? cleanNumberString(amountWithoutGasFee.formatUnits(metadata.decimals || 0))
+        ? cleanNumberString(
+            amountWithoutGasFee.formatUnits(metadata.decimals || 0)
+          )
         : balanceValue;
     } else {
       amountStringToSet = balanceValue;

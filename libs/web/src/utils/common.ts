@@ -4,7 +4,10 @@ import {buildPoolId, PoolId} from "mira-dex-ts";
 import {DefaultLocale} from "./constants";
 
 // TODO: done in a rush, try to eliminate use of this function
-export const cleanNumberString = (value: string, preserveTyping: boolean = false): string => {
+export const cleanNumberString = (
+  value: string,
+  preserveTyping: boolean = false
+): string => {
   if (!value || value === "") return "";
 
   if (preserveTyping) {
@@ -14,21 +17,21 @@ export const cleanNumberString = (value: string, preserveTyping: boolean = false
     }
     return cleaned;
   }
-  
+
   if (value === "0") return "";
-  
+
   let cleaned = value.replace(/^0+(?=\d)/, "");
-  
+
   if (cleaned.startsWith(".")) {
     cleaned = "0" + cleaned;
   }
-  
+
   if (cleaned.includes(".")) {
     cleaned = cleaned.replace(/\.?0+$/, "");
   }
-  
+
   if (cleaned === "0." || cleaned === "") return "";
-  
+
   return cleaned;
 };
 

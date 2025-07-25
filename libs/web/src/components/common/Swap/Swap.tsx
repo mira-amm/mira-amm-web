@@ -284,9 +284,10 @@ export function Swap({isWidget}: {isWidget?: boolean}) {
     ) {
       return "";
     }
-    const rawValue = activeMode === "sell"
-      ? trade.amountOut.formatUnits(decimals)
-      : trade.amountIn.formatUnits(decimals);
+    const rawValue =
+      activeMode === "sell"
+        ? trade.amountOut.formatUnits(decimals)
+        : trade.amountIn.formatUnits(decimals);
     return cleanNumberString(rawValue);
   }, [trade, tradeState, activeMode, decimals]);
 
