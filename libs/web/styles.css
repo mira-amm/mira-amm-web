@@ -30,9 +30,9 @@
   --color-border-secondary: var(--border-secondary);
   --color-page-background: var(--page-background);
 
-  --font-sans: var(--font-inter);
+  --font-sans: var(--font-sans);
   --font-mono: var(--font-jetbrains-mono);
-  --font-alt: var(--font-inter);
+  --font-alt: var(--font-alt);
 
   --color-old-mira-btn: #2e2e2e;
   --color-old-mira-audit: #1b2749;
@@ -86,9 +86,8 @@
     --accent-secondary-1: #CA4757;
     --accent-secondary-2: #552533;
 
-    --accent-secondary: rgba(174, 237, 13, 0.4);
     --accent-dimmed: rgba(174, 237, 13, 0.1);
-    --accent-warning: #e43d4b;
+    --accent-warning: var(--accent-secondary);
     --accent-alert: #d4b226;
     --content-positive: #46cc44;
 
@@ -99,6 +98,16 @@
     --font-jetbrains-mono: 'JetBrains Mono', monospace;
     --font-ibm-plex-mono: 'IBM Plex Mono', monospace;
     --font-vt323: 'VT323', monospace;
+  }
+
+  /* Font variation settings for custom fonts */
+  .font-inter-variable {
+    font-family: "inter-variable", sans-serif;
+    font-variation-settings: "slnt" 0, "wght" 400;
+  }
+
+  .font-cartograph-cf {
+    font-family: cartograph-cf, monospace;
   }
 
   .dark {
