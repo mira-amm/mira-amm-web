@@ -234,40 +234,44 @@ export class ReadonlyMiraAmm {
       const pool = poolMetadataList[i]!;
       const poolId = orderedPools[i];
 
-      const [assetOut, reserveIn, reserveOut, decimalsIn, decimalsOut] =
-        arrangePoolParams(pool, currentAsset);
+      let assetOut, reserveIn, reserveOut, decimalsIn, decimalsOut;
 
-      let amount =
-        direction === "IN"
-          ? subtractFee(poolId, currentAmount, fees)
-          : currentAmount;
+      if (direction === "IN") {
+        [assetOut, reserveIn, reserveOut, decimalsIn, decimalsOut] =
+          arrangePoolParams(pool, currentAsset);
 
-      let swapAmount =
-        direction === "IN"
-          ? getAmountOut(
-              poolId[2],
-              reserveIn,
-              reserveOut,
-              powDecimals(decimalsIn),
-              powDecimals(decimalsOut),
-              amount
-            )
-          : getAmountIn(
-              poolId[2],
-              reserveIn,
-              reserveOut,
-              powDecimals(decimalsIn),
-              powDecimals(decimalsOut),
-              amount
-            );
+        const amountAfterFee = subtractFee(poolId, currentAmount, fees);
+        const swapAmount = getAmountOut(
+          poolId[2],
+          reserveIn,
+          reserveOut,
+          powDecimals(decimalsIn),
+          powDecimals(decimalsOut),
+          amountAfterFee
+        );
 
-      if (direction === "OUT") {
-        swapAmount = addFee(poolId, swapAmount, fees);
+        result.push([assetOut, swapAmount]);
+        currentAsset = assetOut;
+        currentAmount = swapAmount;
+      } else {
+        const [assetIn, reserveOut, reserveIn, decimalsOut, decimalsIn] =
+          arrangePoolParams(pool, currentAsset);
+
+        const swapAmount = getAmountIn(
+          poolId[2],
+          reserveIn,
+          reserveOut,
+          powDecimals(decimalsIn),
+          powDecimals(decimalsOut),
+          currentAmount
+        );
+
+        const amountWithFee = addFee(poolId, swapAmount, fees);
+
+        result.push([assetIn, amountWithFee]);
+        currentAsset = assetIn;
+        currentAmount = amountWithFee;
       }
-
-      result.push([assetOut, swapAmount]);
-      currentAsset = assetOut;
-      currentAmount = swapAmount;
     }
 
     return result;
@@ -343,7 +347,7 @@ export class ReadonlyMiraAmm {
   ): Promise<(Asset | undefined)[]> {
     const results = await Promise.allSettled(
       routes.map((route) =>
-        this.getAmountsOut(assetIdOut, assetAmountOut, route)
+        this.getAmountsIn(assetIdOut, assetAmountOut, route)
       )
     );
 
