@@ -87,6 +87,21 @@ const SwapRouteItem = memo(function SwapRouteItem({pool}: {pool: PoolId}) {
   );
 });
 
+const PriceSummarySkeletonLoader = ({
+  className = "w-[50%]",
+}: {
+  className?: string;
+}) => {
+  return (
+    <div
+      className={cn(
+        "bg-accent-primary/30 animate-pulse h-3 rounded-md",
+        className
+      )}
+    />
+  );
+};
+
 const PreviewSummary = memo(function PreviewSummary({
   previewLoading,
   tradeState,
@@ -117,7 +132,7 @@ const PreviewSummary = memo(function PreviewSummary({
       <div className="flex justify-between">
         <p className="text-sm">Rate:</p>
         {previewLoading || tradeState === TradeState.REFETCHING ? (
-          <Loader color="gray" />
+          <PriceSummarySkeletonLoader className="w-[65%]" />
         ) : (
           <p className="text-sm">{exchangeRate}</p>
         )}
@@ -125,11 +140,11 @@ const PreviewSummary = memo(function PreviewSummary({
 
       <div className="flex justify-between">
         <p className="text-sm">Routing:</p>
-        <div className="flex flex-wrap items-center gap-1">
-          {previewLoading || tradeState === TradeState.REFETCHING ? (
-            <Loader color="gray" />
-          ) : (
-            pools.map((pool, i) => (
+        {previewLoading || tradeState === TradeState.REFETCHING ? (
+          <PriceSummarySkeletonLoader className="w-[35%]" />
+        ) : (
+          <div className="flex flex-wrap items-center gap-1">
+            {pools.map((pool, i) => (
               <div
                 className="flex items-center gap-1"
                 key={createPoolKeyFn(pool)}
@@ -137,15 +152,15 @@ const PreviewSummary = memo(function PreviewSummary({
                 <SwapRouteItem pool={pool} />
                 {i !== pools.length - 1 && <span>+</span>}
               </div>
-            ))
-          )}
-        </div>
+            ))}
+          </div>
+        )}
       </div>
 
       <div className="flex justify-between">
         <p className="text-sm">Estimated fees:</p>
         {previewLoading || tradeState === TradeState.REFETCHING ? (
-          <Loader color="gray" />
+          <PriceSummarySkeletonLoader className="w-[35%]" />
         ) : (
           <p className="text-sm">
             {feeValue} {sellMetadataSymbol}
@@ -156,7 +171,7 @@ const PreviewSummary = memo(function PreviewSummary({
       <div className="flex justify-between">
         <p className="text-sm">Gas cost:</p>
         {txCostPending ? (
-          <Loader color="gray" />
+          <PriceSummarySkeletonLoader className="w-[35%]" />
         ) : (
           <p className="text-sm">{txCost?.toFixed(9)} ETH</p>
         )}
