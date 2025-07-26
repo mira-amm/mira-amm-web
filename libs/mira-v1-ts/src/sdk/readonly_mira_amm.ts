@@ -1,6 +1,6 @@
-import { AssetId, BigNumberish, BN, Provider } from "fuels";
-import { DEFAULT_AMM_CONTRACT_ID } from "./constants";
-import { MiraAmmContract } from "./typegen/MiraAmmContract";
+import {AssetId, BigNumberish, BN, Provider} from "fuels";
+import {DEFAULT_AMM_CONTRACT_ID} from "./constants";
+import {MiraAmmContract} from "./typegen/MiraAmmContract";
 import {
   AmmFees,
   AmmMetadata,
@@ -68,7 +68,7 @@ export class ReadonlyMiraAmm {
     poolIds: PoolId[],
     options: CacheOptions = {}
   ): Promise<(PoolMetadata | null)[]> {
-    const effectiveOptions = { ...DEFAULT_CACHE_OPTIONS, ...options };
+    const effectiveOptions = {...DEFAULT_CACHE_OPTIONS, ...options};
 
     // If caching is disabled, use direct fetch
     if (!effectiveOptions.useCache) {
@@ -174,7 +174,7 @@ export class ReadonlyMiraAmm {
       this.ammContract.functions.pool_metadata(poolIdInput(poolId))
     );
 
-    const { value } = await this.ammContract.multiCall(poolIdTransactions).get();
+    const {value} = await this.ammContract.multiCall(poolIdTransactions).get();
 
     if (!value || value.length !== poolIds.length) {
       throw new Error(
@@ -707,19 +707,19 @@ export class ReadonlyMiraAmm {
       const [reserveIn, reserveOut, assetOut, decimalsIn, decimalsOut] =
         poolId[0].bits === assetIn.bits
           ? [
-            pool.reserve0,
-            pool.reserve1,
-            poolId[1],
-            pool.decimals0,
-            pool.decimals1,
-          ]
+              pool.reserve0,
+              pool.reserve1,
+              poolId[1],
+              pool.decimals0,
+              pool.decimals1,
+            ]
           : [
-            pool.reserve1,
-            pool.reserve0,
-            poolId[0],
-            pool.decimals1,
-            pool.decimals0,
-          ];
+              pool.reserve1,
+              pool.reserve0,
+              poolId[0],
+              pool.decimals1,
+              pool.decimals0,
+            ];
       if (assetIdIn.bits === assetIn.bits) {
         assetDecimalsIn = decimalsIn;
       }
