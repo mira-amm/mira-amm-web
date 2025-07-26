@@ -46,4 +46,4 @@ jobs:
         run: pnpm i
 
       - name: 🧩 Build
-        run: pnpm nx run-many -t build -p api rust-sdk mira-v1-ts admin microgame web --verbose
+        run: pnpm nx run-many -t build -p rust-sdk --verbose
