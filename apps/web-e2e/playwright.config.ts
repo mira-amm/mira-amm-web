@@ -10,12 +10,12 @@ const __filename = fileURLToPath(import.meta.url);
 
 const baseURL = "http://localhost:3000";
 
-// const chromiumGpuOnLinuxFlags = [
-//   "--use-angle=vulkan",
-//   "--enable-features=Vulkan",
-//   "--disable-vulkan-surface",
-//   "--enable-unsafe-webgpu",
-// ]
+const chromiumGpuOnLinuxFlags = [
+  "--use-angle=vulkan",
+  "--enable-features=Vulkan",
+  "--disable-vulkan-surface",
+  "--enable-unsafe-webgpu",
+]
 
 export default defineConfig<SerenityOptions>({
   ...nxE2EPreset(__filename, {testDir: "./src"}),
@@ -57,12 +57,12 @@ export default defineConfig<SerenityOptions>({
     {
       name: "chromium",
       use: {...devices["Desktop Chrome"]},
-      // launchOptions: {
-      //           args: [
-      //             "--no-sandbox",
-      //             ...(process.platform === "linux" ? chromiumGpuOnLinuxFlags : []),
-      //           ],
-      //         },
+      launchOptions: {
+                args: [
+                  "--no-sandbox",
+                  ...(process.platform === "linux" ? chromiumGpuOnLinuxFlags : []),
+                ],
+              },
     },
     // {
     //   name: 'firefox',

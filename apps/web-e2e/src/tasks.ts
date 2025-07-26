@@ -20,6 +20,7 @@ import {
 } from "@serenity-js/assertions";
 
 import {
+  addLiquidityButton,
   connectWalletButton,
   walletOption,
   createPoolButton,
@@ -64,11 +65,9 @@ export const CreatePool = {
         Navigate.to("/liquidity"),
 
         Wait.upTo(Duration.ofSeconds(10)).until(
-          PageElement.located(By.css("Loading pools...")),
-          not(isVisible())
-        ),
+          PageElement.located(By.css("Loading pools...")), not(isVisible())),
 
-        Wait.until(createPoolButton(), isVisible()),
+        Wait.until(addLiquidityButton(), isPresent()),
         Click.on(createPoolButton()),
 
         Wait.until(chooseAssetButtons().first(), isVisible()),
@@ -160,7 +159,7 @@ export const AdjustSlippage = {
       Wait.until(slippageSettingsModalCustomButton(), isPresent()),
       Click.on(slippageSettingsModalCustomButton()),
       Wait.until(slippageSettingsInput(), isPresent()),
-      slippageSettingsInput().enterValue(`${value}%`),
+      slippageSettingsInput().enterValue(process.env.NEXT_PUBLIC_ENABLE_REBRAND_UI ? value : `${value}%`),
       Press.the("Enter"),
       Press.the("Escape"),
       Ensure.that(Text.of(slippageLabel()), equals(`${value}% Slippage`))

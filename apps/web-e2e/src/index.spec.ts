@@ -342,6 +342,7 @@ describe("Layout", () => {
     it("should show 'Bridge' link", async ({actor}) =>
       actor.attemptsTo(Layout.shouldShow("'Bridge' link", headerBridgeLink())));
 
+!process.env.NEXT_PUBLIC_ENABLE_REBRAND_UI &&
     it("should show 'Mainnet' text", async ({actor}) =>
       actor.attemptsTo(
         Layout.shouldShow("'Mainnet' text", headerMainnetText())
