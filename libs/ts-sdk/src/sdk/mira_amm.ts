@@ -20,10 +20,7 @@ import {
   SwapExactOutputScriptLoader,
 } from "./typegen/scripts";
 
-import {
-  MiraAmmContract,
-  MiraAmmContractFactory,
-} from "./typegen/contracts";
+import {MiraAmmContract, MiraAmmContractFactory} from "./typegen/contracts";
 
 import {PoolId} from "./model";
 import {
