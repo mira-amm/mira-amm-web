@@ -7,11 +7,12 @@ export const metadata: Metadata = {
   title: `${brandText.name} DEX - The Liquidity Hub on Fuel`,
   description: `Trade tokens and provide liquidity on ${brandText.dex}, the most efficient AMM on Fuel Network.`,
   icons: {
-    icon: "/favicon.ico",
+    icon: "/favicon.png",
   },
   openGraph: {
+    siteName: `${brandText.name} DEX`,
     title: `${brandText.name} DEX - The Liquidity Hub on Fuel`,
-    url: "https://mira.ly/",
+    url: "https://microchain.systems",
     description: `Trade tokens and provide liquidity on ${brandText.dex}, the most efficient AMM on Fuel Network.`,
     images: [
       {
@@ -24,6 +25,6 @@ export const metadata: Metadata = {
   twitter: {
     title: `${brandText.name} DEX - The Liquidity Hub on Fuel`,
     description: `Trade tokens and provide liquidity on ${brandText.dex}, the most efficient AMM on Fuel Network.`,
-    images: ["/og-image.png"],
+    images: ["/og-twitter.png"],
   },
 };
