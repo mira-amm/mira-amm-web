@@ -1,5 +1,6 @@
 export {
   PoolDataCache,
+  globalPoolDataCache,
   CachedPoolMetadata,
   CacheStats,
   PoolCacheConfig,

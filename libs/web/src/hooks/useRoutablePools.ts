@@ -1,10 +1,6 @@
 import {useMemo} from "react";
 import type {PoolId} from "mira-dex-ts";
-import {
-  type Pool,
-  useAllAssetsCombination,
-  useGetPoolsWithReserve,
-} from "@/src/hooks";
+import {useAllAssetsCombination, useGetPoolsWithReserve} from "@/src/hooks";
 import type {CoinData} from "../utils/coinsConfig";
 import {computeAllRoutes, getPoolIdCombinations} from "./get-routable-pools";
 

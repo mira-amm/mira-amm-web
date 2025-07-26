@@ -1,5 +1,5 @@
 import {type BN, type AssetId} from "fuels";
-import type {ReadonlyMiraAmm} from "mira-dex-ts";
+import type {ReadonlyMiraAmm, CacheOptions} from "mira-dex-ts";
 import {Route} from ".";
 
 export enum TradeType {
@@ -20,7 +20,8 @@ export const getSwapQuotesBatch = async (
   amount: BN,
   tradeType: TradeType,
   routes: Route[],
-  amm: ReadonlyMiraAmm
+  amm: ReadonlyMiraAmm,
+  cacheOptions?: CacheOptions
 ): Promise<SwapQuote[]> => {
   if (!routes.length) return [];
 
@@ -29,14 +30,55 @@ export const getSwapQuotesBatch = async (
     ? routes[0].assetIn.assetId
     : routes[0].assetOut.assetId;
   const poolPaths = routes.map((r) => r.pools.map((p) => p.poolId));
-
-  const results = isExactIn
-    ? await amm.previewSwapExactInputBatch({bits: assetKey}, amount, poolPaths)
-    : await amm.previewSwapExactOutputBatch(
-        {bits: assetKey},
-        amount,
-        poolPaths
+  let results;
+  try {
+    // Perform batch quote calculations with cache options
+    results = isExactIn
+      ? await amm.previewSwapExactInputBatch(
+          {bits: assetKey},
+          amount,
+          poolPaths,
+          cacheOptions
+        )
+      : await amm.previewSwapExactOutputBatch(
+          {bits: assetKey},
+          amount,
+          poolPaths,
+          cacheOptions
+        );
+  } catch (error) {
+    // Enhanced error handling for cache failures during batch operations
+    if (cacheOptions?.useCache) {
+      console.warn(
+        "Cached batch calculation failed, retrying without cache:",
+        error
       );
+
+      // Fallback: retry without cache options
+      try {
+        results = isExactIn
+          ? await amm.previewSwapExactInputBatch(
+              {bits: assetKey},
+              amount,
+              poolPaths
+            )
+          : await amm.previewSwapExactOutputBatch(
+              {bits: assetKey},
+              amount,
+              poolPaths
+            );
+      } catch (fallbackError) {
+        console.error(
+          "Batch calculation failed even without cache:",
+          fallbackError
+        );
+        throw fallbackError;
+      }
+    } else {
+      // Re-throw if not a cache-related issue
+      throw error;
+    }
+  }
 
   return results
     .map((asset, i) =>
