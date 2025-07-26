@@ -9,48 +9,40 @@
   "implicitDependencies": ["!libs/web"],
   "tags": ["sdk", "typescript", "v1"],
   "targets": {
-    "test": {
-      "command": "jest",
-      "options": {
-        "cwd": "libs/mira-v1-ts"
-      }
-    },
-    "typegen:predicates": {
-      "cache": true,
-      "command": "fuels typegen -i '../scripts/scripts/*/out/release/*-abi.json' -o ./src/sdk/typegen --script",
-      "options": {
-        "cwd": "libs/mira-v1-ts"
-      }
-    },
-    "typegen:contracts": {
-      "cache": true,
-      "command": "fuels typegen -i '../contracts/contracts/*/out/release/*-abi.json' -o './src/sdk/typegen'",
-      "options": {
-        "cwd": "libs/mira-v1-ts"
-      }
-    },
-    "typegen": {
-      "cache": true,
-      "command": "pnpm typegen:predicates && pnpm typegen:contracts",
+    "typecheck": {
+      "dependsOn": ["typegen"],
+      "command": "tsc --noEmit",
       "options": {
         "cwd": "libs/mira-v1-ts"
       }
     },
     "build": {
-      "command": "tsx scripts/build.ts",
-      "cache": true,
+      "dependsOn": ["typegen"],
+      "command": "tsup",
       "options": {
         "cwd": "libs/mira-v1-ts"
       }
     },
-    "prepare": {
-      "command": "pnpm build",
+    "dev": {
+      "command": "tsup",
       "options": {
         "cwd": "libs/mira-v1-ts"
       }
     },
-    "pub": {
-      "command": "pnpm publish --access public",
+    "typegen": {
+      "command": "pnpm nx typegen:scripts && pnpm nx typegen:contracts",
+      "options": {
+        "cwd": "libs/mira-v1-ts"
+      }
+    },
+    "typegen:scripts": {
+      "command": "fuels typegen -i './sway_abis/scripts/*/release/*-abi.json' -o ./src/sdk/typegen/scripts --script",
+      "options": {
+        "cwd": "libs/mira-v1-ts"
+      }
+    },
+    "typegen:contracts": {
+      "command": "fuels typegen -i './sway_abis/contracts/*/release/*-abi.json' -o './src/sdk/typegen/contracts'",
       "options": {
         "cwd": "libs/mira-v1-ts"
       }
