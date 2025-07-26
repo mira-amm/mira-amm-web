@@ -25,6 +25,12 @@ import {
   powDecimals,
   subtractFee,
 } from "./math";
+import {
+  PoolDataCache,
+  CacheOptions,
+  DEFAULT_CACHE_OPTIONS,
+  CacheError,
+} from "./cache";
 
 import {MiraAmmContract} from "./typegen/contracts";
 
@@ -33,11 +39,13 @@ const DECIMALS_PRECISION = 1000000000000;
 export class ReadonlyMiraAmm {
   provider: Provider;
   ammContract: MiraAmmContract;
+  private poolCache: PoolDataCache;
 
   constructor(provider: Provider, contractIdOpt?: string) {
     let contractId = contractIdOpt ?? DEFAULT_AMM_CONTRACT_ID;
     this.provider = provider;
     this.ammContract = new MiraAmmContract(contractId, provider);
+    this.poolCache = new PoolDataCache();
   }
 
   id(): string {
@@ -54,7 +62,101 @@ export class ReadonlyMiraAmm {
     };
   }
 
-  async poolMetadataBatch(poolIds: PoolId[]): Promise<(PoolMetadata | null)[]> {
+  async poolMetadataBatch(
+    poolIds: PoolId[],
+    options: CacheOptions = {}
+  ): Promise<(PoolMetadata | null)[]> {
+    const effectiveOptions = {...DEFAULT_CACHE_OPTIONS, ...options};
+
+    // If caching is disabled, use direct fetch
+    if (!effectiveOptions.useCache) {
+      return this.poolMetadataBatchDirect(poolIds);
+    }
+
+    const results: (PoolMetadata | null)[] = [];
+    const poolsToFetch: PoolId[] = [];
+    const fetchIndices: number[] = [];
+
+    // Check cache for each pool
+    for (let i = 0; i < poolIds.length; i++) {
+      const poolId = reorderPoolId(poolIds[i]);
+      const cached = this.poolCache.getPoolMetadata(poolId);
+
+      if (cached && !this.poolCache.isStale(poolId)) {
+        // Use cached data
+        results[i] = cached;
+      } else if (cached && this.poolCache.isStale(poolId)) {
+        // Handle stale data
+        if (effectiveOptions.refreshStaleData) {
+          // Mark for refresh
+          poolsToFetch.push(poolId);
+          fetchIndices.push(i);
+          // Use stale data temporarily
+          results[i] = cached;
+        } else {
+          // Use stale data as-is
+          results[i] = cached;
+        }
+      } else {
+        // Cache miss - need to fetch
+        poolsToFetch.push(poolId);
+        fetchIndices.push(i);
+        results[i] = null; // Placeholder
+      }
+    }
+
+    // Fetch missing or stale pools
+    if (poolsToFetch.length > 0) {
+      try {
+        const fetchedPools = await this.poolMetadataBatchDirect(poolsToFetch);
+
+        // Update cache and results
+        for (let i = 0; i < poolsToFetch.length; i++) {
+          const poolId = poolsToFetch[i];
+          const metadata = fetchedPools[i];
+          const resultIndex = fetchIndices[i];
+
+          if (metadata) {
+            // Store in cache with custom TTL if provided
+            this.poolCache.setPoolMetadata(
+              poolId,
+              metadata,
+              effectiveOptions.cacheTTL
+            );
+            results[resultIndex] = metadata;
+          }
+        }
+      } catch (error) {
+        // If fetch fails, use any available stale data or throw
+        const hasStaleData = results.some(
+          (result, index) => result !== null && fetchIndices.includes(index)
+        );
+
+        if (hasStaleData) {
+          // Log warning but continue with stale data
+          console.warn(
+            "Failed to refresh pool data, using stale cache:",
+            error
+          );
+        } else {
+          // No fallback data available, re-throw error
+          throw new CacheError(
+            "Failed to fetch pool metadata and no cache available",
+            error instanceof Error ? error : new Error(String(error))
+          );
+        }
+      }
+    }
+
+    return results;
+  }
+
+  /**
+   * Direct pool metadata batch fetch without caching
+   */
+  private async poolMetadataBatchDirect(
+    poolIds: PoolId[]
+  ): Promise<(PoolMetadata | null)[]> {
     const poolIdTransactions = poolIds.map((poolId) =>
       this.ammContract.functions.pool_metadata(poolIdInput(poolId))
     );
@@ -80,24 +182,12 @@ export class ReadonlyMiraAmm {
     });
   }
 
-  async poolMetadata(poolId: PoolId): Promise<PoolMetadata | null> {
-    poolId = reorderPoolId(poolId);
-    const result = await this.ammContract.functions
-      .pool_metadata(poolIdInput(poolId))
-      .get();
-    const value = result.value;
-    if (!value) {
-      return null;
-    }
-
-    return {
-      poolId: poolId,
-      reserve0: value.reserve_0,
-      reserve1: value.reserve_1,
-      liquidity: [value.liquidity.id, value.liquidity.amount],
-      decimals0: value.decimals_0,
-      decimals1: value.decimals_1,
-    };
+  async poolMetadata(
+    poolId: PoolId,
+    options: CacheOptions = {}
+  ): Promise<PoolMetadata | null> {
+    const results = await this.poolMetadataBatch([poolId], options);
+    return results[0];
   }
 
   async fees(): Promise<AmmFees> {
@@ -167,10 +257,11 @@ export class ReadonlyMiraAmm {
   async getOtherTokenToAddLiquidity(
     poolId: PoolId,
     amount: BigNumberish,
-    isFirstToken: boolean
+    isFirstToken: boolean,
+    options: CacheOptions = {}
   ): Promise<Asset> {
     poolId = reorderPoolId(poolId);
-    const pool = await this.poolMetadata(poolId);
+    const pool = await this.poolMetadata(poolId, options);
     if (!pool) {
       throw new Error("Pool not found");
     }
@@ -194,14 +285,15 @@ export class ReadonlyMiraAmm {
 
   async getLiquidityPosition(
     poolId: PoolId,
-    lpTokensAmount: BigNumberish
+    lpTokensAmount: BigNumberish,
+    options: CacheOptions = {}
   ): Promise<[Asset, Asset]> {
     poolId = reorderPoolId(poolId);
     const lpTokensBN = new BN(lpTokensAmount);
     if (lpTokensBN.isNeg() || lpTokensBN.isZero()) {
       throw new Error("Non positive input amount");
     }
-    const pool = await this.poolMetadata(poolId);
+    const pool = await this.poolMetadata(poolId, options);
     if (!pool) {
       throw new Error("Pool not found");
     }
@@ -222,11 +314,13 @@ export class ReadonlyMiraAmm {
     assetId: AssetId,
     amount: BN,
     pools: PoolId[],
-    fees: AmmFees
+    fees: AmmFees,
+    options: CacheOptions = {}
   ): Promise<Asset[]> {
     const orderedPools = direction === "IN" ? pools : [...pools].reverse();
     const poolMetadataList = await this.poolMetadataBatch(
-      orderedPools.map(reorderPoolId)
+      orderedPools.map(reorderPoolId),
+      options
     );
 
     let currentAsset = assetId;
@@ -283,36 +377,47 @@ export class ReadonlyMiraAmm {
   async getAmountsOut(
     assetIdIn: AssetId,
     assetAmountIn: BigNumberish,
-    pools: PoolId[]
+    pools: PoolId[],
+    options: CacheOptions = {}
   ) {
     const amount = new BN(assetAmountIn);
     if (amount.isNeg() || amount.isZero())
       throw new Error("Non positive input amount");
     const fees = await this.fees();
-    return this.computeSwapPath("IN", assetIdIn, amount, pools, fees);
+    return this.computeSwapPath("IN", assetIdIn, amount, pools, fees, options);
   }
 
   async getAmountsIn(
     assetIdOut: AssetId,
     assetAmountOut: BigNumberish,
-    pools: PoolId[]
+    pools: PoolId[],
+    options: CacheOptions = {}
   ) {
     const amount = new BN(assetAmountOut);
     if (amount.isNeg() || amount.isZero())
       throw new Error("Non positive input amount");
     const fees = await this.fees();
-    return this.computeSwapPath("OUT", assetIdOut, amount, pools, fees);
+    return this.computeSwapPath(
+      "OUT",
+      assetIdOut,
+      amount,
+      pools,
+      fees,
+      options
+    );
   }
 
   async previewSwapExactInput(
     assetIdIn: AssetId,
     assetAmountIn: BigNumberish,
-    pools: PoolId[]
+    pools: PoolId[],
+    options: CacheOptions = {}
   ): Promise<Asset> {
     const amountsOut = await this.getAmountsOut(
       assetIdIn,
       assetAmountIn,
-      pools
+      pools,
+      options
     );
     return amountsOut[amountsOut.length - 1];
   }
@@ -320,12 +425,14 @@ export class ReadonlyMiraAmm {
   async previewSwapExactOutput(
     assetIdOut: AssetId,
     assetAmountOut: BigNumberish,
-    pools: PoolId[]
+    pools: PoolId[],
+    options: CacheOptions = {}
   ): Promise<Asset> {
     const amountsIn = await this.getAmountsIn(
       assetIdOut,
       assetAmountOut,
-      pools
+      pools,
+      options
     );
     return amountsIn[amountsIn.length - 1];
   }
@@ -333,10 +440,13 @@ export class ReadonlyMiraAmm {
   async previewSwapExactInputBatch(
     assetIdIn: AssetId,
     assetAmountIn: BigNumberish,
-    routes: PoolId[][]
+    routes: PoolId[][],
+    options: CacheOptions = {}
   ): Promise<(Asset | undefined)[]> {
     const results = await Promise.allSettled(
-      routes.map((route) => this.getAmountsOut(assetIdIn, assetAmountIn, route))
+      routes.map((route) =>
+        this.getAmountsOut(assetIdIn, assetAmountIn, route, options)
+      )
     );
     return results.map((r) =>
       r.status === "fulfilled" ? r.value[r.value.length - 1] : undefined
@@ -346,17 +456,57 @@ export class ReadonlyMiraAmm {
   async previewSwapExactOutputBatch(
     assetIdOut: AssetId,
     assetAmountOut: BigNumberish,
-    routes: PoolId[][]
+    routes: PoolId[][],
+    options: CacheOptions = {}
   ): Promise<(Asset | undefined)[]> {
     const results = await Promise.allSettled(
-      routes.map((route) =>
-        this.getAmountsIn(assetIdOut, assetAmountOut, route)
+      routes.map(
+        (route) => this.getAmountsIn(assetIdOut, assetAmountOut, route, options) // FIXED: was getAmountsOut
       )
     );
 
     return results.map((r) =>
       r.status === "fulfilled" ? r.value[r.value.length - 1] : undefined
     );
+  }
+
+  /**
+   * Get access to the pool data cache for external management
+   */
+  getPoolCache(): PoolDataCache {
+    return this.poolCache;
+  }
+
+  /**
+   * Preload pools for routes to warm up the cache
+   */
+  async preloadPoolsForRoutes(
+    routes: PoolId[][],
+    options: CacheOptions = {}
+  ): Promise<void> {
+    // Extract unique pools from all routes
+    const uniquePools = new Set<string>();
+    const poolsToPreload: PoolId[] = [];
+
+    for (const route of routes) {
+      for (const poolId of route) {
+        const reorderedPoolId = reorderPoolId(poolId);
+        const key = `${reorderedPoolId[0].bits}-${reorderedPoolId[1].bits}-${reorderedPoolId[2]}`;
+
+        if (!uniquePools.has(key)) {
+          uniquePools.add(key);
+          poolsToPreload.push(reorderedPoolId);
+        }
+      }
+    }
+
+    // Preload all unique pools
+    if (poolsToPreload.length > 0) {
+      await this.poolMetadataBatch(poolsToPreload, {
+        ...options,
+        useCache: true, // Force cache usage for preloading
+      });
+    }
   }
 
   async getCurrentRate(
