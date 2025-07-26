@@ -521,15 +521,19 @@ export function Swap({isWidget}: {isWidget?: boolean}) {
       if (txCostData?.tx) {
         const result = await triggerSwap(txCostData.tx);
         if (result?.isStatusPreConfirmationSuccess) {
-          setSwapState(initialSwapState);
-          setInputsState(initialInputsState);
+          // Preserve current asset selection, only clear amounts
+          setSwapState((prev) => ({
+            sell: {...prev.sell, amount: ""},
+            buy: {...prev.buy, amount: ""},
+          }));
+          setInputsState({sell: {amount: ""}, buy: {amount: ""}});
           setReview(false);
           openSuccess();
           triggerClassAnimation("dino");
           await refetchBalances();
-          // TODO: use variable outputs 
+          // TODO: use variable outputs
           // check this after rebrand
-          await result.waitForResult
+          await result.waitForResult;
         }
       } else {
         openFailure();
