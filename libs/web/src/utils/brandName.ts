@@ -1,7 +1,7 @@
 /**
  * Check if rebrand is enabled - SSR safe
  */
-function isRebrandEnabled(): boolean {
+export function isRebrandEnabled(): boolean {
   return process.env.NEXT_PUBLIC_ENABLE_REBRAND_UI === "true";
 }
 
