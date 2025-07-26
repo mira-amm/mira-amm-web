@@ -55,7 +55,7 @@ export function useSwapPreview(
   ]);
 
   // passing as bn causes infinite render
-  const debouncedValue = useDebounce(rawUserInputAmount.toString(), 500);
+  const debouncedValue = useDebounce(rawUserInputAmount.toString(), 100);
 
   return useSwapRouter(tradeType, bn(debouncedValue), assetIn, assetOut, {
     enableCaching: true,
