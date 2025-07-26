@@ -3,9 +3,9 @@ name: 🧪 End-to-End Tests
 
 on:
   push:
-    branches: ['*']
+    branches: ["*"]
   pull_request:
-    branches: ['*']
+    branches: ["*"]
 
 jobs:
   e2e:
@@ -25,8 +25,34 @@ jobs:
       - name: 🌳 Fetch main branch # Will be used for test splitting later
         run: git fetch origin main # Explicitly fetch the 'main' branch to ensure it's available
 
+        # TODO: use lix installer because that's what we use for local dev
+        # https://github.com/lix-pm/setup-lix
+      - name: ❄ Install Nix
+        uses: cachix/install-nix-action@v26
+      - uses: cachix/cachix-action@v14
+        with:
+          name: devenv
+
+      # TODO: unsuited to github actions due to broken caching, blocked by hercules CI
+      # - name: 🟦 Install Devenv
+      #   run: nix profile install nixpkgs#devenv
+
+      # - name: 🟨 Install pnpm
+      #   uses: pnpm/action-setup@v4
+
+      # - name: 🟩 Install Node.js
+      #   uses: actions/setup-node@v4
+      #   with:
+      #     node-version: 22
+
+      # - name: 📦 Install dependencies
+      #   run: pnpm i
+
       - name: 📦 Install dependencies
         run: pnpm i --frozen-lockfile
+
+      - name: 🧩 Build
+        run: pnpm nx run-many -t build -p api rust-sdk mira-v1-ts design admin microgame web --verbose
 
       - name: 🧐 Run End-to-End tests
         env:
