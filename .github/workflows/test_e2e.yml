@@ -52,7 +52,7 @@ jobs:
         run: pnpm i --frozen-lockfile
 
       - name: 🧩 Build
-        run: pnpm nx run-many -t build -p api rust-sdk mira-v1-ts design admin microgame web --verbose
+        run: pnpm nx run-many -t build -p api mira-v1-ts design admin microgame web --verbose
 
       - name: 🧐 Run End-to-End tests
         env:
