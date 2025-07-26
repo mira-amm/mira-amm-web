@@ -7,6 +7,7 @@ import {BN, AssetId} from "fuels";
 import {ReadonlyMiraAmm} from "../readonly_mira_amm";
 import {PoolId} from "../model";
 import {CacheOptions} from "../cache";
+import {vi} from "vitest";
 
 // Mock the provider and contract
 const mockProvider = {} as any;
@@ -51,19 +52,19 @@ describe("Batch Preview Methods with Cache Support", () => {
     ];
 
     // Mock the underlying methods to avoid actual network calls
-    jest.spyOn(amm, "getAmountsOut").mockResolvedValue([
+    vi.spyOn(amm, "getAmountsOut").mockResolvedValue([
       [mockAssetIn, new BN(1000)],
       [mockAssetOut, new BN(950)],
     ]);
 
-    jest.spyOn(amm, "getAmountsIn").mockResolvedValue([
+    vi.spyOn(amm, "getAmountsIn").mockResolvedValue([
       [mockAssetOut, new BN(1000)],
       [mockAssetIn, new BN(1050)],
     ]);
   });
 
   afterEach(() => {
-    jest.restoreAllMocks();
+    vi.restoreAllMocks();
   });
 
   describe("previewSwapExactInputBatch", () => {
@@ -124,8 +125,7 @@ describe("Batch Preview Methods with Cache Support", () => {
 
     it("should handle failed routes gracefully", async () => {
       // Mock one route to fail
-      jest
-        .spyOn(amm, "getAmountsOut")
+      vi.spyOn(amm, "getAmountsOut")
         .mockResolvedValueOnce([
           [mockAssetIn, new BN(1000)],
           [mockAssetOut, new BN(950)],
@@ -234,8 +234,7 @@ describe("Batch Preview Methods with Cache Support", () => {
 
     it("should handle failed routes gracefully", async () => {
       // Mock one route to fail
-      jest
-        .spyOn(amm, "getAmountsIn")
+      vi.spyOn(amm, "getAmountsIn")
         .mockResolvedValueOnce([
           [mockAssetOut, new BN(1000)],
           [mockAssetIn, new BN(1050)],

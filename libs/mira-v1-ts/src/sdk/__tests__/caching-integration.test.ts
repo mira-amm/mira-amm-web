@@ -35,9 +35,11 @@ const mockContract = {
   }),
 } as any;
 
+import {vi} from "vitest";
+
 // Mock the MiraAmmContract constructor
-jest.mock("../typegen/MiraAmmContract", () => ({
-  MiraAmmContract: jest.fn().mockImplementation(() => mockContract),
+vi.mock("../typegen/MiraAmmContract", () => ({
+  MiraAmmContract: vi.fn().mockImplementation(() => mockContract),
 }));
 
 describe("Caching Integration Tests", () => {
@@ -280,7 +282,7 @@ describe("Caching Integration Tests", () => {
       const assetAmountIn = new BN(100000);
 
       // Spy on poolMetadataBatch to verify preloading
-      const poolMetadataBatchSpy = jest.spyOn(amm, "poolMetadataBatch");
+      const poolMetadataBatchSpy = vi.spyOn(amm, "poolMetadataBatch");
 
       await amm.previewSwapExactInputBatch(
         assetIdIn,

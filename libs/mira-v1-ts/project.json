@@ -10,7 +10,7 @@
   "tags": ["sdk", "typescript", "v1"],
   "targets": {
     "test": {
-      "command": "jest",
+      "command": "vitest run",
       "options": {
         "cwd": "libs/mira-v1-ts"
       }
