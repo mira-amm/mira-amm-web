@@ -4,7 +4,7 @@
   "description": "TypeScript SDK for Mira DEX",
   "license": "GPL-3.0-only",
   "type": "module",
-  "main": "dist/index.mjs",
+  "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "files": [
     "dist"
