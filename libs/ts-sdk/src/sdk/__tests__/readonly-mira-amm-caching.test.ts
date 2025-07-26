@@ -2,13 +2,17 @@ import {BN, AssetId} from "fuels";
 import {ReadonlyMiraAmm} from "../readonly_mira_amm";
 import {CacheOptions} from "../cache";
 import {PoolId, PoolMetadata} from "../model";
+import {vi} from "vitest";
 
 // Mock the MiraAmmContract and Provider
-jest.mock("../typegen/MiraAmmContract");
-jest.mock("fuels", () => ({
-  ...jest.requireActual("fuels"),
-  Provider: jest.fn().mockImplementation(() => ({})),
-}));
+vi.mock("../typegen/MiraAmmContract");
+vi.mock("fuels", async (importOriginal) => {
+  const actual = (await importOriginal()) as any;
+  return {
+    ...actual,
+    Provider: vi.fn().mockImplementation(() => ({})),
+  };
+});
 
 describe("ReadonlyMiraAmm Caching Integration", () => {
   let readonlyAmm: ReadonlyMiraAmm;
@@ -37,9 +41,9 @@ describe("ReadonlyMiraAmm Caching Integration", () => {
     protocolFeeStable: new BN(0),
   };
 
-  beforeEach(() => {
+  beforeEach(async () => {
     // Reset mocks
-    jest.clearAllMocks();
+    vi.clearAllMocks();
 
     // Mock provider
     mockProvider = {};
@@ -48,8 +52,8 @@ describe("ReadonlyMiraAmm Caching Integration", () => {
     mockContract = {
       id: {toString: () => "mock-contract-id"},
       functions: {
-        fees: jest.fn().mockReturnValue({
-          get: jest.fn().mockResolvedValue({
+        fees: vi.fn().mockReturnValue({
+          get: vi.fn().mockResolvedValue({
             value: [
               mockFees.lpFeeVolatile,
               mockFees.lpFeeStable,
@@ -58,10 +62,10 @@ describe("ReadonlyMiraAmm Caching Integration", () => {
             ],
           }),
         }),
-        pool_metadata: jest.fn(),
+        pool_metadata: vi.fn(),
       },
-      multiCall: jest.fn().mockImplementation((transactions) => ({
-        get: jest.fn().mockResolvedValue({
+      multiCall: vi.fn().mockImplementation((transactions) => ({
+        get: vi.fn().mockResolvedValue({
           value: transactions.map(() => ({
             reserve_0: mockPoolMetadata1.reserve0,
             reserve_1: mockPoolMetadata1.reserve1,
@@ -77,8 +81,8 @@ describe("ReadonlyMiraAmm Caching Integration", () => {
     };
 
     // Mock the MiraAmmContract constructor
-    const {MiraAmmContract} = require("../typegen/MiraAmmContract");
-    MiraAmmContract.mockImplementation(() => mockContract);
+    const {MiraAmmContract} = await import("../typegen/MiraAmmContract");
+    (MiraAmmContract as any).mockImplementation(() => mockContract);
 
     readonlyAmm = new ReadonlyMiraAmm(mockProvider);
   });
@@ -104,6 +108,8 @@ describe("ReadonlyMiraAmm Caching Integration", () => {
 
     it("should use cached pool data when available", async () => {
       const cacheOptions: CacheOptions = {useCache: true};
+
+      readonlyAmm.getPoolCache().clear();
 
       // First call - should fetch from network
       await readonlyAmm.getAmountsOut(
@@ -203,6 +209,8 @@ describe("ReadonlyMiraAmm Caching Integration", () => {
     it("should use cached pool data when available", async () => {
       const cacheOptions: CacheOptions = {useCache: true};
 
+      readonlyAmm.getPoolCache().clear();
+
       // First call - should fetch from network
       await readonlyAmm.getAmountsIn(
         mockAssetId2,
@@ -292,6 +300,7 @@ describe("ReadonlyMiraAmm Caching Integration", () => {
     });
 
     it("should use default cache behavior when no options provided", async () => {
+      readonlyAmm.getPoolCache().clear();
       // First call
       await readonlyAmm.getAmountsOut(mockAssetId1, new BN(100000), [
         mockPoolId1,
@@ -325,7 +334,7 @@ describe("ReadonlyMiraAmm Caching Integration", () => {
 
   describe("Cache integration", () => {
     it("should pass cache options through the call chain", async () => {
-      const spy = jest.spyOn(readonlyAmm, "poolMetadataBatch");
+      const spy = vi.spyOn(readonlyAmm, "poolMetadataBatch");
 
       const cacheOptions: CacheOptions = {
         useCache: true,
@@ -353,6 +362,8 @@ describe("ReadonlyMiraAmm Caching Integration", () => {
 
     it("should support preloading pools for routes", async () => {
       const routes = [[mockPoolId1]];
+
+      readonlyAmm.getPoolCache().clear();
 
       // Should not throw
       await expect(
