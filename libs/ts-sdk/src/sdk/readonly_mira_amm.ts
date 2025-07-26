@@ -132,32 +132,23 @@ export class ReadonlyMiraAmm {
           }
         }
       } catch (error) {
-        // If batch fetch fails, try individual fetches as fallback
-        console.warn(
-          "Batch pool metadata fetch failed, trying individual fetches:",
-          error
+        // If fetch fails, use any available stale data or throw
+        const hasStaleData = results.some(
+          (result, index) => result !== null && fetchIndices.includes(index)
         );
 
-        for (let i = 0; i < poolsToFetch.length; i++) {
-          const poolId = poolsToFetch[i];
-          const resultIndex = fetchIndices[i];
-
-          try {
-            const metadata = await this.poolMetadata(poolId, {useCache: false});
-            if (metadata) {
-              this.poolCache.setPoolMetadata(
-                poolId,
-                metadata,
-                effectiveOptions.cacheTTL
-              );
-              results[resultIndex] = metadata;
-            }
-          } catch (individualError) {
-            console.warn(
-              `Failed to fetch individual pool ${poolId}:`,
-              individualError
-            );
-          }
+        if (hasStaleData) {
+          // Log warning but continue with stale data
+          console.warn(
+            "Failed to refresh pool data, using stale cache:",
+            error
+          );
+        } else {
+          // No fallback data available, re-throw error
+          throw new CacheError(
+            "Failed to fetch pool metadata and no cache available",
+            error instanceof Error ? error : new Error(String(error))
+          );
         }
       }
     }
@@ -563,7 +554,6 @@ export class ReadonlyMiraAmm {
   /**
    * Preload pools for routes to warm up the cache
    * Extracts unique pools from route arrays and batch fetches their metadata
-   * Also preloads fees to avoid network calls during swap calculations
    */
   async preloadPoolsForRoutes(
     routes: PoolId[][],
@@ -572,11 +562,6 @@ export class ReadonlyMiraAmm {
     if (!routes || routes.length === 0) {
       return;
     }
-
-    // Preload fees to avoid network calls during swap calculations (non-blocking)
-    this.fees().catch((error) => {
-      console.warn("Fee preloading failed:", error);
-    });
 
     // Extract unique pools from all routes
     const uniquePools = this.extractUniquePoolsFromRoutes(routes);
