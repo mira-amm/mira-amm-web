@@ -4,6 +4,7 @@ import {useCallback, useEffect, useMemo, useRef, useState, memo} from "react";
 
 import {
   B256Address,
+  BN,
   bn,
   ScriptTransactionRequest,
   TransactionCost,
@@ -117,7 +118,7 @@ const PreviewSummary = memo(function PreviewSummary({
 }: {
   previewLoading: boolean;
   tradeState: TradeState;
-  exchangeRate: string | undefined;
+  exchangeRate: string | null;
   pools: PoolId[];
   feeValue: string;
   sellMetadataSymbol: string;
@@ -233,7 +234,7 @@ export function Swap({isWidget}: {isWidget?: boolean}) {
   const [slippageMode, setSlippageMode] = useState<SlippageMode>("auto");
   const [txCostData, setTxCostData] = useState<{
     tx: ScriptTransactionRequest;
-    txCost: TransactionCost;
+    txCost: BN;
   }>();
   const [txCost, setTxCost] = useState<number | null>(null);
   const [swapButtonTitle, setSwapButtonTitle] = useState<string>("Review");
@@ -484,7 +485,13 @@ export function Swap({isWidget}: {isWidget?: boolean}) {
     try {
       const data = await fetchTxCost();
       setTxCostData(data);
-      setTxCost(data?.txCost.gasPrice.toNumber() / 10 ** 9 || null);
+
+      if (data?.txCost) {
+        setTxCost(data.txCost.toNumber() / 10 ** 9);
+      } else {
+        setTxCost(null);
+      }
+
       setCustomErrorTitle("");
     } catch (e) {
       console.error(e);
@@ -513,17 +520,16 @@ export function Swap({isWidget}: {isWidget?: boolean}) {
     try {
       if (txCostData?.tx) {
         const result = await triggerSwap(txCostData.tx);
-        if (result) {
-          // Preserve current asset selection, only clear amounts
-          setSwapState((prev) => ({
-            sell: {...prev.sell, amount: ""},
-            buy: {...prev.buy, amount: ""},
-          }));
-          setInputsState({sell: {amount: ""}, buy: {amount: ""}});
+        if (result?.isStatusPreConfirmationSuccess) {
+          setSwapState(initialSwapState);
+          setInputsState(initialInputsState);
           setReview(false);
           openSuccess();
           triggerClassAnimation("dino");
           await refetchBalances();
+          // TODO: use variable outputs 
+          // check this after rebrand
+          await result.waitForResult
         }
       } else {
         openFailure();
@@ -750,7 +756,7 @@ export function Swap({isWidget}: {isWidget?: boolean}) {
               exchangeRate={exchangeRate}
               pools={pools}
               feeValue={feeValue}
-              sellMetadataSymbol={sellMetadata.symbol}
+              sellMetadataSymbol={sellMetadata.symbol ?? ""}
               txCost={txCost}
               txCostPending={txCostPending}
               createPoolKeyFn={createPoolKey}

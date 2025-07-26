@@ -1,7 +1,7 @@
 "use client";
 
 import {useCallback} from "react";
-import {bn, ScriptTransactionRequest} from "fuels";
+import {BN, bn, ScriptTransactionRequest} from "fuels";
 import {useWallet} from "@fuels/react";
 import {PoolId} from "mira-dex-ts";
 import {useMutation} from "@tanstack/react-query";
@@ -40,6 +40,7 @@ export function useSwap({
     const buyAmount = bn.parseUnits(swapState.buy.amount, buyDecimals);
 
     let tx: ScriptTransactionRequest;
+    let txCost: BN;
 
     if (mode === "sell") {
       const [_buyAsset, simulatedBuyAmount] =
@@ -49,14 +50,19 @@ export function useSwap({
       const buyAmountWithSlippage = simulatedBuyAmount
         .mul(bn(10_000).sub(bn(slippage)))
         .div(bn(10_000));
-      tx = await miraDex.swapExactInput(
+
+      const {transactionRequest, gasPrice} = await miraDex.swapExactInput(
         sellAmount,
         sellAssetIdInput,
         buyAmountWithSlippage,
         pools,
         MaxDeadline,
-        DefaultTxParams
+        DefaultTxParams,
+        {useAssembleTx: true}
       );
+
+      tx = transactionRequest;
+      txCost = gasPrice;
     } else {
       const [_sellAsset, simulatedSellAmount] =
         await readonlyMira.previewSwapExactOutput(buyAssetIdInput, buyAmount, [
@@ -65,22 +71,25 @@ export function useSwap({
       const sellAmountWithSlippage = simulatedSellAmount
         .mul(bn(10_000).add(bn(slippage)))
         .div(bn(10_000));
-      tx = await miraDex.swapExactOutput(
+      const {transactionRequest, gasPrice} = await miraDex.swapExactOutput(
         buyAmount,
         buyAssetIdInput,
         sellAmountWithSlippage,
         pools,
         MaxDeadline,
-        DefaultTxParams
+        DefaultTxParams,
+        {useAssembleTx: true}
       );
-    }
 
-    const txCost = await wallet.getTransactionCost(tx);
+      tx = transactionRequest;
+      txCost = gasPrice;
+    }
 
     return {tx, txCost};
   }, [
     wallet,
     miraDex,
+    readonlyMira,
     swapState.buy.amount,
     sellDecimals,
     swapState.sell.amount,
@@ -98,12 +107,16 @@ export function useSwap({
         return;
       }
 
-      const txCost = await wallet.getTransactionCost(inputTx);
-      const fundedTx = await wallet.fund(inputTx, txCost);
-      const tx = await wallet.sendTransaction(fundedTx, {
-        estimateTxDependencies: true,
-      });
-      return await tx.waitForResult();
+      const tx = await wallet.sendTransaction(inputTx);
+
+      const {isStatusPreConfirmationSuccess} =
+        await tx.waitForPreConfirmation();
+
+      return {
+        isStatusPreConfirmationSuccess,
+        waitForResult: tx.waitForResult(),
+        id: tx.id,
+      };
     },
     [wallet]
   );
@@ -114,9 +127,7 @@ export function useSwap({
     isPending: txCostPending,
     error: txCostError,
     reset: resetTxCost,
-  } = useMutation({
-    mutationFn: getTxCost,
-  });
+  } = useMutation({mutationFn: getTxCost});
 
   const {
     mutateAsync: triggerSwap,
@@ -124,9 +135,7 @@ export function useSwap({
     isPending: swapPending,
     error: swapError,
     reset: resetSwap,
-  } = useMutation({
-    mutationFn: sendTx,
-  });
+  } = useMutation({mutationFn: sendTx});
 
   return {
     fetchTxCost,

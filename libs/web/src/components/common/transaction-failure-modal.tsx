@@ -21,7 +21,7 @@ export function TransactionFailureModal({
       <p className="font-medium text-[22px] leading-[26px] text-center">
         {title}
       </p>
-      <p className="text-[14px] leading-[16px] text-content-dimmed-dark text-center">
+      <p className="text-[14px] leading-[16px] text-content-primary dark:text-content-dimmed-dark text-center">
         {message}
       </p>
       <Button onClick={closeModal} block>
