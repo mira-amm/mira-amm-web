@@ -56,20 +56,20 @@ export function useAddLiquidity({
       .mul(bn(10_000).sub(bn(slippage)))
       .div(bn(10_000));
 
-    const txRequest = await mira.addLiquidity(
+    const {transactionRequest: txRequest} = await mira.addLiquidity(
       poolId,
       asset0Amount,
       asset1Amount,
       minAsset0Amount,
       minAsset1Amount,
       MaxDeadline,
-      DefaultTxParams
+      DefaultTxParams,
+      {
+        useAssembleTx: true,
+      }
     );
-    const gasCost = await wallet.getTransactionCost(txRequest);
-    const fundedTx = await wallet.fund(txRequest, gasCost);
-    const tx = await wallet.sendTransaction(fundedTx, {
-      estimateTxDependencies: true,
-    });
+
+    const tx = await wallet.sendTransaction(txRequest);
     return await tx.waitForResult();
   }, [
     mira,

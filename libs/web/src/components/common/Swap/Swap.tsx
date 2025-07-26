@@ -4,6 +4,7 @@ import {useCallback, useEffect, useMemo, useRef, useState, memo} from "react";
 
 import {
   B256Address,
+  BN,
   bn,
   ScriptTransactionRequest,
   TransactionCost,
@@ -102,7 +103,7 @@ const PreviewSummary = memo(function PreviewSummary({
 }: {
   previewLoading: boolean;
   tradeState: TradeState;
-  exchangeRate: string | undefined;
+  exchangeRate: string | null;
   pools: PoolId[];
   feeValue: string;
   sellMetadataSymbol: string;
@@ -126,7 +127,7 @@ const PreviewSummary = memo(function PreviewSummary({
       <div className="flex justify-between">
         <p className="text-sm">Routing:</p>
         <div className="flex flex-wrap items-center gap-1">
-          {previewLoading || tradeState === TradeState.REEFETCHING ? (
+          {previewLoading || tradeState === TradeState.REFETCHING ? (
             <Loader color="gray" />
           ) : (
             pools.map((pool, i) => (
@@ -144,7 +145,7 @@ const PreviewSummary = memo(function PreviewSummary({
 
       <div className="flex justify-between">
         <p className="text-sm">Estimated fees:</p>
-        {previewLoading || tradeState === TradeState.REEFETCHING ? (
+        {previewLoading || tradeState === TradeState.REFETCHING ? (
           <Loader color="gray" />
         ) : (
           <p className="text-sm">
@@ -218,7 +219,7 @@ export function Swap({isWidget}: {isWidget?: boolean}) {
   const [slippageMode, setSlippageMode] = useState<SlippageMode>("auto");
   const [txCostData, setTxCostData] = useState<{
     tx: ScriptTransactionRequest;
-    txCost: TransactionCost;
+    txCost: BN;
   }>();
   const [txCost, setTxCost] = useState<number | null>(null);
   const [swapButtonTitle, setSwapButtonTitle] = useState<string>("Review");
@@ -469,7 +470,13 @@ export function Swap({isWidget}: {isWidget?: boolean}) {
     try {
       const data = await fetchTxCost();
       setTxCostData(data);
-      setTxCost(data?.txCost.gasPrice.toNumber() / 10 ** 9 || null);
+
+      if (data?.txCost) {
+        setTxCost(data.txCost.toNumber() / 10 ** 9);
+      } else {
+        setTxCost(null);
+      }
+
       setCustomErrorTitle("");
     } catch {
       setCustomErrorTitle("Review failed, please try again");
@@ -732,7 +739,7 @@ export function Swap({isWidget}: {isWidget?: boolean}) {
               exchangeRate={exchangeRate}
               pools={pools}
               feeValue={feeValue}
-              sellMetadataSymbol={sellMetadata.symbol}
+              sellMetadataSymbol={sellMetadata.symbol ?? ""}
               txCost={txCost}
               txCostPending={txCostPending}
               createPoolKeyFn={createPoolKey}
