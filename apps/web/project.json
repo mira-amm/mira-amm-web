@@ -11,6 +11,13 @@
       "options": {
         "cwd": "apps/web"
       }
+    },
+    "dev": {
+      "command": "next dev",
+      "dependsOn": [{"projects": ["mira-v1-ts"], "target": "build"}],
+      "options": {
+        "cwd": "apps/web"
+      }
     }
   }
 }
