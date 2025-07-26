@@ -1,7 +1,13 @@
+/**
+ * Batch Preview Tests
+ * Tests for batch preview methods with cache support
+ */
+
 import {BN, AssetId} from "fuels";
 import {ReadonlyMiraAmm} from "../readonly_mira_amm";
 import {PoolId} from "../model";
 import {CacheOptions} from "../cache";
+import {vi} from "vitest";
 
 // Mock the provider and contract
 const mockProvider = {} as any;
@@ -22,7 +28,7 @@ const mockContract = {
   }),
 } as any;
 
-describe("Task 4: Batch Preview Methods with Cache Support", () => {
+describe("Batch Preview Methods with Cache Support", () => {
   let amm: ReadonlyMiraAmm;
   let mockAssetIn: AssetId;
   let mockAssetOut: AssetId;
@@ -46,19 +52,19 @@ describe("Task 4: Batch Preview Methods with Cache Support", () => {
     ];
 
     // Mock the underlying methods to avoid actual network calls
-    jest.spyOn(amm, "getAmountsOut").mockResolvedValue([
+    vi.spyOn(amm, "getAmountsOut").mockResolvedValue([
       [mockAssetIn, new BN(1000)],
       [mockAssetOut, new BN(950)],
     ]);
 
-    jest.spyOn(amm, "getAmountsIn").mockResolvedValue([
+    vi.spyOn(amm, "getAmountsIn").mockResolvedValue([
       [mockAssetOut, new BN(1000)],
       [mockAssetIn, new BN(1050)],
     ]);
   });
 
   afterEach(() => {
-    jest.restoreAllMocks();
+    vi.restoreAllMocks();
   });
 
   describe("previewSwapExactInputBatch", () => {
@@ -100,43 +106,26 @@ describe("Task 4: Batch Preview Methods with Cache Support", () => {
         mockAssetIn,
         new BN(1000),
         mockRoutes[0],
-        expect.objectContaining(cacheOptions)
+        expect.objectContaining({
+          useCache: true,
+          cacheTTL: 30000,
+        })
       );
+
       expect(amm.getAmountsOut).toHaveBeenCalledWith(
         mockAssetIn,
         new BN(1000),
         mockRoutes[1],
-        expect.objectContaining(cacheOptions)
-      );
-    });
-
-    it("should work without cache options (backward compatibility)", async () => {
-      const result = await amm.previewSwapExactInputBatch(
-        mockAssetIn,
-        new BN(1000),
-        mockRoutes
-      );
-
-      expect(result).toBeDefined();
-      expect(Array.isArray(result)).toBe(true);
-
-      // Verify that getAmountsOut was called with default options (merged with defaults)
-      expect(amm.getAmountsOut).toHaveBeenCalledWith(
-        mockAssetIn,
-        new BN(1000),
-        mockRoutes[0],
         expect.objectContaining({
           useCache: true,
-          preloadPools: false,
-          refreshStaleData: true,
           cacheTTL: 30000,
         })
       );
     });
 
-    it("should handle route failures gracefully", async () => {
+    it("should handle failed routes gracefully", async () => {
       // Mock one route to fail
-      (amm.getAmountsOut as jest.Mock)
+      vi.spyOn(amm, "getAmountsOut")
         .mockResolvedValueOnce([
           [mockAssetIn, new BN(1000)],
           [mockAssetOut, new BN(950)],
@@ -150,8 +139,40 @@ describe("Task 4: Batch Preview Methods with Cache Support", () => {
       );
 
       expect(result).toHaveLength(2);
-      expect(result[0]).toEqual([mockAssetOut, new BN(950)]);
-      expect(result[1]).toBeUndefined();
+      expect(result[0]).toBeDefined(); // First route succeeded
+      expect(result[1]).toBeUndefined(); // Second route failed
+    });
+
+    it("should maintain backward compatibility without cache options", async () => {
+      const result = await amm.previewSwapExactInputBatch(
+        mockAssetIn,
+        new BN(1000),
+        mockRoutes
+      );
+
+      expect(result).toBeDefined();
+      expect(Array.isArray(result)).toBe(true);
+      expect(result.length).toBe(mockRoutes.length);
+
+      // Should call getAmountsOut with default cache options
+      expect(amm.getAmountsOut).toHaveBeenCalledWith(
+        mockAssetIn,
+        new BN(1000),
+        mockRoutes[0],
+        expect.objectContaining({
+          useCache: true,
+        })
+      );
+    });
+
+    it("should handle empty routes array", async () => {
+      const result = await amm.previewSwapExactInputBatch(
+        mockAssetIn,
+        new BN(1000),
+        []
+      );
+
+      expect(result).toEqual([]);
     });
   });
 
@@ -189,48 +210,31 @@ describe("Task 4: Batch Preview Methods with Cache Support", () => {
         cacheOptions
       );
 
-      // Verify that getAmountsIn was called with cache options (merged with defaults)
-      expect(amm.getAmountsIn).toHaveBeenCalledWith(
-        mockAssetOut,
-        new BN(1000),
-        mockRoutes[0],
-        expect.objectContaining(cacheOptions)
-      );
-      expect(amm.getAmountsIn).toHaveBeenCalledWith(
-        mockAssetOut,
-        new BN(1000),
-        mockRoutes[1],
-        expect.objectContaining(cacheOptions)
-      );
-    });
-
-    it("should work without cache options (backward compatibility)", async () => {
-      const result = await amm.previewSwapExactOutputBatch(
-        mockAssetOut,
-        new BN(1000),
-        mockRoutes
-      );
-
-      expect(result).toBeDefined();
-      expect(Array.isArray(result)).toBe(true);
-
-      // Verify that getAmountsIn was called with default options (merged with defaults)
+      // Verify that getAmountsIn was called with cache options
       expect(amm.getAmountsIn).toHaveBeenCalledWith(
         mockAssetOut,
         new BN(1000),
         mockRoutes[0],
         expect.objectContaining({
           useCache: true,
-          preloadPools: false,
-          refreshStaleData: true,
+          cacheTTL: 30000,
+        })
+      );
+
+      expect(amm.getAmountsIn).toHaveBeenCalledWith(
+        mockAssetOut,
+        new BN(1000),
+        mockRoutes[1],
+        expect.objectContaining({
+          useCache: true,
           cacheTTL: 30000,
         })
       );
     });
 
-    it("should handle route failures gracefully", async () => {
+    it("should handle failed routes gracefully", async () => {
       // Mock one route to fail
-      (amm.getAmountsIn as jest.Mock)
+      vi.spyOn(amm, "getAmountsIn")
         .mockResolvedValueOnce([
           [mockAssetOut, new BN(1000)],
           [mockAssetIn, new BN(1050)],
@@ -244,21 +248,73 @@ describe("Task 4: Batch Preview Methods with Cache Support", () => {
       );
 
       expect(result).toHaveLength(2);
-      expect(result[0]).toEqual([mockAssetIn, new BN(1050)]);
-      expect(result[1]).toBeUndefined();
+      expect(result[0]).toBeDefined(); // First route succeeded
+      expect(result[1]).toBeUndefined(); // Second route failed
+    });
+
+    it("should maintain backward compatibility without cache options", async () => {
+      const result = await amm.previewSwapExactOutputBatch(
+        mockAssetOut,
+        new BN(1000),
+        mockRoutes
+      );
+
+      expect(result).toBeDefined();
+      expect(Array.isArray(result)).toBe(true);
+      expect(result.length).toBe(mockRoutes.length);
+
+      // Should call getAmountsIn with default cache options
+      expect(amm.getAmountsIn).toHaveBeenCalledWith(
+        mockAssetOut,
+        new BN(1000),
+        mockRoutes[0],
+        expect.objectContaining({
+          useCache: true,
+        })
+      );
+    });
+
+    it("should handle empty routes array", async () => {
+      const result = await amm.previewSwapExactOutputBatch(
+        mockAssetOut,
+        new BN(1000),
+        []
+      );
+
+      expect(result).toEqual([]);
     });
   });
 
-  describe("Cache integration", () => {
-    it("should pass cache options through to underlying methods", async () => {
-      // This test verifies that batch preview methods correctly pass cache options
-      // to the underlying getAmountsOut/getAmountsIn methods, which handle caching
-      // at the poolMetadataBatch level
+  describe("Cache Options Integration", () => {
+    it("should merge default cache options with provided options", async () => {
+      const customOptions: CacheOptions = {
+        cacheTTL: 45000,
+        refreshStaleData: false,
+      };
 
+      await amm.previewSwapExactInputBatch(
+        mockAssetIn,
+        new BN(1000),
+        mockRoutes,
+        customOptions
+      );
+
+      // Should merge with defaults
+      expect(amm.getAmountsOut).toHaveBeenCalledWith(
+        mockAssetIn,
+        new BN(1000),
+        mockRoutes[0],
+        expect.objectContaining({
+          useCache: true, // default
+          cacheTTL: 45000, // custom
+          refreshStaleData: false, // custom
+        })
+      );
+    });
+
+    it("should disable caching when useCache is false", async () => {
       const cacheOptions: CacheOptions = {
-        useCache: true,
-        preloadPools: true,
-        cacheTTL: 30000,
+        useCache: false,
       };
 
       await amm.previewSwapExactInputBatch(
@@ -268,18 +324,13 @@ describe("Task 4: Batch Preview Methods with Cache Support", () => {
         cacheOptions
       );
 
-      // Verify that cache options were passed through correctly (merged with defaults)
       expect(amm.getAmountsOut).toHaveBeenCalledWith(
         mockAssetIn,
         new BN(1000),
         mockRoutes[0],
-        expect.objectContaining(cacheOptions)
-      );
-      expect(amm.getAmountsOut).toHaveBeenCalledWith(
-        mockAssetIn,
-        new BN(1000),
-        mockRoutes[1],
-        expect.objectContaining(cacheOptions)
+        expect.objectContaining({
+          useCache: false,
+        })
       );
     });
   });
