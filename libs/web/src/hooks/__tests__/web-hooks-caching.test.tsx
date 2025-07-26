@@ -236,7 +236,7 @@ describe("useSwapRouter with caching", () => {
     await new Promise((resolve) => setTimeout(resolve, 0));
 
     expect(consoleSpy).toHaveBeenCalledWith(
-      "Failed to preload pools for routes:",
+      "❌ Failed to preload pools for routes:",
       expect.any(Error)
     );
 
