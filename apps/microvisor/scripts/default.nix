@@ -74,12 +74,12 @@
 
     dn = {
       description = "     💥 Nuke & reload devenv";
-      exec        = "set -ex; git clean -fdX -e '!.env*'";
+      exec        = "set -ex; git clean -fdX";
     };
 
     clean = {
       description = "  🧽 Remove all files matched by .gitignore (except any .env*)";
-      exec        = "set -ex; git clean -fdX -e '!.env*' -e '!.devenv*' -e '!.direnv*'";
+      exec        = "set -ex; git clean -fdX -e '!.devenv*' -e '!.direnv*'";
     };
 
     nuke = {
