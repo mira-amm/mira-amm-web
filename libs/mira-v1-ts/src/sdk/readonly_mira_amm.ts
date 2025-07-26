@@ -1,6 +1,5 @@
 import {AssetId, BigNumberish, BN, Provider} from "fuels";
 import {DEFAULT_AMM_CONTRACT_ID} from "./constants";
-import {MiraAmmContract} from "./typegen/MiraAmmContract";
 import {
   AmmFees,
   AmmMetadata,
@@ -24,6 +23,7 @@ import {
   powDecimals,
   subtractFee,
 } from "./math";
+import {MiraAmmContract} from "./typegen";
 
 const DECIMALS_PRECISION = 1000000000000;
 

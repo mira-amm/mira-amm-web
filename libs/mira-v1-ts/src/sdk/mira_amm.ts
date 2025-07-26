@@ -11,11 +11,12 @@ import {DEFAULT_AMM_CONTRACT_ID} from "./constants";
 import {
   AddLiquidityScriptLoader,
   CreatePoolAndAddLiquidityScriptLoader,
+  MiraAmmContract,
+  MiraAmmContractFactory,
   RemoveLiquidityScriptLoader,
   SwapExactInputScriptLoader,
   SwapExactOutputScriptLoader,
 } from "./typegen";
-import {MiraAmmContract} from "./typegen/MiraAmmContract";
 import {PoolId} from "./model";
 import {
   addressInput,
@@ -27,7 +28,6 @@ import {
   reorderAssetContracts,
   reorderPoolId,
 } from "./utils";
-import {MiraAmmContractFactory} from "./typegen/MiraAmmContractFactory";
 
 export class MiraAmm {
   private readonly account: Account;

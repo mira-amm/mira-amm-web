@@ -10,6 +10,6 @@
     "dist"
   ],
   "peerDependencies": {
-    "fuels": "^0.100.3"
+    "fuels": "0.101.2"
   }
 }
