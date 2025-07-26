@@ -48,7 +48,7 @@ export const useReservesPrice = ({
     },
     enabled: shouldFetch,
     staleTime: 30_000,
-    cacheTime: 60_000,
+    gcTime: 60_000,
   });
 
   return {
