@@ -15,9 +15,6 @@ inputs:
   #   inputs:
   #     nixpkgs:
   #       follows: nixpkgs
-  # NOTE: pinned to playwright@1.53.1
-  nixpkgs-unstable-playwright:
-    url: github:NixOS/nixpkgs/2d02dc9fc19492c35e94c7419567e6991eefc16e
 
 allowUnfree: true
 # permittedInsecurePackages:
