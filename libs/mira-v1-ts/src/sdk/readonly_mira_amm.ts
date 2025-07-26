@@ -24,17 +24,30 @@ import {
   powDecimals,
   subtractFee,
 } from "./math";
+import {
+  PoolDataCache,
+  globalPoolDataCache,
+  CacheOptions,
+  DEFAULT_CACHE_OPTIONS,
+  CacheError,
+} from "./cache";
 
 const DECIMALS_PRECISION = 1000000000000;
 
 export class ReadonlyMiraAmm {
   provider: Provider;
   ammContract: MiraAmmContract;
+  private poolCache: PoolDataCache;
+  private lastRouteSignature: string | null = null;
+  private cachedFees: AmmFees | null = null;
+  private feesCacheTimestamp: number = 0;
+  private readonly FEES_CACHE_TTL = 30000; // 30 seconds
 
   constructor(provider: Provider, contractIdOpt?: string) {
     let contractId = contractIdOpt ?? DEFAULT_AMM_CONTRACT_ID;
     this.provider = provider;
     this.ammContract = new MiraAmmContract(contractId, provider);
+    this.poolCache = globalPoolDataCache;
   }
 
   id(): string {
@@ -51,7 +64,103 @@ export class ReadonlyMiraAmm {
     };
   }
 
-  async poolMetadataBatch(poolIds: PoolId[]): Promise<(PoolMetadata | null)[]> {
+  async poolMetadataBatch(
+    poolIds: PoolId[],
+    options: CacheOptions = {}
+  ): Promise<(PoolMetadata | null)[]> {
+    const effectiveOptions = {...DEFAULT_CACHE_OPTIONS, ...options};
+
+    // If caching is disabled, use direct fetch
+    if (!effectiveOptions.useCache) {
+      return this.poolMetadataBatchDirect(poolIds);
+    }
+
+    const results: (PoolMetadata | null)[] = [];
+    const poolsToFetch: PoolId[] = [];
+    const fetchIndices: number[] = [];
+
+    // Check cache for each pool
+    // TODO change from loop to do things with a map
+    for (let i = 0; i < poolIds.length; i++) {
+      const poolId = reorderPoolId(poolIds[i]);
+      const cached = this.poolCache.getPoolMetadata(poolId);
+
+      if (cached && !this.poolCache.isStale(poolId)) {
+        // Use cached data
+        results[i] = cached;
+      } else if (cached && this.poolCache.isStale(poolId)) {
+        // Handle stale data
+        if (effectiveOptions.refreshStaleData) {
+          // Mark for refresh
+          poolsToFetch.push(poolId);
+          fetchIndices.push(i);
+          // Use stale data temporarily
+          results[i] = cached;
+        } else {
+          // Use stale data as-is
+          results[i] = cached;
+        }
+      } else {
+        // Cache miss - need to fetch
+        poolsToFetch.push(poolId);
+        fetchIndices.push(i);
+        results[i] = null; // Placeholder
+      }
+    }
+
+    // Fetch missing or stale pools
+    if (poolsToFetch.length > 0) {
+      try {
+        const fetchedPools = await this.poolMetadataBatchDirect(poolsToFetch);
+        // TODO: it looks like USDC ETH is failing cacheing, not sure why
+
+        // Update cache and results
+        for (let i = 0; i < poolsToFetch.length; i++) {
+          const poolId = poolsToFetch[i];
+          const metadata = fetchedPools[i];
+          const resultIndex = fetchIndices[i];
+
+          if (metadata) {
+            // Store in cache with custom TTL if provided
+            this.poolCache.setPoolMetadata(
+              poolId,
+              metadata,
+              effectiveOptions.cacheTTL
+            );
+            results[resultIndex] = metadata;
+          }
+        }
+      } catch (error) {
+        // If fetch fails, use any available stale data or throw
+        const hasStaleData = results.some(
+          (result, index) => result !== null && fetchIndices.includes(index)
+        );
+
+        if (hasStaleData) {
+          // Log warning but continue with stale data
+          console.warn(
+            "Failed to refresh pool data, using stale cache:",
+            error
+          );
+        } else {
+          // No fallback data available, re-throw error
+          throw new CacheError(
+            "Failed to fetch pool metadata and no cache available",
+            error instanceof Error ? error : new Error(String(error))
+          );
+        }
+      }
+    }
+
+    return results;
+  }
+
+  /**
+   * Direct pool metadata batch fetch without caching
+   */
+  private async poolMetadataBatchDirect(
+    poolIds: PoolId[]
+  ): Promise<(PoolMetadata | null)[]> {
     const poolIdTransactions = poolIds.map((poolId) =>
       this.ammContract.functions.pool_metadata(poolIdInput(poolId))
     );
@@ -77,37 +186,39 @@ export class ReadonlyMiraAmm {
     });
   }
 
-  async poolMetadata(poolId: PoolId): Promise<PoolMetadata | null> {
-    poolId = reorderPoolId(poolId);
-    const result = await this.ammContract.functions
-      .pool_metadata(poolIdInput(poolId))
-      .get();
-    const value = result.value;
-    if (!value) {
-      return null;
-    }
-
-    return {
-      poolId: poolId,
-      reserve0: value.reserve_0,
-      reserve1: value.reserve_1,
-      liquidity: [value.liquidity.id, value.liquidity.amount],
-      decimals0: value.decimals_0,
-      decimals1: value.decimals_1,
-    };
+  async poolMetadata(
+    poolId: PoolId,
+    options: CacheOptions = {}
+  ): Promise<PoolMetadata | null> {
+    const results = await this.poolMetadataBatch([poolId], options);
+    return results[0];
   }
 
   async fees(): Promise<AmmFees> {
-    // we're doing a 2nd set of calls
+    const now = Date.now();
+
+    // Return cached fees if they're still fresh
+    if (
+      this.cachedFees &&
+      now - this.feesCacheTimestamp < this.FEES_CACHE_TTL
+    ) {
+      return this.cachedFees;
+    }
+
+    // Fetch fresh fees from the contract
     const result = await this.ammContract.functions.fees().get();
     const [lpFeeVolatile, lpFeeStable, protocolFeeVolatile, protocolFeeStable] =
       result.value;
-    return {
+
+    this.cachedFees = {
       lpFeeVolatile: lpFeeVolatile,
       lpFeeStable: lpFeeStable,
       protocolFeeVolatile: protocolFeeVolatile,
       protocolFeeStable: protocolFeeStable,
     };
+    this.feesCacheTimestamp = now;
+
+    return this.cachedFees;
   }
 
   async hook(): Promise<string | null> {
@@ -164,10 +275,11 @@ export class ReadonlyMiraAmm {
   async getOtherTokenToAddLiquidity(
     poolId: PoolId,
     amount: BigNumberish,
-    isFirstToken: boolean
+    isFirstToken: boolean,
+    options: CacheOptions = {}
   ): Promise<Asset> {
     poolId = reorderPoolId(poolId);
-    const pool = await this.poolMetadata(poolId);
+    const pool = await this.poolMetadata(poolId, options);
     if (!pool) {
       throw new Error("Pool not found");
     }
@@ -191,14 +303,15 @@ export class ReadonlyMiraAmm {
 
   async getLiquidityPosition(
     poolId: PoolId,
-    lpTokensAmount: BigNumberish
+    lpTokensAmount: BigNumberish,
+    options: CacheOptions = {}
   ): Promise<[Asset, Asset]> {
     poolId = reorderPoolId(poolId);
     const lpTokensBN = new BN(lpTokensAmount);
     if (lpTokensBN.isNeg() || lpTokensBN.isZero()) {
       throw new Error("Non positive input amount");
     }
-    const pool = await this.poolMetadata(poolId);
+    const pool = await this.poolMetadata(poolId, options);
     if (!pool) {
       throw new Error("Pool not found");
     }
@@ -219,55 +332,65 @@ export class ReadonlyMiraAmm {
     assetId: AssetId,
     amount: BN,
     pools: PoolId[],
-    fees: AmmFees
+    fees: AmmFees,
+    options: CacheOptions = {}
   ): Promise<Asset[]> {
     const orderedPools = direction === "IN" ? pools : [...pools].reverse();
+
+    var rand = Math.random();
+
     const poolMetadataList = await this.poolMetadataBatch(
-      orderedPools.map(reorderPoolId)
+      orderedPools.map(reorderPoolId),
+      options
     );
 
     let currentAsset = assetId;
     let currentAmount = amount;
     const result: Asset[] = [[currentAsset, currentAmount]];
 
+    var rand = Math.random();
     for (let i = 0; i < orderedPools.length; i++) {
       const pool = poolMetadataList[i]!;
       const poolId = orderedPools[i];
 
-      const [assetOut, reserveIn, reserveOut, decimalsIn, decimalsOut] =
-        arrangePoolParams(pool, currentAsset);
+      let assetOut, reserveIn, reserveOut, decimalsIn, decimalsOut;
 
-      let amount =
-        direction === "IN"
-          ? subtractFee(poolId, currentAmount, fees)
-          : currentAmount;
+      if (direction === "IN") {
+        [assetOut, reserveIn, reserveOut, decimalsIn, decimalsOut] =
+          arrangePoolParams(pool, currentAsset);
 
-      let swapAmount =
-        direction === "IN"
-          ? getAmountOut(
-              poolId[2],
-              reserveIn,
-              reserveOut,
-              powDecimals(decimalsIn),
-              powDecimals(decimalsOut),
-              amount
-            )
-          : getAmountIn(
-              poolId[2],
-              reserveIn,
-              reserveOut,
-              powDecimals(decimalsIn),
-              powDecimals(decimalsOut),
-              amount
-            );
+        const amountAfterFee = subtractFee(poolId, currentAmount, fees);
+        const swapAmount = getAmountOut(
+          poolId[2],
+          reserveIn,
+          reserveOut,
+          powDecimals(decimalsIn),
+          powDecimals(decimalsOut),
+          amountAfterFee
+        );
 
-      if (direction === "OUT") {
-        swapAmount = addFee(poolId, swapAmount, fees);
+        result.push([assetOut, swapAmount]);
+        currentAsset = assetOut;
+        currentAmount = swapAmount;
+      } else {
+        const [assetIn, reserveOut, reserveIn, decimalsOut, decimalsIn] =
+          arrangePoolParams(pool, currentAsset);
+
+        const swapAmount = getAmountIn(
+          poolId[2],
+          reserveIn,
+          reserveOut,
+          powDecimals(decimalsIn),
+          powDecimals(decimalsOut),
+          currentAmount
+        );
+
+        const amountWithFee = addFee(poolId, swapAmount, fees);
+
+        result.push([assetIn, amountWithFee]);
+        currentAsset = assetIn;
+        currentAmount = amountWithFee;
       }
-
-      result.push([assetOut, swapAmount]);
-      currentAsset = assetOut;
-      currentAmount = swapAmount;
     }
 
     return result;
@@ -276,36 +399,56 @@ export class ReadonlyMiraAmm {
   async getAmountsOut(
     assetIdIn: AssetId,
     assetAmountIn: BigNumberish,
-    pools: PoolId[]
+    pools: PoolId[],
+    options: CacheOptions = {}
   ) {
     const amount = new BN(assetAmountIn);
     if (amount.isNeg() || amount.isZero())
       throw new Error("Non positive input amount");
     const fees = await this.fees();
-    return this.computeSwapPath("IN", assetIdIn, amount, pools, fees);
+    const result = await this.computeSwapPath(
+      "IN",
+      assetIdIn,
+      amount,
+      pools,
+      fees,
+      options
+    );
+    return result;
   }
 
   async getAmountsIn(
     assetIdOut: AssetId,
     assetAmountOut: BigNumberish,
-    pools: PoolId[]
+    pools: PoolId[],
+    options: CacheOptions = {}
   ) {
     const amount = new BN(assetAmountOut);
     if (amount.isNeg() || amount.isZero())
       throw new Error("Non positive input amount");
     const fees = await this.fees();
-    return this.computeSwapPath("OUT", assetIdOut, amount, pools, fees);
+    const result = await this.computeSwapPath(
+      "OUT",
+      assetIdOut,
+      amount,
+      pools,
+      fees,
+      options
+    );
+    return result;
   }
 
   async previewSwapExactInput(
     assetIdIn: AssetId,
     assetAmountIn: BigNumberish,
-    pools: PoolId[]
+    pools: PoolId[],
+    options: CacheOptions = {}
   ): Promise<Asset> {
     const amountsOut = await this.getAmountsOut(
       assetIdIn,
       assetAmountIn,
-      pools
+      pools,
+      options
     );
     return amountsOut[amountsOut.length - 1];
   }
@@ -313,12 +456,14 @@ export class ReadonlyMiraAmm {
   async previewSwapExactOutput(
     assetIdOut: AssetId,
     assetAmountOut: BigNumberish,
-    pools: PoolId[]
+    pools: PoolId[],
+    options: CacheOptions = {}
   ): Promise<Asset> {
     const amountsIn = await this.getAmountsIn(
       assetIdOut,
       assetAmountOut,
-      pools
+      pools,
+      options
     );
     return amountsIn[amountsIn.length - 1];
   }
@@ -326,10 +471,15 @@ export class ReadonlyMiraAmm {
   async previewSwapExactInputBatch(
     assetIdIn: AssetId,
     assetAmountIn: BigNumberish,
-    routes: PoolId[][]
+    routes: PoolId[][],
+    options: CacheOptions = {}
   ): Promise<(Asset | undefined)[]> {
+    const effectiveOptions = {...DEFAULT_CACHE_OPTIONS, ...options};
+
     const results = await Promise.allSettled(
-      routes.map((route) => this.getAmountsOut(assetIdIn, assetAmountIn, route))
+      routes.map((route) =>
+        this.getAmountsOut(assetIdIn, assetAmountIn, route, effectiveOptions)
+      )
     );
     return results.map((r) =>
       r.status === "fulfilled" ? r.value[r.value.length - 1] : undefined
@@ -339,17 +489,183 @@ export class ReadonlyMiraAmm {
   async previewSwapExactOutputBatch(
     assetIdOut: AssetId,
     assetAmountOut: BigNumberish,
-    routes: PoolId[][]
+    routes: PoolId[][],
+    options: CacheOptions = {}
   ): Promise<(Asset | undefined)[]> {
+    const effectiveOptions = {...DEFAULT_CACHE_OPTIONS, ...options};
+
     const results = await Promise.allSettled(
       routes.map((route) =>
-        this.getAmountsOut(assetIdOut, assetAmountOut, route)
+        this.getAmountsIn(assetIdOut, assetAmountOut, route, effectiveOptions)
       )
     );
-
     return results.map((r) =>
       r.status === "fulfilled" ? r.value[r.value.length - 1] : undefined
     );
+  }
+
+  /**
+   * Get access to the pool data cache for external management
+   */
+  getPoolCache(): PoolDataCache {
+    return this.poolCache;
+  }
+
+  /**
+   * Generate a signature for routes to detect changes
+   * @private
+   */
+  private generateRouteSignature(routes: PoolId[][]): string {
+    return routes
+      .map((route) =>
+        route
+          .map((poolId) => `${poolId[0].bits}-${poolId[1].bits}-${poolId[2]}`)
+          .join("|")
+      )
+      .join("||");
+  }
+
+  /**
+   * Check if routes have changed since last call
+   * @private
+   */
+  private hasRoutesChanged(routes: PoolId[][]): boolean {
+    const currentSignature = this.generateRouteSignature(routes);
+    const hasChanged = this.lastRouteSignature !== currentSignature;
+    this.lastRouteSignature = currentSignature;
+    return hasChanged;
+  }
+
+  /**
+   * Preload pools for routes with automatic route change detection
+   * This method will automatically preload pools when routes change
+   */
+  async preloadPoolsForRoutesWithChangeDetection(
+    routes: PoolId[][],
+    options: CacheOptions = {}
+  ): Promise<boolean> {
+    const routesChanged = this.hasRoutesChanged(routes);
+
+    if (routesChanged) {
+      await this.preloadPoolsForRoutes(routes, options);
+      return true; // Indicates preloading occurred
+    }
+
+    return false; // No preloading needed
+  }
+
+  /**
+   * Preload pools for routes to warm up the cache
+   * Extracts unique pools from route arrays and batch fetches their metadata
+   * Also preloads fees to warm up the fee cache
+   */
+  async preloadPoolsForRoutes(
+    routes: PoolId[][],
+    options: CacheOptions = {}
+  ): Promise<void> {
+    if (!routes || routes.length === 0) {
+      return;
+    }
+
+    // Extract unique pools from all routes
+    const uniquePools = this.extractUniquePoolsFromRoutes(routes);
+
+    if (uniquePools.length === 0) {
+      return;
+    }
+
+    // Determine which pools need to be fetched
+    const poolsToFetch = this.getPoolsToFetch(uniquePools, options);
+
+    // Create an array of promises for concurrent execution
+    const preloadPromises: Promise<any>[] = [];
+
+    // Add pool metadata fetching if needed
+    if (poolsToFetch.length > 0) {
+      preloadPromises.push(
+        this.poolMetadataBatch(poolsToFetch, {
+          ...options,
+          useCache: true, // Force cache usage for preloading
+        }).catch((error) => {
+          // Log warning but don't throw - preloading is an optimization
+          console.warn(
+            "Pool preloading failed, continuing without cache:",
+            error
+          );
+        })
+      );
+    }
+
+    // Add fee fetching to warm up the fee cache
+    preloadPromises.push(
+      this.fees().catch((error) => {
+        // Log warning but don't throw - preloading is an optimization
+        console.warn("Fee preloading failed, continuing without cache:", error);
+      })
+    );
+
+    // Execute all preloading operations concurrently
+    if (preloadPromises.length > 0) {
+      await Promise.allSettled(preloadPromises);
+    }
+  }
+
+  /**
+   * Extract unique pools from route arrays
+   * @private
+   */
+  private extractUniquePoolsFromRoutes(routes: PoolId[][]): PoolId[] {
+    const uniquePools = new Set<string>();
+    const poolsToPreload: PoolId[] = [];
+
+    for (const route of routes) {
+      if (!Array.isArray(route)) {
+        continue;
+      }
+
+      for (const poolId of route) {
+        if (!poolId || !Array.isArray(poolId) || poolId.length !== 3) {
+          continue;
+        }
+
+        const reorderedPoolId = reorderPoolId(poolId);
+        const key = `${reorderedPoolId[0].bits}-${reorderedPoolId[1].bits}-${reorderedPoolId[2]}`;
+
+        if (!uniquePools.has(key)) {
+          uniquePools.add(key);
+          poolsToPreload.push(reorderedPoolId);
+        }
+      }
+    }
+
+    return poolsToPreload;
+  }
+
+  /**
+   * Determine which pools need to be fetched based on cache state
+   * @private
+   */
+  private getPoolsToFetch(pools: PoolId[], options: CacheOptions): PoolId[] {
+    const effectiveOptions = {...DEFAULT_CACHE_OPTIONS, ...options};
+
+    // If caching is disabled, fetch all pools
+    if (!effectiveOptions.useCache) {
+      return pools;
+    }
+
+    const poolsToFetch: PoolId[] = [];
+
+    for (const poolId of pools) {
+      const hasValidCache = this.poolCache.hasValidCache(poolId);
+      const isStale = this.poolCache.isStale(poolId);
+
+      // Fetch if not cached, or if stale and refresh is enabled
+      if (!hasValidCache || (isStale && effectiveOptions.refreshStaleData)) {
+        poolsToFetch.push(poolId);
+      }
+    }
+
+    return poolsToFetch;
   }
 
   async getCurrentRate(
