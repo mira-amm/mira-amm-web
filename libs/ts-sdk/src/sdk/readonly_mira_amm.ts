@@ -40,6 +40,7 @@ export class ReadonlyMiraAmm {
   provider: Provider;
   ammContract: MiraAmmContract;
   private poolCache: PoolDataCache;
+  private lastRouteSignature: string | null = null;
 
   constructor(provider: Provider, contractIdOpt?: string) {
     let contractId = contractIdOpt ?? DEFAULT_AMM_CONTRACT_ID;
@@ -443,11 +444,24 @@ export class ReadonlyMiraAmm {
     routes: PoolId[][],
     options: CacheOptions = {}
   ): Promise<(Asset | undefined)[]> {
+    const effectiveOptions = {...DEFAULT_CACHE_OPTIONS, ...options};
+
+    // Preload pools if enabled and caching is active
+    if (effectiveOptions.preloadPools && effectiveOptions.useCache) {
+      try {
+        await this.preloadPoolsForRoutes(routes, effectiveOptions);
+      } catch (error) {
+        // Log warning but continue - preloading is an optimization
+        console.warn("Pool preloading failed during batch preview:", error);
+      }
+    }
+
     const results = await Promise.allSettled(
       routes.map((route) =>
-        this.getAmountsOut(assetIdIn, assetAmountIn, route, options)
+        this.getAmountsOut(assetIdIn, assetAmountIn, route, effectiveOptions)
       )
     );
+
     return results.map((r) =>
       r.status === "fulfilled" ? r.value[r.value.length - 1] : undefined
     );
@@ -459,9 +473,21 @@ export class ReadonlyMiraAmm {
     routes: PoolId[][],
     options: CacheOptions = {}
   ): Promise<(Asset | undefined)[]> {
+    const effectiveOptions = {...DEFAULT_CACHE_OPTIONS, ...options};
+
+    // Preload pools if enabled and caching is active
+    if (effectiveOptions.preloadPools && effectiveOptions.useCache) {
+      try {
+        await this.preloadPoolsForRoutes(routes, effectiveOptions);
+      } catch (error) {
+        // Log warning but continue - preloading is an optimization
+        console.warn("Pool preloading failed during batch preview:", error);
+      }
+    }
+
     const results = await Promise.allSettled(
-      routes.map(
-        (route) => this.getAmountsIn(assetIdOut, assetAmountOut, route, options) // FIXED: was getAmountsOut
+      routes.map((route) =>
+        this.getAmountsIn(assetIdOut, assetAmountOut, route, effectiveOptions)
       )
     );
 
@@ -478,18 +504,105 @@ export class ReadonlyMiraAmm {
   }
 
   /**
+   * Generate a signature for routes to detect changes
+   * @private
+   */
+  private generateRouteSignature(routes: PoolId[][]): string {
+    return routes
+      .map((route) =>
+        route
+          .map((poolId) => `${poolId[0].bits}-${poolId[1].bits}-${poolId[2]}`)
+          .join("|")
+      )
+      .join("||");
+  }
+
+  /**
+   * Check if routes have changed since last call
+   * @private
+   */
+  private hasRoutesChanged(routes: PoolId[][]): boolean {
+    const currentSignature = this.generateRouteSignature(routes);
+    const hasChanged = this.lastRouteSignature !== currentSignature;
+    this.lastRouteSignature = currentSignature;
+    return hasChanged;
+  }
+
+  /**
+   * Preload pools for routes with automatic route change detection
+   * This method will automatically preload pools when routes change
+   */
+  async preloadPoolsForRoutesWithChangeDetection(
+    routes: PoolId[][],
+    options: CacheOptions = {}
+  ): Promise<boolean> {
+    const routesChanged = this.hasRoutesChanged(routes);
+
+    if (routesChanged) {
+      await this.preloadPoolsForRoutes(routes, options);
+      return true; // Indicates preloading occurred
+    }
+
+    return false; // No preloading needed
+  }
+
+  /**
    * Preload pools for routes to warm up the cache
+   * Extracts unique pools from route arrays and batch fetches their metadata
    */
   async preloadPoolsForRoutes(
     routes: PoolId[][],
     options: CacheOptions = {}
   ): Promise<void> {
+    if (!routes || routes.length === 0) {
+      return;
+    }
+
     // Extract unique pools from all routes
+    const uniquePools = this.extractUniquePoolsFromRoutes(routes);
+
+    if (uniquePools.length === 0) {
+      return;
+    }
+
+    // Determine which pools need to be fetched
+    const poolsToFetch = this.getPoolsToFetch(uniquePools, options);
+
+    // Batch fetch missing pools to warm the cache
+    if (poolsToFetch.length > 0) {
+      try {
+        await this.poolMetadataBatch(poolsToFetch, {
+          ...options,
+          useCache: true, // Force cache usage for preloading
+        });
+      } catch (error) {
+        // Log warning but don't throw - preloading is an optimization
+        console.warn(
+          "Pool preloading failed, continuing without cache:",
+          error
+        );
+      }
+    }
+  }
+
+  /**
+   * Extract unique pools from route arrays
+   * @private
+   */
+  private extractUniquePoolsFromRoutes(routes: PoolId[][]): PoolId[] {
     const uniquePools = new Set<string>();
     const poolsToPreload: PoolId[] = [];
 
     for (const route of routes) {
+      if (!Array.isArray(route)) {
+        continue;
+      }
+
       for (const poolId of route) {
+        if (!poolId || !Array.isArray(poolId) || poolId.length !== 3) {
+          continue;
+        }
+
         const reorderedPoolId = reorderPoolId(poolId);
         const key = `${reorderedPoolId[0].bits}-${reorderedPoolId[1].bits}-${reorderedPoolId[2]}`;
 
@@ -500,13 +613,34 @@ export class ReadonlyMiraAmm {
       }
     }
 
-    // Preload all unique pools
-    if (poolsToPreload.length > 0) {
-      await this.poolMetadataBatch(poolsToPreload, {
-        ...options,
-        useCache: true, // Force cache usage for preloading
-      });
+    return poolsToPreload;
+  }
+
+  /**
+   * Determine which pools need to be fetched based on cache state
+   * @private
+   */
+  private getPoolsToFetch(pools: PoolId[], options: CacheOptions): PoolId[] {
+    const effectiveOptions = {...DEFAULT_CACHE_OPTIONS, ...options};
+
+    // If caching is disabled, fetch all pools
+    if (!effectiveOptions.useCache) {
+      return pools;
     }
+
+    const poolsToFetch: PoolId[] = [];
+
+    for (const poolId of pools) {
+      const hasValidCache = this.poolCache.hasValidCache(poolId);
+      const isStale = this.poolCache.isStale(poolId);
+
+      // Fetch if not cached, or if stale and refresh is enabled
+      if (!hasValidCache || (isStale && effectiveOptions.refreshStaleData)) {
+        poolsToFetch.push(poolId);
+      }
+    }
+
+    return poolsToFetch;
   }
 
   async getCurrentRate(
