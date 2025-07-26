@@ -3,9 +3,9 @@ name: 🏗 Build Projects
 
 on:
   push:
-    branches: ['*']
+    branches: ["*"]
   pull_request:
-    branches: ['*']
+    branches: ["*"]
 
 jobs:
   build:
@@ -45,17 +45,5 @@ jobs:
       - name: 📦 Install dependencies
         run: pnpm i
 
-      - name: 🧩 Build API
-        run: pnpm nx build api --verbose
-
-      - name: 🦀 Build Rust SDK
-        run: pnpm nx build rust-sdk --verbose
-
-      - name: 🐞 Build TypeScript SDK
-        run: pnpm nx build mira-v1-ts --verbose
-
-      - name: 🛞 Build Admin
-        run: pnpm nx build admin --verbose
-
-      - name: 🕹 Build Microgame
-        run: pnpm nx build microgame --verbose
+      - name: 🧩 Build
+        run: pnpm nx run-many -t build -p api rust-sdk mira-v1-ts admin microgame web --verbose
