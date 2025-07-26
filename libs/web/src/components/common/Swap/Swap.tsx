@@ -126,7 +126,7 @@ const PreviewSummary = memo(function PreviewSummary({
       <div className="flex justify-between">
         <p className="text-sm">Routing:</p>
         <div className="flex flex-wrap items-center gap-1">
-          {previewLoading || tradeState === TradeState.REEFETCHING ? (
+          {previewLoading || tradeState === TradeState.REFETCHING ? (
             <Loader color="gray" />
           ) : (
             pools.map((pool, i) => (
@@ -144,7 +144,7 @@ const PreviewSummary = memo(function PreviewSummary({
 
       <div className="flex justify-between">
         <p className="text-sm">Estimated fees:</p>
-        {previewLoading || tradeState === TradeState.REEFETCHING ? (
+        {previewLoading || tradeState === TradeState.REFETCHING ? (
           <Loader color="gray" />
         ) : (
           <p className="text-sm">
