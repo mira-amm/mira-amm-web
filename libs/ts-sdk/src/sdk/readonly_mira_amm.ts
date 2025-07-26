@@ -554,6 +554,7 @@ export class ReadonlyMiraAmm {
   /**
    * Preload pools for routes to warm up the cache
    * Extracts unique pools from route arrays and batch fetches their metadata
+   * Also preloads fees to warm up the fee cache
    */
   async preloadPoolsForRoutes(
     routes: PoolId[][],
@@ -573,20 +574,36 @@ export class ReadonlyMiraAmm {
     // Determine which pools need to be fetched
     const poolsToFetch = this.getPoolsToFetch(uniquePools, options);
 
-    // Batch fetch missing pools to warm the cache
+    // Create an array of promises for concurrent execution
+    const preloadPromises: Promise<any>[] = [];
+
+    // Add pool metadata fetching if needed
     if (poolsToFetch.length > 0) {
-      try {
-        await this.poolMetadataBatch(poolsToFetch, {
+      preloadPromises.push(
+        this.poolMetadataBatch(poolsToFetch, {
           ...options,
           useCache: true, // Force cache usage for preloading
-        });
-      } catch (error) {
+        }).catch((error) => {
+          // Log warning but don't throw - preloading is an optimization
+          console.warn(
+            "Pool preloading failed, continuing without cache:",
+            error
+          );
+        })
+      );
+    }
+
+    // Add fee fetching to warm up the fee cache
+    preloadPromises.push(
+      this.fees().catch((error) => {
         // Log warning but don't throw - preloading is an optimization
-        console.warn(
-          "Pool preloading failed, continuing without cache:",
-          error
-        );
-      }
+        console.warn("Fee preloading failed, continuing without cache:", error);
+      })
+    );
+
+    // Execute all preloading operations concurrently
+    if (preloadPromises.length > 0) {
+      await Promise.allSettled(preloadPromises);
     }
   }
 
