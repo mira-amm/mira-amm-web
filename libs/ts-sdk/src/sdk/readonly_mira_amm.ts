@@ -27,6 +27,7 @@ import {
 } from "./math";
 import {
   PoolDataCache,
+  globalPoolDataCache,
   CacheOptions,
   DEFAULT_CACHE_OPTIONS,
   CacheError,
@@ -41,12 +42,15 @@ export class ReadonlyMiraAmm {
   ammContract: MiraAmmContract;
   private poolCache: PoolDataCache;
   private lastRouteSignature: string | null = null;
+  private cachedFees: AmmFees | null = null;
+  private feesCacheTimestamp: number = 0;
+  private readonly FEES_CACHE_TTL = 30000; // 30 seconds
 
   constructor(provider: Provider, contractIdOpt?: string) {
     let contractId = contractIdOpt ?? DEFAULT_AMM_CONTRACT_ID;
     this.provider = provider;
     this.ammContract = new MiraAmmContract(contractId, provider);
-    this.poolCache = new PoolDataCache();
+    this.poolCache = globalPoolDataCache;
   }
 
   id(): string {
@@ -79,6 +83,7 @@ export class ReadonlyMiraAmm {
     const fetchIndices: number[] = [];
 
     // Check cache for each pool
+    // TODO change from loop to do things with a map
     for (let i = 0; i < poolIds.length; i++) {
       const poolId = reorderPoolId(poolIds[i]);
       const cached = this.poolCache.getPoolMetadata(poolId);
@@ -110,7 +115,6 @@ export class ReadonlyMiraAmm {
     if (poolsToFetch.length > 0) {
       try {
         const fetchedPools = await this.poolMetadataBatchDirect(poolsToFetch);
-
         // Update cache and results
         for (let i = 0; i < poolsToFetch.length; i++) {
           const poolId = poolsToFetch[i];
@@ -128,23 +132,32 @@ export class ReadonlyMiraAmm {
           }
         }
       } catch (error) {
-        // If fetch fails, use any available stale data or throw
-        const hasStaleData = results.some(
-          (result, index) => result !== null && fetchIndices.includes(index)
+        // If batch fetch fails, try individual fetches as fallback
+        console.warn(
+          "Batch pool metadata fetch failed, trying individual fetches:",
+          error
         );
 
-        if (hasStaleData) {
-          // Log warning but continue with stale data
-          console.warn(
-            "Failed to refresh pool data, using stale cache:",
-            error
-          );
-        } else {
-          // No fallback data available, re-throw error
-          throw new CacheError(
-            "Failed to fetch pool metadata and no cache available",
-            error instanceof Error ? error : new Error(String(error))
-          );
+        for (let i = 0; i < poolsToFetch.length; i++) {
+          const poolId = poolsToFetch[i];
+          const resultIndex = fetchIndices[i];
+
+          try {
+            const metadata = await this.poolMetadata(poolId, {useCache: false});
+            if (metadata) {
+              this.poolCache.setPoolMetadata(
+                poolId,
+                metadata,
+                effectiveOptions.cacheTTL
+              );
+              results[resultIndex] = metadata;
+            }
+          } catch (individualError) {
+            console.warn(
+              `Failed to fetch individual pool ${poolId}:`,
+              individualError
+            );
+          }
         }
       }
     }
@@ -192,16 +205,30 @@ export class ReadonlyMiraAmm {
   }
 
   async fees(): Promise<AmmFees> {
-    // we're doing a 2nd set of calls
+    const now = Date.now();
+
+    // Return cached fees if they're still fresh
+    if (
+      this.cachedFees &&
+      now - this.feesCacheTimestamp < this.FEES_CACHE_TTL
+    ) {
+      return this.cachedFees;
+    }
+
+    // Fetch fresh fees from the contract
     const result = await this.ammContract.functions.fees().get();
     const [lpFeeVolatile, lpFeeStable, protocolFeeVolatile, protocolFeeStable] =
       result.value;
-    return {
+
+    this.cachedFees = {
       lpFeeVolatile: lpFeeVolatile,
       lpFeeStable: lpFeeStable,
       protocolFeeVolatile: protocolFeeVolatile,
       protocolFeeStable: protocolFeeStable,
     };
+    this.feesCacheTimestamp = now;
+
+    return this.cachedFees;
   }
 
   async hook(): Promise<string | null> {
@@ -385,7 +412,15 @@ export class ReadonlyMiraAmm {
     if (amount.isNeg() || amount.isZero())
       throw new Error("Non positive input amount");
     const fees = await this.fees();
-    return this.computeSwapPath("IN", assetIdIn, amount, pools, fees, options);
+    const result = await this.computeSwapPath(
+      "IN",
+      assetIdIn,
+      amount,
+      pools,
+      fees,
+      options
+    );
+    return result;
   }
 
   async getAmountsIn(
@@ -398,7 +433,7 @@ export class ReadonlyMiraAmm {
     if (amount.isNeg() || amount.isZero())
       throw new Error("Non positive input amount");
     const fees = await this.fees();
-    return this.computeSwapPath(
+    const result = await this.computeSwapPath(
       "OUT",
       assetIdOut,
       amount,
@@ -406,6 +441,7 @@ export class ReadonlyMiraAmm {
       fees,
       options
     );
+    return result;
   }
 
   async previewSwapExactInput(
@@ -446,22 +482,11 @@ export class ReadonlyMiraAmm {
   ): Promise<(Asset | undefined)[]> {
     const effectiveOptions = {...DEFAULT_CACHE_OPTIONS, ...options};
 
-    // Preload pools if enabled and caching is active
-    if (effectiveOptions.preloadPools && effectiveOptions.useCache) {
-      try {
-        await this.preloadPoolsForRoutes(routes, effectiveOptions);
-      } catch (error) {
-        // Log warning but continue - preloading is an optimization
-        console.warn("Pool preloading failed during batch preview:", error);
-      }
-    }
-
     const results = await Promise.allSettled(
       routes.map((route) =>
         this.getAmountsOut(assetIdIn, assetAmountIn, route, effectiveOptions)
       )
     );
-
     return results.map((r) =>
       r.status === "fulfilled" ? r.value[r.value.length - 1] : undefined
     );
@@ -475,22 +500,11 @@ export class ReadonlyMiraAmm {
   ): Promise<(Asset | undefined)[]> {
     const effectiveOptions = {...DEFAULT_CACHE_OPTIONS, ...options};
 
-    // Preload pools if enabled and caching is active
-    if (effectiveOptions.preloadPools && effectiveOptions.useCache) {
-      try {
-        await this.preloadPoolsForRoutes(routes, effectiveOptions);
-      } catch (error) {
-        // Log warning but continue - preloading is an optimization
-        console.warn("Pool preloading failed during batch preview:", error);
-      }
-    }
-
     const results = await Promise.allSettled(
       routes.map((route) =>
         this.getAmountsIn(assetIdOut, assetAmountOut, route, effectiveOptions)
       )
     );
-
     return results.map((r) =>
       r.status === "fulfilled" ? r.value[r.value.length - 1] : undefined
     );
@@ -549,6 +563,7 @@ export class ReadonlyMiraAmm {
   /**
    * Preload pools for routes to warm up the cache
    * Extracts unique pools from route arrays and batch fetches their metadata
+   * Also preloads fees to avoid network calls during swap calculations
    */
   async preloadPoolsForRoutes(
     routes: PoolId[][],
@@ -557,6 +572,11 @@ export class ReadonlyMiraAmm {
     if (!routes || routes.length === 0) {
       return;
     }
+
+    // Preload fees to avoid network calls during swap calculations (non-blocking)
+    this.fees().catch((error) => {
+      console.warn("Fee preloading failed:", error);
+    });
 
     // Extract unique pools from all routes
     const uniquePools = this.extractUniquePoolsFromRoutes(routes);

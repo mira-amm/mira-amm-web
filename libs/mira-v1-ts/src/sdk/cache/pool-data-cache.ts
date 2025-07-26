@@ -58,6 +58,7 @@ export class PoolDataCache {
   private config: PoolCacheConfig;
 
   constructor(config: Partial<PoolCacheConfig> = {}) {
+    console.count("PoolDataCache constructor");
     this.pools = new Map();
     this.accessOrder = [];
     this.stats = {
@@ -75,7 +76,6 @@ export class PoolDataCache {
    */
   getPoolMetadata(poolId: PoolId): CachedPoolMetadata | null {
     const key = generatePoolCacheKey(poolId);
-
     if (this.config.enableStats) {
       this.stats.totalRequests++;
     }
@@ -274,3 +274,9 @@ export class PoolDataCache {
     }
   }
 }
+
+/**
+ * Singleton instance of the pool data cache
+ * This ensures the cache persists across multiple ReadonlyMiraAmm instances
+ */
+export const globalPoolDataCache = new PoolDataCache();

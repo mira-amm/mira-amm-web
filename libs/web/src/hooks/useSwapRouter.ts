@@ -1,4 +1,4 @@
-import {useMemo} from "react";
+import {useMemo, useEffect, useRef} from "react";
 import {useQuery} from "@tanstack/react-query";
 import {type BN, bn} from "fuels";
 import {
@@ -9,6 +9,7 @@ import {
 import {useReadonlyMira} from ".";
 import {type Route, useRoutablePools} from "@/src/hooks";
 import {CoinData} from "../utils/coinsConfig";
+import {type CacheOptions} from "mira-dex-ts";
 
 export enum TradeState {
   LOADING,
@@ -18,11 +19,22 @@ export enum TradeState {
   REFETCHING,
 }
 
+/**
+ * Cache options for the swap router hook
+ */
+export interface SwapRouterCacheOptions {
+  enableCaching?: boolean; // Whether to enable caching (default: false for backward compatibility)
+  poolDataTTL?: number; // Pool data TTL in milliseconds (default: 30000)
+  refreshInterval?: number; // Background refresh interval in milliseconds (default: 60000)
+  preloadOnRouteChange?: boolean; // Whether to preload pools when routes change (default: true)
+}
+
 export function useSwapRouter(
   tradeType: TradeType,
   amountSpecified: BN = bn(0),
   assetIn?: CoinData,
-  assetOut?: CoinData
+  assetOut?: CoinData,
+  cacheOptions?: SwapRouterCacheOptions
 ): {
   tradeState: TradeState;
   trade?: {
@@ -34,6 +46,29 @@ export function useSwapRouter(
 } {
   const amm = useReadonlyMira();
 
+  // Default cache options
+  const effectiveCacheOptions = useMemo(
+    () => ({
+      enableCaching: false, // Default to false for backward compatibility
+      poolDataTTL: 30000, // 30 seconds
+      refreshInterval: 60000, // 1 minute
+      preloadOnRouteChange: true,
+      ...cacheOptions,
+    }),
+    [cacheOptions]
+  );
+
+  // Convert SwapRouterCacheOptions to CacheOptions
+  const ammCacheOptions: CacheOptions = useMemo(
+    () => ({
+      useCache: effectiveCacheOptions.enableCaching,
+      preloadPools: effectiveCacheOptions.preloadOnRouteChange,
+      cacheTTL: effectiveCacheOptions.poolDataTTL,
+      refreshStaleData: true,
+    }),
+    [effectiveCacheOptions]
+  );
+
   const shouldFetch = useMemo(
     () => !!assetIn && !!assetOut && amountSpecified.gt(0),
     [assetIn, assetOut, amountSpecified]
@@ -43,9 +78,48 @@ export function useSwapRouter(
     routes,
     isLoading: routesLoading,
     isRefetching: routesRefetching,
-  } = useRoutablePools(assetIn, assetOut, shouldFetch);
+  } = useRoutablePools(assetIn, assetOut, true);
 
-  // debugger;
+  // Track route changes for preloading
+  const previousRouteSignature = useRef<string | null>(null);
+  const routeSignature = useMemo(() => {
+    if (!routes.length) return null;
+    return routes
+      .map((route) =>
+        route.pools.map((pool) => pool.poolId.join("-")).join("|")
+      )
+      .join("||");
+  }, [routes]);
+
+  // Pool preloading effect when routes change (even without amount)
+  useEffect(() => {
+    if (
+      effectiveCacheOptions.enableCaching &&
+      effectiveCacheOptions.preloadOnRouteChange &&
+      amm &&
+      routeSignature &&
+      routeSignature !== previousRouteSignature.current &&
+      routes.length > 0 // Only need routes, not amount
+    ) {
+      // Convert Route[] to PoolId[][] format for preloading
+      const poolPaths = routes.map((route) =>
+        route.pools.map((pool) => pool.poolId)
+      );
+
+      // Preload pools for new routes
+      amm.preloadPoolsForRoutes(poolPaths, ammCacheOptions);
+      previousRouteSignature.current = routeSignature;
+    }
+  }, [
+    amm,
+    routes,
+    routeSignature,
+    effectiveCacheOptions.enableCaching,
+    effectiveCacheOptions.preloadOnRouteChange,
+    ammCacheOptions,
+    assetIn?.symbol, // Add asset dependencies to trigger preload on asset change
+    assetOut?.symbol,
+  ]);
 
   const {
     data: quotes = [],
@@ -59,15 +133,26 @@ export function useSwapRouter(
       assetIn?.assetId,
       assetOut?.assetId,
       routes,
+      effectiveCacheOptions.enableCaching, // Include cache options in query key
     ],
 
     queryFn: () =>
       amm && routes.length
-        ? getSwapQuotesBatch(amountSpecified, tradeType, routes, amm)
+        ? getSwapQuotesBatch(
+            amountSpecified,
+            tradeType,
+            routes,
+            amm,
+            ammCacheOptions
+          )
         : Promise.resolve([]),
 
-    staleTime: 0,
-    cacheTime: 0,
+    staleTime: effectiveCacheOptions.enableCaching
+      ? effectiveCacheOptions.poolDataTTL
+      : 0,
+    gcTime: effectiveCacheOptions.enableCaching
+      ? effectiveCacheOptions.poolDataTTL
+      : 0, // Updated from cacheTime
     refetchOnWindowFocus: true,
     refetchOnMount: true,
     enabled: shouldFetch,
@@ -87,6 +172,7 @@ export function useSwapRouter(
     if (!quotes.length) {
       return {
         tradeState: TradeState.NO_ROUTE_FOUND,
+        error: null, // Fixed: added missing error property
       };
     }
 
