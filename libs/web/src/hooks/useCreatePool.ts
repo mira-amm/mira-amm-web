@@ -1,3 +1,4 @@
+"use client";
 import {useCallback} from "react";
 import {bn} from "fuels";
 import {useWallet} from "@fuels/react";
@@ -48,20 +49,22 @@ export function useCreatePool({
       secondAssetMetadata.decimals || 0
     );
 
-    const txRequest = await mira.createPoolAndAddLiquidity(
-      firstAssetContract.contractId,
-      firstAssetContract.subId,
-      secondAssetContract.contractId,
-      secondAssetContract.subId,
-      isPoolStable,
-      firstCoinAmountToUse,
-      secondCoinAmountToUse,
-      MaxDeadline,
-      DefaultTxParams
-    );
-    const gasCost = await wallet.getTransactionCost(txRequest);
-    const fundedTx = await wallet.fund(txRequest, gasCost);
-    const tx = await wallet.sendTransaction(fundedTx);
+    const {transactionRequest: txRequest} =
+      await mira.createPoolAndAddLiquidity(
+        firstAssetContract.contractId,
+        firstAssetContract.subId,
+        secondAssetContract.contractId,
+        secondAssetContract.subId,
+        isPoolStable,
+        firstCoinAmountToUse,
+        secondCoinAmountToUse,
+        MaxDeadline,
+        DefaultTxParams,
+        {
+          useAssembleTx: true,
+        }
+      );
+    const tx = await wallet.sendTransaction(txRequest);
     return await tx.waitForResult();
   }, [
     mira,
