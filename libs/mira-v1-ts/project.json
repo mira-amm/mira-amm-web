@@ -6,31 +6,30 @@
   },
   "sourceRoot": "libs/mira-v1-ts/src",
   "projectType": "library",
-  "implicitDependencies": ["!libs/web"],
-  "tags": ["sdk", "typescript", "v1"],
+  "implicitDependencies": [
+    "!libs/web"
+  ],
+  "tags": [
+    "sdk",
+    "typescript",
+    "v1"
+  ],
   "targets": {
-    "typecheck": {
-      "dependsOn": ["typegen"],
-      "command": "tsc --noEmit",
-      "options": {
-        "cwd": "libs/mira-v1-ts"
-      }
-    },
     "build": {
-      "dependsOn": ["typegen"],
-      "command": "tsup",
+      "dependsOn": [
+        "typegen:scripts",
+        "typegen:contracts"
+      ],
+      "command": "tsx scripts/build.ts",
       "options": {
         "cwd": "libs/mira-v1-ts"
       }
     },
-    "dev": {
-      "command": "tsup",
-      "options": {
-        "cwd": "libs/mira-v1-ts"
-      }
-    },
-    "typegen": {
-      "command": "pnpm nx typegen:scripts && pnpm nx typegen:contracts",
+    "typecheck": {
+      "dependsOn": [
+        "build"
+      ],
+      "command": "tsc --noEmit",
       "options": {
         "cwd": "libs/mira-v1-ts"
       }
