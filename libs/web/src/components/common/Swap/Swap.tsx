@@ -30,7 +30,7 @@ import {
   triggerClassAnimation,
 } from "@/src/components/common";
 
-import {createPoolKey, openNewTab, cleanNumberString} from "@/src/utils/common";
+import {createPoolKey, openNewTab} from "@/src/utils/common";
 
 import {PriceImpactNew} from "@/src/components/common/Swap/components/price-impact";
 
@@ -299,11 +299,9 @@ export function Swap({isWidget}: {isWidget?: boolean}) {
     ) {
       return "";
     }
-    const rawValue =
-      activeMode === "sell"
-        ? trade.amountOut.formatUnits(decimals)
-        : trade.amountIn.formatUnits(decimals);
-    return cleanNumberString(rawValue);
+    return activeMode === "sell"
+      ? trade.amountOut.formatUnits(decimals)
+      : trade.amountIn.formatUnits(decimals);
   }, [trade, tradeState, activeMode, decimals]);
 
   useEffect(() => {

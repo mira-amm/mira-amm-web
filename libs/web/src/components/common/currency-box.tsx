@@ -11,7 +11,6 @@ import {MinEthValueBN} from "@/src/utils/constants";
 import {useAssetMetadata, useIsRebrandEnabled} from "@/src/hooks";
 import fiatValueFormatter from "@/src/utils/abbreviateNumber";
 import {cn} from "@/src/utils/cn";
-import {cleanNumberString} from "@/src/utils/common";
 
 export function CurrencyBox({
   value,
@@ -37,25 +36,13 @@ export function CurrencyBox({
   className?: string;
 }) {
   const metadata = useAssetMetadata(assetId);
-  const balanceValue = cleanNumberString(
-    balance.formatUnits(metadata.decimals || 0)
-  );
+  const balanceValue = balance.formatUnits(metadata.decimals || 0);
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const inputValue = e.target.value.replace(",", ".");
     const re = new RegExp(`^[0-9]*[.]?[0-9]{0,${metadata.decimals || 0}}$`);
     if (re.test(inputValue)) {
-      // Don't clean during typing to preserve user input flow
       setAmount(inputValue);
-    }
-  };
-
-  const handleBlur = (e: ChangeEvent<HTMLInputElement>) => {
-    const inputValue = e.target.value;
-    if (inputValue) {
-      // Clean the value when user finishes typing
-      const cleanedValue = cleanNumberString(inputValue);
-      setAmount(cleanedValue);
     }
   };
 
@@ -70,9 +57,7 @@ export function CurrencyBox({
     if (metadata.symbol === "ETH" && mode === "sell") {
       const amountWithoutGasFee = balance.sub(MinEthValueBN);
       amountStringToSet = amountWithoutGasFee.gt(0)
-        ? cleanNumberString(
-            amountWithoutGasFee.formatUnits(metadata.decimals || 0)
-          )
+        ? amountWithoutGasFee.formatUnits(metadata.decimals || 0)
         : balanceValue;
     } else {
       amountStringToSet = balanceValue;
@@ -127,7 +112,6 @@ export function CurrencyBox({
             value={value}
             disabled={coinNotSelected || loading}
             onChange={handleChange}
-            onBlur={handleBlur}
           />
         )}
 
