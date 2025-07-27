@@ -1,5 +1,3 @@
-{ config, lib, pkgs, ... }:
-
 {
   tasks = {
     "myapp:mytask" = {
