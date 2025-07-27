@@ -71,7 +71,7 @@
   "release": {
     "version": {
       "conventionalCommits": true,
-      "preVersionCommand": "nx build swap"
+      "preVersionCommand": "nx build ts-sdk"
     },
     "changelog": {
       "workspaceChangelog": {
