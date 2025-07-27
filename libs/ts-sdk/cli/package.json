@@ -2,10 +2,5 @@
   "name": "ts-sdk-cli",
   "version": "1.0.0",
   "description": "Mira DEX cli",
-  "type": "module",
-  "dependencies": {
-    "commander": "^12.1.0",
-    "envalid": "^8.0.0",
-    "vite-node": "^3.2.3"
-  }
+  "type": "module"
 }
