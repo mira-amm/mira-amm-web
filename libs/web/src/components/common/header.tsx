@@ -120,7 +120,7 @@ export function Header({pathName}: {isHomePage?: boolean; pathName?: string}) {
         </div>
 
         <div className="flex lg:hidden items-center gap-3">
-          <DisconnectMobile className="gap-1 px-2 py-1 text-sm font-medium leading-4" />
+          <DisconnectMobile className="gap-1 px-2 py-1 text-sm  leading-4" />
           <MobileMenu />
         </div>
 

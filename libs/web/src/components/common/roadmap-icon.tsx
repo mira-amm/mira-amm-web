@@ -9,9 +9,7 @@ export const RoadMapIcon: React.FC<{
           "linear-gradient(132.04deg, #262f5f 11.87%, #c41cff 176.88%)",
       }}
     >
-      <span className="font-medium text-base leading-6 text-center">
-        {text}
-      </span>
+      <span className=" text-base leading-6 text-center">{text}</span>
     </div>
   );
 };

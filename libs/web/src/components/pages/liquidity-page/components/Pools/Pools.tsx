@@ -66,7 +66,7 @@ export function Pools() {
       </div>
 
       <div className="flex justify-between items-center">
-        <p className="text-[20px] leading-[24px]">All Pools</p>
+        <p className="text-xl leading-[24px]">All Pools</p>
         <SearchBar
           placeholder="Symbol or address..."
           className=""
@@ -83,7 +83,7 @@ export function Pools() {
       />
 
       {isLoading && (
-        <div className="flex flex-col items-center gap-4 py-7 px-4 lg:p-8 rounded-2xl bg-background-grey-dark">
+        <div className="flex flex-col items-center gap-4 py-7 px-4 lg:p-8 rounded-ten bg-background-grey-dark">
           {isRebrandingEnabled ? (
             <LoaderBar />
           ) : (

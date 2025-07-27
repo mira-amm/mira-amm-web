@@ -56,7 +56,7 @@ export function DesktopPoolRow({poolData}: {poolData: PoolData}) {
 
       <TableCell className="py-4 whitespace-nowrap overflow-hidden text-ellipsis text-center">
         <Link href={`/liquidity/add?pool=${poolKey}`}>
-          <Button variant="outline" className="hover:cursor-pointer w-full md:w-[177px]">
+          <Button variant="outline">
             Add Liquidity
           </Button>
         </Link>

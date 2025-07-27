@@ -53,7 +53,7 @@ export const TransactionsHistory = forwardRef<
       >
         <div className="flex justify-between items-center">
           <h2
-            className={`text-[20px] leading-6 ${isRebrandEnabled ? "font-medium text-content-primary" : "font-normal"}`}
+            className={`text-xl leading-6 ${isRebrandEnabled ? " text-content-primary" : "font-normal"}`}
           >
             Transactions History
           </h2>
@@ -84,7 +84,7 @@ export const TransactionsHistory = forwardRef<
             <span
               className={`text-base leading-6 ${
                 isRebrandEnabled
-                  ? "font-medium text-content-primary"
+                  ? " text-content-primary"
                   : "font-normal text-white"
               }`}
             >
@@ -110,7 +110,7 @@ export const TransactionsHistory = forwardRef<
                 <span
                   className={`leading-[22px] ${
                     isRebrandEnabled
-                      ? "text-sm font-medium text-content-tertiary"
+                      ? "text-sm  text-content-tertiary"
                       : "text-base font-normal text-content-primary/65"
                   }`}
                 >
@@ -149,7 +149,7 @@ export const TransactionsHistory = forwardRef<
                         <div
                           className={`flex flex-col gap-1 leading-[22px] flex-1 ${
                             isRebrandEnabled
-                              ? "text-sm font-medium"
+                              ? "text-sm "
                               : "text-base font-normal"
                           }`}
                         >
@@ -160,7 +160,7 @@ export const TransactionsHistory = forwardRef<
                               rel="noopener noreferrer"
                               className={`${
                                 isRebrandEnabled
-                                  ? "text-content-primary hover:text-accent-primary transition-colors font-medium"
+                                  ? "text-content-primary hover:text-accent-primary transition-colors "
                                   : "text-content-primary"
                               }`}
                             >

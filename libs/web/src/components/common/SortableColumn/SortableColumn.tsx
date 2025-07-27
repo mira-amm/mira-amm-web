@@ -28,7 +28,7 @@ export default function SortableColumn({
     >
       <div
         className={cn(
-          "flex justify-center gap-1 lg:font-normal font-medium text-foreground"
+          "flex justify-center gap-1 lg:font-normal  text-foreground"
         )}
       >
         {title}

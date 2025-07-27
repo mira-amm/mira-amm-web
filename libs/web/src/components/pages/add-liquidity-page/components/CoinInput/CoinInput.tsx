@@ -65,7 +65,7 @@ const CoinInput = ({
           value={value}
           disabled={loading}
           onChange={handleChange}
-          className="w-full font-medium text-content-primary text-sm leading-4 bg-transparent border-none disabled:text-content-dimmed-dark lg:text-base lg:leading-[19px]"
+          className="w-full  text-content-primary text-sm leading-4 bg-transparent border-none disabled:text-content-dimmed-dark lg:text-base lg:leading-[19px]"
         />
         {usdValue !== null && (
           <p className="min-h-[16px] text-xs leading-4 text-content-tertiary lg:min-h-[18px] lg:text-sm lg:leading-[18px]">

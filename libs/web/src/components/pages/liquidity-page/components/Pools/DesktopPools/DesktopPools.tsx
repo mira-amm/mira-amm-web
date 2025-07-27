@@ -25,7 +25,7 @@ export function DesktopPools({
   if (!poolsData) return null;
 
   const thBase =
-    "px-6 py-4 text-[16px] leading-[19px] font-medium text-foreground whitespace-nowrap overflow-hidden text-ellipsis";
+    "px-6 py-4 text-base leading-[19px]  text-foreground whitespace-nowrap overflow-hidden text-ellipsis";
   return (
     <Table className="md:table table-fixed desktopOnly p-5">
       <TableHeader>
@@ -52,12 +52,12 @@ export function DesktopPools({
           </TableHead>
           <TableHead
             className={cn(
-              "py-4 text-[16px] leading-[19px] font-medium text-content-tertiary whitespace-nowrap overflow-hidden text-ellipsis",
+              "py-4 text-base leading-[19px]  text-content-tertiary whitespace-nowrap overflow-hidden text-ellipsis",
               "w-[20%] text-center"
             )}
           >
             <Link href="/liquidity/create-pool">
-              <Button className="w-[177px]">Create Pool</Button>
+              <Button>Create Pool</Button>
             </Link>
           </TableHead>
         </TableRow>
@@ -71,7 +71,7 @@ export function DesktopPools({
           <TableRow>
             <TableCell
               colSpan={5}
-              className="text-center text-[16px] font-medium text-[color:var(--content-tertiary)] px-6 py-4"
+              className="text-center text-base text-content-tertiary px-6 py-4"
             >
               No pools available
             </TableCell>

@@ -30,9 +30,7 @@ export default function RemoveLiquiditySuccessModal({
       <div className="lg:w-[80px] lg:h-[80px]">
         <CheckCircle />
       </div>
-      <p className="font-medium text-[22px] leading-[26px] text-center">
-        Success
-      </p>
+      <p className=" text-[22px] leading-[26px] text-center">Success</p>
       <p className="text-[14px] leading-[16px] text-content-dimmed-dark text-center">
         {subText}
       </p>

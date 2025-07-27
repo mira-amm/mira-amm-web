@@ -78,7 +78,7 @@ export function useModal(): [ReturnType, () => void, () => void] {
               )}
             >
               {/* Header */}
-              <div className="flex justify-between items-center font-medium text-[18px] leading-[22px] lg:text-[20px] lg:leading-[24px]">
+              <div className="flex justify-between items-center  text-[18px] leading-[22px] lg:text-xl lg:leading-[24px]">
                 <div className={cn("flex-1", titleClassName)}>{title}</div>
                 <IconButton
                   onClick={() => {

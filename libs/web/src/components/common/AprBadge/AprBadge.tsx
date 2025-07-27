@@ -96,10 +96,10 @@ export function AprBadge({
         </span>
         <span
           className={clsx(
-            "text-white whitespace-normal break-words",
+            "text-white whitespace-normal break-words font-alt",
             small
               ? "text-[13px] leading-[16px]"
-              : "text-[16px] leading-[19.36px]"
+              : "text-base leading-[19.36px]"
           )}
         >
           {aprElement}
@@ -162,24 +162,24 @@ export function AprLabel({
   return (
     <div className="flex flex-col gap-[10px]">
       <div className="flex justify-between gap-[10px]">
-        <span className="text-[16px] leading-[19.36px] text-white text-left">
+        <span className="text-base leading-[19.36px] text-white text-left">
           Swap fees
         </span>
-        <span className="text-[16px] leading-[19.36px] text-white text-left">
+        <span className="text-base leading-[19.36px] text-white text-left font-alt">
           {baseApr}
         </span>
       </div>
       <div>
         <div className="flex justify-between gap-[10px]">
-          <span className="text-[16px] leading-[19.36px] text-white text-left">
+          <span className="text-base leading-[19.36px] text-white text-left">
             {label}
           </span>
           {boostedApr === 0 ? (
-            <span className="text-[16px] leading-[19.36px] text-white text-left">
+            <span className="text-base leading-[19.36px] text-white text-left font-alt">
               {boostReward.toLocaleString()}
             </span>
           ) : (
-            <span className="text-[16px] leading-[19.36px] text-white text-left">
+            <span className="text-base leading-[19.36px] text-white text-left font-alt">
               {boostedApr}%
             </span>
           )}
@@ -192,10 +192,10 @@ export function AprLabel({
         <>
           <div className="w-full h-[2px] bg-gradient-to-r from-[#5872fc] via-[#6142ba] to-[#c41cff] shadow-[0_1px_2px_rgba(0,0,0,0.1)]" />
           <div className="flex justify-between gap-[10px]">
-            <span className="text-[16px] leading-[19.36px] text-white text-left">
+            <span className="text-base leading-[19.36px] text-white text-left">
               Total rewards
             </span>
-            <span className="text-[16px] leading-[19.36px] text-white text-left">
+            <span className="text-base leading-[19.36px] text-white text-left">
               {aprElement}
             </span>
           </div>

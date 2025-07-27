@@ -47,7 +47,7 @@ export const DropDownMenu = forwardRef<
             {button.disabled && button.tooltip && (
               <div
                 className={clsx(
-                  "absolute z-10 px-2 py-[3px] text-[10px] leading-[14px] font-medium rounded-[20px] whitespace-nowrap",
+                  "absolute z-10 px-2 py-[3px] text-[10px] leading-[14px]  rounded-[20px] whitespace-nowrap",
                   "bg-accent-primary text-[#292929]",
                   "left-[-60px] top-1/2 translate-y-[-50%] ml-2",
                   "max-[1023px]:left-[210px] max-[1023px]:top-[64%] max-[1023px]:visible",

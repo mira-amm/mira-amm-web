@@ -48,30 +48,30 @@ const CoinPair = ({
       <div className="flex flex-col gap-1">
         {firstSymbol && secondSymbol ? (
           <p
-            className="font-medium text-[14px] leading-[16px] lg:text-[16px] lg:leading-[19px]"
+            className="text-base leading-[16px]"
             data-identifier="coin-pair"
           >
             {firstSymbol}/{secondSymbol}
           </p>
         ) : (
-          <p className="text-[14px] text-muted">loading...</p>
+          <p className="text-sm text-muted">loading...</p>
         )}
 
         {withFeeBelow && (
-          <p className="text-xs leading-[14px] text-content-tertiary lg:text-sm lg:leading-[16px]">
+          <p className="text-sm leading-[14px] text-content-tertiary lg:text-sm">
             {feeText}
           </p>
         )}
 
         {withPoolDescription && (
-          <p className="text-xs leading-[14px] text-[#d4b226]">
+          <p className="text-sm leading-[14px] text-accent-alert">
             {poolDescription}
           </p>
         )}
       </div>
 
       {withFee && (
-        <p className="text-xs leading-[14px] text-content-tertiary lg:text-sm lg:leading-[16px]">
+        <p className="text-sm leading-[14px] text-content-tertiary">
           {feeText}
         </p>
       )}

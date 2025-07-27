@@ -85,13 +85,13 @@ function SettingsModalContentNew({
       </div>
       <div className="flex gap-2 items-center">
         <div className="flex flex-1">
-          {AutoSlippageValues.map((value) => (
+          {AutoSlippageValues.map((value, index) => (
             <button
               key={value}
               className={clsx(
-                "w-full px-3 py-[14px] first:rounded-l-lg last:rounded-r-lg text-content-dimmed-light border bg-background-grey-dark hover:border dark:hover:text-content-primary hover:border-accent-primary dark:hover:border-accent-primary hover:border-black",
+                "w-full px-3 py-[14px] first:rounded-l-lg last:rounded-r-lg text-content-dimmed-light border bg-background-grey-dark hover:border dark:hover:text-content-primary dark:hover:border-accent-primary hover:border-black",
                 slippage === value &&
-                  "dark:border-accent-primary border border-content-tertiary bg-black dark:bg-background-grey-dark text-white"
+                  "dark:border-accent-primary border border-black bg-black dark:bg-background-grey-dark text-white"
               )}
               onClick={() => handleSlippageButtonClick(value)}
             >
@@ -124,7 +124,7 @@ function SettingsModalContentNew({
         </div>
       </div>
       {showSlippageWarning && (
-        <div className="text-accent-warning font-medium text-sm">
+        <div className="text-accent-warning  text-sm">
           Slippage high, your transaction might be front run.
         </div>
       )}

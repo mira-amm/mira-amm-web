@@ -61,9 +61,9 @@ export default function AddLiquidityPage() {
         <ChevronLeft className="size-5" />
         Back
       </button>
-      <section className="flex flex-col p-4 rounded-2xl gap-6 bg-background-grey-dark border-border-secondary border-[12px] dark:border-0 dark:bg-background-grey-dark z-[5] w-full max-w-[524px] mx-auto">
-        <div className="flex items-center w-full pb-4 border-b border-background-grey-light gap-2.5 font-medium text-sm leading-[19px] text-content-grey">
-          <p className="flex-1 text-content-primary text-base font-medium">
+      <section className="flex flex-col p-4 rounded-ten gap-6 bg-background-grey-dark border-border-secondary border-[12px] dark:border-0 dark:bg-background-grey-dark z-[5] w-full max-w-[524px] mx-auto">
+        <div className="flex items-center w-full pb-4 border-b border-background-grey-light gap-2.5  text-sm leading-[19px] text-content-grey">
+          <p className="flex-1 text-content-primary text-base ">
             Add Liquidity
           </p>
           <SlippageSetting

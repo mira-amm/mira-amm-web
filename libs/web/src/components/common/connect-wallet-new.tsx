@@ -77,7 +77,7 @@ export function ConnectWalletNew() {
   return (
     <>
       {!isConnected && (
-        <div className="rounded-lg border-border-secondary border-[12px] dark:border-0">
+        <div className="rounded-ten border-border-secondary border-[12px] dark:border-0">
           <div className="flex gap-x-3 p-3 justify-between bg-background-grey-dark dark:bg-background-grey-dark">
             <div className="">
               <div className="flex justify-between items-center mb-0.5">
@@ -93,7 +93,7 @@ export function ConnectWalletNew() {
                 Connect
               </Button>
             </div>
-            <div className="w-[239.82px] bg-black rounded-lg font-alt text-accent-primary uppercase px-3 tracking-tight flex justify-left items-center text-sm">
+            <div className="w-[239.82px] bg-black rounded-ten font-alt text-accent-primary uppercase px-3 tracking-tight flex justify-left items-center text-sm">
               No wallet connected
             </div>
           </div>
@@ -101,7 +101,7 @@ export function ConnectWalletNew() {
       )}
       {isConnected && (
         <div ref={containerRef} className="relative w-[410px]">
-          <div className="rounded-lg border-[12px] border-border-secondary dark:border-0">
+          <div className="rounded-ten border-[12px] border-border-secondary dark:border-0">
             <div className="flex gap-x-3 p-3 justify-between bg-background-grey-dark dark:bg-background-grey-dark">
               <div>
                 <div className="flex justify-between items-center mb-0.5">
@@ -122,7 +122,7 @@ export function ConnectWalletNew() {
 
               <div
                 onClick={() => setOpen((prev) => !prev)}
-                className="bg-black rounded-lg w-[239.82px] text-accent-primary font-alt uppercase px-3 tracking-tight flex justify-between items-center text-sm cursor-pointer"
+                className="bg-black rounded-ten w-[239.82px] text-accent-primary font-alt uppercase px-3 tracking-tight flex justify-between items-center text-sm cursor-pointer"
               >
                 {formattedAddress}
                 {open ? (
@@ -135,13 +135,13 @@ export function ConnectWalletNew() {
           </div>
 
           {open && (
-            <div className="absolute left-0 mt-2 w-full border-[12px] border-border-secondary dark:border-0 bg-background-grey-dark dark:bg-[#262834] px-2 py-2.5 rounded-lg z-50">
+            <div className="absolute left-0 mt-2 w-full border-[12px] border-border-secondary dark:border-0 bg-background-grey-dark dark:bg-[#262834] px-2 py-2.5 rounded-ten z-50">
               <div
                 onClick={() => {
                   handleCopy();
                   setOpen(false);
                 }}
-                className="hover:bg-background-tertiary dark:hover:bg-background-secondary p-2 rounded-lg cursor-pointer flex items-center gap-2"
+                className="hover:bg-background-tertiary dark:hover:bg-background-secondary p-2 rounded-ten cursor-pointer flex items-center gap-2"
               >
                 <CopyIcon className="size-4 dark:text-white" />
                 Copy Address
@@ -151,7 +151,7 @@ export function ConnectWalletNew() {
                   handleExplorerClick();
                   setOpen(false);
                 }}
-                className="hover:bg-background-tertiary dark:hover:bg-background-secondary p-2 rounded-lg cursor-pointer flex items-center gap-2"
+                className="hover:bg-background-tertiary dark:hover:bg-background-secondary p-2 rounded-ten cursor-pointer flex items-center gap-2"
               >
                 <ExternalLink className="size-4 dark:text-white" />
                 View in Explorer
@@ -161,7 +161,7 @@ export function ConnectWalletNew() {
                   handleTxHistoryClick();
                   setOpen(false);
                 }}
-                className="hover:bg-background-tertiary dark:hover:bg-background-secondary p-2 rounded-lg cursor-pointer flex items-center gap-2"
+                className="hover:bg-background-tertiary dark:hover:bg-background-secondary p-2 rounded-ten cursor-pointer flex items-center gap-2"
               >
                 <ArrowLeftRight className="size-4 dark:text-white" />
                 Transaction History
@@ -171,7 +171,7 @@ export function ConnectWalletNew() {
                   disconnect();
                   setOpen(false);
                 }}
-                className="hover:bg-background-tertiary dark:hover:bg-background-secondary p-2 rounded-lg cursor-pointer flex items-center gap-2"
+                className="hover:bg-background-tertiary dark:hover:bg-background-secondary p-2 rounded-ten cursor-pointer flex items-center gap-2"
               >
                 <LogOutIcon className="size-4 dark:text-white" />
                 Disconnect

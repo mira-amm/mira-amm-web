@@ -65,15 +65,15 @@ const PreviewCreatePoolDialog = ({
         <div className="flex flex-col gap-3 bg-[var(--background-secondary)] p-3 rounded-md">
           <div className="flex justify-between items-center">
             <Coin assetId={previewData.assets[0].assetId} />
-            <p className="text-sm font-medium leading-4">{firstCoinAmount}</p>
+            <p className="text-sm  leading-4">{firstCoinAmount}</p>
           </div>
           <div className="flex justify-between items-center">
             <Coin assetId={previewData.assets[1].assetId} />
-            <p className="text-sm font-medium leading-4">{secondCoinAmount}</p>
+            <p className="text-sm  leading-4">{secondCoinAmount}</p>
           </div>
           <div className="flex justify-between items-center border-t border-[var(--background-grey-dark)] pt-3">
-            <p className="text-sm font-medium leading-4">Fee tier</p>
-            <p className="text-sm font-medium leading-4">{feeText}</p>
+            <p className="text-sm  leading-4">Fee tier</p>
+            <p className="text-sm  leading-4">{feeText}</p>
           </div>
         </div>
       </div>

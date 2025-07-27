@@ -23,8 +23,8 @@ export function Positions() {
   if (!isConnected || data?.length === 0) {
     return (
       <section className="flex flex-col gap-6 w-full">
-        <p className="text-[20px] leading-6">Your Positions</p>
-        <div className="flex flex-col items-center gap-2 rounded-2xl px-4 py-7  bg-background-grey-dark border-border-secondary border-[12px] dark:border-0 dark:bg-background-grey-dark">
+        <p className="text-xl leading-6">Your Positions</p>
+        <div className="flex flex-col items-center gap-2 rounded-ten px-4 py-7  bg-background-grey-dark border-border-secondary border-[12px] dark:border-0 dark:bg-background-grey-dark">
           <div className="flex flex-col items-center gap-4">
             <div className="h-11 w-11 flex items-center justify-center rounded-full text-white bg-[url('/images/overlay-5.jpg')] bg-cover">
               <FileText />
@@ -40,11 +40,11 @@ export function Positions() {
 
   return (
     <section className="flex flex-col gap-6 w-full">
-      <p className="text-[20px] leading-6">Your Positions</p>
+      <p className="text-xl leading-6">Your Positions</p>
       {!data || isLoading ? (
         <PositionsLoader />
       ) : (
-        <div className="flex flex-col gap-4 bg-background-grey-dark border-border-secondary border-[12px] dark:border-0 dark:bg-background-grey-dark rounded-[24px] p-4">
+        <div className="flex flex-col gap-4 bg-background-grey-dark border-border-secondary border-[12px] dark:border-0 dark:bg-background-grey-dark rounded-ten p-4">
           {/* Headers */}
           <div className="grid grid-cols-3 md:grid-cols-4 gap-4 px-2 pb-4 border-b border-background-grey-darkertext-content-tertiary text-sm font-normal">
             <div className="text-left">Pools</div>
@@ -134,7 +134,7 @@ function PositionRow({
           />
         </div>
 
-        <div className="text-center mx-auto text-[14px]">
+        <div className="text-center mx-auto text-base font-alt">
           {isMatching ? (
             <AprBadge
               aprValue={aprValue}
@@ -147,14 +147,12 @@ function PositionRow({
           )}
         </div>
 
-        <div className="text-center text-[14px]">
+        <div className="text-center text-base font-alt">
           {size ? `$${size.toFixed(2)}` : "checking..."}
         </div>
 
         <div className="col-span-3 md:col-span-1 flex lg:justify-end">
-          <Button className="lg:max-w-[165px]" variant="outline" block>
-            Manage
-          </Button>
+          <Button variant="outline">Manage Position</Button>
         </div>
       </div>
     </Link>
@@ -163,7 +161,7 @@ function PositionRow({
 
 function PositionsLoader({count = 3}: {count?: number}) {
   return (
-    <div className="flex flex-col gap-4 border-border-secondary border-[12px] dark:border-0 bg-background-grey-dark dark:bg-gray-800 rounded-3xl p-4 w-full">
+    <div className="flex flex-col gap-4 border-border-secondary border-[12px] dark:border-0 bg-background-grey-dark dark:bg-gray-800 rounded-ten p-4 w-full">
       <div className="hidden md:grid grid-cols-4 gap-4 px-2 pb-4 border-b border-gray-700 text-gray-400 text-sm font-normal">
         <div className="text-left">
           <div className="bg-gray-300 dark:bg-gray-600 animate-pulse h-3 line-3" />

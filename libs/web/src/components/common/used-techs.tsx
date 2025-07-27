@@ -9,7 +9,7 @@ export const UsedTechs: React.FC<{
   return (
     <figure
       className={clsx(
-        "flex items-center gap-4 font-light text-[20px] leading-6",
+        "flex items-center gap-4 font-light text-xl leading-6",
         "max-lg:text-[16px] max-lg:leading-[22px] max-lg:gap-3",
         className
       )}

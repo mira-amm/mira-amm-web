@@ -78,28 +78,28 @@ export function CurrencyBox({
   return (
     <div
       className={cn(
-        "flex flex-col gap-2.5 rounded-lg border border-transparent bg-background-tertiary dark:bg-background-secondary px-3 py-3 lg:px-4",
+        "flex flex-col gap-2.5 rounded-ten border border-transparent bg-background-tertiary dark:bg-background-secondary p-4",
         className,
         isRebrandEnabled
           ? "focus-within:border-black"
           : "focus-within:border-accent-secondary"
       )}
     >
-      <p className="text-xs leading-4 text-content-tertiary dark:text-content-tertiary lg:text-sm lg:leading-[18px]">
+      <p className="text-sm leading-4 text-content-tertiary dark:text-content-tertiary lg:leading-[18px]">
         {mode === "buy" ? "Buy" : "Sell"}
       </p>
 
       <div className="min-h-[44px] flex items-center gap-2">
         {previewError ? (
-          <div className="flex-1 bg-yellow-100/30 dark:bg-[rgba(255,235,59,0.1)] border border-yellow-500 dark:border-[rgba(255,235,59,0.3)] rounded-lg px-3 py-2">
-            <p className="text-[#d4a900] text-sm font-medium leading-[1.4] lg:text-[15px]">
+          <div className="flex-1 bg-yellow-100/30 dark:bg-[rgba(255,235,59,0.1)] border border-yellow-500 dark:border-[rgba(255,235,59,0.3)] rounded-ten px-3 py-2">
+            <p className="text-[#d4a900] text-sm leading-[1.4] lg:text-[15px]">
               {previewError}
             </p>
           </div>
         ) : (
           <input
             className={cn(
-              "flex-1 w-0 text-[20px] leading-6 border-none bg-transparent outline-none",
+              "flex-1 w-0 text-xl leading-6 border-none bg-transparent outline-none",
               "text-content-secondary dark:text-content-secondary ",
               "font-alt",
               loading && "text-gray-400/40 dark:text-content-tertiary/40"
@@ -119,14 +119,14 @@ export function CurrencyBox({
           onClick={handleCoinSelectorClick}
           disabled={loading}
           className={cn(
-            "flex items-center gap-2 px-2.5 py-1.5 rounded-lg bg-transparent text-content-grey",
+            "flex items-center gap-2 px-2.5 py-1.5 rounded-ten bg-transparent text-content-grey",
             "hover:bg-background-grey-light dark:hover:bg-background-grey-dark disabled:cursor-default",
             coinNotSelected &&
               "bg-background-grey-dark hover:bg-background-grey-light cursor-pointer"
           )}
         >
           {coinNotSelected ? (
-            <p className="font-medium text-[16px] leading-[19px] text-content-primary">
+            <p className="text-[16px] leading-[19px] text-content-primary">
               Choose coin
             </p>
           ) : (
@@ -137,9 +137,9 @@ export function CurrencyBox({
       </div>
 
       <div className="min-h-[16px] lg:min-h-[18px] flex justify-between items-center text-content-tertiary dark:text-content-tertiary font-alt">
-        <p className="text-xs leading-4">{usdValue !== null && usdValue}</p>
+        <p className="text-sm leading-4 font-alt">{usdValue !== null && usdValue}</p>
         {balance.gt(0) && (
-          <span className="text-xs leading-4 lg:text-sm">
+          <span className="text-sm leading-4">
             Balance: {balanceValue}{" "}
             <TextButton onClick={handleMaxClick}>Max</TextButton>
           </span>

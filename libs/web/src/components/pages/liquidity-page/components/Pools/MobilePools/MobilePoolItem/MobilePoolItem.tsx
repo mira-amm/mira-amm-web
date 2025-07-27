@@ -62,7 +62,7 @@ export function MobilePoolItem({poolData}: {poolData: PoolData}) {
             <InfoBlock title="TVL" value={tvlValue} />
           </div>
         </div>
-        <p className="text-[12px] leading-[14px] text-[#d4b226]">
+        <p className="text-[12px] leading-[14px] text-accent-alert">
           {poolDescription}
         </p>
       </div>
@@ -70,7 +70,7 @@ export function MobilePoolItem({poolData}: {poolData: PoolData}) {
       <Button
         variant="outline"
         onClick={handleAddClick}
-        className="font-medium leading-[19px] w-full md:w-[177px]"
+        className=" leading-[19px] w-full md:w-[177px]"
         size="lg"
       >
         Add Liquidity
