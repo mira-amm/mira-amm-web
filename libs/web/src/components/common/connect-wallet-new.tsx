@@ -93,14 +93,14 @@ export function ConnectWalletNew() {
                 Connect
               </Button>
             </div>
-            <div className="w-[239.82px] bg-black rounded-lg font-alt text-accent-primary uppercase px-3 tracking-tight flex justify-left items-center text-sm">
+            <div className="w-[187px] sm:w-[239.82px] bg-black rounded-lg font-alt text-accent-primary uppercase px-3 tracking-tight flex justify-left items-center text-xs sm:text-sm">
               No wallet connected
             </div>
           </div>
         </div>
       )}
       {isConnected && (
-        <div ref={containerRef} className="relative w-[410px]">
+        <div ref={containerRef} className="relative w-[339px] sm:w-[410px]">
           <div className="rounded-lg border-[12px] border-border-secondary dark:border-0">
             <div className="flex gap-x-3 p-3 justify-between bg-background-grey-dark dark:bg-background-grey-dark">
               <div>
@@ -122,7 +122,7 @@ export function ConnectWalletNew() {
 
               <div
                 onClick={() => setOpen((prev) => !prev)}
-                className="bg-black rounded-lg w-[239.82px] text-accent-primary font-alt uppercase px-3 tracking-tight flex justify-between items-center text-sm cursor-pointer"
+                className="bg-black rounded-lg w-[187px] sm:w-[239.82px] text-accent-primary font-alt uppercase px-3 tracking-tight flex justify-between items-center text-xs sm:text-sm cursor-pointer"
               >
                 {formattedAddress}
                 {open ? (
