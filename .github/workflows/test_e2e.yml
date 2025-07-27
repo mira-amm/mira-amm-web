@@ -52,9 +52,12 @@ jobs:
         run: pnpm i --frozen-lockfile
 
       - name: 🧩 Build
+        env:
+          NEXT_PUBLIC_ENABLE_REBRAND_UI: true
         run: pnpm nx run-many -t build -p api ts-sdk design admin microgame web --verbose
 
       - name: 🧐 Run End-to-End tests
         env:
           SENTIO_API_KEY: ${{ secrets.SENTIO_API_KEY }}
+          NEXT_PUBLIC_ENABLE_REBRAND_UI: true
         run: pnpm nx e2e web-e2e --verbose
