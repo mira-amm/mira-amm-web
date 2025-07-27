@@ -9,16 +9,22 @@ import {
   ScriptTransactionRequest,
   TxParams,
 } from "fuels";
+
 import {DEFAULT_AMM_CONTRACT_ID} from "./constants";
+
 import {
   AddLiquidityScriptLoader,
   CreatePoolAndAddLiquidityScriptLoader,
-  MiraAmmContract,
-  MiraAmmContractFactory,
   RemoveLiquidityScriptLoader,
   SwapExactInputScriptLoader,
   SwapExactOutputScriptLoader,
-} from "./typegen";
+} from "./typegen/scripts";
+
+import {
+  MiraAmmContract,
+  MiraAmmContractFactory,
+} from "./typegen/contracts";
+
 import {PoolId} from "./model";
 import {
   addressInput,

@@ -1,5 +1,5 @@
-import {AssetId, BigNumberish, BN, Provider} from "fuels";
 import {DEFAULT_AMM_CONTRACT_ID} from "./constants";
+import {AssetId, BigNumberish, BN, Provider} from "fuels";
 import {
   AmmFees,
   AmmMetadata,
@@ -8,6 +8,7 @@ import {
   PoolId,
   PoolMetadata,
 } from "./model";
+
 import {
   arrangePoolParams,
   assetInput,
@@ -15,6 +16,7 @@ import {
   poolIdInput,
   reorderPoolId,
 } from "./utils";
+
 import {
   addFee,
   BASIS_POINTS,
@@ -23,7 +25,8 @@ import {
   powDecimals,
   subtractFee,
 } from "./math";
-import {MiraAmmContract} from "./typegen";
+
+import {MiraAmmContract} from "./typegen/contracts";
 
 const DECIMALS_PRECISION = 1000000000000;
 
