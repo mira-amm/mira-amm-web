@@ -17,7 +17,7 @@ export function BoostsBanner() {
         <Link href={POINTS_LEARN_MORE_URL} target="_blank">
           <Button
             variant="secondary"
-            className="relative inline-flex items-center text-white text-[16px] font-medium bg-transparent border-none cursor-pointer transition-colors duration-300 hover:text-[#e0e0e0]"
+            className="relative inline-flex items-center text-white text-[16px]  bg-transparent border-none cursor-pointer transition-colors duration-300 hover:text-[#e0e0e0]"
           >
             Learn more
             <span className="ml-1 transition-all duration-300 group-hover:ml-2 text-[18px]">

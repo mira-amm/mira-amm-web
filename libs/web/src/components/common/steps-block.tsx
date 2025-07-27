@@ -5,7 +5,7 @@ export const StepsBlock: React.FC<{
   done?: boolean;
 }> = ({logo, title, description}) => {
   return (
-    <div className="bg-[#262934] rounded-2xl w-[350px] flex flex-col items-center gap-4 px-6 pt-7 pb-10 box-border lg:w-full lg:pb-8">
+    <div className="bg-[#262934] rounded-ten w-[350px] flex flex-col items-center gap-4 px-6 pt-7 pb-10 box-border lg:w-full lg:pb-8">
       {logo}
       <h3 className="text-[26px] leading-8 text-center mt-[22px] font-[var(--font-inter)] lg:text-[24px] lg:leading-[30px]">
         {title}

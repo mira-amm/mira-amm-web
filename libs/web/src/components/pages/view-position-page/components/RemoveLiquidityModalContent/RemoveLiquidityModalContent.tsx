@@ -100,7 +100,7 @@ const RemoveLiquidityModalContent = ({
       />
 
       <div className="flex justify-between items-center">
-        <p className="font-medium text-2xl leading-[28px]">{displayValue}%</p>
+        <p className=" text-2xl leading-[28px]">{displayValue}%</p>
         <button
           className="uppercase text-[12px] leading-4 px-2 py-1 border border-accent-primary text-accent-primary rounded hover:opacity-80 transition-opacity"
           onClick={handleMax}
@@ -142,7 +142,7 @@ const RemoveLiquidityModalContent = ({
               {currentCoinBValue}
             </TableCell>
           </TableRow>
-          <TableRow className="font-medium text-content-primary border-t border-background-grey-dark">
+          <TableRow className=" text-content-primary border-t border-background-grey-dark">
             <TableCell className="py-4">Remove</TableCell>
             <TableCell className="py-4">{coinAValueToWithdraw}</TableCell>
             <TableCell className="py-4 text-right">

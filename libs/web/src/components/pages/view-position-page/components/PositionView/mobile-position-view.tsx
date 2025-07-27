@@ -54,8 +54,8 @@ export function MobilePositionView({
         />
       </div>
 
-      <div className="flex flex-col gap-[15px] p-4 rounded-2xl bg-background-grey-dark border-border-secondary border-[12px] dark:border-0 dark:bg-background-grey-dark">
-        <p className="text-[16px] font-bold leading-[19px]">Your position</p>
+      <div className="flex flex-col gap-[15px] p-4 rounded-ten bg-background-grey-dark border-border-secondary border-[12px] dark:border-0 dark:bg-background-grey-dark">
+        <p className="text-base leading-[19px]">Your position</p>
         <AprDisplay pool={pool} />
         <div className="flex justify-between">
           <CoinWithAmount
@@ -72,7 +72,7 @@ export function MobilePositionView({
       <MiraBlock pool={pool} />
 
       <div className="flex flex-col gap-3 my-[10px]">
-        <p className="text-[16px] font-bold leading-[19px]">Pool reserves</p>
+        <p className="text-base leading-[19px]">Pool reserves</p>
         <ReserveItem
           reserve={assetA.reserve}
           assetId={pool[0].bits}
@@ -86,7 +86,7 @@ export function MobilePositionView({
 
         <div className="w-full h-px border border-white opacity-10" />
         <div className="flex items-center justify-between text-content-tertiary">
-          <p className="text-[16px] font-normal leading-[19px]">
+          <p className="text-base font-normal leading-[19px]">
             Total value locked
           </p>
           {formattedTvlValue ? (
@@ -126,7 +126,7 @@ export function MobilePositionView({
         title="Learn about providing liquidity"
         link="https://mirror.xyz/miraly.eth"
         linkText="Click here and check our v3 LP walkthrough"
-        background="gradient"
+        background="overlay-4"
       />
     </section>
   );

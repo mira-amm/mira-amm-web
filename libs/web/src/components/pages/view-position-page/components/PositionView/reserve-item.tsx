@@ -37,10 +37,8 @@ export function ReserveItem({
       <CoinWithAmount assetId={assetId} amount={coinAmount} withName />
       {usdValue && reserve !== undefined ? (
         <div className="flex flex-col items-end gap-y-2">
-          <p className="font-medium text-[18px] leading-[21px]">
-            {formatNumber(reserve)}
-          </p>
-          <p className="opacity-64 font-normal text-[15px] leading-[18px]">
+          <p className=" text-[18px] leading-[21px] font-alt">{formatNumber(reserve)}</p>
+          <p className="opacity-64 font-normal text-[15px] leading-[18px] font-alt">
             {usdValue === "NaN" ? "~0" : usdValue}
           </p>
         </div>

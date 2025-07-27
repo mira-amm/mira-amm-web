@@ -18,13 +18,11 @@ export function TransactionFailureModal({
   return (
     <div className="flex flex-col items-center gap-3 lg:gap-6">
       <CircleX className="w-[40px] h-[40px] lg:w-[80px] lg:h-[80px] text-red-500" />
-      <p className="font-medium text-[22px] leading-[26px] text-center">
-        {title}
-      </p>
-      <p className="text-[14px] leading-[16px] text-content-primary dark:text-content-dimmed-dark text-center">
+      <p className="text-[22px] leading-[26px] text-center text-content-primary">{title}</p>
+      <p className="text-sm leading-[16px] text-content-tertiary text-center">
         {message}
       </p>
-      <Button onClick={closeModal} block>
+      <Button onClick={closeModal} block size="2xl">
         Try again
       </Button>
     </div>

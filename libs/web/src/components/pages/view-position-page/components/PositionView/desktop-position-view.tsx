@@ -1,6 +1,5 @@
 import React from "react";
 import Link from "next/link";
-import {Sparkles} from "lucide-react";
 import {Button} from "@/meshwave-ui/Button";
 import {PoolId} from "mira-dex-ts";
 
@@ -84,7 +83,7 @@ export function DesktopPositionView({
       </div>
 
       <div className="w-full p-4 rounded-xl flex flex-col gap-4 bg-background-grey-dark border-border-secondary border-[12px] dark:border-0 dark:bg-background-grey-dark">
-        <p className="text-[16px] font-semibold leading-[19px] border-b border-content-grey-dark/40 pb-3">
+        <p className="text-base leading-[19px] border-b border-content-grey-dark/40 pb-3">
           Pool reserves
         </p>
         <ReserveItem
@@ -103,7 +102,7 @@ export function DesktopPositionView({
         <div className="flex flex-col gap-[10px]">
           <div className="flex items-center justify-between text-content-tertiary">
             {formattedTvlValue && <p>Total value locked</p>}
-            {formattedTvlValue && <p>${formattedTvlValue}</p>}
+            {formattedTvlValue && <p className="font-alt">${formattedTvlValue}</p>}
           </div>
           <ExchangeRate
             assetBMetadata={assetB.metadata}
@@ -119,7 +118,7 @@ export function DesktopPositionView({
         title="Learn about providing liquidity"
         link="https://mirror.xyz/miraly.eth"
         linkText="Click here and check our v3 LP walkthrough"
-        background="gradient"
+        background="overlay-4"
       />
     </section>
   );

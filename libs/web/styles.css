@@ -55,6 +55,8 @@
   --color-accent-secondary: var(--accent-secondary);
   --color-accent-secondary-1: var(--accent-secondary-1);
   --color-accent-secondary-2: var(--accent-secondary-2);
+
+  --radius-ten: 0.625rem;
 }
 
 @layer base {

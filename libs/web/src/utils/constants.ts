@@ -85,6 +85,12 @@ export const boostsEpochTooltip =
 export const boosterBannerTitle =
   "Introducing Boost Rewards, earn $FUEL by providing liquidity.";
 
+export const getPromoTitle = () => {
+  const brandText = getBrandText();
+
+  return `Introducing ${brandText.points}, earn points by providing liquidity and engaging in activities.`;
+};
+
 export const POINTS_PROMO_TITLE =
   "Introducing Mira Points, earn points by providing liquidity and engaging in activities.";
 

@@ -34,13 +34,13 @@ export function SwapFailureModal({
   return (
     <div className="flex flex-col items-center gap-3 lg:gap-6 pb-3">
       <CircleX className="w-6 h-6 lg:w-20 lg:h-20 text-red-400" />
-      <p className="font-medium text-[22px] leading-[26px] text-center">
+      <p className="text-[22px] leading-[26px] text-center text-content-primary">
         {customTitle?.length ? customTitle : title}
       </p>
-      <p className="text-sm leading-4 text-content-primary dark:text-content-dimmed-dark text-center">
+      <p className="text-sm leading-4 text-content-tertiary dark:text-content-dimmed-dark text-center">
         {message}
       </p>
-      <Button onClick={closeModal} block>
+      <Button onClick={closeModal} block size="2xl">
         Try again
       </Button>
     </div>

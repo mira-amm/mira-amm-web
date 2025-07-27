@@ -706,11 +706,11 @@ export function Swap({isWidget}: {isWidget?: boolean}) {
 
         <div
           className={cn(
-            "flex flex-col gap-4 p-4 pb-[18px] rounded-2xl bg-background-grey-dark border-border-secondary border-[12px] dark:border-0 dark:bg-background-grey-dark",
+            "flex flex-col gap-4 p-5 pb-[18px] rounded-ten bg-background-grey-dark border-border-secondary border-[12px] dark:border-0 dark:bg-background-grey-dark",
             swapPending && "z-[5]"
           )}
         >
-          <div className="flex items-center gap-[10px] font-medium text-[16px] leading-[19px] text-content-grey lg:text-[20px] lg:leading-[24px]">
+          <div className="flex items-center gap-[10px]  text-base leading-[19px] text-content-grey lg:text-xl lg:leading-[24px]">
             <div className="flex-1 text-black dark:text-content-primary">
               {isWidget ? <Logo /> : <p>Swap</p>}
             </div>

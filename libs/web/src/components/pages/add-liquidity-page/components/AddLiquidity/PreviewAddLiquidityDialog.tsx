@@ -94,19 +94,15 @@ export default function PreviewAddLiquidityDialog({
           <div className="flex flex-col gap-3 p-3 rounded-md bg-background-secondary">
             <div className="flex justify-between items-center">
               <Coin assetId={assets[0].assetId} />
-              <p className="text-sm font-medium leading-4">
-                {firstAssetAmountString}
-              </p>
+              <p className="text-sm  leading-4">{firstAssetAmountString}</p>
             </div>
             <div className="flex justify-between items-center">
               <Coin assetId={assets[1].assetId} />
-              <p className="text-sm font-medium leading-4">
-                {secondAssetAmountString}
-              </p>
+              <p className="text-sm  leading-4">{secondAssetAmountString}</p>
             </div>
             <div className="flex justify-between items-center border-t border-background-grey-dark pt-3">
-              <p className="text-sm font-medium leading-4">Fee tier</p>
-              <p className="text-sm font-medium leading-4">{feeText}</p>
+              <p className="text-sm  leading-4">Fee tier</p>
+              <p className="text-sm  leading-4">{feeText}</p>
             </div>
           </div>
         </div>

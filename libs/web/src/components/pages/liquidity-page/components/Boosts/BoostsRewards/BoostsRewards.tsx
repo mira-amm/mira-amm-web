@@ -31,7 +31,7 @@ export function BoostsRewards() {
   return (
     <div className="flex flex-col gap-6 max-[480px]:gap-4 ">
       <div className="flex justify-between items-center">
-        <p className="text-2xl">Points Program</p>
+        <p className="text-xl">Points Program</p>
         <Link href={POINTS_LEARN_MORE_URL} target="_blank">
           <Button variant="outline">Learn more</Button>
         </Link>
@@ -53,7 +53,7 @@ export function BoostsRewards() {
             ) : (
               <>
                 <PointsIcon />
-                <p className="text-[26px] font-normal max-[768px]:text-[20px] text-white">
+                <p className="text-[26px] font-normal max-[768px]:text-xl text-white font-alt">
                   {pointsRank?.points.toLocaleString(DefaultLocale, {
                     maximumFractionDigits: 0,
                   })}
@@ -73,7 +73,7 @@ export function BoostsRewards() {
             {isLoading ? (
               <Loader color="gray" />
             ) : (
-              <p className="text-[20px] font-normal text-white">
+              <p className="text-xl font-normal text-white font-alt">
                 {pointsRank?.rank}
               </p>
             )}

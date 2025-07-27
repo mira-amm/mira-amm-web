@@ -333,7 +333,7 @@ export function CreatePoolDialog({
             className="flex justify-between items-center px-4 py-3 rounded-md bg-background-grey-darker cursor-pointer"
             onClick={handleExchangeRateSwap}
           >
-            <p className="text-sm font-medium">{exchangeRate}</p>
+            <p className="text-sm ">{exchangeRate}</p>
             <ArrowLeftRight className="w-4 h-4" />
           </div>
           <p className="text-sm text-[#ffb800] leading-[17px]">

@@ -66,8 +66,8 @@ export default function PointsRankTable() {
     columnHelper.accessor("points", {
       header: "Points",
       cell: (info) => (
-        <div className="flex items-center">
-          <span className="text-[var(--accent-primary)] flex items-center">
+        <div className="flex items-center font-alt">
+          <span className="text-accent-primary flex items-center">
             <PointsIconSimple />
           </span>
           {info.getValue().toLocaleString(DefaultLocale, {
@@ -101,7 +101,7 @@ export default function PointsRankTable() {
 
   if (isLoading) {
     return (
-      <div className="flex flex-col items-center gap-4 p-7 rounded-2xl bg-background-grey-dark">
+      <div className="flex flex-col items-center gap-4 p-7 rounded-ten bg-background-grey-dark">
         {isRebrandingEnabled ? (
           <LoaderBar />
         ) : (

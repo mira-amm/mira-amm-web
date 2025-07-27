@@ -32,7 +32,7 @@ export function Coin({
       onClick={handleClick}
     >
       {icon && <img src={icon} className="size-5" />}
-      <p className={cn("text-[18px] font-medium leading-[19px]", className)}>
+      <p className={cn("text-base  leading-[19px]", className)}>
         {metadata.symbol ?? "Choose Asset"}
       </p>
       {newPool && <ChevronDown />}

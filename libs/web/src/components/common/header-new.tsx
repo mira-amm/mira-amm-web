@@ -9,8 +9,8 @@ import {useIsConnected} from "@fuels/react";
 
 import {
   FuelAppUrl,
+  getPromoTitle,
   POINTS_LEARN_MORE_URL,
-  POINTS_PROMO_TITLE,
 } from "@/src/utils/constants";
 
 import {IconButton} from "@/src/components/common";
@@ -81,7 +81,7 @@ export function HeaderNew({
           <div className="flex items-center gap-2 mx-auto">
             <PointsIcon className="w-[18px] h-[18px]" />
             <p>
-              {POINTS_PROMO_TITLE}
+              {getPromoTitle()}
               <Link
                 href={POINTS_LEARN_MORE_URL}
                 target="_blank"

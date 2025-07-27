@@ -4,6 +4,7 @@ import {clsx} from "clsx";
 import {PoolData} from "@/src/hooks/usePoolsData";
 import SortableColumn from "@/src/components/common/SortableColumn/SortableColumn";
 import {Table, TableHead, TableHeader, TableRow} from "@/meshwave-ui/table";
+import {cn} from "@/src/utils/cn";
 
 export function MobilePools({
   poolsData,
@@ -19,18 +20,16 @@ export function MobilePools({
   }
 
   return (
-    <div className="mobileOnly rounded-2xl bg-background-grey-dark border-border-secondary border-[12px] dark:border-0 dark:bg-background-grey-dark">
+    <div className="mobileOnly rounded-ten bg-background-grey-dark border-border-secondary border-[12px] dark:border-0 dark:bg-background-grey-dark">
       <Table
-        className={clsx(
-          "mobileOnly text-slate-400 text-sm bg-[var(--background-grey-dark)]",
-          "rounded-lg px-2 px-5 py-2 mb-2"
+        className={cn(
+          "mobileOnly text-slate-400 text-sm bg-background-grey-dark"
         )}
+        tableParentClassName="border-0"
       >
         <TableHeader>
           <TableRow className="flex items-center">
-            <TableHead className="font-medium flex items-center">
-              SORT BY:
-            </TableHead>
+            <TableHead className=" flex items-center">SORT BY:</TableHead>
             <SortableColumn
               title="TVL"
               columnKey="tvlUSD"
@@ -41,7 +40,7 @@ export function MobilePools({
         </TableHeader>
       </Table>
 
-      <div className="mobileOnly flex flex-col p-4 rounded-md bg-[var(--background-grey-dark)]">
+      <div className="mobileOnly flex flex-col p-4 rounded-md bg-background-grey-dark">
         {poolsData.length > 0 ? (
           poolsData.map((poolData, index) => (
             <Fragment key={poolData.id}>
@@ -52,7 +51,7 @@ export function MobilePools({
             </Fragment>
           ))
         ) : (
-          <p className="text-center text-[16px] font-medium text-[color:var(--content-tertiary)]">
+          <p className="text-center text-[16px]  text-[color:var(--content-tertiary)]">
             No pools available
           </p>
         )}

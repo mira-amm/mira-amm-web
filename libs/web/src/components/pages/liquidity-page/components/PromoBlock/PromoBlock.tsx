@@ -33,7 +33,7 @@ export default function PromoBlock({
         {icon}
       </div>
       <div className="flex-1 flex flex-col justify-center gap-1">
-        <p className="font-medium">{title}</p>
+        <p className="">{title}</p>
         <p className="text-sm leading-4 text-content-dimmed-light group-hover:text-content-primary">
           {linkText}
         </p>

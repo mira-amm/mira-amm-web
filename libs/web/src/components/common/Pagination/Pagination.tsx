@@ -1,4 +1,3 @@
-import {clsx} from "clsx";
 import {cn} from "@/src/utils/cn";
 
 export default function Pagination({
@@ -50,16 +49,15 @@ export default function Pagination({
   return (
     <div className="flex flex-wrap items-center justify-center gap-[8px] sm:gap-[4px] p-[8px]">
       <button
-        className={clsx(
+        className={cn(
           buttonBaseClasses,
-          navButtonResponsive,
           "flex gap-2 items-center",
           currentPage === 1 && disabledClasses
         )}
         onClick={() => onPageChange(currentPage - 1)}
         disabled={currentPage === 1}
       >
-        <span className={clsx(buttonBaseClasses)}>Previous</span>
+        Previous
       </button>
 
       {generatePages().map((page, index) => (
@@ -69,7 +67,7 @@ export default function Pagination({
             buttonBaseClasses,
             typeof page === "number" &&
               page === currentPage &&
-              "dark:bg-accent-dimmed dark:text-accent-primary font-bold bg-black text-white",
+              "dark:bg-accent-dimmed dark:text-accent-primary bg-black text-white",
             typeof page !== "number" && disabledClasses
           )}
           onClick={() => typeof page === "number" && onPageChange(page)}
@@ -80,16 +78,15 @@ export default function Pagination({
       ))}
 
       <button
-        className={clsx(
+        className={cn(
           buttonBaseClasses,
-          navButtonResponsive,
           "flex gap-2 items-center",
           currentPage === totalPages && disabledClasses
         )}
         onClick={() => onPageChange(currentPage + 1)}
         disabled={currentPage === totalPages}
       >
-        <span className={clsx(buttonBaseClasses)}>Next</span>
+        Next
       </button>
     </div>
   );
