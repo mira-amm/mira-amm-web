@@ -2,7 +2,7 @@ import {Suspense} from "react";
 import AddLiquidityPage from "./add-liquidity-page";
 import {Loader} from "@/src/components/common";
 
-const Page = () => {
+export default function Page() {
   return (
     <Suspense
       fallback={
@@ -14,6 +14,4 @@ const Page = () => {
       <AddLiquidityPage />
     </Suspense>
   );
-};
-
-export default Page;
+}

@@ -4,7 +4,7 @@ import {useRouter, useSearchParams} from "next/navigation";
 import {createPoolIdFromPoolKey, isPoolIdValid} from "@/src/utils/common";
 import {PositionView} from "@/src/components/pages/view-position-page/components/PositionView/PositionView";
 
-const PositionPage = () => {
+export default function PositionPage() {
   const router = useRouter();
   const query = useSearchParams();
   const poolKey = query.get("pool");
@@ -20,6 +20,4 @@ const PositionPage = () => {
       <PositionView pool={poolId} />
     </main>
   );
-};
-
-export default PositionPage;
+}
