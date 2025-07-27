@@ -21,8 +21,9 @@
         "typegen:contracts"
       ],
       "command": "tsx build.ts",
+      "cache": true,
       "options": {
-        "cwd": "libs/ts-sdk"
+        "cwd": "libs/ts-sdk",
       }
     },
     "typecheck": {
@@ -30,20 +31,23 @@
         "build"
       ],
       "command": "tsc --noEmit",
+      "cache": true,
       "options": {
-        "cwd": "libs/ts-sdk"
+        "cwd": "libs/ts-sdk",
       }
     },
     "typegen:scripts": {
       "command": "fuels typegen -i './sway_abis/scripts/*/release/*-abi.json' -o ./src/sdk/typegen/scripts --script",
+      "cache": true,
       "options": {
-        "cwd": "libs/ts-sdk"
+        "cwd": "libs/ts-sdk",
       }
     },
     "typegen:contracts": {
       "command": "fuels typegen -i './sway_abis/contracts/*/release/*-abi.json' -o './src/sdk/typegen/contracts'",
+      "cache": true,
       "options": {
-        "cwd": "libs/ts-sdk"
+        "cwd": "libs/ts-sdk",
       }
     }
   }
