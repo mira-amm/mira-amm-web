@@ -33,7 +33,7 @@
       "@/web": ["libs/web/index.ts"],
       "@/web/*": ["libs/web/*"],
       "@payload-config": ["apps/admin/src/payload.config.ts"],
-      "mira-dex-ts": ["libs/mira-v1-ts/src/index.ts"]
+      "mira-dex-ts": ["libs/ts-sdk/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]

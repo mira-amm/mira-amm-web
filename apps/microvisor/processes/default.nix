@@ -143,8 +143,8 @@
       };
     };
 
-    "🏗  build mira-v1-ts" = {
-      exec = "pnpm nx build mira-v1-ts";
+    "🏗  build ts-sdk" = {
+      exec = "pnpm nx build ts-sdk";
       process-compose = {
         description = "🔌 TypeScript SDK";
         is_tty = true;
