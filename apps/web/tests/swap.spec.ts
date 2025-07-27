@@ -1,8 +1,8 @@
 import {describe, it, test, expect, beforeEach, afterEach} from "vitest";
 import {Provider, bn} from "fuels";
-import {ReadonlyMiraAmm} from "../../../libs/mira-v1-ts/src/sdk/readonly_mira_amm";
+import {ReadonlyMiraAmm} from "../../../libs/ts-sdk/src/sdk/readonly_mira_amm";
 import {NetworkUrl, BASE_ASSETS} from "../../../libs/web/src/utils/constants";
-import {buildPoolId} from "../../../libs/mira-v1-ts/src/sdk/utils";
+import {buildPoolId} from "../../../libs/ts-sdk/src/sdk/utils";
 import {
   getSwapQuotesBatch,
   TradeType,

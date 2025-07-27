@@ -1,5 +1,5 @@
 {
-  "name": "mira-v1-ts-cli",
+  "name": "ts-sdk-cli",
   "version": "1.0.0",
   "description": "Mira DEX cli",
   "type": "module",

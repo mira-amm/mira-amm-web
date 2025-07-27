@@ -1,9 +1,7 @@
 {
   "name": "@microchain/swap",
   "version": "0.3.1",
-  "browser": "./dist/index.js",
-  "module": "./dist/index.js",
-  "types": "./dist/index.d.ts",
+  "main": "./dist/index.mjs",
   "description": "Swap using the most efficient AMM on Fuel",
   "license": "GPL-3.0-only",
   "type": "module",
@@ -22,28 +20,5 @@
   ],
   "files": [
     "dist"
-  ],
-  "exports": {
-    ".": {
-      "import": "./dist/index.js",
-      "default": "./dist/index.js"
-    },
-    "./domains": {
-      "import": "./dist/domains.js"
-    },
-    "./assets/index.css": {
-      "default": "./dist/assets/index.css"
-    }
-  },
-  "peerDependencies": {
-    "@fuels/connectors": "0.40.0",
-    "@fuels/react": "0.40.0",
-    "@tanstack/react-query": "^5.74.4",
-    "fuels": "0.100.3",
-    "@wagmi/connectors": "^5.8.5",
-    "@wagmi/core": "^2.17.3",
-    "mira-dex-ts": "workspace:*",
-    "react": "^18.0.0 || ^19.0.0",
-    "react-dom": "^18.0.0 || ^19.0.0"
-  }
+  ]
 }

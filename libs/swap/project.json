@@ -6,25 +6,24 @@
   },
   "sourceRoot": "libs/swap/src",
   "projectType": "library",
-  "implicitDependencies": ["!libs/web"],
-  "tags": ["typescript", "react"],
+  "implicitDependencies": [
+    "!libs/web"
+  ],
+  "tags": [
+    "typescript",
+    "react"
+  ],
   "targets": {
     "build": {
       "command": "tsc",
       "options": {
-        "cwd": "libs/mira-v1-ts"
-      }
-    },
-    "prepare": {
-      "command": "pnpm run build",
-      "options": {
-        "cwd": "libs/mira-v1-ts"
+        "cwd": "libs/swap"
       }
     },
     "pub": {
       "command": "pnpm publish --access public",
       "options": {
-        "cwd": "libs/mira-v1-ts"
+        "cwd": "libs/swap"
       }
     }
   }
