@@ -10,14 +10,14 @@
     build = {
       description = "  🏗  Build with pnpm & Nx with any args passed through";
       exec        = ''
-        pnpm nx build "$@"
+        nx build "$@"
       '';
     };
 
     start = {
       description = "  🚂 Serve with pnpm & Nx with any args passed through";
       exec        = ''
-        pnpm nx start "$@"
+        nx start "$@"
       '';
     };
 
@@ -53,7 +53,7 @@
       description = "   🌕 List top-level packages in the monorepo";
       exec        = ''
         pnpm list -r --depth -1
-        pnpm nx show projects --json
+        nx show projects --json
       '';
     };
 

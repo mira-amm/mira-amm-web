@@ -1,5 +1,5 @@
 [build]
-command = "pnpm nx build admin --verbose"
+command = "nx build admin --verbose"
 publish = "apps/admin/.next"
 
 [[plugins]]

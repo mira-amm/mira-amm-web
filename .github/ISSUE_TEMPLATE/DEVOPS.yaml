@@ -7,7 +7,7 @@ body:
     id: task
     attributes:
       label: Task description
-      placeholder: 'Add pre-commit hook to auto-run `pnpm nx format:all`'
+      placeholder: 'Add pre-commit hook to auto-run `nx format:all`'
     validations:
       required: true
   - type: textarea
