@@ -4,6 +4,8 @@
 .env
 .env*.local
 .env.sentry-build-plugin
+**/.env
+**/.env.sentry-build-plugin
 
 #====================================================
 #               Build/Test Outputs
@@ -11,6 +13,7 @@
 libs/db/data/*
 libs/api/documentation
 apps/admin/media
+apps/microvisor/.wxt
 **/dist
 **/bin
 **/.swc
@@ -29,8 +32,6 @@ apps/admin/media
 **/*.tsbuildinfo
 **/next-env.d.ts
 **/*.tar.gz
-**/.env
-**/.env.sentry-build-plugin
 **/.vercel
 **/.netlify
 **/.drizzle
@@ -43,8 +44,6 @@ apps/admin/media
 .pre-commit-config.yaml
 .nx/cache
 .nx/workspace-data
-libs/db/supabase/.branches
-libs/db/supabase/.temp
 .devenv*
 devenv.local.nix
 .direnv
