@@ -11,6 +11,8 @@
   packages =
     with pkgs;
     [
+      bat
+      eza
       curl
       wget
       pulumi
