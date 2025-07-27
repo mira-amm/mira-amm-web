@@ -1,18 +1,7 @@
 {
-  pkgs,
-  config,
-  inputs,
-  ...
-}:
-
-{
-  imports = [
-    ./db.nix
-  ];
-
   # NOTE: existing env vars in devenv.nix will have priority
   dotenv = {
-    enable = true;
+    enable = false;
     filename = [
       ".env"
     ];
