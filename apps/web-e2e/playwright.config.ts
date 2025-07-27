@@ -31,7 +31,7 @@ export default defineConfig<SerenityOptions>({
     trace: "on-first-retry",
   },
   webServer: {
-    command: "pnpm nx start web",
+    command: "nx start web",
     url: baseURL,
     reuseExistingServer: !process.env.CI,
     cwd: workspaceRoot,

@@ -13,7 +13,7 @@
 
 - [ ] Project starts successfully using `pnpm dev` or `pnpm start` (verifies build, dependencies,
       and runtime)
-- [ ] Ran `pnpm nx format:all` to ensure consistent code style
+- [ ] Ran `nx format:all` to ensure consistent code style
 - [ ] No obvious runtime or import errors (manual verification if needed)
 
 ### 🎨 UI (if applicable)

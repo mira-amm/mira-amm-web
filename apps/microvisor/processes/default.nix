@@ -30,7 +30,7 @@
     };
 
     dev-admin = {
-      exec = "pnpm nx dev admin";
+      exec = "nx dev admin";
       process-compose = {
         description = "🛞 Admin | 8000 | admin.mira.ly";
         is_tty = true;
@@ -44,7 +44,7 @@
     };
 
     dev-microgame = {
-      exec = "pnpm nx dev microgame";
+      exec = "nx dev microgame";
       process-compose = {
         is_tty = true;
         readiness_probe = {
@@ -75,7 +75,7 @@
     };
 
     dev-web = {
-      exec = "pnpm nx dev web";
+      exec = "nx dev web";
       process-compose = {
         description = "🦕 Web App | 3000 | mira.ly";
         is_tty = true;
@@ -86,7 +86,7 @@
     };
 
     test-web = {
-      exec = "pnpm nx test web --run --cache --no-color=false";
+      exec = "nx test web --run --cache --no-color=false";
       process-compose = {
         is_tty = true;
         namespace = "🔬 UNIT";
@@ -95,7 +95,7 @@
     };
 
     dev-api = {
-      exec = "pnpm nx dev api";
+      exec = "nx dev api";
       process-compose = {
         description = "🧩 Core API | 8080 | api.mira.ly";
         is_tty = true;
@@ -122,7 +122,7 @@
     };
 
     dev-docs = {
-      exec = "pnpm nx dev docs";
+      exec = "nx dev docs";
       process-compose = {
         description = "📚 Docs | 4000 | docs.mira.ly";
         is_tty = true;
@@ -133,7 +133,7 @@
     };
 
     build-docs = {
-      exec = "pnpm nx build docs";
+      exec = "nx build docs";
       process-compose = {
         description = "📚 Docs | 4000 | docs.mira.ly";
         is_tty = true;
@@ -144,7 +144,7 @@
     };
 
     build-ts-sdk = {
-      exec = "pnpm nx build ts-sdk";
+      exec = "nx build ts-sdk";
       process-compose = {
         description = "🔌 TypeScript SDK";
         is_tty = true;
@@ -155,7 +155,7 @@
     };
 
     graph = {
-      exec = "pnpm nx graph --view=projects --affected";
+      exec = "nx graph --view=projects --affected";
       process-compose = {
         description = "📍 Project Graph - Nx | 4211 | graph.mira.ly";
         is_tty = true;
@@ -172,7 +172,7 @@
     };
 
     dev-arch = {
-      exec = "pnpm nx dev arch";
+      exec = "nx dev arch";
       process-compose = {
         description = "🏛 Architecture | 5173 | arch.mira.ly";
         is_tty = true;
@@ -209,7 +209,7 @@
     };
 
     view-db = {
-      exec = "pnpm nx view db";
+      exec = "nx view db";
       process-compose = {
         description = "📊 Drizzle Studio | Schema Visualizer | 5600";
         namespace = "🧮 VIEWS";
@@ -245,7 +245,7 @@
     };
 
     e2e-web-e2e---ui = {
-      exec = "pnpm nx e2e web-e2e --ui";
+      exec = "nx e2e web-e2e --ui";
       process-compose = {
         description = "🎭 Web | E2E (UI)";
         namespace = "🎭 E2E";
@@ -254,7 +254,7 @@
     };
 
     build-api = {
-      exec = "pnpm nx build api";
+      exec = "nx build api";
       process-compose = {
         description = "🧩 Core API | Build";
         namespace = "📦 DEPS";
@@ -263,7 +263,7 @@
     };
 
     test-api = {
-      exec = "pnpm nx test api";
+      exec = "nx test api";
       process-compose = {
         description = "🧩 Core API | Unit";
         namespace = "🔬 UNIT";
@@ -272,7 +272,7 @@
     };
 
     e2e-api = {
-      exec = "pnpm nx e2e api";
+      exec = "nx e2e api";
       process-compose = {
         description = "🧩 Core API | E2E";
         namespace = "🎭 E2E";
@@ -311,7 +311,7 @@
     };
 
     dev-platform-vercel  = {
-      exec = "pnpm nx dev platform-vercel";
+      exec = "nx dev platform-vercel";
       process-compose = {
         description = "🔺 Vercel";
         namespace = "☁ DEPLOYMENTS";

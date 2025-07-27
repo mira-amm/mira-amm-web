@@ -71,7 +71,7 @@
   "release": {
     "version": {
       "conventionalCommits": true,
-      "preVersionCommand": "pnpm nx build swap"
+      "preVersionCommand": "nx build swap"
     },
     "changelog": {
       "workspaceChangelog": {
