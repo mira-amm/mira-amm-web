@@ -82,7 +82,7 @@ function TableRow({className, ...props}: React.ComponentProps<"tr">) {
   );
 }
 
-function TableHead({className, ...props}: React.ComponentProps<"th">) {
+function TableHead({className, ...props}) {
   return (
     <th
       data-slot="table-head"
