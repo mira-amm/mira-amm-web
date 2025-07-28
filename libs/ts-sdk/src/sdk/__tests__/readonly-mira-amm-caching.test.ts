@@ -5,7 +5,7 @@ import {PoolId, PoolMetadata} from "../model";
 import {vi} from "vitest";
 
 // Mock the MiraAmmContract and Provider
-vi.mock("../typegen/MiraAmmContract");
+vi.mock("../typegen/contracts/MiraAmmContract");
 vi.mock("fuels", async (importOriginal) => {
   const actual = (await importOriginal()) as any;
   return {
@@ -81,7 +81,7 @@ describe("ReadonlyMiraAmm Caching Integration", () => {
     };
 
     // Mock the MiraAmmContract constructor
-    const {MiraAmmContract} = await import("../typegen/MiraAmmContract");
+    const {MiraAmmContract} = await import("../typegen/contracts/MiraAmmContract");
     (MiraAmmContract as any).mockImplementation(() => mockContract);
 
     readonlyAmm = new ReadonlyMiraAmm(mockProvider);

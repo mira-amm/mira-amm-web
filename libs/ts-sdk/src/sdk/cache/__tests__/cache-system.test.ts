@@ -3,16 +3,16 @@
  * Comprehensive tests for the caching system including pool data cache, TTL, LRU, and integration tests
  */
 
-import {ReadonlyMiraAmm} from "../../readonly_mira_amm";
+import {ReadonlyMiraAmm} from "../../";
 import {PoolId, PoolMetadata} from "../../model";
-import {CacheOptions} from "../types";
+import type {CacheOptions} from "../";
 import {Provider} from "fuels";
 import {PoolDataCache} from "../pool-data-cache";
 import {vi} from "vitest";
 
 // Mock the Provider and MiraAmmContract
 vi.mock("fuels");
-vi.mock("../../typegen/MiraAmmContract");
+vi.mock("../../typegen/contracts/MiraAmmContract");
 
 describe("Cache System Tests", () => {
   describe("ReadonlyMiraAmm - Cached Pool Metadata Fetching", () => {
