@@ -6,11 +6,11 @@ import {replaceTscAliasPaths} from "tsc-alias";
 import {type Options, build as tsupBuild} from "tsup";
 
 async function build(): Promise<void> {
-  const outDir = "build";
+  const outDir = "dist";
   const tsupOptions: Options = {
     entry: ["src/**/*.ts", "!src/**/*.test.ts", "!src/**/*.spec.ts"],
     // entry: ["src/main.ts"],
-    outDir: outDir,
+    outDir,
     format: ["esm"],
     target: "esnext",
     platform: "node",
@@ -26,7 +26,11 @@ async function build(): Promise<void> {
 
   await rm(outDir, {recursive: true, force: true});
   await tsupBuild(tsupOptions);
-  await replaceTscAliasPaths({outDir: outDir});
+  await replaceTscAliasPaths({
+    outDir,
+    resolveFullPaths:     true,
+    resolveFullExtension: ".js",
+  });
 }
 
 await build();

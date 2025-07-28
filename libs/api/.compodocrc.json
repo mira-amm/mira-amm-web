@@ -6,7 +6,7 @@
   "theme": "postmark",
   "port": 4800,
   "open": false,
-  "output": "./documentation",
+  "output": "./api/documentation",
   "name": "🦕 Microchain API Reference",
   "assets": "../../libs/shared/assets",
   "customFavicon": "./public/favicon.ico",

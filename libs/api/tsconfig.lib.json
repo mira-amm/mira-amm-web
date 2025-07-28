@@ -1,6 +1,8 @@
 {
-  "extends": "../../tsconfig.base.json",
+  "extends": "./tsconfig.json",
+  // TODO: remove these comments once this project setup is well-documented with gotchas
   // credit: https://github.com/mkvlrn/template-nest
+  // https://community.vercel.com/t/express-101-everything-about-deploying-your-express-app-on-vercel/4870
   "compilerOptions": {
     "noEmit": true, // no transpiling
     // no funny business
@@ -17,7 +19,9 @@
     // esm, the node way
     "esModuleInterop": true,
     "isolatedModules": true,
-    "lib": ["ESNext"],
+    "lib": [
+      "ESNext"
+    ],
     "module": "NodeNext",
     "moduleResolution": "nodenext",
     "target": "esnext",
@@ -26,7 +30,6 @@
     "resolveJsonModule": true,
     // don't try to check for errors on imported libs
     "skipLibCheck": true,
-    "baseUrl": ".",
     // nest uses these weird ass experimental decorators
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true
