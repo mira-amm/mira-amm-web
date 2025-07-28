@@ -27,7 +27,7 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
       plugins: [ApolloServerPluginLandingPageLocalDefault()],
     }),
     ServeStaticModule.forRoot({
-      rootPath: join(__dirname, "..", "documentation"),
+      rootPath: join(__dirname, "..", "api/documentation"),
       renderPath: "/compodoc",
     }),
     ReadAmmModule,

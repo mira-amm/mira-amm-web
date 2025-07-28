@@ -6,7 +6,7 @@ import {replaceTscAliasPaths} from "tsc-alias";
 import {type Options, build as tsupBuild} from "tsup";
 
 async function build(): Promise<void> {
-  const outDir = "build";
+  const outDir = "api";
   const tsupOptions: Options = {
     entry: ["src/**/*.ts", "!src/**/*.test.ts", "!src/**/*.spec.ts"],
     // entry: ["src/main.ts"],

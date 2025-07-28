@@ -4,7 +4,13 @@
   "references": [
     {
       "path": "./tsconfig.lib.json"
-    }
+    },
+    {
+      "path": "../../libs/ts-sdk"
+    },
   ],
-  "include": ["**/*.ts", "**/*.tsx"]
+  "include": [
+    "**/*.ts",
+    "**/*.tsx"
+  ]
 }

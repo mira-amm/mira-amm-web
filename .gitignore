@@ -12,7 +12,7 @@
 #====================================================
 libs/ts-sdk/src/sdk/typegen/*
 libs/db/data/*
-libs/api/documentation
+libs/api/api
 apps/admin/media
 apps/microvisor/.wxt
 **/dist
