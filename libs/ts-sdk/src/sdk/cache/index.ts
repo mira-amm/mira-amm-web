@@ -1,18 +1,22 @@
 export {
-  PoolDataCache,
   globalPoolDataCache,
-  CachedPoolMetadata,
-  CacheStats,
-  PoolCacheConfig,
   DEFAULT_CACHE_CONFIG,
   generatePoolCacheKey,
 } from "./pool-data-cache";
 
-export {
+export type {
+  CacheStats,
+  PoolDataCache,
+  CachedPoolMetadata,
+  PoolCacheConfig
+} from "./pool-data-cache"
+
+export type {
   IPoolDataCache,
   CacheError,
   StaleDataError,
   PoolNotFoundError,
   CacheOptions,
-  DEFAULT_CACHE_OPTIONS,
 } from "./types";
+
+export {  DEFAULT_CACHE_OPTIONS } from "./types"

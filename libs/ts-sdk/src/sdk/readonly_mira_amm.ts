@@ -25,12 +25,17 @@ import {
   powDecimals,
   subtractFee,
 } from "./math";
-import {
+
+import type {
   PoolDataCache,
-  globalPoolDataCache,
   CacheOptions,
-  DEFAULT_CACHE_OPTIONS,
   CacheError,
+} from "./cache";
+
+
+import {
+  globalPoolDataCache,
+  DEFAULT_CACHE_OPTIONS,
 } from "./cache";
 
 import {MiraAmmContract} from "./typegen/contracts";
