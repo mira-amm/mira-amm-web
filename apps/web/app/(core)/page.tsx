@@ -53,20 +53,13 @@ export default function Page() {
   const {isConnected} = useIsConnected();
   return (
     <div className="flex flex-1 flex-col items-center w-full md:justify-center">
-      <div className="w-full max-w-lg px-4">
-        <div className="relative">
-          <div className="relative z-10">
-            <Swap />
-          </div>
-          <FeatureGuard>
-            {isConnected && (
-              <div className="flex justify-center -mt-45 -mb-20 relative z-0">
-                <SVGComponent className="!min-w-[500px] !max-w-[800px] sm:!min-w-[650px] md:!max-w-[600px] lg:!min-w-[750px]" />
-              </div>
-              // next fix the header, header and wallet should be doing different things at different times
-            )}
-          </FeatureGuard>
-        </div>
+      <div className="w-full max-w-lg px-4 relative">
+        <Swap />
+        <FeatureGuard>
+          {isConnected && (
+            <SVGComponent className="absolute w-[650px] -bottom-25 -left-18 -z-1" />
+          )}
+        </FeatureGuard>
       </div>
     </div>
   );
