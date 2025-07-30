@@ -697,7 +697,7 @@ export function Swap({isWidget}: {isWidget?: boolean}) {
     </div>
   ) : (
     <>
-      <div className="flex flex-col gap-3 lg:gap-4 items-center">
+      <div className="flex flex-col gap-3 lg:gap-4">
         {isWidget && (
           <FeatureGuard fallback={<ConnectWallet />}>
             <ConnectWalletNew />
@@ -706,7 +706,7 @@ export function Swap({isWidget}: {isWidget?: boolean}) {
 
         <div
           className={cn(
-            "flex flex-col gap-4 p-4 pb-[18px] rounded-2xl bg-background-grey-dark border-border-secondary border-[12px] dark:border-0 dark:bg-background-grey-dark min-w-[339px] max-w-[339px] sm:min-w-[410px] lg:min-w-[480px] sm:max-w-none",
+            "flex flex-col gap-4 p-4 pb-[18px] rounded-2xl bg-background-grey-dark border-border-secondary border-[12px] dark:border-0 dark:bg-background-grey-dark",
             swapPending && "z-[5]"
           )}
         >

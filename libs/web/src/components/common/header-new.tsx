@@ -100,7 +100,7 @@ export function HeaderNew({
         </section>
       )}
 
-      <section className="flex justify-between items-center gap-4 px-4 pb-8 lg:pb-4 pt-4 lg:px-10">
+      <section className="flex justify-between items-center gap-4 px-4 py-4 lg:px-10">
         <div className="flex items-center gap-6 lg:gap-10 flex-1">
           <Logo />
         </div>
@@ -140,8 +140,12 @@ export function HeaderNew({
         </div>
       </section>
 
-      <div className="lg:hidden flex flex-col pb-4 gap-6">
-        <nav className="flex gap-2 sm:gap-6 items-center mx-auto flex-wrap justify-center sm:pb-4">
+      <div className="lg:hidden flex flex-col pb-4">
+        <div className="pb-4 mx-auto">
+          <ConnectWalletNew />
+        </div>
+
+        <nav className="flex gap-2 sm:gap-6 items-center mx-auto flex-wrap justify-center">
           {navLinks.map(({href, label, match, external}) =>
             external ? (
               <a
@@ -168,10 +172,6 @@ export function HeaderNew({
             )
           )}
         </nav>
-
-        <div className="mx-auto">
-          <ConnectWalletNew />
-        </div>
       </div>
     </header>
   );
