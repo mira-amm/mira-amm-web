@@ -1,5 +1,5 @@
-# ===== ci(test/e2e) ======
-name: 🧪 End-to-End Tests
+# ===== ci(test) ======
+name: 🧪 Unit & E2E Tests
 
 on:
   push:
@@ -20,7 +20,7 @@ jobs:
       - name: 🛎 Checkout Code
         uses: actions/checkout@v4
         with:
-          fetch-depth: 1 # Fetch all history for all branches and tags to ensure the 'main' branch is available
+          fetch-depth: 0 # Fetch all history for all branches and tags to ensure the 'main' branch is available
 
       - name: 🌳 Fetch main branch # Will be used for test splitting later
         run: git fetch origin main # Explicitly fetch the 'main' branch to ensure it's available
@@ -56,8 +56,15 @@ jobs:
           NEXT_PUBLIC_ENABLE_REBRAND_UI: true
         run: pnpm nx run-many -t build -p api ts-sdk design admin microgame web --verbose
 
+      - name: 🧩 Run Unit tests - api
+        run: pnpm nx run-many -t test -p api web
+
       - name: 🧐 Run End-to-End tests
         env:
           SENTIO_API_KEY: ${{ secrets.SENTIO_API_KEY }}
           NEXT_PUBLIC_ENABLE_REBRAND_UI: true
-        run: pnpm nx e2e web-e2e --verbose
+          FUEL_WALLET_MNEMONIC: ${{ secrets.FUEL_WALLET_MNEMONIC }}
+          FUEL_WALLET_PASSWORD: ${{ secrets.FUEL_WALLET_PASSWORD }}
+        uses: coactions/setup-xvfb@v1
+        with:
+          run: pnpm nx run-many -t e2e -p api web-e2e --verbose
