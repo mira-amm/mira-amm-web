@@ -6,6 +6,7 @@ import {
   JetBrains_Mono,
   IBM_Plex_Mono,
   VT323,
+  Instrument_Serif,
 } from "next/font/google";
 import {useIsRebrandEnabled} from "@/src/hooks/useIsRebrandEnabled";
 
@@ -49,6 +50,14 @@ export const vt323 = VT323({
   variable: "--font-vt323", // optional: for CSS variables
   display: "swap",
 });
+
+export const instrumentSerif = Instrument_Serif({
+  weight: "400",
+  subsets: ["latin"],
+  variable: "--font-instrument-serif",
+  display: "swap",
+});
+
 export {metadata};
 
 export default function Layout({children}: {readonly children: ReactNode}) {
@@ -60,6 +69,7 @@ export default function Layout({children}: {readonly children: ReactNode}) {
     ? {
         "--font-alt": "var(--font-cartograph-cf)",
         "--font-sans": "var(--font-inter-variable)",
+        "--font-serif": "var(--font-instrument-serif)",
       }
     : {
         "--font-alt": "var(--font-inter)",
@@ -84,7 +94,8 @@ export default function Layout({children}: {readonly children: ReactNode}) {
           prompt.variable,
           jetBrainsMono.variable,
           ibmPlexMono.variable,
-          vt323.variable
+          vt323.variable,
+          instrumentSerif.variable
         )}
         style={fontThemeVars}
       >
