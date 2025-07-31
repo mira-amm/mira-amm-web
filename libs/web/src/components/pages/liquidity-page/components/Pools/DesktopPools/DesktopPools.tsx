@@ -59,9 +59,11 @@ export function DesktopPools({
               "w-[20%] text-center"
             )}
           >
-            {isConnected && <Link href="/liquidity/create-pool">
-              <Button>Create Pool</Button>
-            </Link>}
+            {isConnected && (
+              <Link href="/liquidity/create-pool">
+                <Button>Create Pool</Button>
+              </Link>
+            )}
           </TableHead>
         </TableRow>
       </TableHeader>

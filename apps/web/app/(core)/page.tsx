@@ -56,7 +56,9 @@ export default function Page() {
       <div className="w-full max-w-lg px-4 relative">
         <section className="space-y-10 mt-2">
           {!isConnected && (
-            <p className={`text-5xl lg:text-6xl margin-auto text-center font-serif`}>
+            <p
+              className={`text-5xl lg:text-6xl margin-auto text-center font-serif`}
+            >
               Trade like a predator.
             </p>
           )}
