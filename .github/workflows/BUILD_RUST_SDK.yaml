@@ -1,5 +1,5 @@
-# ===== ci(build) ======
-name: 🏗 Build Projects
+# ===== ci(build/rust-sdk) ======
+name: 🦀 Build Rust SDK
 
 on:
   push:
