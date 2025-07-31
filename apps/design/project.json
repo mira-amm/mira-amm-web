@@ -5,9 +5,7 @@
   "projectType": "application",
   "targets": {
     "build": {
-      "dependsOn": [
-        "ts-sdk:build"
-      ],
+      "dependsOn": ["ts-sdk:build"],
       "command": "nx build-storybook",
       "options": {
         "cwd": "apps/design"

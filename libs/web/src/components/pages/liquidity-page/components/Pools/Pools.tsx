@@ -29,8 +29,7 @@ export function Pools() {
   } = moreInfo;
 
   const [searchInput, setSearchInput] = useState(search || "");
-  const
-debouncedSearchTerm = useDebounce(searchInput, 300);
+  const debouncedSearchTerm = useDebounce(searchInput, 300);
 
   useEffect(() => {
     setQueryVariables({page: page || DEFAULT_PAGE});
@@ -62,9 +61,11 @@ debouncedSearchTerm = useDebounce(searchInput, 300);
   return (
     <section className="flex flex-col gap-[14px]">
       <div className="flex justify-end">
-        {isConnected && <Link href="/liquidity/create-pool">
-          <Button className="mobileOnly w-[177px]">Create Pool</Button>
-        </Link>}
+        {isConnected && (
+          <Link href="/liquidity/create-pool">
+            <Button className="mobileOnly w-[177px]">Create Pool</Button>
+          </Link>
+        )}
       </div>
 
       <div className="flex justify-between items-center">

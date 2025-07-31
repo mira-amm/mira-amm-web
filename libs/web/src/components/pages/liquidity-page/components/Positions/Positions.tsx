@@ -38,51 +38,53 @@ export function Positions() {
     );
   }
 
-return (
-  <>
-  {isConnected &&
-    <section className="flex flex-col gap-6 w-full">
-      <p className="text-xl leading-6">Your Positions</p>
-      {!data || isLoading ? (
-        <PositionsLoader />
-      ) : (
-        <div className="flex flex-col gap-4 bg-background-grey-dark border-border-secondary border-[12px] dark:border-0 dark:bg-background-grey-dark rounded-ten p-4">
-          {/* Headers */}
-          <div className="grid grid-cols-3 md:grid-cols-4 gap-4 px-2 pb-4 border-b border-background-grey-darkertext-content-tertiary text-sm font-normal">
-            <div className="text-left">Pools</div>
-            <div className="text-center">APR</div>
-            <div className="text-center">Position size</div>
-            <div className="text-right" />
-          </div>
+  return (
+    <>
+      {isConnected && (
+        <section className="flex flex-col gap-6 w-full">
+          <p className="text-xl leading-6">Your Positions</p>
+          {!data || isLoading ? (
+            <PositionsLoader />
+          ) : (
+            <div className="flex flex-col gap-4 bg-background-grey-dark border-border-secondary border-[12px] dark:border-0 dark:bg-background-grey-dark rounded-ten p-4">
+              {/* Headers */}
+              <div className="grid grid-cols-3 md:grid-cols-4 gap-4 px-2 pb-4 border-b border-background-grey-darkertext-content-tertiary text-sm font-normal">
+                <div className="text-left">Pools</div>
+                <div className="text-center">APR</div>
+                <div className="text-center">Position size</div>
+                <div className="text-right" />
+              </div>
 
-          {/* Rows */}
-          {data.map((position) => {
-            const assetIdA = position.token0Item.token0Position[0].bits;
-            const assetIdB = position.token1Item.token1Position[0].bits;
-            const amountA = position.token0Item.token0Position[1].toString();
-            const amountB = position.token1Item.token1Position[1].toString();
-            const isStablePool = position.isStable;
-            const priceA = position.token0Item.price;
-            const priceB = position.token1Item.price;
+              {/* Rows */}
+              {data.map((position) => {
+                const assetIdA = position.token0Item.token0Position[0].bits;
+                const assetIdB = position.token1Item.token1Position[0].bits;
+                const amountA =
+                  position.token0Item.token0Position[1].toString();
+                const amountB =
+                  position.token1Item.token1Position[1].toString();
+                const isStablePool = position.isStable;
+                const priceA = position.token0Item.price;
+                const priceB = position.token1Item.price;
 
-            return (
-              <PositionRow
-                key={createPoolKey(position.poolId)}
-                assetIdA={assetIdA}
-                assetIdB={assetIdB}
-                amountA={amountA}
-                amountB={amountB}
-                isStablePool={isStablePool}
-                priceA={priceA}
-                priceB={priceB}
-              />
-            );
-          })}
-        </div>
+                return (
+                  <PositionRow
+                    key={createPoolKey(position.poolId)}
+                    assetIdA={assetIdA}
+                    assetIdB={assetIdB}
+                    amountA={amountA}
+                    amountB={amountB}
+                    isStablePool={isStablePool}
+                    priceA={priceA}
+                    priceB={priceB}
+                  />
+                );
+              })}
+            </div>
+          )}
+        </section>
       )}
-    </section>
-  }
-  </>
+    </>
   );
 }
 
