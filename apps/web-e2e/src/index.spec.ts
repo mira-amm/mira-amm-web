@@ -1,13 +1,7 @@
 import {chromium, type BrowserContext} from "@playwright/test";
-import {
-  downloadFuel,
-  seedWallet,
-  FuelWalletTestHelper,
-} from "@fuels/playwright-utils";
-
+import {useBase, useFixtures, describe, it, beforeEach, afterEach, test} from "@serenity-js/playwright-test";
+import {Page, Navigate, PageElement, PageElements, By, Click, isVisible, Switch} from "@serenity-js/web";
 import {Duration, Wait, Cast} from "@serenity-js/core";
-
-import {Navigate, PageElement, By, Click, isVisible} from "@serenity-js/web";
 
 import {
   Ensure,
@@ -18,17 +12,7 @@ import {
   isPresent,
   not,
 } from "@serenity-js/assertions";
-
 import {BrowseTheWebWithPlaywright} from "@serenity-js/playwright";
-
-import {
-  useFixtures,
-  describe,
-  it,
-  beforeEach,
-  afterEach,
-  test,
-} from "@serenity-js/playwright-test";
 
 import {
   CallAnApi,
@@ -57,7 +41,7 @@ import {
   footerDocsLink,
   footerBlogLink,
   footerContactUsLink,
-  footerSocialLinks,
+  // footerSocialLinks, // TODO: implement selectors & assertions
 } from "./locators";
 
 import {
@@ -69,107 +53,66 @@ import {
   TOKENS,
 } from "./tasks";
 
-type TestScopeFixtures = {
-  context: BrowserContext;
-  extensionId: string;
-  actors: Cast;
-};
+import {
+  Provider,
+  Wallet,
+} from 'fuels';
 
-// const wallet = new FuelWalletTestHelper()
-// const pathToExtension = await downloadFuel('0.55.2');
-// const context = await chromium.launchPersistentContext('', {
-//   channel: 'chromium',
-//   // headless: false,
-//   // args: [
-//   //   `--disable-extensions-except=${pathToExtension}`,
-//   //   `--load-extension=${pathToExtension}`,
-//   // ],
-// });
-// const FUEL_MNEMONIC = "demand fashion unaware upgrade upon heart bright august panel kangaroo want gaze";
-// const FUEL_WALLET_PASSWORD = "$123Ran123Dom123!";
-// static async walletSetup(
-//     context: BrowserContext,
-//     fuelExtensionId: string,
-//     fuelProviderUrl: "https://mainnet.fuel.network/v1/graphql",
-//     chainName: string,
-//     mnemonic: string = FUEL_MNEMONIC,
-//     password: string = FUEL_WALLET_PASSWORD
-// ): Promise<FuelWalletTestHelper>
 
-// export const { describe, it, beforeEach, afterEach, test } = useFixtures<TestScopeFixtures>({
-//   // context: async ({}, use) => {
-//   //   const pathToExtension = await downloadFuel('0.55.2');
-
-//   //   const context = await chromium.launchPersistentContext('', {
-//   //     channel: 'chromium',
-//   //     // headless: false,
-//   //     args: [
-//   //       `--disable-extensions-except=${pathToExtension}`,
-//   //       `--load-extension=${pathToExtension}`,
-//   //     ],
-//   //   });
-//   //   await use(context);
-//   //   await context.close();
-//   // },
-
-//   actors: async ({browser}, use) => {
-//     const cast = Cast.where(actor =>
-//       actor.whoCan(BrowseTheWebWithPlaywright.using(browser, {
-//         ...context,
-//         userAgent: actor.name,
-//         extensionId: async ({ context }, use) => {
-//           let [background] = context.serviceWorkers();
-//           if (!background) background = await context.waitForEvent('serviceworker');
-//           const extensionId = background.url().split('/')[2];
-//           await use(extensionId);
-//         },
-//       }))
-//     );
-
-//     // let [background] = context.serviceWorkers();
-//     // if (!background) background = await context.waitForEvent('serviceworker');
-
-//     // const extensionId = background.url().split('/')[2];
-
-//     // await use(context);
-//     // await use(extensionId);
-//     await use(cast);
-//     // await context.close();
-//   },
-// });
+import {test as fuelsBase, FuelWalletTestHelper} from '@fuels/playwright-utils';
 
 describe("Connect to wallet", () => {
-  it("should be able to connect to fuel wallet", async ({
+
+const { it } = useBase(fuelsBase.extend({ fuelWalletVersion: "0.58.0"}))
+
+// TODO: switch over to testnet
+const fuelProvider = new Provider('https://mainnet.fuel.network/v1/graphql');
+// const chainName = (await fuelProvider.getChain()).name;
+const fuelWallet = Wallet.fromMnemonic("demand fashion unaware upgrade upon heart bright august panel kangaroo want gaze");
+fuelWallet.connect(fuelProvider);
+
+  it("should be able to connect to fuel wallet & perform swap transaction", async ({
     actor,
+    page,
     context,
+    browser,
+    extensionId
   }, use) => {
-    await actor.attemptsTo(
-      Navigate.to("/"),
-      Wait.until(connectWalletButton(), isVisible()),
-      Click.on(connectWalletButton()),
-      Wait.until(
-        PageElement.located(
-          By.cssContainingText(
-            "div.fuel-connectors-connector-item",
-            "Fuel Wallet"
-          )
-        ),
-        isVisible()
-      ),
-      Click.on(
-        PageElement.located(
-          By.cssContainingText(
-            "div.fuel-connectors-connector-item",
-            "Fuel Wallet"
-          )
-        )
-      ),
-      Wait.until(
-        PageElement.located(By.cssContainingText("a", "Install")),
-        isVisible()
-      ),
-      Click.on(PageElement.located(By.cssContainingText("a", "Install")))
-    );
+
+  const fuelWalletTestHelper = await FuelWalletTestHelper.walletSetup({
+    context,
+    fuelExtensionId: extensionId,
+    fuelProvider: {
+      url: fuelProvider.url,
+      chainId: await fuelProvider.getChainId(),
+    },
+    chainName: "microchain-local", // HACK: fuel's playwright utils fail if this string matches any existing networks, such as "Ignition", or "Fuel Sepolia Testnet"
+    mnemonic: process.env.FUEL_WALLET_MNEMONIC || "demand fashion unaware upgrade upon heart bright august panel kangaroo want gaze",
+    password: process.env.FUEL_WALLET_PASSWORD || "$123Ran123Dom123!"
+  });
+
+  await page.goto('/');
+  await page.bringToFront();
+
+  await page.getByRole('button', { name: 'Connect Wallet' }).click()
+  await page.getByLabel('Connect to Fuel Wallet').click()
+
+  await fuelWalletTestHelper.walletConnect();
+
+  await page.getByRole('button', { name: 'Sign and Confirm' }).click()
+
+  await actor
+    .whoCan(BrowseTheWebWithPlaywright.usingPage(page))
+    .attemptsTo(
+    Navigate.to("/"),
+    Wait.until(PageElements.located(By.cssContainingText("button", "DISCONNECT")).last(), isPresent()),
+    Ensure.that(PageElement.located(By.cssContainingText("button", "Input amounts")), isPresent()));
+
+  await page.locator('input').last().fill("1")
+  await page.getByRole('button', { name: 'Review' }).click()
+  await page.getByRole('button', { name: 'Swap' }).click()
+  await fuelWalletTestHelper.walletApprove();
+  await page.getByRole('button', { name: 'View transaction' }).click()
   });
 });
 
