@@ -51,7 +51,7 @@ jobs:
       - name: 📦 Install dependencies
         run: pnpm i --frozen-lockfile
 
-      - name: 🧩 Build
+      - name: 🏗 Build
         env:
           NEXT_PUBLIC_ENABLE_REBRAND_UI: true
         run: pnpm nx run-many -t build -p api ts-sdk design admin microgame web --verbose
