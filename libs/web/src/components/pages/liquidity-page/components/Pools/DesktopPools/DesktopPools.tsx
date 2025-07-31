@@ -1,5 +1,6 @@
 import {PoolData} from "@/src/hooks/usePoolsData";
 import {DesktopPoolRow} from "./DesktopPoolRow";
+import {useIsConnected} from "@fuels/react";
 import Link from "next/link";
 import SortableColumn from "@/src/components/common/SortableColumn/SortableColumn";
 import {Button} from "@/meshwave-ui/Button";
@@ -22,6 +23,8 @@ export function DesktopPools({
   orderBy: string;
   handleSort: (key: string) => void;
 }) {
+  const {isConnected} = useIsConnected();
+
   if (!poolsData) return null;
 
   const thBase =
@@ -56,9 +59,9 @@ export function DesktopPools({
               "w-[20%] text-center"
             )}
           >
-            <Link href="/liquidity/create-pool">
+            {isConnected && <Link href="/liquidity/create-pool">
               <Button>Create Pool</Button>
-            </Link>
+            </Link>}
           </TableHead>
         </TableRow>
       </TableHeader>

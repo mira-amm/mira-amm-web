@@ -1,6 +1,7 @@
 "use client";
 
 import {useEffect, useState} from "react";
+import {useIsConnected} from "@fuels/react";
 
 import Link from "next/link";
 
@@ -9,7 +10,6 @@ import clsx from "clsx";
 
 import {MobilePools} from "@/src/components/pages/liquidity-page/components/Pools/MobilePools/MobilePools";
 import {DesktopPools} from "@/src/components/pages/liquidity-page/components/Pools/DesktopPools/DesktopPools";
-import LoaderV2 from "@/src/components/common/LoaderV2/LoaderV2";
 import {SearchBar} from "@/src/components/common";
 import Pagination from "@/src/components/common/Pagination/Pagination";
 import {DEFAULT_PAGE} from "@/src/hooks/usePoolsData";
@@ -18,6 +18,7 @@ import {LoaderCircle} from "lucide-react";
 import LoaderBar from "@/src/components/common/loader-bar";
 
 export function Pools() {
+  const {isConnected} = useIsConnected();
   const {data, isLoading, moreInfo} = usePoolsData();
 
   const {
@@ -28,7 +29,8 @@ export function Pools() {
   } = moreInfo;
 
   const [searchInput, setSearchInput] = useState(search || "");
-  const debouncedSearchTerm = useDebounce(searchInput, 300);
+  const
+debouncedSearchTerm = useDebounce(searchInput, 300);
 
   useEffect(() => {
     setQueryVariables({page: page || DEFAULT_PAGE});
@@ -60,9 +62,9 @@ export function Pools() {
   return (
     <section className="flex flex-col gap-[14px]">
       <div className="flex justify-end">
-        <Link href="/liquidity/create-pool">
+        {isConnected && <Link href="/liquidity/create-pool">
           <Button className="mobileOnly w-[177px]">Create Pool</Button>
-        </Link>
+        </Link>}
       </div>
 
       <div className="flex justify-between items-center">
