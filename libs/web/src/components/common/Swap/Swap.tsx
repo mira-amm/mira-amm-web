@@ -781,7 +781,7 @@ export function Swap({isWidget}: {isWidget?: boolean}) {
               className={cn(
                 !isConnected &&
                   isRebrandingEnabled &&
-                  "bg-accent-primary-2 border-0 text-accent-primary-1 shadow-none disabled:opacity-100"
+                  "bg-accent-primary border-0 text-black hover:bg-accent-primary-1 shadow-none disabled:opacity-100"
               )}
             >
               Connect Wallet
@@ -794,7 +794,7 @@ export function Swap({isWidget}: {isWidget?: boolean}) {
               className={cn(
                 isActionDisabled &&
                   isRebrandingEnabled &&
-                  "bg-accent-primary-2 border-0 text-accent-primary-1 shadow-none disabled:opacity-100"
+                  "bg-accent-primary border-0 text-black hover:bg-accent-primary-1 shadow-none disabled:opacity-100"
               )}
             >
               {isActionLoading ? (
