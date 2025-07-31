@@ -20,7 +20,7 @@ export function Positions() {
   const {isConnected} = useIsConnected();
   const {data, isLoading} = usePositions();
 
-  if (!isConnected || data?.length === 0) {
+  if (isConnected && data?.length === 0) {
     return (
       <section className="flex flex-col gap-6 w-full">
         <p className="text-xl leading-6">Your Positions</p>
@@ -38,7 +38,9 @@ export function Positions() {
     );
   }
 
-  return (
+return (
+  <>
+  {isConnected &&
     <section className="flex flex-col gap-6 w-full">
       <p className="text-xl leading-6">Your Positions</p>
       {!data || isLoading ? (
@@ -79,6 +81,8 @@ export function Positions() {
         </div>
       )}
     </section>
+  }
+  </>
   );
 }
 
