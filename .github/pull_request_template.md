@@ -4,28 +4,14 @@
 
 ## Checklist
 
-### 🧪 Tests & Quality
-
-- [ ] Added unit or integration tests for new functionality (using [Vitest](https://vitest.dev/))
-- [ ] All tests pass locally (`npx vitest`)
-
-### ⚙️ Build & Tooling
-
-- [ ] Project starts successfully using `pnpm dev` or `pnpm start` (verifies build, dependencies,
-      and runtime)
-- [ ] Ran `nx format:all` to ensure consistent code style
-- [ ] No obvious runtime or import errors (manual verification if needed)
-
-### 🎨 UI (if applicable)
-
-- [ ] Storybook stories are added or updated (`pnpm storybook`)
-- [ ] Accessibility has been considered (e.g. labels, roles, focus management)
-- [ ] UI changes have been manually verified and screenshots are attached (if relevant)
-
-### 🔍 Miscellaneous
-
+- [ ] I've thoroughly read the latest [contribution guidelines](https://docs.mira.ly/libraries/contributing/installation).
+- [ ] I've rebased my branch onto `main` **before** creating this PR.
+- [ ] My commit messages follow [conventional spec](https://www.conventionalcommits.org/en/)
+- [ ] I've added tests to cover my changes (if applicable).
+- [ ] I've verified that all new and existing tests have passed locally for mobile, tablet, and desktop screen sizes.
+- [ ] My change requires documentation updates.
+- [ ] I've updated the documentation accordingly.
 - [ ] No unrelated changes are included in this PR
 - [ ] Breaking changes are clearly documented, with migration steps if needed
-- [ ] Follows project conventions and folder structure
 
-## Additional Note
+## Additional Notes
