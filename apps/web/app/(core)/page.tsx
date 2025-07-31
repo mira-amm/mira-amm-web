@@ -54,7 +54,20 @@ export default function Page() {
   return (
     <div className="flex flex-1 flex-col items-center w-full md:justify-center">
       <div className="w-full max-w-lg px-4 relative">
-        <Swap />
+        <section className="space-y-10 mt-2">
+          {!isConnected && (
+            <p className={`text-5xl lg:text-6xl margin-auto text-center font-serif`}>
+              Trade like a predator.
+            </p>
+          )}
+          <Swap />
+          {!isConnected && (
+            <p className="text-content-tertiary text-md text-center">
+              The DLM-2000 is the biggest AMM on the Fuel Network. Earn rewards
+              LPing and make lightning fast swaps.
+            </p>
+          )}
+        </section>
         <FeatureGuard>
           {isConnected && (
             <SVGComponent className="absolute w-[650px] -bottom-25 -left-18 -z-1" />
