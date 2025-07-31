@@ -1,5 +1,5 @@
-import type {SerenityOptions} from "@serenity-js/playwright-test";
 /* eslint-disable node/prefer-global/process */
+import type {SerenityOptions} from "@serenity-js/playwright-test";
 import {fileURLToPath} from "node:url";
 import {workspaceRoot} from "@nx/devkit";
 import {nxE2EPreset} from "@nx/playwright/preset";
@@ -10,18 +10,19 @@ const __filename = fileURLToPath(import.meta.url);
 
 const baseURL = "http://localhost:3000";
 
-const chromiumGpuOnLinuxFlags = [
-  "--use-angle=vulkan",
-  "--enable-features=Vulkan",
-  "--disable-vulkan-surface",
-  "--enable-unsafe-webgpu",
-]
-
 export default defineConfig<SerenityOptions>({
   ...nxE2EPreset(__filename, {testDir: "./src"}),
   fullyParallel: true,
   workers: "90%",
   retries: 4,
+  forbidOnly: !process.env.CI,
+  webServer: {
+    command: "nx start web",
+    url: baseURL,
+    reuseExistingServer: !process.env.CI,
+    cwd: workspaceRoot,
+    timeout: 1000 * 60 * 6, // 1000 ms * 60 * 6 = 6 minutes
+  },
   use: {
     crew: [
       ["@serenity-js/web:Photographer", {strategy: "TakePhotosOfFailures"}],
@@ -29,13 +30,9 @@ export default defineConfig<SerenityOptions>({
     defaultActorName: "User",
     baseURL,
     trace: "on-first-retry",
-  },
-  webServer: {
-    command: "nx start web",
-    url: baseURL,
-    reuseExistingServer: !process.env.CI,
-    cwd: workspaceRoot,
-    timeout: 120 * 3000,
+    permissions: ['clipboard-read', 'clipboard-write'],
+    actionTimeout: 5000,
+    screenshot: 'only-on-failure'
   },
   reporter: [
     [
@@ -56,13 +53,22 @@ export default defineConfig<SerenityOptions>({
   projects: [
     {
       name: "chromium",
-      use: {...devices["Desktop Chrome"]},
-      launchOptions: {
-                args: [
-                  "--no-sandbox",
-                  ...(process.platform === "linux" ? chromiumGpuOnLinuxFlags : []),
-                ],
-              },
+      use: {
+        channel: 'chromium',
+        ...devices["Desktop Chrome"],
+        launchOptions: {
+          args: [
+            // "--no-sandbox",
+            '--disable-features=ExtensionDisableUnsupportedDeveloper',
+            ...(process.platform === "linux" && !process.env.CI ? [
+            "--use-angle=vulkan",
+            "--enable-features=Vulkan",
+            "--disable-vulkan-surface",
+            "--enable-unsafe-webgpu",
+            ] : []),
+          ],
+        },
+      },
     },
     // {
     //   name: 'firefox',
