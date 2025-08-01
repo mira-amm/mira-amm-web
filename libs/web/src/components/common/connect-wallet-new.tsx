@@ -223,7 +223,7 @@ export function ConnectWalletNew({
         className={cn(`relative ${containerWidth}`, className)}
       >
         <div className={cn("rounded-ten dark:border-0", className)}>
-          <div className="flex gap-x-1.5! p-3 dark:bg-background-grey-dark">
+          <div className="flex gap-x-1.5! dark:bg-background-grey-dark">
             <div>
               <PowerIndicator isConnected={isConnected} />
               <ActionButton />
