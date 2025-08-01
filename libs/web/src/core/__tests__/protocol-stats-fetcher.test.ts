@@ -2,12 +2,10 @@ import {describe, it, expect, vi, beforeEach} from "vitest";
 import {StatsService} from "../stats-service";
 import type {PoolData} from "../../types/protocol-stats";
 
-// Mock the cached GraphQL client
-vi.mock("../cached-graphql-client", () => ({
-  cachedSubsquidClient: {
+// Mock the GraphQL client
+vi.mock("../graphql-client", () => ({
+  subsquidClient: {
     query: vi.fn(),
-    clearCache: vi.fn(),
-    getCacheStats: vi.fn(),
   },
 }));
 
@@ -38,8 +36,8 @@ describe("StatsService", () => {
   });
 
   it("should calculate stats correctly from pool data", async () => {
-    const {cachedSubsquidClient} = await import("../cached-graphql-client");
-    vi.mocked(cachedSubsquidClient.query).mockResolvedValue({
+    const {subsquidClient} = await import("../graphql-client");
+    vi.mocked(subsquidClient.query).mockResolvedValue({
       pools: mockPoolData,
     });
 
@@ -54,8 +52,8 @@ describe("StatsService", () => {
   });
 
   it("should handle empty pool data", async () => {
-    const {cachedSubsquidClient} = await import("../cached-graphql-client");
-    vi.mocked(cachedSubsquidClient.query).mockResolvedValue({pools: []});
+    const {subsquidClient} = await import("../graphql-client");
+    vi.mocked(subsquidClient.query).mockResolvedValue({pools: []});
 
     const result = await statsService.fetchProtocolStats();
 
@@ -68,7 +66,7 @@ describe("StatsService", () => {
   });
 
   it("should handle null/undefined values gracefully", async () => {
-    const {cachedSubsquidClient} = await import("../cached-graphql-client");
+    const {subsquidClient} = await import("../graphql-client");
     const poolDataWithNulls: PoolData[] = [
       {
         poolTVL: 1000000,
@@ -78,7 +76,7 @@ describe("StatsService", () => {
       },
     ];
 
-    vi.mocked(cachedSubsquidClient.query).mockResolvedValue({
+    vi.mocked(subsquidClient.query).mockResolvedValue({
       pools: poolDataWithNulls,
     });
 
@@ -93,10 +91,10 @@ describe("StatsService", () => {
   });
 
   it("should fallback to basic query on error", async () => {
-    const {cachedSubsquidClient} = await import("../cached-graphql-client");
+    const {subsquidClient} = await import("../graphql-client");
 
     // First call fails, second call (fallback) succeeds
-    vi.mocked(cachedSubsquidClient.query)
+    vi.mocked(subsquidClient.query)
       .mockRejectedValueOnce(new Error("Network error"))
       .mockResolvedValueOnce({
         pools: [
@@ -120,8 +118,8 @@ describe("StatsService", () => {
   });
 
   it("should throw error when both queries fail", async () => {
-    const {cachedSubsquidClient} = await import("../cached-graphql-client");
-    vi.mocked(cachedSubsquidClient.query).mockRejectedValue(
+    const {subsquidClient} = await import("../graphql-client");
+    vi.mocked(subsquidClient.query).mockRejectedValue(
       new Error("Network error")
     );
 
@@ -131,10 +129,10 @@ describe("StatsService", () => {
   });
 
   it("should validate GraphQL response structure", async () => {
-    const {cachedSubsquidClient} = await import("../cached-graphql-client");
+    const {subsquidClient} = await import("../graphql-client");
 
     // Test invalid response structure - both main and fallback queries return null
-    vi.mocked(cachedSubsquidClient.query).mockResolvedValue(null as any);
+    vi.mocked(subsquidClient.query).mockResolvedValue(null as any);
 
     await expect(statsService.fetchProtocolStats()).rejects.toThrow(
       "Unable to fetch protocol statistics"
@@ -142,7 +140,7 @@ describe("StatsService", () => {
   });
 
   it("should validate pool data fields", async () => {
-    const {cachedSubsquidClient} = await import("../cached-graphql-client");
+    const {subsquidClient} = await import("../graphql-client");
 
     // Test invalid pool data - both main and fallback queries return invalid data
     const invalidPoolData = {
@@ -156,9 +154,7 @@ describe("StatsService", () => {
       ],
     };
 
-    vi.mocked(cachedSubsquidClient.query).mockResolvedValue(
-      invalidPoolData as any
-    );
+    vi.mocked(subsquidClient.query).mockResolvedValue(invalidPoolData as any);
 
     await expect(statsService.fetchProtocolStats()).rejects.toThrow(
       "Unable to fetch protocol statistics"
@@ -166,7 +162,7 @@ describe("StatsService", () => {
   });
 
   it("should handle negative values by converting to zero", async () => {
-    const {cachedSubsquidClient} = await import("../cached-graphql-client");
+    const {subsquidClient} = await import("../graphql-client");
 
     const poolDataWithNegatives: PoolData[] = [
       {
@@ -177,7 +173,7 @@ describe("StatsService", () => {
       },
     ];
 
-    vi.mocked(cachedSubsquidClient.query).mockResolvedValue({
+    vi.mocked(subsquidClient.query).mockResolvedValue({
       pools: poolDataWithNegatives,
     });
 
@@ -189,7 +185,7 @@ describe("StatsService", () => {
   });
 
   it("should handle malformed snapshot data", async () => {
-    const {cachedSubsquidClient} = await import("../cached-graphql-client");
+    const {subsquidClient} = await import("../graphql-client");
 
     // Test malformed snapshot data - this should fail validation for both main and fallback queries
     const poolDataWithMalformedSnapshots: any[] = [
@@ -207,7 +203,7 @@ describe("StatsService", () => {
     ];
 
     // Mock both main and fallback queries to return the same malformed data
-    vi.mocked(cachedSubsquidClient.query)
+    vi.mocked(subsquidClient.query)
       .mockResolvedValueOnce({
         pools: poolDataWithMalformedSnapshots,
       })
@@ -221,7 +217,7 @@ describe("StatsService", () => {
   });
 
   it("should warn about data inconsistencies", async () => {
-    const {cachedSubsquidClient} = await import("../cached-graphql-client");
+    const {subsquidClient} = await import("../graphql-client");
     const consoleSpy = vi.spyOn(console, "warn").mockImplementation(() => {});
 
     // Create data where 1-day volume > 7-day volume (inconsistent)
@@ -234,7 +230,7 @@ describe("StatsService", () => {
       },
     ];
 
-    vi.mocked(cachedSubsquidClient.query).mockResolvedValue({
+    vi.mocked(subsquidClient.query).mockResolvedValue({
       pools: inconsistentPoolData,
     });
 

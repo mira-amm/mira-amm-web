@@ -41,12 +41,11 @@ describe("ProtocolStatsContainer", () => {
       />
     );
 
-    expect(screen.getByText("Protocol Statistics")).toBeTruthy();
-    expect(screen.getByText("All Time Volume")).toBeTruthy();
+    expect(screen.getByText("All time volume")).toBeTruthy();
     expect(screen.getByText("$123.46M")).toBeTruthy();
   });
 
-  it("renders success state with stale data indicator", () => {
+  it("renders success state with data regardless of stale flag", () => {
     render(
       <ProtocolStatsContainer
         data={mockStatsData}
@@ -55,7 +54,8 @@ describe("ProtocolStatsContainer", () => {
       />
     );
 
-    expect(screen.getByText("Stale Data")).toBeTruthy();
+    expect(screen.getByText("All time volume")).toBeTruthy();
+    expect(screen.getByText("$123.46M")).toBeTruthy();
   });
 
   it("shows data even when there is an error (stale data scenario)", () => {
@@ -70,9 +70,9 @@ describe("ProtocolStatsContainer", () => {
       />
     );
 
-    // Should show the data with stale indicator, not the error state
-    expect(screen.getByText("Protocol Statistics")).toBeTruthy();
-    expect(screen.getByText("Stale Data")).toBeTruthy();
+    // Should show the data, not the error state
+    expect(screen.getByText("All time volume")).toBeTruthy();
+    expect(screen.getByText("$123.46M")).toBeTruthy();
     expect(screen.queryByText("Failed to load protocol statistics")).toBeNull();
   });
 

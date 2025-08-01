@@ -52,11 +52,7 @@ export function ProtocolStatsContainer({
           console.error("Protocol stats component error:", error, errorInfo);
         }}
       >
-        <ProtocolStats
-          stats={data}
-          lastUpdated={lastUpdated || new Date()}
-          isStale={isStale}
-        />
+        <ProtocolStats stats={data} />
       </ProtocolStatsErrorBoundary>
     );
   }

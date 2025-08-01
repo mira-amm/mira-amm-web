@@ -2,21 +2,16 @@ import {GraphQLClient} from "graphql-request";
 import {SQDIndexerUrl} from "../utils/constants";
 
 /**
- * GraphQL client configuration for Subsquid endpoint
- * Used to fetch protocol statistics data
+ * Simple GraphQL client for protocol statistics
  */
-export class SubsquidGraphQLClient {
+export class SimpleGraphQLClient {
   private client: GraphQLClient;
 
   constructor(endpoint?: string) {
     const graphqlEndpoint =
       endpoint || process.env.NEXT_PUBLIC_SUBSQUID_ENDPOINT || SQDIndexerUrl;
 
-    this.client = new GraphQLClient(graphqlEndpoint, {
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
+    this.client = new GraphQLClient(graphqlEndpoint);
   }
 
   /**
@@ -29,20 +24,27 @@ export class SubsquidGraphQLClient {
     try {
       return await this.client.request<T>(query, variables);
     } catch (error) {
-      console.error("GraphQL query failed:", error);
       throw new Error(
         `GraphQL query failed: ${error instanceof Error ? error.message : "Unknown error"}`
       );
     }
   }
-
-  /**
-   * Get the underlying GraphQL client instance
-   */
-  getClient(): GraphQLClient {
-    return this.client;
-  }
 }
 
-// Export a singleton instance
-export const subsquidClient = new SubsquidGraphQLClient();
+// Lazy-loaded singleton instance for SSR compatibility
+let _subsquidClient: SimpleGraphQLClient | null = null;
+
+export function getSubsquidClient(): SimpleGraphQLClient {
+  if (!_subsquidClient) {
+    _subsquidClient = new SimpleGraphQLClient();
+  }
+  return _subsquidClient;
+}
+
+// Export singleton instance using getter for lazy loading
+export const subsquidClient = {
+  query: <T = any>(
+    query: string,
+    variables?: Record<string, any>
+  ): Promise<T> => getSubsquidClient().query<T>(query, variables),
+};

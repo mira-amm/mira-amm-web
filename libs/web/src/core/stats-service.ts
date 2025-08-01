@@ -1,4 +1,4 @@
-import {cachedSubsquidClient} from "./cached-graphql-client";
+import {subsquidClient} from "./graphql-client";
 import {
   PROTOCOL_STATS_QUERY,
   BASIC_PROTOCOL_STATS_QUERY,
@@ -61,10 +61,7 @@ export class StatsService {
     variables?: QueryVariables
   ): Promise<GraphQLResponse> {
     try {
-      return await cachedSubsquidClient.query<GraphQLResponse>(
-        query,
-        variables
-      );
+      return await subsquidClient.query<GraphQLResponse>(query, variables);
     } catch (error) {
       const errorMessage =
         error instanceof Error ? error.message : "Unknown GraphQL error";
