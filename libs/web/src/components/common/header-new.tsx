@@ -14,10 +14,11 @@ import {
 } from "@/src/utils/constants";
 
 import {IconButton} from "@/src/components/common";
-import {PointsIcon} from "@/meshwave-ui/icons";
+import {PointsIconSimple} from "@/meshwave-ui/icons";
 import {X} from "lucide-react";
 import {cn} from "@/src/utils/cn";
 import {ConnectWalletNew} from "./connect-wallet-new";
+import {Navigation, type NavLink} from "./navigation";
 
 const PROMO_BANNER_STORAGE_KEY = "fuel-boost-program-promo-banner-closed";
 
@@ -79,7 +80,7 @@ export function HeaderNew({
       {isPromoShown && (
         <section className="relative flex items-center justify-between px-4 py-3 gap-4 text-white text-sm lg:text-lg lg:justify-center bg-old-mira-promo-bg">
           <div className="flex items-center gap-2 mx-auto">
-            <PointsIcon className="w-[18px] h-[18px]" />
+            <PointsIconSimple className="w-[18px] h-[18px]" />
             <p>
               {getPromoTitle()}
               <Link
@@ -105,73 +106,33 @@ export function HeaderNew({
           <Logo />
         </div>
 
-        <nav className="hidden lg:flex gap-6 items-center mx-auto">
-          {navLinks.map(({href, label, match, external}) =>
-            external ? (
-              <a
-                key={label}
-                href={href}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="px-3 py-1 rounded-full transition hover:bg-background-grey-light text-content-tertiary"
-              >
-                {label}
-              </a>
-            ) : (
-              <Link
-                key={label}
-                href={href}
-                className={cn(
-                  "px-3 py-1 rounded-full transition hover:bg-background-grey-light text-content-tertiary",
-                  match &&
-                    "bg-background-primary text-white dark:bg-background-grey-light hover:bg-background-primary"
-                )}
-              >
-                {label}
-              </Link>
-            )
-          )}
-        </nav>
+        <div className="hidden lg:flex">
+          <Navigation
+            navLinks={navLinks}
+            size="small"
+            className="gap-6 mx-auto"
+          />
+        </div>
 
         <div className="flex items-center flex-1 justify-end gap-2">
           <div className="hidden lg:flex">
-            <ConnectWalletNew />
+            <ConnectWalletNew size="small" />
           </div>
         </div>
       </section>
 
-      <div className="lg:hidden flex flex-col pb-4">
-        <div className="pb-4 mx-auto">
-          <ConnectWalletNew />
+      <div className="lg:hidden flex flex-col pb-4 gap-6">
+        <div className="sm:pb-4">
+          <Navigation
+            navLinks={navLinks}
+            size="small"
+            className="flex gap-2 sm:gap-6 items-center mx-auto flex-wrap justify-center"
+          />
         </div>
 
-        <nav className="flex gap-2 sm:gap-6 items-center mx-auto flex-wrap justify-center">
-          {navLinks.map(({href, label, match, external}) =>
-            external ? (
-              <a
-                key={label}
-                href={href}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="px-3 py-1 rounded-full transition hover:bg-background-grey-light text-content-tertiary text-sm sm:text-base"
-              >
-                {label}
-              </a>
-            ) : (
-              <Link
-                key={label}
-                href={href}
-                className={cn(
-                  "px-3 py-1 rounded-full transition hover:bg-background-grey-light text-content-tertiary text-sm sm:text-base",
-                  match &&
-                    "bg-background-primary text-white dark:bg-background-grey-light hover:bg-background-primary"
-                )}
-              >
-                {label}
-              </Link>
-            )
-          )}
-        </nav>
+        <div className="mx-auto">
+          <ConnectWalletNew size="small" />
+        </div>
       </div>
     </header>
   );
