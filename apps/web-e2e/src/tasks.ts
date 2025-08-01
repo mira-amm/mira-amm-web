@@ -50,7 +50,7 @@ export const Connect = {
     Task.where(
       `#actor connects to ${walletName}`,
       Navigate.to("/"),
-      Wait.until(connectWalletButton(), isVisible()),
+      Wait.until(connectWalletButton(), isPresent()),
       Click.on(connectWalletButton()),
       Wait.until(walletOption(walletName), isVisible())
     ),

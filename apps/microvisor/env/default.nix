@@ -21,8 +21,7 @@
     # TERM = "xterm-256color";
     ZELLIJ_AUTO_ATTACH = "true";
     ZELLIJ_AUTO_EXIT = "true";
-    # FUEL_WALLET_MNEMONIC = "";
-    # FUEL_WALLET_PASSWORD = "";
+    # FUEL_WALLET_PRIVATE_KEY = "";
 
     #====================================================
     #                      PORTS
