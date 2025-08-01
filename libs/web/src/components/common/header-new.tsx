@@ -16,7 +16,6 @@ import {
 import {IconButton} from "@/src/components/common";
 import {PointsIconSimple} from "@/meshwave-ui/icons";
 import {X} from "lucide-react";
-import {cn} from "@/src/utils/cn";
 import {ConnectWalletNew} from "./connect-wallet-new";
 import {Navigation, type NavLink} from "./navigation";
 
