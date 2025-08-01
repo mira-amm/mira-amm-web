@@ -35,7 +35,7 @@
     DOCS_DEV_SERVER_PORT = "4000";
     ARCHITECTURE_DEV_SERVER_PORT = "5173";
     GRAPH_DEV_SERVER_PORT = "4211";
-    NODE_MODULES_INSPECTOR_PORT = "7000";
+    NODE_MODULES_INSPECTOR_PORT = "7800";
 
     #====================================================
     #                      URLS

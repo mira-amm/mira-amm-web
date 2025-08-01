@@ -218,13 +218,13 @@
     };
 
     node-modules-inspector = {
-      exec = "pnpm node-modules-inspector --depth=7 --port=7000";
+      exec = "pnpm node-modules-inspector --depth=7 --port=7800";
       process-compose = {
-        description = "📦 Node Modules Inspector | 7000";
+        description = "📦 Node Modules Inspector | 7800";
         is_tty = true;
         readiness_probe = {
           http_get = {
-            port = "7000";
+            port = "7800";
             host = "localhost";
             scheme = "http";
           };
