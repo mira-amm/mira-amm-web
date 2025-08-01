@@ -1,3 +1,12 @@
+# nix upgrade-nix
+Describe "❄ Nix should be:"
+It "using Lix implementation"
+When run nix --version
+The status should be success
+The line 1 should include "nix (Lix, like Nix) 2.93.3"
+End
+End
+
 Describe "📦 Pnpm should be:"
 It "installed via standalone script only"
 When run which pnpm
