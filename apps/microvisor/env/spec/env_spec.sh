@@ -7,6 +7,15 @@ The line 1 should include "nix (Lix, like Nix) 2.93.3"
 End
 End
 
+# nix profile upgrade devenv --accept-flake-config
+Describe "🟦 Devenv should be:"
+It "greater than or equal to version 1.8.0"
+When run devenv
+The status should be success
+The output should include '1.8'
+End
+End
+
 Describe "📦 Pnpm should be:"
 It "installed via standalone script only"
 When run which pnpm
