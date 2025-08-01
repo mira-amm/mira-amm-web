@@ -1,0 +1,5 @@
+{
+  languages = {
+    nix.enable = true;
+  };
+}
