@@ -4,6 +4,7 @@
   imports = [
     ./ai.nix
     ./db.nix
+    ./fuel.nix
     ./git.nix
     ./shell.nix
   ];

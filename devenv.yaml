@@ -9,6 +9,11 @@ inputs:
     inputs:
       nixpkgs:
         follows: nixpkgs
+  fuel-labs:
+    url: github:fuellabs/fuel.nix
+    inputs:
+      nixpkgs:
+        follows: nixpkgs
   # TODO: investigate usage & gotchas of venv
   # nixpkgs-python:
   #   url: github:cachix/nixpkgs-python
