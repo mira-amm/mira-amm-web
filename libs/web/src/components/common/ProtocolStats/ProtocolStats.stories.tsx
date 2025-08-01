@@ -24,16 +24,12 @@ const mockStatsData: ProtocolStatsData = {
 export const Default: Story = {
   args: {
     stats: mockStatsData,
-    lastUpdated: new Date(),
-    isStale: false,
   },
 };
 
 export const StaleData: Story = {
   args: {
     stats: mockStatsData,
-    lastUpdated: new Date(Date.now() - 10 * 60 * 1000), // 10 minutes ago
-    isStale: true,
   },
 };
 
@@ -45,8 +41,6 @@ export const LowValues: Story = {
       oneDayVolume: 123.45,
       sevenDayVolume: 987.65,
     },
-    lastUpdated: new Date(),
-    isStale: false,
   },
 };
 
@@ -58,8 +52,6 @@ export const HighValues: Story = {
       oneDayVolume: 7.89e9,
       sevenDayVolume: 1.23e10,
     },
-    lastUpdated: new Date(),
-    isStale: false,
   },
 };
 
@@ -71,7 +63,5 @@ export const ZeroValues: Story = {
       oneDayVolume: 0,
       sevenDayVolume: 0,
     },
-    lastUpdated: new Date(),
-    isStale: false,
   },
 };

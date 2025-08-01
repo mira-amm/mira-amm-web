@@ -32,17 +32,11 @@ export function StatCard({
   }, [value, formatAsCurrency]);
 
   return (
-    <div
-      className={cn(
-        "flex flex-col gap-2 p-4 rounded-lg bg-surface-secondary border border-border-primary",
-        "hover:bg-surface-tertiary transition-colors duration-200",
-        className
-      )}
-    >
-      <h3 className="text-sm font-medium text-content-secondary uppercase tracking-wide">
+    <div className={cn("flex flex-col gap-4 md:w-[206px]", className)}>
+      <h3 className="text-gray-500 font-medium text-[17.72px] leading-none">
         {title}
       </h3>
-      <div className="text-2xl font-bold text-content-primary font-alt">
+      <div className="text-black text-[25.23px] leading-none font-alt">
         {formattedValue}
       </div>
     </div>
