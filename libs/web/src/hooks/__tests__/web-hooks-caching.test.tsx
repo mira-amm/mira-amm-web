@@ -210,7 +210,7 @@ describe("useSwapRouter with caching", () => {
   });
 
   it("should handle preloading errors gracefully", async () => {
-    const consoleSpy = vi.spyOn(console, "warn").mockImplementation(() => {});
+    const consoleSpy = vi.spyOn(console, "error").mockImplementation(() => {});
     mockAmm.preloadPoolsForRoutes.mockRejectedValueOnce(
       new Error("Preload failed")
     );
@@ -236,7 +236,7 @@ describe("useSwapRouter with caching", () => {
     await new Promise((resolve) => setTimeout(resolve, 0));
 
     expect(consoleSpy).toHaveBeenCalledWith(
-      "❌ Failed to preload pools for routes:",
+      "Failed to preload pools:",
       expect.any(Error)
     );
 
