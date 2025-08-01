@@ -895,6 +895,9 @@ importers:
       '@xstate/react':
         specifier: catalog:ui
         version: 6.0.0(@types/react@19.1.8)(react@19.1.0)(xstate@5.20.1)
+      axios-cache-interceptor:
+        specifier: ^1.8.0
+        version: 1.8.0(axios@1.11.0)
       clsx:
         specifier: catalog:ui
         version: 2.1.1
@@ -10921,6 +10924,12 @@ packages:
     resolution: {integrity: sha512-Xm7bpRXnDSX2YE2YFfBk2FnF0ep6tmG7xPh8iHee8MIcrgq762Nkce856dYtJYLkuIoYZvGfTs/PbZhideTcEg==}
     engines: {node: '>=4'}
 
+  axios-cache-interceptor@1.8.0:
+    resolution: {integrity: sha512-cTNnPGJyQkxnWp0EWvE3NRvgURU5cWw/Qx3dIhXyHSM4Ip0c7EEe0I3an0Jwa549m1CAOg57ibj27YRNLmQCcg==}
+    engines: {node: '>=12'}
+    peerDependencies:
+      axios: ^1
+
   axios@1.10.0:
     resolution: {integrity: sha512-/1xYAC4MP/HEG+3duIhFr4ZQXR4sQXOIe+o6sdqzeykGLx6Upp/1p8MHqhINOvGeP7xyNHe7tsiJByc4SSVUxw==}
 
@@ -11344,6 +11353,9 @@ packages:
   cache-content-type@1.0.1:
     resolution: {integrity: sha512-IKufZ1o4Ut42YUrZSo8+qnMTrFuKkvyoLXUywKz9GJ5BrhOFGhLdkx9sG4KAnVvbY6kEcSFjLQul+DVmBm2bgA==}
     engines: {node: '>= 6.0.0'}
+
+  cache-parser@1.2.5:
+    resolution: {integrity: sha512-Md/4VhAHByQ9frQ15WD6LrMNiVw9AEl/J7vWIXw+sxT6fSOpbtt6LHTp76vy8+bOESPBO94117Hm2bIjlI7XjA==}
 
   cacheable-lookup@5.0.4:
     resolution: {integrity: sha512-2/kNscPhpcxrOigMZzbiWF7dz8ilhb/nIHU3EyZiXWXpeq/au8qJ8VhdftMkty3n7Gj6HIGalQG8oiBNB3AJgA==}
@@ -13771,6 +13783,9 @@ packages:
 
   fast-deep-equal@3.1.3:
     resolution: {integrity: sha512-f3qQ9oQy9j2AhBe/H9VC91wLmKBCCU/gDOnKNAYG5hswO7BLKj09Hc5HYNz9cGI++xlpDCIgDaitVs03ATR84Q==}
+
+  fast-defer@1.1.8:
+    resolution: {integrity: sha512-lEJeOH5VL5R09j6AA0D4Uvq7AgsHw0dAImQQ+F3iSyHZuAxyQfWobsagGpTcOPvJr3urmKRHrs+Gs9hV+/Qm/Q==}
 
   fast-diff@1.3.0:
     resolution: {integrity: sha512-VxPP4NqbUjj6MaAOafWeUn2cXWLcCtljklUtZf0Ind4XQ+QPtmA0b18zZy0jIQx+ExRVCR/ZQpBmik5lXshNsw==}
@@ -17270,6 +17285,9 @@ packages:
     resolution: {integrity: sha512-rJgTQnkUnH1sFw8yT6VSU3zD3sWmu6sZhIseY8VX+GRu3P6F7Fu+JNDoXfklElbLJSnc3FUQHVe4cU5hj+BcUg==}
     engines: {node: '>=0.10.0'}
 
+  object-code@1.3.3:
+    resolution: {integrity: sha512-/Ds4Xd5xzrtUOJ+xJQ57iAy0BZsZltOHssnDgcZ8DOhgh41q1YJCnTPnWdWSLkNGNnxYzhYChjc5dgC9mEERCA==}
+
   object-inspect@1.13.4:
     resolution: {integrity: sha512-W67iLl4J2EXEGTbfeHCffrjDfitvLANg0UlX3wFUUSTx92KXRFegMHUVgSqE+wvhAbi4WqjGg9czysTV2Epbew==}
     engines: {node: '>= 0.4'}
@@ -19600,6 +19618,7 @@ packages:
   source-map@0.8.0-beta.0:
     resolution: {integrity: sha512-2ymg6oRBpebeZi9UUNsgQ89bhx01TcTkmNTGnNO88imTmbSgy4nfujrgVEFKWpMTEGA11EDkTt7mqObTPdigIA==}
     engines: {node: '>= 8'}
+    deprecated: The work that was done in this beta branch won't be included in future versions
 
   space-separated-tokens@2.0.2:
     resolution: {integrity: sha512-PEGlAwrG8yXGXRjW32fGbg66JAlOAwbObuqVoJpv/mRgoWDQfgH1wDPvtzWyUSNAXBGSk8h755YDbbcEy3SH2Q==}
@@ -35452,6 +35471,13 @@ snapshots:
 
   axe-core@4.10.3: {}
 
+  axios-cache-interceptor@1.8.0(axios@1.11.0):
+    dependencies:
+      axios: 1.11.0
+      cache-parser: 1.2.5
+      fast-defer: 1.1.8
+      object-code: 1.3.3
+
   axios@1.10.0:
     dependencies:
       follow-redirects: 1.15.9(debug@4.4.1)
@@ -36030,6 +36056,8 @@ snapshots:
     dependencies:
       mime-types: 2.1.35
       ylru: 1.4.0
+
+  cache-parser@1.2.5: {}
 
   cacheable-lookup@5.0.4: {}
 
@@ -38967,6 +38995,8 @@ snapshots:
   fast-copy@3.0.2: {}
 
   fast-deep-equal@3.1.3: {}
+
+  fast-defer@1.1.8: {}
 
   fast-diff@1.3.0: {}
 
@@ -43575,6 +43605,8 @@ snapshots:
       readable-stream: 2.3.8
 
   object-assign@4.1.1: {}
+
+  object-code@1.3.3: {}
 
   object-inspect@1.13.4: {}
 
