@@ -13,7 +13,7 @@
     "url": "git+https://github.com/mira-amm/mira-amm-web.git"
   },
   "type": "module",
-  "packageManager": "pnpm@10.10.0",
+  "packageManager": "pnpm@10.13.1",
   "scripts": {
     "dev": "NX_TUI='false' nx dev:tui microvisor; process-compose down; supabase stop --all; zellij ka -y; zellij da -y;",
     "start": "nx dev microvisor --outputStyle=tui; process-compose down; supabase stop --all; zellij ka -y; zellij da -y;",
@@ -262,7 +262,7 @@
     "tw-animate-css": "catalog:ui",
     "typescript": "catalog:build",
     "typescript-eslint": "catalog:style",
-    "vercel": "^44.6.4",
+    "vercel": "^44.6.6",
     "verdaccio": "catalog:build",
     "vite": "catalog:build",
     "vite-node": "catalog:build",

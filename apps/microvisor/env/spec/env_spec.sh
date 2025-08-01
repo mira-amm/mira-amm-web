@@ -23,18 +23,18 @@ The status should be success
 The line 3 should be undefined
 End
 
-It "greater than or equal to version 10.10.0"
+It "greater than or equal to version 10.13.0"
 When run pnpm --version
 The status should be success
-The output should include '10.10'
+The output should include '10.13'
 End
 End
 
 Describe "🟢 Node.js should be:"
-It "greater than or equal to version 22.14.0"
+It "greater than or equal to version 22.17.0"
 When run which node
 The status should be success
-The output should include 'nodejs-22.14'
+The output should include 'nodejs-22.17'
 The output should end with '/bin/node'
 End
 End
