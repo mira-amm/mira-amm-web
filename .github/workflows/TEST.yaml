@@ -53,18 +53,21 @@ jobs:
 
       - name: 🏗 Build
         env:
+          SENTIO_API_KEY: ${{ secrets.SENTIO_API_KEY }}
           NEXT_PUBLIC_ENABLE_REBRAND_UI: true
+          FUEL_WALLET_PRIVATE_KEY: ${{ secrets.FUEL_WALLET_PRIVATE_KEY }}
         run: pnpm nx run-many -t build -p api ts-sdk design admin microgame web --verbose
 
-      - name: 🧩 Run Unit tests - api
+      - name: 🧩 Run Unit test
+        env:
+          SENTIO_API_KEY: ${{ secrets.SENTIO_API_KEY }}
+          NEXT_PUBLIC_ENABLE_REBRAND_UI: true
+          FUEL_WALLET_PRIVATE_KEY: ${{ secrets.FUEL_WALLET_PRIVATE_KEY }}
         run: pnpm nx run-many -t test -p api web
 
       - name: 🧐 Run End-to-End tests
         env:
           SENTIO_API_KEY: ${{ secrets.SENTIO_API_KEY }}
           NEXT_PUBLIC_ENABLE_REBRAND_UI: true
-          FUEL_WALLET_MNEMONIC: ${{ secrets.FUEL_WALLET_MNEMONIC }}
-          FUEL_WALLET_PASSWORD: ${{ secrets.FUEL_WALLET_PASSWORD }}
-        uses: coactions/setup-xvfb@v1
-        with:
-          run: pnpm nx run-many -t e2e -p api web-e2e --verbose
+          FUEL_WALLET_PRIVATE_KEY: ${{ secrets.FUEL_WALLET_PRIVATE_KEY }}
+        run: xvfb-run pnpm nx run-many -t e2e -p api web-e2e --verbose

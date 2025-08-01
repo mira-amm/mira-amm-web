@@ -1,5 +1,5 @@
 /* eslint-disable node/prefer-global/process */
-import type {SerenityOptions} from "@serenity-js/playwright-test";
+import type { SerenityFixtures, SerenityWorkerFixtures } from '@serenity-js/playwright-test'
 import {fileURLToPath} from "node:url";
 import {workspaceRoot} from "@nx/devkit";
 import {nxE2EPreset} from "@nx/playwright/preset";
@@ -10,7 +10,7 @@ const __filename = fileURLToPath(import.meta.url);
 
 const baseURL = "http://localhost:3000";
 
-export default defineConfig<SerenityOptions>({
+export default defineConfig<SerenityFixtures, SerenityWorkerFixtures>({
   ...nxE2EPreset(__filename, {testDir: "./src"}),
   fullyParallel: true,
   workers: "90%",
@@ -22,17 +22,6 @@ export default defineConfig<SerenityOptions>({
     reuseExistingServer: !process.env.CI,
     cwd: workspaceRoot,
     timeout: 1000 * 60 * 6, // 1000 ms * 60 * 6 = 6 minutes
-  },
-  use: {
-    crew: [
-      ["@serenity-js/web:Photographer", {strategy: "TakePhotosOfFailures"}],
-    ],
-    defaultActorName: "User",
-    baseURL,
-    trace: "on-first-retry",
-    permissions: ['clipboard-read', 'clipboard-write'],
-    actionTimeout: 5000,
-    screenshot: 'only-on-failure'
   },
   reporter: [
     [
@@ -55,7 +44,7 @@ export default defineConfig<SerenityOptions>({
       name: "chromium",
       use: {
         channel: 'chromium',
-        ...devices["Desktop Chrome"],
+        // ...devices["Desktop Chrome"],
         launchOptions: {
           args: [
             // "--no-sandbox",
@@ -68,6 +57,14 @@ export default defineConfig<SerenityOptions>({
             ] : []),
           ],
         },
+      crew: [
+        ["@serenity-js/web:Photographer", {strategy: "TakePhotosOfFailures"}],
+      ],
+      baseURL,
+      trace: "on-first-retry",
+      permissions: ['clipboard-read', 'clipboard-write'],
+      actionTimeout: 5000,
+      screenshot: 'only-on-failure',
       },
     },
     // {
