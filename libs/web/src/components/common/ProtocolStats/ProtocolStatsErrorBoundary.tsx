@@ -1,10 +1,7 @@
-import React from "react";
-import {ProtocolStatsError} from "./ProtocolStatsError";
+"use client";
 
-interface ProtocolStatsErrorBoundaryState {
-  hasError: boolean;
-  error?: Error;
-}
+import React, {useState} from "react";
+import {ProtocolStatsError} from "./ProtocolStatsError";
 
 interface ProtocolStatsErrorBoundaryProps {
   children: React.ReactNode;
@@ -16,50 +13,41 @@ interface ProtocolStatsErrorBoundaryProps {
  * Error boundary specifically for protocol stats components
  * Catches JavaScript errors and provides graceful fallback UI
  */
-export class ProtocolStatsErrorBoundary extends React.Component<
-  ProtocolStatsErrorBoundaryProps,
-  ProtocolStatsErrorBoundaryState
-> {
-  constructor(props: ProtocolStatsErrorBoundaryProps) {
-    super(props);
-    this.state = {hasError: false};
-  }
+export function ProtocolStatsErrorBoundary({
+  children,
+  fallback,
+  onError,
+}: ProtocolStatsErrorBoundaryProps) {
+  const [hasError, setHasError] = useState(false);
+  const [error, setError] = useState<Error | undefined>(undefined);
 
-  static getDerivedStateFromError(
-    error: Error
-  ): ProtocolStatsErrorBoundaryState {
-    return {hasError: true, error};
-  }
-
-  componentDidCatch(error: Error, errorInfo: React.ErrorInfo) {
-    console.error(
-      "ProtocolStats Error Boundary caught an error:",
-      error,
-      errorInfo
-    );
-
-    // Call optional error handler
-    if (this.props.onError) {
-      this.props.onError(error, errorInfo);
-    }
-  }
-
-  handleRetry = () => {
-    this.setState({hasError: false, error: undefined});
+  const handleRetry = () => {
+    setHasError(false);
+    setError(undefined);
   };
 
-  render() {
-    if (this.state.hasError) {
-      const FallbackComponent = this.props.fallback || ProtocolStatsError;
+  if (hasError) {
+    const FallbackComponent = fallback || ProtocolStatsError;
 
-      return (
-        <FallbackComponent
-          error={this.state.error}
-          onRetry={this.handleRetry}
-        />
-      );
+    return <FallbackComponent error={error} onRetry={handleRetry} />;
+  }
+
+  // Wrap children in error handling
+  try {
+    return <>{children}</>;
+  } catch (caughtError) {
+    const err = caughtError as Error;
+    console.error("ProtocolStats Error Boundary caught an error:", err);
+
+    // Call optional error handler
+    if (onError) {
+      onError(err, {} as React.ErrorInfo);
     }
 
-    return this.props.children;
+    setHasError(true);
+    setError(err);
+
+    const FallbackComponent = fallback || ProtocolStatsError;
+    return <FallbackComponent error={err} onRetry={handleRetry} />;
   }
 }

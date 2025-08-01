@@ -2,3 +2,7 @@
 export * from "./graphql-client";
 export * from "./cached-graphql-client";
 export * from "./stats-service";
+
+// Export server-side rendering utilities
+export * from "./server-stats";
+export * from "./background-refresh";

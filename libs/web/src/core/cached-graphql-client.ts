@@ -1,6 +1,6 @@
 import {GraphQLClient} from "graphql-request";
 import axios from "axios";
-import {setupCache} from "axios-cache-interceptor";
+import {setupCache, buildStorage} from "axios-cache-interceptor";
 import {SQDIndexerUrl} from "../utils/constants";
 
 /**
@@ -20,7 +20,7 @@ export class CachedGraphQLClient {
       // Cache for 5 minutes by default
       ttl: 5 * 60 * 1000,
       // Use memory storage (perfect for 4 values)
-      storage: "memory",
+      storage: buildStorage(),
       // Cache based on URL and request body
       generateKey: (req) => `${req.url}:${JSON.stringify(req.data)}`,
       // Enable debug logging in development
@@ -82,5 +82,22 @@ export class CachedGraphQLClient {
   }
 }
 
-// Export a singleton instance
-export const cachedSubsquidClient = new CachedGraphQLClient();
+// Lazy-loaded singleton instance for SSR compatibility
+let _cachedSubsquidClient: CachedGraphQLClient | null = null;
+
+export function getCachedSubsquidClient(): CachedGraphQLClient {
+  if (!_cachedSubsquidClient) {
+    _cachedSubsquidClient = new CachedGraphQLClient();
+  }
+  return _cachedSubsquidClient;
+}
+
+// Export singleton instance using getter for lazy loading
+export const cachedSubsquidClient = {
+  query: <T = any>(
+    query: string,
+    variables?: Record<string, any>
+  ): Promise<T> => getCachedSubsquidClient().query<T>(query, variables),
+  clearCache: (): void => getCachedSubsquidClient().clearCache(),
+  getCacheStats: (): any => getCachedSubsquidClient().getCacheStats(),
+};
