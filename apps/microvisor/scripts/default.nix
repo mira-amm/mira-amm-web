@@ -31,7 +31,7 @@
     kernel = {
       description = " 🎉 Fire up the Microvisor Kernel";
       exec        = ''
-        process-compose
+        process-compose up
       '';
     };
 

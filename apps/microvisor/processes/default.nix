@@ -24,7 +24,7 @@
       process-compose = {
         description = "🤖 Use the GPT LLM of your choice";
         namespace = "🧮 VIEWS";
-        disabled = false;
+        disabled = true;
         is_tty = true;
       };
     };
@@ -56,7 +56,7 @@
         };
         description = "🕹 Microgame | 4200 | microgame.mira.ly";
         namespace = "🧮 VIEWS";
-        disabled = false;
+        disabled = true;
       };
     };
 
@@ -81,7 +81,7 @@
         is_tty = true;
         ready_log_line = "Ready in";
         namespace = "🧮 VIEWS";
-        disabled = true;
+        disabled = false;
       };
     };
 

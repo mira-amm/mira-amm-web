@@ -40,6 +40,7 @@ Parameters
 "SENTIO_API_URL" "https://app.sentio.xyz/api/v1/analytics/fuellabs/mira-mainnet/sql/execute"
 "NX_VERBOSE_LOGGING" true
 "NEXT_PUBLIC_ENABLE_AUTOLOGIN" "true"
+"NEXT_PUBLIC_ENABLE_REBRAND_UI" "true"
 End
 
 Example "${1}=$2"
