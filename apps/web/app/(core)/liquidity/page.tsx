@@ -3,6 +3,7 @@ import {Positions} from "@/src/components/pages/liquidity-page/components/Positi
 import PromoBlock from "@/src/components/pages/liquidity-page/components/PromoBlock/PromoBlock";
 import {Boosts} from "@/src/components/pages/liquidity-page/components/Boosts/Boosts";
 import {BrandText} from "@/src/components/common";
+import {ProtocolStatsWithSuspense} from "@/src/components/common/ProtocolStats/ProtocolStatsSSR";
 
 import {
   LIQUIDITY_PROVIDING_DOC_URL,
@@ -13,6 +14,7 @@ import {PromoSparkle} from "@/meshwave-ui/src/components/icons";
 export default function Page() {
   return (
     <div className="flex flex-col w-full gap-y-6">
+      <ProtocolStatsWithSuspense />
       <Boosts />
       <Positions />
       <Pools />

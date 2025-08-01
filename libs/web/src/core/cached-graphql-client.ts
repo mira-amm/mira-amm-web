@@ -1,6 +1,6 @@
 import {GraphQLClient} from "graphql-request";
 import axios from "axios";
-import {setupCache, buildStorage} from "axios-cache-interceptor";
+import {setupCache, buildMemoryStorage} from "axios-cache-interceptor";
 import {SQDIndexerUrl} from "../utils/constants";
 
 /**
@@ -15,39 +15,22 @@ export class CachedGraphQLClient {
     const graphqlEndpoint =
       endpoint || process.env.NEXT_PUBLIC_SUBSQUID_ENDPOINT || SQDIndexerUrl;
 
+    console.log("GraphQL Client initialized with endpoint:", graphqlEndpoint);
+
     // Create axios instance with caching
     this.axiosInstance = setupCache(axios.create(), {
       // Cache for 5 minutes by default
       ttl: 5 * 60 * 1000,
       // Use memory storage (perfect for 4 values)
-      storage: buildStorage(),
+      storage: buildMemoryStorage(),
       // Cache based on URL and request body
       generateKey: (req) => `${req.url}:${JSON.stringify(req.data)}`,
       // Enable debug logging in development
       debug: process.env.NODE_ENV === "development",
     });
 
-    // Create GraphQL client with cached axios instance
-    this.client = new GraphQLClient(graphqlEndpoint, {
-      fetch: async (url, options) => {
-        const response = await this.axiosInstance.post(url, options?.body, {
-          headers: options?.headers,
-          // Cache this specific request for 5 minutes
-          cache: {
-            ttl: 5 * 60 * 1000,
-          },
-        });
-
-        // Convert axios response to fetch-like response
-        return {
-          ok: response.status >= 200 && response.status < 300,
-          status: response.status,
-          statusText: response.statusText,
-          json: async () => response.data,
-          text: async () => JSON.stringify(response.data),
-        } as Response;
-      },
-    });
+    // Create simple GraphQL client (remove complex caching for now)
+    this.client = new GraphQLClient(graphqlEndpoint);
   }
 
   /**
@@ -60,7 +43,6 @@ export class CachedGraphQLClient {
     try {
       return await this.client.request<T>(query, variables);
     } catch (error) {
-      console.error("GraphQL query failed:", error);
       throw new Error(
         `GraphQL query failed: ${error instanceof Error ? error.message : "Unknown error"}`
       );
@@ -71,14 +53,16 @@ export class CachedGraphQLClient {
    * Clear the cache
    */
   clearCache(): void {
-    this.axiosInstance.storage.clear();
+    if (this.axiosInstance.storage) {
+      this.axiosInstance.storage.clear();
+    }
   }
 
   /**
    * Get cache statistics
    */
   getCacheStats(): any {
-    return this.axiosInstance.storage.data;
+    return this.axiosInstance.storage?.data || {};
   }
 }
 

@@ -9,20 +9,14 @@
  */
 export const PROTOCOL_STATS_QUERY = `
   query GetProtocolStats($timestamp24h: Int, $timestamp7d: Int) {
-    pools {
-      poolTVL
-      poolAlltimeVolume
-      snapshot24hours: poolSnapshots(
-        where: { timestamp_gte: $timestamp24h }
-        orderBy: timestamp_ASC
-      ) {
-        poolHourVolume
+    pools(orderBy: tvlUSD_DESC) {
+      poolTVL: tvlUSD
+      poolAlltimeVolume: volumeUSD
+      snapshot24hours: snapshots(where: {timestamp_gt: $timestamp24h}) {
+        poolHourVolume: volumeUSD
       }
-      snapshot7days: poolSnapshots(
-        where: { timestamp_gte: $timestamp7d }
-        orderBy: timestamp_ASC
-      ) {
-        poolHourVolume
+      snapshot7days: snapshots(where: {timestamp_gt: $timestamp7d}) {
+        poolHourVolume: volumeUSD
       }
     }
   }
@@ -34,9 +28,9 @@ export const PROTOCOL_STATS_QUERY = `
  */
 export const BASIC_PROTOCOL_STATS_QUERY = `
   query GetBasicProtocolStats {
-    pools {
-      poolTVL
-      poolAlltimeVolume
+    pools(orderBy: tvlUSD_DESC) {
+      poolTVL: tvlUSD
+      poolAlltimeVolume: volumeUSD
     }
   }
 `;

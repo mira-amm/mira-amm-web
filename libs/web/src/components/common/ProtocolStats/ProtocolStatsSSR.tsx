@@ -1,6 +1,7 @@
 import {Suspense} from "react";
 import {fetchProtocolStatsWithFallback} from "../../../core/server-stats";
-import {StatCard} from "./StatCard";
+import {ProtocolStats} from "./ProtocolStats";
+import {ProtocolStatsLoading} from "./ProtocolStatsLoading";
 import type {ProtocolStatsData} from "../../../types/protocol-stats";
 
 /**

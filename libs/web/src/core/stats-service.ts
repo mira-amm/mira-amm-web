@@ -33,8 +33,6 @@ export class StatsService {
 
       return this.calculateStats(response.pools);
     } catch (error) {
-      console.error("Failed to fetch protocol stats:", error);
-
       // Fallback to basic query without time-based data
       try {
         const basicResponse = await this.querySubsquid(
@@ -44,7 +42,12 @@ export class StatsService {
 
         return this.calculateBasicStats(basicResponse.pools);
       } catch (fallbackError) {
-        console.error("Fallback query also failed:", fallbackError);
+        console.error(
+          "Protocol stats fetch failed:",
+          fallbackError instanceof Error
+            ? fallbackError.message
+            : "Unknown error"
+        );
         throw new Error("Unable to fetch protocol statistics");
       }
     }
