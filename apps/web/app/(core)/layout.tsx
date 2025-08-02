@@ -1,3 +1,4 @@
+import {Analytics} from "@vercel/analytics/next";
 import {ReactNode} from "react";
 import {clsx} from "clsx";
 import {
@@ -109,6 +110,7 @@ export default function Layout({children}: {readonly children: ReactNode}) {
             {glitchScavengerHuntEnabled && <GlitchEffects />}
           </div>
         </Providers>
+        <Analytics />
       </body>
     </html>
   );
