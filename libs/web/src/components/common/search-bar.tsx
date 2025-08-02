@@ -12,11 +12,11 @@ export const SearchBar: React.FC<{
   return (
     <div
       className={clsx(
-        "flex gap-[10px] p-[14px_12px] rounded-lg text-content-grey bg-background-secondary dark:bg-background-grey-dark",
+        "flex items-center gap-[10px] py-2 px-4 rounded-ten text-content-grey bg-background-secondary dark:bg-background-grey-dark max-w-[160px]",
         className
       )}
     >
-      <Search />
+      <Search className="w-4 h-4 flex-shrink-0" />
       <input
         type="text"
         placeholder={placeholder}
