@@ -1,7 +1,6 @@
 import {Pools} from "@/src/components/pages/liquidity-page/components/Pools/Pools";
 import {Positions} from "@/src/components/pages/liquidity-page/components/Positions/Positions";
 import PromoBlock from "@/src/components/pages/liquidity-page/components/PromoBlock/PromoBlock";
-import {Boosts} from "@/src/components/pages/liquidity-page/components/Boosts/Boosts";
 import {BrandText} from "@/src/components/common";
 
 import {
@@ -13,7 +12,6 @@ import {PromoSparkle} from "@/meshwave-ui/src/components/icons";
 export default function Page() {
   return (
     <div className="flex flex-col w-full gap-y-6">
-      <Boosts />
       <Positions />
       <Pools />
       <div className="flex flex-col gap-4 lg:flex-row lg:gap-5 w-full">
@@ -23,7 +21,7 @@ export default function Page() {
             title="Learn about providing liquidity"
             link={LIQUIDITY_PROVIDING_DOC_URL}
             linkText="Click here to see the guide"
-            background="overlay-4"
+            background="black"
           />
         </div>
         <div className="w-full lg:w-1/2">
@@ -42,7 +40,7 @@ export default function Page() {
                 microchain="Learn about Microchain Points"
               />
             }
-            background="overlay-1"
+            background="black"
           />
         </div>
       </div>

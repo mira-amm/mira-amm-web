@@ -71,7 +71,7 @@ export function Pools() {
       <div className="flex justify-between items-center">
         <p className="text-xl leading-[24px]">All Pools</p>
         <SearchBar
-          placeholder="Symbol or address..."
+          placeholder="Search"
           className=""
           value={searchInput}
           onChange={handleSearchChange}

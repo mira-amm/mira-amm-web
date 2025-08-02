@@ -264,7 +264,7 @@ const AddLiquidityDialog = ({
                     leftAlignValue="-200px"
                     poolKey={poolKey}
                     tvlValue={tvlValue}
-                    background="overlay-1"
+                    background="black"
                   />
                 </div>
               ) : (
@@ -334,12 +334,7 @@ const AddLiquidityDialog = ({
         </div>
       </div>
       {!isConnected ? (
-        <Button
-          onClick={connect}
-          disabled={isConnecting}
-          variant="secondary"
-          size="2xl"
-        >
+        <Button onClick={connect} disabled={isConnecting} size="2xl">
           Connect Wallet
         </Button>
       ) : (

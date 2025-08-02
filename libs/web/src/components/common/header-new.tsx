@@ -14,10 +14,10 @@ import {
 } from "@/src/utils/constants";
 
 import {IconButton} from "@/src/components/common";
-import {PointsIcon} from "@/meshwave-ui/icons";
+import {PointsIconSimple} from "@/meshwave-ui/icons";
 import {X} from "lucide-react";
-import {cn} from "@/src/utils/cn";
 import {ConnectWalletNew} from "./connect-wallet-new";
+import {Navigation, type NavLink} from "./navigation";
 
 const PROMO_BANNER_STORAGE_KEY = "fuel-boost-program-promo-banner-closed";
 
@@ -79,7 +79,7 @@ export function HeaderNew({
       {isPromoShown && (
         <section className="relative flex items-center justify-between px-4 py-3 gap-4 text-white text-sm lg:text-lg lg:justify-center bg-old-mira-promo-bg">
           <div className="flex items-center gap-2 mx-auto">
-            <PointsIcon className="w-[18px] h-[18px]" />
+            <PointsIconSimple className="w-[18px] h-[18px]" />
             <p>
               {getPromoTitle()}
               <Link
@@ -100,79 +100,37 @@ export function HeaderNew({
         </section>
       )}
 
-      <section className="flex justify-between items-center gap-4 px-4 py-4 lg:px-10">
+      <section className="hidden md:!flex justify-between items-center gap-4 px-4 py-4 lg:px-6">
         <div className="flex items-center gap-6 lg:gap-10 flex-1">
           <Logo />
         </div>
 
-        <nav className="hidden lg:flex gap-6 items-center mx-auto">
-          {navLinks.map(({href, label, match, external}) =>
-            external ? (
-              <a
-                key={label}
-                href={href}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="px-3 py-1 rounded-full transition hover:bg-background-grey-light text-content-tertiary"
-              >
-                {label}
-              </a>
-            ) : (
-              <Link
-                key={label}
-                href={href}
-                className={cn(
-                  "px-3 py-1 rounded-full transition hover:bg-background-grey-light text-content-tertiary",
-                  match &&
-                    "bg-background-primary text-white dark:bg-background-grey-light hover:bg-background-primary"
-                )}
-              >
-                {label}
-              </Link>
-            )
-          )}
-        </nav>
+        <div className="flex">
+          <Navigation
+            navLinks={navLinks}
+            size="small"
+            className="gap-4 mx-auto"
+          />
+        </div>
 
         <div className="flex items-center flex-1 justify-end gap-2">
-          <div className="hidden lg:flex">
-            <ConnectWalletNew />
-          </div>
+          <ConnectWalletNew size="small" />
         </div>
       </section>
 
-      <div className="lg:hidden flex flex-col pb-4">
-        <div className="pb-4 mx-auto">
-          <ConnectWalletNew />
+      <section className="flex md:hidden flex-col justify-start items-start gap-6 px-4 py-4 lg:px-6">
+        <div className="flex items-center gap-6 lg:gap-10 flex-1">
+          <Logo />
         </div>
 
-        <nav className="flex gap-2 sm:gap-6 items-center mx-auto flex-wrap justify-center">
-          {navLinks.map(({href, label, match, external}) =>
-            external ? (
-              <a
-                key={label}
-                href={href}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="px-3 py-1 rounded-full transition hover:bg-background-grey-light text-content-tertiary text-sm sm:text-base"
-              >
-                {label}
-              </a>
-            ) : (
-              <Link
-                key={label}
-                href={href}
-                className={cn(
-                  "px-3 py-1 rounded-full transition hover:bg-background-grey-light text-content-tertiary text-sm sm:text-base",
-                  match &&
-                    "bg-background-primary text-white dark:bg-background-grey-light hover:bg-background-primary"
-                )}
-              >
-                {label}
-              </Link>
-            )
-          )}
-        </nav>
-      </div>
+        <div className="flex">
+          <Navigation navLinks={navLinks} size="small" className="gap-4" />
+        </div>
+
+        <div className="flex items-center flex-1 justify-center gap-2 mx-auto">
+          <ConnectWalletNew size="small" />
+        </div>
+      </section>
     </header>
   );
 }

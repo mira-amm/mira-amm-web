@@ -12,7 +12,7 @@ export default function PromoBlock({
   title: string;
   link: string;
   linkText: string;
-  background: "overlay-4" | "overlay-1" | "gradient";
+  background: "overlay-4" | "overlay-1" | "gradient" | "black";
 }) {
   return (
     <a
@@ -27,7 +27,8 @@ export default function PromoBlock({
           background === "overlay-4" && "bg-[url('/images/overlay-4.jpg')]",
           background === "overlay-1" && "bg-[url('/images/overlay-1.jpg')]",
           background === "gradient" &&
-            "bg-[linear-gradient(96.75deg,_#BEFA15_-106.79%,_#5872FC_48.13%,_#C41CFF_168.79%)]"
+            "bg-[linear-gradient(96.75deg,_#BEFA15_-106.79%,_#5872FC_48.13%,_#C41CFF_168.79%)]",
+          background === "black" && "bg-black"
         )}
       >
         {icon}

@@ -52,7 +52,7 @@ export default function Footer() {
           </a>
         </div>
         <FeatureGuard>
-          <ModeToggle />
+          <ModeToggle className="hidden" />
         </FeatureGuard>
         <div className="flex gap-3 lg:gap-4 text-content-tertiary">
           <a href="https://github.com/mira-amm" target="_blank" rel="noopener">

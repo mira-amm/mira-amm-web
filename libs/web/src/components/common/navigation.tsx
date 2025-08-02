@@ -20,15 +20,15 @@ export function Navigation({
 }: NavigationProps) {
   const baseClasses = "flex items-center mx-auto";
   const sizeClasses = {
-    small: "gap-2 gap-6 flex-wrap justify-center pb-4",
+    small: "gap-2 gap-6 flex-wrap justify-center",
     large: "gap-6",
   };
 
   const linkBaseClasses =
     "px-3 py-1 rounded-full transition hover:bg-background-grey-light text-content-tertiary";
   const linkSizeClasses = {
-    small: "text-sm sm:text-base",
-    large: "",
+    small: "text-md",
+    large: "text-md",
   };
 
   return (

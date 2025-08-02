@@ -16,7 +16,7 @@
     NX_TUI = "false";
     NX_VERBOSE_LOGGING = "true";
     NEXT_PUBLIC_ENABLE_AUTOLOGIN = "true";
-    NEXT_PUBLIC_ENABLE_REBRAND_UI = "true";
+    NEXT_PUBLIC_ENABLE_REBRAND_UI = "false";
     NEXT_PUBLIC_ENABLE_GLITCH_SCAVENGER_HUNT = "false";
     # TERM = "xterm-256color";
     ZELLIJ_AUTO_ATTACH = "true";
