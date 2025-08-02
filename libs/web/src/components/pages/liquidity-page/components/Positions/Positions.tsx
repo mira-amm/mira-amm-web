@@ -26,7 +26,7 @@ export function Positions() {
         <p className="text-xl leading-6">Your Positions</p>
         <div className="flex flex-col items-center gap-2 rounded-ten px-4 py-7  bg-background-grey-dark border-border-secondary border-[12px] dark:border-0 dark:bg-background-grey-dark">
           <div className="flex flex-col items-center gap-4">
-            <div className="h-11 w-11 flex items-center justify-center rounded-full text-white bg-[url('/images/overlay-5.jpg')] bg-cover">
+            <div className="h-11 w-11 flex items-center justify-center rounded-full text-white bg-black bg-cover">
               <FileText />
             </div>
             <p className="text-content-tertiary">
@@ -146,7 +146,7 @@ function PositionRow({
               aprValue={aprValue}
               poolKey={poolKey}
               tvlValue={tvlValue}
-              background="overlay-9"
+              background="black"
             />
           ) : (
             aprValue

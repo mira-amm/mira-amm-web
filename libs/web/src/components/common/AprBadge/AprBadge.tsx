@@ -24,7 +24,7 @@ export function AprBadge({
   leftAlignValue?: string;
   poolKey: string;
   tvlValue: number;
-  background: "overlay-1" | "overlay-5" | "overlay-9";
+  background: "overlay-1" | "overlay-5" | "overlay-9" | "black";
 }) {
   const [isHovered, setIsHovered] = useState(false);
 
@@ -87,6 +87,7 @@ export function AprBadge({
             "bg-[url('/images/overlay-5.jpg')] bg-cover",
           background === "overlay-9" &&
             "bg-[url('/images/overlay-9.jpg')] bg-cover",
+          background === "black" && "bg-black bg-cover",
           !isRebrandEnabled &&
             "bg-black dark:bg-[linear-gradient(170deg,#262f5f_35%,#c41cff_100%)]"
         )}
@@ -97,9 +98,7 @@ export function AprBadge({
         <span
           className={clsx(
             "text-white whitespace-normal break-words font-alt",
-            small
-              ? "text-[13px] leading-[16px]"
-              : "text-base leading-[19.36px]"
+            small ? "text-[13px] leading-[16px]" : "text-base leading-[19.36px]"
           )}
         >
           {aprElement}

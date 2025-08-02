@@ -47,7 +47,7 @@ export function MobilePoolItem({poolData}: {poolData: PoolData}) {
                 aprValue={aprValue}
                 poolKey={poolKey || ""}
                 tvlValue={tvlActual}
-                background="overlay-5"
+                background="black"
               />
             </div>
           ) : (
