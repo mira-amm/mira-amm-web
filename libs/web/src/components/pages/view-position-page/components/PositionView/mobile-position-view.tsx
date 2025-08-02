@@ -126,7 +126,7 @@ export function MobilePositionView({
         title="Learn about providing liquidity"
         link="https://mirror.xyz/miraly.eth"
         linkText="Click here and check our v3 LP walkthrough"
-        background="overlay-4"
+        background="black"
       />
     </section>
   );

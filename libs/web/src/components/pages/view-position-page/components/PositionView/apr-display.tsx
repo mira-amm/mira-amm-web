@@ -25,7 +25,7 @@ export function AprDisplay({pool}: {pool: PoolId}) {
             poolKey={poolKey}
             tvlValue={tvlValue}
             small
-            background="overlay-1"
+            background="black"
           />
         </div>
       ) : (

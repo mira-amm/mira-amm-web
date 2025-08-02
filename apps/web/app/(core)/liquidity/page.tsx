@@ -23,7 +23,7 @@ export default function Page() {
             title="Learn about providing liquidity"
             link={LIQUIDITY_PROVIDING_DOC_URL}
             linkText="Click here to see the guide"
-            background="overlay-4"
+            background="black"
           />
         </div>
         <div className="w-full lg:w-1/2">
@@ -42,7 +42,7 @@ export default function Page() {
                 microchain="Learn about Microchain Points"
               />
             }
-            background="overlay-1"
+            background="black"
           />
         </div>
       </div>
