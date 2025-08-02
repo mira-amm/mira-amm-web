@@ -100,12 +100,12 @@ export function HeaderNew({
         </section>
       )}
 
-      <section className="flex justify-between items-center gap-4 px-4 py-4 lg:px-6">
+      <section className="hidden md:!flex justify-between items-center gap-4 px-4 py-4 lg:px-6">
         <div className="flex items-center gap-6 lg:gap-10 flex-1">
           <Logo />
         </div>
 
-        <div className="hidden md:flex!">
+        <div className="flex">
           <Navigation
             navLinks={navLinks}
             size="small"
@@ -113,24 +113,24 @@ export function HeaderNew({
           />
         </div>
 
-        <div className="hidden md:flex! items-center flex-1 justify-end gap-2">
+        <div className="flex items-center flex-1 justify-end gap-2">
           <ConnectWalletNew size="small" />
         </div>
       </section>
 
-      <div className="flex md:hidden flex-col pb-4 gap-6">
-        <div className="sm:pb-4">
-          <Navigation
-            navLinks={navLinks}
-            size="small"
-            className="flex gap-2 sm:gap-6 items-center mx-auto flex-wrap justify-center"
-          />
+      <section className="flex md:hidden flex-col justify-start items-start gap-6 px-4 py-4 lg:px-6">
+        <div className="flex items-center gap-6 lg:gap-10 flex-1">
+          <Logo />
         </div>
 
-        <div className="mx-auto">
+        <div className="flex">
+          <Navigation navLinks={navLinks} size="small" className="gap-4" />
+        </div>
+
+        <div className="flex items-center flex-1 justify-center gap-2 mx-auto">
           <ConnectWalletNew size="small" />
         </div>
-      </div>
+      </section>
     </header>
   );
 }
