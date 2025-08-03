@@ -1,4 +1,5 @@
 import {cn} from "@/src/utils/cn";
+import Link from "next/link";
 
 export interface NavLink {
   href: string;
@@ -45,7 +46,7 @@ export function Navigation({
             {label}
           </a>
         ) : (
-          <a
+          <Link
             key={label}
             href={href}
             className={cn(
@@ -56,7 +57,7 @@ export function Navigation({
             )}
           >
             {label}
-          </a>
+          </Link>
         )
       )}
     </nav>

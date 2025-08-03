@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 export const MainInfo: React.FC<{
   title: string;
   description: string;
@@ -11,9 +13,9 @@ export const MainInfo: React.FC<{
       </h2>
       <p className="text-[18px] leading-[24px] lg:text-xl lg:leading-[28px] m-0 lg:mb-0 text-center font-normal text-content-dimmed-light w-[350px] mx-auto mb-[28px] lg:mb-0">
         {description}
-        <a href="/" className="text-accent-primary underline">
+        <Link href="/" className="text-accent-primary underline">
           {link}
-        </a>
+        </Link>
       </p>
       {children}
     </>

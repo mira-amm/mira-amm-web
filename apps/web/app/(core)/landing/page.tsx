@@ -28,6 +28,7 @@ import {
 import {DiscordLink, XLink} from "@/src/utils/constants";
 import {Swap} from "@/src/components/common/Swap/Swap";
 import {Button} from "@/meshwave-ui/Button";
+import Link from "next/link";
 
 function HeroSection() {
   return (
@@ -43,11 +44,11 @@ function HeroSection() {
           aria-label="Primary actions"
           className="flex flex-col items-center gap-3 w-full max-lg:max-w-md lg:flex-row"
         >
-          <a href="/swap" className="w-full">
+          <Link href="/swap" className="w-full">
             <Button className="h-14" block>
               Launch App
             </Button>
-          </a>
+          </Link>
           <a
             className="w-full"
             href="https://mirror.xyz/miraly.eth/gIYyYWmf4_ofBY3mb9-AwcnwIfe4-1iK6kdUlJMjfn8"
