@@ -2,79 +2,57 @@
 import {useIsConnected} from "@fuels/react";
 import {FeatureGuard} from "@/src/components/common";
 import {Swap} from "@/src/components/common/Swap/Swap";
-
-const SVGComponent = (props: React.SVGProps<SVGSVGElement>) => (
-  <svg
-    width={800}
-    height={300}
-    viewBox="0 0 800 300"
-    xmlns="http://www.w3.org/2000/svg"
-    {...props}
-  >
-    <defs>
-      <radialGradient
-        id="grad-green"
-        cx={0.5}
-        cy={0.5}
-        r={0.5}
-        gradientUnits="objectBoundingBox"
-      >
-        <stop offset="0%" stopColor="#7EEAC0" stopOpacity={1} />
-        <stop offset="80%" stopColor="#7EEAC0" stopOpacity={0} />
-      </radialGradient>
-      <radialGradient
-        id="grad-red"
-        cx={0.5}
-        cy={0.5}
-        r={0.5}
-        gradientUnits="objectBoundingBox"
-      >
-        <stop offset="0%" stopColor="#FF7A7A" stopOpacity={1} />
-        <stop offset="80%" stopColor="#FF7A7A" stopOpacity={0} />
-      </radialGradient>
-      <radialGradient
-        id="grad-blue"
-        cx={0.5}
-        cy={0.5}
-        r={0.5}
-        gradientUnits="objectBoundingBox"
-      >
-        <stop offset="0%" stopColor="#93AFFF" stopOpacity={1} />
-        <stop offset="80%" stopColor="#93AFFF" stopOpacity={0} />
-      </radialGradient>
-    </defs>
-    <circle cx={250} cy={150} r={200} fill="url(#grad-green)" />
-    <circle cx={400} cy={150} r={200} fill="url(#grad-red)" />
-    <circle cx={550} cy={150} r={200} fill="url(#grad-blue)" />
-  </svg>
-);
+import {useFadeAnimation} from "@/src/hooks/useFadeAnimation";
+import {BackgroundGlow} from "@/src/components/common/BackgroundGlow/BackgroundGlow";
+import {AnimatedText} from "@/src/components/common/AnimatedText/AnimatedText";
+import {AnimatePresence} from "framer-motion";
 
 export default function Page() {
   const {isConnected} = useIsConnected();
+  const {isVisible: isTitleVisible, shouldRender: shouldRenderTitle} =
+    useFadeAnimation(!isConnected, 200);
+  const {
+    isVisible: isDescriptionVisible,
+    shouldRender: shouldRenderDescription,
+  } = useFadeAnimation(!isConnected, 200);
+  const {isVisible: isSVGVisible, shouldRender: shouldRenderSVG} =
+    useFadeAnimation(isConnected, 200);
+
   return (
-    <div className="flex flex-1 flex-col items-center w-full md:justify-center">
+    <div className="flex flex-1 flex-col items-center w-full lg:justify-center lg:min-h-[calc(100vh-120px)]">
       <div className="w-full max-w-lg px-4 relative">
-        <section className="space-y-10 mt-2">
-          {!isConnected && (
-            <p
-              className={`text-5xl lg:text-6xl margin-auto text-center font-serif`}
-            >
-              Trade like a predator.
-            </p>
-          )}
-          <Swap />
-          {!isConnected && (
-            <p className="text-content-tertiary text-md text-center">
-              The DLM-2000 is the biggest AMM on the Fuel Network. Earn rewards
-              LPing and make lightning fast swaps.
-            </p>
-          )}
+        <section className="space-y-10">
+          <AnimatedText
+            isVisible={isTitleVisible}
+            shouldRender={shouldRenderTitle}
+            className="text-5xl lg:text-6xl margin-auto text-center font-serif"
+          >
+            Trade like a predator.
+          </AnimatedText>
+
+          <div className="relative">
+            <Swap />
+            <FeatureGuard>
+              <AnimatePresence mode="wait">
+                {shouldRenderSVG && (
+                  <BackgroundGlow
+                    isVisible={isSVGVisible}
+                    shouldRender={shouldRenderSVG}
+                  />
+                )}
+              </AnimatePresence>
+            </FeatureGuard>
+          </div>
+
+          <AnimatedText
+            isVisible={isDescriptionVisible}
+            shouldRender={shouldRenderDescription}
+            className="text-content-tertiary text-md text-center"
+          >
+            The DLM-2000 is the biggest AMM on the Fuel Network. Earn rewards
+            LPing and make lightning fast swaps.
+          </AnimatedText>
         </section>
-        <FeatureGuard>
-          {isConnected && (
-            <SVGComponent className="absolute w-[650px] -bottom-25 -left-18 -z-1" />
-          )}
-        </FeatureGuard>
       </div>
     </div>
   );
