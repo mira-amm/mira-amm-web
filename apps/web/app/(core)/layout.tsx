@@ -9,19 +9,12 @@ import {
   VT323,
   Instrument_Serif,
 } from "next/font/google";
-import {useIsRebrandEnabled} from "@/src/hooks/useIsRebrandEnabled";
-
 import {metadata} from "./metadata";
 
 import "../styles.css";
 import "@/meshwave-ui/global.css";
 
-import {Providers} from "@/src/core/providers/Providers";
-import {useAnimationStore} from "@/src/stores/useGlitchScavengerHunt";
-import GlitchEffects from "@/src/components/common/GlitchEffects/GlitchEffects";
-import {FeatureGuard, Header, HeaderNew} from "@/src/components/common";
-import Footer from "@/src/components/common/Footer/Footer";
-import {getBrandText} from "@/src/utils/brandName";
+import {LayoutBody} from "@/src/components/common/LayoutBody";
 
 const prompt = Prompt({
   subsets: ["latin"],
@@ -62,20 +55,8 @@ export const instrumentSerif = Instrument_Serif({
 export {metadata};
 
 export default function Layout({children}: {readonly children: ReactNode}) {
-  const glitchScavengerHuntEnabled = useAnimationStore.getState().masterEnabled;
-  const rebrandEnabled = useIsRebrandEnabled();
-  const brandText = getBrandText();
-
-  const fontThemeVars = rebrandEnabled
-    ? {
-        "--font-alt": "var(--font-cartograph-cf)",
-        "--font-sans": "var(--font-inter-variable)",
-        "--font-serif": "var(--font-instrument-serif)",
-      }
-    : {
-        "--font-alt": "var(--font-inter)",
-        "--font-sans": "var(--font-inter)",
-      };
+  // Get rebrand status for html attributes (server-side safe)
+  const rebrandEnabled = process.env.NEXT_PUBLIC_ENABLE_REBRAND_UI === "true";
 
   return (
     <html
@@ -85,33 +66,20 @@ export default function Layout({children}: {readonly children: ReactNode}) {
       suppressHydrationWarning
     >
       <head>
-        <link rel="preload" as="image" href="/images/loader.webp" />
+        <link rel="preload" as="image" href="images/loader.webp" />
         <link rel="stylesheet" href="https://use.typekit.net/joy1wau.css" />
       </head>
-      <body
-        className={clsx(
-          inter.className,
-          inter.variable,
-          prompt.variable,
-          jetBrainsMono.variable,
-          ibmPlexMono.variable,
-          vt323.variable,
-          instrumentSerif.variable
-        )}
-        style={fontThemeVars}
+      <LayoutBody
+        inter={inter}
+        prompt={prompt}
+        jetBrainsMono={jetBrainsMono}
+        ibmPlexMono={ibmPlexMono}
+        vt323={vt323}
+        instrumentSerif={instrumentSerif}
       >
-        <Providers>
-          <div className="flex flex-col min-h-screen relative">
-            <FeatureGuard fallback={<Header />}>
-              <HeaderNew />
-            </FeatureGuard>
-            <main className="flex-1 flex flex-col">{children}</main>
-            <Footer />
-            {glitchScavengerHuntEnabled && <GlitchEffects />}
-          </div>
-        </Providers>
-        <Analytics />
-      </body>
+        {children}
+      </LayoutBody>
+      <Analytics />
     </html>
   );
 }
