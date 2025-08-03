@@ -4,7 +4,7 @@ export * from "./useBoostedApr";
 export {useSwapRouter, TradeState} from "./useSwapRouter";
 export {TradeType} from "./get-swap-quotes-batch";
 export {useIsClient} from "./useIsClient";
-export {useIsRebrandEnabled} from "./useIsRebrandEnabled";
+export {getIsRebrandEnabled} from "../utils/isRebrandEnabled";
 export * from "../utils/brandName";
 export {useVerifiedAssets} from "./useVerifiedAssets";
 export {useAddLiquidity} from "./useAddLiquidity";

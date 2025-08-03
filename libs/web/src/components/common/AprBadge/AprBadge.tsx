@@ -8,7 +8,7 @@ import {Loader} from "@/src/components/common";
 import {EPOCH_NUMBER} from "@/src/utils/constants";
 import {AprIcon, PointsIconSimple} from "@/meshwave-ui/icons";
 import {cn} from "@/src/utils/cn";
-import {useIsRebrandEnabled} from "@/src/hooks";
+import {getIsRebrandEnabled} from "@/src/utils/isRebrandEnabled";
 import {BrandText} from "@/src/components/common";
 
 export function AprBadge({
@@ -67,7 +67,7 @@ export function AprBadge({
     aprElement = boostedApr ? <>{showApr}%</> : <Loader color="gray" />;
   }
 
-  const isRebrandEnabled = useIsRebrandEnabled();
+  const rebrandEnabled = getIsRebrandEnabled();
 
   return (
     <div className="flex items-center gap-[5px]">
@@ -88,7 +88,7 @@ export function AprBadge({
           background === "overlay-9" &&
             "bg-[url('/images/overlay-9.jpg')] bg-cover",
           background === "black" && "bg-black bg-cover",
-          !isRebrandEnabled &&
+          !rebrandEnabled &&
             "bg-black dark:bg-[linear-gradient(170deg,#262f5f_35%,#c41cff_100%)]"
         )}
       >

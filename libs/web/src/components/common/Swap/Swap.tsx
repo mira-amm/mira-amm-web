@@ -11,6 +11,7 @@ import {
 } from "fuels";
 import {useConnectUI, useIsConnected} from "@fuels/react";
 import {PoolId} from "mira-dex-ts";
+import {getIsRebrandEnabled} from "@/src/utils/isRebrandEnabled";
 
 import {Button} from "@/meshwave-ui/Button";
 
@@ -52,7 +53,6 @@ import {
   useAssetPrice,
   TradeState,
   useInitialSwapState,
-  useIsRebrandEnabled,
 } from "@/src/hooks";
 
 import {useAnimationStore} from "@/src/stores/useGlitchScavengerHunt";
@@ -689,7 +689,7 @@ export function Swap({isWidget}: {isWidget?: boolean}) {
     txCostPending,
   ]);
 
-  const isRebrandingEnabled = useIsRebrandEnabled();
+  const isRebrandingEnabled = getIsRebrandEnabled();
 
   return !isClient ? (
     <div className="flex justify-center items-center gap-3 lg:gap-4">

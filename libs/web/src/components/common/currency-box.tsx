@@ -8,9 +8,10 @@ import {Coin, FeatureGuard, TextButton} from "@/src/components/common";
 
 import {CurrencyBoxMode} from "@/src/components/common/Swap/Swap";
 import {MinEthValueBN} from "@/src/utils/constants";
-import {useAssetMetadata, useIsRebrandEnabled} from "@/src/hooks";
+import {useAssetMetadata} from "@/src/hooks";
 import fiatValueFormatter from "@/src/utils/abbreviateNumber";
 import {cn} from "@/src/utils/cn";
+import {getIsRebrandEnabled} from "@/src/utils/isRebrandEnabled";
 
 export function CurrencyBox({
   value,
@@ -73,14 +74,14 @@ export function CurrencyBox({
       ? fiatValueFormatter(numericValue * usdRate!)
       : null;
 
-  const isRebrandEnabled = useIsRebrandEnabled();
+  const rebrandEnabled = getIsRebrandEnabled();
 
   return (
     <div
       className={cn(
         "flex flex-col gap-2.5 rounded-ten border border-transparent bg-background-tertiary dark:bg-background-secondary p-4",
         className,
-        isRebrandEnabled
+        rebrandEnabled
           ? "focus-within:border-black"
           : "focus-within:border-accent-secondary"
       )}
@@ -137,7 +138,9 @@ export function CurrencyBox({
       </div>
 
       <div className="min-h-[16px] lg:min-h-[18px] flex justify-between items-center text-content-tertiary dark:text-content-tertiary font-alt">
-        <p className="text-sm leading-4 font-alt">{usdValue !== null && usdValue}</p>
+        <p className="text-sm leading-4 font-alt">
+          {usdValue !== null && usdValue}
+        </p>
         {balance.gt(0) && (
           <span className="text-sm leading-4">
             Balance: {balanceValue}{" "}

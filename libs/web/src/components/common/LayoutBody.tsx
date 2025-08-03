@@ -1,7 +1,6 @@
 "use client";
 import {ReactNode} from "react";
 import {clsx} from "clsx";
-import {useIsRebrandEnabled} from "@/src/hooks/useIsRebrandEnabled";
 import {getBrandText} from "@/src/utils/brandName";
 import {useAnimationStore} from "@/src/stores/useGlitchScavengerHunt";
 import {Providers} from "@/src/core/providers/Providers";
@@ -13,6 +12,7 @@ import {
 } from "@/src/components/common";
 import Footer from "@/src/components/common/Footer/Footer";
 import GlitchEffects from "@/src/components/common/GlitchEffects/GlitchEffects";
+import {getIsRebrandEnabled} from "@/src/utils/isRebrandEnabled";
 
 interface LayoutBodyProps {
   children: ReactNode;
@@ -34,8 +34,9 @@ export const LayoutBody = ({
   instrumentSerif,
 }: LayoutBodyProps) => {
   const glitchScavengerHuntEnabled = useAnimationStore.getState().masterEnabled;
-  const rebrandEnabled = useIsRebrandEnabled();
   const brandText = getBrandText();
+
+  const rebrandEnabled = getIsRebrandEnabled();
 
   const fontThemeVars = rebrandEnabled
     ? ({

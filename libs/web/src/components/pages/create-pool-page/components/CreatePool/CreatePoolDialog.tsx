@@ -27,9 +27,9 @@ import {
   useAssetMetadata,
   useCheckActiveNetwork,
   useBalances,
-  useIsRebrandEnabled,
 } from "@/src/hooks";
 import {cn} from "@/src/utils/cn";
+import {getIsRebrandEnabled} from "@/src/utils/isRebrandEnabled";
 
 export function CreatePoolDialog({
   setPreviewData,
@@ -232,7 +232,7 @@ export function CreatePoolDialog({
     );
   };
 
-  const isRebrandEnabled = useIsRebrandEnabled();
+  const rebrandEnabled = getIsRebrandEnabled();
 
   return (
     <>
@@ -253,7 +253,7 @@ export function CreatePoolDialog({
               className={cn(
                 "flex flex-col items-start w-full rounded-md px-3 py-3 gap-2 bg-background-secondary text-content-dimmed-light cursor-pointer",
                 !isStablePool && "text-content-primary border",
-                !isStablePool && isRebrandEnabled
+                !isStablePool && rebrandEnabled
                   ? "border-black"
                   : "border-accent-primary"
               )}
@@ -272,7 +272,7 @@ export function CreatePoolDialog({
                 "flex flex-col items-start w-full rounded-md px-3 py-3 gap-2 bg-background-secondary text-content-dimmed-light cursor-pointer",
                 isStablePool &&
                   "text-content-primary border-accent-primary border",
-                isStablePool && isRebrandEnabled
+                isStablePool && rebrandEnabled
                   ? "border-black"
                   : "border-accent-primary"
               )}
