@@ -5,24 +5,25 @@ import {useRouter} from "next/navigation";
 import CoinPair from "@/src/components/common/CoinPair/CoinPair";
 import {Button} from "@/meshwave-ui/Button";
 import {Divider} from "@/meshwave-ui/divider";
+import {cn} from "@/shadcn-ui/utils";
 
 export function ResponsivePools({
   poolsData,
   orderBy,
   handleSort,
+  className,
 }: {
   poolsData: PoolData[] | undefined;
   orderBy: string;
   handleSort: (key: string) => void;
+  className?: string;
 }) {
   if (!poolsData) {
     return null;
   }
 
   return (
-    // outer container
-    // gap 22px
-    <div className="gap-5 flex flex-col">
+    <div className={cn("gap-5 flex flex-col", className)}>
       {poolsData.map((poolData) => {
         return <PoolItem key={poolData.id} poolData={poolData} />;
       })}
