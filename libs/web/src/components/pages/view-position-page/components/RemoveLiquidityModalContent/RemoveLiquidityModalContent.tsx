@@ -10,7 +10,7 @@ import React, {
   useState,
 } from "react";
 import CoinPair from "@/src/components/common/CoinPair/CoinPair";
-import {useDebounceCallback} from "usehooks-ts";
+import {useDebounceCallback, useDocumentTitle} from "usehooks-ts";
 import {useAssetMetadata} from "@/src/hooks";
 import {B256Address} from "fuels";
 import {Info} from "lucide-react";
@@ -58,6 +58,11 @@ const RemoveLiquidityModalContent = ({
   const [displayValue, setDisplayValue] = useState(liquidityValue);
   const coinAMetadata = useAssetMetadata(coinA);
   const coinBMetadata = useAssetMetadata(coinB);
+
+  // HACK: This is a bit of an ugly way to set document titles
+  useDocumentTitle(
+    `Remove Liquidity:  ${coinAMetadata.symbol}/${coinBMetadata.symbol}`
+  );
 
   const sliderRef = useRef<HTMLInputElement>(null);
   const debouncedSetValue = useDebounceCallback(setLiquidityValue, 500);

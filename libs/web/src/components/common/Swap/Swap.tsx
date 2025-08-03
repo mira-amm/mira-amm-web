@@ -53,6 +53,7 @@ import {
   useAssetPrice,
   TradeState,
   useInitialSwapState,
+  useDocumentTitle,
 } from "@/src/hooks";
 
 import {useAnimationStore} from "@/src/stores/useGlitchScavengerHunt";
@@ -269,6 +270,9 @@ export function Swap({isWidget}: {isWidget?: boolean}) {
 
   const sellMetadata = useAssetMetadata(swapState.sell.assetId);
   const buyMetadata = useAssetMetadata(swapState.buy.assetId);
+
+  // HACK: This is a bit of an ugly way to set document titles
+  useDocumentTitle(`Swap:  ${sellMetadata.symbol} to ${buyMetadata.symbol}`);
 
   const isValidNetwork = useCheckActiveNetwork();
   const {
