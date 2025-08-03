@@ -60,26 +60,36 @@ export function Pools() {
 
   return (
     <section className="flex flex-col gap-[14px]">
-      <div className="flex justify-end">
-        {isConnected && (
-          <Link href="/liquidity/create-pool">
-            <Button className="mobileOnly w-[177px]">Create Pool</Button>
-          </Link>
-        )}
-      </div>
+      {/* Mobile: Title and Button same line, search bar below full width*/}
+      {/* Desktop: Title and search bar same line space between mobile search bar hidden*/}
 
-      <div className="flex justify-between items-center">
-        <p className="text-xl leading-[24px]">All Pools</p>
+      <div className="flex flex-col md:flex-row justify-between items-center gap-5">
+        <div className="flex flex-row justify-between items-center w-full">
+          <p className="text-xl leading-[24px] self-start">All Pools</p>
+          <div className="flex justify-end md:hidden">
+            {isConnected && (
+              <Link href="/liquidity/create-pool">
+                <Button className="mobileOnly w-[177px]">Create Pool</Button>
+              </Link>
+            )}
+          </div>
+        </div>
         <SearchBar
+          className="w-full md:w-auto"
           placeholder="Search"
-          className=""
           value={searchInput}
           onChange={handleSearchChange}
         />
       </div>
 
-      <MobilePools poolsData={data} orderBy={orderBy} handleSort={handleSort} />
+      <MobilePools
+        className="md:hidden"
+        poolsData={data}
+        orderBy={orderBy}
+        handleSort={handleSort}
+      />
       <DesktopPools
+        className="hidden md:block"
         poolsData={data}
         orderBy={orderBy}
         handleSort={handleSort}
@@ -98,7 +108,9 @@ export function Pools() {
 
       {data && data.length > 0 && (
         <div className="flex justify-center items-center lg:justify-between lg:items-center">
-          <p className={clsx("desktopOnly", "text-sm")}>
+          <p
+            className={clsx("desktopOnly", "text-sm", "text-content-tertiary")}
+          >
             Showing {data.length} out of {totalCount} pools...
           </p>
           <Pagination

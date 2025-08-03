@@ -140,10 +140,10 @@ export function Positions() {
         const path = `/liquidity/position?pool=${poolKey}`;
 
         return (
-          <Link href={path} className="block">
-            <div className="col-span-3 md:col-span-1 flex lg:justify-end">
-              <Button variant="outline">Manage Position</Button>
-            </div>
+          <Link href={path} className="block w-full">
+            <Button variant="outline" className="w-full md:w-fit">
+              Manage Position
+            </Button>
           </Link>
         );
       },
