@@ -123,11 +123,12 @@ export function DesktopPools({
   ];
 
   return (
-    <div>
+    <div className="hidden md:flex! w-full">
       <DataTable
         data={poolsData}
         columns={columns}
         emptyMessage="No pools available"
+        className="w-full"
       />
     </div>
   );
