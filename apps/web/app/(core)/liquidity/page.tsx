@@ -1,7 +1,9 @@
+"use client";
 import {Pools} from "@/src/components/pages/liquidity-page/components/Pools/Pools";
 import {Positions} from "@/src/components/pages/liquidity-page/components/Positions/Positions";
 import PromoBlock from "@/src/components/pages/liquidity-page/components/PromoBlock/PromoBlock";
 import {BrandText} from "@/src/components/common";
+import {ProtocolStatsContainer} from "@/src/components/common/ProtocolStats/ProtocolStatsContainer";
 
 import {
   LIQUIDITY_PROVIDING_DOC_URL,
@@ -12,6 +14,7 @@ import {PromoSparkle} from "@/meshwave-ui/src/components/icons";
 export default function Page() {
   return (
     <div className="flex flex-col w-full gap-y-6">
+      <ProtocolStatsContainer />
       <Positions />
       <Pools />
       <div className="flex flex-col gap-4 lg:flex-row lg:gap-5 w-full">

@@ -45,3 +45,4 @@ export {triggerClassAnimation} from "./GlitchEffects/ClassAnimationTrigger";
 export {TransactionsHistory} from "./TransactionsHistory/TransactionsHistory";
 export {DisconnectMobile} from "./ConnectButton/DisconnectMobile";
 export {ClientSplashWrapper} from "./SplashScreen";
+export * from "./ProtocolStats";
