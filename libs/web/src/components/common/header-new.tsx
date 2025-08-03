@@ -100,7 +100,7 @@ export function HeaderNew({
         </section>
       )}
 
-      <section className="flex flex-col py-7 gap-7 lg:pt-0 lg:flex-row justify-between items-start lg:items-center lg:gap-4 px-4 lg:py-4 lg:px-6">
+      <section className="flex flex-col py-7 gap-7 lg:pt-0 lg:flex-row justify-between items-center lg:gap-4 px-4 lg:py-4 lg:px-6">
         <div className="flex items-center gap-6 lg:gap-10 flex-1">
           <Logo />
         </div>
