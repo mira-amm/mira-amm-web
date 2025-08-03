@@ -20,7 +20,7 @@ export function Navigation({
 }: NavigationProps) {
   const baseClasses = "flex items-center mx-auto";
   const sizeClasses = {
-    small: "gap-2 gap-6 flex-wrap justify-center",
+    small: "gap-2 gap-6 justify-center",
     large: "gap-6",
   };
 
