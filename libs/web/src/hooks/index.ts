@@ -53,3 +53,4 @@ export {useRoutablePools} from "./useRoutablePools";
 export {useRemoveLiquidity} from "./useRemoveLiquidity";
 export {useWalletTransactions} from "./useWalletTransactions";
 export {usePreviewAddLiquidity} from "./usePreviewAddLiquidity";
+export {useDocumentTitle} from "./useDocumentTitle";

@@ -9,7 +9,7 @@ import {Button} from "@/meshwave-ui/Button";
 import {BN, bn} from "fuels";
 import {useConnectUI, useIsConnected} from "@fuels/react";
 import {PoolId} from "mira-dex-ts";
-import {useDebounceCallback} from "usehooks-ts";
+import {useDebounceCallback, useDocumentTitle} from "usehooks-ts";
 import {clsx} from "clsx";
 
 import CoinInput from "@/src/components/pages/add-liquidity-page/components/CoinInput/CoinInput";
@@ -72,6 +72,11 @@ const AddLiquidityDialog = ({
 
   const asset0Metadata = useAssetMetadata(poolId[0].bits);
   const asset1Metadata = useAssetMetadata(poolId[1].bits);
+
+  // HACK: This is a bit of an ugly way to set document titles
+  useDocumentTitle(
+    `Add Liquidity:  ${asset0Metadata.symbol}/${asset1Metadata.symbol}`
+  );
 
   const isFirstToken = activeAsset === poolId[0].bits;
 
