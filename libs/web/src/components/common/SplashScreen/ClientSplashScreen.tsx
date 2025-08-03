@@ -2,7 +2,7 @@
 import {useEffect, useState, useRef} from "react";
 import {motion, AnimatePresence} from "framer-motion";
 import {getBrandText} from "@/src/utils/brandName";
-import {useIsRebrandEnabled} from "@/src/hooks/useIsRebrandEnabled";
+import {getIsRebrandEnabled} from "@/src/utils/isRebrandEnabled";
 
 const MAX_SPLASH_DURATION = 2000; // maximum time in splash page
 const LAST_FRAME_DURATION = 200; // How long to pause on last frame
@@ -14,7 +14,7 @@ export const ClientSplashScreen = () => {
   const [videoError, setVideoError] = useState(false);
   const [isFading, setIsFading] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
-  const rebrandEnabled = useIsRebrandEnabled();
+  const rebrandEnabled = getIsRebrandEnabled();
   const brandText = getBrandText();
 
   useEffect(() => {

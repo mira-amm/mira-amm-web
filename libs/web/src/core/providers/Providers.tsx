@@ -16,7 +16,7 @@ import {FuelProviderWrapper} from "@/src/core/providers/FuelProviderWrapper";
 import {DisclaimerWrapper} from "@/src/core/providers/DisclaimerWrapper";
 import {Loader} from "@/src/components/common";
 import {ThemeProvider} from "./theme-provider";
-import {useIsRebrandEnabled} from "@/src/hooks/useIsRebrandEnabled";
+import {getIsRebrandEnabled} from "@/src/utils/isRebrandEnabled";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -51,7 +51,7 @@ const persistOptions: PersistQueryClientOptions = {
 };
 
 export function Providers({children}: {children: ReactNode}) {
-  const rebrandEnabled = useIsRebrandEnabled();
+  const rebrandEnabled = getIsRebrandEnabled();
 
   return (
     <PersistQueryClientProvider

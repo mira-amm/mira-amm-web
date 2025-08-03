@@ -13,8 +13,9 @@ import {DesktopPools} from "@/src/components/pages/liquidity-page/components/Poo
 import {SearchBar} from "@/src/components/common";
 import Pagination from "@/src/components/common/Pagination/Pagination";
 import {DEFAULT_PAGE} from "@/src/hooks/usePoolsData";
-import {useDebounce, useIsRebrandEnabled, usePoolsData} from "@/src/hooks";
+import {useDebounce, usePoolsData} from "@/src/hooks";
 import {LoaderCircle} from "lucide-react";
+import {getIsRebrandEnabled} from "@/src/utils/isRebrandEnabled";
 import LoaderBar from "@/src/components/common/loader-bar";
 
 export function Pools() {
@@ -56,7 +57,7 @@ export function Pools() {
 
   const handlePageChange = (page: number) => setQueryVariables({page: page});
 
-  const isRebrandingEnabled = useIsRebrandEnabled();
+  const isRebrandingEnabled = getIsRebrandEnabled();
 
   return (
     <section className="flex flex-col gap-[14px]">

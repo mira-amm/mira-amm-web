@@ -7,7 +7,7 @@ import defaultImage from "@/assets/unknown-asset.svg";
 import {
   useWalletTransactions,
   useFormattedAddress,
-  useIsRebrandEnabled,
+  getIsRebrandEnabled,
 } from "@/src/hooks";
 import {FuelAppUrl} from "@/src/utils/constants";
 import {SkeletonLoader} from "@/web/src/components/common";
@@ -21,7 +21,7 @@ export const TransactionsHistory = forwardRef<
 >(function TransactionsHistory({onClose, isOpened}, ref) {
   const {account} = useAccount();
   const {isConnected} = useIsConnected();
-  const isRebrandEnabled = useIsRebrandEnabled();
+  const rebrandEnabled = getIsRebrandEnabled();
   const formattedAddress = useFormattedAddress(account);
   const walletAddress = useMemo(() => {
     return isConnected ? formattedAddress : "Connect Wallet";
@@ -39,13 +39,13 @@ export const TransactionsHistory = forwardRef<
     <div
       className={
         isOpened
-          ? `fixed top-0 left-0 w-screen h-screen ${isRebrandEnabled ? "bg-black/20" : "bg-black/35"} backdrop-blur-sm z-[100]`
+          ? `fixed top-0 left-0 w-screen h-screen ${rebrandEnabled ? "bg-black/20" : "bg-black/35"} backdrop-blur-sm z-[100]`
           : "absolute top-5 left-1/2"
       }
     >
       <div
         className={`${
-          isRebrandEnabled
+          rebrandEnabled
             ? "bg-background-secondary border border-border-secondary dark:border-background-primary shadow-lg"
             : "bg-background-grey-dark border-border-secondary border-[12px] dark:border-0 dark:bg-background-primary"
         } flex flex-col gap-6 fixed top-[72px] right-0 h-[calc(100vh-197px)] w-full max-w-[472px] px-5 py-4 z-[200] transition-transform duration-300 ease-in-out overflow-y-auto overflow-x-hidden ${isOpened ? "translate-x-0" : "translate-x-full"} lg:rounded-xl`}
@@ -53,22 +53,22 @@ export const TransactionsHistory = forwardRef<
       >
         <div className="flex justify-between items-center">
           <h2
-            className={`text-xl leading-6 ${isRebrandEnabled ? " text-content-primary" : "font-normal"}`}
+            className={`text-xl leading-6 ${rebrandEnabled ? " text-content-primary" : "font-normal"}`}
           >
             Transactions History
           </h2>
           <button
             type="button"
             onClick={onClose}
-            className={`hover:opacity-65 cursor-pointer ${isRebrandEnabled ? "text-content-tertiary hover:text-content-primary transition-colors" : ""}`}
+            className={`hover:opacity-65 cursor-pointer ${rebrandEnabled ? "text-content-tertiary hover:text-content-primary transition-colors" : ""}`}
           >
-            <X size={isRebrandEnabled ? 20 : 24} />
+            <X size={rebrandEnabled ? 20 : 24} />
           </button>
         </div>
 
         <div
           className={`flex flex-col gap-5 p-3 ${
-            isRebrandEnabled
+            rebrandEnabled
               ? "rounded-xl bg-gradient-to-br from-accent-primary/10 to-accent-primary/5 border border-accent-primary/20"
               : "rounded-lg bg-gradient-to-br from-[#663e92] to-[#29294e]"
           }`}
@@ -77,13 +77,13 @@ export const TransactionsHistory = forwardRef<
             <img
               src="/images/avatar.png"
               alt="avatar"
-              className={isRebrandEnabled ? "w-8 h-8 rounded-full" : "w-8 h-8"}
+              className={rebrandEnabled ? "w-8 h-8 rounded-full" : "w-8 h-8"}
               width={40}
               height={40}
             />
             <span
               className={`text-base leading-6 ${
-                isRebrandEnabled
+                rebrandEnabled
                   ? " text-content-primary"
                   : "font-normal text-white"
               }`}
@@ -93,7 +93,7 @@ export const TransactionsHistory = forwardRef<
             <button
               onClick={handleCopy}
               className={`hover:opacity-65 cursor-pointer ${
-                isRebrandEnabled
+                rebrandEnabled
                   ? "text-content-tertiary hover:text-content-primary transition-colors"
                   : "text-white"
               }`}
@@ -109,7 +109,7 @@ export const TransactionsHistory = forwardRef<
               <li key={date} className="flex flex-col gap-2">
                 <span
                   className={`leading-[22px] ${
-                    isRebrandEnabled
+                    rebrandEnabled
                       ? "text-sm  text-content-tertiary"
                       : "text-base font-normal text-content-primary/65"
                   }`}
@@ -121,7 +121,7 @@ export const TransactionsHistory = forwardRef<
                     <li key={index} className="flex flex-col gap-2">
                       <div
                         className={`flex gap-7 p-2.5 rounded-lg ${
-                          isRebrandEnabled
+                          rebrandEnabled
                             ? "bg-background-grey-light hover:bg-background-grey-light/80 transition-colors"
                             : "bg-[#3b3d48]"
                         }`}
@@ -131,7 +131,7 @@ export const TransactionsHistory = forwardRef<
                             src={transaction.firstAsset?.icon || defaultImage}
                             alt={`${transaction.firstAsset.symbol} icon`}
                             className={
-                              isRebrandEnabled
+                              rebrandEnabled
                                 ? "w-8 h-8 rounded-full border-2 border-background-secondary"
                                 : "w-7 h-7"
                             }
@@ -140,7 +140,7 @@ export const TransactionsHistory = forwardRef<
                             src={transaction.secondAsset?.icon || defaultImage}
                             alt={`${transaction.secondAsset.name} icon`}
                             className={
-                              isRebrandEnabled
+                              rebrandEnabled
                                 ? "w-8 h-8 rounded-full border-2 border-background-secondary absolute -right-3 z-10"
                                 : "w-7 h-7 absolute top-0 left-5 z-10"
                             }
@@ -148,7 +148,7 @@ export const TransactionsHistory = forwardRef<
                         </div>
                         <div
                           className={`flex flex-col gap-1 leading-[22px] flex-1 ${
-                            isRebrandEnabled
+                            rebrandEnabled
                               ? "text-sm "
                               : "text-base font-normal"
                           }`}
@@ -159,7 +159,7 @@ export const TransactionsHistory = forwardRef<
                               target="_blank"
                               rel="noopener noreferrer"
                               className={`${
-                                isRebrandEnabled
+                                rebrandEnabled
                                   ? "text-content-primary hover:text-accent-primary transition-colors "
                                   : "text-content-primary"
                               }`}
@@ -168,13 +168,13 @@ export const TransactionsHistory = forwardRef<
                             </a>
                             <div
                               className={`rounded-full ${
-                                isRebrandEnabled ? "w-2 h-2" : "w-3 h-3"
+                                rebrandEnabled ? "w-2 h-2" : "w-3 h-3"
                               } ${
                                 transaction.withdrawal
                                   ? "bg-accent-warning"
                                   : transaction.addLiquidity
                                     ? "bg-content-positive"
-                                    : isRebrandEnabled
+                                    : rebrandEnabled
                                       ? "bg-accent-primary"
                                       : ""
                               }`}
@@ -182,7 +182,7 @@ export const TransactionsHistory = forwardRef<
                           </div>
                           <span
                             className={`${
-                              isRebrandEnabled
+                              rebrandEnabled
                                 ? "text-content-tertiary text-xs"
                                 : "text-content-primary/65"
                             }`}
@@ -211,7 +211,7 @@ export const TransactionsHistory = forwardRef<
           isOpened ? "translate-x-0" : "translate-x-full"
         } hidden md:block`}
         style={{
-          background: isRebrandEnabled
+          background: rebrandEnabled
             ? "linear-gradient(to bottom, rgba(236,237,240,0) 0%, rgba(236,237,240,0.2) 15%, rgba(236,237,240,0.5) 25%, rgba(236,237,240,0.5) 50%, rgba(236,237,240,0.5) 75%, rgba(236,237,240,0.8) 100%)"
             : "linear-gradient(to bottom, rgba(38,40,52,0) 0%, rgba(38,40,52,0.2) 15%, rgba(38,40,52,0.5) 25%, rgba(38,40,52,0.5) 50%, rgba(38,40,52,0.5) 75%, rgba(38,40,52,0.8) 100%)",
         }}

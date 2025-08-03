@@ -1,16 +1,11 @@
-/**
- * Check if rebrand is enabled - SSR safe
- */
-export function isRebrandEnabled(): boolean {
-  return process.env.NEXT_PUBLIC_ENABLE_REBRAND_UI === "true";
-}
+import {getIsRebrandEnabled} from "./isRebrandEnabled";
 
 /**
  * Returns the appropriate brand name based on the rebrand feature flag
  * SSR-safe version that uses environment variable directly
  */
 export function getBrandName(): string {
-  return isRebrandEnabled() ? "Microchain" : "Mira";
+  return getIsRebrandEnabled() ? "Microchain" : "Mira";
 }
 
 /**
@@ -18,7 +13,7 @@ export function getBrandName(): string {
  * SSR-safe version that uses environment variable directly
  */
 export function getBrandText() {
-  const rebrandEnabled = isRebrandEnabled();
+  const rebrandEnabled = getIsRebrandEnabled();
 
   return {
     name: rebrandEnabled ? "Microchain" : "Mira",
