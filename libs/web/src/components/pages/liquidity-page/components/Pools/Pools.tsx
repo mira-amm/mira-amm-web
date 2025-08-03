@@ -8,7 +8,7 @@ import Link from "next/link";
 import {Button} from "@/meshwave-ui/Button";
 import clsx from "clsx";
 
-import {MobilePools} from "@/src/components/pages/liquidity-page/components/Pools/MobilePools/MobilePools";
+import {ResponsivePools as MobilePools} from "@/src/components/pages/liquidity-page/components/Pools/ResponsivePools";
 import {DesktopPools} from "@/src/components/pages/liquidity-page/components/Pools/DesktopPools/DesktopPools";
 import {SearchBar} from "@/src/components/common";
 import Pagination from "@/src/components/common/Pagination/Pagination";
