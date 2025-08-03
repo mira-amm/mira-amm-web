@@ -1,88 +1,134 @@
 import {PoolData} from "@/src/hooks/usePoolsData";
-import {DesktopPoolRow} from "./DesktopPoolRow";
 import {useIsConnected} from "@fuels/react";
 import Link from "next/link";
 import SortableColumn from "@/src/components/common/SortableColumn/SortableColumn";
 import {Button} from "@/meshwave-ui/Button";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/meshwave-ui/table";
+import {DataTable, DataTableColumn} from "@/meshwave-ui/table";
 import {cn} from "@/src/utils/cn";
+import {usePoolDetails} from "../usePoolDetails";
+import CoinPair from "@/src/components/common/CoinPair/CoinPair";
+import {AprBadge} from "@/src/components/common/AprBadge/AprBadge";
+import {usePoolNameAndMatch} from "@/src/hooks/usePoolNameAndMatch";
+
+const tableBase = "md:table table-fixed desktopOnly p-4";
+const thBase =
+  "text-base leading-[19px] text-content-tertiary whitespace-nowrap overflow-hidden text-ellipsis";
+const tdBase = "";
+const trBase = "px-2 py-4 mb-2";
+const tableHeaderBase = "";
 
 export function DesktopPools({
   poolsData,
   orderBy,
   handleSort,
+  className,
 }: {
   poolsData: PoolData[] | undefined;
   orderBy: string;
   handleSort: (key: string) => void;
+  className?: string;
 }) {
   const {isConnected} = useIsConnected();
 
-  if (!poolsData) return null;
+  console.log("DesktopPools render:", {poolsData, isConnected});
 
-  const thBase =
-    "px-6 py-4 text-base leading-[19px]  text-foreground whitespace-nowrap overflow-hidden text-ellipsis";
-  return (
-    <Table className="md:table table-fixed desktopOnly p-5">
-      <TableHeader>
-        <TableRow>
-          <TableHead className={cn(thBase, "w-[230px] text-left")}>
-            Pools
-          </TableHead>
-          <TableHead className={cn(thBase, "w-[20%] text-center")}>
-            APR
-          </TableHead>
-          <TableHead className={cn(thBase, "w-[15%] text-center")}>
-            24H Volume
-          </TableHead>
-          <TableHead
-            className={cn(thBase, "w-[15%] flex w-full h-full justify-center")}
-          >
-            <SortableColumn
-              title="$ TVL"
-              columnKey="tvlUSD"
-              orderBy={orderBy}
-              onSort={handleSort}
-              className=""
+  if (!poolsData) return <div>No pools data</div>;
+
+  const columns: DataTableColumn<PoolData>[] = [
+    {
+      key: "pools",
+      header: "Pools",
+      align: "left",
+      render: (poolData) => {
+        const {poolKey, isStablePool, poolId} = usePoolDetails(poolData);
+        return (
+          <div className="text-left w-[230px] truncate">
+            <CoinPair
+              firstCoin={poolId[0].bits}
+              secondCoin={poolId[1].bits}
+              isStablePool={isStablePool}
+              withPoolDescription
             />
-          </TableHead>
-          <TableHead
-            className={cn(
-              "py-4 text-base leading-[19px]  text-content-tertiary whitespace-nowrap overflow-hidden text-ellipsis",
-              "w-[20%] text-center"
+          </div>
+        );
+      },
+    },
+    {
+      key: "apr",
+      header: "APR",
+      align: "center",
+      render: (poolData) => {
+        const {poolKey, aprValue, tvlValue} = usePoolDetails(poolData);
+        const {isMatching} = usePoolNameAndMatch(poolKey);
+        const tvlActual = parseInt(
+          tvlValue?.replace(/[^0-9]+/g, "") || "0",
+          10
+        );
+
+        return (
+          <div className="overflow-visible font-alt">
+            {isMatching ? (
+              <div className="flex justify-center">
+                <AprBadge
+                  aprValue={aprValue}
+                  poolKey={poolKey}
+                  tvlValue={tvlActual}
+                  background="black"
+                />
+              </div>
+            ) : (
+              aprValue
             )}
-          >
-            {isConnected && (
-              <Link href="/liquidity/create-pool">
-                <Button>Create Pool</Button>
-              </Link>
-            )}
-          </TableHead>
-        </TableRow>
-      </TableHeader>
-      <TableBody>
-        {poolsData.length > 0 ? (
-          poolsData.map((poolData) => (
-            <DesktopPoolRow key={poolData.id} poolData={poolData} />
-          ))
-        ) : (
-          <TableRow>
-            <TableCell
-              colSpan={5}
-              className="text-center text-base text-content-tertiary px-6 py-4"
-            >
-              No pools available
-            </TableCell>
-          </TableRow>
-        )}
-      </TableBody>
-    </Table>
+          </div>
+        );
+      },
+    },
+    {
+      key: "volume",
+      header: "24H Volume",
+      align: "center",
+      render: (poolData) => {
+        const {volumeValue} = usePoolDetails(poolData);
+        return <div className="font-alt">{volumeValue}</div>;
+      },
+    },
+    {
+      key: "tvl",
+      header: "$ TVL",
+      align: "center",
+      render: (poolData) => {
+        const {tvlValue} = usePoolDetails(poolData);
+        return <div className="font-alt">{tvlValue}</div>;
+      },
+    },
+    {
+      key: "actions",
+      header: isConnected ? (
+        <Link href="/liquidity/create-pool">
+          <Button>Create Pool</Button>
+        </Link>
+      ) : (
+        ""
+      ),
+      align: "center",
+      render: (poolData) => {
+        const {poolKey} = usePoolDetails(poolData);
+        return (
+          <Link href={`/liquidity/add?pool=${poolKey}`}>
+            <Button variant="outline">Add Liquidity</Button>
+          </Link>
+        );
+      },
+    },
+  ];
+
+  return (
+    <div>
+      <DataTable
+        data={poolsData}
+        columns={columns}
+        emptyMessage="No pools available"
+      />
+    </div>
   );
 }

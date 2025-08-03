@@ -15,7 +15,7 @@ interface DataTableProps<T> {
 
 interface DataTableColumn<T> {
   key: string;
-  header: string;
+  header: string | React.ReactNode;
   render: (item: T) => React.ReactNode;
   className?: string;
   align?: "left" | "center" | "right";
@@ -44,20 +44,25 @@ function DataTable<T>({
   return (
     <div
       className={cn(
-        "flex flex-col gap-4 bg-background-grey-dark border-border-secondary border-[12px] dark:border-0 dark:bg-background-grey-dark rounded-ten p-4",
+        "flex flex-col gap-4 bg-background-grey-dark border-border-secondary border-[12px] dark:border-0 dark:bg-background-grey-dark rounded-ten p-4 overflow-hidden",
         className
       )}
     >
       {/* Headers */}
-      <div className="grid grid-cols-3 md:grid-cols-4 gap-4 px-2 text-content-tertiary text-md font-normal">
+      <div
+        className="hidden md:grid gap-4 px-2 text-content-tertiary text-md font-normal align-center"
+        style={{
+          gridTemplateColumns: `2fr repeat(${columns.length - 1}, 1fr)`,
+        }}
+      >
         {columns.map((column) => (
           <div
             key={column.key}
             className={cn(
-              "text-content-tertiary",
+              "text-content-tertiary flex items-center justify-center min-h-[40px]",
               column.align === "center" && "text-center",
-              column.align === "right" && "text-right",
-              column.align === "left" && "text-left",
+              column.align === "right" && "text-right justify-end",
+              column.align === "left" && "text-left justify-start",
               column.className
             )}
           >
@@ -66,13 +71,16 @@ function DataTable<T>({
         ))}
       </div>
 
-      <Divider size="sm" />
+      <Divider size="sm" className="hidden md:block" />
 
-      {/* Rows */}
+      {/* Desktop Rows */}
       {data.map((item, index) => (
         <div
           key={index}
-          className="grid grid-cols-3 md:grid-cols-4 gap-4 items-center py-1 hover:bg-background-grey-darker transition rounded-lg px-2"
+          className="hidden md:grid gap-4 items-center py-1 hover:bg-background-grey-darker transition rounded-lg px-2"
+          style={{
+            gridTemplateColumns: `2fr repeat(${columns.length - 1}, 1fr)`,
+          }}
         >
           {columns.map((column) => (
             <div
@@ -85,6 +93,36 @@ function DataTable<T>({
               )}
             >
               {column.render(item)}
+            </div>
+          ))}
+        </div>
+      ))}
+
+      {/* Mobile Rows */}
+      {data.map((item, index) => (
+        <div
+          key={`mobile-${index}`}
+          className="md:hidden flex flex-col gap-2 p-4 bg-background-grey-light rounded-lg"
+        >
+          {columns.map((column, columnIndex) => (
+            <div
+              key={column.key}
+              className={cn(
+                "flex justify-between items-center",
+                columnIndex === columns.length - 1 && "flex-col gap-2"
+              )}
+            >
+              <span className="text-content-tertiary font-medium">
+                {typeof column.header === "string" ? column.header : column.key}
+              </span>
+              <div
+                className={cn(
+                  "text-right",
+                  columnIndex === columns.length - 1 && "w-full"
+                )}
+              >
+                {column.render(item)}
+              </div>
             </div>
           ))}
         </div>
