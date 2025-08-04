@@ -1,6 +1,14 @@
+import Image from "next/image";
+
 const LoaderV2 = () => {
   return (
-    <img src="/images/loader.webp" alt="Loading..." className="animate-spin" />
+    <Image
+      src="/images/loader.webp"
+      alt="Loading..."
+      className="animate-spin"
+      width={20}
+      height={20}
+    />
   );
 };
 

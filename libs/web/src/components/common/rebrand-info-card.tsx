@@ -1,5 +1,6 @@
 import React, {useState} from "react";
 import {Button} from "@/meshwave-ui/Button/Button";
+import Image from "next/image";
 
 interface RebrandInfoCardProps {
   icon?: string;
@@ -31,12 +32,8 @@ export const RebrandInfoCard: React.FC<RebrandInfoCardProps> = ({
       <div className="p-8 space-y-6">
         {/* Icon Section */}
         {iconImage ? (
-          <div className="w-30 h-10">
-            <img
-              src={iconImage}
-              alt="Icon"
-              className="w-full h-full object-contain"
-            />
+          <div className="relative w-32 h-10">
+            <Image src={iconImage} alt="Icon" className="object-contain" fill />
           </div>
         ) : (
           icon && <div className="text-4xl">{icon}</div>

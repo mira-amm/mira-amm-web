@@ -24,6 +24,7 @@ import {
   RoadMapIcon,
   StepsIcon,
 } from "@/src/components/common";
+import Image from "next/image";
 
 import {DiscordLink, XLink} from "@/src/utils/constants";
 import {Swap} from "@/src/components/common/Swap/Swap";
@@ -232,7 +233,13 @@ function WelcomeSection() {
       aria-labelledby="welcome-heading"
     >
       <figure className="flex flex-col items-center gap-5 mb-5 lg:gap-4">
-        <img className="w-20 h-20" src={miraLogo.src} alt="MIRA Logo" />
+        <Image
+          className="w-20 h-20"
+          src={miraLogo.src}
+          alt="MIRA Logo"
+          width={320}
+          height={320}
+        />
         <figcaption>
           <h2
             id="welcome-heading"

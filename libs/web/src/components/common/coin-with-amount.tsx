@@ -1,6 +1,7 @@
 import {B256Address} from "fuels";
 import {useAssetImage} from "@/src/hooks/useAssetImage";
 import {useAssetMetadata} from "@/src/hooks";
+import Image from "next/image";
 
 export function CoinWithAmount({
   amount,
@@ -17,10 +18,12 @@ export function CoinWithAmount({
   return (
     <div className="flex items-center gap-2 flex-1">
       {icon && (
-        <img
+        <Image
           src={icon}
           alt={`${metadata.symbol} icon`}
           className="w-[38px] h-[38px]"
+          width={38}
+          height={38}
         />
       )}
       {!withName ? (

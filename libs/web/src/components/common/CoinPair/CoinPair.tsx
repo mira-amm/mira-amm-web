@@ -3,6 +3,7 @@ import {memo} from "react";
 import {useAssetImage} from "@/src/hooks/useAssetImage";
 import {B256Address} from "fuels";
 import {useAssetMetadata} from "@/src/hooks";
+import Image from "next/image";
 
 type Props = {
   firstCoin: B256Address;
@@ -35,22 +36,30 @@ const CoinPair = ({
     >
       <div className="flex items-center w-16 h-9">
         {firstCoinIcon && (
-          <img src={firstCoinIcon} className="w-full h-full rounded-full" />
+          <div className="relative w-full h-full">
+            <Image
+              src={firstCoinIcon}
+              fill
+              className="rounded-full object-cover"
+              alt={`${firstSymbol} icon`}
+            />
+          </div>
         )}
         {secondCoinIcon && (
-          <img
-            src={secondCoinIcon}
-            className="-ml-2 w-full h-full rounded-full"
-          />
+          <div className="relative w-full h-full -ml-2">
+            <Image
+              src={secondCoinIcon}
+              fill
+              className="rounded-full object-cover"
+              alt={`${secondSymbol} icon`}
+            />
+          </div>
         )}
       </div>
 
       <div className="flex flex-col gap-1">
         {firstSymbol && secondSymbol ? (
-          <p
-            className="text-base leading-[16px]"
-            data-identifier="coin-pair"
-          >
+          <p className="text-base leading-[16px]" data-identifier="coin-pair">
             {firstSymbol}/{secondSymbol}
           </p>
         ) : (

@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import {useCallback, useState, useEffect, useMemo, useRef} from "react";
 import {Button} from "@/meshwave-ui/Button";
 import {clsx} from "clsx";
@@ -124,7 +125,7 @@ export function DisconnectMobile({className}: {className?: string}) {
         )}
         onClick={handleClick}
       >
-        <img src="/images/avatar.png" width="16" height="16" />
+        <Image src="/images/avatar.png" width="16" height="16" alt="avatar" />
         {formattedAddress}
       </Button>
 

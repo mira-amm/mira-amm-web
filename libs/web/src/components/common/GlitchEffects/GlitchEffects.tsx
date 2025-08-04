@@ -11,7 +11,15 @@ const GlitchEffects = () => (
       <div className="rainbowColor -translate-x-1/2 rainbowColor4"></div>
       <div className="rainbowColor -translate-x-1/2 rainbowColor5"></div>
     </div>
-    <Image src={dino} alt="Derek Dino" className="dino" />
+    <Image
+      src={dino}
+      alt="Derek Dino"
+      className="dino"
+      width={0}
+      height={0}
+      sizes="auto"
+      style={{width: "auto", height: "auto"}}
+    />
     <MicroChainStatusText />{" "}
   </>
 );

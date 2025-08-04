@@ -55,6 +55,7 @@ import {
   useInitialSwapState,
   useDocumentTitle,
 } from "@/src/hooks";
+import Image from "next/image";
 
 import {useAnimationStore} from "@/src/stores/useGlitchScavengerHunt";
 import {ArrowUpDown, LoaderCircle} from "lucide-react";
@@ -82,8 +83,20 @@ const SwapRouteItem = memo(function SwapRouteItem({pool}: {pool: PoolId}) {
 
   return (
     <div className="flex items-center gap-1">
-      <img src={firstAssetIcon || ""} className="-mr-2 h-4 w-4" />
-      <img src={secondAssetIcon || ""} className="h-4 w-4" />
+      <Image
+        alt={`${pool[0].bits} icon`}
+        src={firstAssetIcon || ""}
+        className="-mr-2 h-4 w-4"
+        width={16}
+        height={16}
+      />
+      <Image
+        alt={`${pool[1].bits} icon`}
+        src={secondAssetIcon || ""}
+        className="h-4 w-4"
+        width={16}
+        height={16}
+      />
       <p className="text-sm">({fee}%)</p>
     </div>
   );
@@ -272,7 +285,7 @@ export function Swap({isWidget}: {isWidget?: boolean}) {
   const buyMetadata = useAssetMetadata(swapState.buy.assetId);
 
   // HACK: This is a bit of an ugly way to set document titles
-  useDocumentTitle(`Swap:  ${sellMetadata.symbol} to ${buyMetadata.symbol}`);
+  useDocumentTitle(`Swap: ${sellMetadata.symbol} to ${buyMetadata.symbol}`);
 
   const isValidNetwork = useCheckActiveNetwork();
   const {

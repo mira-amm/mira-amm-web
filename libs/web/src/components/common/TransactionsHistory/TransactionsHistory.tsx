@@ -4,6 +4,7 @@ import {forwardRef, useMemo} from "react";
 import {Copy, X} from "lucide-react";
 import {useAccount, useIsConnected} from "@fuels/react";
 import defaultImage from "@/assets/unknown-asset.svg";
+import Image from "next/image";
 import {
   useWalletTransactions,
   useFormattedAddress,
@@ -74,12 +75,12 @@ export const TransactionsHistory = forwardRef<
           }`}
         >
           <div className="flex items-center gap-2.5">
-            <img
+            <Image
               src="/images/avatar.png"
               alt="avatar"
               className={rebrandEnabled ? "w-8 h-8 rounded-full" : "w-8 h-8"}
-              width={40}
-              height={40}
+              width={32}
+              height={32}
             />
             <span
               className={`text-base leading-6 ${
@@ -127,7 +128,7 @@ export const TransactionsHistory = forwardRef<
                         }`}
                       >
                         <div className="relative flex items-center">
-                          <img
+                          <Image
                             src={transaction.firstAsset?.icon || defaultImage}
                             alt={`${transaction.firstAsset.symbol} icon`}
                             className={
@@ -135,8 +136,10 @@ export const TransactionsHistory = forwardRef<
                                 ? "w-8 h-8 rounded-full border-2 border-background-secondary"
                                 : "w-7 h-7"
                             }
+                            width={rebrandEnabled ? 32 : 28}
+                            height={rebrandEnabled ? 32 : 28}
                           />
-                          <img
+                          <Image
                             src={transaction.secondAsset?.icon || defaultImage}
                             alt={`${transaction.secondAsset.name} icon`}
                             className={
@@ -144,6 +147,8 @@ export const TransactionsHistory = forwardRef<
                                 ? "w-8 h-8 rounded-full border-2 border-background-secondary absolute -right-3 z-10"
                                 : "w-7 h-7 absolute top-0 left-5 z-10"
                             }
+                            width={rebrandEnabled ? 32 : 28}
+                            height={rebrandEnabled ? 32 : 28}
                           />
                         </div>
                         <div
