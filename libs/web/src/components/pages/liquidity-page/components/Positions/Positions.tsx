@@ -141,7 +141,7 @@ export function Positions() {
 
         return (
           <Link href={path} className="block w-full">
-            <Button variant="outline" className="w-full md:w-fit">
+            <Button variant="outline" className="">
               Manage Position
             </Button>
           </Link>
