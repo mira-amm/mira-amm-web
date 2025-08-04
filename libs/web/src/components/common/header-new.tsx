@@ -113,8 +113,11 @@ export function HeaderNew({
           />
         </div>
 
-        <div className="flex items-center flex-1 justify-end gap-2">
+        <div className="hidden sm:flex! items-center flex-1 justify-end gap-2">
           <ConnectWalletNew size="small" />
+        </div>
+        <div className="flex sm:hidden items-center flex-1 justify-end gap-2">
+          <ConnectWalletNew size="large" />
         </div>
       </section>
     </header>

@@ -85,9 +85,9 @@ export function ConnectWalletNew({
   const handleTxHistoryClick = () => setHistoryOpened(true);
 
   // Common styles
-  const containerWidth = size === "large" ? "w-[410px]" : "w-[341.82px]";
-  const rightPanelWidth = size === "large" ? "w-[239.82px]" : "w-[239.82px]";
-  const textSize = size === "large" ? "text-sm" : "text-xs";
+  const containerWidth = size === "large" ? "w-[90vw]" : "w-[341.82px]";
+  const rightPanelWidth = size === "large" ? "w-full" : "w-[239.82px]";
+  const textSize = size === "large" ? "text-xs" : "text-xs";
 
   // Power indicator component
   const PowerIndicator = ({isConnected}: {isConnected: boolean}) => (
