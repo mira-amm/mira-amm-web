@@ -16,7 +16,7 @@ export const TickerTape: React.FC<TickerTapeProps> = ({
   } as React.CSSProperties;
 
   return (
-    <div className={`w-full overflow-hidden bg-[hsl(0_0%_0%)] ${className}`}>
+    <div className={`w-full overflow-hidden h-10 bg-[hsl(0_0%_0%)] ${className}`}>
       <div
         className="whitespace-nowrap font-mono py-2 px-4 text-[hsl(348_89%_64%)] flex animate-[marquee_var(--scroll-speed)_linear_infinite]"
         style={style}
