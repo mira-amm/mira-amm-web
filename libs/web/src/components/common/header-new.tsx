@@ -1,57 +1,24 @@
 "use client";
 
-import {useEffect, useState, useCallback, useMemo} from "react";
-import Link from "next/link";
+import {useMemo} from "react";
 import {usePathname} from "next/navigation";
-
 import {Logo} from "@/src/components/common";
-import {useIsConnected} from "@fuels/react";
-
 import {
   FuelAppUrl,
-  getPromoTitle,
-  POINTS_LEARN_MORE_URL,
 } from "@/src/utils/constants";
-
-import {IconButton} from "@/src/components/common";
-import {PointsIconSimple} from "@/meshwave-ui/icons";
-import {X} from "lucide-react";
 import {ConnectWalletNew} from "./connect-wallet-new";
 import {Navigation, type NavLink} from "./navigation";
+import {TickerTapeText} from "@/src/utils/constants";
+import {TickerTape} from "./ticker-tape-banner";
 
-const PROMO_BANNER_STORAGE_KEY = "fuel-boost-program-promo-banner-closed";
 
 export function HeaderNew({
-  isHomePage,
   pathName,
 }: {
   isHomePage?: boolean;
   pathName?: string;
 }) {
   const pathname = pathName ?? usePathname();
-  const {isConnected} = useIsConnected();
-  const [isPromoShown, setIsPromoShown] = useState(false);
-
-  useEffect(() => {
-    if (typeof window !== "undefined") {
-      try {
-        const bannerClosed = localStorage.getItem(PROMO_BANNER_STORAGE_KEY);
-        setIsPromoShown(!bannerClosed);
-      } catch (error) {
-        console.warn("Failed to access localStorage:", error);
-        setIsPromoShown(true);
-      }
-    }
-  }, []);
-
-  const handleCloseBanner = useCallback(() => {
-    setIsPromoShown(false);
-    try {
-      localStorage.setItem(PROMO_BANNER_STORAGE_KEY, "true");
-    } catch (error) {
-      console.warn("Failed to save banner state:", error);
-    }
-  }, []);
 
   const navLinks = useMemo(
     () => [
@@ -76,30 +43,7 @@ export function HeaderNew({
       className="md:sticky top-0 z-10 text-base lg:text-lg backdrop-blur-lg
         transition-all duration-300 ease-in-out"
     >
-      {isPromoShown && (
-        <section className="relative flex items-center justify-between px-4 py-3 gap-4 text-white text-sm lg:text-lg lg:justify-center bg-old-mira-promo-bg">
-          <div className="flex items-center gap-2 mx-auto">
-            <PointsIconSimple className="w-[18px] h-[18px]" />
-            <p>
-              {getPromoTitle()}
-              <Link
-                href={POINTS_LEARN_MORE_URL}
-                target="_blank"
-                className="ml-1 underline"
-              >
-                Learn More
-              </Link>
-            </p>
-          </div>
-          <IconButton
-            onClick={handleCloseBanner}
-            className="absolute right-4 top-3"
-          >
-            <X />
-          </IconButton>
-        </section>
-      )}
-
+      <TickerTape text={TickerTapeText} />
       <section className="flex flex-col py-7 gap-7 lg:pt-0 lg:flex-row justify-between items-center lg:gap-4 px-4 lg:py-4 lg:px-6">
         <div className="flex items-center gap-6 lg:gap-10 flex-1">
           <Logo />
