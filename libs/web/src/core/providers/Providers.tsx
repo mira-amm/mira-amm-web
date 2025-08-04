@@ -28,7 +28,7 @@ const queryClient = new QueryClient({
 
 function QueryParamProviderWrapper({children}: {children: ReactNode}) {
   return (
-    <Suspense fallback={<Loader />}>
+    <Suspense fallback={<Loader rebrand={getIsRebrandEnabled()} />}>
       <QueryParamProvider adapter={NextAdapterApp}>
         {children}
       </QueryParamProvider>

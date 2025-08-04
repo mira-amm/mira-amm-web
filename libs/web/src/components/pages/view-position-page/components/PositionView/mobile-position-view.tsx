@@ -1,7 +1,6 @@
 import React from "react";
 import Link from "next/link";
 import {PoolId} from "mira-dex-ts";
-import {Sparkles} from "lucide-react";
 
 import {Button} from "@/meshwave-ui/Button";
 import CoinPair from "@/src/components/common/CoinPair/CoinPair";
@@ -15,6 +14,7 @@ import {MiraBlock} from "./mira-block";
 
 import {formatDisplayAmount} from "@/src/utils/common";
 import {PromoSparkle} from "@/meshwave-ui/src/components/icons";
+import {getIsRebrandEnabled} from "@/src/utils/isRebrandEnabled";
 
 interface AssetData {
   amount: string;
@@ -92,7 +92,7 @@ export function MobilePositionView({
           {formattedTvlValue ? (
             <p className="text-content-tertiary">${formattedTvlValue}</p>
           ) : (
-            <Loader color="gray" />
+            <Loader color="gray" rebrand={getIsRebrandEnabled()} />
           )}
         </div>
         <ExchangeRate
