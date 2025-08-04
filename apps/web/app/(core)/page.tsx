@@ -6,6 +6,7 @@ import {useFadeAnimation} from "@/src/hooks/useFadeAnimation";
 import {BackgroundGlow} from "@/src/components/common/BackgroundGlow/BackgroundGlow";
 import {AnimatedText} from "@/src/components/common/AnimatedText/AnimatedText";
 import {AnimatePresence} from "framer-motion";
+import {RebrandInfoCard} from "@/src/components/common/rebrand-info-card";
 
 export default function Page() {
   const {isConnected} = useIsConnected();
@@ -53,6 +54,7 @@ export default function Page() {
             LPing and make lightning fast swaps.
           </AnimatedText>
         </section>
+        <RebrandInfoCard />
       </div>
     </div>
   );
