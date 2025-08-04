@@ -149,10 +149,10 @@ export function useCoinListModal(
         },
         []
       );
-  }, [assets, balances, value, verifiedAssetData, verifiedAssetsOnly]);
+  }, [assets, balances, value, verifiedAssetData, verifiedAssetsOnly, assetImages]);
   return {
     handleFilterChange,
-    isLoading: isLoading || isVerifiedAssetsLoading,
+    isLoading: isLoading || isVerifiedAssetsLoading || isAssetImagesLoading,
     allCoins: sortedCoinsList,
     searchValue: value,
   };
