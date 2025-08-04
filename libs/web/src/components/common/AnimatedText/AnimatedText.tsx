@@ -17,18 +17,20 @@ export function AnimatedText({
   className,
 }: AnimatedTextProps) {
   return (
-    <AnimatePresence mode="wait">
-      {shouldRender && (
-        <motion.p
-          className={className}
-          initial={{opacity: 0, y: -10}}
-          animate={{opacity: isVisible ? 1 : 0, y: isVisible ? 0 : -10}}
-          exit={{opacity: 0, y: -10}}
-          transition={{duration: 0.3, ease: "easeInOut"}}
-        >
-          {children}
-        </motion.p>
-      )}
-    </AnimatePresence>
+    <div className="h-[60px]">
+      <AnimatePresence mode="wait">
+        {shouldRender && (
+          <motion.p
+            className={className}
+            initial={{opacity: 0, y: -10}}
+            animate={{opacity: isVisible ? 1 : 0, y: isVisible ? 0 : -10}}
+            exit={{opacity: 0, y: -10}}
+            transition={{duration: 0.3, ease: "easeInOut"}}
+          >
+            {children}
+          </motion.p>
+        )}
+      </AnimatePresence>
+    </div>
   );
 }
