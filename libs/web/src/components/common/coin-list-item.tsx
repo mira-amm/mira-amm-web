@@ -2,6 +2,7 @@
 
 import {clsx} from "clsx";
 import {BN, CoinQuantity} from "fuels";
+import Image from "next/image";
 
 import {CoinDataWithPrice} from "@/src/utils/coinsConfig";
 import {Tooltip} from "react-tooltip";
@@ -31,10 +32,13 @@ export function CoinListItem({
     >
       <Tooltip id="verified-tooltip" />
 
-      <img
+      <Image
         src={assetData.icon || fallbackIcon}
-        fetchPriority="high"
+        alt={`${assetData.symbol} icon`}
+        width={32}
+        height={32}
         className="w-8 h-8 rounded-full"
+        priority={true}
       />
 
       <div className="flex flex-col flex-1">

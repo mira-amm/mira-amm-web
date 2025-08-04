@@ -20,18 +20,10 @@ export const ClientSplashScreen = () => {
   useEffect(() => {
     if (!isVisible || !videoRef.current) return;
 
-    console.log("Video element found:", videoRef.current);
-    console.log("Video src:", videoRef.current.src);
-
     // Start playing the video
-    videoRef.current
-      .play()
-      .then(() => {
-        console.log("Video started playing successfully");
-      })
-      .catch((error) => {
-        console.error("Error playing video:", error);
-      });
+    videoRef.current.play().catch((error) => {
+      console.error("Video failed playing", error);
+    });
 
     // Listen for video end to pause on last frame and start fade
     const handleVideoEnd = () => {
@@ -53,7 +45,7 @@ export const ClientSplashScreen = () => {
     // Fallback timer in case video doesn't end properly
     const fallbackTimer = setTimeout(() => {
       if (videoRef.current && !videoRef.current.ended) {
-        console.log("Fallback: video taking too long, forcing end");
+        console.info("Fallback: video taking too long, forcing end");
         handleVideoEnd();
       }
     }, MAX_SPLASH_DURATION);

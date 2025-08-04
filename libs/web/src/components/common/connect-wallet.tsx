@@ -17,6 +17,7 @@ import {
   DropdownMenuTrigger,
 } from "@/meshwave-ui/dropdown-menu";
 import {Button} from "@/meshwave-ui/Button";
+import Image from "next/image";
 
 import {useFormattedAddress, useWeb3Connection} from "@/src/hooks";
 import {CopyNotification, TransactionsHistory} from "@/src/components/common";
@@ -84,7 +85,12 @@ export function ConnectWallet() {
               variant="outline"
               className="flex items-center gap-2.5 px-2 py-4 h-10 text-content-primary bg-transparent border border-accent-primary hover:shadow-none hover:text-none active:bg-transparent hover:bg-transaparent"
             >
-              <img src="/images/avatar.png" width="24" height="24" />
+              <Image
+                src="/images/avatar.png"
+                width="24"
+                height="24"
+                alt="avatar"
+              />
               {formattedAddress}
               <ChevronDown className="text-content-dimmed-dark" />
             </Button>

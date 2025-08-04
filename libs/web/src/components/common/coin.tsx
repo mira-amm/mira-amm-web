@@ -1,8 +1,8 @@
-import {clsx} from "clsx";
 import {useAssetMetadata} from "@/src/hooks";
 import {useAssetImage} from "@/src/hooks/useAssetImage";
 import {ChevronDown} from "lucide-react";
 import {cn} from "@/src/utils/cn";
+import Image from "next/image";
 
 export function Coin({
   assetId,
@@ -31,7 +31,15 @@ export function Coin({
       )}
       onClick={handleClick}
     >
-      {icon && <img src={icon} className="size-5" />}
+      {icon && (
+        <Image
+          src={icon}
+          width={20}
+          height={20}
+          className="size-5"
+          alt={metadata.symbol + " icon"}
+        />
+      )}
       <p className={cn("text-base  leading-[19px]", className)}>
         {metadata.symbol ?? "Choose Asset"}
       </p>
