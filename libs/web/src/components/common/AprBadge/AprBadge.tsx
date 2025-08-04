@@ -64,7 +64,11 @@ export function AprBadge({
   let aprElement = <>{showApr}%</>;
 
   if (rewardsToken === "$FUEL") {
-    aprElement = boostedApr ? <>{showApr}%</> : <Loader color="gray" />;
+    aprElement = boostedApr ? (
+      <>{showApr}%</>
+    ) : (
+      <Loader color="gray" rebrand={getIsRebrandEnabled()} />
+    );
   }
 
   const rebrandEnabled = getIsRebrandEnabled();

@@ -411,6 +411,34 @@
   animation: textGlow-red 1.5s ease-in-out infinite alternate;
 }
 
+@keyframes character-cycle {
+  0%,
+  25% {
+    content: '|';
+  }
+  25.1%,
+  50% {
+    content: '/';
+  }
+  50.1%,
+  75% {
+    content: '-';
+  }
+  75.1%,
+  100% {
+    content: '\\';
+  }
+}
+
+.character-cycle {
+  position: relative;
+}
+
+.character-cycle::before {
+  content: '|';
+  animation: character-cycle 1s steps(1) infinite;
+}
+
 @theme {
   --color-fd-background: var(--background);
   --color-fd-foreground: var(--foreground);

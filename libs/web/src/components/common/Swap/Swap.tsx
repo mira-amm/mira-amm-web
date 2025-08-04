@@ -710,7 +710,7 @@ export function Swap({isWidget}: {isWidget?: boolean}) {
 
   return !isClient ? (
     <div className="flex justify-center items-center gap-3 lg:gap-4">
-      <Loader color="gray" />
+      <Loader color="gray" rebrand={isRebrandingEnabled} />
     </div>
   ) : (
     <>
@@ -815,11 +815,7 @@ export function Swap({isWidget}: {isWidget?: boolean}) {
               )}
             >
               {isActionLoading ? (
-                isRebrandingEnabled ? (
-                  <LoaderBar />
-                ) : (
-                  <LoaderCircle className="animate-spin size-4" />
-                )
+                <Loader rebrand={isRebrandingEnabled} />
               ) : (
                 swapButtonTitle
               )}

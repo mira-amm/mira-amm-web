@@ -10,7 +10,7 @@ import clsx from "clsx";
 
 import {ResponsivePools as MobilePools} from "@/src/components/pages/liquidity-page/components/Pools/ResponsivePools";
 import {DesktopPools} from "@/src/components/pages/liquidity-page/components/Pools/DesktopPools/DesktopPools";
-import {SearchBar} from "@/src/components/common";
+import {Loader, SearchBar} from "@/src/components/common";
 import Pagination from "@/src/components/common/Pagination/Pagination";
 import {DEFAULT_PAGE} from "@/src/hooks/usePoolsData";
 import {useDebounce, usePoolsData} from "@/src/hooks";
@@ -98,11 +98,7 @@ export function Pools() {
 
       {isLoading && (
         <div className="flex flex-col items-center gap-4 py-7 px-4 lg:p-8 rounded-ten bg-background-grey-dark">
-          {isRebrandingEnabled ? (
-            <LoaderBar />
-          ) : (
-            <LoaderCircle className="animate-spin size-7" />
-          )}
+          <Loader rebrand={isRebrandingEnabled} />
           <p>Loading pools...</p>
         </div>
       )}

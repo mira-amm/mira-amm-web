@@ -19,9 +19,8 @@ import {
   TableHeader,
   TableRow,
 } from "@/meshwave-ui/table";
-import {LoaderCircle} from "lucide-react";
-import LoaderBar from "@/src/components/common/loader-bar";
 import {getIsRebrandEnabled} from "@/src/utils/isRebrandEnabled";
+import {Loader} from "@/src/components/common";
 
 const truncateAddress = (address: string) => {
   if (!address) return "";
@@ -103,11 +102,7 @@ export default function PointsRankTable() {
   if (isLoading) {
     return (
       <div className="flex flex-col items-center gap-4 p-7 rounded-ten bg-background-grey-dark">
-        {isRebrandingEnabled ? (
-          <LoaderBar />
-        ) : (
-          <LoaderCircle className="animate-spin size-7" />
-        )}
+        <Loader rebrand={isRebrandingEnabled} />
         <p>Loading points leaderboard...</p>
       </div>
     );

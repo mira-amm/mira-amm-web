@@ -102,7 +102,9 @@ export function DesktopPositionView({
         <div className="flex flex-col gap-[10px]">
           <div className="flex items-center justify-between text-content-tertiary">
             {formattedTvlValue && <p>Total value locked</p>}
-            {formattedTvlValue && <p className="font-alt">${formattedTvlValue}</p>}
+            {formattedTvlValue && (
+              <p className="font-alt">${formattedTvlValue}</p>
+            )}
           </div>
           <ExchangeRate
             assetBMetadata={assetB.metadata}

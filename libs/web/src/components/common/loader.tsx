@@ -1,12 +1,19 @@
 import {clsx} from "clsx";
+import LoaderBar from "./loader-bar";
 
 export function Loader({
   variant = "outlined",
   color = "gray",
+  rebrand = false,
 }: {
   variant?: "primary" | "secondary" | "outlined";
   color?: "gray";
+  rebrand?: boolean;
 }) {
+  if (rebrand) {
+    return <LoaderBar />;
+  }
+
   return (
     <div
       className={clsx(

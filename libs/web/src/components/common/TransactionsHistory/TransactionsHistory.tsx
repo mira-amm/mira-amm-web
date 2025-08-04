@@ -5,13 +5,10 @@ import {Copy, X} from "lucide-react";
 import {useAccount, useIsConnected} from "@fuels/react";
 import defaultImage from "@/assets/unknown-asset.svg";
 import Image from "next/image";
-import {
-  useWalletTransactions,
-  useFormattedAddress,
-  getIsRebrandEnabled,
-} from "@/src/hooks";
+import {useWalletTransactions, useFormattedAddress} from "@/src/hooks";
 import {FuelAppUrl} from "@/src/utils/constants";
 import {SkeletonLoader} from "@/web/src/components/common";
+import {getIsRebrandEnabled} from "@/src/utils/isRebrandEnabled";
 
 export const TransactionsHistory = forwardRef<
   HTMLDivElement,
