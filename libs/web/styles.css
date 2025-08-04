@@ -407,6 +407,14 @@
   }
 }
 
+@keyframes marquee {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
 
 /* added this here becuase it wasn't working in tailwind */
 /* .points-gradient {

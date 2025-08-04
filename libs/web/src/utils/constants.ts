@@ -113,3 +113,6 @@ export const POINTS_BANNER_SUBHEADER =
 
 export const SENTIO_POINTS_ENDPOINT =
   "https://endpoint.sentio.xyz/fuellabs/mira-mainnet/points-per-user-from-balance-table/async";
+
+export const TickerTapeText =
+  "🚀 BREAKING: MIRA IS NOW MICROCHAIN • COMING SOON: IMPROVED CAPITAL EFFICIENCY • ⛽ $FUEL COMMUNITY RALLIES IN ANTICIPATION";
