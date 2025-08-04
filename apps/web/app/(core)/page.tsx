@@ -7,6 +7,7 @@ import {BackgroundGlow} from "@/src/components/common/BackgroundGlow/BackgroundG
 import {AnimatedText} from "@/src/components/common/AnimatedText/AnimatedText";
 import {AnimatePresence} from "framer-motion";
 import {RebrandInfoCard} from "@/src/components/common/rebrand-info-card";
+import {TickerTape} from "@/src/components/common/ticker-tape-banner";
 
 export default function Page() {
   const {isConnected} = useIsConnected();
@@ -20,7 +21,8 @@ export default function Page() {
     useFadeAnimation(isConnected, 200);
 
   return (
-    <div className="flex flex-1 flex-col items-center w-full lg:justify-center lg:min-h-[calc(100vh-120px)]">
+    <div className="flex flex-1 flex-col items-center w-full gap-10 lg:justify-center lg:min-h-[calc(100vh-120px)]">
+      <TickerTape />
       <div className="w-full max-w-lg px-4 relative">
         <section className="space-y-10">
           <AnimatedText
