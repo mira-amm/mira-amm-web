@@ -709,7 +709,7 @@ export function Swap({isWidget}: {isWidget?: boolean}) {
   const isRebrandingEnabled = getIsRebrandEnabled();
 
   return !isClient ? (
-    <div className="flex justify-center items-center gap-3 lg:gap-4">
+    <div className="w-[90vw] mx-auto sm:!w-full flex justify-center items-center gap-3 lg:gap-4">
       <Loader color="gray" rebrand={isRebrandingEnabled} />
     </div>
   ) : (
