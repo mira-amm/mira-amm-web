@@ -37,10 +37,6 @@ function PoolItem({poolData}: {poolData: PoolData}) {
     router.push(`/liquidity/add?pool=${poolKey}`);
   };
 
-  const tvlActual = tvlValue
-    ? parseInt(tvlValue?.replace(/[^0-9]+/g, ""), 10)
-    : 0;
-
   // card box
   // it has the border, gap 20px,
   // padding of approximately 30px
