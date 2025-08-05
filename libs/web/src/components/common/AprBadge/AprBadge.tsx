@@ -6,7 +6,7 @@ import {useBoostedApr, RewardsToken} from "@/src/hooks/useBoostedApr";
 import {isMobile} from "react-device-detect";
 import {Loader} from "@/src/components/common";
 import {EPOCH_NUMBER} from "@/src/utils/constants";
-import {AprIcon, PointsIconSimple} from "@/meshwave-ui/icons";
+import {PointsIcon} from "@/meshwave-ui/icons";
 import {cn} from "@/src/utils/cn";
 import {getIsRebrandEnabled} from "@/src/utils/isRebrandEnabled";
 import {BrandText} from "@/src/components/common";
@@ -96,8 +96,8 @@ export function AprBadge({
             "bg-black dark:bg-[linear-gradient(170deg,#262f5f_35%,#c41cff_100%)]"
         )}
       >
-        <span className="flex items-center justify-center text-white text-[19px]">
-          <AprIcon />
+        <span className="flex items-center justify-center text-white text-[19px] w-[15px] h-[15px]">
+          <PointsIcon />
         </span>
         <span
           className={clsx(
