@@ -1,6 +1,5 @@
 import Image from "next/image";
 import MicroChainStatusText from "@/src/components/common/MicroChainStatusText/microChainStatusText";
-import dino from "@/public/images/dino.png";
 
 const GlitchEffects = () => (
   <>
@@ -12,7 +11,7 @@ const GlitchEffects = () => (
       <div className="rainbowColor -translate-x-1/2 rainbowColor5"></div>
     </div>
     <Image
-      src={dino}
+      src={"/images/dino.png"}
       alt="Derek Dino"
       className="dino"
       width={0}
