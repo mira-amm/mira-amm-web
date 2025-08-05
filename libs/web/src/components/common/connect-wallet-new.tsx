@@ -20,6 +20,21 @@ interface ConnectWalletNewProps {
   className?: string;
 }
 
+// Power indicator component
+const PowerIndicator = ({isConnected}: {isConnected: boolean}) => (
+  <div className="flex justify-between items-center mb-0.5">
+    <span className="text-xs">Power</span>
+    <div
+      className={cn(
+        "h-2 w-5",
+        isConnected
+          ? "bg-accent-primary shadow-[0_0_10px_#01ec97,0_0_20px_#01ec97aa]"
+          : "bg-accent-primary-2"
+      )}
+    />
+  </div>
+);
+
 export function ConnectWalletNew({
   size = "large",
   className,
@@ -88,21 +103,6 @@ export function ConnectWalletNew({
   const containerWidth = size === "large" ? "w-[90vw]" : "w-[341.82px]";
   const rightPanelWidth = size === "large" ? "w-full" : "w-[239.82px]";
   const textSize = size === "large" ? "text-sm" : "text-sm";
-
-  // Power indicator component
-  const PowerIndicator = ({isConnected}: {isConnected: boolean}) => (
-    <div className="flex justify-between items-center mb-0.5">
-      <span className="text-xs">Power</span>
-      <div
-        className={cn(
-          "h-2 w-5",
-          isConnected
-            ? "bg-accent-primary shadow-[0_0_10px_#01ec97,0_0_20px_#01ec97aa]"
-            : "bg-accent-primary-2"
-        )}
-      />
-    </div>
-  );
 
   // Action button component
   const ActionButton = () => {
