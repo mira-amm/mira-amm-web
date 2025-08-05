@@ -52,7 +52,7 @@ export function useModal(): [ReturnType, () => void, () => void] {
     className,
     onClose,
     noBackground,
-    showCloseIcon,
+    showCloseIcon = true,
   }: {
     title: string | ReactNode;
     titleClassName?: string;
@@ -88,9 +88,7 @@ export function useModal(): [ReturnType, () => void, () => void] {
               {/* Header */}
               <div className="flex justify-between items-center  text-[18px] leading-[22px] lg:text-xl lg:leading-[24px]">
                 <div className={cn("flex-1", titleClassName)}>{title}</div>
-                {showCloseIcon ? (
-                  <></>
-                ) : (
+                {showCloseIcon !== false && (
                   <IconButton
                     onClick={() => {
                       if (onClose) onClose();
