@@ -6,7 +6,11 @@ import {useEffect} from "react";
  */
 export const useDocumentTitle = (title: string | undefined) => {
   useEffect(() => {
-    if (title !== undefined && document.title !== title) {
+    if (
+      title !== undefined &&
+      typeof document !== "undefined" &&
+      document.title !== title
+    ) {
       document.title = title;
     }
   }, [title]);
