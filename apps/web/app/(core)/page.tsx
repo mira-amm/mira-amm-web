@@ -5,7 +5,7 @@ import {Swap} from "@/src/components/common/Swap/Swap";
 import {useFadeAnimation} from "@/src/hooks/useFadeAnimation";
 import {BackgroundGlow} from "@/src/components/common/BackgroundGlow/BackgroundGlow";
 import {AnimatedText} from "@/src/components/common/AnimatedText/AnimatedText";
-import {AnimatePresence} from "framer-motion";
+import {AnimatePresence, motion} from "framer-motion";
 import {RebrandInfoCard} from "@/src/components/common/rebrand-info-card";
 import {TickerTape} from "@/src/components/common/ticker-tape-banner";
 
@@ -33,7 +33,17 @@ export default function Page() {
             Trade like a predator.
           </AnimatedText>
 
-          <div className="relative">
+          <motion.div
+            className="relative"
+            animate={{
+              marginTop: !shouldRenderTitle ? "-60px" : "0px",
+            }}
+            transition={{
+              duration: 0.3,
+              ease: "easeInOut",
+              delay: 0.15,
+            }}
+          >
             <Swap />
             <FeatureGuard>
               <AnimatePresence mode="wait">
@@ -45,7 +55,7 @@ export default function Page() {
                 )}
               </AnimatePresence>
             </FeatureGuard>
-          </div>
+          </motion.div>
 
           <AnimatedText
             isVisible={isDescriptionVisible}
