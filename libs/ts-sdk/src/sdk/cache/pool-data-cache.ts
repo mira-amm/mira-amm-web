@@ -58,7 +58,6 @@ export class PoolDataCache {
   private config: PoolCacheConfig;
 
   constructor(config: Partial<PoolCacheConfig> = {}) {
-    console.count("PoolDataCache constructor");
     this.pools = new Map();
     this.accessOrder = [];
     this.stats = {
