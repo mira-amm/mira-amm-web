@@ -7,7 +7,6 @@ import {BackgroundGlow} from "@/src/components/common/BackgroundGlow/BackgroundG
 import {AnimatedText} from "@/src/components/common/AnimatedText/AnimatedText";
 import {AnimatePresence, motion} from "framer-motion";
 import {RebrandInfoCard} from "@/src/components/common/rebrand-info-card";
-import {TickerTape} from "@/src/components/common/ticker-tape-banner";
 
 export default function Page() {
   const {isConnected} = useIsConnected();
