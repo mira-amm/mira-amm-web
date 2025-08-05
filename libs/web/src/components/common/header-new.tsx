@@ -8,8 +8,6 @@ import {
 } from "@/src/utils/constants";
 import {ConnectWalletNew} from "./connect-wallet-new";
 import {Navigation, type NavLink} from "./navigation";
-import {TickerTapeText} from "@/src/utils/constants";
-import {TickerTape} from "./ticker-tape-banner";
 
 
 export function HeaderNew({
@@ -43,7 +41,6 @@ export function HeaderNew({
       className="md:sticky top-0 z-10 text-base lg:text-lg backdrop-blur-lg
         transition-all duration-300 ease-in-out"
     >
-      <TickerTape text={TickerTapeText} />
       <section className="flex flex-col py-7 gap-7 lg:pt-0 lg:flex-row justify-between items-center lg:gap-4 px-4 lg:py-4 lg:px-6">
         <div className="flex items-center gap-6 lg:gap-10 flex-1">
           <Logo />
