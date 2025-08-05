@@ -141,7 +141,7 @@ function DataTableLoader<T>({
   return (
     <div className="flex flex-col gap-4 border-border-secondary border-[12px] dark:border-0 bg-background-grey-dark dark:bg-gray-800 rounded-ten p-4 w-full">
       {/* Header loader */}
-      <div className="hidden md:grid grid-cols-4 gap-4 px-2 pb-4 border-b border-gray-700 text-gray-400 text-sm font-normal">
+      <div className="hidden md:grid grid-cols-4 gap-4 px-2 pb-4 border-b border-background-grey-light text-gray-400 text-sm font-normal">
         {columns.map((column) => (
           <div
             key={column.key}
@@ -151,7 +151,7 @@ function DataTableLoader<T>({
               column.align === "left" && "text-left"
             )}
           >
-            <div className="bg-gray-300 dark:bg-gray-600 animate-pulse h-3 w-[75%] line-3" />
+            <div className="bg-gray-300 dark:bg-gray-600 animate-pulse h-3 w-[75%]" />
           </div>
         ))}
       </div>
