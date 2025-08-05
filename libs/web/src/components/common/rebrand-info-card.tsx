@@ -117,6 +117,8 @@ export const RebrandInfoCard: React.FC<RebrandInfoCardProps> = ({
         title=""
         className="w-full h-full lg:max-w-[80vw]! lg:w-[80vw]!"
         onClose={handleModalClose}
+        noBackground={true}
+        showCloseIcon={true}
       >
         <div className="w-full h-full">
           <iframe
