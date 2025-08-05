@@ -87,7 +87,7 @@ export function ConnectWalletNew({
   // Common styles
   const containerWidth = size === "large" ? "w-[90vw]" : "w-[341.82px]";
   const rightPanelWidth = size === "large" ? "w-full" : "w-[239.82px]";
-  const textSize = size === "large" ? "text-xs" : "text-xs";
+  const textSize = size === "large" ? "text-sm" : "text-sm";
 
   // Power indicator component
   const PowerIndicator = ({isConnected}: {isConnected: boolean}) => (
