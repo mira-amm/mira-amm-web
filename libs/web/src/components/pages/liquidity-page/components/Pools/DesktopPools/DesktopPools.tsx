@@ -1,27 +1,15 @@
 import {PoolData} from "@/src/hooks/usePoolsData";
 import {useIsConnected} from "@fuels/react";
 import Link from "next/link";
-import SortableColumn from "@/src/components/common/SortableColumn/SortableColumn";
 import {Button} from "@/meshwave-ui/Button";
 import {DataTable, DataTableColumn} from "@/meshwave-ui/table";
-import {cn} from "@/src/utils/cn";
 import {usePoolDetails} from "../usePoolDetails";
 import CoinPair from "@/src/components/common/CoinPair/CoinPair";
 import {AprBadge} from "@/src/components/common/AprBadge/AprBadge";
 import {usePoolNameAndMatch} from "@/src/hooks/usePoolNameAndMatch";
 
-const tableBase = "md:table table-fixed desktopOnly p-4";
-const thBase =
-  "text-base leading-[19px] text-content-tertiary whitespace-nowrap overflow-hidden text-ellipsis";
-const tdBase = "";
-const trBase = "px-2 py-4 mb-2";
-const tableHeaderBase = "";
-
 export function DesktopPools({
   poolsData,
-  orderBy,
-  handleSort,
-  className,
 }: {
   poolsData: PoolData[] | undefined;
   orderBy: string;
@@ -29,8 +17,6 @@ export function DesktopPools({
   className?: string;
 }) {
   const {isConnected} = useIsConnected();
-
-  console.log("DesktopPools render:", {poolsData, isConnected});
 
   if (!poolsData) return <div>No pools data</div>;
 
