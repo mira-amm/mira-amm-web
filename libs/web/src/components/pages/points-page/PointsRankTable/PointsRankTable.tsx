@@ -93,8 +93,6 @@ export default function PointsRankTable() {
     onPaginationChange: setPagination,
   });
 
-  const isRebrandingEnabled = getIsRebrandEnabled();
-
   if (error) {
     return <div>Error: {error.message}</div>;
   }
@@ -102,7 +100,7 @@ export default function PointsRankTable() {
   if (isLoading) {
     return (
       <div className="flex flex-col items-center gap-4 p-7 rounded-ten bg-background-grey-dark">
-        <Loader rebrand={isRebrandingEnabled} />
+        <Loader rebrand={rebrandEnabled} />
         <p>Loading points leaderboard...</p>
       </div>
     );
