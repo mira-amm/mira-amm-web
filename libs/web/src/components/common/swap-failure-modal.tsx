@@ -24,6 +24,12 @@ export function SwapFailureModal({
         error.message.includes("Exceeding input amount"))
     ) {
       message = "Slippage exceeds limit. Adjust settings and try again.";
+    } else if (
+      error.code === ErrorCode.SCRIPT_REVERTED &&
+      error.message.includes("NotEnoughBalance")
+    ) {
+      message =
+        "Your account doesn't have enough funds to complete this transaction.";
     }
   } else if (error?.message === "User rejected the transaction!") {
     message =
