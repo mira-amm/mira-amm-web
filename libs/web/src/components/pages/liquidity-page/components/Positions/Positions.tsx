@@ -1,21 +1,16 @@
 "use client";
 
 import Link from "next/link";
-import {formatUnits} from "fuels";
 import {useIsConnected} from "@fuels/react";
 import {buildPoolId} from "mira-dex-ts";
 import {FileText} from "lucide-react";
 import {Button} from "@/meshwave-ui/Button";
 import {DataTable, DataTableColumn} from "@/meshwave-ui/table";
-
-import {usePoolNameAndMatch} from "@/src/hooks/usePoolNameAndMatch";
-import {usePoolAPR, useAssetMetadata, usePositions} from "@/src/hooks";
-
+import {usePositions} from "@/src/hooks";
 import {createPoolKey} from "@/src/utils/common";
 import CoinPair from "@/src/components/common/CoinPair/CoinPair";
-import {AprBadge} from "@/src/components/common/AprBadge/AprBadge";
-
-import {DefaultLocale} from "@/src/utils/constants";
+import PositionSizeCell from "./PositionSizeCell";
+import AprCell from "./AprCell";
 
 export function Positions() {
   const {isConnected} = useIsConnected();
@@ -65,67 +60,13 @@ export function Positions() {
       key: "apr",
       header: "APR",
       align: "center",
-      render: (position) => {
-        const assetIdA = position.token0Item.token0Position[0].bits;
-        const assetIdB = position.token1Item.token1Position[0].bits;
-        const isStablePool = position.isStable;
-        const poolId = buildPoolId(assetIdA, assetIdB, isStablePool);
-        const poolKey = createPoolKey(poolId);
-        const {apr} = usePoolAPR(poolId);
-        const {isMatching} = usePoolNameAndMatch(poolKey);
-
-        const aprValue = apr
-          ? `${apr.apr.toLocaleString(DefaultLocale, {
-              minimumFractionDigits: 2,
-              maximumFractionDigits: 2,
-            })}%`
-          : null;
-
-        const tvlValue = apr?.tvlUSD;
-
-        return (
-          <div className="text-center mx-auto text-base font-alt">
-            {isMatching ? (
-              <AprBadge
-                aprValue={aprValue}
-                poolKey={poolKey}
-                tvlValue={tvlValue}
-                background="black"
-              />
-            ) : (
-              aprValue
-            )}
-          </div>
-        );
-      },
+      render: (position) => <AprCell position={position} />,
     },
     {
       key: "positionSize",
       header: "Position size",
       align: "center",
-      render: (position) => {
-        const assetIdA = position.token0Item.token0Position[0].bits;
-        const assetIdB = position.token1Item.token1Position[0].bits;
-        const amountA = position.token0Item.token0Position[1].toString();
-        const amountB = position.token1Item.token1Position[1].toString();
-        const isStablePool = position.isStable;
-        const priceA = position.token0Item.price;
-        const priceB = position.token1Item.price;
-
-        const assetAMetadata = useAssetMetadata(assetIdA);
-        const assetBMetadata = useAssetMetadata(assetIdB);
-
-        const coinAAmount = formatUnits(amountA, assetAMetadata.decimals);
-        const coinBAmount = formatUnits(amountB, assetBMetadata.decimals);
-        const size =
-          parseFloat(coinAAmount) * priceA + parseFloat(coinBAmount) * priceB;
-
-        return (
-          <div className="text-center text-base font-alt">
-            {size ? `$${size.toFixed(2)}` : "checking..."}
-          </div>
-        );
-      },
+      render: (position) => <PositionSizeCell position={position} />,
     },
     {
       key: "actions",
