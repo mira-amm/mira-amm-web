@@ -17,9 +17,9 @@ function Divider({
   ...props
 }: DividerProps) {
   const sizeClasses = {
-    sm: "border-t-[1px]",
-    md: "border-t-[2px]",
-    lg: "border-t-[3px]",
+    sm: "border-[1px]",
+    md: "border-[2px]",
+    lg: "border-[3px]",
   };
 
   const variantClasses = {
@@ -30,9 +30,9 @@ function Divider({
 
   const orientationClasses = {
     horizontal:
-      "w-full border-t border-background-grey-light dark:border-background-grey-darker",
+      "w-full border-t-0 border-l-0 border-r-0 border-background-grey-light dark:border-background-grey-darker",
     vertical:
-      "h-full border-l border-background-grey-light dark:border-background-grey-darker",
+      "h-full border-t-0 border-b-0 border-r-0 border-background-grey-light dark:border-background-grey-darker",
   };
 
   return (
