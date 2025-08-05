@@ -55,7 +55,7 @@ interface BackgroundGlowProps {
   shouldRender: boolean;
 }
 
-export function BackgroundGlow({isVisible, shouldRender}: BackgroundGlowProps) {
+export function BackgroundGlow({isVisible}: BackgroundGlowProps) {
   return (
     <motion.div
       className="absolute bottom-[-100px] -z-10"
