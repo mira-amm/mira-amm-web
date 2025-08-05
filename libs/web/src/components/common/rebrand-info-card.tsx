@@ -1,6 +1,7 @@
 import React, {useState, useEffect} from "react";
 import {Button} from "@/meshwave-ui/Button/Button";
 import Image from "next/image";
+import {useLocalStorage} from "usehooks-ts";
 
 interface RebrandInfoCardProps {
   icon?: string;
@@ -14,7 +15,6 @@ interface RebrandInfoCardProps {
 }
 
 const REBRAND_CARD_DISMISSED_KEY = "rebrand-info-card-dismissed";
-const PAGE_REFRESH_FLAG = "page-refresh-flag";
 
 export const RebrandInfoCard: React.FC<RebrandInfoCardProps> = ({
   icon,
@@ -22,51 +22,27 @@ export const RebrandInfoCard: React.FC<RebrandInfoCardProps> = ({
   headline = "Mira is now Microchain!",
   subheadline = "Faster swaps, smoother UX, and improved price execution coming soon.",
   buttonText = "Watch trailer",
-
   buttonHref = "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
-  linkText = "Maybe later",
+  linkText = "No thanks",
   className = "",
 }) => {
-  const [hide, setHide] = useState(false);
-
-  useEffect(() => {
-    // Check if this is a page refresh
-    const isRefresh = sessionStorage.getItem(PAGE_REFRESH_FLAG) === "true";
-
-    if (isRefresh) {
-      // Clear the dismissed state on refresh
-      sessionStorage.removeItem(REBRAND_CARD_DISMISSED_KEY);
-      sessionStorage.removeItem(PAGE_REFRESH_FLAG);
-    } else {
-      // Check if the card was previously dismissed in this session
-      const isDismissed =
-        sessionStorage.getItem(REBRAND_CARD_DISMISSED_KEY) === "true";
-      if (isDismissed) {
-        setHide(true);
-      }
-    }
-
-    // Set up beforeunload listener to detect page refresh
-    const handleBeforeUnload = () => {
-      sessionStorage.setItem(PAGE_REFRESH_FLAG, "true");
-    };
-
-    window.addEventListener("beforeunload", handleBeforeUnload);
-
-    return () => {
-      window.removeEventListener("beforeunload", handleBeforeUnload);
-    };
-  }, []);
+  const [isDismissed, setIsDismissed] = useLocalStorage(
+    REBRAND_CARD_DISMISSED_KEY,
+    false
+  );
 
   const handleDismiss = () => {
-    setHide(true);
-    // Store the dismissed state in sessionStorage
-    sessionStorage.setItem(REBRAND_CARD_DISMISSED_KEY, "true");
+    setIsDismissed(true);
   };
+
+  // Don't render if dismissed
+  if (isDismissed) {
+    return null;
+  }
 
   return (
     <div
-      className={`fixed bottom-10 right-8 w-80 max-w-[calc(100vw-3rem)] md:max-w-80 bg-black rounded-xl shadow-2xl animate-[slide-in-right_0.5s_ease-in-out] overflow-hidden ${hide ? "hidden" : ""} ${className}`}
+      className={`fixed bottom-10 right-8 w-80 max-w-[calc(100vw-3rem)] md:max-w-80 bg-black rounded-xl shadow-2xl animate-[slide-in-right_0.5s_ease-in-out] overflow-hidden ${className}`}
     >
       {/* Content */}
       <div className="p-8 space-y-6">
