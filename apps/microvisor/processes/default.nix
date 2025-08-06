@@ -39,7 +39,7 @@
         };
         ready_log_line = "Ready in";
         namespace = "🧮 VIEWS";
-        disabled = false;
+        disabled = true;
       };
     };
 
