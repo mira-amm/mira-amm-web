@@ -66,7 +66,7 @@
         description = "🟩 Supabase | 54323";
         is_tty = true;
         depends_on = {
-          postgres.condition = "process_complete";
+          postgres.condition = "process_completed";
         };
         ready_log_line = "Started supabase local development setup.";
         namespace = "📀 DATABASES";
