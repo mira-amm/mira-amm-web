@@ -22,8 +22,8 @@ export const DefaultTxParams: TxParams = {
 
 export const MaxDeadline = 4_294_967_295 as const;
 
-export const DiscordLink = "https://discord.gg/6pHdTY6rYq" as const;
-export const XLink = "https://x.com/MiraProtocol" as const;
+export const DiscordLink = "https://discord.gg/9HzukDUKSq" as const;
+export const XLink = "https://x.com/MicrochainDLM" as const;
 
 export const BlogLink =
   "https://mirror.xyz/0xBE101110E07430Cf585123864a55f51e53ABc339" as const;
