@@ -1,6 +1,7 @@
 import {cn} from "@/src/utils/cn";
 import Link from "next/link";
 import {useEffect, useRef, useState} from "react";
+import {ExternalLink} from "lucide-react";
 
 export interface NavLink {
   href: string;
@@ -69,7 +70,10 @@ export function Navigation({
             }}
             className={cn(linkBaseClasses, linkSizeClasses[size])}
           >
-            {label}
+            <div className="flex flex-row items-center gap-1 no-wrap">
+              {label}
+              <ExternalLink className="size-4 dark:text-white" />
+            </div>
           </a>
         ) : (
           <Link
