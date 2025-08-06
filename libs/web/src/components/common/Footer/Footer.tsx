@@ -19,7 +19,7 @@ export default function Footer() {
           </a>
 
           <a
-            href="https://docs.mira.ly/resources/security-audits"
+            href="https://docs.microchain.systems/resources/security-audits"
             target="_blank"
             rel="noopener"
             className="lg:px-4 text-base text-content-tertiary hover:text-content-primary hover:no-underline"
@@ -27,7 +27,7 @@ export default function Footer() {
             Security Audit
           </a>
           <a
-            href="https://docs.mira.ly"
+            href="https://docs.microchain.systems"
             className="lg:px-4 text-base text-content-tertiary hover:text-content-primary hover:no-underline"
             target="_blank"
             rel="noopener"
@@ -43,7 +43,7 @@ export default function Footer() {
             Blog
           </a>
           <a
-            href="mailto:help@mira.ly"
+            href="https://microchain.featurebase.app/"
             target="_blank"
             rel="noopener"
             className="lg:px-4 text-base text-content-tertiary hover:text-content-primary hover:no-underline"

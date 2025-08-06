@@ -87,14 +87,14 @@ function AuditSection() {
         <div className="flex items-center gap-4">
           <UsedTechs text="Audited by">
             <a
-              href="https://docs.mira.ly/developer-guides/security-audit"
+              href="https://docs.microchain.systems/developer-guides/security-audit"
               target="_blank"
               rel="noopener noreferrer"
             >
               <OttersecIcon />
             </a>
             <a
-              href="https://docs.mira.ly/developer-guides/security-audit"
+              href="https://docs.microchain.systems/developer-guides/security-audit"
               target="_blank"
               rel="noopener noreferrer"
             >

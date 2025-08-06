@@ -25,7 +25,8 @@ export const MaxDeadline = 4_294_967_295 as const;
 export const DiscordLink = "https://discord.gg/6pHdTY6rYq" as const;
 export const XLink = "https://x.com/MiraProtocol" as const;
 
-export const BlogLink = "https://mirror.xyz/0xBE101110E07430Cf585123864a55f51e53ABc339" as const;
+export const BlogLink =
+  "https://mirror.xyz/0xBE101110E07430Cf585123864a55f51e53ABc339" as const;
 
 // TODO: Use env variables for values below to separate dev/prod | testnet/mainnet
 export const ValidNetworkChainId = CHAIN_IDS.fuel.mainnet;
@@ -34,7 +35,7 @@ export const NetworkUrl: string = "https://mainnet.fuel.network/v1/graphql";
 export const SQDIndexerUrl =
   "https://mira-dex.squids.live/mira-indexer@v3/api/graphql" as const;
 export const MainnetUrl = "https://mainnet-explorer.fuel.network";
-export const ApiBaseUrl = "https://prod.api.mira.ly" as const;
+export const ApiBaseUrl = "https://prod.api.microchain.systems" as const;
 
 export const FuelAppUrl = "https://app.fuel.network" as const;
 
@@ -74,7 +75,7 @@ export const BoostsLearnMoreUrl =
   "https://mirror.xyz/miraly.eth/X-80QWbrq4f17L67Yy8QyQBdE5y2okxTzcfJIL-SHCQ" as const;
 
 export const LIQUIDITY_PROVIDING_DOC_URL =
-  "https://docs.mira.ly/users/how-to-add-liquidity" as const;
+  "https://docs.microchain.systems/users/how-to-add-liquidity" as const;
 
 export const BoostsRewardsTooltip =
   "These are the total Fuel tokens earned that will be distributed at the end of the season. The exact dollar amount will change based on Fuel’s current price. The exact token amount might change.";
@@ -92,7 +93,7 @@ export const getPromoTitle = () => {
 };
 
 export const POINTS_PROMO_TITLE =
-  "Introducing Mira Points, earn points by providing liquidity and engaging in activities.";
+  "Introducing Microchain Points, earn points by providing liquidity and engaging in activities.";
 
 export const EPOCH_NUMBER = 6 as const;
 
