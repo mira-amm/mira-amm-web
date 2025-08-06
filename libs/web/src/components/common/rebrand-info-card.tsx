@@ -10,7 +10,7 @@ interface RebrandInfoCardProps {
   headline?: string;
   subheadline?: string;
   buttonText?: string;
-  buttonHref?: string;
+  videoLink?: string;
   linkText?: string;
   className?: string;
 }
@@ -23,7 +23,7 @@ export const RebrandInfoCard: React.FC<RebrandInfoCardProps> = ({
   headline = "Mira is now Microchain!",
   subheadline = "Faster swaps, smoother UX, and improved price execution coming soon.",
   buttonText = "Watch trailer",
-  buttonHref = "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+  videoLink = "https://youtu.be/X6iqdzdXqTc",
   linkText = "No thanks",
   className = "",
 }) => {
@@ -53,9 +53,7 @@ export const RebrandInfoCard: React.FC<RebrandInfoCardProps> = ({
 
   // Convert YouTube URL to embed URL
   const getEmbedUrl = (url: string) => {
-    const videoId = url.match(
-      /(?:youtube\.com\/watch\?v=|youtu\.be\/)([^&\n?#]+)/
-    )?.[1];
+    const videoId = "X6iqdzdXqTc";
     return videoId
       ? `https://www.youtube.com/embed/${videoId}?autoplay=1&rel=0`
       : url;
@@ -122,7 +120,7 @@ export const RebrandInfoCard: React.FC<RebrandInfoCardProps> = ({
       >
         <div className="w-full h-full">
           <iframe
-            src={getEmbedUrl(buttonHref)}
+            src={getEmbedUrl(videoLink)}
             title="Video Player"
             className="w-full h-full rounded-lg"
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
