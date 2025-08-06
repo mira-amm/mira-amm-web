@@ -39,7 +39,7 @@ export function StatCard({
 
   return (
     <div className={cn("flex flex-col gap-4 md:w-[206px]", className)}>
-      <h3 className="text-gray-500 font-medium text-[17.72px] leading-none">
+      <h3 className="text-gray-500 font-regular text-[17.72px] leading-none">
         {title}
       </h3>
       <div className="text-black text-[25.23px] leading-none font-alt">

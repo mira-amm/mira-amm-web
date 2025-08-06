@@ -23,7 +23,7 @@ export function ProtocolStatsDisplay({
   isLoading = false,
 }: ProtocolStatsDisplayProps) {
   return (
-    <div className={cn("w-full", className)}>
+    <div className={cn("w-full pb-8", className)}>
       {/* Stats row */}
       <div className="flex flex-col md:flex-row gap-8">
         <StatCard
