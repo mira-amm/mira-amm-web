@@ -3,6 +3,8 @@ import {Button} from "@/meshwave-ui/Button/Button";
 import Image from "next/image";
 import {useLocalStorage} from "usehooks-ts";
 import {useModal} from "@/src/hooks/useModal";
+import Link from "next/link";
+import {XIcon} from "lucide-react";
 
 interface RebrandInfoCardProps {
   icon?: string;
@@ -24,7 +26,7 @@ export const RebrandInfoCard: React.FC<RebrandInfoCardProps> = ({
   subheadline = "Faster swaps, smoother UX, and improved price execution coming soon.",
   buttonText = "Watch trailer",
   videoLink = "https://youtu.be/X6iqdzdXqTc",
-  linkText = "No thanks",
+  linkText = "Learn more",
   className = "",
 }) => {
   const [isDismissed, setIsDismissed] = useLocalStorage(
@@ -65,7 +67,7 @@ export const RebrandInfoCard: React.FC<RebrandInfoCardProps> = ({
         className={`fixed bottom-10 right-8 w-80 max-w-[calc(100vw-3rem)] md:max-w-80 bg-black rounded-xl shadow-2xl animate-[slide-in-right_0.5s_ease-in-out] overflow-hidden ${className}`}
       >
         {/* Content */}
-        <div className="p-8 space-y-6">
+        <div className="relative p-8 space-y-6">
           {/* Icon Section */}
           {iconImage ? (
             <div className="relative w-32 h-10">
@@ -79,6 +81,11 @@ export const RebrandInfoCard: React.FC<RebrandInfoCardProps> = ({
           ) : (
             icon && <div className="text-4xl">{icon}</div>
           )}
+
+          <XIcon
+            onClick={handleDismiss}
+            className="text-white size-5 absolute top-8 right-8 hover:cursor-pointer"
+          />
 
           {/* Headlines */}
           <div className="space-y-2">
@@ -104,7 +111,13 @@ export const RebrandInfoCard: React.FC<RebrandInfoCardProps> = ({
               className="text-base text-white underline hover:no-underline transition-all duration-200 font-normal"
               variant="link"
             >
-              {linkText}
+              <Link
+                href="https://mirror.xyz/0xBE101110E07430Cf585123864a55f51e53ABc339/K5UQ9eDTdG1OP2RsVNdth5upq4anJq86W5XkwsXxR8s"
+                target="_blank"
+                className="text-base text-white underline hover:no-underline transition-all duration-200 font-normal"
+              >
+                {linkText}
+              </Link>
             </Button>
           </div>
         </div>
