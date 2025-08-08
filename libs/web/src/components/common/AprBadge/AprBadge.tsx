@@ -10,6 +10,7 @@ import {PointsIcon} from "@/meshwave-ui/icons";
 import {cn} from "@/src/utils/cn";
 import {getIsRebrandEnabled} from "@/src/utils/isRebrandEnabled";
 import {BrandText} from "@/src/components/common";
+import {Tooltip, TooltipContent, TooltipTrigger} from "@/meshwave-ui/tooltip";
 
 export function AprBadge({
   aprValue,
@@ -26,36 +27,15 @@ export function AprBadge({
   tvlValue: number;
   background: "overlay-1" | "overlay-5" | "overlay-9" | "black";
 }) {
-  const [isHovered, setIsHovered] = useState(false);
-
   const {boostedApr, boostReward, rewardsToken} = useBoostedApr(
     poolKey,
     tvlValue,
     EPOCH_NUMBER
   );
 
-  useEffect(() => {
-    if (small && isHovered && isMobile) {
-      const handleClickOutside = () => setIsHovered(false);
-
-      document.addEventListener("click", handleClickOutside);
-
-      return () => {
-        document.removeEventListener("click", handleClickOutside);
-      };
-    }
-  }, [small, isHovered]);
-
   const aprValueInNumber = aprValue
     ? parseFloat(aprValue.match(/[0-9.]+/)?.[0] || "0")
     : 0;
-
-  const handleMouseEnter = () => !isMobile && setIsHovered(true);
-  const handleMouseLeave = () => !isMobile && setIsHovered(false);
-  const handleClick = () => isMobile && setIsHovered((prev) => !prev);
-
-  const iconWidth = small ? 15 : 20;
-  const iconHeight = small ? 15 : 18;
 
   const showApr = aprValue
     ? (boostedApr + aprValueInNumber).toFixed(2)
@@ -74,57 +54,51 @@ export function AprBadge({
   const rebrandEnabled = getIsRebrandEnabled();
 
   return (
-    <div className="flex items-center gap-[5px]">
-      <div
-        onMouseEnter={handleMouseEnter}
-        onMouseLeave={handleMouseLeave}
-        onClick={handleClick}
-        className={cn(
-          "relative flex items-center gap-[5px] rounded-lg cursor-pointer",
-          "justify-center",
-          small
-            ? "min-w-[76px] py-[5px] px-[8px]"
-            : "min-w-[96px] py-[7px] px-[10px] ml-[10px]",
-          background === "overlay-1" &&
-            "bg-[url('/images/overlay-1.jpg')] bg-cover",
-          background === "overlay-5" &&
-            "bg-[url('/images/overlay-5.jpg')] bg-cover",
-          background === "overlay-9" &&
-            "bg-[url('/images/overlay-9.jpg')] bg-cover",
-          background === "black" && "bg-black bg-cover",
-          !rebrandEnabled &&
-            "bg-black dark:bg-[linear-gradient(170deg,#262f5f_35%,#c41cff_100%)]"
-        )}
-      >
-        <span className="flex items-center justify-center text-white text-[19px] w-[15px] h-[15px]">
-          <PointsIcon />
-        </span>
-        <span
-          className={clsx(
-            "text-white whitespace-normal break-words font-alt",
-            small ? "text-[13px] leading-[16px]" : "text-base leading-[19.36px]"
+    <Tooltip>
+      <TooltipTrigger>
+        <div
+          className={cn(
+            "relative flex items-center gap-[5px] rounded-lg cursor-pointer",
+            "justify-center",
+            small
+              ? "min-w-[76px] py-[5px] px-[8px]"
+              : "min-w-[96px] py-[7px] px-[10px] ml-[10px]",
+            background === "overlay-1" &&
+              "bg-[url('/images/overlay-1.jpg')] bg-cover",
+            background === "overlay-5" &&
+              "bg-[url('/images/overlay-5.jpg')] bg-cover",
+            background === "overlay-9" &&
+              "bg-[url('/images/overlay-9.jpg')] bg-cover",
+            background === "black" && "bg-black bg-cover",
+            !rebrandEnabled &&
+              "bg-black dark:bg-[linear-gradient(170deg,#262f5f_35%,#c41cff_100%)]"
           )}
         >
-          {aprElement}
-        </span>
-
-        {isHovered && (
-          <div
-            onClick={() => setIsHovered(false)}
-            className="absolute top-[140%] left-0 z-[9999] w-[292px] rounded-lg p-[25px] text-white text-left shadow-[0_4px_10px_rgba(0,0,0,0.1)] bg-black flex flex-col gap-[10px]"
-            style={{left: leftAlignValue ?? "0"}}
+          <span className="flex items-center justify-center text-white text-[19px] w-[15px] h-[15px]">
+            <PointsIcon />
+          </span>
+          <span
+            className={clsx(
+              "text-white whitespace-normal break-words font-alt",
+              small
+                ? "text-[13px] leading-[16px]"
+                : "text-base leading-[19.36px]"
+            )}
           >
-            <AprLabel
-              rewardsToken={rewardsToken}
-              boostedApr={boostedApr}
-              boostReward={boostReward}
-              baseApr={aprValue || "0"}
-              aprElement={aprElement}
-            />
-          </div>
-        )}
-      </div>
-    </div>
+            {aprElement}
+          </span>
+        </div>
+      </TooltipTrigger>
+      <TooltipContent className="font-alt p-[25px] max-w-[292px]">
+        <AprLabel
+          rewardsToken={rewardsToken}
+          boostedApr={boostedApr}
+          boostReward={boostReward}
+          baseApr={aprValue || "0"}
+          aprElement={aprElement}
+        />
+      </TooltipContent>
+    </Tooltip>
   );
 }
 
