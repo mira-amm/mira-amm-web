@@ -110,9 +110,9 @@ catalogs:
     '@vercel/node': ^5.3.7
     chromatic: ^13.0.1
   fuels:
-    '@fuels/connectors': 0.40.0
+    '@fuels/connectors': 0.44.1
     '@fuels/react': 0.40.0
-    fuels: 0.101.2
+    fuels: 0.101.3
   script:
     '@eslint/config-inspector': ^1.1.0
     '@statelyai/inspect': ^0.4.0
