@@ -2,7 +2,6 @@ import {useAssetPriceFromIndexer} from "@/src/hooks/useAssetPriceFromIndexer";
 import {formatDisplayAmount} from "@/src/utils/common";
 import {CoinWithAmount, Loader} from "@/src/components/common";
 import {formatMoney, formatNumber} from "@/src/utils/formatMoney";
-import {getIsRebrandEnabled} from "@/src/utils/isRebrandEnabled";
 
 const useFormattedReserveValue = (
   assetId: string,
@@ -46,7 +45,7 @@ export function ReserveItem({
           </p>
         </div>
       ) : (
-        <Loader color="gray" rebrand={getIsRebrandEnabled()} />
+        <Loader />
       )}
     </div>
   );
