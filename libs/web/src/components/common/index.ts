@@ -32,7 +32,7 @@ export {CurrencyBox} from "./currency-box";
 export {ExchangeRate} from "./exchange-rate";
 export {SettingsModalContent} from "./settings-modal-content";
 export {CoinListItem} from "./coin-list-item";
-export {FeatureGuard} from "./feature-guard";
+
 export {BrandText} from "./BrandText/BrandText";
 export {HeaderNew} from "./header-new";
 export {LogoNew} from "./logo-new";

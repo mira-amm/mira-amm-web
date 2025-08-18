@@ -12,7 +12,6 @@ import AddLiquidityDialog from "@/src/components/pages/add-liquidity-page/compon
 import {PoolId} from "mira-dex-ts";
 import {
   IconButton,
-  FeatureGuard,
   SettingsModalContent,
   SlippageSetting,
 } from "@/src/components/common";
@@ -85,7 +84,7 @@ export default function AddLiquidityPage() {
           />
         ) : (
           <AddLiquidityDialog
-            poolId={poolId as PoolId}
+            poolId={poolId}
             setPreviewData={setPreviewData}
             poolKey={poolKey || ""}
           />
@@ -96,27 +95,13 @@ export default function AddLiquidityPage() {
         <div className="fixed top-0 left-0 w-full h-full backdrop-blur-sm z-[4] pointer-events-auto" />
       )}
 
-      <FeatureGuard
-        fallback={
-          <SettingsModal title="Settings">
-            <SettingsModalContent
-              slippage={slippage}
-              slippageMode={slippageMode}
-              setSlippage={setSlippage}
-              setSlippageMode={setSlippageMode}
-              closeModal={closeSettingsModal}
-            />
-          </SettingsModal>
-        }
-      >
-        <SettingsModal title={`Slippage tolerance: ${slippage / 100}%`}>
-          <SettingsModalContentNew
-            slippage={slippage}
-            setSlippage={setSlippage}
-            closeModal={closeSettingsModal}
-          />
-        </SettingsModal>
-      </FeatureGuard>
+      <SettingsModal title={`Slippage tolerance: ${slippage / 100}%`}>
+        <SettingsModalContentNew
+          slippage={slippage}
+          setSlippage={setSlippage}
+          closeModal={closeSettingsModal}
+        />
+      </SettingsModal>
     </main>
   );
 }

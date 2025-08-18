@@ -15,7 +15,6 @@ import Pagination from "@/src/components/common/Pagination/Pagination";
 import {DEFAULT_PAGE} from "@/src/hooks/usePoolsData";
 import {useDebounce, usePoolsData} from "@/src/hooks";
 import {LoaderCircle} from "lucide-react";
-import {getIsRebrandEnabled} from "@/src/utils/isRebrandEnabled";
 import LoaderBar from "@/src/components/common/loader-bar";
 
 export function Pools() {
@@ -57,8 +56,6 @@ export function Pools() {
 
   const handlePageChange = (page: number) => setQueryVariables({page: page});
 
-  const isRebrandingEnabled = getIsRebrandEnabled();
-
   return (
     <section className="flex flex-col gap-[14px]">
       {/* Mobile: Title and Button same line, search bar below full width*/}
@@ -98,7 +95,7 @@ export function Pools() {
 
       {isLoading && (
         <div className="flex flex-col items-center gap-4 py-7 px-4 lg:p-8 rounded-ten bg-background-grey-dark">
-          <Loader rebrand={isRebrandingEnabled} />
+          <Loader />
           <p>Loading pools...</p>
         </div>
       )}

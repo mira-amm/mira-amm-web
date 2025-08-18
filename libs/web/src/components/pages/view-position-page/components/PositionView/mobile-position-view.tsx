@@ -14,7 +14,6 @@ import {MiraBlock} from "./mira-block";
 
 import {formatDisplayAmount} from "@/src/utils/common";
 import {PromoSparkle} from "@/meshwave-ui/src/components/icons";
-import {getIsRebrandEnabled} from "@/src/utils/isRebrandEnabled";
 
 interface AssetData {
   amount: string;
@@ -92,7 +91,7 @@ export function MobilePositionView({
           {formattedTvlValue ? (
             <p className="text-content-tertiary">${formattedTvlValue}</p>
           ) : (
-            <Loader color="gray" rebrand={getIsRebrandEnabled()} />
+            <Loader />
           )}
         </div>
         <ExchangeRate

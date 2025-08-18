@@ -17,9 +17,7 @@ function validateEnvironment(): void {
  * Determines the current brand based on environment variable
  */
 function getCurrentBrand(): BrandType {
-  validateEnvironment();
-  const isRebrandEnabled = process.env.NEXT_PUBLIC_ENABLE_REBRAND_UI === "true";
-  return isRebrandEnabled ? "microchain" : "mira";
+  return "microchain";
 }
 
 /**
