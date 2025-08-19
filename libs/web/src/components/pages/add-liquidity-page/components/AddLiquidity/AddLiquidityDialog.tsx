@@ -1,38 +1,16 @@
-import {
-  Dispatch,
-  SetStateAction,
-  useCallback,
-  useEffect,
-  useState,
-} from "react";
+import {Dispatch, SetStateAction, useCallback} from "react";
 import {Button} from "@/meshwave-ui/Button";
-import {BN, bn} from "fuels";
 import {useConnectUI, useIsConnected} from "@fuels/react";
 import {PoolId} from "mira-dex-ts";
-import {useDebounceCallback, useDocumentTitle} from "usehooks-ts";
+import {useDocumentTitle} from "usehooks-ts";
 import {clsx} from "clsx";
 
 import CoinInput from "@/src/components/pages/add-liquidity-page/components/CoinInput/CoinInput";
-import {openNewTab} from "@/src/utils/common";
 import {Info, TransactionFailureModal} from "@/src/components/common";
 import CoinPair from "@/src/components/common/CoinPair/CoinPair";
 import {AprBadge} from "@/src/components/common/AprBadge/AprBadge";
 import {usePoolNameAndMatch} from "@/src/hooks/usePoolNameAndMatch";
-
-import {
-  usePreviewAddLiquidity,
-  useAssetBalance,
-  usePoolAPR,
-  usePoolsMetadata,
-  useFaucetLink,
-  useAssetMetadata,
-  useAssetPrice,
-  useModal,
-  useCheckEthBalance,
-  useCheckActiveNetwork,
-  useBalances,
-} from "@/src/hooks";
-import {DefaultLocale, FuelAppUrl} from "@/src/utils/constants";
+import {useModal} from "@/src/hooks";
 import {AddLiquidityPreviewData} from "@/src/components/pages/add-liquidity-page/components/AddLiquidity/PreviewAddLiquidityDialog";
 
 import {
@@ -41,6 +19,9 @@ import {
   VolatilePoolTooltip,
 } from "@/src/components/pages/add-liquidity-page/components/AddLiquidity/addLiquidityTooltips";
 import {cn} from "@/src/utils/cn";
+
+import {usePoolAssets} from "@/src/hooks/usePoolAssets";
+import {useLiquidityForm} from "@/src/hooks/useLiquidityForm";
 
 const AddLiquidityDialog = ({
   poolId,
@@ -52,192 +33,62 @@ const AddLiquidityDialog = ({
   poolKey: string;
 }) => {
   const [FailureModal, openFailureModal, closeFailureModal] = useModal();
-
   const {isConnected, isPending: isConnecting} = useIsConnected();
   const {connect} = useConnectUI();
-  const {balances} = useBalances();
 
-  const firstAssetId = poolId[0].bits;
-  const secondAssetId = poolId[1].bits;
-
-  const firstAssetBalance = useAssetBalance(balances, firstAssetId);
-  const secondAssetBalance = useAssetBalance(balances, secondAssetId);
-
-  const [firstAmount, setFirstAmount] = useState(new BN(0));
-  const [firstAmountInput, setFirstAmountInput] = useState("");
-  const [secondAmount, setSecondAmount] = useState(new BN(0));
-  const [secondAmountInput, setSecondAmountInput] = useState("");
-  const [activeAsset, setActiveAsset] = useState<string | null>(null);
-  const [isStablePool, setIsStablePool] = useState(poolId[2]);
-
-  const asset0Metadata = useAssetMetadata(poolId[0].bits);
-  const asset1Metadata = useAssetMetadata(poolId[1].bits);
-
-  // HACK: This is a bit of an ugly way to set document titles
-  useDocumentTitle(
-    `Add Liquidity:  ${asset0Metadata.symbol}/${asset1Metadata.symbol}`
-  );
-
-  const isFirstToken = activeAsset === poolId[0].bits;
-
-  const {poolsMetadata} = usePoolsMetadata([poolId]);
-  const emptyPool = Boolean(
-    poolsMetadata?.[0]?.reserve0.eq(0) && poolsMetadata?.[0].reserve1.eq(0)
-  );
-
-  //Checks if the pool with rewards matches the current pool
-  const {isMatching} = usePoolNameAndMatch(poolKey);
-
+  // Get pool assets info
   const {
-    data,
-    isFetching,
-    error: previewError,
-  } = usePreviewAddLiquidity({
     firstAssetId,
     secondAssetId,
-    amount: isFirstToken ? firstAmount : secondAmount,
-    isFirstToken,
-    isStablePool,
-    fetchCondition: !emptyPool,
-  });
+    firstAssetBalance,
+    secondAssetBalance,
+    asset0Price,
+    asset1Price,
+  } = usePoolAssets(poolKey);
 
-  useEffect(() => {
-    if (previewError) {
-      openFailureModal();
-    }
-  }, [previewError]);
+  // Check if the pool with rewards matches the current pool
+  const {isMatching} = usePoolNameAndMatch(poolKey);
 
-  const {apr} = usePoolAPR(poolId);
+  // Handle preview errors
+  const handlePreviewError = useCallback(() => {
+    openFailureModal();
+  }, [openFailureModal]);
 
-  const aprValue =
-    apr !== undefined
-      ? apr.apr.toLocaleString(DefaultLocale, {
-          minimumFractionDigits: 2,
-          maximumFractionDigits: 2,
-        })
-      : null;
-
-  const tvlValue = apr?.tvlUSD;
-
-  const debouncedSetFirstAmount = useDebounceCallback(setFirstAmount, 500);
-  const debouncedSetSecondAmount = useDebounceCallback(setSecondAmount, 500);
-
-  useEffect(() => {
-    if (data) {
-      const anotherTokenDecimals = isFirstToken
-        ? asset1Metadata.decimals
-        : asset0Metadata.decimals;
-      const anotherTokenValue = data[1];
-      const anotherTokenValueString = data[1].formatUnits(anotherTokenDecimals);
-
-      if (isFirstToken) {
-        setSecondAmount(anotherTokenValue);
-        setSecondAmountInput(anotherTokenValueString);
-      } else {
-        setFirstAmount(anotherTokenValue);
-        setFirstAmountInput(anotherTokenValueString);
-      }
-    }
-  }, [data]);
-
-  const setAmount = useCallback(
-    (coin: string) => {
-      return (value: string) => {
-        if (value === "") {
-          debouncedSetFirstAmount(new BN(0));
-          debouncedSetSecondAmount(new BN(0));
-          setFirstAmountInput("");
-          setSecondAmountInput("");
-          setActiveAsset(coin);
-          return;
-        }
-
-        if (coin === poolId[0].bits) {
-          debouncedSetFirstAmount(
-            bn.parseUnits(value, asset0Metadata.decimals)
-          );
-          setFirstAmountInput(value);
-        } else {
-          debouncedSetSecondAmount(
-            bn.parseUnits(value, asset1Metadata.decimals)
-          );
-          setSecondAmountInput(value);
-        }
-        setActiveAsset(coin);
-      };
+  // Handle preview action
+  const handlePreview = useCallback(
+    (data: AddLiquidityPreviewData) => {
+      setPreviewData(data);
     },
-    [
-      debouncedSetFirstAmount,
-      debouncedSetSecondAmount,
-      poolId,
-      asset0Metadata,
-      asset1Metadata,
-    ]
+    [setPreviewData]
   );
 
-  const sufficientEthBalanceForFirstCoin = useCheckEthBalance({
-    assetId: poolId[0].bits,
-    amount: firstAmount.formatUnits(asset0Metadata.decimals),
-  });
-  const sufficientEthBalanceForSecondCoin = useCheckEthBalance({
-    assetId: poolId[1].bits,
-    amount: secondAmount.formatUnits(asset1Metadata.decimals),
-  });
-  const sufficientEthBalance =
-    sufficientEthBalanceForFirstCoin && sufficientEthBalanceForSecondCoin;
-
-  const faucetLink = useFaucetLink();
-  const handleButtonClick = useCallback(() => {
-    if (!sufficientEthBalance) {
-      openNewTab(`${FuelAppUrl}/bridge?from=eth&to=fuel&auto_close=true&=true`);
-      return;
-    }
-
-    setPreviewData({
-      assets: [
-        {
-          amount: firstAmount,
-          assetId: poolId[0].bits,
-        },
-        {
-          amount: secondAmount,
-          assetId: poolId[1].bits,
-        },
-      ],
-      isStablePool,
-    });
-  }, [
-    sufficientEthBalance,
-    setPreviewData,
-    firstAmount,
-    secondAmount,
+  const {
+    firstAmountInput,
+    secondAmountInput,
+    setAmount,
     isStablePool,
-    faucetLink,
-  ]);
+    aprValue,
+    tvlValue,
+    isFetching,
+    isFirstToken,
+    buttonTitle,
+    buttonDisabled,
+    handleButtonClick,
+    asset0Metadata,
+    asset1Metadata,
+    previewError,
+  } = useLiquidityForm({
+    poolId,
+    firstAssetBalance,
+    secondAssetBalance,
+    onPreview: handlePreview,
+    onPreviewError: handlePreviewError,
+  });
 
-  const isValidNetwork = useCheckActiveNetwork();
-
-  const insufficientFirstBalance = firstAmount.gt(firstAssetBalance);
-  const insufficientSecondBalance = secondAmount.gt(secondAssetBalance);
-  const insufficientBalance =
-    insufficientFirstBalance || insufficientSecondBalance;
-
-  let buttonTitle = "Preview";
-  if (!isValidNetwork) {
-    buttonTitle = "Incorrect network";
-  } else if (!sufficientEthBalance) {
-    buttonTitle = "Bridge more ETH to pay for gas";
-  } else if (insufficientBalance) {
-    buttonTitle = "Insufficient balance";
-  }
-
-  const oneOfAmountsIsEmpty = firstAmount.eq(0) || secondAmount.eq(0);
-
-  const buttonDisabled =
-    !isValidNetwork || insufficientBalance || oneOfAmountsIsEmpty;
-
-  const {price: asset0Price} = useAssetPrice(poolId[0].bits);
-  const {price: asset1Price} = useAssetPrice(poolId[1].bits);
+  // Set document title
+  useDocumentTitle(
+    `Add Liquidity: ${asset0Metadata.symbol}/${asset1Metadata.symbol}`
+  );
 
   return (
     <>
