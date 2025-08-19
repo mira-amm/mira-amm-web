@@ -1,5 +1,21 @@
 import {GeckoTerminalTypes, SQDIndexerTypes} from "./constants";
 
+// Binned liquidity types
+export interface BinnedAmounts {
+  x: string;
+  y: string;
+}
+
+export interface BinnedLiquidityMetadata {
+  binId?: number;
+  binStep?: number;
+  activeId?: number;
+  lpTokenMinted?: string;
+  lpTokenBurned?: string;
+  totalFees?: BinnedAmounts;
+  protocolFees?: BinnedAmounts;
+}
+
 // SQDIndexer responses
 export namespace SQDIndexerResponses {
   // used to get block number of latest block
@@ -27,6 +43,11 @@ export namespace SQDIndexerResponses {
       metadata?: Record<string, string>;
     };
     metadata?: Record<string, string>;
+    // Binned liquidity specific fields
+    binStep?: number;
+    activeId?: number;
+    assetX?: Asset;
+    assetY?: Asset;
   }
 
   export interface Action {
@@ -49,10 +70,27 @@ export namespace SQDIndexerResponses {
     type:
       | SQDIndexerTypes.ActionTypes.SWAP
       | SQDIndexerTypes.ActionTypes.JOIN
-      | SQDIndexerTypes.ActionTypes.EXIT;
+      | SQDIndexerTypes.ActionTypes.EXIT
+      | SQDIndexerTypes.ActionTypes.MINT_LIQUIDITY
+      | SQDIndexerTypes.ActionTypes.BURN_LIQUIDITY
+      | SQDIndexerTypes.ActionTypes.COLLECT_PROTOCOL_FEES
+      | SQDIndexerTypes.ActionTypes.COMPOSITION_FEES;
     transaction: string;
     timestamp: number;
     blockNumber: number;
+    // Binned liquidity specific fields
+    binId?: number;
+    amountsIn?: BinnedAmounts;
+    amountsOut?: BinnedAmounts;
+    totalFees?: BinnedAmounts;
+    protocolFees?: BinnedAmounts;
+    sender?: string;
+    to?: string;
+    binIds?: number[];
+    amounts?: BinnedAmounts[];
+    amountsWithdrawn?: BinnedAmounts[];
+    lpTokenMinted?: string;
+    lpTokenBurned?: string;
   }
 
   // events api response (have to move to Fuel API asap)
@@ -102,7 +140,9 @@ export namespace GeckoTerminalQueryResponses {
   export interface JoinExitEvent {
     eventType:
       | GeckoTerminalTypes.EventTypes.JOIN
-      | GeckoTerminalTypes.EventTypes.EXIT;
+      | GeckoTerminalTypes.EventTypes.EXIT
+      | GeckoTerminalTypes.EventTypes.MINT_LIQUIDITY
+      | GeckoTerminalTypes.EventTypes.BURN_LIQUIDITY;
     txnId: string;
     txnIndex: number;
     eventIndex: number;
@@ -112,6 +152,8 @@ export namespace GeckoTerminalQueryResponses {
     amount1: number | string;
     reserves: Reserves;
     metadata?: Record<string, string>;
+    // Binned liquidity specific fields
+    binnedMetadata?: BinnedLiquidityMetadata;
   }
 
   export type SwapEvent = {
@@ -124,6 +166,8 @@ export namespace GeckoTerminalQueryResponses {
     priceNative: number | string;
     reserves: Reserves;
     metadata?: Record<string, string>;
+    // Binned liquidity specific fields
+    binnedMetadata?: BinnedLiquidityMetadata;
   } & (
     | {
         // Case 1: asset0In and asset1Out are present
@@ -183,7 +227,22 @@ export namespace GeckoTerminalQueryResponses {
   }
 
   export interface EventsResponse {
-    events: Array<{block: Block} & (SwapEvent | JoinExitEvent)>;
+    events: Array<{block: Block} & (SwapEvent | JoinExitEvent | BinnedLiquidityEvent)>;
+  }
+
+  // New binned liquidity specific events
+  export interface BinnedLiquidityEvent {
+    eventType:
+      | GeckoTerminalTypes.EventTypes.COMPOSITION_FEES
+      | GeckoTerminalTypes.EventTypes.COLLECT_PROTOCOL_FEES;
+    txnId: string;
+    txnIndex: number;
+    eventIndex: number;
+    maker: string;
+    pairId: string;
+    reserves: Reserves;
+    metadata?: Record<string, string>;
+    binnedMetadata: BinnedLiquidityMetadata;
   }
 
   export interface PairResponse {

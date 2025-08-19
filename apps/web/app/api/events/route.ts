@@ -7,6 +7,8 @@ import {SQDIndexerUrl} from "../../../../../libs/web/src/utils/constants";
 import {
   GeckoTerminalQueryResponses,
   SQDIndexerResponses,
+  BinnedAmounts,
+  BinnedLiquidityMetadata,
 } from "@/web/shared/types";
 import {
   GeckoTerminalTypes,
@@ -21,6 +23,8 @@ const ACTIONS_QUERY = gql`
     actions(where: {blockNumber_gt: $fromBlock, blockNumber_lt: $toBlock}) {
       pool {
         id
+        binStep
+        activeId
       }
       asset0 {
         id
@@ -41,6 +45,37 @@ const ACTIONS_QUERY = gql`
       recipient
       timestamp
       blockNumber
+      # Binned liquidity specific fields
+      binId
+      amountsIn {
+        x
+        y
+      }
+      amountsOut {
+        x
+        y
+      }
+      totalFees {
+        x
+        y
+      }
+      protocolFees {
+        x
+        y
+      }
+      sender
+      to
+      binIds
+      amounts {
+        x
+        y
+      }
+      amountsWithdrawn {
+        x
+        y
+      }
+      lpTokenMinted
+      lpTokenBurned
     }
   }
 `;
@@ -57,10 +92,63 @@ function formatAmount(value: string, decimals: number): string {
   return formatUnits(value || "0", decimals);
 }
 
+// Helper function to detect if this is a binned liquidity event
+function isBinnedLiquidityEvent(action: SQDIndexerResponses.Action): boolean {
+  return !!(
+    action.binId !== undefined ||
+    action.amountsIn ||
+    action.amountsOut ||
+    action.totalFees ||
+    action.protocolFees ||
+    action.binIds ||
+    action.amounts ||
+    action.lpTokenMinted ||
+    action.lpTokenBurned
+  );
+}
+
+// Helper function to create binned liquidity metadata
+function createBinnedMetadata(action: SQDIndexerResponses.Action): BinnedLiquidityMetadata | undefined {
+  if (!isBinnedLiquidityEvent(action)) return undefined;
+
+  return {
+    binId: action.binId,
+    binStep: action.pool.binStep,
+    activeId: action.pool.activeId,
+    lpTokenMinted: action.lpTokenMinted,
+    lpTokenBurned: action.lpTokenBurned,
+    totalFees: action.totalFees,
+    protocolFees: action.protocolFees,
+  };
+}
+
+// Helper function to format binned amounts to traditional amounts
+function formatBinnedToTraditional(
+  amountsIn?: BinnedAmounts,
+  amountsOut?: BinnedAmounts,
+  asset0Decimals?: number,
+  asset1Decimals?: number
+): {
+  amount0In?: string;
+  amount1In?: string;
+  amount0Out?: string;
+  amount1Out?: string;
+} {
+  return {
+    amount0In: amountsIn?.x || "0",
+    amount1In: amountsIn?.y || "0",
+    amount0Out: amountsOut?.x || "0",
+    amount1Out: amountsOut?.y || "0",
+  };
+}
+
 function createEventData(action: SQDIndexerResponses.Action):
   | (
       | GeckoTerminalQueryResponses.SwapEvent
       | (GeckoTerminalQueryResponses.JoinExitEvent & {
+          block: GeckoTerminalQueryResponses.Block;
+        })
+      | (GeckoTerminalQueryResponses.BinnedLiquidityEvent & {
           block: GeckoTerminalQueryResponses.Block;
         })
     )
@@ -82,21 +170,43 @@ function createEventData(action: SQDIndexerResponses.Action):
     asset1: formatAmount(action.reserves1After, asset1.decimals),
   };
 
+  const binnedMetadata = createBinnedMetadata(action);
+  const isBinned = isBinnedLiquidityEvent(action);
+
   if (type === SQDIndexerTypes.ActionTypes.SWAP) {
-    const amount0In = action.amount0In;
-    const amount1Out = action.amount1Out;
-    const amount1In = action.amount1In;
-    const amount0Out = action.amount0Out;
+    // Handle both traditional and binned liquidity swaps
+    let amount0In, amount1In, amount0Out, amount1Out;
+
+    if (isBinned && action.amountsIn && action.amountsOut) {
+      // Binned liquidity: use amountsIn/amountsOut
+      const traditional = formatBinnedToTraditional(
+        action.amountsIn,
+        action.amountsOut,
+        asset0.decimals,
+        asset1.decimals
+      );
+      amount0In = traditional.amount0In;
+      amount1In = traditional.amount1In;
+      amount0Out = traditional.amount0Out;
+      amount1Out = traditional.amount1Out;
+    } else {
+      // Traditional AMM: use existing fields
+      amount0In = action.amount0In;
+      amount1Out = action.amount1Out;
+      amount1In = action.amount1In;
+      amount0Out = action.amount0Out;
+    }
 
     const eventBase = {
       eventType: "swap" as const,
       txnId: transaction,
       txnIndex: 0,
       eventIndex: 0,
-      maker: recipient,
+      maker: action.sender || recipient, // Use sender for binned liquidity, fallback to recipient
       pairId: pool.id,
       reserves,
       block,
+      binnedMetadata,
     };
 
     if (amount0In && amount1Out) {
@@ -124,29 +234,91 @@ function createEventData(action: SQDIndexerResponses.Action):
     return null;
   }
 
+  // Handle traditional JOIN/EXIT and new binned liquidity MINT/BURN events
   if (
     type === SQDIndexerTypes.ActionTypes.JOIN ||
-    type === SQDIndexerTypes.ActionTypes.EXIT
+    type === SQDIndexerTypes.ActionTypes.EXIT ||
+    type === SQDIndexerTypes.ActionTypes.MINT_LIQUIDITY ||
+    type === SQDIndexerTypes.ActionTypes.BURN_LIQUIDITY
   ) {
-    const amount0 = action.amount0In || action.amount0Out;
-    const amount1 = action.amount1In || action.amount1Out;
+    let amount0, amount1, eventType;
+
+    if (isBinned) {
+      // For binned liquidity, aggregate amounts from all bins
+      if (action.amounts && action.amounts.length > 0) {
+        const totalAmounts = action.amounts.reduce(
+          (acc, curr) => ({
+            x: (BigInt(acc.x) + BigInt(curr.x || "0")).toString(),
+            y: (BigInt(acc.y) + BigInt(curr.y || "0")).toString(),
+          }),
+          { x: "0", y: "0" }
+        );
+        amount0 = totalAmounts.x;
+        amount1 = totalAmounts.y;
+      } else if (action.amountsWithdrawn && action.amountsWithdrawn.length > 0) {
+        const totalAmounts = action.amountsWithdrawn.reduce(
+          (acc, curr) => ({
+            x: (BigInt(acc.x) + BigInt(curr.x || "0")).toString(),
+            y: (BigInt(acc.y) + BigInt(curr.y || "0")).toString(),
+          }),
+          { x: "0", y: "0" }
+        );
+        amount0 = totalAmounts.x;
+        amount1 = totalAmounts.y;
+      }
+
+      // Map binned liquidity event types to GeckoTerminal types
+      eventType =
+        type === SQDIndexerTypes.ActionTypes.MINT_LIQUIDITY
+          ? GeckoTerminalTypes.EventTypes.MINT_LIQUIDITY
+          : GeckoTerminalTypes.EventTypes.BURN_LIQUIDITY;
+    } else {
+      // Traditional AMM
+      amount0 = action.amount0In || action.amount0Out;
+      amount1 = action.amount1In || action.amount1Out;
+      eventType =
+        type === SQDIndexerTypes.ActionTypes.JOIN
+          ? GeckoTerminalTypes.EventTypes.JOIN
+          : GeckoTerminalTypes.EventTypes.EXIT;
+    }
 
     if (!amount0 || !amount1) return null;
 
     return {
-      eventType:
-        type === SQDIndexerTypes.ActionTypes.JOIN
-          ? GeckoTerminalTypes.EventTypes.JOIN
-          : GeckoTerminalTypes.EventTypes.EXIT,
+      eventType,
       txnId: transaction,
       txnIndex: 0,
       eventIndex: 0,
-      maker: recipient,
+      maker: action.sender || recipient,
       pairId: pool.id,
       amount0: formatAmount(amount0, asset0.decimals),
       amount1: formatAmount(amount1, asset1.decimals),
       reserves,
       block,
+      binnedMetadata,
+    };
+  }
+
+  // Handle new binned liquidity specific events
+  if (
+    type === SQDIndexerTypes.ActionTypes.COLLECT_PROTOCOL_FEES ||
+    type === SQDIndexerTypes.ActionTypes.COMPOSITION_FEES
+  ) {
+    if (!binnedMetadata) return null;
+
+    return {
+      eventType:
+        type === SQDIndexerTypes.ActionTypes.COLLECT_PROTOCOL_FEES
+          ? GeckoTerminalTypes.EventTypes.COLLECT_PROTOCOL_FEES
+          : GeckoTerminalTypes.EventTypes.COMPOSITION_FEES,
+      txnId: transaction,
+      txnIndex: 0,
+      eventIndex: 0,
+      maker: action.sender || recipient,
+      pairId: pool.id,
+      reserves,
+      block,
+      binnedMetadata,
     };
   }
 

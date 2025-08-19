@@ -143,4 +143,171 @@ describe("GET /api/events", () => {
       error: "Failed to fetch events data",
     });
   });
+
+  describe("Binned Liquidity Compatibility", () => {
+    it("should handle binned liquidity MINT_LIQUIDITY events while maintaining compatibility", async () => {
+      const req = new NextRequest(
+        "http://localhost:3000/api/events/?fromBlock=100&toBlock=200"
+      );
+
+      const mockBinnedLiquidityActions = {
+        actions: [
+          {
+            pool: {id: "binned_pool1", binStep: 100, activeId: 8388608},
+            asset0: {id: "asset_x", decimals: 18},
+            asset1: {id: "asset_y", decimals: 18},
+            amount1Out: "0", // Traditional fields for backward compatibility
+            amount1In: "0",
+            amount0Out: "0",
+            amount0In: "0",
+            reserves0After: "1000000000000000000",
+            reserves1After: "2000000000000000000",
+            type: "MINT_LIQUIDITY",
+            transaction: "binned_txn1",
+            recipient: "recipient_address1",
+            sender: "sender_address1",
+            timestamp: 1234567890,
+            blockNumber: 1,
+            // Binned liquidity specific fields
+            binId: 8388608,
+            binIds: [8388607, 8388608, 8388609],
+            amounts: [
+              { x: "100000000000000000", y: "200000000000000000" },
+              { x: "150000000000000000", y: "300000000000000000" },
+              { x: "50000000000000000", y: "100000000000000000" }
+            ],
+            lpTokenMinted: "lp_token_asset_id",
+            totalFees: { x: "1000000000000000", y: "2000000000000000" },
+            protocolFees: { x: "250000000000000", y: "500000000000000" }
+          }
+        ],
+      };
+
+      mockRequest.mockResolvedValueOnce(mockBinnedLiquidityActions);
+
+      const res = await GET(req);
+      expect(res.status).toBe(200);
+      const json = await res.json();
+
+      expect(json.events).toHaveLength(1);
+      const event = json.events[0];
+      
+      // Should maintain traditional event structure for backward compatibility
+      expect(event.eventType).toBe("mint_liquidity");
+      expect(event.txnId).toBe("binned_txn1");
+      expect(event.maker).toBe("sender_address1"); // Should use sender for binned liquidity
+      expect(event.pairId).toBe("binned_pool1");
+      
+      // Should aggregate amounts from all bins
+      expect(event.amount0).toBe("0.3"); // Sum of x amounts: 0.1 + 0.15 + 0.05
+      expect(event.amount1).toBe("0.6"); // Sum of y amounts: 0.2 + 0.3 + 0.1
+      
+      // Should include binned metadata
+      expect(event.binnedMetadata).toBeDefined();
+      expect(event.binnedMetadata.binId).toBe(8388608);
+      expect(event.binnedMetadata.binStep).toBe(100);
+      expect(event.binnedMetadata.lpTokenMinted).toBe("lp_token_asset_id");
+    });
+
+    it("should handle binned liquidity SWAP events while maintaining compatibility", async () => {
+      const req = new NextRequest(
+        "http://localhost:3000/api/events/?fromBlock=100&toBlock=200"
+      );
+
+      const mockBinnedSwapActions = {
+        actions: [
+          {
+            pool: {id: "binned_pool2", binStep: 50, activeId: 8388610},
+            asset0: {id: "asset_x", decimals: 18},
+            asset1: {id: "asset_y", decimals: 18},
+            amount1Out: "0", // Traditional fields for backward compatibility
+            amount1In: "0",
+            amount0Out: "0",
+            amount0In: "0",
+            reserves0After: "5000000000000000000",
+            reserves1After: "10000000000000000000",
+            type: "SWAP",
+            transaction: "binned_swap_txn1",
+            recipient: "recipient_address1",
+            sender: "sender_address1",
+            timestamp: 1234567891,
+            blockNumber: 2,
+            // Binned liquidity specific fields
+            binId: 8388610,
+            amountsIn: { x: "1000000000000000000", y: "0" }, // 1.0 token X in
+            amountsOut: { x: "0", y: "950000000000000000" }, // 0.95 token Y out
+            totalFees: { x: "5000000000000000", y: "0" },
+            protocolFees: { x: "1250000000000000", y: "0" }
+          }
+        ],
+      };
+
+      mockRequest.mockResolvedValueOnce(mockBinnedSwapActions);
+
+      const res = await GET(req);
+      expect(res.status).toBe(200);
+      const json = await res.json();
+
+      expect(json.events).toHaveLength(1);
+      const event = json.events[0];
+      
+      // Should maintain traditional swap event structure
+      expect(event.eventType).toBe("swap");
+      expect(event.asset0In).toBe("1.0");
+      expect(event.asset1Out).toBe("0.95");
+      expect(event.priceNative).toBe(1.0526315789473684); // 1.0 / 0.95
+      
+      // Should include binned metadata
+      expect(event.binnedMetadata).toBeDefined();
+      expect(event.binnedMetadata.binId).toBe(8388610);
+      expect(event.binnedMetadata.totalFees).toEqual({ x: "5000000000000000", y: "0" });
+    });
+
+    it("should handle traditional AMM events without binned metadata", async () => {
+      const req = new NextRequest(
+        "http://localhost:3000/api/events/?fromBlock=100&toBlock=200"
+      );
+
+      const mockTraditionalActions = {
+        actions: [
+          {
+            pool: {id: "traditional_pool1"},
+            asset0: {id: "asset0", decimals: 18},
+            asset1: {id: "asset1", decimals: 18},
+            amount1Out: "1000000000000000000",
+            amount1In: "0",
+            amount0Out: "0",
+            amount0In: "500000000000000000",
+            reserves0After: "10000000000000000000",
+            reserves1After: "20000000000000000000",
+            type: "SWAP",
+            transaction: "traditional_txn1",
+            recipient: "recipient_address1",
+            timestamp: 1234567890,
+            blockNumber: 1,
+            // No binned liquidity fields
+          }
+        ],
+      };
+
+      mockRequest.mockResolvedValueOnce(mockTraditionalActions);
+
+      const res = await GET(req);
+      expect(res.status).toBe(200);
+      const json = await res.json();
+
+      expect(json.events).toHaveLength(1);
+      const event = json.events[0];
+      
+      // Should work exactly as before for traditional AMM
+      expect(event.eventType).toBe("swap");
+      expect(event.asset0In).toBe("0.5");
+      expect(event.asset1Out).toBe("1.0");
+      expect(event.priceNative).toBe(0.5);
+      expect(event.maker).toBe("recipient_address1"); // Should use recipient for traditional
+      
+      // Should not include binned metadata
+      expect(event.binnedMetadata).toBeUndefined();
+    });
+  });
 });
