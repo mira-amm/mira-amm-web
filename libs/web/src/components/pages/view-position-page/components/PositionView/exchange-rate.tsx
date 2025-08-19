@@ -75,12 +75,12 @@ export function ExchangeRate({
 
   return (
     <div className="flex items-center justify-between text-content-tertiary">
-      <p className="text-[16px] font-normal leading-[19px]">Price</p>
+      <p className="text-sm font-normal leading-[19px]">Price</p>
       <div
         className="flex cursor-pointer"
         onClick={() => setIsBaseCoinA(!isBaseCoinA)}
       >
-        <p className="flex items-center font-alt">
+        <p className="flex items-center font-alt text-sm">
           {isBaseCoinA
             ? `1 ${assetBMetadata.symbol} ≈ ${flooredRate} ${assetAMetadata.symbol}`
             : `1 ${assetAMetadata.symbol} ≈ ${flooredRate} ${assetBMetadata.symbol}`}
