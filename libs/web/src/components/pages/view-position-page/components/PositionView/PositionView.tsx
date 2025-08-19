@@ -24,6 +24,7 @@ import {
 import {DesktopPositionView} from "./desktop-position-view";
 import {MobilePositionView} from "./mobile-position-view";
 import {DEFAULT_AMM_CONTRACT_ID, DefaultLocale} from "@/src/utils/constants";
+import RemoveBinLiquidity from "../../../bin-liquidity/remove-bin-liquidity";
 
 export function PositionView({pool}: {pool: PoolId}) {
   const [
@@ -31,6 +32,7 @@ export function PositionView({pool}: {pool: PoolId}) {
     openRemoveLiquidityModal,
     closeRemoveLiquidityModal,
   ] = useModal();
+  const [Modal, openModal, closeModal] = useModal();
   const [SuccessModal, openSuccessModal] = useModal();
   const [FailureModal, openFailureModal, closeFailureModal] = useModal();
 
@@ -97,6 +99,10 @@ export function PositionView({pool}: {pool: PoolId}) {
     openRemoveLiquidityModal();
   }, [openRemoveLiquidityModal]);
 
+  const handleWithdrawBinLiquidity = useCallback(() => {
+    openModal();
+  }, [openModal]);
+
   const handleRemoveLiquidity = useCallback(async () => {
     try {
       const result = await removeLiquidity();
@@ -137,7 +143,7 @@ export function PositionView({pool}: {pool: PoolId}) {
     ? parseFloat(tvlValue?.toFixed(2)).toLocaleString()
     : "";
 
-  const positionPath = `/liquidity/add?pool=${poolKey}`;
+  const positionPath = `/liquidity/add?pool=${poolKey}&binned=true`;
 
   return (
     <>
@@ -180,8 +186,29 @@ export function PositionView({pool}: {pool: PoolId}) {
           metadata: assetBMetadata,
           reserve: coinReserveB,
         }}
-        handleWithdrawLiquidity={handleWithdrawLiquidity}
+        handleWithdrawLiquidity={handleWithdrawBinLiquidity}
       />
+
+      <Modal
+        useDefaultStyling={false}
+        showCloseIcon={false}
+        backdropClassName="fixed inset-0 bg-black/50 backdrop-blur-sm z-50"
+        modalContainerClassName="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-50 w-full lg:w-[563px] px-4 lg:px-0"
+      >
+        <RemoveBinLiquidity
+          onClose={closeModal}
+          assetA={{
+            amount: coinAAmount,
+            metadata: assetAMetadata,
+            reserve: coinReserveA,
+          }}
+          assetB={{
+            amount: coinBAmount,
+            metadata: assetBMetadata,
+            reserve: coinReserveB,
+          }}
+        />
+      </Modal>
 
       <RemoveLiquidityModal
         title="Remove Liquidity"

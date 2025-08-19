@@ -58,7 +58,7 @@ const TvlCell = ({poolData}: {poolData: PoolData}) => {
 const ActionCell = ({poolData}: {poolData: PoolData}) => {
   const {poolKey} = usePoolDetails(poolData);
   return (
-    <Link href={`/liquidity/add?pool=${poolKey}`}>
+    <Link href={`/liquidity/add?pool=${poolKey}&binned=true`}>
       <Button variant="outline">Add Liquidity</Button>
     </Link>
   );

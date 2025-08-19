@@ -68,7 +68,7 @@ export type CurrencyBoxMode = "buy" | "sell";
 export type SlippageMode = "auto" | "custom";
 export type CurrencyBoxState = {assetId: string | null; amount: string};
 export type SwapState = Record<CurrencyBoxMode, CurrencyBoxState>;
-type InputsState = Record<CurrencyBoxMode, {amount: string}>;
+export type InputsState = Record<CurrencyBoxMode, {amount: string}>;
 
 const initialInputsState: InputsState = {sell: {amount: ""}, buy: {amount: ""}};
 
