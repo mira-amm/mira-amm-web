@@ -3,18 +3,19 @@ import Link from "next/link";
 import {Button} from "@/meshwave-ui/Button";
 import {PoolId} from "mira-dex-ts";
 
-import {formatDisplayAmount} from "@/src/utils/common";
-import {CoinWithAmount} from "@/src/components/common";
 import CoinPair from "@/src/components/common/CoinPair/CoinPair";
 import PromoBlock from "@/src/components/pages/liquidity-page/components/PromoBlock/PromoBlock";
 
-import {AprDisplay} from "./apr-display";
 import {ReserveItem} from "./reserve-item";
 import {ExchangeRate} from "./exchange-rate";
 import {MiraBlock} from "./mira-block";
 import {PromoSparkle} from "@/meshwave-ui/src/components/icons";
+import {DepositAmount} from "./deposit-amount";
+import {useAssetPriceFromIndexer} from "@/src/hooks";
+import {formatMoney} from "@/src/utils/formatMoney";
+import SimulatedDistribution from "../../../bin-liquidity/components/simulated-distribution";
 
-interface AssetData {
+export interface AssetData {
   amount: string;
   metadata: {
     name?: string;
@@ -64,55 +65,77 @@ export function DesktopPositionView({
 
       <div className="flex gap-3 w-full">
         <MiraBlock pool={pool} />
-        <div className="flex flex-col min-w-[350px] flex-1 w-full rounded-lg bg-background-grey-dark border-border-secondary border-[12px] dark:border-0 dark:bg-background-grey-dark">
-          <div className="flex flex-col gap-[15px] p-4">
-            <p className="text-[16px] leading-[19px]">Your position</p>
-            <AprDisplay pool={pool} />
-            <div className="flex justify-between">
-              <CoinWithAmount
-                assetId={pool[0].bits}
-                amount={formatDisplayAmount(assetA.amount)}
-              />
-              <CoinWithAmount
-                assetId={pool[1].bits}
-                amount={formatDisplayAmount(assetB.amount)}
-              />
+        <div className="p-4 w-1/2 rounded-lg flex flex-col gap-4 bg-background-grey-dark border-border-secondary border-[11px] dark:border-0 dark:bg-background-grey-dark">
+          <p className="text-base leading-[19px] border-b border-background-grey-light pb-3">
+            Pool reserves
+          </p>
+          <ReserveItem
+            assetId={pool[0].bits}
+            amount={assetA.amount}
+            reserve={assetA.reserve}
+          />
+          <ReserveItem
+            assetId={pool[1].bits}
+            amount={assetB.amount}
+            reserve={assetB.reserve}
+          />
+
+          <div className="flex flex-col gap-1 border-t border-background-grey-light pt-3">
+            <div className="flex items-center justify-between text-content-tertiary">
+              {formattedTvlValue && (
+                <p className="text-sm">Total value locked</p>
+              )}
+              {formattedTvlValue && (
+                <p className="text-sm">${formattedTvlValue}</p>
+              )}
             </div>
+            <ExchangeRate
+              assetBMetadata={assetB.metadata}
+              assetAMetadata={assetA.metadata}
+              coinAAmount={assetA.amount}
+              coinBAmount={assetB.amount}
+            />
           </div>
         </div>
       </div>
 
       <div className="w-full p-4 rounded-xl flex flex-col gap-4 bg-background-grey-dark border-border-secondary border-[12px] dark:border-0 dark:bg-background-grey-dark">
-        <p className="text-base leading-[19px] border-b border-content-grey-dark/40 pb-3">
-          Pool reserves
-        </p>
-        <ReserveItem
-          assetId={pool[0].bits}
-          amount={assetA.amount}
-          reserve={assetA.reserve}
-        />
-        <ReserveItem
-          assetId={pool[1].bits}
-          amount={assetB.amount}
-          reserve={assetB.reserve}
-        />
+        <div className="flex justify-between items-center mb-4">
+          <div className="text-content-primary text-base leading-[19px]">
+            Your liquidity
+          </div>
+          <div className="flex items-center space-x-4">
+            <div className="flex items-center">
+              <div className="w-3 h-3 bg-[#F95465] rounded-full mr-2"></div>
+              <span className="text-sm text-content-primary">
+                {assetA.metadata.symbol}
+              </span>
+            </div>
+            <div className="flex items-center">
+              <div className="w-3 h-3 bg-[#72A2FF] rounded-full mr-2"></div>
+              <span className="text-sm text-content-primary">
+                {assetB.metadata.symbol}
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <div className="border-b border-background-grey-light">
+          <SimulatedDistribution />
+        </div>
+
+        <DepositAmount assetId={pool[0].bits} amount={assetA.amount} />
+        <DepositAmount assetId={pool[1].bits} amount={assetB.amount} />
         {formattedTvlValue && (
           <div className="w-full h-0.5 bg-content-grey-dark dark:bg-white opacity-10" />
         )}
-        <div className="flex flex-col gap-[10px]">
-          <div className="flex items-center justify-between text-content-tertiary">
-            {formattedTvlValue && <p>Total value locked</p>}
-            {formattedTvlValue && (
-              <p className="font-alt">${formattedTvlValue}</p>
-            )}
-          </div>
-          <ExchangeRate
-            assetBMetadata={assetB.metadata}
-            assetAMetadata={assetA.metadata}
-            coinAAmount={assetA.amount}
-            coinBAmount={assetB.amount}
-          />
-        </div>
+
+        <TotalDeposit
+          assetAId={pool[0].bits}
+          assetAmount={assetA.amount}
+          assetBId={pool[0].bits}
+          assetBmount={assetB.amount}
+        />
       </div>
 
       <PromoBlock
@@ -125,3 +148,31 @@ export function DesktopPositionView({
     </section>
   );
 }
+
+const TotalDeposit = ({
+  assetAId,
+  assetAmount,
+  assetBId,
+  assetBmount,
+}: {
+  assetAId: string;
+  assetAmount: string;
+  assetBId: string;
+  assetBmount: string;
+}) => {
+  const {price: usdPrice} = useAssetPriceFromIndexer(assetAId);
+  const valueOfAssetA = usdPrice ? usdPrice * parseFloat(assetAmount) : 0;
+  const {price: usdPriceB} = useAssetPriceFromIndexer(assetBId);
+  const valueOfAssetB = usdPrice ? usdPriceB * parseFloat(assetBmount) : 0;
+
+  const usdValue = formatMoney(valueOfAssetA + valueOfAssetB);
+
+  return (
+    <div className="flex flex-col gap-[10px]">
+      <div className="flex items-center justify-between text-content-tertiary">
+        <p>Deposit balance:</p>
+        <p className="font-alt">{usdValue}</p>
+      </div>
+    </div>
+  );
+};

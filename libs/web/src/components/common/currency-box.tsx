@@ -27,7 +27,7 @@ export function CurrencyBox({
 }: {
   value: string;
   assetId: B256Address | null;
-  mode: CurrencyBoxMode;
+  mode?: CurrencyBoxMode;
   balance: BN;
   setAmount: (amount: string) => void;
   loading: boolean;
@@ -49,7 +49,9 @@ export function CurrencyBox({
 
   const handleCoinSelectorClick = () => {
     if (!loading) {
-      onCoinSelectorClick(mode);
+      if (mode) {
+        onCoinSelectorClick(mode);
+      }
     }
   };
 
@@ -76,6 +78,16 @@ export function CurrencyBox({
 
   const rebrandEnabled = getIsRebrandEnabled();
 
+  const renderMode = () => {
+    if (mode) {
+      return (
+        <p className="text-sm leading-4 text-content-tertiary dark:text-content-tertiary lg:leading-[18px]">
+          {mode === "buy" ? "Buy" : "Sell"}
+        </p>
+      );
+    }
+  };
+
   return (
     <div
       className={cn(
@@ -86,9 +98,7 @@ export function CurrencyBox({
           : "focus-within:border-accent-secondary"
       )}
     >
-      <p className="text-sm leading-4 text-content-tertiary dark:text-content-tertiary lg:leading-[18px]">
-        {mode === "buy" ? "Buy" : "Sell"}
-      </p>
+      {renderMode()}
 
       <div className="min-h-[44px] flex items-center gap-2">
         {previewError ? (
