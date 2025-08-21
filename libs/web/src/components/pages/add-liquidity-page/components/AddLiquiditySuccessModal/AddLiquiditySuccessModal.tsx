@@ -28,8 +28,8 @@ export default function AddLiquiditySuccessModal({
   return (
     <div className="flex flex-col items-center gap-3 pb-3">
       <CircleCheck className="w-12 h-12 text-green-500" />
-      <p className="text-[22px] leading-[26px]  text-center">Success</p>
-      <p className="text-[14px] leading-[16px] text-content-dimmed-dark text-center">
+      <p className="text-[22px] leading-[26px] text-center">Success</p>
+      <p className="text-[14px] leading-[16px] text-content-tertiary text-center">
         {subText}
       </p>
       <Button onClick={handleViewTransactionClick} block>
