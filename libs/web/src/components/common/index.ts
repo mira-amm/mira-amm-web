@@ -46,3 +46,4 @@ export {TransactionsHistory} from "./TransactionsHistory/TransactionsHistory";
 export {DisconnectMobile} from "./ConnectButton/DisconnectMobile";
 export {ClientSplashWrapper} from "./SplashScreen";
 export * from "./ProtocolStats";
+export {AssetDataPrefetcher} from "./AssetDataPrefetcher";

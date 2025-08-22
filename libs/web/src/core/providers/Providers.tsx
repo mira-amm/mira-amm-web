@@ -14,7 +14,7 @@ import {Toaster} from "sonner";
 
 import {FuelProviderWrapper} from "@/src/core/providers/FuelProviderWrapper";
 import {DisclaimerWrapper} from "@/src/core/providers/DisclaimerWrapper";
-import {Loader} from "@/src/components/common";
+import {Loader, AssetDataPrefetcher} from "@/src/components/common";
 import {ThemeProvider} from "./theme-provider";
 import {getIsRebrandEnabled} from "@/src/utils/isRebrandEnabled";
 
@@ -68,6 +68,7 @@ export function Providers({children}: {children: ReactNode}) {
               enableSystem
               disableTransitionOnChange
             >
+              <AssetDataPrefetcher />
               <Toaster richColors position="bottom-right" />
               {children}
             </ThemeProvider>
