@@ -51,7 +51,6 @@ export function useCoinListModal(
 
   // TODO: Pre-sort the list by priorityOrder and alphabet to avoid sorting each time and optimise this filtering
   const sortedCoinsList = useMemo(() => {
-    if (isLoading || isVerifiedAssetsLoading || isAssetImagesLoading) return [];
     if (!assets?.length) return [];
     return assets
       .toSorted((firstAsset, secondAsset) => {
@@ -149,10 +148,17 @@ export function useCoinListModal(
         },
         []
       );
-  }, [assets, balances, value, verifiedAssetData, verifiedAssetsOnly, assetImages]);
+  }, [
+    assets,
+    balances,
+    value,
+    verifiedAssetData,
+    verifiedAssetsOnly,
+    assetImages,
+  ]);
   return {
     handleFilterChange,
-    isLoading: isLoading || isVerifiedAssetsLoading || isAssetImagesLoading,
+    isLoading: isLoading && !assets?.length,
     allCoins: sortedCoinsList,
     searchValue: value,
   };

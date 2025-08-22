@@ -1,19 +1,10 @@
 import {useQuery} from "@tanstack/react-query";
-import {VerifiedAssets} from "../utils/checkIfCoinVerified";
+import {verifiedAssetsQueryOptions} from "./queries/assetQueries";
 
 export const useVerifiedAssets = () => {
-  const {data: verifiedAssetData, isLoading} = useQuery({
-    queryKey: ["verifiedAssets"],
-    queryFn: async () => {
-      const req = await fetch(
-        `https://verified-assets.fuel.network/assets.json`
-      );
-      const res = await req.json();
-      return res as VerifiedAssets;
-    },
-    staleTime: Infinity,
-    meta: {persist: true},
-  });
+  const {data: verifiedAssetData, isLoading} = useQuery(
+    verifiedAssetsQueryOptions
+  );
 
   return {verifiedAssetData, isLoading};
 };
