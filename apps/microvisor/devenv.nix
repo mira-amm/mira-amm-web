@@ -9,6 +9,7 @@
     ./scripts
     ./services
     ./tasks
+    ./cachix
   ];
 
   # NOTE: uses native nixos test syntax | nixos.org/manual/nixos/stable/#sec-writing-nixos-tests
