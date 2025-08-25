@@ -1,3 +1,6 @@
 [submodule "apps/indexer"]
 	path = apps/indexer
 	url = https://github.com/mira-amm/mira-sqd-indexer.git
+[submodule "libs/mira-v2-core"]
+	path = libs/mira-v2-core
+	url = git@github.com:mira-amm/mira-binned-liquidity.git
