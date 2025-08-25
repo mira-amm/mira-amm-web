@@ -43,7 +43,9 @@ export const FuelAssetPriceUrl =
   " https://explorer-indexer-mainnet.fuel.network/assets" as const;
 
 export const EthDecimals = 9 as const;
-export const MinEthValue = 0.0001 as const;
+// Fuel requires at least 0.000275 for fees
+// but we use 0.0003 which includes some additional buffer
+export const MinEthValue = 0.0003 as const;
 export const MinEthValueBN = MinEthValue * 10 ** EthDecimals;
 
 export const MAX_U256 = bn(
