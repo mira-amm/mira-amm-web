@@ -439,18 +439,39 @@ export class MiraAmm {
 
       const accountCoinQuantities = Array.from(accountCoinMap.values());
 
-      const {assembledRequest, gasPrice} =
-        await this.account.provider.assembleTx({
-          request,
-          feePayerAccount: this.account,
-          accountCoinQuantities,
-          reserveGas: options?.reserveGas,
-        });
+      try {
+        const {assembledRequest, gasPrice} =
+          await this.account.provider.assembleTx({
+            request,
+            feePayerAccount: this.account,
+            accountCoinQuantities,
+            reserveGas: options?.reserveGas,
+          });
 
-      return {transactionRequest: assembledRequest, gasPrice};
+        return {transactionRequest: assembledRequest, gasPrice};
+      } catch (error) {
+        // If assembleTx fails, fall back to legacy method
+        if (
+          error instanceof Error &&
+          error.message.includes("NotEnoughBalance")
+        ) {
+          console.warn(
+            "assembleTx failed with NotEnoughBalance, falling back to legacy method"
+          );
+          return this.prepareLegacyRequest(request, inputAssets);
+        }
+        throw error;
+      }
     }
 
     // Legacy/manual fallback
+    return this.prepareLegacyRequest(request, inputAssets);
+  }
+
+  private async prepareLegacyRequest(
+    request: ScriptTransactionRequest,
+    inputAssets: CoinQuantityLike[]
+  ): Promise<TransactionWithGasPrice> {
     request.addResources(await this.account.getResourcesToSpend(inputAssets));
     request = await this.fundRequest(request);
     const {gasPrice} = await this.account.getTransactionCost(request);
