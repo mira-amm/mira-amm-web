@@ -30,3 +30,38 @@ export {
   validateBaseFactor,
   calculateBinPriceRange,
 } from "./utils";
+
+// Math functions
+export {
+  getAmountOut,
+  getAmountIn,
+  subtractFee,
+  addFee,
+  roundingUpDivision,
+  powDecimals,
+  // V2 math functions
+  getAmountOutWithFeesV2,
+  getAmountInWithFeesV2,
+  getAmountsOutV2,
+  getAmountsInV2,
+  calculateProportionalAmountV2,
+  validateSlippageV2,
+} from "./math";
+
+// V2 specific math functions
+export {
+  getAmountOutV2,
+  getAmountInV2,
+  getBinPrice,
+  getPriceBinId,
+  calculateLiquidityDistributionV2,
+  calculateOptimalDistribution,
+  calculatePositionValue,
+  calculateImpermanentLossV2,
+  calculateSwapFeeV2,
+  calculateEffectivePrice,
+  calculatePriceImpact,
+  calculateMinAmountOut,
+  calculateMaxAmountIn,
+  calculateBinLiquidity,
+} from "./math-v2";
