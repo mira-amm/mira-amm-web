@@ -141,11 +141,7 @@ export class MiraV2Error extends Error {
   }
 }
 
-// Cache options for v2 operations
-export type CacheOptions = {
-  ttl?: number;
-  skipCache?: boolean;
-};
+// Cache options are defined in cache/types.ts
 
 // Transaction parameters for v2 operations
 export type TxParams = {
