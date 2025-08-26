@@ -8,16 +8,40 @@ import {
 } from "./model";
 import {InsufficientReservesError, InvalidAmountError} from "./errors";
 import {binIdToPrice, priceToBinId} from "./utils";
+import {BASE_FACTOR_RANGES} from "./constants";
 
-export const BASIS_POINTS = new BN(10000);
+export const BASIS_POINTS = new BN(BASE_FACTOR_RANGES.DEFAULT);
 const ONE_E_18 = new BN(10).pow(new BN(18));
 
 /**
  * Calculate the output amount for a swap in a v2 binned liquidity pool
+ *
+ * Unlike v1's simple constant product formula, v2 swaps traverse multiple bins,
+ * each with its own reserves and price. This provides more accurate price discovery
+ * and allows for concentrated liquidity strategies.
+ *
+ * The algorithm:
+ * 1. Start at the active bin (current price)
+ * 2. Consume liquidity from the bin until either:
+ *    - All input is consumed, or
+ *    - The bin is emptied
+ * 3. If input remains, move to the next bin and repeat
+ * 4. Bins are traversed in price order (higher bins for X->Y, lower for Y->X)
+ *
  * @param poolMetadata Pool metadata containing bin structure and reserves
  * @param amountIn Input amount to swap
- * @param swapForY True if swapping X for Y, false if swapping Y for X
- * @returns Output amount after swap
+ * @param swapForY True if swapping X for Y (moving to higher price bins), false if swapping Y for X (moving to lower price bins)
+ * @returns Output amount after consuming liquidity across bins
+ *
+ * @example
+ * ```typescript
+ * const poolMetadata = await readonlyAmm.poolMetadata(poolId);
+ * const amountIn = new BN("1000000"); // 1 token
+ *
+ * // Swap X for Y (moving up in price)
+ * const amountOut = getAmountOutV2(poolMetadata, amountIn, true);
+ * console.log(`Swapping ${amountIn} X tokens yields ${amountOut} Y tokens`);
+ * ```
  */
 export function getAmountOutV2(
   poolMetadata: PoolMetadataV2,
@@ -32,18 +56,22 @@ export function getAmountOutV2(
   const {binStep} = pool;
 
   // Start from active bin and traverse bins until input is consumed
+  // Each bin represents a discrete price point with its own liquidity reserves
   let remainingAmountIn = amountIn;
   let totalAmountOut = new BN(0);
   let currentBinId = activeId;
 
   while (remainingAmountIn.gt(0)) {
+    // Get reserves for the current bin
+    // Bins may have asymmetric liquidity (more X or Y depending on price position)
     const binReserves = getBinReservesAtId(poolMetadata, currentBinId);
 
     if (
       !binReserves ||
       (swapForY ? binReserves.y.eq(0) : binReserves.x.eq(0))
     ) {
-      // No liquidity in this bin, move to next bin
+      // No liquidity in this bin for the desired swap direction
+      // Move to next bin: higher bins for X->Y swaps, lower bins for Y->X swaps
       currentBinId = swapForY ? currentBinId + 1 : currentBinId - 1;
 
       // Check if we've run out of liquidity
