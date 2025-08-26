@@ -16,6 +16,9 @@ export default defineConfig({
       reportsDirectory: "../../coverage/libs/mira-v1-ts",
       provider: "v8" as const,
     },
+    typecheck: {
+      tsconfig: "./tsconfig.test.json",
+    },
   },
   resolve: {
     alias: {
