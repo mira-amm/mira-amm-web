@@ -14,6 +14,8 @@ import {
   PoolMetadataV2,
   PoolInput,
   BinIdDelta,
+  LiquidityConfig,
+  Amounts,
 } from "./model";
 import {
   ContractIdInput,
@@ -172,8 +174,38 @@ export function buildPoolIdV2(
 }
 
 export function reorderPoolIdV2(poolId: PoolIdV2): PoolIdV2 {
-  // v2 pool IDs are already ordered by construction
+  // v2 pool IDs are already ordered by construction since they're generated
+  // from ordered assets, but we keep this function for API consistency
   return poolId;
+}
+
+export function extractAssetsFromPoolIdV2(
+  poolMetadata: PoolMetadataV2
+): [AssetId, AssetId] {
+  return [poolMetadata.pool.assetX, poolMetadata.pool.assetY];
+}
+
+export function arrangePoolParamsV2(
+  poolMetadata: PoolMetadataV2,
+  firstAsset: AssetId
+): [AssetId, BN, BN] {
+  if (firstAsset.bits === poolMetadata.pool.assetX.bits) {
+    return [
+      poolMetadata.pool.assetY,
+      poolMetadata.reserves.x,
+      poolMetadata.reserves.y,
+    ];
+  }
+  if (firstAsset.bits === poolMetadata.pool.assetY.bits) {
+    return [
+      poolMetadata.pool.assetX,
+      poolMetadata.reserves.y,
+      poolMetadata.reserves.x,
+    ];
+  }
+  throw new Error(
+    `AssetId ${firstAsset.bits} not in pool (${poolMetadata.pool.assetX.bits}, ${poolMetadata.pool.assetY.bits})`
+  );
 }
 
 export function poolInputFromAssets(
@@ -237,42 +269,187 @@ export function deltaToBinId(delta: BinIdDelta): number {
 
 export function binIdToPrice(binId: number, binStep: number): BN {
   // Price calculation: price = (1 + binStep / 10000) ^ binId
+  // Using more precise calculation with scaling
+  const SCALE = new BN(10).pow(18); // 18 decimal precision
   const binStepBN = new BN(binStep);
-  const base = new BN(10000).add(binStepBN).div(new BN(10000));
+  const base = SCALE.add(binStepBN.mul(SCALE).div(new BN(10000)));
 
-  // For simplicity, we'll use a basic approximation
-  // In a real implementation, you'd want a more precise power calculation
-  const exponent = new BN(Math.abs(binId));
-  let result = new BN(1);
-
-  for (let i = 0; i < Math.abs(binId); i++) {
-    result = result.mul(base).div(new BN(10000));
+  if (binId === 0) {
+    return SCALE; // Price = 1.0 scaled
   }
 
-  return binId >= 0 ? result : new BN(1).div(result);
+  let result = SCALE;
+  const absBinId = Math.abs(binId);
+
+  // Use exponentiation by squaring for efficiency
+  let basePower = base;
+  let exp = absBinId;
+
+  while (exp > 0) {
+    if (exp % 2 === 1) {
+      result = result.mul(basePower).div(SCALE);
+    }
+    basePower = basePower.mul(basePower).div(SCALE);
+    exp = Math.floor(exp / 2);
+  }
+
+  // If binId is negative, take reciprocal
+  if (binId < 0) {
+    result = SCALE.mul(SCALE).div(result);
+  }
+
+  return result;
 }
 
 export function priceToBinId(price: BN, binStep: number): number {
   // Inverse of binIdToPrice: binId = log(price) / log(1 + binStep / 10000)
-  // This is a simplified implementation
-  const binStepBN = new BN(binStep);
-  const base = new BN(10000).add(binStepBN).div(new BN(10000));
+  // Using binary search for more accurate results
+  const SCALE = new BN(10).pow(18);
+  const targetPrice = price;
 
-  // Simple approximation - in practice you'd want a more precise logarithm
-  let binId = 0;
-  let currentPrice = new BN(1);
+  // Handle edge cases
+  if (targetPrice.eq(SCALE)) {
+    return 0; // Price = 1.0
+  }
 
-  if (price.gte(new BN(1))) {
-    while (currentPrice.lt(price) && binId < 1000000) {
-      currentPrice = currentPrice.mul(base).div(new BN(10000));
-      binId++;
+  // Binary search bounds
+  let low = -1000000;
+  let high = 1000000;
+  let bestBinId = 0;
+  let bestDiff = new BN(2).pow(256); // Max BN value
+
+  while (low <= high) {
+    const mid = Math.floor((low + high) / 2);
+    const midPrice = binIdToPrice(mid, binStep);
+    const diff = midPrice.gt(targetPrice)
+      ? midPrice.sub(targetPrice)
+      : targetPrice.sub(midPrice);
+
+    if (diff.lt(bestDiff)) {
+      bestDiff = diff;
+      bestBinId = mid;
     }
-  } else {
-    while (currentPrice.gt(price) && binId > -1000000) {
-      currentPrice = currentPrice.mul(new BN(10000)).div(base);
-      binId--;
+
+    if (midPrice.lt(targetPrice)) {
+      low = mid + 1;
+    } else if (midPrice.gt(targetPrice)) {
+      high = mid - 1;
+    } else {
+      return mid; // Exact match
     }
   }
 
-  return binId;
+  return bestBinId;
+}
+
+export function calculateLiquidityDistribution(
+  totalAmountX: BN,
+  totalAmountY: BN,
+  activeBinId: number,
+  deltaIds: BinIdDelta[],
+  distributionX: number[],
+  distributionY: number[]
+): LiquidityConfig[] {
+  if (
+    deltaIds.length !== distributionX.length ||
+    deltaIds.length !== distributionY.length
+  ) {
+    throw new Error(
+      "Delta IDs and distribution arrays must have the same length"
+    );
+  }
+
+  const configs: LiquidityConfig[] = [];
+
+  for (let i = 0; i < deltaIds.length; i++) {
+    const binId = activeBinId + deltaToBinId(deltaIds[i]);
+    const distX = Math.floor(distributionX[i] * 10000); // Convert to basis points
+    const distY = Math.floor(distributionY[i] * 10000); // Convert to basis points
+
+    configs.push({
+      binId,
+      distributionX: distX,
+      distributionY: distY,
+    });
+  }
+
+  return configs;
+}
+
+export function calculateBinAmounts(
+  totalAmountX: BN,
+  totalAmountY: BN,
+  liquidityConfigs: LiquidityConfig[]
+): Map<number, Amounts> {
+  const binAmounts = new Map<number, Amounts>();
+
+  // Calculate total distribution weights
+  let totalDistX = 0;
+  let totalDistY = 0;
+
+  for (const config of liquidityConfigs) {
+    totalDistX += config.distributionX;
+    totalDistY += config.distributionY;
+  }
+
+  // Distribute amounts proportionally
+  for (const config of liquidityConfigs) {
+    const amountX =
+      totalDistX > 0
+        ? totalAmountX.mul(new BN(config.distributionX)).div(new BN(totalDistX))
+        : new BN(0);
+
+    const amountY =
+      totalDistY > 0
+        ? totalAmountY.mul(new BN(config.distributionY)).div(new BN(totalDistY))
+        : new BN(0);
+
+    binAmounts.set(config.binId, {x: amountX, y: amountY});
+  }
+
+  return binAmounts;
+}
+
+export function getBinRange(startBinId: number, endBinId: number): number[] {
+  const range: number[] = [];
+  const start = Math.min(startBinId, endBinId);
+  const end = Math.max(startBinId, endBinId);
+
+  for (let i = start; i <= end; i++) {
+    range.push(i);
+  }
+
+  return range;
+}
+
+export function getActiveBinRange(
+  activeBinId: number,
+  rangeBefore: number = 10,
+  rangeAfter: number = 10
+): number[] {
+  return getBinRange(activeBinId - rangeBefore, activeBinId + rangeAfter);
+}
+
+export function validateBinStep(binStep: number): boolean {
+  // Common bin steps: 1, 5, 10, 25, 50, 100, 250, 500, 1000 basis points
+  const validBinSteps = [1, 5, 10, 25, 50, 100, 250, 500, 1000];
+  return validBinSteps.includes(binStep);
+}
+
+export function validateBaseFactor(baseFactor: number): boolean {
+  // Base factor should be between 5000 and 10000 (0.5x to 1.0x)
+  return baseFactor >= 5000 && baseFactor <= 10000;
+}
+
+export function calculateBinPriceRange(
+  binId: number,
+  binStep: number
+): {lowerPrice: BN; upperPrice: BN} {
+  const currentPrice = binIdToPrice(binId, binStep);
+  const nextPrice = binIdToPrice(binId + 1, binStep);
+
+  return {
+    lowerPrice: currentPrice,
+    upperPrice: nextPrice,
+  };
 }
