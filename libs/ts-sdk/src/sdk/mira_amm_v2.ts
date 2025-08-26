@@ -14,7 +14,11 @@ import {
   concat,
 } from "fuels";
 
-import {DEFAULT_AMM_V2_CONTRACT_ID} from "./constants";
+import {
+  DEFAULT_AMM_V2_CONTRACT_ID,
+  V2_TRANSACTION_CONFIG,
+  LIQUIDITY_DISTRIBUTION,
+} from "./constants";
 
 import {
   AddLiquidity,
@@ -48,7 +52,7 @@ import {
   withErrorHandling,
   createErrorContext,
   EnhancedMiraV2Error,
-} from "./errors";
+} from "./errors/v2-errors";
 
 import {
   validatePoolId,
@@ -69,6 +73,46 @@ type TransactionWithGasPrice = {
   gasPrice: BN;
 };
 
+/**
+ * MiraAmmV2 - Write operations for Mira v2 binned liquidity pools
+ *
+ * This class provides methods for executing transactions on Mira v2 pools, which use
+ * a binned liquidity model similar to Trader Joe v2. Unlike v1's continuous liquidity,
+ * v2 allows liquidity providers to concentrate their capital in specific price ranges
+ * through discrete bins.
+ *
+ * Key features:
+ * - Binned liquidity distribution for capital efficiency
+ * - Concentrated liquidity positions across multiple price points
+ * - Per-pool fee structures instead of global fees
+ * - Advanced slippage protection with bin-aware calculations
+ *
+ * @example
+ * ```typescript
+ * import { Account, Provider } from "fuels";
+ * import { MiraAmmV2 } from "mira-dex-ts";
+ *
+ * const provider = await Provider.create("https://testnet.fuel.network/v1/graphql");
+ * const account = new Account("your-private-key", provider);
+ * const miraAmm = new MiraAmmV2(account);
+ *
+ * // Add concentrated liquidity around current price
+ * const poolId = new BN("12345");
+ * const transaction = await miraAmm.addLiquidity(
+ *   poolId,
+ *   new BN("1000000"), // 1 token A
+ *   new BN("2000000"), // 2 token B
+ *   new BN("950000"),  // min A (5% slippage)
+ *   new BN("1900000"), // min B (5% slippage)
+ *   new BN(Date.now() + 20 * 60 * 1000), // 20 min deadline
+ *   8388608, // active bin ID
+ *   5,       // 5 bin slippage tolerance
+ *   [{Positive: 0}, {Positive: 1}, {Positive: 2}], // bins around active
+ *   [40, 30, 30], // X token distribution %
+ *   [60, 20, 20]  // Y token distribution %
+ * );
+ * ```
+ */
 export class MiraAmmV2 {
   private readonly account: Account;
   private readonly ammContract: PoolCurveState;
@@ -77,6 +121,12 @@ export class MiraAmmV2 {
   private readonly swapExactInScript: SwapExactIn;
   private readonly swapExactOutScript: SwapExactOut;
 
+  /**
+   * Creates a new MiraAmmV2 instance for executing v2 pool transactions
+   *
+   * @param account - Fuel account for signing transactions
+   * @param contractIdOpt - Optional v2 contract ID (uses default if not provided)
+   */
   constructor(account: Account, contractIdOpt?: string) {
     const contractId = contractIdOpt ?? DEFAULT_AMM_V2_CONTRACT_ID;
     const contractIdConfigurables = {
@@ -100,6 +150,11 @@ export class MiraAmmV2 {
     ).setConfigurableConstants(contractIdConfigurables);
   }
 
+  /**
+   * Gets the contract ID of the v2 AMM contract
+   *
+   * @returns The contract ID as a B256 string
+   */
   id(): string {
     return this.ammContract.id.toB256();
   }
@@ -152,7 +207,9 @@ export class MiraAmmV2 {
     );
 
     return withErrorHandling(async () => {
-      // Get pool metadata to determine asset order
+      // Get pool metadata to determine asset order and current active bin
+      // In v2, liquidity is distributed across bins rather than a single position
+      // Each bin represents a discrete price point where liquidity can be concentrated
       const poolMetadata = await this.ammContract.functions
         .get_pool(poolIdV2Input(poolId))
         .get();
@@ -167,9 +224,13 @@ export class MiraAmmV2 {
       const pool = poolMetadata.value.pool;
 
       // Default values for v2-specific parameters
+      // activeIdDesired: target bin for liquidity concentration (defaults to current active bin)
       const finalActiveIdDesired =
         activeIdDesired ?? poolMetadata.value.active_id;
+      // idSlippage: allowed movement in bin IDs due to price changes during transaction
       const finalIdSlippage = idSlippage ?? 0;
+      // deltaIds: relative positions from active bin for liquidity distribution
+      // Positive values = bins above current price, Negative = bins below current price
       const finalDeltaIds =
         deltaIds?.map((delta) => {
           if (delta.Positive !== undefined) {
@@ -179,29 +240,32 @@ export class MiraAmmV2 {
           }
           throw new Error("Invalid BinIdDelta");
         }) ?? [];
+      // distributionX/Y: percentage allocation for each bin (arrays must sum to 100)
       const finalDistributionX = distributionX ?? [];
       const finalDistributionY = distributionY ?? [];
 
-      // Prepare the AddLiquidityParameters
+      // Prepare the AddLiquidityParameters for v2 binned liquidity
+      // Unlike v1's single position, v2 allows distributing liquidity across multiple bins
+      // This enables concentrated liquidity strategies for improved capital efficiency
       const addLiquidityParams = {
         pool: {
           asset_x: pool.asset_x,
           asset_y: pool.asset_y,
-          bin_step: pool.bin_step,
-          base_factor: pool.base_factor,
+          bin_step: pool.bin_step, // Price increment between adjacent bins
+          base_factor: pool.base_factor, // Precision multiplier for calculations
         },
-        amount_x: amountADesired,
-        amount_y: amountBDesired,
-        amount_x_min: amountAMin,
-        amount_y_min: amountBMin,
-        active_id_desired: finalActiveIdDesired,
-        id_slippage: finalIdSlippage,
-        delta_ids: finalDeltaIds,
-        distribution_x: finalDistributionX,
-        distribution_y: finalDistributionY,
-        to: addressInput(this.account.address),
-        refund_to: addressInput(this.account.address),
-        deadline,
+        amount_x: amountADesired, // Total X tokens to add across all bins
+        amount_y: amountBDesired, // Total Y tokens to add across all bins
+        amount_x_min: amountAMin, // Minimum X tokens (slippage protection)
+        amount_y_min: amountBMin, // Minimum Y tokens (slippage protection)
+        active_id_desired: finalActiveIdDesired, // Target active bin for price anchoring
+        id_slippage: finalIdSlippage, // Allowed bin ID movement during execution
+        delta_ids: finalDeltaIds, // Relative bin positions (e.g., [-1, 0, +1])
+        distribution_x: finalDistributionX, // X token % per bin (must sum to 100)
+        distribution_y: finalDistributionY, // Y token % per bin (must sum to 100)
+        to: addressInput(this.account.address), // LP token recipient
+        refund_to: addressInput(this.account.address), // Excess token refund address
+        deadline, // Transaction deadline
       };
 
       // Call the add liquidity script
@@ -284,10 +348,12 @@ export class MiraAmmV2 {
       const pool = poolMetadata.value.pool;
 
       // Generate LP asset IDs for each bin
+      // In v2, each bin has its own unique LP token (unlike v1's single LP token per pool)
+      // This allows users to have positions in specific price ranges
       const lpAssets: AssetId[] = [];
       for (const binId of binIds) {
-        // For v2, LP asset IDs are generated based on pool ID and bin ID
-        // We need to create a unique sub-ID for each bin
+        // LP asset ID is derived from pool ID + bin ID to ensure uniqueness
+        // Each bin's LP token represents ownership of liquidity at that specific price point
         const binSubId = sha256(
           arrayify(
             hexlify(
@@ -458,10 +524,14 @@ export class MiraAmmV2 {
         ? addressInput(receiver)
         : addressInput(this.account.address);
 
-      // Convert pool IDs to path (array of BN)
+      // Convert pool IDs to routing path
+      // In v2, swaps traverse bins within each pool, moving from bin to bin
+      // as liquidity is consumed, providing more granular price discovery
       const path = pools.map((poolId) => poolId);
 
       // Call the swap exact in script
+      // The script handles bin-to-bin routing within each pool automatically
+      // Swaps start at the active bin and move through adjacent bins as needed
       let request = await this.swapExactInScript.functions
         .main(
           amountIn,
@@ -699,8 +769,8 @@ export class MiraAmmV2 {
       const finalLiquidityConfig = liquidityConfig ?? [
         {
           binId: Number(activeId),
-          distributionX: 100,
-          distributionY: 100,
+          distributionX: LIQUIDITY_DISTRIBUTION.MAX_DISTRIBUTION,
+          distributionY: LIQUIDITY_DISTRIBUTION.MAX_DISTRIBUTION,
         },
       ];
 
@@ -714,8 +784,12 @@ export class MiraAmmV2 {
         },
         amount_x: amountADesired,
         amount_y: amountBDesired,
-        amount_x_min: bn(amountADesired).mul(95).div(100), // 5% slippage tolerance
-        amount_y_min: bn(amountBDesired).mul(95).div(100), // 5% slippage tolerance
+        amount_x_min: bn(amountADesired)
+          .mul(10000 - V2_TRANSACTION_CONFIG.DEFAULT_SLIPPAGE * 10)
+          .div(10000), // Default slippage tolerance
+        amount_y_min: bn(amountBDesired)
+          .mul(10000 - V2_TRANSACTION_CONFIG.DEFAULT_SLIPPAGE * 10)
+          .div(10000), // Default slippage tolerance
         active_id_desired: activeId,
         id_slippage: 0,
         delta_ids: finalLiquidityConfig.map((config) => ({
