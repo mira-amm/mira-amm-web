@@ -23,29 +23,28 @@ import {
 } from "./utils";
 
 import type {CacheOptions} from "./cache";
-import {DEFAULT_CACHE_OPTIONS} from "./cache";
+import {
+  DEFAULT_CACHE_OPTIONS,
+  globalPoolDataCacheV2,
+  PoolDataCacheV2,
+  CacheManagerV2,
+} from "./cache";
 
 import {PoolCurveState} from "./typegen/contracts-v2";
 
 export class ReadonlyMiraAmmV2 {
   provider: Provider;
   ammContract: PoolCurveState;
-  private poolMetadataCache: Map<
-    string,
-    {metadata: PoolMetadataV2; timestamp: number; ttl: number}
-  > = new Map();
-  private poolFeeCache: Map<string, {fee: BN; timestamp: number; ttl: number}> =
-    new Map();
-  private binDataCache: Map<
-    string,
-    {data: BinLiquidityInfo; timestamp: number; ttl: number}
-  > = new Map();
-  private readonly DEFAULT_CACHE_TTL = 30000; // 30 seconds
+  private poolCache: PoolDataCacheV2;
+  private lastRouteSignature: string | null = null;
+  private cacheManager: CacheManagerV2;
 
   constructor(provider: Provider, contractIdOpt?: string) {
     const contractId = contractIdOpt ?? DEFAULT_AMM_V2_CONTRACT_ID;
     this.provider = provider;
     this.ammContract = new PoolCurveState(contractId, provider);
+    this.poolCache = globalPoolDataCacheV2;
+    this.cacheManager = new CacheManagerV2(this.poolCache, this);
   }
 
   id(): string {
@@ -86,13 +85,12 @@ export class ReadonlyMiraAmmV2 {
     // Check cache for each pool
     for (let i = 0; i < poolIds.length; i++) {
       const poolId = poolIds[i];
-      const cacheKey = this.generatePoolCacheKey(poolId);
-      const cached = this.poolMetadataCache.get(cacheKey);
+      const cached = this.poolCache.getPoolMetadata(poolId);
 
-      if (cached && !this.isPoolMetadataStale(cached)) {
+      if (cached && !this.poolCache.isStale(poolId)) {
         // Use cached data
         results[i] = cached.metadata;
-      } else if (cached && this.isPoolMetadataStale(cached)) {
+      } else if (cached && this.poolCache.isStale(poolId)) {
         // Handle stale data
         if (effectiveOptions.refreshStaleData) {
           // Mark for refresh
@@ -124,7 +122,7 @@ export class ReadonlyMiraAmmV2 {
 
           if (metadata) {
             // Store in cache with custom TTL if provided
-            this.setPoolMetadataCache(
+            this.poolCache.setPoolMetadata(
               poolId,
               metadata,
               effectiveOptions.cacheTTL
@@ -222,12 +220,10 @@ export class ReadonlyMiraAmmV2 {
    * Uses get_base_fee contract method
    */
   async fees(poolId: PoolIdV2): Promise<BN> {
-    const cacheKey = this.generatePoolFeeCacheKey(poolId);
-    const cached = this.poolFeeCache.get(cacheKey);
-
-    // Return cached fee if it's still fresh
-    if (cached && !this.isPoolFeeStale(cached)) {
-      return cached.fee;
+    // Check cache first
+    const cachedFee = this.poolCache.getPoolFee(poolId);
+    if (cachedFee !== null) {
+      return new BN(cachedFee);
     }
 
     try {
@@ -245,8 +241,8 @@ export class ReadonlyMiraAmmV2 {
 
       const fee = result.value;
 
-      // Cache the fee
-      this.setPoolFeeCache(poolId, fee);
+      // Cache the fee (convert BN to number for caching)
+      this.poolCache.setPoolFee(poolId, fee.toNumber());
 
       return fee;
     } catch (error) {
@@ -347,6 +343,9 @@ export class ReadonlyMiraAmmV2 {
     pools: PoolIdV2[],
     options: CacheOptions = {}
   ): Promise<Asset> {
+    // Preload route data if enabled
+    await this.preloadRoute(pools, options);
+
     const amountsOut = await this.getAmountsOut(
       assetIdIn,
       assetAmountIn,
@@ -365,6 +364,9 @@ export class ReadonlyMiraAmmV2 {
     pools: PoolIdV2[],
     options: CacheOptions = {}
   ): Promise<Asset> {
+    // Preload route data if enabled
+    await this.preloadRoute(pools, options);
+
     const amountsIn = await this.getAmountsIn(
       assetIdOut,
       assetAmountOut,
@@ -613,6 +615,14 @@ export class ReadonlyMiraAmmV2 {
     poolId: PoolIdV2,
     binId: BigNumberish
   ): Promise<Amounts | null> {
+    const binIdNum = Number(binId);
+
+    // Check cache first
+    const cached = this.poolCache.getBinData(poolId, binIdNum);
+    if (cached && !this.poolCache.isStale(poolId, binIdNum)) {
+      return cached.liquidity.liquidity;
+    }
+
     try {
       const result = await this.ammContract.functions
         .get_bin(poolIdV2Input(poolId), binId)
@@ -622,10 +632,21 @@ export class ReadonlyMiraAmmV2 {
         return null;
       }
 
-      return {
+      const amounts = {
         x: result.value.x,
         y: result.value.y,
       };
+
+      // Cache the bin data
+      const binLiquidityInfo: BinLiquidityInfo = {
+        binId: binIdNum,
+        liquidity: amounts,
+        price: new BN(0), // Price will be calculated separately if needed
+      };
+
+      this.poolCache.setBinData(poolId, binIdNum, binLiquidityInfo);
+
+      return amounts;
     } catch (error) {
       // Bin might not exist, return null instead of throwing
       return null;
@@ -1069,67 +1090,218 @@ export class ReadonlyMiraAmmV2 {
   }
 
   /**
-   * Generate cache key for pool metadata
+   * Get access to the pool data cache for external management
    */
-  private generatePoolCacheKey(poolId: PoolIdV2): string {
-    return `pool_${poolId.toString()}`;
+  getPoolCache(): PoolDataCacheV2 {
+    return this.poolCache;
   }
 
   /**
-   * Check if pool metadata cache entry is stale
+   * Get access to the cache manager for advanced cache strategies
    */
-  private isPoolMetadataStale(cached: {
-    metadata: PoolMetadataV2;
-    timestamp: number;
-    ttl: number;
-  }): boolean {
-    return Date.now() - cached.timestamp > cached.ttl;
+  getCacheManager(): CacheManagerV2 {
+    return this.cacheManager;
   }
 
   /**
-   * Set pool metadata in cache
+   * Preload pool metadata and bin data for a route
    */
-  private setPoolMetadataCache(
-    poolId: PoolIdV2,
-    metadata: PoolMetadataV2,
-    ttl?: number
+  async preloadRoute(
+    pools: PoolIdV2[],
+    options: CacheOptions = {}
+  ): Promise<void> {
+    const effectiveOptions = {...DEFAULT_CACHE_OPTIONS, ...options};
+
+    if (!effectiveOptions.preloadPools) {
+      return;
+    }
+
+    // Generate route signature for change detection
+    const routeSignature = this.generateRouteSignature(pools);
+
+    // Check if route has changed
+    if (this.lastRouteSignature !== routeSignature) {
+      this.lastRouteSignature = routeSignature;
+
+      // Preload pool metadata
+      await this.poolMetadataBatch(pools, {
+        ...effectiveOptions,
+        useCache: true,
+        refreshStaleData: true,
+      });
+
+      // Preload active bins and surrounding bins if enabled
+      if (this.poolCache.getConfig().preloadActiveBins) {
+        await this.preloadActiveBinsForPools(pools);
+      }
+    }
+  }
+
+  /**
+   * Preload active bins and surrounding bins for multiple pools
+   */
+  private async preloadActiveBinsForPools(pools: PoolIdV2[]): Promise<void> {
+    const config = this.poolCache.getConfig();
+
+    for (const poolId of pools) {
+      try {
+        // Get active bin ID
+        const activeBinId = await this.getActiveBin(poolId);
+        if (activeBinId === null) continue;
+
+        // Preload bins around the active bin
+        const startBin = activeBinId - config.preloadRange;
+        const endBin = activeBinId + config.preloadRange;
+
+        // Batch load bins in the range
+        const binPromises: Promise<void>[] = [];
+        for (let binId = startBin; binId <= endBin; binId++) {
+          binPromises.push(
+            this.getBinLiquidity(poolId, binId)
+              .then(() => {
+                // Just trigger the cache, don't need the result
+              })
+              .catch(() => {
+                // Ignore errors for non-existent bins
+              })
+          );
+        }
+
+        await Promise.allSettled(binPromises);
+      } catch (error) {
+        // Continue with other pools if one fails
+        console.warn(
+          `Failed to preload bins for pool ${poolId.toString()}:`,
+          error
+        );
+      }
+    }
+  }
+
+  /**
+   * Generate a signature for a route to detect changes
+   */
+  private generateRouteSignature(pools: PoolIdV2[]): string {
+    return pools.map((pool) => pool.toString()).join("-");
+  }
+
+  /**
+   * Invalidate cache for specific pools (useful for route changes)
+   */
+  invalidatePoolsCache(pools: PoolIdV2[]): void {
+    for (const poolId of pools) {
+      this.poolCache.removePool(poolId);
+    }
+  }
+
+  /**
+   * Warm up cache by preloading frequently used pools
+   */
+  async warmUpCache(
+    frequentPools: PoolIdV2[],
+    options: CacheOptions = {}
+  ): Promise<void> {
+    const effectiveOptions = {...DEFAULT_CACHE_OPTIONS, ...options};
+
+    // Preload pool metadata
+    await this.poolMetadataBatch(frequentPools, {
+      ...effectiveOptions,
+      useCache: true,
+      refreshStaleData: false, // Don't refresh during warmup
+    });
+
+    // Preload fees for all pools
+    const feePromises = frequentPools.map((poolId) =>
+      this.fees(poolId).catch(() => {
+        // Ignore errors during warmup
+      })
+    );
+
+    await Promise.allSettled(feePromises);
+
+    // Preload active bins if enabled
+    if (this.poolCache.getConfig().preloadActiveBins) {
+      await this.preloadActiveBinsForPools(frequentPools);
+    }
+  }
+
+  /**
+   * Get cache statistics and performance metrics
+   */
+  getCacheMetrics(): {
+    stats: any;
+    hitRate: number;
+    size: number;
+    poolCount: number;
+    binCount: number;
+  } {
+    const stats = this.poolCache.getStats();
+    const hitRate = this.poolCache.getHitRate();
+    const size = this.poolCache.size();
+    const poolIds = this.poolCache.getCachedPoolIds();
+    const poolCount = poolIds.length;
+
+    // Count total bins across all pools
+    let binCount = 0;
+    for (const poolIdStr of poolIds) {
+      const poolId = new BN(poolIdStr);
+      binCount += this.poolCache.getCachedBinIds(poolId).length;
+    }
+
+    return {
+      stats,
+      hitRate,
+      size,
+      poolCount,
+      binCount,
+    };
+  }
+
+  /**
+   * Configure cache behavior for different use cases
+   */
+  configureCacheForUseCase(
+    useCase: "trading" | "analytics" | "liquidity"
   ): void {
-    const cacheKey = this.generatePoolCacheKey(poolId);
-    this.poolMetadataCache.set(cacheKey, {
-      metadata,
-      timestamp: Date.now(),
-      ttl: ttl ?? this.DEFAULT_CACHE_TTL,
-    });
-  }
+    const config = this.poolCache.getConfig();
 
-  /**
-   * Generate cache key for pool fees
-   */
-  private generatePoolFeeCacheKey(poolId: PoolIdV2): string {
-    return `fee_${poolId.toString()}`;
-  }
+    switch (useCase) {
+      case "trading":
+        // Optimize for fast swaps - shorter TTLs, more aggressive preloading
+        this.poolCache.updateConfig({
+          ...config,
+          defaultTTL: 15000, // 15 seconds
+          binDataTTL: 10000, // 10 seconds
+          feeTTL: 30000, // 30 seconds
+          preloadActiveBins: true,
+          preloadRange: 5,
+        });
+        break;
 
-  /**
-   * Check if pool fee cache entry is stale
-   */
-  private isPoolFeeStale(cached: {
-    fee: BN;
-    timestamp: number;
-    ttl: number;
-  }): boolean {
-    return Date.now() - cached.timestamp > cached.ttl;
-  }
+      case "analytics":
+        // Optimize for data analysis - longer TTLs, less preloading
+        this.poolCache.updateConfig({
+          ...config,
+          defaultTTL: 60000, // 60 seconds
+          binDataTTL: 45000, // 45 seconds
+          feeTTL: 120000, // 2 minutes
+          preloadActiveBins: false,
+          preloadRange: 0,
+        });
+        break;
 
-  /**
-   * Set pool fee in cache
-   */
-  private setPoolFeeCache(poolId: PoolIdV2, fee: BN, ttl?: number): void {
-    const cacheKey = this.generatePoolFeeCacheKey(poolId);
-    this.poolFeeCache.set(cacheKey, {
-      fee,
-      timestamp: Date.now(),
-      ttl: ttl ?? this.DEFAULT_CACHE_TTL,
-    });
+      case "liquidity":
+        // Optimize for liquidity operations - balanced TTLs, moderate preloading
+        this.poolCache.updateConfig({
+          ...config,
+          defaultTTL: 30000, // 30 seconds
+          binDataTTL: 20000, // 20 seconds
+          feeTTL: 60000, // 60 seconds
+          preloadActiveBins: true,
+          preloadRange: 10,
+        });
+        break;
+    }
   }
 
   /**
