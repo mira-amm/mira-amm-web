@@ -11,5 +11,9 @@
   ],
   "peerDependencies": {
     "fuels": "0.101.2"
+  },
+  "devDependencies": {
+    "@types/node": "^24.3.0",
+    "vitest": "^3.2.4"
   }
 }
