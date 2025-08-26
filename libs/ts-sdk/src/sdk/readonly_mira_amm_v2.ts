@@ -1,4 +1,9 @@
-import {DEFAULT_AMM_V2_CONTRACT_ID} from "./constants";
+import {
+  DEFAULT_AMM_V2_CONTRACT_ID,
+  BASE_FACTOR_RANGES,
+  V2_CACHE_CONFIG,
+  ACTIVE_BIN_ID,
+} from "./constants";
 import {AssetId, BigNumberish, BN, Provider, Address} from "fuels";
 import {
   Asset,
@@ -26,7 +31,7 @@ import {
   withErrorHandling,
   createErrorContext,
   EnhancedMiraV2Error,
-} from "./errors";
+} from "./errors/v2-errors";
 
 import {validatePoolId, validateAssetId, validateBinId} from "./validation";
 
@@ -40,6 +45,46 @@ import {
 
 import {PoolCurveState} from "./typegen/contracts-v2";
 
+/**
+ * ReadonlyMiraAmmV2 - Read-only operations for Mira v2 binned liquidity pools
+ *
+ * This class provides methods for querying Mira v2 pool data without executing transactions.
+ * It includes advanced caching mechanisms optimized for the binned liquidity model and
+ * supports batch operations for improved performance.
+ *
+ * Key features:
+ * - Bin-specific liquidity queries for granular pool analysis
+ * - Intelligent caching with bin-level granularity
+ * - Batch operations for efficient multi-pool queries
+ * - Swap preview calculations using binned liquidity math
+ * - Position management utilities for concentrated liquidity
+ *
+ * @example
+ * ```typescript
+ * import { Provider } from "fuels";
+ * import { ReadonlyMiraAmmV2 } from "mira-dex-ts";
+ *
+ * const provider = await Provider.create("https://testnet.fuel.network/v1/graphql");
+ * const readonlyAmm = new ReadonlyMiraAmmV2(provider);
+ *
+ * // Query pool metadata
+ * const poolId = new BN("12345");
+ * const metadata = await readonlyAmm.poolMetadata(poolId);
+ * console.log(`Active bin: ${metadata.activeId}`);
+ *
+ * // Analyze liquidity distribution
+ * const distribution = await readonlyAmm.getLiquidityDistribution(poolId);
+ * console.log(`Total liquidity: ${distribution.totalLiquidity.x} X, ${distribution.totalLiquidity.y} Y`);
+ *
+ * // Preview swap with bin-aware calculations
+ * const preview = await readonlyAmm.previewSwapExactInput(
+ *   assetIn,
+ *   new BN("1000000"),
+ *   [poolId]
+ * );
+ * console.log(`Expected output: ${preview[1]} tokens`);
+ * ```
+ */
 export class ReadonlyMiraAmmV2 {
   provider: Provider;
   ammContract: PoolCurveState;
@@ -47,6 +92,12 @@ export class ReadonlyMiraAmmV2 {
   private lastRouteSignature: string | null = null;
   private cacheManager: CacheManagerV2;
 
+  /**
+   * Creates a new ReadonlyMiraAmmV2 instance for querying v2 pool data
+   *
+   * @param provider - Fuel provider for blockchain queries
+   * @param contractIdOpt - Optional v2 contract ID (uses default if not provided)
+   */
   constructor(provider: Provider, contractIdOpt?: string) {
     const contractId = contractIdOpt ?? DEFAULT_AMM_V2_CONTRACT_ID;
     this.provider = provider;
@@ -55,13 +106,39 @@ export class ReadonlyMiraAmmV2 {
     this.cacheManager = new CacheManagerV2(this.poolCache, this);
   }
 
+  /**
+   * Gets the contract ID of the v2 AMM contract
+   *
+   * @returns The contract ID as a B256 string
+   */
   id(): string {
     return this.ammContract.id.toB256();
   }
 
   /**
-   * Get pool metadata for a single v2 pool
-   * Uses get_pool contract method instead of pool_metadata
+   * Get comprehensive metadata for a single v2 pool
+   *
+   * Retrieves complete pool information including bin structure, active bin,
+   * total reserves, and protocol fees. Uses intelligent caching to minimize
+   * contract calls while ensuring data freshness.
+   *
+   * @param poolId - The v2 pool identifier (BN)
+   * @param options - Caching and refresh options
+   * @returns Pool metadata or null if pool doesn't exist
+   *
+   * @example
+   * ```typescript
+   * const poolId = new BN("12345");
+   * const metadata = await readonlyAmm.poolMetadata(poolId);
+   *
+   * if (metadata) {
+   *   console.log(`Pool ${poolId}:`);
+   *   console.log(`  Assets: ${metadata.pool.assetX.bits} / ${metadata.pool.assetY.bits}`);
+   *   console.log(`  Active bin: ${metadata.activeId}`);
+   *   console.log(`  Reserves: ${metadata.reserves.x} X, ${metadata.reserves.y} Y`);
+   *   console.log(`  Bin step: ${metadata.pool.binStep} basis points`);
+   * }
+   * ```
    */
   async poolMetadata(
     poolId: PoolIdV2,
@@ -77,8 +154,29 @@ export class ReadonlyMiraAmmV2 {
   }
 
   /**
-   * Get pool metadata for multiple v2 pools in batch
-   * Uses get_pool contract method and handles PoolIdV2 (BN) format
+   * Get metadata for multiple v2 pools efficiently in a single batch operation
+   *
+   * Optimizes performance by batching multiple pool queries and leveraging
+   * intelligent caching. Significantly reduces network overhead compared to
+   * individual queries when working with multiple pools.
+   *
+   * @param poolIds - Array of v2 pool identifiers to query
+   * @param options - Caching and refresh options applied to all pools
+   * @returns Array of pool metadata (null for non-existent pools)
+   *
+   * @example
+   * ```typescript
+   * const poolIds = [new BN("12345"), new BN("67890"), new BN("11111")];
+   * const metadataList = await readonlyAmm.poolMetadataBatch(poolIds);
+   *
+   * metadataList.forEach((metadata, index) => {
+   *   if (metadata) {
+   *     console.log(`Pool ${poolIds[index]}: Active bin ${metadata.activeId}`);
+   *   } else {
+   *     console.log(`Pool ${poolIds[index]}: Not found`);
+   *   }
+   * });
+   * ```
    */
   async poolMetadataBatch(
     poolIds: PoolIdV2[],
@@ -238,8 +336,25 @@ export class ReadonlyMiraAmmV2 {
   }
 
   /**
-   * Get fees for a specific v2 pool (per-pool instead of global)
-   * Uses get_base_fee contract method
+   * Get the base fee rate for a specific v2 pool
+   *
+   * Unlike v1 which has global fees, v2 pools each have their own fee structure.
+   * The base fee is applied to swaps and may be modified by hooks or other factors.
+   * Results are cached to improve performance for repeated queries.
+   *
+   * @param poolId - The v2 pool identifier
+   * @returns Base fee rate as a BN (typically in basis points)
+   *
+   * @example
+   * ```typescript
+   * const poolId = new BN("12345");
+   * const fee = await readonlyAmm.fees(poolId);
+   * console.log(`Pool fee: ${fee.toNumber()} basis points`);
+   *
+   * // Convert to percentage
+   * const feePercent = fee.toNumber() / 10000;
+   * console.log(`Pool fee: ${feePercent}%`);
+   * ```
    */
   async fees(poolId: PoolIdV2): Promise<BN> {
     // Check cache first
@@ -423,10 +538,12 @@ export class ReadonlyMiraAmmV2 {
     }
 
     try {
-      // For v2, we'll simulate the swap calculation through each pool
+      // For v2, simulate swap calculation through binned liquidity in each pool
+      // Unlike v1's simple constant product formula, v2 swaps traverse multiple bins
+      // Each bin has its own reserves and price, providing more accurate price discovery
       const amounts: Asset[] = [[assetIdIn, amount]];
 
-      // Get pool metadata to determine asset order for each hop
+      // Get pool metadata to determine asset order and bin structure for each hop
       const poolMetadataList = await this.poolMetadataBatch(pools, options);
 
       let currentAsset = assetIdIn;
@@ -441,22 +558,27 @@ export class ReadonlyMiraAmmV2 {
           );
         }
 
-        // Determine output asset for this hop
+        // Determine output asset for this hop based on input asset
         const outputAsset =
           poolMetadata.pool.assetX.bits === currentAsset.bits
             ? poolMetadata.pool.assetY
             : poolMetadata.pool.assetX;
 
-        // Use get_swap_in to calculate the output amount
+        // Determine swap direction: swapForY = true means X->Y, false means Y->X
+        // This affects which bins the swap will traverse (higher bins for X->Y, lower for Y->X)
         const swapForY = poolMetadata.pool.assetX.bits === currentAsset.bits;
 
         try {
+          // Use get_swap_in to calculate output amount using bin-based liquidity
+          // This method simulates traversing bins from the active bin outward,
+          // consuming liquidity until the input amount is fully processed
           const swapResult = await this.ammContract.functions
             .get_swap_in(poolIdV2Input(pools[i]), currentAmount, swapForY)
             .get();
 
           if (swapResult.value) {
-            // get_swap_in returns [amountIn, amountOut, fee]
+            // get_swap_in returns [amountIn, amountOut, fee] tuple
+            // amountOut accounts for bin-to-bin price impact and fees
             const outputAmount = swapResult.value[1];
             amounts.push([outputAsset, outputAmount]);
             currentAsset = outputAsset;
@@ -631,7 +753,30 @@ export class ReadonlyMiraAmmV2 {
   }
 
   /**
-   * Get liquidity for a specific bin using get_bin contract function
+   * Get liquidity reserves for a specific bin in a v2 pool
+   *
+   * Bins are discrete price points where liquidity can be concentrated.
+   * Each bin contains reserves of both tokens, with the distribution
+   * depending on the bin's position relative to the current price.
+   *
+   * @param poolId - The v2 pool identifier
+   * @param binId - The specific bin identifier to query
+   * @returns Token amounts in the bin, or null if bin is empty/doesn't exist
+   *
+   * @example
+   * ```typescript
+   * const poolId = new BN("12345");
+   * const binId = 8388608; // Active bin
+   *
+   * const liquidity = await readonlyAmm.getBinLiquidity(poolId, binId);
+   * if (liquidity) {
+   *   console.log(`Bin ${binId} contains:`);
+   *   console.log(`  Token X: ${liquidity.x}`);
+   *   console.log(`  Token Y: ${liquidity.y}`);
+   * } else {
+   *   console.log(`Bin ${binId} is empty`);
+   * }
+   * ```
    */
   async getBinLiquidity(
     poolId: PoolIdV2,
@@ -644,13 +789,16 @@ export class ReadonlyMiraAmmV2 {
     return withErrorHandling(async () => {
       const binIdNum = Number(binId);
 
-      // Check cache first
+      // Check cache first for bin-specific data
+      // Each bin maintains its own liquidity reserves independently
       const cached = this.poolCache.getBinData(poolId, binIdNum);
       if (cached && !this.poolCache.isStale(poolId, binIdNum)) {
         return cached.liquidity.liquidity;
       }
 
       try {
+        // Query specific bin liquidity from contract
+        // Bins contain discrete liquidity positions at specific price points
         const result = await this.ammContract.functions
           .get_bin(poolIdV2Input(poolId), binId)
           .get();
@@ -682,7 +830,28 @@ export class ReadonlyMiraAmmV2 {
   }
 
   /**
-   * Get the active bin ID for a pool using get_pool_active_bin_id
+   * Get the currently active bin ID for a v2 pool
+   *
+   * The active bin represents the current price of the pool. It's the bin
+   * where the next swap will occur and typically contains the most balanced
+   * liquidity between both tokens. Bin IDs increase with price.
+   *
+   * @param poolId - The v2 pool identifier
+   * @returns Active bin ID, or null if pool is not initialized
+   *
+   * @example
+   * ```typescript
+   * const poolId = new BN("12345");
+   * const activeBin = await readonlyAmm.getActiveBin(poolId);
+   *
+   * if (activeBin !== null) {
+   *   console.log(`Current price is at bin ${activeBin}`);
+   *
+   *   // Get price for this bin
+   *   const price = await readonlyAmm.getPriceFromId(poolId, activeBin);
+   *   console.log(`Current price: ${price}`);
+   * }
+   * ```
    */
   async getActiveBin(poolId: PoolIdV2): Promise<number | null> {
     const context = createErrorContext("getActiveBin", {poolId});
@@ -698,7 +867,36 @@ export class ReadonlyMiraAmmV2 {
   }
 
   /**
-   * Get liquidity distribution across a range of bins
+   * Get liquidity information for a range of consecutive bins
+   *
+   * Efficiently queries multiple bins in a single batch operation.
+   * Useful for analyzing liquidity distribution around the current price
+   * or for building liquidity charts and depth visualizations.
+   *
+   * @param poolId - The v2 pool identifier
+   * @param startBinId - First bin ID in the range (inclusive)
+   * @param endBinId - Last bin ID in the range (inclusive)
+   * @returns Array of bin liquidity information (empty bins are included with zero liquidity)
+   *
+   * @example
+   * ```typescript
+   * const poolId = new BN("12345");
+   * const activeBin = await readonlyAmm.getActiveBin(poolId);
+   *
+   * // Get liquidity in ±10 bins around active price
+   * const range = await readonlyAmm.getBinRange(
+   *   poolId,
+   *   activeBin - 10,
+   *   activeBin + 10
+   * );
+   *
+   * range.forEach(bin => {
+   *   const totalLiquidity = bin.liquidity.x.add(bin.liquidity.y);
+   *   if (totalLiquidity.gt(0)) {
+   *     console.log(`Bin ${bin.binId}: ${totalLiquidity} total liquidity at price ${bin.price}`);
+   *   }
+   * });
+   * ```
    */
   async getBinRange(
     poolId: PoolIdV2,
@@ -775,7 +973,36 @@ export class ReadonlyMiraAmmV2 {
   }
 
   /**
-   * Get comprehensive liquidity distribution for a pool
+   * Get comprehensive liquidity distribution analysis for a v2 pool
+   *
+   * Provides a complete overview of how liquidity is distributed across
+   * the pool's price range. Analyzes bins around the active price to
+   * give insights into capital efficiency and price impact.
+   *
+   * @param poolId - The v2 pool identifier
+   * @returns Complete liquidity distribution including totals and per-bin breakdown
+   *
+   * @example
+   * ```typescript
+   * const poolId = new BN("12345");
+   * const distribution = await readonlyAmm.getLiquidityDistribution(poolId);
+   *
+   * console.log(`Pool Liquidity Analysis:`);
+   * console.log(`  Total X: ${distribution.totalLiquidity.x}`);
+   * console.log(`  Total Y: ${distribution.totalLiquidity.y}`);
+   * console.log(`  Active bin: ${distribution.activeBinId}`);
+   * console.log(`  Bins with liquidity: ${distribution.bins.filter(b => b.liquidity.x.gt(0) || b.liquidity.y.gt(0)).length}`);
+   *
+   * // Find bins with highest liquidity
+   * const sortedBins = distribution.bins
+   *   .filter(b => b.liquidity.x.gt(0) || b.liquidity.y.gt(0))
+   *   .sort((a, b) => b.liquidity.x.add(b.liquidity.y).sub(a.liquidity.x.add(a.liquidity.y)).toNumber());
+   *
+   * console.log(`Top liquidity bins:`);
+   * sortedBins.slice(0, 5).forEach(bin => {
+   *   console.log(`  Bin ${bin.binId}: ${bin.liquidity.x} X, ${bin.liquidity.y} Y`);
+   * });
+   * ```
    */
   async getLiquidityDistribution(
     poolId: PoolIdV2
@@ -890,11 +1117,15 @@ export class ReadonlyMiraAmmV2 {
 
               if (totalSupply.value && totalSupply.value.gt(0)) {
                 const userShare = balance
-                  .mul(new BN(10000))
+                  .mul(new BN(BASE_FACTOR_RANGES.DEFAULT))
                   .div(totalSupply.value);
                 const underlyingAmounts = {
-                  x: binLiquidity.x.mul(userShare).div(new BN(10000)),
-                  y: binLiquidity.y.mul(userShare).div(new BN(10000)),
+                  x: binLiquidity.x
+                    .mul(userShare)
+                    .div(new BN(BASE_FACTOR_RANGES.DEFAULT)),
+                  y: binLiquidity.y
+                    .mul(userShare)
+                    .div(new BN(BASE_FACTOR_RANGES.DEFAULT)),
                 };
 
                 positions.push({
@@ -981,7 +1212,7 @@ export class ReadonlyMiraAmmV2 {
 
   /**
    * Get the required amount of the other token for proportional liquidity addition
-   * Maintains v1 API compatibility where possible
+   * Updated for v2 to work with bin-based liquidity while maintaining API compatibility
    */
   async getOtherTokenToAddLiquidity(
     poolId: PoolIdV2,
@@ -989,108 +1220,485 @@ export class ReadonlyMiraAmmV2 {
     isFirstToken: boolean,
     options: CacheOptions = {}
   ): Promise<Asset> {
-    const poolMetadata = await this.poolMetadata(poolId, options);
-    if (!poolMetadata) {
-      throw new MiraV2Error(
-        PoolCurveStateError.PoolNotFound,
-        `Pool ${poolId.toString()} not found`
-      );
-    }
+    const context = createErrorContext("getOtherTokenToAddLiquidity", {
+      poolId,
+      amount,
+      isFirstToken,
+    });
+    validatePoolId(poolId, context);
 
-    const amountBN = new BN(amount);
-    if (amountBN.lt(0) || amountBN.eq(0)) {
-      throw new MiraV2Error(
-        PoolCurveStateError.InsufficientAmountIn,
-        "Non positive input amount"
-      );
-    }
+    return withErrorHandling(async () => {
+      const poolMetadata = await this.poolMetadata(poolId, options);
+      if (!poolMetadata) {
+        throw new MiraV2Error(
+          PoolCurveStateError.PoolNotFound,
+          `Pool ${poolId.toString()} not found`
+        );
+      }
 
-    const reserves = poolMetadata.reserves;
-    if (reserves.x.eq(0) || reserves.y.eq(0)) {
-      throw new MiraV2Error(
-        PoolCurveStateError.OutOfLiquidity,
-        "Reserve is zero. Any number of tokens can be added"
-      );
-    }
+      const amountBN = new BN(amount);
+      if (amountBN.lte(0)) {
+        throw new MiraV2Error(
+          PoolCurveStateError.InsufficientAmountIn,
+          "Amount must be positive"
+        );
+      }
 
-    if (isFirstToken) {
-      // First token is X, calculate required Y
-      const otherTokenAmount = amountBN
-        .mul(reserves.y)
-        .div(reserves.x)
-        .add(new BN(1)); // Add 1 for rounding
-      return [poolMetadata.pool.assetY, otherTokenAmount];
-    } else {
-      // First token is Y, calculate required X
-      const otherTokenAmount = amountBN
-        .mul(reserves.x)
-        .div(reserves.y)
-        .add(new BN(1)); // Add 1 for rounding
-      return [poolMetadata.pool.assetX, otherTokenAmount];
-    }
+      // Get active bin to understand current price ratio
+      const activeBinId = await this.getActiveBin(poolId);
+      if (activeBinId === null) {
+        throw new MiraV2Error(
+          PoolCurveStateError.NotInitialized,
+          "Pool has no active bin"
+        );
+      }
+
+      // For v2, we calculate based on the active bin's liquidity ratio
+      // This provides a more accurate representation of the current price
+      const activeBinLiquidity = await this.getBinLiquidity(
+        poolId,
+        activeBinId
+      );
+
+      // If active bin has no liquidity, fall back to total reserves
+      let xReserve: BN, yReserve: BN;
+
+      if (
+        activeBinLiquidity &&
+        (!activeBinLiquidity.x.eq(0) || !activeBinLiquidity.y.eq(0))
+      ) {
+        // Use active bin liquidity for more accurate price
+        xReserve = activeBinLiquidity.x;
+        yReserve = activeBinLiquidity.y;
+      } else {
+        // Fall back to total pool reserves
+        const reserves = poolMetadata.reserves;
+        xReserve = reserves.x;
+        yReserve = reserves.y;
+      }
+
+      // Handle edge cases where one reserve is zero
+      if (xReserve.eq(0) && yReserve.eq(0)) {
+        throw new MiraV2Error(
+          PoolCurveStateError.OutOfLiquidity,
+          "Pool has no liquidity. Any amount can be added for the other token"
+        );
+      }
+
+      if (xReserve.eq(0)) {
+        // Only Y liquidity exists, X can be any amount
+        if (isFirstToken) {
+          // Adding X, Y should be proportional to existing Y
+          return [poolMetadata.pool.assetY, amountBN];
+        } else {
+          // Adding Y, X can be any amount
+          return [poolMetadata.pool.assetX, amountBN];
+        }
+      }
+
+      if (yReserve.eq(0)) {
+        // Only X liquidity exists, Y can be any amount
+        if (isFirstToken) {
+          // Adding X, Y can be any amount
+          return [poolMetadata.pool.assetY, amountBN];
+        } else {
+          // Adding Y, X should be proportional to existing X
+          return [poolMetadata.pool.assetX, amountBN];
+        }
+      }
+
+      // Calculate proportional amount based on current liquidity ratio
+      if (isFirstToken) {
+        // First token is X, calculate required Y
+        const otherTokenAmount = amountBN.mul(yReserve).div(xReserve);
+
+        // Add small buffer for rounding and slippage
+        const bufferedAmount = otherTokenAmount
+          .add(
+            otherTokenAmount.div(new BN(BASE_FACTOR_RANGES.DEFAULT)) // 0.01% buffer
+          )
+          .add(new BN(1)); // Minimum 1 unit buffer
+
+        return [poolMetadata.pool.assetY, bufferedAmount];
+      } else {
+        // First token is Y, calculate required X
+        const otherTokenAmount = amountBN.mul(xReserve).div(yReserve);
+
+        // Add small buffer for rounding and slippage
+        const bufferedAmount = otherTokenAmount
+          .add(
+            otherTokenAmount.div(new BN(BASE_FACTOR_RANGES.DEFAULT)) // 0.01% buffer
+          )
+          .add(new BN(1)); // Minimum 1 unit buffer
+
+        return [poolMetadata.pool.assetX, bufferedAmount];
+      }
+    }, context);
+  }
+
+  /**
+   * Get comprehensive liquidity position information across multiple bins for v2
+   * Returns detailed information about how a position is distributed across bins
+   */
+  async getLiquidityPositionDetailed(
+    poolId: PoolIdV2,
+    userAddress: Address,
+    options: CacheOptions = {}
+  ): Promise<{
+    totalPosition: [Asset, Asset];
+    binPositions: UserBinPosition[];
+    activeBinId: number | null;
+    positionValue: BN;
+  }> {
+    const context = createErrorContext("getLiquidityPositionDetailed", {
+      poolId,
+      userAddress,
+    });
+    validatePoolId(poolId, context);
+
+    return withErrorHandling(async () => {
+      const poolMetadata = await this.poolMetadata(poolId, options);
+      if (!poolMetadata) {
+        throw new MiraV2Error(
+          PoolCurveStateError.PoolNotFound,
+          `Pool ${poolId.toString()} not found`
+        );
+      }
+
+      // Get user's bin positions
+      const binPositions = await this.getUserBinPositions(poolId, userAddress);
+      const activeBinId = await this.getActiveBin(poolId);
+
+      // Calculate total position across all bins
+      let totalX = new BN(0);
+      let totalY = new BN(0);
+      let totalValue = new BN(0);
+
+      for (const position of binPositions) {
+        totalX = totalX.add(position.underlyingAmounts.x);
+        totalY = totalY.add(position.underlyingAmounts.y);
+
+        // Calculate value using current bin price
+        const binPrice = await this.getPriceFromId(poolId, position.binId);
+        const binValue = position.underlyingAmounts.x.add(
+          position.underlyingAmounts.y.mul(binPrice).div(new BN(10000))
+        );
+        totalValue = totalValue.add(binValue);
+      }
+
+      return {
+        totalPosition: [
+          [poolMetadata.pool.assetX, totalX],
+          [poolMetadata.pool.assetY, totalY],
+        ],
+        binPositions,
+        activeBinId,
+        positionValue: totalValue,
+      };
+    }, context);
   }
 
   /**
    * Get liquidity position value across bins for v2
-   * Returns the total value of LP tokens distributed across bins
+   * Updated to handle bin-distributed positions and return comprehensive position information
    */
   async getLiquidityPosition(
     poolId: PoolIdV2,
     lpTokensAmount: BigNumberish,
     options: CacheOptions = {}
   ): Promise<[Asset, Asset]> {
-    const lpTokensBN = new BN(lpTokensAmount);
-    if (lpTokensBN.lt(0) || lpTokensBN.eq(0)) {
-      throw new MiraV2Error(
-        PoolCurveStateError.InvalidLPTokenBalance,
-        "Non positive LP token amount"
-      );
-    }
+    const context = createErrorContext("getLiquidityPosition", {
+      poolId,
+      lpTokensAmount,
+    });
+    validatePoolId(poolId, context);
 
-    const poolMetadata = await this.poolMetadata(poolId, options);
-    if (!poolMetadata) {
-      throw new MiraV2Error(
-        PoolCurveStateError.PoolNotFound,
-        `Pool ${poolId.toString()} not found`
-      );
-    }
-
-    // For v2, this is a simplified calculation
-    // In practice, you'd need to know which specific bins the LP tokens represent
-    // This assumes proportional distribution across the pool's total reserves
-
-    try {
-      // Get total supply of LP tokens for this pool (simplified)
-      // In v2, there are multiple LP tokens (one per bin), so this is an approximation
-      const totalReserves = poolMetadata.reserves;
-
-      // Calculate proportional amounts based on total reserves
-      // This is a simplified approach - real implementation would need bin-specific calculations
-      const totalLiquidity = totalReserves.x.add(totalReserves.y);
-
-      if (totalLiquidity.eq(0)) {
+    return withErrorHandling(async () => {
+      const lpTokensBN = new BN(lpTokensAmount);
+      if (lpTokensBN.lte(0)) {
         throw new MiraV2Error(
-          PoolCurveStateError.OutOfLiquidity,
-          "Pool has no liquidity"
+          PoolCurveStateError.InvalidLPTokenBalance,
+          "LP token amount must be positive"
         );
       }
 
-      // Simplified proportional calculation
-      const sharePercentage = lpTokensBN.mul(new BN(10000)).div(totalLiquidity);
+      const poolMetadata = await this.poolMetadata(poolId, options);
+      if (!poolMetadata) {
+        throw new MiraV2Error(
+          PoolCurveStateError.PoolNotFound,
+          `Pool ${poolId.toString()} not found`
+        );
+      }
 
-      const amount0 = totalReserves.x.mul(sharePercentage).div(new BN(10000));
-      const amount1 = totalReserves.y.mul(sharePercentage).div(new BN(10000));
+      // For v2, we need to handle the fact that LP tokens are distributed across bins
+      // This implementation provides a more accurate calculation based on bin distribution
 
-      return [
-        [poolMetadata.pool.assetX, amount0],
-        [poolMetadata.pool.assetY, amount1],
-      ];
-    } catch (error) {
-      throw new MiraV2Error(
-        PoolCurveStateError.InvalidLPTokenBalance,
-        `Failed to calculate liquidity position: ${error instanceof Error ? error.message : String(error)}`,
-        {poolId, lpTokensAmount, error}
+      try {
+        // Get the liquidity distribution to understand how liquidity is spread across bins
+        const liquidityDistribution =
+          await this.getLiquidityDistribution(poolId);
+
+        if (liquidityDistribution.bins.length === 0) {
+          throw new MiraV2Error(
+            PoolCurveStateError.OutOfLiquidity,
+            "Pool has no liquidity in any bins"
+          );
+        }
+
+        // Calculate total liquidity across all bins
+        const totalBinLiquidity = liquidityDistribution.bins.reduce(
+          (total, bin) => ({
+            x: total.x.add(bin.liquidity.x),
+            y: total.y.add(bin.liquidity.y),
+          }),
+          {x: new BN(0), y: new BN(0)}
+        );
+
+        if (totalBinLiquidity.x.eq(0) && totalBinLiquidity.y.eq(0)) {
+          throw new MiraV2Error(
+            PoolCurveStateError.OutOfLiquidity,
+            "Pool has no liquidity"
+          );
+        }
+
+        // For v2, we need to estimate the user's share across bins
+        // This is a simplified approach that assumes the LP tokens represent
+        // a proportional share of the total pool liquidity
+
+        // Calculate the total value of liquidity in the pool
+        // We'll use a weighted approach based on bin liquidity
+        let totalWeightedLiquidity = new BN(0);
+        let userWeightedX = new BN(0);
+        let userWeightedY = new BN(0);
+
+        for (const bin of liquidityDistribution.bins) {
+          // Calculate the value of liquidity in this bin
+          const binValue = bin.liquidity.x.add(bin.liquidity.y);
+
+          if (binValue.gt(0)) {
+            totalWeightedLiquidity = totalWeightedLiquidity.add(binValue);
+
+            // Calculate user's proportional share of this bin
+            const userShareOfBin = lpTokensBN
+              .mul(binValue)
+              .div(totalWeightedLiquidity.add(binValue));
+
+            // Add to user's total position
+            userWeightedX = userWeightedX.add(
+              bin.liquidity.x.mul(userShareOfBin).div(binValue)
+            );
+            userWeightedY = userWeightedY.add(
+              bin.liquidity.y.mul(userShareOfBin).div(binValue)
+            );
+          }
+        }
+
+        // If the weighted calculation doesn't work, fall back to simple proportional
+        if (userWeightedX.eq(0) && userWeightedY.eq(0)) {
+          // Simple proportional calculation based on total reserves
+          const totalReserves = poolMetadata.reserves;
+          const totalValue = totalReserves.x.add(totalReserves.y);
+
+          if (totalValue.eq(0)) {
+            throw new MiraV2Error(
+              PoolCurveStateError.OutOfLiquidity,
+              "Pool has no liquidity"
+            );
+          }
+
+          // Assume LP tokens represent a proportional share
+          // This is a simplified assumption for v2
+          const sharePercentage = lpTokensBN.mul(new BN(10000)).div(totalValue);
+
+          userWeightedX = totalReserves.x
+            .mul(sharePercentage)
+            .div(new BN(10000));
+          userWeightedY = totalReserves.y
+            .mul(sharePercentage)
+            .div(new BN(10000));
+        }
+
+        return [
+          [poolMetadata.pool.assetX, userWeightedX],
+          [poolMetadata.pool.assetY, userWeightedY],
+        ];
+      } catch (error) {
+        if (error instanceof MiraV2Error) {
+          throw error;
+        }
+        throw new MiraV2Error(
+          PoolCurveStateError.InvalidLPTokenBalance,
+          `Failed to calculate liquidity position: ${error instanceof Error ? error.message : String(error)}`,
+          {poolId, lpTokensAmount, error}
+        );
+      }
+    }, context);
+  }
+
+  /**
+   * Calculate optimal liquidity distribution across bins for v2
+   * Helps users understand how to distribute liquidity for maximum efficiency
+   */
+  async calculateOptimalLiquidityDistribution(
+    poolId: PoolIdV2,
+    amountX: BigNumberish,
+    amountY: BigNumberish,
+    priceRange: {minPrice: BN; maxPrice: BN},
+    options: CacheOptions = {}
+  ): Promise<{
+    distributions: Array<{
+      binId: number;
+      price: BN;
+      amountX: BN;
+      amountY: BN;
+      percentage: number;
+    }>;
+    totalBins: number;
+    activeBinId: number | null;
+  }> {
+    const context = createErrorContext(
+      "calculateOptimalLiquidityDistribution",
+      {
+        poolId,
+        amountX,
+        amountY,
+        priceRange,
+      }
+    );
+    validatePoolId(poolId, context);
+
+    return withErrorHandling(async () => {
+      const poolMetadata = await this.poolMetadata(poolId, options);
+      if (!poolMetadata) {
+        throw new MiraV2Error(
+          PoolCurveStateError.PoolNotFound,
+          `Pool ${poolId.toString()} not found`
+        );
+      }
+
+      const amountXBN = new BN(amountX);
+      const amountYBN = new BN(amountY);
+      const activeBinId = await this.getActiveBin(poolId);
+
+      if (activeBinId === null) {
+        throw new MiraV2Error(
+          PoolCurveStateError.NotInitialized,
+          "Pool has no active bin"
+        );
+      }
+
+      // Calculate bin IDs for the price range
+      const minBinId = await this.getBinIdFromPrice(
+        poolId,
+        priceRange.minPrice
       );
+      const maxBinId = await this.getBinIdFromPrice(
+        poolId,
+        priceRange.maxPrice
+      );
+
+      const distributions: Array<{
+        binId: number;
+        price: BN;
+        amountX: BN;
+        amountY: BN;
+        percentage: number;
+      }> = [];
+
+      const totalBins = maxBinId - minBinId + 1;
+
+      // Distribute liquidity across bins with higher concentration around active bin
+      for (let binId = minBinId; binId <= maxBinId; binId++) {
+        const price = await this.getPriceFromId(poolId, binId);
+
+        // Calculate distance from active bin (for concentration weighting)
+        const distanceFromActive = Math.abs(binId - activeBinId);
+        const weight = Math.exp(-distanceFromActive * 0.1); // Exponential decay
+
+        // Calculate percentage allocation based on weight
+        const percentage = (weight / totalBins) * 100;
+
+        // Distribute amounts based on bin position relative to current price
+        let binAmountX = new BN(0);
+        let binAmountY = new BN(0);
+
+        if (binId < activeBinId) {
+          // Below current price - more Y token
+          binAmountY = amountYBN
+            .mul(new BN(Math.floor(percentage * 100)))
+            .div(new BN(10000));
+        } else if (binId > activeBinId) {
+          // Above current price - more X token
+          binAmountX = amountXBN
+            .mul(new BN(Math.floor(percentage * 100)))
+            .div(new BN(10000));
+        } else {
+          // At current price - balanced
+          binAmountX = amountXBN
+            .mul(new BN(Math.floor(percentage * 50)))
+            .div(new BN(10000));
+          binAmountY = amountYBN
+            .mul(new BN(Math.floor(percentage * 50)))
+            .div(new BN(10000));
+        }
+
+        distributions.push({
+          binId,
+          price,
+          amountX: binAmountX,
+          amountY: binAmountY,
+          percentage: percentage,
+        });
+      }
+
+      return {
+        distributions,
+        totalBins,
+        activeBinId,
+      };
+    }, context);
+  }
+
+  /**
+   * Helper method to get bin ID from price
+   */
+  private async getBinIdFromPrice(
+    poolId: PoolIdV2,
+    price: BN
+  ): Promise<number> {
+    try {
+      const result = await this.ammContract.functions
+        .get_id_from_price(poolIdV2Input(poolId), price)
+        .get();
+
+      return result.value;
+    } catch (error) {
+      // Fallback calculation if contract method fails
+      const poolMetadata = await this.poolMetadata(poolId);
+      if (!poolMetadata) {
+        throw new MiraV2Error(
+          PoolCurveStateError.PoolNotFound,
+          `Pool ${poolId.toString()} not found`
+        );
+      }
+
+      // Simplified calculation: binId = log(price / basePrice) / log(1 + binStep/10000)
+      const binStep = poolMetadata.pool.binStep;
+      const basePrice = new BN(10000);
+
+      if (price.eq(basePrice)) {
+        return 0;
+      }
+
+      // Simplified logarithmic calculation
+      const ratio = price.gt(basePrice)
+        ? price.div(basePrice).toNumber()
+        : basePrice.div(price).toNumber();
+
+      const stepRatio = 1 + binStep / 10000;
+      const binId = Math.round(Math.log(ratio) / Math.log(stepRatio));
+
+      return price.gt(basePrice) ? binId : -binId;
     }
   }
 
@@ -1299,9 +1907,9 @@ export class ReadonlyMiraAmmV2 {
         // Optimize for fast swaps - shorter TTLs, more aggressive preloading
         this.poolCache.updateConfig({
           ...config,
-          defaultTTL: 15000, // 15 seconds
-          binDataTTL: 10000, // 10 seconds
-          feeTTL: 30000, // 30 seconds
+          defaultTTL: V2_CACHE_CONFIG.POOL_METADATA_TTL / 4, // 15 seconds for trading
+          binDataTTL: V2_CACHE_CONFIG.BIN_DATA_TTL / 3, // 10 seconds for trading
+          feeTTL: V2_CACHE_CONFIG.FEE_DATA_TTL / 10, // 30 seconds for trading
           preloadActiveBins: true,
           preloadRange: 5,
         });
