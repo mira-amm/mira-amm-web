@@ -178,16 +178,15 @@ describe("PoolDataCacheV2", () => {
   });
 
   describe("Cache Management", () => {
-    it("should check staleness correctly", () => {
+    it("should check staleness correctly", async () => {
       cache.setPoolMetadata(mockPoolId, mockPoolMetadata, 10); // 10ms TTL
 
       // Should not be stale immediately
       expect(cache.isStale(mockPoolId)).toBe(false);
 
       // Should be stale after TTL
-      setTimeout(() => {
-        expect(cache.isStale(mockPoolId)).toBe(true);
-      }, 20);
+      await new Promise((resolve) => setTimeout(resolve, 20));
+      expect(cache.isStale(mockPoolId)).toBe(true);
     });
 
     it("should remove pool and all associated data", () => {
