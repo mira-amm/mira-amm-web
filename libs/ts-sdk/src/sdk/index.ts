@@ -4,6 +4,7 @@ export * from "./mira_amm_v2";
 export * from "./readonly_mira_amm_v2";
 export * from "./model";
 export * from "./errors";
+export * from "./validation";
 export * from "./cache";
 export {
   buildPoolId,

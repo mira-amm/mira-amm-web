@@ -22,6 +22,14 @@ import {
   addressInput,
 } from "./utils";
 
+import {
+  withErrorHandling,
+  createErrorContext,
+  EnhancedMiraV2Error,
+} from "./errors";
+
+import {validatePoolId, validateAssetId, validateBinId} from "./validation";
+
 import type {CacheOptions} from "./cache";
 import {
   DEFAULT_CACHE_OPTIONS,
@@ -59,8 +67,13 @@ export class ReadonlyMiraAmmV2 {
     poolId: PoolIdV2,
     options: CacheOptions = {}
   ): Promise<PoolMetadataV2 | null> {
-    const results = await this.poolMetadataBatch([poolId], options);
-    return results[0];
+    const context = createErrorContext("poolMetadata", {poolId});
+    validatePoolId(poolId, context);
+
+    return withErrorHandling(async () => {
+      const results = await this.poolMetadataBatch([poolId], options);
+      return results[0];
+    }, context);
   }
 
   /**
@@ -71,89 +84,98 @@ export class ReadonlyMiraAmmV2 {
     poolIds: PoolIdV2[],
     options: CacheOptions = {}
   ): Promise<(PoolMetadataV2 | null)[]> {
-    const effectiveOptions = {...DEFAULT_CACHE_OPTIONS, ...options};
+    const context = createErrorContext("poolMetadataBatch");
 
-    // If caching is disabled, use direct fetch
-    if (!effectiveOptions.useCache) {
-      return this.poolMetadataBatchDirect(poolIds);
-    }
+    // Validate all pool IDs
+    poolIds.forEach((poolId, index) => {
+      validatePoolId(poolId, {...context, poolIndex: index});
+    });
 
-    const results: (PoolMetadataV2 | null)[] = [];
-    const poolsToFetch: PoolIdV2[] = [];
-    const fetchIndices: number[] = [];
+    return withErrorHandling(async () => {
+      const effectiveOptions = {...DEFAULT_CACHE_OPTIONS, ...options};
 
-    // Check cache for each pool
-    for (let i = 0; i < poolIds.length; i++) {
-      const poolId = poolIds[i];
-      const cached = this.poolCache.getPoolMetadata(poolId);
+      // If caching is disabled, use direct fetch
+      if (!effectiveOptions.useCache) {
+        return this.poolMetadataBatchDirect(poolIds);
+      }
 
-      if (cached && !this.poolCache.isStale(poolId)) {
-        // Use cached data
-        results[i] = cached.metadata;
-      } else if (cached && this.poolCache.isStale(poolId)) {
-        // Handle stale data
-        if (effectiveOptions.refreshStaleData) {
-          // Mark for refresh
+      const results: (PoolMetadataV2 | null)[] = [];
+      const poolsToFetch: PoolIdV2[] = [];
+      const fetchIndices: number[] = [];
+
+      // Check cache for each pool
+      for (let i = 0; i < poolIds.length; i++) {
+        const poolId = poolIds[i];
+        const cached = this.poolCache.getPoolMetadata(poolId);
+
+        if (cached && !this.poolCache.isStale(poolId)) {
+          // Use cached data
+          results[i] = cached.metadata;
+        } else if (cached && this.poolCache.isStale(poolId)) {
+          // Handle stale data
+          if (effectiveOptions.refreshStaleData) {
+            // Mark for refresh
+            poolsToFetch.push(poolId);
+            fetchIndices.push(i);
+            // Use stale data temporarily
+            results[i] = cached.metadata;
+          } else {
+            // Use stale data as-is
+            results[i] = cached.metadata;
+          }
+        } else {
+          // Cache miss - need to fetch
           poolsToFetch.push(poolId);
           fetchIndices.push(i);
-          // Use stale data temporarily
-          results[i] = cached.metadata;
-        } else {
-          // Use stale data as-is
-          results[i] = cached.metadata;
+          results[i] = null; // Placeholder
         }
-      } else {
-        // Cache miss - need to fetch
-        poolsToFetch.push(poolId);
-        fetchIndices.push(i);
-        results[i] = null; // Placeholder
       }
-    }
 
-    // Fetch missing or stale pools
-    if (poolsToFetch.length > 0) {
-      try {
-        const fetchedPools = await this.poolMetadataBatchDirect(poolsToFetch);
-        // Update cache and results
-        for (let i = 0; i < poolsToFetch.length; i++) {
-          const poolId = poolsToFetch[i];
-          const metadata = fetchedPools[i];
-          const resultIndex = fetchIndices[i];
+      // Fetch missing or stale pools
+      if (poolsToFetch.length > 0) {
+        try {
+          const fetchedPools = await this.poolMetadataBatchDirect(poolsToFetch);
+          // Update cache and results
+          for (let i = 0; i < poolsToFetch.length; i++) {
+            const poolId = poolsToFetch[i];
+            const metadata = fetchedPools[i];
+            const resultIndex = fetchIndices[i];
 
-          if (metadata) {
-            // Store in cache with custom TTL if provided
-            this.poolCache.setPoolMetadata(
-              poolId,
-              metadata,
-              effectiveOptions.cacheTTL
+            if (metadata) {
+              // Store in cache with custom TTL if provided
+              this.poolCache.setPoolMetadata(
+                poolId,
+                metadata,
+                effectiveOptions.cacheTTL
+              );
+              results[resultIndex] = metadata;
+            }
+          }
+        } catch (error) {
+          // If fetch fails, use any available stale data or throw
+          const hasStaleData = results.some(
+            (result, index) => result !== null && fetchIndices.includes(index)
+          );
+
+          if (hasStaleData) {
+            // Log warning but continue with stale data
+            console.warn(
+              "Failed to refresh v2 pool data, using stale cache:",
+              error
             );
-            results[resultIndex] = metadata;
+          } else {
+            // No fallback data available, re-throw error
+            throw new MiraV2Error(
+              PoolCurveStateError.PoolNotFound,
+              "Failed to fetch pool metadata and no cache available",
+              error instanceof Error ? error : new Error(String(error))
+            );
           }
         }
-      } catch (error) {
-        // If fetch fails, use any available stale data or throw
-        const hasStaleData = results.some(
-          (result, index) => result !== null && fetchIndices.includes(index)
-        );
-
-        if (hasStaleData) {
-          // Log warning but continue with stale data
-          console.warn(
-            "Failed to refresh v2 pool data, using stale cache:",
-            error
-          );
-        } else {
-          // No fallback data available, re-throw error
-          throw new MiraV2Error(
-            PoolCurveStateError.PoolNotFound,
-            "Failed to fetch pool metadata and no cache available",
-            error instanceof Error ? error : new Error(String(error))
-          );
-        }
       }
-    }
 
-    return results;
+      return results;
+    }, context);
   }
 
   /**
@@ -615,57 +637,64 @@ export class ReadonlyMiraAmmV2 {
     poolId: PoolIdV2,
     binId: BigNumberish
   ): Promise<Amounts | null> {
-    const binIdNum = Number(binId);
+    const context = createErrorContext("getBinLiquidity", {poolId, binId});
+    validatePoolId(poolId, context);
+    validateBinId(binId, context);
 
-    // Check cache first
-    const cached = this.poolCache.getBinData(poolId, binIdNum);
-    if (cached && !this.poolCache.isStale(poolId, binIdNum)) {
-      return cached.liquidity.liquidity;
-    }
+    return withErrorHandling(async () => {
+      const binIdNum = Number(binId);
 
-    try {
-      const result = await this.ammContract.functions
-        .get_bin(poolIdV2Input(poolId), binId)
-        .get();
-
-      if (!result.value) {
-        return null;
+      // Check cache first
+      const cached = this.poolCache.getBinData(poolId, binIdNum);
+      if (cached && !this.poolCache.isStale(poolId, binIdNum)) {
+        return cached.liquidity.liquidity;
       }
 
-      const amounts = {
-        x: result.value.x,
-        y: result.value.y,
-      };
+      try {
+        const result = await this.ammContract.functions
+          .get_bin(poolIdV2Input(poolId), binId)
+          .get();
 
-      // Cache the bin data
-      const binLiquidityInfo: BinLiquidityInfo = {
-        binId: binIdNum,
-        liquidity: amounts,
-        price: new BN(0), // Price will be calculated separately if needed
-      };
+        if (!result.value) {
+          return null;
+        }
 
-      this.poolCache.setBinData(poolId, binIdNum, binLiquidityInfo);
+        const amounts = {
+          x: result.value.x,
+          y: result.value.y,
+        };
 
-      return amounts;
-    } catch (error) {
-      // Bin might not exist, return null instead of throwing
-      return null;
-    }
+        // Cache the bin data
+        const binLiquidityInfo: BinLiquidityInfo = {
+          binId: binIdNum,
+          liquidity: amounts,
+          price: new BN(0), // Price will be calculated separately if needed
+        };
+
+        this.poolCache.setBinData(poolId, binIdNum, binLiquidityInfo);
+
+        return amounts;
+      } catch (error) {
+        // Bin might not exist, return null instead of throwing
+        return null;
+      }
+    }, context);
   }
 
   /**
    * Get the active bin ID for a pool using get_pool_active_bin_id
    */
   async getActiveBin(poolId: PoolIdV2): Promise<number | null> {
-    try {
+    const context = createErrorContext("getActiveBin", {poolId});
+    validatePoolId(poolId, context);
+
+    return withErrorHandling(async () => {
       const result = await this.ammContract.functions
         .get_pool_active_bin_id(poolIdV2Input(poolId))
         .get();
 
       return result.value ?? null;
-    } catch (error) {
-      return null;
-    }
+    }, context);
   }
 
   /**
