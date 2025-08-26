@@ -26,17 +26,11 @@ import {
   subtractFee,
 } from "./math";
 
-import type {
-  PoolDataCache,
-  CacheOptions,
-  CacheError,
-} from "./cache";
+import type {PoolDataCache, CacheOptions} from "./cache";
 
+import {CacheError} from "./cache";
 
-import {
-  globalPoolDataCache,
-  DEFAULT_CACHE_OPTIONS,
-} from "./cache";
+import {globalPoolDataCache, DEFAULT_CACHE_OPTIONS} from "./cache";
 
 import {MiraAmmContract} from "./typegen/contracts";
 
