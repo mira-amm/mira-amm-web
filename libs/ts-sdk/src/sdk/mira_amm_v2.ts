@@ -44,6 +44,26 @@ import {
   getAssetId,
 } from "./utils";
 
+import {
+  withErrorHandling,
+  createErrorContext,
+  EnhancedMiraV2Error,
+} from "./errors";
+
+import {
+  validatePoolId,
+  validateAssetId,
+  validateSwapParams,
+  validateAddLiquidityParams,
+  validateRemoveLiquidityParams,
+  validatePoolInput,
+  validateBinId,
+  validateAmount,
+  validateDeadline,
+  validateLiquidityConfig,
+  DEFAULT_VALIDATION_OPTIONS,
+} from "./validation";
+
 type TransactionWithGasPrice = {
   transactionRequest: ScriptTransactionRequest;
   gasPrice: BN;
@@ -117,7 +137,21 @@ export class MiraAmmV2 {
     txParams?: TxParams,
     options?: PrepareRequestOptions
   ): Promise<TransactionWithGasPrice> {
-    try {
+    const context = createErrorContext("addLiquidity", {poolId});
+
+    // Validate input parameters
+    validateAddLiquidityParams(
+      poolId,
+      amountADesired,
+      amountBDesired,
+      amountAMin,
+      amountBMin,
+      deadline,
+      DEFAULT_VALIDATION_OPTIONS,
+      context
+    );
+
+    return withErrorHandling(async () => {
       // Get pool metadata to determine asset order
       const poolMetadata = await this.ammContract.functions
         .get_pool(poolIdV2Input(poolId))
@@ -190,18 +224,7 @@ export class MiraAmmV2 {
       ];
 
       return await this.prepareRequest(request, 2, inputAssets, [], options);
-    } catch (error) {
-      if (error instanceof MiraV2Error) {
-        throw error;
-      }
-
-      // Wrap other errors in MiraV2Error
-      throw new MiraV2Error(
-        PoolCurveStateError.InvalidParameters,
-        `Failed to add liquidity: ${error instanceof Error ? error.message : String(error)}`,
-        {poolId, amountADesired, amountBDesired, error}
-      );
-    }
+    }, context);
   }
 
   private async fundRequest(
@@ -232,7 +255,20 @@ export class MiraAmmV2 {
     txParams?: TxParams,
     options?: PrepareRequestOptions
   ): Promise<TransactionWithGasPrice> {
-    try {
+    const context = createErrorContext("removeLiquidity", {poolId});
+
+    // Validate input parameters
+    validateRemoveLiquidityParams(
+      poolId,
+      binIds,
+      amountAMin,
+      amountBMin,
+      deadline,
+      DEFAULT_VALIDATION_OPTIONS,
+      context
+    );
+
+    return withErrorHandling(async () => {
       // Get pool metadata to determine asset order and validate pool exists
       const poolMetadata = await this.ammContract.functions
         .get_pool(poolIdV2Input(poolId))
@@ -292,18 +328,7 @@ export class MiraAmmV2 {
       }));
 
       return await this.prepareRequest(request, 2, inputAssets, [], options);
-    } catch (error) {
-      if (error instanceof MiraV2Error) {
-        throw error;
-      }
-
-      // Wrap other errors in MiraV2Error
-      throw new MiraV2Error(
-        PoolCurveStateError.InvalidParameters,
-        `Failed to remove liquidity: ${error instanceof Error ? error.message : String(error)}`,
-        {poolId, binIds, amountAMin, amountBMin, error}
-      );
-    }
+    }, context);
   }
 
   private async prepareRequest(
@@ -408,7 +433,20 @@ export class MiraAmmV2 {
     txParams?: TxParams,
     options?: PrepareRequestOptions
   ): Promise<TransactionWithGasPrice> {
-    try {
+    const context = createErrorContext("swapExactInput", {assetIn});
+
+    // Validate input parameters
+    validateAssetId(assetIn, "assetIn", context);
+    validateSwapParams(
+      amountIn,
+      amountOutMin,
+      pools,
+      deadline,
+      DEFAULT_VALIDATION_OPTIONS,
+      context
+    );
+
+    return withErrorHandling(async () => {
       if (pools.length === 0) {
         throw new MiraV2Error(
           PoolCurveStateError.InvalidParameters,
@@ -446,18 +484,7 @@ export class MiraAmmV2 {
       ];
 
       return await this.prepareRequest(request, 1, inputAssets, [], options);
-    } catch (error) {
-      if (error instanceof MiraV2Error) {
-        throw error;
-      }
-
-      // Wrap other errors in MiraV2Error
-      throw new MiraV2Error(
-        PoolCurveStateError.InvalidParameters,
-        `Failed to swap exact input: ${error instanceof Error ? error.message : String(error)}`,
-        {amountIn, assetIn, amountOutMin, pools, error}
-      );
-    }
+    }, context);
   }
 
   /**
@@ -483,7 +510,20 @@ export class MiraAmmV2 {
     txParams?: TxParams,
     options?: PrepareRequestOptions
   ): Promise<TransactionWithGasPrice> {
-    try {
+    const context = createErrorContext("swapExactOutput", {assetOut});
+
+    // Validate input parameters
+    validateAssetId(assetOut, "assetOut", context);
+    validateSwapParams(
+      amountInMax,
+      amountOut,
+      pools,
+      deadline,
+      DEFAULT_VALIDATION_OPTIONS,
+      context
+    );
+
+    return withErrorHandling(async () => {
       if (pools.length === 0) {
         throw new MiraV2Error(
           PoolCurveStateError.InvalidParameters,
@@ -548,18 +588,7 @@ export class MiraAmmV2 {
       ];
 
       return await this.prepareRequest(request, 1, inputAssets, [], options);
-    } catch (error) {
-      if (error instanceof MiraV2Error) {
-        throw error;
-      }
-
-      // Wrap other errors in MiraV2Error
-      throw new MiraV2Error(
-        PoolCurveStateError.InvalidParameters,
-        `Failed to swap exact output: ${error instanceof Error ? error.message : String(error)}`,
-        {amountOut, assetOut, amountInMax, pools, error}
-      );
-    }
+    }, context);
   }
 
   /**
@@ -577,15 +606,13 @@ export class MiraAmmV2 {
     txParams?: TxParams,
     options?: PrepareRequestOptions
   ): Promise<TransactionWithGasPrice> {
-    try {
-      // Validate pool parameters
-      if (pool.assetX.bits === pool.assetY.bits) {
-        throw new MiraV2Error(
-          PoolCurveStateError.IdenticalAssets,
-          "Pool assets cannot be identical"
-        );
-      }
+    const context = createErrorContext("createPool", {pool});
 
+    // Validate input parameters
+    validatePoolInput(pool, context);
+    validateBinId(activeId, context);
+
+    return withErrorHandling(async () => {
       // Call the create pool contract method
       let request = await this.ammContract.functions
         .create_pool(
@@ -601,18 +628,7 @@ export class MiraAmmV2 {
         .getTransactionRequest();
 
       return await this.prepareRequest(request, 0, [], [], options);
-    } catch (error) {
-      if (error instanceof MiraV2Error) {
-        throw error;
-      }
-
-      // Wrap other errors in MiraV2Error
-      throw new MiraV2Error(
-        PoolCurveStateError.InvalidParameters,
-        `Failed to create pool: ${error instanceof Error ? error.message : String(error)}`,
-        {pool, activeId, error}
-      );
-    }
+    }, context);
   }
 
   /**
@@ -638,15 +654,30 @@ export class MiraAmmV2 {
     txParams?: TxParams,
     options?: PrepareRequestOptions
   ): Promise<TransactionWithGasPrice> {
-    try {
-      // Validate pool parameters
-      if (pool.assetX.bits === pool.assetY.bits) {
-        throw new MiraV2Error(
-          PoolCurveStateError.IdenticalAssets,
-          "Pool assets cannot be identical"
-        );
-      }
+    const context = createErrorContext("createPoolAndAddLiquidity", {pool});
 
+    // Validate input parameters
+    validatePoolInput(pool, context);
+    validateBinId(activeId, context);
+    validateAmount(
+      amountADesired,
+      "amountADesired",
+      DEFAULT_VALIDATION_OPTIONS,
+      context
+    );
+    validateAmount(
+      amountBDesired,
+      "amountBDesired",
+      DEFAULT_VALIDATION_OPTIONS,
+      context
+    );
+    validateDeadline(deadline, DEFAULT_VALIDATION_OPTIONS, context);
+
+    if (liquidityConfig) {
+      validateLiquidityConfig(liquidityConfig, context);
+    }
+
+    return withErrorHandling(async () => {
       // First create the pool
       const createPoolRequest = await this.ammContract.functions
         .create_pool(
@@ -734,17 +765,6 @@ export class MiraAmmV2 {
         [],
         options
       );
-    } catch (error) {
-      if (error instanceof MiraV2Error) {
-        throw error;
-      }
-
-      // Wrap other errors in MiraV2Error
-      throw new MiraV2Error(
-        PoolCurveStateError.InvalidParameters,
-        `Failed to create pool and add liquidity: ${error instanceof Error ? error.message : String(error)}`,
-        {pool, activeId, amountADesired, amountBDesired, error}
-      );
-    }
+    }, context);
   }
 }
