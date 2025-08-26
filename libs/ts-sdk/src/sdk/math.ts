@@ -1,6 +1,12 @@
 import {BN} from "fuels";
-import {AmmFees, PoolId} from "./model";
+import {AmmFees, PoolId, PoolIdV2, PoolMetadataV2, Amounts} from "./model";
 import {InsufficientReservesError, InvalidAmountError} from "./errors";
+import {
+  getAmountOutV2,
+  getAmountInV2,
+  calculateSwapFeeV2,
+  roundingUpDivision as roundingUpDivisionV2,
+} from "./math-v2";
 
 export const BASIS_POINTS = new BN(10000);
 const ONE_E_18 = new BN(10).pow(new BN(18));
@@ -189,4 +195,174 @@ function calculateFeeToAdd(amount: BN, fee: BN): BN {
   const nominator = amount.mul(fee);
   const denominator = BASIS_POINTS.sub(fee);
   return roundingUpDivision(nominator, denominator);
+}
+
+// V2 compatibility functions
+
+/**
+ * Get amount out for v2 pools with binned liquidity
+ * @param poolMetadata V2 pool metadata
+ * @param amountIn Input amount
+ * @param swapForY True if swapping X for Y
+ * @param feeBasisPoints Fee in basis points
+ * @returns Output amount after fees
+ */
+export function getAmountOutWithFeesV2(
+  poolMetadata: PoolMetadataV2,
+  amountIn: BN,
+  swapForY: boolean,
+  feeBasisPoints: BN
+): BN {
+  // Subtract fee from input amount
+  const fee = calculateSwapFeeV2(amountIn, feeBasisPoints);
+  const amountInAfterFee = amountIn.sub(fee);
+
+  // Calculate output using v2 binned liquidity math
+  return getAmountOutV2(poolMetadata, amountInAfterFee, swapForY);
+}
+
+/**
+ * Get amount in for v2 pools with binned liquidity
+ * @param poolMetadata V2 pool metadata
+ * @param amountOut Desired output amount
+ * @param swapForY True if swapping X for Y
+ * @param feeBasisPoints Fee in basis points
+ * @returns Required input amount including fees
+ */
+export function getAmountInWithFeesV2(
+  poolMetadata: PoolMetadataV2,
+  amountOut: BN,
+  swapForY: boolean,
+  feeBasisPoints: BN
+): BN {
+  // Calculate required input before fees
+  const amountInBeforeFee = getAmountInV2(poolMetadata, amountOut, swapForY);
+
+  // Add fee to get total input amount
+  const fee = calculateFeeToAdd(amountInBeforeFee, feeBasisPoints);
+  return amountInBeforeFee.add(fee);
+}
+
+/**
+ * Calculate swap amounts for multi-hop routes in v2
+ * @param poolsMetadata Array of pool metadata for the route
+ * @param amountIn Input amount
+ * @param swapDirections Array indicating swap direction for each pool
+ * @param fees Array of fee basis points for each pool
+ * @returns Array of amounts for each step in the route
+ */
+export function getAmountsOutV2(
+  poolsMetadata: PoolMetadataV2[],
+  amountIn: BN,
+  swapDirections: boolean[],
+  fees: BN[]
+): BN[] {
+  if (
+    poolsMetadata.length !== swapDirections.length ||
+    poolsMetadata.length !== fees.length
+  ) {
+    throw new Error("Arrays must have the same length");
+  }
+
+  const amounts: BN[] = [amountIn];
+  let currentAmount = amountIn;
+
+  for (let i = 0; i < poolsMetadata.length; i++) {
+    currentAmount = getAmountOutWithFeesV2(
+      poolsMetadata[i],
+      currentAmount,
+      swapDirections[i],
+      fees[i]
+    );
+    amounts.push(currentAmount);
+  }
+
+  return amounts;
+}
+
+/**
+ * Calculate required input amounts for multi-hop routes in v2
+ * @param poolsMetadata Array of pool metadata for the route
+ * @param amountOut Desired output amount
+ * @param swapDirections Array indicating swap direction for each pool
+ * @param fees Array of fee basis points for each pool
+ * @returns Array of amounts for each step in the route
+ */
+export function getAmountsInV2(
+  poolsMetadata: PoolMetadataV2[],
+  amountOut: BN,
+  swapDirections: boolean[],
+  fees: BN[]
+): BN[] {
+  if (
+    poolsMetadata.length !== swapDirections.length ||
+    poolsMetadata.length !== fees.length
+  ) {
+    throw new Error("Arrays must have the same length");
+  }
+
+  const amounts: BN[] = new Array(poolsMetadata.length + 1);
+  amounts[amounts.length - 1] = amountOut;
+  let currentAmount = amountOut;
+
+  for (let i = poolsMetadata.length - 1; i >= 0; i--) {
+    currentAmount = getAmountInWithFeesV2(
+      poolsMetadata[i],
+      currentAmount,
+      swapDirections[i],
+      fees[i]
+    );
+    amounts[i] = currentAmount;
+  }
+
+  return amounts;
+}
+
+/**
+ * Calculate proportional amounts for adding liquidity to v2 pools
+ * @param poolMetadata V2 pool metadata
+ * @param amountDesired Desired amount of one token
+ * @param isTokenX True if amountDesired is for token X
+ * @returns Required amount of the other token
+ */
+export function calculateProportionalAmountV2(
+  poolMetadata: PoolMetadataV2,
+  amountDesired: BN,
+  isTokenX: boolean
+): BN {
+  const {reserves} = poolMetadata;
+
+  if (reserves.x.eq(0) || reserves.y.eq(0)) {
+    // If no liquidity exists, any ratio is acceptable
+    return new BN(0);
+  }
+
+  if (isTokenX) {
+    // Calculate required Y amount based on X amount
+    return amountDesired.mul(reserves.y).div(reserves.x);
+  } else {
+    // Calculate required X amount based on Y amount
+    return amountDesired.mul(reserves.x).div(reserves.y);
+  }
+}
+
+/**
+ * Validate that amounts are within acceptable slippage for v2 operations
+ * @param expectedAmount Expected amount
+ * @param actualAmount Actual amount
+ * @param slippageBasisPoints Slippage tolerance in basis points
+ * @returns True if within slippage tolerance
+ */
+export function validateSlippageV2(
+  expectedAmount: BN,
+  actualAmount: BN,
+  slippageBasisPoints: BN
+): boolean {
+  const slippageAmount = expectedAmount
+    .mul(slippageBasisPoints)
+    .div(BASIS_POINTS);
+  const minAmount = expectedAmount.sub(slippageAmount);
+  const maxAmount = expectedAmount.add(slippageAmount);
+
+  return actualAmount.gte(minAmount) && actualAmount.lte(maxAmount);
 }
