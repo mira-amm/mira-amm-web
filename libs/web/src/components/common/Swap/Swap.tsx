@@ -50,9 +50,9 @@ import Image from "next/image";
 import {useAnimationStore} from "@/src/stores/useGlitchScavengerHunt";
 import {ArrowUpDown, LoaderCircle} from "lucide-react";
 import {cn} from "@/src/utils/cn";
-import {ConnectWalletNew} from "../connect-wallet-new";
-import SettingsModalContentNew from "../settings-modal-content-new";
+import {ConnectWallet} from "../connect-wallet";
 import LoaderBar from "../loader-bar";
+import SettingsModalContent from "../settings-modal-content";
 
 export type CurrencyBoxMode = "buy" | "sell";
 export type SlippageMode = "auto" | "custom";
@@ -704,7 +704,7 @@ export function Swap({isWidget}: {isWidget?: boolean}) {
   ) : (
     <>
       <div className="flex flex-col gap-3 lg:gap-4">
-        {isWidget && <ConnectWalletNew />}
+        {isWidget && <ConnectWallet />}
 
         <div
           className={cn(
@@ -804,7 +804,7 @@ export function Swap({isWidget}: {isWidget?: boolean}) {
       {swapPending && <div className={overlayClasses} />}
 
       <SettingsModal title={`Slippage tolerance: ${slippage / 100}%`}>
-        <SettingsModalContentNew
+        <SettingsModalContent
           slippage={slippage}
           setSlippage={setSlippage}
           closeModal={closeSettingsModal}

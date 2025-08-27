@@ -15,7 +15,7 @@ import {Button} from "@/meshwave-ui/Button";
 import {toast} from "sonner";
 import {cn} from "@/src/utils/cn";
 
-interface ConnectWalletNewProps {
+interface ConnectWalletProps {
   size?: "small" | "large";
   className?: string;
 }
@@ -35,10 +35,7 @@ const PowerIndicator = ({isConnected}: {isConnected: boolean}) => (
   </div>
 );
 
-export function ConnectWalletNew({
-  size = "large",
-  className,
-}: ConnectWalletNewProps) {
+export function ConnectWallet({size = "large", className}: ConnectWalletProps) {
   const {account, connect, disconnect, isConnected, isWalletLoading} =
     useWeb3Connection();
   const formattedAddress = useFormattedAddress(account);

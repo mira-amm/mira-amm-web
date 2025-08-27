@@ -4,12 +4,12 @@ import "../../../styles.css";
 import {QueryClient, QueryClientProvider} from "@tanstack/react-query";
 import {FuelProvider} from "@fuels/react";
 import {defaultConnectors} from "@fuels/connectors";
-import {HeaderNew} from "./header-new";
+import {ConnectWallet} from "./connect-wallet";
 const queryClient = new QueryClient();
 
 const meta = {
-  title: "🪙 Web/Layout & Navigation/Header New",
-  component: HeaderNew,
+  title: "🪙 Web/Wallet & Connection/Connect Wallet New",
+  component: ConnectWallet,
   tags: ["autodocs"],
   parameters: {
     layout: "centered",
@@ -27,13 +27,11 @@ const meta = {
       </QueryClientProvider>
     ),
   ],
-} satisfies Meta<typeof HeaderNew>;
+} satisfies Meta<typeof ConnectWallet>;
 
 export default meta;
-type Story = StoryObj<typeof HeaderNew>;
+type Story = StoryObj<typeof ConnectWallet>;
 
 export const Default: Story = {
-  args: {
-    pathName: "/",
-  },
+  args: {},
 };
