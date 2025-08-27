@@ -78,7 +78,7 @@ export function Positions() {
         const isStablePool = position.isStable;
         const poolId = buildPoolId(assetIdA, assetIdB, isStablePool);
         const poolKey = createPoolKey(poolId);
-        const path = `/liquidity/position?pool=${poolKey}`;
+        const path = getPoolNavigationUrl(poolId, "view");
 
         return (
           <Link href={path} className="block w-full">

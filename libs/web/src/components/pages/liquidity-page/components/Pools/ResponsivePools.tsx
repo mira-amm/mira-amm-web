@@ -5,6 +5,8 @@ import CoinPair from "@/src/components/common/CoinPair/CoinPair";
 import {Button} from "@/meshwave-ui/Button";
 import {Divider} from "@/meshwave-ui/divider";
 import {cn} from "@/shadcn-ui/utils";
+import {PoolTypeIndicator} from "@/src/components/common";
+import {getPoolNavigationUrl} from "@/src/utils/poolNavigation";
 
 export function ResponsivePools({
   poolsData,
@@ -34,7 +36,7 @@ function PoolItem({poolData}: {poolData: PoolData}) {
     usePoolDetails(poolData);
 
   const handleAddClick = () => {
-    router.push(`/liquidity/add?pool=${poolKey}`);
+    router.push(getPoolNavigationUrl(poolId, "add"));
   };
 
   // card box
@@ -43,12 +45,18 @@ function PoolItem({poolData}: {poolData: PoolData}) {
   // TODO: Background color is not dark gray
   return (
     <div className="gap-5 p-6 border-border-secondary border-[12px] rounded-ten flex flex-col bg-[#F5F5F5]">
-      <CoinPair
-        firstCoin={poolId[0].bits}
-        secondCoin={poolId[1].bits}
-        isStablePool={isStablePool}
-        withPoolDescription={true}
-      />
+      <div className="flex flex-col gap-3">
+        <CoinPair
+          firstCoin={poolId[0].bits}
+          secondCoin={poolId[1].bits}
+          isStablePool={isStablePool}
+          withPoolDescription={true}
+        />
+        <PoolTypeIndicator
+          poolType={poolData.poolType || "v1-volatile"}
+          size="sm"
+        />
+      </div>
 
       <Divider size="sm" />
 

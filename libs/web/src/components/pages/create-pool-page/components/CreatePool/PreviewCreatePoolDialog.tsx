@@ -3,7 +3,12 @@ import {useRouter} from "next/navigation";
 import {Button} from "@/meshwave-ui/Button";
 import CoinPair from "@/src/components/common/CoinPair/CoinPair";
 import {Coin} from "@/src/components/common";
-import {useCreatePool, useModal, useAssetMetadata} from "@/src/hooks";
+import {
+  useCreatePool,
+  useCreatePoolV2,
+  useModal,
+  useAssetMetadata,
+} from "@/src/hooks";
 import CreatePoolSuccessModal from "../CreatePoolSuccessModal/CreatePoolSuccessModal";
 
 export type CreatePoolPreviewData = {
@@ -11,7 +16,11 @@ export type CreatePoolPreviewData = {
     assetId: string;
     amount: string;
   }[];
-  isStablePool: boolean;
+  poolType: "volatile" | "stable" | "concentrated";
+  v2Config?: {
+    binStep: number;
+    baseFactor: number;
+  };
 };
 
 const PreviewCreatePoolDialog = ({
@@ -25,15 +34,30 @@ const PreviewCreatePoolDialog = ({
 
   const router = useRouter();
 
-  const {assets, isStablePool} = previewData;
+  const {assets, poolType, v2Config} = previewData;
 
-  const {createPoolData, createPool, isPoolCreationPending} = useCreatePool({
+  // Use v1 hook for volatile and stable pools
+  const v1Hook = useCreatePool({
     firstAsset: assets[0].assetId,
     firstAssetAmount: assets[0].amount,
     secondAsset: assets[1].assetId,
     secondAssetAmount: assets[1].amount,
-    isPoolStable: isStablePool,
+    isPoolStable: poolType === "stable",
   });
+
+  // Use v2 hook for concentrated liquidity pools
+  const v2Hook = useCreatePoolV2({
+    firstAsset: assets[0].assetId,
+    firstAssetAmount: assets[0].amount,
+    secondAsset: assets[1].assetId,
+    secondAssetAmount: assets[1].amount,
+    binStep: v2Config?.binStep || 25,
+    baseFactor: v2Config?.baseFactor || 10000,
+  });
+
+  // Select the appropriate hook based on pool type
+  const {createPoolData, createPool, isPoolCreationPending} =
+    poolType === "concentrated" ? v2Hook : v1Hook;
 
   const firstCoinAmount = previewData.assets[0].amount;
   const secondCoinAmount = previewData.assets[1].amount;
@@ -59,7 +83,7 @@ const PreviewCreatePoolDialog = ({
           <CoinPair
             firstCoin={previewData.assets[0].assetId}
             secondCoin={previewData.assets[1].assetId}
-            isStablePool={isStablePool}
+            isStablePool={poolType === "stable"}
           />
         </div>
         <div className="flex flex-col gap-3 bg-[var(--background-secondary)] p-3 rounded-md">
