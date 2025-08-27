@@ -10,15 +10,11 @@ import PreviewAddLiquidityDialog, {
 } from "@/src/components/pages/add-liquidity-page/components/AddLiquidity/PreviewAddLiquidityDialog";
 import AddLiquidityDialog from "@/src/components/pages/add-liquidity-page/components/AddLiquidity/AddLiquidityDialog";
 import {PoolId} from "mira-dex-ts";
-import {
-  IconButton,
-  SettingsModalContent,
-  SlippageSetting,
-} from "@/src/components/common";
+import {IconButton, SlippageSetting} from "@/src/components/common";
 import {useModal} from "@/src/hooks";
 
 import {SlippageMode} from "@/src/components/common/Swap/Swap";
-import SettingsModalContentNew from "@/src/components/common/settings-modal-content-new";
+import SettingsModalContent from "@/src/components/common/settings-modal-content";
 
 export default function AddLiquidityPage() {
   const router = useRouter();
@@ -96,7 +92,7 @@ export default function AddLiquidityPage() {
       )}
 
       <SettingsModal title={`Slippage tolerance: ${slippage / 100}%`}>
-        <SettingsModalContentNew
+        <SettingsModalContent
           slippage={slippage}
           setSlippage={setSlippage}
           closeModal={closeSettingsModal}

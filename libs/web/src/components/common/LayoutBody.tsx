@@ -4,7 +4,7 @@ import {clsx} from "clsx";
 import {getBrandText} from "@/src/utils/brandName";
 import {useAnimationStore} from "@/src/stores/useGlitchScavengerHunt";
 import {Providers} from "@/src/core/providers/Providers";
-import {HeaderNew, ClientSplashWrapper} from "@/src/components/common";
+import {Header, ClientSplashWrapper} from "@/src/components/common";
 import Footer from "@/src/components/common/Footer/Footer";
 import GlitchEffects from "@/src/components/common/GlitchEffects/GlitchEffects";
 
@@ -52,7 +52,7 @@ export const LayoutBody = ({
       <Providers>
         <ClientSplashWrapper>
           <div className="flex flex-col min-h-screen relative">
-            <HeaderNew />
+            <Header />
             <main className="flex-1 flex flex-col">{children}</main>
             <Footer />
             {glitchScavengerHuntEnabled && <GlitchEffects />}

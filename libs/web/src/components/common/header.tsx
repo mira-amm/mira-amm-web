@@ -3,19 +3,11 @@
 import {useMemo} from "react";
 import {usePathname} from "next/navigation";
 import {Logo} from "@/src/components/common";
-import {
-  FuelAppUrl,
-} from "@/src/utils/constants";
-import {ConnectWalletNew} from "./connect-wallet-new";
+import {FuelAppUrl} from "@/src/utils/constants";
+import {ConnectWallet} from "./connect-wallet";
 import {Navigation, type NavLink} from "./navigation";
 
-
-export function HeaderNew({
-  pathName,
-}: {
-  isHomePage?: boolean;
-  pathName?: string;
-}) {
+export function Header({pathName}: {isHomePage?: boolean; pathName?: string}) {
   const pathname = pathName ?? usePathname();
 
   const navLinks = useMemo(
@@ -55,10 +47,10 @@ export function HeaderNew({
         </div>
 
         <div className="hidden sm:flex! items-center flex-1 justify-end gap-2">
-          <ConnectWalletNew size="small" />
+          <ConnectWallet size="small" />
         </div>
         <div className="flex sm:hidden items-center flex-1 justify-end gap-2">
-          <ConnectWalletNew size="large" />
+          <ConnectWallet size="large" />
         </div>
       </section>
     </header>

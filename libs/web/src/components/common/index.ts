@@ -29,11 +29,10 @@ export {SwapSuccessModal} from "./swap-success-modal";
 export {SwapFailureModal} from "./swap-failure-modal";
 export {CurrencyBox} from "./currency-box";
 export {ExchangeRate} from "./exchange-rate";
-export {SettingsModalContent} from "./settings-modal-content";
 export {CoinListItem} from "./coin-list-item";
 
 export {BrandText} from "./BrandText/BrandText";
-export {HeaderNew} from "./header-new";
+export {Header} from "./header";
 export {default as MicrochainTextLogo} from "./Logo/MicrochainTextLogo";
 export {default as LogoIconFooter} from "./Logo/LogoIconFooter";
 export {default as LogoIcon} from "./Logo/LogoIcon";
