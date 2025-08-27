@@ -8,6 +8,8 @@ import {usePoolNameAndMatch} from "@/src/hooks/usePoolNameAndMatch";
 import {Button} from "@/meshwave-ui/Button";
 import {TableCell, TableRow} from "@/meshwave-ui/table";
 import {cn} from "@/src/utils/cn";
+import {PoolTypeIndicator} from "@/src/components/common";
+import {getPoolNavigationUrl} from "@/src/utils/poolNavigation";
 
 const cellBase = "whitespace-nowrap overflow-hidden text-ellipsis text-center";
 
@@ -21,12 +23,18 @@ export function DesktopPoolRow({poolData}: {poolData: PoolData}) {
   return (
     <TableRow key={poolKey}>
       <TableCell className={cn(cellBase, "text-left w-[230px] truncate")}>
-        <CoinPair
-          firstCoin={poolId[0].bits}
-          secondCoin={poolId[1].bits}
-          isStablePool={isStablePool}
-          withPoolDescription
-        />
+        <div className="flex flex-col gap-2">
+          <CoinPair
+            firstCoin={poolId[0].bits}
+            secondCoin={poolId[1].bits}
+            isStablePool={isStablePool}
+            withPoolDescription
+          />
+          <PoolTypeIndicator
+            poolType={poolData.poolType || "v1-volatile"}
+            size="sm"
+          />
+        </div>
       </TableCell>
 
       <TableCell
@@ -54,7 +62,7 @@ export function DesktopPoolRow({poolData}: {poolData: PoolData}) {
       <TableCell className={cn(cellBase, "font-alt")}>{tvlValue}</TableCell>
 
       <TableCell className="py-4 whitespace-nowrap overflow-hidden text-ellipsis text-center">
-        <Link href={`/liquidity/add?pool=${poolKey}&binned=true`}>
+        <Link href={getPoolNavigationUrl(poolId, "add")}>
           <Button variant="outline">Add Liquidity</Button>
         </Link>
       </TableCell>

@@ -24,6 +24,8 @@ export type PoolData = {
   };
   swap_count: number;
   create_time: number;
+  // New field for pool type
+  poolType?: "v1-volatile" | "v1-stable" | "v2-concentrated";
 };
 
 export type MoreInfo = {
@@ -141,6 +143,9 @@ export function usePoolsData() {
         },
         swap_count: 0,
         create_time: 0,
+        // TODO: Implement proper pool type detection when indexer supports v2
+        // For now, assume all pools from indexer are v1-volatile
+        poolType: "v1-volatile" as const,
       };
     }
   );

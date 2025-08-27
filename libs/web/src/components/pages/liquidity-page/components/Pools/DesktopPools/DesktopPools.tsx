@@ -7,6 +7,8 @@ import {usePoolDetails} from "../usePoolDetails";
 import CoinPair from "@/src/components/common/CoinPair/CoinPair";
 import {AprBadge} from "@/src/components/common/AprBadge/AprBadge";
 import {usePoolNameAndMatch} from "@/src/hooks/usePoolNameAndMatch";
+import {getPoolNavigationUrl} from "@/src/utils/poolNavigation";
+import {PoolTypeIndicator} from "@/src/components/common";
 
 const AprCell = ({poolData}: {poolData: PoolData}) => {
   const {poolKey, aprValue, tvlValue} = usePoolDetails(poolData);
@@ -35,12 +37,18 @@ const PoolCell = ({poolData}: {poolData: PoolData}) => {
   const {isStablePool, poolId} = usePoolDetails(poolData);
   return (
     <div className="text-left w-[230px] truncate">
-      <CoinPair
-        firstCoin={poolId[0].bits}
-        secondCoin={poolId[1].bits}
-        isStablePool={isStablePool}
-        withPoolDescription
-      />
+      <div className="flex flex-col gap-2">
+        <CoinPair
+          firstCoin={poolId[0].bits}
+          secondCoin={poolId[1].bits}
+          isStablePool={isStablePool}
+          withPoolDescription
+        />
+        <PoolTypeIndicator
+          poolType={poolData.poolType || "v1-volatile"}
+          size="sm"
+        />
+      </div>
     </div>
   );
 };
@@ -56,9 +64,9 @@ const TvlCell = ({poolData}: {poolData: PoolData}) => {
 };
 
 const ActionCell = ({poolData}: {poolData: PoolData}) => {
-  const {poolKey} = usePoolDetails(poolData);
+  const {poolId} = usePoolDetails(poolData);
   return (
-    <Link href={`/liquidity/add?pool=${poolKey}&binned=true`}>
+    <Link href={getPoolNavigationUrl(poolId, "add")}>
       <Button variant="outline">Add Liquidity</Button>
     </Link>
   );

@@ -62,8 +62,8 @@ export default function SimulatedDistribution({
                   <div
                     className={cn(
                       "h-1 bg-gray-200",
-                      simulationData.length >= 111 && "w-1",
-                      simulationData.length <= 110 && "w-1",
+                      simulationData.length >= 111 && "w-0.5",
+                      simulationData.length <= 110 && "w-0.5",
                       simulationData.length <= 45 && "w-3"
                     )}
                   ></div>
@@ -74,8 +74,8 @@ export default function SimulatedDistribution({
                   <div
                     className={cn(
                       "bg-blue-500 rounded-t-md",
-                      simulationData.length >= 111 && "w-1",
-                      simulationData.length <= 110 && "w-1",
+                      simulationData.length >= 111 && "w-0.5",
+                      simulationData.length <= 110 && "w-0.5",
                       simulationData.length <= 45 && "w-3"
                     )}
                     style={{height: `${Math.min(assetBHeight, 140)}px`}}
@@ -90,7 +90,7 @@ export default function SimulatedDistribution({
                       "bg-red-500 rounded-b-md",
                       assetBHeight === 0 ? "rounded-t-md" : "",
                       simulationData.length >= 121 && "w-0.5",
-                      simulationData.length <= 120 && "w-1",
+                      simulationData.length <= 120 && "w-0.5",
                       simulationData.length <= 45 && "w-3"
                     )}
                     style={{height: `${Math.min(assetAHeight, 140)}px`}}
