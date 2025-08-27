@@ -392,9 +392,9 @@ export class MiraAmm {
     const uniqueContracts = new Set(
       inputContracts.map((c) => Address.fromAddressOrString(c))
     );
-    for (const contract of uniqueContracts) {
+    Array.from(uniqueContracts).forEach((contract) => {
       request.addContractInputAndOutput(contract);
-    }
+    });
 
     if (options?.useAssembleTx) {
       const accountCoinMap = new Map<string, AccountCoinQuantity>();
@@ -439,6 +439,8 @@ export class MiraAmm {
 
       const accountCoinQuantities = Array.from(accountCoinMap.values());
 
+      console.log(request);
+
       const {assembledRequest, gasPrice} =
         await this.account.provider.assembleTx({
           request,
@@ -447,7 +449,25 @@ export class MiraAmm {
           reserveGas: options?.reserveGas,
         });
 
-      return {transactionRequest: assembledRequest, gasPrice};
+      console.log({
+        assembledRequest,
+      });
+
+      // Modify the assembled request outputs in place
+      assembledRequest.outputs = assembledRequest.outputs.map((output) => {
+        if (output.type === 3) {
+          return {
+            ...output,
+            amount: "0x0",
+          };
+        }
+        return output;
+      });
+
+      return {
+        transactionRequest: assembledRequest,
+        gasPrice,
+      };
     }
 
     // Legacy/manual fallback

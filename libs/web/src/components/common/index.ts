@@ -46,3 +46,7 @@ export {TransactionsHistory} from "./TransactionsHistory/TransactionsHistory";
 export {DisconnectMobile} from "./ConnectButton/DisconnectMobile";
 export {ClientSplashWrapper} from "./SplashScreen";
 export * from "./ProtocolStats";
+export * from "./PoolTypeIndicator";
+export {PositionManagementDashboard} from "./PositionManagementDashboard";
+export * from "./IndividualBinLiquidityModals";
+export * from "./ConcentratedLiquidityMetrics";
