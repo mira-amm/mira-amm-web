@@ -33,7 +33,7 @@ export const DEFAULT_VALIDATION_OPTIONS: ValidationOptions = {
  * Validate pool ID
  */
 export function validatePoolId(poolId: PoolIdV2, context?: ErrorContext): void {
-  if (!poolId || poolId.isZero()) {
+  if (!poolId) {
     throw new EnhancedMiraV2Error(
       PoolCurveStateError.InvalidParameters,
       "Pool ID cannot be zero or null",

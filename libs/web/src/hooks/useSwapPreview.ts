@@ -10,10 +10,12 @@ import {
   TradeState,
 } from "@/src/hooks";
 import {type Route} from "@/src/hooks";
+import {type PoolTypeOption} from "@/src/components/common/PoolTypeToggle";
 
 export function useSwapPreview(
   swapState: SwapState,
-  mode: CurrencyBoxMode
+  mode: CurrencyBoxMode,
+  poolType: PoolTypeOption = "v1"
 ): {
   tradeState: TradeState;
   trade?: {
@@ -57,7 +59,34 @@ export function useSwapPreview(
   // passing as bn causes infinite render
   const debouncedValue = useDebounce(rawUserInputAmount.toString(), 100);
 
-  return useSwapRouter(tradeType, bn(debouncedValue), assetIn, assetOut, {
-    enableCaching: true,
-  });
+  // For now, v2 pools will use the same router but with different caching strategy
+  // TODO: Implement v2-specific routing when v2 pools are available
+  const cacheOptions = useMemo(
+    () => ({
+      enableCaching: true,
+      // v2 pools might need different cache settings
+      poolDataTTL: poolType === "v2" ? 15000 : 30000, // Shorter TTL for v2 due to more dynamic pricing
+      refreshInterval: poolType === "v2" ? 30000 : 60000,
+    }),
+    [poolType]
+  );
+
+  const result = useSwapRouter(
+    tradeType,
+    bn(debouncedValue),
+    assetIn,
+    assetOut,
+    cacheOptions
+  );
+
+  // For v2 pools, we might need to show a different error message when no routes are found
+  return useMemo(() => {
+    if (poolType === "v2" && result.tradeState === TradeState.NO_ROUTE_FOUND) {
+      return {
+        ...result,
+        error: "No concentrated liquidity pools available for this pair",
+      };
+    }
+    return result;
+  }, [result, poolType]);
 }
