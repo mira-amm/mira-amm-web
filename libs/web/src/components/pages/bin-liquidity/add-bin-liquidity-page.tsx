@@ -8,14 +8,31 @@ import {AprBadge} from "../../common/AprBadge/AprBadge";
 import CoinInput from "../add-liquidity-page/components/CoinInput/CoinInput";
 import {useConnectUI, useIsConnected} from "@fuels/react";
 import {Button} from "@/meshwave-ui/Button";
+import {
+  PoolTypeToggle,
+  type PoolTypeOption,
+} from "../../common/PoolTypeToggle/PoolTypeToggle";
+import {useState} from "react";
 
 // Import our custom hooks
 import {usePoolAssets} from "@/src/hooks/usePoolAssets";
 import {useLiquidityForm} from "@/src/hooks/useLiquidityForm";
+import {useLiquidityFormV2Integration} from "@/src/hooks/useLiquidityFormV2Integration";
+import {BN} from "fuels";
 
-const AddBinLiquidityPage = ({poolKey}: {poolKey: string}) => {
+const AddBinLiquidityPage = ({
+  poolKey,
+  poolType = "v1",
+  v2PoolId,
+}: {
+  poolKey: string;
+  poolType?: PoolTypeOption;
+  v2PoolId?: BN;
+}) => {
   const {isConnected, isPending: isConnecting} = useIsConnected();
   const {connect} = useConnectUI();
+  const [selectedPoolType, setSelectedPoolType] =
+    useState<PoolTypeOption>(poolType);
 
   // Use the pool assets hook
   const {
@@ -52,6 +69,20 @@ const AddBinLiquidityPage = ({poolKey}: {poolKey: string}) => {
     secondAssetBalance,
   });
 
+  // V2 integration hook
+  const {
+    shouldUseV2,
+    handleV2ButtonClick,
+    v2ButtonTitle,
+    v2ButtonDisabled,
+    v2IsPending,
+  } = useLiquidityFormV2Integration({
+    poolType: selectedPoolType,
+    firstAmount,
+    secondAmount,
+    poolId: v2PoolId,
+  });
+
   return (
     <>
       <main className="flex flex-col gap-4 mx-auto lg:w-[716px] w-full lg:px-4 lg:py-8">
@@ -70,6 +101,17 @@ const AddBinLiquidityPage = ({poolKey}: {poolKey: string}) => {
 
             <div>
               <div className="text-content-primary mb-2 text-base">
+                Pool Type
+              </div>
+              <PoolTypeToggle
+                selectedType={selectedPoolType}
+                onTypeChange={setSelectedPoolType}
+                className="mb-4"
+              />
+            </div>
+
+            <div>
+              <div className="text-content-primary mb-2 text-base">
                 Selected Pair
               </div>
               <div className="flex items-center justify-between">
@@ -77,7 +119,9 @@ const AddBinLiquidityPage = ({poolKey}: {poolKey: string}) => {
                   <CoinPair
                     firstCoin={firstAssetId}
                     secondCoin={secondAssetId}
-                    isStablePool={isStablePool}
+                    isStablePool={
+                      selectedPoolType === "v1" ? isStablePool : false
+                    }
                   />
                 </div>
                 <div className="flex items-center">
@@ -95,39 +139,49 @@ const AddBinLiquidityPage = ({poolKey}: {poolKey: string}) => {
               </div>
             </div>
 
-            <div className="flex items-center gap-2">
-              <div className="border border-content-tertiary rounded-md flex w-full">
-                {[
-                  {
-                    id: "0.30",
-                    text: "0.30% fee tier (volatile pool)",
-                    isStablePool: !isStablePool,
-                  },
-                  {
-                    id: "0.05",
-                    text: "0.05% fee tier (stable pool)",
-                    isStablePool,
-                  },
-                ].map((period, index, array) => (
-                  <button
-                    key={period.id}
-                    className={`px-3.5 py-2.5 text-sm transition-all w-1/2 ${
-                      period.isStablePool
-                        ? "bg-background-primary text-page-background"
-                        : "text-background-primary"
-                    } ${
-                      index === 0
-                        ? "rounded-l-md"
-                        : index === array.length - 1
-                          ? "rounded-r-md"
-                          : ""
-                    }`}
-                  >
-                    {period.text}
-                  </button>
-                ))}
+            {selectedPoolType === "v1" ? (
+              <div className="flex items-center gap-2">
+                <div className="border border-content-tertiary rounded-md flex w-full">
+                  {[
+                    {
+                      id: "0.30",
+                      text: "0.30% fee tier (volatile pool)",
+                      isStablePool: !isStablePool,
+                    },
+                    {
+                      id: "0.05",
+                      text: "0.05% fee tier (stable pool)",
+                      isStablePool,
+                    },
+                  ].map((period, index, array) => (
+                    <button
+                      key={period.id}
+                      className={`px-3.5 py-2.5 text-sm transition-all w-1/2 ${
+                        period.isStablePool
+                          ? "bg-background-primary text-page-background"
+                          : "text-background-primary"
+                      } ${
+                        index === 0
+                          ? "rounded-l-md"
+                          : index === array.length - 1
+                            ? "rounded-r-md"
+                            : ""
+                      }`}
+                    >
+                      {period.text}
+                    </button>
+                  ))}
+                </div>
               </div>
-            </div>
+            ) : (
+              <div className="bg-blue-50 dark:bg-blue-900/20 p-3 rounded-md">
+                <p className="text-sm text-blue-700 dark:text-blue-300">
+                  <strong>Concentrated Liquidity Pool:</strong> Variable fee
+                  tier based on pool configuration. Fees are distributed
+                  proportionally to liquidity providers in active price ranges.
+                </p>
+              </div>
+            )}
 
             <div className="space-y-3">
               <div className="text-content-primary text-base">
@@ -154,14 +208,39 @@ const AddBinLiquidityPage = ({poolKey}: {poolKey: string}) => {
               </div>
             </div>
 
-            <LiquidityManager
-              asset0Metadata={asset0Metadata}
-              asset1Metadata={asset1Metadata}
-            />
+            {selectedPoolType === "v1" ? (
+              <LiquidityManager
+                asset0Metadata={asset0Metadata}
+                asset1Metadata={asset1Metadata}
+              />
+            ) : (
+              <div className="space-y-4">
+                <div className="bg-yellow-50 dark:bg-yellow-900/20 p-3 rounded-md">
+                  <p className="text-sm text-yellow-700 dark:text-yellow-300">
+                    <strong>Simple Mode:</strong> Your liquidity will be added
+                    to the active price bin only, similar to traditional AMM
+                    behavior. For advanced bin distribution strategies, use the
+                    full concentrated liquidity interface.
+                  </p>
+                </div>
+                <div className="text-content-primary text-base">
+                  Liquidity will be concentrated in the active price bin for
+                  maximum capital efficiency.
+                </div>
+              </div>
+            )}
 
             {!isConnected ? (
               <Button onClick={connect} disabled={isConnecting} size="2xl">
                 Connect Wallet
+              </Button>
+            ) : shouldUseV2 ? (
+              <Button
+                disabled={v2ButtonDisabled}
+                onClick={handleV2ButtonClick}
+                size="2xl"
+              >
+                {v2IsPending ? "Processing..." : v2ButtonTitle}
               </Button>
             ) : (
               <Button

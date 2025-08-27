@@ -8,6 +8,7 @@ import {bn, formatUnits} from "fuels";
 
 import {TransactionFailureModal} from "@/src/components/common";
 import {createPoolKey, floorToTwoSignificantDigits} from "@/src/utils/common";
+import {getPoolNavigationUrl} from "@/src/utils/poolNavigation";
 import RemoveLiquidityModalContent from "@/src/components/pages/view-position-page/components/RemoveLiquidityModalContent/RemoveLiquidityModalContent";
 import RemoveLiquiditySuccessModal from "@/src/components/pages/view-position-page/components/RemoveLiquiditySuccessModal/RemoveLiquiditySuccessModal";
 
@@ -143,7 +144,7 @@ export function PositionView({pool}: {pool: PoolId}) {
     ? parseFloat(tvlValue?.toFixed(2)).toLocaleString()
     : "";
 
-  const positionPath = `/liquidity/add?pool=${poolKey}&binned=true`;
+  const positionPath = getPoolNavigationUrl(pool, "add");
 
   return (
     <>

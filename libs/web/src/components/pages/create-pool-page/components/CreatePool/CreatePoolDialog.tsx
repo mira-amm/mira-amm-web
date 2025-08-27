@@ -13,7 +13,11 @@ import CoinInput from "@/src/components/pages/add-liquidity-page/components/Coin
 import {useDebounceCallback} from "usehooks-ts";
 import {createPoolKey, openNewTab} from "@/src/utils/common";
 import {Info, CoinsListModal} from "@/src/components/common";
-import {StablePoolTooltip, VolatilePoolTooltip} from "./CreatePoolTooltips";
+import {
+  StablePoolTooltip,
+  VolatilePoolTooltip,
+  ConcentratedLiquidityTooltip,
+} from "./CreatePoolTooltips";
 import {CreatePoolPreviewData} from "./PreviewCreatePoolDialog";
 
 import {
@@ -55,7 +59,14 @@ export function CreatePoolDialog({
   const [secondAmount, setSecondAmount] = useState("");
   const [secondAmountInput, setSecondAmountInput] = useState("");
   const [activeAsset, setActiveAsset] = useState<B256Address | null>(null);
-  const [isStablePool, setIsStablePool] = useState(false);
+  const [poolType, setPoolType] = useState<
+    "volatile" | "stable" | "concentrated"
+  >("volatile");
+  const isStablePool = poolType === "stable";
+  const [v2Config, setV2Config] = useState({
+    binStep: 25, // Default 25 basis points (0.25%)
+    baseFactor: 10000, // Default base factor
+  });
 
   const activeAssetForAssetSelector = useRef<string | null>(null);
 
@@ -63,8 +74,8 @@ export function CreatePoolDialog({
   const secondAssetMetadata = useAssetMetadata(secondAssetId);
 
   const pools =
-    firstAssetId && secondAssetId
-      ? [buildPoolId(firstAssetId, secondAssetId, isStablePool)]
+    firstAssetId && secondAssetId && poolType !== "concentrated"
+      ? [buildPoolId(firstAssetId, secondAssetId, poolType === "stable")]
       : undefined;
   const {poolsMetadata} = usePoolsMetadata(pools);
   const poolExists = Boolean(poolsMetadata && poolsMetadata?.[0]);
@@ -79,8 +90,8 @@ export function CreatePoolDialog({
   const debouncedSetFirstAmount = useDebounceCallback(setFirstAmount, 500);
   const debouncedSetSecondAmount = useDebounceCallback(setSecondAmount, 500);
 
-  const handleStabilityChange = (isStable: boolean) =>
-    setIsStablePool(isStable);
+  const handlePoolTypeChange = (type: "volatile" | "stable" | "concentrated") =>
+    setPoolType(type);
 
   const setAmount = useCallback(
     (coin: B256Address | null) => {
@@ -114,6 +125,7 @@ export function CreatePoolDialog({
     sufficientEthBalanceForFirstCoin && sufficientEthBalanceForSecondCoin;
 
   const faucetLink = useFaucetLink();
+
   const handleButtonClick = useCallback(() => {
     if (!sufficientEthBalance) {
       openNewTab(faucetLink);
@@ -133,7 +145,8 @@ export function CreatePoolDialog({
                 amount: secondAmount,
               },
             ],
-            isStablePool,
+            poolType,
+            v2Config: poolType === "concentrated" ? v2Config : undefined,
           }
         : null
     );
@@ -244,50 +257,125 @@ export function CreatePoolDialog({
               <CoinPair
                 firstCoin={firstAssetId}
                 secondCoin={secondAssetId}
-                isStablePool={isStablePool}
+                isStablePool={poolType === "stable"}
               />
             )}
           </div>
-          <div className="flex w-full gap-2">
+          <div className="flex flex-col w-full gap-2">
             <div
               className={cn(
                 "flex flex-col items-start w-full rounded-md px-3 py-3 gap-2 bg-background-secondary text-content-dimmed-light cursor-pointer",
-                !isStablePool && "text-content-primary border",
-                !isStablePool && rebrandEnabled
+                poolType === "volatile" && "text-content-primary border",
+                poolType === "volatile" && rebrandEnabled
                   ? "border-black"
                   : "border-accent-primary"
               )}
-              onClick={() => handleStabilityChange(false)}
+              onClick={() => handlePoolTypeChange("volatile")}
               role="button"
             >
               <div className="flex w-full">
-                <p className="flex-1 text-left">Volatile pool</p>
+                <p className="flex-1 text-left">Volatile Pool (v1)</p>
                 <Info tooltipText={VolatilePoolTooltip} />
               </div>
               <p>0.30% fee tier</p>
             </div>
 
-            <button
-              className={clsx(
+            <div
+              className={cn(
                 "flex flex-col items-start w-full rounded-md px-3 py-3 gap-2 bg-background-secondary text-content-dimmed-light cursor-pointer",
-                isStablePool &&
-                  "text-content-primary border-accent-primary border",
-                isStablePool && rebrandEnabled
+                poolType === "stable" && "text-content-primary border",
+                poolType === "stable" && rebrandEnabled
                   ? "border-black"
                   : "border-accent-primary"
               )}
-              onClick={() => handleStabilityChange(true)}
+              onClick={() => handlePoolTypeChange("stable")}
               role="button"
             >
               <div className="flex w-full">
-                <p className="flex-1 text-left">Stable pool</p>
+                <p className="flex-1 text-left">Stable Pool (v1)</p>
                 <Info tooltipText={StablePoolTooltip} />
               </div>
               <p>0.05% fee tier</p>
-            </button>
+            </div>
+
+            <div
+              className={cn(
+                "flex flex-col items-start w-full rounded-md px-3 py-3 gap-2 bg-background-secondary text-content-dimmed-light cursor-pointer",
+                poolType === "concentrated" && "text-content-primary border",
+                poolType === "concentrated" && rebrandEnabled
+                  ? "border-black"
+                  : "border-accent-primary"
+              )}
+              onClick={() => handlePoolTypeChange("concentrated")}
+              role="button"
+            >
+              <div className="flex w-full">
+                <p className="flex-1 text-left">
+                  Concentrated Liquidity Pool (v2)
+                </p>
+                <Info tooltipText={ConcentratedLiquidityTooltip} />
+              </div>
+              <p>Variable fee tier</p>
+            </div>
           </div>
         </div>
       </div>
+
+      {poolType === "concentrated" && (
+        <div className="flex flex-col gap-4">
+          <p className="text-base text-content-primary">Pool Configuration</p>
+          <div className="flex flex-col gap-3 p-3 rounded-md bg-background-secondary">
+            <div className="flex flex-col gap-2">
+              <label className="text-sm text-content-primary">
+                Bin Step (basis points)
+              </label>
+              <input
+                type="number"
+                min="1"
+                max="100"
+                value={v2Config.binStep}
+                onChange={(e) =>
+                  setV2Config((prev) => ({
+                    ...prev,
+                    binStep: parseInt(e.target.value) || 25,
+                  }))
+                }
+                className="px-3 py-2 rounded-md bg-background-grey-darker text-content-primary border border-border-secondary focus:border-accent-primary focus:outline-none"
+                placeholder="25"
+              />
+              <p className="text-xs text-content-dimmed-light">
+                Controls the price step between bins. Lower values = more
+                granular price ranges.
+              </p>
+            </div>
+
+            <div className="flex flex-col gap-2">
+              <label className="text-sm text-content-primary">
+                Base Factor
+              </label>
+              <input
+                type="number"
+                min="5000"
+                max="20000"
+                value={v2Config.baseFactor}
+                onChange={(e) =>
+                  setV2Config((prev) => ({
+                    ...prev,
+                    baseFactor: parseInt(e.target.value) || 10000,
+                  }))
+                }
+                className="px-3 py-2 rounded-md bg-background-grey-darker text-content-primary border border-border-secondary focus:border-accent-primary focus:outline-none"
+                placeholder="10000"
+              />
+              <p className="text-xs text-content-dimmed-light">
+                Determines the geometric progression of bin prices. Default:
+                10000.
+              </p>
+            </div>
+          </div>
+        </div>
+      )}
+
       <div className="flex flex-col gap-4">
         <p className="text-base text-content-primary">Deposit amount</p>
         <div className="flex flex-col gap-3">

@@ -41,16 +41,7 @@ const DoubleSlider = ({
           <Slider.Thumb className="block w-5 h-5 bg-gray-600 border-2 border-white shadow-lg rounded-full hover:scale-105 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 transition-transform" />
         </Slider.Root>
 
-       <div className="absolute w-0.5 h-6 bg-gray-700 transform top-1/2 -translate-y-1/2 pointer-events-none left-1/2 -translate-x-1/2"></div>
-      </div>
-
-      <div className="flex justify-between mt-2">
-        <div className="text-xs font-medium text-gray-700">
-          {value[0].toFixed(4)}
-        </div>
-        <div className="text-xs font-medium text-gray-700">
-          {value[1].toFixed(4)}
-        </div>
+        <div className="absolute w-0.5 h-6 bg-gray-700 transform top-1/2 -translate-y-1/2 pointer-events-none left-1/2 -translate-x-1/2"></div>
       </div>
     </div>
   );
