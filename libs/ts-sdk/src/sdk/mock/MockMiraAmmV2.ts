@@ -12,6 +12,8 @@ import {
   MockTransactionWithGasPrice,
   MockSDKConfig,
   DEFAULT_MOCK_CONFIG,
+  MockError,
+  MockErrorType,
 } from "./types";
 
 import {MockAccount} from "./MockAccount";
@@ -23,6 +25,12 @@ import {
   SwapParams,
   CreatePoolParams,
 } from "./MockTransactionProcessor";
+import {
+  MockParameterValidator,
+  DEFAULT_MOCK_VALIDATION_OPTIONS,
+} from "./MockParameterValidator";
+import {MockErrorRecovery} from "./MockErrorRecovery";
+import {MockErrorContextTracker} from "./MockErrorContextTracker";
 
 /**
  * MockMiraAmmV2 - Mock implementation of write operations for Mira v2 binned liquidity pools
@@ -67,6 +75,9 @@ export class MockMiraAmmV2 {
   private readonly stateManager: MockStateManager;
   private readonly transactionProcessor: MockTransactionProcessor;
   private readonly config: MockSDKConfig;
+  private readonly parameterValidator: MockParameterValidator;
+  private readonly errorRecovery: MockErrorRecovery;
+  private readonly errorContextTracker: MockErrorContextTracker;
 
   /**
    * Creates a new MockMiraAmmV2 instance for executing mock v2 pool transactions
@@ -87,6 +98,11 @@ export class MockMiraAmmV2 {
       this.config,
       this.stateManager
     );
+    this.parameterValidator = new MockParameterValidator(
+      DEFAULT_MOCK_VALIDATION_OPTIONS
+    );
+    this.errorRecovery = new MockErrorRecovery(this.config, this.stateManager);
+    this.errorContextTracker = new MockErrorContextTracker(this.config);
   }
 
   /**
@@ -131,37 +147,8 @@ export class MockMiraAmmV2 {
     txParams?: TxParams,
     options?: PrepareRequestOptions
   ): Promise<MockTransactionWithGasPrice> {
-    // Validate account has sufficient balances
-    const pool = this.stateManager.getPool(poolId);
-    if (!pool) {
-      throw new Error(`Pool with ID ${poolId.toString()} not found`);
-    }
-
-    const amountA = new BN(amountADesired.toString());
-    const amountB = new BN(amountBDesired.toString());
-
-    // Check balances for both assets
-    const assetAId = pool.metadata.pool.asset_x.bits;
-    const assetBId = pool.metadata.pool.asset_y.bits;
-
-    if (!this.account.hasBalance(assetAId, amountA)) {
-      throw new Error(
-        `Insufficient balance for asset A. Required: ${amountA.toString()}, Available: ${this.account
-          .getBalance(assetAId)
-          .toString()}`
-      );
-    }
-
-    if (!this.account.hasBalance(assetBId, amountB)) {
-      throw new Error(
-        `Insufficient balance for asset B. Required: ${amountB.toString()}, Available: ${this.account
-          .getBalance(assetBId)
-          .toString()}`
-      );
-    }
-
-    // Prepare parameters for transaction processor
-    const params: AddLiquidityParams = {
+    const operation = "addLiquidity";
+    const parameters = {
       poolId,
       amountADesired,
       amountBDesired,
@@ -177,25 +164,181 @@ export class MockMiraAmmV2 {
       options,
     };
 
-    // Process the transaction
-    const result = await this.transactionProcessor.processAddLiquidity(
-      params,
-      this.account.address
-    );
+    // Create state snapshot for potential rollback
+    const snapshotId = this.errorRecovery.createStateSnapshot(operation);
 
-    // If transaction was successful, update account balances and state
-    if (result.result?.success) {
-      // Deduct tokens from account
-      this.account.subtractBalance(assetAId, amountA);
-      this.account.subtractBalance(assetBId, amountB);
+    try {
+      // Comprehensive parameter validation
+      this.parameterValidator.validateAddLiquidity(
+        poolId,
+        amountADesired,
+        amountBDesired,
+        amountAMin,
+        amountBMin,
+        deadline,
+        activeIdDesired,
+        idSlippage,
+        deltaIds,
+        distributionX,
+        distributionY
+      );
 
-      // Update user position in state manager
-      // This would be handled by the transaction processor in a real implementation
-      // For now, we'll create a basic position update
-      this.updateUserPositionAfterAddLiquidity(params);
+      // Validate transaction parameters
+      this.parameterValidator.validateTransactionParams(txParams, options);
+
+      // Validate pool existence
+      const pool = this.stateManager.getPool(poolId);
+      this.parameterValidator.validatePoolExistence(poolId, !!pool, operation);
+
+      if (!pool) {
+        throw new MockError(
+          MockErrorType.POOL_NOT_FOUND,
+          `Pool with ID ${poolId.toString()} not found`,
+          {operation, poolId: poolId.toString()}
+        );
+      }
+
+      const amountA = new BN(amountADesired.toString());
+      const amountB = new BN(amountBDesired.toString());
+
+      // Check balances for both assets
+      const assetAId = pool.metadata.pool.asset_x.bits;
+      const assetBId = pool.metadata.pool.asset_y.bits;
+
+      const requiredBalances = new Map([
+        [assetAId, amountA],
+        [assetBId, amountB],
+      ]);
+
+      // Validate balance requirements
+      this.parameterValidator.validateBalanceRequirements(
+        this.account.balances,
+        requiredBalances,
+        operation
+      );
+
+      // Prepare parameters for transaction processor
+      const params: AddLiquidityParams = {
+        poolId,
+        amountADesired,
+        amountBDesired,
+        amountAMin,
+        amountBMin,
+        deadline,
+        activeIdDesired,
+        idSlippage,
+        deltaIds,
+        distributionX,
+        distributionY,
+        txParams,
+        options,
+      };
+
+      // Track successful operation
+      this.errorContextTracker.trackOperation(operation, parameters, true);
+
+      // Process the transaction
+      const result = await this.transactionProcessor.processAddLiquidity(
+        params,
+        this.account.address
+      );
+
+      // If transaction was successful, update account balances and state
+      if (result.result?.success) {
+        // Deduct tokens from account
+        this.account.subtractBalance(assetAId, amountA);
+        this.account.subtractBalance(assetBId, amountB);
+
+        // Update user position in state manager
+        this.updateUserPositionAfterAddLiquidity(params);
+      }
+
+      return result;
+    } catch (error) {
+      // Track failed operation
+      this.errorContextTracker.trackOperation(operation, parameters, false);
+
+      if (error instanceof MockError) {
+        // Handle mock-specific errors with recovery
+        const systemState = {
+          account: this.account,
+          stateManager: this.stateManager,
+        };
+
+        const errorContext = this.errorContextTracker.trackError(
+          error,
+          operation,
+          parameters,
+          systemState,
+          this.account.address
+        );
+
+        const recoveryContext = this.errorRecovery.handleError(
+          error,
+          operation,
+          parameters,
+          snapshotId
+        );
+
+        // Attempt automatic recovery if possible
+        if (recoveryContext.isRecoverable) {
+          const recoveryResult =
+            await this.errorRecovery.attemptRecovery(recoveryContext);
+
+          if (recoveryResult.success && recoveryResult.adjustedParameters) {
+            // Retry with adjusted parameters
+            return this.addLiquidity(
+              recoveryResult.adjustedParameters.poolId || poolId,
+              recoveryResult.adjustedParameters.amountADesired ||
+                amountADesired,
+              recoveryResult.adjustedParameters.amountBDesired ||
+                amountBDesired,
+              recoveryResult.adjustedParameters.amountAMin || amountAMin,
+              recoveryResult.adjustedParameters.amountBMin || amountBMin,
+              recoveryResult.adjustedParameters.deadline || deadline,
+              recoveryResult.adjustedParameters.activeIdDesired ||
+                activeIdDesired,
+              recoveryResult.adjustedParameters.idSlippage || idSlippage,
+              recoveryResult.adjustedParameters.deltaIds || deltaIds,
+              recoveryResult.adjustedParameters.distributionX || distributionX,
+              recoveryResult.adjustedParameters.distributionY || distributionY,
+              recoveryResult.adjustedParameters.txParams || txParams,
+              recoveryResult.adjustedParameters.options || options
+            );
+          }
+        }
+
+        // Rollback state if recovery failed
+        this.errorRecovery.rollbackToSnapshot(snapshotId);
+
+        throw error;
+      }
+
+      // For non-MockError exceptions, wrap and handle
+      const mockError = new MockError(
+        MockErrorType.INVALID_PARAMETERS,
+        error instanceof Error ? error.message : "Unknown error occurred",
+        {operation, parameters, originalError: error}
+      );
+
+      const systemState = {
+        account: this.account,
+        stateManager: this.stateManager,
+      };
+
+      this.errorContextTracker.trackError(
+        mockError,
+        operation,
+        parameters,
+        systemState,
+        this.account.address
+      );
+
+      // Rollback state
+      this.errorRecovery.rollbackToSnapshot(snapshotId);
+
+      throw mockError;
     }
-
-    return result;
   }
 
   /**
@@ -515,6 +658,68 @@ export class MockMiraAmmV2 {
    */
   getConfig(): MockSDKConfig {
     return {...this.config};
+  }
+
+  /**
+   * Get error statistics and analysis
+   *
+   * @returns Comprehensive error analysis including patterns and recommendations
+   */
+  getErrorAnalysis(): ReturnType<
+    typeof this.errorContextTracker.analyzeErrorPatterns
+  > {
+    return this.errorContextTracker.analyzeErrorPatterns();
+  }
+
+  /**
+   * Generate debug report for a specific error
+   *
+   * @param errorId - The error ID to generate report for
+   * @returns Detailed debug report as string
+   */
+  generateErrorDebugReport(errorId: string): string {
+    return this.errorContextTracker.generateDebugReport(errorId);
+  }
+
+  /**
+   * Export all error data for external analysis
+   *
+   * @returns Complete error data export
+   */
+  exportErrorData(): ReturnType<
+    typeof this.errorContextTracker.exportErrorData
+  > {
+    return this.errorContextTracker.exportErrorData();
+  }
+
+  /**
+   * Clear all error history and recovery data
+   */
+  clearErrorHistory(): void {
+    this.errorContextTracker.clearAll();
+    this.errorRecovery.clearHistory();
+  }
+
+  /**
+   * Update validation options
+   *
+   * @param options - New validation options to apply
+   */
+  updateValidationOptions(
+    options: Partial<import("./MockParameterValidator").MockValidationOptions>
+  ): void {
+    this.parameterValidator.updateOptions(options);
+  }
+
+  /**
+   * Get error recovery statistics
+   *
+   * @returns Error recovery statistics and success rates
+   */
+  getErrorRecoveryStats(): ReturnType<
+    typeof this.errorRecovery.getErrorStatistics
+  > {
+    return this.errorRecovery.getErrorStatistics();
   }
 
   // ===== Private Helper Methods =====

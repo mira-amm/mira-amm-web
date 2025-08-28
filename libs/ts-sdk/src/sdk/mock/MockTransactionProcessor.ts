@@ -108,40 +108,62 @@ export class MockTransactionProcessor {
     params: AddLiquidityParams,
     userId: string
   ): Promise<MockTransactionWithGasPrice> {
-    const transactionRequest = this.createMockTransactionRequest(
-      "addLiquidity",
-      params
-    );
-    const gasPrice = this.generateGasPrice();
+    const operation = "addLiquidity";
 
-    // Simulate processing delay
-    await this.simulateDelay();
+    try {
+      // Comprehensive parameter validation
+      this.validateTransactionParameters(operation, params, userId);
 
-    // Check for simulated errors
-    this.checkForSimulatedError("addLiquidity", params);
-
-    // Validate deadline
-    this.validateDeadline(params.deadline);
-
-    // Validate pool exists
-    const poolId = this.poolIdToString(params.poolId);
-    const pool = this.stateManager.getPool(poolId);
-    if (!pool) {
-      throw new MockError(
-        MockErrorType.POOL_NOT_FOUND,
-        `Pool ${poolId} not found`,
-        {poolId}
+      const transactionRequest = this.createMockTransactionRequest(
+        operation,
+        params
       );
+      const gasPrice = this.generateGasPrice();
+
+      // Simulate processing delay
+      await this.simulateDelay();
+
+      // Check for simulated errors
+      this.checkForSimulatedError(operation, params);
+
+      // Validate deadline
+      this.validateDeadline(params.deadline);
+
+      // Validate pool exists
+      const poolId = this.poolIdToString(params.poolId);
+      const pool = this.stateManager.getPool(poolId);
+      if (!pool) {
+        throw new MockError(
+          MockErrorType.POOL_NOT_FOUND,
+          `Pool ${poolId} not found`,
+          {
+            poolId,
+            operation,
+            suggestion: "Create the pool first or verify the pool ID",
+          }
+        );
+      }
+
+      // Process the transaction
+      const result = await this.executeAddLiquidity(params, userId);
+
+      return {
+        transactionRequest,
+        gasPrice,
+        result,
+      };
+    } catch (error) {
+      // Enhance error with operation context
+      if (error instanceof MockError) {
+        error.context = {
+          ...error.context,
+          operation,
+          userId,
+          timestamp: new Date().toISOString(),
+        };
+      }
+      throw error;
     }
-
-    // Process the transaction
-    const result = await this.executeAddLiquidity(params, userId);
-
-    return {
-      transactionRequest,
-      gasPrice,
-      result,
-    };
   }
 
   /**
@@ -368,7 +390,22 @@ export class MockTransactionProcessor {
    */
   private checkForSimulatedError(operation: string, params: any): void {
     if (this.errorSimulator.shouldSimulateError(operation, params)) {
-      throw this.errorSimulator.generateError(operation, params);
+      const error = this.errorSimulator.generateError(operation, params);
+
+      // Enhance error with additional context
+      error.context = {
+        ...error.context,
+        operation,
+        timestamp: new Date().toISOString(),
+        blockNumber: this.blockNumber,
+        transactionCounter: this.transactionCounter,
+        systemState: {
+          poolCount: this.stateManager.getAllPools().length,
+          totalTransactions: this.transactionCounter,
+        },
+      };
+
+      throw error;
     }
   }
 
@@ -382,8 +419,338 @@ export class MockTransactionProcessor {
     if (deadlineMs < now) {
       throw new MockError(
         MockErrorType.DEADLINE_EXCEEDED,
-        "Transaction deadline has passed",
-        {deadline: deadlineMs, now}
+        `Transaction deadline has passed. Deadline: ${new Date(
+          deadlineMs
+        ).toISOString()}, Current: ${new Date(now).toISOString()}`,
+        {
+          deadline: deadlineMs,
+          currentTime: now,
+          timeDifference: now - deadlineMs,
+          suggestion: "Use a deadline at least 10 minutes in the future",
+        }
+      );
+    }
+
+    // Warn if deadline is very close (within 30 seconds)
+    const timeUntilDeadline = deadlineMs - now;
+    if (timeUntilDeadline < 30000) {
+      console.warn(
+        `[MockSDK Warning] Transaction deadline is very close (${Math.round(
+          timeUntilDeadline / 1000
+        )}s remaining). Consider using a longer deadline.`
+      );
+    }
+  }
+
+  /**
+   * Comprehensive validation for transaction parameters
+   */
+  private validateTransactionParameters(
+    operation: string,
+    params: any,
+    userId: string
+  ): void {
+    // Validate user ID
+    if (!userId || typeof userId !== "string") {
+      throw new MockError(
+        MockErrorType.INVALID_PARAMETERS,
+        "Invalid user ID provided",
+        {operation, userId}
+      );
+    }
+
+    // Operation-specific validations
+    switch (operation) {
+      case "addLiquidity":
+        this.validateAddLiquidityParameters(params);
+        break;
+      case "removeLiquidity":
+        this.validateRemoveLiquidityParameters(params);
+        break;
+      case "swap":
+        this.validateSwapParameters(params);
+        break;
+      case "createPool":
+        this.validateCreatePoolParameters(params);
+        break;
+      default:
+        throw new MockError(
+          MockErrorType.INVALID_PARAMETERS,
+          `Unknown operation: ${operation}`,
+          {operation}
+        );
+    }
+  }
+
+  /**
+   * Validate add liquidity parameters
+   */
+  private validateAddLiquidityParameters(params: AddLiquidityParams): void {
+    const {
+      poolId,
+      amountADesired,
+      amountBDesired,
+      amountAMin,
+      amountBMin,
+      deadline,
+      activeIdDesired,
+      idSlippage,
+      deltaIds,
+      distributionX,
+      distributionY,
+    } = params;
+
+    // Validate amounts are positive
+    if (new BN(amountADesired.toString()).lte(0)) {
+      throw new MockError(
+        MockErrorType.INVALID_PARAMETERS,
+        "Amount A desired must be positive",
+        {amountADesired: amountADesired.toString()}
+      );
+    }
+
+    if (new BN(amountBDesired.toString()).lte(0)) {
+      throw new MockError(
+        MockErrorType.INVALID_PARAMETERS,
+        "Amount B desired must be positive",
+        {amountBDesired: amountBDesired.toString()}
+      );
+    }
+
+    // Validate minimum amounts are not greater than desired amounts
+    if (new BN(amountAMin.toString()).gt(new BN(amountADesired.toString()))) {
+      throw new MockError(
+        MockErrorType.INVALID_PARAMETERS,
+        "Minimum amount A cannot be greater than desired amount A",
+        {
+          amountAMin: amountAMin.toString(),
+          amountADesired: amountADesired.toString(),
+        }
+      );
+    }
+
+    if (new BN(amountBMin.toString()).gt(new BN(amountBDesired.toString()))) {
+      throw new MockError(
+        MockErrorType.INVALID_PARAMETERS,
+        "Minimum amount B cannot be greater than desired amount B",
+        {
+          amountBMin: amountBMin.toString(),
+          amountBDesired: amountBDesired.toString(),
+        }
+      );
+    }
+
+    // Validate distribution arrays if provided
+    if (distributionX && distributionY) {
+      if (distributionX.length !== distributionY.length) {
+        throw new MockError(
+          MockErrorType.INVALID_PARAMETERS,
+          "Distribution arrays must have the same length",
+          {
+            distributionXLength: distributionX.length,
+            distributionYLength: distributionY.length,
+          }
+        );
+      }
+
+      // Validate distribution percentages
+      const totalX = distributionX.reduce(
+        (sum, dist) => sum + Number(dist.toString()),
+        0
+      );
+      const totalY = distributionY.reduce(
+        (sum, dist) => sum + Number(dist.toString()),
+        0
+      );
+
+      if (totalX > 0 && (totalX < 99 || totalX > 101)) {
+        throw new MockError(
+          MockErrorType.INVALID_PARAMETERS,
+          "Distribution X percentages should sum to approximately 100%",
+          {totalDistributionX: totalX}
+        );
+      }
+
+      if (totalY > 0 && (totalY < 99 || totalY > 101)) {
+        throw new MockError(
+          MockErrorType.INVALID_PARAMETERS,
+          "Distribution Y percentages should sum to approximately 100%",
+          {totalDistributionY: totalY}
+        );
+      }
+    }
+
+    // Validate delta IDs match distribution arrays
+    if (deltaIds && distributionX && deltaIds.length !== distributionX.length) {
+      throw new MockError(
+        MockErrorType.INVALID_PARAMETERS,
+        "Delta IDs array must match distribution arrays length",
+        {
+          deltaIdsLength: deltaIds.length,
+          distributionLength: distributionX.length,
+        }
+      );
+    }
+  }
+
+  /**
+   * Validate remove liquidity parameters
+   */
+  private validateRemoveLiquidityParameters(
+    params: RemoveLiquidityParams
+  ): void {
+    const {binIds, amountAMin, amountBMin} = params;
+
+    if (!binIds || binIds.length === 0) {
+      throw new MockError(
+        MockErrorType.INVALID_PARAMETERS,
+        "At least one bin ID must be provided",
+        {binIds}
+      );
+    }
+
+    // Check for duplicate bin IDs
+    const uniqueBinIds = new Set(binIds.map((id) => id.toString()));
+    if (uniqueBinIds.size !== binIds.length) {
+      throw new MockError(
+        MockErrorType.INVALID_PARAMETERS,
+        "Duplicate bin IDs are not allowed",
+        {binIds: binIds.map((id) => id.toString())}
+      );
+    }
+
+    // Validate minimum amounts are non-negative
+    if (new BN(amountAMin.toString()).lt(0)) {
+      throw new MockError(
+        MockErrorType.INVALID_PARAMETERS,
+        "Minimum amount A cannot be negative",
+        {amountAMin: amountAMin.toString()}
+      );
+    }
+
+    if (new BN(amountBMin.toString()).lt(0)) {
+      throw new MockError(
+        MockErrorType.INVALID_PARAMETERS,
+        "Minimum amount B cannot be negative",
+        {amountBMin: amountBMin.toString()}
+      );
+    }
+  }
+
+  /**
+   * Validate swap parameters
+   */
+  private validateSwapParameters(params: SwapParams): void {
+    const {pools, amountIn, amountOut, amountOutMin, amountInMax} = params;
+
+    if (!pools || pools.length === 0) {
+      throw new MockError(
+        MockErrorType.INVALID_PARAMETERS,
+        "At least one pool must be provided for swap routing",
+        {pools}
+      );
+    }
+
+    if (pools.length > 5) {
+      throw new MockError(
+        MockErrorType.INVALID_PARAMETERS,
+        "Too many pools in swap route (maximum 5)",
+        {poolCount: pools.length}
+      );
+    }
+
+    // Validate exact input swap parameters
+    if (amountIn !== undefined) {
+      if (new BN(amountIn.toString()).lte(0)) {
+        throw new MockError(
+          MockErrorType.INVALID_PARAMETERS,
+          "Amount in must be positive",
+          {amountIn: amountIn.toString()}
+        );
+      }
+
+      if (amountOutMin !== undefined && new BN(amountOutMin.toString()).lt(0)) {
+        throw new MockError(
+          MockErrorType.INVALID_PARAMETERS,
+          "Minimum amount out cannot be negative",
+          {amountOutMin: amountOutMin.toString()}
+        );
+      }
+    }
+
+    // Validate exact output swap parameters
+    if (amountOut !== undefined) {
+      if (new BN(amountOut.toString()).lte(0)) {
+        throw new MockError(
+          MockErrorType.INVALID_PARAMETERS,
+          "Amount out must be positive",
+          {amountOut: amountOut.toString()}
+        );
+      }
+
+      if (amountInMax !== undefined && new BN(amountInMax.toString()).lte(0)) {
+        throw new MockError(
+          MockErrorType.INVALID_PARAMETERS,
+          "Maximum amount in must be positive",
+          {amountInMax: amountInMax.toString()}
+        );
+      }
+    }
+  }
+
+  /**
+   * Validate create pool parameters
+   */
+  private validateCreatePoolParameters(params: CreatePoolParams): void {
+    const {pool, activeId} = params;
+
+    if (!pool) {
+      throw new MockError(
+        MockErrorType.INVALID_PARAMETERS,
+        "Pool configuration is required",
+        {pool}
+      );
+    }
+
+    // Validate assets are different
+    if (pool.assetX.bits === pool.assetY.bits) {
+      throw new MockError(
+        MockErrorType.INVALID_PARAMETERS,
+        "Pool assets must be different",
+        {
+          assetX: pool.assetX.bits,
+          assetY: pool.assetY.bits,
+        }
+      );
+    }
+
+    // Validate bin step
+    const binStep = new BN(pool.binStep.toString()).toNumber();
+    if (binStep < 1 || binStep > 100) {
+      throw new MockError(
+        MockErrorType.INVALID_PARAMETERS,
+        "Bin step must be between 1 and 100",
+        {binStep}
+      );
+    }
+
+    // Validate base factor
+    const baseFactor = new BN(pool.baseFactor.toString());
+    if (baseFactor.lt(new BN(10000)) || baseFactor.gt(new BN(20000))) {
+      throw new MockError(
+        MockErrorType.INVALID_PARAMETERS,
+        "Base factor must be between 10000 and 20000",
+        {baseFactor: baseFactor.toString()}
+      );
+    }
+
+    // Validate active ID is within reasonable range
+    const activeIdNum = new BN(activeId.toString()).toNumber();
+    if (Math.abs(activeIdNum) > 8388607) {
+      throw new MockError(
+        MockErrorType.INVALID_PARAMETERS,
+        "Active ID is outside valid range (-8388607 to 8388607)",
+        {activeId: activeIdNum}
       );
     }
   }

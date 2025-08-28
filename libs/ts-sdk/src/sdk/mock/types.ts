@@ -260,6 +260,7 @@ export enum MockErrorType {
   INSUFFICIENT_BALANCE = "InsufficientBalance",
   POOL_NOT_FOUND = "PoolNotFound",
   INVALID_BIN_RANGE = "InvalidBinRange",
+  INVALID_PARAMETERS = "InvalidParameters",
   NETWORK_ERROR = "NetworkError",
   GAS_ESTIMATION_FAILED = "GasEstimationFailed",
 }
