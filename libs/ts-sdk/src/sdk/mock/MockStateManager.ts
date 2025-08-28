@@ -9,6 +9,7 @@ import {
   DEFAULT_MOCK_CONFIG,
 } from "./types";
 import {PoolIdV2, Amounts} from "../model";
+import {MockDataGenerator} from "./MockDataGenerator";
 
 /**
  * Central state management for the mock SDK
@@ -622,5 +623,84 @@ export class MockStateManager {
     if (state.config) {
       this.config = {...this.config, ...state.config};
     }
+  }
+
+  // ===== Scenario Management =====
+
+  /**
+   * Load predefined ETH/USDC pool scenarios
+   * @param distributionTypes - Array of distribution types to load
+   */
+  loadEthUsdcScenarios(
+    distributionTypes: Array<
+      "uniform" | "concentrated" | "wide" | "asymmetric"
+    > = ["concentrated", "wide"]
+  ): void {
+    const scenarios: MockPoolScenario[] = [];
+
+    for (const distributionType of distributionTypes) {
+      scenarios.push(
+        MockDataGenerator.createEthUsdcPoolScenario(distributionType)
+      );
+    }
+
+    this.loadPoolScenarios(scenarios);
+  }
+
+  /**
+   * Load predefined USDC/ETH pool scenarios
+   * @param distributionTypes - Array of distribution types to load
+   */
+  loadUsdcEthScenarios(
+    distributionTypes: Array<
+      "uniform" | "concentrated" | "wide" | "asymmetric"
+    > = ["wide", "asymmetric"]
+  ): void {
+    const scenarios: MockPoolScenario[] = [];
+
+    for (const distributionType of distributionTypes) {
+      scenarios.push(
+        MockDataGenerator.createUsdcEthPoolScenario(distributionType)
+      );
+    }
+
+    this.loadPoolScenarios(scenarios);
+  }
+
+  /**
+   * Load all predefined scenarios from MockDataGenerator
+   */
+  loadAllPredefinedScenarios(): void {
+    const scenarios = MockDataGenerator.getAllPredefinedScenarios();
+    this.loadPoolScenarios(scenarios);
+  }
+
+  /**
+   * Load a custom pool scenario
+   * @param config - Custom pool configuration
+   */
+  loadCustomScenario(
+    config: Parameters<typeof MockDataGenerator.createCustomPoolScenario>[0]
+  ): void {
+    const scenario = MockDataGenerator.createCustomPoolScenario(config);
+    this.loadPoolScenarios([scenario]);
+  }
+
+  /**
+   * Get available pool scenarios without loading them
+   * @returns Array of available predefined scenarios
+   */
+  getAvailableScenarios(): MockPoolScenario[] {
+    return MockDataGenerator.getAllPredefinedScenarios();
+  }
+
+  /**
+   * Initialize with default Fuel ETH/USDC scenarios
+   * This is a convenience method for quick setup
+   */
+  initializeWithDefaultFuelScenarios(): void {
+    this.reset();
+    this.loadEthUsdcScenarios(["concentrated"]);
+    this.loadUsdcEthScenarios(["wide"]);
   }
 }
