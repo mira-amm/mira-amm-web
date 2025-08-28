@@ -12,6 +12,13 @@ interface UseLiquidityFormV2IntegrationProps {
   secondAmount: BN;
   poolId?: BN; // v2 pool ID
   onPreview?: (data: any) => void;
+  v2Config?: {
+    liquidityShape: string;
+    priceRange: [number, number];
+    numBins: number;
+    binResults?: any;
+    liquidityDistribution?: any;
+  } | null;
 }
 
 export function useLiquidityFormV2Integration({
@@ -20,6 +27,7 @@ export function useLiquidityFormV2Integration({
   secondAmount,
   poolId,
   onPreview,
+  v2Config,
 }: UseLiquidityFormV2IntegrationProps) {
   // Only use v2 functionality if pool type is v2 and we have a valid pool ID
   const shouldUseV2 = poolType === "v2" && (poolId || isV2MockEnabled());
@@ -46,7 +54,12 @@ export function useLiquidityFormV2Integration({
           poolId: "1001", // Use default mock pool
           amountX: firstAmount.toString(),
           amountY: secondAmount.toString(),
-          binConfig: {strategy: "single-active-bin"},
+          binConfig: {
+            strategy: v2Config?.liquidityShape || "single-active-bin",
+            numBins: v2Config?.numBins || 1,
+            priceRange: v2Config?.priceRange || [0.8, 1.2],
+            liquidityDistribution: v2Config?.liquidityDistribution,
+          },
         });
 
         if (onPreview) {
@@ -54,8 +67,11 @@ export function useLiquidityFormV2Integration({
             poolId: "1001",
             firstAmount: firstAmount.toString(),
             secondAmount: secondAmount.toString(),
-            type: "v2-simple",
-            binStrategy: "single-active-bin",
+            type: "v2-concentrated",
+            binStrategy: v2Config?.liquidityShape || "single-active-bin",
+            numBins: v2Config?.numBins || 1,
+            priceRange: v2Config?.priceRange || [0.8, 1.2],
+            liquidityDistribution: v2Config?.liquidityDistribution,
             isMock: true,
             mockResult,
           };
@@ -71,8 +87,11 @@ export function useLiquidityFormV2Integration({
             poolId: poolId.toString(),
             firstAmount: firstAmount.toString(),
             secondAmount: secondAmount.toString(),
-            type: "v2-simple",
-            binStrategy: "single-active-bin",
+            type: "v2-concentrated",
+            binStrategy: v2Config?.liquidityShape || "single-active-bin",
+            numBins: v2Config?.numBins || 1,
+            priceRange: v2Config?.priceRange || [0.8, 1.2],
+            liquidityDistribution: v2Config?.liquidityDistribution,
           };
           onPreview(previewData);
         } else {
@@ -103,18 +122,28 @@ export function useLiquidityFormV2Integration({
       return "Enter amounts";
     }
 
+    if (v2Config) {
+      const binText =
+        v2Config.numBins === 1 ? "1 bin" : `${v2Config.numBins} bins`;
+      return `Preview ${binText} (${v2Config.liquidityShape})`;
+    }
+
     return "Preview V2 Liquidity";
-  }, [shouldUseV2, firstAmount, secondAmount]);
+  }, [shouldUseV2, firstAmount, secondAmount, v2Config]);
 
   const v2ButtonDisabled = useMemo(() => {
     if (!shouldUseV2) return false;
 
     const isLoading = isV2MockEnabled() ? isPending : v2AddLiquidity.isPending;
-    return !firstAmount.gt(0) || !secondAmount.gt(0) || isLoading;
+    const hasValidAmounts = firstAmount.gt(0) && secondAmount.gt(0);
+    const hasValidConfig = v2Config && v2Config.numBins > 0;
+
+    return !hasValidAmounts || !hasValidConfig || isLoading;
   }, [
     shouldUseV2,
     firstAmount,
     secondAmount,
+    v2Config,
     isPending,
     v2AddLiquidity.isPending,
   ]);
