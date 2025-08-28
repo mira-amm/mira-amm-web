@@ -15,6 +15,12 @@ export interface MockSDKConfig {
   enablePersistence: boolean;
   /** Key used for localStorage persistence */
   persistenceKey: string;
+  /** Auto-persist state after every operation */
+  autoPersist: boolean;
+  /** Maximum number of transactions to persist */
+  maxPersistedTransactions: number;
+  /** Persistence version for migration support */
+  persistenceVersion: string;
   /** Default failure rate for transaction simulation (0-1) */
   defaultFailureRate: number;
   /** Default latency for transaction simulation in milliseconds */
@@ -35,6 +41,9 @@ export interface MockSDKConfig {
 export const DEFAULT_MOCK_CONFIG: MockSDKConfig = {
   enablePersistence: false,
   persistenceKey: "mira-mock-sdk-state",
+  autoPersist: true,
+  maxPersistedTransactions: 1000,
+  persistenceVersion: "1.0.0",
   defaultFailureRate: 0.05, // 5% failure rate
   defaultLatencyMs: 1000,
   enableRealisticGas: true,
@@ -279,6 +288,90 @@ export interface MockEnvironmentConfig {
 }
 
 /**
+ * Environment-specific default configurations
+ */
+export const ENVIRONMENT_CONFIGS: MockEnvironmentConfig = {
+  development: {
+    ...DEFAULT_MOCK_CONFIG,
+    enablePersistence: true,
+    persistenceKey: "mira-mock-sdk-dev",
+    defaultFailureRate: 0.1, // Higher failure rate for testing
+    defaultLatencyMs: 500,
+    autoPersist: true,
+    maxPersistedTransactions: 500,
+  },
+  testing: {
+    ...DEFAULT_MOCK_CONFIG,
+    enablePersistence: false, // No persistence in tests
+    persistenceKey: "mira-mock-sdk-test",
+    defaultFailureRate: 0, // No failures in tests unless explicitly set
+    defaultLatencyMs: 0, // Instant transactions in tests
+    autoPersist: false,
+    maxPersistedTransactions: 100,
+  },
+  staging: {
+    ...DEFAULT_MOCK_CONFIG,
+    enablePersistence: true,
+    persistenceKey: "mira-mock-sdk-staging",
+    defaultFailureRate: 0.02, // Lower failure rate
+    defaultLatencyMs: 800,
+    autoPersist: true,
+    maxPersistedTransactions: 1000,
+  },
+};
+
+/**
+ * SDK initialization options
+ */
+export interface MockSDKInitOptions {
+  /** Environment to use for configuration */
+  environment?: keyof MockEnvironmentConfig;
+  /** Custom configuration overrides */
+  config?: Partial<MockSDKConfig>;
+  /** Account to use for transactions */
+  account?: MockAccount;
+  /** Provider configuration */
+  provider?: MockProvider;
+  /** Auto-load predefined scenarios */
+  autoLoadScenarios?: boolean;
+  /** Scenario types to auto-load */
+  scenarioTypes?: Array<"uniform" | "concentrated" | "wide" | "asymmetric">;
+}
+
+/**
+ * Mock provider interface
+ */
+export interface MockProvider {
+  /** Provider URL */
+  url: string;
+  /** Network configuration */
+  network: {
+    chainId: number;
+    name: string;
+  };
+  /** Get current block number */
+  getBlockNumber(): Promise<number>;
+  /** Get gas price */
+  getGasPrice(): Promise<BN>;
+}
+
+/**
+ * Mock account interface
+ */
+export interface MockAccount {
+  /** Account address */
+  address: string;
+  /** Account balances by asset ID */
+  balances: Map<string, BN>;
+  /** Get balance for specific asset */
+  getBalance(assetId: string): BN;
+  /** Update balance for specific asset */
+  updateBalance(assetId: string, amount: BN): void;
+  /** Check if account has sufficient balance */
+  hasBalance(assetId: string, amount: BN): boolean;
+}
+
+/**
  * Runtime configuration for debugging and monitoring
  */
 export interface MockRuntimeConfig {
@@ -290,4 +383,50 @@ export interface MockRuntimeConfig {
   validateStateConsistency: boolean;
   /** Enable performance metrics collection */
   enablePerformanceMetrics: boolean;
+}
+
+/**
+ * Persistence configuration options
+ */
+export interface MockPersistenceConfig {
+  /** Enable persistence */
+  enabled: boolean;
+  /** Storage key prefix */
+  keyPrefix: string;
+  /** Custom storage implementation */
+  storage?: MockStorage;
+  /** Compression enabled */
+  compression: boolean;
+  /** Encryption enabled */
+  encryption: boolean;
+  /** Maximum storage size in bytes */
+  maxStorageSize: number;
+}
+
+/**
+ * Custom storage interface for persistence
+ */
+export interface MockStorage {
+  getItem(key: string): string | null;
+  setItem(key: string, value: string): void;
+  removeItem(key: string): void;
+  clear(): void;
+}
+
+/**
+ * Serialized state structure for persistence
+ */
+export interface MockSerializedState {
+  /** State version for migration */
+  version: string;
+  /** Timestamp when state was saved */
+  timestamp: Date;
+  /** Serialized pools data */
+  pools: Array<[string, any]>;
+  /** Serialized positions data */
+  positions: Array<[string, Array<[string, any]>]>;
+  /** Serialized transactions (limited by maxPersistedTransactions) */
+  transactions: MockTransaction[];
+  /** Configuration at time of persistence */
+  config: MockSDKConfig;
 }
