@@ -11,7 +11,7 @@ import type {
   SwapState,
 } from "@/src/components/common/Swap/Swap";
 import {useMiraDex, useSwapData, useReadonlyMira} from "@/src/hooks";
-import {DefaultTxParams, MaxDeadline} from "@/src/utils/constants";
+import {MaxDeadline} from "@/src/utils/constants";
 
 export function useSwap({
   swapState,
@@ -57,7 +57,7 @@ export function useSwap({
         buyAmountWithSlippage,
         pools,
         MaxDeadline,
-        DefaultTxParams,
+        undefined,
         {useAssembleTx: true}
       );
 
@@ -77,7 +77,7 @@ export function useSwap({
         sellAmountWithSlippage,
         pools,
         MaxDeadline,
-        DefaultTxParams,
+        undefined,
         {useAssembleTx: true}
       );
 
