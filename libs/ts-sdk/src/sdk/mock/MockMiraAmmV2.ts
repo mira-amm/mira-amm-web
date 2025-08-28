@@ -73,11 +73,16 @@ export class MockMiraAmmV2 {
    *
    * @param account - Mock account for balance management and transaction signing
    * @param config - Optional configuration for mock behavior
+   * @param stateManager - Optional shared state manager instance
    */
-  constructor(account: MockAccount, config?: Partial<MockSDKConfig>) {
+  constructor(
+    account: MockAccount,
+    config?: Partial<MockSDKConfig>,
+    stateManager?: MockStateManager
+  ) {
     this.account = account;
     this.config = {...DEFAULT_MOCK_CONFIG, ...config};
-    this.stateManager = new MockStateManager(this.config);
+    this.stateManager = stateManager || new MockStateManager(this.config);
     this.transactionProcessor = new MockTransactionProcessor(
       this.config,
       this.stateManager
