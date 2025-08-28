@@ -233,11 +233,16 @@ export default function V2LiquidityConfig({
   }, [minPrice, maxPrice, calculateResults]);
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-6">
       {/* Liquidity Shape Selection */}
-      <div>
-        <div className="text-sm font-medium text-blue-900 dark:text-blue-100 mb-3">
-          Liquidity Distribution Strategy
+      <div className="space-y-4">
+        <div className="flex justify-between items-center">
+          <h3 className="text-base font-medium text-content-primary">
+            Liquidity shape
+          </h3>
+          <button className="text-blue-600 dark:text-blue-400 text-sm flex items-center hover:text-blue-800 dark:hover:text-blue-200">
+            🔗 Learn more
+          </button>
         </div>
         <LiquidityShapeSelector
           liquidityShape={liquidityShape}
@@ -246,24 +251,18 @@ export default function V2LiquidityConfig({
       </div>
 
       {/* Price Range Configuration */}
-      <div>
-        <div className="text-sm font-medium text-blue-900 dark:text-blue-100 mb-3">
-          Price Range
-        </div>
+      <div className="space-y-4">
+        <h3 className="text-base font-medium text-content-primary">
+          Price range
+        </h3>
 
         {/* Active Bin Display */}
-        <div className="bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 mx-auto px-3 py-2 rounded-lg text-sm mb-3 text-center border">
-          <div>
-            Active Bin: {formatPriceForDisplay(currentPrice, DEFAULT_BIN_STEP)}{" "}
-            {asset0Metadata.symbol} per {asset1Metadata.symbol}
-          </div>
-          <div className="text-xs text-gray-600 dark:text-gray-400 mt-1">
-            Bin Step: {DEFAULT_BIN_STEP} basis points (
-            {(DEFAULT_BIN_STEP / 100).toFixed(2)}% per bin)
-          </div>
+        <div className="bg-black text-white px-3 py-2 rounded-lg text-sm text-center mx-auto inline-block">
+          Active Bin: {formatPriceForDisplay(currentPrice, DEFAULT_BIN_STEP)}{" "}
+          {asset0Metadata.symbol} per {asset1Metadata.symbol}
         </div>
 
-        {/* Price Range Slider - Exponential Movement */}
+        {/* Price Range Slider */}
         <div className="mb-4">
           <div className="relative">
             <DoubleSlider
@@ -272,7 +271,6 @@ export default function V2LiquidityConfig({
               step={sliderBounds.sliderStep}
               value={[minSliderPosition, maxSliderPosition]}
               onValueChange={handleSliderChange}
-              className="mb-4"
             />
             {/* Current Price Indicator */}
             <div
@@ -285,105 +283,111 @@ export default function V2LiquidityConfig({
               <div className="absolute -top-1 left-1/2 transform -translate-x-1/2 w-2 h-2 bg-green-500 dark:bg-green-400 rounded-full"></div>
             </div>
           </div>
-          <div className="flex justify-between text-xs text-gray-500 dark:text-gray-400 mt-1">
-            <span>
-              {formatPriceForDisplay(
-                sliderPositionToPrice(0, currentPrice, DEFAULT_BIN_STEP, 100),
-                DEFAULT_BIN_STEP
-              )}
-            </span>
-            <span className="text-green-600 dark:text-green-400 font-medium">
-              Current: {formatPriceForDisplay(currentPrice, DEFAULT_BIN_STEP)}{" "}
-              (Center: {(currentPricePosition * 100).toFixed(1)}%)
-            </span>
-            <span>
-              {formatPriceForDisplay(
-                sliderPositionToPrice(1, currentPrice, DEFAULT_BIN_STEP, 100),
-                DEFAULT_BIN_STEP
-              )}
-            </span>
-          </div>
         </div>
 
         {/* Price Input Fields */}
-        <div className="grid grid-cols-2 gap-3 mb-3">
+        <div className="grid grid-cols-2 gap-4 mb-4">
           <div>
-            <label className="block text-xs mb-1 text-blue-800 dark:text-blue-200">
+            <label className="block text-sm mb-2 text-content-primary">
               Min price
             </label>
-            <input
-              type="number"
-              value={formatPriceForDisplay(minPrice, DEFAULT_BIN_STEP)}
-              onChange={(e) => handleMinPriceChange(Number(e.target.value))}
-              step={DEFAULT_BIN_STEP < 10 ? "0.000001" : "0.0001"}
-              className="w-full p-2 text-sm border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-800"
-            />
+            <div className="relative">
+              <input
+                type="number"
+                value={formatPriceForDisplay(minPrice, DEFAULT_BIN_STEP)}
+                onChange={(e) => handleMinPriceChange(Number(e.target.value))}
+                step={DEFAULT_BIN_STEP < 10 ? "0.000001" : "0.0001"}
+                className="w-full p-3 border border-gray-300 dark:border-gray-600 rounded-lg text-sm bg-gray-200 dark:bg-gray-600 text-gray-900 dark:text-gray-100 focus:bg-white dark:focus:bg-gray-800 focus:border-blue-500 dark:focus:border-blue-400"
+                placeholder="1200"
+              />
+              <span className="absolute right-3 top-3 text-gray-500 text-sm">
+                {asset0Metadata.symbol} per {asset1Metadata.symbol}
+              </span>
+            </div>
           </div>
           <div>
-            <label className="block text-xs mb-1 text-blue-800 dark:text-blue-200">
+            <label className="block text-sm mb-2 text-content-primary">
               Max price
             </label>
-            <input
-              type="number"
-              value={formatPriceForDisplay(maxPrice, DEFAULT_BIN_STEP)}
-              onChange={(e) => handleMaxPriceChange(Number(e.target.value))}
-              step={DEFAULT_BIN_STEP < 10 ? "0.000001" : "0.0001"}
-              className="w-full p-2 text-sm border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-800"
-            />
+            <div className="relative">
+              <input
+                type="number"
+                value={formatPriceForDisplay(maxPrice, DEFAULT_BIN_STEP)}
+                onChange={(e) => handleMaxPriceChange(Number(e.target.value))}
+                step={DEFAULT_BIN_STEP < 10 ? "0.000001" : "0.0001"}
+                className="w-full p-3 border border-gray-300 dark:border-gray-600 rounded-lg text-sm bg-gray-200 dark:bg-gray-600 text-gray-900 dark:text-gray-100 focus:bg-white dark:focus:bg-gray-800 focus:border-blue-500 dark:focus:border-blue-400"
+                placeholder="1200"
+              />
+              <span className="absolute right-3 top-3 text-gray-500 text-sm">
+                {asset0Metadata.symbol} per {asset1Metadata.symbol}
+              </span>
+            </div>
           </div>
         </div>
 
         {/* Number of Bins */}
-        <div className="mb-3">
-          <label className="block text-xs mb-1 text-blue-800 dark:text-blue-200">
-            Number of Bins
+        <div className="mb-4">
+          <label className="block text-sm mb-2 text-content-primary">
+            Num Bins
           </label>
-          <input
-            type="number"
-            value={numBins}
-            onChange={(e) => handleNumBinsChange(Number(e.target.value))}
-            min="1"
-            max="50"
-            step="1"
-            className="w-full p-2 text-sm border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-800"
-          />
-          <div className="text-xs text-gray-600 dark:text-gray-400 mt-1">
-            Price range spans {numBins} bins • Each bin ={" "}
-            {(DEFAULT_BIN_STEP / 100).toFixed(2)}% price change
+          <div className="relative">
+            <input
+              type="number"
+              value={numBins}
+              onChange={(e) => handleNumBinsChange(Number(e.target.value))}
+              min="1"
+              max="50"
+              step="1"
+              className="w-full p-3 border border-gray-300 dark:border-gray-600 rounded-lg text-sm bg-gray-200 dark:bg-gray-600 text-gray-900 dark:text-gray-100 focus:bg-white dark:focus:bg-gray-800 focus:border-blue-500 dark:focus:border-blue-400"
+            />
+            <div className="absolute right-3 top-3">
+              <svg
+                className="w-4 h-4 text-gray-500"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M19 9l-7 7-7-7"
+                />
+              </svg>
+            </div>
           </div>
         </div>
 
         <button
           onClick={resetPrice}
-          className="text-blue-600 dark:text-blue-400 text-xs flex items-center hover:text-blue-800 dark:hover:text-blue-200"
+          className="text-blue-600 dark:text-blue-400 text-sm flex items-center hover:text-blue-800 dark:hover:text-blue-200"
         >
-          <RotateCw className="size-3 mr-1" /> Reset to default range
+          🔄 Reset price
         </button>
       </div>
 
       {/* Simulated Distribution Preview */}
-      <div>
-        <div className="flex justify-between items-center mb-3">
-          <div className="text-sm font-medium text-blue-900 dark:text-blue-100">
-            Liquidity Distribution Preview
-          </div>
-          <div className="flex items-center space-x-3">
+      <div className="space-y-4">
+        <div className="flex justify-between items-center">
+          <h3 className="text-base font-medium text-content-primary">
+            Simulated distribution
+          </h3>
+          <div className="flex items-center space-x-4">
             <div className="flex items-center">
-              <div className="w-2 h-2 bg-[#F95465] rounded-full mr-1"></div>
-              <span className="text-xs text-blue-800 dark:text-blue-200">
+              <div className="w-3 h-3 bg-red-500 rounded-full mr-2"></div>
+              <span className="text-sm text-content-primary">
                 {asset0Metadata.symbol}
               </span>
             </div>
             <div className="flex items-center">
-              <div className="w-2 h-2 bg-[#72A2FF] rounded-full mr-1"></div>
-              <span className="text-xs text-blue-800 dark:text-blue-200">
+              <div className="w-3 h-3 bg-blue-500 rounded-full mr-2"></div>
+              <span className="text-sm text-content-primary">
                 {asset1Metadata.symbol}
               </span>
             </div>
           </div>
         </div>
-
-        <div className="h-32">
+        <div className="h-40">
           <SimulatedDistribution
             liquidityShape={liquidityShape}
             data={visualizationData}
