@@ -271,6 +271,25 @@ const AddLiquidityDialog = ({
           <V2LiquidityConfig
             asset0Metadata={asset0Metadata}
             asset1Metadata={asset1Metadata}
+            currentPrice={
+              asset1Price && asset0Price ? asset1Price / asset0Price : 1.0
+            }
+            asset0Price={asset0Price || undefined}
+            asset1Price={asset1Price || undefined}
+            totalAsset0Amount={
+              firstAmount
+                ? parseFloat(
+                    firstAmount.formatUnits(asset0Metadata.decimals || 0)
+                  )
+                : undefined
+            }
+            totalAsset1Amount={
+              secondAmount
+                ? parseFloat(
+                    secondAmount.formatUnits(asset1Metadata.decimals || 0)
+                  )
+                : undefined
+            }
             onConfigChange={setV2Config}
           />
         )}
