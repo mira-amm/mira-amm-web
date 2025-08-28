@@ -33,6 +33,16 @@ import {isV2MockEnabled} from "@/src/utils/mockConfig";
 import {MockModeIndicator} from "@/src/components/common/MockModeIndicator/MockModeIndicator";
 import V2LiquidityConfig from "./V2LiquidityConfig";
 
+// Reusable heading component with consistent styling
+const SectionHeading = ({children}: {children: React.ReactNode}) => (
+  <h3
+    className="text-base font-medium text-content-primary"
+    style={{fontSize: "16px"}}
+  >
+    {children}
+  </h3>
+);
+
 const AddLiquidityDialog = ({
   poolId,
   setPreviewData,
@@ -151,7 +161,7 @@ const AddLiquidityDialog = ({
       {/* Selected pair section */}
       <div className="flex flex-col gap-4 mb-6">
         <div className="flex justify-between items-center">
-          <p className="text-base text-content-primary">Selected pair</p>
+          <SectionHeading>Selected pair</SectionHeading>
           {/* Show pool type toggle for pools that support both v1 and v2, or in mock mode */}
           {(isV2PoolDetected || poolType === "v2" || isV2MockEnabled()) && (
             <PoolTypeToggle
@@ -169,10 +179,8 @@ const AddLiquidityDialog = ({
             isStablePool={isStablePool}
           />
 
-          <div className="flex items-center gap-1 bg-purple-100 dark:bg-purple-900/20 px-3 py-1.5 rounded-lg">
-            <span className="text-sm text-purple-800 dark:text-purple-200">
-              Estimated APR
-            </span>
+          <div className="flex items-center gap-1">
+            <span className="text-sm text-content-primary">Estimated APR</span>
             <Info tooltipText={APRTooltip} />
             {isMatching ? (
               <AprBadge
@@ -190,7 +198,7 @@ const AddLiquidityDialog = ({
                 background="black"
               />
             ) : (
-              <span className="text-sm font-medium text-purple-800 dark:text-purple-200 bg-purple-600 text-white px-2 py-1 rounded ml-1">
+              <span className="text-sm font-medium text-content-primary ml-1">
                 {aprValue ? `${aprValue}%` : "88.78%"}
               </span>
             )}
@@ -233,25 +241,11 @@ const AddLiquidityDialog = ({
         </div>
       )}
 
-      {/* Fee tier selection for v2 pools */}
-      {poolType === "v2" && (
-        <div className="flex gap-3 mb-6">
-          <div className="px-4 py-2 bg-gray-800 text-white rounded-lg text-sm font-medium">
-            0.30% fee tier (volatile pool)
-          </div>
-          <div className="px-4 py-2 bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 rounded-lg text-sm">
-            0.05% fee tier (stable pool)
-          </div>
-        </div>
-      )}
-
       {/* Main content layout - Single column for all pool types */}
       <div className="flex flex-col gap-6 mb-6">
         {/* Deposit amounts */}
         <div className="space-y-4">
-          <h3 className="text-base font-medium text-content-primary">
-            Deposit amounts
-          </h3>
+          <SectionHeading>Deposit amounts</SectionHeading>
           <div className="space-y-3">
             <CoinInput
               assetId={firstAssetId}
