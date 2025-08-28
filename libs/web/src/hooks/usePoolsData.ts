@@ -26,6 +26,9 @@ export type PoolData = {
   create_time: number;
   // New field for pool type
   poolType?: "v1-volatile" | "v1-stable" | "v2-concentrated";
+  // V2 specific fields
+  binStep?: number;
+  baseFactor?: number;
 };
 
 export type MoreInfo = {

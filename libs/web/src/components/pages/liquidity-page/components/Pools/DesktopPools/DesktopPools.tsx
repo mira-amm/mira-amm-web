@@ -8,7 +8,6 @@ import CoinPair from "@/src/components/common/CoinPair/CoinPair";
 import {AprBadge} from "@/src/components/common/AprBadge/AprBadge";
 import {usePoolNameAndMatch} from "@/src/hooks/usePoolNameAndMatch";
 import {getPoolNavigationUrl} from "@/src/utils/poolNavigation";
-import {PoolTypeIndicator} from "@/src/components/common";
 
 const AprCell = ({poolData}: {poolData: PoolData}) => {
   const {poolKey, aprValue, tvlValue} = usePoolDetails(poolData);
@@ -43,10 +42,9 @@ const PoolCell = ({poolData}: {poolData: PoolData}) => {
           secondCoin={poolId[1].bits}
           isStablePool={isStablePool}
           withPoolDescription
-        />
-        <PoolTypeIndicator
           poolType={poolData.poolType || "v1-volatile"}
-          size="sm"
+          binStep={poolData.binStep}
+          baseFactor={poolData.baseFactor}
         />
       </div>
     </div>

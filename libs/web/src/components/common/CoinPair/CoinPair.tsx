@@ -5,6 +5,8 @@ import {B256Address} from "fuels";
 import {useAssetMetadata} from "@/src/hooks";
 import Image from "next/image";
 
+type PoolType = "v1-volatile" | "v1-stable" | "v2-concentrated";
+
 type Props = {
   firstCoin: B256Address;
   secondCoin: B256Address;
@@ -12,6 +14,9 @@ type Props = {
   withFee?: boolean;
   withFeeBelow?: boolean;
   withPoolDescription?: boolean;
+  poolType?: PoolType;
+  binStep?: number;
+  baseFactor?: number;
 };
 
 const CoinPair = ({
@@ -21,14 +26,34 @@ const CoinPair = ({
   withFee,
   withFeeBelow,
   withPoolDescription,
+  poolType,
+  binStep,
+  baseFactor,
 }: Props) => {
   const firstCoinIcon = useAssetImage(firstCoin);
   const secondCoinIcon = useAssetImage(secondCoin);
   const {symbol: firstSymbol} = useAssetMetadata(firstCoin);
   const {symbol: secondSymbol} = useAssetMetadata(secondCoin);
 
+  // Calculate pool description based on pool type
+  const getPoolDescription = () => {
+    if (poolType === "v2-concentrated") {
+      // For V2 pools, show base fee and bin steps
+      const baseFee =
+        binStep && baseFactor
+          ? ((binStep * baseFactor) / 10000).toFixed(2) + "%"
+          : "Variable";
+      const binStepDisplay = binStep ? `${binStep} steps` : "Custom";
+      return `Concentrated: ${baseFee}, ${binStepDisplay}`;
+    } else {
+      // For V1 pools, show traditional volatile/stable
+      const feeText = isStablePool ? "0.05%" : "0.3%";
+      return `${isStablePool ? "Stable" : "Volatile"}: ${feeText}`;
+    }
+  };
+
   const feeText = isStablePool ? "0.05%" : "0.3%";
-  const poolDescription = `${isStablePool ? "Stable" : "Volatile"}: ${feeText}`;
+  const poolDescription = getPoolDescription();
 
   return (
     <div

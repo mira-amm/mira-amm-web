@@ -25,6 +25,77 @@ function chunk<T>(arr: T[], size: number): T[][] {
 export async function fetchPoolsWithReserve(
   poolKeys: Array<[CoinData, CoinData, PoolId, boolean]>
 ): Promise<Pool[]> {
+  // Check if we should use mock data
+  const isV2MockEnabled =
+    process.env.NODE_ENV === "development" ||
+    process.env.NEXT_PUBLIC_ENABLE_V2_MOCK === "true";
+
+  if (isV2MockEnabled) {
+    // Import MockDataGenerator dynamically to avoid issues in production
+    try {
+      const {MockDataGenerator} = await import("mira-dex-ts");
+      const {coinsConfig} = await import("../utils/coinsConfig");
+
+      // Get predefined scenarios from MockDataGenerator
+      const scenarios = MockDataGenerator.getAllPredefinedScenarios();
+      const mockPools: Pool[] = [];
+
+      // Convert coinsConfig Map to array for searching
+      const coinsArray = Array.from(coinsConfig.values());
+
+      for (const scenario of scenarios) {
+        // Find matching coin data for the assets
+        const assetAConfig = coinsArray.find(
+          (coin) => coin.assetId === scenario.poolConfig.metadata.assetA
+        );
+        const assetBConfig = coinsArray.find(
+          (coin) => coin.assetId === scenario.poolConfig.metadata.assetB
+        );
+
+        if (assetAConfig && assetBConfig) {
+          // Calculate total reserves from all bins
+          let totalReserveA = "0";
+          let totalReserveB = "0";
+
+          for (const bin of scenario.bins) {
+            totalReserveA = (
+              BigInt(totalReserveA) + BigInt(bin.reserves.assetA.toString())
+            ).toString();
+            totalReserveB = (
+              BigInt(totalReserveB) + BigInt(bin.reserves.assetB.toString())
+            ).toString();
+          }
+
+          // Create a mock PoolId (v2 pools use different format)
+          const mockPoolId = [
+            {bits: scenario.poolConfig.metadata.assetA},
+            {bits: scenario.poolConfig.metadata.assetB},
+            false, // v2 pools are not stable pools in the traditional sense
+          ] as PoolId;
+
+          mockPools.push({
+            assetA: assetAConfig,
+            assetB: assetBConfig,
+            poolId: mockPoolId,
+            reserve0: totalReserveA,
+            reserve1: totalReserveB,
+          });
+        }
+      }
+
+      console.log(
+        `Mock mode: Generated ${mockPools.length} pools from MockDataGenerator`
+      );
+      return mockPools;
+    } catch (error) {
+      console.warn(
+        "Failed to load MockDataGenerator, falling back to regular fetch:",
+        error
+      );
+    }
+  }
+
+  // Regular GraphQL fetching for production
   const chunks = chunk(poolKeys, 10);
   const allResults: Pool[] = [];
 

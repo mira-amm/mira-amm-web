@@ -32,11 +32,6 @@ import {
   triggerClassAnimation,
 } from "@/src/components/common";
 
-import {
-  PoolTypeToggle,
-  type PoolTypeOption,
-} from "@/src/components/common/PoolTypeToggle";
-
 import {createPoolKey, openNewTab} from "@/src/utils/common";
 
 import {PriceImpactNew} from "@/src/components/common/Swap/components/price-impact";
@@ -261,7 +256,6 @@ export function Swap({isWidget}: {isWidget?: boolean}) {
   const [showInsufficientBalance, setShowInsufficientBalance] =
     useState<boolean>(true);
   const [customErrorTitle, setCustomErrorTitle] = useState<string>("");
-  const [poolType, setPoolType] = useState<PoolTypeOption>("v1");
 
   const swapStateForPreview = useRef<SwapState>(swapState);
   const modeForCoinSelector = useRef<CurrencyBoxMode>("sell");
@@ -298,7 +292,7 @@ export function Swap({isWidget}: {isWidget?: boolean}) {
     trade,
     tradeState,
     error: previewError,
-  } = useSwapPreview(swapState, activeMode, poolType);
+  } = useSwapPreview(swapState, activeMode);
 
   const pools = useMemo(
     () => trade?.bestRoute?.pools.map((p) => p.poolId) ?? [],
@@ -476,7 +470,7 @@ export function Swap({isWidget}: {isWidget?: boolean}) {
     swapResult,
     swapError,
     resetSwap,
-  } = useSwap({swapState, mode: activeMode, slippage, pools, poolType});
+  } = useSwap({swapState, mode: activeMode, slippage, pools});
 
   const resetSwapErrors = useCallback(() => {
     resetTxCost();
@@ -742,13 +736,6 @@ export function Swap({isWidget}: {isWidget?: boolean}) {
               openSettingsModal={openSettingsModal}
             />
           </div>
-
-          <PoolTypeToggle
-            selectedType={poolType}
-            onTypeChange={setPoolType}
-            disabled={swapPending}
-            className="mb-2"
-          />
 
           <CurrencyBox
             value={sellValue}

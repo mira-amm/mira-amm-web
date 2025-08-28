@@ -5,7 +5,7 @@ import CoinPair from "@/src/components/common/CoinPair/CoinPair";
 import {Button} from "@/meshwave-ui/Button";
 import {Divider} from "@/meshwave-ui/divider";
 import {cn} from "@/shadcn-ui/utils";
-import {PoolTypeIndicator} from "@/src/components/common";
+
 import {getPoolNavigationUrl} from "@/src/utils/poolNavigation";
 
 export function ResponsivePools({
@@ -51,10 +51,9 @@ function PoolItem({poolData}: {poolData: PoolData}) {
           secondCoin={poolId[1].bits}
           isStablePool={isStablePool}
           withPoolDescription={true}
-        />
-        <PoolTypeIndicator
           poolType={poolData.poolType || "v1-volatile"}
-          size="sm"
+          binStep={poolData.binStep}
+          baseFactor={poolData.baseFactor}
         />
       </div>
 

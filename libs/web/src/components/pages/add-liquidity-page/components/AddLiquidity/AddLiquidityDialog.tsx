@@ -10,10 +10,7 @@ import CoinInput from "@/src/components/pages/add-liquidity-page/components/Coin
 import {Info, TransactionFailureModal} from "@/src/components/common";
 import CoinPair from "@/src/components/common/CoinPair/CoinPair";
 import {AprBadge} from "@/src/components/common/AprBadge/AprBadge";
-import {
-  PoolTypeToggle,
-  PoolTypeOption,
-} from "@/src/components/common/PoolTypeToggle/PoolTypeToggle";
+
 import {usePoolNameAndMatch} from "@/src/hooks/usePoolNameAndMatch";
 import {useModal} from "@/src/hooks";
 import {AddLiquidityPreviewData} from "@/src/components/pages/add-liquidity-page/components/AddLiquidity/PreviewAddLiquidityDialog";
@@ -56,11 +53,8 @@ const AddLiquidityDialog = ({
   const {isConnected, isPending: isConnecting} = useIsConnected();
   const {connect} = useConnectUI();
 
-  // Detect if this is a v2 pool and manage pool type state
-  const isV2PoolDetected = isV2PoolId(poolId);
-  const [poolType, setPoolType] = useState<PoolTypeOption>(
-    isV2PoolDetected ? "v2" : "v1"
-  );
+  // Detect if this is a v2 pool
+  const isV2Pool = isV2PoolId(poolId);
 
   // V2 liquidity configuration state
   const [v2Config, setV2Config] = useState<{
@@ -72,8 +66,7 @@ const AddLiquidityDialog = ({
   } | null>(null);
 
   // Convert v1 PoolId to v2 pool ID if needed
-  const v2PoolId =
-    isV2PoolDetected && poolId instanceof BN ? poolId : undefined;
+  const v2PoolId = isV2Pool && poolId instanceof BN ? poolId : undefined;
 
   // Get pool assets info
   const {
@@ -128,7 +121,7 @@ const AddLiquidityDialog = ({
 
   // V2 integration for concentrated liquidity
   const v2Integration = useLiquidityFormV2Integration({
-    poolType,
+    poolType: isV2Pool ? "v2" : "v1",
     firstAmount: firstAmount || new BN(0),
     secondAmount: secondAmount || new BN(0),
     poolId: v2PoolId,
@@ -162,14 +155,6 @@ const AddLiquidityDialog = ({
       <div className="flex flex-col gap-4 mb-6">
         <div className="flex justify-between items-center">
           <SectionHeading>Selected pair</SectionHeading>
-          {/* Show pool type toggle for pools that support both v1 and v2, or in mock mode */}
-          {(isV2PoolDetected || poolType === "v2" || isV2MockEnabled()) && (
-            <PoolTypeToggle
-              selectedType={poolType}
-              onTypeChange={setPoolType}
-              className="text-sm"
-            />
-          )}
         </div>
 
         <div className="flex justify-between items-center">
@@ -207,7 +192,7 @@ const AddLiquidityDialog = ({
       </div>
 
       {/* Fee tier selection for v1 pools */}
-      {poolType === "v1" && (
+      {!isV2Pool && (
         <div className="flex w-full gap-3 mb-6">
           <div
             role="button"
@@ -267,10 +252,29 @@ const AddLiquidityDialog = ({
         </div>
 
         {/* V2 Configuration (Liquidity Shape, Price Range, Distribution) */}
-        {poolType === "v2" && (
+        {isV2Pool && (
           <V2LiquidityConfig
             asset0Metadata={asset0Metadata}
             asset1Metadata={asset1Metadata}
+            currentPrice={
+              asset1Price && asset0Price ? asset1Price / asset0Price : 1.0
+            }
+            asset0Price={asset0Price || undefined}
+            asset1Price={asset1Price || undefined}
+            totalAsset0Amount={
+              firstAmount
+                ? parseFloat(
+                    firstAmount.formatUnits(asset0Metadata.decimals || 0)
+                  )
+                : undefined
+            }
+            totalAsset1Amount={
+              secondAmount
+                ? parseFloat(
+                    secondAmount.formatUnits(asset1Metadata.decimals || 0)
+                  )
+                : undefined
+            }
             onConfigChange={setV2Config}
           />
         )}
@@ -287,12 +291,10 @@ const AddLiquidityDialog = ({
           onClick={finalHandleButtonClick}
           size="2xl"
           className={
-            poolType === "v2"
-              ? "bg-green-600 hover:bg-green-700 text-white py-3"
-              : ""
+            isV2Pool ? "bg-green-600 hover:bg-green-700 text-white py-3" : ""
           }
         >
-          {poolType === "v2" ? "Input amounts" : finalButtonTitle}
+          {isV2Pool ? "Input amounts" : finalButtonTitle}
         </Button>
       )}
 

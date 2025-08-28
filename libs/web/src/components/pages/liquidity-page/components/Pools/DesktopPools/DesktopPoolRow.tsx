@@ -8,7 +8,7 @@ import {usePoolNameAndMatch} from "@/src/hooks/usePoolNameAndMatch";
 import {Button} from "@/meshwave-ui/Button";
 import {TableCell, TableRow} from "@/meshwave-ui/table";
 import {cn} from "@/src/utils/cn";
-import {PoolTypeIndicator} from "@/src/components/common";
+
 import {getPoolNavigationUrl} from "@/src/utils/poolNavigation";
 
 const cellBase = "whitespace-nowrap overflow-hidden text-ellipsis text-center";
@@ -29,10 +29,9 @@ export function DesktopPoolRow({poolData}: {poolData: PoolData}) {
             secondCoin={poolId[1].bits}
             isStablePool={isStablePool}
             withPoolDescription
-          />
-          <PoolTypeIndicator
             poolType={poolData.poolType || "v1-volatile"}
-            size="sm"
+            binStep={poolData.binStep}
+            baseFactor={poolData.baseFactor}
           />
         </div>
       </TableCell>
