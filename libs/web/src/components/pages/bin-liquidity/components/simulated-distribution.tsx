@@ -23,21 +23,117 @@ export type LiquidityData = {
   asset1Value: number;
 }[];
 
+// Generate bin data based on actual parameters
+function generateBinData(
+  minPrice: number,
+  maxPrice: number,
+  numBins: number,
+  currentPrice: number,
+  liquidityShape: LiquidityShape
+): LiquidityData {
+  const data: LiquidityData = [];
+  const priceStep = (maxPrice - minPrice) / (numBins - 1);
+  const centerPrice = (minPrice + maxPrice) / 2; // Center of the selected range
+
+  for (let i = 0; i < numBins; i++) {
+    const binPrice = minPrice + i * priceStep;
+    const isCurrentPrice = Math.abs(binPrice - currentPrice) < priceStep / 2;
+
+    // Calculate distribution height based on shape and distance from center
+    let heightMultiplier = 1;
+    const distanceFromCenter = Math.abs(binPrice - centerPrice);
+    const maxDistance = Math.abs(maxPrice - centerPrice);
+
+    switch (liquidityShape) {
+      case "curve":
+        // Bell curve - highest at center, decreasing towards edges
+        heightMultiplier = Math.exp(
+          -Math.pow(distanceFromCenter / (maxDistance / 2), 2)
+        );
+        break;
+      case "spot":
+        // Concentrated around center
+        heightMultiplier = distanceFromCenter < maxDistance * 0.1 ? 1 : 0.1;
+        break;
+      case "bidask":
+        // Higher at edges, lower in middle
+        heightMultiplier =
+          1 - Math.exp(-Math.pow(distanceFromCenter / (maxDistance / 3), 2));
+        break;
+    }
+
+    const maxHeight = 120;
+    const baseHeight = heightMultiplier * maxHeight;
+
+    // Determine asset distribution
+    let assetAHeight = 0;
+    let assetBHeight = 0;
+
+    if (isCurrentPrice) {
+      // At current price, show both assets (mixed bar)
+      assetAHeight = baseHeight * 0.5;
+      assetBHeight = baseHeight * 0.5;
+    } else if (binPrice < currentPrice) {
+      // Below current price, more of asset A (red)
+      assetAHeight = baseHeight;
+    } else {
+      // Above current price, more of asset B (blue)
+      assetBHeight = baseHeight;
+    }
+
+    data.push({
+      binId: i,
+      price: binPrice.toFixed(4),
+      assetAHeight,
+      assetBHeight,
+      asset0Value: assetAHeight,
+      asset1Value: assetBHeight,
+      showPrice: i === 0 || i === numBins - 1, // Only show first and last prices
+    });
+  }
+
+  return data;
+}
+
 export default function SimulatedDistribution({
   data,
   liquidityShape = "spot",
+  minPrice,
+  maxPrice,
+  numBins,
+  currentPrice = 1.0,
 }: {
   data?: LiquidityData;
   liquidityShape?: LiquidityShape;
+  minPrice?: number;
+  maxPrice?: number;
+  numBins?: number;
+  currentPrice?: number;
 }) {
   const [simulationData, setSimulationData] = useState(
     data ?? graphVisualization[liquidityShape]
   );
 
   useEffect(() => {
-    const data = graphVisualization[liquidityShape];
-    setSimulationData(data);
-  }, [liquidityShape]);
+    if (
+      minPrice !== undefined &&
+      maxPrice !== undefined &&
+      numBins !== undefined
+    ) {
+      // Generate data based on actual parameters
+      const generatedData = generateBinData(
+        minPrice,
+        maxPrice,
+        numBins,
+        currentPrice,
+        liquidityShape
+      );
+      setSimulationData(generatedData);
+    } else {
+      const data = graphVisualization[liquidityShape];
+      setSimulationData(data);
+    }
+  }, [liquidityShape, minPrice, maxPrice, numBins, currentPrice]);
 
   return (
     <div className="h-56">
@@ -105,13 +201,20 @@ export default function SimulatedDistribution({
 
       {/* Price labels */}
       <div className="flex justify-between text-gray-500 mt-4 text-xs">
-        {simulationData
-          .filter((dataPoint) => dataPoint.showPrice)
-          .map((dataPoint, index) => (
-            <span key={index} className="text-center">
-              {dataPoint.price}
-            </span>
-          ))}
+        {minPrice !== undefined && maxPrice !== undefined ? (
+          <>
+            <span className="text-center">{minPrice.toFixed(4)}</span>
+            <span className="text-center">{maxPrice.toFixed(4)}</span>
+          </>
+        ) : (
+          simulationData
+            .filter((dataPoint) => dataPoint.showPrice)
+            .map((dataPoint, index) => (
+              <span key={index} className="text-center">
+                {dataPoint.price}
+              </span>
+            ))
+        )}
       </div>
     </div>
   );
