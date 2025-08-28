@@ -189,32 +189,109 @@ export const mockAddLiquidityV2 = async (params: {
   poolId: string;
   amountX: string;
   amountY: string;
-  binConfig?: any;
+  binConfig?: {
+    strategy: string;
+    numBins?: number;
+    priceRange?: [number, number];
+    liquidityDistribution?: any;
+  };
 }) => {
   await mockDelay("addLiquidity");
 
-  // Simulate successful transaction
-  const result = getMockTransactionResult("addLiquidity");
+  const pool = getMockV2Pool(params.poolId);
+  const activeBinId = pool?.activeBinId || 8388608;
 
-  // Add new position to mock data (in a real app, this would be handled by the backend)
-  const newPosition = {
-    poolId: params.poolId,
-    binId: 8388608, // Active bin for simple mode
-    lpTokenAmount: params.amountX, // Simplified calculation
-    underlyingAmounts: {
-      x: params.amountX,
-      y: params.amountY,
-    },
-    feesEarned: {
-      x: "0",
-      y: "0",
-    },
-    price: 1.0,
-    isActive: true,
+  // Handle different liquidity distribution strategies
+  const binConfig = params.binConfig || {strategy: "single-active-bin"};
+  const numBins = binConfig.numBins || 1;
+  const strategy = binConfig.strategy;
+
+  // Calculate bin IDs based on strategy
+  let binIds: number[] = [];
+
+  if (strategy === "single-active-bin" || numBins === 1) {
+    binIds = [activeBinId];
+  } else {
+    // Distribute across multiple bins around active bin
+    const halfBins = Math.floor(numBins / 2);
+    for (let i = -halfBins; i <= halfBins; i++) {
+      if (binIds.length < numBins) {
+        binIds.push(activeBinId + i);
+      }
+    }
+  }
+
+  // Simulate successful transaction with enhanced result
+  const result = {
+    ...getMockTransactionResult("addLiquidity"),
+    binIds,
+    strategy,
+    numBins,
+    liquidityDistribution: binConfig.liquidityDistribution,
+    priceRange: binConfig.priceRange,
   };
 
-  // In a real implementation, this would update the backend state
-  console.log("Mock: Added liquidity position", newPosition);
+  // Create positions for each bin
+  const totalAmountX = BigInt(params.amountX);
+  const totalAmountY = BigInt(params.amountY);
+
+  binIds.forEach((binId, index) => {
+    // Distribute liquidity across bins (simplified distribution)
+    const isActiveBin = binId === activeBinId;
+    let binAmountX = "0";
+    let binAmountY = "0";
+
+    if (strategy === "spot" && isActiveBin) {
+      // Concentrated in active bin
+      binAmountX = ((totalAmountX * BigInt(70)) / BigInt(100)).toString();
+      binAmountY = ((totalAmountY * BigInt(70)) / BigInt(100)).toString();
+    } else if (strategy === "curve") {
+      // Distributed based on distance from active bin
+      const weight = Math.max(0.1, 1 - Math.abs(binId - activeBinId) * 0.2);
+      binAmountX = (
+        (totalAmountX * BigInt(Math.floor(weight * 100))) /
+        BigInt(100 * numBins)
+      ).toString();
+      binAmountY = (
+        (totalAmountY * BigInt(Math.floor(weight * 100))) /
+        BigInt(100 * numBins)
+      ).toString();
+    } else if (strategy === "bidask") {
+      // Higher liquidity on both sides of active bin
+      const distance = Math.abs(binId - activeBinId);
+      const weight = distance <= 2 ? 0.8 : 0.2;
+      binAmountX = (
+        (totalAmountX * BigInt(Math.floor(weight * 100))) /
+        BigInt(100 * numBins)
+      ).toString();
+      binAmountY = (
+        (totalAmountY * BigInt(Math.floor(weight * 100))) /
+        BigInt(100 * numBins)
+      ).toString();
+    } else {
+      // Equal distribution
+      binAmountX = (totalAmountX / BigInt(numBins)).toString();
+      binAmountY = (totalAmountY / BigInt(numBins)).toString();
+    }
+
+    const newPosition = {
+      poolId: params.poolId,
+      binId,
+      lpTokenAmount: (BigInt(binAmountX) + BigInt(binAmountY)).toString(),
+      underlyingAmounts: {
+        x: binAmountX,
+        y: binAmountY,
+      },
+      feesEarned: {
+        x: "0",
+        y: "0",
+      },
+      price: pool?.currentPrice || 1.0,
+      isActive: isActiveBin,
+    };
+
+    console.log(`Mock: Added liquidity position to bin ${binId}`, newPosition);
+  });
 
   return result;
 };
