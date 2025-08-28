@@ -10,33 +10,7 @@ import {
   MockTransactionResult,
 } from "../types";
 import {PoolIdV2, AssetId} from "../../model";
-import {vi} from "vitest";
-import {it} from "node:test";
-import {describe} from "node:test";
-import {it} from "node:test";
-import {it} from "node:test";
-import {describe} from "node:test";
-import {it} from "node:test";
-import {it} from "node:test";
-import {describe} from "node:test";
-import {it} from "node:test";
-import {it} from "node:test";
-import {it} from "node:test";
-import {describe} from "node:test";
-import {it} from "node:test";
-import {it} from "node:test";
-import {it} from "node:test";
-import {it} from "node:test";
-import {it} from "node:test";
-import {describe} from "node:test";
-import {it} from "node:test";
-import {it} from "node:test";
-import {it} from "node:test";
-import {it} from "node:test";
-import {it} from "node:test";
-import {describe} from "node:test";
-import {beforeEach} from "node:test";
-import {describe} from "node:test";
+import {vi, describe, it, beforeEach, expect} from "vitest";
 
 // Mock localStorage for testing
 const mockLocalStorage = {
@@ -760,6 +734,132 @@ describe("MockStateManager", () => {
       );
       expect(position).toBeTruthy();
       expect(position!.binPositions.has(8388608)).toBe(true);
+    });
+  });
+
+  describe("Scenario Management", () => {
+    it("should load ETH/USDC scenarios", () => {
+      stateManager.loadEthUsdcScenarios(["concentrated", "wide"]);
+
+      const pools = stateManager.getAllPools();
+      expect(pools.length).toBeGreaterThan(0);
+
+      // Should have ETH/USDC pools
+      const ethUsdcPools = pools.filter(
+        (pool) =>
+          pool.metadata.assetA ===
+            "0xf8f8b6283d7fa5b672b530cbb84fcccb4ff8dc40f8176ef4544ddb1f1952ad07" &&
+          pool.metadata.assetB ===
+            "0x286c479da40dc953bddc3bb4c453b608bba2e0ac483b077bd475174115395e6b"
+      );
+      expect(ethUsdcPools.length).toBeGreaterThan(0);
+    });
+
+    it("should load USDC/ETH scenarios", () => {
+      stateManager.loadUsdcEthScenarios(["wide", "asymmetric"]);
+
+      const pools = stateManager.getAllPools();
+      expect(pools.length).toBeGreaterThan(0);
+
+      // Should have USDC/ETH pools
+      const usdcEthPools = pools.filter(
+        (pool) =>
+          pool.metadata.assetA ===
+            "0x286c479da40dc953bddc3bb4c453b608bba2e0ac483b077bd475174115395e6b" &&
+          pool.metadata.assetB ===
+            "0xf8f8b6283d7fa5b672b530cbb84fcccb4ff8dc40f8176ef4544ddb1f1952ad07"
+      );
+      expect(usdcEthPools.length).toBeGreaterThan(0);
+    });
+
+    it("should load all predefined scenarios", () => {
+      stateManager.loadAllPredefinedScenarios();
+
+      const pools = stateManager.getAllPools();
+      expect(pools.length).toBeGreaterThan(0);
+
+      // Should have both ETH/USDC and USDC/ETH pools
+      const ethUsdcPools = pools.filter(
+        (pool) =>
+          pool.metadata.assetA ===
+          "0x0000000000000000000000000000000000000000000000000000000000000000"
+      );
+      const usdcEthPools = pools.filter(
+        (pool) =>
+          pool.metadata.assetA ===
+          "0x336b7c06352a4b736ff6f688ba6885788b3df16e136e95310ade51aa32dc6f05"
+      );
+
+      expect(ethUsdcPools.length).toBeGreaterThan(0);
+      expect(usdcEthPools.length).toBeGreaterThan(0);
+    });
+
+    it("should load custom scenarios", () => {
+      stateManager.loadCustomScenario({
+        name: "Test Custom Pool",
+        binCount: 7,
+        distributionType: "asymmetric",
+      });
+
+      const pools = stateManager.getAllPools();
+      expect(pools.length).toBe(1);
+      expect(pools[0].bins.size).toBe(7);
+    });
+
+    it("should get available scenarios without loading", () => {
+      const scenarios = stateManager.getAvailableScenarios();
+      expect(scenarios.length).toBeGreaterThan(0);
+
+      // Should not have loaded any pools yet
+      expect(stateManager.getAllPools()).toHaveLength(0);
+
+      // All scenarios should have required properties
+      scenarios.forEach((scenario) => {
+        expect(scenario.name).toBeTruthy();
+        expect(scenario.description).toBeTruthy();
+        expect(scenario.bins.length).toBeGreaterThan(0);
+      });
+    });
+
+    it("should initialize with default Fuel scenarios", () => {
+      // Add some existing pools first
+      stateManager.setPool("existing-pool", {
+        poolId: "existing-pool",
+        metadata: {} as any,
+        bins: new Map(),
+        activeBinId: 8388608,
+        totalReserves: {assetA: new BN(0), assetB: new BN(0)},
+        protocolFees: {assetA: new BN(0), assetB: new BN(0)},
+        volume24h: new BN(0),
+        createdAt: new Date(),
+        lastUpdated: new Date(),
+      });
+
+      expect(stateManager.getAllPools()).toHaveLength(1);
+
+      // Initialize with default scenarios (should reset first)
+      stateManager.initializeWithDefaultFuelScenarios();
+
+      const pools = stateManager.getAllPools();
+      expect(pools.length).toBeGreaterThan(0);
+
+      // Should not have the existing pool anymore (reset)
+      expect(pools.find((p) => p.poolId === "existing-pool")).toBeUndefined();
+
+      // Should have both ETH/USDC and USDC/ETH pools
+      const ethUsdcPools = pools.filter(
+        (pool) =>
+          pool.metadata.assetA ===
+          "0x0000000000000000000000000000000000000000000000000000000000000000"
+      );
+      const usdcEthPools = pools.filter(
+        (pool) =>
+          pool.metadata.assetA ===
+          "0x336b7c06352a4b736ff6f688ba6885788b3df16e136e95310ade51aa32dc6f05"
+      );
+
+      expect(ethUsdcPools.length).toBeGreaterThan(0);
+      expect(usdcEthPools.length).toBeGreaterThan(0);
     });
   });
 });
