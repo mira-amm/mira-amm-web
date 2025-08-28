@@ -40,6 +40,11 @@ const SectionHeading = ({children}: {children: React.ReactNode}) => (
 interface V2LiquidityConfigProps {
   asset0Metadata: AssetMetadata;
   asset1Metadata: AssetMetadata;
+  currentPrice: number;
+  asset0Price?: number;
+  asset1Price?: number;
+  totalAsset0Amount?: number;
+  totalAsset1Amount?: number;
   onConfigChange?: (config: {
     liquidityShape: LiquidityShape;
     priceRange: [number, number];
@@ -56,13 +61,35 @@ const SLIDER_BIN_RANGE = 150; // Fixed range for slider (75 bins on each side of
 export default function V2LiquidityConfig({
   asset0Metadata,
   asset1Metadata,
+  currentPrice,
+  asset0Price,
+  asset1Price,
+  totalAsset0Amount,
+  totalAsset1Amount,
   onConfigChange,
 }: V2LiquidityConfigProps) {
-  const [liquidityShape, setLiquidityShape] = useState<LiquidityShape>("curve");
-  const [priceRange, setPriceRange] = useState<[number, number]>([0.8, 1.2]);
-  const [numBins, setNumBins] = useState<number>(3);
+  // Calculate initial price range as 20% difference on either side of current price
+  const priceRangePercent = 0.2; // 20%
+  const initialMinPrice = currentPrice * (1 - priceRangePercent);
+  const initialMaxPrice = currentPrice * (1 + priceRangePercent);
 
-  const currentPrice = 1.0; // Current market price
+  const [liquidityShape, setLiquidityShape] = useState<LiquidityShape>("curve");
+  const [priceRange, setPriceRange] = useState<[number, number]>([
+    initialMinPrice,
+    initialMaxPrice,
+  ]);
+
+  // Calculate initial number of bins based on the price range and bin step
+  const initialBins = calculateBinsBetweenPrices(
+    initialMinPrice,
+    initialMaxPrice,
+    DEFAULT_BIN_STEP
+  );
+  const [numBins, setNumBins] = useState<number>(initialBins);
+
+  // Track if user has manually entered custom prices
+  const [hasCustomMinPrice, setHasCustomMinPrice] = useState(false);
+  const [hasCustomMaxPrice, setHasCustomMaxPrice] = useState(false);
 
   const [minPrice, maxPrice] = priceRange;
 
@@ -141,6 +168,7 @@ export default function V2LiquidityConfig({
     // Align price to nearest bin boundary
     const alignedPrice = alignPriceToBin(value, currentPrice, DEFAULT_BIN_STEP);
     setPriceRange([alignedPrice, maxPrice]);
+    setHasCustomMinPrice(true); // Mark as manually entered
     const calculatedBins = calculateBinsBetweenPrices(
       alignedPrice,
       maxPrice,
@@ -154,6 +182,7 @@ export default function V2LiquidityConfig({
     // Align price to nearest bin boundary
     const alignedPrice = alignPriceToBin(value, currentPrice, DEFAULT_BIN_STEP);
     setPriceRange([minPrice, alignedPrice]);
+    setHasCustomMaxPrice(true); // Mark as manually entered
     const calculatedBins = calculateBinsBetweenPrices(
       minPrice,
       alignedPrice,
@@ -190,17 +219,31 @@ export default function V2LiquidityConfig({
       DEFAULT_BIN_STEP
     );
 
-    // Always update the price range when slider moves
-    setPriceRange([alignedMinPrice, alignedMaxPrice]);
+    // Respect custom price inputs - only update the prices that weren't manually set
+    let finalMinPrice = alignedMinPrice;
+    let finalMaxPrice = alignedMaxPrice;
+
+    // If user has custom max price, preserve it when left slider moves
+    if (hasCustomMaxPrice) {
+      finalMaxPrice = maxPrice;
+    }
+
+    // If user has custom min price, preserve it when right slider moves
+    if (hasCustomMinPrice) {
+      finalMinPrice = minPrice;
+    }
+
+    // Update the price range
+    setPriceRange([finalMinPrice, finalMaxPrice]);
     const calculatedBins = calculateBinsBetweenPrices(
-      alignedMinPrice,
-      alignedMaxPrice,
+      finalMinPrice,
+      finalMaxPrice,
       DEFAULT_BIN_STEP
     );
     setNumBins(calculatedBins);
     calculateResults(
-      alignedMinPrice,
-      alignedMaxPrice,
+      finalMinPrice,
+      finalMaxPrice,
       DEFAULT_BIN_STEP,
       currentPrice
     );
@@ -218,7 +261,9 @@ export default function V2LiquidityConfig({
   };
 
   const resetPrice = () => {
-    setPriceRange([0.8, 1.2]);
+    setPriceRange([initialMinPrice, initialMaxPrice]);
+    setHasCustomMinPrice(false);
+    setHasCustomMaxPrice(false);
   };
 
   // Notify parent component of config changes
@@ -391,7 +436,7 @@ export default function V2LiquidityConfig({
 
         <button
           onClick={resetPrice}
-          className="text-accent-primary-2 text-sm flex items-center hover:opacity-80 gap-1"
+          className="text-accent-primary-2 text-sm flex items-center hover:opacity-80 gap-1 align-end"
         >
           <svg
             className="w-4 h-4"
@@ -432,11 +477,16 @@ export default function V2LiquidityConfig({
         <div className="h-40">
           <SimulatedDistribution
             liquidityShape={liquidityShape}
-            data={visualizationData}
             minPrice={minPrice}
             maxPrice={maxPrice}
             numBins={numBins}
             currentPrice={currentPrice}
+            asset0Symbol={asset0Metadata.symbol}
+            asset1Symbol={asset1Metadata.symbol}
+            asset0Price={asset0Price}
+            asset1Price={asset1Price}
+            totalAsset0Amount={totalAsset0Amount}
+            totalAsset1Amount={totalAsset1Amount}
           />
         </div>
       </div>
