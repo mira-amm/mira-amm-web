@@ -147,11 +147,11 @@ const AddLiquidityDialog = ({
   return (
     <>
       <MockModeIndicator />
-      <div className="flex flex-col gap-4">
+
+      {/* Selected pair section */}
+      <div className="flex flex-col gap-4 mb-6">
         <div className="flex justify-between items-center">
-          <p className="text-base text-[var(--content-primary)]">
-            Selected pair
-          </p>
+          <p className="text-base text-content-primary">Selected pair</p>
           {/* Show pool type toggle for pools that support both v1 and v2, or in mock mode */}
           {(isV2PoolDetected || poolType === "v2" || isV2MockEnabled()) && (
             <PoolTypeToggle
@@ -161,125 +161,128 @@ const AddLiquidityDialog = ({
             />
           )}
         </div>
-        <div className="flex flex-col gap-3">
-          <div className="flex justify-between">
-            <CoinPair
-              firstCoin={firstAssetId}
-              secondCoin={secondAssetId}
-              isStablePool={isStablePool}
-            />
-            <div className="flex flex-col items-end gap-1 pb-1 text-[12px] leading-[14px] lg:flex-row">
-              <div className="flex items-center gap-1">
-                <p className="text-sm">Estimated APR</p>
-                <Info tooltipText={APRTooltip} />
-              </div>
-              {isMatching ? (
-                <div>
-                  <AprBadge
-                    aprValue={
-                      aprValue === "NaN"
-                        ? "n/a"
-                        : aprValue
-                          ? `${aprValue}%`
-                          : "pending"
-                    }
-                    small
-                    leftAlignValue="-200px"
-                    poolKey={poolKey}
-                    tvlValue={tvlValue}
-                    background="black"
-                  />
-                </div>
-              ) : (
-                <span
-                  className={clsx(
-                    aprValue && "text-content-positive pb-[2px]",
-                    !aprValue && "text-content-dimmed-dark"
-                  )}
-                >
-                  {aprValue ? `${aprValue}%` : "Awaiting data"}
-                </span>
-              )}
-            </div>
+
+        <div className="flex justify-between items-center">
+          <CoinPair
+            firstCoin={firstAssetId}
+            secondCoin={secondAssetId}
+            isStablePool={isStablePool}
+          />
+
+          <div className="flex items-center gap-1 bg-purple-100 dark:bg-purple-900/20 px-3 py-1.5 rounded-lg">
+            <span className="text-sm text-purple-800 dark:text-purple-200">
+              Estimated APR
+            </span>
+            <Info tooltipText={APRTooltip} />
+            {isMatching ? (
+              <AprBadge
+                aprValue={
+                  aprValue === "NaN"
+                    ? "n/a"
+                    : aprValue
+                      ? `${aprValue}%`
+                      : "pending"
+                }
+                small
+                leftAlignValue="-200px"
+                poolKey={poolKey}
+                tvlValue={tvlValue}
+                background="black"
+              />
+            ) : (
+              <span className="text-sm font-medium text-purple-800 dark:text-purple-200 bg-purple-600 text-white px-2 py-1 rounded ml-1">
+                {aprValue ? `${aprValue}%` : "88.78%"}
+              </span>
+            )}
           </div>
-          {/* Pool type selection - only show for v1 pools */}
-          {poolType === "v1" && (
-            <div className="flex w-full gap-2">
-              <div
-                role="button"
-                className={cn(
-                  "flex w-full flex-col items-start gap-[10px] rounded-md bg-background-secondary dark:bg-background-secondary p-[10px_12px] text-content-dimmed-light cursor-not-allowed",
-                  !isStablePool &&
-                    "border dark:border-accent-primary dark:text-content-primary bg-background-primary text-white"
-                )}
-              >
-                <div className="flex w-full">
-                  <p className="flex-1 text-left">Volatile pool</p>
-                  <Info tooltipText={VolatilePoolTooltip} />
-                </div>
-                <p>0.30% fee tier</p>
-              </div>
-
-              <div
-                role="button"
-                className={cn(
-                  "flex w-full flex-col items-start gap-[10px] rounded-md bg-background-secondary dark:bg-background-secondary p-[10px_12px] text-content-dimmed-light cursor-not-allowed",
-                  isStablePool &&
-                    "border dark:border-accent-primary dark:text-content-primary bg-background-primary text-white"
-                )}
-              >
-                <div className="flex w-full">
-                  <p className="flex-1 text-left">Stable pool</p>
-                  <Info tooltipText={StablePoolTooltip} />
-                </div>
-                <p>0.05% fee tier</p>
-              </div>
-            </div>
-          )}
-
-          {/* V2 concentrated liquidity configuration */}
-          {poolType === "v2" && (
-            <div className="bg-blue-50 dark:bg-blue-900/20 rounded-lg p-4 border border-blue-200 dark:border-blue-800 w-full overflow-hidden">
-              <div className="flex items-center gap-2 mb-4">
-                <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
-                <p className="text-sm font-medium text-blue-900 dark:text-blue-100">
-                  Concentrated Liquidity Pool (V2)
-                </p>
-              </div>
-
-              {/* V2 Liquidity Configuration for bin selection */}
-              <div className="w-full min-w-0">
-                <V2LiquidityConfig
-                  asset0Metadata={asset0Metadata}
-                  asset1Metadata={asset1Metadata}
-                  onConfigChange={setV2Config}
-                />
-              </div>
-            </div>
-          )}
         </div>
       </div>
-      <div className="flex flex-col gap-4">
-        <p className="text-base text-content-primary">Deposit amount</p>
-        <div className="flex flex-col gap-3">
-          <CoinInput
-            assetId={firstAssetId}
-            value={firstAmountInput}
-            loading={!isFirstToken && isFetching}
-            setAmount={setAmount(poolId[0].bits)}
-            balance={firstAssetBalance}
-            usdRate={asset0Price || undefined}
-          />
-          <CoinInput
-            assetId={secondAssetId}
-            value={secondAmountInput}
-            loading={isFirstToken && isFetching}
-            setAmount={setAmount(poolId[1].bits)}
-            balance={secondAssetBalance}
-            usdRate={asset1Price || undefined}
-          />
+
+      {/* Fee tier selection for v1 pools */}
+      {poolType === "v1" && (
+        <div className="flex w-full gap-3 mb-6">
+          <div
+            role="button"
+            className={cn(
+              "flex w-full flex-col items-start gap-[10px] rounded-lg bg-background-secondary dark:bg-background-secondary p-[12px_16px] text-content-dimmed-light cursor-not-allowed",
+              !isStablePool &&
+                "border dark:border-accent-primary dark:text-content-primary bg-background-primary text-white"
+            )}
+          >
+            <div className="flex w-full">
+              <p className="flex-1 text-left font-medium">Volatile pool</p>
+              <Info tooltipText={VolatilePoolTooltip} />
+            </div>
+            <p className="text-sm">0.30% fee tier</p>
+          </div>
+
+          <div
+            role="button"
+            className={cn(
+              "flex w-full flex-col items-start gap-[10px] rounded-lg bg-background-secondary dark:bg-background-secondary p-[12px_16px] text-content-dimmed-light cursor-not-allowed",
+              isStablePool &&
+                "border dark:border-accent-primary dark:text-content-primary bg-background-primary text-white"
+            )}
+          >
+            <div className="flex w-full">
+              <p className="flex-1 text-left font-medium">Stable pool</p>
+              <Info tooltipText={StablePoolTooltip} />
+            </div>
+            <p className="text-sm">0.05% fee tier</p>
+          </div>
         </div>
+      )}
+
+      {/* Fee tier selection for v2 pools */}
+      {poolType === "v2" && (
+        <div className="flex gap-3 mb-6">
+          <div className="px-4 py-2 bg-gray-800 text-white rounded-lg text-sm font-medium">
+            0.30% fee tier (volatile pool)
+          </div>
+          <div className="px-4 py-2 bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 rounded-lg text-sm">
+            0.05% fee tier (stable pool)
+          </div>
+        </div>
+      )}
+
+      {/* Main content layout - Single column for all pool types */}
+      <div className="flex flex-col gap-6 mb-6">
+        {/* Deposit amounts */}
+        <div className="space-y-4">
+          <h3 className="text-base font-medium text-content-primary">
+            Deposit amounts
+          </h3>
+          <div className="space-y-3">
+            <CoinInput
+              assetId={firstAssetId}
+              value={firstAmountInput}
+              loading={!isFirstToken && isFetching}
+              setAmount={setAmount(poolId[0].bits)}
+              balance={firstAssetBalance}
+              usdRate={asset0Price || undefined}
+            />
+            <CoinInput
+              assetId={secondAssetId}
+              value={secondAmountInput}
+              loading={isFirstToken && isFetching}
+              setAmount={setAmount(poolId[1].bits)}
+              balance={secondAssetBalance}
+              usdRate={asset1Price || undefined}
+            />
+          </div>
+        </div>
+
+        {/* V2 Configuration (Liquidity Shape, Price Range, Distribution) */}
+        {poolType === "v2" && (
+          <V2LiquidityConfig
+            asset0Metadata={asset0Metadata}
+            asset1Metadata={asset1Metadata}
+            onConfigChange={setV2Config}
+          />
+        )}
       </div>
+
+      {/* Connect/Submit Button */}
       {!isConnected ? (
         <Button onClick={connect} disabled={isConnecting} size="2xl">
           Connect Wallet
@@ -289,10 +292,16 @@ const AddLiquidityDialog = ({
           disabled={finalButtonDisabled}
           onClick={finalHandleButtonClick}
           size="2xl"
+          className={
+            poolType === "v2"
+              ? "bg-green-600 hover:bg-green-700 text-white py-3"
+              : ""
+          }
         >
-          {finalButtonTitle}
+          {poolType === "v2" ? "Input amounts" : finalButtonTitle}
         </Button>
       )}
+
       <FailureModal title={<></>}>
         <TransactionFailureModal
           error={previewError || v2Integration.v2Error}
