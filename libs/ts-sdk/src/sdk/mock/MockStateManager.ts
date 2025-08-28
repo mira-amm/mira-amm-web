@@ -441,7 +441,7 @@ export class MockStateManager {
    * Convert PoolIdV2 to string for consistent key usage
    */
   private poolIdToString(poolId: PoolIdV2): string {
-    return `${poolId.assetA.bits}-${poolId.assetB.bits}-${poolId.binStep}`;
+    return poolId.toString();
   }
 
   /**
