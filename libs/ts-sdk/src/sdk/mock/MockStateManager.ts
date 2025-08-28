@@ -6,6 +6,7 @@ import {
   MockTransaction,
   MockBinPosition,
   MockPoolScenario,
+  MockSerializedState,
   DEFAULT_MOCK_CONFIG,
 } from "./types";
 import {PoolIdV2, Amounts} from "../model";
@@ -402,9 +403,46 @@ export class MockStateManager {
 
     try {
       const state = this.serializeState();
-      localStorage.setItem(this.config.persistenceKey, JSON.stringify(state));
+      const serialized = JSON.stringify(state);
+
+      // Check storage size limits
+      if (serialized.length > 5 * 1024 * 1024) {
+        // 5MB limit
+        console.warn(
+          "Mock SDK state exceeds 5MB, truncating transaction history"
+        );
+        this.truncateTransactionHistory();
+        const truncatedState = this.serializeState();
+        localStorage.setItem(
+          this.config.persistenceKey,
+          JSON.stringify(truncatedState)
+        );
+      } else {
+        localStorage.setItem(this.config.persistenceKey, serialized);
+      }
     } catch (error) {
-      console.warn("Failed to persist mock SDK state:", error);
+      if (error instanceof DOMException && error.code === 22) {
+        // Storage quota exceeded
+        console.warn(
+          "localStorage quota exceeded, clearing old data and retrying"
+        );
+        this.clearPersistedState();
+        this.truncateTransactionHistory();
+        try {
+          const state = this.serializeState();
+          localStorage.setItem(
+            this.config.persistenceKey,
+            JSON.stringify(state)
+          );
+        } catch (retryError) {
+          console.error(
+            "Failed to persist mock SDK state after cleanup:",
+            retryError
+          );
+        }
+      } else {
+        console.warn("Failed to persist mock SDK state:", error);
+      }
     }
   }
 
@@ -420,21 +458,104 @@ export class MockStateManager {
       const stored = localStorage.getItem(this.config.persistenceKey);
       if (stored) {
         const state = JSON.parse(stored);
+
+        // Check version compatibility
+        if (state.version && state.version !== this.config.persistenceVersion) {
+          console.warn(
+            `State version mismatch: stored ${state.version}, expected ${this.config.persistenceVersion}`
+          );
+          // Could implement migration logic here
+        }
+
         this.deserializeState(state);
       }
     } catch (error) {
       console.warn("Failed to restore mock SDK state:", error);
+      // Clear corrupted state
+      this.clearPersistedState();
+    }
+  }
+
+  /**
+   * Clear persisted state from localStorage
+   */
+  clearPersistedState(): void {
+    if (typeof localStorage !== "undefined") {
+      localStorage.removeItem(this.config.persistenceKey);
+    }
+  }
+
+  /**
+   * Get the size of persisted state in bytes
+   */
+  getPersistedStateSize(): number {
+    if (!this.config.enablePersistence || typeof localStorage === "undefined") {
+      return 0;
+    }
+
+    const stored = localStorage.getItem(this.config.persistenceKey);
+    return stored ? new Blob([stored]).size : 0;
+  }
+
+  /**
+   * Check if persistence is available and working
+   */
+  isPersistenceAvailable(): boolean {
+    if (typeof localStorage === "undefined") {
+      return false;
+    }
+
+    try {
+      const testKey = `${this.config.persistenceKey}_test`;
+      localStorage.setItem(testKey, "test");
+      localStorage.removeItem(testKey);
+      return true;
+    } catch {
+      return false;
+    }
+  }
+
+  /**
+   * Export state as JSON string for backup/sharing
+   */
+  exportState(): string {
+    const state = this.serializeState();
+    return JSON.stringify(state, null, 2);
+  }
+
+  /**
+   * Import state from JSON string
+   */
+  importState(stateJson: string): void {
+    try {
+      const state = JSON.parse(stateJson);
+      this.deserializeState(state);
+      this.persistIfEnabled();
+    } catch (error) {
+      throw new Error(`Failed to import state: ${error}`);
     }
   }
 
   // ===== Private Helper Methods =====
 
   /**
-   * Persist state if persistence is enabled
+   * Persist state if persistence is enabled and auto-persist is on
    */
   private persistIfEnabled(): void {
-    if (this.config.enablePersistence) {
+    if (this.config.enablePersistence && this.config.autoPersist) {
       this.persist();
+    }
+  }
+
+  /**
+   * Truncate transaction history to stay within limits
+   */
+  private truncateTransactionHistory(): void {
+    if (this.transactions.length > this.config.maxPersistedTransactions) {
+      // Keep the most recent transactions
+      this.transactions = this.transactions
+        .sort((a, b) => b.timestamp.getTime() - a.timestamp.getTime())
+        .slice(0, this.config.maxPersistedTransactions);
     }
   }
 
@@ -546,28 +667,201 @@ export class MockStateManager {
    * Serialize state for persistence
    */
   private serializeState(): any {
+    // Limit transactions to configured maximum
+    const transactionsToSerialize =
+      this.transactions.length > this.config.maxPersistedTransactions
+        ? this.transactions
+            .sort((a, b) => b.timestamp.getTime() - a.timestamp.getTime())
+            .slice(0, this.config.maxPersistedTransactions)
+        : this.transactions;
+
     return {
+      version: this.config.persistenceVersion,
+      timestamp: new Date(),
       pools: Array.from(this.pools.entries()).map(([id, pool]) => [
         id,
-        {
-          ...pool,
-          bins: Array.from(pool.bins.entries()),
-        },
+        this.serializePool(pool),
       ]),
       positions: Array.from(this.positions.entries()).map(
         ([userId, userPools]) => [
           userId,
           Array.from(userPools.entries()).map(([poolId, position]) => [
             poolId,
-            {
-              ...position,
-              binPositions: Array.from(position.binPositions.entries()),
-            },
+            this.serializePosition(position),
           ]),
         ]
       ),
-      transactions: this.transactions,
+      transactions: transactionsToSerialize.map((tx) =>
+        this.serializeTransaction(tx)
+      ),
       config: this.config,
+    };
+  }
+
+  /**
+   * Serialize a pool for persistence (handles BN objects)
+   */
+  private serializePool(pool: MockPoolState): any {
+    return {
+      ...pool,
+      bins: Array.from(pool.bins.entries()).map(([binId, bin]) => [
+        binId,
+        {
+          ...bin,
+          reserves: {
+            assetA: bin.reserves.assetA.toString(),
+            assetB: bin.reserves.assetB.toString(),
+          },
+          totalLpTokens: bin.totalLpTokens.toString(),
+          price: bin.price.toString(),
+        },
+      ]),
+      totalReserves: {
+        assetA: pool.totalReserves.assetA.toString(),
+        assetB: pool.totalReserves.assetB.toString(),
+      },
+      protocolFees: {
+        assetA: pool.protocolFees.assetA.toString(),
+        assetB: pool.protocolFees.assetB.toString(),
+      },
+      volume24h: pool.volume24h.toString(),
+    };
+  }
+
+  /**
+   * Serialize a position for persistence (handles BN objects)
+   */
+  private serializePosition(position: MockUserPosition): any {
+    return {
+      ...position,
+      binPositions: Array.from(position.binPositions.entries()).map(
+        ([binId, binPos]) => [
+          binId,
+          {
+            ...binPos,
+            lpTokenAmount: binPos.lpTokenAmount.toString(),
+            underlyingAmounts: {
+              assetA: binPos.underlyingAmounts.assetA.toString(),
+              assetB: binPos.underlyingAmounts.assetB.toString(),
+            },
+            feesEarned: {
+              assetA: binPos.feesEarned.assetA.toString(),
+              assetB: binPos.feesEarned.assetB.toString(),
+            },
+            entryPrice: binPos.entryPrice.toString(),
+          },
+        ]
+      ),
+      totalValue: {
+        assetA: position.totalValue.assetA.toString(),
+        assetB: position.totalValue.assetB.toString(),
+      },
+      totalFeesEarned: {
+        assetA: position.totalFeesEarned.assetA.toString(),
+        assetB: position.totalFeesEarned.assetB.toString(),
+      },
+    };
+  }
+
+  /**
+   * Serialize a transaction for persistence (handles BN objects)
+   */
+  private serializeTransaction(transaction: MockTransaction): any {
+    return {
+      ...transaction,
+      result: {
+        ...transaction.result,
+        gasUsed: transaction.result.gasUsed.toString(),
+        gasPrice: transaction.result.gasPrice.toString(),
+      },
+    };
+  }
+
+  /**
+   * Deserialize a pool from persistence (handles BN objects)
+   */
+  private deserializePool(poolData: any): MockPoolState {
+    return {
+      ...poolData,
+      bins: new Map(
+        poolData.bins.map(([binId, bin]: [number, any]) => [
+          binId,
+          {
+            ...bin,
+            reserves: {
+              assetA: new BN(bin.reserves.assetA),
+              assetB: new BN(bin.reserves.assetB),
+            },
+            totalLpTokens: new BN(bin.totalLpTokens),
+            price: new BN(bin.price),
+          },
+        ])
+      ),
+      totalReserves: {
+        assetA: new BN(poolData.totalReserves.assetA),
+        assetB: new BN(poolData.totalReserves.assetB),
+      },
+      protocolFees: {
+        assetA: new BN(poolData.protocolFees.assetA),
+        assetB: new BN(poolData.protocolFees.assetB),
+      },
+      volume24h: new BN(poolData.volume24h),
+      createdAt: new Date(poolData.createdAt),
+      lastUpdated: new Date(poolData.lastUpdated),
+    };
+  }
+
+  /**
+   * Deserialize a position from persistence (handles BN objects)
+   */
+  private deserializePosition(positionData: any): MockUserPosition {
+    return {
+      ...positionData,
+      binPositions: new Map(
+        positionData.binPositions.map(([binId, binPos]: [number, any]) => [
+          binId,
+          {
+            ...binPos,
+            lpTokenAmount: new BN(binPos.lpTokenAmount),
+            underlyingAmounts: {
+              assetA: new BN(binPos.underlyingAmounts.assetA),
+              assetB: new BN(binPos.underlyingAmounts.assetB),
+            },
+            feesEarned: {
+              assetA: new BN(binPos.feesEarned.assetA),
+              assetB: new BN(binPos.feesEarned.assetB),
+            },
+            entryPrice: new BN(binPos.entryPrice),
+            entryTime: new Date(binPos.entryTime),
+          },
+        ])
+      ),
+      totalValue: {
+        assetA: new BN(positionData.totalValue.assetA),
+        assetB: new BN(positionData.totalValue.assetB),
+      },
+      totalFeesEarned: {
+        assetA: new BN(positionData.totalFeesEarned.assetA),
+        assetB: new BN(positionData.totalFeesEarned.assetB),
+      },
+      createdAt: new Date(positionData.createdAt),
+      lastUpdated: new Date(positionData.lastUpdated),
+    };
+  }
+
+  /**
+   * Deserialize a transaction from persistence (handles BN objects)
+   */
+  private deserializeTransaction(transactionData: any): MockTransaction {
+    return {
+      ...transactionData,
+      result: {
+        ...transactionData.result,
+        gasUsed: new BN(transactionData.result.gasUsed),
+        gasPrice: new BN(transactionData.result.gasPrice),
+        timestamp: new Date(transactionData.result.timestamp),
+      },
+      timestamp: new Date(transactionData.timestamp),
     };
   }
 
@@ -579,12 +873,7 @@ export class MockStateManager {
     if (state.pools) {
       this.pools.clear();
       for (const [id, poolData] of state.pools) {
-        const pool = {
-          ...poolData,
-          bins: new Map(poolData.bins),
-          createdAt: new Date(poolData.createdAt),
-          lastUpdated: new Date(poolData.lastUpdated),
-        };
+        const pool = this.deserializePool(poolData);
         this.pools.set(id, pool);
       }
     }
@@ -595,12 +884,7 @@ export class MockStateManager {
       for (const [userId, userPoolsData] of state.positions) {
         const userPools = new Map();
         for (const [poolId, positionData] of userPoolsData) {
-          const position = {
-            ...positionData,
-            binPositions: new Map(positionData.binPositions),
-            createdAt: new Date(positionData.createdAt),
-            lastUpdated: new Date(positionData.lastUpdated),
-          };
+          const position = this.deserializePosition(positionData);
           userPools.set(poolId, position);
         }
         this.positions.set(userId, userPools);
@@ -609,14 +893,9 @@ export class MockStateManager {
 
     // Restore transactions
     if (state.transactions) {
-      this.transactions = state.transactions.map((tx: any) => ({
-        ...tx,
-        timestamp: new Date(tx.timestamp),
-        result: {
-          ...tx.result,
-          timestamp: new Date(tx.result.timestamp),
-        },
-      }));
+      this.transactions = state.transactions.map((tx: any) =>
+        this.deserializeTransaction(tx)
+      );
     }
 
     // Update config if present
