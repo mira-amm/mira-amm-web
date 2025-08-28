@@ -59,16 +59,16 @@ export class MockReadonlyMiraAmmV2 {
    *
    * @param provider - Mock provider for compatibility
    * @param contractId - Optional contract ID (ignored in mock)
-   * @param config - Optional configuration for mock behavior
+   * @param stateManager - Optional shared state manager instance
    */
   constructor(
     provider: MockProvider | Provider,
     contractId?: string,
-    config?: Partial<MockSDKConfig>
+    stateManager?: MockStateManager
   ) {
     this.provider = provider as MockProvider;
-    this.config = {...DEFAULT_MOCK_CONFIG, ...config};
-    this.stateManager = new MockStateManager(this.config);
+    this.config = stateManager?.getConfig() || DEFAULT_MOCK_CONFIG;
+    this.stateManager = stateManager || new MockStateManager(this.config);
   }
 
   /**
