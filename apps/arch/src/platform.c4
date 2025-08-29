@@ -66,6 +66,18 @@ model {
                     shape: mobile
                 }
             }
+
+            contracts = component {
+                title: "Contracts"
+                icon: https://avatars.githubusercontent.com/u/55993183?s=200&v=4
+                link: https://github.com/mira-amm/mira-v1-core
+                desription: "Implements the foundational AMM logic, handling swaps, liquidity provision, and pool state management."
+                style {
+                    color: green
+                    shape: storage
+                }
+            }
+
             periphery-scripts = component {
                 title: "Periphery Scripts"
                 icon: tech:rust
