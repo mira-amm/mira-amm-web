@@ -137,7 +137,8 @@ model {
             Ideally this server lives in a data center as close to the client as possible, referred to as the 'Edge'.
             "
         }
-            external-providers.software-development.sqd -> backend {
+
+            external-providers.software-development.sentio -> backend {
             title: "hosts"
 }
 
