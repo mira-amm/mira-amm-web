@@ -15,12 +15,14 @@ export const baseOptions: BaseLayoutProps = {
     title: (
       <>
         <Image
-          src="/mira-logo.png"
-          alt="Mira Logo Symbol"
-          height={48}
-          width={48}
+          src="/symbol.svg"
+          alt="Microchain Symbol"
+          height={12}
+          width={12}
         />
-        <span className="text-lg font-bold text-lime-500">Mira Docs</span>
+              {/* TODO: use tokens */}
+        <span className="text-lg font-bold text-[#01ec97]">Microchain</span>
+        <span className="text-lg font-bold text-[#507ff7]">Docs</span>
       </>
     ),
     url: "/",
