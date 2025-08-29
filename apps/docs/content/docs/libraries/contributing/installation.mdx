@@ -19,24 +19,49 @@ curl -fsSL https://raw.githubusercontent.com/mira-amm/mira-amm-web/main/install 
 Fork and Clone [Repository](https://github.com/mira-amm/mira-amm-web).
 
 
-```sh title="Terminal"
+<Tabs groupId="clone-repository" items={['Git', 'GitHub CLI']} persist>
+  <Tab value="Git">
+```sh title="Shell"
+git clone https://mira-amm/mira-amm-web; # clone repo
+cd mira-amm-web;                         # Navigate into directory
+./install                                # run install script
+  ```
+  </Tab>
+  <Tab value="GitHub CLI">
+
+```sh title="Shell"
 gh repo fork mira-amm/mira-amm-web --clone; # fork and clone repo
 cd mira-amm-web;                            # Navigate into directory
 ./install                                   # run install script
 ```
+  </Tab>
+  </Tabs>
 
 ```sh title="Terminal"
 pnpm exec playwright install --with-deps # install Playwright Browsers for E2E Testing
 ```
 
-[Playwright for Arch Linux users](https://github.com/microsoft/playwright/issues/2621#issuecomment-2083083392).
+Open editor:
 
-Open VSCode (Or your preferred editor):
-    ```sh title="Shell"
+<Tabs groupId="open-editor" items={['VS Code', 'Neovim', 'Emacs']} persist>
+  <Tab value="VS Code">
+   ```sh title="Shell"
     # allow all hosts and trust the authors when you see a popup
     # and install all recommended extensions
-    code .
-    ```
+   code .
+   ```
+</Tab>
+  <Tab value="Neovim">
+   ```sh title="Shell"
+   nvim .
+   ```
+  </Tab>
+  <Tab value="Emacs">
+   ```sh title="Shell"
+   emacs .
+   ```
+  </Tab>
+</Tabs>
 
   ## Run projects
 
