@@ -110,7 +110,7 @@ model {
                 icon: https://upload.wikimedia.org/wikipedia/commons/thumb/8/82/Telegram_logo.svg/2048px-Telegram_logo.svg.png
                 link : https://telegram.org
                 style {
-                    color: sky-800
+                    color: sky-700
                     shape: mobile
                 }
             }

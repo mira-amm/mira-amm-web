@@ -32,7 +32,7 @@ model {
             sdks = container {
                 title: "SDKs"
                 style {
-                    color: white
+                    color: slate
                     opacity: 40%
                 }
 
