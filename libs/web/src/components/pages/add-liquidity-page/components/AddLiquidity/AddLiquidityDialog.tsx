@@ -58,9 +58,11 @@ const AddLiquidityDialog = ({
 
   // Detect if this is a v2 pool and manage pool type state
   const isV2PoolDetected = isV2PoolId(poolId);
-  const [poolType, setPoolType] = useState<PoolTypeOption>(
+  const [_, setPoolType] = useState<PoolTypeOption>(
     isV2PoolDetected ? "v2" : "v1"
   );
+
+  const poolType = "v2";
 
   // V2 liquidity configuration state
   const [v2Config, setV2Config] = useState<{
@@ -163,13 +165,13 @@ const AddLiquidityDialog = ({
         <div className="flex justify-between items-center">
           <SectionHeading>Selected pair</SectionHeading>
           {/* Show pool type toggle for pools that support both v1 and v2, or in mock mode */}
-          {(isV2PoolDetected || poolType === "v2" || isV2MockEnabled()) && (
+          {/* {(isV2PoolDetected || poolType === "v2" || isV2MockEnabled()) && (
             <PoolTypeToggle
               selectedType={poolType}
               onTypeChange={setPoolType}
               className="text-sm"
             />
-          )}
+          )} */}
         </div>
 
         <div className="flex justify-between items-center">
