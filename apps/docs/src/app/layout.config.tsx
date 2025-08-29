@@ -65,7 +65,7 @@ export const baseOptions: BaseLayoutProps = {
     {
       type: "icon",
       text: "X (Twitter)",
-      url: "https://x.com/MiraProtocol",
+      url: "https://x.com/MicrochainDLM/",
       icon: <Twitter />,
       external: true,
     },
