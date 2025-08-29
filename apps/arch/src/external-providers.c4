@@ -178,6 +178,17 @@ model {
                 }
             }
 
+            sentio = brand {
+                title: "Sentio"
+                icon: https://sentio.xyz/favicon.ico
+                description: "Blochain Indexing Provider"
+                link : https://sentio.xyz
+                style {
+                    color: sky
+                    shape: queue
+                }
+            }
+
             sentry = brand {
                 title: "Sentry"
                 icon: https://sentry.io/static/favicon-46f8676a36982f8eb852ac6860387755.ico
