@@ -51,7 +51,7 @@ export const baseOptions: BaseLayoutProps = {
     {
       type: "icon",
       text: "Blog",
-      url: "https://mirror.xyz/miraly.eth",
+      url: "https://mirror.xyz/0xBE101110E07430Cf585123864a55f51e53ABc339",
       icon: <BlogIcon />,
       external: true,
     },
