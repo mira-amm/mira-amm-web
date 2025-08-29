@@ -40,7 +40,7 @@ export const baseOptions: BaseLayoutProps = {
     },
     {
       text: "Graph",
-      url: "https://graph.mira.ly",
+      url: "https://graph.microchain.systems",
       external: true,
     },
     {
