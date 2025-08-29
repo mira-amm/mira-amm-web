@@ -45,7 +45,7 @@
 # Introduction
 
 Source code for the [Microchain](https://microchain.systems) web interface that enables users to interact
-with the Mira decentralized exchange (DEX) on the [Fuel blockchain](https://fuel.network/).
+with the Microchain decentralized exchange (DEX) on the [Fuel blockchain](https://fuel.network/).
 
 ## Features
 
@@ -53,18 +53,14 @@ with the Mira decentralized exchange (DEX) on the [Fuel blockchain](https://fuel
 
 | [Swap Tokens](https://microchain.systems)                               | [Manage Liquidity](https://microchain.systems/liquidity/?page=1)          | [Earn Points](https://microchain.systems/points/)                     |
 | ------------------------------------------------------------ | -------------------------------------------------------------- | ---------------------------------------------------------- |
-| ![Mira Token Swaps](libs/shared/assets/mira-token-swaps.png) | ![Mira Liquidity Pools](libs/shared/assets/mira-liquidity.png) | ![Mira Points Program](libs/shared/assets/mira-points.png) |
+| ![Microchain Token Swaps](libs/shared/assets/screenshots/swaps.png) | ![Microchain Liquidity Pools](libs/shared/assets/screenshots/liquidity.png) | ![Microchain Points Program](libs/shared/assets/screenshots/points.png) |
 
 ## Platform
 
-| [🪙 Decentralized Exchange - (DEX)](https://microchain.systems)            |           [📚 Docs Site](https://docs.microchain.systems)           |  [🌟 Design System - Storybook](https://design.microchain.systems)  |               [🏛 Architecture](https://arch.microchain.systems)               |
+| [🪙 Decentralized Exchange - (DEX)](https://microchain.systems)            |           [📚 Docs Site](https://docs.microchain.systems)           |  [🌟 Design System - Storybook](https://design.microchain.systems)  |               [🏛 Architecture](https://arch.microchain.systems)               |  📢 [Blog](https://mirror.xyz/0xBE101110E07430Cf585123864a55f51e53ABc339) |
 | :---------------------------------------------------: | :--------------------------------------------------------------: | :------------------------------------------------------: | :------------------------------------------------------: | :-----------------------------------------------------------------: |
-|    ![DEX](libs/shared/assets/mira-token-swaps.png)  | ![Docs Site](apps/docs/public/screenshots/docs-site.png) | ![Storybook](apps/docs/public/screenshots/storybook.png) | ![Architecture](apps/docs/public/screenshots/architecture-site.png) |
+|    ![DEX](libs/shared/assets/screenshots/swaps.png)  | ![Docs Site](libs/shared/assets/screenshots/docs.png) | ![Storybook](libs/shared/assets/screenshots/storybook.png) | ![Architecture](libs/shared/assets/screenshots/architecture.png) | ![Blog](libs/shared/assets/screenshots/blog.png) |
 
-- [Periphery Scripts](https://github.com/mira-amm/mira-v1-periphery)
-- [Blog](https://mirror.xyz/0xBE101110E07430Cf585123864a55f51e53ABc339)
-
-![Blog](apps/docs/public/screenshots/mirror-blog.png)
 
 ## Contributing
 
@@ -74,7 +70,7 @@ experience.
 
 The codebase is self-documenting.
 
-|                           🖥️ Microvisor                           |                        💊 Microdoctor                        |           [📍 Project Graph](https://microchain.systems/landing)            |
+|                           🖥️ Microvisor                           |                        💊 Microdoctor                        |           [📍 Project Graph](https://graph.microchain.systems)            |
 | :---------------------------------------------------------------: | :----------------------------------------------------------: | :--------------------------------------------------------------: |
 | ![Microvisor](apps/docs/public/screenshots/microvisor-status.png) | ![Microdoctor](apps/docs/public/screenshots/microdoctor.png) | ![Project Graph](apps/docs/public/screenshots/project-graph.png) |
 
@@ -92,7 +88,7 @@ See [docs](https://docs.microchain.systems/libraries/contributing/installation) 
 
 ## Socials/Contact
 
-- [Twitter/X - @MiraProtocol](https://x.com/MicrochainDLM/)
+- [Twitter/X - @MicrochainDLM](https://x.com/MicrochainDLM/)
 - [Discord](https://discord.gg/6pHdTY6rYq)
 
 ## Acknowledgements & Ecosystem
