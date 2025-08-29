@@ -39,7 +39,8 @@ model {
                 typescript-sdk = component {
                     title: "TypeScript"
                     icon: tech:typescript
-                    link : https://github.com/mira-amm/mira-v1-ts
+                    link: https://github.com/mira-amm/mira-dex-typescript-sdk
+                    description: "Offers tools for developers to interact with Microchain, including swapping tokens, querying liquidity pools, and managing liquidity."
                     style {
                         color: slate-500
                         shape: queue
@@ -81,7 +82,8 @@ model {
             periphery-scripts = component {
                 title: "Periphery Scripts"
                 icon: tech:rust
-                link : https://github.com/mira-amm/mira-v1-periphery
+                link: https://github.com/mira-amm/mira-v1-periphery
+                description: "Provides high-level abstractions for interacting with the core contract, including safety mechanisms and swap functions."
                 style {
                     color: purple-500
                     shape: queue
@@ -276,7 +278,8 @@ model {
                 rust = component {
                     title: "Rust"
                     icon: tech:rust
-                    link : https://www.rust-lang.org
+                    link: https://www.rust-lang.org
+                    description: "Provides a Rust-based toolkit for developers building high-performance applications on top of Microchain."
                     style {
                         color: gray-500
                     }
@@ -294,7 +297,7 @@ model {
                 typescript = component {
                     title: "TypeScript"
                     icon: tech:typescript
-                    link : https://typescriptlang.org
+                    link https://typescriptlang.org
                     style {
                         color: gray-500
                     }
