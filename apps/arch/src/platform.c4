@@ -1,7 +1,7 @@
 model {
     context platform {
-        title: "Mira Platform"
-        icon: https://mira.ly/images/favicon.png
+        title: "Microchain Platform"
+        icon: https://microchain.systems/favicon.png
         link : https://github.com/mira-amm
 
         style {
@@ -12,10 +12,10 @@ model {
         }
 
         web = component {
-            title: "Web App"
+            title: "Web"
             icon: tech:nextjs
             technology: "TypeScript, Next.js"
-            link : https://mira.ly
+            link : https://microchain.systems
             style {
                 color: pink-900
                 shape: mobile
@@ -80,7 +80,7 @@ model {
                 title: "Docs"
                 icon: tech:nextjs
                 technology: "TypeScript, Fumadocs, Next.js, MDX, Tailwind CSS"
-                link : https://docs.mira.ly
+                link : https://docs.microchain.systems
                 style {
                     color: green
                     shape: browser
@@ -91,7 +91,7 @@ model {
                 title: "Design"
                 technology: "TypeScript, Storybook, React, Component Story Format (CSF)"
                 icon: tech:storybook
-                link : https://design.mira.ly
+                link : https://design.microchain.systems
                 style {
                     color: purple-800
                     shape: browser
@@ -99,10 +99,10 @@ model {
             }
 
             architecture-site = component {
-                title: "Architecture Site"
+                title: "Architecture"
                 technology: 'LikeC4, C4 Model, React'
                 icon https://avatars.githubusercontent.com/u/128791862?s=200&v=4
-                link : https://arch.mira.ly
+                link : https://arch.microchain.systems
                 style {
                     color: blue-700
                     shape: browser
@@ -111,10 +111,10 @@ model {
 
 
             graph-site = component {
-                title: "Project Graph Site"
+                title: "Graph"
                 icon: https://camo.githubusercontent.com/30fd89042b9d367be3b5f04ba1c73083048eb94d3ae5d84f0b50287092c424a6/68747470733a2f2f6170692e69636f6e6966792e64657369676e2f6c6f676f733a6e782e737667
                 description "Interactive map of the codebase showing dependencies and task pipelines"
-                link : https://graph.mira.ly
+                link : https://graph.microchain.systems
                 style {
                     color: cyan-700
                     shape: browser
@@ -122,7 +122,7 @@ model {
             }
         }
 
-        external-providers.software-development.vercel -> platform {
+        external-providers.software-development.vercel -> documentation {
             title: "provides continous deployment hosting for"
         }
 
@@ -137,9 +137,12 @@ model {
             Ideally this server lives in a data center as close to the client as possible, referred to as the 'Edge'.
             "
         }
+            external-providers.software-development.sqd -> backend {
+            title: "hosts"
+}
 
         container backend {
-            title: "Back-End (Squid Indexer)"
+            title: "Indexer"
             technology: "TypeORM, SQL"
             icon: https://www.svgrepo.com/show/484343/server-like.svg
             description: "Database, API Layer, and State Engine. ⚙"
@@ -149,10 +152,9 @@ model {
             }
 
             component api {
-                title: "API Layer"
-                icon: tech:swagger
+                title: "Subsquid RPC"
+                icon: tech:graphql
                 link: https://github.com/mira-amm/mira-sqd-indexer
-                description: "REST via Next.js API routes & GraphQL via SQD"
                 style {
                     color: red
                     shape: queue
@@ -214,7 +216,7 @@ model {
                     icon: https://diataxis.fr/_static/favicon.png
                     link : https://diataxis.fr/
                     style {
-                        color: gray-500
+                        color: amber
                     }
                 }
 
