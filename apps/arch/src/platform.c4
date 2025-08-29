@@ -57,6 +57,15 @@ model {
                 }
             }
 
+            meshwave-ui = component {
+                title: "Meshwave UI"
+                icon: https://www.microchain.systems/favicon.png
+                link : https://github.com/mira-amm/mira-amm-web/tree/main/libs/meshwave-ui
+                style {
+                    color: indigo
+                    shape: mobile
+                }
+            }
             periphery-scripts = component {
                 title: "Periphery Scripts"
                 icon: tech:rust
