@@ -189,6 +189,18 @@ model {
                 }
             }
 
+            fuel = brand {
+                title: "Fuel Network"
+                icon: https://framerusercontent.com/images/RV6Rixp8ycQ57ESg2TNnHRE8Meg.png
+                description: "Ethereum Layer 2 Optimistic Rollup"
+                link : https://fuel.network
+                style {
+                    color: green
+                    shape: queue
+                }
+            }
+
+
             pulumi = brand {
                 title: "Pulumi Cloud"
                 icon: https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/pulumi/pulumi-original.svg
