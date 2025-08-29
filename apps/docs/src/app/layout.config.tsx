@@ -35,7 +35,7 @@ export const baseOptions: BaseLayoutProps = {
     },
     {
       text: "Architecture",
-      url: "https://arch.mira.ly",
+      url: "https://arch.microchain.systems",
       external: true,
     },
     {
