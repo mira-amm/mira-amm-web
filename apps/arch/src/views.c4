@@ -17,7 +17,7 @@ views {
     }
 
     view platform of platform {
-    title: "Mira Platform"
+    title: "Microchain Platform"
         include *
         include packages.**
         include documentation.*
