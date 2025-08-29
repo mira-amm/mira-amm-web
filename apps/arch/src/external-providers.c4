@@ -167,15 +167,35 @@ model {
                 }
             }
 
+            sqd = brand {
+                title: "Subsquid"
+                icon: https://cdn.prod.website-files.com/666dfea59a8746e0339e843a/66b4fd0b3e1625046a8b1fd6_Fav%2032.png
+                description: "Blockchain Indexing Provider"
+                link : https://www.sqd.ai
+                style {
+                    color: indigo
+                    shape: browser
+                }
+            }
+
+            sentry = brand {
+                title: "Sentry"
+                icon: https://sentry.io/static/favicon-46f8676a36982f8eb852ac6860387755.ico
+                description: "Application Monitoring"
+                link : https://sentry.io
+                style {
+                    color: purple-500
+                    shape: browser
+                }
+            }
 
             pulumi = brand {
                 title: "Pulumi Cloud"
                 icon: https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/pulumi/pulumi-original.svg
-                description: "Infrastructure-as-Code
-            Provider"
+                description: "Infrastructure-as-Code Provider"
                 link : https://pulumi.com
                 style {
-                    color: stone-500
+                    color: amber
                     shape: browser
                 }
             }
