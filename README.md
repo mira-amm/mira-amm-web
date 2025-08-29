@@ -1,13 +1,12 @@
 <h1 align="center">
-  <a href="https://mira.ly">
-   🟩 Mira 🦕
+  <a href="https://microchain.systems">
+   🟩 Microchain 🦕
   </a>
 </h1>
 
-![Mira GitHub Repo README Cover](libs/shared/assets/mira-github-repo-readme-banner.png)
+![Microchain GitHub Repo README Cover](apps/docs/public/retro_desktop_pink_bg.png)
 
 <div align="center">
-  🚧 Major Monorepo Migration in Progress 🏗
 
 <hr/>
 
@@ -45,40 +44,37 @@
 
 # Introduction
 
-Source code for the [Mira Exchange](https://mira.ly/) web interface that enables users to interact
+Source code for the [Microchain](https://microchain.systems) web interface that enables users to interact
 with the Mira decentralized exchange (DEX) on the [Fuel blockchain](https://fuel.network/).
 
 ## Features
 
-### [Decentralized Exchange - (DEX)](https://mira.ly/)
+### [Decentralized Exchange - (DEX)](https://microchain.systems)
 
-| [Swap Tokens](https://mira.ly)                               | [Manage Liquidity](https://mira.ly/liquidity/?page=1)          | [Earn Points](https://mira.ly/points/)                     |
+| [Swap Tokens](https://microchain.systems)                               | [Manage Liquidity](https://microchain.systems/liquidity/?page=1)          | [Earn Points](https://microchain.systems/points/)                     |
 | ------------------------------------------------------------ | -------------------------------------------------------------- | ---------------------------------------------------------- |
 | ![Mira Token Swaps](libs/shared/assets/mira-token-swaps.png) | ![Mira Liquidity Pools](libs/shared/assets/mira-liquidity.png) | ![Mira Points Program](libs/shared/assets/mira-points.png) |
 
 ## Platform
 
-| [🪙 Decentralized Exchange - (DEX)](https://mira.ly/) |              [📢 Website](https://mira.ly/landing)               |           [📚 Docs Site](https://docs.mira.ly)           |  [🌟 Design System - Storybook](https://design.mira.ly)  |               [🏛 Architecture](https://arch.mira.ly)               |
+| [🪙 Decentralized Exchange - (DEX)](https://microchain.systems)            |           [📚 Docs Site](https://docs.microchain.systems)           |  [🌟 Design System - Storybook](https://design.microchain.systems)  |               [🏛 Architecture](https://arch.microchain.systems)               |
 | :---------------------------------------------------: | :--------------------------------------------------------------: | :------------------------------------------------------: | :------------------------------------------------------: | :-----------------------------------------------------------------: |
-|    ![DEX](libs/shared/assets/mira-token-swaps.png)    | ![Website](libs/shared/assets/screenshots/mira-landing-page.png) | ![Docs Site](apps/docs/public/screenshots/docs-site.png) | ![Storybook](apps/docs/public/screenshots/storybook.png) | ![Architecture](apps/docs/public/screenshots/architecture-site.png) |
+|    ![DEX](libs/shared/assets/mira-token-swaps.png)  | ![Docs Site](apps/docs/public/screenshots/docs-site.png) | ![Storybook](apps/docs/public/screenshots/storybook.png) | ![Architecture](apps/docs/public/screenshots/architecture-site.png) |
 
-- [Core Contract](https://github.com/mira-amm/mira-v1-core)
 - [Periphery Scripts](https://github.com/mira-amm/mira-v1-periphery)
-- [TypeScript SDK](https://github.com/mira-amm/mira-v1-ts)
-- [Rust SDK](https://github.com/mira-amm/mira-v1-rs)
-- [Blog](https://mirror.xyz/miraly.eth)
+- [Blog](https://mirror.xyz/0xBE101110E07430Cf585123864a55f51e53ABc339)
 
 ![Blog](apps/docs/public/screenshots/mirror-blog.png)
 
 ## Contributing
 
-Developers are treated as first-class citizens here. The Mira platform's robust suite of tools
+Developers are treated as first-class citizens here. Microchain's robust suite of tools
 handle the majority of environment setup, providing an outstanding full-stack development
 experience.
 
 The codebase is self-documenting.
 
-|                           🖥️ Microvisor                           |                        💊 Microdoctor                        |           [📍 Project Graph](https://mira.ly/landing)            |
+|                           🖥️ Microvisor                           |                        💊 Microdoctor                        |           [📍 Project Graph](https://microchain.systems/landing)            |
 | :---------------------------------------------------------------: | :----------------------------------------------------------: | :--------------------------------------------------------------: |
 | ![Microvisor](apps/docs/public/screenshots/microvisor-status.png) | ![Microdoctor](apps/docs/public/screenshots/microdoctor.png) | ![Project Graph](apps/docs/public/screenshots/project-graph.png) |
 
@@ -92,11 +88,11 @@ The codebase is self-documenting.
 | :-------------------------------------------------------------: | :-------------------------------------------------------------------: | :---------------------------------------------------------------: | :-------------------------------------------------------------------: | :---------------------------------------------------------------------: |
 | ![OpenAPI JSON](apps/docs/public/screenshots/openapi-json.webp) | ![OpenAPI Swagger](apps/docs/public/screenshots/openapi-swagger.webp) | ![OpenAPI Redoc](apps/docs/public/screenshots/openapi-redoc.webp) | ![OpenAPI Rapidoc](apps/docs/public/screenshots/openapi-rapidoc.webp) | ![OpenAPI Fumadocs](apps/docs/public/screenshots/openapi-fumadocs.webp) |
 
-See [docs](https://docs.mira.ly/libraries/contributing/installation) for instructions.
+See [docs](https://docs.microchain.systems/libraries/contributing/installation) for instructions.
 
 ## Socials/Contact
 
-- [Twitter/X - @MiraProtocol](https://x.com/MiraProtocol)
+- [Twitter/X - @MiraProtocol](https://x.com/MicrochainDLM/)
 - [Discord](https://discord.gg/6pHdTY6rYq)
 
 ## Acknowledgements & Ecosystem
