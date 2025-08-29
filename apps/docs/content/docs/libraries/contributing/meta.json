@@ -2,5 +2,5 @@
   "title": "Contributing",
   "icon": "Code",
   "root": true,
-  "pages": ["installation", "packages", "concepts"]
+  "pages": ["installation", "concepts"]
 }
