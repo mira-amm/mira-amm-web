@@ -159,7 +159,7 @@ model {
             vercel = brand {
                 title: "Vercel"
                 icon: https://avatars.githubusercontent.com/u/14985020?s=48&v=4
-                description: "Platform-as-a-Service provider hosting front-ends with continous deployment"
+                description: "Platform-as-a-Service provider hosting front-ends with continuous deployment"
                 link : https://vercel.com
                 style {
                     color: gray-900
@@ -181,7 +181,7 @@ model {
             sentio = brand {
                 title: "Sentio"
                 icon: https://sentio.xyz/favicon.ico
-                description: "Blochain Indexing Provider"
+                description: "Blockhain Indexing Provider"
                 link : https://sentio.xyz
                 style {
                     color: sky
