@@ -72,7 +72,7 @@ model {
                 title: "Contracts"
                 icon: https://avatars.githubusercontent.com/u/55993183?s=200&v=4
                 link: https://github.com/mira-amm/mira-v1-core
-                desription: "Implements the foundational AMM logic, handling swaps, liquidity provision, and pool state management."
+                description: "Implements the foundational AMM logic, handling swaps, liquidity provision, and pool state management."
                 style {
                     color: green
                     shape: storage
@@ -146,7 +146,7 @@ model {
         }
 
         external-providers.software-development.vercel -> documentation {
-            title: "provides continous deployment hosting for"
+            title: "provides continuous deployment hosting for"
         }
 
         external-providers.software-development.vercel -> backend {
@@ -642,7 +642,7 @@ model {
                     vercel = brand {
                         title: "Vercel"
                         icon: https://avatars.githubusercontent.com/u/14985020?s=48&v=4
-                        description: "Platform-as-a-Service provider hosting front-ends with continous deployment"
+                        description: "Platform-as-a-Service provider hosting front-ends with continuous deployment"
                         link: https://vercel.com
                         style {
                             color: gray-500
