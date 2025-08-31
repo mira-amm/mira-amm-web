@@ -4,7 +4,7 @@
 
 ## Checklist
 
-- [ ] I've thoroughly read the latest [contribution guidelines](https://docs.mira.ly/libraries/contributing/installation).
+- [ ] I've thoroughly read the latest [contribution guidelines](https://docs.microchain.systems/libraries/contributing/installation).
 - [ ] I've rebased my branch onto `main` **before** creating this PR.
 - [ ] My commit messages follow [conventional spec](https://www.conventionalcommits.org/en/)
 - [ ] I've added tests to cover my changes (if applicable).
