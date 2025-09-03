@@ -10,7 +10,7 @@ on:
 jobs:
   e2e:
     # Sped up greatly via sharding across cores
-    runs-on: self-hosted # https://github.com/mira-amm/mira-amm-web/settings/actions/runners
+    runs-on: ubuntu-latest # https://github.com/mira-amm/mira-amm-web/settings/actions/runners
     # runs-on: ubuntu-latest # Uncomment in case of self-hosted runner downtime. Slower test runs due to only 2 cores.
     strategy:
       matrix:
@@ -25,31 +25,19 @@ jobs:
       - name: 🌳 Fetch main branch # Will be used for test splitting later
         run: git fetch origin main # Explicitly fetch the 'main' branch to ensure it's available
 
-        # TODO: use lix installer because that's what we use for local dev
-        # https://github.com/lix-pm/setup-lix
-      - name: ❄ Install Nix
-        uses: cachix/install-nix-action@v26
-      - uses: cachix/cachix-action@v14
+      - name: 🟨 Install pnpm
+        uses: pnpm/action-setup@v4
+
+      - name: 🟩 Install Node.js
+        uses: actions/setup-node@v4
         with:
-          name: devenv
-
-      # TODO: unsuited to github actions due to broken caching, blocked by hercules CI
-      # - name: 🟦 Install Devenv
-      #   run: nix profile install nixpkgs#devenv
-
-      # - name: 🟨 Install pnpm
-      #   uses: pnpm/action-setup@v4
-
-      # - name: 🟩 Install Node.js
-      #   uses: actions/setup-node@v4
-      #   with:
-      #     node-version: 22
-
-      # - name: 📦 Install dependencies
-      #   run: pnpm i
+          node-version: 22
 
       - name: 📦 Install dependencies
         run: pnpm i --frozen-lockfile
+
+      - name: Install Playwright Browsers
+        run: npx playwright install --with-deps
 
       - name: 🏗 Build
         env:
