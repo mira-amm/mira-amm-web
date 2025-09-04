@@ -1,15 +1,15 @@
 import type {Meta, StoryObj} from "@storybook/react";
 import "../../../styles.css";
-import {Header} from "./header";
 
 import {QueryClient, QueryClientProvider} from "@tanstack/react-query";
 import {FuelProvider} from "@fuels/react";
 import {defaultConnectors} from "@fuels/connectors";
+import {HeaderNew} from "./header";
 const queryClient = new QueryClient();
 
 const meta = {
-  title: "🪙 Web/Layout & Navigation/Header",
-  component: Header,
+  title: "🪙 Web/Layout & Navigation/Header New",
+  component: HeaderNew,
   tags: ["autodocs"],
   parameters: {
     layout: "centered",
@@ -27,10 +27,10 @@ const meta = {
       </QueryClientProvider>
     ),
   ],
-} satisfies Meta<typeof Header>;
+} satisfies Meta<typeof HeaderNew>;
 
 export default meta;
-type Story = StoryObj<typeof Header>;
+type Story = StoryObj<typeof HeaderNew>;
 
 export const Default: Story = {
   args: {

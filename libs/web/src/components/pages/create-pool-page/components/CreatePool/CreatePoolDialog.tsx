@@ -29,7 +29,6 @@ import {
   useBalances,
 } from "@/src/hooks";
 import {cn} from "@/src/utils/cn";
-import {getIsRebrandEnabled} from "@/src/utils/isRebrandEnabled";
 
 export function CreatePoolDialog({
   setPreviewData,
@@ -232,8 +231,6 @@ export function CreatePoolDialog({
     );
   };
 
-  const rebrandEnabled = getIsRebrandEnabled();
-
   return (
     <>
       <div className="flex flex-col gap-4">
@@ -253,9 +250,7 @@ export function CreatePoolDialog({
               className={cn(
                 "flex flex-col items-start w-full rounded-md px-3 py-3 gap-2 bg-background-secondary text-content-dimmed-light cursor-pointer",
                 !isStablePool && "text-content-primary border",
-                !isStablePool && rebrandEnabled
-                  ? "border-black"
-                  : "border-accent-primary"
+                !isStablePool && "border-black"
               )}
               onClick={() => handleStabilityChange(false)}
               role="button"
@@ -272,9 +267,7 @@ export function CreatePoolDialog({
                 "flex flex-col items-start w-full rounded-md px-3 py-3 gap-2 bg-background-secondary text-content-dimmed-light cursor-pointer",
                 isStablePool &&
                   "text-content-primary border-accent-primary border",
-                isStablePool && rebrandEnabled
-                  ? "border-black"
-                  : "border-accent-primary"
+                isStablePool && "border-black"
               )}
               onClick={() => handleStabilityChange(true)}
               role="button"
