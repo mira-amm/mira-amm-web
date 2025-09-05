@@ -67,6 +67,7 @@ const AddBinLiquidityPage = ({
     poolId,
     firstAssetBalance,
     secondAssetBalance,
+    enableAutoSync: selectedPoolType !== "v2",
   });
 
   // V2 integration hook
