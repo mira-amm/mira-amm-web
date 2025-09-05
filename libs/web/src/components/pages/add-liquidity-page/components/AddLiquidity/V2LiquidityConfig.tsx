@@ -27,6 +27,24 @@ type AssetMetadata = {
   decimals?: number;
 } & {isLoading: boolean};
 
+function useDebounce<T>(value: T, delay: number) {
+  const [debounced, setDebounced] = useState<T>(value);
+  useEffect(() => {
+    const id = setTimeout(() => setDebounced(value), delay);
+    return () => clearTimeout(id);
+  }, [value, delay]);
+  return debounced;
+}
+
+// parser for text input ("1,234.56", "  1234  ")
+function parsePriceString(input: string): number | null {
+  if (typeof input !== "string") return null;
+  const cleaned = input.replace(/[^\d.]/g, ""); // keep digits + dot
+  if (!cleaned || cleaned === "." || cleaned === "..") return null;
+  const num = parseFloat(cleaned);
+  return Number.isFinite(num) ? num : null;
+}
+
 // Reusable heading component with consistent styling
 const SectionHeading = ({children}: {children: React.ReactNode}) => (
   <h3
@@ -57,6 +75,7 @@ interface V2LiquidityConfigProps {
 const DEFAULT_BIN_STEP = 25;
 const DEFAULT_BIN_NUMBER = 2000;
 const SLIDER_BIN_RANGE = 150; // Fixed range for slider (75 bins on each side of current price)
+const DEFAULT_INPUT_DEBOUNCE = 400;
 
 export default function V2LiquidityConfig({
   asset0Metadata,
@@ -92,6 +111,20 @@ export default function V2LiquidityConfig({
   const [hasCustomMaxPrice, setHasCustomMaxPrice] = useState(false);
 
   const [minPrice, maxPrice] = priceRange;
+
+  // local string states for text inputs + "typing" flags
+  const [minPriceInput, setMinPriceInput] = useState(
+    formatPriceForDisplay(initialMinPrice, DEFAULT_BIN_STEP)
+  );
+  const [maxPriceInput, setMaxPriceInput] = useState(
+    formatPriceForDisplay(initialMaxPrice, DEFAULT_BIN_STEP)
+  );
+  const [isTypingMin, setIsTypingMin] = useState(false);
+  const [isTypingMax, setIsTypingMax] = useState(false);
+
+  // debounced input values
+  const debouncedMinInput = useDebounce(minPriceInput, DEFAULT_INPUT_DEBOUNCE);
+  const debouncedMaxInput = useDebounce(maxPriceInput, DEFAULT_INPUT_DEBOUNCE);
 
   // Create simple slider bounds from 0 to 1 for the fixed 150-bin range
   const sliderBounds = {
@@ -235,6 +268,15 @@ export default function V2LiquidityConfig({
 
     // Update the price range
     setPriceRange([finalMinPrice, finalMaxPrice]);
+
+    // keep inputs in sync when not typing
+    if (!isTypingMin) {
+      setMinPriceInput(formatPriceForDisplay(finalMinPrice, DEFAULT_BIN_STEP));
+    }
+    if (!isTypingMax) {
+      setMaxPriceInput(formatPriceForDisplay(finalMaxPrice, DEFAULT_BIN_STEP));
+    }
+
     const calculatedBins = calculateBinsBetweenPrices(
       finalMinPrice,
       finalMaxPrice,
@@ -257,6 +299,10 @@ export default function V2LiquidityConfig({
       newNumBins
     );
     setPriceRange([minPrice, newMaxPrice]);
+    // sync text inputs
+    if (!isTypingMax) {
+      setMaxPriceInput(formatPriceForDisplay(newMaxPrice, DEFAULT_BIN_STEP));
+    }
     calculateResults(minPrice, newMaxPrice, DEFAULT_BIN_STEP, currentPrice);
   };
 
@@ -264,6 +310,11 @@ export default function V2LiquidityConfig({
     setPriceRange([initialMinPrice, initialMaxPrice]);
     setHasCustomMinPrice(false);
     setHasCustomMaxPrice(false);
+
+    setMinPriceInput(formatPriceForDisplay(initialMinPrice, DEFAULT_BIN_STEP));
+    setMaxPriceInput(formatPriceForDisplay(initialMaxPrice, DEFAULT_BIN_STEP));
+    setIsTypingMin(false);
+    setIsTypingMax(false);
   };
 
   // Notify parent component of config changes
@@ -288,6 +339,32 @@ export default function V2LiquidityConfig({
   useEffect(() => {
     calculateResults(minPrice, maxPrice, DEFAULT_BIN_STEP, currentPrice);
   }, [minPrice, maxPrice, calculateResults]);
+
+  // when priceRange changes externally (slider/reset), update text inputs if not typing
+  useEffect(() => {
+    if (!isTypingMin) {
+      setMinPriceInput(formatPriceForDisplay(minPrice, DEFAULT_BIN_STEP));
+    }
+  }, [minPrice, isTypingMin]);
+  useEffect(() => {
+    if (!isTypingMax) {
+      setMaxPriceInput(formatPriceForDisplay(maxPrice, DEFAULT_BIN_STEP));
+    }
+  }, [maxPrice, isTypingMax]);
+
+  // commit debounced text edits
+  useEffect(() => {
+    if (!isTypingMin) return;
+    const parsed = parsePriceString(debouncedMinInput);
+    if (parsed !== null) handleMinPriceChange(parsed);
+  }, [debouncedMinInput]);
+
+  useEffect(() => {
+    if (!isTypingMax) return;
+    const parsed = parsePriceString(debouncedMaxInput);
+    console.log("parser", {parsed});
+    if (parsed !== null) handleMaxPriceChange(parsed);
+  }, [debouncedMaxInput]);
 
   return (
     <div className="space-y-6">
@@ -369,10 +446,26 @@ export default function V2LiquidityConfig({
             </label>
             <div className="relative">
               <input
-                type="number"
-                value={formatPriceForDisplay(minPrice, DEFAULT_BIN_STEP)}
-                onChange={(e) => handleMinPriceChange(Number(e.target.value))}
-                step={DEFAULT_BIN_STEP < 10 ? "0.000001" : "0.0001"}
+                type="text"
+                inputMode="decimal"
+                pattern="[0-9]*[.]?[0-9]*"
+                value={
+                  isTypingMin
+                    ? minPriceInput
+                    : formatPriceForDisplay(minPrice, DEFAULT_BIN_STEP)
+                }
+                onChange={(e) => {
+                  setIsTypingMin(true);
+                  setMinPriceInput(e.target.value);
+                }}
+                onBlur={() => {
+                  const parsed = parsePriceString(minPriceInput);
+                  if (parsed !== null) handleMinPriceChange(parsed);
+                  setIsTypingMin(false);
+                  setMinPriceInput(
+                    formatPriceForDisplay(minPrice, DEFAULT_BIN_STEP)
+                  );
+                }}
                 className="w-full p-3 border border-gray-300 dark:border-gray-600 rounded-lg text-sm bg-gray-200 dark:bg-gray-600 text-gray-900 dark:text-gray-100 focus:bg-white dark:focus:bg-gray-800 focus:border-blue-500 dark:focus:border-blue-400"
                 placeholder="1200"
               />
@@ -387,10 +480,26 @@ export default function V2LiquidityConfig({
             </label>
             <div className="relative">
               <input
-                type="number"
-                value={formatPriceForDisplay(maxPrice, DEFAULT_BIN_STEP)}
-                onChange={(e) => handleMaxPriceChange(Number(e.target.value))}
-                step={DEFAULT_BIN_STEP < 10 ? "0.000001" : "0.0001"}
+                type="text"
+                inputMode="decimal"
+                pattern="[0-9]*[.]?[0-9]*"
+                value={
+                  isTypingMax
+                    ? maxPriceInput
+                    : formatPriceForDisplay(maxPrice, DEFAULT_BIN_STEP)
+                }
+                onChange={(e) => {
+                  setIsTypingMax(true);
+                  setMaxPriceInput(e.target.value);
+                }}
+                onBlur={() => {
+                  const parsed = parsePriceString(maxPriceInput);
+                  if (parsed !== null) handleMaxPriceChange(parsed);
+                  setIsTypingMax(false);
+                  setMaxPriceInput(
+                    formatPriceForDisplay(maxPrice, DEFAULT_BIN_STEP)
+                  );
+                }}
                 className="w-full p-3 border border-gray-300 dark:border-gray-600 rounded-lg text-sm bg-gray-200 dark:bg-gray-600 text-gray-900 dark:text-gray-100 focus:bg-white dark:focus:bg-gray-800 focus:border-blue-500 dark:focus:border-blue-400"
                 placeholder="1200"
               />
