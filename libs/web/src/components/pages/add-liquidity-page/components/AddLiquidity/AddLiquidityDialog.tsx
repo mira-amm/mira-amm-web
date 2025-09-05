@@ -1,4 +1,10 @@
-import {Dispatch, SetStateAction, useCallback, useState} from "react";
+import {
+  Dispatch,
+  SetStateAction,
+  useCallback,
+  useEffect,
+  useState,
+} from "react";
 import {Button} from "@/meshwave-ui/Button";
 import {useConnectUI, useIsConnected} from "@fuels/react";
 import {PoolId} from "mira-dex-ts";
@@ -108,7 +114,9 @@ const AddLiquidityDialog = ({
     secondAmountInput,
     firstAmount,
     secondAmount,
-    setAmount,
+    setAmountForCoin,
+    clearFirstAmount,
+    clearSecondAmount,
     isStablePool,
     aprValue,
     tvlValue,
@@ -126,6 +134,7 @@ const AddLiquidityDialog = ({
     secondAssetBalance,
     onPreview: handlePreview,
     onPreviewError: handlePreviewError,
+    enableAutoSync: poolType !== "v2",
   });
 
   // V2 integration for concentrated liquidity
@@ -155,6 +164,42 @@ const AddLiquidityDialog = ({
   useDocumentTitle(
     `Add Liquidity: ${asset0Metadata.symbol}/${asset1Metadata.symbol}`
   );
+
+  // Determine out-of-range states for disabling inputs in v2
+  const currentPrice =
+    asset1Price && asset0Price ? asset1Price / asset0Price : null;
+  const isOutOfRangeLow = Boolean(
+    poolType === "v2" &&
+      v2Config &&
+      currentPrice !== null &&
+      currentPrice < v2Config.priceRange[0]
+  );
+  const isOutOfRangeHigh = Boolean(
+    poolType === "v2" &&
+      v2Config &&
+      currentPrice !== null &&
+      currentPrice > v2Config.priceRange[1]
+  );
+
+  // Clear the irrelevant amount when out of range
+  useEffect(() => {
+    if (poolType !== "v2" || !v2Config || currentPrice === null) return;
+    if (isOutOfRangeLow) {
+      // Only first asset is needed → clear second
+      clearSecondAmount();
+    } else if (isOutOfRangeHigh) {
+      // Only second asset is needed → clear first
+      clearFirstAmount();
+    }
+  }, [
+    poolType,
+    v2Config,
+    currentPrice,
+    isOutOfRangeLow,
+    isOutOfRangeHigh,
+    clearFirstAmount,
+    clearSecondAmount,
+  ]);
 
   return (
     <>
@@ -252,16 +297,16 @@ const AddLiquidityDialog = ({
             <CoinInput
               assetId={firstAssetId}
               value={firstAmountInput}
-              loading={!isFirstToken && isFetching}
-              setAmount={setAmount(poolId[0].bits)}
+              loading={(!isFirstToken && isFetching) || isOutOfRangeHigh}
+              setAmount={(val) => setAmountForCoin(poolId[0].bits, val)}
               balance={firstAssetBalance}
               usdRate={asset0Price || undefined}
             />
             <CoinInput
               assetId={secondAssetId}
               value={secondAmountInput}
-              loading={isFirstToken && isFetching}
-              setAmount={setAmount(poolId[1].bits)}
+              loading={(isFirstToken && isFetching) || isOutOfRangeLow}
+              setAmount={(val) => setAmountForCoin(poolId[1].bits, val)}
               balance={secondAssetBalance}
               usdRate={asset1Price || undefined}
             />

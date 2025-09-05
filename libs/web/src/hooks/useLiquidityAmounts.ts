@@ -23,10 +23,13 @@ export const useLiquidityAmounts = (poolId: PoolId) => {
     (coin: string) => {
       return (value: string) => {
         if (value === "") {
-          debouncedSetFirstAmount(new BN(0));
-          debouncedSetSecondAmount(new BN(0));
-          setFirstAmountInput("");
-          setSecondAmountInput("");
+          if (coin === poolId[0].bits) {
+            debouncedSetFirstAmount(new BN(0));
+            setFirstAmountInput("");
+          } else {
+            debouncedSetSecondAmount(new BN(0));
+            setSecondAmountInput("");
+          }
           setActiveAsset(coin);
           return;
         }
@@ -44,6 +47,38 @@ export const useLiquidityAmounts = (poolId: PoolId) => {
         }
         setActiveAsset(coin);
       };
+    },
+    [
+      debouncedSetFirstAmount,
+      debouncedSetSecondAmount,
+      poolId,
+      asset0Metadata,
+      asset1Metadata,
+    ]
+  );
+
+  const setAmountForCoin = useCallback(
+    (coin: string, value: string) => {
+      if (value === "") {
+        if (coin === poolId[0].bits) {
+          debouncedSetFirstAmount(new BN(0));
+          setFirstAmountInput("");
+        } else {
+          debouncedSetSecondAmount(new BN(0));
+          setSecondAmountInput("");
+        }
+        setActiveAsset(coin);
+        return;
+      }
+
+      if (coin === poolId[0].bits) {
+        debouncedSetFirstAmount(bn.parseUnits(value, asset0Metadata.decimals));
+        setFirstAmountInput(value);
+      } else {
+        debouncedSetSecondAmount(bn.parseUnits(value, asset1Metadata.decimals));
+        setSecondAmountInput(value);
+      }
+      setActiveAsset(coin);
     },
     [
       debouncedSetFirstAmount,
@@ -72,6 +107,18 @@ export const useLiquidityAmounts = (poolId: PoolId) => {
     setFirstAmountInput(amount.formatUnits(decimals));
   }, []);
 
+  const clearFirstAmount = useCallback(() => {
+    setFirstAmount(new BN(0));
+    setFirstAmountInput("");
+    setActiveAsset(poolId[0].bits);
+  }, [poolId]);
+
+  const clearSecondAmount = useCallback(() => {
+    setSecondAmount(new BN(0));
+    setSecondAmountInput("");
+    setActiveAsset(poolId[1].bits);
+  }, [poolId]);
+
   return {
     firstAmount,
     firstAmountInput,
@@ -80,9 +127,12 @@ export const useLiquidityAmounts = (poolId: PoolId) => {
     activeAsset,
     isFirstToken,
     setAmount,
+    setAmountForCoin,
     resetAmounts,
     updateSecondAmount,
     updateFirstAmount,
+    clearFirstAmount,
+    clearSecondAmount,
     asset0Metadata,
     asset1Metadata,
   };
