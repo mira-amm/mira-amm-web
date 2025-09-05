@@ -165,6 +165,9 @@ export default function V2LiquidityConfig({
   const [visualizationData, setVisualizationData] = useState<any>(null);
 
   const [rangeError, setRangeError] = useState<string | null>(null);
+  const hasAsset0 = (totalAsset0Amount ?? 0) > 0;
+  const hasAsset1 = (totalAsset1Amount ?? 0) > 0;
+  const shouldShowSimulation = hasAsset0 && hasAsset1;
 
   const calculateResults = useCallback(
     (
@@ -173,6 +176,14 @@ export default function V2LiquidityConfig({
       binStepVal: number,
       currentPriceVal: number
     ) => {
+      // If simulation isn't eligible, clear derived state and bail.
+      if (!shouldShowSimulation) {
+        setBinResults(null);
+        setLiquidityDistribution(undefined);
+        setVisualizationData(null);
+        return;
+      }
+
       const result = TradeUtils.calculateLiquidityBook({
         minPrice: minPriceVal,
         maxPrice: maxPriceVal,
@@ -200,7 +211,7 @@ export default function V2LiquidityConfig({
       const vizData = distributionToVisualizationData(distribution);
       setVisualizationData(vizData);
     },
-    [numBins, liquidityShape]
+    [numBins, liquidityShape, shouldShowSimulation]
   );
 
   const resetIfError = () => {
@@ -388,7 +399,7 @@ export default function V2LiquidityConfig({
   // Initialize calculations
   useEffect(() => {
     calculateResults(minPrice, maxPrice, DEFAULT_BIN_STEP, currentPrice);
-  }, [minPrice, maxPrice, calculateResults]);
+  }, [minPrice, maxPrice, calculateResults, currentPrice]);
 
   // when priceRange changes externally (slider/reset), update text inputs if not typing
   useEffect(() => {
@@ -625,40 +636,42 @@ export default function V2LiquidityConfig({
       </div>
 
       {/* Simulated Distribution Preview */}
-      <div className="space-y-4">
-        <div className="flex justify-between items-center">
-          <SectionHeading>Simulated distribution</SectionHeading>
-          <div className="flex items-center space-x-4">
-            <div className="flex items-center">
-              <div className="w-3 h-3 bg-red-500 rounded-full mr-2"></div>
-              <span className="text-sm text-content-primary">
-                {asset0Metadata.symbol}
-              </span>
-            </div>
-            <div className="flex items-center">
-              <div className="w-3 h-3 bg-blue-500 rounded-full mr-2"></div>
-              <span className="text-sm text-content-primary">
-                {asset1Metadata.symbol}
-              </span>
+      {shouldShowSimulation && (
+        <div className="space-y-4">
+          <div className="flex justify-between items-center">
+            <SectionHeading>Simulated distribution</SectionHeading>
+            <div className="flex items-center space-x-4">
+              <div className="flex items-center">
+                <div className="w-3 h-3 bg-red-500 rounded-full mr-2"></div>
+                <span className="text-sm text-content-primary">
+                  {asset0Metadata.symbol}
+                </span>
+              </div>
+              <div className="flex items-center">
+                <div className="w-3 h-3 bg-blue-500 rounded-full mr-2"></div>
+                <span className="text-sm text-content-primary">
+                  {asset1Metadata.symbol}
+                </span>
+              </div>
             </div>
           </div>
+          <div className="h-40">
+            <SimulatedDistribution
+              liquidityShape={liquidityShape}
+              minPrice={minPrice}
+              maxPrice={maxPrice}
+              numBins={numBins}
+              currentPrice={currentPrice}
+              asset0Symbol={asset0Metadata.symbol}
+              asset1Symbol={asset1Metadata.symbol}
+              asset0Price={asset0Price}
+              asset1Price={asset1Price}
+              totalAsset0Amount={totalAsset0Amount}
+              totalAsset1Amount={totalAsset1Amount}
+            />
+          </div>
         </div>
-        <div className="h-40">
-          <SimulatedDistribution
-            liquidityShape={liquidityShape}
-            minPrice={minPrice}
-            maxPrice={maxPrice}
-            numBins={numBins}
-            currentPrice={currentPrice}
-            asset0Symbol={asset0Metadata.symbol}
-            asset1Symbol={asset1Metadata.symbol}
-            asset0Price={asset0Price}
-            asset1Price={asset1Price}
-            totalAsset0Amount={totalAsset0Amount}
-            totalAsset1Amount={totalAsset1Amount}
-          />
-        </div>
-      </div>
+      )}
     </div>
   );
 }
