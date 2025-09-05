@@ -18,6 +18,7 @@ import {
   calculateBinsBetweenPrices,
   getCurrentPriceSliderPosition,
 } from "./priceSliderUtils";
+import {cn} from "@/src/utils/cn";
 
 export type LiquidityShape = "spot" | "curve" | "bidask";
 
@@ -76,6 +77,9 @@ const DEFAULT_BIN_STEP = 25;
 const DEFAULT_BIN_NUMBER = 2000;
 const SLIDER_BIN_RANGE = 150; // Fixed range for slider (75 bins on each side of current price)
 const DEFAULT_INPUT_DEBOUNCE = 400;
+
+const INVALID_MSG =
+  "Invalid range. The min price must be lower than the max price.";
 
 export default function V2LiquidityConfig({
   asset0Metadata,
@@ -160,6 +164,8 @@ export default function V2LiquidityConfig({
   >(undefined);
   const [visualizationData, setVisualizationData] = useState<any>(null);
 
+  const [rangeError, setRangeError] = useState<string | null>(null);
+
   const calculateResults = useCallback(
     (
       minPriceVal: number,
@@ -197,9 +203,25 @@ export default function V2LiquidityConfig({
     [numBins, liquidityShape]
   );
 
+  const resetIfError = () => {
+    if (rangeError) {
+      resetPrice();
+    }
+  };
+
   const handleMinPriceChange = (value: number) => {
     // Align price to nearest bin boundary
     const alignedPrice = alignPriceToBin(value, currentPrice, DEFAULT_BIN_STEP);
+
+    // Validate: min must be strictly lower than current max
+    if (alignedPrice >= maxPrice) {
+      setRangeError(INVALID_MSG);
+      return; // disengage: do not update anything else
+    }
+
+    // Clear error if previously set
+    if (rangeError) setRangeError(null);
+
     setPriceRange([alignedPrice, maxPrice]);
     setHasCustomMinPrice(true); // Mark as manually entered
     const calculatedBins = calculateBinsBetweenPrices(
@@ -214,6 +236,15 @@ export default function V2LiquidityConfig({
   const handleMaxPriceChange = (value: number) => {
     // Align price to nearest bin boundary
     const alignedPrice = alignPriceToBin(value, currentPrice, DEFAULT_BIN_STEP);
+
+    // Validate: max must be strictly greater than current min
+    if (alignedPrice <= minPrice) {
+      setRangeError(INVALID_MSG);
+      return; // disengage
+    }
+
+    if (rangeError) setRangeError(null);
+
     setPriceRange([minPrice, alignedPrice]);
     setHasCustomMaxPrice(true); // Mark as manually entered
     const calculatedBins = calculateBinsBetweenPrices(
@@ -292,12 +323,23 @@ export default function V2LiquidityConfig({
   };
 
   const handleNumBinsChange = (newNumBins: number) => {
+    // Disengage while in error; clicking into the field will reset via onFocus
+    if (rangeError) return;
+
     setNumBins(newNumBins);
     const newMaxPrice = TradeUtils.calculateMaxPriceFromBins(
       minPrice,
       DEFAULT_BIN_STEP,
       newNumBins
     );
+
+    if (newMaxPrice <= minPrice) {
+      setRangeError(INVALID_MSG);
+      return;
+    } else if (rangeError) {
+      setRangeError(null);
+    }
+
     setPriceRange([minPrice, newMaxPrice]);
     // sync text inputs
     if (!isTypingMax) {
@@ -315,6 +357,14 @@ export default function V2LiquidityConfig({
     setMaxPriceInput(formatPriceForDisplay(initialMaxPrice, DEFAULT_BIN_STEP));
     setIsTypingMin(false);
     setIsTypingMax(false);
+
+    const calculatedBins = calculateBinsBetweenPrices(
+      initialMinPrice,
+      initialMaxPrice,
+      DEFAULT_BIN_STEP
+    );
+    setNumBins(calculatedBins);
+    setRangeError(null);
   };
 
   // Notify parent component of config changes
@@ -362,7 +412,6 @@ export default function V2LiquidityConfig({
   useEffect(() => {
     if (!isTypingMax) return;
     const parsed = parsePriceString(debouncedMaxInput);
-    console.log("parser", {parsed});
     if (parsed !== null) handleMaxPriceChange(parsed);
   }, [debouncedMaxInput]);
 
@@ -439,7 +488,9 @@ export default function V2LiquidityConfig({
         </div>
 
         {/* Price Input Fields */}
-        <div className="grid grid-cols-2 gap-4 mb-4">
+        <div
+          className={cn("grid grid-cols-2 gap-4", rangeError ? "mb-2" : "mb-4")}
+        >
           <div>
             <label className="block text-sm mb-2 text-content-primary">
               Min price
@@ -465,6 +516,7 @@ export default function V2LiquidityConfig({
                   setMinPriceInput(
                     formatPriceForDisplay(minPrice, DEFAULT_BIN_STEP)
                   );
+                  setRangeError(null);
                 }}
                 className="w-full p-3 border border-gray-300 dark:border-gray-600 rounded-lg text-sm bg-gray-200 dark:bg-gray-600 text-gray-900 dark:text-gray-100 focus:bg-white dark:focus:bg-gray-800 focus:border-blue-500 dark:focus:border-blue-400"
                 placeholder="1200"
@@ -499,6 +551,7 @@ export default function V2LiquidityConfig({
                   setMaxPriceInput(
                     formatPriceForDisplay(maxPrice, DEFAULT_BIN_STEP)
                   );
+                  setRangeError(null);
                 }}
                 className="w-full p-3 border border-gray-300 dark:border-gray-600 rounded-lg text-sm bg-gray-200 dark:bg-gray-600 text-gray-900 dark:text-gray-100 focus:bg-white dark:focus:bg-gray-800 focus:border-blue-500 dark:focus:border-blue-400"
                 placeholder="1200"
@@ -510,6 +563,12 @@ export default function V2LiquidityConfig({
           </div>
         </div>
 
+        {rangeError && (
+          <div className="text-sm text-red-600 dark:text-red-400">
+            {rangeError}
+          </div>
+        )}
+
         {/* Number of Bins */}
         <div className="mb-4">
           <label className="block text-sm mb-2 text-content-primary">
@@ -520,6 +579,7 @@ export default function V2LiquidityConfig({
               type="number"
               value={numBins}
               onChange={(e) => handleNumBinsChange(Number(e.target.value))}
+              onFocus={resetIfError} // reset if user clicks here while invalid
               min="1"
               max="50"
               step="1"
