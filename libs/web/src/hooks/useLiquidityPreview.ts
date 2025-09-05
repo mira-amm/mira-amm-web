@@ -15,6 +15,7 @@ type UseLiquidityPreviewProps = {
   asset0Decimals: number;
   asset1Decimals: number;
   onPreviewError?: (error: any) => void;
+  enableAutoSync?: boolean;
 };
 
 export const useLiquidityPreview = ({
@@ -30,6 +31,7 @@ export const useLiquidityPreview = ({
   asset0Decimals,
   asset1Decimals,
   onPreviewError,
+  enableAutoSync = true,
 }: UseLiquidityPreviewProps) => {
   const {
     data,
@@ -51,7 +53,7 @@ export const useLiquidityPreview = ({
   }, [previewError, onPreviewError]);
 
   useEffect(() => {
-    if (data) {
+    if (data && enableAutoSync) {
       const anotherTokenDecimals = isFirstToken
         ? asset1Decimals
         : asset0Decimals;
