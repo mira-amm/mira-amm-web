@@ -13,6 +13,7 @@ type UseLiquidityFormProps = {
   secondAssetBalance: BN;
   onPreview?: (data: any) => void;
   onPreviewError?: (error: any) => void;
+  enableAutoSync?: boolean;
 };
 
 export const useLiquidityForm = ({
@@ -21,6 +22,7 @@ export const useLiquidityForm = ({
   secondAssetBalance,
   onPreview,
   onPreviewError,
+  enableAutoSync = true,
 }: UseLiquidityFormProps) => {
   const [isStablePool, setIsStablePool] = useState(poolId[2]);
 
@@ -32,9 +34,12 @@ export const useLiquidityForm = ({
     activeAsset,
     isFirstToken,
     setAmount,
+    setAmountForCoin,
     resetAmounts,
     updateSecondAmount,
     updateFirstAmount,
+    clearFirstAmount,
+    clearSecondAmount,
     asset0Metadata,
     asset1Metadata,
   } = useLiquidityAmounts(poolId);
@@ -65,6 +70,7 @@ export const useLiquidityForm = ({
     asset0Decimals: asset0Metadata.decimals,
     asset1Decimals: asset1Metadata.decimals,
     onPreviewError,
+    enableAutoSync,
   });
 
   const {handleButtonClick} = useLiquidityActions({
@@ -85,7 +91,10 @@ export const useLiquidityForm = ({
     activeAsset,
     isFirstToken,
     setAmount,
+    setAmountForCoin,
     resetAmounts,
+    clearFirstAmount,
+    clearSecondAmount,
 
     // Pool info
     isStablePool,

@@ -19,6 +19,7 @@ interface UseLiquidityFormV2IntegrationProps {
     binResults?: any;
     liquidityDistribution?: any;
   } | null;
+  currentPrice?: number;
 }
 
 export function useLiquidityFormV2Integration({
@@ -28,6 +29,7 @@ export function useLiquidityFormV2Integration({
   poolId,
   onPreview,
   v2Config,
+  currentPrice,
 }: UseLiquidityFormV2IntegrationProps) {
   // Only use v2 functionality if pool type is v2 and we have a valid pool ID
   const shouldUseV2 = poolType === "v2" && (poolId || isV2MockEnabled());
@@ -118,8 +120,28 @@ export function useLiquidityFormV2Integration({
   const v2ButtonTitle = useMemo(() => {
     if (!shouldUseV2) return null;
 
-    if (!firstAmount.gt(0) || !secondAmount.gt(0)) {
-      return "Enter amounts";
+    // Allow one-sided amounts if price range is strictly above or below current price
+    const outOfRangeLow = Boolean(
+      v2Config &&
+        typeof currentPrice === "number" &&
+        currentPrice < v2Config.priceRange[0]
+    );
+    const outOfRangeHigh = Boolean(
+      v2Config &&
+        typeof currentPrice === "number" &&
+        currentPrice > v2Config.priceRange[1]
+    );
+    const needsBoth = !outOfRangeLow && !outOfRangeHigh;
+
+    if (needsBoth) {
+      if (!firstAmount.gt(0) || !secondAmount.gt(0)) {
+        return "Enter amounts";
+      }
+    } else {
+      // One-sided: at least one side > 0
+      if (!firstAmount.gt(0) && !secondAmount.gt(0)) {
+        return "Enter amount";
+      }
     }
 
     if (v2Config) {
@@ -129,13 +151,27 @@ export function useLiquidityFormV2Integration({
     }
 
     return "Preview V2 Liquidity";
-  }, [shouldUseV2, firstAmount, secondAmount, v2Config]);
+  }, [shouldUseV2, firstAmount, secondAmount, v2Config, currentPrice]);
 
   const v2ButtonDisabled = useMemo(() => {
     if (!shouldUseV2) return false;
 
     const isLoading = isV2MockEnabled() ? isPending : v2AddLiquidity.isPending;
-    const hasValidAmounts = firstAmount.gt(0) && secondAmount.gt(0);
+    // Allow one-sided amounts if out of range on one side
+    const outOfRangeLow = Boolean(
+      v2Config &&
+        typeof currentPrice === "number" &&
+        currentPrice < v2Config.priceRange[0]
+    );
+    const outOfRangeHigh = Boolean(
+      v2Config &&
+        typeof currentPrice === "number" &&
+        currentPrice > v2Config.priceRange[1]
+    );
+    const needsBoth = !outOfRangeLow && !outOfRangeHigh;
+    const hasValidAmounts = needsBoth
+      ? firstAmount.gt(0) && secondAmount.gt(0)
+      : firstAmount.gt(0) || secondAmount.gt(0);
     const hasValidConfig = v2Config && v2Config.numBins > 0;
 
     return !hasValidAmounts || !hasValidConfig || isLoading;
@@ -146,6 +182,7 @@ export function useLiquidityFormV2Integration({
     v2Config,
     isPending,
     v2AddLiquidity.isPending,
+    currentPrice,
   ]);
 
   return {
