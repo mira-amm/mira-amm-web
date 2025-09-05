@@ -5,6 +5,7 @@ import {MinEthValueBN} from "@/src/utils/constants";
 import {BN} from "fuels";
 import {useAssetMetadata} from "@/src/hooks";
 import fiatValueFormatter from "@/src/utils/abbreviateNumber";
+import {cn} from "@/src/utils/cn";
 
 const CoinInput = ({
   assetId,
@@ -53,8 +54,18 @@ const CoinInput = ({
       ? fiatValueFormatter(numericValue * usdRate!)
       : null;
 
+  const hasInsufficientBalance =
+    value.trim().length > 0 &&
+    !isNaN(numericValue) &&
+    numericValue > parseFloat(balanceValue);
+
   return (
-    <div className="min-h-[65px] flex items-center gap-1 p-3 rounded-lg bg-background-secondary">
+    <div
+      className={cn(
+        "min-h-[65px] flex items-center gap-1 p-3 rounded-lg bg-background-secondary",
+        hasInsufficientBalance ? "ring-1 ring-red-500" : "ring-0"
+      )}
+    >
       <div className="flex flex-col gap-1 items-start flex-1">
         <input
           type="text"
@@ -65,10 +76,26 @@ const CoinInput = ({
           value={value}
           disabled={loading}
           onChange={handleChange}
-          className="w-full  text-content-primary text-sm leading-4 bg-transparent border-none disabled:text-content-dimmed-dark lg:text-base lg:leading-[19px] font-alt"
+          aria-invalid={hasInsufficientBalance}
+          className={cn(
+            "w-full text-content-primary text-sm leading-4 bg-transparent border-none disabled:text-content-dimmed-dark lg:text-base lg:leading-[19px] font-alt",
+            hasInsufficientBalance ? "outline-none" : ""
+          )}
         />
+
+        {hasInsufficientBalance && (
+          <p className="min-h-[16px] text-xs leading-4 text-red-500 lg:min-h-[18px] lg:text-sm lg:leading-[18px]">
+            Insufficient balance
+          </p>
+        )}
+
         {usdValue !== null && (
-          <p className="min-h-[16px] text-xs leading-4 text-content-tertiary lg:min-h-[18px] lg:text-sm lg:leading-[18px]">
+          <p
+            className={cn(
+              "min-h-[16px] text-xs leading-4 lg:min-h-[18px] lg:text-sm lg:leading-[18px]",
+              hasInsufficientBalance ? "text-red-400" : "text-content-tertiary"
+            )}
+          >
             {usdValue}
           </p>
         )}
