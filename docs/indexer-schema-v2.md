@@ -223,7 +223,7 @@ Enhanced liquidity pool entity supporting both V1 pools and V2 liquidity book po
 - `protocolVersion`: Integer (1 or 2) indicating the protocol version *(Note: Making this required will require re-indexing existing V1 pools)*
 - `activeBinId`: Current active bin ID where trading occurs
 - `binStep`: The price step between consecutive bins (basis points)
-- `basePrice`: Base price for bin calculations
+- `basePrice`: Initial price for bin calculations
 - `globalLiquidity`: Total liquidity across all bins
 - `baseFee`: Base fee rate for the pool
 - `volatilityFee`: Current volatility-adjusted fee
@@ -499,9 +499,9 @@ query GetPoolMetrics($poolId: ID!) {
 ### Get Bin Liquidity Providers
 ```graphql
 query GetBinLiquidityProviders($poolId: ID!, $binId: Int!) {
-  binPositions(where: { 
+  binPositions(where: {
     bin: { pool: $poolId, binId: $binId },
-    liquidityShares_gt: 0 
+    liquidityShares_gt: 0
   }) {
     position {
       nftAssetId
@@ -524,7 +524,7 @@ query GetBinLiquidityProviders($poolId: ID!, $binId: Int!) {
 
 ### Price Calculation Differences
 - **V1 Pools**: Price calculated as `reserve1 / reserve0` (constant product or stable curve)
-- **V2 Liquidity Book Pools**: 
+- **V2 Liquidity Book Pools**:
   - Each bin represents a discrete price level
   - Price = `basePrice * (1 + binStep/10000)^binId`
   - Active trading occurs only in the active bin
@@ -532,7 +532,7 @@ query GetBinLiquidityProviders($poolId: ID!, $binId: Int!) {
 
 ### Liquidity Representation
 - **V1 Pools**: Single liquidity value across entire price range
-- **V2 Liquidity Book Pools**: 
+- **V2 Liquidity Book Pools**:
   - Liquidity concentrated in discrete bins
   - Each bin acts as a constant product pool
   - Positions represented by NFTs owning shares across multiple bins
@@ -549,7 +549,7 @@ query GetBinLiquidityProviders($poolId: ID!, $binId: Int!) {
 
 ### Fee Handling
 - **V1 Pools**: Fixed fee tiers (0.3% for volatile, 0.04% for stable)
-- **V2 Liquidity Book Pools**: 
+- **V2 Liquidity Book Pools**:
   - Dynamic fee rates: `baseFee + volatilityFee`
   - Fees accumulated per bin
   - Fee distribution proportional to liquidity shares
