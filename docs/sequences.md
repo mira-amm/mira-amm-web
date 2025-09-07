@@ -121,6 +121,7 @@ sequenceDiagram
 
     alt Concentrated Pool (V2)
         LP->>WebApp: Set bin step
+        LP->>WebApp: Set base fee
         LP->>WebApp: Set initial price
         LP->>WebApp: Choose price range
     else Stable Pool (V1)
@@ -130,7 +131,6 @@ sequenceDiagram
         LP->>WebApp: Confirm standard AMM
     end
 
-    LP->>WebApp: Set trading fee
     LP->>WebApp: Input initial liquidity amounts
 
     WebApp->>SDK: Validate all parameters
