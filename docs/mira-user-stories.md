@@ -29,6 +29,7 @@ portfolio tracking.
    - [View Liquidity Position](#story-3-view-liquidity-position)
    - [View Pool Information](#story-4-view-pool-information)
    - [Execute Optimal Swap](#story-5-execute-optimal-swap)
+   - [Create New Liquidity Pool](#story-6-create-new-liquidity-pool)
 
 ---
 
@@ -787,6 +788,173 @@ graph TD
 - System supports concurrent execution of up to 2,000 simultaneous swaps without degradation
 - Smart contract integration includes slippage protection and deadline enforcement against attacks
 - Transaction history maintains complete records including failed transactions with failure reasons
+
+### Story 6: Create New Liquidity Pool
+
+**As a** professional liquidity provider or institutional user **I want to** create new liquidity
+pools for token pairs **So that** I can provide initial liquidity and enable trading for new asset
+pairs on the platform
+
+#### User Flow Diagram
+
+```mermaid
+graph TD
+    A[Navigate to Create Pool] --> B[Connect Wallet]
+    B --> C[Select Asset 1]
+    C --> D[Select Asset 2]
+    D --> E[Choose Pool Type]
+    E --> F{Pool Type Selected}
+    F -->|Stable| G[Configure Stable Pool]
+    F -->|Volatile| H[Configure Volatile Pool]
+    F -->|V2 Binned| I[Configure V2 Binned Pool]
+    I --> J[Enter Base Fee]
+    J --> K[Enter Bin Steps]
+    K --> L[Set Initial Price]
+    G --> M[System Orders Assets by ID]
+    H --> M
+    L --> M
+    M --> N[Generate Expected Pool ID]
+    N --> O{Check Pool Existence}
+    O -->|Pool Exists| P[Display Pool Exists Message]
+    O -->|Pool Not Found| Q[Enable Create Button]
+    P --> R[Show Link to Existing Pool]
+    Q --> S[Review Pool Parameters]
+    S --> T[Click Create Pool]
+    T --> U[Deploy Pool Contract]
+    U --> V[Transaction Confirmation]
+    V --> W[Redirect to New Pool Page]
+```
+
+#### Task Flow
+
+1. User navigates to Create Pool page from main navigation or pools list
+2. User connects wallet if not already connected
+3. User selects first asset from token list or by searching
+4. User selects second asset ensuring it's different from first asset
+5. System validates token pair is valid (different tokens, both supported)
+6. User selects pool type from three options:
+   - **Stable Pool (V1)**: For stable asset pairs (e.g., stablecoins)
+   - **Volatile Pool (V1)**: For standard volatile asset pairs
+   - **V2 Binned**: For concentrated liquidity with customizable parameters
+7. If V2 Binned is selected:
+   - User enters base fee parameter (basis points)
+   - User enters bin steps parameter (tick spacing)
+   - User sets initial price for the pool (ratio between assets)
+   - System validates parameters are within acceptable ranges
+8. System automatically orders assets by asset ID (deterministic ordering)
+9. System generates expected pool ID based on:
+   - Ordered asset pair
+   - Pool type
+   - Pool parameters (for V2 binned)
+10. System queries indexer to check if pool already exists
+11. If pool exists:
+    - System displays "Pool Already Exists" message
+    - Shows link to existing pool page
+    - Disables create button
+12. If pool doesn't exist:
+    - System enables "Create Pool" button
+    - Displays estimated gas cost
+13. User reviews pool creation parameters:
+    - Asset pair (in correct order)
+    - Pool type and configuration
+    - Expected pool ID
+    - Estimated deployment cost
+14. User clicks "Create Pool" button
+15. System prepares pool deployment transaction
+16. User approves transaction in wallet
+17. Pool factory contract deploys new pool instance
+18. Transaction is submitted to Fuel Network
+19. System monitors deployment transaction
+20. Upon successful deployment:
+    - Pool is registered in factory contract
+    - User is redirected to newly created pool page
+    - Pool appears in pool list for other users
+
+#### Prerequisite Stories
+
+- Token listing and metadata management
+- Wallet connection functionality
+- Pool factory contract deployment
+- Pool data indexing infrastructure
+
+#### Prerequisite Technical Stories
+
+- Pool factory contract interfaces
+- Pool ID generation algorithm
+- Asset ordering system
+- Pool existence validation
+- V2 binned parameter validation
+- Initial price setting mechanism for V2 pools
+
+#### Subtasks
+
+**Designs 6.1: Pool Creation Interface Design**
+
+- Required Competencies: UX/UI Design, Figma
+- Project Areas: Design System, User Interface
+- Description: Create comprehensive pool creation interface designs including dual-token selection
+  component with search and validation, pool type selector with educational tooltips explaining
+  differences between Stable, Volatile, and V2 Binned options, conditional parameter inputs for V2
+  binned pools with validation feedback including base fee, bin steps, and initial price setting
+  interface, pool existence checker with clear status indicators and links to existing pools, and
+  creation confirmation flow with parameter summary and gas estimation
+
+**SDK 6.2: Pool Creation and Factory Management SDK**
+
+- Required Competencies: TypeScript, Smart Contract Integration
+- Project Areas: SDK, Contract Integration
+- Description: Implement comprehensive pool creation business logic including pool factory
+  interaction functions for deploying new pool instances across all types, deterministic pool ID
+  generation algorithm ensuring consistent ordering and unique identification, pool existence
+  validation through efficient indexer queries and contract state checks, V2 binned parameter
+  validation with acceptable range enforcement for base fee, bin steps, and initial price
+  calculation, asset pair validation ensuring token compatibility and preventing duplicate pools,
+  and deployment transaction management with status tracking and error recovery
+
+**Front-End 6.3: Pool Creation Components**
+
+- Required Competencies: React, TypeScript, Frontend Development
+- Project Areas: Frontend, Components
+- Description: Build UI components leveraging SDK pool creation functions including token pair
+  selector using SDK token validation with automatic ordering display, pool type selector displaying
+  SDK-provided pool type options with dynamic parameter fields, V2 binned configuration inputs with
+  SDK parameter validation and real-time feedback for base fee, bin steps, and initial price input
+  with ratio calculation, pool existence checker consuming SDK validation functions with clear user
+  messaging, creation flow orchestration using SDK deployment functions with comprehensive state
+  management, and transaction confirmation interface with SDK gas estimation and status tracking
+
+**Indexer 6.4: Pool Creation and Registry Pipeline**
+
+- Required Competencies: Subsquid, Database Design, Data Modeling
+- Project Areas: Indexer, Data Pipeline
+- Description: Build complete pool creation indexer including pool deployment event tracking from
+  factory contracts with metadata extraction, pool registry maintenance with unique pool
+  identification and duplicate prevention, pool parameter storage for all pool types including V2
+  binned configurations, and real-time pool discovery for immediate availability in pool lists and
+  search results
+
+#### Acceptance Criteria
+
+**Functional Requirements:**
+
+- Token pair selection validates both assets are different and supported on the platform
+- Pool type selection clearly differentiates between Stable, Volatile, and V2 Binned options
+- V2 Binned pools require and validate base fee, bin steps, and initial price parameters within
+  acceptable ranges
+- Asset ordering follows deterministic algorithm ensuring consistent pool ID generation
+- Pool existence check accurately identifies duplicate pools preventing redundant deployments
+- Pool creation transaction successfully deploys new pool contract with correct parameters
+- Newly created pool immediately appears in pool list and is discoverable by other users
+
+**Non-Functional Requirements:**
+
+- Pool ID generation completes within 100ms ensuring responsive user experience
+- Pool existence validation query returns within 500ms preventing user confusion
+- Parameter validation provides real-time feedback within 50ms of input changes
+- Pool deployment gas estimation accurate within 10% of actual cost
+- Creation interface responsive across all device types and screen sizes
+- Failed deployments provide specific error messages with recovery guidance
+- Indexer registers new pools within 30 seconds of on-chain deployment
 
 ---
 
