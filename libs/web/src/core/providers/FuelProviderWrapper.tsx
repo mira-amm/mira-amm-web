@@ -35,7 +35,7 @@ const FUEL_CONFIG = createFuelConfig(() => {
         metadata: {
           name: brandText.dex,
           description: "The Liquidity Hub on Fuel",
-          url: "https://mira.ly/",
+          url: "https://www.microchain.systems",
           icons: ["https://connectors.fuel.network/logo_white.png"],
         },
       }),
