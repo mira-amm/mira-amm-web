@@ -42,7 +42,7 @@ export function useAddLiquidityV2({
     const distributionX = [100]; // 100% of X tokens to active bin
     const distributionY = [100]; // 100% of Y tokens to active bin
     const activeIdDesired = undefined; // Use current active bin
-    const idSlippage = 0; // No bin slippage for single bin
+    const idSlippage = 0; 
 
     const {transactionRequest: txRequest} = await miraV2.addLiquidity(
       poolId,
