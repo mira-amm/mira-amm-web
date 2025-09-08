@@ -1,10 +1,12 @@
 # V2 Event Processing Flowcharts
 
-This document shows the step-by-step entity modifications required for each V2 concentrated liquidity event type.
+This document shows the step-by-step entity modifications required for each V2 concentrated
+liquidity event type.
 
 ## Event Types Overview
 
 Based on the ABI analysis, V2 supports the following event types:
+
 - **MintLiquidityEvent**: Adding liquidity to specific bins
 - **BurnLiquidityEvent**: Removing liquidity from specific bins
 - **SwapEvent**: Trading between assets through bins
@@ -14,6 +16,7 @@ Based on the ABI analysis, V2 supports the following event types:
 ## 1. MintLiquidityEvent
 
 **Event Fields:**
+
 - `sender`: Identity - who initiated the mint
 - `to`: Identity - who receives the position NFT
 - `pool_id`: u256 - pool identifier
@@ -54,6 +57,7 @@ graph TD
 ## 2. BurnLiquidityEvent
 
 **Event Fields:**
+
 - `sender`: Identity - who initiated the burn
 - `to`: Identity - who receives the withdrawn assets
 - `pool_id`: u256 - pool identifier
@@ -96,6 +100,7 @@ graph TD
 ## 3. SwapEvent
 
 **Event Fields:**
+
 - `sender`: Identity - who initiated the swap
 - `to`: Identity - who receives the output tokens
 - `pool_id`: u256 - pool identifier
@@ -141,6 +146,7 @@ graph TD
 ## 4. PoolCreatedEvent
 
 **Event Fields:**
+
 - `creator`: Identity - who created the pool
 - `pool_id`: u256 - new pool identifier
 - `asset_x`: AssetId - first asset in pool
@@ -170,7 +176,7 @@ graph TD
    - Set `protocolVersion` = "v2"
    - Set `binStep` = bin_step parameter
    - Set `activeId` = active_id
-   - Calculate and set `baseFee` from bin_step (baseFee = bin_step * 0.0001)
+   - Calculate and set `baseFee` from bin_step (baseFee = bin_step \* base_factor)
    - Initialize reserves, prices, volumes to 0
    - Set creation metadata
 
@@ -272,11 +278,13 @@ graph TD
    - **feesY**: Calculate fees generated for this bin
 
 **Use Cases:**
+
 - **Bin State Management**: Track individual bin reserve and share changes
 - **Position Tracking**: Manage user position allocations across bins
 - **Snapshot Creation**: Maintain historical bin state records
 
 **Critical constraints:**
+
 - Position IDs must match NFT AssetIds exactly
 - BinPosition entities track individual user shares in specific bins
 - Fee distribution requires updating all BinPosition entities in affected bins
