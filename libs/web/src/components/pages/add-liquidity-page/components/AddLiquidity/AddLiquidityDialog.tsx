@@ -58,11 +58,9 @@ const AddLiquidityDialog = ({
 
   // Detect if this is a v2 pool and manage pool type state
   const isV2PoolDetected = isV2PoolId(poolId);
-  const [_, setPoolType] = useState<PoolTypeOption>(
-    isV2PoolDetected ? "v2" : "v1"
+  const [poolType, setPoolType] = useState<PoolTypeOption>(
+    isV2MockEnabled() ? "v2" : isV2PoolDetected ? "v2" : "v1"
   );
-
-  const poolType = "v2";
 
   // V2 liquidity configuration state
   const [v2Config, setV2Config] = useState<{
@@ -95,12 +93,33 @@ const AddLiquidityDialog = ({
     openFailureModal();
   }, [openFailureModal]);
 
-  // Handle preview action
+  // Handle preview data for both v1 and v2 (mock/real) flows
   const handlePreview = useCallback(
-    (data: AddLiquidityPreviewData) => {
-      setPreviewData(data);
+    (data: any) => {
+      const assets =
+        data?.assets && Array.isArray(data.assets)
+          ? data.assets
+          : [
+              {
+                assetId: firstAssetId || poolId[0].bits,
+                amount: new BN(data?.firstAmount || "0"),
+              },
+              {
+                assetId: secondAssetId || poolId[1].bits,
+                amount: new BN(data?.secondAmount || "0"),
+              },
+            ];
+
+      const preview: AddLiquidityPreviewData = {
+        ...(data || {}),
+        assets,
+        isStablePool:
+          typeof data?.isStablePool === "boolean" ? data.isStablePool : false,
+      };
+
+      setPreviewData(preview);
     },
-    [setPreviewData]
+    [setPreviewData, firstAssetId, secondAssetId, poolId]
   );
 
   const {
