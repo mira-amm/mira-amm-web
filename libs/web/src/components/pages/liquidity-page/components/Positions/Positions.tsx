@@ -11,6 +11,7 @@ import {createPoolKey} from "@/src/utils/common";
 import CoinPair from "@/src/components/common/CoinPair/CoinPair";
 import PositionSizeCell from "./PositionSizeCell";
 import AprCell from "./AprCell";
+import {getPoolNavigationUrl} from "@/src/utils/poolNavigation";
 
 export function Positions() {
   const {isConnected} = useIsConnected();
