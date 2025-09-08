@@ -19,7 +19,7 @@ catalog:
   file-loader: ^6.2.0
   inquirer: ^12.6.3
   isbot: ^5.1.27
-  jsdom: ~26.1.0
+  jsdom: 26.1.0
   pino-pretty: ^13.0.0
   reflect-metadata: ^0.2.2
   tunnelmole: ^2.4.0
@@ -228,7 +228,7 @@ catalogs:
     lexical: 0.33.1
     likec4: ^1.32.2
     lucide-react: ^0.536.0
-    mermaid: ^11.6.0
+    mermaid: 11.9.0
     motion: ^12.18.1
     next: ^15.3.4
     next-query-params: ^5.1.0
