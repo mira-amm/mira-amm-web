@@ -188,38 +188,42 @@ graph TD
 **Event Fields:**
 
 ```rust
+/// Asset amounts with explicit X and Y amounts
+///
+/// This struct represents the amounts of two assets in a pool or bin or fees owed.
+/// The x field is the amount of asset X, the y field is the amount of asset Y.
+pub struct Amounts {
+   x: u64,
+   y: u64,
+}
 /// Event emitted when liquidity distribution changes within a bin
 ///
 /// # Fields
 ///
 /// * `pool_id` - The pool identifier where the bin change occurred
 /// * `bin_id` - The specific bin that was modified
-/// * `old_reserve_x` - Previous reserve amount of asset X in the bin
-/// * `old_reserve_y` - Previous reserve amount of asset Y in the bin
-/// * `new_reserve_x` - New reserve amount of asset X in the bin
-/// * `new_reserve_y` - New reserve amount of asset Y in the bin
+/// * `old_reserves` - Previous reserves in the bin
+/// * `new_reserves` - New reserves in the bin
 /// * `old_total_shares` - Previous total LP shares in the bin
 /// * `new_total_shares` - New total LP shares in the bin
 /// * `triggered_by` - The transaction type that caused this change (mint, burn, swap)
-/// * `position_id` - Optional position asset ID if change is position-specific
+/// * `position_id` - Optional position asset (LP token) ID if change is position-specific
 pub struct BinChangeEvent {
-    pub pool_id: u256,
-    pub bin_id: u32,
-    pub old_reserve_x: u64,
-    pub old_reserve_y: u64,
-    pub new_reserve_x: u64,
-    pub new_reserve_y: u64,
-    pub old_total_shares: u64,
-    pub new_total_shares: u64,
+    pub pool_id: PoolId,
+    pub bin_id: BinId,
+    pub old_reserves: Amounts,
+    pub new_reserves: Amounts,
+    pub old_total_shares: u256,
+    pub new_total_shares: u256,
     pub triggered_by: BinChangeType,
     pub position_id: Option<AssetId>,
 }
 
 /// Enum representing the type of operation that triggered a bin change
 pub enum BinChangeType {
-    Mint,
-    Burn,
-    Swap,
+    Mint: ()
+    Burn: (),
+    Swap: (),
 }
 ```
 
@@ -236,8 +240,8 @@ graph TD
 
 1. **Bin Entity Updates:**
    - **Find/Create**: Locate Bin by `pool_id` and `bin_id`, create if doesn't exist
-   - **reserveX**: Set to `new_reserve_x` from event
-   - **reserveY**: Set to `new_reserve_y` from event
+   - **reserveX**: Set to `new_reserves.x` from event
+   - **reserveY**: Set to `new_reserves.y` from event
    - **liquidity**: Calculated from reserves and price
    - **totalSupply**: Set to `new_total_shares` from event
    - **price**: Calculate using `basePrice * (1 + binStep/10000)^binId`
