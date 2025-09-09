@@ -45,6 +45,7 @@ export function useRemoveLiquidity({
       DefaultTxParams,
       {
         useAssembleTx: true,
+        reserveGas: 10000,
       }
     );
 
