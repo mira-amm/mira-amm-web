@@ -41,6 +41,7 @@ export function useLiquidityFormV2Integration({
     firstAssetAmount: firstAmount,
     secondAssetAmount: secondAmount,
     slippage: 50, // 0.5% slippage
+    liquidityDistribution: v2Config?.liquidityDistribution,
   });
 
   const handleV2ButtonClick = useCallback(async () => {
