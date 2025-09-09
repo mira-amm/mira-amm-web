@@ -115,13 +115,33 @@ export function useAddLiquidityV2({
         return rounded;
       };
 
-      distributionX = roundAndNormalize(rawX);
-      distributionY = roundAndNormalize(rawY);
+      const pctX = roundAndNormalize(rawX);
+      const pctY = roundAndNormalize(rawY);
+
+      // Convert percentages (0-100) to basis points (0-10000) expected by the script (u16)
+      const toBps = (arr: number[]) => {
+        if (arr.every((v) => v === 0)) return arr.map(() => 0);
+        let bps = arr.map((v) => Math.max(0, Math.min(100, v)) * 100);
+        const sum = bps.reduce((a, b) => a + b, 0);
+        if (sum !== 10000) {
+          const diff = 10000 - sum;
+          const idx = bps.reduce(
+            (bestIdx, val, i, arrVals) =>
+              val > arrVals[bestIdx] ? i : bestIdx,
+            0
+          );
+          bps[idx] = Math.max(0, Math.min(10000, bps[idx] + diff));
+        }
+        return bps;
+      };
+
+      distributionX = toBps(pctX);
+      distributionY = toBps(pctY);
     } else {
       // Fallback: single active bin (v1-like behavior)
       deltaIds = [{Positive: 0}];
-      distributionX = [100];
-      distributionY = [100];
+      distributionX = [10000];
+      distributionY = [10000];
       // If not fetched, keep activeIdDesired undefined to use current active on-chain
       // and set a conservative idSlippage of 0
       idSlippage = idSlippage || 0;
@@ -141,7 +161,7 @@ export function useAddLiquidityV2({
       distributionY,
       DefaultTxParams,
       {
-        useAssembleTx: true,
+        fundTransaction: true,
       }
     );
 
