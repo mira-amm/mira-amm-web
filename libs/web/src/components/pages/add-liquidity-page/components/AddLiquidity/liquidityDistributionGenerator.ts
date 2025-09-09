@@ -1,4 +1,5 @@
-import {LiquidityShape} from "./V2LiquidityConfig";
+import { Delta } from "framer-motion";
+import { LiquidityShape } from "./V2LiquidityConfig";
 
 export interface BinLiquidityData {
   binId: number;
@@ -26,12 +27,28 @@ export interface LiquidityDistributionResult {
   utilizationRate: number; // Percentage of liquidity in active bins
 }
 
+
+// activeIdDesired?: BigNumberish,
+// idSlippage?: BigNumberish,
+// deltaIds?: BinIdDelta[],
+// distributionX?: BigNumberish[],
+// distributionY?: BigNumberish[],
+
+export interface DeltaIdDistribution {
+  // take current price
+  // activeIdDesired?: BigNumberish, This will be current active binId
+  // idSlippage?: BigNumberish, //  This you calculated well
+  // deltaIds?: BinIdDelta[], // for each between (getBinIdFrom(priceRange[0]) to getBinIdFrom(priceRange[1])) create a delta, each delta should be activeBinId - binId[i]
+  // distributionX?: BigNumberish[],
+  // distributionY?: BigNumberish[],
+}
+
 /**
  * Generate liquidity distribution based on configuration parameters
  */
 export function generateLiquidityDistribution(
   params: LiquidityDistributionParams
-): LiquidityDistributionResult {
+): { chartDistribution: LiquidityDistributionResult, deltaIdDistribution: DeltaIdDistribution } {
   const {
     numBins,
     binStep,
@@ -57,6 +74,9 @@ export function generateLiquidityDistribution(
 
   // Generate bins
   const bins: BinLiquidityData[] = [];
+  const deltaIds: Record<"Positive" | "Negative", number>[];
+  const distributionX: number[];
+  const distributionY: number[];
 
   for (let binId = startBinId; binId <= endBinId; binId++) {
     const price = Math.pow(1 + binStep / 10000, binId);
@@ -64,7 +84,7 @@ export function generateLiquidityDistribution(
     const distanceFromActive = Math.abs(binId - currentBinId);
 
     // Calculate liquidity amounts based on shape
-    const {liquidityX, liquidityY} = calculateBinLiquidity(
+    const { liquidityX, liquidityY } = calculateBinLiquidity(
       binId,
       currentBinId,
       price,
@@ -73,6 +93,13 @@ export function generateLiquidityDistribution(
       totalLiquidityAmount,
       actualNumBins
     );
+
+    if (liquidityX > 0 || liquidityY > 0) {
+      // set delta id and push
+      // set distributionX and push
+      // set distributionY and push
+    }
+
 
     bins.push({
       binId,
@@ -102,12 +129,17 @@ export function generateLiquidityDistribution(
     100;
 
   return {
-    bins,
-    activeBinId: currentBinId,
-    totalLiquidityX,
-    totalLiquidityY,
-    utilizationRate,
-  };
+    chartDistribution: {
+      bins,
+      activeBinId: currentBinId,
+      totalLiquidityX,
+      totalLiquidityY,
+      utilizationRate,
+    },
+    deltaIdDistribution {
+
+  }
+};
 }
 
 /**
@@ -121,7 +153,7 @@ function calculateBinLiquidity(
   shape: LiquidityShape,
   totalLiquidity: number,
   numBins: number
-): {liquidityX: number; liquidityY: number} {
+): { liquidityX: number; liquidityY: number } {
   const distanceFromActive = Math.abs(binId - activeBinId);
   const isActive = binId === activeBinId;
   const isBelow = binId < activeBinId;
@@ -216,7 +248,7 @@ function calculateBinLiquidity(
       }
   }
 
-  return {liquidityX, liquidityY};
+  return { liquidityX, liquidityY };
 }
 
 /**
@@ -249,7 +281,7 @@ export function distributionToVisualizationData(
   asset0Value: number;
   asset1Value: number;
 }> {
-  const {bins} = distribution;
+  const { bins } = distribution;
 
   // Find max liquidity for scaling
   const maxLiquidityX = Math.max(...bins.map((bin) => bin.liquidityX));
@@ -337,7 +369,7 @@ export function generateRealisticDistribution(
 export function getDistributionSummary(
   distribution: LiquidityDistributionResult
 ) {
-  const {bins, activeBinId, totalLiquidityX, totalLiquidityY, utilizationRate} =
+  const { bins, activeBinId, totalLiquidityX, totalLiquidityY, utilizationRate } =
     distribution;
 
   const activeBins = bins.filter((bin) => bin.isActive);
