@@ -58,7 +58,7 @@ export function useSwap({
         pools,
         MaxDeadline,
         undefined,
-        {useAssembleTx: true}
+        {useAssembleTx: true, reserveGas: 10000}
       );
 
       tx = transactionRequest;
