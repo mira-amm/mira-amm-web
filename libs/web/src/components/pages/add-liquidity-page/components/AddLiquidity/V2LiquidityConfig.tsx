@@ -9,6 +9,7 @@ import {
   distributionToVisualizationData,
   LiquidityDistributionResult,
 } from "./liquidityDistributionGenerator";
+import type {DeltaIdDistribution} from "./liquidityDistributionGenerator";
 import {
   priceToSliderPosition,
   sliderPositionToPrice,
@@ -70,6 +71,7 @@ interface V2LiquidityConfigProps {
     numBins: number;
     binResults?: any;
     liquidityDistribution?: LiquidityDistributionResult;
+    deltaDistribution?: DeltaIdDistribution;
   }) => void;
 }
 
@@ -192,7 +194,10 @@ export default function V2LiquidityConfig({
   const [liquidityDistribution, setLiquidityDistribution] = useState<
     LiquidityDistributionResult | undefined
   >(undefined);
-  const [visualizationData, setVisualizationData] = useState<any>(null);
+  const [deltaDistribution, setDeltaDistribution] = useState<
+    DeltaIdDistribution | undefined
+  >(undefined);
+  // const [visualizationData, setVisualizationData] = useState<any>(null);
 
   const [rangeError, setRangeError] = useState<string | null>(null);
   const hasAsset0 = (totalAsset0Amount ?? 0) > 0;
@@ -211,7 +216,7 @@ export default function V2LiquidityConfig({
       if (!shouldShowSimulation) {
         setBinResults(null);
         setLiquidityDistribution(undefined);
-        setVisualizationData(null);
+        // setVisualizationData(null);
         return;
       }
 
@@ -226,8 +231,8 @@ export default function V2LiquidityConfig({
         setBinResults(result);
       }
 
-      // Generate liquidity distribution
-      const distribution = generateLiquidityDistribution({
+      // Generate liquidity distribution + delta distribution
+      const ret = generateLiquidityDistribution({
         numBins,
         binStep: binStepVal,
         currentPrice: currentPriceVal,
@@ -236,11 +241,12 @@ export default function V2LiquidityConfig({
         totalLiquidityAmount: 10000,
       });
 
-      setLiquidityDistribution(distribution);
+      setLiquidityDistribution(ret.liquidityDistribution);
+      setDeltaDistribution(ret.deltaDistribution);
 
       // Convert to visualization data
-      const vizData = distributionToVisualizationData(distribution);
-      setVisualizationData(vizData);
+      // const vizData = distributionToVisualizationData(distribution);
+      // setVisualizationData(vizData);
     },
     [numBins, liquidityShape, shouldShowSimulation]
   );
@@ -417,6 +423,7 @@ export default function V2LiquidityConfig({
       numBins,
       binResults,
       liquidityDistribution,
+      deltaDistribution,
     });
   }, [
     liquidityShape,
@@ -424,6 +431,7 @@ export default function V2LiquidityConfig({
     numBins,
     binResults,
     liquidityDistribution,
+    deltaDistribution,
     onConfigChange,
   ]);
 
