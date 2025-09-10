@@ -18,6 +18,9 @@ export interface LiquidityDistributionParams {
   priceRange: [number, number]; // [minPrice, maxPrice]
   liquidityShape: LiquidityShape;
   totalLiquidityAmount?: number; // Total amount to distribute
+  // Optional extras to compute delta distribution
+  chainActiveId?: number; // if provided, use this; otherwise use computed activeBinId
+  slippageBps?: number; // to derive idSlippage
 }
 
 export interface LiquidityDistributionResult {
@@ -41,7 +44,10 @@ export interface DeltaIdDistribution {
  */
 export function generateLiquidityDistribution(
   params: LiquidityDistributionParams
-): LiquidityDistributionResult {
+): {
+  liquidityDistribution: LiquidityDistributionResult;
+  deltaDistribution: DeltaIdDistribution;
+} {
   const {
     numBins,
     binStep,
@@ -111,134 +117,106 @@ export function generateLiquidityDistribution(
       (totalLiquidityX + totalLiquidityY)) *
     100;
 
-  return {
+  const result: LiquidityDistributionResult = {
     bins,
     activeBinId: currentBinId,
     totalLiquidityX,
     totalLiquidityY,
     utilizationRate,
   };
+
+  const computeIdSlippage = () => {
+    if (params.binStep > 0 && typeof params.slippageBps === "number") {
+      return Math.floor(params.slippageBps / params.binStep);
+    }
+    return 0;
+  };
+
+  const activeId =
+    typeof params.chainActiveId === "number"
+      ? params.chainActiveId
+      : result.activeBinId;
+
+  const selectedBins = result.bins.filter(
+    (b) => (b.liquidityX || 0) > 0 || (b.liquidityY || 0) > 0
+  );
+
+  let deltaIds: BinIdDelta[];
+  let distributionX: number[];
+  let distributionY: number[];
+
+  if (selectedBins.length === 0) {
+    deltaIds = [{Positive: 0}];
+    distributionX = [10000];
+    distributionY = [10000];
+  } else {
+    deltaIds = selectedBins.map((b) => {
+      const d = b.binId - activeId;
+      return d >= 0 ? {Positive: d} : {Negative: Math.abs(d)};
+    });
+
+    // Use precomputed totals
+    const totalX = result.totalLiquidityX;
+    const totalY = result.totalLiquidityY;
+
+    const rawX = selectedBins.map((b) =>
+      totalX > 0 ? (b.liquidityX / totalX) * 100 : 0
+    );
+    const rawY = selectedBins.map((b) =>
+      totalY > 0 ? (b.liquidityY / totalY) * 100 : 0
+    );
+
+    const roundAndNormalize = (values: number[]): number[] => {
+      if (values.every((v) => v === 0)) return values.map(() => 0);
+      const rounded = values.map((v) => Math.round(v));
+      const sum = rounded.reduce((a, b) => a + b, 0);
+      if (sum === 100) return rounded;
+      const diff = 100 - sum;
+      const idx = rounded.reduce(
+        (bestIdx, val, i, arr) => (val > arr[bestIdx] ? i : bestIdx),
+        0
+      );
+      rounded[idx] = Math.max(0, rounded[idx] + diff);
+      return rounded;
+    };
+
+    const toBps = (arr: number[]): number[] => {
+      if (arr.every((v) => v === 0)) return arr.map(() => 0);
+      let bps = arr.map((v) => Math.max(0, Math.min(100, v)) * 100);
+      const sum = bps.reduce((a, b) => a + b, 0);
+      if (sum !== 10000) {
+        const diff = 10000 - sum;
+        const idx = bps.reduce(
+          (bestIdx, val, i, arrVals) => (val > arrVals[bestIdx] ? i : bestIdx),
+          0
+        );
+        bps[idx] = Math.max(0, Math.min(10000, bps[idx] + diff));
+      }
+      return bps;
+    };
+
+    const pctX = roundAndNormalize(rawX);
+    const pctY = roundAndNormalize(rawY);
+    distributionX = toBps(pctX);
+    distributionY = toBps(pctY);
+  }
+
+  const deltaDistribution: DeltaIdDistribution = {
+    activeIdDesired: activeId,
+    idSlippage: computeIdSlippage(),
+    deltaIds,
+    distributionX,
+    distributionY,
+  };
+
+  return {liquidityDistribution: result, deltaDistribution};
 }
 
 /**
  * Compute deltaIds and distributions (basis points) from a liquidity distribution.
  * Optionally computes idSlippage from slippage and bin step, and sets activeIdDesired.
  */
-export function generateDeltaIdDistribution(params: {
-  liquidityDistribution?: LiquidityDistributionResult;
-  chainActiveId?: number;
-  slippageBps?: number; // e.g. 50 => 0.5%
-  binStepBps?: number; // e.g. 25 => 0.25%
-}): {
-  liquidityDistribution?: LiquidityDistributionResult;
-  data: DeltaIdDistribution;
-} {
-  const {liquidityDistribution, chainActiveId, slippageBps, binStepBps} =
-    params;
-
-  const computeIdSlippage = () => {
-    if (binStepBps && binStepBps > 0 && typeof slippageBps === "number") {
-      return Math.floor(slippageBps / binStepBps);
-    }
-    return 0;
-  };
-
-  if (!liquidityDistribution || !liquidityDistribution.bins?.length) {
-    return {
-      liquidityDistribution,
-      data: {
-        activeIdDesired: chainActiveId,
-        idSlippage: computeIdSlippage(),
-        deltaIds: [{Positive: 0}],
-        distributionX: [10000],
-        distributionY: [10000],
-      },
-    };
-  }
-
-  const activeId =
-    typeof chainActiveId === "number"
-      ? chainActiveId
-      : liquidityDistribution.activeBinId;
-
-  const selectedBins = liquidityDistribution.bins.filter(
-    (b) => (b.liquidityX || 0) > 0 || (b.liquidityY || 0) > 0
-  );
-
-  // If nothing selected, fall back to active bin
-  if (selectedBins.length === 0) {
-    return {
-      liquidityDistribution,
-      data: {
-        activeIdDesired: activeId,
-        idSlippage: computeIdSlippage(),
-        deltaIds: [{Positive: 0}],
-        distributionX: [10000],
-        distributionY: [10000],
-      },
-    };
-  }
-
-  const deltaIds: BinIdDelta[] = selectedBins.map((b) => {
-    const d = b.binId - activeId;
-    return d >= 0 ? {Positive: d} : {Negative: Math.abs(d)};
-  });
-
-  const totalX = selectedBins.reduce((sum, b) => sum + (b.liquidityX || 0), 0);
-  const totalY = selectedBins.reduce((sum, b) => sum + (b.liquidityY || 0), 0);
-
-  const rawX = selectedBins.map((b) =>
-    totalX > 0 ? (b.liquidityX / totalX) * 100 : 0
-  );
-  const rawY = selectedBins.map((b) =>
-    totalY > 0 ? (b.liquidityY / totalY) * 100 : 0
-  );
-
-  const roundAndNormalize = (values: number[]): number[] => {
-    if (values.every((v) => v === 0)) return values.map(() => 0);
-    const rounded = values.map((v) => Math.round(v));
-    const sum = rounded.reduce((a, b) => a + b, 0);
-    if (sum === 100) return rounded;
-    const diff = 100 - sum;
-    const idx = rounded.reduce(
-      (bestIdx, val, i, arr) => (val > arr[bestIdx] ? i : bestIdx),
-      0
-    );
-    rounded[idx] = Math.max(0, rounded[idx] + diff);
-    return rounded;
-  };
-
-  const toBps = (arr: number[]): number[] => {
-    if (arr.every((v) => v === 0)) return arr.map(() => 0);
-    let bps = arr.map((v) => Math.max(0, Math.min(100, v)) * 100);
-    const sum = bps.reduce((a, b) => a + b, 0);
-    if (sum !== 10000) {
-      const diff = 10000 - sum;
-      const idx = bps.reduce(
-        (bestIdx, val, i, arrVals) => (val > arrVals[bestIdx] ? i : bestIdx),
-        0
-      );
-      bps[idx] = Math.max(0, Math.min(10000, bps[idx] + diff));
-    }
-    return bps;
-  };
-
-  const pctX = roundAndNormalize(rawX);
-  const pctY = roundAndNormalize(rawY);
-  const distributionX = toBps(pctX);
-  const distributionY = toBps(pctY);
-
-  return {
-    liquidityDistribution,
-    data: {
-      activeIdDesired: activeId,
-      idSlippage: computeIdSlippage(),
-      deltaIds,
-      distributionX,
-      distributionY,
-    },
-  };
-}
+// Note: generateLiquidityDistribution is the source of truth for delta computation; no separate function is exported.
 
 /**
  * Calculate liquidity amounts for a specific bin based on distribution shape
@@ -415,7 +393,8 @@ export function generateRealisticDistribution(
   params: LiquidityDistributionParams,
   randomnessFactor: number = 0.1
 ): LiquidityDistributionResult {
-  const baseDistribution = generateLiquidityDistribution(params);
+  const {liquidityDistribution: baseDistribution} =
+    generateLiquidityDistribution(params);
 
   // Add some randomness to make it more realistic
   const randomizedBins = baseDistribution.bins.map((bin) => {
