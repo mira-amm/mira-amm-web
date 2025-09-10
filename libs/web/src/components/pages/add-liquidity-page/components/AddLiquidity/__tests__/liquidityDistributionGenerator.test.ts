@@ -29,7 +29,11 @@ describe("liquidityDistributionGenerator", () => {
       expect(activeBins).toHaveLength(1);
 
       const activeBin = activeBins[0];
-      expect(activeBin.price).toBeCloseTo(baseParams.currentPrice, 0);
+      const stepTolerance =
+        (baseParams.currentPrice * (baseParams.binStep / 10000)) / 2;
+      expect(
+        Math.abs(activeBin.price - baseParams.currentPrice)
+      ).toBeLessThanOrEqual(stepTolerance);
     });
 
     it("should distribute liquidity according to spot shape", () => {
