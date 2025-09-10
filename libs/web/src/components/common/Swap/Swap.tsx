@@ -2,16 +2,9 @@
 
 import {useCallback, useEffect, useMemo, useRef, useState, memo} from "react";
 
-import {
-  B256Address,
-  BN,
-  bn,
-  ScriptTransactionRequest,
-  TransactionCost,
-} from "fuels";
+import {B256Address, BN, bn, ScriptTransactionRequest} from "fuels";
 import {useConnectUI, useIsConnected} from "@fuels/react";
 import {PoolId} from "mira-dex-ts";
-import {getIsRebrandEnabled} from "@/src/utils/isRebrandEnabled";
 
 import {Button} from "@/meshwave-ui/Button";
 
@@ -25,10 +18,7 @@ import {
   IconButton,
   Loader,
   SlippageSetting,
-  FeatureGuard,
-  SettingsModalContent,
   PriceImpact,
-  ConnectWallet,
   triggerClassAnimation,
 } from "@/src/components/common";
 
@@ -60,9 +50,9 @@ import Image from "next/image";
 import {useAnimationStore} from "@/src/stores/useGlitchScavengerHunt";
 import {ArrowUpDown, LoaderCircle} from "lucide-react";
 import {cn} from "@/src/utils/cn";
-import {ConnectWalletNew} from "../connect-wallet-new";
-import SettingsModalContentNew from "../settings-modal-content-new";
+import {ConnectWallet} from "../connect-wallet";
 import LoaderBar from "../loader-bar";
+import SettingsModalContent from "../settings-modal-content";
 
 export type CurrencyBoxMode = "buy" | "sell";
 export type SlippageMode = "auto" | "custom";
@@ -192,12 +182,10 @@ const PreviewSummary = memo(function PreviewSummary({
         )}
       </div>
 
-      <FeatureGuard>
-        <PriceImpactNew
-          reservesPrice={reservesPrice}
-          previewPrice={previewPrice}
-        />
-      </FeatureGuard>
+      <PriceImpactNew
+        reservesPrice={reservesPrice}
+        previewPrice={previewPrice}
+      />
     </div>
   );
 });
@@ -706,20 +694,17 @@ export function Swap({isWidget}: {isWidget?: boolean}) {
     txCostPending,
   ]);
 
-  const isRebrandingEnabled = getIsRebrandEnabled();
+  const buttonClass =
+    "bg-accent-primary border-0 text-black hover:bg-accent-primary-1 shadow-none disabled:opacity-100";
 
   return !isClient ? (
     <div className="w-[90vw] mx-auto sm:!w-full flex justify-center items-center gap-3 lg:gap-4">
-      <Loader color="gray" rebrand={isRebrandingEnabled} />
+      <Loader />
     </div>
   ) : (
     <>
       <div className="flex flex-col gap-3 lg:gap-4">
-        {isWidget && (
-          <FeatureGuard fallback={<ConnectWallet />}>
-            <ConnectWalletNew />
-          </FeatureGuard>
-        )}
+        {isWidget && <ConnectWallet />}
 
         <div
           className={cn(
@@ -786,20 +771,14 @@ export function Swap({isWidget}: {isWidget?: boolean}) {
             />
           )}
 
-          <FeatureGuard>
-            <Rate swapState={swapState} />
-          </FeatureGuard>
+          <Rate swapState={swapState} />
 
           {!isConnected ? (
             <Button
               onClick={connect}
               disabled={isConnecting}
               size="2xl"
-              className={cn(
-                !isConnected &&
-                  isRebrandingEnabled &&
-                  "bg-accent-primary border-0 text-black hover:bg-accent-primary-1 shadow-none disabled:opacity-100"
-              )}
+              className={cn(!isConnected && buttonClass)}
             >
               Connect Wallet
             </Button>
@@ -808,55 +787,29 @@ export function Swap({isWidget}: {isWidget?: boolean}) {
               disabled={isActionDisabled}
               onClick={handleSwapClick}
               size="2xl"
-              className={cn(
-                isActionDisabled &&
-                  isRebrandingEnabled &&
-                  "bg-accent-primary border-0 text-black hover:bg-accent-primary-1 shadow-none disabled:opacity-100"
-              )}
+              className={cn(isActionDisabled && buttonClass)}
             >
-              {isActionLoading ? (
-                <Loader rebrand={isRebrandingEnabled} />
-              ) : (
-                swapButtonTitle
-              )}
+              {isActionLoading ? <Loader /> : swapButtonTitle}
             </Button>
           )}
         </div>
 
-        <FeatureGuard
-          fallback={
-            <PriceAndRate
-              reservesPrice={reservesPrice}
-              previewPrice={previewPrice}
-              swapState={swapState}
-            />
-          }
+        <PriceAndRate
+          reservesPrice={reservesPrice}
+          previewPrice={previewPrice}
+          swapState={swapState}
         />
       </div>
 
       {swapPending && <div className={overlayClasses} />}
 
-      <FeatureGuard
-        fallback={
-          <SettingsModal title="Settings">
-            <SettingsModalContent
-              slippage={slippage}
-              slippageMode={slippageMode}
-              setSlippage={setSlippage}
-              setSlippageMode={setSlippageMode}
-              closeModal={closeSettingsModal}
-            />
-          </SettingsModal>
-        }
-      >
-        <SettingsModal title={`Slippage tolerance: ${slippage / 100}%`}>
-          <SettingsModalContentNew
-            slippage={slippage}
-            setSlippage={setSlippage}
-            closeModal={closeSettingsModal}
-          />
-        </SettingsModal>
-      </FeatureGuard>
+      <SettingsModal title={`Slippage tolerance: ${slippage / 100}%`}>
+        <SettingsModalContent
+          slippage={slippage}
+          setSlippage={setSlippage}
+          closeModal={closeSettingsModal}
+        />
+      </SettingsModal>
 
       <CoinsModal title="Choose token">
         <CoinsListModal selectCoin={handleCoinSelection} balances={balances} />

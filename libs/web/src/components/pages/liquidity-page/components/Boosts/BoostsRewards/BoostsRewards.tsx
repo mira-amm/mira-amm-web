@@ -7,13 +7,11 @@ import {
   DefaultLocale,
 } from "@/src/utils/constants";
 import {usePointsRank} from "@/src/hooks";
-import {getIsRebrandEnabled} from "@/src/utils/isRebrandEnabled";
 import {PointsIcon} from "@/meshwave-ui/icons";
 import {Button} from "@/meshwave-ui/Button";
 import clsx from "clsx";
 
 export function BoostsRewards() {
-  const isRebrandEnabled = getIsRebrandEnabled();
   const {data: pointsRankArray, isLoading, error} = usePointsRank();
 
   if (error) {
@@ -51,7 +49,7 @@ export function BoostsRewards() {
           </div>
           <div className="flex items-center gap-2 h-[25px]">
             {isLoading ? (
-              <Loader color="gray" rebrand={isRebrandEnabled} />
+              <Loader />
             ) : (
               <>
                 <PointsIcon />
@@ -73,7 +71,7 @@ export function BoostsRewards() {
               <Info tooltipText={POINTS_RANK_TOOLTIP} />
             </div>
             {isLoading ? (
-              <Loader color="gray" rebrand={isRebrandEnabled} />
+              <Loader />
             ) : (
               <p className="text-xl font-normal text-white font-alt">
                 {pointsRank?.rank}

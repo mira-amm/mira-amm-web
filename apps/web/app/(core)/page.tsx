@@ -1,6 +1,5 @@
 "use client";
 import {useIsConnected} from "@fuels/react";
-import {FeatureGuard} from "@/src/components/common";
 import {Swap} from "@/src/components/common/Swap/Swap";
 import {useFadeAnimation} from "@/src/hooks/useFadeAnimation";
 import {BackgroundGlow} from "@/src/components/common/BackgroundGlow/BackgroundGlow";
@@ -44,16 +43,9 @@ export default function Page() {
             }}
           >
             <Swap />
-            <FeatureGuard>
-              <AnimatePresence mode="wait">
-                {shouldRenderSVG && (
-                  <BackgroundGlow
-                    isVisible={isSVGVisible}
-                    shouldRender={shouldRenderSVG}
-                  />
-                )}
-              </AnimatePresence>
-            </FeatureGuard>
+            <AnimatePresence mode="wait">
+              {shouldRenderSVG && <BackgroundGlow isVisible={isSVGVisible} />}
+            </AnimatePresence>
           </motion.div>
 
           <AnimatedText

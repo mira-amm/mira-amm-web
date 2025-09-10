@@ -4,14 +4,13 @@ import {clsx} from "clsx";
 import {B256Address, BN} from "fuels";
 import {ChevronDown} from "lucide-react";
 
-import {Coin, FeatureGuard, TextButton} from "@/src/components/common";
+import {Coin, TextButton} from "@/src/components/common";
 
 import {CurrencyBoxMode} from "@/src/components/common/Swap/Swap";
 import {MinEthValueBN} from "@/src/utils/constants";
 import {useAssetMetadata} from "@/src/hooks";
 import fiatValueFormatter from "@/src/utils/abbreviateNumber";
 import {cn} from "@/src/utils/cn";
-import {getIsRebrandEnabled} from "@/src/utils/isRebrandEnabled";
 
 export function CurrencyBox({
   value,
@@ -74,16 +73,11 @@ export function CurrencyBox({
       ? fiatValueFormatter(numericValue * usdRate!)
       : null;
 
-  const rebrandEnabled = getIsRebrandEnabled();
-
   return (
     <div
       className={cn(
-        "flex flex-col gap-2.5 rounded-ten border border-transparent bg-background-tertiary dark:bg-background-secondary p-4",
-        className,
-        rebrandEnabled
-          ? "focus-within:border-black"
-          : "focus-within:border-accent-secondary"
+        "flex flex-col gap-2.5 rounded-ten border border-transparent bg-background-tertiary dark:bg-background-secondary p-4 focus-within:border-black",
+        className
       )}
     >
       <p className="text-sm leading-4 text-content-tertiary dark:text-content-tertiary lg:leading-[18px]">

@@ -8,7 +8,6 @@ import {Loader} from "@/src/components/common";
 import {EPOCH_NUMBER} from "@/src/utils/constants";
 import {PointsIcon} from "@/meshwave-ui/icons";
 import {cn} from "@/src/utils/cn";
-import {getIsRebrandEnabled} from "@/src/utils/isRebrandEnabled";
 import {BrandText} from "@/src/components/common";
 import {Tooltip, TooltipContent, TooltipTrigger} from "@/meshwave-ui/tooltip";
 
@@ -44,14 +43,8 @@ export function AprBadge({
   let aprElement = <>{showApr}%</>;
 
   if (rewardsToken === "$FUEL") {
-    aprElement = boostedApr ? (
-      <>{showApr}%</>
-    ) : (
-      <Loader color="gray" rebrand={getIsRebrandEnabled()} />
-    );
+    aprElement = boostedApr ? <>{showApr}%</> : <Loader />;
   }
-
-  const rebrandEnabled = getIsRebrandEnabled();
 
   return (
     <Tooltip>
@@ -69,9 +62,7 @@ export function AprBadge({
               "bg-[url('/images/overlay-5.jpg')] bg-cover",
             background === "overlay-9" &&
               "bg-[url('/images/overlay-9.jpg')] bg-cover",
-            background === "black" && "bg-black bg-cover",
-            !rebrandEnabled &&
-              "bg-black dark:bg-[linear-gradient(170deg,#262f5f_35%,#c41cff_100%)]"
+            background === "black" && "bg-black bg-cover"
           )}
         >
           <span className="flex items-center justify-center text-white text-[19px] w-[15px] h-[15px]">
