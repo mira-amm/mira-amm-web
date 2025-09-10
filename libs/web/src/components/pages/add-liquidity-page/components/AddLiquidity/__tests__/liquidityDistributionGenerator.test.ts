@@ -250,4 +250,32 @@ describe("liquidityDistributionGenerator", () => {
       expect(result.utilizationRate).toBe(0);
     });
   });
+
+  describe("deltaDistribution", () => {
+    it("should produce compact delta arrays and normalized distributions", () => {
+      const {liquidityDistribution, deltaDistribution} =
+        generateLiquidityDistribution(baseParams);
+
+      expect(deltaDistribution.deltaIds).toBeDefined();
+      expect(deltaDistribution.distributionX).toBeDefined();
+      expect(deltaDistribution.distributionY).toBeDefined();
+
+      const n = deltaDistribution.deltaIds!.length;
+      expect(deltaDistribution.distributionX!.length).toBe(n);
+      expect(deltaDistribution.distributionY!.length).toBe(n);
+
+      const sum = (arr: number[]) => arr.reduce((a, b) => a + b, 0);
+      const sumX = sum(deltaDistribution.distributionX as number[]);
+      const sumY = sum(deltaDistribution.distributionY as number[]);
+
+      // For baseParams the active bin has both tokens; sums should be 10000
+      expect(sumX).toBe(10000);
+      expect(sumY).toBe(10000);
+
+      // activeIdDesired should default to computed active bin
+      expect(deltaDistribution.activeIdDesired).toBe(
+        liquidityDistribution.activeBinId
+      );
+    });
+  });
 });
