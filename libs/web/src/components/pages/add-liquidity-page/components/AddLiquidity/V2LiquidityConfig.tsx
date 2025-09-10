@@ -20,6 +20,7 @@ import {
   getCurrentPriceSliderPosition,
 } from "./priceSliderUtils";
 import {cn} from "@/src/utils/cn";
+import {DEFAULT_SLIPPAGE_BASIS_POINT} from "@/src/utils/constants";
 
 export type LiquidityShape = "spot" | "curve" | "bidask";
 
@@ -208,6 +209,7 @@ export default function V2LiquidityConfig({
         priceRange: [minPriceVal, maxPriceVal],
         liquidityShape,
         totalLiquidityAmount: 10000,
+        slippageBps: DEFAULT_SLIPPAGE_BASIS_POINT,
       });
 
       setLiquidityDistribution(ret.liquidityDistribution);
