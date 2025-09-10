@@ -71,8 +71,17 @@ export function generateLiquidityDistribution(
   );
   const endBinId = startBinId + actualNumBins - 1;
 
-  // Generate bins
+  // Determine target active id for delta computation
+  const activeIdForDelta =
+    typeof params.chainActiveId === "number"
+      ? params.chainActiveId
+      : currentBinId;
+
+  // Generate bins and accumulate compact delta/distribution inputs
   const bins: BinLiquidityData[] = [];
+  const accDeltaIds: BinIdDelta[] = [];
+  const accRawX: number[] = [];
+  const accRawY: number[] = [];
 
   for (let binId = startBinId; binId <= endBinId; binId++) {
     const price = Math.pow(1 + binStep / 10000, binId);
@@ -98,6 +107,14 @@ export function generateLiquidityDistribution(
       isActive,
       distanceFromActive,
     });
+
+    // Accumulate only bins with some liquidity to keep payloads compact
+    if (liquidityX > 0 || liquidityY > 0) {
+      const d = binId - activeIdForDelta;
+      accDeltaIds.push(d >= 0 ? {Positive: d} : {Negative: Math.abs(d)});
+      accRawX.push(liquidityX);
+      accRawY.push(liquidityY);
+    }
   }
 
   // Calculate totals and utilization
@@ -132,39 +149,23 @@ export function generateLiquidityDistribution(
     return 0;
   };
 
-  const activeId =
-    typeof params.chainActiveId === "number"
-      ? params.chainActiveId
-      : result.activeBinId;
-
-  const selectedBins = result.bins.filter(
-    (b) => (b.liquidityX || 0) > 0 || (b.liquidityY || 0) > 0
-  );
-
   let deltaIds: BinIdDelta[];
   let distributionX: number[];
   let distributionY: number[];
 
-  if (selectedBins.length === 0) {
+  if (accDeltaIds.length === 0) {
     deltaIds = [{Positive: 0}];
     distributionX = [10000];
     distributionY = [10000];
   } else {
-    deltaIds = selectedBins.map((b) => {
-      const d = b.binId - activeId;
-      return d >= 0 ? {Positive: d} : {Negative: Math.abs(d)};
-    });
+    deltaIds = accDeltaIds;
 
     // Use precomputed totals
     const totalX = result.totalLiquidityX;
     const totalY = result.totalLiquidityY;
 
-    const rawX = selectedBins.map((b) =>
-      totalX > 0 ? (b.liquidityX / totalX) * 100 : 0
-    );
-    const rawY = selectedBins.map((b) =>
-      totalY > 0 ? (b.liquidityY / totalY) * 100 : 0
-    );
+    const rawX = accRawX.map((v) => (totalX > 0 ? (v / totalX) * 100 : 0));
+    const rawY = accRawY.map((v) => (totalY > 0 ? (v / totalY) * 100 : 0));
 
     const roundAndNormalize = (values: number[]): number[] => {
       if (values.every((v) => v === 0)) return values.map(() => 0);
@@ -202,7 +203,7 @@ export function generateLiquidityDistribution(
   }
 
   const deltaDistribution: DeltaIdDistribution = {
-    activeIdDesired: activeId,
+    activeIdDesired: activeIdForDelta,
     idSlippage: computeIdSlippage(),
     deltaIds,
     distributionX,

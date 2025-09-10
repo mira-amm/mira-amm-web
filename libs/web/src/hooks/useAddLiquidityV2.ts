@@ -4,7 +4,7 @@ import {useMutation} from "@tanstack/react-query";
 import {useMiraDexV2, useReadonlyMiraV2} from "@/src/hooks";
 import {useCallback} from "react";
 import {useWallet} from "@fuels/react";
-import {DefaultTxParams, MaxDeadline} from "@/src/utils/constants";
+import {DEFAULT_SLIPPAGE_BASIS_POINT, DefaultTxParams, MaxDeadline} from "@/src/utils/constants";
 import {bn, BN} from "fuels";
 import type {LiquidityDistributionResult} from "@/src/components/pages/add-liquidity-page/components/AddLiquidity/liquidityDistributionGenerator";
 import {generateDeltaIdDistribution} from "@/src/components/pages/add-liquidity-page/components/AddLiquidity/liquidityDistributionGenerator";
@@ -13,7 +13,7 @@ export function useAddLiquidityV2({
   poolId,
   firstAssetAmount,
   secondAssetAmount,
-  slippage = 50, // 0.5% default slippage (basis points)
+  slippage = DEFAULT_SLIPPAGE_BASIS_POINT, // 0.5% default slippage (basis points)
   liquidityDistribution,
 }: {
   poolId: BN;
