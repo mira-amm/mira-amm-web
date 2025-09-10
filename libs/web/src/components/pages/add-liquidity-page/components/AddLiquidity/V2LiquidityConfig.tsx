@@ -138,6 +138,7 @@ export default function V2LiquidityConfig({
   };
 
   // Convert current price range to slider positions
+  const isCurrentPriceValid = Number.isFinite(currentPrice) && currentPrice > 0;
   const minSliderPosition = priceToSliderPosition(
     minPrice,
     currentPrice,
@@ -150,6 +151,35 @@ export default function V2LiquidityConfig({
     DEFAULT_BIN_STEP,
     SLIDER_BIN_RANGE
   );
+
+  // Fallback slider value if computed positions are invalid or collapsed
+  const hasValidSliderPositions =
+    Number.isFinite(minSliderPosition) &&
+    Number.isFinite(maxSliderPosition) &&
+    minSliderPosition >= 0 &&
+    maxSliderPosition <= 1 &&
+    minSliderPosition < maxSliderPosition;
+
+  const defaultSliderValue: [number, number] = isCurrentPriceValid
+    ? [
+        priceToSliderPosition(
+          currentPrice * (1 - priceRangePercent),
+          currentPrice,
+          DEFAULT_BIN_STEP,
+          SLIDER_BIN_RANGE
+        ),
+        priceToSliderPosition(
+          currentPrice * (1 + priceRangePercent),
+          currentPrice,
+          DEFAULT_BIN_STEP,
+          SLIDER_BIN_RANGE
+        ),
+      ]
+    : [0.4, 0.6];
+
+  const sliderValue: [number, number] = hasValidSliderPositions
+    ? [minSliderPosition, maxSliderPosition]
+    : defaultSliderValue;
 
   // Get current price position (should always be 0.5)
   const currentPricePosition = getCurrentPriceSliderPosition(
@@ -398,8 +428,32 @@ export default function V2LiquidityConfig({
 
   // Initialize calculations
   useEffect(() => {
+    if (!isCurrentPriceValid) return;
+    if (!Number.isFinite(minPrice) || !Number.isFinite(maxPrice)) return;
+    if (minPrice <= 0 || maxPrice <= 0) return;
     calculateResults(minPrice, maxPrice, DEFAULT_BIN_STEP, currentPrice);
-  }, [minPrice, maxPrice, calculateResults, currentPrice]);
+  }, [minPrice, maxPrice, calculateResults, currentPrice, isCurrentPriceValid]);
+
+  // When currentPrice becomes valid for the first time (or changes),
+  // initialize the default 20% price range if user hasn't set custom values
+  useEffect(() => {
+    if (!isCurrentPriceValid) return;
+    if (hasCustomMinPrice || hasCustomMaxPrice) return;
+
+    const newMin = currentPrice * (1 - priceRangePercent);
+    const newMax = currentPrice * (1 + priceRangePercent);
+
+    setPriceRange([newMin, newMax]);
+    setMinPriceInput(formatPriceForDisplay(newMin, DEFAULT_BIN_STEP));
+    setMaxPriceInput(formatPriceForDisplay(newMax, DEFAULT_BIN_STEP));
+    const calculatedBins = calculateBinsBetweenPrices(
+      newMin,
+      newMax,
+      DEFAULT_BIN_STEP
+    );
+    setNumBins(calculatedBins);
+    setRangeError(null);
+  }, [isCurrentPriceValid, currentPrice, hasCustomMinPrice, hasCustomMaxPrice]);
 
   // when priceRange changes externally (slider/reset), update text inputs if not typing
   useEffect(() => {
@@ -479,7 +533,7 @@ export default function V2LiquidityConfig({
             <div className="relative">
               <Slider.Root
                 className="relative flex items-center select-none touch-none w-full h-5"
-                value={[minSliderPosition, maxSliderPosition]}
+                value={sliderValue}
                 onValueChange={handleSliderChange}
                 max={sliderBounds.sliderMax}
                 min={sliderBounds.sliderMin}
