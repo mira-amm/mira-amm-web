@@ -17,12 +17,14 @@ describe("liquidityDistributionGenerator", () => {
 
   describe("generateLiquidityDistribution", () => {
     it("should generate correct number of bins", () => {
-      const result = generateLiquidityDistribution(baseParams);
+      const {liquidityDistribution: result} =
+        generateLiquidityDistribution(baseParams);
       expect(result.bins).toHaveLength(baseParams.numBins);
     });
 
     it("should identify the active bin correctly", () => {
-      const result = generateLiquidityDistribution(baseParams);
+      const {liquidityDistribution: result} =
+        generateLiquidityDistribution(baseParams);
       const activeBins = result.bins.filter((bin) => bin.isActive);
       expect(activeBins).toHaveLength(1);
 
@@ -32,7 +34,8 @@ describe("liquidityDistributionGenerator", () => {
 
     it("should distribute liquidity according to spot shape", () => {
       const spotParams = {...baseParams, liquidityShape: "spot" as const};
-      const result = generateLiquidityDistribution(spotParams);
+      const {liquidityDistribution: result} =
+        generateLiquidityDistribution(spotParams);
 
       const activeBin = result.bins.find((bin) => bin.isActive);
       const otherBins = result.bins.filter((bin) => !bin.isActive);
@@ -45,7 +48,8 @@ describe("liquidityDistributionGenerator", () => {
 
     it("should distribute liquidity according to curve shape", () => {
       const curveParams = {...baseParams, liquidityShape: "curve" as const};
-      const result = generateLiquidityDistribution(curveParams);
+      const {liquidityDistribution: result} =
+        generateLiquidityDistribution(curveParams);
 
       // Should have a normal distribution pattern
       const activeBin = result.bins.find((bin) => bin.isActive);
@@ -70,7 +74,8 @@ describe("liquidityDistributionGenerator", () => {
 
     it("should distribute liquidity according to bidask shape", () => {
       const bidaskParams = {...baseParams, liquidityShape: "bidask" as const};
-      const result = generateLiquidityDistribution(bidaskParams);
+      const {liquidityDistribution: result} =
+        generateLiquidityDistribution(bidaskParams);
 
       const activeBin = result.bins.find((bin) => bin.isActive);
       const otherBins = result.bins.filter((bin) => !bin.isActive);
@@ -86,7 +91,8 @@ describe("liquidityDistributionGenerator", () => {
     });
 
     it("should place asset0 in bins below current price and asset1 in bins above", () => {
-      const result = generateLiquidityDistribution(baseParams);
+      const {liquidityDistribution: result} =
+        generateLiquidityDistribution(baseParams);
       const activeBinId = result.activeBinId;
 
       result.bins.forEach((bin) => {
@@ -107,7 +113,8 @@ describe("liquidityDistributionGenerator", () => {
     });
 
     it("should calculate utilization rate correctly", () => {
-      const result = generateLiquidityDistribution(baseParams);
+      const {liquidityDistribution: result} =
+        generateLiquidityDistribution(baseParams);
 
       expect(result.utilizationRate).toBeGreaterThanOrEqual(0);
       expect(result.utilizationRate).toBeLessThanOrEqual(100);
@@ -122,7 +129,8 @@ describe("liquidityDistributionGenerator", () => {
 
   describe("distributionToVisualizationData", () => {
     it("should convert distribution to visualization format", () => {
-      const distribution = generateLiquidityDistribution(baseParams);
+      const {liquidityDistribution: distribution} =
+        generateLiquidityDistribution(baseParams);
       const vizData = distributionToVisualizationData(distribution);
 
       expect(vizData).toHaveLength(distribution.bins.length);
@@ -143,7 +151,8 @@ describe("liquidityDistributionGenerator", () => {
     });
 
     it("should scale heights correctly", () => {
-      const distribution = generateLiquidityDistribution(baseParams);
+      const {liquidityDistribution: distribution} =
+        generateLiquidityDistribution(baseParams);
       const maxHeight = 100;
       const vizData = distributionToVisualizationData(distribution, maxHeight);
 
@@ -157,7 +166,8 @@ describe("liquidityDistributionGenerator", () => {
 
   describe("generateRealisticDistribution", () => {
     it("should add randomness to the distribution", () => {
-      const baseDistribution = generateLiquidityDistribution(baseParams);
+      const {liquidityDistribution: baseDistribution} =
+        generateLiquidityDistribution(baseParams);
       const realisticDistribution = generateRealisticDistribution(
         baseParams,
         0.2
@@ -194,7 +204,8 @@ describe("liquidityDistributionGenerator", () => {
 
   describe("getDistributionSummary", () => {
     it("should provide correct summary statistics", () => {
-      const distribution = generateLiquidityDistribution(baseParams);
+      const {liquidityDistribution: distribution} =
+        generateLiquidityDistribution(baseParams);
       const summary = getDistributionSummary(distribution);
 
       expect(summary.totalBins).toBe(baseParams.numBins);
@@ -212,7 +223,8 @@ describe("liquidityDistributionGenerator", () => {
   describe("edge cases", () => {
     it("should handle single bin", () => {
       const singleBinParams = {...baseParams, numBins: 1};
-      const result = generateLiquidityDistribution(singleBinParams);
+      const {liquidityDistribution: result} =
+        generateLiquidityDistribution(singleBinParams);
 
       expect(result.bins).toHaveLength(1);
       expect(result.bins[0].isActive).toBe(true);
@@ -221,7 +233,8 @@ describe("liquidityDistributionGenerator", () => {
 
     it("should handle very large number of bins", () => {
       const largeBinParams = {...baseParams, numBins: 50};
-      const result = generateLiquidityDistribution(largeBinParams);
+      const {liquidityDistribution: result} =
+        generateLiquidityDistribution(largeBinParams);
 
       expect(result.bins.length).toBeLessThanOrEqual(50);
       expect(result.bins.length).toBeGreaterThan(0);
@@ -229,7 +242,8 @@ describe("liquidityDistributionGenerator", () => {
 
     it("should handle zero total liquidity", () => {
       const zeroLiquidityParams = {...baseParams, totalLiquidityAmount: 0};
-      const result = generateLiquidityDistribution(zeroLiquidityParams);
+      const {liquidityDistribution: result} =
+        generateLiquidityDistribution(zeroLiquidityParams);
 
       expect(result.totalLiquidityX).toBe(0);
       expect(result.totalLiquidityY).toBe(0);
