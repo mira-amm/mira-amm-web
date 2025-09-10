@@ -9,9 +9,9 @@ export default function PromoBlock({
   background,
 }: {
   icon: ReactNode;
-  title: string;
+  title: ReactNode;
   link: string;
-  linkText: string;
+  linkText: ReactNode;
   background: "overlay-4" | "overlay-1" | "gradient" | "black";
 }) {
   return (

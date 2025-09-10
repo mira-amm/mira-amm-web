@@ -249,8 +249,7 @@ export function CreatePoolDialog({
             <div
               className={cn(
                 "flex flex-col items-start w-full rounded-md px-3 py-3 gap-2 bg-background-secondary text-content-dimmed-light cursor-pointer",
-                !isStablePool && "text-content-primary border",
-                !isStablePool && "border-black"
+                !isStablePool && "text-content-primary border border-black"
               )}
               onClick={() => handleStabilityChange(false)}
               role="button"
@@ -265,9 +264,7 @@ export function CreatePoolDialog({
             <button
               className={clsx(
                 "flex flex-col items-start w-full rounded-md px-3 py-3 gap-2 bg-background-secondary text-content-dimmed-light cursor-pointer",
-                isStablePool &&
-                  "text-content-primary border-accent-primary border",
-                isStablePool && "border-black"
+                isStablePool && "text-content-primary border border-black"
               )}
               onClick={() => handleStabilityChange(true)}
               role="button"

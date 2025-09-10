@@ -55,14 +55,8 @@ export const instrumentSerif = Instrument_Serif({
 export {metadata};
 
 export default function Layout({children}: {readonly children: ReactNode}) {
-
   return (
-    <html
-      lang="en"
-      className=""
-      data-brand="microchain"
-      suppressHydrationWarning
-    >
+    <html lang="en" className="" suppressHydrationWarning>
       <head>
         <link rel="preload" as="image" href="images/loader.webp" />
         <link rel="stylesheet" href="https://use.typekit.net/joy1wau.css" />

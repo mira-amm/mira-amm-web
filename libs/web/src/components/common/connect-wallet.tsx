@@ -134,7 +134,7 @@ export function ConnectWallet({size = "large", className}: ConnectWalletProps) {
       return (
         <div
           className={cn(
-            "bg-black rounded-ten font-alt text-accent-primary uppercase px-3 tracking-tight flex justify-left items-center",
+            "bg-black rounded-ten font-alt text-accent-primary uppercase px-3 tracking-tight flex justify-start items-center",
             rightPanelWidth,
             textSize
           )}
@@ -145,8 +145,10 @@ export function ConnectWallet({size = "large", className}: ConnectWalletProps) {
     }
 
     return (
-      <div
+      <button
         onClick={() => setOpen((prev) => !prev)}
+        aria-expanded={open}
+        aria-controls="wallet-menu"
         className={cn(
           "bg-black rounded-ten text-accent-primary font-alt uppercase px-3 tracking-tight flex justify-between items-center cursor-pointer",
           rightPanelWidth,
@@ -159,7 +161,7 @@ export function ConnectWallet({size = "large", className}: ConnectWalletProps) {
         ) : (
           <ChevronDown className="text-content-dimmed-dark text-mc-blue" />
         )}
-      </div>
+      </button>
     );
   };
 
@@ -168,47 +170,51 @@ export function ConnectWallet({size = "large", className}: ConnectWalletProps) {
     if (!open || !isConnected) return null;
 
     return (
-      <div className="absolute left-0 mt-2 w-full border-[12px] border-border-secondary dark:border-0 bg-background-grey-dark dark:bg-[#262834] px-2 py-2.5 rounded-ten z-50">
-        <div
+      <div
+        id="wallet-menu"
+        role="menu"
+        className="absolute left-0 mt-2 w-full border-[12px] border-border-secondary dark:border-0 bg-background-grey-dark dark:bg-[#262834] px-2 py-2.5 rounded-ten z-50"
+      >
+        <button
           onClick={() => {
             handleCopy();
             setOpen(false);
           }}
-          className="hover:bg-background-tertiary dark:hover:bg-background-secondary p-2 rounded-ten cursor-pointer flex items-center gap-2"
+          className="w-full hover:bg-background-tertiary dark:hover:bg-background-secondary p-2 rounded-ten cursor-pointer flex items-center gap-2"
         >
           <CopyIcon className="size-4 dark:text-white" />
           Copy Address
-        </div>
-        <div
+        </button>
+        <button
           onClick={() => {
             handleExplorerClick();
             setOpen(false);
           }}
-          className="hover:bg-background-tertiary dark:hover:bg-background-secondary p-2 rounded-ten cursor-pointer flex items-center gap-2"
+          className="w-full hover:bg-background-tertiary dark:hover:bg-background-secondary p-2 rounded-ten cursor-pointer flex items-center gap-2"
         >
           <ExternalLink className="size-4 dark:text-white" />
           View in Explorer
-        </div>
-        <div
+        </button>
+        <button
           onClick={() => {
             handleTxHistoryClick();
             setOpen(false);
           }}
-          className="hover:bg-background-tertiary dark:hover:bg-background-secondary p-2 rounded-ten cursor-pointer flex items-center gap-2"
+          className="w-full hover:bg-background-tertiary dark:hover:bg-background-secondary p-2 rounded-ten cursor-pointer flex items-center gap-2"
         >
           <ArrowLeftRight className="size-4 dark:text-white" />
           Transaction History
-        </div>
-        <div
+        </button>
+        <button
           onClick={() => {
             disconnect();
             setOpen(false);
           }}
-          className="hover:bg-background-tertiary dark:hover:bg-background-secondary p-2 rounded-ten cursor-pointer flex items-center gap-2"
+          className="w-full hover:bg-background-tertiary dark:hover:bg-background-secondary p-2 rounded-ten cursor-pointer flex items-center gap-2"
         >
           <LogOutIcon className="size-4 dark:text-white" />
           Disconnect
-        </div>
+        </button>
       </div>
     );
   };

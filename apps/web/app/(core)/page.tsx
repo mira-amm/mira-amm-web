@@ -44,12 +44,7 @@ export default function Page() {
           >
             <Swap />
             <AnimatePresence mode="wait">
-              {shouldRenderSVG && (
-                <BackgroundGlow
-                  isVisible={isSVGVisible}
-                  shouldRender={shouldRenderSVG}
-                />
-              )}
+              {shouldRenderSVG && <BackgroundGlow isVisible={isSVGVisible} />}
             </AnimatePresence>
           </motion.div>
 
