@@ -93,6 +93,7 @@ export function useLiquidityFormV2Integration({
             numBins: v2Config?.numBins || 1,
             priceRange: v2Config?.priceRange || [0.8, 1.2],
             liquidityDistribution: v2Config?.liquidityDistribution,
+            // deltaDistribution is now available via V2LiquidityConfig onConfigChange
           };
           onPreview(previewData);
         } else {
