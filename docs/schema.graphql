@@ -1,0 +1,102 @@
+type Asset @entity {
+  id: ID!
+  contractId: String
+  subId: String
+
+  name: String
+  symbol: String
+  decimals: Int
+  supply: BigInt!
+
+  l1Address: String
+  image: String
+
+  numPools: Int!
+  tradeVolume: BigInt!
+  tradeVolumeDecimal: String!
+
+  price: String!
+}
+
+type Pool @entity {
+  id: ID!
+  asset0: Asset!
+  asset1: Asset!
+  isStable: Boolean!
+  lpToken: Asset!
+
+  reserve0: BigInt!
+  reserve1: BigInt!
+  reserve0Decimal: String!
+  reserve1Decimal: String!
+  tvlUSD: Float!
+
+  price0: String!
+  price1: String!
+
+  volumeAsset0: BigInt!
+  volumeAsset1: BigInt!
+  volumeAsset0Decimal: String!
+  volumeAsset1Decimal: String!
+  volumeUSD: Float!
+  feesUSD: String!
+
+  creationBlock: Int!
+  creationTime: Int!
+  creationTx: String!
+
+  # decimals_0: Int!
+  # decimals_1: Int!
+
+  snapshots: [PoolHourlySnapshot!] @derivedFrom(field: "pool")
+}
+
+enum Type {
+  ADD_LIQUIDITY
+  REMOVE_LIQUIDITY
+  SWAP
+}
+
+type Action @entity {
+  id: ID!
+  blockNumber: Int!
+  timestamp: Int!
+  transaction: String!
+  type: Type!
+  pool: Pool!
+  recipient: String!
+
+  asset0: Asset!
+  asset1: Asset!
+  amount0In: BigInt!
+  amount1In: BigInt!
+  amount0Out: BigInt!
+  amount1Out: BigInt!
+
+  reserves0Before: BigInt!
+  reserves1Before: BigInt!
+  reserves0After: BigInt!
+  reserves1After: BigInt!
+}
+
+type PoolHourlySnapshot @entity {
+  id: ID!
+  pool: Pool!
+  timestamp: Int!
+
+  reserve0: BigInt!
+  reserve1: BigInt!
+  reserve0Decimal: String!
+  reserve1Decimal: String!
+  tvlUSD: Float!
+
+  volumeAsset0: BigInt!
+  volumeAsset1: BigInt!
+  volumeAsset0Decimal: String!
+  volumeAsset1Decimal: String!
+  volumeUSD: Float!
+  feesUSD: String!
+
+  price0: String!
+  price1: String!
+}
