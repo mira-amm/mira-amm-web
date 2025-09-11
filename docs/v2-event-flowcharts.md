@@ -11,7 +11,8 @@ Based on the ABI analysis, V2 supports the following event types:
 - **BurnLiquidityEvent**: Removing liquidity from specific bins
 - **SwapEvent**: Trading between assets through bins
 - **PoolCreatedEvent**: Creating new concentrated liquidity pools
-- **BinChangeEvent**: Tracking granular bin-level state changes
+- **BinLiquidityEvent**: Tracking granular bin-level state changes
+- **CompositionFeesEvent**: Composition fee collected when adding liquidity
 
 ## 1. MintLiquidityEvent
 
@@ -20,39 +21,26 @@ Based on the ABI analysis, V2 supports the following event types:
 - `sender`: Identity - who initiated the mint
 - `to`: Identity - who receives the position NFT
 - `pool_id`: u256 - pool identifier
-- `bin_ids`: Vec<u32> - array of bin IDs receiving liquidity
-- `amounts`: Vec<Amounts> - amounts added to each bin
 - `lp_token_minted`: AssetId - the NFT position token created
 
 **Entity Modification Flow:**
 
 ```mermaid
 graph TD
-    A[MintLiquidityEvent] --> B[Update/Create Pool Entity]
-    B --> C[Create Position Entity with NFT AssetId]
-    C --> D[Update Pool Reserves & TVL]
-    D --> E[Create Action Entity]
-    E --> F[Update PoolHourlySnapshot]
+    A[MintLiquidityEvent] --> B[Create Position Entity]
+    B --> C[Create Action Entity]
 ```
 
 **Step-by-step modifications:**
 
-1. **Pool Entity Updates:**
-   - Increment `reserve0`, `reserve1` based on amounts
-   - Recalculate `tvlUSD`
-   - Update `price0`, `price1` if active bin affected
+1. **Position Entity Creation:**
+   - Create an entity with `lp_token_minted` as primary key (NFT AssetId)
+   - Set `pool` = `pool_id` reference and transaction data fields
 
-2. **Position Entity Creation:**
-   - Set `id` = `lp_token_minted` (NFT AssetId)
-   - Set `pool` = pool reference
-   - Set `createdAtBlock`, `createdAtTimestamp`
-
-3. **Action Entity Creation:**
-   - Set `type` = ADD_LIQUIDITY
-   - Record amounts, recipient, etc.
-
-4. **Snapshot Updates:**
-   - Update PoolHourlySnapshot with new values
+2. **Action Entity Creation:**
+   - Retrieve pool data
+   - Set `type` = ADD_LIQUIDITY_V2
+   - Set `position` to  Position Entity created in prev. step and fill other fields with transaction data and data from retrieved Pool Entity
 
 ## 2. BurnLiquidityEvent
 
@@ -61,41 +49,12 @@ graph TD
 - `sender`: Identity - who initiated the burn
 - `to`: Identity - who receives the withdrawn assets
 - `pool_id`: u256 - pool identifier
-- `bin_ids`: Vec<u32> - array of bin IDs losing liquidity
-- `amounts_withdrawn`: Vec<Amounts> - amounts withdrawn from each bin
 - `lp_token_burned`: AssetId - the NFT position token burned
-
-**Entity Modification Flow:**
-
-```mermaid
-graph TD
-    A[BurnLiquidityEvent] --> B[Find Position by lp_token_burned]
-    B --> C[Update Pool Entity - reduce reserves]
-    C --> D[Delete Position Entity if fully burned]
-    D --> E[Create Action Entity]
-    E --> F[Update PoolHourlySnapshot]
-```
 
 **Step-by-step modifications:**
 
-1. **Find Existing Entities:**
-   - Locate Position by `lp_token_burned` AssetId
-
-2. **Pool Entity Updates:**
-   - Decrement `reserve0`, `reserve1`
-   - Recalculate `tvlUSD`
-   - Update `price0`, `price1` if active bin affected
-
-3. **Position Entity Management:**
-   - If position fully burned, delete Position entity
-   - Otherwise, update Position metadata
-
-4. **Action Entity Creation:**
-   - Set `type` = REMOVE_LIQUIDITY
-   - Record amounts, recipient, etc.
-
-5. **Snapshot Updates:**
-   - Update PoolHourlySnapshot
+1. **Position Entity Management:**
+   - Delete Position entity identified by `lp_token_burned`
 
 ## 3. SwapEvent
 
@@ -115,8 +74,8 @@ graph TD
 ```mermaid
 graph TD
     A[SwapEvent] --> B[Update Pool Entity reserves & volume]
-    B --> C[Update Pool prices based on active bin]
-    C --> D[Distribute fees to Position holders in bin]
+    B --> C[Update Pool price based on active bin]
+    C --> D[Update Bin Entity]
     D --> E[Update BinPosition entities with fee shares]
     E --> F[Update protocol fee tracking]
     F --> G[Create Action Entity]
@@ -130,11 +89,6 @@ graph TD
    - Add to `volumeAsset0`, `volumeAsset1`, `volumeUSD`
    - Add to `feesUSD`
    - Update `price0`, `price1` from new bin price
-
-2. **Fee Distribution:**
-   - Calculate fee per share in the bin
-   - Update all BinPosition entities in this bin:
-     - Add to `feesX`, `feesY` based on shares owned
 
 3. **Action Entity Creation:**
    - Set `type` = SWAP
@@ -183,7 +137,7 @@ graph TD
 3. **Snapshot Initialization:**
    - Create initial PoolHourlySnapshot
 
-## 5. BinChangeEvent
+## 5. BinLiquidityEvent
 
 **Event Fields:**
 
@@ -202,28 +156,23 @@ pub struct Amounts {
 ///
 /// * `pool_id` - The pool identifier where the bin change occurred
 /// * `bin_id` - The specific bin that was modified
-/// * `old_reserves` - Previous reserves in the bin
 /// * `new_reserves` - New reserves in the bin
-/// * `old_total_shares` - Previous total LP shares in the bin
 /// * `new_total_shares` - New total LP shares in the bin
 /// * `triggered_by` - The transaction type that caused this change (mint, burn, swap)
 /// * `position_id` - Optional position asset (LP token) ID if change is position-specific
-pub struct BinChangeEvent {
+pub struct BinLiquidityEvent {
     pub pool_id: PoolId,
     pub bin_id: BinId,
-    pub old_reserves: Amounts,
     pub new_reserves: Amounts,
-    pub old_total_shares: u256,
     pub new_total_shares: u256,
-    pub triggered_by: BinChangeType,
-    pub position_id: Option<AssetId>,
+    pub triggered_by: BinLiquidityChangeType,
+    pub position_id: AssetId,
 }
 
 /// Enum representing the type of operation that triggered a bin change
-pub enum BinChangeType {
-    Mint: ()
+pub enum BinLiquidityChangeType {
+    Mint: (),
     Burn: (),
-    Swap: (),
 }
 ```
 
@@ -265,7 +214,7 @@ graph TD
    - **positionTvlUSD**: Calculate USD value of position's reserves
    - **lastUpdateBlock**: Set to current block number
    - **lastUpdateTime**: Set to current timestamp
-   - **Delete logic**: Remove BinPosition if `liquidityShares` becomes zero
+   - **Delete logic**: Remove BinPosition if `triggered_by` = `BinLiquidityChangeType::Burn`
 
 3. **BinSnapshot Creation or Update:**
    - **Find PoolHourlySnapshot**: Get current hourly snapshot for the pool
