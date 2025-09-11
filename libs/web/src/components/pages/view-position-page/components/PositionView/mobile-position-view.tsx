@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState} from "react";
 import Link from "next/link";
 import {PoolId} from "mira-dex-ts";
 
@@ -15,6 +15,9 @@ import {MiraBlock} from "./mira-block";
 import {formatDisplayAmount} from "@/src/utils/common";
 import {PromoSparkle} from "@/meshwave-ui/src/components/icons";
 import {getIsRebrandEnabled} from "@/src/utils/isRebrandEnabled";
+
+import {Dialog, DialogContent, DialogTrigger} from "@/meshwave-ui/modal";
+import RemoveBinLiquidity from "../../../bin-liquidity/remove-bin-liquidity";
 
 interface AssetData {
   amount: string;
@@ -33,7 +36,6 @@ export function MobilePositionView({
   positionPath,
   assetA,
   assetB,
-  handleWithdrawLiquidity,
 }: {
   pool: PoolId;
   isStablePool: boolean;
@@ -41,8 +43,9 @@ export function MobilePositionView({
   positionPath: string;
   assetA: AssetData;
   assetB: AssetData;
-  handleWithdrawLiquidity: () => void;
 }) {
+  const [openModal, setOpenModal] = useState(false);
+
   return (
     <section className="flex flex-col gap-3 mobileOnly">
       <div className="flex items-start justify-between">
@@ -111,14 +114,31 @@ export function MobilePositionView({
         </Link>
       </div>
       <div className="w-full self-start">
-        <Button
-          variant="outline"
-          onClick={handleWithdrawLiquidity}
-          size="lg"
-          block
-        >
-          Remove Liquidity
-        </Button>
+        <Dialog open={openModal} onOpenChange={setOpenModal}>
+          <DialogTrigger className="w-full">
+            <Button variant="outline" size="lg" block>
+              Remove Liquidity
+            </Button>
+          </DialogTrigger>
+          <DialogContent
+            className="max-w-[563px] p-0 bg-transaparent border-0"
+            showCloseButton={false}
+          >
+            <RemoveBinLiquidity
+              onClose={() => setOpenModal(() => false)}
+              assetA={{
+                amount: assetA.amount,
+                metadata: assetA.metadata,
+                reserve: assetA.reserve,
+              }}
+              assetB={{
+                amount: assetB.amount,
+                metadata: assetB.metadata,
+                reserve: assetB.reserve,
+              }}
+            />
+          </DialogContent>
+        </Dialog>
       </div>
 
       <PromoBlock

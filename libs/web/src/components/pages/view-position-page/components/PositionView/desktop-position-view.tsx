@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState} from "react";
 import Link from "next/link";
 import {Button} from "@/meshwave-ui/Button";
 import {PoolId} from "mira-dex-ts";
@@ -14,6 +14,9 @@ import {DepositAmount} from "./deposit-amount";
 import {useAssetPriceFromIndexer} from "@/src/hooks";
 import {formatMoney} from "@/src/utils/formatMoney";
 import SimulatedDistribution from "../../../bin-liquidity/components/simulated-distribution";
+
+import {Dialog, DialogContent, DialogTrigger} from "@/meshwave-ui/modal";
+import RemoveBinLiquidity from "../../../bin-liquidity/remove-bin-liquidity";
 
 export interface AssetData {
   amount: string;
@@ -32,7 +35,6 @@ export function DesktopPositionView({
   positionPath,
   assetA,
   assetB,
-  handleWithdrawLiquidity,
 }: {
   pool: PoolId;
   isStablePool: boolean;
@@ -40,8 +42,9 @@ export function DesktopPositionView({
   positionPath: string;
   assetA: AssetData;
   assetB: AssetData;
-  handleWithdrawLiquidity: () => void;
 }) {
+  const [openModal, setOpenModal] = useState(false);
+
   return (
     <section className="flex flex-col gap-3 desktopOnly">
       <div className="flex justify-between items-center">
@@ -54,9 +57,30 @@ export function DesktopPositionView({
           />
         </div>
         <div className="flex items-center gap-2.5">
-          <Button variant="outline" onClick={handleWithdrawLiquidity}>
-            Remove Liquidity
-          </Button>
+          <Dialog open={openModal} onOpenChange={setOpenModal}>
+            <DialogTrigger>
+              <Button variant="outline">Remove Liquidity</Button>
+            </DialogTrigger>
+            <DialogContent
+              className="max-w-[563px] p-0 bg-transaparent border-0"
+              showCloseButton={false}
+            >
+              <RemoveBinLiquidity
+                onClose={() => setOpenModal(() => false)}
+                assetA={{
+                  amount: assetA.amount,
+                  metadata: assetA.metadata,
+                  reserve: assetA.reserve,
+                }}
+                assetB={{
+                  amount: assetB.amount,
+                  metadata: assetB.metadata,
+                  reserve: assetB.reserve,
+                }}
+              />
+            </DialogContent>
+          </Dialog>
+
           <Link href={positionPath}>
             <Button>Add Liquidity</Button>
           </Link>
