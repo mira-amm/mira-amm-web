@@ -108,7 +108,7 @@ const RemoveBinLiquidity = ({
   const hasV2Positions = (v2Positions?.length || 0) > 0;
 
   return (
-    <div className="flex flex-col gap-4 mx-auto max-w-[563px] w-full">
+    <div className="flex flex-col gap-4 mx-auto w-full">
       <button
         className="flex items-center text-base leading-5 text-content-grey hover:text-content-primary cursor-pointer"
         onClick={onClose}
