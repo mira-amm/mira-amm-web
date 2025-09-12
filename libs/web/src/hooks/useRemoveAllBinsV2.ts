@@ -92,13 +92,13 @@ export function useRemoveAllBinsV2({
     const {transactionRequest: txRequest} = await miraV2.removeLiquidity(
       poolId,
       binIds,
-      lpTokenAmounts,
+      // lpTokenAmounts,
       minAmountX,
       minAmountY,
       MaxDeadline,
       DefaultTxParams,
       {
-        useAssembleTx: true,
+        fundTransaction: true,
       }
     );
 
@@ -164,13 +164,13 @@ export function useRemoveSpecificBinsV2({
       const {transactionRequest: txRequest} = await miraV2.removeLiquidity(
         poolId,
         binIds,
-        lpTokenAmounts,
+        // lpTokenAmounts,
         minAmountX,
         minAmountY,
         MaxDeadline,
         DefaultTxParams,
         {
-          useAssembleTx: true,
+          fundTransaction: true,
         }
       );
 

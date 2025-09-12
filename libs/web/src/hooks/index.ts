@@ -85,3 +85,4 @@ export type {
 export {usePreviewAddLiquidity} from "./usePreviewAddLiquidity";
 export {useDocumentTitle} from "./useDocumentTitle";
 export {useProtocolStats} from "./useProtocolStats";
+export {usePoolConcentrationType} from "./usePoolConcentrationType";
