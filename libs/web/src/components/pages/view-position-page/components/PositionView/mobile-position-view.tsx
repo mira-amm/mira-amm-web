@@ -18,6 +18,7 @@ import {getIsRebrandEnabled} from "@/src/utils/isRebrandEnabled";
 
 import {Dialog, DialogContent, DialogTrigger} from "@/meshwave-ui/modal";
 import RemoveBinLiquidity from "../../../bin-liquidity/remove-bin-liquidity";
+import {usePoolConcentrationType} from "@/src/hooks";
 
 interface AssetData {
   amount: string;
@@ -36,6 +37,7 @@ export function MobilePositionView({
   positionPath,
   assetA,
   assetB,
+  openRemoveRegularPoolModal,
 }: {
   pool: PoolId;
   isStablePool: boolean;
@@ -43,8 +45,47 @@ export function MobilePositionView({
   positionPath: string;
   assetA: AssetData;
   assetB: AssetData;
+  openRemoveRegularPoolModal: () => void;
 }) {
   const [openModal, setOpenModal] = useState(false);
+
+  const poolType = usePoolConcentrationType();
+
+  const renderRemoveLiquidity = () => {
+    if (poolType.poolType === "concentrated") {
+      return (
+        <Dialog open={openModal} onOpenChange={setOpenModal}>
+          <DialogTrigger>
+            <Button variant="outline">Remove Liquidity</Button>
+          </DialogTrigger>
+          <DialogContent
+            className="max-w-[563px] p-0 bg-transaparent border-0"
+            showCloseButton={false}
+          >
+            <RemoveBinLiquidity
+              onClose={() => setOpenModal(() => false)}
+              assetA={{
+                amount: assetA.amount,
+                metadata: assetA.metadata,
+                reserve: assetA.reserve,
+              }}
+              assetB={{
+                amount: assetB.amount,
+                metadata: assetB.metadata,
+                reserve: assetB.reserve,
+              }}
+            />
+          </DialogContent>
+        </Dialog>
+      );
+    }
+
+    return (
+      <Button variant="outline" onClick={openRemoveRegularPoolModal}>
+        Remove Liquidity
+      </Button>
+    );
+  };
 
   return (
     <section className="flex flex-col gap-3 mobileOnly">
@@ -113,33 +154,7 @@ export function MobilePositionView({
           </Button>
         </Link>
       </div>
-      <div className="w-full self-start">
-        <Dialog open={openModal} onOpenChange={setOpenModal}>
-          <DialogTrigger className="w-full">
-            <Button variant="outline" size="lg" block>
-              Remove Liquidity
-            </Button>
-          </DialogTrigger>
-          <DialogContent
-            className="max-w-[563px] p-0 bg-transaparent border-0"
-            showCloseButton={false}
-          >
-            <RemoveBinLiquidity
-              onClose={() => setOpenModal(() => false)}
-              assetA={{
-                amount: assetA.amount,
-                metadata: assetA.metadata,
-                reserve: assetA.reserve,
-              }}
-              assetB={{
-                amount: assetB.amount,
-                metadata: assetB.metadata,
-                reserve: assetB.reserve,
-              }}
-            />
-          </DialogContent>
-        </Dialog>
-      </div>
+      <div className="w-full self-start">{renderRemoveLiquidity()}</div>
 
       <PromoBlock
         icon={<PromoSparkle />}
