@@ -11,8 +11,6 @@ import {
 } from "../../common/PoolTypeToggle/PoolTypeToggle";
 import {useUserBinPositionsV2, useRemoveAllBinsV2} from "@/src/hooks";
 import {useConnectUI, useIsConnected} from "@fuels/react";
-import {useSearchParams} from "next/navigation";
-import {createPoolIdFromIdString} from "@/src/utils/common";
 
 interface AssetData {
   amount: string;
@@ -92,7 +90,12 @@ const RemoveBinLiquidity = ({
             />
           </div>
 
-          <PriceSummary assetA={assetA} assetB={assetB} />
+          <PriceSummary
+            assetA={assetA}
+            assetB={assetB}
+            userPositions={v2Positions}
+            slippage={50}
+          />
 
           {!isConnected ? (
             <Button onClick={connect} size="2xl">
