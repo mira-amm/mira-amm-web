@@ -58,9 +58,11 @@ const AddLiquidityDialog = ({
 
   // Detect if this is a v2 pool and manage pool type state
   const isV2PoolDetected = isV2PoolId(poolId);
-  const [poolType, setPoolType] = useState<PoolTypeOption>(
-    isV2MockEnabled() ? "v2" : isV2PoolDetected ? "v2" : "v1"
+  const [_, setPoolType] = useState<PoolTypeOption>(
+    isV2PoolDetected ? "v2" : "v1"
   );
+
+  const poolType = "v2";
 
   // V2 liquidity configuration state
   const [v2Config, setV2Config] = useState<{
