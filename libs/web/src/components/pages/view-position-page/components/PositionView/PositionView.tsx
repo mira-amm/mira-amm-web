@@ -26,6 +26,7 @@ import {DesktopPositionView} from "./desktop-position-view";
 import {MobilePositionView} from "./mobile-position-view";
 import {DEFAULT_AMM_CONTRACT_ID, DefaultLocale} from "@/src/utils/constants";
 import RemoveBinLiquidity from "../../../bin-liquidity/remove-bin-liquidity";
+import {getUiPoolTypeFromPoolId} from "@/src/utils/poolTypeDetection";
 
 export function PositionView({pool}: {pool: PoolId}) {
   const [
@@ -41,6 +42,7 @@ export function PositionView({pool}: {pool: PoolId}) {
   const assetBMetadata = useAssetMetadata(pool[1].bits);
 
   const isStablePool = pool[2];
+  const uiPoolType = getUiPoolTypeFromPoolId(pool);
 
   const {assets, lpTokenBalance} = usePositionData({pool});
   const {apr} = usePoolAPR(pool);
@@ -158,6 +160,7 @@ export function PositionView({pool}: {pool: PoolId}) {
       <MobilePositionView
         pool={pool}
         isStablePool={isStablePool}
+        poolType={uiPoolType}
         formattedTvlValue={formattedTvlValue}
         positionPath={positionPath}
         assetA={{
@@ -175,6 +178,7 @@ export function PositionView({pool}: {pool: PoolId}) {
       <DesktopPositionView
         pool={pool}
         isStablePool={isStablePool}
+        poolType={uiPoolType}
         formattedTvlValue={formattedTvlValue}
         positionPath={positionPath}
         assetA={{

@@ -110,3 +110,22 @@ export function parsePoolKey(poolKey: string): UnifiedPoolId {
 
   throw new Error(`Invalid pool key format: ${poolKey}`);
 }
+
+// UI pool type mapping
+export type UiPoolType = "v1-volatile" | "v1-stable" | "v2-concentrated";
+
+/**
+ * Maps a boolean stability flag (v1 pools) to the UI pool type string
+ */
+export function mapUiPoolTypeFromStableFlag(isStable: boolean): UiPoolType {
+  return isStable ? "v1-stable" : "v1-volatile";
+}
+
+/**
+ * Derives UI pool type from a unified pool id
+ */
+export function getUiPoolTypeFromPoolId(poolId: UnifiedPoolId): UiPoolType {
+  if (isV2PoolId(poolId)) return "v2-concentrated";
+  if (isV1PoolId(poolId)) return mapUiPoolTypeFromStableFlag(poolId[2]);
+  return "v1-volatile";
+}
