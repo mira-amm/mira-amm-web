@@ -197,7 +197,8 @@ export default function V2LiquidityConfig({
   const [rangeError, setRangeError] = useState<string | null>(null);
   const hasAsset0 = (totalAsset0Amount ?? 0) > 0;
   const hasAsset1 = (totalAsset1Amount ?? 0) > 0;
-  const shouldShowSimulation = hasAsset0 && hasAsset1;
+  // Only show simulation when at least one non-zero amount is provided
+  const shouldShowSimulation = hasAsset0 || hasAsset1;
 
   const calculateResults = useCallback(
     (

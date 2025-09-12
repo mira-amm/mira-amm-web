@@ -167,7 +167,7 @@ const AddLiquidityDialog = ({
 
   // Determine out-of-range states for disabling inputs in v2
   const currentPrice =
-    asset1Price && asset0Price ? asset1Price / asset0Price : null;
+    asset1Price && asset0Price ? asset1Price / asset0Price : 1;
   const isOutOfRangeLow = Boolean(
     poolType === "v2" &&
       v2Config &&
@@ -185,11 +185,11 @@ const AddLiquidityDialog = ({
   useEffect(() => {
     if (poolType !== "v2" || !v2Config || currentPrice === null) return;
     if (isOutOfRangeLow) {
-      // Only first asset is needed → clear second
-      clearSecondAmount();
-    } else if (isOutOfRangeHigh) {
-      // Only second asset is needed → clear first
+      // Price below range → only second asset (asset1) is needed → clear first
       clearFirstAmount();
+    } else if (isOutOfRangeHigh) {
+      // Price above range → only first asset (asset0) is needed → clear second
+      clearSecondAmount();
     }
   }, [
     poolType,
@@ -297,7 +297,7 @@ const AddLiquidityDialog = ({
             <CoinInput
               assetId={firstAssetId}
               value={firstAmountInput}
-              loading={(!isFirstToken && isFetching) || isOutOfRangeHigh}
+              loading={(!isFirstToken && isFetching) || isOutOfRangeLow}
               setAmount={(val) => setAmountForCoin(poolId[0].bits, val)}
               balance={firstAssetBalance}
               usdRate={asset0Price || undefined}
@@ -305,7 +305,7 @@ const AddLiquidityDialog = ({
             <CoinInput
               assetId={secondAssetId}
               value={secondAmountInput}
-              loading={(isFirstToken && isFetching) || isOutOfRangeLow}
+              loading={(isFirstToken && isFetching) || isOutOfRangeHigh}
               setAmount={(val) => setAmountForCoin(poolId[1].bits, val)}
               balance={secondAssetBalance}
               usdRate={asset1Price || undefined}
