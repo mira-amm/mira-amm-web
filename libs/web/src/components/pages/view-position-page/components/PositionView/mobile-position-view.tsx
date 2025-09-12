@@ -15,6 +15,7 @@ import {MiraBlock} from "./mira-block";
 import {formatDisplayAmount} from "@/src/utils/common";
 import {PromoSparkle} from "@/meshwave-ui/src/components/icons";
 import {getIsRebrandEnabled} from "@/src/utils/isRebrandEnabled";
+import {PoolType} from "@/src/components/common/PoolTypeIndicator";
 
 interface AssetData {
   amount: string;
@@ -29,6 +30,7 @@ interface AssetData {
 export function MobilePositionView({
   pool,
   isStablePool,
+  poolType,
   formattedTvlValue,
   positionPath,
   assetA,
@@ -37,6 +39,7 @@ export function MobilePositionView({
 }: {
   pool: PoolId;
   isStablePool: boolean;
+  poolType?: PoolType;
   formattedTvlValue: string;
   positionPath: string;
   assetA: AssetData;
@@ -50,7 +53,8 @@ export function MobilePositionView({
           firstCoin={pool[0].bits}
           secondCoin={pool[1].bits}
           isStablePool={isStablePool}
-          withPoolDescription
+          poolType={poolType ?? (isStablePool ? "v1-stable" : "v1-volatile")}
+          withPoolDetails
         />
       </div>
 

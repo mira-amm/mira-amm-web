@@ -4,6 +4,7 @@ import {useAssetImage} from "@/src/hooks/useAssetImage";
 import {B256Address} from "fuels";
 import {useAssetMetadata} from "@/src/hooks";
 import Image from "next/image";
+import {PoolType} from "../PoolTypeIndicator";
 
 type Props = {
   firstCoin: B256Address;
@@ -12,6 +13,29 @@ type Props = {
   withFee?: boolean;
   withFeeBelow?: boolean;
   withPoolDescription?: boolean;
+  withPoolDetails?: boolean;
+  poolType?: PoolType;
+};
+
+const poolTypeConfig = {
+  "v1-volatile": {
+    label: "Volatile",
+    shortLabel: "V1",
+    fee: "0.30%",
+    description: "Traditional AMM pool for volatile asset pairs",
+  },
+  "v1-stable": {
+    label: "Stable",
+    shortLabel: "V1S",
+    fee: "0.05%",
+    description: "Optimized for stable asset pairs with lower fees",
+  },
+  "v2-concentrated": {
+    label: "Concentrated",
+    shortLabel: "V2",
+    fee: "Variable",
+    description: "Concentrated liquidity with customizable price ranges",
+  },
 };
 
 const CoinPair = ({
@@ -21,6 +45,8 @@ const CoinPair = ({
   withFee,
   withFeeBelow,
   withPoolDescription,
+  withPoolDetails,
+  poolType,
 }: Props) => {
   const firstCoinIcon = useAssetImage(firstCoin);
   const secondCoinIcon = useAssetImage(secondCoin);
@@ -29,6 +55,8 @@ const CoinPair = ({
 
   const feeText = isStablePool ? "0.05%" : "0.3%";
   const poolDescription = `${isStablePool ? "Stable" : "Volatile"}: ${feeText}`;
+
+  const config = poolTypeConfig[poolType ?? "v1-volatile"];
 
   return (
     <div
@@ -76,6 +104,17 @@ const CoinPair = ({
           <p className="text-sm leading-[14px] text-accent-alert">
             {poolDescription}
           </p>
+        )}
+
+        {withPoolDetails && (
+          <div className="flex gap-3">
+            <span className="rounded-lg bg-background-secondary px-2 py-0.5 text-content-tertiary text-xs font-medium">
+              {config.label}
+            </span>
+            <span className="rounded-lg bg-background-secondary px-2 py-0.5 text-content-tertiary text-xs font-medium">
+              {feeText}
+            </span>
+          </div>
         )}
       </div>
 
