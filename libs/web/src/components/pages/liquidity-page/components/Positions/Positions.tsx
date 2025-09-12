@@ -44,6 +44,7 @@ export function Positions() {
         const assetIdA = position.token0Item.token0Position[0].bits;
         const assetIdB = position.token1Item.token1Position[0].bits;
         const isStablePool = position.isStable;
+        const poolType = position.poolType;
 
         return (
           <div className="flex flex-col gap-1 min-w-[150px]">
@@ -51,7 +52,8 @@ export function Positions() {
               firstCoin={assetIdA}
               secondCoin={assetIdB}
               isStablePool={isStablePool}
-              withPoolDescription={true}
+              poolType={poolType}
+              withPoolDetails={true}
             />
           </div>
         );

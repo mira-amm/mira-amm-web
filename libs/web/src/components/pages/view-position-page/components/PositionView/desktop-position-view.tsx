@@ -14,6 +14,7 @@ import {DepositAmount} from "./deposit-amount";
 import {useAssetPriceFromIndexer} from "@/src/hooks";
 import {formatMoney} from "@/src/utils/formatMoney";
 import SimulatedDistribution from "../../../bin-liquidity/components/simulated-distribution";
+import {PoolType} from "@/src/components/common/PoolTypeIndicator";
 
 export interface AssetData {
   amount: string;
@@ -28,6 +29,7 @@ export interface AssetData {
 export function DesktopPositionView({
   pool,
   isStablePool,
+  poolType,
   formattedTvlValue,
   positionPath,
   assetA,
@@ -36,6 +38,7 @@ export function DesktopPositionView({
 }: {
   pool: PoolId;
   isStablePool: boolean;
+  poolType?: PoolType;
   formattedTvlValue: string;
   positionPath: string;
   assetA: AssetData;
@@ -50,7 +53,8 @@ export function DesktopPositionView({
             firstCoin={pool[0].bits}
             secondCoin={pool[1].bits}
             isStablePool={isStablePool}
-            withPoolDescription
+            poolType={poolType ?? (isStablePool ? "v1-stable" : "v1-volatile")}
+            withPoolDetails
           />
         </div>
         <div className="flex items-center gap-2.5">
