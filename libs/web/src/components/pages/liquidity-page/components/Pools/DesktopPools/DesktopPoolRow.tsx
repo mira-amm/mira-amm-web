@@ -28,11 +28,8 @@ export function DesktopPoolRow({poolData}: {poolData: PoolData}) {
             firstCoin={poolId[0].bits}
             secondCoin={poolId[1].bits}
             isStablePool={isStablePool}
-            withPoolDescription
-          />
-          <PoolTypeIndicator
             poolType={poolData.poolType || "v1-volatile"}
-            size="sm"
+            withPoolDetails
           />
         </div>
       </TableCell>
