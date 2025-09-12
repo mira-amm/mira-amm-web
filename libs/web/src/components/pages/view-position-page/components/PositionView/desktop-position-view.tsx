@@ -11,13 +11,14 @@ import {ExchangeRate} from "./exchange-rate";
 import {MiraBlock} from "./mira-block";
 import {PromoSparkle} from "@/meshwave-ui/src/components/icons";
 import {DepositAmount} from "./deposit-amount";
-import {useAssetPriceFromIndexer} from "@/src/hooks";
+import {useAssetPriceFromIndexer, usePoolConcentrationType} from "@/src/hooks";
 import {formatMoney} from "@/src/utils/formatMoney";
 import SimulatedDistribution from "../../../bin-liquidity/components/simulated-distribution";
 import {PoolType} from "@/src/components/common/PoolTypeIndicator";
 
-import {Dialog, DialogContent, DialogTrigger} from "@/meshwave-ui/modal";
 import RemoveBinLiquidity from "../../../bin-liquidity/remove-bin-liquidity";
+import {Dialog, DialogContent, DialogTrigger} from "@/meshwave-ui/modal";
+import { BN } from "fuels";
 
 export interface AssetData {
   amount: string;
@@ -37,6 +38,7 @@ export function DesktopPositionView({
   positionPath,
   assetA,
   assetB,
+  openRemoveRegularPoolModal,
 }: {
   pool: PoolId;
   isStablePool: boolean;
@@ -45,8 +47,48 @@ export function DesktopPositionView({
   positionPath: string;
   assetA: AssetData;
   assetB: AssetData;
+  openRemoveRegularPoolModal: () => void;
 }) {
   const [openModal, setOpenModal] = useState(false);
+
+  const poolType = usePoolConcentrationType();
+
+  const renderRemoveLiquidity = () => {
+    if (poolType.poolType === "concentrated") {
+      return (
+        <Dialog open={openModal} onOpenChange={setOpenModal}>
+          <DialogTrigger>
+            <Button variant="outline">Remove Liquidity</Button>
+          </DialogTrigger>
+          <DialogContent
+            className="max-w-[563px] p-0 bg-transaparent border-0"
+            showCloseButton={false}
+          >
+            <RemoveBinLiquidity
+              onClose={() => setOpenModal(() => false)}
+              assetA={{
+                amount: assetA.amount,
+                metadata: assetA.metadata,
+                reserve: assetA.reserve,
+              }}
+              assetB={{
+                amount: assetB.amount,
+                metadata: assetB.metadata,
+                reserve: assetB.reserve,
+              }}
+              v2PoolId={poolType.poolId as BN}
+            />
+          </DialogContent>
+        </Dialog>
+      );
+    }
+
+    return (
+      <Button variant="outline" onClick={openRemoveRegularPoolModal}>
+        Remove Liquidity
+      </Button>
+    );
+  };
 
   return (
     <section className="flex flex-col gap-3 desktopOnly">
@@ -61,29 +103,7 @@ export function DesktopPositionView({
           />
         </div>
         <div className="flex items-center gap-2.5">
-          <Dialog open={openModal} onOpenChange={setOpenModal}>
-            <DialogTrigger>
-              <Button variant="outline">Remove Liquidity</Button>
-            </DialogTrigger>
-            <DialogContent
-              className="max-w-[563px] p-0 bg-transaparent border-0"
-              showCloseButton={false}
-            >
-              <RemoveBinLiquidity
-                onClose={() => setOpenModal(() => false)}
-                assetA={{
-                  amount: assetA.amount,
-                  metadata: assetA.metadata,
-                  reserve: assetA.reserve,
-                }}
-                assetB={{
-                  amount: assetB.amount,
-                  metadata: assetB.metadata,
-                  reserve: assetB.reserve,
-                }}
-              />
-            </DialogContent>
-          </Dialog>
+          {renderRemoveLiquidity()}
 
           <Link href={positionPath}>
             <Button>Add Liquidity</Button>
