@@ -96,7 +96,7 @@ export function PositionView({pool}: {pool: PoolId}) {
     coinBAmountToWithdraw,
   });
 
-  const handleWithdrawLiquidity = useCallback(() => {
+  const openRemoveRegularPoolModal = useCallback(() => {
     openRemoveLiquidityModal();
   }, [openRemoveLiquidityModal]);
 
@@ -167,7 +167,7 @@ export function PositionView({pool}: {pool: PoolId}) {
           metadata: assetBMetadata,
           reserve: coinReserveB,
         }}
-        handleWithdrawLiquidity={handleWithdrawLiquidity}
+        openRemoveRegularPoolModal={openRemoveRegularPoolModal}
       />
       <DesktopPositionView
         pool={pool}
@@ -185,6 +185,7 @@ export function PositionView({pool}: {pool: PoolId}) {
           metadata: assetBMetadata,
           reserve: coinReserveB,
         }}
+        openRemoveRegularPoolModal={openRemoveRegularPoolModal}
       />
 
       <RemoveLiquidityModal
