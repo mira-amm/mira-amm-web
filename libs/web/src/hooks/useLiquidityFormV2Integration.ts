@@ -5,6 +5,7 @@ import {BN, bn} from "fuels";
 import {useAddLiquidityV2} from "./useAddLiquidityV2";
 import {PoolTypeOption} from "../components/common/PoolTypeToggle/PoolTypeToggle";
 import {isV2MockEnabled, mockAddLiquidityV2} from "../utils/mockConfig";
+import {DeltaIdDistribution} from "../components/pages/add-liquidity-page/components/AddLiquidity/liquidityDistributionGenerator";
 
 interface UseLiquidityFormV2IntegrationProps {
   poolType: PoolTypeOption;
@@ -18,6 +19,7 @@ interface UseLiquidityFormV2IntegrationProps {
     numBins: number;
     binResults?: any;
     liquidityDistribution?: any;
+    deltaDistribution?: DeltaIdDistribution;
   } | null;
   currentPrice?: number;
 }
@@ -41,6 +43,8 @@ export function useLiquidityFormV2Integration({
     firstAssetAmount: firstAmount,
     secondAssetAmount: secondAmount,
     slippage: 50, // 0.5% slippage
+    liquidityDistribution: v2Config?.liquidityDistribution,
+    deltaDistribution: v2Config?.deltaDistribution,
   });
 
   const handleV2ButtonClick = useCallback(async () => {
@@ -94,6 +98,7 @@ export function useLiquidityFormV2Integration({
             numBins: v2Config?.numBins || 1,
             priceRange: v2Config?.priceRange || [0.8, 1.2],
             liquidityDistribution: v2Config?.liquidityDistribution,
+            // deltaDistribution is now available via V2LiquidityConfig onConfigChange
           };
           onPreview(previewData);
         } else {

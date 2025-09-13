@@ -101,12 +101,33 @@ const AddLiquidityDialog = ({
     openFailureModal();
   }, [openFailureModal]);
 
-  // Handle preview action
+  // Handle preview data for both v1 and v2 (mock/real) flows
   const handlePreview = useCallback(
-    (data: AddLiquidityPreviewData) => {
-      setPreviewData(data);
+    (data: any) => {
+      const assets =
+        data?.assets && Array.isArray(data.assets)
+          ? data.assets
+          : [
+              {
+                assetId: firstAssetId || poolId[0].bits,
+                amount: new BN(data?.firstAmount || "0"),
+              },
+              {
+                assetId: secondAssetId || poolId[1].bits,
+                amount: new BN(data?.secondAmount || "0"),
+              },
+            ];
+
+      const preview: AddLiquidityPreviewData = {
+        ...(data || {}),
+        assets,
+        isStablePool:
+          typeof data?.isStablePool === "boolean" ? data.isStablePool : false,
+      };
+
+      setPreviewData(preview);
     },
-    [setPreviewData]
+    [setPreviewData, firstAssetId, secondAssetId, poolId]
   );
 
   const {

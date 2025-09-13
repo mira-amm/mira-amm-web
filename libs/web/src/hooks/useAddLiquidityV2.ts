@@ -1,24 +1,37 @@
 "use client";
 
 import {useMutation} from "@tanstack/react-query";
-import {useMiraDexV2} from "@/src/hooks";
+import {useMiraDexV2, useReadonlyMiraV2} from "@/src/hooks";
 import {useCallback} from "react";
 import {useWallet} from "@fuels/react";
-import {DefaultTxParams, MaxDeadline} from "@/src/utils/constants";
+import {
+  DEFAULT_SLIPPAGE_BASIS_POINT,
+  DefaultTxParams,
+  MaxDeadline,
+} from "@/src/utils/constants";
 import {bn, BN} from "fuels";
+import type {
+  LiquidityDistributionResult,
+  DeltaIdDistribution,
+} from "@/src/components/pages/add-liquidity-page/components/AddLiquidity/liquidityDistributionGenerator";
 
 export function useAddLiquidityV2({
   poolId,
   firstAssetAmount,
   secondAssetAmount,
-  slippage = 50, // 0.5% default slippage
+  slippage = DEFAULT_SLIPPAGE_BASIS_POINT, // 0.5% default slippage (basis points)
+  liquidityDistribution,
+  deltaDistribution,
 }: {
   poolId: BN;
   firstAssetAmount: BN;
   secondAssetAmount: BN;
   slippage?: number;
+  liquidityDistribution?: LiquidityDistributionResult;
+  deltaDistribution?: DeltaIdDistribution;
 }) {
   const miraV2 = useMiraDexV2();
+  const readonlyMiraV2 = useReadonlyMiraV2();
   const {wallet} = useWallet();
 
   const mutationFn = useCallback(async () => {
@@ -36,13 +49,11 @@ export function useAddLiquidityV2({
       .mul(bn(10_000).sub(bn(slippage)))
       .div(bn(10_000));
 
-    // Single active bin configuration - equivalent to v1 behavior
-    // All liquidity goes to the active bin (current price)
-    const deltaIds = [{Positive: 0}]; // Only active bin (0 offset)
-    const distributionX = [100]; // 100% of X tokens to active bin
-    const distributionY = [100]; // 100% of Y tokens to active bin
-    const activeIdDesired = undefined; // Use current active bin
-    const idSlippage = 0; // No bin slippage for single bin
+    const activeIdDesired = deltaDistribution?.activeIdDesired;
+    const idSlippage = deltaDistribution?.idSlippage;
+    const deltaIds = deltaDistribution?.deltaIds;
+    const distributionX = deltaDistribution?.distributionX;
+    const distributionY = deltaDistribution?.distributionY;
 
     const {transactionRequest: txRequest} = await miraV2.addLiquidity(
       poolId,
@@ -58,13 +69,23 @@ export function useAddLiquidityV2({
       distributionY,
       DefaultTxParams,
       {
-        useAssembleTx: true,
+        fundTransaction: true,
       }
     );
 
     const tx = await wallet.sendTransaction(txRequest);
     return await tx.waitForResult();
-  }, [miraV2, wallet, poolId, firstAssetAmount, secondAssetAmount, slippage]);
+  }, [
+    miraV2,
+    readonlyMiraV2,
+    wallet,
+    poolId,
+    firstAssetAmount,
+    secondAssetAmount,
+    slippage,
+    liquidityDistribution,
+    deltaDistribution,
+  ]);
 
   const {data, mutateAsync, isPending, error} = useMutation({
     mutationFn,

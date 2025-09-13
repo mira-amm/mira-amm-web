@@ -1,4 +1,12 @@
 import {LiquidityShape} from "./V2LiquidityConfig";
+import type {BigNumberish} from "fuels";
+import type {BinIdDelta} from "mira-dex-ts";
+import {
+  computeIdSlippageFromBps,
+  computeDistributionBpsForRaw,
+  computeUtilizationRate,
+} from "./liquidityDistributionUtils";
+import {calculateBinLiquidity} from "./liquidityDistributionUtils";
 
 export interface BinLiquidityData {
   binId: number;
@@ -16,6 +24,9 @@ export interface LiquidityDistributionParams {
   priceRange: [number, number]; // [minPrice, maxPrice]
   liquidityShape: LiquidityShape;
   totalLiquidityAmount?: number; // Total amount to distribute
+  // Optional extras to compute delta distribution
+  chainActiveId?: number; // if provided, use this; otherwise use computed activeBinId
+  slippageBps?: number; // to derive idSlippage
 }
 
 export interface LiquidityDistributionResult {
@@ -26,12 +37,23 @@ export interface LiquidityDistributionResult {
   utilizationRate: number; // Percentage of liquidity in active bins
 }
 
+export interface DeltaIdDistribution {
+  activeIdDesired?: BigNumberish;
+  idSlippage?: BigNumberish;
+  deltaIds?: BinIdDelta[];
+  distributionX?: BigNumberish[];
+  distributionY?: BigNumberish[];
+}
+
 /**
  * Generate liquidity distribution based on configuration parameters
  */
 export function generateLiquidityDistribution(
   params: LiquidityDistributionParams
-): LiquidityDistributionResult {
+): {
+  liquidityDistribution: LiquidityDistributionResult;
+  deltaDistribution: DeltaIdDistribution;
+} {
   const {
     numBins,
     binStep,
@@ -55,8 +77,17 @@ export function generateLiquidityDistribution(
   );
   const endBinId = startBinId + actualNumBins - 1;
 
-  // Generate bins
+  // Determine target active id for delta computation
+  const activeIdForDelta =
+    typeof params.chainActiveId === "number"
+      ? params.chainActiveId
+      : currentBinId;
+
+  // Generate bins and accumulate compact delta/distribution inputs
   const bins: BinLiquidityData[] = [];
+  const accDeltaIds: BinIdDelta[] = [];
+  const accRawX: number[] = [];
+  const accRawY: number[] = [];
 
   for (let binId = startBinId; binId <= endBinId; binId++) {
     const price = Math.pow(1 + binStep / 10000, binId);
@@ -82,6 +113,14 @@ export function generateLiquidityDistribution(
       isActive,
       distanceFromActive,
     });
+
+    // Accumulate only bins with some liquidity to keep payloads compact
+    if (liquidityX > 0 || liquidityY > 0) {
+      const d = binId - activeIdForDelta;
+      accDeltaIds.push(d >= 0 ? {Positive: d} : {Negative: Math.abs(d)});
+      accRawX.push(liquidityX);
+      accRawY.push(liquidityY);
+    }
   }
 
   // Calculate totals and utilization
@@ -96,142 +135,52 @@ export function generateLiquidityDistribution(
     (sum, bin) => sum + bin.liquidityY,
     0
   );
-  const utilizationRate =
-    ((activeLiquidityX + activeLiquidityY) /
-      (totalLiquidityX + totalLiquidityY)) *
-    100;
+  const utilizationRate = computeUtilizationRate(
+    totalLiquidityX,
+    totalLiquidityY,
+    activeLiquidityX,
+    activeLiquidityY
+  );
 
-  return {
+  const result: LiquidityDistributionResult = {
     bins,
     activeBinId: currentBinId,
     totalLiquidityX,
     totalLiquidityY,
     utilizationRate,
   };
-}
 
-/**
- * Calculate liquidity amounts for a specific bin based on distribution shape
- */
-function calculateBinLiquidity(
-  binId: number,
-  activeBinId: number,
-  binPrice: number,
-  currentPrice: number,
-  shape: LiquidityShape,
-  totalLiquidity: number,
-  numBins: number
-): {liquidityX: number; liquidityY: number} {
-  const distanceFromActive = Math.abs(binId - activeBinId);
-  const isActive = binId === activeBinId;
-  const isBelow = binId < activeBinId;
-  const isAbove = binId > activeBinId;
+  const computeIdSlippage = () =>
+    computeIdSlippageFromBps(params.binStep, params.slippageBps);
 
-  let liquidityX = 0;
-  let liquidityY = 0;
-  let weight = 0;
+  let deltaIds: BinIdDelta[];
+  let distributionX: number[];
+  let distributionY: number[];
 
-  switch (shape) {
-    case "spot":
-      // Concentrated liquidity - most liquidity in active bin
-      if (isActive) {
-        weight = 0.7; // 70% in active bin
-        liquidityX = (totalLiquidity * weight * 0.5) / currentPrice;
-        liquidityY = totalLiquidity * weight * 0.5;
-      } else if (distanceFromActive === 1) {
-        weight = 0.15; // 15% in adjacent bins
-        if (isBelow) {
-          liquidityX = (totalLiquidity * weight) / binPrice;
-          liquidityY = 0;
-        } else {
-          liquidityX = 0;
-          liquidityY = totalLiquidity * weight;
-        }
-      } else {
-        weight = 0.15 / Math.max(1, numBins - 3); // Remaining 15% distributed
-        if (isBelow) {
-          liquidityX = (totalLiquidity * weight) / binPrice;
-          liquidityY = 0;
-        } else {
-          liquidityX = 0;
-          liquidityY = totalLiquidity * weight;
-        }
-      }
-      break;
+  if (accDeltaIds.length === 0) {
+    deltaIds = [{Positive: 0}];
+    distributionX = [10000];
+    distributionY = [10000];
+  } else {
+    deltaIds = accDeltaIds;
 
-    case "curve":
-      // Normal distribution curve
-      const sigma = numBins / 4; // Standard deviation
-      const normalWeight = Math.exp(
-        -0.5 * Math.pow(distanceFromActive / sigma, 2)
-      );
-      const totalWeight = calculateTotalNormalWeight(numBins, sigma);
-      weight = normalWeight / totalWeight;
+    // Use precomputed totals
+    const totalX = result.totalLiquidityX;
+    const totalY = result.totalLiquidityY;
 
-      if (isActive) {
-        liquidityX = (totalLiquidity * weight * 0.5) / currentPrice;
-        liquidityY = totalLiquidity * weight * 0.5;
-      } else if (isBelow) {
-        liquidityX = (totalLiquidity * weight) / binPrice;
-        liquidityY = 0;
-      } else {
-        liquidityX = 0;
-        liquidityY = totalLiquidity * weight;
-      }
-      break;
-
-    case "bidask":
-      // Bid-ask spread - liquidity on both sides
-      if (isActive) {
-        weight = 0.1; // Small amount in active bin
-        liquidityX = (totalLiquidity * weight * 0.5) / currentPrice;
-        liquidityY = totalLiquidity * weight * 0.5;
-      } else {
-        // Distribute remaining 90% evenly on both sides
-        const sideWeight = 0.45 / Math.floor(numBins / 2);
-        weight = sideWeight;
-
-        if (isBelow) {
-          liquidityX = (totalLiquidity * weight) / binPrice;
-          liquidityY = 0;
-        } else {
-          liquidityX = 0;
-          liquidityY = totalLiquidity * weight;
-        }
-      }
-      break;
-
-    default:
-      // Uniform distribution as fallback
-      weight = 1 / numBins;
-      if (isActive) {
-        liquidityX = (totalLiquidity * weight * 0.5) / currentPrice;
-        liquidityY = totalLiquidity * weight * 0.5;
-      } else if (isBelow) {
-        liquidityX = (totalLiquidity * weight) / binPrice;
-        liquidityY = 0;
-      } else {
-        liquidityX = 0;
-        liquidityY = totalLiquidity * weight;
-      }
+    distributionX = computeDistributionBpsForRaw(accRawX, totalX);
+    distributionY = computeDistributionBpsForRaw(accRawY, totalY);
   }
 
-  return {liquidityX, liquidityY};
-}
+  const deltaDistribution: DeltaIdDistribution = {
+    activeIdDesired: activeIdForDelta,
+    idSlippage: computeIdSlippage(),
+    deltaIds,
+    distributionX,
+    distributionY,
+  };
 
-/**
- * Calculate total weight for normal distribution normalization
- */
-function calculateTotalNormalWeight(numBins: number, sigma: number): number {
-  let totalWeight = 0;
-  const center = Math.floor(numBins / 2);
-
-  for (let i = 0; i < numBins; i++) {
-    const distance = Math.abs(i - center);
-    totalWeight += Math.exp(-0.5 * Math.pow(distance / sigma, 2));
-  }
-
-  return totalWeight;
+  return {liquidityDistribution: result, deltaDistribution};
 }
 
 /**
@@ -285,7 +234,8 @@ export function generateRealisticDistribution(
   params: LiquidityDistributionParams,
   randomnessFactor: number = 0.1
 ): LiquidityDistributionResult {
-  const baseDistribution = generateLiquidityDistribution(params);
+  const {liquidityDistribution: baseDistribution} =
+    generateLiquidityDistribution(params);
 
   // Add some randomness to make it more realistic
   const randomizedBins = baseDistribution.bins.map((bin) => {
