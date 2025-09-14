@@ -44,6 +44,7 @@ import {
 } from "./cache";
 
 import {PoolCurveState} from "./typegen/contracts-v2";
+import {IReadonlyMiraAmmV2} from "./interfaces/IReadonlyMiraAmmV2";
 
 /**
  * ReadonlyMiraAmmV2 - Read-only operations for Mira v2 binned liquidity pools
@@ -85,7 +86,7 @@ import {PoolCurveState} from "./typegen/contracts-v2";
  * console.log(`Expected output: ${preview[1]} tokens`);
  * ```
  */
-export class ReadonlyMiraAmmV2 {
+export class ReadonlyMiraAmmV2 implements IReadonlyMiraAmmV2 {
   provider: Provider;
   ammContract: PoolCurveState;
   private poolCache: PoolDataCacheV2;
