@@ -1,9 +1,9 @@
 import {useQuery} from "@tanstack/react-query";
-import {useReadonlyMira} from "@/src/hooks";
+import {useMiraSDK} from "@/src/core/providers/MiraSDKProvider";
 import {PoolId} from "mira-dex-ts";
 
 export function usePoolsMetadata(pools: PoolId[] | undefined) {
-  const mira = useReadonlyMira();
+  const {readonlyMira: mira} = useMiraSDK();
   const miraExists = Boolean(mira);
 
   const shouldFetch = miraExists && Boolean(pools);

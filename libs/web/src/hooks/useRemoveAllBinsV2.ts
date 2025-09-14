@@ -1,7 +1,7 @@
 "use client";
 
 import {useMutation, useQueryClient} from "@tanstack/react-query";
-import {useMiraDexV2} from "@/src/hooks";
+import {useMiraSDK} from "@/src/core/providers/MiraSDKProvider";
 import {useCallback} from "react";
 import {useWallet} from "@fuels/react";
 import {DefaultTxParams, MaxDeadline} from "@/src/utils/constants";
@@ -24,7 +24,7 @@ export function useRemoveAllBinsV2({
   userPositions,
   slippage,
 }: RemoveAllBinsV2Params) {
-  const miraV2 = useMiraDexV2();
+  const {miraV2} = useMiraSDK();
   const {wallet} = useWallet();
   const queryClient = useQueryClient();
 
@@ -128,7 +128,7 @@ export function useRemoveSpecificBinsV2({
   poolId: BN;
   slippage: number;
 }) {
-  const miraV2 = useMiraDexV2();
+  const {miraV2} = useMiraSDK();
   const {wallet} = useWallet();
   const queryClient = useQueryClient();
 

@@ -1,7 +1,7 @@
 "use client";
 
 import {useQuery} from "@tanstack/react-query";
-import {useReadonlyMiraV2} from "@/src/hooks";
+import {useMiraSDK} from "@/src/core/providers/MiraSDKProvider";
 import {BN, Address} from "fuels";
 import {useWallet} from "@fuels/react";
 import {
@@ -21,7 +21,7 @@ export interface V2BinPosition {
 }
 
 export function useUserBinPositionsV2(poolId: BN | undefined) {
-  const readonlyMiraV2 = useReadonlyMiraV2();
+  const {readonlyMiraV2} = useMiraSDK();
   const {wallet} = useWallet();
 
   const userAddress = wallet?.address;

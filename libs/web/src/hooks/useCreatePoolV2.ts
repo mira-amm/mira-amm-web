@@ -6,7 +6,8 @@ import {useMutation} from "@tanstack/react-query";
 
 import {DefaultTxParams, MaxDeadline} from "@/src/utils/constants";
 import {useAssetMinterContract} from "./useAssetMinterContract";
-import {useAssetMetadata, useMiraDexV2} from "@/src/hooks";
+import {useAssetMetadata} from "@/src/hooks";
+import {useMiraSDK} from "@/src/core/providers/MiraSDKProvider";
 
 export function useCreatePoolV2({
   firstAsset,
@@ -23,7 +24,7 @@ export function useCreatePoolV2({
   binStep: number;
   baseFactor: number;
 }) {
-  const miraV2 = useMiraDexV2();
+  const {miraV2} = useMiraSDK();
   const {wallet} = useWallet();
   const firstAssetContract = useAssetMinterContract(firstAsset);
   const secondAssetContract = useAssetMinterContract(secondAsset);

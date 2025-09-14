@@ -1,7 +1,7 @@
 "use client";
 
 import {useMutation} from "@tanstack/react-query";
-import {useMiraDex} from "@/src/hooks";
+import {useMiraSDK} from "@/src/core/providers/MiraSDKProvider";
 import {useCallback} from "react";
 import {useWallet} from "@fuels/react";
 import {DefaultTxParams, MaxDeadline} from "@/src/utils/constants";
@@ -23,7 +23,7 @@ export function useAddLiquidity({
   isPoolStable: boolean;
   slippage: number;
 }) {
-  const mira = useMiraDex();
+  const {mira} = useMiraSDK();
   const {wallet} = useWallet();
 
   const mutationFn = useCallback(async () => {
