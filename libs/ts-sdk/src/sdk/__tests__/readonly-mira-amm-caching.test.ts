@@ -81,7 +81,9 @@ describe("ReadonlyMiraAmm Caching Integration", () => {
     };
 
     // Mock the MiraAmmContract constructor
-    const {MiraAmmContract} = await import("../typegen/contracts/MiraAmmContract");
+    const {MiraAmmContract} = await import(
+      "../typegen/contracts/MiraAmmContract"
+    );
     (MiraAmmContract as any).mockImplementation(() => mockContract);
 
     readonlyAmm = new ReadonlyMiraAmm(mockProvider);

@@ -28,7 +28,7 @@ async function build(): Promise<void> {
   await tsupBuild(tsupOptions);
   await replaceTscAliasPaths({
     outDir,
-    resolveFullPaths:     true,
+    resolveFullPaths: true,
     resolveFullExtension: ".js",
   });
 }

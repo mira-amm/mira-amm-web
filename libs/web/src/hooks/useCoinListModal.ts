@@ -149,7 +149,14 @@ export function useCoinListModal(
         },
         []
       );
-  }, [assets, balances, value, verifiedAssetData, verifiedAssetsOnly, assetImages]);
+  }, [
+    assets,
+    balances,
+    value,
+    verifiedAssetData,
+    verifiedAssetsOnly,
+    assetImages,
+  ]);
   return {
     handleFilterChange,
     isLoading: isLoading || isVerifiedAssetsLoading || isAssetImagesLoading,

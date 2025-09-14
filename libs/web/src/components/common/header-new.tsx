@@ -3,12 +3,9 @@
 import {useMemo} from "react";
 import {usePathname} from "next/navigation";
 import {Logo} from "@/src/components/common";
-import {
-  FuelAppUrl,
-} from "@/src/utils/constants";
+import {FuelAppUrl} from "@/src/utils/constants";
 import {ConnectWalletNew} from "./connect-wallet-new";
 import {Navigation, type NavLink} from "./navigation";
-
 
 export function HeaderNew({
   pathName,

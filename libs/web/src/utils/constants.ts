@@ -121,4 +121,4 @@ export const TickerTapeText =
 export const fuelUsdcPoolKey =
   "0x1d5d97005e41cae2187a895fd8eab0506111e0e2f3331cd3912c15c24e3c1d82-0x286c479da40dc953bddc3bb4c453b608bba2e0ac483b077bd475174115395e6b-false";
 
-export const DEFAULT_SLIPPAGE_BASIS_POINT = 50
+export const DEFAULT_SLIPPAGE_BASIS_POINT = 50;
