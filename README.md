@@ -44,33 +44,32 @@
 
 # Introduction
 
-Source code for the [Microchain](https://microchain.systems) web interface that enables users to interact
-with the Microchain decentralized exchange (DEX) on the [Fuel blockchain](https://fuel.network/).
+Source code for the [Microchain](https://microchain.systems) web interface that enables users to
+interact with the Microchain decentralized exchange (DEX) on the
+[Fuel blockchain](https://fuel.network/).
 
 ## Features
 
 ### [Decentralized Exchange - (DEX)](https://microchain.systems)
 
-| [Swap Tokens](https://microchain.systems)                               | [Manage Liquidity](https://microchain.systems/liquidity/?page=1)          | [Earn Points](https://microchain.systems/points/)                     |
-| ------------------------------------------------------------ | -------------------------------------------------------------- | ---------------------------------------------------------- |
+| [Swap Tokens](https://microchain.systems)                           | [Manage Liquidity](https://microchain.systems/liquidity/?page=1)            | [Earn Points](https://microchain.systems/points/)                       |
+| ------------------------------------------------------------------- | --------------------------------------------------------------------------- | ----------------------------------------------------------------------- |
 | ![Microchain Token Swaps](libs/shared/assets/screenshots/swaps.png) | ![Microchain Liquidity Pools](libs/shared/assets/screenshots/liquidity.png) | ![Microchain Points Program](libs/shared/assets/screenshots/points.png) |
 
 ## Platform
 
-| [🪙 Decentralized Exchange - (DEX)](https://microchain.systems)            |           [📚 Docs Site](https://docs.microchain.systems)           |  [🌟 Design System - Storybook](https://design.microchain.systems)  |               [🏛 Architecture](https://arch.microchain.systems)               |  📢 [Blog](https://mirror.xyz/0xBE101110E07430Cf585123864a55f51e53ABc339) |
-| :---------------------------------------------------: | :--------------------------------------------------------------: | :------------------------------------------------------: | :------------------------------------------------------: | :-----------------------------------------------------------------: |
-|    ![DEX](libs/shared/assets/screenshots/swaps.png)  | ![Docs Site](libs/shared/assets/screenshots/docs.png) | ![Storybook](libs/shared/assets/screenshots/storybook.png) | ![Architecture](libs/shared/assets/screenshots/architecture.png) | ![Blog](libs/shared/assets/screenshots/blog.png) |
-
+| [🪙 Decentralized Exchange - (DEX)](https://microchain.systems) |    [📚 Docs Site](https://docs.microchain.systems)    | [🌟 Design System - Storybook](https://design.microchain.systems) |        [🏛 Architecture](https://arch.microchain.systems)        | 📢 [Blog](https://mirror.xyz/0xBE101110E07430Cf585123864a55f51e53ABc339) |
+| :-------------------------------------------------------------: | :---------------------------------------------------: | :---------------------------------------------------------------: | :--------------------------------------------------------------: | :----------------------------------------------------------------------: |
+|        ![DEX](libs/shared/assets/screenshots/swaps.png)         | ![Docs Site](libs/shared/assets/screenshots/docs.png) |    ![Storybook](libs/shared/assets/screenshots/storybook.png)     | ![Architecture](libs/shared/assets/screenshots/architecture.png) |             ![Blog](libs/shared/assets/screenshots/blog.png)             |
 
 ## Contributing
 
-Developers are treated as first-class citizens here. Microchain's robust suite of tools
-handle the majority of environment setup, providing an outstanding full-stack development
-experience.
+Developers are treated as first-class citizens here. Microchain's robust suite of tools handle the
+majority of environment setup, providing an outstanding full-stack development experience.
 
 The codebase is self-documenting.
 
-|                           🖥️ Microvisor                           |                        💊 Microdoctor                        |           [📍 Project Graph](https://graph.microchain.systems)            |
+|                           🖥️ Microvisor                           |                        💊 Microdoctor                        |       [📍 Project Graph](https://graph.microchain.systems)       |
 | :---------------------------------------------------------------: | :----------------------------------------------------------: | :--------------------------------------------------------------: |
 | ![Microvisor](apps/docs/public/screenshots/microvisor-status.png) | ![Microdoctor](apps/docs/public/screenshots/microdoctor.png) | ![Project Graph](apps/docs/public/screenshots/project-graph.png) |
 

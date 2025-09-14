@@ -6,48 +6,37 @@
   },
   "sourceRoot": "libs/ts-sdk/src",
   "projectType": "library",
-  "implicitDependencies": [
-    "!libs/web"
-  ],
-  "tags": [
-    "sdk",
-    "typescript",
-    "v1"
-  ],
+  "implicitDependencies": ["!libs/web"],
+  "tags": ["sdk", "typescript", "v1"],
   "targets": {
     "build": {
-      "dependsOn": [
-        "typegen:scripts",
-        "typegen:contracts"
-      ],
+      "dependsOn": ["typegen:scripts", "typegen:contracts"],
       "command": "tsx build.ts",
       "cache": true,
       "options": {
-        "cwd": "libs/ts-sdk",
+        "cwd": "libs/ts-sdk"
       }
     },
     "typecheck": {
-      "dependsOn": [
-        "build"
-      ],
+      "dependsOn": ["build"],
       "command": "tsc --noEmit",
       "cache": true,
       "options": {
-        "cwd": "libs/ts-sdk",
+        "cwd": "libs/ts-sdk"
       }
     },
     "typegen:scripts": {
       "command": "fuels typegen -i './sway_abis/scripts/*/release/*-abi.json' -o ./src/sdk/typegen/scripts --script",
       "cache": true,
       "options": {
-        "cwd": "libs/ts-sdk",
+        "cwd": "libs/ts-sdk"
       }
     },
     "typegen:contracts": {
       "command": "fuels typegen -i './sway_abis/contracts/*/release/*-abi.json' -o './src/sdk/typegen/contracts'",
       "cache": true,
       "options": {
-        "cwd": "libs/ts-sdk",
+        "cwd": "libs/ts-sdk"
       }
     }
   }

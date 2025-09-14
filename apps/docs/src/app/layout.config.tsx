@@ -20,7 +20,7 @@ export const baseOptions: BaseLayoutProps = {
           height={12}
           width={12}
         />
-              {/* TODO: use tokens */}
+        {/* TODO: use tokens */}
         <span className="text-lg font-bold text-[#01ec97]">Microchain</span>
         <span className="text-lg font-bold text-[#507ff7]">Docs</span>
       </>

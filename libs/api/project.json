@@ -6,20 +6,12 @@
   },
   "sourceRoot": "libs/api/src",
   "projectType": "library",
-  "implicitDependencies": [
-    "!libs/web"
-  ],
-  "tags": [
-    "tools",
-    "back-end"
-  ],
+  "implicitDependencies": ["!libs/web"],
+  "tags": ["tools", "back-end"],
   "// targets": "to see all targets run: nx show project api --web",
   "targets": {
     "dev": {
-      "dependsOn": [
-        "compodoc",
-        "ts-sdk:build"
-      ],
+      "dependsOn": ["compodoc", "ts-sdk:build"],
       "command": "tsx --watch src/main.ts",
       "options": {
         "cwd": "libs/api"
@@ -33,9 +25,7 @@
       }
     },
     "build": {
-      "dependsOn": [
-        "ts-sdk:build"
-      ],
+      "dependsOn": ["ts-sdk:build"],
       "command": "tsx build.ts && compodoc",
       "cache": true,
       "options": {
@@ -56,9 +46,7 @@
       }
     },
     "vercel:deploy": {
-      "dependsOn": [
-        "vercel:build"
-      ],
+      "dependsOn": ["vercel:build"],
       "command": "pnpm vercel deploy --prebuilt --prod",
       "options": {
         "cwd": "libs/api"
