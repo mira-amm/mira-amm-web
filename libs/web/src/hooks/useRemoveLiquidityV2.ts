@@ -1,7 +1,7 @@
 "use client";
 
 import {useMutation} from "@tanstack/react-query";
-import {useMiraDexV2} from "@/src/hooks";
+import {useMiraSDK} from "@/src/core/providers/MiraSDKProvider";
 import {useCallback} from "react";
 import {useWallet} from "@fuels/react";
 import {DefaultTxParams, MaxDeadline} from "@/src/utils/constants";
@@ -24,7 +24,7 @@ export function useRemoveLiquidityV2({
   minAmountY,
   slippage,
 }: RemoveLiquidityV2Params) {
-  const miraV2 = useMiraDexV2();
+  const {miraV2} = useMiraSDK();
   const {wallet} = useWallet();
 
   const mutationFn = useCallback(async () => {

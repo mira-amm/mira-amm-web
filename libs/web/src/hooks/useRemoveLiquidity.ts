@@ -3,7 +3,7 @@ import {useCallback} from "react";
 import {bn, BN} from "fuels";
 import {useWallet} from "@fuels/react";
 import {useMutation} from "@tanstack/react-query";
-import {useMiraDex} from "@/src/hooks";
+import {useMiraSDK} from "@/src/core/providers/MiraSDKProvider";
 import {PoolId} from "mira-dex-ts";
 import {DefaultTxParams, MaxDeadline} from "@/src/utils/constants";
 
@@ -20,7 +20,7 @@ export function useRemoveLiquidity({
   coinAAmountToWithdraw: BN;
   coinBAmountToWithdraw: BN;
 }) {
-  const mira = useMiraDex();
+  const {mira} = useMiraSDK();
   const {wallet} = useWallet();
 
   const mutationFn = useCallback(async () => {

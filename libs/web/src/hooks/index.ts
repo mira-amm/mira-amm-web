@@ -16,12 +16,8 @@ export {useDidUpdate} from "./useDidUpdate";
 export {useAssetMetadata} from "./useAssetMetadata";
 export {useBalances} from "./useBalances";
 export {useProvider} from "./useProvider";
-export {useReadonlyMira} from "./useReadonlyMira";
-export {useReadonlyMiraV2} from "./useReadonlyMiraV2";
 export {useCheckEthBalance} from "./useCheckEthBalance";
 export {useFormattedAddress} from "./useFormattedAddress";
-export {useMiraDex} from "./useMiraDex";
-export {useMiraDexV2} from "./useMiraDexV2";
 export {useSwap} from "./useSwap";
 export {useAssetList} from "./useAssetList";
 export {useAssetMinterContract} from "./useAssetMinterContract";
@@ -85,3 +81,10 @@ export type {
 export {usePreviewAddLiquidity} from "./usePreviewAddLiquidity";
 export {useDocumentTitle} from "./useDocumentTitle";
 export {useProtocolStats} from "./useProtocolStats";
+export {
+  useMiraSDK,
+  useMira,
+  useMiraV2,
+  useReadonlyMira,
+  useReadonlyMiraV2,
+} from "../core/providers/MiraSDKProvider";

@@ -2,7 +2,8 @@ import {useMemo} from "react";
 import {useQuery} from "@tanstack/react-query";
 import {B256Address} from "fuels";
 import {PoolId} from "mira-dex-ts";
-import {useReadonlyMira, useAssetMetadata} from "@/src/hooks";
+import {useAssetMetadata} from "@/src/hooks";
+import {useMiraSDK} from "@/src/core/providers/MiraSDKProvider";
 
 export const useReservesPrice = ({
   pools,
@@ -13,7 +14,7 @@ export const useReservesPrice = ({
   sellAssetId: B256Address | null;
   buyAssetId: B256Address | null;
 }) => {
-  const miraAmm = useReadonlyMira();
+  const {readonlyMira: miraAmm} = useMiraSDK();
   const sellMetadata = useAssetMetadata(sellAssetId);
   const buyMetadata = useAssetMetadata(buyAssetId);
 

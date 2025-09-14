@@ -1,5 +1,5 @@
 import {useBalances} from "@/src/hooks";
-import {useReadonlyMira} from "@/src/hooks";
+import {useMiraSDK} from "@/src/core/providers/MiraSDKProvider";
 import {useQuery} from "@tanstack/react-query";
 import request, {gql} from "graphql-request";
 import {Asset, PoolId} from "mira-dex-ts";
@@ -24,7 +24,7 @@ export function usePositions(): {
   data: Position[] | undefined;
   isLoading: boolean;
 } {
-  const mira = useReadonlyMira();
+  const {readonlyMira: mira} = useMiraSDK();
   const {balances} = useBalances();
 
   const miraExists = Boolean(mira);

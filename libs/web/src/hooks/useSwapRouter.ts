@@ -6,7 +6,7 @@ import {
   type SwapQuote,
   TradeType,
 } from "./get-swap-quotes-batch";
-import {useReadonlyMira} from ".";
+import {useMiraSDK} from "@/src/core/providers/MiraSDKProvider";
 import {type Route, useRoutablePools} from "@/src/hooks";
 import {CoinData} from "../utils/coinsConfig";
 import {type CacheOptions} from "mira-dex-ts";
@@ -44,7 +44,7 @@ export function useSwapRouter(
   };
   error: string | null;
 } {
-  const amm = useReadonlyMira();
+  const {readonlyMira: amm} = useMiraSDK();
 
   // Default cache options
   const effectiveCacheOptions = useMemo(

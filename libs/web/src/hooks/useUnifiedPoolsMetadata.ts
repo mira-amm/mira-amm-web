@@ -1,5 +1,5 @@
 import {useQuery} from "@tanstack/react-query";
-import {useReadonlyMira, useReadonlyMiraV2} from "@/src/hooks";
+import {useMiraSDK} from "@/src/core/providers/MiraSDKProvider";
 import {PoolId} from "mira-dex-ts";
 import {BN} from "fuels";
 
@@ -17,8 +17,7 @@ export type UnifiedPoolMetadata = {
 };
 
 export function useUnifiedPoolsMetadata(pools: UnifiedPoolId[] | undefined) {
-  const miraV1 = useReadonlyMira();
-  const miraV2 = useReadonlyMiraV2();
+  const {readonlyMira: miraV1, readonlyMiraV2: miraV2} = useMiraSDK();
   const shouldFetch = Boolean(miraV1 && miraV2 && pools);
 
   const {data, isPending} = useQuery({
