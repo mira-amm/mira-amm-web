@@ -33,10 +33,11 @@ import {CacheError} from "./cache";
 import {globalPoolDataCache, DEFAULT_CACHE_OPTIONS} from "./cache";
 
 import {MiraAmmContract} from "./typegen/contracts";
+import {IReadonlyMiraAmm} from "./interfaces/IReadonlyMiraAmm";
 
 const DECIMALS_PRECISION = 1000000000000;
 
-export class ReadonlyMiraAmm {
+export class ReadonlyMiraAmm implements IReadonlyMiraAmm {
   provider: Provider;
   ammContract: MiraAmmContract;
   private poolCache: PoolDataCache;

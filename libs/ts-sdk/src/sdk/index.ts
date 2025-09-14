@@ -6,6 +6,9 @@ export * from "./readonly_mira_amm";
 export * from "./mira_amm_v2";
 export * from "./readonly_mira_amm_v2";
 
+// Interfaces for v2 SDK
+export * from "./interfaces";
+
 // Shared types and models for both v1 and v2
 export * from "./model";
 

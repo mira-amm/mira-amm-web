@@ -10,7 +10,7 @@ import {
   TxParams,
 } from "fuels";
 
-import { DEFAULT_AMM_CONTRACT_ID } from "./constants";
+import {DEFAULT_AMM_CONTRACT_ID} from "./constants";
 
 import {
   AddLiquidityScriptLoader,
@@ -20,9 +20,9 @@ import {
   SwapExactOutputScriptLoader,
 } from "./typegen/scripts";
 
-import { MiraAmmContract, MiraAmmContractFactory } from "./typegen/contracts";
+import {MiraAmmContract, MiraAmmContractFactory} from "./typegen/contracts";
 
-import { PoolId } from "./model";
+import {PoolId} from "./model";
 import {
   addressInput,
   assetInput,
@@ -33,19 +33,14 @@ import {
   reorderAssetContracts,
   reorderPoolId,
 } from "./utils";
-import { hexlify, bn } from "fuels";
+import {hexlify, bn} from "fuels";
+import {
+  IMiraAmm,
+  PrepareRequestOptions,
+  TransactionWithGasPrice,
+} from "./interfaces/IMiraAmm";
 
-type PrepareRequestOptions = {
-  useAssembleTx?: boolean;
-  reserveGas?: number;
-};
-
-type TransactionWithGasPrice = {
-  transactionRequest: ScriptTransactionRequest;
-  gasPrice: BN;
-};
-
-export class MiraAmm {
+export class MiraAmm implements IMiraAmm {
   private readonly account: Account;
   private readonly ammContract: MiraAmmContract;
   private readonly addLiquidityScriptLoader: AddLiquidityScriptLoader;
@@ -80,8 +75,8 @@ export class MiraAmm {
   }
 
   static async deploy(wallet: Account): Promise<MiraAmm> {
-    const { waitForResult } = await MiraAmmContractFactory.deploy(wallet);
-    const { contract, transactionResult } = await waitForResult();
+    const {waitForResult} = await MiraAmmContractFactory.deploy(wallet);
+    const {contract, transactionResult} = await waitForResult();
     console.log(
       "Deployed MiraAmm contract with status:",
       transactionResult.status,
@@ -401,8 +396,8 @@ export class MiraAmm {
 
       for (const asset of inputAssets) {
         const coin = Array.isArray(asset)
-          ? { amount: asset[0], assetId: asset[1] }
-          : { amount: asset.amount, assetId: asset.assetId };
+          ? {amount: asset[0], assetId: asset[1]}
+          : {amount: asset.amount, assetId: asset.assetId};
 
         const assetId =
           typeof coin.assetId === "string"
@@ -440,7 +435,7 @@ export class MiraAmm {
       const accountCoinQuantities = Array.from(accountCoinMap.values());
 
       try {
-        const { assembledRequest, gasPrice } =
+        const {assembledRequest, gasPrice} =
           await this.account.provider.assembleTx({
             request,
             feePayerAccount: this.account,
@@ -448,7 +443,7 @@ export class MiraAmm {
             reserveGas: options?.reserveGas,
           });
 
-        return { transactionRequest: assembledRequest, gasPrice };
+        return {transactionRequest: assembledRequest, gasPrice};
       } catch (error) {
         // If assembleTx fails, fall back to legacy method
         if (
@@ -474,8 +469,8 @@ export class MiraAmm {
   ): Promise<TransactionWithGasPrice> {
     request.addResources(await this.account.getResourcesToSpend(inputAssets));
     request = await this.fundRequest(request);
-    const { gasPrice } = await this.account.getTransactionCost(request);
+    const {gasPrice} = await this.account.getTransactionCost(request);
     await this.account.provider.estimateTxDependencies(request);
-    return { transactionRequest: request, gasPrice };
+    return {transactionRequest: request, gasPrice};
   }
 }

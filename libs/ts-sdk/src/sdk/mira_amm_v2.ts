@@ -68,10 +68,7 @@ import {
   DEFAULT_VALIDATION_OPTIONS,
 } from "./validation";
 
-type TransactionWithGasPrice = {
-  transactionRequest: ScriptTransactionRequest;
-  gasPrice: BN;
-};
+import {IMiraAmmV2, TransactionWithGasPrice} from "./interfaces/IMiraAmmV2";
 
 /**
  * MiraAmmV2 - Write operations for Mira v2 binned liquidity pools
@@ -113,7 +110,7 @@ type TransactionWithGasPrice = {
  * );
  * ```
  */
-export class MiraAmmV2 {
+export class MiraAmmV2 implements IMiraAmmV2 {
   private readonly account: Account;
   private readonly ammContract: PoolCurveState;
   private readonly addLiquidityScript: AddLiquidity;
