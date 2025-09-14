@@ -23,6 +23,8 @@
       "@/engine": ["libs/engine/index.ts"],
       "@/engine/*": ["libs/engine/*"],
       "@/fumadocs-ui/*": ["libs/external/fumadocs-ui/*"],
+      "@/indexer": ["libs/indexer/src/index.ts"],
+      "@/indexer/*": ["libs/indexer/src/*"],
       "@/magic-ui/*": ["libs/external/magic-ui/*"],
       "@/meshwave-ui/*": ["libs/meshwave-ui/*"],
       "@/meshwave-ui/icons": ["libs/meshwave-ui/src/components/icons/index.tsx"],
