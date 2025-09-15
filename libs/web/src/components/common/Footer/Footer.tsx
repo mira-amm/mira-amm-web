@@ -65,7 +65,7 @@ export default function Footer() {
         </div>
       </div>
       <div className="text-base text-center lg:text-right mt-[30px] text-content-tertiary/60">
-        &copy; 2025 <BrandText mira="Mira" microchain="Microchain" /> Finance
+        &copy; 2025 <BrandText microchain="Microchain" /> Finance
       </div>
     </footer>
   );

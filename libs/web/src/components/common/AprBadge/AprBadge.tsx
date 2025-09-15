@@ -105,7 +105,7 @@ const LabelMap: Record<
     description: "Boost rewards ($FUEL) per day distributed among LPs in pool",
   },
   Points: {
-    label: <BrandText mira="Mira Points" microchain="Microchain Points" />,
+    label: <BrandText microchain="Microchain Points" />,
     description: "distributed amount LPs in pool per day",
   },
 };

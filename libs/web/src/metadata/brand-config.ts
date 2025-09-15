@@ -1,6 +1,6 @@
-import {BrandMetadata} from "./types";
+import {BrandMetadata, BrandType} from "./types";
 
-export const BRAND_CONFIGS: Record<"microchain", BrandMetadata> = {
+export const BRAND_CONFIGS: Record<BrandType, BrandMetadata> = {
   microchain: {
     brandName: "Microchain",
     siteName: "Microchain DEX",
