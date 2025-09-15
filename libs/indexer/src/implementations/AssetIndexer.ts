@@ -4,6 +4,7 @@ import {
   GET_ASSET_BY_ID,
   GET_ASSET_PRICE,
   GET_ASSETS_LIST,
+  GET_ASSETS_WITH_POOLS,
   GET_ASSET_METADATA,
   GET_ASSET_IMAGE,
   SEARCH_ASSETS,
@@ -64,6 +65,13 @@ export class AssetIndexer implements IAssetIndexer {
 
   async list(): Promise<Asset[]> {
     const response = await this.indexer.query<{assets: any[]}>(GET_ASSETS_LIST);
+    return response.assets.map((asset) => this.transformAssetData(asset));
+  }
+
+  async listWithPools(): Promise<Asset[]> {
+    const response = await this.indexer.query<{assets: any[]}>(
+      GET_ASSETS_WITH_POOLS
+    );
     return response.assets.map((asset) => this.transformAssetData(asset));
   }
 

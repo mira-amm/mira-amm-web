@@ -173,6 +173,21 @@ export class MockAssetIndexer implements IAssetIndexer {
     }));
   }
 
+  async listWithPools(): Promise<Asset[]> {
+    return Array.from({length: 5}, (_, i) => ({
+      id: `asset_${i}`,
+      name: `Asset ${i}`,
+      symbol: `A${i}`,
+      decimals: 18,
+      price: `${1 + i * 0.1}`,
+      image: `https://example.com/asset_${i}.png`,
+      numPools: i + 1,
+      contractId: `contract_${i}`,
+      subId: `sub_${i}`,
+      l1Address: `l1_address_${i}`,
+    }));
+  }
+
   async getMetadata(id: string): Promise<AssetMetadata> {
     return {
       id,

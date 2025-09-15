@@ -12,6 +12,10 @@ export interface Asset {
   coinMarketCapId?: string;
   metadata?: Record<string, any>;
   price?: string;
+  image?: string;
+  numPools?: string | number;
+  contractId?: string;
+  subId?: string;
 }
 
 export interface AssetPrice {

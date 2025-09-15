@@ -15,6 +15,7 @@ import {Toaster} from "sonner";
 import {FuelProviderWrapper} from "@/src/core/providers/FuelProviderWrapper";
 import {DisclaimerWrapper} from "@/src/core/providers/DisclaimerWrapper";
 import {MiraSDKProvider} from "@/src/core/providers/MiraSDKProvider";
+import {IndexerProvider} from "@/indexer";
 import {Loader} from "@/src/components/common";
 import {ThemeProvider} from "./theme-provider";
 import {getIsRebrandEnabled} from "@/src/utils/isRebrandEnabled";
@@ -62,19 +63,21 @@ export function Providers({children}: {children: ReactNode}) {
       <ReactQueryDevtools initialIsOpen={false} />
       <QueryParamProviderWrapper>
         <FuelProviderWrapper>
-          <MiraSDKProvider>
-            <DisclaimerWrapper>
-              <ThemeProvider
-                attribute="class"
-                defaultTheme={rebrandEnabled ? "light" : "dark"}
-                enableSystem
-                disableTransitionOnChange
-              >
-                <Toaster richColors position="bottom-right" />
-                {children}
-              </ThemeProvider>
-            </DisclaimerWrapper>
-          </MiraSDKProvider>
+          <IndexerProvider>
+            <MiraSDKProvider>
+              <DisclaimerWrapper>
+                <ThemeProvider
+                  attribute="class"
+                  defaultTheme={rebrandEnabled ? "light" : "dark"}
+                  enableSystem
+                  disableTransitionOnChange
+                >
+                  <Toaster richColors position="bottom-right" />
+                  {children}
+                </ThemeProvider>
+              </DisclaimerWrapper>
+            </MiraSDKProvider>
+          </IndexerProvider>
         </FuelProviderWrapper>
       </QueryParamProviderWrapper>
     </PersistQueryClientProvider>

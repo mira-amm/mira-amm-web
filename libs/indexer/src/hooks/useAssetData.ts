@@ -49,6 +49,17 @@ export function useAssetList() {
   });
 }
 
+export function useAssetListWithPools() {
+  const indexer = useIndexerData();
+
+  return useQuery({
+    queryKey: ["assets", "withPools"],
+    queryFn: () => indexer.assets.listWithPools(),
+    staleTime: 3 * 60 * 60 * 1000, // 3 hours
+    meta: {persist: true},
+  });
+}
+
 export function useAssetMetadata(assetId: string) {
   const indexer = useIndexerData();
 

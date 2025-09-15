@@ -9,6 +9,8 @@ export interface IAssetIndexer {
 
   list(): Promise<Asset[]>;
 
+  listWithPools(): Promise<Asset[]>;
+
   getMetadata(id: string): Promise<AssetMetadata>;
 
   getImage(id: string): Promise<string | null>;

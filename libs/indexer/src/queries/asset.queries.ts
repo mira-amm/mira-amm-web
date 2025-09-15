@@ -33,6 +33,23 @@ export const GET_ASSETS_LIST = gql`
   }
 `;
 
+export const GET_ASSETS_WITH_POOLS = gql`
+  query GetAssetsWithPools {
+    assets(where: {numPools_gt: 0}) {
+      image
+      name
+      symbol
+      id
+      decimals
+      numPools
+      l1Address
+      price
+      contractId
+      subId
+    }
+  }
+`;
+
 export const GET_ASSET_METADATA = gql`
   query GetAssetMetadata($id: String!) {
     asset: assetById(id: $id) {
