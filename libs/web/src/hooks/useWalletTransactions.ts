@@ -5,6 +5,7 @@ import {DefaultLocale, SQDIndexerUrl} from "../utils/constants";
 import {useMemo} from "react";
 import {CoinDataWithPrice} from "../utils/coinsConfig";
 import {useAssetList} from "./useAssetList";
+import {useWalletTransactions as useIndexerWalletTransactions} from "@/indexer";
 
 export type TransactionFromQuery = {
   id: string;
@@ -719,45 +720,39 @@ export function useWalletTransactions(
 } {
   const {assets, isLoading: isAssetsLoading} = useAssetList();
 
-  const query = gql`
-    query MyQuery($recipient: String, $limit: Int) {
-      actions(limit: $limit, where: {recipient_eq: $recipient}) {
-        id
-        amount0In
-        amount0Out
-        amount1In
-        amount1Out
-        type
-        asset0 {
-          symbol
-          decimals
-        }
-        asset1 {
-          symbol
-          decimals
-        }
-        transaction
-        recipient
-        timestamp
-      }
-    }
-  `;
-
   const shouldFetch = Boolean(account) && Boolean(fetchCondition);
 
-  const {data, isLoading} = useQuery<TransactionsDataFromQuery>({
-    queryKey: ["transactions", account],
-    queryFn: () =>
-      request({
-        url: SQDIndexerUrl,
-        document: query,
-        variables: {
-          recipient: account?.toLowerCase(),
-          limit: 200,
+  const {data: indexerData, isLoading} = useIndexerWalletTransactions(
+    shouldFetch ? account?.toLowerCase() || "" : "",
+    200
+  );
+
+  // Transform indexer data to match expected format
+  const data = useMemo(() => {
+    if (!indexerData) return undefined;
+
+    return {
+      actions: indexerData.map((tx) => ({
+        id: tx.id,
+        amount0In: tx.data?.amounts?.amount0In || "0",
+        amount0Out: tx.data?.amounts?.amount0Out || "0",
+        amount1In: tx.data?.amounts?.amount1In || "0",
+        amount1Out: tx.data?.amounts?.amount1Out || "0",
+        type: tx.type as "ADD_LIQUIDITY" | "REMOVE_LIQUIDITY" | "SWAP",
+        asset0: {
+          symbol: tx.data?.pool?.asset0?.symbol || "",
+          decimals: tx.data?.pool?.asset0?.decimals || 18,
         },
-      }),
-    enabled: shouldFetch,
-  });
+        asset1: {
+          symbol: tx.data?.pool?.asset1?.symbol || "",
+          decimals: tx.data?.pool?.asset1?.decimals || 18,
+        },
+        transaction: tx.hash,
+        recipient: tx.from,
+        timestamp: tx.timestamp,
+      })),
+    } as TransactionsDataFromQuery;
+  }, [indexerData]);
 
   const transactions = useMemo(() => {
     if (!data || !assets?.length) return {};

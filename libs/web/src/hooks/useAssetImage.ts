@@ -3,6 +3,7 @@ import request, {gql} from "graphql-request";
 import {SQDIndexerUrl} from "../utils/constants";
 import defaultImage from "@/assets/unknown-asset.svg";
 import {useAssetList} from "./useAssetList";
+import {useAssetImage as useIndexerAssetImage} from "@/indexer";
 
 export interface AssetImageData {
   l1Address: string;
@@ -12,6 +13,7 @@ export type AssetImageMap = Record<string, AssetImageData>;
 
 export const useAssetImage = (assetId: string | null): string => {
   const {assets, isLoading: isLoadingAsset} = useAssetList();
+  const {data: indexerImageData} = useIndexerAssetImage(assetId || "");
 
   const {data, isLoading, error} = useQuery<string | null>({
     queryKey: ["assetImage", assetId, assets?.length],
@@ -23,21 +25,9 @@ export const useAssetImage = (assetId: string | null): string => {
         return asset.icon;
       }
 
-      const query = gql`
-        query MyQuery {
-            assetById(id: "${assetId}"){
-              l1Address
-              image
-            }
-        }`;
-
-      const results = await request<Record<string, AssetImageData>>({
-        document: query,
-        url: SQDIndexerUrl,
-      });
-
-      if (results.assetById.image) {
-        return results.assetById.image;
+      // Try indexer first
+      if (indexerImageData) {
+        return indexerImageData;
       }
 
       // TODO: get images from L1 address
