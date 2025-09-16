@@ -62,7 +62,7 @@ const CoinInput = ({
   return (
     <div
       className={cn(
-        "min-h-[65px] flex items-center gap-1 p-3 rounded-lg bg-background-secondary",
+        "min-h-[65px] flex items-center gap-1 p-3 rounded-lg bg-background-secondary border border-input",
         hasInsufficientBalance ? "ring-1 ring-red-500" : "ring-0"
       )}
     >
@@ -92,7 +92,7 @@ const CoinInput = ({
         {usdValue !== null && (
           <p
             className={cn(
-              "min-h-[16px] text-xs leading-4 lg:min-h-[18px] lg:text-sm lg:leading-[18px]",
+              "min-h-[16px] text-xs leading-4 lg:min-h-[18px] lg:text-sm lg:leading-[18px] font-alt",
               hasInsufficientBalance ? "text-red-400" : "text-content-tertiary"
             )}
           >
@@ -108,7 +108,7 @@ const CoinInput = ({
           onClick={onAssetClick}
         />
         {balance.gt(0) && (
-          <span className="text-xs leading-4 text-content-tertiary lg:text-sm lg:leading-[18px]">
+          <span className="text-xs leading-4 text-content-tertiary lg:text-sm lg:leading-[18px] font-alt">
             Balance: {balanceValue}&nbsp;
             <TextButton onClick={handleMaxClick}>Max</TextButton>
           </span>

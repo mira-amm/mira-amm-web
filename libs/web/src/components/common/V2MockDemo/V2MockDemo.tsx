@@ -67,14 +67,14 @@ export function V2MockDemo() {
     <div className="bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800 rounded-lg p-6 space-y-6">
       <div className="flex items-center gap-2">
         <div className="w-3 h-3 bg-yellow-500 rounded-full animate-pulse"></div>
-        <h3 className="text-lg font-semibold text-yellow-900 dark:text-yellow-100">
+        <h3 className="text-lg  text-yellow-900 dark:text-yellow-100">
           V2 Mock Testing Demo
         </h3>
       </div>
 
       {/* Mock Pools */}
       <div>
-        <h4 className="font-medium text-yellow-800 dark:text-yellow-200 mb-2">
+        <h4 className=" text-yellow-800 dark:text-yellow-200 mb-2">
           Available Mock Pools
         </h4>
         <div className="space-y-2">
@@ -85,7 +85,7 @@ export function V2MockDemo() {
             >
               <div className="flex justify-between items-start">
                 <div>
-                  <p className="font-medium">{pool.name}</p>
+                  <p className="">{pool.name}</p>
                   <p className="text-sm text-gray-600 dark:text-gray-400">
                     Pool ID: {pool.id}
                   </p>
@@ -104,7 +104,7 @@ export function V2MockDemo() {
 
       {/* Mock Positions */}
       <div>
-        <h4 className="font-medium text-yellow-800 dark:text-yellow-200 mb-2">
+        <h4 className=" text-yellow-800 dark:text-yellow-200 mb-2">
           Mock User Positions (Pool 1001)
         </h4>
         <div className="space-y-1">
@@ -130,7 +130,7 @@ export function V2MockDemo() {
 
       {/* Mock Operations */}
       <div>
-        <h4 className="font-medium text-yellow-800 dark:text-yellow-200 mb-2">
+        <h4 className=" text-yellow-800 dark:text-yellow-200 mb-2">
           Test Mock Operations
         </h4>
         <div className="flex gap-2">
@@ -156,11 +156,11 @@ export function V2MockDemo() {
       {/* Last Result */}
       {lastResult && (
         <div>
-          <h4 className="font-medium text-yellow-800 dark:text-yellow-200 mb-2">
+          <h4 className=" text-yellow-800 dark:text-yellow-200 mb-2">
             Last Operation Result
           </h4>
           <div className="bg-white dark:bg-gray-800 rounded-md p-3 border">
-            <p className="font-medium">{lastResult.type}</p>
+            <p className="">{lastResult.type}</p>
             <pre className="text-xs mt-2 overflow-auto">
               {JSON.stringify(lastResult.result, null, 2)}
             </pre>

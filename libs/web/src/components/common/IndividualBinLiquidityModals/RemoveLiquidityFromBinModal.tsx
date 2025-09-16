@@ -124,7 +124,7 @@ export function RemoveLiquidityFromBinModal({
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
       <div className="bg-white dark:bg-gray-800 rounded-lg p-6 w-full max-w-md mx-4">
         <div className="flex items-center justify-between mb-4">
-          <h2 className="text-xl font-semibold text-gray-900 dark:text-white">
+          <h2 className="text-xl  text-gray-900 dark:text-white">
             Remove Liquidity from Bin
           </h2>
           <button
@@ -137,13 +137,13 @@ export function RemoveLiquidityFromBinModal({
 
         <div className="mb-4 p-3 bg-blue-50 dark:bg-blue-900/20 rounded-lg">
           <div className="text-sm text-blue-800 dark:text-blue-200">
-            <div className="font-medium">Bin #{position.binId.toString()}</div>
+            <div className="">Bin #{position.binId.toString()}</div>
             <div>
               Price: {position.price.toFixed(6)} {assetXMetadata.symbol} per{" "}
               {assetYMetadata.symbol}
             </div>
             {position.isActive && (
-              <div className="text-green-600 dark:text-green-400 font-medium">
+              <div className="text-green-600 dark:text-green-400 ">
                 Active Bin
               </div>
             )}
@@ -153,7 +153,7 @@ export function RemoveLiquidityFromBinModal({
         {/* Current Position Summary */}
         <div className="mb-4 p-3 bg-gray-50 dark:bg-gray-700 rounded-lg">
           <div className="text-sm text-gray-700 dark:text-gray-300">
-            <div className="font-medium mb-2">Current Position</div>
+            <div className=" mb-2">Current Position</div>
             <div className="grid grid-cols-2 gap-2">
               <div>
                 <span className="text-xs text-gray-500">
@@ -184,7 +184,7 @@ export function RemoveLiquidityFromBinModal({
         <form onSubmit={handleSubmit} className="space-y-4">
           {/* Removal Percentage */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+            <label className="block text-sm  text-gray-700 dark:text-gray-300 mb-2">
               Amount to Remove: {removePercentage}%
             </label>
             <input
@@ -225,7 +225,7 @@ export function RemoveLiquidityFromBinModal({
           {/* Removal Preview */}
           <div className="p-3 bg-yellow-50 dark:bg-yellow-900/20 rounded-lg">
             <div className="text-sm text-yellow-800 dark:text-yellow-200">
-              <div className="font-medium mb-2">You will receive:</div>
+              <div className=" mb-2">You will receive:</div>
               <div className="grid grid-cols-2 gap-2">
                 <div>
                   <span className="text-xs">{assetXMetadata.symbol}:</span>
@@ -245,7 +245,7 @@ export function RemoveLiquidityFromBinModal({
 
           {/* Slippage Setting */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+            <label className="block text-sm  text-gray-700 dark:text-gray-300 mb-1">
               Slippage Tolerance
             </label>
             <div className="flex space-x-2">

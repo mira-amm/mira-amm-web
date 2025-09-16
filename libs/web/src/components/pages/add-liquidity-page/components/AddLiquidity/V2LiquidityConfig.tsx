@@ -21,6 +21,7 @@ import {
 } from "./priceSliderUtils";
 import {cn} from "@/src/utils/cn";
 import {DEFAULT_SLIPPAGE_BASIS_POINT} from "@/src/utils/constants";
+import {Input} from "@/meshwave-ui/input";
 
 export type LiquidityShape = "spot" | "curve" | "bidask";
 
@@ -50,10 +51,7 @@ function parsePriceString(input: string): number | null {
 
 // Reusable heading component with consistent styling
 const SectionHeading = ({children}: {children: React.ReactNode}) => (
-  <h3
-    className="text-base font-medium text-content-primary"
-    style={{fontSize: "16px"}}
-  >
+  <h3 className="text-base  text-content-primary" style={{fontSize: "16px"}}>
     {children}
   </h3>
 );
@@ -565,14 +563,17 @@ export default function V2LiquidityConfig({
 
         {/* Price Input Fields */}
         <div
-          className={cn("grid grid-cols-2 gap-4", rangeError ? "mb-2" : "mb-4")}
+          className={cn(
+            "grid grid-cols-1 md:grid-cols-2 gap-4",
+            rangeError ? "mb-2" : "mb-4"
+          )}
         >
           <div>
             <label className="block text-sm mb-2 text-content-primary">
               Min price
             </label>
             <div className="relative">
-              <input
+              <Input
                 type="text"
                 inputMode="decimal"
                 pattern="[0-9]*[.]?[0-9]*"
@@ -594,10 +595,10 @@ export default function V2LiquidityConfig({
                   );
                   setRangeError(null);
                 }}
-                className="w-full p-3 border border-gray-300 dark:border-gray-600 rounded-lg text-sm bg-gray-200 dark:bg-gray-600 text-gray-900 dark:text-gray-100 focus:bg-white dark:focus:bg-gray-800 focus:border-blue-500 dark:focus:border-blue-400"
+                className="font-alt"
                 placeholder="1200"
               />
-              <span className="absolute right-3 top-3 text-gray-500 text-sm">
+              <span className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 text-sm">
                 {asset0Metadata.symbol} per {asset1Metadata.symbol}
               </span>
             </div>
@@ -607,7 +608,7 @@ export default function V2LiquidityConfig({
               Max price
             </label>
             <div className="relative">
-              <input
+              <Input
                 type="text"
                 inputMode="decimal"
                 pattern="[0-9]*[.]?[0-9]*"
@@ -629,10 +630,10 @@ export default function V2LiquidityConfig({
                   );
                   setRangeError(null);
                 }}
-                className="w-full p-3 border border-gray-300 dark:border-gray-600 rounded-lg text-sm bg-gray-200 dark:bg-gray-600 text-gray-900 dark:text-gray-100 focus:bg-white dark:focus:bg-gray-800 focus:border-blue-500 dark:focus:border-blue-400"
+                className="font-alt"
                 placeholder="1200"
               />
-              <span className="absolute right-3 top-3 text-gray-500 text-sm">
+              <span className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 text-sm">
                 {asset0Metadata.symbol} per {asset1Metadata.symbol}
               </span>
             </div>
@@ -651,7 +652,7 @@ export default function V2LiquidityConfig({
             Num Bins
           </label>
           <div className="relative">
-            <input
+            <Input
               type="number"
               value={numBins}
               onChange={(e) => handleNumBinsChange(Number(e.target.value))}
@@ -659,29 +660,14 @@ export default function V2LiquidityConfig({
               min="1"
               max="50"
               step="1"
-              className="w-full p-3 border border-gray-300 dark:border-gray-600 rounded-lg text-sm bg-gray-200 dark:bg-gray-600 text-gray-900 dark:text-gray-100 focus:bg-white dark:focus:bg-gray-800 focus:border-blue-500 dark:focus:border-blue-400 font-alt"
+              className="font-alt"
             />
-            <div className="absolute right-3 top-3">
-              <svg
-                className="w-4 h-4 text-gray-500"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M19 9l-7 7-7-7"
-                />
-              </svg>
-            </div>
           </div>
         </div>
 
         <button
           onClick={resetPrice}
-          className="text-accent-primary-2 text-sm flex items-center hover:opacity-80 gap-1 align-end"
+          className="text-accent-primary-2 text-sm flex items-center hover:opacity-80 gap-1 align-end ml-auto"
         >
           <svg
             className="w-4 h-4"

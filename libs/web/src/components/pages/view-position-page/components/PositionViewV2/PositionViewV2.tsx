@@ -62,25 +62,25 @@ export function PositionViewV2({
       {/* Quick Stats */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
         <div className="bg-white dark:bg-gray-800 rounded-lg border p-4 text-center">
-          <div className="text-2xl font-bold text-blue-600">
+          <div className="text-2xl text-blue-600">
             {summary.totalBins}
           </div>
           <div className="text-sm text-gray-500">Total Bins</div>
         </div>
         <div className="bg-white dark:bg-gray-800 rounded-lg border p-4 text-center">
-          <div className="text-2xl font-bold text-green-600">
+          <div className="text-2xl text-green-600">
             {summary.activeBins}
           </div>
           <div className="text-sm text-gray-500">Active Bins</div>
         </div>
         <div className="bg-white dark:bg-gray-800 rounded-lg border p-4 text-center">
-          <div className="text-2xl font-bold text-purple-600">
+          <div className="text-2xl text-purple-600">
             {summary.averagePrice.toFixed(4)}
           </div>
           <div className="text-sm text-gray-500">Avg Price</div>
         </div>
         <div className="bg-white dark:bg-gray-800 rounded-lg border p-4 text-center">
-          <div className="text-lg font-bold text-orange-600">
+          <div className="text-lg text-orange-600">
             {summary.priceRange.min.toFixed(4)} -{" "}
             {summary.priceRange.max.toFixed(4)}
           </div>
@@ -101,10 +101,10 @@ export function PositionViewV2({
 
       {/* Action Buttons */}
       <div className="flex gap-4">
-        <button className="flex-1 bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-lg transition-colors">
+        <button className="flex-1 bg-blue-600 hover:bg-blue-700 text-white  py-2 px-4 rounded-lg transition-colors">
           Add More Liquidity
         </button>
-        <button className="flex-1 bg-red-600 hover:bg-red-700 text-white font-medium py-2 px-4 rounded-lg transition-colors">
+        <button className="flex-1 bg-red-600 hover:bg-red-700 text-white  py-2 px-4 rounded-lg transition-colors">
           Remove Liquidity
         </button>
       </div>

@@ -25,7 +25,7 @@ export const PoolTypeComparison: React.FC<PoolTypeComparisonProps> = ({
   return (
     <div className={cn("space-y-4", className)}>
       <div className="text-center mb-6">
-        <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">
+        <h2 className="text-xl  text-gray-900 dark:text-white mb-2">
           Pool Type Comparison
         </h2>
         <p className="text-sm text-gray-600 dark:text-gray-400">
@@ -58,7 +58,7 @@ export const PoolTypeComparison: React.FC<PoolTypeComparisonProps> = ({
         <div className="mt-6 p-4 bg-blue-50 dark:bg-blue-900/20 rounded-lg border border-blue-200 dark:border-blue-800">
           <div className="flex items-center text-blue-800 dark:text-blue-200">
             <div className="w-2 h-2 bg-blue-500 rounded-full mr-2" />
-            <span className="text-sm font-medium">
+            <span className="text-sm ">
               Selected:{" "}
               {selectedType === "v1-volatile"
                 ? "Volatile Pool"

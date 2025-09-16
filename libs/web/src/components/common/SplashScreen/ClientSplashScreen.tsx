@@ -69,7 +69,7 @@ export const ClientSplashScreen = () => {
       >
         {videoError ? (
           <div className="text-black text-center">
-            <h1 className="text-6xl lg:text-8xl font-bold mb-4">
+            <h1 className="text-6xl lg:text-8xl mb-4">
               {brandText.name}
             </h1>
             <p className="text-xl lg:text-2xl text-gray-600">

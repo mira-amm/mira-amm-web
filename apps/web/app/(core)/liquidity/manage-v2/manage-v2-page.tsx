@@ -41,12 +41,12 @@ export default function ManageV2Page({poolKey}: ManageV2PageProps) {
 
   return (
     <div className="flex flex-col items-center justify-center min-h-[400px] space-y-4">
-      <h1 className="text-2xl font-bold">
+      <h1 className="text-2xl">
         Manage Concentrated Liquidity Position
       </h1>
       <p className="text-gray-600">Pool: {poolKey}</p>
       <div className="bg-yellow-100 border border-yellow-400 text-yellow-700 px-4 py-3 rounded">
-        <p className="font-semibold">Coming Soon</p>
+        <p className="">Coming Soon</p>
         <p>
           v2 concentrated liquidity position management is under development.
         </p>

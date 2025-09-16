@@ -112,7 +112,7 @@ function DataTable<T>({
                 columnIndex === columns.length - 1 && "flex-col gap-2"
               )}
             >
-              <span className="text-content-tertiary font-medium">
+              <span className="text-content-tertiary ">
                 {typeof column.header === "string" ? column.header : column.key}
               </span>
               <div

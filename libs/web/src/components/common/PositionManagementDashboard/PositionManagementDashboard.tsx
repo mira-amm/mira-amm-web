@@ -189,9 +189,7 @@ export function PositionManagementDashboard({
     return (
       <div className="bg-gray-50 dark:bg-gray-800 rounded-lg p-8 text-center">
         <BarChart3 className="w-12 h-12 text-gray-400 mx-auto mb-4" />
-        <p className="text-gray-500 text-lg font-medium">
-          No liquidity positions found
-        </p>
+        <p className="text-gray-500 text-lg ">No liquidity positions found</p>
         <p className="text-sm text-gray-400 mt-2">
           Add liquidity to start managing your positions across different price
           bins.
@@ -205,7 +203,7 @@ export function PositionManagementDashboard({
       {/* Dashboard Header */}
       <div className="bg-white dark:bg-gray-800 rounded-lg border p-6">
         <div className="flex items-center justify-between mb-4">
-          <h2 className="text-xl font-semibold text-gray-900 dark:text-white">
+          <h2 className="text-xl  text-gray-900 dark:text-white">
             Position Management Dashboard
           </h2>
           <div className="text-sm text-gray-500">
@@ -216,7 +214,7 @@ export function PositionManagementDashboard({
         {/* Summary Stats */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
           <div className="bg-blue-50 dark:bg-blue-900/20 rounded-lg p-4 text-center">
-            <div className="text-2xl font-bold text-blue-600 dark:text-blue-400">
+            <div className="text-2xl text-blue-600 dark:text-blue-400">
               {summary.totalBins}
             </div>
             <div className="text-sm text-blue-800 dark:text-blue-200">
@@ -224,7 +222,7 @@ export function PositionManagementDashboard({
             </div>
           </div>
           <div className="bg-green-50 dark:bg-green-900/20 rounded-lg p-4 text-center">
-            <div className="text-2xl font-bold text-green-600 dark:text-green-400">
+            <div className="text-2xl text-green-600 dark:text-green-400">
               {summary.activeBins}
             </div>
             <div className="text-sm text-green-800 dark:text-green-200">
@@ -232,7 +230,7 @@ export function PositionManagementDashboard({
             </div>
           </div>
           <div className="bg-purple-50 dark:bg-purple-900/20 rounded-lg p-4 text-center">
-            <div className="text-lg font-bold text-purple-600 dark:text-purple-400">
+            <div className="text-lg text-purple-600 dark:text-purple-400">
               {summary.averagePrice.toFixed(4)}
             </div>
             <div className="text-sm text-purple-800 dark:text-purple-200">
@@ -240,7 +238,7 @@ export function PositionManagementDashboard({
             </div>
           </div>
           <div className="bg-orange-50 dark:bg-orange-900/20 rounded-lg p-4 text-center">
-            <div className="text-sm font-bold text-orange-600 dark:text-orange-400">
+            <div className="text-sm text-orange-600 dark:text-orange-400">
               {summary.priceRange.min.toFixed(4)} -{" "}
               {summary.priceRange.max.toFixed(4)}
             </div>
@@ -321,7 +319,7 @@ export function PositionManagementDashboard({
                   />
                 </th>
                 <th
-                  className="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-600"
+                  className="px-4 py-3 text-left text-xs  text-gray-500 dark:text-gray-400 uppercase tracking-wider cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-600"
                   onClick={() => handleSort("binId")}
                 >
                   <div className="flex items-center space-x-1">
@@ -338,13 +336,13 @@ export function PositionManagementDashboard({
                   </div>
                 </th>
                 <th
-                  className="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-600"
+                  className="px-4 py-3 text-left text-xs  text-gray-500 dark:text-gray-400 uppercase tracking-wider cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-600"
                   onClick={() => handleSort("status")}
                 >
                   Status
                 </th>
                 <th
-                  className="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-600"
+                  className="px-4 py-3 text-left text-xs  text-gray-500 dark:text-gray-400 uppercase tracking-wider cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-600"
                   onClick={() => handleSort("price")}
                 >
                   <div className="flex items-center space-x-1">
@@ -361,7 +359,7 @@ export function PositionManagementDashboard({
                   </div>
                 </th>
                 <th
-                  className="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-600"
+                  className="px-4 py-3 text-left text-xs  text-gray-500 dark:text-gray-400 uppercase tracking-wider cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-600"
                   onClick={() => handleSort("liquidity")}
                 >
                   <div className="flex items-center space-x-1">
@@ -378,7 +376,7 @@ export function PositionManagementDashboard({
                   </div>
                 </th>
                 <th
-                  className="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-600"
+                  className="px-4 py-3 text-left text-xs  text-gray-500 dark:text-gray-400 uppercase tracking-wider cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-600"
                   onClick={() => handleSort("fees")}
                 >
                   <div className="flex items-center space-x-1">
@@ -394,7 +392,7 @@ export function PositionManagementDashboard({
                     )}
                   </div>
                 </th>
-                <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+                <th className="px-4 py-3 text-left text-xs  text-gray-500 dark:text-gray-400 uppercase tracking-wider">
                   Actions
                 </th>
               </tr>
@@ -424,11 +422,11 @@ export function PositionManagementDashboard({
                   </td>
                   <td className="px-4 py-4 whitespace-nowrap">
                     {position.isActive ? (
-                      <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 dark:bg-green-800 text-green-800 dark:text-green-200">
+                      <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs  bg-green-100 dark:bg-green-800 text-green-800 dark:text-green-200">
                         Active
                       </span>
                     ) : (
-                      <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-300">
+                      <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs  bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-300">
                         Inactive
                       </span>
                     )}
@@ -480,14 +478,14 @@ export function PositionManagementDashboard({
                     <div className="flex space-x-2">
                       <button
                         onClick={() => handleAddLiquidityClick(position)}
-                        className="inline-flex items-center px-2 py-1 border border-transparent text-xs font-medium rounded text-blue-700 bg-blue-100 hover:bg-blue-200 dark:bg-blue-800 dark:text-blue-200 dark:hover:bg-blue-700"
+                        className="inline-flex items-center px-2 py-1 border border-transparent text-xs  rounded text-blue-700 bg-blue-100 hover:bg-blue-200 dark:bg-blue-800 dark:text-blue-200 dark:hover:bg-blue-700"
                       >
                         <Plus className="w-3 h-3 mr-1" />
                         Add
                       </button>
                       <button
                         onClick={() => handleRemoveLiquidityClick(position)}
-                        className="inline-flex items-center px-2 py-1 border border-transparent text-xs font-medium rounded text-red-700 bg-red-100 hover:bg-red-200 dark:bg-red-800 dark:text-red-200 dark:hover:bg-red-700"
+                        className="inline-flex items-center px-2 py-1 border border-transparent text-xs  rounded text-red-700 bg-red-100 hover:bg-red-200 dark:bg-red-800 dark:text-red-200 dark:hover:bg-red-700"
                       >
                         <Minus className="w-3 h-3 mr-1" />
                         Remove

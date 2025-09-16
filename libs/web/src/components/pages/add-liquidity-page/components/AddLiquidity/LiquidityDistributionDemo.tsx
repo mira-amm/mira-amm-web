@@ -48,9 +48,7 @@ export default function LiquidityDistributionDemo({
 
   return (
     <div className="p-6 bg-white dark:bg-gray-800 rounded-lg border">
-      <h3 className="text-lg font-semibold mb-4">
-        Liquidity Distribution Demo
-      </h3>
+      <h3 className="text-lg  mb-4">Liquidity Distribution Demo</h3>
 
       {/* Summary Stats */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
@@ -58,35 +56,31 @@ export default function LiquidityDistributionDemo({
           <div className="text-sm text-gray-600 dark:text-gray-300">
             Total Bins
           </div>
-          <div className="text-xl font-bold">{summary.totalBins}</div>
+          <div className="text-xl">{summary.totalBins}</div>
         </div>
         <div className="bg-gray-50 dark:bg-gray-700 rounded-lg p-3">
           <div className="text-sm text-gray-600 dark:text-gray-300">
             Active Bin
           </div>
-          <div className="text-xl font-bold">#{summary.activeBinId}</div>
+          <div className="text-xl">#{summary.activeBinId}</div>
         </div>
         <div className="bg-gray-50 dark:bg-gray-700 rounded-lg p-3">
           <div className="text-sm text-gray-600 dark:text-gray-300">
             Utilization
           </div>
-          <div className="text-xl font-bold">
-            {summary.utilizationRate.toFixed(1)}%
-          </div>
+          <div className="text-xl">{summary.utilizationRate.toFixed(1)}%</div>
         </div>
         <div className="bg-gray-50 dark:bg-gray-700 rounded-lg p-3">
           <div className="text-sm text-gray-600 dark:text-gray-300">
             Total Value
           </div>
-          <div className="text-xl font-bold">
-            {summary.totalValue.toFixed(0)}
-          </div>
+          <div className="text-xl">{summary.totalValue.toFixed(0)}</div>
         </div>
       </div>
 
       {/* Bin Details */}
       <div className="mb-6">
-        <h4 className="text-md font-medium mb-3">Bin Distribution</h4>
+        <h4 className="text-md  mb-3">Bin Distribution</h4>
         <div className="space-y-2 max-h-64 overflow-y-auto">
           {distribution.bins.map((bin) => (
             <div
@@ -98,7 +92,7 @@ export default function LiquidityDistributionDemo({
               }`}
             >
               <div className="flex items-center space-x-3">
-                <span className="font-medium">Bin #{bin.binId}</span>
+                <span className="">Bin #{bin.binId}</span>
                 {bin.isActive && (
                   <span className="px-2 py-1 bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200 text-xs rounded-full">
                     Active
@@ -119,7 +113,7 @@ export default function LiquidityDistributionDemo({
 
       {/* Visualization Preview */}
       <div>
-        <h4 className="text-md font-medium mb-3">Visualization Data</h4>
+        <h4 className="text-md  mb-3">Visualization Data</h4>
         <div className="bg-gray-50 dark:bg-gray-700 rounded-lg p-4">
           <div className="flex items-end justify-between h-32 space-x-1">
             {visualizationData.map((item, index) => (
@@ -162,25 +156,25 @@ export default function LiquidityDistributionDemo({
 
       {/* Configuration Display */}
       <div className="mt-6 pt-4 border-t border-gray-200 dark:border-gray-600">
-        <h4 className="text-md font-medium mb-2">Current Configuration</h4>
+        <h4 className="text-md  mb-2">Current Configuration</h4>
         <div className="grid grid-cols-2 gap-4 text-sm">
           <div>
-            Shape: <span className="font-medium">{liquidityShape}</span>
+            Shape: <span className="">{liquidityShape}</span>
           </div>
           <div>
-            Bins: <span className="font-medium">{numBins}</span>
+            Bins: <span className="">{numBins}</span>
           </div>
           <div>
-            Bin Step: <span className="font-medium">{binStep}bp</span>
+            Bin Step: <span className="">{binStep}bp</span>
           </div>
           <div>
-            Current Price: <span className="font-medium">${currentPrice}</span>
+            Current Price: <span className="">${currentPrice}</span>
           </div>
           <div>
-            Min Price: <span className="font-medium">${priceRange[0]}</span>
+            Min Price: <span className="">${priceRange[0]}</span>
           </div>
           <div>
-            Max Price: <span className="font-medium">${priceRange[1]}</span>
+            Max Price: <span className="">${priceRange[1]}</span>
           </div>
         </div>
       </div>

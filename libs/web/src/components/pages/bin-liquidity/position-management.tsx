@@ -180,7 +180,7 @@
 //                       <button
 //                         key={period}
 //                         className={cn(
-//                           "px-3.5 py-1 text-sm font-medium transition-colors text-content-primary",
+//                           "px-3.5 py-1 text-sm  transition-colors text-content-primary",
 //                           selectedPeriod === period &&
 //                             "bg-background-primary text-page-background",
 //                           index === 1 && "border-x"
