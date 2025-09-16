@@ -32,11 +32,6 @@ import {
   triggerClassAnimation,
 } from "@/src/components/common";
 
-import {
-  PoolTypeToggle,
-  type PoolTypeOption,
-} from "@/src/components/common/PoolTypeToggle";
-
 import {createPoolKey, openNewTab} from "@/src/utils/common";
 
 import {PriceImpactNew} from "@/src/components/common/Swap/components/price-impact";
@@ -75,6 +70,8 @@ export type CurrencyBoxState = {assetId: string | null; amount: string};
 export type SwapState = Record<CurrencyBoxMode, CurrencyBoxState>;
 export type InputsState = Record<CurrencyBoxMode, {amount: string}>;
 
+// TODO: Remove pool type hardcoding
+const poolType = "v2";
 const initialInputsState: InputsState = {sell: {amount: ""}, buy: {amount: ""}};
 
 const lineSplitterClasses = "relative w-full h-px bg-background-grey-dark my-4";
@@ -261,7 +258,6 @@ export function Swap({isWidget}: {isWidget?: boolean}) {
   const [showInsufficientBalance, setShowInsufficientBalance] =
     useState<boolean>(true);
   const [customErrorTitle, setCustomErrorTitle] = useState<string>("");
-  const [poolType, setPoolType] = useState<PoolTypeOption>("v1");
 
   const swapStateForPreview = useRef<SwapState>(swapState);
   const modeForCoinSelector = useRef<CurrencyBoxMode>("sell");
@@ -742,13 +738,6 @@ export function Swap({isWidget}: {isWidget?: boolean}) {
               openSettingsModal={openSettingsModal}
             />
           </div>
-
-          <PoolTypeToggle
-            selectedType={poolType}
-            onTypeChange={setPoolType}
-            disabled={swapPending}
-            className="mb-2"
-          />
 
           <CurrencyBox
             value={sellValue}
