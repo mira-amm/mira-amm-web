@@ -31,10 +31,10 @@ export default function PoolV2Page({poolKey}: PoolV2PageProps) {
 
   return (
     <div className="flex flex-col items-center justify-center min-h-[400px] space-y-4">
-      <h1 className="text-2xl font-bold">Concentrated Liquidity Pool</h1>
+      <h1 className="text-2xl">Concentrated Liquidity Pool</h1>
       <p className="text-gray-600">Pool: {poolKey}</p>
       <div className="bg-yellow-100 border border-yellow-400 text-yellow-700 px-4 py-3 rounded">
-        <p className="font-semibold">Coming Soon</p>
+        <p className="">Coming Soon</p>
         <p>v2 concentrated liquidity pool view is under development.</p>
         <p>This will be implemented in task 3.1.</p>
       </div>

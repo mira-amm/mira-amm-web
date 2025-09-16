@@ -65,14 +65,14 @@ export const WithContent: Story = {
   render: () => (
     <div className="space-y-4">
       <div className="p-4 bg-background-grey-dark rounded-ten">
-        <h3 className="text-lg font-semibold mb-2">Coin Pair Section</h3>
+        <h3 className="text-lg  mb-2">Coin Pair Section</h3>
         <p className="text-content-secondary">This is the coin pair content.</p>
       </div>
 
       <Divider />
 
       <div className="p-4 bg-background-grey-dark rounded-ten">
-        <h3 className="text-lg font-semibold mb-2">Next Section</h3>
+        <h3 className="text-lg  mb-2">Next Section</h3>
         <p className="text-content-secondary">
           This is the next section content.
         </p>

@@ -76,7 +76,7 @@ export function PositionSummaryV2({
       className={`bg-white dark:bg-gray-800 rounded-lg border p-4 space-y-4 ${className}`}
     >
       <div className="flex items-center justify-between">
-        <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
+        <h3 className="text-lg  text-gray-900 dark:text-white">
           Position Summary
         </h3>
         <div className="text-sm text-gray-500">
@@ -87,18 +87,18 @@ export function PositionSummaryV2({
       {/* Total Liquidity */}
       <div className="grid grid-cols-2 gap-4">
         <div className="bg-blue-50 dark:bg-blue-900/20 rounded-lg p-3">
-          <div className="text-sm text-blue-600 dark:text-blue-400 font-medium">
+          <div className="text-sm text-blue-600 dark:text-blue-400 ">
             Total {assetXMetadata.symbol || "Asset X"}
           </div>
-          <div className="text-lg font-semibold text-blue-900 dark:text-blue-100">
+          <div className="text-lg  text-blue-900 dark:text-blue-100">
             {formatAmount(summary.totalLiquidity.x, assetXMetadata.decimals)}
           </div>
         </div>
         <div className="bg-green-50 dark:bg-green-900/20 rounded-lg p-3">
-          <div className="text-sm text-green-600 dark:text-green-400 font-medium">
+          <div className="text-sm text-green-600 dark:text-green-400 ">
             Total {assetYMetadata.symbol || "Asset Y"}
           </div>
-          <div className="text-lg font-semibold text-green-900 dark:text-green-100">
+          <div className="text-lg  text-green-900 dark:text-green-100">
             {formatAmount(summary.totalLiquidity.y, assetYMetadata.decimals)}
           </div>
         </div>
@@ -106,7 +106,7 @@ export function PositionSummaryV2({
 
       {/* Fees Earned */}
       <div className="bg-yellow-50 dark:bg-yellow-900/20 rounded-lg p-3">
-        <div className="text-sm text-yellow-600 dark:text-yellow-400 font-medium mb-2">
+        <div className="text-sm text-yellow-600 dark:text-yellow-400  mb-2">
           Total Fees Earned
         </div>
         <div className="grid grid-cols-2 gap-4 text-sm">
@@ -128,19 +128,19 @@ export function PositionSummaryV2({
       {/* Bin Statistics */}
       <div className="grid grid-cols-3 gap-4 text-center">
         <div className="bg-gray-50 dark:bg-gray-700 rounded-lg p-3">
-          <div className="text-2xl font-bold text-gray-900 dark:text-white">
+          <div className="text-2xl text-gray-900 dark:text-white">
             {summary.totalBins}
           </div>
           <div className="text-sm text-gray-500">Total Bins</div>
         </div>
         <div className="bg-green-50 dark:bg-green-900/20 rounded-lg p-3">
-          <div className="text-2xl font-bold text-green-600 dark:text-green-400">
+          <div className="text-2xl text-green-600 dark:text-green-400">
             {summary.activeBins}
           </div>
           <div className="text-sm text-gray-500">Active Bins</div>
         </div>
         <div className="bg-gray-50 dark:bg-gray-700 rounded-lg p-3">
-          <div className="text-2xl font-bold text-gray-600 dark:text-gray-400">
+          <div className="text-2xl text-gray-600 dark:text-gray-400">
             {summary.inactiveBins}
           </div>
           <div className="text-sm text-gray-500">Inactive Bins</div>
@@ -149,7 +149,7 @@ export function PositionSummaryV2({
 
       {/* Individual Bin Details */}
       <div className="space-y-2">
-        <div className="text-sm font-medium text-gray-700 dark:text-gray-300">
+        <div className="text-sm  text-gray-700 dark:text-gray-300">
           Bin Details
         </div>
         <div className="max-h-40 overflow-y-auto space-y-1">

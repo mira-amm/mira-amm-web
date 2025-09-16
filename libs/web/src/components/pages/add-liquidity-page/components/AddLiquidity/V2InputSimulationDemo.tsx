@@ -83,14 +83,14 @@ export default function V2InputSimulationDemo({
       <div className="flex items-center justify-between mb-6">
         <div className="flex items-center space-x-2">
           <Settings className="w-5 h-5 text-blue-500" />
-          <h3 className="text-lg font-medium text-gray-900 dark:text-gray-100">
+          <h3 className="text-lg  text-gray-900 dark:text-gray-100">
             V2 Input → Simulation Demo
           </h3>
         </div>
         <button
           onClick={runSimulation}
           disabled={isSimulating || !v2Config}
-          className={`flex items-center space-x-2 px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
+          className={`flex items-center space-x-2 px-4 py-2 rounded-lg text-sm  transition-colors ${
             isSimulating || !v2Config
               ? "bg-gray-100 dark:bg-gray-700 text-gray-400 cursor-not-allowed"
               : "bg-blue-500 hover:bg-blue-600 text-white"
@@ -104,14 +104,14 @@ export default function V2InputSimulationDemo({
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Input Configuration */}
         <div className="space-y-4">
-          <h4 className="text-md font-medium text-gray-900 dark:text-gray-100 flex items-center">
+          <h4 className="text-md  text-gray-900 dark:text-gray-100 flex items-center">
             <Settings className="w-4 h-4 mr-2" />
             Configuration Inputs
           </h4>
 
           {/* Amount Inputs */}
           <div className="bg-gray-50 dark:bg-gray-700 rounded-lg p-4">
-            <h5 className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">
+            <h5 className="text-sm  text-gray-700 dark:text-gray-300 mb-3">
               Liquidity Amounts
             </h5>
             <div className="grid grid-cols-2 gap-3">
@@ -152,7 +152,7 @@ export default function V2InputSimulationDemo({
 
           {/* V2 Configuration */}
           <div className="bg-gray-50 dark:bg-gray-700 rounded-lg p-4">
-            <h5 className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">
+            <h5 className="text-sm  text-gray-700 dark:text-gray-300 mb-3">
               Distribution Configuration
             </h5>
             <V2LiquidityConfig
@@ -165,7 +165,7 @@ export default function V2InputSimulationDemo({
           {/* Current Config Display */}
           {v2Config && (
             <div className="bg-blue-50 dark:bg-blue-900/20 rounded-lg p-4">
-              <h5 className="text-sm font-medium text-blue-800 dark:text-blue-200 mb-2">
+              <h5 className="text-sm  text-blue-800 dark:text-blue-200 mb-2">
                 Current Configuration
               </h5>
               <div className="text-xs space-y-1 text-blue-700 dark:text-blue-300">
@@ -190,7 +190,7 @@ export default function V2InputSimulationDemo({
 
         {/* Simulation Results */}
         <div className="space-y-4">
-          <h4 className="text-md font-medium text-gray-900 dark:text-gray-100 flex items-center">
+          <h4 className="text-md  text-gray-900 dark:text-gray-100 flex items-center">
             <BarChart3 className="w-4 h-4 mr-2" />
             Simulation Results
           </h4>
@@ -217,7 +217,7 @@ export default function V2InputSimulationDemo({
             <div className="space-y-4">
               {/* Transaction Result */}
               <div className="bg-green-50 dark:bg-green-900/20 rounded-lg p-4">
-                <h5 className="text-sm font-medium text-green-800 dark:text-green-200 mb-2">
+                <h5 className="text-sm  text-green-800 dark:text-green-200 mb-2">
                   Transaction Simulation
                 </h5>
                 <div className="text-xs space-y-1 text-green-700 dark:text-green-300">
@@ -246,7 +246,7 @@ export default function V2InputSimulationDemo({
 
               {/* Mock Result */}
               <div className="bg-purple-50 dark:bg-purple-900/20 rounded-lg p-4">
-                <h5 className="text-sm font-medium text-purple-800 dark:text-purple-200 mb-2">
+                <h5 className="text-sm  text-purple-800 dark:text-purple-200 mb-2">
                   Liquidity Distribution
                 </h5>
                 <div className="text-xs space-y-1 text-purple-700 dark:text-purple-300">
@@ -273,7 +273,7 @@ export default function V2InputSimulationDemo({
 
               {/* Input Echo */}
               <div className="bg-gray-50 dark:bg-gray-700 rounded-lg p-4">
-                <h5 className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                <h5 className="text-sm  text-gray-700 dark:text-gray-300 mb-2">
                   Input Echo
                 </h5>
                 <div className="text-xs space-y-1 text-gray-600 dark:text-gray-400">
@@ -308,7 +308,7 @@ export default function V2InputSimulationDemo({
 
           {simulationResult?.error && (
             <div className="bg-red-50 dark:bg-red-900/20 rounded-lg p-4">
-              <h5 className="text-sm font-medium text-red-800 dark:text-red-200 mb-2">
+              <h5 className="text-sm  text-red-800 dark:text-red-200 mb-2">
                 Simulation Error
               </h5>
               <p className="text-xs text-red-700 dark:text-red-300">

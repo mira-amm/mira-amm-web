@@ -443,7 +443,7 @@ const PriceRange = ({
     <div className="">
       {/* Price Range Section */}
       <div className="flex flex-col">
-        <div className="mb-4 text-base font-medium">Price range</div>
+        <div className="mb-4 text-base">Price range</div>
 
         {/* Price Range Slider */}
         <div className="mb-4">

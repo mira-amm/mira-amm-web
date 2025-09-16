@@ -27,9 +27,7 @@ function StatCardSkeleton({title}: {title: string}) {
   return (
     <div className="flex flex-col gap-4 md:w-[206px]">
       {/* Actual title */}
-      <h3 className="text-gray-500 font-medium text-[17.72px] leading-none">
-        {title}
-      </h3>
+      <h3 className="text-gray-500  text-[17.72px] leading-none">{title}</h3>
       {/* Value skeleton */}
       <div className="h-[25px] w-20 bg-gray-300 rounded animate-pulse"></div>
     </div>
