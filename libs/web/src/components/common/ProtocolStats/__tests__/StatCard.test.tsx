@@ -141,7 +141,7 @@ describe("StatCard", () => {
       // Title should preserve styles
       const title = screen.getByText("Total TVL");
       expect(title.className).toContain(
-        "text-gray-500 font-medium text-[17.72px] leading-none"
+        "text-gray-500  text-[17.72px] leading-none"
       );
     });
   });

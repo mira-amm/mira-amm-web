@@ -32,7 +32,7 @@ export function ProtocolStatsError({
       <div className="mt-6 p-4 rounded-lg bg-red-50 border border-red-200">
         <div className="flex items-start justify-between">
           <div>
-            <h3 className="text-sm font-medium text-red-800 mb-1">
+            <h3 className="text-sm  text-red-800 mb-1">
               Failed to load protocol statistics
             </h3>
             <p className="text-xs text-red-600">
@@ -43,7 +43,7 @@ export function ProtocolStatsError({
           {onRetry && (
             <button
               onClick={onRetry}
-              className="px-3 py-1 text-xs font-medium bg-red-600 text-white rounded hover:bg-red-700 transition-colors"
+              className="px-3 py-1 text-xs  bg-red-600 text-white rounded hover:bg-red-700 transition-colors"
             >
               Retry
             </button>
@@ -61,9 +61,7 @@ function ErrorStatCard({title}: {title: string}) {
   return (
     <div className="flex flex-col gap-4 md:w-[206px]">
       {/* Title matches StatCard styling */}
-      <h3 className="text-gray-500 font-medium text-[17.72px] leading-none">
-        {title}
-      </h3>
+      <h3 className="text-gray-500  text-[17.72px] leading-none">{title}</h3>
       {/* Error state value */}
       <div className="text-gray-400 text-[25.23px] leading-none font-alt">
         --

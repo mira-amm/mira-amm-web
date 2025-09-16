@@ -22,7 +22,7 @@ const LiquidityShapeOption = ({
     }`}
     onClick={onClick}
   >
-    <div className="flex items-end space-x-1 mb-2">
+    <div className="flex items-end gap-x-1 mb-2 h-12">
       {shape === "spot" && (
         <>
           <div className="w-2 h-2 bg-accent-primary rounded"></div>
@@ -63,7 +63,7 @@ const LiquidityShapeOption = ({
         </>
       )}
     </div>
-    <span className="text-sm font-medium">{label}</span>
+    <span className="text-sm ">{label}</span>
   </div>
 );
 

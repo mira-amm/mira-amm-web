@@ -45,17 +45,17 @@ const sizeConfig = {
   sm: {
     padding: "px-2 py-1",
     text: "text-xs",
-    font: "font-medium",
+    font: "",
   },
   md: {
     padding: "px-3 py-1.5",
     text: "text-sm",
-    font: "font-medium",
+    font: "",
   },
   lg: {
     padding: "px-4 py-2",
     text: "text-base",
-    font: "font-semibold",
+    font: "",
   },
 };
 
@@ -100,7 +100,7 @@ export function PoolTypeIndicatorCompact({
   return (
     <span
       className={cn(
-        "inline-flex items-center justify-center w-8 h-6 rounded text-xs font-bold",
+        "inline-flex items-center justify-center w-8 h-6 rounded text-xs",
         config.bgColor,
         config.textColor,
         config.borderColor,
@@ -139,9 +139,7 @@ export function PoolTypeIndicatorBadge({
         className={cn("w-2 h-2 rounded-full", getIndicatorColor(poolType))}
       />
       <div className="flex flex-col">
-        <span className={cn("text-sm font-medium", config.textColor)}>
-          {config.label}
-        </span>
+        <span className={cn("text-sm ", config.textColor)}>{config.label}</span>
         {showFee && (
           <span className={cn("text-xs opacity-75", config.textColor)}>
             {config.fee} fee

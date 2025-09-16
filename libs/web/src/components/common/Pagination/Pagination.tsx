@@ -41,7 +41,7 @@ export default function Pagination({
   };
 
   const buttonBaseClasses =
-    "px-[12px] py-[8px]  text-sm font-medium rounded cursor-pointer transition-colors duration-200 bg-none border border-black bg-background-grey-dark text-black hover:bg-black dark:hover:bg-background-grey-dark hover:text-white dark:text-white";
+    "px-[12px] py-[8px]  text-sm  rounded cursor-pointer transition-colors duration-200 bg-none border border-black bg-background-grey-dark text-black hover:bg-black dark:hover:bg-background-grey-dark hover:text-white dark:text-white";
   const disabledClasses = "opacity-50 cursor-not-allowed text-content-tertiary";
   const navButtonResponsive =
     "h-[32px] p-0 justify-center items-center sm:w-auto sm:h-auto sm:px-[12px] sm:py-[8px]";
