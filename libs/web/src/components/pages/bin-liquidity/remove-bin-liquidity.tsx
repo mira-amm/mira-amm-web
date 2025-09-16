@@ -5,10 +5,7 @@ import {useState, useMemo} from "react";
 import {BN} from "fuels";
 import {Button} from "@/meshwave-ui/Button";
 import PriceSummary from "./components/price-summary";
-import {
-  PoolTypeToggle,
-  type PoolTypeOption,
-} from "../../common/PoolTypeToggle/PoolTypeToggle";
+import {type PoolTypeOption} from "../../common/PoolTypeToggle/PoolTypeToggle";
 import {useUserBinPositionsV2, useRemoveAllBinsV2} from "@/src/hooks";
 import {useConnectUI, useIsConnected} from "@fuels/react";
 
@@ -80,15 +77,6 @@ const RemoveBinLiquidity = ({
           <p className="text-base text-content-primary leading-[19px] border-b border-content-grey-dark/40 pb-3">
             Remove Liquidity
           </p>
-
-          <div>
-            <div className="text-content-primary mb-2 text-base">Pool Type</div>
-            <PoolTypeToggle
-              selectedType={selectedPoolType}
-              onTypeChange={setSelectedPoolType}
-              className="mb-4"
-            />
-          </div>
 
           <PriceSummary
             assetA={assetA}

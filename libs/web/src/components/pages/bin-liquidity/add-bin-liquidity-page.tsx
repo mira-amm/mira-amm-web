@@ -8,10 +8,7 @@ import {AprBadge} from "../../common/AprBadge/AprBadge";
 import CoinInput from "../add-liquidity-page/components/CoinInput/CoinInput";
 import {useConnectUI, useIsConnected} from "@fuels/react";
 import {Button} from "@/meshwave-ui/Button";
-import {
-  PoolTypeToggle,
-  type PoolTypeOption,
-} from "../../common/PoolTypeToggle/PoolTypeToggle";
+import {type PoolTypeOption} from "../../common/PoolTypeToggle/PoolTypeToggle";
 import {useState} from "react";
 
 // Import our custom hooks
@@ -99,17 +96,6 @@ const AddBinLiquidityPage = ({
             <p className="text-base text-content-primary leading-[19px] border-b border-content-grey-dark/40 pb-3">
               Add Liqudity
             </p>
-
-            <div>
-              <div className="text-content-primary mb-2 text-base">
-                Pool Type
-              </div>
-              <PoolTypeToggle
-                selectedType={selectedPoolType}
-                onTypeChange={setSelectedPoolType}
-                className="mb-4"
-              />
-            </div>
 
             <div>
               <div className="text-content-primary mb-2 text-base">

@@ -16,10 +16,7 @@ import CoinInput from "@/src/components/pages/add-liquidity-page/components/Coin
 import {Info, TransactionFailureModal} from "@/src/components/common";
 import CoinPair from "@/src/components/common/CoinPair/CoinPair";
 import {AprBadge} from "@/src/components/common/AprBadge/AprBadge";
-import {
-  PoolTypeToggle,
-  PoolTypeOption,
-} from "@/src/components/common/PoolTypeToggle/PoolTypeToggle";
+import {PoolTypeOption} from "@/src/components/common/PoolTypeToggle/PoolTypeToggle";
 import {usePoolNameAndMatch} from "@/src/hooks/usePoolNameAndMatch";
 import {useModal} from "@/src/hooks";
 import {AddLiquidityPreviewData} from "@/src/components/pages/add-liquidity-page/components/AddLiquidity/PreviewAddLiquidityDialog";
@@ -209,14 +206,6 @@ const AddLiquidityDialog = ({
       <div className="flex flex-col gap-4 mb-6">
         <div className="flex justify-between items-center">
           <SectionHeading>Selected pair</SectionHeading>
-          {/* Show pool type toggle for pools that support both v1 and v2, or in mock mode */}
-          {/* {(isV2PoolDetected || poolType === "v2" || isV2MockEnabled()) && (
-            <PoolTypeToggle
-              selectedType={poolType}
-              onTypeChange={setPoolType}
-              className="text-sm"
-            />
-          )} */}
         </div>
 
         <div className="flex justify-between items-center">
