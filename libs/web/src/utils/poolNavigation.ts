@@ -13,7 +13,7 @@ import {
  */
 export function getPoolNavigationUrl(
   poolId: UnifiedPoolId,
-  action: "add" | "view" | "manage" = "add"
+  action: "add" | "view" | "manage" | "remove" = "add"
 ): string {
   const poolType = detectPoolType(poolId);
   const poolKey = poolIdToString(poolId);
@@ -45,6 +45,10 @@ export function getPoolNavigationUrl(
         // Route to v1 position management
         return `/liquidity/position?pool=${poolKey}`;
       }
+
+    case "remove":
+      // Route to unified remove-liquidity page which handles v1 vs v2 internally
+      return `/liquidity/remove?pool=${poolKey}`;
 
     default:
       // Fallback to add liquidity
