@@ -185,7 +185,7 @@ const RemoveBinLiquidity = ({
                     <button
                       key={period.id}
                       className={cn(
-                        "px-3.5 py-2.5 text-sm font-medium transition-all w-1/2",
+                        "px-3.5 py-2.5 text-sm  transition-all w-1/2",
                         selectedPeriod.id === period.id
                           ? "bg-background-primary text-page-background"
                           : "text-background-primary",

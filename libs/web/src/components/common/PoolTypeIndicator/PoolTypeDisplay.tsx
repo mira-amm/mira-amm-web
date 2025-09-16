@@ -139,7 +139,7 @@ export const PoolTypeDisplay: React.FC<PoolTypeDisplayProps> = ({
       >
         <IconComponent className="w-4 h-4 mr-2" />
         <div className="flex flex-col">
-          <span className="text-sm font-medium">{currentConfig.label}</span>
+          <span className="text-sm ">{currentConfig.label}</span>
           <span className="text-xs opacity-75">Fee: {currentConfig.fee}</span>
         </div>
       </div>
@@ -159,13 +159,13 @@ export const PoolTypeDisplay: React.FC<PoolTypeDisplayProps> = ({
           <div className="flex items-center">
             <IconComponent className="w-5 h-5 mr-2" />
             <div>
-              <h3 className="font-semibold text-base">{currentConfig.label}</h3>
+              <h3 className=" text-base">{currentConfig.label}</h3>
               <p className="text-sm opacity-75">{currentConfig.version}</p>
             </div>
           </div>
           <div
             className={cn(
-              "px-2 py-1 rounded text-xs font-medium",
+              "px-2 py-1 rounded text-xs ",
               getColorClasses(currentConfig.primaryColor, "dark")
             )}
           >
@@ -181,35 +181,35 @@ export const PoolTypeDisplay: React.FC<PoolTypeDisplayProps> = ({
               <div className="flex items-center text-sm">
                 <DollarSign className="w-3 h-3 mr-1 opacity-60" />
                 <span className="opacity-75">TVL:</span>
-                <span className="ml-1 font-medium">{metrics.tvl}</span>
+                <span className="ml-1 ">{metrics.tvl}</span>
               </div>
             )}
             {metrics.volume24h && (
               <div className="flex items-center text-sm">
                 <BarChart3 className="w-3 h-3 mr-1 opacity-60" />
                 <span className="opacity-75">24h Vol:</span>
-                <span className="ml-1 font-medium">{metrics.volume24h}</span>
+                <span className="ml-1 ">{metrics.volume24h}</span>
               </div>
             )}
             {metrics.apr && (
               <div className="flex items-center text-sm">
                 <TrendingUp className="w-3 h-3 mr-1 opacity-60" />
                 <span className="opacity-75">APR:</span>
-                <span className="ml-1 font-medium">{metrics.apr}</span>
+                <span className="ml-1 ">{metrics.apr}</span>
               </div>
             )}
             {poolType === "v2-concentrated" && metrics.activeBins && (
               <div className="flex items-center text-sm">
                 <Target className="w-3 h-3 mr-1 opacity-60" />
                 <span className="opacity-75">Active Bins:</span>
-                <span className="ml-1 font-medium">{metrics.activeBins}</span>
+                <span className="ml-1 ">{metrics.activeBins}</span>
               </div>
             )}
           </div>
         )}
 
         <div className="space-y-2">
-          <h4 className="text-sm font-medium flex items-center">
+          <h4 className="text-sm  flex items-center">
             <Zap className="w-3 h-3 mr-1" />
             Key Features
           </h4>
@@ -238,14 +238,14 @@ export const PoolTypeDisplay: React.FC<PoolTypeDisplayProps> = ({
         <div className="flex items-center mb-3">
           <IconComponent className="w-5 h-5 mr-2" />
           <div>
-            <h3 className="font-semibold">{currentConfig.label}</h3>
+            <h3 className="">{currentConfig.label}</h3>
             <p className="text-sm opacity-75">{currentConfig.fee} fee</p>
           </div>
         </div>
 
         <div className="grid grid-cols-1 gap-3">
           <div>
-            <h4 className="text-sm font-medium text-green-700 dark:text-green-300 mb-1">
+            <h4 className="text-sm  text-green-700 dark:text-green-300 mb-1">
               Advantages
             </h4>
             <ul className="text-xs space-y-1">
@@ -259,7 +259,7 @@ export const PoolTypeDisplay: React.FC<PoolTypeDisplayProps> = ({
           </div>
 
           <div>
-            <h4 className="text-sm font-medium text-orange-700 dark:text-orange-300 mb-1">
+            <h4 className="text-sm  text-orange-700 dark:text-orange-300 mb-1">
               Considerations
             </h4>
             <ul className="text-xs space-y-1">

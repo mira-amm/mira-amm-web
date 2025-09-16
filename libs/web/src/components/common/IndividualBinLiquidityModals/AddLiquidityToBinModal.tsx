@@ -106,7 +106,7 @@ export function AddLiquidityToBinModal({
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
       <div className="bg-white dark:bg-gray-800 rounded-lg p-6 w-full max-w-md mx-4">
         <div className="flex items-center justify-between mb-4">
-          <h2 className="text-xl font-semibold text-gray-900 dark:text-white">
+          <h2 className="text-xl  text-gray-900 dark:text-white">
             Add Liquidity to Bin
           </h2>
           <button
@@ -119,7 +119,7 @@ export function AddLiquidityToBinModal({
 
         <div className="mb-4 p-3 bg-blue-50 dark:bg-blue-900/20 rounded-lg">
           <div className="text-sm text-blue-800 dark:text-blue-200">
-            <div className="font-medium">Bin #{binId.toString()}</div>
+            <div className="">Bin #{binId.toString()}</div>
             <div>
               Price: {binPrice.toFixed(6)} {assetXMetadata.symbol} per{" "}
               {assetYMetadata.symbol}
@@ -147,7 +147,7 @@ export function AddLiquidityToBinModal({
 
           {/* Amount X Input */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+            <label className="block text-sm  text-gray-700 dark:text-gray-300 mb-1">
               {assetXMetadata.symbol || "Asset X"} Amount
             </label>
             <input
@@ -164,7 +164,7 @@ export function AddLiquidityToBinModal({
 
           {/* Amount Y Input */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+            <label className="block text-sm  text-gray-700 dark:text-gray-300 mb-1">
               {assetYMetadata.symbol || "Asset Y"} Amount
             </label>
             <input
@@ -181,7 +181,7 @@ export function AddLiquidityToBinModal({
 
           {/* Slippage Setting */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+            <label className="block text-sm  text-gray-700 dark:text-gray-300 mb-1">
               Slippage Tolerance
             </label>
             <div className="flex space-x-2">

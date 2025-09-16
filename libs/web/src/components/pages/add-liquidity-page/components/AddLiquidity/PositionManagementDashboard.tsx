@@ -125,7 +125,7 @@ export default function PositionManagementDashboard({
       <div className="bg-white dark:bg-gray-800 rounded-lg p-6 border text-center">
         <div className="text-gray-500 dark:text-gray-400">
           <TrendingUp className="w-12 h-12 mx-auto mb-4 opacity-50" />
-          <h3 className="text-lg font-medium mb-2">No Positions Found</h3>
+          <h3 className="text-lg  mb-2">No Positions Found</h3>
           <p className="text-sm">
             You don't have any liquidity positions in this pool yet.
           </p>
@@ -137,7 +137,7 @@ export default function PositionManagementDashboard({
   return (
     <div className="bg-white dark:bg-gray-800 rounded-lg p-6 border">
       <div className="flex justify-between items-center mb-6">
-        <h2 className="text-xl font-semibold text-gray-900 dark:text-gray-100">
+        <h2 className="text-xl  text-gray-900 dark:text-gray-100">
           Position Management
         </h2>
         {selectedBins.size > 0 && (
@@ -155,16 +155,16 @@ export default function PositionManagementDashboard({
       <div className="grid grid-cols-2 gap-4 mb-6">
         <div className="bg-gray-50 dark:bg-gray-700 rounded-lg p-4">
           <div className="flex items-center justify-between mb-2">
-            <span className="text-sm font-medium text-gray-600 dark:text-gray-300">
+            <span className="text-sm  text-gray-600 dark:text-gray-300">
               Total Liquidity
             </span>
             <DollarSign className="w-4 h-4 text-gray-400" />
           </div>
           <div className="space-y-1">
-            <div className="text-lg font-semibold text-gray-900 dark:text-gray-100">
+            <div className="text-lg  text-gray-900 dark:text-gray-100">
               {parseFloat(position.totalValue.x).toFixed(2)} {asset0Symbol}
             </div>
-            <div className="text-lg font-semibold text-gray-900 dark:text-gray-100">
+            <div className="text-lg  text-gray-900 dark:text-gray-100">
               {parseFloat(position.totalValue.y).toFixed(2)} {asset1Symbol}
             </div>
           </div>
@@ -172,16 +172,16 @@ export default function PositionManagementDashboard({
 
         <div className="bg-gray-50 dark:bg-gray-700 rounded-lg p-4">
           <div className="flex items-center justify-between mb-2">
-            <span className="text-sm font-medium text-gray-600 dark:text-gray-300">
+            <span className="text-sm  text-gray-600 dark:text-gray-300">
               Total Fees Earned
             </span>
             <TrendingUp className="w-4 h-4 text-green-500" />
           </div>
           <div className="space-y-1">
-            <div className="text-lg font-semibold text-green-600 dark:text-green-400">
+            <div className="text-lg  text-green-600 dark:text-green-400">
               {parseFloat(position.totalFeesEarned.x).toFixed(2)} {asset0Symbol}
             </div>
-            <div className="text-lg font-semibold text-green-600 dark:text-green-400">
+            <div className="text-lg  text-green-600 dark:text-green-400">
               {parseFloat(position.totalFeesEarned.y).toFixed(2)} {asset1Symbol}
             </div>
           </div>
@@ -190,7 +190,7 @@ export default function PositionManagementDashboard({
 
       {/* Bin Positions */}
       <div className="space-y-3">
-        <h3 className="text-lg font-medium text-gray-900 dark:text-gray-100 mb-3">
+        <h3 className="text-lg  text-gray-900 dark:text-gray-100 mb-3">
           Bin Positions ({position.bins.length})
         </h3>
 
@@ -207,7 +207,7 @@ export default function PositionManagementDashboard({
             <div className="flex justify-between items-start mb-3">
               <div className="flex items-center space-x-3">
                 <div className="flex items-center space-x-2">
-                  <span className="text-lg font-semibold text-gray-900 dark:text-gray-100">
+                  <span className="text-lg  text-gray-900 dark:text-gray-100">
                     Bin #{bin.binId}
                   </span>
                   {bin.isActive && (
@@ -247,7 +247,7 @@ export default function PositionManagementDashboard({
 
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <div className="text-sm font-medium text-gray-600 dark:text-gray-300 mb-1">
+                <div className="text-sm  text-gray-600 dark:text-gray-300 mb-1">
                   Liquidity
                 </div>
                 <div className="space-y-1">
@@ -263,7 +263,7 @@ export default function PositionManagementDashboard({
               </div>
 
               <div>
-                <div className="text-sm font-medium text-gray-600 dark:text-gray-300 mb-1">
+                <div className="text-sm  text-gray-600 dark:text-gray-300 mb-1">
                   Fees Earned
                 </div>
                 <div className="space-y-1">

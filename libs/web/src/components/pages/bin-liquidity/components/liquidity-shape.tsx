@@ -22,10 +22,10 @@ const LiquidityShapeOption = ({
     }`}
     onClick={onClick}
   >
-    <div className="flex items-end space-x-1 mb-2">
+    <div className="flex items-end gap-x-1 mb-2 h-12">
       {shape === "spot" && (
         <>
-          <div className="w-2 h-2 bg-accent-primary rounded"></div>
+          <div className="w-2 h-2 bg-accent-primary rounded hidden md:block"></div>
           <div className="w-2 h-2 bg-accent-primary rounded"></div>
           <div className="w-2 h-2 bg-accent-primary rounded"></div>
           <div className="w-3 h-12 bg-accent-primary-2 rounded"></div>
@@ -33,12 +33,12 @@ const LiquidityShapeOption = ({
           <div className="w-3 h-12 bg-accent-primary-2 rounded"></div>
           <div className="w-2 h-2 bg-accent-primary rounded"></div>
           <div className="w-2 h-2 bg-accent-primary rounded"></div>
-          <div className="w-2 h-2 bg-accent-primary rounded"></div>
+          <div className="w-2 h-2 bg-accent-primary rounded hidden md:block"></div>
         </>
       )}
       {shape === "curve" && (
         <>
-          <div className="w-2 h-2 bg-accent-primary rounded"></div>
+          <div className="w-2 h-2 bg-accent-primary rounded hidden md:block"></div>
           <div className="w-2 h-3 bg-accent-primary rounded"></div>
           <div className="w-2 h-5 bg-accent-primary rounded"></div>
           <div className="w-2 h-8 bg-accent-primary-1 rounded"></div>
@@ -46,12 +46,12 @@ const LiquidityShapeOption = ({
           <div className="w-3 h-8 bg-accent-primary-1 rounded"></div>
           <div className="w-2 h-5 bg-accent-primary rounded"></div>
           <div className="w-2 h-4 bg-accent-primary rounded"></div>
-          <div className="w-2 h-2 bg-accent-primary rounded"></div>
+          <div className="w-2 h-2 bg-accent-primary rounded hidden md:block"></div>
         </>
       )}
       {shape === "bidask" && (
         <>
-          <div className="w-3 h-12 bg-accent-primary-2 rounded"></div>
+          <div className="w-3 h-12 bg-accent-primary-2 rounded hidden md:block"></div>
           <div className="w-3 h-10 bg-accent-primary-1 rounded"></div>
           <div className="w-2 h-4 bg-accent-primary-1 rounded"></div>
           <div className="w-2 h-3 bg-accent-primary rounded"></div>
@@ -59,11 +59,11 @@ const LiquidityShapeOption = ({
           <div className="w-2 h-3 bg-accent-primary rounded"></div>
           <div className="w-2 h-5 bg-accent-primary-1 rounded"></div>
           <div className="w-3 h-10 bg-accent-primary-1 rounded"></div>
-          <div className="w-3 h-12 bg-accent-primary-2 rounded"></div>
+          <div className="w-3 h-12 bg-accent-primary-2 rounded hidden md:block"></div>
         </>
       )}
     </div>
-    <span className="text-sm font-medium">{label}</span>
+    <span className="text-sm ">{label}</span>
   </div>
 );
 

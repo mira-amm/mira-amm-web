@@ -144,9 +144,7 @@ const PriceSummary = ({
   return (
     <div className="">
       <div className="flex justify-between items-center mb-4">
-        <div className="text-content-primary text-base font-medium">
-          You'll receive
-        </div>
+        <div className="text-content-primary text-base ">You'll receive</div>
       </div>
 
       <div className="bg-background-primary p-5 rounded-lg flex flex-col gap-y-4">

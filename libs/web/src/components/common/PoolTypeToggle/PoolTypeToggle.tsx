@@ -26,7 +26,7 @@ export const PoolTypeToggle = memo<PoolTypeToggleProps>(
       >
         <button
           className={cn(
-            "px-3 py-2 text-sm font-medium transition-colors duration-200 flex-1",
+            "px-3 py-2 text-sm  transition-colors duration-200 flex-1",
             selectedType === "v1"
               ? "bg-accent-primary text-white dark:bg-accent-primary dark:text-black"
               : "bg-background-primary text-content-secondary hover:bg-background-secondary dark:bg-background-secondary dark:text-content-tertiary dark:hover:bg-background-primary",
@@ -40,7 +40,7 @@ export const PoolTypeToggle = memo<PoolTypeToggleProps>(
         </button>
         <button
           className={cn(
-            "px-3 py-2 text-sm font-medium transition-colors duration-200 flex-1",
+            "px-3 py-2 text-sm  transition-colors duration-200 flex-1",
             selectedType === "v2"
               ? "bg-accent-primary text-white dark:bg-accent-primary dark:text-black"
               : "bg-background-primary text-content-secondary hover:bg-background-secondary dark:bg-background-secondary dark:text-content-tertiary dark:hover:bg-background-primary",

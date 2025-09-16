@@ -41,10 +41,7 @@ import V2LiquidityConfig from "./V2LiquidityConfig";
 
 // Reusable heading component with consistent styling
 const SectionHeading = ({children}: {children: React.ReactNode}) => (
-  <h3
-    className="text-base font-medium text-content-primary"
-    style={{fontSize: "16px"}}
-  >
+  <h3 className="text-base  text-content-primary" style={{fontSize: "16px"}}>
     {children}
   </h3>
 );
@@ -245,7 +242,7 @@ const AddLiquidityDialog = ({
                 background="black"
               />
             ) : (
-              <span className="text-sm font-medium text-content-primary ml-1">
+              <span className="text-sm  text-content-primary ml-1">
                 {aprValue ? `${aprValue}%` : "88.78%"}
               </span>
             )}
@@ -265,7 +262,7 @@ const AddLiquidityDialog = ({
             )}
           >
             <div className="flex w-full">
-              <p className="flex-1 text-left font-medium">Volatile pool</p>
+              <p className="flex-1 text-left ">Volatile pool</p>
               <Info tooltipText={VolatilePoolTooltip} />
             </div>
             <p className="text-sm">0.30% fee tier</p>
@@ -280,7 +277,7 @@ const AddLiquidityDialog = ({
             )}
           >
             <div className="flex w-full">
-              <p className="flex-1 text-left font-medium">Stable pool</p>
+              <p className="flex-1 text-left ">Stable pool</p>
               <Info tooltipText={StablePoolTooltip} />
             </div>
             <p className="text-sm">0.05% fee tier</p>
@@ -352,11 +349,10 @@ const AddLiquidityDialog = ({
           disabled={finalButtonDisabled}
           onClick={finalHandleButtonClick}
           size="2xl"
-          className={
-            poolType === "v2"
-              ? "bg-green-600 hover:bg-green-700 text-white py-3"
-              : ""
-          }
+          className={cn(
+            finalButtonDisabled &&
+              "bg-accent-primary-2 hover:bg-accent-primary-1 disabled:opacity-100 text-accent-primary-1"
+          )}
         >
           {poolType === "v2" ? "Input amounts" : finalButtonTitle}
         </Button>
