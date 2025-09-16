@@ -32,8 +32,6 @@ const RemoveBinLiquidity = ({
 }) => {
   const {isConnected} = useIsConnected();
   const {connect} = useConnectUI();
-  const [selectedPoolType, setSelectedPoolType] =
-    useState<PoolTypeOption>("v1");
 
   // V2 position management
   const {data: v2Positions, isLoading: v2Loading} =
