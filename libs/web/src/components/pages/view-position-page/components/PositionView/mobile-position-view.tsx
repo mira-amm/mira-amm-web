@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React from "react";
 import Link from "next/link";
 import {PoolId} from "mira-dex-ts";
 
@@ -17,9 +17,7 @@ import {PromoSparkle} from "@/meshwave-ui/src/components/icons";
 import {getIsRebrandEnabled} from "@/src/utils/isRebrandEnabled";
 import {PoolType} from "@/src/components/common/PoolTypeIndicator";
 
-import {Dialog, DialogContent, DialogTrigger} from "@/meshwave-ui/modal";
-import RemoveBinLiquidity from "../../../bin-liquidity/remove-bin-liquidity";
-import {usePoolConcentrationType} from "@/src/hooks";
+import {getPoolNavigationUrl} from "@/src/utils/poolNavigation";
 
 interface AssetData {
   amount: string;
@@ -39,7 +37,6 @@ export function MobilePositionView({
   positionPath,
   assetA,
   assetB,
-  openRemoveRegularPoolModal,
 }: {
   pool: PoolId;
   isStablePool: boolean;
@@ -48,45 +45,14 @@ export function MobilePositionView({
   positionPath: string;
   assetA: AssetData;
   assetB: AssetData;
-  openRemoveRegularPoolModal: () => void;
 }) {
-  const [openModal, setOpenModal] = useState(false);
-
-  const poolType = usePoolConcentrationType();
-
   const renderRemoveLiquidity = () => {
-    if (poolType.poolType === "concentrated") {
-      return (
-        <Dialog open={openModal} onOpenChange={setOpenModal}>
-          <DialogTrigger>
-            <Button variant="outline">Remove Liquidity</Button>
-          </DialogTrigger>
-          <DialogContent
-            className="max-w-[563px] p-0 bg-transaparent border-0"
-            showCloseButton={false}
-          >
-            <RemoveBinLiquidity
-              onClose={() => setOpenModal(() => false)}
-              assetA={{
-                amount: assetA.amount,
-                metadata: assetA.metadata,
-                reserve: assetA.reserve,
-              }}
-              assetB={{
-                amount: assetB.amount,
-                metadata: assetB.metadata,
-                reserve: assetB.reserve,
-              }}
-            />
-          </DialogContent>
-        </Dialog>
-      );
-    }
+    const removePath = getPoolNavigationUrl(pool, "remove");
 
     return (
-      <Button variant="outline" onClick={openRemoveRegularPoolModal}>
-        Remove Liquidity
-      </Button>
+      <Link href={removePath}>
+        <Button variant="outline">Remove Liquidity</Button>
+      </Link>
     );
   };
 

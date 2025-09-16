@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React from "react";
 import Link from "next/link";
 import {Button} from "@/meshwave-ui/Button";
 import {PoolId} from "mira-dex-ts";
@@ -11,14 +11,12 @@ import {ExchangeRate} from "./exchange-rate";
 import {MiraBlock} from "./mira-block";
 import {PromoSparkle} from "@/meshwave-ui/src/components/icons";
 import {DepositAmount} from "./deposit-amount";
-import {useAssetPriceFromIndexer, usePoolConcentrationType} from "@/src/hooks";
+import {useAssetPriceFromIndexer} from "@/src/hooks";
 import {formatMoney} from "@/src/utils/formatMoney";
 import SimulatedDistribution from "../../../bin-liquidity/components/simulated-distribution";
 import {PoolType} from "@/src/components/common/PoolTypeIndicator";
 
-import RemoveBinLiquidity from "../../../bin-liquidity/remove-bin-liquidity";
-import {Dialog, DialogContent, DialogTrigger} from "@/meshwave-ui/modal";
-import { BN } from "fuels";
+import {getPoolNavigationUrl} from "@/src/utils/poolNavigation";
 
 export interface AssetData {
   amount: string;
@@ -38,7 +36,6 @@ export function DesktopPositionView({
   positionPath,
   assetA,
   assetB,
-  openRemoveRegularPoolModal,
 }: {
   pool: PoolId;
   isStablePool: boolean;
@@ -47,46 +44,14 @@ export function DesktopPositionView({
   positionPath: string;
   assetA: AssetData;
   assetB: AssetData;
-  openRemoveRegularPoolModal: () => void;
 }) {
-  const [openModal, setOpenModal] = useState(false);
-
-  const poolType = usePoolConcentrationType();
-
   const renderRemoveLiquidity = () => {
-    if (poolType.poolType === "concentrated") {
-      return (
-        <Dialog open={openModal} onOpenChange={setOpenModal}>
-          <DialogTrigger>
-            <Button variant="outline">Remove Liquidity</Button>
-          </DialogTrigger>
-          <DialogContent
-            className="max-w-[563px] p-0 bg-transaparent border-0"
-            showCloseButton={false}
-          >
-            <RemoveBinLiquidity
-              onClose={() => setOpenModal(() => false)}
-              assetA={{
-                amount: assetA.amount,
-                metadata: assetA.metadata,
-                reserve: assetA.reserve,
-              }}
-              assetB={{
-                amount: assetB.amount,
-                metadata: assetB.metadata,
-                reserve: assetB.reserve,
-              }}
-              v2PoolId={poolType.poolId as BN}
-            />
-          </DialogContent>
-        </Dialog>
-      );
-    }
+    const removePath = getPoolNavigationUrl(pool, "remove");
 
     return (
-      <Button variant="outline" onClick={openRemoveRegularPoolModal}>
-        Remove Liquidity
-      </Button>
+      <Link href={removePath}>
+        <Button variant="outline">Remove Liquidity</Button>
+      </Link>
     );
   };
 
