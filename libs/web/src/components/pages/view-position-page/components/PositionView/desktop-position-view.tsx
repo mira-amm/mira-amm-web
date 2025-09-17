@@ -18,6 +18,18 @@ import {PoolType} from "@/src/components/common/PoolTypeIndicator";
 
 import {getPoolNavigationUrl} from "@/src/utils/poolNavigation";
 
+const MOCK = {
+  liquidityShape: "curve",
+  minPrice: 134.54718564908973,
+  maxPrice: 201.82077847363456,
+  numBins: 163,
+  currentPrice: 168.18398206136214,
+  asset0Price: 0.00594471,
+  asset1Price: 0.999805,
+  totalAsset0Amount: 1,
+  totalAsset1Amount: 1,
+};
+
 export interface AssetData {
   amount: string;
   metadata: {
@@ -54,6 +66,18 @@ export function DesktopPositionView({
       </Link>
     );
   };
+
+  const {
+    liquidityShape,
+    minPrice,
+    maxPrice,
+    numBins,
+    currentPrice,
+    asset0Price,
+    asset1Price,
+    totalAsset0Amount,
+    totalAsset1Amount,
+  } = MOCK;
 
   return (
     <section className="flex flex-col gap-3 desktopOnly">
@@ -134,7 +158,19 @@ export function DesktopPositionView({
         </div>
 
         <div className="border-b border-background-grey-light">
-          <SimulatedDistribution />
+          <SimulatedDistribution
+            liquidityShape={liquidityShape}
+            minPrice={minPrice}
+            maxPrice={maxPrice}
+            numBins={numBins}
+            currentPrice={currentPrice}
+            asset0Symbol={assetA.metadata.symbol}
+            asset1Symbol={assetB.metadata.symbol}
+            asset0Price={asset0Price}
+            asset1Price={asset1Price}
+            totalAsset0Amount={totalAsset0Amount}
+            totalAsset1Amount={totalAsset1Amount}
+          />
         </div>
 
         <DepositAmount assetId={pool[0].bits} amount={assetA.amount} />
