@@ -61,7 +61,7 @@ export default function Layout({children}: {readonly children: ReactNode}) {
   return (
     <html
       lang="en"
-      className={rebrandEnabled ? "" : "dark"}
+      className="dark"
       data-brand={rebrandEnabled ? "microchain" : "mira"}
       suppressHydrationWarning
     >
