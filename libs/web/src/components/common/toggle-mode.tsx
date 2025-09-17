@@ -17,7 +17,7 @@ export function ModeToggle({className}: {className?: string}) {
 
   return (
     <div className={className}>
-      <DropdownMenu>
+      <DropdownMenu modal={false}>
         <DropdownMenuTrigger asChild>
           <Button
             variant="outline"

@@ -3,12 +3,10 @@
 import {useMemo} from "react";
 import {usePathname} from "next/navigation";
 import {Logo} from "@/src/components/common";
-import {
-  FuelAppUrl,
-} from "@/src/utils/constants";
+import {ModeToggle} from "@/src/components/common/toggle-mode";
+import {FuelAppUrl} from "@/src/utils/constants";
 import {ConnectWalletNew} from "./connect-wallet-new";
 import {Navigation, type NavLink} from "./navigation";
-
 
 export function HeaderNew({
   pathName,
@@ -55,9 +53,11 @@ export function HeaderNew({
         </div>
 
         <div className="hidden sm:flex! items-center flex-1 justify-end gap-2">
+          <ModeToggle />
           <ConnectWalletNew size="small" />
         </div>
         <div className="flex sm:hidden items-center flex-1 justify-end gap-2">
+          <ModeToggle />
           <ConnectWalletNew size="large" />
         </div>
       </section>
