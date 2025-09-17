@@ -51,7 +51,6 @@ const persistOptions: PersistQueryClientOptions = {
 };
 
 export function Providers({children}: {children: ReactNode}) {
-  const rebrandEnabled = getIsRebrandEnabled();
 
   return (
     <PersistQueryClientProvider
@@ -64,8 +63,7 @@ export function Providers({children}: {children: ReactNode}) {
           <DisclaimerWrapper>
             <ThemeProvider
               attribute="class"
-              defaultTheme={rebrandEnabled ? "light" : "dark"}
-              enableSystem
+              defaultTheme="dark"
               disableTransitionOnChange
             >
               <Toaster richColors position="bottom-right" />
