@@ -62,7 +62,7 @@ const CoinInput = ({
   return (
     <div
       className={cn(
-        "min-h-[65px] flex items-center gap-1 p-3 rounded-lg bg-background-secondary border border-input",
+        "min-h-[65px] flex items-center gap-1 p-3 rounded-lg bg-background-secondary border border-background-grey-light",
         hasInsufficientBalance ? "ring-1 ring-red-500" : "ring-0"
       )}
     >
