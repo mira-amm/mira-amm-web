@@ -1,6 +1,6 @@
 "use client";
 
-import {useState, useCallback, useEffect} from "react";
+import {useState, useCallback} from "react";
 import {useRouter, useSearchParams} from "next/navigation";
 import {ChevronLeft, X} from "lucide-react";
 import {PoolId} from "mira-dex-ts";
@@ -8,13 +8,10 @@ import {createPoolIdFromIdString} from "@/src/utils/common";
 import RemoveLiquidityModalContent from "@/src/components/pages/view-position-page/components/RemoveLiquidityModalContent/RemoveLiquidityModalContent";
 import RemoveLiquiditySuccessModal from "@/src/components/pages/view-position-page/components/RemoveLiquiditySuccessModal/RemoveLiquiditySuccessModal";
 import {
-  FeatureGuard,
-  SettingsModalContent,
   SlippageSetting,
   TransactionFailureModal,
 } from "@/src/components/common";
 import {useModal} from "@/src/hooks";
-import {SlippageMode} from "@/src/components/common/Swap/Swap";
 import {bn, formatUnits} from "fuels";
 import {
   useRemoveLiquidity,
@@ -22,6 +19,7 @@ import {
   useAssetMetadata,
   useCheckActiveNetwork,
 } from "@/src/hooks";
+import SettingsModalContentNew from "@/src/components/common/settings-modal-content-new";
 
 export default function RemoveLiquidityPage() {
   const router = useRouter();
@@ -33,7 +31,6 @@ export default function RemoveLiquidityPage() {
   const [SuccessModal, openSuccessModal] = useModal();
   const [FailureModal, openFailureModal, closeFailureModal] = useModal();
   const [slippage, setSlippage] = useState<number>(100);
-  const [slippageMode, setSlippageMode] = useState<SlippageMode>("auto");
   const [liquidityValue, setLiquidityValue] = useState<number>(50);
 
   const handleBackClick = useCallback(() => {
@@ -129,29 +126,13 @@ export default function RemoveLiquidityPage() {
         />
       </section>
 
-      <FeatureGuard
-        fallback={
-          <SettingsModal title="Settings">
-            <SettingsModalContent
-              slippage={slippage}
-              slippageMode={slippageMode}
-              setSlippage={setSlippage}
-              setSlippageMode={setSlippageMode}
-              closeModal={closeSettingsModal}
-            />
-          </SettingsModal>
-        }
-      >
-        <SettingsModal title={`Slippage tolerance: ${slippage / 100}%`}>
-          <SettingsModalContent
-            slippage={slippage}
-            slippageMode={slippageMode}
-            setSlippage={setSlippage}
-            setSlippageMode={setSlippageMode}
-            closeModal={closeSettingsModal}
-          />
-        </SettingsModal>
-      </FeatureGuard>
+      <SettingsModal title={`Slippage tolerance: ${slippage / 100}%`}>
+        <SettingsModalContentNew
+          slippage={slippage}
+          setSlippage={setSlippage}
+          closeModal={closeSettingsModal}
+        />
+      </SettingsModal>
 
       <SuccessModal title={<></>}>
         <RemoveLiquiditySuccessModal
