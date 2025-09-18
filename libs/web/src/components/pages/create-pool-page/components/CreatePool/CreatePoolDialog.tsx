@@ -408,14 +408,14 @@ export function CreatePoolDialog({
       </div>
 
       {poolExists && (
-        <div className="flex items-center gap-2 p-3 rounded-lg bg-gradient-to-r from-[#5872fc] via-[#6142ba] to-[#c41cff]">
+        <div className="flex items-center gap-2 p-3 rounded-lg bg-background-primary">
           <div className="w-5 h-5 flex items-center justify-center rounded-full bg-content-dimmed-dark">
-            <Sparkle className="size-3" />
+            <Sparkle className="size-3 text-white" />
           </div>
           <p className="flex-1 text-sm text-white">This pool already exists</p>
           <Link
             href={`/liquidity/add/?pool=${existingPoolKey}`}
-            className="underline hover:text-content-secondary"
+            className="underline underline-offset-2 text-sm text-white"
           >
             Add liquidity →
           </Link>
