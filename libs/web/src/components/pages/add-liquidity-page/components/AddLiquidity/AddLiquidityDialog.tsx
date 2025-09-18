@@ -309,18 +309,20 @@ const AddLiquidityDialog = ({
             <CoinInput
               assetId={firstAssetId}
               value={firstAmountInput}
-              loading={(!isFirstToken && isFetching) || isOutOfRangeLow}
+              loading={!isFirstToken && isFetching}
               setAmount={(val) => setAmountForCoin(poolId[0].bits, val)}
               balance={firstAssetBalance}
               usdRate={asset0Price || undefined}
+              isOutOfRange={isOutOfRangeLow}
             />
             <CoinInput
               assetId={secondAssetId}
               value={secondAmountInput}
-              loading={(isFirstToken && isFetching) || isOutOfRangeHigh}
+              loading={isFirstToken && isFetching}
               setAmount={(val) => setAmountForCoin(poolId[1].bits, val)}
               balance={secondAssetBalance}
               usdRate={asset1Price || undefined}
+              isOutOfRange={isOutOfRangeHigh}
             />
           </div>
         </div>
