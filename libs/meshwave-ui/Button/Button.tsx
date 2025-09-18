@@ -4,7 +4,7 @@ import {Slot} from "@radix-ui/react-slot";
 import {cva, type VariantProps} from "class-variance-authority";
 
 const buttonVariants = cva(
-  "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-lg text-sm  transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring hover:cursor-pointer disabled:pointer-events-none [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 disabled:opacity-50",
+  "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-lg text-sm  transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring hover:cursor-pointer disabled:pointer-events-none [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 disabled:hover:bg-accent-primary-1 disabled:text-accent-primary-1 disabled:bg-accent-primary-2",
   {
     variants: {
       variant: {
@@ -32,7 +32,7 @@ const buttonVariants = cva(
         true: "w-full",
       },
       disabled: {
-        true: "bg-background-secondary border-background-secondary border-black dark:text-content-dimmed-dark text-content-tertiary shadow-none hover:bg-background-secondary disabled:opacity-50",
+        true: "bg-background-secondary border-background-secondary border-black dark:text-content-dimmed-dark text-content-tertiary shadow-none hover:bg-background-secondary",
       },
     },
     defaultVariants: {
