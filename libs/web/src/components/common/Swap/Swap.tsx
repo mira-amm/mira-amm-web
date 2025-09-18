@@ -793,16 +793,7 @@ export function Swap({isWidget}: {isWidget?: boolean}) {
           </FeatureGuard>
 
           {!isConnected ? (
-            <Button
-              onClick={connect}
-              disabled={isConnecting}
-              size="2xl"
-              className={cn(
-                !isConnected &&
-                  isRebrandingEnabled &&
-                  "bg-accent-primary border-0 text-black hover:bg-accent-primary-1 shadow-none disabled:opacity-100"
-              )}
-            >
+            <Button onClick={connect} disabled={isConnecting} size="2xl">
               Connect Wallet
             </Button>
           ) : (
@@ -810,11 +801,6 @@ export function Swap({isWidget}: {isWidget?: boolean}) {
               disabled={isActionDisabled}
               onClick={handleSwapClick}
               size="2xl"
-              className={cn(
-                isActionDisabled &&
-                  isRebrandingEnabled &&
-                  "bg-accent-primary border-0 text-black hover:bg-accent-primary-1 shadow-none disabled:opacity-100"
-              )}
             >
               {isActionLoading ? (
                 <Loader rebrand={isRebrandingEnabled} />
