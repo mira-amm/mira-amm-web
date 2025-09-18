@@ -25,9 +25,9 @@ export function Coin({
   return (
     <div
       className={cn(
-        "flex items-center gap-2 text-content-primary dark:text-content-primary",
+        "flex items-center gap-2 text-content-primary dark:text-content-primary hover:bg-background-grey-light",
         newPool &&
-          "rounded px-2 py-1 cursor-pointer hover:background-grey-light active:bg-background-grey-dark"
+          "rounded px-2 py-1 cursor-pointer hover:background-grey-light"
       )}
       onClick={handleClick}
     >
