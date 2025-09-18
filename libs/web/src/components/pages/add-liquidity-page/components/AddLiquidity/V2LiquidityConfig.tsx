@@ -524,7 +524,7 @@ export default function V2LiquidityConfig({
 
         {/* Active Bin Display */}
         <div
-          className="bg-black text-white text-sm text-center mx-auto flex items-center justify-center gap-2.5 w-fit"
+          className="bg-black text-white text-center mx-auto flex items-center justify-center gap-1 w-fit"
           style={{
             height: "29px",
             borderRadius: "10px",
@@ -532,8 +532,11 @@ export default function V2LiquidityConfig({
             opacity: 1,
           }}
         >
-          Active Bin: {formatPriceForDisplay(currentPrice, DEFAULT_BIN_STEP)}{" "}
-          {asset0Metadata.symbol} per {asset1Metadata.symbol}
+          <span className="text-sm">Active Bin:</span>
+          <span className="text-sm font-alt">{formatPriceForDisplay(currentPrice, DEFAULT_BIN_STEP)}</span>
+          <span className="text-sm">
+            {asset0Metadata.symbol} per {asset1Metadata.symbol}
+          </span>
         </div>
 
         {/* Price Range Slider */}
