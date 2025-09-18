@@ -8,6 +8,7 @@ import PriceSummary from "./components/price-summary";
 import {type PoolTypeOption} from "../../common/PoolTypeToggle/PoolTypeToggle";
 import {useUserBinPositionsV2, useRemoveAllBinsV2} from "@/src/hooks";
 import {useConnectUI, useIsConnected} from "@fuels/react";
+import {Info} from "@/src/components/common";
 
 interface AssetData {
   amount: string;
@@ -72,8 +73,13 @@ const RemoveBinLiquidity = ({
       </button>
       <section className="flex flex-col gap-3">
         <div className="w-full p-4 pb-10 rounded-[12px] flex flex-col gap-6 bg-background-grey-dark border-border-secondary border-[11px] dark:border-0 dark:bg-background-grey-dark">
-          <p className="text-base text-content-primary leading-[19px] border-b border-content-grey-dark/40 pb-3">
+          <p className="flex items-center gap-x-1 text-base text-content-primary leading-[19px] border-b border-content-grey-dark/40 pb-3">
             Remove Liquidity
+            <Info
+              tooltipText={
+                "This action will remove all your liquidity in this pool. If you want to rebalance the pool, you'll need to add liquidity back into the pool after this action."
+              }
+            />
           </p>
 
           <PriceSummary

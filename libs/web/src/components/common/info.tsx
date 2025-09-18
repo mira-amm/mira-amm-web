@@ -7,7 +7,7 @@ export function Info({tooltipText}: {tooltipText: string}) {
   return (
     <Tooltip>
       <TooltipTrigger>
-        <button className="w-4 h-4 p-0 border-none bg-transparent cursor-pointer text-content-grey-dark hover:text-content-grey active:text-content-dimmed-dark">
+        <button className="flex justify-center items-center w-4 h-4 p-0 border-none bg-transparent cursor-pointer text-content-grey-dark hover:text-content-grey active:text-content-dimmed-dark">
           <CircleHelp className="size-4" />
         </button>
       </TooltipTrigger>
