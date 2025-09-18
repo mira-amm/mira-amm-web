@@ -6,6 +6,7 @@ import {useRouter} from "next/navigation";
 import {Dispatch, SetStateAction, useCallback} from "react";
 import {BN} from "fuels";
 import {Button} from "@/meshwave-ui/Button";
+import {getUiPoolTypeFromPoolId} from "@/src/utils/poolTypeDetection";
 
 export type AddLiquidityPreviewData = {
   assets: {
@@ -40,7 +41,7 @@ export default function PreviewAddLiquidityDialog({
 
   const router = useRouter();
 
-  const {assets, isStablePool} = previewData;
+  const {assets, isStablePool, poolId} = previewData;
 
   const firstAssetMetadata = useAssetMetadata(assets[0].assetId);
   const secondAssetMetadata = useAssetMetadata(assets[1].assetId);
@@ -101,6 +102,8 @@ export default function PreviewAddLiquidityDialog({
               firstCoin={assets[0].assetId}
               secondCoin={assets[1].assetId}
               isStablePool={isStablePool}
+              poolType={getUiPoolTypeFromPoolId(poolId)}
+              withPoolDetails
             />
             {isV2 && (
               <div className="flex items-center gap-2">

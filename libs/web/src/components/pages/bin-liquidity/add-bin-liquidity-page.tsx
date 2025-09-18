@@ -16,6 +16,7 @@ import {usePoolAssets} from "@/src/hooks/usePoolAssets";
 import {useLiquidityForm} from "@/src/hooks/useLiquidityForm";
 import {useLiquidityFormV2Integration} from "@/src/hooks/useLiquidityFormV2Integration";
 import {BN} from "fuels";
+import {getUiPoolTypeFromPoolId} from "@/src/utils/poolTypeDetection";
 
 const AddBinLiquidityPage = ({
   poolKey,
@@ -109,6 +110,8 @@ const AddBinLiquidityPage = ({
                     isStablePool={
                       selectedPoolType === "v1" ? isStablePool : false
                     }
+                    poolType={getUiPoolTypeFromPoolId(poolId)}
+                    withPoolDetails
                   />
                 </div>
                 <div className="flex items-center">

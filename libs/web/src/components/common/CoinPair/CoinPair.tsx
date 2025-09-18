@@ -107,7 +107,10 @@ const CoinPair = ({
         )}
 
         {withPoolDetails && (
-          <div className="flex gap-3">
+          <div className="flex gap-1">
+            <span className="rounded-lg bg-background-secondary px-2 py-0.5 text-content-tertiary text-xs font-medium">
+              {config.shortLabel}
+            </span>
             <span className="rounded-lg bg-background-secondary px-2 py-0.5 text-content-tertiary text-xs font-medium">
               {config.label}
             </span>
