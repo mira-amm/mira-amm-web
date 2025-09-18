@@ -89,7 +89,7 @@ function SettingsModalContentNew({
             <button
               key={value}
               className={clsx(
-                "w-full px-3 py-[14px] first:rounded-l-lg last:rounded-r-lg text-content-dimmed-light border bg-background-grey-dark hover:border dark:hover:text-content-primary dark:hover:border-accent-primary hover:border-black",
+                "w-full px-3 py-[14px] font-alt first:rounded-l-lg last:rounded-r-lg text-content-dimmed-light border bg-background-grey-dark hover:border dark:hover:text-content-primary dark:hover:border-accent-primary hover:border-black",
                 slippage === value &&
                   "dark:border-accent-primary border border-black bg-black dark:bg-background-grey-dark text-white"
               )}
@@ -114,7 +114,7 @@ function SettingsModalContentNew({
             pattern="^[0-9]*[.,]?[0-9]*$"
             aria-label="Custom slippage percentage"
             aria-describedby="slippage-description"
-            className="w-22 px-3 py-[14px] rounded-lg text-content-dimmed-light bg-background-grey-dark focus:border-accent-primary focus:text-content-primary"
+            className="w-22 px-3 font-alt py-[14px] rounded-lg text-content-dimmed-light bg-background-grey-dark focus:border-accent-primary focus:text-content-primary"
             value={inputValue}
             onChange={handleSlippageChange}
             onKeyDown={handleKeyDown}
