@@ -1,5 +1,5 @@
 import {Coin} from "@/src/components/common";
-import {ChangeEvent, memo, useCallback} from "react";
+import {ChangeEvent, memo, useCallback, useMemo} from "react";
 import {TextButton} from "@/src/components/common";
 import {MinEthValueBN} from "@/src/utils/constants";
 import {BN} from "fuels";
@@ -15,6 +15,7 @@ const CoinInput = ({
   balance,
   usdRate,
   onAssetClick,
+  isOutOfRange,
 }: {
   assetId: string | null;
   value: string;
@@ -23,6 +24,7 @@ const CoinInput = ({
   balance: BN;
   usdRate: number | undefined;
   onAssetClick?: VoidFunction;
+  isOutOfRange?: boolean;
 }) => {
   const metadata = useAssetMetadata(assetId);
   const balanceValue = balance.formatUnits(metadata.decimals || 0);
@@ -59,6 +61,11 @@ const CoinInput = ({
     !isNaN(numericValue) &&
     numericValue > parseFloat(balanceValue);
 
+  const isDisabled = useMemo(
+    () => loading || isOutOfRange,
+    [loading, isOutOfRange]
+  );
+
   return (
     <div
       className={cn(
@@ -74,12 +81,13 @@ const CoinInput = ({
           placeholder="0"
           minLength={1}
           value={value}
-          disabled={loading}
+          disabled={isDisabled}
           onChange={handleChange}
           aria-invalid={hasInsufficientBalance}
           className={cn(
-            "w-full text-content-primary text-sm leading-4 bg-transparent border-none disabled:text-content-dimmed-dark lg:text-base lg:leading-[19px] font-alt",
-            hasInsufficientBalance ? "outline-none" : ""
+            "w-full text-content-primary text-sm leading-4 bg-transparent border-none lg:text-base lg:leading-[19px] font-alt",
+            hasInsufficientBalance ? "outline-none" : "",
+            isDisabled && "text-gray-400/40 cursor-not-allowed"
           )}
         />
 
