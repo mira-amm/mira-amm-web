@@ -438,12 +438,7 @@ export function CreatePoolDialog({
         </div>
       )}
       {!isConnected ? (
-        <Button
-          variant="secondary"
-          onClick={connect}
-          disabled={isConnecting}
-          size="2xl"
-        >
+        <Button onClick={connect} disabled={isConnecting} size="2xl">
           Connect Wallet
         </Button>
       ) : (

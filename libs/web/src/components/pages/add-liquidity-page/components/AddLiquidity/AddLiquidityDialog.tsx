@@ -31,7 +31,10 @@ import {cn} from "@/src/utils/cn";
 import {usePoolAssets} from "@/src/hooks/usePoolAssets";
 import {useLiquidityForm} from "@/src/hooks/useLiquidityForm";
 import {useLiquidityFormV2Integration} from "@/src/hooks/useLiquidityFormV2Integration";
-import {getUiPoolTypeFromPoolId, isV2PoolId} from "@/src/utils/poolTypeDetection";
+import {
+  getUiPoolTypeFromPoolId,
+  isV2PoolId,
+} from "@/src/utils/poolTypeDetection";
 import {isV2MockEnabled} from "@/src/utils/mockConfig";
 import {MockModeIndicator} from "@/src/components/common/MockModeIndicator/MockModeIndicator";
 import V2LiquidityConfig from "./V2LiquidityConfig";
@@ -361,10 +364,6 @@ const AddLiquidityDialog = ({
           disabled={finalButtonDisabled}
           onClick={finalHandleButtonClick}
           size="2xl"
-          className={cn(
-            finalButtonDisabled &&
-              "bg-accent-primary-2 hover:bg-accent-primary-1 disabled:opacity-100 text-accent-primary-1"
-          )}
         >
           {poolType === "v2" ? "Input amounts" : finalButtonTitle}
         </Button>
