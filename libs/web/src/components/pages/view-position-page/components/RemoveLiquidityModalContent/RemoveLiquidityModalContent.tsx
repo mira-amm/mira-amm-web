@@ -23,8 +23,11 @@ import {
   TableHeader,
   TableRow,
 } from "@/meshwave-ui/table";
+import {PoolId} from "mira-dex-ts";
+import {getUiPoolTypeFromPoolId} from "@/src/utils/poolTypeDetection";
 
 type Props = {
+  poolId: PoolId;
   coinA: B256Address;
   coinB: B256Address;
   isStablePool: boolean;
@@ -41,6 +44,7 @@ type Props = {
 };
 
 const RemoveLiquidityModalContent = ({
+  poolId,
   coinA,
   coinB,
   isStablePool,
@@ -102,6 +106,8 @@ const RemoveLiquidityModalContent = ({
         firstCoin={coinA}
         secondCoin={coinB}
         isStablePool={isStablePool}
+        poolType={getUiPoolTypeFromPoolId(poolId)}
+        withPoolDetails
       />
 
       <div className="flex justify-between items-center">

@@ -31,7 +31,7 @@ import {cn} from "@/src/utils/cn";
 import {usePoolAssets} from "@/src/hooks/usePoolAssets";
 import {useLiquidityForm} from "@/src/hooks/useLiquidityForm";
 import {useLiquidityFormV2Integration} from "@/src/hooks/useLiquidityFormV2Integration";
-import {isV2PoolId} from "@/src/utils/poolTypeDetection";
+import {getUiPoolTypeFromPoolId, isV2PoolId} from "@/src/utils/poolTypeDetection";
 import {isV2MockEnabled} from "@/src/utils/mockConfig";
 import {MockModeIndicator} from "@/src/components/common/MockModeIndicator/MockModeIndicator";
 import V2LiquidityConfig from "./V2LiquidityConfig";
@@ -231,6 +231,8 @@ const AddLiquidityDialog = ({
             firstCoin={firstAssetId}
             secondCoin={secondAssetId}
             isStablePool={isStablePool}
+            poolType={getUiPoolTypeFromPoolId(poolId)}
+            withPoolDetails
           />
 
           <div className="flex items-center gap-1">

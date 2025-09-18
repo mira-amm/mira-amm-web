@@ -34,6 +34,7 @@ import {
 } from "@/src/hooks";
 import {cn} from "@/src/utils/cn";
 import {getIsRebrandEnabled} from "@/src/utils/isRebrandEnabled";
+import {getUiPoolTypeFromPoolId} from "@/src/utils/poolTypeDetection";
 
 export function CreatePoolDialog({
   setPreviewData,
@@ -258,6 +259,8 @@ export function CreatePoolDialog({
                 firstCoin={firstAssetId}
                 secondCoin={secondAssetId}
                 isStablePool={poolType === "stable"}
+                poolType={getUiPoolTypeFromPoolId(poolsMetadata?.[0]?.poolId)}
+                withPoolDetails
               />
             )}
           </div>

@@ -8,8 +8,10 @@ import {
   useCreatePoolV2,
   useModal,
   useAssetMetadata,
+  usePoolConcentrationType,
 } from "@/src/hooks";
 import CreatePoolSuccessModal from "../CreatePoolSuccessModal/CreatePoolSuccessModal";
+import {getUiPoolTypeFromPoolId} from "@/src/utils/poolTypeDetection";
 
 export type CreatePoolPreviewData = {
   assets: {
@@ -74,7 +76,9 @@ const PreviewCreatePoolDialog = ({
     router.push("/liquidity");
   }, [router]);
 
-  const feeText = isStablePool ? "0.05%" : "0.3%";
+  const poolConcentrationtype = usePoolConcentrationType();
+
+  const feeText = poolType === "stable" ? "0.05%" : "0.3%";
 
   return (
     <>
@@ -84,6 +88,8 @@ const PreviewCreatePoolDialog = ({
             firstCoin={previewData.assets[0].assetId}
             secondCoin={previewData.assets[1].assetId}
             isStablePool={poolType === "stable"}
+            poolType={getUiPoolTypeFromPoolId(poolConcentrationtype.poolId)}
+            withPoolDetails
           />
         </div>
         <div className="flex flex-col gap-3 bg-[var(--background-secondary)] p-3 rounded-md">
