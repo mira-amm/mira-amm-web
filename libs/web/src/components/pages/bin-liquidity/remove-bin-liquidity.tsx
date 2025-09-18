@@ -73,7 +73,7 @@ const RemoveBinLiquidity = ({
       </button>
       <section className="flex flex-col gap-3">
         <div className="w-full p-4 pb-10 rounded-[12px] flex flex-col gap-6 bg-background-grey-dark border-border-secondary border-[11px] dark:border-0 dark:bg-background-grey-dark">
-          <p className="flex items-center gap-x-1 text-base text-content-primary leading-[19px] border-b border-content-grey-dark/40 pb-3">
+          <p className="flex items-center gap-x-1 text-lg text-content-primary leading-[19px] border-b border-content-grey-dark/40 pb-3">
             Remove Liquidity
             <Info
               tooltipText={

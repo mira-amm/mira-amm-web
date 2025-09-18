@@ -94,7 +94,7 @@ const AddBinLiquidityPage = ({
         </Link>
         <section className="flex flex-col gap-3">
           <div className="w-full p-4 rounded-[12px] flex flex-col gap-4 bg-background-grey-dark border-border-secondary border-[11px] dark:border-0 dark:bg-background-grey-dark">
-            <p className="text-base text-content-primary leading-[19px] border-b border-content-grey-dark/40 pb-3">
+            <p className="text-lg text-content-primary leading-[19px] border-b border-content-grey-dark/40 pb-3">
               Add Liqudity
             </p>
 
