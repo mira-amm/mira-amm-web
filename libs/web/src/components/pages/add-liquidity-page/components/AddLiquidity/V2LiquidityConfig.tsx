@@ -40,6 +40,19 @@ function useDebounce<T>(value: T, delay: number) {
   return debounced;
 }
 
+/**
+ * Sanitize numeric input by removing special characters
+ * and allowing only digits and a single decimal point.
+ *
+ * @param value - The raw input string from the user
+ * @returns A sanitized string safe to set as input value
+ */
+function sanitizeNumericInput(value: string): string {
+  return value
+    .replace(/[^0-9.]/g, "") // remove anything that's not a digit or dot
+    .replace(/(\..*?)\./g, "$1"); // keep only the first dot
+}
+
 // parser for text input ("1,234.56", "  1234  ")
 function parsePriceString(input: string): number | null {
   if (typeof input !== "string") return null;
@@ -533,7 +546,9 @@ export default function V2LiquidityConfig({
           }}
         >
           <span className="text-sm">Active Bin:</span>
-          <span className="text-sm font-alt">{formatPriceForDisplay(currentPrice, DEFAULT_BIN_STEP)}</span>
+          <span className="text-sm font-alt">
+            {formatPriceForDisplay(currentPrice, DEFAULT_BIN_STEP)}
+          </span>
           <span className="text-sm">
             {asset0Metadata.symbol} per {asset1Metadata.symbol}
           </span>
@@ -587,7 +602,7 @@ export default function V2LiquidityConfig({
                 }
                 onChange={(e) => {
                   setIsTypingMin(true);
-                  setMinPriceInput(e.target.value);
+                  setMinPriceInput(sanitizeNumericInput(e.target.value));
                 }}
                 onBlur={() => {
                   const parsed = parsePriceString(minPriceInput);
@@ -622,7 +637,7 @@ export default function V2LiquidityConfig({
                 }
                 onChange={(e) => {
                   setIsTypingMax(true);
-                  setMaxPriceInput(e.target.value);
+                  setMaxPriceInput(sanitizeNumericInput(e.target.value));
                 }}
                 onBlur={() => {
                   const parsed = parsePriceString(maxPriceInput);
