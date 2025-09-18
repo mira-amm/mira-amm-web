@@ -35,6 +35,7 @@ import {
 import {cn} from "@/src/utils/cn";
 import {getIsRebrandEnabled} from "@/src/utils/isRebrandEnabled";
 import {getUiPoolTypeFromPoolId} from "@/src/utils/poolTypeDetection";
+import {Input} from "@/meshwave-ui/input";
 
 export function CreatePoolDialog({
   setPreviewData,
@@ -336,7 +337,7 @@ export function CreatePoolDialog({
               <label className="text-sm text-content-primary">
                 Bin Step (basis points)
               </label>
-              <input
+              <Input
                 type="number"
                 min="1"
                 max="100"
@@ -347,8 +348,8 @@ export function CreatePoolDialog({
                     binStep: parseInt(e.target.value) || 25,
                   }))
                 }
-                className="px-3 py-2 rounded-md bg-background-grey-darker text-content-primary border border-border-secondary focus:border-accent-primary focus:outline-none"
                 placeholder="25"
+                className="font-alt"
               />
               <p className="text-xs text-content-dimmed-light">
                 Controls the price step between bins. Lower values = more
@@ -360,7 +361,7 @@ export function CreatePoolDialog({
               <label className="text-sm text-content-primary">
                 Base Factor
               </label>
-              <input
+              <Input
                 type="number"
                 min="5000"
                 max="20000"
@@ -371,8 +372,8 @@ export function CreatePoolDialog({
                     baseFactor: parseInt(e.target.value) || 10000,
                   }))
                 }
-                className="px-3 py-2 rounded-md bg-background-grey-darker text-content-primary border border-border-secondary focus:border-accent-primary focus:outline-none"
                 placeholder="10000"
+                className="font-alt"
               />
               <p className="text-xs text-content-dimmed-light">
                 Determines the geometric progression of bin prices. Default:
