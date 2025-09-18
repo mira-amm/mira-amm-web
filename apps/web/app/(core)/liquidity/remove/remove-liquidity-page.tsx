@@ -110,6 +110,7 @@ export default function RemoveLiquidityPage() {
         </div>
 
         <RemoveLiquidityModalContent
+          poolId={poolId}
           coinA={poolId[0].bits}
           coinB={poolId[1].bits}
           isStablePool={isStablePool}
