@@ -309,14 +309,14 @@ export default function SimulatedDistribution({
       <div className="flex justify-between text-gray-500 mt-4 text-xs">
         {minPrice !== undefined && maxPrice !== undefined ? (
           <>
-            <span className="text-center">{minPrice.toFixed(4)}</span>
-            <span className="text-center">{maxPrice.toFixed(4)}</span>
+            <span className="text-center font-alt">{minPrice.toFixed(4)}</span>
+            <span className="text-center font-alt">{maxPrice.toFixed(4)}</span>
           </>
         ) : (
           simulationData
             .filter((dataPoint) => dataPoint.showPrice)
             .map((dataPoint, index) => (
-              <span key={index} className="text-center">
+              <span key={index} className="text-center font-alt">
                 {dataPoint.price}
               </span>
             ))

@@ -62,7 +62,7 @@ export function CoinListItem({
       </div>
 
       {balanceValue.gt(0) && (
-        <p className="text-sm leading-4 text-content-dimmed-light">
+        <p className="text-sm leading-4 text-content-dimmed-light font-alt">
           {balanceValue.formatUnits(assetData.decimals || 0)}
         </p>
       )}

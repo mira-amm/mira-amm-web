@@ -114,7 +114,7 @@ const CoinPair = ({
             <span className="rounded-lg bg-background-secondary px-2 py-0.5 text-content-tertiary text-xs font-medium">
               {config.label}
             </span>
-            <span className="rounded-lg bg-background-secondary px-2 py-0.5 text-content-tertiary text-xs font-medium">
+            <span className="rounded-lg bg-background-secondary px-2 py-0.5 text-content-tertiary text-xs font-medium font-alt">
               {feeText}
             </span>
           </div>
@@ -122,7 +122,7 @@ const CoinPair = ({
       </div>
 
       {withFee && (
-        <p className="text-sm leading-[14px] text-content-tertiary">
+        <p className="text-sm leading-[14px] text-content-tertiary font-alt">
           {feeText}
         </p>
       )}
