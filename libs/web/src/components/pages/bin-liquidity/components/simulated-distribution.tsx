@@ -282,7 +282,10 @@ export default function SimulatedDistribution({
                 {/* Asset B bar (blue) - stacked on top */}
                 {assetBHeight > 0 && (
                   <div
-                    className="bg-blue-500 rounded-t-md w-full"
+                    className={cn(
+                      "bg-blue-500 rounded-t-md w-full",
+                      assetAHeight === 0 ? "rounded-b-md" : ""
+                    )}
                     style={{height: `${Math.min(assetBHeight, 140)}px`}}
                     title={`Price Range: ${priceRangeInfo}\n${asset1Symbol || "Asset B"}: ${depositedAsset1.toFixed(4)} tokens`}
                   ></div>
