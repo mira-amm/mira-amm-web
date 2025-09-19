@@ -224,12 +224,12 @@ const AddLiquidityDialog = ({
       <MockModeIndicator />
 
       {/* Selected pair section */}
-      <div className="flex flex-col gap-4 mb-6">
+      <div className="flex flex-col gap-4">
         <div className="flex justify-between items-center">
           <SectionHeading>Selected pair</SectionHeading>
         </div>
 
-        <div className="flex justify-between items-center">
+        <div className="flex gap-2 flex-col sm:flex-row justify-between sm:items-center">
           <CoinPair
             firstCoin={firstAssetId}
             secondCoin={secondAssetId}
