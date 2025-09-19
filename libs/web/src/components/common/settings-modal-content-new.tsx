@@ -10,6 +10,7 @@ import {
 } from "react";
 import {clsx} from "clsx";
 import {useAnimationStore} from "@/src/stores/useGlitchScavengerHunt";
+import {ButtonGroup} from "@/meshwave-ui/Button";
 
 const AutoSlippageValues = [10, 50, 100];
 
@@ -84,21 +85,13 @@ function SettingsModalContentNew({
         </p>
       </div>
       <div className="flex gap-2 items-center">
-        <div className="flex flex-1">
-          {AutoSlippageValues.map((value, index) => (
-            <button
-              key={value}
-              className={clsx(
-                "w-full px-3 py-[14px] font-alt first:rounded-l-lg last:rounded-r-lg text-content-dimmed-light border bg-background-grey-dark hover:border dark:hover:text-content-primary dark:hover:border-accent-primary hover:border-black",
-                slippage === value &&
-                  "dark:border-accent-primary border border-black bg-black dark:bg-background-grey-dark text-white"
-              )}
-              onClick={() => handleSlippageButtonClick(value)}
-            >
-              {value / 100}%
-            </button>
-          ))}
-        </div>
+        <ButtonGroup
+          items={AutoSlippageValues}
+          value={slippage}
+          onChange={handleSlippageButtonClick}
+          className="flex-1"
+          renderItem={(item) => `${item.value / 100}%`}
+        />
         <div className="flex items-center justify-center">
           <div className="flex justify-center items-center px-3">or</div>
           <p
@@ -114,7 +107,7 @@ function SettingsModalContentNew({
             pattern="^[0-9]*[.,]?[0-9]*$"
             aria-label="Custom slippage percentage"
             aria-describedby="slippage-description"
-            className="w-22 px-3 font-alt py-[14px] rounded-lg text-content-dimmed-light bg-background-grey-dark focus:border-accent-primary focus:text-content-primary"
+            className="w-22 px-3 font-alt h-10 rounded-lg text-content-dimmed-light bg-background-grey-dark focus:border-accent-primary focus:text-content-primary"
             value={inputValue}
             onChange={handleSlippageChange}
             onKeyDown={handleKeyDown}
