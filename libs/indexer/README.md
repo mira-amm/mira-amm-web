@@ -46,6 +46,23 @@ pnpm dev:mock
 NEXT_PUBLIC_USE_MOCK_INDEXER=true pnpm nx dev web
 ```
 
+### 3. Local Development with Local Fuel Network
+
+For development with a local Fuel network and indexer:
+
+**Usage:**
+
+```bash
+# Start web application with local development target
+pnpm dev:local
+
+# Or run nx target directly
+nx dev:local web
+```
+
+When `NEXT_PUBLIC_NETWORK_URL` contains `localhost:4000`, the indexer automatically switches to
+`http://localhost:4350/graphql`.
+
 The mock indexer provides realistic data including:
 
 - ETH, USDC, FUEL, BTC assets with real-looking prices
@@ -130,7 +147,15 @@ Uses mock data for development. Enabled by:
 - `forceMock={true}` prop on IndexerProvider
 - `NODE_ENV=test` automatically enables mock mode
 
-### 3. Custom Indexer
+### 3. Local Development Mode
+
+Uses local Fuel network and indexer. Enabled by:
+
+- `NEXT_PUBLIC_NETWORK_URL=http://localhost:4000/v1/graphql` environment variable
+- Automatically uses `http://localhost:4350/graphql` as indexer endpoint
+- Run with `pnpm dev:local` script
+
+### 4. Custom Indexer
 
 Inject your own indexer implementation:
 
@@ -149,6 +174,9 @@ const customIndexer = new CustomIndexer();
 ```bash
 # Enable mock indexer (development)
 NEXT_PUBLIC_USE_MOCK_INDEXER=true
+
+# Use local Fuel network (auto-detects local indexer)
+NEXT_PUBLIC_NETWORK_URL=http://localhost:4000/v1/graphql
 
 # Override Subsquid endpoint (optional)
 NEXT_PUBLIC_SUBSQUID_ENDPOINT=https://custom-indexer.com/graphql

@@ -15,6 +15,57 @@ import {StatsIndexer} from "./StatsIndexer";
 const DEFAULT_ENDPOINT =
   "https://mira-dex.squids.live/mira-indexer@v3/api/graphql";
 
+const LOCAL_INDEXER_ENDPOINT = "http://localhost:4350/graphql";
+
+/**
+ * Determines the appropriate indexer endpoint based on the current environment
+ * and network configuration.
+ */
+function getIndexerEndpoint(customEndpoint?: string): string {
+  // If custom endpoint is provided, use it
+  if (customEndpoint) {
+    return customEndpoint;
+  }
+
+  // Check environment variable first
+  const envEndpoint = process.env["NEXT_PUBLIC_SUBSQUID_ENDPOINT"];
+  if (envEndpoint) {
+    return envEndpoint;
+  }
+
+  // Auto-detect local development mode
+  // Check if we're in a browser environment and can access the Fuel provider
+  if (typeof window !== "undefined") {
+    try {
+      // Check if NetworkUrl from constants indicates localhost development
+      const networkUrl =
+        process.env.NEXT_PUBLIC_NETWORK_URL || (globalThis as any)?.NETWORK_URL;
+
+      if (networkUrl && networkUrl.includes("localhost:4000")) {
+        console.log(
+          "🔧 IndexerConfig: Auto-detected localhost network, using local indexer"
+        );
+        return LOCAL_INDEXER_ENDPOINT;
+      }
+    } catch (error) {
+      // Ignore errors in auto-detection
+    }
+  }
+
+  // Check server-side environment variables for local development
+  if (process.env.NODE_ENV === "development") {
+    const networkUrl = process.env.NEXT_PUBLIC_NETWORK_URL;
+    if (networkUrl && networkUrl.includes("localhost:4000")) {
+      console.log(
+        "🔧 IndexerConfig: Auto-detected localhost network (server), using local indexer"
+      );
+      return LOCAL_INDEXER_ENDPOINT;
+    }
+  }
+
+  return DEFAULT_ENDPOINT;
+}
+
 export class SubsquidIndexer implements ISubsquidIndexer {
   readonly pools: IPoolIndexer;
   readonly assets: IAssetIndexer;
@@ -26,10 +77,7 @@ export class SubsquidIndexer implements ISubsquidIndexer {
   private client: GraphQLClient;
 
   constructor(endpoint?: string, config?: IndexerConfig) {
-    this.endpoint =
-      endpoint ||
-      process.env["NEXT_PUBLIC_SUBSQUID_ENDPOINT"] ||
-      DEFAULT_ENDPOINT;
+    this.endpoint = getIndexerEndpoint(endpoint);
     this.config = config;
 
     // Initialize GraphQL client

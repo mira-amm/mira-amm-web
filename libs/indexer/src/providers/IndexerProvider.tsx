@@ -43,6 +43,15 @@ export function IndexerProvider({
       return createMockIndexer(endpoint, config);
     }
 
+    // Check for local development mode
+    const networkUrl = process.env.NEXT_PUBLIC_NETWORK_URL;
+    if (networkUrl && networkUrl.includes("localhost:4000")) {
+      console.log(
+        "🔧 IndexerProvider: Using Local Indexer: http://localhost:4350/graphql"
+      );
+      return new SubsquidIndexer("http://localhost:4350/graphql", config);
+    }
+
     console.log("🔗 IndexerProvider: Using Real Subsquid Indexer");
     return new SubsquidIndexer(endpoint, config);
   }, [injectedIndexer, endpoint, config, forceMock]);
@@ -75,6 +84,12 @@ export function getIndexer(): ISubsquidIndexer {
 
   if (shouldUseMock) {
     return createMockIndexer();
+  }
+
+  // Check for local development mode
+  const networkUrl = process.env.NEXT_PUBLIC_NETWORK_URL;
+  if (networkUrl && networkUrl.includes("localhost:4000")) {
+    return new SubsquidIndexer("http://localhost:4350/graphql");
   }
 
   return new SubsquidIndexer();
