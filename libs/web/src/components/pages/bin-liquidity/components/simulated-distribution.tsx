@@ -32,22 +32,27 @@ function generateBinData(
 ): LiquidityData {
   const data: LiquidityData = [];
   const priceStep = (maxPrice - minPrice) / (numBins - 1);
-  const centerPrice = (minPrice + maxPrice) / 2; // Center of the selected range
+  // Use currentPrice as the reference point for shapes
+  const referencePrice = currentPrice;
 
   for (let i = 0; i < numBins; i++) {
     const binPrice = minPrice + i * priceStep;
     const isCurrentPrice = Math.abs(binPrice - currentPrice) < priceStep / 2;
 
-    // Calculate distribution height based on shape and distance from center
+    // Calculate distribution height based on shape and distance from current price
     let heightMultiplier = 1;
-    const distanceFromCenter = Math.abs(binPrice - centerPrice);
-    const maxDistance = Math.abs(maxPrice - centerPrice);
+    const distanceFromCurrent = Math.abs(binPrice - referencePrice);
+    const maxDistance = Math.max(
+      Math.abs(referencePrice - minPrice),
+      Math.abs(maxPrice - referencePrice)
+    );
 
     switch (liquidityShape) {
       case "curve":
-        // Bell curve - highest at center, decreasing towards edges
+        // Bell curve - highest at current price, decreasing towards edges
         // Use a gentler curve to ensure all bins are visible
-        const normalizedDistance = distanceFromCenter / maxDistance;
+        const normalizedDistance =
+          maxDistance > 0 ? distanceFromCurrent / maxDistance : 0;
         heightMultiplier = Math.max(
           0.2,
           Math.exp(-Math.pow(normalizedDistance * 1.5, 2))
@@ -58,9 +63,10 @@ function generateBinData(
         heightMultiplier = 1;
         break;
       case "bidask":
-        // Higher at edges, lower in middle
-        heightMultiplier =
-          1 - Math.exp(-Math.pow(distanceFromCenter / (maxDistance / 3), 2));
+        // Higher at edges, lower near current price
+        const norm =
+          maxDistance > 0 ? distanceFromCurrent / (maxDistance / 3) : 0;
+        heightMultiplier = 1 - Math.exp(-Math.pow(norm, 2));
         break;
     }
 
@@ -203,6 +209,45 @@ export default function SimulatedDistribution({
     return null;
   }
 
+  // Precompute value-based heights using asset prices and totals
+  const asset0P = asset0Price ?? 1;
+  const asset1P = asset1Price ?? 1;
+
+  // Treat generated assetAHeight/assetBHeight as distribution weights for token amounts
+  const totalWeight0 = simulationData.reduce(
+    (sum, d) => sum + Math.max(d.assetAHeight, 0),
+    0
+  );
+  const totalWeight1 = simulationData.reduce(
+    (sum, d) => sum + Math.max(d.assetBHeight, 0),
+    0
+  );
+
+  // Compute per-bin deposited amounts based on provided totals (fallback to weights if totals are not provided)
+  const hasTotal0 = totalAsset0Amount !== undefined;
+  const hasTotal1 = totalAsset1Amount !== undefined;
+  const perBinDeposits = simulationData.map((d) => {
+    const weight0 = Math.max(d.assetAHeight, 0);
+    const weight1 = Math.max(d.assetBHeight, 0);
+    const amount0 = hasTotal0
+      ? totalWeight0 > 0
+        ? (weight0 / totalWeight0) * (totalAsset0Amount as number)
+        : 0
+      : weight0;
+    const amount1 = hasTotal1
+      ? totalWeight1 > 0
+        ? (weight1 / totalWeight1) * (totalAsset1Amount as number)
+        : 0
+      : weight1;
+    return {amount0, amount1};
+  });
+
+  // Compute per-bin total values and max for scaling
+  const perBinValues = perBinDeposits.map(
+    ({amount0, amount1}) => amount0 * asset0P + amount1 * asset1P
+  );
+  const maxBinValue = perBinValues.length > 0 ? Math.max(...perBinValues) : 0;
+
   return (
     <div className="h-56">
       {/* Chart container */}
@@ -210,10 +255,23 @@ export default function SimulatedDistribution({
         {/* Chart bars */}
         <div className="flex items-end h-full gap-0.5">
           {simulationData.map((dataPoint, index) => {
-            // Ensure minimum visible height
-            const assetAHeight = Math.max(dataPoint.assetAHeight, 0);
-            const assetBHeight = Math.max(dataPoint.assetBHeight, 0);
-            const hasAnyBar = assetAHeight > 0 || assetBHeight > 0;
+            // Value-based stacked heights
+            const {amount0, amount1} = perBinDeposits[index];
+            const binTotalValue = perBinValues[index];
+            const maxPixelHeight = 140; // Keep visual cap consistent with previous styling
+            const totalBarHeight =
+              maxBinValue > 0
+                ? (binTotalValue / maxBinValue) * maxPixelHeight
+                : 0;
+            const valueA = amount0 * asset0P;
+            const valueB = amount1 * asset1P;
+            const displayAssetAHeight =
+              binTotalValue > 0 ? (valueA / binTotalValue) * totalBarHeight : 0;
+            const displayAssetBHeight =
+              binTotalValue > 0 ? (valueB / binTotalValue) * totalBarHeight : 0;
+
+            const hasAnyBar =
+              displayAssetAHeight > 0 || displayAssetBHeight > 0;
 
             // Calculate consistent width based on available space and number of bins
             // Account for gaps: total gaps = (numBars - 1) * 2px
@@ -225,42 +283,9 @@ export default function SimulatedDistribution({
               maxWidth: "20px", // Prevent bars from getting too wide with few bins
             };
 
-            // Calculate actual deposited token amounts for this bin
-            // Heights represent relative distribution, convert to actual deposit amounts
-            const calculateDepositedAmount = (
-              relativeHeight: number,
-              totalAmount: number,
-              totalHeight: number
-            ) => {
-              if (!totalAmount || !totalHeight || totalHeight === 0) return 0;
-              return (relativeHeight / totalHeight) * totalAmount;
-            };
-
-            // Calculate total heights for normalization
-            const totalAsset0Height = simulationData.reduce(
-              (sum, d) => sum + d.assetAHeight,
-              0
-            );
-            const totalAsset1Height = simulationData.reduce(
-              (sum, d) => sum + d.assetBHeight,
-              0
-            );
-
-            // Calculate actual deposited amounts for this specific bin
-            const depositedAsset0 = totalAsset0Amount
-              ? calculateDepositedAmount(
-                  assetAHeight,
-                  totalAsset0Amount,
-                  totalAsset0Height
-                )
-              : 0;
-            const depositedAsset1 = totalAsset1Amount
-              ? calculateDepositedAmount(
-                  assetBHeight,
-                  totalAsset1Amount,
-                  totalAsset1Height
-                )
-              : 0;
+            // Deposited amounts for tooltips
+            const depositedAsset0 = amount0 || 0;
+            const depositedAsset1 = amount1 || 0;
 
             // Calculate price range for this bar
             const binWidth = (maxPrice! - minPrice!) / (numBins || 1);
@@ -280,25 +305,25 @@ export default function SimulatedDistribution({
                 {!hasAnyBar && <div className="h-1 bg-gray-200 w-full"></div>}
 
                 {/* Asset B bar (blue) - stacked on top */}
-                {assetBHeight > 0 && (
+                {displayAssetBHeight > 0 && (
                   <div
                     className={cn(
                       "bg-blue-500 rounded-t-md w-full",
-                      assetAHeight === 0 ? "rounded-b-md" : ""
+                      displayAssetAHeight === 0 ? "rounded-b-md" : ""
                     )}
-                    style={{height: `${Math.min(assetBHeight, 140)}px`}}
+                    style={{height: `${Math.min(displayAssetBHeight, 140)}px`}}
                     title={`Price Range: ${priceRangeInfo}\n${asset1Symbol || "Asset B"}: ${depositedAsset1.toFixed(4)} tokens`}
                   ></div>
                 )}
 
                 {/* Asset A bar (red) - stacked on bottom */}
-                {assetAHeight > 0 && (
+                {displayAssetAHeight > 0 && (
                   <div
                     className={cn(
                       "bg-red-500 rounded-b-md w-full",
-                      assetBHeight === 0 ? "rounded-t-md" : ""
+                      displayAssetBHeight === 0 ? "rounded-t-md" : ""
                     )}
-                    style={{height: `${Math.min(assetAHeight, 140)}px`}}
+                    style={{height: `${Math.min(displayAssetAHeight, 140)}px`}}
                     title={`Price Range: ${priceRangeInfo}\n${asset0Symbol || "Asset A"}: ${depositedAsset0.toFixed(4)} tokens`}
                   ></div>
                 )}

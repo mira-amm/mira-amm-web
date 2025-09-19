@@ -200,17 +200,28 @@ export function distributionToVisualizationData(
 }> {
   const {bins} = distribution;
 
-  // Find max liquidity for scaling
-  const maxLiquidityX = Math.max(...bins.map((bin) => bin.liquidityX));
-  const maxLiquidityY = Math.max(...bins.map((bin) => bin.liquidityY));
-  const maxLiquidity = Math.max(maxLiquidityX, maxLiquidityY);
+  // Compute per-bin total value in terms of token Y using bin price (Y per X)
+  // This ensures bar heights reflect value, not raw token counts
+  const binTotalValues = bins.map((bin) => {
+    const valueXInY = bin.liquidityX * bin.price; // convert X to Y terms
+    const valueYInY = bin.liquidityY; // already in Y terms
+    return valueXInY + valueYInY;
+  });
+  const maxTotalValue = Math.max(0, ...binTotalValues);
 
   return bins.map((bin, index) => {
-    // Scale heights
+    // Scale stacked heights by value such that total bar height represents total value
+    const valueXInY = bin.liquidityX * bin.price;
+    const valueYInY = bin.liquidityY;
+    const totalValueY = valueXInY + valueYInY;
+
+    const totalBarHeight =
+      maxTotalValue > 0 ? (totalValueY / maxTotalValue) * maxHeight : 0;
+
     const assetAHeight =
-      maxLiquidity > 0 ? (bin.liquidityX / maxLiquidity) * maxHeight : 0;
+      totalValueY > 0 ? (valueXInY / totalValueY) * totalBarHeight : 0;
     const assetBHeight =
-      maxLiquidity > 0 ? (bin.liquidityY / maxLiquidity) * maxHeight : 0;
+      totalValueY > 0 ? (valueYInY / totalValueY) * totalBarHeight : 0;
 
     // Show price for every 3rd bin or active bin
     const showPrice = bin.isActive || index % 3 === 0;
