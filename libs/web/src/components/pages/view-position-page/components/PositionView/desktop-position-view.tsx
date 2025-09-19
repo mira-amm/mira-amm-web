@@ -1,6 +1,6 @@
 import React, {useState} from "react";
 import Link from "next/link";
-import {Button} from "@/meshwave-ui/Button";
+import {Button, ButtonGroup} from "@/meshwave-ui/Button";
 import {PoolId} from "mira-dex-ts";
 
 import CoinPair from "@/src/components/common/CoinPair/CoinPair";
@@ -202,13 +202,15 @@ export function DesktopPositionView({
             <div className="text-content-primary text-base leading-[19px]">
               Fees earned
             </div>
-            <div className="text-content-tertiary text-sm">Last refreshed on Jun 28 2025, 2:00 PM</div>
+            <div className="text-content-tertiary text-sm">
+              Last refreshed on Jun 28 2025, 2:00 PM
+            </div>
           </div>
           <div className="flex items-center space-x-4">
-            <TimeDisplay
-              timeData={TimeData}
-              selectedTime={selectedTime}
-              handleSetSelectedTime={handleButtonClick}
+            <ButtonGroup
+              items={TimeData}
+              value={selectedTime}
+              onChange={handleButtonClick}
             />
           </div>
         </div>
@@ -265,34 +267,6 @@ const TotalDeposit = ({
         <p>{title}</p>
         <p className="font-alt">{usdValue}</p>
       </div>
-    </div>
-  );
-};
-
-const TimeDisplay = ({
-  timeData,
-  selectedTime,
-  handleSetSelectedTime,
-}: {
-  timeData: string[];
-  selectedTime: string;
-  handleSetSelectedTime: (value: string) => void;
-}) => {
-  return (
-    <div className="flex flex-1">
-      {timeData.map((value) => (
-        <button
-          key={value}
-          className={cn(
-            "w-full h-10 px-2 font-alt first:rounded-l-lg cursor-pointer last:rounded-r-lg text-content-dimmed-light border bg-background-grey-dark hover:border dark:hover:text-content-primary dark:hover:border-accent-primary hover:border-black",
-            selectedTime === value &&
-              "dark:border-accent-primary border border-black bg-black dark:bg-background-grey-dark text-white"
-          )}
-          onClick={() => handleSetSelectedTime(value)}
-        >
-          {value}
-        </button>
-      ))}
     </div>
   );
 };
