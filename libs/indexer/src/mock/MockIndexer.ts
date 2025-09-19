@@ -34,6 +34,7 @@ import {
 
 export class MockPoolIndexer implements IPoolIndexer {
   async getById(id: string): Promise<Pool> {
+    const isStable = id.includes("stable") || id.includes("true");
     return {
       id,
       asset0: {id: "asset0", name: "Asset 0", symbol: "A0", decimals: 18},
@@ -45,34 +46,41 @@ export class MockPoolIndexer implements IPoolIndexer {
       creationBlock: 1000,
       creationTime: Date.now() - 86400000,
       creationTx: "tx_hash",
-      poolType: "v1-volatile",
+      poolType: isStable ? "v1-stable" : "v1-volatile",
     };
   }
 
   async list(params?: PoolListParams): Promise<PoolListResponse> {
-    const mockPools = Array.from({length: params?.limit || 10}, (_, i) => ({
-      id: `pool_${i}`,
-      asset0: {
-        id: `asset0_${i}`,
-        name: `Asset ${i}A`,
-        symbol: `A${i}A`,
-        decimals: 18,
-      },
-      asset1: {
-        id: `asset1_${i}`,
-        name: `Asset ${i}B`,
-        symbol: `A${i}B`,
-        decimals: 18,
-      },
-      asset0Id: `asset0_${i}`,
-      asset1Id: `asset1_${i}`,
-      tvlUSD: `${(i + 1) * 100000}`,
-      volumeUSD: `${(i + 1) * 50000}`,
-      creationBlock: 1000 + i,
-      creationTime: Date.now() - i * 3600000,
-      creationTx: `tx_hash_${i}`,
-      poolType: "v1-volatile" as const,
-    }));
+    const mockPools = Array.from({length: params?.limit || 10}, (_, i) => {
+      const asset0Id = `0x${i.toString().padStart(2, "0")}${"1".repeat(61)}${i}`;
+      const asset1Id = `0x${i.toString().padStart(2, "0")}${"2".repeat(61)}${i}`;
+      const isStable = i % 3 === 0; // Make some pools stable for variety
+      const poolId = `${asset0Id}-${asset1Id}-${isStable}`;
+
+      return {
+        id: poolId,
+        asset0: {
+          id: asset0Id,
+          name: `Asset ${i}A`,
+          symbol: `A${i}A`,
+          decimals: 18,
+        },
+        asset1: {
+          id: asset1Id,
+          name: `Asset ${i}B`,
+          symbol: `A${i}B`,
+          decimals: 18,
+        },
+        asset0Id,
+        asset1Id,
+        tvlUSD: `${(i + 1) * 100000}`,
+        volumeUSD: `${(i + 1) * 50000}`,
+        creationBlock: 1000 + i,
+        creationTime: Date.now() - i * 3600000,
+        creationTx: `tx_hash_${i}`,
+        poolType: isStable ? "v1-stable" : ("v1-volatile" as const),
+      };
+    });
 
     return {
       pools: mockPools,
@@ -140,7 +148,7 @@ export class MockAssetIndexer implements IAssetIndexer {
   async getById(id: string): Promise<Asset> {
     return {
       id,
-      name: `Mock Asset ${id}`,
+      name: `Mock Asset ${id.slice(-4)}`,
       symbol: `MA${id.slice(-2)}`,
       decimals: 18,
       price: "1.50",
@@ -165,7 +173,7 @@ export class MockAssetIndexer implements IAssetIndexer {
 
   async list(): Promise<Asset[]> {
     return Array.from({length: 10}, (_, i) => ({
-      id: `asset_${i}`,
+      id: `0x${i.toString().padStart(2, "0")}${"0".repeat(61)}${i}`,
       name: `Asset ${i}`,
       symbol: `A${i}`,
       decimals: 18,
@@ -174,18 +182,69 @@ export class MockAssetIndexer implements IAssetIndexer {
   }
 
   async listWithPools(): Promise<Asset[]> {
-    return Array.from({length: 5}, (_, i) => ({
-      id: `asset_${i}`,
-      name: `Asset ${i}`,
-      symbol: `A${i}`,
-      decimals: 18,
-      price: `${1 + i * 0.1}`,
-      image: `https://example.com/asset_${i}.png`,
-      numPools: i + 1,
-      contractId: `contract_${i}`,
-      subId: `sub_${i}`,
-      l1Address: `l1_address_${i}`,
-    }));
+    // More realistic dev data with valid 66-character B256 asset IDs
+    return [
+      {
+        id: "0xf8f8b6283d7fa5b672b530cbb84fcccb4ff8dc40f8176ef4544ddb1f1952ad07",
+        name: "Ethereum",
+        symbol: "ETH",
+        decimals: 18,
+        price: "3250.50",
+        image:
+          "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='16' fill='%23627eea'/%3E%3Ctext x='16' y='20' text-anchor='middle' fill='white' font-family='Arial' font-size='10'%3EETH%3C/text%3E%3C/svg%3E",
+        numPools: 12,
+        contractId:
+          "0xb4bb1bbecb02ed1a3d91fe7e93a2fad1b20cdc6b2c4f1c70c95d55c6f6a51a01",
+        subId:
+          "0x0000000000000000000000000000000000000000000000000000000000000000",
+        l1Address: "0xA0b86a33E6842a7E648c9e863fb16Eb8c6E1c0e3",
+      },
+      {
+        id: "0x336b7c06352a4b736ff6de65ca7b5e6fd71e2a742e3fbc5a67c85dd8ddbf5a0c",
+        name: "USD Coin",
+        symbol: "USDC",
+        decimals: 6,
+        price: "1.00",
+        image:
+          "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='16' fill='%2326a69a'/%3E%3Ctext x='16' y='20' text-anchor='middle' fill='white' font-family='Arial' font-size='9'%3EUSDC%3C/text%3E%3C/svg%3E",
+        numPools: 8,
+        contractId:
+          "0xa6e58b58d4e9e0ccf7f826a2e7b2f3d3b8b4e4b0a1234567890abcdef1234567",
+        subId:
+          "0x0000000000000000000000000000000000000000000000000000000000000000",
+        l1Address: "0xA0b86a33E6842a7E648c9e863fb16Eb8c6E1c0e4",
+      },
+      {
+        id: "0x1b99de5c3b9b9b5b5b9b5b5b9b5b5b9b5b5b9b5b5b9b5b5b9b5b5b9b5b5b9b5b",
+        name: "Fuel Token",
+        symbol: "FUEL",
+        decimals: 18,
+        price: "0.045",
+        image:
+          "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='16' fill='%23ff6b35'/%3E%3Ctext x='16' y='20' text-anchor='middle' fill='white' font-family='Arial' font-size='8'%3EFUEL%3C/text%3E%3C/svg%3E",
+        numPools: 6,
+        contractId:
+          "0xc5ae4b2a5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b",
+        subId:
+          "0x0000000000000000000000000000000000000000000000000000000000000000",
+        l1Address: "0xA0b86a33E6842a7E648c9e863fb16Eb8c6E1c0e5",
+      },
+      {
+        id: "0x2cafad89999cc6b3462c3de05a6e41aaed8f6b5b5b5b5b5b5b5b5b5b5b5b5b5b",
+        name: "Bitcoin",
+        symbol: "BTC",
+        decimals: 8,
+        price: "67890.25",
+        image:
+          "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='16' fill='%23f7931a'/%3E%3Ctext x='16' y='20' text-anchor='middle' fill='white' font-family='Arial' font-size='10'%3EBTC%3C/text%3E%3C/svg%3E",
+        numPools: 4,
+        contractId:
+          "0xd6bf8b2c6c6c6c6c6c6c6c6c6c6c6c6c6c6c6c6c6c6c6c6c6c6c6c6c6c6c6c6c",
+        subId:
+          "0x0000000000000000000000000000000000000000000000000000000000000000",
+        l1Address: "0xA0b86a33E6842a7E648c9e863fb16Eb8c6E1c0e6",
+      },
+    ];
   }
 
   async getMetadata(id: string): Promise<AssetMetadata> {
@@ -194,13 +253,14 @@ export class MockAssetIndexer implements IAssetIndexer {
       name: `Mock Asset ${id}`,
       symbol: `MA${id.slice(-2)}`,
       decimals: 18,
-      image: "https://example.com/image.png",
+      image:
+        "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='16' fill='%23667eea'/%3E%3Ctext x='16' y='20' text-anchor='middle' fill='white' font-family='Arial' font-size='12'%3EMA%3C/text%3E%3C/svg%3E",
       description: "Mock asset for testing",
     };
   }
 
   async getImage(id: string): Promise<string | null> {
-    return "https://example.com/image.png";
+    return "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='16' fill='%23667eea'/%3E%3Ctext x='16' y='20' text-anchor='middle' fill='white' font-family='Arial' font-size='12'%3EMA%3C/text%3E%3C/svg%3E";
   }
 
   async getBatch(ids: string[]): Promise<Asset[]> {
@@ -340,6 +400,58 @@ export class MockSubsquidIndexer implements ISubsquidIndexer {
     query: string,
     variables?: Record<string, any>
   ): Promise<T> {
+    // Mock response for protocol stats queries
+    if (query.includes("pools") && query.includes("poolTVL")) {
+      // Return mock data for protocol stats query
+      return {
+        pools: [
+          {
+            poolTVL: 1000000,
+            poolAlltimeVolume: 5000000,
+            snapshot24hours: [
+              {poolHourVolume: 10000},
+              {poolHourVolume: 15000},
+              {poolHourVolume: 12000},
+            ],
+            snapshot7days: [
+              {poolHourVolume: 50000},
+              {poolHourVolume: 60000},
+              {poolHourVolume: 55000},
+            ],
+          },
+          {
+            poolTVL: 500000,
+            poolAlltimeVolume: 2500000,
+            snapshot24hours: [
+              {poolHourVolume: 5000},
+              {poolHourVolume: 7500},
+              {poolHourVolume: 6000},
+            ],
+            snapshot7days: [
+              {poolHourVolume: 25000},
+              {poolHourVolume: 30000},
+              {poolHourVolume: 27500},
+            ],
+          },
+          {
+            poolTVL: 250000,
+            poolAlltimeVolume: 1000000,
+            snapshot24hours: [
+              {poolHourVolume: 2500},
+              {poolHourVolume: 3000},
+              {poolHourVolume: 2750},
+            ],
+            snapshot7days: [
+              {poolHourVolume: 10000},
+              {poolHourVolume: 12000},
+              {poolHourVolume: 11000},
+            ],
+          },
+        ],
+      } as T;
+    }
+
+    // Default empty response for other queries
     return {} as T;
   }
 }

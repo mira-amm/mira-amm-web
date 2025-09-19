@@ -1,7 +1,6 @@
-import request, {gql} from "graphql-request";
 import {PoolId} from "mira-dex-ts";
-import {SQDIndexerUrl} from "../utils/constants";
 import type {CoinData} from "../utils/coinsConfig";
+import {getServerIndexer} from "@/indexer";
 
 export type PoolReserveData = {
   reserve0: string;
@@ -25,49 +24,30 @@ function chunk<T>(arr: T[], size: number): T[][] {
 export async function fetchPoolsWithReserve(
   poolKeys: Array<[CoinData, CoinData, PoolId, boolean]>
 ): Promise<Pool[]> {
+  const indexer = getServerIndexer();
   const chunks = chunk(poolKeys, 10);
   const allResults: Pool[] = [];
 
   for (const keysChunk of chunks) {
-    const aliasMap = keysChunk.map(([a, b, [assetA, assetB, stable]], idx) => {
-      const alias = String.fromCharCode(97 + idx);
-      const id = `${assetA.bits}-${assetB.bits}-${stable}`;
-      return {alias, a, b, id};
+    const poolIds = keysChunk.map(([_a, _b, [assetA, assetB, stable]]) => {
+      return `${assetA.bits}-${assetB.bits}-${stable}`;
     });
 
-    const queries = aliasMap
-      .map(
-        ({alias, id}) => `
-        ${alias}: poolById(id: "${id}") {
-          reserve0
-          reserve1
-        }
-      `
-      )
-      .join("\n");
+    // Fetch pool reserves using the indexer
+    const poolsWithReserves = await indexer.pools.getWithReserves(poolIds);
 
-    const gqlQuery = gql`
-      query MultiPoolReserve {
-        ${queries}
-      }
-    `;
+    for (let idx = 0; idx < keysChunk.length; idx++) {
+      const [a, b, poolId] = keysChunk[idx];
+      const poolIdString = poolIds[idx];
+      const poolData = poolsWithReserves.find((p) => p.id === poolIdString);
 
-    const response = await request<Record<string, PoolReserveData | null>>(
-      SQDIndexerUrl,
-      gqlQuery
-    );
-
-    for (let idx = 0; idx < aliasMap.length; idx++) {
-      const {alias, a, b, id: _} = aliasMap[idx];
-      const data = response[alias];
-      if (data) {
-        const poolId = keysChunk[idx][2];
+      if (poolData && poolData.reserve0 && poolData.reserve1) {
         allResults.push({
           assetA: a,
           assetB: b,
           poolId,
-          reserve0: data.reserve0,
-          reserve1: data.reserve1,
+          reserve0: poolData.reserve0,
+          reserve1: poolData.reserve1,
         });
       }
     }

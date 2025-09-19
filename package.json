@@ -16,6 +16,7 @@
   "packageManager": "pnpm@10.13.1",
   "scripts": {
     "dev": "NX_TUI='false' nx dev:tui microvisor; process-compose down; supabase stop --all; zellij ka -y; zellij da -y;",
+    "dev:mock": "NEXT_PUBLIC_USE_MOCK_INDEXER=true nx dev web # 🚀 Web with Mock Indexer - Fast Development",
     "start": "nx dev microvisor --outputStyle=tui; process-compose down; supabase stop --all; zellij ka -y; zellij da -y;",
     "storybook": "nx storybook design -p $STORYBOOK_DEV_SERVER_PORT # 🎨 Design System - Storybook",
     "commit": "cz #🟢 Commitizen CLI",

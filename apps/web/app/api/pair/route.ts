@@ -2,8 +2,7 @@
  * @api {get} /pair Get pair details by id
  */
 import {NextRequest, NextResponse} from "next/server";
-import {request, gql} from "graphql-request";
-import {SQDIndexerUrl} from "../../../../../libs/web/src/utils/constants";
+import {getServerIndexer} from "@/indexer";
 import {
   SQDIndexerResponses,
   GeckoTerminalQueryResponses,
@@ -13,34 +12,27 @@ import {NotFoundError} from "../../../../../libs/web/src/utils/errors";
 export const fetchPoolById = async (
   poolId: string
 ): Promise<SQDIndexerResponses.Pool> => {
-  const query = gql`
-    query GetPoolById($id: String!) {
-      poolById(id: $id) {
-        id
-        asset0 {
-          id
-        }
-        asset1 {
-          id
-        }
-        creationBlock
-        creationTime
-        creationTx
-      }
-    }
-  `;
+  // Use the indexer abstraction
+  const indexer = getServerIndexer();
+  const pool = await indexer.pools.getById(poolId);
 
-  const {poolById} = await request<{poolById: SQDIndexerResponses.Pool}>({
-    url: SQDIndexerUrl,
-    document: query,
-    variables: {id: poolId},
-  });
-
-  if (!poolById) {
+  if (!pool) {
     throw new NotFoundError(`Pool with ID: ${poolId} not found`);
   }
 
-  return poolById;
+  // Transform to match expected response type
+  return {
+    id: pool.id,
+    asset0: {
+      id: pool.asset0Id,
+    },
+    asset1: {
+      id: pool.asset1Id,
+    },
+    creationBlock: pool.creationBlock,
+    creationTime: pool.creationTime,
+    creationTx: pool.creationTx,
+  };
 };
 
 export const createPairFromPool = (

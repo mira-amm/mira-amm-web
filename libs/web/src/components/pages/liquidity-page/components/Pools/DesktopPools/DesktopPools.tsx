@@ -39,8 +39,8 @@ const PoolCell = ({poolData}: {poolData: PoolData}) => {
     <div className="text-left w-[230px] truncate">
       <div className="flex flex-col gap-2">
         <CoinPair
-          firstCoin={poolId[0].bits}
-          secondCoin={poolId[1].bits}
+          firstCoin={poolId[0]?.bits || poolData.details?.asset0Id || ""}
+          secondCoin={poolId[1]?.bits || poolData.details?.asset1Id || ""}
           isStablePool={isStablePool}
           withPoolDescription
         />
