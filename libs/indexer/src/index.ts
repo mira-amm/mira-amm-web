@@ -5,3 +5,4 @@ export * from "./queries";
 export * from "./providers";
 export * from "./hooks";
 export * from "./mock";
+export {getServerIndexer} from "./server";

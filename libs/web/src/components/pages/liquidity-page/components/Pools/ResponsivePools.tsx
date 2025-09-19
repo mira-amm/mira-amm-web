@@ -47,8 +47,8 @@ function PoolItem({poolData}: {poolData: PoolData}) {
     <div className="gap-5 p-6 border-border-secondary border-[12px] rounded-ten flex flex-col bg-[#F5F5F5]">
       <div className="flex flex-col gap-3">
         <CoinPair
-          firstCoin={poolId[0].bits}
-          secondCoin={poolId[1].bits}
+          firstCoin={poolId[0]?.bits || poolData.details?.asset0Id || ""}
+          secondCoin={poolId[1]?.bits || poolData.details?.asset1Id || ""}
           isStablePool={isStablePool}
           withPoolDescription={true}
         />

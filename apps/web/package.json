@@ -5,6 +5,7 @@
   "scripts": {
     "lint": "next lint",
     "lint:fix": "next lint --fix",
-    "rewards": "tsx scripts/getAllCampaignRewardsForEpoch.ts"
+    "rewards": "tsx scripts/getAllCampaignRewardsForEpoch.ts",
+    "dev:mock": "NEXT_PUBLIC_USE_MOCK_INDEXER=true next dev"
   }
 }

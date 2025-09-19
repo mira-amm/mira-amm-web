@@ -1,1 +1,1 @@
-export {IndexerProvider} from "./IndexerProvider";
+export {IndexerProvider, useIndexer, getIndexer} from "./IndexerProvider";

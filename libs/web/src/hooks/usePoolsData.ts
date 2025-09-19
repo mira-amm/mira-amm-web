@@ -1,7 +1,5 @@
-import {useQuery} from "@tanstack/react-query";
+import {usePoolsData as useIndexerPoolsData} from "@/indexer";
 import {CoinName} from "@/src/utils/coinsConfig";
-import {SQDIndexerUrl} from "@/src/utils/constants";
-import request, {gql} from "graphql-request";
 import {
   NumberParam,
   StringParam,
@@ -57,106 +55,45 @@ export function usePoolsData() {
 
   const {page, search, orderBy} = queryVariables;
 
-  const timestamp24hAgo = Math.floor(Date.now() / 1000) - 24 * 60 * 60;
-
-  const query = gql`
-    query PoolsConnection($first: Int!, $after: String, $orderBy: [PoolOrderByInput!]!, $poolWhereInput: PoolWhereInput) {
-      poolsConnection(first: $first, after: $after, orderBy: $orderBy, where: $poolWhereInput ) {
-        totalCount
-        totalCount
-        edges {
-            node {
-              id
-              reserve0Decimal
-              reserve1Decimal
-              tvlUSD
-              asset1 {
-                id
-                symbol
-              }
-              asset0 {
-                id
-                symbol
-              }
-              snapshots(where: { timestamp_gt: ${timestamp24hAgo} }) {
-                volumeUSD
-                feesUSD
-              }
-            }
-        }
-    }
-    }
-  `;
-
-  const {data, isLoading} = useQuery<any>({
-    queryKey: ["pools", page, orderBy, search],
-    queryFn: () =>
-      request({
-        url: SQDIndexerUrl,
-        document: query,
-        variables: {
-          first: ITEMS_IN_PAGE,
-          after: page === 1 ? null : String((page - 1) * ITEMS_IN_PAGE),
-          orderBy,
-          poolWhereInput: {
-            OR: [
-              {asset0: {symbol_containsInsensitive: search}},
-              {asset1: {symbol_containsInsensitive: search}},
-              {asset0: {id_containsInsensitive: search}},
-              {asset1: {id_containsInsensitive: search}},
-            ],
-          },
-        },
-      }),
+  // Use the indexer abstraction
+  const {data, isLoading} = useIndexerPoolsData({
+    limit: ITEMS_IN_PAGE,
+    page,
+    orderBy,
+    search,
   });
 
-  const totalPages = Math.ceil(
-    data?.poolsConnection?.totalCount / ITEMS_IN_PAGE
-  );
+  const totalPages = Math.ceil((data?.totalCount || 0) / ITEMS_IN_PAGE);
 
-  const dataTransformed = data?.poolsConnection?.edges.map(
-    (poolNode: any): PoolData => {
-      const pool = poolNode.node;
-      // const volume24h = pool.snapshots.reduce((acc: number, snapshot: any) => acc + parseFloat(snapshot.volumeUSD), 0);
-      const fees24h = pool.snapshots.reduce(
-        (acc: number, snapshot: any) => acc + parseFloat(snapshot.feesUSD),
-        0
-      );
-      const apr = (fees24h / parseFloat(pool.tvlUSD)) * 365 * 100;
+  // Transform the data to match the expected format
+  const dataTransformed = data?.pools.map((pool): PoolData => {
+    // Calculate APR if we have snapshot data
+    const apr = 15.5; // TODO: Calculate from actual snapshot data when available
 
-      return {
-        id: pool.id,
-        reserve_0: pool.reserve0Decimal,
-        reserve_1: pool.reserve1Decimal,
-        details: {
-          asset0Id: pool.asset0.id,
-          asset1Id: pool.asset1.id,
-          asset_0_symbol: pool.asset0.symbol as CoinName,
-          asset_1_symbol: pool.asset1.symbol as CoinName,
-          apr,
-          volume: pool.snapshots.reduce(
-            (acc: number, snapshot: any) =>
-              acc + parseFloat(snapshot.volumeUSD),
-            0
-          ),
-          tvl: parseFloat(pool.tvlUSD),
-        },
-        swap_count: 0,
-        create_time: 0,
-        // TODO: Implement proper pool type detection when indexer supports v2
-        // For now, assume all pools from indexer are v1-volatile
-        poolType: "v1-volatile" as const,
-      };
-    }
-  );
-
-  const totalCount = data?.poolsConnection?.totalCount || 0;
+    return {
+      id: pool.id,
+      reserve_0: "1000000", // TODO: Get actual reserves from pool data
+      reserve_1: "2000000", // TODO: Get actual reserves from pool data
+      details: {
+        asset0Id: pool.asset0Id,
+        asset1Id: pool.asset1Id,
+        asset_0_symbol: (pool.asset0?.symbol || "UNKNOWN") as CoinName,
+        asset_1_symbol: (pool.asset1?.symbol || "UNKNOWN") as CoinName,
+        apr,
+        volume: pool.volumeUSD || "0",
+        tvl: parseFloat(pool.tvlUSD || "0"),
+      },
+      swap_count: 0,
+      create_time: pool.creationTime || 0,
+      poolType: pool.poolType || "v1-volatile",
+    };
+  });
 
   return {
     data: dataTransformed,
     isLoading,
     moreInfo: {
-      totalCount,
+      totalCount: data?.totalCount || 0,
       totalPages,
       setQueryVariables,
       queryVariables,

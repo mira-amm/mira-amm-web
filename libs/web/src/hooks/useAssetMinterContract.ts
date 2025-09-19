@@ -8,8 +8,16 @@ export const useAssetMinterContract = (
 ): {contractId: string | null; subId: string | null; isLoading: boolean} => {
   const {assets, isLoading: assetListLoading} = useAssetList();
 
-  if (assetId && assetId.length !== 66) {
-    throw new Error("Invalid assetId");
+  // Handle undefined or null assetId gracefully
+  if (!assetId) {
+    return {contractId: null, subId: null, isLoading: assetListLoading};
+  }
+
+  if (assetId.length !== 66) {
+    console.warn(
+      `Invalid assetId length: ${assetId.length} for assetId: ${assetId}`
+    );
+    return {contractId: null, subId: null, isLoading: assetListLoading};
   }
 
   const {data, isLoading} = useQuery({
