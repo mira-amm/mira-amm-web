@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState} from "react";
 import Link from "next/link";
 import {Button} from "@/meshwave-ui/Button";
 import {PoolId} from "mira-dex-ts";
@@ -17,6 +17,7 @@ import SimulatedDistribution from "../../../bin-liquidity/components/simulated-d
 import {PoolType} from "@/src/components/common/PoolTypeIndicator";
 
 import {getPoolNavigationUrl} from "@/src/utils/poolNavigation";
+import {cn} from "@/src/utils/cn";
 
 const MOCK = {
   liquidityShape: "curve",
@@ -39,6 +40,8 @@ export interface AssetData {
   } & {isLoading: boolean};
   reserve?: number;
 }
+
+const TimeData = ["24H", "7D", "30D"];
 
 export function DesktopPositionView({
   pool,
@@ -78,6 +81,12 @@ export function DesktopPositionView({
     totalAsset0Amount,
     totalAsset1Amount,
   } = MOCK;
+
+  const [selectedTime, setSelectedtime] = useState(TimeData[1]);
+
+  const handleButtonClick = (value: string) => {
+    setSelectedtime(value);
+  };
 
   return (
     <section className="flex flex-col gap-3 desktopOnly">
@@ -187,6 +196,38 @@ export function DesktopPositionView({
         />
       </div>
 
+      <div className="w-full p-4 rounded-xl flex flex-col gap-4 bg-background-grey-dark border-border-secondary border-[12px] dark:border-0 dark:bg-background-grey-dark">
+        <div className="flex justify-between items-center mb-4 border-b border-background-grey-light pb-4">
+          <div className="flex flex-col">
+            <div className="text-content-primary text-base leading-[19px]">
+              Fees earned
+            </div>
+            <div className="text-content-tertiary text-sm">Last refreshed on Jun 28 2025, 2:00 PM</div>
+          </div>
+          <div className="flex items-center space-x-4">
+            <TimeDisplay
+              timeData={TimeData}
+              selectedTime={selectedTime}
+              handleSetSelectedTime={handleButtonClick}
+            />
+          </div>
+        </div>
+
+        <DepositAmount assetId={pool[0].bits} amount={assetA.amount} />
+        <DepositAmount assetId={pool[1].bits} amount={assetB.amount} />
+        {formattedTvlValue && (
+          <div className="w-full h-0.5 bg-content-grey-dark dark:bg-white opacity-10" />
+        )}
+
+        <TotalDeposit
+          title="Total in this period"
+          assetAId={pool[0].bits}
+          assetAmount={assetA.amount}
+          assetBId={pool[0].bits}
+          assetBmount={assetB.amount}
+        />
+      </div>
+
       <PromoBlock
         icon={<PromoSparkle />}
         title="Learn about providing liquidity"
@@ -199,11 +240,13 @@ export function DesktopPositionView({
 }
 
 const TotalDeposit = ({
+  title = "Deposit balance:",
   assetAId,
   assetAmount,
   assetBId,
   assetBmount,
 }: {
+  title?: string;
   assetAId: string;
   assetAmount: string;
   assetBId: string;
@@ -219,9 +262,37 @@ const TotalDeposit = ({
   return (
     <div className="flex flex-col gap-[10px]">
       <div className="flex items-center justify-between text-content-tertiary">
-        <p>Deposit balance:</p>
+        <p>{title}</p>
         <p className="font-alt">{usdValue}</p>
       </div>
+    </div>
+  );
+};
+
+const TimeDisplay = ({
+  timeData,
+  selectedTime,
+  handleSetSelectedTime,
+}: {
+  timeData: string[];
+  selectedTime: string;
+  handleSetSelectedTime: (value: string) => void;
+}) => {
+  return (
+    <div className="flex flex-1">
+      {timeData.map((value) => (
+        <button
+          key={value}
+          className={cn(
+            "w-full h-10 px-2 font-alt first:rounded-l-lg last:rounded-r-lg text-content-dimmed-light border bg-background-grey-dark hover:border dark:hover:text-content-primary dark:hover:border-accent-primary hover:border-black",
+            selectedTime === value &&
+              "dark:border-accent-primary border border-black bg-black dark:bg-background-grey-dark text-white"
+          )}
+          onClick={() => handleSetSelectedTime(value)}
+        >
+          {value}
+        </button>
+      ))}
     </div>
   );
 };
