@@ -26,7 +26,7 @@ const poolTypeConfig = {
   },
   "v1-stable": {
     label: "Stable",
-    shortLabel: "V1S",
+    shortLabel: "V1",
     fee: "0.05%",
     description: "Optimized for stable asset pairs with lower fees",
   },
@@ -112,7 +112,7 @@ const CoinPair = ({
               {config.shortLabel}
             </span>
             <span className="rounded-lg bg-background-secondary px-2 py-0.5 text-content-tertiary text-xs font-medium">
-              {config.label}
+              {isStablePool ? "Stable" : "Volatile"}
             </span>
             <span className="rounded-lg bg-background-secondary px-2 py-0.5 text-content-tertiary text-xs font-medium font-alt">
               {feeText}
