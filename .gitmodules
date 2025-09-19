@@ -1,0 +1,3 @@
+[submodule "apps/indexer"]
+	path = apps/indexer
+	url = https://github.com/mira-amm/mira-sqd-indexer.git
