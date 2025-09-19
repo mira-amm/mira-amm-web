@@ -284,7 +284,7 @@ const TimeDisplay = ({
         <button
           key={value}
           className={cn(
-            "w-full h-10 px-2 font-alt first:rounded-l-lg last:rounded-r-lg text-content-dimmed-light border bg-background-grey-dark hover:border dark:hover:text-content-primary dark:hover:border-accent-primary hover:border-black",
+            "w-full h-10 px-2 font-alt first:rounded-l-lg cursor-pointer last:rounded-r-lg text-content-dimmed-light border bg-background-grey-dark hover:border dark:hover:text-content-primary dark:hover:border-accent-primary hover:border-black",
             selectedTime === value &&
               "dark:border-accent-primary border border-black bg-black dark:bg-background-grey-dark text-white"
           )}
