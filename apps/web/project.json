@@ -12,6 +12,24 @@
       "options": {
         "cwd": "apps/web"
       }
+    },
+    "dev:local": {
+      "executor": "nx:run-commands",
+      "options": {
+        "commands": ["nx dev indexer", "next dev"],
+        "cwd": "apps/web",
+        "env": {
+          "NEXT_PUBLIC_NETWORK_URL": "http://localhost:4000/v1/graphql"
+        },
+        "parallel": true
+      },
+      "configurations": {
+        "production": {
+          "env": {
+            "NODE_ENV": "production"
+          }
+        }
+      }
     }
   }
 }

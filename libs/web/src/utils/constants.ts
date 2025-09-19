@@ -30,7 +30,9 @@ export const BlogLink =
 
 // TODO: Use env variables for values below to separate dev/prod | testnet/mainnet
 export const ValidNetworkChainId = CHAIN_IDS.fuel.mainnet;
-export const NetworkUrl: string = "https://mainnet.fuel.network/v1/graphql";
+export const NetworkUrl: string =
+  process.env.NEXT_PUBLIC_NETWORK_URL ||
+  "https://mainnet.fuel.network/v1/graphql";
 
 export const SQDIndexerUrl =
   "https://mira-dex.squids.live/mira-indexer@v4/api/graphql" as const;

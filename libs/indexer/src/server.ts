@@ -21,5 +21,14 @@ export function getServerIndexer(): ISubsquidIndexer {
     return createMockIndexer();
   }
 
+  // Check for local development mode
+  const networkUrl = process.env.NEXT_PUBLIC_NETWORK_URL;
+  if (networkUrl && networkUrl.includes("localhost:4000")) {
+    console.log(
+      "🔧 Using Local Indexer (server-side): http://localhost:4350/graphql"
+    );
+    return new SubsquidIndexer("http://localhost:4350/graphql");
+  }
+
   return new SubsquidIndexer();
 }
