@@ -30,7 +30,7 @@ export default function Page() {
   const showPreview = Boolean(previewData);
 
   return (
-    <div className="flex flex-col gap-4 max-w-lg lg:min-w-lg mx-auto w-full p-4">
+    <div className="flex flex-col gap-4 max-w-[610px] lg:min-w-lg mx-auto w-full p-4">
       <button
         onClick={handleBackClick}
         className="flex items-center text-base leading-5 text-content-grey hover:text-content-primary cursor-pointer"
@@ -39,7 +39,7 @@ export default function Page() {
         Back
       </button>
 
-      <section className="flex flex-col gap-6 p-4 rounded-ten w-full max-w-lg mx-auto bg-background-grey-dark border-border-secondary border-[12px] dark:border-0 z-[5]">
+      <section className="flex flex-col gap-6 p-4 rounded-ten w-full max-w-[610px] mx-auto bg-background-grey-dark border-border-secondary border-[12px] dark:border-0 z-[5]">
         <div className="flex items-center justify-between border-b border-background-grey-light pb-4 text-content-grey text-lg leading-5 gap-2">
           {isConnected && (
             <p className="flex-1 text-content-primary">Create Pool</p>
