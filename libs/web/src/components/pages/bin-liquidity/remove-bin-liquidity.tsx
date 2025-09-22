@@ -4,6 +4,7 @@ import {ChevronLeft} from "lucide-react";
 import {useState, useMemo} from "react";
 import {BN} from "fuels";
 import {Button} from "@/meshwave-ui/Button";
+import {Alert, AlertDescription} from "@/meshwave-ui/alert";
 import PriceSummary from "./components/price-summary";
 import {type PoolTypeOption} from "../../common/PoolTypeToggle/PoolTypeToggle";
 import {useUserBinPositionsV2, useRemoveAllBinsV2} from "@/src/hooks";
@@ -75,12 +76,15 @@ const RemoveBinLiquidity = ({
         <div className="w-full p-4 pb-10 rounded-[12px] flex flex-col gap-6 bg-background-grey-dark border-border-secondary border-[11px] dark:border-0 dark:bg-background-grey-dark">
           <p className="flex items-center gap-x-1 text-lg text-content-primary leading-[19px] border-b border-content-grey-dark/40 pb-3">
             Remove Liquidity
-            <Info
-              tooltipText={
-                "This action will remove all your liquidity in this pool. If you want to rebalance the pool, you'll need to add liquidity back into the pool after this action."
-              }
-            />
           </p>
+
+          <Alert>
+            <AlertDescription>
+              This action will remove all your liquidity in this pool. If you
+              want to rebalance the pool, you'll need to add liquidity back into
+              the pool after this action.
+            </AlertDescription>
+          </Alert>
 
           <PriceSummary
             assetA={assetA}
