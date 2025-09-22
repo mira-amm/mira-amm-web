@@ -47,7 +47,7 @@ function useDebounce<T>(value: T, delay: number) {
  * @param value - The raw input string from the user
  * @returns A sanitized string safe to set as input value
  */
-function sanitizeNumericInput(value: string): string {
+export function sanitizeNumericInput(value: string): string {
   return value
     .replace(/[^0-9.]/g, "") // remove anything that's not a digit or dot
     .replace(/(\..*?)\./g, "$1"); // keep only the first dot
