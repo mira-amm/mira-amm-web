@@ -3,9 +3,9 @@ name: 🧪 Unit & E2E Tests
 
 on:
   push:
-    branches: ["*"]
+    branches: ['main']
   pull_request:
-    branches: ["*"]
+    branches: ['*']
 
 jobs:
   e2e:
