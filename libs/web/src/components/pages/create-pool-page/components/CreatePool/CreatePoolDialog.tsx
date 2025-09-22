@@ -1,8 +1,15 @@
-import {Dispatch, SetStateAction, useCallback, useRef, useState} from "react";
+import {
+  Dispatch,
+  SetStateAction,
+  useCallback,
+  useRef,
+  useState,
+  useMemo,
+} from "react";
 import {B256Address, bn} from "fuels";
 import {useConnectUI, useIsConnected} from "@fuels/react";
 import {ArrowLeftRight, Sparkle} from "lucide-react";
-import {Button} from "@/meshwave-ui/Button";
+import {Button, ButtonGroup} from "@/meshwave-ui/Button";
 
 import {clsx} from "clsx";
 import Link from "next/link";
@@ -36,6 +43,8 @@ import {cn} from "@/src/utils/cn";
 import {getIsRebrandEnabled} from "@/src/utils/isRebrandEnabled";
 import {getUiPoolTypeFromPoolId} from "@/src/utils/poolTypeDetection";
 import {Input} from "@/meshwave-ui/input";
+import {Alert, AlertDescription} from "@/meshwave-ui/alert";
+import {sanitizeNumericInput} from "../../../add-liquidity-page/components/AddLiquidity/V2LiquidityConfig";
 
 export function CreatePoolDialog({
   setPreviewData,
@@ -69,6 +78,7 @@ export function CreatePoolDialog({
     binStep: 25, // Default 25 basis points (0.25%)
     baseFactor: 10000, // Default base factor
   });
+  const [activePriceInput, setActivePriceInput] = useState("");
 
   const activeAssetForAssetSelector = useRef<string | null>(null);
 
@@ -249,6 +259,35 @@ export function CreatePoolDialog({
 
   const rebrandEnabled = getIsRebrandEnabled();
 
+  // Derived labels and market price for concentrated pool UI
+  const baseIsFirst = activeAssetId ? activeAssetId === firstAssetId : true;
+  const baseSymbol = baseIsFirst
+    ? firstAssetMetadata.symbol
+    : secondAssetMetadata.symbol;
+  const quoteSymbol = baseIsFirst
+    ? secondAssetMetadata.symbol
+    : firstAssetMetadata.symbol;
+  const marketPrice = useMemo(() => {
+    const p1 = firstAssetPrice.price;
+    const p2 = secondAssetPrice.price;
+    if (typeof p1 !== "number" || typeof p2 !== "number") return null;
+    if (!Number.isFinite(p1) || !Number.isFinite(p2) || p1 <= 0 || p2 <= 0) {
+      return null;
+    }
+    return baseIsFirst ? p1 / p2 : p2 / p1;
+  }, [firstAssetPrice.price, secondAssetPrice.price, baseIsFirst]);
+  const activePriceNumber = parseFloat(activePriceInput.replace(",", "."));
+  const canWarn =
+    Number.isFinite(activePriceNumber) &&
+    typeof marketPrice === "number" &&
+    marketPrice > 0 &&
+    activePriceNumber > 0;
+  const priceDeviation = canWarn
+    ? (Math.abs(activePriceNumber - (marketPrice as number)) /
+        (marketPrice as number)) *
+      100
+    : undefined;
+
   return (
     <>
       <div className="flex flex-col gap-4">
@@ -326,61 +365,6 @@ export function CreatePoolDialog({
         </div>
       </div>
 
-      {poolType === "concentrated" && (
-        <div className="flex flex-col gap-4">
-          <p className="text-base text-content-primary">Pool Configuration</p>
-          <div className="flex flex-col gap-3 p-3 rounded-md bg-background-secondary">
-            <div className="flex flex-col gap-2">
-              <label className="text-sm text-content-primary">
-                Bin Step (basis points)
-              </label>
-              <Input
-                type="number"
-                min="1"
-                max="100"
-                value={v2Config.binStep}
-                onChange={(e) =>
-                  setV2Config((prev) => ({
-                    ...prev,
-                    binStep: parseInt(e.target.value) || 25,
-                  }))
-                }
-                placeholder="25"
-                className="font-alt"
-              />
-              <p className="text-xs text-content-dimmed-light">
-                Controls the price step between bins. Lower values = more
-                granular price ranges.
-              </p>
-            </div>
-
-            <div className="flex flex-col gap-2">
-              <label className="text-sm text-content-primary">
-                Base Factor
-              </label>
-              <Input
-                type="number"
-                min="5000"
-                max="20000"
-                value={v2Config.baseFactor}
-                onChange={(e) =>
-                  setV2Config((prev) => ({
-                    ...prev,
-                    baseFactor: parseInt(e.target.value) || 10000,
-                  }))
-                }
-                placeholder="10000"
-                className="font-alt"
-              />
-              <p className="text-xs text-content-dimmed-light">
-                Determines the geometric progression of bin prices. Default:
-                10000.
-              </p>
-            </div>
-          </div>
-        </div>
-      )}
-
       <div className="flex flex-col gap-4">
         <p className="text-base text-content-primary">Deposit amount</p>
         <div className="flex flex-col gap-3">
@@ -404,6 +388,84 @@ export function CreatePoolDialog({
           />
         </div>
       </div>
+
+      {poolType === "concentrated" && (
+        <div className="flex flex-col gap-4">
+          <p className="text-base">Pool configuration</p>
+          <ButtonGroup
+            items={[
+              {value: 10, label: "0.1%"},
+              {value: 25, label: "0.25%"},
+              {value: 50, label: "0.5%"},
+              {value: 100, label: "1%"},
+            ]}
+            value={v2Config.binStep}
+            onChange={(step) =>
+              setV2Config((prev) => ({...prev, binStep: step}))
+            }
+            buttonClassName="h-full px-3 py-2 min-w-0"
+            renderItem={(item) => (
+              <div className="flex flex-col items-center justify-center gap-1 p-2 min-w-0">
+                <span className="text-sm leading-none">{item.label}</span>
+                <span className="text-xs whitespace-nowrap leading-none">
+                  Base fee: 0.25%
+                </span>
+              </div>
+            )}
+          />
+
+          {/* Active price input */}
+          <div className="flex flex-col gap-2">
+            <div className="flex items-center justify-between text-sm">
+              <span>Enter active price</span>
+              {Boolean(firstAssetId && secondAssetId) && (
+                <div
+                  className="flex items-center gap-2 cursor-pointer"
+                  onClick={handleExchangeRateSwap}
+                >
+                  <span className="text-content-tertiary text-xs">
+                    {`Current price: ${exchangeRate ?? "—"}`}
+                  </span>
+                  <ArrowLeftRight className="w-4 h-4 text-content-tertiary" />
+                </div>
+              )}
+            </div>
+
+            <div className="relative">
+              <Input
+                type="text"
+                inputMode="decimal"
+                pattern="[0-9]*[.]?[0-9]*"
+                placeholder="1200"
+                value={activePriceInput}
+                onChange={(e) =>
+                  setActivePriceInput(sanitizeNumericInput(e.target.value))
+                }
+                className="font-alt pr-28"
+              />
+              <span className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 text-sm">
+                {baseSymbol && quoteSymbol
+                  ? `${baseSymbol} per ${quoteSymbol}`
+                  : "—"}
+              </span>
+            </div>
+
+            {Boolean(canWarn) && (
+              <Alert variant="warning">
+                <AlertDescription>
+                  The active price is set to{" "}
+                  {activePriceNumber.toLocaleString()} {baseSymbol} per{" "}
+                  {quoteSymbol}, while the current market price is{" "}
+                  {Number(marketPrice).toLocaleString()} {baseSymbol} per{" "}
+                  {quoteSymbol}. This is a deviation of{" "}
+                  {(priceDeviation ?? 0).toFixed(2)}%. Please review the price
+                  settings to ensure accuracy.
+                </AlertDescription>
+              </Alert>
+            )}
+          </div>
+        </div>
+      )}
 
       {poolExists && (
         <div className="flex items-center gap-2 p-3 rounded-lg bg-background-primary">
@@ -429,10 +491,12 @@ export function CreatePoolDialog({
             <p className="text-sm ">{exchangeRate}</p>
             <ArrowLeftRight className="w-4 h-4" />
           </div>
-          <p className="text-sm text-[#ffb800] leading-[17px]">
-            This is the price of the pool on inception. Always double check
-            before deploying a pool.
-          </p>
+          <Alert variant="warning">
+            <AlertDescription>
+              This is the price of the pool on inception. Always double check
+              before deploying a pool.
+            </AlertDescription>
+          </Alert>
         </div>
       )}
       {!isConnected ? (
