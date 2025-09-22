@@ -57,6 +57,15 @@
   --color-accent-secondary-1: var(--accent-secondary-1);
   --color-accent-secondary-2: var(--accent-secondary-2);
 
+  --color-mc-blue-1: #c5d8fe;
+  --color-mc-blue-3: #2c3c62;
+ 
+  --color-mc-yellow-1: #FBE9B9;
+  --color-mc-yellow-3: #55492E;
+ 
+  --color-mc-red-1: #FBB9C0;
+  --color-mc-red-3: #552533;
+
   --radius-ten: 0.625rem;
 }
 
