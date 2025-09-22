@@ -17,8 +17,6 @@
       "@/*": ["libs/web/*"],
       "@/aceternity/*": ["libs/external/aceternity-ui/*"],
       "@/api/*": ["libs/api/*"],
-      "@/db": ["libs/db/index.ts"],
-      "@/db/*": ["libs/db/*"],
       "@/docs": ["libs/docs/index.ts"],
       "@/engine": ["libs/engine/index.ts"],
       "@/engine/*": ["libs/engine/*"],
@@ -32,7 +30,6 @@
       "@/shared/*": ["libs/shared/*"],
       "@/web": ["libs/web/index.ts"],
       "@/web/*": ["libs/web/*"],
-      "@payload-config": ["apps/admin/src/payload.config.ts"],
       "mira-dex-ts": ["libs/ts-sdk/src/index.ts"]
     }
   },

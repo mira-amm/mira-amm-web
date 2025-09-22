@@ -27,8 +27,6 @@
     #                      PORTS
     #====================================================
     APP_DEV_SERVER_PORT = "3000";
-    ADMIN_DEV_SERVER_PORT = "8000";
-    MICROGAME_DEV_SERVER_PORT = "4200";
     API_SERVER_PORT = "8080";
     STORYBOOK_DEV_SERVER_PORT = "6006";
     DOCS_DEV_SERVER_PORT = "4000";
@@ -43,8 +41,6 @@
     LOCALHOST_STRING = "http://localhost";
 
     APP_LOCAL_URL = "http://localhost:3000";
-    ADMIN_LOCAL_URL = "http://localhost:8000";
-    MICROGAME_LOCAL_URL = "http://localhost:4200";
     API_SERVER_LOCAL_URL = "http://localhost:8080";
     STORYBOOK_LOCAL_URL = "http://localhost:6006";
     DOCS_LOCAL_URL = "http://localhost:4000";
@@ -55,7 +51,7 @@
     SENTIO_API_URL = "https://app.sentio.xyz/api/v1/analytics/fuellabs/mira-mainnet/sql/execute";
     PAYLOAD_SECRET = "YOUR_SECRET_HERE";
 
-    CORS_WHITELIST_ORIGINS = "http://localhost:4200,http://localhost:8000,https://microgame.mira.ly,https://admin.mira.ly,https://microchain.systems,https://x.com,https://api.x.com";
-    CSRF_WHITELIST_ORIGINS = "http://localhost:4200,http://localhost:8000,https://microgame.mira.ly,https://admin.mira.ly,https://microchain.systems,https://x.com,https://api.x.com";
+    CORS_WHITELIST_ORIGINS = "http://localhost:4200,http://localhost:8000,https://microchain.systems,https://x.com,https://api.x.com";
+    CSRF_WHITELIST_ORIGINS = "http://localhost:4200,http://localhost:8000,https://microchain.systems,https://x.com,https://api.x.com";
   };
 }

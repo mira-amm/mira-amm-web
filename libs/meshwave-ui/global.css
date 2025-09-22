@@ -8,7 +8,6 @@
 @source '../shared/ui/**/*.{ts,tsx}';
 @source '../../apps/docs{src,components,app,content}/**/*!(*.stories|*.spec).{ts,tsx,md,mdx,html}';
 @source '../../apps/docs/content/docs/**/*.{md,mdx}';
-@source '../../apps/admin/**/*.{ts,tsx}';
 
 /* @plugin "tw-animate-css"; */
 /* @plugin "tailwindcss-animate"; */
