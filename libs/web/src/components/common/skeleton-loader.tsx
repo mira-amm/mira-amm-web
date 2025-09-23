@@ -17,7 +17,7 @@ export function SkeletonLoader({
     <div className="flex flex-col gap-4">
       {Array.from({length: count}).map((_, index) => (
         <div key={index} className="flex items-center gap-4 animate-pulse">
-          <div className="w-10 h-10 rounded-full bg-background-secondary dark:bg-background-grey-dark" />
+          <div className="w-10 h-10 rounded-full bg-background-secondary" />
           <div className="flex-1 flex flex-col gap-2">
             {Array.from({length: textLines}).map((_, i) => {
               const widths = ["w-4/5", "w-3/5", "w-2/3"];
@@ -25,7 +25,7 @@ export function SkeletonLoader({
               return (
                 <div
                   key={i}
-                  className={`${width} h-3 rounded bg-gray-600/20 dark:bg-background-grey-dark`}
+                  className={`${width} h-3 rounded bg-gray-600/20`}
                 />
               );
             })}

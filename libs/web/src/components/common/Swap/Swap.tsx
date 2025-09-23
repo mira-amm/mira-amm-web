@@ -725,7 +725,7 @@ export function Swap({isWidget}: {isWidget?: boolean}) {
 
         <div
           className={cn(
-            "flex flex-col gap-4 p-5 pb-[18px] rounded-ten bg-background-grey-dark border-border-secondary border-[12px] dark:border-0 dark:bg-background-grey-dark",
+            "flex flex-col gap-4 p-5 pb-[18px] rounded-ten bg-background-grey-dark border-border-secondary border-[12px]",
             swapPending && "z-[5]"
           )}
         >

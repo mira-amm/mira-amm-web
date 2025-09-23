@@ -70,7 +70,7 @@ export function CoinsListModal({
             <div
               key={asset.assetId}
               onClick={handleSelect(asset.assetId)}
-              className="p-2 px-4 rounded-lg hover:bg-background-grey-dark cursor-pointer"
+              className="p-2 px-4 rounded-lg hover:bg-background-grey-dark dark:hover:bg-background-grey-light cursor-pointer"
             >
               <CoinListItem assetData={asset} />
             </div>

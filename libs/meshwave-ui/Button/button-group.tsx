@@ -44,11 +44,11 @@ export function ButtonGroup<T extends string | number>({
             className={cn(
               fullWidth && "w-full",
               "h-10 px-2 font-alt border bg-background-grey-dark text-content-dimmed-light cursor-pointer",
-              "hover:border hover:border-black dark:hover:text-content-primary dark:hover:border-accent-primary",
+              "hover:border hover:border-black dark:border-light-theme-5 dark:hover:text-content-primary dark:hover:border-light-theme-5",
               isFirst && "rounded-l-lg",
               isLast && "rounded-r-lg",
               selected &&
-                "border border-black dark:border-accent-primary bg-black dark:bg-background-grey-dark text-white",
+                "border border-black dark:border-light-theme-5 bg-black dark:bg-background-grey-light text-white",
               item.disabled && "opacity-50 cursor-not-allowed",
               buttonClassName
             )}

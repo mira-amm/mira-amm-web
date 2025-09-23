@@ -35,7 +35,7 @@ function DataTable<T>({
 
   if (!data || data.length === 0) {
     return (
-      <div className="flex flex-col items-center gap-2 rounded-ten px-4 py-7 bg-background-grey-dark border-border-secondary border-[12px] dark:border-0 dark:bg-background-grey-dark">
+      <div className="flex flex-col items-center gap-2 rounded-ten px-4 py-7 bg-background-grey-dark border-border-secondary border-[12px]">
         <p className="text-content-tertiary">{emptyMessage}</p>
       </div>
     );
@@ -44,7 +44,7 @@ function DataTable<T>({
   return (
     <div
       className={cn(
-        "flex flex-col gap-4 bg-background-grey-dark border-border-secondary border-[12px] dark:border-0 dark:bg-background-grey-dark rounded-ten p-4 overflow-hidden",
+        "flex flex-col gap-4 bg-background-grey-dark border-border-secondary border-[12px] bg-background-grey-dark rounded-ten p-4 overflow-hidden",
         className
       )}
     >
@@ -139,7 +139,7 @@ function DataTableLoader<T>({
   count?: number;
 }) {
   return (
-    <div className="flex flex-col gap-4 border-border-secondary border-[12px] dark:border-0 bg-background-grey-dark dark:bg-gray-800 rounded-ten p-4 w-full">
+    <div className="flex flex-col gap-4 border-border-secondary border-[12px] bg-background-secondary rounded-ten p-4 w-full">
       {/* Header loader */}
       <div className="hidden md:grid grid-cols-4 gap-4 px-2 pb-4 border-b border-background-grey-light text-gray-400 text-sm font-normal">
         {columns.map((column) => (
@@ -151,7 +151,7 @@ function DataTableLoader<T>({
               column.align === "left" && "text-left"
             )}
           >
-            <div className="bg-gray-300 dark:bg-gray-600 animate-pulse h-3 w-[75%]" />
+            <div className="bg-gray-300 dark:bg-background-grey-dark animate-pulse h-3 w-[75%]" />
           </div>
         ))}
       </div>
@@ -160,7 +160,7 @@ function DataTableLoader<T>({
       {Array.from({length: count}, (_, i) => (
         <div
           key={i}
-          className="grid grid-cols-1 sm:grid-cols-3 md:grid-cols-4 gap-4 items-center py-4 dark:hover:bg-gray-700 transition rounded-lg px-2"
+          className="grid grid-cols-1 sm:grid-cols-3 md:grid-cols-4 gap-4 items-center py-4 transition rounded-lg px-2"
         >
           {columns.map((column) => (
             <div
@@ -171,7 +171,7 @@ function DataTableLoader<T>({
                 column.align === "left" && "text-left"
               )}
             >
-              <div className="bg-gray-300 dark:bg-gray-600 animate-pulse w-[75%] h-4 mx-auto" />
+              <div className="bg-gray-300 dark:bg-background-grey-dark animate-pulse w-[75%] h-4 mx-auto" />
             </div>
           ))}
         </div>

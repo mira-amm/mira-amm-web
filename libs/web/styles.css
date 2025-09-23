@@ -49,42 +49,70 @@
   --color-old-mira-promo-bg: #507ff7;
   --color-mc-blue: #507ff7;
 
-  --color-accent-primary: var(--accent-primary);
   --color-accent-primary-1: var(--accent-primary-1);
   --color-accent-primary-2: var(--accent-primary-2);
 
-  --color-accent-secondary: var(--accent-secondary);
   --color-accent-secondary-1: var(--accent-secondary-1);
   --color-accent-secondary-2: var(--accent-secondary-2);
 
+  --color-mc-black: #0e111e;
+  --color-mc-white: #fdfdfd;
+  --color-mc-grey-1: #f5f5f5;
+  --color-mc-grey-2: #ecedf0;
+  --color-mc-grey-3: #e0e2e7;
+  --color-mc-grey-4: #8a8b8e;
+
   --color-mc-blue-1: #c5d8fe;
   --color-mc-blue-3: #2c3c62;
- 
-  --color-mc-yellow-1: #FBE9B9;
-  --color-mc-yellow-3: #55492E;
- 
-  --color-mc-red-1: #FBB9C0;
+
+  --color-mc-yellow-1: #fbe9b9;
+  --color-mc-yellow-3: #55492e;
+
+  --color-mc-red-1: #fbb9c0;
   --color-mc-red-3: #552533;
+
+  --color-light-theme-1: var(--light-theme-1);
+  --color-light-theme-2: var(--light-theme-2);
+  --color-light-theme-3: var(--light-theme-3);
+  --color-light-theme-4: var(--light-theme-4);
+  --color-light-theme-5: var(--light-theme-5);
 
   --radius-ten: 0.625rem;
 }
 
 @layer base {
   :root {
-    --page-background: #fdfdfd;
-    --background-primary: #0e111e;
-    --background-secondary: #ecedf0;
+    --color-mc-black: #0e111e;
+    --color-mc-white: #fdfdfd;
+    --color-mc-grey-1: #f5f5f5;
+    --color-mc-grey-2: #ecedf0;
+    --color-mc-grey-3: #e0e2e7;
+    --color-mc-grey-4: #8a8b8e;
+
+    --color-mc-blue: #507ff7;
+    --color-mc-blue-1: #c5d8fe;
+    --color-mc-blue-3: #2c3c62;
+
+    --color-mc-yellow-1: #fbe9b9;
+    --color-mc-yellow-3: #55492e;
+
+    --color-mc-red-1: #fbb9c0;
+    --color-mc-red-3: #552533;
+
+    --page-background: var(--color-mc-white);
+    --background-primary: var(--color-mc-black);
+    --background-secondary: var(--color-mc-grey-2);
     --background-grey-darker: rgba(255, 255, 255, 0.05);
-    --background-grey-dark: #f5f5f5;
-    --background-grey-light: #e0e2e7;
-    --background-tertiary: #ecedf0;
+    --background-grey-dark: var(--color-mc-grey-1);
+    --background-grey-light: var(--color-mc-grey-3);
+    --background-tertiary: var(--color-mc-grey-2);
 
-    --border-secondary: #ecedf0;
+    --border-secondary: var(--color-mc-grey-2);
 
-    --content-primary: #0e111e;
-    --content-secondary: #0e111e;
-    --content-tertiary: #8a8b8e;
-    --content-dimmed-light: #8a8b8e;
+    --content-primary: var(--color-mc-black);
+    --content-secondary: var(--color-mc-black);
+    --content-tertiary: var(--color-mc-grey-4);
+    --content-dimmed-light: var(--color-mc-grey-4);
     --content-dimmed-dark: rgba(255, 255, 255, 0.4);
     --content-grey: #9d9d9d;
     --content-grey-dark: #6d6d6d;
@@ -111,6 +139,12 @@
     --font-jetbrains-mono: 'JetBrains Mono', monospace;
     --font-ibm-plex-mono: 'IBM Plex Mono', monospace;
     --font-vt323: 'VT323', monospace;
+
+    --light-theme-1: var(--color-mc-black);
+    --light-theme-2: var(--color-mc-grey-1);
+    --light-theme-3: var(--color-mc-grey-2);
+    --light-theme-4: var(--color-mc-grey-3);
+    --light-theme-5: var(--color-mc-grey-4);
   }
 
   /* Font variation settings for custom fonts */
@@ -130,11 +164,13 @@
   }
 
   .dark {
-    --background-primary: #0a0b12;
-    --background-secondary: #121318;
+    --background-primary: var(--color-mc-black);
+    --background-secondary: #41424a;
     --background-grey-darker: rgba(255, 255, 255, 0.03);
-    --background-grey-dark: rgba(255, 255, 255, 0.08);
+    --background-grey-dark: #33343a;
     --background-grey-light: rgba(255, 255, 255, 0.15);
+
+    --border-secondary: #41424a;
 
     --content-primary: #f9fafb;
     --content-secondary: rgba(255, 255, 255, 0.85);
@@ -149,11 +185,17 @@
     --accent-primary-1: #19bd82;
     --accent-primary-2: #075339;
 
-    --accent-secondary: rgba(174, 237, 13, 0.3);
+    --accent-secondary: #19bd82;
     --accent-dimmed: rgba(174, 237, 13, 0.08);
     --accent-warning: #e43d4b;
     --accent-alert: #ffd700;
     --content-positive: #4ade80;
+
+    --light-theme-1: var(--color-mc-white);
+    --light-theme-2: #33343a;
+    --light-theme-3: #41424a;
+    --light-theme-4: #747476;
+    --light-theme-5: #9a9a9b;
   }
 
   html,
@@ -241,6 +283,9 @@
   }
 }
 
+/* ----------------------- */
+/* Extra visuals & effects */
+/* ----------------------- */
 .rainbowContainer {
   position: fixed;
   aspect-ratio: 2 / 1;
@@ -424,11 +469,6 @@
     transform: translateX(-50%);
   }
 }
-
-/* added this here becuase it wasn't working in tailwind */
-/* .points-gradient {
-  background: linear-gradient(170deg, #262f5f 35%, #c41cff 100%);
-} */
 
 /* remove liquidity range slider start */
 .remove-liquidity-slider {

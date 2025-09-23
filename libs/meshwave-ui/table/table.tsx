@@ -14,14 +14,14 @@ function Table({
     <div
       data-slot="table-container"
       className={cn(
-        "relative w-full overflow-x-auto rounded-ten bg-background-grey-dark dark:bg-transparent border-border-secondary border-[12px] dark:border-0 p-5",
+        "relative w-full overflow-x-auto rounded-ten bg-background-grey-dark border-border-secondary border-[12px] dark:border-0 p-5",
         tableParentClassName
       )}
     >
       <table
         data-slot="table"
         className={cn(
-          "w-full caption-bottom text-base rounded-ten bg-background-grey-dark dark:bg-background-grey-dark",
+          "w-full caption-bottom text-base rounded-ten bg-background-grey-dark",
           className
         )}
         {...props}
