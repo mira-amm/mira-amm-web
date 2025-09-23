@@ -65,6 +65,12 @@ import {getUiPoolTypeFromPoolId} from "@/src/utils/poolTypeDetection";
 import {Input} from "@/meshwave-ui/input";
 import {Alert, AlertDescription} from "@/meshwave-ui/alert";
 import {sanitizeNumericInput} from "../../../add-liquidity-page/components/AddLiquidity/V2LiquidityConfig";
+import {
+  Select as SelectRoot,
+  SelectTrigger,
+  SelectContent,
+  SelectItem,
+} from "@/meshwave-ui/select";
 
 export function CreatePoolDialog({
   setPreviewData,
@@ -308,6 +314,16 @@ export function CreatePoolDialog({
       100
     : undefined;
 
+  const handleBinStepChange = (selectedBinStep: number) => {
+    const config = V2_POOL_CONFIGS.find((c) => c.binStep === selectedBinStep);
+    if (config) {
+      setV2Config({
+        binStep: config.binStep,
+        baseFactor: config.baseFactor,
+      });
+    }
+  };
+
   return (
     <>
       <div className="flex flex-col gap-4">
@@ -416,41 +432,60 @@ export function CreatePoolDialog({
       {poolType === "concentrated" && (
         <div className="flex flex-col gap-4">
           <p className="text-base">Select Bin Step</p>
-          <ButtonGroup
-            items={V2_POOL_CONFIGS.map((config) => ({
-              value: config.binStep,
-              label: `%${config.binStep / 100}`,
-            }))}
-            value={v2Config.binStep}
-            onChange={(selectedBinStep) => {
-              const config = V2_POOL_CONFIGS.find(
-                (c) => c.binStep === selectedBinStep
-              );
-              if (config) {
-                setV2Config({
-                  binStep: config.binStep,
-                  baseFactor: config.baseFactor,
-                });
-              }
-            }}
-            buttonClassName="h-full px-3 py-2 min-w-0"
-            renderItem={(item) => {
-              const config = V2_POOL_CONFIGS.find(
-                (c) => c.binStep === item.value
-              );
-              return (
-                <div className="flex flex-col items-center justify-center gap-1 p-2 min-w-0">
-                  <span className="text-sm leading-none">{item.label}</span>
-                  <span className="text-xs whitespace-nowrap leading-none">
-                    Base fee:{" "}
-                    {config
-                      ? calculateBaseFee(config.binStep, config.baseFactor)
-                      : item.label}
-                  </span>
-                </div>
-              );
-            }}
-          />
+          {/* Mobile: dropdown */}
+          <div className="md:hidden">
+            <SelectRoot
+              value={String(v2Config.binStep)}
+              onValueChange={(value) => handleBinStepChange(Number(value))}
+            >
+              <SelectTrigger>{`%${v2Config.binStep / 100}`}</SelectTrigger>
+              <SelectContent className="bg-background-secondary text-content-primary border border-background-grey-light shadow-md">
+                {V2_POOL_CONFIGS.map((config) => (
+                  <SelectItem
+                    key={config.binStep}
+                    value={String(config.binStep)}
+                    className="focus:bg-background-grey-light focus:text-content-primary"
+                  >
+                    <span className="flex flex-col items-start gap-1">
+                      <span className="text-sm leading-none">{`%${config.binStep / 100}`}</span>
+                      <span className="text-xs whitespace-nowrap leading-none text-content-tertiary">
+                        {`Fee: ${calculateBaseFee(config.binStep, config.baseFactor)}`}
+                      </span>
+                    </span>
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </SelectRoot>
+          </div>
+
+          {/* Desktop: button group */}
+          <div className="hidden md:block">
+            <ButtonGroup
+              items={V2_POOL_CONFIGS.map((config) => ({
+                value: config.binStep,
+                label: `%${config.binStep / 100}`,
+              }))}
+              value={v2Config.binStep}
+              onChange={handleBinStepChange}
+              buttonClassName="h-full px-3 py-2 min-w-0"
+              renderItem={(item) => {
+                const config = V2_POOL_CONFIGS.find(
+                  (c) => c.binStep === item.value
+                );
+                return (
+                  <div className="flex flex-col items-center justify-center gap-1 p-2 min-w-0">
+                    <span className="text-sm leading-none">{item.label}</span>
+                    <span className="text-xs whitespace-nowrap leading-none">
+                      Fee:{" "}
+                      {config
+                        ? calculateBaseFee(config.binStep, config.baseFactor)
+                        : item.label}
+                    </span>
+                  </div>
+                );
+              }}
+            />
+          </div>
 
           {/* Active price input */}
           <div className="flex flex-col gap-2">
