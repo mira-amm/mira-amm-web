@@ -11,9 +11,29 @@ import {useConnectUI, useIsConnected} from "@fuels/react";
 import {ArrowLeftRight, Sparkle} from "lucide-react";
 import {Button, ButtonGroup} from "@/meshwave-ui/Button";
 
-import {clsx} from "clsx";
 import Link from "next/link";
 import {buildPoolId} from "mira-dex-ts";
+
+type V2PoolConfig = {
+  binStep: number;
+  baseFactor: number;
+};
+
+// V2 Concentrated Liquidity Pool Configuration
+const V2_POOL_CONFIGS: V2PoolConfig[] = [
+  {binStep: 10, baseFactor: 1000}, // base fee 0.1%
+  {binStep: 25, baseFactor: 1000}, // base fee 0.25%
+  {binStep: 50, baseFactor: 800}, // base fee 0.4%
+  {binStep: 100, baseFactor: 800}, // base fee 0.8%
+] as const;
+
+const DEFAULT_V2_CONFIG = V2_POOL_CONFIGS[1]; // Default to 0.25%
+
+// Helper function to calculate base fee percentage
+const calculateBaseFee = (binStep: number, baseFactor: number): string => {
+  const fee = (binStep * baseFactor) / 1000000;
+  return `${fee}%`;
+};
 
 import CoinPair from "@/src/components/common/CoinPair/CoinPair";
 import CoinInput from "@/src/components/pages/add-liquidity-page/components/CoinInput/CoinInput";
@@ -75,8 +95,8 @@ export function CreatePoolDialog({
   >("volatile");
   const isStablePool = poolType === "stable";
   const [v2Config, setV2Config] = useState({
-    binStep: 25, // Default 25 basis points (0.25%)
-    baseFactor: 10000, // Default base factor
+    binStep: DEFAULT_V2_CONFIG.binStep,
+    baseFactor: DEFAULT_V2_CONFIG.baseFactor,
   });
   const [activePriceInput, setActivePriceInput] = useState("");
 
@@ -299,7 +319,11 @@ export function CreatePoolDialog({
                 firstCoin={firstAssetId}
                 secondCoin={secondAssetId}
                 isStablePool={poolType === "stable"}
-                poolType={getUiPoolTypeFromPoolId(poolsMetadata?.[0]?.poolId)}
+                poolType={
+                  poolsMetadata?.[0]?.poolId
+                    ? getUiPoolTypeFromPoolId(poolsMetadata[0].poolId)
+                    : undefined
+                }
                 withPoolDetails
               />
             )}
@@ -391,27 +415,41 @@ export function CreatePoolDialog({
 
       {poolType === "concentrated" && (
         <div className="flex flex-col gap-4">
-          <p className="text-base">Pool configuration</p>
+          <p className="text-base">Select Bin Step</p>
           <ButtonGroup
-            items={[
-              {value: 10, label: "0.1%"},
-              {value: 25, label: "0.25%"},
-              {value: 50, label: "0.5%"},
-              {value: 100, label: "1%"},
-            ]}
+            items={V2_POOL_CONFIGS.map((config) => ({
+              value: config.binStep,
+              label: `%${config.binStep / 100}`,
+            }))}
             value={v2Config.binStep}
-            onChange={(step) =>
-              setV2Config((prev) => ({...prev, binStep: step}))
-            }
+            onChange={(selectedBinStep) => {
+              const config = V2_POOL_CONFIGS.find(
+                (c) => c.binStep === selectedBinStep
+              );
+              if (config) {
+                setV2Config({
+                  binStep: config.binStep,
+                  baseFactor: config.baseFactor,
+                });
+              }
+            }}
             buttonClassName="h-full px-3 py-2 min-w-0"
-            renderItem={(item) => (
-              <div className="flex flex-col items-center justify-center gap-1 p-2 min-w-0">
-                <span className="text-sm leading-none">{item.label}</span>
-                <span className="text-xs whitespace-nowrap leading-none">
-                  Base fee: 0.25%
-                </span>
-              </div>
-            )}
+            renderItem={(item) => {
+              const config = V2_POOL_CONFIGS.find(
+                (c) => c.binStep === item.value
+              );
+              return (
+                <div className="flex flex-col items-center justify-center gap-1 p-2 min-w-0">
+                  <span className="text-sm leading-none">{item.label}</span>
+                  <span className="text-xs whitespace-nowrap leading-none">
+                    Base fee:{" "}
+                    {config
+                      ? calculateBaseFee(config.binStep, config.baseFactor)
+                      : item.label}
+                  </span>
+                </div>
+              );
+            }}
           />
 
           {/* Active price input */}
