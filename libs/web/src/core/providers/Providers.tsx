@@ -63,7 +63,7 @@ export function Providers({children}: {children: ReactNode}) {
           <DisclaimerWrapper>
             <ThemeProvider
               attribute="class"
-              defaultTheme="dark"
+              defaultTheme="light"
               enableSystem
               disableTransitionOnChange
             >
