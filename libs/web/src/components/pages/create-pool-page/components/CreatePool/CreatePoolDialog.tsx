@@ -270,9 +270,8 @@ export function CreatePoolDialog({
               className={cn(
                 "flex flex-col items-start w-full rounded-md px-3 py-3 gap-2 bg-background-secondary text-content-dimmed-light cursor-pointer border border-background-grey-light hover:border-content-primary",
                 poolType === "volatile" && "text-content-primary border",
-                poolType === "volatile" && rebrandEnabled
-                  ? "border-black"
-                  : "border-background-grey-light"
+                poolType === "volatile" &&
+                  "border-background-primary dark:border-content-tertiary"
               )}
               onClick={() => handlePoolTypeChange("volatile")}
               role="button"
@@ -290,9 +289,8 @@ export function CreatePoolDialog({
               className={cn(
                 "flex flex-col items-start w-full rounded-md px-3 py-3 gap-2 bg-background-secondary text-content-dimmed-light cursor-pointer border border-background-grey-light hover:border-content-primary",
                 poolType === "stable" && "text-content-primary border",
-                poolType === "stable" && rebrandEnabled
-                  ? "border-black"
-                  : "border-background-grey-light"
+                poolType === "stable" &&
+                  "border-background-primary dark:border-content-tertiary"
               )}
               onClick={() => handlePoolTypeChange("stable")}
               role="button"
@@ -310,9 +308,8 @@ export function CreatePoolDialog({
               className={cn(
                 "flex flex-col items-start w-full rounded-md px-3 py-3 gap-2 bg-background-secondary text-content-dimmed-light cursor-pointer border border-background-grey-light hover:border-content-primary",
                 poolType === "concentrated" && "text-content-primary border",
-                poolType === "concentrated" && rebrandEnabled
-                  ? "border-black"
-                  : "border-background-grey-light"
+                poolType === "concentrated" &&
+                  "border-background-primary dark:border-content-tertiary"
               )}
               onClick={() => handlePoolTypeChange("concentrated")}
               role="button"

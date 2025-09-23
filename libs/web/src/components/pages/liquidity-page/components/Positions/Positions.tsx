@@ -21,7 +21,7 @@ export function Positions() {
     return (
       <section className="flex flex-col gap-6 w-full">
         <p className="text-xl leading-6">Your Positions</p>
-        <div className="flex flex-col items-center gap-2 rounded-ten px-4 py-7  bg-background-grey-dark border-border-secondary border-[12px] dark:border-0 dark:bg-background-grey-dark">
+        <div className="flex flex-col items-center gap-2 rounded-ten px-4 py-7  bg-background-grey-dark border-border-secondary border-[12px]">
           <div className="flex flex-col items-center gap-4">
             <div className="h-11 w-11 flex items-center justify-center rounded-full text-white bg-black bg-cover">
               <FileText />

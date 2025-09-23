@@ -28,7 +28,7 @@ const PowerIndicator = ({isConnected}: {isConnected: boolean}) => (
       className={cn(
         "h-2 w-5",
         isConnected
-          ? "bg-accent-primary shadow-[0_0_10px_#01ec97,0_0_20px_#01ec97aa]"
+          ? "bg-accent-primary-1 shadow-[0_0_10px_#01ec97,0_0_20px_#01ec97aa]"
           : "bg-accent-primary-2"
       )}
     />
@@ -124,7 +124,7 @@ export function ConnectWalletNew({
         onClick={() => disconnect()}
         size="xs"
         variant="secondary"
-        className="bg-accent-secondary hover:bg-accent-secondary-1 rounded uppercase px-4 text-black transition-colors duration-300"
+        className="rounded uppercase px-4"
       >
         Disconnect
       </Button>
@@ -137,7 +137,7 @@ export function ConnectWalletNew({
       return (
         <div
           className={cn(
-            "bg-black rounded-ten font-alt text-accent-primary uppercase px-3 tracking-tight flex justify-left items-center",
+            "bg-black rounded-ten font-alt text-accent-primary-1 uppercase px-3 tracking-tight flex justify-left items-center",
             rightPanelWidth,
             textSize
           )}
@@ -151,7 +151,7 @@ export function ConnectWalletNew({
       <div
         onClick={() => setOpen((prev) => !prev)}
         className={cn(
-          "bg-black rounded-ten text-accent-primary font-alt uppercase px-3 tracking-tight flex justify-between items-center cursor-pointer",
+          "bg-black dark:border dark:border-border-secondary rounded-ten text-accent-primary-1 font-alt uppercase px-3 tracking-tight flex justify-between items-center cursor-pointer",
           rightPanelWidth,
           textSize
         )}
@@ -171,7 +171,7 @@ export function ConnectWalletNew({
     if (!open || !isConnected) return null;
 
     return (
-      <div className="absolute left-0 mt-2 w-full border-[12px] border-border-secondary dark:border-0 bg-background-grey-dark dark:bg-[#262834] px-2 py-2.5 rounded-ten z-50">
+      <div className="absolute left-0 mt-2 w-full border-[12px] border-border-secondary bg-background-grey-dark px-2 py-2.5 rounded-ten z-50">
         <div
           onClick={() => {
             handleCopy();
@@ -223,7 +223,7 @@ export function ConnectWalletNew({
         className={cn(`relative ${containerWidth}`, className)}
       >
         <div className={cn("rounded-ten dark:border-0")}>
-          <div className="flex gap-x-1.5! dark:bg-background-grey-dark">
+          <div className="flex gap-x-1.5!">
             <div>
               <PowerIndicator isConnected={isConnected} />
               <ActionButton />

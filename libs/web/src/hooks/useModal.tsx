@@ -99,7 +99,7 @@ export function useModal(
             defaultConfig.defaultModalContainerClassName,
             noBackground
               ? ""
-              : "p-4 bg-white border-border-secondary border-[12px] dark:border-0 dark:bg-[#262834]",
+              : "p-4 bg-white border-border-secondary border-[12px] dark:bg-background-grey-dark",
             className
           )
         : className || "");

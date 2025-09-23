@@ -68,7 +68,7 @@ export function MobilePositionView({
         />
       </div>
 
-      <div className="flex flex-col gap-[15px] p-4 rounded-ten bg-background-grey-dark border-border-secondary border-[12px] dark:border-0 dark:bg-background-grey-dark">
+      <div className="flex flex-col gap-[15px] p-4 rounded-ten bg-background-grey-dark border-border-secondary border-[12px]">
         <p className="text-base leading-[19px]">Your position</p>
         <AprDisplay pool={pool} />
         <div className="flex justify-between">

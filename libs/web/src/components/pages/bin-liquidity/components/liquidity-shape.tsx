@@ -17,7 +17,7 @@ const LiquidityShapeOption = ({
   <div
     className={`flex flex-col items-center p-3 border rounded-lg cursor-pointer transition-all ${
       selected
-        ? "border-background-primary bg-background-secondary"
+        ? "border-background-primary dark:border-content-tertiary bg-background-secondary"
         : "border-background-grey-light hover:border-content-tertiary"
     }`}
     onClick={onClick}

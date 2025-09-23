@@ -111,7 +111,7 @@ export function DesktopPositionView({
 
       <div className="flex gap-3 w-full">
         <MiraBlock pool={pool} />
-        <div className="p-4 w-1/2 rounded-lg flex flex-col gap-4 bg-background-grey-dark border-border-secondary border-[11px] dark:border-0 dark:bg-background-grey-dark">
+        <div className="p-4 w-1/2 rounded-lg flex flex-col gap-4 bg-background-grey-dark border-border-secondary border-[11px]">
           <p className="text-base leading-[19px] border-b border-background-grey-light pb-3">
             Pool reserves
           </p>
@@ -145,7 +145,7 @@ export function DesktopPositionView({
         </div>
       </div>
 
-      <div className="w-full p-4 rounded-xl flex flex-col gap-4 bg-background-grey-dark border-border-secondary border-[12px] dark:border-0 dark:bg-background-grey-dark">
+      <div className="w-full p-4 rounded-xl flex flex-col gap-4 bg-background-grey-dark border-border-secondary border-[12px]">
         <div className="flex justify-between items-center mb-4">
           <div className="text-content-primary text-base leading-[19px]">
             Your liquidity
@@ -196,7 +196,7 @@ export function DesktopPositionView({
         />
       </div>
 
-      <div className="w-full p-4 rounded-xl flex flex-col gap-4 bg-background-grey-dark border-border-secondary border-[12px] dark:border-0 dark:bg-background-grey-dark">
+      <div className="w-full p-4 rounded-xl flex flex-col gap-4 bg-background-grey-dark border-border-secondary border-[12px]">
         <div className="flex justify-between items-center mb-4 border-b border-background-grey-light pb-4">
           <div className="flex flex-col">
             <div className="text-content-primary text-base leading-[19px]">
