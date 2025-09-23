@@ -32,7 +32,7 @@ import {fetchPoolById, createPairFromPool, GET} from "./route";
 const mockRequest = vi.mocked(request);
 const mockGql = vi.mocked(gql);
 
-const INDEXER_URL = "https://mira-dex.squids.live/mira-indexer@v3/api/graphql";
+const INDEXER_URL = "https://mira-dex.squids.live/mira-indexer@v4/api/graphql";
 
 const poolId = "pool-xyz";
 const rawPool = {

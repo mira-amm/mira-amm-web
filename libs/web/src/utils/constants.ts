@@ -33,7 +33,7 @@ export const ValidNetworkChainId = CHAIN_IDS.fuel.mainnet;
 export const NetworkUrl: string = "https://mainnet.fuel.network/v1/graphql";
 
 export const SQDIndexerUrl =
-  "https://mira-dex.squids.live/mira-indexer@v3/api/graphql" as const;
+  "https://mira-dex.squids.live/mira-indexer@v4/api/graphql" as const;
 export const MainnetUrl = "https://mainnet-explorer.fuel.network";
 export const ApiBaseUrl = "https://prod.api.microchain.systems" as const;
 
