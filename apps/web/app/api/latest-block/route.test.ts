@@ -3,12 +3,7 @@ import {NextRequest} from "next/server";
 import {GET} from "./route";
 
 describe("GET /api/latest-block (integration)", () => {
-  /**
-   * This test is expected to fail while the subsquid indexer is lagging behind so far.
-   * If it suddenly passes, that means the indexer is back online
-   * and we should remove `test.fails` so it becomes a normal test again.
-   */
-  it.fails("returns a valid block number and a recent timestamp", async () => {
+  it("returns a valid block number and a recent timestamp", async () => {
     const req = new NextRequest("http://localhost/api/latest-block");
     const res = await GET(req);
 
