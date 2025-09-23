@@ -64,7 +64,6 @@ export function Providers({children}: {children: ReactNode}) {
             <ThemeProvider
               attribute="class"
               defaultTheme="light"
-              enableSystem
               disableTransitionOnChange
             >
               <Toaster richColors position="bottom-right" />
