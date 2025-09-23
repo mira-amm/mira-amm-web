@@ -49,7 +49,7 @@ export function Navigation({
       {/* Animated background element */}
       {activeIndex !== null && (
         <div
-          className="absolute bg-background-primary dark:bg-background-grey-light rounded-full transition-all duration-300 ease-in-out z-0"
+          className="absolute bg-light-theme-1 dark:text-mc-black rounded-full transition-all duration-300 ease-in-out z-0"
           style={{
             left: linkRefs.current[activeIndex]?.offsetLeft ?? 0,
             width: linkRefs.current[activeIndex]?.offsetWidth ?? 0,
@@ -85,7 +85,7 @@ export function Navigation({
             className={cn(
               linkBaseClasses,
               linkSizeClasses[size],
-              match && "text-white"
+              match && "text-white dark:text-mc-black"
             )}
           >
             {label}

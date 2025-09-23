@@ -45,7 +45,7 @@ export const TransactionsHistory = forwardRef<
         className={`${
           rebrandEnabled
             ? "bg-background-secondary border border-border-secondary dark:border-background-primary shadow-lg"
-            : "bg-background-grey-dark border-border-secondary border-[12px] dark:border-0 dark:bg-background-primary"
+            : "bg-background-grey-dark border-border-secondary border-[12px] dark:bg-background-primary"
         } flex flex-col gap-6 fixed top-[72px] right-0 h-[calc(100vh-197px)] w-full max-w-[472px] px-5 py-4 z-[200] transition-transform duration-300 ease-in-out overflow-y-auto overflow-x-hidden ${isOpened ? "translate-x-0" : "translate-x-full"} lg:rounded-xl`}
         ref={ref}
       >
@@ -207,17 +207,6 @@ export const TransactionsHistory = forwardRef<
           </ul>
         </SkeletonLoader>
       </div>
-
-      <div
-        className={`fixed right-0 bottom-[125px] w-full max-w-[472px] h-[10%] rounded-xl z-[300] transition-transform duration-300 ease-in-out ${
-          isOpened ? "translate-x-0" : "translate-x-full"
-        } hidden md:block`}
-        style={{
-          background: rebrandEnabled
-            ? "linear-gradient(to bottom, rgba(236,237,240,0) 0%, rgba(236,237,240,0.2) 15%, rgba(236,237,240,0.5) 25%, rgba(236,237,240,0.5) 50%, rgba(236,237,240,0.5) 75%, rgba(236,237,240,0.8) 100%)"
-            : "linear-gradient(to bottom, rgba(38,40,52,0) 0%, rgba(38,40,52,0.2) 15%, rgba(38,40,52,0.5) 25%, rgba(38,40,52,0.5) 50%, rgba(38,40,52,0.5) 75%, rgba(38,40,52,0.8) 100%)",
-        }}
-      ></div>
     </div>
   );
 });

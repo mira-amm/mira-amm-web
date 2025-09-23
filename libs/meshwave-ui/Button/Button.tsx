@@ -4,18 +4,18 @@ import {Slot} from "@radix-ui/react-slot";
 import {cva, type VariantProps} from "class-variance-authority";
 
 const buttonVariants = cva(
-  "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-lg text-sm  transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring hover:cursor-pointer disabled:pointer-events-none [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 disabled:hover:bg-accent-primary-1 disabled:text-accent-primary-1 disabled:bg-accent-primary-2",
+  "inline-flex items-center text-black justify-center gap-2 whitespace-nowrap rounded-lg text-sm  transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring hover:cursor-pointer disabled:pointer-events-none [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 disabled:hover:bg-accent-primary-1 disabled:text-accent-primary-1 disabled:bg-accent-primary-2",
   {
     variants: {
       variant: {
         default:
-          "bg-accent-primary text-old-mira-text border border-accent-primary hover:bg-accent-primary-1 dark:hover:bg-old-mira-active-btn cursor-pointer",
+          "bg-accent-primary-1 text-black border border-accent-primary-1 hover:bg-accent-primary-1 dark:hover:bg-accent-primary-1/80  cursor-pointer",
         destructive:
           "bg-destructive text-destructive-foreground shadow-sm hover:bg-destructive/90",
         outline:
-          "text-black dark:text-accent-primary bg-transparent hover:bg-background-grey-light border border-black dark:border-accent-primary hover:shadow-none active:bg-transparent",
+          "text-black dark:text-light-theme-1 bg-transparent hover:bg-background-grey-light border border-black dark:border-light-theme-5 hover:shadow-none active:bg-transparent",
         secondary:
-          "bg-accent-dimmed text-accent-primary border-none shadow-none hover:bg-old-mira-bg-hover active:bg-old-mira-bg-active cursor-pointer",
+          "bg-accent-secondary hover:bg-accent-secondary/90 border-none shadow-none cursor-pointer",
         ghost: "hover:bg-accent hover:text-accent-foreground",
         link: "text-primary underline-offset-4 hover:underline",
       },
@@ -32,7 +32,7 @@ const buttonVariants = cva(
         true: "w-full",
       },
       disabled: {
-        true: "bg-background-secondary border-background-secondary border-black dark:text-content-dimmed-dark text-content-tertiary shadow-none hover:bg-background-secondary",
+        true: "bg-background-secondary border-accent-primary-2 dark:text-content-dimmed-dark text-content-tertiary shadow-none hover:bg-background-secondary",
       },
     },
     defaultVariants: {
