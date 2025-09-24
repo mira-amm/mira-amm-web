@@ -314,6 +314,14 @@ export function CreatePoolDialog({
       100
     : undefined;
 
+  const hasBothMarketPrices =
+    typeof firstAssetPrice.price === "number" &&
+    Number.isFinite(firstAssetPrice.price) &&
+    firstAssetPrice.price > 0 &&
+    typeof secondAssetPrice.price === "number" &&
+    Number.isFinite(secondAssetPrice.price) &&
+    secondAssetPrice.price > 0;
+
   const handleBinStepChange = (selectedBinStep: number) => {
     const config = V2_POOL_CONFIGS.find((c) => c.binStep === selectedBinStep);
     if (config) {
@@ -566,8 +574,9 @@ export function CreatePoolDialog({
           </div>
           <Alert variant="warning">
             <AlertDescription>
-              This is the price of the pool on inception. Always double check
-              before deploying a pool.
+              {hasBothMarketPrices
+                ? "This is the price of the pool on inception. Always double check before deploying a pool."
+                : "This is the price of the pool on inception, make sure it reflects current market price before creating the pool to avoid losses."}
             </AlertDescription>
           </Alert>
         </div>
