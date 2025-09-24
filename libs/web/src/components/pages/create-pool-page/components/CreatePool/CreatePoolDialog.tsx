@@ -566,7 +566,7 @@ export function CreatePoolDialog({
         <div className="flex flex-col gap-4">
           <p className="text-base text-content-primary">Starting price</p>
           <div
-            className="flex justify-between items-center px-4 py-3 rounded-md bg-background-grey-darker cursor-pointer"
+            className="flex justify-between items-center rounded-md bg-background-grey-darker cursor-pointer"
             onClick={handleExchangeRateSwap}
           >
             <p className="text-sm ">{exchangeRate}</p>
