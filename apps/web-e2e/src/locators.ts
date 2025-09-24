@@ -1,4 +1,5 @@
-import {PageElement, PageElements, By} from "@serenity-js/web";
+import {PageElement, PageElements, By, isVisible} from "@serenity-js/web";
+import {isPresent} from "@serenity-js/assertions";
 
 export const connectWalletButton = () =>
   PageElements.located(By.cssContainingText("button", "Connect Wallet")).last();
@@ -73,9 +74,11 @@ export const poolTypeOption = (type: "Volatile" | "Stable") =>
   PageElements.located(By.cssContainingText("div", `${type} pool`)).first();
 
 export const addLiquidityButton = () =>
-  PageElement.located(
-    By.css('tr:has(td:has-text("FUEL/USDC")) button:has-text("Add Liquidity")')
-  );
+  PageElements.located(
+    By.xpath(
+      "//div[contains(.,'FUEL/USDC')]//button[contains(text(),'Add Liquidity')]"
+    )
+  ).first();
 
 //
 // ========== LAYOUT LOCATORS: HEADER ==========
