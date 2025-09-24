@@ -14,6 +14,23 @@
     ],
     "sharedGlobals": ["{workspaceRoot}/package.json", "{workspaceRoot}/pnpm-lock.yaml"]
   },
+  "targetDefaults": {
+    "build": {
+      "cache": true
+    },
+    "test": {
+      "cache": true
+    },
+    "lint": {
+      "cache": true
+    },
+    "e2e": {
+      "cache": true
+    },
+    "typecheck": {
+      "cache": true
+    }
+  },
   "plugins": [
     "@monodon/rust",
     {
