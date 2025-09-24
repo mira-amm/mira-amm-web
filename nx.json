@@ -17,18 +17,6 @@
   "targetDefaults": {
     "build": {
       "cache": true
-    },
-    "test": {
-      "cache": true
-    },
-    "lint": {
-      "cache": true
-    },
-    "e2e": {
-      "cache": true
-    },
-    "typecheck": {
-      "cache": true
     }
   },
   "plugins": [
