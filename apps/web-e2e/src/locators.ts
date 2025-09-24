@@ -83,7 +83,8 @@ export const addLiquidityButton = () =>
 
 export const header = () => PageElement.located(By.tagName("header"));
 
-export const headerLogo = () => PageElement.located(By.css("header a svg"));
+export const headerLogo = () =>
+  PageElement.located(By.css("header a[href='/'] svg"));
 
 export const headerSwapLink = () =>
   PageElement.located(By.cssContainingText("header", "Swap"));
