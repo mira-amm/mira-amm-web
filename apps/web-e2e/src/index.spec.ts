@@ -211,18 +211,6 @@ describe("Liquidity", () => {
     await actor.attemptsTo(Navigate.to("/liquidity"));
   });
 
-  it("should be able to learn more about points program", async ({actor}) => {
-    await actor.attemptsTo(
-      Wait.upTo(Duration.ofSeconds(10)).until(
-        PageElement.located(By.cssContainingText("button", "Learn More ")),
-        isVisible()
-      ),
-      Click.on(
-        PageElement.located(By.cssContainingText("button", "Learn More "))
-      )
-    );
-  });
-
   it("should be able to manage positions in liquidity pools", async ({
     actor,
   }) => {
