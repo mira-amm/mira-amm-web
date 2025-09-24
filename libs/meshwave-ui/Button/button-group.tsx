@@ -43,8 +43,8 @@ export function ButtonGroup<T extends string | number>({
             disabled={item.disabled}
             className={cn(
               fullWidth && "w-full",
-              "h-10 px-2 font-alt border bg-background-grey-dark text-content-dimmed-light cursor-pointer",
-              "hover:border hover:border-black dark:border-light-theme-5 dark:hover:text-content-primary dark:hover:border-light-theme-5",
+              "h-10 px-2 font-alt border bg-white dark:bg-background-grey-dark text-content-dimmed-light cursor-pointer",
+              "hover:border hover:border-black dark:hover:text-content-primary dark:hover:border-accent-primary",
               isFirst && "rounded-l-lg",
               isLast && "rounded-r-lg",
               selected &&
