@@ -4,15 +4,9 @@ import {clsx} from "clsx";
 import {getBrandText} from "@/src/utils/brandName";
 import {useAnimationStore} from "@/src/stores/useGlitchScavengerHunt";
 import {Providers} from "@/src/core/providers/Providers";
-import {
-  FeatureGuard,
-  Header,
-  HeaderNew,
-  ClientSplashWrapper,
-} from "@/src/components/common";
+import {Header, ClientSplashWrapper} from "@/src/components/common";
 import Footer from "@/src/components/common/Footer/Footer";
 import GlitchEffects from "@/src/components/common/GlitchEffects/GlitchEffects";
-import {getIsRebrandEnabled} from "@/src/utils/isRebrandEnabled";
 
 interface LayoutBodyProps {
   children: ReactNode;
@@ -36,18 +30,11 @@ export const LayoutBody = ({
   const glitchScavengerHuntEnabled = useAnimationStore.getState().masterEnabled;
   const brandText = getBrandText();
 
-  const rebrandEnabled = getIsRebrandEnabled();
-
-  const fontThemeVars = rebrandEnabled
-    ? ({
-        "--font-alt": "var(--font-cartograph-cf)",
-        "--font-sans": "var(--font-inter-variable)",
-        "--font-serif": "var(--font-instrument-serif)",
-      } as React.CSSProperties)
-    : ({
-        "--font-alt": "var(--font-inter)",
-        "--font-sans": "var(--font-inter)",
-      } as React.CSSProperties);
+  const fontThemeVars = {
+    "--font-alt": "var(--font-cartograph-cf)",
+    "--font-sans": "var(--font-inter-variable)",
+    "--font-serif": "var(--font-instrument-serif)",
+  } as React.CSSProperties;
 
   return (
     <body
@@ -65,9 +52,7 @@ export const LayoutBody = ({
       <Providers>
         <ClientSplashWrapper>
           <div className="flex flex-col min-h-screen relative">
-            <FeatureGuard fallback={<Header />}>
-              <HeaderNew />
-            </FeatureGuard>
+            <Header />
             <main className="flex-1 flex flex-col">{children}</main>
             <Footer />
             {glitchScavengerHuntEnabled && <GlitchEffects />}

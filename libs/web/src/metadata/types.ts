@@ -8,4 +8,4 @@ export interface BrandMetadata {
   favicon: string;
 }
 
-export type BrandType = "mira" | "microchain";
+export type BrandType = "microchain";

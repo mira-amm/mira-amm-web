@@ -19,8 +19,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/meshwave-ui/table";
-import {getIsRebrandEnabled} from "@/src/utils/isRebrandEnabled";
-import {Loader} from "@/src/components/common";
+import {Loader} from "@/src/components/common/loader";
 
 const truncateAddress = (address: string) => {
   if (!address) return "";
@@ -29,7 +28,6 @@ const truncateAddress = (address: string) => {
 };
 
 export default function PointsRankTable() {
-  const rebrandEnabled = getIsRebrandEnabled();
   const [pagination, setPagination] = useState({
     pageIndex: 0,
     pageSize: 50,
@@ -100,7 +98,7 @@ export default function PointsRankTable() {
   if (isLoading) {
     return (
       <div className="flex flex-col items-center gap-4 p-7 rounded-ten bg-background-grey-dark">
-        <Loader rebrand={rebrandEnabled} />
+        <Loader />
         <p>Loading points leaderboard...</p>
       </div>
     );
@@ -114,7 +112,7 @@ export default function PointsRankTable() {
             {headerGroup.headers.map((header) => (
               <TableHead
                 key={header.id}
-                className={`p-4 text-left font-normal text-base text-content-tertiary ${!rebrandEnabled ? "border-b border-background-grey-light dark:border-background-grey-darker" : ""}`}
+                className="p-4 text-left font-normal text-base text-content-tertiary"
               >
                 {header.isPlaceholder
                   ? null
@@ -133,7 +131,7 @@ export default function PointsRankTable() {
             {row.getVisibleCells().map((cell, idx) => (
               <TableCell
                 key={cell.id}
-                className={`p-4 text-base ${!rebrandEnabled ? "border-b border-background-grey-light dark:border-background-grey-darker" : ""} ${
+                className={`p-4 text-base ${
                   idx === 1
                     ? "overflow-hidden text-ellipsis whitespace-nowrap"
                     : ""

@@ -4,7 +4,7 @@ const LogoIcon = () => {
       width="182"
       height="28"
       viewBox="0 0 390 58"
-      fill="none"
+      fill="currentcolor"
       xmlns="http://www.w3.org/2000/svg"
     >
       <path

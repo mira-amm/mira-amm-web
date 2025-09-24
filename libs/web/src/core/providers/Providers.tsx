@@ -16,7 +16,6 @@ import {FuelProviderWrapper} from "@/src/core/providers/FuelProviderWrapper";
 import {DisclaimerWrapper} from "@/src/core/providers/DisclaimerWrapper";
 import {Loader} from "@/src/components/common";
 import {ThemeProvider} from "./theme-provider";
-import {getIsRebrandEnabled} from "@/src/utils/isRebrandEnabled";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -28,7 +27,7 @@ const queryClient = new QueryClient({
 
 function QueryParamProviderWrapper({children}: {children: ReactNode}) {
   return (
-    <Suspense fallback={<Loader rebrand={getIsRebrandEnabled()} />}>
+    <Suspense fallback={<Loader />}>
       <QueryParamProvider adapter={NextAdapterApp}>
         {children}
       </QueryParamProvider>
@@ -51,8 +50,6 @@ const persistOptions: PersistQueryClientOptions = {
 };
 
 export function Providers({children}: {children: ReactNode}) {
-  const rebrandEnabled = getIsRebrandEnabled();
-
   return (
     <PersistQueryClientProvider
       client={queryClient}
@@ -64,7 +61,7 @@ export function Providers({children}: {children: ReactNode}) {
           <DisclaimerWrapper>
             <ThemeProvider
               attribute="class"
-              defaultTheme={rebrandEnabled ? "light" : "dark"}
+              defaultTheme="light"
               enableSystem
               disableTransitionOnChange
             >

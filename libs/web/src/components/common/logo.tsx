@@ -1,21 +1,16 @@
 import Link from "next/link";
-import {LogoIcon} from "@/meshwave-ui/icons";
-import {FeatureGuard} from "./feature-guard";
-import {LogoNew} from "./logo-new";
+import LogoIconFooter from "./Logo/LogoIconFooter";
+import LogoIcon from "./Logo/LogoIcon";
+import {cn} from "@/src/utils/cn";
 
 export function Logo({isFooter = false}: {isFooter?: boolean}) {
   return (
-    <FeatureGuard
-      fallback={
-        <Link
-          href="/"
-          className="w-16 h-8 flex flex-col justify-center text-content-primary hover:text-content-primary"
-        >
-          <LogoIcon />
-        </Link>
-      }
+    <Link
+      href="/"
+      aria-label="Microchain home"
+      className={cn(!isFooter && "w-[150px]", "dark:text-white")}
     >
-      <LogoNew isFooter={isFooter} />
-    </FeatureGuard>
+      {isFooter ? <LogoIconFooter /> : <LogoIcon />}
+    </Link>
   );
 }

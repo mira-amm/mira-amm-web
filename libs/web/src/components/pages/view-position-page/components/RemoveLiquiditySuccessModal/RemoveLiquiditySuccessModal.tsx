@@ -3,7 +3,7 @@ import {openNewTab} from "@/src/utils/common";
 import {CoinName} from "@/src/utils/coinsConfig";
 import {FuelAppUrl} from "@/src/utils/constants";
 import {Button} from "@/meshwave-ui/Button";
-import {CheckCircle} from "lucide-react";
+import {CircleCheck} from "lucide-react";
 
 export default function RemoveLiquiditySuccessModal({
   coinA,
@@ -26,12 +26,10 @@ export default function RemoveLiquiditySuccessModal({
   const subText = `Removed ${firstCoinAmount} ${coinA} and ${secondCoinAmount} ${coinB}`;
 
   return (
-    <div className="flex flex-col items-center gap-[12px] lg:gap-[24px]">
-      <div className="lg:w-[80px] lg:h-[80px]">
-        <CheckCircle />
-      </div>
+    <div className="flex flex-col items-center gap-3 pb-3">
+      <CircleCheck className="w-12 h-12 text-green-500" />
       <p className=" text-[22px] leading-[26px] text-center">Success</p>
-      <p className="text-[14px] leading-[16px] text-content-dimmed-dark text-center">
+      <p className="text-[14px] leading-[16px] text-content-tertiary text-center">
         {subText}
       </p>
       <Button onClick={handleViewTransactionClick} block>
