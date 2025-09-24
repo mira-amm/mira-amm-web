@@ -517,7 +517,7 @@ export function CreatePoolDialog({
                 type="text"
                 inputMode="decimal"
                 pattern="[0-9]*[.]?[0-9]*"
-                placeholder="1200"
+                placeholder="Active price"
                 value={activePriceInput}
                 onChange={(e) =>
                   setActivePriceInput(sanitizeNumericInput(e.target.value))
