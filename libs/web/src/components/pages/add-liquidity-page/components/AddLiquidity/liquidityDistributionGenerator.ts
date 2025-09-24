@@ -90,6 +90,8 @@ export function generateLiquidityDistribution(
   const accRawY: number[] = [];
 
   for (let binId = startBinId; binId <= endBinId; binId++) {
+    // Calculate price using exponential formula: price(n) = (1 + binStep/10000)^n
+    // binStep is in basis points, so divide by 10000 to get decimal
     const price = Math.pow(1 + binStep / 10000, binId);
     const isActive = binId === currentBinId;
     const distanceFromActive = Math.abs(binId - currentBinId);

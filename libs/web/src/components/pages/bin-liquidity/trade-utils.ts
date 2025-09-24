@@ -1,4 +1,5 @@
 export const TradeUtils = {
+  // binStep is in basis points (e.g., 25 for 0.25%)
   getLogBase: (binStep: any) => Math.log(1 + binStep / 10000),
 
   calculateBinsFromPrices: (minPrice: any, maxPrice: any, binStep: any) => {
