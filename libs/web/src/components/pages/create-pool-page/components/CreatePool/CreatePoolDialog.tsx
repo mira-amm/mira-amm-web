@@ -438,7 +438,7 @@ export function CreatePoolDialog({
               value={String(v2Config.binStep)}
               onValueChange={(value) => handleBinStepChange(Number(value))}
             >
-              <SelectTrigger>{`%${v2Config.binStep / 100}`}</SelectTrigger>
+              <SelectTrigger>{`${v2Config.binStep / 100}%`}</SelectTrigger>
               <SelectContent className="bg-background-secondary text-content-primary border border-background-grey-light shadow-md">
                 {V2_POOL_CONFIGS.map((config) => (
                   <SelectItem
@@ -447,7 +447,7 @@ export function CreatePoolDialog({
                     className="focus:bg-background-grey-light focus:text-content-primary"
                   >
                     <span className="flex flex-col items-start gap-1">
-                      <span className="text-sm leading-none">{`%${config.binStep / 100}`}</span>
+                      <span className="text-sm leading-none">{`${config.binStep / 100}%`}</span>
                       <span className="text-xs whitespace-nowrap leading-none text-content-tertiary">
                         {`Fee: ${calculateBaseFee(config.binStep, config.baseFactor)}`}
                       </span>
@@ -463,7 +463,7 @@ export function CreatePoolDialog({
             <ButtonGroup
               items={V2_POOL_CONFIGS.map((config) => ({
                 value: config.binStep,
-                label: `%${config.binStep / 100}`,
+                label: `${config.binStep / 100}%`,
               }))}
               value={v2Config.binStep}
               onChange={handleBinStepChange}
