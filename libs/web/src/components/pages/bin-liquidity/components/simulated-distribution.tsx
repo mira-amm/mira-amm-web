@@ -287,10 +287,15 @@ export default function SimulatedDistribution({
             const depositedAsset0 = amount0 || 0;
             const depositedAsset1 = amount1 || 0;
 
-            // Calculate price range for this bar
-            const binWidth = (maxPrice! - minPrice!) / (numBins || 1);
+            // Calculate price range for this displayed bar using the displayed bar count,
+            // not the original total numBins (which may be much larger and grouped).
+            const displayBarCount = simulationData.length || 1;
+            const binWidth = (maxPrice! - minPrice!) / displayBarCount;
             const binStartPrice = minPrice! + index * binWidth;
-            const binEndPrice = binStartPrice + binWidth;
+            const binEndPrice =
+              index === displayBarCount - 1
+                ? maxPrice!
+                : binStartPrice + binWidth;
 
             // Format price range for display
             const priceRangeInfo = `${binStartPrice.toFixed(4)} - ${binEndPrice.toFixed(4)}`;
