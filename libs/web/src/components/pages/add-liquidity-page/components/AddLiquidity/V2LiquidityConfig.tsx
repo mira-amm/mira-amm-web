@@ -770,8 +770,8 @@ export default function V2LiquidityConfig({
               liquidityShape={liquidityShape}
               minPrice={minPrice}
               maxPrice={maxPrice}
-              numBins={numBins}
               currentPrice={currentPrice}
+              binStepBasisPoints={DEFAULT_BIN_STEP}
               asset0Symbol={asset0Metadata.symbol}
               asset1Symbol={asset1Metadata.symbol}
               asset0Price={asset0Price}

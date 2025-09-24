@@ -270,7 +270,10 @@ const LiquidityManager = ({
           </div>
         </div>
 
-        <SimulatedDistribution liquidityShape={liquidityShape} />
+        <SimulatedDistribution
+          liquidityShape={liquidityShape}
+          binStepBasisPoints={25} // Default 25 basis points (0.25%)
+        />
       </div>
     </div>
   );

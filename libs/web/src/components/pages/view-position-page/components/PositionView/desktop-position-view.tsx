@@ -168,11 +168,11 @@ export function DesktopPositionView({
 
         <div className="border-b border-background-grey-light">
           <SimulatedDistribution
-            liquidityShape={liquidityShape}
+            liquidityShape={liquidityShape as "spot" | "curve" | "bidask"}
             minPrice={minPrice}
             maxPrice={maxPrice}
-            numBins={numBins}
             currentPrice={currentPrice}
+            binStepBasisPoints={25} // Default 25 basis points (0.25%) - should be passed from pool metadata
             asset0Symbol={assetA.metadata.symbol}
             asset1Symbol={assetB.metadata.symbol}
             asset0Price={asset0Price}
