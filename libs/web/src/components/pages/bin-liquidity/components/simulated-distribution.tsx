@@ -1,5 +1,6 @@
 "use client";
-
+// NOTE: importing react is needed so that the test will run
+import React from "react";
 import {useEffect, useState} from "react";
 import {cn} from "@/src/utils/cn";
 

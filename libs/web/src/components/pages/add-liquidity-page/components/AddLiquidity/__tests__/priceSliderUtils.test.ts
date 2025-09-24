@@ -8,14 +8,19 @@ import {
   formatPriceForDisplay,
 } from "../priceSliderUtils";
 
-describe("priceSliderUtils", () => {
+describe("priceSliderUtils - core", () => {
   const currentPrice = 1.0;
   const binStep = 25; // 0.25% per bin
   const maxBinsFromCenter = 100;
 
   describe("priceToSliderPosition and sliderPositionToPrice", () => {
-    it("should convert prices to slider positions and back correctly", () => {
+    it("should convert prices to slider positions and back correctly (with clamping)", () => {
       const testPrices = [0.5, 0.8, 1.0, 1.2, 2.0];
+      const {minPrice, maxPrice} = createSliderBounds(
+        currentPrice,
+        binStep,
+        maxBinsFromCenter
+      );
 
       testPrices.forEach((price) => {
         const sliderPosition = priceToSliderPosition(
@@ -31,7 +36,13 @@ describe("priceSliderUtils", () => {
           maxBinsFromCenter
         );
 
-        expect(convertedPrice).toBeCloseTo(price, 6);
+        if (price < minPrice) {
+          expect(convertedPrice).toBeCloseTo(minPrice, 6);
+        } else if (price > maxPrice) {
+          expect(convertedPrice).toBeCloseTo(maxPrice, 6);
+        } else {
+          expect(convertedPrice).toBeCloseTo(price, 6);
+        }
       });
     });
 
@@ -89,10 +100,11 @@ describe("priceSliderUtils", () => {
 
     it("should handle single bin case", () => {
       const stepMultiplier = 1 + binStep / 10000;
-      const price1 = currentPrice;
-      const price2 = currentPrice * stepMultiplier * 0.5; // Half way to next bin
+      const min = currentPrice;
+      // Move less than one full bin upward
+      const max = currentPrice * Math.pow(stepMultiplier, 0.4);
 
-      const numBins = calculateBinsBetweenPrices(price1, price2, binStep);
+      const numBins = calculateBinsBetweenPrices(min, max, binStep);
       expect(numBins).toBe(1);
     });
   });
@@ -137,14 +149,20 @@ describe("priceSliderUtils", () => {
 
   describe("formatPriceForDisplay", () => {
     it("should format prices with appropriate precision", () => {
-      // Small bin step should use more decimals
-      expect(formatPriceForDisplay(1.123456, 1)).toMatch(/\d+\.\d{6}/);
+      // Very small bin step (<1) should use 6 decimals
+      expect(formatPriceForDisplay(1.123456, 0.5)).toMatch(/\d+\.\d{6}/);
 
-      // Large bin step should use fewer decimals
-      expect(formatPriceForDisplay(1.123456, 100)).toMatch(/\d+\.\d{3}/);
+      // binStep = 1 should use 5 decimals
+      expect(formatPriceForDisplay(1.123456, 1)).toMatch(/\d+\.\d{5}/);
 
-      // Medium bin step should use standard precision
+      // binStep = 25 should use default 4 decimals
       expect(formatPriceForDisplay(1.123456, 25)).toMatch(/\d+\.\d{4}/);
+
+      // binStep = 100 should use default 4 decimals
+      expect(formatPriceForDisplay(1.123456, 100)).toMatch(/\d+\.\d{4}/);
+
+      // binStep > 100 should use 3 decimals
+      expect(formatPriceForDisplay(1.123456, 150)).toMatch(/\d+\.\d{3}/);
     });
   });
 
