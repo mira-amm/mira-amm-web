@@ -31,7 +31,6 @@ describe("SimulatedDistribution", () => {
         liquidityShape="curve"
         minPrice={minPrice}
         maxPrice={maxPrice}
-        numBins={numBins}
         currentPrice={currentPrice}
       />
     );
@@ -61,7 +60,6 @@ describe("SimulatedDistribution", () => {
         liquidityShape="curve"
         minPrice={minPrice}
         maxPrice={maxPrice}
-        numBins={numBins}
         currentPrice={currentPrice}
       />
     );

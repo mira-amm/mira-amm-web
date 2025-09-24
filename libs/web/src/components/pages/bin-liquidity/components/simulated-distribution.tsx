@@ -23,22 +23,37 @@ export type LiquidityData = {
   asset1Value: number;
 }[];
 
-// Generate bin data based on actual parameters
+// Generate bin data based on actual parameters with exponential price calculation
 function generateBinData(
   minPrice: number,
   maxPrice: number,
-  numBins: number,
   currentPrice: number,
-  liquidityShape: LiquidityShape
+  liquidityShape: LiquidityShape,
+  binStepBasisPoints: number = 25 // Default 25 basis points (0.25%)
 ): LiquidityData {
   const data: LiquidityData = [];
-  const priceStep = (maxPrice - minPrice) / (numBins - 1);
+
+  // Convert basis points to decimal: binStep = binStepBasisPoints / 10000
+  const binStepDecimal = binStepBasisPoints / 10000;
+  const logBase = Math.log(1 + binStepDecimal);
+
+  // Calculate bin IDs for the price range
+  const minBinId = Math.floor(Math.log(minPrice) / logBase);
+  const maxBinId = Math.ceil(Math.log(maxPrice) / logBase);
+  const currentBinId = Math.round(Math.log(currentPrice) / logBase);
+
+  // Use all bins in the actual price range
+  const startBinId = minBinId;
+  const endBinId = maxBinId;
+
   // Use currentPrice as the reference point for shapes
   const referencePrice = currentPrice;
 
-  for (let i = 0; i < numBins; i++) {
-    const binPrice = minPrice + i * priceStep;
-    const isCurrentPrice = Math.abs(binPrice - currentPrice) < priceStep / 2;
+  for (let binId = startBinId; binId <= endBinId; binId++) {
+    // Calculate price using exponential formula: price(n) = (1 + binStep)^n
+    const binPrice = Math.pow(1 + binStepDecimal, binId);
+    const i = binId - startBinId; // Index for array position
+    const isCurrentPrice = binId === currentBinId;
 
     // Calculate distribution height based on shape and distance from current price
     let heightMultiplier = 1;
@@ -94,13 +109,13 @@ function generateBinData(
     }
 
     data.push({
-      binId: i,
+      binId: binId,
       price: binPrice.toFixed(4),
       assetAHeight,
       assetBHeight,
       asset0Value: assetAHeight,
       asset1Value: assetBHeight,
-      showPrice: i === 0 || i === numBins - 1, // Only show first and last prices
+      showPrice: binId === startBinId || binId === endBinId, // Only show first and last prices
     });
   }
 
@@ -153,8 +168,8 @@ export default function SimulatedDistribution({
   liquidityShape = "spot",
   minPrice,
   maxPrice,
-  numBins,
   currentPrice = 1.0,
+  binStepBasisPoints = 25, // Default 25 basis points (0.25%)
   asset0Symbol,
   asset1Symbol,
   asset0Price,
@@ -166,8 +181,8 @@ export default function SimulatedDistribution({
   liquidityShape?: LiquidityShape;
   minPrice?: number;
   maxPrice?: number;
-  numBins?: number;
   currentPrice?: number;
+  binStepBasisPoints?: number; // In basis points (e.g., 25 for 0.25%)
   asset0Symbol?: string;
   asset1Symbol?: string;
   asset0Price?: number;
@@ -183,16 +198,15 @@ export default function SimulatedDistribution({
     if (
       minPrice !== undefined &&
       maxPrice !== undefined &&
-      numBins !== undefined &&
       currentPrice !== undefined
     ) {
       // Generate data based on actual parameters
       const generatedData = generateBinData(
         minPrice,
         maxPrice,
-        numBins,
         currentPrice,
-        liquidityShape
+        liquidityShape,
+        binStepBasisPoints
       );
 
       // Limit display to maximum 50 bins to prevent overflow
@@ -203,7 +217,7 @@ export default function SimulatedDistribution({
       // No data to render when props are not provided
       setSimulationData(null);
     }
-  }, [liquidityShape, minPrice, maxPrice, numBins, currentPrice]);
+  }, [liquidityShape, minPrice, maxPrice, currentPrice, binStepBasisPoints]);
 
   // Don't render anything if we don't have data yet
   if (!simulationData) {
@@ -288,18 +302,15 @@ export default function SimulatedDistribution({
             const depositedAsset0 = amount0 || 0;
             const depositedAsset1 = amount1 || 0;
 
-            // Calculate price range for this displayed bar using the displayed bar count,
-            // not the original total numBins (which may be much larger and grouped).
-            const displayBarCount = simulationData.length || 1;
-            const binWidth = (maxPrice! - minPrice!) / displayBarCount;
-            const binStartPrice = minPrice! + index * binWidth;
-            const binEndPrice =
-              index === displayBarCount - 1
-                ? maxPrice!
-                : binStartPrice + binWidth;
+            // Use the actual bin price from the data for accurate display
+            const currentBinPrice = parseFloat(dataPoint.price);
+            const nextBinPrice =
+              index < simulationData.length - 1
+                ? parseFloat(simulationData[index + 1].price)
+                : currentBinPrice * 1.01; // Small increment for last bin
 
-            // Format price range for display
-            const priceRangeInfo = `${binStartPrice.toFixed(4)} - ${binEndPrice.toFixed(4)}`;
+            // Format price range for display - show the bin's price range
+            const priceRangeInfo = `${currentBinPrice.toFixed(4)} - ${nextBinPrice.toFixed(4)}`;
 
             return (
               <div
