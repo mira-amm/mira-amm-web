@@ -139,6 +139,7 @@ export default function V2LiquidityConfig({
   );
   const [isTypingMin, setIsTypingMin] = useState(false);
   const [isTypingMax, setIsTypingMax] = useState(false);
+  const [activeThumb, setActiveThumb] = useState<"min" | "max" | null>(null);
 
   // debounced input values
   const debouncedMinInput = useDebounce(minPriceInput, DEFAULT_INPUT_DEBOUNCE);
@@ -166,14 +167,6 @@ export default function V2LiquidityConfig({
     SLIDER_BIN_RANGE
   );
 
-  // Fallback slider value if computed positions are invalid or collapsed
-  const hasValidSliderPositions =
-    Number.isFinite(minSliderPosition) &&
-    Number.isFinite(maxSliderPosition) &&
-    minSliderPosition >= 0 &&
-    maxSliderPosition <= 1 &&
-    minSliderPosition < maxSliderPosition;
-
   const defaultSliderValue: [number, number] = isCurrentPriceValid
     ? [
         priceToSliderPosition(
@@ -191,8 +184,28 @@ export default function V2LiquidityConfig({
       ]
     : [0.4, 0.6];
 
-  const sliderValue: [number, number] = hasValidSliderPositions
-    ? [minSliderPosition, maxSliderPosition]
+  // Render the slider by clamping positions so it stays interactive
+  const clampPosition = (v: number) =>
+    Number.isFinite(v) ? Math.min(1, Math.max(0, v)) : v;
+  let clampedMinPos = clampPosition(minSliderPosition);
+  let clampedMaxPos = clampPosition(maxSliderPosition);
+
+  // If either is invalid (NaN/Infinity), fall back to extremes so the handle is reachable
+  if (!Number.isFinite(clampedMinPos)) clampedMinPos = 0;
+  if (!Number.isFinite(clampedMaxPos)) clampedMaxPos = 1;
+
+  // Ensure ordering with a small epsilon spacing
+  const EPS = 0.001;
+  if (clampedMinPos >= clampedMaxPos) {
+    if (activeThumb === "min") {
+      clampedMinPos = Math.max(0, clampedMaxPos - EPS);
+    } else {
+      clampedMaxPos = Math.min(1, clampedMinPos + EPS);
+    }
+  }
+
+  const sliderValue: [number, number] = isCurrentPriceValid
+    ? [clampedMinPos, clampedMaxPos]
     : defaultSliderValue;
 
   // Get current price position (should always be 0.5)
@@ -318,54 +331,70 @@ export default function V2LiquidityConfig({
   };
 
   const handleSliderChange = (newSliderRange: [number, number]) => {
+    // Infer which thumb moved when clicking the track (no pointerDown on thumb)
+    let effectiveActive: "min" | "max" | null = activeThumb;
+    if (!effectiveActive) {
+      const deltaMin = Math.abs(newSliderRange[0] - sliderValue[0]);
+      const deltaMax = Math.abs(newSliderRange[1] - sliderValue[1]);
+      effectiveActive = deltaMin > deltaMax ? "min" : "max";
+    }
     // Convert slider positions to exponential prices using slider range
-    const newMinPrice = sliderPositionToPrice(
+    const computedMin = sliderPositionToPrice(
       newSliderRange[0],
       currentPrice,
       DEFAULT_BIN_STEP,
       SLIDER_BIN_RANGE
     );
-    const newMaxPrice = sliderPositionToPrice(
+    const computedMax = sliderPositionToPrice(
       newSliderRange[1],
       currentPrice,
       DEFAULT_BIN_STEP,
       SLIDER_BIN_RANGE
     );
 
-    // Align prices to bin boundaries
-    const alignedMinPrice = alignPriceToBin(
-      newMinPrice,
+    // Align to bin boundaries
+    const alignedMin = alignPriceToBin(
+      computedMin,
       currentPrice,
       DEFAULT_BIN_STEP
     );
-    const alignedMaxPrice = alignPriceToBin(
-      newMaxPrice,
+    const alignedMax = alignPriceToBin(
+      computedMax,
       currentPrice,
       DEFAULT_BIN_STEP
     );
 
-    // Respect custom price inputs - only update the prices that weren't manually set
-    let finalMinPrice = alignedMinPrice;
-    let finalMaxPrice = alignedMaxPrice;
+    let finalMinPrice = minPrice;
+    let finalMaxPrice = maxPrice;
 
-    // If user has custom max price, preserve it when left slider moves
-    if (hasCustomMaxPrice) {
-      finalMaxPrice = maxPrice;
+    if (effectiveActive === "min") {
+      finalMinPrice = alignedMin;
+      setHasCustomMinPrice(true);
+    } else if (effectiveActive === "max") {
+      finalMaxPrice = alignedMax;
+      setHasCustomMaxPrice(true);
+    } else {
+      // No active thumb detected (e.g., keyboard). Update both.
+      finalMinPrice = alignedMin;
+      finalMaxPrice = alignedMax;
+      setHasCustomMinPrice(true);
+      setHasCustomMaxPrice(true);
     }
 
-    // If user has custom min price, preserve it when right slider moves
-    if (hasCustomMinPrice) {
-      finalMinPrice = minPrice;
+    // Validate range
+    if (finalMinPrice >= finalMaxPrice) {
+      setRangeError(INVALID_MSG);
+      return;
     }
+    if (rangeError) setRangeError(null);
 
-    // Update the price range
     setPriceRange([finalMinPrice, finalMaxPrice]);
 
     // keep inputs in sync when not typing
-    if (!isTypingMin) {
+    if (!isTypingMin && finalMinPrice !== minPrice) {
       setMinPriceInput(formatPriceForDisplay(finalMinPrice, DEFAULT_BIN_STEP));
     }
-    if (!isTypingMax) {
+    if (!isTypingMax && finalMaxPrice !== maxPrice) {
       setMaxPriceInput(formatPriceForDisplay(finalMaxPrice, DEFAULT_BIN_STEP));
     }
 
@@ -570,8 +599,20 @@ export default function V2LiquidityConfig({
                   <Slider.Range className="absolute bg-accent-primary rounded-full h-full" />
                 </Slider.Track>
 
-                <Slider.Thumb className="block w-5 h-5 bg-gray-600 border-2 border-white shadow-lg rounded-full hover:scale-105 focus:outline-none focus:ring-2 focus:ring-accent-primary focus:ring-offset-2 transition-transform" />
-                <Slider.Thumb className="block w-5 h-5 bg-gray-600 border-2 border-white shadow-lg rounded-full hover:scale-105 focus:outline-none focus:ring-2 focus:ring-accent-primary focus:ring-offset-2 transition-transform" />
+                <Slider.Thumb
+                  className="block w-5 h-5 bg-gray-600 border-2 border-white shadow-lg rounded-full hover:scale-105 focus:outline-none focus:ring-2 focus:ring-accent-primary focus:ring-offset-2 transition-transform"
+                  aria-label="Minimum price"
+                  onPointerDown={() => setActiveThumb("min")}
+                  onPointerUp={() => setActiveThumb(null)}
+                  onBlur={() => setActiveThumb(null)}
+                />
+                <Slider.Thumb
+                  className="block w-5 h-5 bg-gray-600 border-2 border-white shadow-lg rounded-full hover:scale-105 focus:outline-none focus:ring-2 focus:ring-accent-primary focus:ring-offset-2 transition-transform"
+                  aria-label="Maximum price"
+                  onPointerDown={() => setActiveThumb("max")}
+                  onPointerUp={() => setActiveThumb(null)}
+                  onBlur={() => setActiveThumb(null)}
+                />
               </Slider.Root>
 
               <div className="absolute w-0.5 h-6 bg-gray-700 transform top-1/2 -translate-y-1/2 pointer-events-none left-1/2 -translate-x-1/2"></div>
