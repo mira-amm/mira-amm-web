@@ -67,7 +67,7 @@ export default function Pagination({
             buttonBaseClasses,
             typeof page === "number" &&
               page === currentPage &&
-              "dark:bg-accent-dimmed dark:text-accent-primary bg-black text-white",
+              "bg-black text-white",
             typeof page !== "number" && disabledClasses
           )}
           onClick={() => typeof page === "number" && onPageChange(page)}
