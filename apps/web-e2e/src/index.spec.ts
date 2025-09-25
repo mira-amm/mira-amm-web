@@ -6,6 +6,7 @@ import {
   PageElements,
   By,
   Click,
+  Scroll,
   isVisible,
 } from "@serenity-js/web";
 import {Duration, Wait} from "@serenity-js/core";
@@ -171,6 +172,11 @@ describe.serial("With connected wallet", () => {
         not(isVisible())
       ),
       Wait.until(addLiquidityButton(), isPresent()),
+      Scroll.to(addLiquidityButton()),
+      Wait.upTo(Duration.ofSeconds(10)).until(
+        addLiquidityButton(),
+        isVisible()
+      ),
       Click.on(addLiquidityButton())
       // https://github.com/user-attachments/assets/f72703fd-2c2b-4181-92e9-2ed7329e93c7
       // PageElement.located(By.cssContainingText(".ActionButton_btn__fm8nx", "Preview"))
