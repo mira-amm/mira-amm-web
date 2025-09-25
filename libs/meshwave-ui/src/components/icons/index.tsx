@@ -835,11 +835,17 @@ export function PointsIcon() {
       width="20"
       height="20"
       viewBox="0 0 20 20"
-      fill="none"
+      fill="currentColor"
       xmlns="http://www.w3.org/2000/svg"
     >
       {/* Circle background */}
-      <rect width="20" height="20" rx="10" fill="white" fillOpacity="0.4" />
+      <rect
+        width="20"
+        height="20"
+        rx="10"
+        fill="currentColor"
+        fillOpacity="0.4"
+      />
 
       {/* 45° rotated square */}
       <rect
@@ -848,7 +854,7 @@ export function PointsIcon() {
         width="6.87"
         height="6.87"
         transform="rotate(45 10 5.17)"
-        fill="white"
+        fill="currentColor"
       />
     </svg>
   );

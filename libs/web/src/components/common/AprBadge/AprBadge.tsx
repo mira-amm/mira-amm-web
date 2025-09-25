@@ -69,17 +69,17 @@ export function AprBadge({
               "bg-[url('/images/overlay-5.jpg')] bg-cover",
             background === "overlay-9" &&
               "bg-[url('/images/overlay-9.jpg')] bg-cover",
-            background === "black" && "bg-black bg-cover",
+            background === "black" && "bg-black bg-cover dark:bg-white",
             !rebrandEnabled &&
               "bg-black dark:bg-[linear-gradient(170deg,#262f5f_35%,#c41cff_100%)]"
           )}
         >
-          <span className="flex items-center justify-center text-white text-[19px] w-[15px] h-[15px]">
+          <span className="flex items-center justify-center text-white dark:text-black text-[19px] w-[15px] h-[15px]">
             <PointsIcon />
           </span>
           <span
             className={clsx(
-              "text-white whitespace-normal break-words font-alt",
+              "text-white dark:text-black whitespace-normal break-words font-alt",
               small
                 ? "text-[13px] leading-[16px]"
                 : "text-base leading-[19.36px]"
