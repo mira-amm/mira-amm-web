@@ -27,11 +27,16 @@ export function ButtonGroup<T extends string | number>({
   renderItem,
 }: ButtonGroupProps<T>) {
   const normalized = items.map((i) =>
-    typeof i === "object" ? i : ({value: i} as ButtonGroupItem<T>)
+    typeof i === "object"
+      ? (i as ButtonGroupItem<T>)
+      : ({value: i} as ButtonGroupItem<T>)
   );
 
   return (
-    <div className={cn("inline-flex", fullWidth && "w-full", className)}>
+    <div
+      className={cn("inline-flex", fullWidth && "w-full", className)}
+      role="group"
+    >
       {normalized.map((item, i) => {
         const selected = item.value === value;
         const isFirst = i === 0;
@@ -40,15 +45,17 @@ export function ButtonGroup<T extends string | number>({
         return (
           <button
             key={String(item.value)}
+            type="button"
+            aria-pressed={selected}
             disabled={item.disabled}
             className={cn(
-              fullWidth && "w-full",
-              "h-10 px-2 font-alt border bg-background-grey-dark text-content-dimmed-light cursor-pointer",
-              "hover:border hover:border-black dark:border-light-theme-5 dark:hover:text-content-primary dark:hover:border-light-theme-5",
+              fullWidth ? "flex-1" : "px-3",
+              "relative h-10 px-2 font-alt box-border border cursor-pointer dark:border-light-theme-5",
               isFirst && "rounded-l-lg",
               isLast && "rounded-r-lg",
+              "text-content-dimmed-light hover:border-black dark:hover:bg-white dark:hover:text-black dark:hover:border-light-theme-5",
               selected &&
-                "border border-black dark:border-light-theme-5 bg-black dark:bg-background-grey-light text-white",
+                "bg-black text-white dark:bg-white dark:text-black border-black dark:border-light-theme-5",
               item.disabled && "opacity-50 cursor-not-allowed",
               buttonClassName
             )}
