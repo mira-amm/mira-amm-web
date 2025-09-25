@@ -295,6 +295,18 @@
           "storage": "tmp/local-registry/storage"
         }
       },
+      "dev:local": {
+        "executor": "nx:run-commands",
+        "continuous": true,
+        "options": {
+          "commands": [
+            "nx dev web",
+            "nx dev:clean indexer"
+          ],
+          "parallel": true,
+          "color": true
+        }
+      },
       "format:rust": {
         "executor": "nx:run-commands",
         "options": {
