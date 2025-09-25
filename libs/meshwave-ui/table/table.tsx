@@ -14,7 +14,7 @@ function Table({
     <div
       data-slot="table-container"
       className={cn(
-        "relative w-full overflow-x-auto rounded-ten bg-background-grey-dark border-border-secondary border-[12px] dark:border-0 p-5",
+        "relative w-full overflow-x-auto rounded-ten bg-background-grey-dark border-border-secondary border-[12px] p-5",
         tableParentClassName
       )}
     >
