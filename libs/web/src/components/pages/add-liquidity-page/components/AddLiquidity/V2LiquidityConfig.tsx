@@ -596,18 +596,18 @@ export default function V2LiquidityConfig({
                 step={sliderBounds.sliderStep}
               >
                 <Slider.Track className="bg-gray-300 relative grow rounded-full h-1">
-                  <Slider.Range className="absolute bg-accent-primary rounded-full h-full" />
+                  <Slider.Range className="absolute bg-accent-primary dark:bg-mc-black rounded-full h-full" />
                 </Slider.Track>
 
                 <Slider.Thumb
-                  className="block w-5 h-5 bg-gray-600 border-2 border-white shadow-lg rounded-full hover:scale-105 focus:outline-none focus:ring-2 focus:ring-accent-primary focus:ring-offset-2 transition-transform"
+                  className="block w-5 h-5 bg-gray-600 border-2 border-white shadow-lg rounded-full hover:scale-105 focus:outline-none focus:ring-2 focus:ring-accent-primary dark:focus:ring-mc-black focus:ring-offset-2 transition-transform"
                   aria-label="Minimum price"
                   onPointerDown={() => setActiveThumb("min")}
                   onPointerUp={() => setActiveThumb(null)}
                   onBlur={() => setActiveThumb(null)}
                 />
                 <Slider.Thumb
-                  className="block w-5 h-5 bg-gray-600 border-2 border-white shadow-lg rounded-full hover:scale-105 focus:outline-none focus:ring-2 focus:ring-accent-primary focus:ring-offset-2 transition-transform"
+                  className="block w-5 h-5 bg-gray-600 border-2 border-white shadow-lg rounded-full hover:scale-105 focus:outline-none focus:ring-2 focus:ring-accent-primary dark:focus:ring-mc-black focus:ring-offset-2 transition-transform"
                   aria-label="Maximum price"
                   onPointerDown={() => setActiveThumb("max")}
                   onPointerUp={() => setActiveThumb(null)}
