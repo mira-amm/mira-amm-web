@@ -107,7 +107,7 @@ function SettingsModalContentNew({
             pattern="^[0-9]*[.,]?[0-9]*$"
             aria-label="Custom slippage percentage"
             aria-describedby="slippage-description"
-            className="w-22 px-3 font-alt h-10 rounded-lg text-content-dimmed-light bg-background-grey-dark focus:border-accent-primary focus:text-content-primary"
+            className="w-22 px-3 font-alt h-10 rounded-lg text-content-dimmed-light bg-background-grey-dark focus:border-mc-black focus:text-content-primary border dark:border-light-theme-5"
             value={inputValue}
             onChange={handleSlippageChange}
             onKeyDown={handleKeyDown}
