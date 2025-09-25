@@ -21,6 +21,8 @@ export type LiquidityData = {
   price: string;
   asset0Value: number;
   asset1Value: number;
+  // Marks the bin that contains the current price in the ungrouped data
+  isCurrentBin?: boolean;
 }[];
 
 // Generate bin data based on actual parameters with exponential price calculation
@@ -40,7 +42,8 @@ function generateBinData(
   // Calculate bin IDs for the price range
   const minBinId = Math.floor(Math.log(minPrice) / logBase);
   const maxBinId = Math.ceil(Math.log(maxPrice) / logBase);
-  const currentBinId = Math.round(Math.log(currentPrice) / logBase);
+  // Use floor so the bin range [price(n), price(n+1)) always contains currentPrice
+  const currentBinId = Math.floor(Math.log(currentPrice) / logBase);
 
   // Use all bins in the actual price range
   const startBinId = minBinId;
@@ -115,6 +118,7 @@ function generateBinData(
       assetBHeight,
       asset0Value: assetAHeight,
       asset1Value: assetBHeight,
+      isCurrentBin: isCurrentPrice,
       showPrice: binId === startBinId || binId === endBinId, // Only show first and last prices
     });
   }
@@ -125,7 +129,8 @@ function generateBinData(
 // Combine bins when there are too many to display clearly
 function combineBins(
   data: LiquidityData,
-  maxDisplayBins: number
+  maxDisplayBins: number,
+  anchorIndex?: number
 ): LiquidityData {
   if (data.length <= maxDisplayBins) {
     return data;
@@ -133,8 +138,43 @@ function combineBins(
 
   const combinedData: LiquidityData = [];
   const groupSize = Math.ceil(data.length / maxDisplayBins);
+  const numGroups = Math.ceil(data.length / groupSize);
 
-  for (let i = 0; i < data.length; i += groupSize) {
+  // Choose an offset within [0, groupSize-1] so the anchorIndex falls into the middle group
+  const targetGroupIndex = Math.floor(numGroups / 2);
+  let startOffsetWithinGroup = 0;
+  if (typeof anchorIndex === "number" && !Number.isNaN(anchorIndex)) {
+    startOffsetWithinGroup = anchorIndex - targetGroupIndex * groupSize;
+    if (startOffsetWithinGroup < 0) startOffsetWithinGroup = 0;
+    if (startOffsetWithinGroup >= groupSize) {
+      startOffsetWithinGroup = groupSize - 1;
+    }
+  }
+
+  // If there's a leading partial group, add it first
+  if (startOffsetWithinGroup > 0) {
+    const group = data.slice(0, startOffsetWithinGroup);
+    const avgAssetAHeight =
+      group.reduce((sum, bin) => sum + bin.assetAHeight, 0) / group.length;
+    const avgAssetBHeight =
+      group.reduce((sum, bin) => sum + bin.assetBHeight, 0) / group.length;
+    const avgAsset0Value =
+      group.reduce((sum, bin) => sum + bin.asset0Value, 0) / group.length;
+    const avgAsset1Value =
+      group.reduce((sum, bin) => sum + bin.asset1Value, 0) / group.length;
+    const groupStartBin = group[0];
+    combinedData.push({
+      binId: combinedData.length,
+      price: groupStartBin.price,
+      assetAHeight: avgAssetAHeight,
+      assetBHeight: avgAssetBHeight,
+      asset0Value: avgAsset0Value,
+      asset1Value: avgAsset1Value,
+      showPrice: true,
+    });
+  }
+
+  for (let i = startOffsetWithinGroup; i < data.length; i += groupSize) {
     const group = data.slice(i, i + groupSize);
     const avgAssetAHeight =
       group.reduce((sum, bin) => sum + bin.assetAHeight, 0) / group.length;
@@ -145,18 +185,18 @@ function combineBins(
     const avgAsset1Value =
       group.reduce((sum, bin) => sum + bin.asset1Value, 0) / group.length;
 
-    // Use the middle bin's price as representative
-    const middleIndex = Math.floor(group.length / 2);
-    const representativeBin = group[middleIndex];
+    // Use the first bin's lower price so groups form contiguous ranges
+    const groupStartBin = group[0];
 
     combinedData.push({
       binId: combinedData.length,
-      price: representativeBin.price,
+      price: groupStartBin.price,
       assetAHeight: avgAssetAHeight,
       assetBHeight: avgAssetBHeight,
       asset0Value: avgAsset0Value,
       asset1Value: avgAsset1Value,
-      showPrice: representativeBin.showPrice,
+      // Only show price labels for the first and last groups
+      showPrice: combinedData.length === 0 || i + group.length >= data.length,
     });
   }
 
@@ -211,7 +251,8 @@ export default function SimulatedDistribution({
 
       // Limit display to maximum 50 bins to prevent overflow
       const maxDisplayBins = 50;
-      const finalData = combineBins(generatedData, maxDisplayBins);
+      const anchorIndex = generatedData.findIndex((d) => d.isCurrentBin);
+      const finalData = combineBins(generatedData, maxDisplayBins, anchorIndex);
       setSimulationData(finalData);
     } else {
       // No data to render when props are not provided
@@ -304,13 +345,21 @@ export default function SimulatedDistribution({
 
             // Use the actual bin price from the data for accurate display
             const currentBinPrice = parseFloat(dataPoint.price);
-            const nextBinPrice =
-              index < simulationData.length - 1
-                ? parseFloat(simulationData[index + 1].price)
-                : currentBinPrice * 1.01; // Small increment for last bin
+            const stepDecimal = binStepBasisPoints / 10000;
+            // Compute contiguous range, anchored to min/max where provided
+            const lowerBound =
+              minPrice !== undefined && index === 0
+                ? minPrice
+                : currentBinPrice;
+            const upperBound =
+              maxPrice !== undefined && index === simulationData.length - 1
+                ? maxPrice
+                : index < simulationData.length - 1
+                  ? parseFloat(simulationData[index + 1].price)
+                  : currentBinPrice * (1 + stepDecimal);
 
             // Format price range for display - show the bin's price range
-            const priceRangeInfo = `${currentBinPrice.toFixed(4)} - ${nextBinPrice.toFixed(4)}`;
+            const priceRangeInfo = `${lowerBound.toFixed(4)} - ${upperBound.toFixed(4)}`;
 
             return (
               <div
