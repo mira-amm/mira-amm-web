@@ -67,7 +67,7 @@ export default function PointsRankTable() {
       header: "Points",
       cell: (info) => (
         <div className="flex items-center font-alt">
-          <span className="text-accent-primary flex items-center">
+          <span className="dark:text-background-grey-dark flex items-center">
             <PointsIconSimple />
           </span>
           {info.getValue().toLocaleString(DefaultLocale, {
