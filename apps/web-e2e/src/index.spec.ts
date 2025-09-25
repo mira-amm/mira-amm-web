@@ -1,6 +1,5 @@
-import {chromium, type BrowserContext} from "@playwright/test";
+import {chromium, Page, type BrowserContext} from "@playwright/test";
 import {
-  Page,
   Navigate,
   PageElement,
   PageElements,
