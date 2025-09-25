@@ -1,5 +1,5 @@
-import {bn, CHAIN_IDS, TxParams} from "fuels";
-import {getBrandText} from "./brandName";
+import { bn, CHAIN_IDS, TxParams } from "fuels";
+import { getBrandText } from "./brandName";
 
 export const DEFAULT_AMM_CONTRACT_ID =
   "0x2e40f2b244b98ed6b8204b3de0156c6961f98525c8162f80162fcf53eebd90e7" as const;

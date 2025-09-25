@@ -1,7 +1,7 @@
-import {type ChangeEvent, useMemo, useState} from "react";
-import {CoinDataWithPrice} from "../utils/coinsConfig";
-import {BN, CoinQuantity} from "fuels";
-import {checkIfCoinVerified} from "../utils/checkIfCoinVerified";
+import { type ChangeEvent, useMemo, useState } from "react";
+import { CoinDataWithPrice } from "../utils/coinsConfig";
+import { BN, CoinQuantity } from "fuels";
+import { checkIfCoinVerified } from "../utils/checkIfCoinVerified";
 import {
   useFetchMultiAssetImages,
   useVerifiedAssets,
@@ -17,15 +17,16 @@ export function useCoinListModal(
 ) {
   const [value, setValue] = useState("");
 
-  const {assets, isLoading} = useAssetList();
-  const {verifiedAssetData, isLoading: isVerifiedAssetsLoading} =
+  const { assets, isLoading } = useAssetList();
+
+  const { verifiedAssetData, isLoading: isVerifiedAssetsLoading } =
     useVerifiedAssets();
 
   const assetsWithOutIcon = assets
     ?.filter((asset) => !asset.icon)
     .map((asset) => asset.assetId);
 
-  const {data: assetImages, isLoading: isAssetImagesLoading} =
+  const { data: assetImages, isLoading: isAssetImagesLoading } =
     useFetchMultiAssetImages(assetsWithOutIcon);
 
   const handleFilterChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -113,7 +114,7 @@ export function useCoinListModal(
 
         return 0;
       })
-      .reduce<(CoinDataWithPrice & {userBalance: CoinQuantity | undefined})[]>(
+      .reduce<(CoinDataWithPrice & { userBalance: CoinQuantity | undefined })[]>(
         (acc, eachAsset) => {
           const coinBalance = balances?.find(
             (balance) => balance.assetId === eachAsset.assetId

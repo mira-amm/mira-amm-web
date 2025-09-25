@@ -4,6 +4,8 @@ import { VerifiedAssets } from "../utils/checkIfCoinVerified";
 export const useVerifiedAssets = () => {
   const { data: verifiedAssetData, isLoading, error } = useQuery({
     queryKey: ["verifiedAssets"],
+    cacheTime: 0, // Disable cache for debugging
+    staleTime: 0, // Always consider stale for debugging
     queryFn: async () => {
       const response = await fetch("/api/verified-assets");
       if (!response.ok) {
@@ -25,9 +27,9 @@ export const useVerifiedAssets = () => {
     },
   });
 
-  return { 
-    verifiedAssetData, 
-    isLoading, 
-    error: error as Error | null 
+  return {
+    verifiedAssetData,
+    isLoading,
+    error: error as Error | null
   };
 };

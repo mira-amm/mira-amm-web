@@ -51,6 +51,7 @@
     ARCHITECTURE_LOCAL_URL = "http://localhost:5173";
     GRAPH_LOCAL_URL = "http://localhost:4211";
     SUPABASE_STUDIO_URL = "http://localhost:54323";
+    NEXT_PUBLIC_SQD_INDEXER_URL = "http://localhost:4350/graphql";
 
     SENTIO_API_URL = "https://app.sentio.xyz/api/v1/analytics/fuellabs/mira-mainnet/sql/execute";
     PAYLOAD_SECRET = "YOUR_SECRET_HERE";

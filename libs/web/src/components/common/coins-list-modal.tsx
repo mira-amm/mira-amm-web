@@ -1,11 +1,11 @@
 "use client";
 
-import {useEffect, useMemo, useCallback, useRef} from "react";
-import {Search} from "lucide-react";
-import {CoinQuantity} from "fuels";
-import {SkeletonLoader, CoinListItem} from "@/web/src/components/common";
-import {UnknownCoinListItem} from "@/web/src/components/common/Swap/components/UnknownCoinListItem";
-import {useCoinListModal} from "@/src/hooks/useCoinListModal";
+import { useEffect, useMemo, useCallback, useRef } from "react";
+import { Search } from "lucide-react";
+import { CoinQuantity } from "fuels";
+import { SkeletonLoader, CoinListItem } from "@/web/src/components/common";
+import { UnknownCoinListItem } from "@/web/src/components/common/Swap/components/UnknownCoinListItem";
+import { useCoinListModal } from "@/src/hooks/useCoinListModal";
 
 const assetIdRegex = /^0x[0-9a-fA-F]{64}$/;
 
@@ -18,8 +18,10 @@ export function CoinsListModal({
   selectCoin: (assetId: string | null) => void;
   verifiedAssetsOnly?: boolean;
 }) {
-  const {allCoins, handleFilterChange, isLoading, searchValue} =
+  const { allCoins, handleFilterChange, isLoading, searchValue } =
     useCoinListModal(balances, verifiedAssetsOnly);
+
+  console.log({ allCoins })
 
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -81,7 +83,7 @@ export function CoinsListModal({
   );
 }
 
-function EmptySearchResults({value}: {value: string}) {
+function EmptySearchResults({ value }: { value: string }) {
   return (
     <div className="px-4 py-2 text-content-dimmed-light">
       {value && (
