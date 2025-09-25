@@ -537,7 +537,7 @@ export default function V2LiquidityConfig({
       <div className="space-y-4">
         <div className="flex justify-between items-center">
           <SectionHeading>Liquidity shape</SectionHeading>
-          <button className="text-accent-primary-2 text-sm flex items-center hover:opacity-80 gap-1">
+          <button className="text-accent-primary-2 dark:text-content-primary text-sm flex items-center hover:opacity-80 gap-1">
             <svg
               className="w-4 h-4"
               fill="none"
@@ -726,7 +726,7 @@ export default function V2LiquidityConfig({
 
         <button
           onClick={resetPrice}
-          className="text-accent-primary-2 text-sm flex items-center hover:opacity-80 gap-1 align-end ml-auto"
+          className="text-accent-primary-2 dark:text-content-primary text-sm flex items-center hover:opacity-80 gap-1 align-end ml-auto"
         >
           <svg
             className="w-4 h-4"
