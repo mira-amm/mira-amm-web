@@ -59,3 +59,14 @@ jobs:
           NEXT_PUBLIC_ENABLE_REBRAND_UI: true
           FUEL_WALLET_PRIVATE_KEY: ${{ secrets.FUEL_WALLET_PRIVATE_KEY }}
         run: xvfb-run pnpm nx run-many -t e2e -p api web-e2e --verbose
+
+      - name: 📸 Upload Playwright artifacts
+        uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: playwright-report
+          path: |
+            apps/web-e2e/test-results/
+            apps/web-e2e/playwright-report/
+            apps/web-e2e/target/site/serenity/
+          retention-days: 30
