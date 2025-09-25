@@ -1,35 +1,20 @@
 import {chromium, type BrowserContext} from "@playwright/test";
-import {Page, Navigate, PageElement, PageElements, By, Click, isVisible, Switch} from "@serenity-js/web";
 import {
-  Duration,
-  Wait,
-  Interaction,
-  Cast
-} from "@serenity-js/core";
+  Page,
+  Navigate,
+  PageElement,
+  PageElements,
+  By,
+  Click,
+  isVisible,
+} from "@serenity-js/web";
+import {Duration, Wait} from "@serenity-js/core";
+
+import {Ensure, equals, isPresent, not} from "@serenity-js/assertions";
+
+import {GetRequest, LastResponse, Send} from "@serenity-js/rest";
 
 import {
-  Ensure,
-  property,
-  equals,
-  and,
-  startsWith,
-  isPresent,
-  not,
-} from "@serenity-js/assertions";
-
-import {BrowseTheWebWithPlaywright} from "@serenity-js/playwright";
-
-import {
-  CallAnApi,
-  DeleteRequest,
-  GetRequest,
-  LastResponse,
-  PostRequest,
-  Send,
-} from "@serenity-js/rest";
-
-import {
-  connectWalletButton,
   swapModule,
   addLiquidityButton,
   header,
@@ -58,64 +43,49 @@ import {
   TOKENS,
 } from "./tasks";
 
-import {
-  Provider,
-  Wallet,
-} from 'fuels';
+import {Provider} from "fuels";
 
-import {useBase,
-        useFixtures,
-        describe,
-        it,
-        test,
-        beforeEach,
-        afterEach
-       } from "@serenity-js/playwright-test";
+import {useBase, describe, it, beforeEach} from "@serenity-js/playwright-test";
 
-import {
-  test as fuelsBase,
-  downloadFuel,
-} from '@fuels/playwright-utils';
+import {test as fuelsBase, downloadFuel} from "@fuels/playwright-utils";
 
-import { FuelWalletTestHelper} from './fuelWalletTestHelper'
-
-import { BrowseTheWeb } from '@serenity-js/web'
+import {FuelWalletTestHelper} from "./fuelWalletTestHelper";
 
 describe.serial("With connected wallet", () => {
-
-const {it} = useBase(fuelsBase)
-  .useFixtures<{
+  const {it} = useBase(fuelsBase).useFixtures<{
     context: BrowserContext;
     page: Page;
     pathToExtension: string;
     fuelWalletVersion: string;
     fuelWalletTestHelper: FuelWalletTestHelper;
-}>({
-   fuelWalletVersion: "0.58.0",
-  pathToExtension: async ({ fuelWalletVersion }, use) => {
-    const fuelPath = await downloadFuel(fuelWalletVersion);
-    await use(fuelPath);
-  },
-  context: async ({ pathToExtension }, use) => {
-    const context = await chromium.launchPersistentContext("", {
-      channel: 'chromium',
-      headless: false,
-      args: [
-        `--disable-extensions-except=${pathToExtension}`,
-        `--load-extension=${pathToExtension}`
-      ]
-    });
+  }>({
+    fuelWalletVersion: "0.58.0",
+    pathToExtension: async ({fuelWalletVersion}, use) => {
+      const fuelPath = await downloadFuel(fuelWalletVersion);
+      await use(fuelPath);
+    },
+    context: async ({pathToExtension}, use) => {
+      const context = await chromium.launchPersistentContext("", {
+        channel: "chromium",
+        headless: false,
+        args: [
+          `--disable-extensions-except=${pathToExtension}`,
+          `--load-extension=${pathToExtension}`,
+        ],
+      });
 
-    await use(context);
-    await context.close();
-  },
-  fuelWalletTestHelper: async ({ context }, use) => {
-    // TODO: switch over to testnet
-      const fuelProvider = new Provider("https://mainnet.fuel.network/v1/graphql");
-      const mnemonic = process.env.FUEL_WALLET_MNEMONIC
-        ?? "demand fashion unaware upgrade upon heart bright august panel kangaroo want gaze";
-      const password = process.env.FUEL_WALLET_PASSWORD
-        ?? "$123Ran123Dom123!";
+      await use(context);
+      await context.close();
+    },
+    fuelWalletTestHelper: async ({context}, use) => {
+      // TODO: switch over to testnet
+      const fuelProvider = new Provider(
+        "https://mainnet.fuel.network/v1/graphql"
+      );
+      const mnemonic =
+        process.env.FUEL_WALLET_MNEMONIC ??
+        "demand fashion unaware upgrade upon heart bright august panel kangaroo want gaze";
+      const password = process.env.FUEL_WALLET_PASSWORD ?? "$123Ran123Dom123!";
 
       let [background] = context.serviceWorkers();
       if (!background) background = await context.waitForEvent("serviceworker");
@@ -144,49 +114,56 @@ const {it} = useBase(fuelsBase)
     //       ))
     //       await use(cast)
     //   },
-})
+  });
 
   it("should be able to interact with swap & liquidity", async ({
     fuelWalletTestHelper,
     actor,
     page,
   }, use) => {
+    await page.goto("/");
+    await page.bringToFront();
 
-  await page.goto('/')
-  await page.bringToFront()
+    await page.getByRole("button", {name: "Connect Wallet"}).click();
+    await page.getByLabel("Connect to Fuel Wallet").click();
+    await fuelWalletTestHelper.walletConnect();
+    await page.getByRole("button", {name: "Sign and Confirm"}).click();
 
-  await page.getByRole('button', { name: 'Connect Wallet' }).click()
-  await page.getByLabel('Connect to Fuel Wallet').click()
-  await fuelWalletTestHelper.walletConnect();
-  await page.getByRole('button', { name: 'Sign and Confirm' }).click()
+    await actor.attemptsTo(
+      Wait.until(
+        PageElements.located(
+          By.cssContainingText("button", "DISCONNECT")
+        ).last(),
+        isPresent()
+      ),
+      Ensure.that(
+        PageElement.located(By.cssContainingText("button", "Input amounts")),
+        isPresent()
+      )
+    );
 
-  await actor
-    .attemptsTo(
-    Wait.until(PageElements.located(By.cssContainingText("button", "DISCONNECT")).last(), isPresent()),
-    Ensure.that(PageElement.located(By.cssContainingText("button", "Input amounts")), isPresent()));
+    await page.locator("input").last().fill("1");
+    await page.getByRole("button", {name: "Review"}).click();
+    await page.getByRole("button", {name: "Swap"}).click();
+    await fuelWalletTestHelper.walletReject();
+    // await page.getByRole('button', { name: 'Try again' }).click()
 
-  await page.locator('input').last().fill("1")
-  await page.getByRole('button', { name: 'Review' }).click()
-  await page.getByRole('button', { name: 'Swap' }).click()
-  await fuelWalletTestHelper.walletReject();
-  // await page.getByRole('button', { name: 'Try again' }).click()
+    // await fuelWalletTestHelper.walletApprove();
+    // await page.getByRole('button', { name: 'View transaction' }).click()
 
-  // await fuelWalletTestHelper.walletApprove();
-  // await page.getByRole('button', { name: 'View transaction' }).click()
+    // should be able to create volatile pool (ETH/FUEL)
+    await actor.attemptsTo(
+      Navigate.to("/liquidity"),
+      CreatePool.ofType("Volatile").withAssets(TOKENS.Base, TOKENS.Quote)
+    );
 
-// should be able to create volatile pool (ETH/FUEL)
-  await actor.attemptsTo(
-    Navigate.to("/liquidity"),
-    CreatePool.ofType("Volatile").withAssets(TOKENS.Base, TOKENS.Quote)
-  );
+    // should be able to create stable pool (ETH/FUEL)
+    await actor.attemptsTo(
+      Navigate.to("/liquidity"),
+      CreatePool.ofType("Stable").withAssets(TOKENS.Base, TOKENS.Quote)
+    );
 
-// should be able to create stable pool (ETH/FUEL)
-  await actor.attemptsTo(
-    Navigate.to("/liquidity"),
-    CreatePool.ofType("Stable").withAssets(TOKENS.Base, TOKENS.Quote)
-  );
-
-// should be able to add liquidity to existing pool (FUEL/ETH)
+    // should be able to add liquidity to existing pool (FUEL/ETH)
     await actor.attemptsTo(
       Navigate.to("/liquidity"),
       Wait.upTo(Duration.ofSeconds(10)).until(
@@ -194,7 +171,7 @@ const {it} = useBase(fuelsBase)
         not(isVisible())
       ),
       Wait.until(addLiquidityButton(), isPresent()),
-      Click.on(addLiquidityButton()),
+      Click.on(addLiquidityButton())
       // https://github.com/user-attachments/assets/f72703fd-2c2b-4181-92e9-2ed7329e93c7
       // PageElement.located(By.cssContainingText(".ActionButton_btn__fm8nx", "Preview"))
       // Click.on(previewButton()),
@@ -342,11 +319,11 @@ describe("Layout", () => {
     it("should show 'Bridge' link", async ({actor}) =>
       actor.attemptsTo(Layout.shouldShow("'Bridge' link", headerBridgeLink())));
 
-!process.env.NEXT_PUBLIC_ENABLE_REBRAND_UI &&
-    it("should show 'Mainnet' text", async ({actor}) =>
-      actor.attemptsTo(
-        Layout.shouldShow("'Mainnet' text", headerMainnetText())
-      ));
+    !process.env.NEXT_PUBLIC_ENABLE_REBRAND_UI &&
+      it("should show 'Mainnet' text", async ({actor}) =>
+        actor.attemptsTo(
+          Layout.shouldShow("'Mainnet' text", headerMainnetText())
+        ));
 
     it("should show 'Connect Wallet' button", async ({actor}) =>
       actor.attemptsTo(

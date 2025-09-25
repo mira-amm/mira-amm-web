@@ -44,17 +44,17 @@ export const slippageSettingsButton = () =>
   PageElement.located(By.css("button svg.lucide-settings"));
 
 export const slippageSettingsModal = () =>
-process.env.NEXT_PUBLIC_ENABLE_REBRAND_UI ?
-  PageElement.located(By.cssContainingText("div", "Slippage tolerance")) :
-  PageElement.located(By.cssContainingText("p", "Settings"));
+  process.env.NEXT_PUBLIC_ENABLE_REBRAND_UI
+    ? PageElement.located(By.cssContainingText("div", "Slippage tolerance"))
+    : PageElement.located(By.cssContainingText("p", "Settings"));
 
 export const slippageSettingsModalPercentageButton = (percentage: string) =>
   PageElement.located(By.cssContainingText("button", `${percentage}%`));
 
 export const slippageSettingsModalCustomButton = () =>
-process.env.NEXT_PUBLIC_ENABLE_REBRAND_UI ?
-  PageElement.located(By.css("[aria-label='Custom slippage percentage']")) :
-  PageElement.located(By.cssContainingText("button", "Custom"));
+  process.env.NEXT_PUBLIC_ENABLE_REBRAND_UI
+    ? PageElement.located(By.css("[aria-label='Custom slippage percentage']"))
+    : PageElement.located(By.cssContainingText("button", "Custom"));
 
 export const slippageSettingsInput = () =>
   PageElements.located(By.css("input")).last();
