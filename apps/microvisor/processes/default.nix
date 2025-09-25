@@ -29,37 +29,6 @@
       };
     };
 
-    dev-admin = {
-      exec = "nx dev admin";
-      process-compose = {
-        description = "🛞 Admin | 8000 | admin.mira.ly";
-        is_tty = true;
-        depends_on = {
-          postgres.condition = "process_healthy";
-        };
-        ready_log_line = "Ready in";
-        namespace = "🧮 VIEWS";
-        disabled = true;
-      };
-    };
-
-    dev-microgame = {
-      exec = "nx dev microgame";
-      process-compose = {
-        is_tty = true;
-        readiness_probe = {
-          http_get = {
-            port = "4200";
-            host = "localhost";
-            scheme = "http";
-          };
-        };
-        description = "🕹 Microgame | 4200 | microgame.mira.ly";
-        namespace = "🧮 VIEWS";
-        disabled = true;
-      };
-    };
-
     supabase-start = {
       exec = "process-compose process stop postgres; supabase start --workdir apps/microvisor/services";
       process-compose = {
