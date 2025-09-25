@@ -49,10 +49,20 @@ export class FuelWalletTestHelper {
     mnemonic: string;
     password?: string;
   }) {
-    const signupPage = context.pages().find((page) => {
-      const url = page.url();
-      return url.includes("sign-up");
-    });
+    // Wait for the signup page to appear
+    let signupPage;
+    for (let i = 0; i < 30; i++) {
+      signupPage = context.pages().find((page) => {
+        const url = page.url();
+        return url.includes("sign-up");
+      });
+      if (signupPage) break;
+      await new Promise((resolve) => setTimeout(resolve, 1000));
+    }
+
+    if (!signupPage) {
+      throw new Error("Signup page did not appear after 30 seconds");
+    }
 
     await signupPage.bringToFront();
     expect(signupPage.url()).toContain("sign-up");
