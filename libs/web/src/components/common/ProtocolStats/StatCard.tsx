@@ -39,10 +39,10 @@ export function StatCard({
 
   return (
     <div className={cn("flex flex-col gap-4 md:w-[206px]", className)}>
-      <h3 className="dark:text-content-tertiary font-regular text-[17.72px] leading-none">
+      <h3 className="dark:text-white font-regular text-[17.72px] leading-none">
         {title}
       </h3>
-      <div className="dark:text-content-tertiary text-[25.23px] leading-none font-alt">
+      <div className="dark:text-white text-[25.23px] leading-none font-alt">
         {isLoading ? (
           <div className="animate-pulse bg-gray-200 h-[25.23px] w-20 rounded"></div>
         ) : (
