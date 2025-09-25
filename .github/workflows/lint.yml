@@ -34,5 +34,14 @@ jobs:
       - name: 📦 Install dependencies
         run: pnpm i --frozen-lockfile
 
+      - name: ⚡ Cache Nx
+        uses: actions/cache@v4
+        with:
+          path: |
+            .nx/cache
+            node_modules/.cache/nx
+          key: ${{ runner.os }}-nx-${{ hashFiles('**/pnpm-lock.yaml', 'nx.json', 'package.json') }}
+          restore-keys: ${{ runner.os }}-nx-
+
       - name: 🧹 Lint Projects
         run: pnpx prettier --check apps/web
