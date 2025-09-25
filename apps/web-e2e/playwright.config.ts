@@ -1,5 +1,8 @@
 /* eslint-disable node/prefer-global/process */
-import type { SerenityFixtures, SerenityWorkerFixtures } from '@serenity-js/playwright-test'
+import type {
+  SerenityFixtures,
+  SerenityWorkerFixtures,
+} from "@serenity-js/playwright-test";
 import {fileURLToPath} from "node:url";
 import {workspaceRoot} from "@nx/devkit";
 import {nxE2EPreset} from "@nx/playwright/preset";
@@ -43,28 +46,30 @@ export default defineConfig<SerenityFixtures, SerenityWorkerFixtures>({
     {
       name: "chromium",
       use: {
-        channel: 'chromium',
+        channel: "chromium",
         // ...devices["Desktop Chrome"],
         launchOptions: {
           args: [
             // "--no-sandbox",
-            '--disable-features=ExtensionDisableUnsupportedDeveloper',
-            ...(process.platform === "linux" && !process.env.CI ? [
-            "--use-angle=vulkan",
-            "--enable-features=Vulkan",
-            "--disable-vulkan-surface",
-            "--enable-unsafe-webgpu",
-            ] : []),
+            "--disable-features=ExtensionDisableUnsupportedDeveloper",
+            ...(process.platform === "linux" && !process.env.CI
+              ? [
+                  "--use-angle=vulkan",
+                  "--enable-features=Vulkan",
+                  "--disable-vulkan-surface",
+                  "--enable-unsafe-webgpu",
+                ]
+              : []),
           ],
         },
-      crew: [
-        ["@serenity-js/web:Photographer", {strategy: "TakePhotosOfFailures"}],
-      ],
-      baseURL,
-      trace: "on-first-retry",
-      permissions: ['clipboard-read', 'clipboard-write'],
-      actionTimeout: 5000,
-      screenshot: 'only-on-failure',
+        crew: [
+          ["@serenity-js/web:Photographer", {strategy: "TakePhotosOfFailures"}],
+        ],
+        baseURL,
+        trace: "on-first-retry",
+        permissions: ["clipboard-read", "clipboard-write"],
+        actionTimeout: 5000,
+        screenshot: "only-on-failure",
       },
     },
     // {
