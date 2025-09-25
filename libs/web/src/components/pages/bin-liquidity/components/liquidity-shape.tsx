@@ -25,41 +25,41 @@ const LiquidityShapeOption = ({
     <div className="flex items-end gap-x-1 mb-2 h-12">
       {shape === "spot" && (
         <>
-          <div className="w-2 h-2 bg-accent-primary rounded"></div>
-          <div className="w-2 h-2 bg-accent-primary rounded"></div>
-          <div className="w-2 h-2 bg-accent-primary rounded"></div>
-          <div className="w-3 h-12 bg-accent-primary-2 rounded"></div>
-          <div className="w-3 h-12 bg-accent-primary-2 rounded"></div>
-          <div className="w-3 h-12 bg-accent-primary-2 rounded"></div>
-          <div className="w-2 h-2 bg-accent-primary rounded"></div>
-          <div className="w-2 h-2 bg-accent-primary rounded"></div>
-          <div className="w-2 h-2 bg-accent-primary rounded"></div>
+          <div className="w-2.5 h-2 bg-accent-primary dark:bg-light-theme-5 rounded-sm"></div>
+          <div className="w-2.5 h-2 bg-accent-primary dark:bg-light-theme-5 rounded-sm"></div>
+          <div className="w-2.5 h-2 bg-accent-primary dark:bg-light-theme-5 rounded-sm"></div>
+          <div className="w-2.5 h-12 bg-accent-primary-2 dark:bg-light-theme-4 rounded-sm"></div>
+          <div className="w-2.5 h-12 bg-accent-primary-2 dark:bg-light-theme-4 rounded-sm"></div>
+          <div className="w-2.5 h-12 bg-accent-primary-2 dark:bg-light-theme-4 rounded-sm"></div>
+          <div className="w-2.5 h-2 bg-accent-primary dark:bg-light-theme-5 rounded-sm"></div>
+          <div className="w-2.5 h-2 bg-accent-primary dark:bg-light-theme-5 rounded-sm"></div>
+          <div className="w-2.5 h-2 bg-accent-primary dark:bg-light-theme-5 rounded-sm"></div>
         </>
       )}
       {shape === "curve" && (
         <>
-          <div className="w-2 h-2 bg-accent-primary rounded"></div>
-          <div className="w-2 h-3 bg-accent-primary rounded"></div>
-          <div className="w-2 h-5 bg-accent-primary rounded"></div>
-          <div className="w-2 h-8 bg-accent-primary-1 rounded"></div>
-          <div className="w-3 h-12 bg-accent-primary-2 rounded"></div>
-          <div className="w-3 h-8 bg-accent-primary-1 rounded"></div>
-          <div className="w-2 h-5 bg-accent-primary rounded"></div>
-          <div className="w-2 h-4 bg-accent-primary rounded"></div>
-          <div className="w-2 h-2 bg-accent-primary rounded"></div>
+          <div className="w-2.5 h-2 bg-accent-primary dark:bg-light-theme-5 rounded-sm"></div>
+          <div className="w-2.5 h-4 bg-accent-primary dark:bg-light-theme-5 rounded-sm"></div>
+          <div className="w-2.5 h-6 bg-accent-primary dark:bg-light-theme-5 rounded-sm"></div>
+          <div className="w-2.5 h-8 bg-accent-primary-1 dark:bg-light-theme-3 rounded-sm"></div>
+          <div className="w-2.5 h-12 bg-accent-primary-2 dark:bg-light-theme-4 rounded-sm"></div>
+          <div className="w-2.5 h-8 bg-accent-primary-1 dark:bg-light-theme-3 rounded-sm"></div>
+          <div className="w-2.5 h-6 bg-accent-primary dark:bg-light-theme-5 rounded-sm"></div>
+          <div className="w-2.5 h-4 bg-accent-primary dark:bg-light-theme-5 rounded-sm"></div>
+          <div className="w-2.5 h-2 bg-accent-primary dark:bg-light-theme-5 rounded-sm"></div>
         </>
       )}
       {shape === "bidask" && (
         <>
-          <div className="w-3 h-12 bg-accent-primary-2 rounded"></div>
-          <div className="w-3 h-10 bg-accent-primary-1 rounded"></div>
-          <div className="w-2 h-4 bg-accent-primary-1 rounded"></div>
-          <div className="w-2 h-3 bg-accent-primary rounded"></div>
-          <div className="w-2 h-2 bg-accent-primary rounded"></div>
-          <div className="w-2 h-3 bg-accent-primary rounded"></div>
-          <div className="w-2 h-5 bg-accent-primary-1 rounded"></div>
-          <div className="w-3 h-10 bg-accent-primary-1 rounded"></div>
-          <div className="w-3 h-12 bg-accent-primary-2 rounded"></div>
+          <div className="w-2.5 h-12 bg-accent-primary-2 dark:bg-light-theme-4 rounded-sm"></div>
+          <div className="w-2.5 h-10 bg-accent-primary-1 dark:bg-light-theme-3 rounded-sm"></div>
+          <div className="w-2.5 h-6 bg-accent-primary-1 dark:bg-light-theme-3 rounded-sm"></div>
+          <div className="w-2.5 h-4 bg-accent-primary dark:bg-light-theme-5 rounded-sm"></div>
+          <div className="w-2.5 h-2 bg-accent-primary dark:bg-light-theme-5 rounded-sm"></div>
+          <div className="w-2.5 h-4 bg-accent-primary dark:bg-light-theme-5 rounded-sm"></div>
+          <div className="w-2.5 h-6 bg-accent-primary-1 dark:bg-light-theme-3 rounded-sm"></div>
+          <div className="w-2.5 h-10 bg-accent-primary-1 dark:bg-light-theme-3 rounded-sm"></div>
+          <div className="w-2.5 h-12 bg-accent-primary-2 dark:bg-light-theme-4 rounded-sm"></div>
         </>
       )}
     </div>
