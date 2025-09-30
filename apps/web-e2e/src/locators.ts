@@ -154,7 +154,12 @@ export const positionSimulationContainer = () =>
 //
 
 export const removeLiquidityAlertTitle = () =>
-  PageElement.located(By.cssContainingText("p", "Pay attention"));
+  PageElement.located(By.css("[data-test-id='remove-bin-liquidity-alert']"));
+
+export const removeBinLiquidityPriceSummary = () =>
+  PageElement.located(
+    By.css("[data-test-id='remove-bin-liquidity-price-summary']")
+  );
 
 //
 // ========== ADD BIN LIQUIDITY (V2) LOCATORS ==========

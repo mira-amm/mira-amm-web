@@ -61,7 +61,7 @@ const PriceSummary = ({
   };
 
   return (
-    <div className="">
+    <div className="" data-test-id="remove-bin-liquidity-price-summary">
       <div className="flex justify-between items-center mb-4">
         <div className="text-content-primary text-base ">You'll receive</div>
       </div>
@@ -75,7 +75,7 @@ const PriceSummary = ({
             <div className="flex items-center">
               <div className="w-3 h-3 bg-accent-secondary rounded-full mr-2"></div>
               <span className="text-accent-primary text-sm">
-                {formatAmount(minimums.x, decimalsA)}
+                {formatAmount(minimums.x, decimalsA ?? 9)}
               </span>
             </div>
           </div>
@@ -86,7 +86,7 @@ const PriceSummary = ({
             <div className="flex items-center">
               <div className="w-3 h-3 bg-[#72A2FF] rounded-full mr-2"></div>
               <span className="text-accent-primary text-sm">
-                {formatAmount(minimums.y, decimalsB)}
+                {formatAmount(minimums.y, decimalsB ?? 9)}
               </span>
             </div>
           </div>

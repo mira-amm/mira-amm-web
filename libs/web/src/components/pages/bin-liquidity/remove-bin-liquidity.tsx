@@ -78,7 +78,7 @@ const RemoveBinLiquidity = ({
             Remove Liquidity
           </p>
 
-          <Alert>
+          <Alert data-test-id="remove-bin-liquidity-alert">
             <AlertDescription>
               This action will remove all your liquidity in this pool. If you
               want to rebalance the pool, you'll need to add liquidity back into

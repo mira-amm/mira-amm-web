@@ -44,6 +44,7 @@ import {
   previewCreationButton,
   positionSimulationContainer,
   removeLiquidityAlertTitle,
+  removeBinLiquidityPriceSummary,
   addV2SimulationHeader,
   addV2ResetPriceButton,
 } from "./locators";
@@ -327,9 +328,9 @@ describe.serial("With connected wallet", () => {
     // Add position
     // click liquidity page
     // click manage position
-    // for now
+    // For Now!!!
     // Navigate directly to a known v1 pool position route
-    // Using ETH/USDC volatile example from coinsConfig BASE_ASSETS
+    // Using ETH / USDC volatile example from coinsConfig BASE_ASSETS
     await actor.attemptsTo(
       Navigate.to(
         "/liquidity/position?pool=0xf8f8b6283d7fa5b672b530cbb84fcccb4ff8dc40f8176ef4544ddb1f1952ad07-0x286c479da40dc953bddc3bb4c453b608bba2e0ac483b077bd475174115395e6b-false"
@@ -359,14 +360,18 @@ describe.serial("With connected wallet", () => {
     // click liquidity page
     // click manage position
     // click remove postion
-    // for now
-    // Navigate directly to remove-liquidity for a known v1 pool (ETH/USDC volatile)
+    // For Now!!!
+    // Navigate directly to remove-liquidity for a known v1 pool (ETH / USDC volatile)
     await actor.attemptsTo(
       Navigate.to(
         "/liquidity/remove?pool=0xf8f8b6283d7fa5b672b530cbb84fcccb4ff8dc40f8176ef4544ddb1f1952ad07-0x286c479da40dc953bddc3bb4c453b608bba2e0ac483b077bd475174115395e6b-false"
       ),
       Wait.upTo(Duration.ofSeconds(15)).until(
         removeLiquidityAlertTitle(),
+        isVisible()
+      ),
+      Wait.upTo(Duration.ofSeconds(15)).until(
+        removeBinLiquidityPriceSummary(),
         isVisible()
       )
     );
