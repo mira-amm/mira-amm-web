@@ -46,6 +46,12 @@ import {
   removeLiquidityAlertTitle,
   removeBinLiquidityPriceSummary,
   addV2SimulationHeader,
+  addV2SimulationChart,
+  addV2DepositFirstInput,
+  addV2DepositSecondInput,
+  addV2MinPriceInput,
+  addV2MaxPriceInput,
+  addV2NumBinsInput,
   addV2ResetPriceButton,
 } from "./locators";
 
@@ -377,33 +383,6 @@ describe.serial("With connected wallet", () => {
     );
   });
 
-  it("should show simulation on Add Bin Liquidity page (v2)", async ({
-    fuelWalletTestHelper,
-    actor,
-    page,
-  }) => {
-    await page.goto("/");
-    await page.bringToFront();
-
-    await page.getByRole("button", {name: "Connect Wallet"}).click();
-    await page.getByLabel("Connect to Fuel Wallet").click();
-    await fuelWalletTestHelper.walletConnect();
-    await page.getByRole("button", {name: "Sign and Confirm"}).click();
-
-    // Navigate directly to v2 add liquidity route using ETH/USDC example
-    await actor.attemptsTo(
-      Navigate.to(
-        "/liquidity/add/?pool=0x286c479da40dc953bddc3bb4c453b608bba2e0ac483b077bd475174115395e6b-0xf8f8b6283d7fa5b672b530cbb84fcccb4ff8dc40f8176ef4544ddb1f1952ad07-false"
-      ),
-      // The v2 form shows simulation only when at least one amount > 0 is provided.
-      // We just assert that the simulation section header renders; chart may require amounts.
-      Wait.upTo(Duration.ofSeconds(15)).until(
-        addV2SimulationHeader(),
-        isVisible()
-      )
-    );
-  });
-
   it("should add bin liquidity: deposit A/B, adjust range, toggle disabled states, simulation visible", async ({
     fuelWalletTestHelper,
     actor,
@@ -423,18 +402,31 @@ describe.serial("With connected wallet", () => {
       )
     );
 
-    // Fill deposit amounts for asset A and B
-    const inputs = page.locator("input[placeholder='0']");
-    await inputs.nth(0).fill("1.23");
-    await inputs.nth(1).fill("4.56");
+    // Fill deposit amounts for asset A and B using data-test-ids
+    await actor.attemptsTo(
+      Wait.until(addV2DepositFirstInput(), isVisible()),
+      Wait.until(addV2DepositSecondInput(), isVisible())
+    );
+
+    await page
+      .locator("[data-test-id='add-v2-deposit-input-first']")
+      .fill("1.23");
+    await page
+      .locator("[data-test-id='add-v2-deposit-input-second']")
+      .fill("0.00001");
 
     // Type an out-of-range MIN to disable first input (current price below range)
+    // When minPrice > currentPrice, isOutOfRangeLow = true, first input gets disabled
+    await actor.attemptsTo(Wait.until(addV2MinPriceInput(), isVisible()));
     await page
-      .locator("label:has-text('Min price') + div input")
+      .locator("[data-test-id='add-v2-min-price-input']")
       .fill("999999");
     await page.keyboard.press("Tab");
     await page.waitForTimeout(300);
-    const firstDisabled = await inputs.nth(0).isDisabled();
+
+    const firstDisabled = await page
+      .locator("[data-test-id='add-v2-deposit-input-first']")
+      .isDisabled();
     if (!firstDisabled)
       throw new Error(
         "Expected first deposit input to be disabled when price is below range"
@@ -448,19 +440,33 @@ describe.serial("With connected wallet", () => {
     await page.waitForTimeout(300);
 
     // Type an out-of-range MAX to disable second input (current price above range)
+    // When maxPrice < currentPrice, isOutOfRangeHigh = true, second input gets disabled
+    await actor.attemptsTo(Wait.until(addV2MaxPriceInput(), isVisible()));
     await page
-      .locator("label:has-text('Max price') + div input")
-      .fill("0.000001");
+      .locator("[data-test-id='add-v2-max-price-input']")
+      .fill("0.00001");
     await page.keyboard.press("Tab");
     await page.waitForTimeout(300);
-    const secondDisabled = await inputs.nth(1).isDisabled();
+
+    const secondDisabled = await page
+      .locator("[data-test-id='add-v2-deposit-input-second']")
+      .isDisabled();
     if (!secondDisabled)
       throw new Error(
         "Expected second deposit input to be disabled when price is above range"
       );
 
-    // Ensure simulation header is visible when deposit amounts are present
-    await actor.attemptsTo(Wait.until(addV2SimulationHeader(), isVisible()));
+    // Test num bins input
+    await actor.attemptsTo(Wait.until(addV2NumBinsInput(), isVisible()));
+    await page.locator("[data-test-id='add-v2-num-bins-input']").fill("5");
+    await page.keyboard.press("Tab");
+    await page.waitForTimeout(300);
+
+    // Ensure simulation container is visible when deposit amounts are present
+    await actor.attemptsTo(
+      Wait.until(addV2SimulationChart(), isVisible()),
+      Wait.until(addV2SimulationHeader(), isVisible())
+    );
   });
 });
 

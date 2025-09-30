@@ -656,6 +656,7 @@ export default function V2LiquidityConfig({
                 }}
                 className="font-alt"
                 placeholder="1200"
+                data-test-id="add-v2-min-price-input"
               />
               <span className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 text-sm">
                 {asset0Metadata.symbol} per {asset1Metadata.symbol}
@@ -691,6 +692,7 @@ export default function V2LiquidityConfig({
                 }}
                 className="font-alt"
                 placeholder="1200"
+                data-test-id="add-v2-max-price-input"
               />
               <span className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 text-sm">
                 {asset0Metadata.symbol} per {asset1Metadata.symbol}
@@ -720,6 +722,7 @@ export default function V2LiquidityConfig({
               max="50"
               step="1"
               className="font-alt"
+              data-test-id="add-v2-num-bins-input"
             />
           </div>
         </div>
@@ -765,7 +768,7 @@ export default function V2LiquidityConfig({
               </div>
             </div>
           </div>
-          <div className="h-40">
+          <div className="h-40" data-test-id="add-v2-simulation-container">
             <SimulatedDistribution
               liquidityShape={liquidityShape}
               minPrice={minPrice}

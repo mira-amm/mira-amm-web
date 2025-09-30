@@ -314,6 +314,7 @@ const AddLiquidityDialog = ({
               balance={firstAssetBalance}
               usdRate={asset0Price || undefined}
               isOutOfRange={isOutOfRangeLow}
+              dataTestId="add-v2-deposit-input-first"
             />
             <CoinInput
               assetId={secondAssetId}
@@ -323,6 +324,7 @@ const AddLiquidityDialog = ({
               balance={secondAssetBalance}
               usdRate={asset1Price || undefined}
               isOutOfRange={isOutOfRangeHigh}
+              dataTestId="add-v2-deposit-input-second"
             />
           </div>
         </div>

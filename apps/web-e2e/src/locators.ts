@@ -169,22 +169,22 @@ export const addV2SimulationHeader = () =>
   PageElement.located(By.cssContainingText("h3", "Simulated distribution"));
 
 export const addV2SimulationChart = () =>
-  PageElement.located(By.css("div.h-40 > div.relative.h-40"));
+  PageElement.located(By.css("[data-test-id='add-v2-simulation-container']"));
 
 export const addV2DepositFirstInput = () =>
-  PageElements.located(By.css('input[placeholder="0"]')).first();
+  PageElement.located(By.css("[data-test-id='add-v2-deposit-input-first']"));
 
 export const addV2DepositSecondInput = () =>
-  PageElements.located(By.css('input[placeholder="0"]')).last();
+  PageElement.located(By.css("[data-test-id='add-v2-deposit-input-second']"));
 
 export const addV2MinPriceInput = () =>
-  PageElement.located(By.css("label:has-text('Min price') + div input"));
+  PageElement.located(By.css("[data-test-id='add-v2-min-price-input']"));
 
 export const addV2MaxPriceInput = () =>
-  PageElement.located(By.css("label:has-text('Max price') + div input"));
+  PageElement.located(By.css("[data-test-id='add-v2-max-price-input']"));
 
 export const addV2NumBinsInput = () =>
-  PageElement.located(By.css('input[type="number"]'));
+  PageElement.located(By.css("[data-test-id='add-v2-num-bins-input']"));
 
 export const addV2ResetPriceButton = () =>
   PageElement.located(By.cssContainingText("button", "Reset price"));
