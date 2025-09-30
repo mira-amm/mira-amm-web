@@ -119,6 +119,27 @@ export function DesktopPools({
     },
   ];
 
+  // If there are no pools but user is connected, show the create pool button prominently
+  if (poolsData.length === 0 && isConnected) {
+    return (
+      <div className="hidden md:flex w-full flex-col items-center gap-4 py-8 px-4 rounded-ten bg-background-grey-dark">
+        <p className="text-content-tertiary">No pools available</p>
+        <Link href="/liquidity/create-pool">
+          <Button>Create Pool</Button>
+        </Link>
+      </div>
+    );
+  }
+
+  // If there are no pools and user is not connected, show regular empty message
+  if (poolsData.length === 0) {
+    return (
+      <div className="hidden md:flex w-full flex-col items-center gap-2 py-7 px-4 rounded-ten bg-background-grey-dark border-border-secondary border-[12px]">
+        <p className="text-content-tertiary">No pools available</p>
+      </div>
+    );
+  }
+
   return (
     <div className="hidden md:flex! w-full">
       <DataTable
