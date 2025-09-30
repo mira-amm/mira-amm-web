@@ -1,5 +1,4 @@
-import {PageElement, PageElements, By, isVisible} from "@serenity-js/web";
-import {isPresent} from "@serenity-js/assertions";
+import {PageElement, PageElements, By} from "@serenity-js/web";
 
 export const connectWalletButton = () =>
   PageElements.located(By.cssContainingText("button", "Connect Wallet")).last();
@@ -126,3 +125,73 @@ export const footerBlogLink = () =>
 
 export const footerContactUsLink = () =>
   PageElement.located(By.cssContainingText("a", "Contact us"));
+
+//
+// ========== CREATE POOL (V2 CONCENTRATED) & PREVIEW LOCATORS ==========
+//
+
+export const concentratedPoolV2Option = () =>
+  PageElement.located(
+    By.cssContainingText("div", "Concentrated Liquidity Pool (v2)")
+  );
+
+export const previewSelectBinStepLabel = () =>
+  PageElement.located(By.cssContainingText("p", "Select Bin Step"));
+
+export const previewEnterActivePriceLabel = () =>
+  PageElement.located(By.cssContainingText("span", "Enter active price"));
+
+export const previewCreationButton = () =>
+  PageElement.located(By.cssContainingText("button", "Preview creation"));
+
+//
+// ========== POSITION VIEW LOCATORS ==========
+//
+
+export const positionSimulationContainer = () =>
+  PageElement.located(By.css("div.relative.h-40"));
+
+//
+// ========== REMOVE LIQUIDITY LOCATORS ==========
+//
+
+export const removeLiquidityAlertTitle = () =>
+  PageElement.located(By.cssContainingText("p", "Pay attention"));
+
+//
+// ========== ADD BIN LIQUIDITY (V2) LOCATORS ==========
+//
+
+export const addV2SimulationHeader = () =>
+  PageElement.located(By.cssContainingText("h3", "Simulated distribution"));
+
+export const addV2SimulationChart = () =>
+  PageElement.located(By.css("div.h-40 > div.relative.h-40"));
+
+export const addV2DepositFirstInput = () =>
+  PageElements.located(By.css('input[placeholder="0"]')).first();
+
+export const addV2DepositSecondInput = () =>
+  PageElements.located(By.css('input[placeholder="0"]')).last();
+
+export const addV2MinPriceInput = () =>
+  PageElement.located(By.css("label:has-text('Min price') + div input"));
+
+export const addV2MaxPriceInput = () =>
+  PageElement.located(By.css("label:has-text('Max price') + div input"));
+
+export const addV2NumBinsInput = () =>
+  PageElement.located(By.css('input[type="number"]'));
+
+export const addV2ResetPriceButton = () =>
+  PageElement.located(By.cssContainingText("button", "Reset price"));
+
+export const addLiquidityDepositInputs = () =>
+  PageElements.located(By.css("input[placeholder='0']"));
+
+export const addV2SliderMinThumb = () =>
+  PageElement.located(By.css("[aria-label='Minimum price']"));
+
+export const addV2SliderMaxThumb = () =>
+  PageElement.located(By.css("[aria-label='Maximum price']"));
+

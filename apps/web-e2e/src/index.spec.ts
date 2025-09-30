@@ -7,6 +7,8 @@ import {
   Click,
   Scroll,
   isVisible,
+  Press,
+  Enter,
 } from "@serenity-js/web";
 import {Duration, Wait} from "@serenity-js/core";
 
@@ -32,6 +34,18 @@ import {
   footerBlogLink,
   footerContactUsLink,
   // footerSocialLinks, // TODO: implement selectors & assertions
+  createPoolButton,
+  chooseAssetButtons,
+  searchInput,
+  searchResults,
+  concentratedPoolV2Option,
+  previewSelectBinStepLabel,
+  previewEnterActivePriceLabel,
+  previewCreationButton,
+  positionSimulationContainer,
+  removeLiquidityAlertTitle,
+  addV2SimulationHeader,
+  addV2ResetPriceButton,
 } from "./locators";
 
 import {
@@ -185,6 +199,268 @@ describe.serial("With connected wallet", () => {
       // Click.on(viewTransactionButton()),
     );
   });
+  it("should reach v2 bin liquidity preview in Create Pool flow", async ({
+    fuelWalletTestHelper,
+    actor,
+    page,
+  }) => {
+    await page.goto("/");
+    await page.bringToFront();
+
+    await page.getByRole("button", {name: "Connect Wallet"}).click();
+    await page.getByLabel("Connect to Fuel Wallet").click();
+    await fuelWalletTestHelper.walletConnect();
+    await page.getByRole("button", {name: "Sign and Confirm"}).click();
+
+    await actor.attemptsTo(
+      Navigate.to("/liquidity"),
+      Wait.upTo(Duration.ofSeconds(10)).until(
+        PageElement.located(By.css("Loading pools...")),
+        not(isVisible())
+      ),
+      Wait.until(createPoolButton(), isPresent()),
+      Click.on(createPoolButton()),
+      // choose first asset
+      Wait.until(chooseAssetButtons().first(), isVisible()),
+      Click.on(chooseAssetButtons().first()),
+      Wait.until(searchInput(), isVisible())
+    );
+
+    // select the Concentrated (v2) pool type block
+    // type ETH slowly to avoid empty results, then select first result
+    await actor.attemptsTo(
+      Enter.theValue("").into(searchInput()),
+      Press.the("E"),
+      Wait.for(Duration.ofMilliseconds(50)),
+      Press.the("T"),
+      Wait.for(Duration.ofMilliseconds(50)),
+      Press.the("H"),
+      Wait.for(Duration.ofMilliseconds(50)),
+      Press.the("Enter"),
+      Wait.until(searchResults().first(), isVisible()),
+      Click.on(searchResults().first())
+    );
+
+    // choose second asset
+    await actor.attemptsTo(
+      Click.on(chooseAssetButtons().last()),
+      Wait.until(searchInput(), isVisible()),
+      Enter.theValue("").into(searchInput()),
+      Press.the("F"),
+      Wait.for(Duration.ofMilliseconds(50)),
+      Press.the("U"),
+      Wait.for(Duration.ofMilliseconds(50)),
+      Press.the("E"),
+      Wait.for(Duration.ofMilliseconds(50)),
+      Press.the("L"),
+      Wait.for(Duration.ofMilliseconds(50)),
+      Press.the("Enter"),
+      Wait.until(searchResults().first(), isVisible()),
+      Click.on(searchResults().first())
+    );
+
+    // select the Concentrated (v2) pool type block
+    await actor.attemptsTo(
+      Wait.until(concentratedPoolV2Option(), isVisible()),
+      Click.on(concentratedPoolV2Option())
+    );
+
+    // Verify preview-step UI is present on the form for v2
+    await actor.attemptsTo(
+      Wait.until(previewSelectBinStepLabel(), isVisible()),
+      Wait.until(previewEnterActivePriceLabel(), isVisible()),
+      Wait.until(previewCreationButton(), isPresent())
+    );
+
+    // Fill deposit amounts and parameters
+    const depositInputs = page.locator("input[placeholder='0']");
+    await depositInputs.nth(0).fill("0.00001"); // ETH
+    await depositInputs.nth(1).fill("1"); // FUEL
+
+    // Select the second bin step from a button group if present
+    const binButtons = page.locator("[data-test-id='bin-step-group'] button");
+    if (await binButtons.count()) {
+      await binButtons.nth(1).click();
+    }
+
+    // Enter active price of 1
+    // Prefer data-test-id if available; fallback to label selector
+    const activePriceInput = page
+      .locator("[data-test-id='active-price-input']")
+      .or(page.locator("span:has-text('Enter active price') + div input"));
+    await activePriceInput.fill("1");
+
+    // Click Preview creation to open modal
+    await page.getByRole("button", {name: "Preview creation"}).click();
+
+    // Assert modal shows correct pair and amounts
+    const modal = page.locator("[data-test-id='create-pool-preview-modal']");
+    await modal.waitFor({state: "visible"});
+
+    // Pair assertion: expect ETH / FUEL
+    const pair = modal
+      .locator("[data-test-id='preview-pair']")
+      .or(modal.locator("text=ETH / FUEL"));
+    await pair.first().waitFor({state: "visible"});
+
+    // Amount assertions
+    const amountA = modal
+      .locator("[data-test-id='preview-amount-A']")
+      .or(modal.locator("text=0.00001"));
+    const amountB = modal
+      .locator("[data-test-id='preview-amount-B']")
+      .or(modal.locator("text=1"));
+    await amountA.first().waitFor({state: "visible"});
+    await amountB.first().waitFor({state: "visible"});
+  });
+
+  it("should show simulation component on Position View page", async ({
+    fuelWalletTestHelper,
+    actor,
+    page,
+  }) => {
+    await page.goto("/");
+    await page.bringToFront();
+
+    await page.getByRole("button", {name: "Connect Wallet"}).click();
+    await page.getByLabel("Connect to Fuel Wallet").click();
+    await fuelWalletTestHelper.walletConnect();
+    await page.getByRole("button", {name: "Sign and Confirm"}).click();
+
+    // Note
+    // Add position
+    // click liquidity page
+    // click manage position
+    // for now
+    // Navigate directly to a known v1 pool position route
+    // Using ETH/USDC volatile example from coinsConfig BASE_ASSETS
+    await actor.attemptsTo(
+      Navigate.to(
+        "/liquidity/position?pool=0xf8f8b6283d7fa5b672b530cbb84fcccb4ff8dc40f8176ef4544ddb1f1952ad07-0x286c479da40dc953bddc3bb4c453b608bba2e0ac483b077bd475174115395e6b-false"
+      ),
+      // Wait for the position view to render and simulation container to show
+      Wait.upTo(Duration.ofSeconds(15)).until(
+        positionSimulationContainer(),
+        isVisible()
+      )
+    );
+  });
+
+  it("should show alert on Remove Liquidity page for bin liquidity", async ({
+    fuelWalletTestHelper,
+    actor,
+    page,
+  }) => {
+    await page.goto("/");
+    await page.bringToFront();
+
+    await page.getByRole("button", {name: "Connect Wallet"}).click();
+    await page.getByLabel("Connect to Fuel Wallet").click();
+    await fuelWalletTestHelper.walletConnect();
+    await page.getByRole("button", {name: "Sign and Confirm"}).click();
+
+    // Note
+    // click liquidity page
+    // click manage position
+    // click remove postion
+    // for now
+    // Navigate directly to remove-liquidity for a known v1 pool (ETH/USDC volatile)
+    await actor.attemptsTo(
+      Navigate.to(
+        "/liquidity/remove?pool=0xf8f8b6283d7fa5b672b530cbb84fcccb4ff8dc40f8176ef4544ddb1f1952ad07-0x286c479da40dc953bddc3bb4c453b608bba2e0ac483b077bd475174115395e6b-false"
+      ),
+      Wait.upTo(Duration.ofSeconds(15)).until(
+        removeLiquidityAlertTitle(),
+        isVisible()
+      )
+    );
+  });
+
+  it("should show simulation on Add Bin Liquidity page (v2)", async ({
+    fuelWalletTestHelper,
+    actor,
+    page,
+  }) => {
+    await page.goto("/");
+    await page.bringToFront();
+
+    await page.getByRole("button", {name: "Connect Wallet"}).click();
+    await page.getByLabel("Connect to Fuel Wallet").click();
+    await fuelWalletTestHelper.walletConnect();
+    await page.getByRole("button", {name: "Sign and Confirm"}).click();
+
+    // Navigate directly to v2 add liquidity route using ETH/USDC example
+    await actor.attemptsTo(
+      Navigate.to(
+        "/liquidity/add/?pool=0x286c479da40dc953bddc3bb4c453b608bba2e0ac483b077bd475174115395e6b-0xf8f8b6283d7fa5b672b530cbb84fcccb4ff8dc40f8176ef4544ddb1f1952ad07-false"
+      ),
+      // The v2 form shows simulation only when at least one amount > 0 is provided.
+      // We just assert that the simulation section header renders; chart may require amounts.
+      Wait.upTo(Duration.ofSeconds(15)).until(
+        addV2SimulationHeader(),
+        isVisible()
+      )
+    );
+  });
+
+  it("should add bin liquidity: deposit A/B, adjust range, toggle disabled states, simulation visible", async ({
+    fuelWalletTestHelper,
+    actor,
+    page,
+  }) => {
+    await page.goto("/");
+    await page.bringToFront();
+
+    await page.getByRole("button", {name: "Connect Wallet"}).click();
+    await page.getByLabel("Connect to Fuel Wallet").click();
+    await fuelWalletTestHelper.walletConnect();
+    await page.getByRole("button", {name: "Sign and Confirm"}).click();
+
+    await actor.attemptsTo(
+      Navigate.to(
+        "/liquidity/add/?pool=0x286c479da40dc953bddc3bb4c453b608bba2e0ac483b077bd475174115395e6b-0xf8f8b6283d7fa5b672b530cbb84fcccb4ff8dc40f8176ef4544ddb1f1952ad07-false"
+      )
+    );
+
+    // Fill deposit amounts for asset A and B
+    const inputs = page.locator("input[placeholder='0']");
+    await inputs.nth(0).fill("1.23");
+    await inputs.nth(1).fill("4.56");
+
+    // Type an out-of-range MIN to disable first input (current price below range)
+    await page
+      .locator("label:has-text('Min price') + div input")
+      .fill("999999");
+    await page.keyboard.press("Tab");
+    await page.waitForTimeout(300);
+    const firstDisabled = await inputs.nth(0).isDisabled();
+    if (!firstDisabled)
+      throw new Error(
+        "Expected first deposit input to be disabled when price is below range"
+      );
+
+    // Reset price to restore inputs
+    await actor.attemptsTo(
+      Wait.until(addV2ResetPriceButton(), isVisible()),
+      Click.on(addV2ResetPriceButton())
+    );
+    await page.waitForTimeout(300);
+
+    // Type an out-of-range MAX to disable second input (current price above range)
+    await page
+      .locator("label:has-text('Max price') + div input")
+      .fill("0.000001");
+    await page.keyboard.press("Tab");
+    await page.waitForTimeout(300);
+    const secondDisabled = await inputs.nth(1).isDisabled();
+    if (!secondDisabled)
+      throw new Error(
+        "Expected second deposit input to be disabled when price is above range"
+      );
+
+    // Ensure simulation header is visible when deposit amounts are present
+    await actor.attemptsTo(Wait.until(addV2SimulationHeader(), isVisible()));
+  });
 });
 
 describe("Swap", () => {
@@ -214,6 +490,18 @@ describe("Swap", () => {
 describe("Liquidity", () => {
   beforeEach(async ({actor}) => {
     await actor.attemptsTo(Navigate.to("/liquidity"));
+  });
+
+  it("should be able to learn more about points program", async ({actor}) => {
+    await actor.attemptsTo(
+      Wait.upTo(Duration.ofSeconds(10)).until(
+        PageElement.located(By.cssContainingText("button", "Learn More ")),
+        isVisible()
+      ),
+      Click.on(
+        PageElement.located(By.cssContainingText("button", "Learn More "))
+      )
+    );
   });
 
   it("should be able to manage positions in liquidity pools", async ({

@@ -116,7 +116,7 @@ export const CreatePool = {
 
 export const SelectToken = {
   called: (token: string) => ({
-    into: (button: PageElement<unknown>) =>
+    into: (button: any) =>
       Task.where(
         `#actor selects token ${token}`,
         Click.on(button),
@@ -171,16 +171,16 @@ export const AdjustSlippage = {
 };
 
 export const Layout = {
-  shouldShow: (description: string, locator: PageElement<unknown>) =>
+  shouldShow: (description: string, locator: any) =>
     Task.where(`#actor sees ${description}`, Wait.until(locator, isVisible())),
 
-  shouldBePresent: (description: string, locator: PageElement<unknown>) =>
+  shouldBePresent: (description: string, locator: any) =>
     Task.where(
       `#actor sees ${description} present`,
       Wait.until(locator, isPresent())
     ),
 
-  shouldAllowClick: (description: string, locator: PageElement<unknown>) =>
+  shouldAllowClick: (description: string, locator: any) =>
     Task.where(`#actor can click ${description}`, Click.on(locator)),
 };
 
