@@ -6,6 +6,7 @@ export {TradeType} from "./get-swap-quotes-batch";
 export {useIsClient} from "./useIsClient";
 export * from "../utils/brandName";
 export {useVerifiedAssets} from "./useVerifiedAssets";
+export {useVerifiedAssetsForChain} from "./useVerifiedAssetsForChain";
 export {useAddLiquidity} from "./useAddLiquidity";
 export {useAddLiquidityV2} from "./useAddLiquidityV2";
 export {useModal} from "./useModal";

@@ -1,5 +1,6 @@
 import {bn, CHAIN_IDS, TxParams} from "fuels";
 import {getBrandText} from "./brandName";
+import verifiedAssets from "./verified-assets.json";
 
 // Function to get local contract IDs when in local development
 function getLocalContractIds() {
@@ -16,16 +17,56 @@ export const DEFAULT_AMM_CONTRACT_ID =
   localContracts?.simpleProxy ||
   ("0x2e40f2b244b98ed6b8204b3de0156c6961f98525c8162f80162fcf53eebd90e7" as const);
 
-export const ETH_ASSET_ID =
-  "0xf8f8b6283d7fa5b672b530cbb84fcccb4ff8dc40f8176ef4544ddb1f1952ad07";
+// Function to get asset ID from verified-assets.json based on symbol and environment
+function getAssetIdFromVerifiedAssets(symbol: string): string {
+  const asset = verifiedAssets.find((asset: any) => asset.symbol === symbol);
+  if (!asset) {
+    throw new Error(
+      `Asset with symbol ${symbol} not found in verified-assets.json`
+    );
+  }
+
+  // For local development, look for local_testnet chain
+  if (process.env.NEXT_PUBLIC_FUEL_PROVIDER_URL?.includes("localhost")) {
+    const localNetwork = asset.networks?.find(
+      (network: any) =>
+        network.type === "fuel" && network.chain === "local_testnet"
+    );
+    if (localNetwork?.assetId) {
+      return localNetwork.assetId;
+    }
+    // Fallback to mainnet if local not found (shouldn't happen in proper setup)
+    console.warn(
+      `Local testnet asset ID not found for ${symbol}, falling back to mainnet`
+    );
+  }
+
+  // For production, find the mainnet fuel network (chainId 9889)
+  const mainnetNetwork = asset.networks?.find(
+    (network: any) => network.type === "fuel" && network.chainId === 9889
+  );
+  if (mainnetNetwork?.assetId) {
+    return mainnetNetwork.assetId;
+  }
+
+  // Final fallback: any fuel network
+  const anyFuelNetwork = asset.networks?.find(
+    (network: any) => network.type === "fuel"
+  );
+  if (anyFuelNetwork?.assetId) {
+    return anyFuelNetwork.assetId;
+  }
+
+  throw new Error(`No fuel network found for asset ${symbol}`);
+}
+
+// Asset IDs - dynamically sourced from verified-assets.json
+export const ETH_ASSET_ID = getAssetIdFromVerifiedAssets("ETH");
+export const FUEL_ASSET_ID = getAssetIdFromVerifiedAssets("FUEL");
+export const USDC_ASSET_ID = getAssetIdFromVerifiedAssets("USDC");
+
 export const BASE_ASSET_CONTRACT =
   "0x7e2becd64cd598da59b4d1064b711661898656c6b1f4918a787156b8965dc83c";
-
-export const USDC_ASSET_ID =
-  "0x286c479da40dc953bddc3bb4c453b608bba2e0ac483b077bd475174115395e6b";
-
-export const FUEL_ASSET_ID =
-  "0x1d5d97005e41cae2187a895fd8eab0506111e0e2f3331cd3912c15c24e3c1d82";
 
 export const DefaultTxParams: TxParams = {
   gasLimit: 2_000_000,
@@ -42,9 +83,10 @@ export const BlogLink =
 
 // TODO: Use env variables for values below to separate dev/prod | testnet/mainnet
 // Support local development with chain ID 0, otherwise use mainnet
-export const ValidNetworkChainId = process.env.NEXT_PUBLIC_FUEL_PROVIDER_URL
-  ? 0 // Local testnet uses chain ID 0
-  : CHAIN_IDS.fuel.mainnet;
+export const ValidNetworkChainId =
+  process.env.NEXT_PUBLIC_FUEL_PROVIDER_URL?.includes("localhost")
+    ? 0 // Local testnet uses chain ID 0
+    : CHAIN_IDS.fuel.mainnet;
 
 // Support local development with environment variables
 export const NetworkUrl: string =

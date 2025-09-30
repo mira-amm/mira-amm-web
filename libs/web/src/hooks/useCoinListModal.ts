@@ -21,6 +21,8 @@ export function useCoinListModal(
   const {verifiedAssetData, isLoading: isVerifiedAssetsLoading} =
     useVerifiedAssets();
 
+  console.log("assets", assets);
+
   const assetsWithOutIcon = assets
     ?.filter((asset) => !asset.icon)
     .map((asset) => asset.assetId);
@@ -149,7 +151,14 @@ export function useCoinListModal(
         },
         []
       );
-  }, [assets, balances, value, verifiedAssetData, verifiedAssetsOnly, assetImages]);
+  }, [
+    assets,
+    balances,
+    value,
+    verifiedAssetData,
+    verifiedAssetsOnly,
+    assetImages,
+  ]);
   return {
     handleFilterChange,
     isLoading: isLoading || isVerifiedAssetsLoading || isAssetImagesLoading,

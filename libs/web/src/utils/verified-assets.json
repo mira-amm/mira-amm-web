@@ -54,6 +54,15 @@
         "decimals": 9,
         "assetId": "0xf8f8b6283d7fa5b672b530cbb84fcccb4ff8dc40f8176ef4544ddb1f1952ad07",
         "chainId": 9889
+      },
+      {
+        "type": "fuel",
+        "chain": "local_testnet",
+        "decimals": 9,
+        "chainId": 0,
+        "contractId": "0x53876459bec697d96528d00c0edac97048c7f5df5b7d5f62678a49ccef3f0b21",
+        "subId": "0x0000000000000000000000000000000000000000000000000000000000000002",
+        "assetId": "0xb93970be997249264374ebea04431aa5897f7343de77aa2aae79909b577fff24"
       }
     ]
   },
@@ -107,6 +116,15 @@
         "contractId": "0x4ea6ccef1215d9479f1024dff70fc055ca538215d2c8c348beddffd54583d0e8",
         "subId": "0xe81c89b8cf795c7c25e79f6c4f2f1cd233290b58e217ed4e9b6b18538badddaf",
         "assetId": "0x1d5d97005e41cae2187a895fd8eab0506111e0e2f3331cd3912c15c24e3c1d82"
+      },
+      {
+        "type": "fuel",
+        "chain": "local_testnet",
+        "decimals": 9,
+        "chainId": 0,
+        "contractId": "0x53876459bec697d96528d00c0edac97048c7f5df5b7d5f62678a49ccef3f0b21",
+        "subId": "0x0000000000000000000000000000000000000000000000000000000000000001",
+        "assetId": "0xa45644779d87dc9b4b1b670c94918b6828fda7eca31a0ca29518baf718c64005"
       }
     ]
   },
@@ -291,6 +309,15 @@
         "contractId": "0x4ea6ccef1215d9479f1024dff70fc055ca538215d2c8c348beddffd54583d0e8",
         "subId": "0xc5c6d3ed779781883a8939c2728e7418b8e805df44ac8883669b23b18c83cea5",
         "assetId": "0xaf3111a248ff7a3238cdeea845bb2d43cf3835f1f6b8c9d28360728b55b9ce5b"
+      },
+      {
+        "type": "fuel",
+        "chain": "local_testnet",
+        "decimals": 9,
+        "chainId": 0,
+        "contractId": "0x53876459bec697d96528d00c0edac97048c7f5df5b7d5f62678a49ccef3f0b21",
+        "subId": "0x0000000000000000000000000000000000000000000000000000000000000003",
+        "assetId": "0x79378e93fe8080807422a2c003d961a7399541cf8946ed0c1dcb7a5f70aec569"
       }
     ]
   },
@@ -498,6 +525,15 @@
         "contractId": "0x4ea6ccef1215d9479f1024dff70fc055ca538215d2c8c348beddffd54583d0e8",
         "subId": "0x033dd0c9246b67aea1456ed2ea6aaac61253583b7a1c84cd73d968ad7d30b72d",
         "assetId": "0xa0265fb5c32f6e8db3197af3c7eb05c48ae373605b8165b6f4a51c5b0ba4812e"
+      },
+      {
+        "type": "fuel",
+        "chain": "local_testnet",
+        "decimals": 6,
+        "chainId": 0,
+        "contractId": "0x53876459bec697d96528d00c0edac97048c7f5df5b7d5f62678a49ccef3f0b21",
+        "subId": "0x0000000000000000000000000000000000000000000000000000000000000004",
+        "assetId": "0xf7de9fe5445c84e949b9a257830458af0af0e071723c55319c89b954c3f65ec0"
       }
     ]
   },
@@ -551,6 +587,15 @@
         "contractId": "0xd02112ef9c39f1cea7c8527c26242ca1f5d26bcfe8d1564bee054d3b04175471",
         "subId": "0xfdf302563e3ce4548e774c1f85627d21d6f146d23402e20274169b43baf689dc",
         "assetId": "0xc26c91055de37528492e7e97d91c6f4abe34aae26f2c4d25cff6bfe45b5dc9a9"
+      },
+      {
+        "type": "fuel",
+        "chain": "local_testnet",
+        "decimals": 6,
+        "chainId": 0,
+        "contractId": "0x53876459bec697d96528d00c0edac97048c7f5df5b7d5f62678a49ccef3f0b21",
+        "subId": "0x0000000000000000000000000000000000000000000000000000000000000000",
+        "assetId": "0xa75f04c2a6858712f56e4b735cb4bb690a666455e95175d8eed25b2e2ede2836"
       }
     ]
   },

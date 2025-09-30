@@ -63,9 +63,7 @@ export default function AddLiquidityPage() {
       </button>
       <section className="flex flex-col p-4 rounded-ten gap-6 bg-background-grey-dark border-border-secondary border-[12px] z-[5] w-full max-w-[563px] mx-auto">
         <div className="flex items-center w-full pb-4 border-b border-background-grey-light gap-2.5  text-sm leading-[19px] text-content-grey">
-          <p className="flex-1 text-content-primary text-lg">
-            Add Liquidity
-          </p>
+          <p className="flex-1 text-content-primary text-lg">Add Liquidity</p>
           <SlippageSetting
             slippage={slippage}
             openSettingsModal={openSettingsModal}

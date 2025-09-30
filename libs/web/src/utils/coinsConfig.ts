@@ -1,4 +1,4 @@
-import assets from "./verified-assets.json";
+import verifiedAssets from "./verified-assets.json";
 
 // TODO: Consider removing this type as we won't probably know the list of all coins ahead of time
 export type CoinName = string | null;
@@ -23,25 +23,41 @@ export interface CoinDataWithPrice extends CoinData {
 // mapping of asset names & symbols to symbols
 export const assetHandleToSymbol = new Map<string, string>();
 
+// Helper function to get the appropriate network data based on chain ID
+export const getNetworkDataForChain = (asset: any, chainId: number) => {
+  // For local development, look for local_testnet chain specifically
+  if (process.env.NEXT_PUBLIC_FUEL_PROVIDER_URL?.includes("localhost")) {
+    const localNetwork = asset.networks?.find(
+      (network: any) =>
+        network.type === "fuel" && network.chain === "local_testnet"
+    );
+    return localNetwork || null; // Return null if no local_testnet network found (don't fallback)
+  }
+
+  // For production, find the fuel network that matches the specified chain ID
+  const fuelNetwork = asset.networks?.find(
+    (network: any) => network.type === "fuel" && network.chainId === chainId
+  );
+
+  // If we find a matching fuel network, return it
+  if (fuelNetwork) {
+    return fuelNetwork;
+  }
+
+  // Fallback: try to find any fuel network (for backwards compatibility with mainnet)
+  const anyFuelNetwork = asset.networks?.find(
+    (network: any) => network.type === "fuel"
+  );
+
+  return anyFuelNetwork;
+};
+
 // TODO: Make an API call to get the coins config
 const initAssetsConfig = () => {
   const assetsConfig: Map<string, CoinData> = new Map();
 
-  assets.forEach((asset) => {
-    const assetData: CoinData = {
-      name: asset.name,
-      symbol: asset.symbol,
-      assetId: asset.assetId!,
-      decimals: asset.decimals,
-      icon: asset.icon.default,
-      isVerified: asset.isVerified,
-      contractId: asset.contractId,
-      subId: asset.subId,
-    };
-
-    assetsConfig.set(assetData.assetId, assetData);
-  });
-
+  // We'll only initialize with additional assets here
+  // Verified assets will be handled dynamically by the hook
   const additionalAssetsConfig = initAdditionalAssetsConfig();
 
   additionalAssetsConfig.forEach((value, assetId) => {
@@ -128,19 +144,60 @@ export const coinsConfig: Map<CoinName, CoinData> = initAssetsConfig();
 
 // Routing configs
 
+// Function to get asset ID from verified-assets.json based on symbol and environment
+function getAssetIdFromVerifiedAssets(symbol: string): string {
+  const asset = verifiedAssets.find((asset: any) => asset.symbol === symbol);
+  if (!asset) {
+    throw new Error(
+      `Asset with symbol ${symbol} not found in verified-assets.json`
+    );
+  }
+
+  // For local development, look for local_testnet chain
+  if (process.env.NEXT_PUBLIC_FUEL_PROVIDER_URL?.includes("localhost")) {
+    const localNetwork = asset.networks?.find(
+      (network: any) =>
+        network.type === "fuel" && network.chain === "local_testnet"
+    );
+    if (localNetwork?.assetId) {
+      return localNetwork.assetId;
+    }
+    // Fallback to mainnet if local not found (shouldn't happen in proper setup)
+    console.warn(
+      `Local testnet asset ID not found for ${symbol}, falling back to mainnet`
+    );
+  }
+
+  // For production, find the mainnet fuel network (chainId 9889)
+  const mainnetNetwork = asset.networks?.find(
+    (network: any) => network.type === "fuel" && network.chainId === 9889
+  );
+  if (mainnetNetwork?.assetId) {
+    return mainnetNetwork.assetId;
+  }
+
+  // Final fallback: any fuel network
+  const anyFuelNetwork = asset.networks?.find(
+    (network: any) => network.type === "fuel"
+  );
+  if (anyFuelNetwork?.assetId) {
+    return anyFuelNetwork.assetId;
+  }
+
+  throw new Error(`No fuel network found for asset ${symbol}`);
+}
+
 export const BASE_ASSETS: CoinData[] = [
   {
     name: "Ethereum",
     symbol: "ETH",
     decimals: 9,
-    assetId:
-      "0xf8f8b6283d7fa5b672b530cbb84fcccb4ff8dc40f8176ef4544ddb1f1952ad07",
+    assetId: getAssetIdFromVerifiedAssets("ETH"),
   },
   {
     name: "USDC",
     symbol: "USDC",
     decimals: 6,
-    assetId:
-      "0x286c479da40dc953bddc3bb4c453b608bba2e0ac483b077bd475174115395e6b",
+    assetId: getAssetIdFromVerifiedAssets("USDC"),
   },
 ];
