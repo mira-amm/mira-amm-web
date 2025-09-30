@@ -71,7 +71,7 @@ export type SwapState = Record<CurrencyBoxMode, CurrencyBoxState>;
 export type InputsState = Record<CurrencyBoxMode, {amount: string}>;
 
 // TODO: Remove pool type hardcoding
-const poolType = "v2";
+const poolType = "v1";
 const initialInputsState: InputsState = {sell: {amount: ""}, buy: {amount: ""}};
 
 const lineSplitterClasses = "relative w-full h-px bg-background-grey-dark my-4";
