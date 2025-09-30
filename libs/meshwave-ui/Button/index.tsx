@@ -1,2 +1,3 @@
 export {Button, buttonVariants} from "./Button";
-export {ButtonGroup, ButtonGroupItem, ButtonGroupProps} from "./button-group";
+export {ButtonGroup} from "./button-group";
+export type {ButtonGroupItem, ButtonGroupProps} from "./button-group";
