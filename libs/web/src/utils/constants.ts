@@ -1,8 +1,20 @@
 import {bn, CHAIN_IDS, TxParams} from "fuels";
 import {getBrandText} from "./brandName";
 
+// Function to get local contract IDs when in local development
+function getLocalContractIds() {
+  // Environment variables are available in both server and client environments
+  return {
+    simpleProxy: process.env.NEXT_PUBLIC_LOCAL_PROXY_CONTRACT_ID,
+    fungible: process.env.NEXT_PUBLIC_LOCAL_FUNGIBLE_CONTRACT_ID,
+  };
+}
+
+// Use local contract ID if available, otherwise use production contract ID
+const localContracts = getLocalContractIds();
 export const DEFAULT_AMM_CONTRACT_ID =
-  "0x2e40f2b244b98ed6b8204b3de0156c6961f98525c8162f80162fcf53eebd90e7" as const;
+  localContracts?.simpleProxy ||
+  ("0x2e40f2b244b98ed6b8204b3de0156c6961f98525c8162f80162fcf53eebd90e7" as const);
 
 export const ETH_ASSET_ID =
   "0xf8f8b6283d7fa5b672b530cbb84fcccb4ff8dc40f8176ef4544ddb1f1952ad07";
@@ -29,11 +41,19 @@ export const BlogLink =
   "https://mirror.xyz/0xBE101110E07430Cf585123864a55f51e53ABc339" as const;
 
 // TODO: Use env variables for values below to separate dev/prod | testnet/mainnet
-export const ValidNetworkChainId = CHAIN_IDS.fuel.mainnet;
-export const NetworkUrl: string = "https://mainnet.fuel.network/v1/graphql";
+// Support local development with chain ID 0, otherwise use mainnet
+export const ValidNetworkChainId = process.env.NEXT_PUBLIC_FUEL_PROVIDER_URL
+  ? 0 // Local testnet uses chain ID 0
+  : CHAIN_IDS.fuel.mainnet;
+
+// Support local development with environment variables
+export const NetworkUrl: string =
+  process.env.NEXT_PUBLIC_FUEL_PROVIDER_URL ||
+  "https://mainnet.fuel.network/v1/graphql";
 
 export const SQDIndexerUrl =
-  "https://mira-dex.squids.live/mira-indexer@v4/api/graphql" as const;
+  process.env.NEXT_PUBLIC_SUBSQUID_ENDPOINT ||
+  ("https://mira-dex.squids.live/mira-indexer@v4/api/graphql" as const);
 export const MainnetUrl = "https://mainnet-explorer.fuel.network";
 export const ApiBaseUrl = "https://prod.api.microchain.systems" as const;
 
@@ -121,4 +141,4 @@ export const TickerTapeText =
 export const fuelUsdcPoolKey =
   "0x1d5d97005e41cae2187a895fd8eab0506111e0e2f3331cd3912c15c24e3c1d82-0x286c479da40dc953bddc3bb4c453b608bba2e0ac483b077bd475174115395e6b-false";
 
-export const DEFAULT_SLIPPAGE_BASIS_POINT = 50
+export const DEFAULT_SLIPPAGE_BASIS_POINT = 50;

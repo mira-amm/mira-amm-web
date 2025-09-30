@@ -324,6 +324,17 @@
           ],
           "parallel": false
         }
+      },
+      "dev:local": {
+        "executor": "nx:run-commands",
+        "options": {
+          "commands": [
+            "nx dev indexer",
+            "nx dev web"
+          ],
+          "parallel": true,
+          "envFile": ".env.dev.local"
+        }
       }
     }
   },
