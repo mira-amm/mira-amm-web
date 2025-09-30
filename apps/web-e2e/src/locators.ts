@@ -189,6 +189,36 @@ export const addV2NumBinsInput = () =>
 export const addV2ResetPriceButton = () =>
   PageElement.located(By.cssContainingText("button", "Reset price"));
 
+export const liquidityShapeSelector = () =>
+  PageElement.located(By.css("[data-test-id='liquidity-shape-selector']"));
+
+export const addV2InputAmountsButton = () =>
+  PageElement.located(By.css("[data-test-id='add-v2-input-amounts-button']"));
+
+//
+// ========== PREVIEW ADD LIQUIDITY DIALOG LOCATORS ==========
+//
+
+export const previewAddLiquidityDialog = () =>
+  PageElement.located(By.css("[data-test-id='preview-add-liquidity-dialog']"));
+
+export const previewCoinPair = () =>
+  PageElement.located(By.css("[data-test-id='preview-coin-pair']"));
+
+export const previewConcentratedLiquidityText = () =>
+  PageElement.located(
+    By.css("[data-test-id='preview-concentrated-liquidity-text']")
+  );
+
+export const previewStrategy = () =>
+  PageElement.located(By.css("[data-test-id='preview-strategy']"));
+
+export const previewNumberOfBins = () =>
+  PageElement.located(By.css("[data-test-id='preview-number-of-bins']"));
+
+export const previewPriceRange = () =>
+  PageElement.located(By.css("[data-test-id='preview-price-range']"));
+
 export const addLiquidityDepositInputs = () =>
   PageElements.located(By.css("input[placeholder='0']"));
 

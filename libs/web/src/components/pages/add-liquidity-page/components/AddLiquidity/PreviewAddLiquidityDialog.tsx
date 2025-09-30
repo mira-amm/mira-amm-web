@@ -96,17 +96,25 @@ export default function PreviewAddLiquidityDialog({
   return (
     <>
       <>
-        <div className="flex flex-col gap-4">
+        <div
+          className="flex flex-col gap-4"
+          data-test-id="preview-add-liquidity-dialog"
+        >
           <div className="flex justify-between">
-            <CoinPair
-              firstCoin={assets[0].assetId}
-              secondCoin={assets[1].assetId}
-              isStablePool={isStablePool}
-              poolType={getUiPoolTypeFromPoolId(poolId)}
-              withPoolDetails
-            />
+            <div data-test-id="preview-coin-pair">
+              <CoinPair
+                firstCoin={assets[0].assetId}
+                secondCoin={assets[1].assetId}
+                isStablePool={isStablePool}
+                poolType="v2-concentrated"
+                withPoolDetails
+              />
+            </div>
             {isV2 && (
-              <div className="flex items-center gap-2">
+              <div
+                className="flex items-center gap-2"
+                data-test-id="preview-concentrated-liquidity-text"
+              >
                 <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
                 <span className="text-xs text-blue-600 dark:text-blue-400">
                   Concentrated Liquidity
@@ -131,18 +139,27 @@ export default function PreviewAddLiquidityDialog({
             {/* V2 specific information */}
             {isV2 && (
               <>
-                <div className="flex justify-between items-center border-t border-background-grey-dark pt-3">
+                <div
+                  className="flex justify-between items-center border-t border-background-grey-dark pt-3"
+                  data-test-id="preview-strategy"
+                >
                   <p className="text-sm leading-4">Strategy</p>
                   <p className="text-sm leading-4 capitalize">
                     {previewData.binStrategy}
                   </p>
                 </div>
-                <div className="flex justify-between items-center">
+                <div
+                  className="flex justify-between items-center"
+                  data-test-id="preview-number-of-bins"
+                >
                   <p className="text-sm leading-4">Number of bins</p>
                   <p className="text-sm leading-4">{previewData.numBins}</p>
                 </div>
                 {previewData.priceRange && (
-                  <div className="flex justify-between items-center">
+                  <div
+                    className="flex justify-between items-center"
+                    data-test-id="preview-price-range"
+                  >
                     <p className="text-sm leading-4">Price range</p>
                     <p className="text-sm leading-4">
                       {previewData.priceRange[0].toFixed(4)} -{" "}
@@ -165,8 +182,8 @@ export default function PreviewAddLiquidityDialog({
           </div>
         </div>
 
-        <Button loading={isPending} onClick={handleAddLiquidity}>
-          Add Liquidity
+        <Button disabled={isPending} onClick={handleAddLiquidity}>
+          {isPending ? "Adding Liquidity..." : "Add Liquidity"}
         </Button>
 
         <SuccessModal title={<></>} onClose={redirectToLiquidity}>

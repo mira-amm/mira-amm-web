@@ -266,7 +266,7 @@ const AddLiquidityDialog = ({
       </div>
 
       {/* Fee tier selection for v1 pools */}
-      {poolType === "v1" && (
+      {false && (
         <div className="flex w-full gap-3 mb-6">
           <div
             role="button"
@@ -368,6 +368,9 @@ const AddLiquidityDialog = ({
           disabled={finalButtonDisabled}
           onClick={finalHandleButtonClick}
           size="2xl"
+          data-test-id={
+            poolType === "v2" ? "add-v2-input-amounts-button" : undefined
+          }
         >
           {poolType === "v2" ? "Input amounts" : finalButtonTitle}
         </Button>
