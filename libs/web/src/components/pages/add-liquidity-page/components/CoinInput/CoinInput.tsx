@@ -16,6 +16,7 @@ const CoinInput = ({
   usdRate,
   onAssetClick,
   isOutOfRange,
+  dataTestId,
 }: {
   assetId: string | null;
   value: string;
@@ -25,6 +26,7 @@ const CoinInput = ({
   usdRate: number | undefined;
   onAssetClick?: VoidFunction;
   isOutOfRange?: boolean;
+  dataTestId?: string;
 }) => {
   const metadata = useAssetMetadata(assetId);
   const balanceValue = balance.formatUnits(metadata.decimals || 0);
@@ -84,6 +86,7 @@ const CoinInput = ({
           disabled={isDisabled}
           onChange={handleChange}
           aria-invalid={hasInsufficientBalance}
+          data-test-id={dataTestId}
           className={cn(
             "w-full text-content-primary text-sm leading-4 bg-transparent border-none lg:text-base lg:leading-[19px] font-alt",
             hasInsufficientBalance ? "outline-none" : "",

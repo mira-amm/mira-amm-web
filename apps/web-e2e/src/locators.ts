@@ -64,7 +64,7 @@ export const slippageSettingsInput = () =>
 //
 
 export const createPoolButton = () =>
-  PageElements.located(By.cssContainingText("button", "Create Pool")).last();
+  PageElement.located(By.css("[data-test-id='create-pool-button']"));
 
 export const chooseAssetButtons = () =>
   PageElements.located(By.cssContainingText("p", "Choose Asset"));
@@ -131,9 +131,7 @@ export const footerContactUsLink = () =>
 //
 
 export const concentratedPoolV2Option = () =>
-  PageElement.located(
-    By.cssContainingText("div", "Concentrated Liquidity Pool (v2)")
-  );
+  PageElement.located(By.css("[data-test-id='concentrated-pool-v2-option']"));
 
 export const previewSelectBinStepLabel = () =>
   PageElement.located(By.cssContainingText("p", "Select Bin Step"));
@@ -149,7 +147,7 @@ export const previewCreationButton = () =>
 //
 
 export const positionSimulationContainer = () =>
-  PageElement.located(By.css("div.relative.h-40"));
+  PageElement.located(By.css("[data-test-id='position-simulation-container']"));
 
 //
 // ========== REMOVE LIQUIDITY LOCATORS ==========
@@ -194,4 +192,3 @@ export const addV2SliderMinThumb = () =>
 
 export const addV2SliderMaxThumb = () =>
   PageElement.located(By.css("[aria-label='Maximum price']"));
-

@@ -398,6 +398,7 @@ export function CreatePoolDialog({
                 poolType === "concentrated" &&
                   "border-background-primary dark:border-content-tertiary"
               )}
+              data-test-id="concentrated-pool-v2-option"
               onClick={() => handlePoolTypeChange("concentrated")}
               role="button"
             >
@@ -424,6 +425,7 @@ export function CreatePoolDialog({
             balance={firstAssetBalanceValue}
             usdRate={firstAssetPrice.price ?? undefined}
             onAssetClick={handleAssetClick(firstAssetId)}
+            dataTestId="deposit-input-A"
           />
           <CoinInput
             assetId={secondAssetId}
@@ -433,6 +435,7 @@ export function CreatePoolDialog({
             balance={secondAssetBalanceValue}
             usdRate={secondAssetPrice.price ?? undefined}
             onAssetClick={handleAssetClick(secondAssetId)}
+            dataTestId="deposit-input-B"
           />
         </div>
       </div>
@@ -467,7 +470,7 @@ export function CreatePoolDialog({
           </div>
 
           {/* Desktop: button group */}
-          <div className="hidden md:block">
+          <div className="hidden md:block" data-test-id="bin-step-group">
             <ButtonGroup
               items={V2_POOL_CONFIGS.map((config) => ({
                 value: config.binStep,
@@ -522,6 +525,7 @@ export function CreatePoolDialog({
                 onChange={(e) =>
                   setActivePriceInput(sanitizeNumericInput(e.target.value))
                 }
+                data-test-id="active-price-input"
                 className="font-alt pr-28"
               />
               <span className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 text-sm">

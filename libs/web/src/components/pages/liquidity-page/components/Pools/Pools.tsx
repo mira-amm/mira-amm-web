@@ -70,7 +70,12 @@ export function Pools() {
           <div className="flex justify-end md:hidden">
             {isConnected && (
               <Link href="/liquidity/create-pool">
-                <Button className="mobileOnly w-[177px]">Create Pool</Button>
+                <Button
+                  className="mobileOnly w-[177px]"
+                  data-test-id="create-pool-button"
+                >
+                  Create Pool
+                </Button>
               </Link>
             )}
           </div>

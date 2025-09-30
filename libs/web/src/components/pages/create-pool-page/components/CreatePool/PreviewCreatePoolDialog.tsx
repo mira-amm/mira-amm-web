@@ -82,8 +82,11 @@ const PreviewCreatePoolDialog = ({
 
   return (
     <>
-      <div className="flex flex-col gap-4">
-        <div className="flex justify-between">
+      <div
+        className="flex flex-col gap-4"
+        data-test-id="create-pool-preview-modal"
+      >
+        <div className="flex justify-between" data-test-id="preview-pair">
           <CoinPair
             firstCoin={previewData.assets[0].assetId}
             secondCoin={previewData.assets[1].assetId}
@@ -95,11 +98,15 @@ const PreviewCreatePoolDialog = ({
         <div className="flex flex-col gap-3 bg-[var(--background-secondary)] p-3 rounded-md">
           <div className="flex justify-between items-center">
             <Coin assetId={previewData.assets[0].assetId} />
-            <p className="text-sm  leading-4">{firstCoinAmount}</p>
+            <p className="text-sm  leading-4" data-test-id="preview-amount-A">
+              {firstCoinAmount}
+            </p>
           </div>
           <div className="flex justify-between items-center">
             <Coin assetId={previewData.assets[1].assetId} />
-            <p className="text-sm  leading-4">{secondCoinAmount}</p>
+            <p className="text-sm  leading-4" data-test-id="preview-amount-B">
+              {secondCoinAmount}
+            </p>
           </div>
           <div className="flex justify-between items-center border-t border-[var(--background-grey-dark)] pt-3">
             <p className="text-sm  leading-4">Fee tier</p>

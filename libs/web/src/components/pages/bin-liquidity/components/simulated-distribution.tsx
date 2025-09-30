@@ -264,7 +264,7 @@ export default function SimulatedDistribution({
   const maxBinValue = perBinValues.length > 0 ? Math.max(...perBinValues) : 0;
 
   return (
-    <div className="h-56">
+    <div className="h-56" data-test-id="position-simulation-container">
       {/* Chart container */}
       <div className="relative h-40">
         {/* Chart bars */}

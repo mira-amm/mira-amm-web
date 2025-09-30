@@ -218,9 +218,12 @@ describe.serial("With connected wallet", () => {
         PageElement.located(By.css("Loading pools...")),
         not(isVisible())
       ),
-      Wait.until(createPoolButton(), isPresent()),
+      Wait.upTo(Duration.ofSeconds(10)).until(createPoolButton(), isVisible()),
       Click.on(createPoolButton()),
-      // choose first asset
+      // select the Concentrated (v2) pool type block FIRST
+      Wait.until(concentratedPoolV2Option(), isVisible()),
+      Click.on(concentratedPoolV2Option()),
+      // then choose first asset
       Wait.until(chooseAssetButtons().first(), isVisible()),
       Click.on(chooseAssetButtons().first()),
       Wait.until(searchInput(), isVisible())
@@ -259,12 +262,6 @@ describe.serial("With connected wallet", () => {
       Click.on(searchResults().first())
     );
 
-    // select the Concentrated (v2) pool type block
-    await actor.attemptsTo(
-      Wait.until(concentratedPoolV2Option(), isVisible()),
-      Click.on(concentratedPoolV2Option())
-    );
-
     // Verify preview-step UI is present on the form for v2
     await actor.attemptsTo(
       Wait.until(previewSelectBinStepLabel(), isVisible()),
@@ -273,9 +270,8 @@ describe.serial("With connected wallet", () => {
     );
 
     // Fill deposit amounts and parameters
-    const depositInputs = page.locator("input[placeholder='0']");
-    await depositInputs.nth(0).fill("0.00001"); // ETH
-    await depositInputs.nth(1).fill("1"); // FUEL
+    await page.locator("[data-test-id='deposit-input-A']").fill("0.00001"); // ETH
+    await page.locator("[data-test-id='deposit-input-B']").fill("1"); // FUEL
 
     // Select the second bin step from a button group if present
     const binButtons = page.locator("[data-test-id='bin-step-group'] button");
