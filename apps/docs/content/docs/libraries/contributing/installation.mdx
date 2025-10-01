@@ -67,7 +67,7 @@ Open editor:
 
 ⭐ Enjoy Microvisor, our project-specific IDE.
 
-<Tabs groupId="project-commands" items={['Terminal Mode', 'Browser Mode']} persist>
+<Tabs groupId="project-commands" items={['Terminal Mode', 'Browser Mode', 'Local Development']} persist>
   <Tab value="Terminal Mode">
    ```sh title="Shell"
    pnpm dev
@@ -76,6 +76,23 @@ Open editor:
   <Tab value="Browser Mode">
    ```sh title="Shell"
    pnpm start
+   ```
+  </Tab>
+  <Tab value="Local Development">
+   Run the entire stack locally with no external dependencies:
+   
+   ```sh title="Shell"
+   # Initialize the indexer submodule
+   git submodule update --init --recursive
+   
+   # Copy the local environment configuration
+   cp .env.dev.local.example .env.dev.local
+   
+   # Ensure Docker daemon is running
+   docker info
+   
+   # Start the local development environment
+   nx dev:local
    ```
   </Tab>
 </Tabs>
