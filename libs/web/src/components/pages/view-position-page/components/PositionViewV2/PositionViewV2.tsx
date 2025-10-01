@@ -1,4 +1,5 @@
 import {BN} from "fuels";
+import {ACTIVE_BIN_ID} from "mira-dex-ts";
 import {useUserBinPositionsV2, usePositionSummaryV2} from "@/src/hooks";
 import {PositionSummaryV2} from "@/src/components/common/PositionSummaryV2";
 import {ConcentratedLiquidityMetrics} from "@/src/components/common";
@@ -62,15 +63,11 @@ export function PositionViewV2({
       {/* Quick Stats */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
         <div className="bg-white dark:bg-gray-800 rounded-lg border p-4 text-center">
-          <div className="text-2xl text-blue-600">
-            {summary.totalBins}
-          </div>
+          <div className="text-2xl text-blue-600">{summary.totalBins}</div>
           <div className="text-sm text-gray-500">Total Bins</div>
         </div>
         <div className="bg-white dark:bg-gray-800 rounded-lg border p-4 text-center">
-          <div className="text-2xl text-green-600">
-            {summary.activeBins}
-          </div>
+          <div className="text-2xl text-green-600">{summary.activeBins}</div>
           <div className="text-sm text-gray-500">Active Bins</div>
         </div>
         <div className="bg-white dark:bg-gray-800 rounded-lg border p-4 text-center">
@@ -94,7 +91,7 @@ export function PositionViewV2({
         positions={positions}
         assetXId={assetXId}
         assetYId={assetYId}
-        activeBinId={new BN(8388608)} // Mock active bin ID
+        activeBinId={new BN(ACTIVE_BIN_ID.CENTER)} // Mock active bin ID
         binStep={25}
         currentPrice={1.0}
       />

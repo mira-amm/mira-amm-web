@@ -113,10 +113,10 @@ export function validateBinId(
 ): void {
   const bnBinId = new BN(binId.toString());
 
-  // Bin IDs are typically signed integers with a specific range
-  // For Trader Joe v2, bin IDs range from -8388608 to 8388607 (24-bit signed integer)
-  const MIN_BIN_ID = -8388608;
-  const MAX_BIN_ID = 8388607;
+  // Bin IDs use unsigned 24-bit integers (stored as u32 in Sway but limited to 24-bit range)
+  // Range from 0 to 16777215 (2^24 - 1), with center bin at 8388608 (2^23)
+  const MIN_BIN_ID = 0;
+  const MAX_BIN_ID = 16777215; // 2^24 - 1
 
   const binIdNumber = bnBinId.toNumber();
 

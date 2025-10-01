@@ -28,11 +28,11 @@ export const BASE_FACTOR_RANGES = {
   MAX: 50000, // Maximum base factor
 } as const;
 
-// Active bin ID constants
+// Active bin ID constants (matches Sway contract REAL_ID_SHIFT)
 export const ACTIVE_BIN_ID = {
-  CENTER: 8388608, // 2^23 - center bin ID
+  CENTER: 8388608, // 2^23 - center bin ID (REAL_ID_SHIFT in Sway)
   MIN: 0, // Minimum bin ID
-  MAX: 16777215, // 2^24 - 1 - maximum bin ID
+  MAX: 16777215, // 2^24 - 1 - maximum bin ID (24-bit range)
 } as const;
 
 // Liquidity distribution constants

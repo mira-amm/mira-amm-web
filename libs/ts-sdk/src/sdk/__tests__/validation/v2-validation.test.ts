@@ -106,12 +106,13 @@ describe("V2 Validation", () => {
     it("should pass for valid bin IDs", () => {
       expect(() => validateBinId(0)).not.toThrow();
       expect(() => validateBinId(1000)).not.toThrow();
-      expect(() => validateBinId(-1000)).not.toThrow();
+      expect(() => validateBinId(8388608)).not.toThrow(); // Center bin
+      expect(() => validateBinId(16777215)).not.toThrow(); // Max bin (2^24 - 1)
     });
 
     it("should throw for bin IDs outside valid range", () => {
-      expect(() => validateBinId(-8388609)).toThrow(EnhancedMiraV2Error);
-      expect(() => validateBinId(8388608)).toThrow(EnhancedMiraV2Error);
+      expect(() => validateBinId(-1)).toThrow(EnhancedMiraV2Error);
+      expect(() => validateBinId(16777216)).toThrow(EnhancedMiraV2Error); // Beyond max (2^24)
     });
   });
 

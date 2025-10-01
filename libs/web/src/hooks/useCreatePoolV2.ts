@@ -3,8 +3,9 @@ import {useCallback} from "react";
 import {bn, BN} from "fuels";
 import {useWallet} from "@fuels/react";
 import {useMutation} from "@tanstack/react-query";
+import {ACTIVE_BIN_ID} from "mira-dex-ts";
 
-import {DefaultTxParams, MaxDeadline} from "@/src/utils/constants";
+import {DefaultTxParams, getMaxDeadline} from "@/src/utils/constants";
 import {useAssetMinterContract} from "./useAssetMinterContract";
 import {useAssetMetadata, useMiraDexV2} from "@/src/hooks";
 
@@ -59,25 +60,28 @@ export function useCreatePoolV2({
       baseFactor: new BN(baseFactor),
     };
 
-    // Calculate active bin ID (starting at the middle bin)
-    const activeId = new BN("8388608"); // 2^23, middle bin
+    // Calculate active bin ID (starting at the middle bin) - unsigned representation
+    // Use center bin constant from SDK, matches REAL_ID_SHIFT in Sway contract
+    const activeBinIdUint = new BN(ACTIVE_BIN_ID.CENTER); // Center bin in unsigned representation
 
     // Create the pool and add initial liquidity
     const {transactionRequest: txRequest} =
       await miraV2.createPoolAndAddLiquidity(
         poolInput,
-        activeId,
+        activeBinIdUint,
+        firstCoinAmountToUse,
+        secondCoinAmountToUse,
+        getMaxDeadline(),
         [
           {
-            binId: activeId,
-            amountX: firstCoinAmountToUse,
-            amountY: secondCoinAmountToUse,
+            binId: activeBinIdUint.toNumber(), // Convert BN to number for LiquidityConfig
+            distributionX: 100, // 100% of X tokens in active bin
+            distributionY: 100, // 100% of Y tokens in active bin
           },
         ],
-        MaxDeadline,
         DefaultTxParams,
         {
-          useAssembleTx: true,
+          reserveGas: 10000,
         }
       );
 

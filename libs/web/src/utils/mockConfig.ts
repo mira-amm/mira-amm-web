@@ -2,11 +2,12 @@
  * Mock configuration for testing v2 functionality without deployed contracts
  */
 
+import {ACTIVE_BIN_ID} from "mira-dex-ts";
+
 export const MOCK_CONFIG = {
   // Enable mock mode for v2 functionality
-  enableV2Mock:
-    process.env.NODE_ENV === "development" ||
-    process.env.NEXT_PUBLIC_ENABLE_V2_MOCK === "true",
+  // Only enable mocks when explicitly requested, not automatically in development
+  enableV2Mock: process.env.NEXT_PUBLIC_ENABLE_V2_MOCK === "true",
 
   // Mock v2 pool data
   mockV2Pools: [
@@ -19,7 +20,7 @@ export const MOCK_CONFIG = {
         "0x1111111111111111111111111111111111111111111111111111111111111111", // USDC
       binStep: 25,
       baseFactor: 10000,
-      activeBinId: 8388608, // 2^23, represents price = 1.0
+      activeBinIdUint: ACTIVE_BIN_ID.CENTER, // Center bin in unsigned representation, represents price = 1.0
       totalLiquidity: "1000000000000000000", // 1 ETH equivalent
       currentPrice: 1.0,
       priceRange: {
@@ -38,7 +39,7 @@ export const MOCK_CONFIG = {
         "0x0000000000000000000000000000000000000000000000000000000000000000", // ETH
       binStep: 50,
       baseFactor: 10000,
-      activeBinId: 8388608,
+      activeBinIdUint: ACTIVE_BIN_ID.CENTER,
       totalLiquidity: "500000000000000000", // 0.5 ETH equivalent
       currentPrice: 15.5,
       priceRange: {
@@ -54,7 +55,7 @@ export const MOCK_CONFIG = {
   mockUserPositions: [
     {
       poolId: "1001",
-      binId: 8388608,
+      binIdUint: ACTIVE_BIN_ID.CENTER,
       lpTokenAmount: "500000000000000000", // 0.5 ETH equivalent
       underlyingAmounts: {
         x: "250000000000000000", // 0.25 ETH
@@ -99,7 +100,7 @@ export const MOCK_CONFIG = {
     },
     {
       poolId: "1002",
-      binId: 8388608,
+      binIdUint: ACTIVE_BIN_ID.CENTER,
       lpTokenAmount: "100000000000000000", // 0.1 ETH equivalent
       underlyingAmounts: {
         x: "50000000000000000", // 0.05 ETH
@@ -129,7 +130,7 @@ export const MOCK_CONFIG = {
     addLiquidity: {
       success: true,
       transactionId: "0xmock_add_liquidity_tx_hash",
-      binIds: [8388608], // Single active bin for simple mode
+      binIdsSigned: [ACTIVE_BIN_ID.CENTER], // Single active bin for simple mode
       liquidityAdded: "1000000000000000000", // 1 ETH equivalent
     },
     removeLiquidity: {
@@ -199,7 +200,7 @@ export const mockAddLiquidityV2 = async (params: {
   await mockDelay("addLiquidity");
 
   const pool = getMockV2Pool(params.poolId);
-  const activeBinId = pool?.activeBinId || 8388608;
+  const activeBinIdUint = pool?.activeBinIdUint || ACTIVE_BIN_ID.CENTER;
 
   // Handle different liquidity distribution strategies
   const binConfig = params.binConfig || {strategy: "single-active-bin"};
@@ -210,13 +211,13 @@ export const mockAddLiquidityV2 = async (params: {
   let binIds: number[] = [];
 
   if (strategy === "single-active-bin" || numBins === 1) {
-    binIds = [activeBinId];
+    binIds = [activeBinIdUint];
   } else {
     // Distribute across multiple bins around active bin
     const halfBins = Math.floor(numBins / 2);
     for (let i = -halfBins; i <= halfBins; i++) {
       if (binIds.length < numBins) {
-        binIds.push(activeBinId + i);
+        binIds.push(activeBinIdUint + i);
       }
     }
   }
@@ -237,7 +238,7 @@ export const mockAddLiquidityV2 = async (params: {
 
   binIds.forEach((binId, index) => {
     // Distribute liquidity across bins (simplified distribution)
-    const isActiveBin = binId === activeBinId;
+    const isActiveBin = binId === activeBinIdUint;
     let binAmountX = "0";
     let binAmountY = "0";
 
@@ -247,7 +248,7 @@ export const mockAddLiquidityV2 = async (params: {
       binAmountY = ((totalAmountY * BigInt(70)) / BigInt(100)).toString();
     } else if (strategy === "curve") {
       // Distributed based on distance from active bin
-      const weight = Math.max(0.1, 1 - Math.abs(binId - activeBinId) * 0.2);
+      const weight = Math.max(0.1, 1 - Math.abs(binId - activeBinIdUint) * 0.2);
       binAmountX = (
         (totalAmountX * BigInt(Math.floor(weight * 100))) /
         BigInt(100 * numBins)
@@ -258,7 +259,7 @@ export const mockAddLiquidityV2 = async (params: {
       ).toString();
     } else if (strategy === "bidask") {
       // Higher liquidity on both sides of active bin
-      const distance = Math.abs(binId - activeBinId);
+      const distance = Math.abs(binId - activeBinIdUint);
       const weight = distance <= 2 ? 0.8 : 0.2;
       binAmountX = (
         (totalAmountX * BigInt(Math.floor(weight * 100))) /
@@ -360,7 +361,8 @@ export const updateMockUserPosition = (
     } else {
       // Create new position
       const pool = getMockV2Pool(poolId);
-      const isActive = binIdNum === (pool?.activeBinId || 8388608);
+      const isActive =
+        binIdNum === (pool?.activeBinIdUint || ACTIVE_BIN_ID.CENTER);
 
       MOCK_CONFIG.mockUserPositions.push({
         poolId,

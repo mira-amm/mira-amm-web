@@ -1,5 +1,6 @@
 import {useState} from "react";
 import {BN} from "fuels";
+import {ACTIVE_BIN_ID} from "mira-dex-ts";
 import {Button} from "@/meshwave-ui/Button";
 import {
   isV2MockEnabled,
@@ -49,7 +50,7 @@ export function V2MockDemo() {
     try {
       const result = await mockRemoveLiquidityV2({
         poolId: "1001",
-        binIds: [8388608, 8388609],
+        binIds: [ACTIVE_BIN_ID.CENTER, ACTIVE_BIN_ID.CENTER + 1],
         amounts: {
           x: new BN("500000000000000000"),
           y: new BN("500000000000000000"),

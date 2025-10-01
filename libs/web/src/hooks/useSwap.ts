@@ -1,10 +1,10 @@
 "use client";
 
-import { useCallback } from "react";
-import { BN, bn, ScriptTransactionRequest } from "fuels";
-import { useWallet } from "@fuels/react";
-import { PoolId } from "mira-dex-ts";
-import { useMutation } from "@tanstack/react-query";
+import {useCallback} from "react";
+import {BN, bn, ScriptTransactionRequest} from "fuels";
+import {useWallet} from "@fuels/react";
+import {PoolId} from "mira-dex-ts";
+import {useMutation} from "@tanstack/react-query";
 
 import type {
   CurrencyBoxMode,
@@ -17,8 +17,8 @@ import {
   useMiraDexV2,
   useReadonlyMiraV2,
 } from "@/src/hooks";
-import { MaxDeadline } from "@/src/utils/constants";
-import { type PoolTypeOption } from "@/src/components/common/PoolTypeToggle";
+import {getMaxDeadline} from "@/src/utils/constants";
+import {type PoolTypeOption} from "@/src/components/common/PoolTypeToggle";
 
 export function useSwap({
   swapState,
@@ -33,13 +33,13 @@ export function useSwap({
   pools: PoolId[] | undefined;
   poolType?: PoolTypeOption;
 }) {
-  const { wallet } = useWallet();
+  const {wallet} = useWallet();
   const miraDex = useMiraDex();
   const readonlyMira = useReadonlyMira();
   const miraDexV2 = useMiraDexV2();
   const readonlyMiraV2 = useReadonlyMiraV2();
   const swapData = useSwapData(swapState);
-  const { sellAssetIdInput, buyAssetIdInput, sellDecimals, buyDecimals } =
+  const {sellAssetIdInput, buyAssetIdInput, sellDecimals, buyDecimals} =
     swapData;
 
   const getTxCost = useCallback(async () => {
@@ -73,14 +73,14 @@ export function useSwap({
         .mul(bn(10_000).sub(bn(slippage)))
         .div(bn(10_000));
 
-      const { transactionRequest, gasPrice } = await activeMiraDex.swapExactInput(
+      const {transactionRequest, gasPrice} = await activeMiraDex.swapExactInput(
         sellAmount,
         sellAssetIdInput,
         buyAmountWithSlippage,
         pools,
-        MaxDeadline,
+        getMaxDeadline(),
         undefined,
-        { useAssembleTx: true, reserveGas: 10000 }
+        {useAssembleTx: true, reserveGas: 10000}
       );
 
       tx = transactionRequest;
@@ -95,21 +95,21 @@ export function useSwap({
       const sellAmountWithSlippage = simulatedSellAmount
         .mul(bn(10_000).add(bn(slippage)))
         .div(bn(10_000));
-      const { transactionRequest, gasPrice } =
+      const {transactionRequest, gasPrice} =
         await activeMiraDex.swapExactOutput(
           buyAmount,
           buyAssetIdInput,
           sellAmountWithSlippage,
           pools,
-          MaxDeadline,
-          { useAssembleTx: true }
+          getMaxDeadline(),
+          {useAssembleTx: true}
         );
 
       tx = transactionRequest;
       txCost = gasPrice;
     }
 
-    return { tx, txCost };
+    return {tx, txCost};
   }, [
     wallet,
     miraDex,
@@ -136,7 +136,7 @@ export function useSwap({
 
       const tx = await wallet.sendTransaction(inputTx);
 
-      const { isStatusPreConfirmationSuccess } =
+      const {isStatusPreConfirmationSuccess} =
         await tx.waitForPreConfirmation();
 
       return {
@@ -154,7 +154,7 @@ export function useSwap({
     isPending: txCostPending,
     error: txCostError,
     reset: resetTxCost,
-  } = useMutation({ mutationFn: getTxCost });
+  } = useMutation({mutationFn: getTxCost});
 
   const {
     mutateAsync: triggerSwap,
@@ -162,7 +162,7 @@ export function useSwap({
     isPending: swapPending,
     error: swapError,
     reset: resetSwap,
-  } = useMutation({ mutationFn: sendTx });
+  } = useMutation({mutationFn: sendTx});
 
   return {
     fetchTxCost,

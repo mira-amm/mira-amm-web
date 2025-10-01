@@ -68,8 +68,8 @@ export function useUserBinPositionsV2(poolId: BN | undefined) {
           Address.fromString(userAddress.toString())
         );
 
-        // Get the active bin to determine which positions are active
-        const activeBinId = await readonlyMiraV2.getActiveBin(poolId);
+        // Get the active bin to determine which positions are active - uint representation
+        const activeBinIdUint = await readonlyMiraV2.getActiveBin(poolId);
 
         // Transform the positions to our interface format
         const transformedPositions: V2BinPosition[] = positions.map(
@@ -80,7 +80,7 @@ export function useUserBinPositionsV2(poolId: BN | undefined) {
             underlyingAmounts: position.underlyingAmounts,
             price: position.price || 0,
             feesEarned: position.feesEarned || {x: new BN(0), y: new BN(0)},
-            isActive: new BN(position.binId).eq(activeBinId),
+            isActive: new BN(position.binId).eq(activeBinIdUint),
           })
         );
 

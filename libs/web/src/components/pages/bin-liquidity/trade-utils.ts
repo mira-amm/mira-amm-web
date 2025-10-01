@@ -75,12 +75,12 @@ export const TradeUtils = {
     const actualMinPrice = Math.pow(1 + binStep / 10000, alignedMinBinId);
     const actualMaxPrice = Math.pow(1 + binStep / 10000, alignedMaxBinId);
 
-    // Current price analysis
+    // Current price analysis - uint representation
     const exactCurrentBinId = Math.log(currentPrice) / logBase;
-    const activeBinId = Math.round(exactCurrentBinId);
-    const activeBinPrice = Math.pow(1 + binStep / 10000, activeBinId);
+    const activeBinIdUint = Math.round(exactCurrentBinId);
+    const activeBinPrice = Math.pow(1 + binStep / 10000, activeBinIdUint);
     const isCurrentPriceInRange =
-      activeBinId >= alignedMinBinId && activeBinId <= alignedMaxBinId;
+      activeBinIdUint >= alignedMinBinId && activeBinIdUint <= alignedMaxBinId;
 
     return {
       inputMinPrice: minPrice,
@@ -92,7 +92,7 @@ export const TradeUtils = {
       numberOfBins,
       actualMinPrice,
       actualMaxPrice,
-      activeBinId,
+      activeBinId: activeBinIdUint,
       activeBinPrice,
       isCurrentPriceInRange,
       exactMinBinId,

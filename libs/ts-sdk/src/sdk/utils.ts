@@ -268,18 +268,23 @@ export function deltaToBinId(delta: BinIdDelta): number {
 }
 
 export function binIdToPrice(binId: number, binStep: number): BN {
-  // Price calculation: price = (1 + binStep / 10000) ^ binId
-  // Using more precise calculation with scaling
+  // Price calculation: price = (1 + binStep / 10000) ^ (binId - CENTER_BIN)
+  // Using unsigned representation with center bin at 8388608 (2^23)
+  // This matches the Sway contract's REAL_ID_SHIFT constant
   const SCALE = new BN(10).pow(18); // 18 decimal precision
+  const CENTER_BIN = 8388608; // 2^23 - REAL_ID_SHIFT from Sway contract
   const binStepBN = new BN(binStep);
   const base = SCALE.add(binStepBN.mul(SCALE).div(new BN(10000)));
 
-  if (binId === 0) {
-    return SCALE; // Price = 1.0 scaled
+  // Convert to signed representation relative to center bin
+  const signedBinId = binId - CENTER_BIN;
+
+  if (signedBinId === 0) {
+    return SCALE; // Price = 1.0 scaled at center bin
   }
 
   let result = SCALE;
-  const absBinId = Math.abs(binId);
+  const absBinId = Math.abs(signedBinId);
 
   // Use exponentiation by squaring for efficiency
   let basePower = base;
@@ -293,8 +298,8 @@ export function binIdToPrice(binId: number, binStep: number): BN {
     exp = Math.floor(exp / 2);
   }
 
-  // If binId is negative, take reciprocal
-  if (binId < 0) {
+  // If signedBinId is negative, take reciprocal
+  if (signedBinId < 0) {
     result = SCALE.mul(SCALE).div(result);
   }
 

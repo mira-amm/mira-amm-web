@@ -73,7 +73,9 @@ export const DefaultTxParams: TxParams = {
   maxFee: 275_000,
 } as const;
 
-export const MaxDeadline = 4_294_967_295 as const;
+// Create a deadline 1 hour (3600 seconds) in the future
+// This is a function to ensure we always get a fresh timestamp
+export const getMaxDeadline = () => Math.floor(Date.now() / 1000) + 3600;
 
 export const DiscordLink = "https://discord.gg/9HzukDUKSq" as const;
 export const XLink = "https://x.com/MicrochainDLM" as const;

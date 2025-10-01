@@ -1,5 +1,6 @@
 import {render, screen} from "@testing-library/react";
 import {BN} from "fuels";
+import {ACTIVE_BIN_ID} from "mira-dex-ts";
 import {ConcentratedLiquidityMetrics} from "../ConcentratedLiquidityMetrics";
 import {V2BinPosition} from "@/src/hooks/useUserBinPositionsV2";
 
@@ -10,7 +11,7 @@ jest.mock("@/src/hooks", () => ({
 
 const mockPositions: V2BinPosition[] = [
   {
-    binId: new BN(8388608),
+    binId: new BN(ACTIVE_BIN_ID.CENTER),
     lpToken: "mock-lp-token-1",
     lpTokenAmount: new BN("1000000000"),
     underlyingAmounts: {
@@ -77,7 +78,7 @@ describe("ConcentratedLiquidityMetrics", () => {
         positions={mockPositions}
         assetXId="asset-x"
         assetYId="asset-y"
-        activeBinId={new BN(8388608)}
+        activeBinId={new BN(ACTIVE_BIN_ID.CENTER)}
         binStep={25}
         currentPrice={1.0}
       />
@@ -97,7 +98,7 @@ describe("ConcentratedLiquidityMetrics", () => {
         positions={mockPositions}
         assetXId="asset-x"
         assetYId="asset-y"
-        activeBinId={new BN(8388608)}
+        activeBinId={new BN(ACTIVE_BIN_ID.CENTER)}
         binStep={25}
         currentPrice={1.0}
       />
@@ -116,7 +117,7 @@ describe("ConcentratedLiquidityMetrics", () => {
         positions={mockPositions}
         assetXId="asset-x"
         assetYId="asset-y"
-        activeBinId={new BN(8388608)}
+        activeBinId={new BN(ACTIVE_BIN_ID.CENTER)}
         binStep={25}
         currentPrice={1.0}
       />
@@ -134,7 +135,7 @@ describe("ConcentratedLiquidityMetrics", () => {
         positions={mockPositions}
         assetXId="asset-x"
         assetYId="asset-y"
-        activeBinId={new BN(8388608)}
+        activeBinId={new BN(ACTIVE_BIN_ID.CENTER)}
         binStep={25}
         currentPrice={1.0}
       />
@@ -152,7 +153,7 @@ describe("ConcentratedLiquidityMetrics", () => {
         positions={mockPositions}
         assetXId="asset-x"
         assetYId="asset-y"
-        activeBinId={new BN(8388608)}
+        activeBinId={new BN(ACTIVE_BIN_ID.CENTER)}
         binStep={25}
         currentPrice={1.0}
       />
@@ -168,7 +169,7 @@ describe("ConcentratedLiquidityMetrics", () => {
         positions={[]}
         assetXId="asset-x"
         assetYId="asset-y"
-        activeBinId={new BN(8388608)}
+        activeBinId={new BN(ACTIVE_BIN_ID.CENTER)}
         binStep={25}
         currentPrice={1.0}
       />
@@ -187,7 +188,7 @@ describe("ConcentratedLiquidityMetrics", () => {
         positions={mockPositions}
         assetXId="asset-x"
         assetYId="asset-y"
-        activeBinId={new BN(8388608)}
+        activeBinId={new BN(ACTIVE_BIN_ID.CENTER)}
         binStep={25}
         currentPrice={1.0}
       />
