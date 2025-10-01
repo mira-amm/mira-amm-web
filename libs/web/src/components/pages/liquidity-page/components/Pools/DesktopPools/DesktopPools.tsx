@@ -109,7 +109,7 @@ export function DesktopPools({
       key: "actions",
       header: isConnected ? (
         <Link href="/liquidity/create-pool">
-          <Button data-test-id="create-pool-button">Create Pool</Button>
+          <Button data-test-id="create-pool-button-desktop">Create Pool</Button>
         </Link>
       ) : (
         ""

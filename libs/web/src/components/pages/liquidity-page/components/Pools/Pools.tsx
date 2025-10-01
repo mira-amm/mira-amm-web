@@ -72,7 +72,7 @@ export function Pools() {
               <Link href="/liquidity/create-pool">
                 <Button
                   className="mobileOnly w-[177px]"
-                  data-test-id="create-pool-button"
+                  data-test-id="create-pool-button-mobile"
                 >
                   Create Pool
                 </Button>

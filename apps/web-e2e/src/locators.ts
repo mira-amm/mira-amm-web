@@ -64,7 +64,10 @@ export const slippageSettingsInput = () =>
 //
 
 export const createPoolButton = () =>
-  PageElement.located(By.css("[data-test-id='create-pool-button']"));
+  PageElement.located(By.css("[data-test-id='create-pool-button-desktop']"));
+
+export const createPoolButtonMobile = () =>
+  PageElement.located(By.css("[data-test-id='create-pool-button-mobile']"));
 
 export const chooseAssetButtons = () =>
   PageElements.located(By.cssContainingText("p", "Choose Asset"));

@@ -206,3 +206,30 @@ export const Swap = {
       Wait.until(Text.of(buyCoinButton()), includes(TOKENS.Quote))
     ),
 };
+
+export const SelectAsset = {
+  called: (token: string) => ({
+    into: (button: any) =>
+      Task.where(
+        `#actor selects asset ${token}`,
+        Click.on(button),
+        Wait.upTo(Duration.ofSeconds(10)).until(searchInput(), isVisible()),
+        Enter.theValue("").into(searchInput()),
+        ...token
+          .split("")
+          .flatMap((char) => [
+            Press.the(char),
+            Wait.for(Duration.ofMilliseconds(50)),
+          ]),
+        // Wait for results to load
+        Wait.for(Duration.ofMilliseconds(500)),
+        Wait.upTo(Duration.ofSeconds(10)).until(
+          searchResults().first(),
+          isVisible()
+        ),
+        Click.on(searchResults().first()),
+        // Wait for modal to close
+        Wait.for(Duration.ofMilliseconds(500))
+      ),
+  }),
+};
