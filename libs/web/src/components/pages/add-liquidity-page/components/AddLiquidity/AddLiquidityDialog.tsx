@@ -31,6 +31,7 @@ import {cn} from "@/src/utils/cn";
 import {usePoolAssets} from "@/src/hooks/usePoolAssets";
 import {useLiquidityForm} from "@/src/hooks/useLiquidityForm";
 import {useLiquidityFormV2Integration} from "@/src/hooks/useLiquidityFormV2Integration";
+import {useBinLiquidityController} from "@/src/hooks/useBinLiquidityController";
 import {
   getUiPoolTypeFromPoolId,
   isV2PoolId,
@@ -65,16 +66,7 @@ const AddLiquidityDialog = ({
     isV2PoolDetected ? "v2" : "v1"
   );
 
-  const poolType = "v2";
-
-  // V2 liquidity configuration state
-  const [v2Config, setV2Config] = useState<{
-    liquidityShape: string;
-    priceRange: [number, number];
-    numBins: number;
-    binResults?: any;
-    liquidityDistribution?: any;
-  } | null>(null);
+  const poolType: PoolTypeOption = "v2";
 
   // Convert v1 PoolId to v2 pool ID if needed
   const v2PoolId =
@@ -155,69 +147,45 @@ const AddLiquidityDialog = ({
     enableAutoSync: poolType !== "v2",
   });
 
-  // V2 integration for concentrated liquidity
-  const v2Integration = useLiquidityFormV2Integration({
+  const {
+    shouldUseV2,
+    setV2Config,
+    currentPrice,
+    isOutOfRangeLow,
+    isOutOfRangeHigh,
+    finalButtonTitle: v2FinalButtonTitle,
+    finalButtonDisabled: v2FinalButtonDisabled,
+    finalHandleButtonClick: v2FinalHandleButtonClick,
+    v2Error,
+  } = useBinLiquidityController({
     poolType,
     firstAmount: firstAmount || new BN(0),
     secondAmount: secondAmount || new BN(0),
     poolId: v2PoolId,
+    asset0Price,
+    asset1Price,
     onPreview: handlePreview,
-    v2Config, // Pass the v2 configuration to the integration hook
+    clearFirstAmount,
+    clearSecondAmount,
   });
 
   // Use v2 logic if pool type is v2, otherwise use v1 logic
-  const finalButtonTitle = v2Integration.shouldUseV2
-    ? v2Integration.v2ButtonTitle || buttonTitle
+  const finalButtonTitle = shouldUseV2
+    ? v2FinalButtonTitle || buttonTitle
     : buttonTitle;
 
-  const finalButtonDisabled = v2Integration.shouldUseV2
-    ? v2Integration.v2ButtonDisabled
+  const finalButtonDisabled = shouldUseV2
+    ? v2FinalButtonDisabled
     : buttonDisabled;
 
-  const finalHandleButtonClick = v2Integration.shouldUseV2
-    ? v2Integration.handleV2ButtonClick
+  const finalHandleButtonClick = shouldUseV2
+    ? v2FinalHandleButtonClick
     : handleButtonClick;
 
   // Set document title
   useDocumentTitle(
     `Add Liquidity: ${asset0Metadata.symbol}/${asset1Metadata.symbol}`
   );
-
-  // Determine out-of-range states for disabling inputs in v2
-  const currentPrice =
-    asset1Price && asset0Price ? asset1Price / asset0Price : 1;
-  const isOutOfRangeLow = Boolean(
-    poolType === "v2" &&
-      v2Config &&
-      currentPrice !== null &&
-      currentPrice < v2Config.priceRange[0]
-  );
-  const isOutOfRangeHigh = Boolean(
-    poolType === "v2" &&
-      v2Config &&
-      currentPrice !== null &&
-      currentPrice > v2Config.priceRange[1]
-  );
-
-  // Clear the irrelevant amount when out of range
-  useEffect(() => {
-    if (poolType !== "v2" || !v2Config || currentPrice === null) return;
-    if (isOutOfRangeLow) {
-      // Price below range → only second asset (asset1) is needed → clear first
-      clearFirstAmount();
-    } else if (isOutOfRangeHigh) {
-      // Price above range → only first asset (asset0) is needed → clear second
-      clearSecondAmount();
-    }
-  }, [
-    poolType,
-    v2Config,
-    currentPrice,
-    isOutOfRangeLow,
-    isOutOfRangeHigh,
-    clearFirstAmount,
-    clearSecondAmount,
-  ]);
 
   return (
     <>
@@ -332,9 +300,7 @@ const AddLiquidityDialog = ({
           <V2LiquidityConfig
             asset0Metadata={asset0Metadata}
             asset1Metadata={asset1Metadata}
-            currentPrice={
-              asset1Price && asset0Price ? asset1Price / asset0Price : 1.0
-            }
+            currentPrice={currentPrice}
             asset0Price={asset0Price || undefined}
             asset1Price={asset1Price || undefined}
             totalAsset0Amount={
@@ -373,7 +339,7 @@ const AddLiquidityDialog = ({
 
       <FailureModal title={<></>}>
         <TransactionFailureModal
-          error={previewError || v2Integration.v2Error}
+          error={previewError || v2Error}
           closeModal={closeFailureModal}
         />
       </FailureModal>
