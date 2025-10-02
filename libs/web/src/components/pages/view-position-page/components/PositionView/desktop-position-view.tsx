@@ -15,21 +15,9 @@ import {useAssetPriceFromIndexer} from "@/src/hooks";
 import {formatMoney} from "@/src/utils/formatMoney";
 import SimulatedDistribution from "../../../bin-liquidity/components/simulated-distribution";
 import {PoolType} from "@/src/components/common/PoolTypeIndicator";
+import {useSimulatedDistributionData} from "@/src/hooks/useSimulatedDistributionData";
 
 import {getPoolNavigationUrl} from "@/src/utils/poolNavigation";
-import {cn} from "@/src/utils/cn";
-
-const MOCK = {
-  liquidityShape: "curve",
-  minPrice: 134.54718564908973,
-  maxPrice: 201.82077847363456,
-  numBins: 163,
-  currentPrice: 168.18398206136214,
-  asset0Price: 0.00594471,
-  asset1Price: 0.999805,
-  totalAsset0Amount: 1,
-  totalAsset1Amount: 1,
-};
 
 export interface AssetData {
   amount: string;
@@ -60,6 +48,17 @@ export function DesktopPositionView({
   assetA: AssetData;
   assetB: AssetData;
 }) {
+  // Get simulated distribution data for v2 pools
+  const {
+    data: distributionData,
+    isLoading: isDistributionLoading,
+    isV2Pool,
+  } = useSimulatedDistributionData({
+    poolId: pool,
+    poolType: poolType,
+    assetXId: pool[0].bits,
+    assetYId: pool[1].bits,
+  });
   const renderRemoveLiquidity = () => {
     const removePath = getPoolNavigationUrl(pool, "remove");
 
@@ -69,18 +68,6 @@ export function DesktopPositionView({
       </Link>
     );
   };
-
-  const {
-    liquidityShape,
-    minPrice,
-    maxPrice,
-    numBins,
-    currentPrice,
-    asset0Price,
-    asset1Price,
-    totalAsset0Amount,
-    totalAsset1Amount,
-  } = MOCK;
 
   const [selectedTime, setSelectedtime] = useState(TimeData[1]);
 
@@ -166,21 +153,24 @@ export function DesktopPositionView({
           </div>
         </div>
 
-        <div className="border-b border-background-grey-light">
-          <SimulatedDistribution
-            liquidityShape={liquidityShape as "spot" | "curve" | "bidask"}
-            minPrice={minPrice}
-            maxPrice={maxPrice}
-            currentPrice={currentPrice}
-            binStepBasisPoints={25} // Default 25 basis points (0.25%) - should be passed from pool metadata
-            asset0Symbol={assetA.metadata.symbol}
-            asset1Symbol={assetB.metadata.symbol}
-            asset0Price={asset0Price}
-            asset1Price={asset1Price}
-            totalAsset0Amount={totalAsset0Amount}
-            totalAsset1Amount={totalAsset1Amount}
-          />
-        </div>
+        {/* Only render SimulatedDistribution for v2 pools */}
+        {isV2Pool && distributionData && (
+          <div className="border-b border-background-grey-light">
+            <SimulatedDistribution
+              liquidityShape={distributionData.liquidityShape}
+              minPrice={distributionData.minPrice}
+              maxPrice={distributionData.maxPrice}
+              currentPrice={distributionData.currentPrice}
+              binStepBasisPoints={distributionData.binStepBasisPoints}
+              asset0Symbol={distributionData.asset0Symbol}
+              asset1Symbol={distributionData.asset1Symbol}
+              asset0Price={distributionData.asset0Price}
+              asset1Price={distributionData.asset1Price}
+              totalAsset0Amount={distributionData.totalAsset0Amount}
+              totalAsset1Amount={distributionData.totalAsset1Amount}
+            />
+          </div>
+        )}
 
         <DepositAmount assetId={pool[0].bits} amount={assetA.amount} />
         <DepositAmount assetId={pool[1].bits} amount={assetB.amount} />
