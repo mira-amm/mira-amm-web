@@ -9,12 +9,13 @@ import {PoolType} from "../PoolTypeIndicator";
 type Props = {
   firstCoin: B256Address;
   secondCoin: B256Address;
-  isStablePool: boolean;
+  isStablePool?: boolean;
   withFee?: boolean;
   withFeeBelow?: boolean;
   withPoolDescription?: boolean;
   withPoolDetails?: boolean;
   poolType?: PoolType;
+  v2Fee?: string;
 };
 
 const poolTypeConfig = {
@@ -47,6 +48,7 @@ const CoinPair = ({
   withPoolDescription,
   withPoolDetails,
   poolType,
+  v2Fee,
 }: Props) => {
   const firstCoinIcon = useAssetImage(firstCoin);
   const secondCoinIcon = useAssetImage(secondCoin);
@@ -112,10 +114,10 @@ const CoinPair = ({
               {config.shortLabel}
             </span>
             <span className="rounded-lg bg-background-secondary px-2 py-0.5 text-content-tertiary text-xs font-medium">
-              {isStablePool ? "Stable" : "Volatile"}
+              {config.label}
             </span>
             <span className="rounded-lg bg-background-secondary px-2 py-0.5 text-content-tertiary text-xs font-medium font-alt">
-              {feeText}
+              {v2Fee ?? config.fee}
             </span>
           </div>
         )}
