@@ -8,10 +8,8 @@ import {
   useCreatePoolV2,
   useModal,
   useAssetMetadata,
-  usePoolConcentrationType,
 } from "@/src/hooks";
 import CreatePoolSuccessModal from "../CreatePoolSuccessModal/CreatePoolSuccessModal";
-import {getUiPoolTypeFromPoolId} from "@/src/utils/poolTypeDetection";
 
 export type CreatePoolPreviewData = {
   assets: {
@@ -76,9 +74,29 @@ const PreviewCreatePoolDialog = ({
     router.push("/liquidity");
   }, [router]);
 
-  const poolConcentrationtype = usePoolConcentrationType();
+  // Calculate the correct pool type for CoinPair
+  const coinPairPoolType =
+    poolType === "concentrated"
+      ? "v2-concentrated"
+      : poolType === "stable"
+        ? "v1-stable"
+        : "v1-volatile";
 
-  const feeText = poolType === "stable" ? "0.05%" : "0.3%";
+  // Calculate fee text
+  const feeText =
+    poolType === "stable"
+      ? "0.05%"
+      : poolType === "volatile"
+        ? "0.3%"
+        : poolType === "concentrated" && v2Config
+          ? `${((v2Config.binStep * v2Config.baseFactor) / 10000).toFixed(2)}%`
+          : "0.3%";
+
+  // Calculate v2 fee for CoinPair component
+  const v2Fee =
+    poolType === "concentrated" && v2Config
+      ? `${((v2Config.binStep * v2Config.baseFactor) / 10000).toFixed(2)}%`
+      : undefined;
 
   return (
     <>
@@ -87,8 +105,8 @@ const PreviewCreatePoolDialog = ({
           <CoinPair
             firstCoin={previewData.assets[0].assetId}
             secondCoin={previewData.assets[1].assetId}
-            isStablePool={poolType === "stable"}
-            poolType={getUiPoolTypeFromPoolId(poolConcentrationtype.poolId)}
+            poolType={coinPairPoolType}
+            v2Fee={v2Fee}
             withPoolDetails
           />
         </div>
@@ -108,8 +126,8 @@ const PreviewCreatePoolDialog = ({
         </div>
       </div>
 
-      <Button loading={isPoolCreationPending} onClick={handleCreateLiquidity}>
-        Create pool
+      <Button disabled={isPoolCreationPending} onClick={handleCreateLiquidity}>
+        {isPoolCreationPending ? "Creating pool..." : "Create pool"}
       </Button>
 
       <SuccessModal title={<></>} onClose={redirectToLiquidity}>
