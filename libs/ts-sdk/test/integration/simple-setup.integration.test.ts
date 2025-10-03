@@ -1,17 +1,20 @@
-import {describe, it, expect, beforeAll} from "vitest";
-import {testEnvironment} from "./setup/test-environment";
+import {describe, it, expect, beforeAll, afterAll} from "vitest";
+import {testEnvironment, defaultTestRunner} from "./setup";
 import {TokenFactory} from "./setup/token-factory";
 
-describe("Simple Integration Test Setup", () => {
+describe("Simple Integration Test Setup (Enhanced)", () => {
   let tokenFactory: TokenFactory;
 
   beforeAll(async () => {
-    console.log("🧪 Starting simple integration test...");
+    console.log(
+      "🧪 Starting simple integration test with enhanced infrastructure..."
+    );
 
-    // Start test environment
-    await testEnvironment.start();
+    // Use enhanced test runner for setup
+    await defaultTestRunner.setup();
 
-    const wallet = testEnvironment.getWallet();
+    // Create a unique wallet for this test to avoid UTXO conflicts
+    const wallet = await testEnvironment.createWallet("100000000000"); // 100,000 ETH for testing
     const contractIds = testEnvironment.getContractIds();
 
     console.log("📋 Contract IDs:", contractIds);
@@ -19,7 +22,11 @@ describe("Simple Integration Test Setup", () => {
 
     // Initialize token factory
     tokenFactory = new TokenFactory(wallet, contractIds.fungible);
-  }, 60000);
+  }, 120000); // Increased timeout for enhanced setup
+
+  afterAll(async () => {
+    await defaultTestRunner.teardown();
+  });
 
   it("should connect to test environment services", async () => {
     const config = testEnvironment.getConfig();

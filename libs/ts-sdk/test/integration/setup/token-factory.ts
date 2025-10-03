@@ -188,7 +188,12 @@ export class TokenFactory {
     }
 
     // Convert units to smallest denomination
-    return new BN(units).mul(new BN(10).pow(token.decimals));
+    // Handle decimal inputs by multiplying by 1000 and then adjusting for decimals
+    const unitsScaled = Math.floor(units * 1000); // Convert to integer (0.01 -> 10)
+    const decimalMultiplier = new BN(10).pow(token.decimals); // 10^decimals
+    const scaleDivisor = new BN(1000); // Divide by scale factor
+
+    return new BN(unitsScaled).mul(decimalMultiplier).div(scaleDivisor);
   }
 
   /**

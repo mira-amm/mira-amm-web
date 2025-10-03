@@ -17,7 +17,8 @@ describe("Basic Pool Creation Test", () => {
     // Start test environment
     await testEnvironment.start();
 
-    const wallet = testEnvironment.getWallet();
+    // Create a unique wallet for this test to avoid UTXO conflicts
+    const wallet = await testEnvironment.createWallet("100000000000"); // 100,000 ETH for testing
     const contractIds = testEnvironment.getContractIds();
 
     // Initialize factories and SDK instances
@@ -25,7 +26,7 @@ describe("Basic Pool Creation Test", () => {
     miraAmm = new MiraAmmV2(wallet, contractIds.simpleProxy);
     readonlyAmm = new ReadonlyMiraAmmV2(
       wallet.provider,
-      contractIds.poolCurveState
+      contractIds.simpleProxy
     );
 
     console.log(`📋 Using contracts:`);
@@ -65,7 +66,6 @@ describe("Basic Pool Creation Test", () => {
           assetY: {bits: usdc.assetId},
           binStep: 20,
           baseFactor: 8000,
-          hookContract: undefined,
           protocolShare: 0,
         },
         8388608 // activeId

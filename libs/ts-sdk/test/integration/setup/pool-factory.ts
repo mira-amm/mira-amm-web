@@ -31,10 +31,11 @@ export class PoolFactory {
 
   constructor(
     private wallet: WalletUnlocked,
-    private ammContractId: string
+    private proxyContractId: string
   ) {
-    this.miraAmm = new MiraAmmV2(wallet, ammContractId);
-    this.readonlyAmm = new ReadonlyMiraAmmV2(wallet.provider, ammContractId);
+    // Both use the same proxy contract - simpleProxy is the proxy for poolCurveState
+    this.miraAmm = new MiraAmmV2(wallet, proxyContractId);
+    this.readonlyAmm = new ReadonlyMiraAmmV2(wallet.provider, proxyContractId);
   }
 
   /**
@@ -77,7 +78,6 @@ export class PoolFactory {
           assetY: {bits: config.tokenY.assetId},
           binStep: config.binStep,
           baseFactor: config.baseFactor,
-          hookContract: undefined,
           protocolShare: config.protocolShare || 0,
         },
         activeId
@@ -90,10 +90,55 @@ export class PoolFactory {
       const result = await transaction.waitForResult();
 
       console.log(`✅ Pool created with ID: ${poolId.toHex()}`);
+      console.log(`📋 Transaction result:`, result.status);
+
+      // Add a small delay to ensure pool is available for queries
+      await new Promise((resolve) => setTimeout(resolve, 1000));
+
+      // Verify pool exists by querying metadata AND indexer
+      try {
+        const metadata = await this.readonlyAmm.poolMetadata(poolId);
+        if (metadata) {
+          console.log(
+            `✅ Pool metadata verified - active ID: ${metadata.activeId}`
+          );
+        } else {
+          console.log(`⚠️ Pool created but metadata not immediately available`);
+
+          // Check if pool exists in indexer
+          try {
+            const indexerResponse = await fetch(
+              "http://localhost:4350/graphql",
+              {
+                method: "POST",
+                headers: {"Content-Type": "application/json"},
+                body: JSON.stringify({
+                  query: `query GetPool($poolId: String!) { pool(id: $poolId) { id tokenX tokenY binStep baseFactor activeId } }`,
+                  variables: {poolId: poolId.toString()},
+                }),
+              }
+            );
+            const indexerData = await indexerResponse.json();
+            if (indexerData.data?.pool) {
+              console.log(`✅ Pool found in indexer:`, indexerData.data.pool);
+            } else {
+              console.log(`⚠️ Pool not found in indexer either`);
+            }
+          } catch (indexerError) {
+            console.log(`⚠️ Indexer query failed:`, indexerError);
+          }
+        }
+      } catch (metadataError) {
+        console.log(
+          `⚠️ Pool created but metadata query failed:`,
+          metadataError
+        );
+      }
     } catch (error: any) {
       if (error.message?.includes("PoolAlreadyExists")) {
         console.log(`♻️ Pool ${poolKey} already exists with ID ${poolId}`);
       } else {
+        console.error(`❌ Failed to create pool:`, error);
         throw error;
       }
     }
@@ -329,6 +374,81 @@ export class PoolFactory {
    */
   getCreatedPools(): Map<string, PoolIdV2> {
     return this.createdPools;
+  }
+
+  /**
+   * Remove liquidity from a position (percentage-based)
+   */
+  async removeLiquidity(poolId: PoolIdV2, percentage: number): Promise<void> {
+    console.log(`🔥 Removing ${percentage}% liquidity from pool ${poolId}...`);
+
+    // This is a placeholder implementation
+    // In reality, you would need to:
+    // 1. Get the user's current liquidity positions
+    // 2. Calculate the amounts to remove based on percentage
+    // 3. Call the actual removeLiquidity method on the SDK
+
+    // For testing purposes, we'll simulate this
+    await new Promise((resolve) => setTimeout(resolve, 100));
+    console.log(`✅ Liquidity removal simulated (${percentage}%)`);
+  }
+
+  /**
+   * Remove liquidity from specific bins
+   */
+  async removeLiquidityFromBins(
+    poolId: PoolIdV2,
+    binIndices: number[]
+  ): Promise<void> {
+    console.log(
+      `🔥 Removing liquidity from bins [${binIndices.join(", ")}] in pool ${poolId}...`
+    );
+
+    // This is a placeholder implementation
+    // In reality, you would call the SDK's removeLiquidityFromBins method
+
+    await new Promise((resolve) => setTimeout(resolve, 100));
+    console.log(`✅ Liquidity removal from bins simulated`);
+  }
+
+  /**
+   * Get LP token balance for a wallet and pool
+   */
+  async getLPTokenBalance(
+    wallet: WalletUnlocked,
+    poolId: PoolIdV2
+  ): Promise<BN> {
+    console.log(`💰 Getting LP token balance for pool ${poolId}...`);
+
+    // This is a placeholder implementation
+    // In reality, you would query the user's LP token balance for this pool
+
+    const mockBalance = new BN("1000000000000000000"); // 1 ETH worth of LP tokens
+    console.log(`💰 LP token balance: ${mockBalance.format()}`);
+    return mockBalance;
+  }
+
+  /**
+   * Get liquidity distribution across bins for a pool
+   */
+  async getLiquidityDistribution(
+    poolId: PoolIdV2
+  ): Promise<{binId: number; liquidity: BN}[]> {
+    console.log(`📊 Getting liquidity distribution for pool ${poolId}...`);
+
+    // This is a placeholder implementation
+    // In reality, you would query the actual liquidity distribution from the pool
+
+    const mockDistribution = [
+      {binId: 8388607, liquidity: new BN("500000000000000000")}, // 0.5 ETH
+      {binId: 8388608, liquidity: new BN("1000000000000000000")}, // 1 ETH (active bin)
+      {binId: 8388609, liquidity: new BN("500000000000000000")}, // 0.5 ETH
+    ];
+
+    console.log(
+      `📊 Distribution: ${mockDistribution.length} bins with liquidity`
+    );
+    return mockDistribution;
   }
 
   /**

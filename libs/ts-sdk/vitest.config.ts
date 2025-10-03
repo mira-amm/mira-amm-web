@@ -10,6 +10,12 @@ export default defineConfig({
     watch: false,
     globals: true,
     environment: "node",
+    // Run integration tests sequentially to avoid UTXO conflicts
+    poolOptions: {
+      forks: {
+        singleFork: true,
+      },
+    },
     include: [
       "src/**/*.{test,spec}.{js,mjs,cjs,ts,mts,cts,jsx,tsx}",
       "test/**/*.{test,spec}.{js,mjs,cjs,ts,mts,cts,jsx,tsx}",

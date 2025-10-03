@@ -17,12 +17,13 @@ describe("Pool Operations Integration Tests", () => {
     await testEnvironment.start();
 
     const provider = testEnvironment.getProvider();
-    const wallet = testEnvironment.getWallet();
+    // Create a unique wallet for this test to avoid UTXO conflicts
+    const wallet = await testEnvironment.createWallet("1000000000000"); // 1M ETH for testing
     const contractIds = testEnvironment.getContractIds();
 
     // Initialize factories and SDK instances
     tokenFactory = new TokenFactory(wallet, contractIds.fungible);
-    poolFactory = new PoolFactory(wallet, contractIds.simpleProxy);
+    poolFactory = new PoolFactory(wallet, contractIds.simpleProxy); // simpleProxy is the proxy for poolCurveState
     miraAmm = new MiraAmmV2(wallet, contractIds.simpleProxy);
     readonlyAmm = new ReadonlyMiraAmmV2(provider, contractIds.simpleProxy);
   }, 60000);

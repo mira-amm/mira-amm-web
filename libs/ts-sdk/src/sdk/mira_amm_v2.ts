@@ -116,10 +116,11 @@ type TransactionWithGasPrice = {
 export class MiraAmmV2 {
   private readonly account: Account;
   private readonly ammContract: PoolCurveState;
-  private readonly addLiquidityScript: AddLiquidity;
-  private readonly removeLiquidityScript: RemoveLiquidity;
-  private readonly swapExactInScript: SwapExactIn;
-  private readonly swapExactOutScript: SwapExactOut;
+  private readonly contractId: string;
+  private _addLiquidityScript?: AddLiquidity;
+  private _removeLiquidityScript?: RemoveLiquidity;
+  private _swapExactInScript?: SwapExactIn;
+  private _swapExactOutScript?: SwapExactOut;
 
   /**
    * Creates a new MiraAmmV2 instance for executing v2 pool transactions
@@ -128,26 +129,70 @@ export class MiraAmmV2 {
    * @param contractIdOpt - Optional v2 contract ID (uses default if not provided)
    */
   constructor(account: Account, contractIdOpt?: string) {
-    const contractId = contractIdOpt ?? DEFAULT_AMM_V2_CONTRACT_ID;
-    const contractIdConfigurables = {
-      POOL_CURVE_STATE: contractIdInput(contractId),
-    };
-
+    this.contractId = contractIdOpt ?? DEFAULT_AMM_V2_CONTRACT_ID;
     this.account = account;
-    this.ammContract = new PoolCurveState(contractId, account);
+    this.ammContract = new PoolCurveState(this.contractId, account);
+    // Scripts are now initialized lazily when needed to avoid InputContractDoesNotExist errors
+  }
 
-    this.addLiquidityScript = new AddLiquidity(
-      account
-    ).setConfigurableConstants(contractIdConfigurables);
-    this.removeLiquidityScript = new RemoveLiquidity(
-      account
-    ).setConfigurableConstants(contractIdConfigurables);
-    this.swapExactInScript = new SwapExactIn(account).setConfigurableConstants(
-      contractIdConfigurables
-    );
-    this.swapExactOutScript = new SwapExactOut(
-      account
-    ).setConfigurableConstants(contractIdConfigurables);
+  /**
+   * Lazy getter for add liquidity script
+   */
+  private get addLiquidityScript(): AddLiquidity {
+    if (!this._addLiquidityScript) {
+      const contractIdConfigurables = {
+        POOL_CURVE_STATE: contractIdInput(this.contractId),
+      };
+      this._addLiquidityScript = new AddLiquidity(
+        this.account
+      ).setConfigurableConstants(contractIdConfigurables);
+    }
+    return this._addLiquidityScript;
+  }
+
+  /**
+   * Lazy getter for remove liquidity script
+   */
+  private get removeLiquidityScript(): RemoveLiquidity {
+    if (!this._removeLiquidityScript) {
+      const contractIdConfigurables = {
+        POOL_CURVE_STATE: contractIdInput(this.contractId),
+      };
+      this._removeLiquidityScript = new RemoveLiquidity(
+        this.account
+      ).setConfigurableConstants(contractIdConfigurables);
+    }
+    return this._removeLiquidityScript;
+  }
+
+  /**
+   * Lazy getter for swap exact in script
+   */
+  private get swapExactInScript(): SwapExactIn {
+    if (!this._swapExactInScript) {
+      const contractIdConfigurables = {
+        POOL_CURVE_STATE: contractIdInput(this.contractId),
+      };
+      this._swapExactInScript = new SwapExactIn(
+        this.account
+      ).setConfigurableConstants(contractIdConfigurables);
+    }
+    return this._swapExactInScript;
+  }
+
+  /**
+   * Lazy getter for swap exact out script
+   */
+  private get swapExactOutScript(): SwapExactOut {
+    if (!this._swapExactOutScript) {
+      const contractIdConfigurables = {
+        POOL_CURVE_STATE: contractIdInput(this.contractId),
+      };
+      this._swapExactOutScript = new SwapExactOut(
+        this.account
+      ).setConfigurableConstants(contractIdConfigurables);
+    }
+    return this._swapExactOutScript;
   }
 
   /**
@@ -696,6 +741,13 @@ export class MiraAmmV2 {
         )
         .txParams(txParams ?? {})
         .getTransactionRequest();
+
+      // Debug: Log contract references in the transaction request
+      console.log("🔍 Transaction request contracts:", {
+        contractsLength: request.contracts?.length || 0,
+        contracts: request.contracts?.map((c) => c.contractId) || [],
+        ammContractId: this.ammContract.id.toB256(),
+      });
 
       return await this.prepareRequest(request, 0, [], [], options);
     }, context);

@@ -2,6 +2,9 @@ import {Provider, WalletUnlocked} from "fuels";
 import {spawn, ChildProcess} from "child_process";
 import * as fs from "fs";
 import * as path from "path";
+import {ServiceManager, serviceManager} from "./service-manager";
+import {ContractValidator} from "./contract-validator";
+import {CleanupManager} from "./cleanup-manager";
 
 /**
  * Test environment configuration
@@ -44,9 +47,13 @@ export class TestEnvironment {
   private provider?: Provider;
   private wallet?: WalletUnlocked;
   private isInitialized = false;
+  private serviceManager: ServiceManager;
+  private contractValidator?: ContractValidator;
+  private cleanupManager?: CleanupManager;
 
   constructor() {
-    this.loadContractIds();
+    // Don't load contract IDs in constructor - they need to be loaded after deployment
+    this.serviceManager = serviceManager;
   }
 
   /**
@@ -84,24 +91,22 @@ export class TestEnvironment {
 
     console.log("🚀 Starting test environment...");
 
-    // Check if services are already running
-    const nodeRunning = await this.isServiceRunning(TEST_CONFIG.fuelNode.url);
-    const indexerRunning = await this.isServiceRunning(TEST_CONFIG.indexer.url);
+    // Start services using the service manager
+    await this.serviceManager.startServices();
 
-    if (!nodeRunning) {
-      throw new Error(
-        "Fuel node not running. Please start them first with: pnpm nx dev indexer\n" +
-          "Or use the integration test script: pnpm nx test:integration ts-sdk"
-      );
-    }
-
-    if (!indexerRunning) {
-      console.log("⚠️  Indexer not running, some tests may be skipped");
-    }
-
-    console.log("✅ Services already running");
-
+    // Initialize provider first
     await this.initializeProvider();
+
+    // Initialize contract validator and cleanup manager
+    this.contractValidator = new ContractValidator(this.provider!);
+    this.cleanupManager = new CleanupManager(this.provider!);
+
+    // Perform contract readiness check to address synchronization issues
+    await this.contractValidator.performReadinessCheck();
+
+    // Load contract IDs after contracts are validated
+    this.loadContractIds();
+
     this.isInitialized = true;
     console.log("✅ Test environment ready");
   }
@@ -258,6 +263,8 @@ export class TestEnvironment {
     return this.wallet;
   }
 
+  private walletCreationQueue: Promise<any> = Promise.resolve();
+
   /**
    * Create a new funded wallet
    */
@@ -266,15 +273,35 @@ export class TestEnvironment {
       throw new Error("Test environment not initialized. Call start() first.");
     }
 
-    const newWallet = WalletUnlocked.generate({provider: this.provider});
+    // Queue wallet creation to prevent UTXO conflicts
+    return (this.walletCreationQueue = this.walletCreationQueue.then(
+      async () => {
+        const newWallet = WalletUnlocked.generate({provider: this.provider});
 
-    if (initialBalance) {
-      // Transfer funds from default wallet
-      const tx = await this.wallet.transfer(newWallet.address, initialBalance);
-      await tx.waitForResult();
-    }
+        if (initialBalance) {
+          // Add a small delay to prevent concurrent transactions
+          await new Promise((resolve) => setTimeout(resolve, 100));
 
-    return newWallet;
+          // Transfer funds from default wallet
+          const tx = await this.wallet.transfer(
+            newWallet.address,
+            initialBalance
+          );
+          await tx.waitForResult();
+
+          console.log(
+            `💰 Created and funded wallet: ${newWallet.address.toB256()}`
+          );
+        }
+
+        // Register wallet with cleanup manager
+        if (this.cleanupManager) {
+          this.cleanupManager.registerWallet(newWallet);
+        }
+
+        return newWallet;
+      }
+    ));
   }
 
   /**
@@ -350,6 +377,86 @@ export class TestEnvironment {
     }
 
     throw new Error(`Timeout waiting for transaction ${txId} to be indexed`);
+  }
+
+  /**
+   * Get the service manager instance
+   */
+  getServiceManager(): ServiceManager {
+    return this.serviceManager;
+  }
+
+  /**
+   * Get the contract validator instance
+   */
+  getContractValidator(): ContractValidator {
+    if (!this.contractValidator) {
+      throw new Error("Test environment not initialized. Call start() first.");
+    }
+    return this.contractValidator;
+  }
+
+  /**
+   * Get the cleanup manager instance
+   */
+  getCleanupManager(): CleanupManager {
+    if (!this.cleanupManager) {
+      throw new Error("Test environment not initialized. Call start() first.");
+    }
+    return this.cleanupManager;
+  }
+
+  /**
+   * Perform quick cleanup for test isolation
+   */
+  async quickCleanup(): Promise<void> {
+    if (this.cleanupManager) {
+      await this.cleanupManager.quickCleanup();
+    }
+  }
+
+  /**
+   * Check if all services are healthy
+   */
+  async checkServicesHealth(): Promise<boolean> {
+    const statuses = await this.serviceManager.checkAllServices();
+    return statuses.every((status) => status.isRunning);
+  }
+
+  /**
+   * Validate contract deployment status
+   */
+  async validateContracts(): Promise<boolean> {
+    if (!this.contractValidator) {
+      return false;
+    }
+
+    const result = await this.contractValidator.validateAllContracts();
+    return result.allValid;
+  }
+
+  /**
+   * Enhanced stop method with cleanup
+   */
+  async stop(): Promise<void> {
+    console.log("🛑 Stopping test environment...");
+
+    // Perform cleanup
+    if (this.cleanupManager) {
+      await this.cleanupManager.fullCleanup();
+    }
+
+    // Stop services
+    await this.serviceManager.stopAllServices();
+
+    // Reset state
+    this.provider = undefined;
+    this.wallet = undefined;
+    this.contractValidator = undefined;
+    this.cleanupManager = undefined;
+    this.isInitialized = false;
+
+    console.log("✅ Test environment stopped");
   }
 }
 
