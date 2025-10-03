@@ -210,6 +210,9 @@ export class TestRunner {
     wallet: any;
     tokenFactory: any;
     poolFactory: any;
+    walletFactory: any;
+    transactionUtilities: any;
+    balanceChecker: any;
     cleanup: () => Promise<void>;
   }> {
     if (!this.isSetup) {
@@ -222,13 +225,25 @@ export class TestRunner {
     // Import factories dynamically to avoid circular dependencies
     const {TokenFactory} = await import("./token-factory");
     const {PoolFactory} = await import("./pool-factory");
+    const {WalletFactory} = await import("./wallet-factory");
+    const {TransactionUtilities} = await import("./transaction-utilities");
+    const {BalanceChecker} = await import("./balance-checker");
 
     const contractIds = testEnvironment.getContractIds();
+    const provider = testEnvironment.getProvider();
+
+    // Initialize all utilities
     const tokenFactory = new TokenFactory(wallet, contractIds.fungible);
     const poolFactory = new PoolFactory(wallet, contractIds.simpleProxy);
+    const walletFactory = new WalletFactory(provider, wallet, tokenFactory);
+    const transactionUtilities = new TransactionUtilities(provider);
+    const balanceChecker = new BalanceChecker(provider, tokenFactory);
 
     const cleanup = async () => {
       console.log("🧹 TestRunner: Cleaning up isolated environment...");
+      // Reset factory states
+      walletFactory.reset();
+      balanceChecker.clearHistory();
       // Cleanup is handled by the CleanupManager automatically
     };
 
@@ -236,6 +251,9 @@ export class TestRunner {
       wallet,
       tokenFactory,
       poolFactory,
+      walletFactory,
+      transactionUtilities,
+      balanceChecker,
       cleanup,
     };
   }

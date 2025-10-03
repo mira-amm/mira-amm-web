@@ -290,4 +290,294 @@ export class TokenFactory {
       amountYBN,
     };
   }
+
+  /**
+   * Batch mint tokens to multiple wallets
+   */
+  async batchMintTokens(
+    recipients: Array<{
+      address: string;
+      tokens: Array<{symbol: string; amount: BN | string}>;
+    }>
+  ): Promise<void> {
+    console.log(`🪙 Batch minting tokens to ${recipients.length} wallets...`);
+
+    for (const recipient of recipients) {
+      console.log(`💰 Minting to ${recipient.address.slice(0, 10)}...`);
+
+      for (const {symbol, amount} of recipient.tokens) {
+        await this.mintTokens(symbol, recipient.address, amount);
+      }
+    }
+
+    console.log("✅ Batch minting completed");
+  }
+
+  /**
+   * Get token balance in multiple formats
+   */
+  async getBalanceDetails(
+    walletAddress: string,
+    symbol: string
+  ): Promise<{
+    raw: BN;
+    formatted: string;
+    units: number;
+    token: TestToken;
+  }> {
+    const token = this.getToken(symbol);
+    if (!token) {
+      throw new Error(`Token ${symbol} not found`);
+    }
+
+    const balance = await this.getBalance(walletAddress, symbol);
+    const formatted = this.formatAmount(symbol, balance);
+
+    // Convert to units (human readable number)
+    const divisor = new BN(10).pow(token.decimals);
+    const units = parseFloat(balance.div(divisor).toString());
+
+    return {
+      raw: balance,
+      formatted,
+      units,
+      token,
+    };
+  }
+
+  /**
+   * Check if wallet has sufficient token balance
+   */
+  async hasSufficientBalance(
+    walletAddress: string,
+    symbol: string,
+    requiredAmount: BN | string
+  ): Promise<boolean> {
+    const balance = await this.getBalance(walletAddress, symbol);
+    const required =
+      typeof requiredAmount === "string"
+        ? new BN(requiredAmount)
+        : requiredAmount;
+
+    return balance.gte(required);
+  }
+
+  /**
+   * Get all token balances for a wallet
+   */
+  async getAllBalances(walletAddress: string): Promise<
+    Array<{
+      symbol: string;
+      balance: BN;
+      formatted: string;
+      token: TestToken;
+    }>
+  > {
+    const balances = [];
+
+    for (const token of this.getAllTokens()) {
+      try {
+        const balance = await this.getBalance(walletAddress, token.symbol);
+        if (balance.gt(0)) {
+          balances.push({
+            symbol: token.symbol,
+            balance,
+            formatted: this.formatAmount(token.symbol, balance),
+            token,
+          });
+        }
+      } catch (error) {
+        // Skip tokens that can't be queried
+        console.warn(`⚠️ Could not get balance for ${token.symbol}:`, error);
+      }
+    }
+
+    return balances;
+  }
+
+  /**
+   * Create test token amounts for different scenarios
+   */
+  getScenarioAmounts(scenario: "small" | "medium" | "large" | "whale"): {
+    [symbol: string]: BN;
+  } {
+    const amounts: {[symbol: string]: BN} = {};
+
+    const multipliers = {
+      small: 1,
+      medium: 10,
+      large: 100,
+      whale: 1000,
+    };
+
+    const baseAmounts = {
+      USDC: 1000, // $1k base
+      USDT: 1000, // $1k base
+      ETH: 1, // 1 ETH base
+      FUEL: 10000, // 10k FUEL base
+    };
+
+    const multiplier = multipliers[scenario];
+
+    for (const [symbol, baseAmount] of Object.entries(baseAmounts)) {
+      if (this.getToken(symbol)) {
+        amounts[symbol] = this.getStandardAmount(
+          symbol,
+          baseAmount * multiplier
+        );
+      }
+    }
+
+    return amounts;
+  }
+
+  /**
+   * Transfer tokens between wallets (requires wallet instances)
+   */
+  async transferTokens(
+    fromWallet: WalletUnlocked,
+    toAddress: string,
+    symbol: string,
+    amount: BN | string
+  ): Promise<void> {
+    const token = this.getToken(symbol);
+    if (!token) {
+      throw new Error(`Token ${symbol} not found`);
+    }
+
+    // For now, we'll use the mint function to simulate transfers
+    // In a real implementation, this would use actual token transfer methods
+    console.log(
+      `🔄 Transferring ${symbol} from ${fromWallet.address.toB256().slice(0, 10)}... to ${toAddress.slice(0, 10)}...`
+    );
+
+    // Check sender has sufficient balance
+    const senderBalance = await this.getBalance(
+      fromWallet.address.toB256(),
+      symbol
+    );
+    const transferAmount = typeof amount === "string" ? new BN(amount) : amount;
+
+    if (senderBalance.lt(transferAmount)) {
+      throw new Error(`Insufficient ${symbol} balance for transfer`);
+    }
+
+    // For testing purposes, we'll mint to the recipient
+    // In production, this would be an actual transfer transaction
+    await this.mintTokens(symbol, toAddress, transferAmount);
+
+    console.log(`✅ Transfer completed`);
+  }
+
+  /**
+   * Validate token configuration
+   */
+  validateTokenConfig(symbol: string): {
+    valid: boolean;
+    issues: string[];
+  } {
+    const token = this.getToken(symbol);
+    const issues: string[] = [];
+
+    if (!token) {
+      issues.push(`Token ${symbol} not found`);
+      return {valid: false, issues};
+    }
+
+    // Validate token properties
+    if (!token.assetId || !token.assetId.match(/^0x[a-fA-F0-9]{64}$/)) {
+      issues.push(`Invalid asset ID format: ${token.assetId}`);
+    }
+
+    if (!token.contractId || !token.contractId.match(/^0x[a-fA-F0-9]{64}$/)) {
+      issues.push(`Invalid contract ID format: ${token.contractId}`);
+    }
+
+    if (token.decimals < 0 || token.decimals > 18) {
+      issues.push(`Invalid decimals: ${token.decimals}`);
+    }
+
+    if (!token.name || token.name.length === 0) {
+      issues.push("Token name is empty");
+    }
+
+    if (!token.symbol || token.symbol.length === 0) {
+      issues.push("Token symbol is empty");
+    }
+
+    return {
+      valid: issues.length === 0,
+      issues,
+    };
+  }
+
+  /**
+   * Get token statistics
+   */
+  getTokenStats(): {
+    totalTokens: number;
+    validTokens: number;
+    invalidTokens: number;
+    tokensByDecimals: {[decimals: number]: string[]};
+  } {
+    const tokens = this.getAllTokens();
+    let validCount = 0;
+    let invalidCount = 0;
+    const tokensByDecimals: {[decimals: number]: string[]} = {};
+
+    tokens.forEach((token) => {
+      const validation = this.validateTokenConfig(token.symbol);
+      if (validation.valid) {
+        validCount++;
+      } else {
+        invalidCount++;
+      }
+
+      // Group by decimals
+      if (!tokensByDecimals[token.decimals]) {
+        tokensByDecimals[token.decimals] = [];
+      }
+      tokensByDecimals[token.decimals].push(token.symbol);
+    });
+
+    return {
+      totalTokens: tokens.length,
+      validTokens: validCount,
+      invalidTokens: invalidCount,
+      tokensByDecimals,
+    };
+  }
+
+  /**
+   * Create token amounts for swap testing
+   */
+  getSwapTestAmounts(
+    inputToken: string,
+    swapSize: "micro" | "small" | "medium" | "large"
+  ): BN {
+    const token = this.getToken(inputToken);
+    if (!token) {
+      throw new Error(`Token ${inputToken} not found`);
+    }
+
+    // Define swap sizes based on token type and liquidity expectations
+    const swapSizes = {
+      micro: 0.1, // Very small swap
+      small: 1, // Small swap
+      medium: 10, // Medium swap
+      large: 100, // Large swap
+    };
+
+    const baseAmounts: {[symbol: string]: number} = {
+      USDC: 100, // $100 base swap
+      USDT: 100, // $100 base swap
+      ETH: 0.1, // 0.1 ETH base swap
+      FUEL: 1000, // 1000 FUEL base swap
+    };
+
+    const baseAmount = baseAmounts[inputToken] || 100; // Default to 100 units
+    const multiplier = swapSizes[swapSize];
+
+    return this.getStandardAmount(inputToken, baseAmount * multiplier);
+  }
 }
