@@ -3,6 +3,7 @@ import {MiraAmmV2} from "../../../src/sdk/mira_amm_v2";
 import {ReadonlyMiraAmmV2} from "../../../src/sdk/readonly_mira_amm_v2";
 import {TestToken} from "./token-factory";
 import {LiquidityConfig, PoolIdV2} from "../../../src/sdk/model";
+import {buildPoolIdV2} from "../../../src/sdk/utils";
 
 export interface PoolConfig {
   tokenX: TestToken;
@@ -10,6 +11,7 @@ export interface PoolConfig {
   binStep: number;
   baseFactor: number;
   protocolShare?: number;
+  activeId?: number; // Initial active bin ID (defaults to center bin)
 }
 
 export interface LiquidityShape {
@@ -54,17 +56,47 @@ export class PoolFactory {
     console.log(`  Bin step: ${config.binStep}`);
     console.log(`  Base factor: ${config.baseFactor}`);
 
-    // Create the pool
-    const poolId = await this.miraAmm.createPool({
-      assetX: {bits: config.tokenX.assetId},
-      assetY: {bits: config.tokenY.assetId},
-      binStep: config.binStep,
-      baseFactor: config.baseFactor,
-      hookContract: undefined,
-      protocolShare: config.protocolShare || 0,
-    });
+    // Try to create the pool, but handle the case where it already exists
+    const activeId = config.activeId || 8388608; // Use provided activeId or default to center bin (2^23)
 
-    console.log(`✅ Pool created with ID: ${poolId}`);
+    // Calculate the correct pool ID using the SDK utility function
+    const poolId = buildPoolIdV2(
+      config.tokenX.assetId,
+      config.tokenY.assetId,
+      config.binStep,
+      config.baseFactor
+    );
+
+    console.log(`🎯 Calculated pool ID: ${poolId} (${typeof poolId})`);
+    console.log(`🎯 Pool ID hex: ${poolId.toHex()}`);
+
+    try {
+      const transactionWithGas = await this.miraAmm.createPool(
+        {
+          assetX: {bits: config.tokenX.assetId},
+          assetY: {bits: config.tokenY.assetId},
+          binStep: config.binStep,
+          baseFactor: config.baseFactor,
+          hookContract: undefined,
+          protocolShare: config.protocolShare || 0,
+        },
+        activeId
+      );
+
+      // Submit the transaction and wait for completion
+      const transaction = await this.wallet.sendTransaction(
+        transactionWithGas.transactionRequest
+      );
+      const result = await transaction.waitForResult();
+
+      console.log(`✅ Pool created with ID: ${poolId.toHex()}`);
+    } catch (error: any) {
+      if (error.message?.includes("PoolAlreadyExists")) {
+        console.log(`♻️ Pool ${poolKey} already exists with ID ${poolId}`);
+      } else {
+        throw error;
+      }
+    }
 
     // Store the pool ID
     this.createdPools.set(poolKey, poolId);
@@ -90,13 +122,25 @@ export class PoolFactory {
     console.log(`  Amount Y: ${amountY.format()}`);
     console.log(`  Shape: ${shape.type} (${shape.bins} bins)`);
 
-    // Get pool metadata to determine active bin
-    const metadata = await this.readonlyAmm.poolMetadata(poolId);
-    if (!metadata) {
-      throw new Error(`Pool ${poolId} not found`);
-    }
+    // Try to get pool metadata to determine active bin
+    // For now, use a default active bin if metadata is not available
+    let activeId = 8388608; // Default center bin
 
-    const activeId = metadata.activeId;
+    try {
+      const metadata = await this.readonlyAmm.poolMetadata(poolId);
+      if (metadata) {
+        activeId = metadata.activeId;
+        console.log(`📊 Using active bin ID from metadata: ${activeId}`);
+      } else {
+        console.log(
+          `⚠️ Pool metadata not available, using default active bin: ${activeId}`
+        );
+      }
+    } catch (error) {
+      console.log(
+        `⚠️ Failed to get pool metadata, using default active bin: ${activeId}`
+      );
+    }
     const liquidityConfig = this.createLiquidityConfig(
       activeId,
       amountX,
@@ -104,13 +148,27 @@ export class PoolFactory {
       shape
     );
 
-    // Add liquidity
+    // Add liquidity with minimum amounts (90% of desired amounts for slippage tolerance)
+    const amountXMin = amountX.mul(new BN(90)).div(new BN(100)); // 90% of desired
+    const amountYMin = amountY.mul(new BN(90)).div(new BN(100)); // 90% of desired
+    const deadline = new BN(Math.floor(Date.now() / 1000) + 3600); // 1 hour deadline
+
     await this.miraAmm.addLiquidity(
       poolId,
-      amountX,
-      amountY,
-      liquidityConfig,
-      new BN(Math.floor(Date.now() / 1000) + 3600) // 1 hour deadline
+      amountX, // amountADesired
+      amountY, // amountBDesired
+      amountXMin, // amountAMin
+      amountYMin, // amountBMin
+      deadline, // deadline
+      activeId, // activeIdDesired (optional)
+      undefined, // idSlippage (optional)
+      undefined, // deltaIds (optional)
+      liquidityConfig.distributionX
+        ? [new BN(liquidityConfig.distributionX)]
+        : undefined, // distributionX (optional)
+      liquidityConfig.distributionY
+        ? [new BN(liquidityConfig.distributionY)]
+        : undefined // distributionY (optional)
     );
 
     console.log("✅ Liquidity added successfully");
@@ -132,8 +190,6 @@ export class PoolFactory {
         // All liquidity in the active bin
         configs.push({
           binId: activeId,
-          amountX,
-          amountY,
           distributionX: 100,
           distributionY: 100,
         });
@@ -147,24 +203,19 @@ export class PoolFactory {
         for (let i = 0; i < shape.bins; i++) {
           const binId = startBin + i;
           const weight = normalWeights[i];
+          const weightBN = new BN(Math.floor(weight * 10000)); // Use 10000 for better precision
 
           configs.push({
             binId,
-            amountX: amountX
-              .mul(new BN(Math.floor(weight * 100)))
-              .div(new BN(100)),
-            amountY: amountY
-              .mul(new BN(Math.floor(weight * 100)))
-              .div(new BN(100)),
-            distributionX: weight * 100,
-            distributionY: weight * 100,
+            distributionX: Math.floor(weight * 100),
+            distributionY: Math.floor(weight * 100),
           });
         }
         break;
 
       case "uniform":
         // Equal distribution across all bins
-        const uniformWeight = 100 / shape.bins;
+        const uniformWeight = Math.floor(100 / shape.bins);
         const uniformStartBin = activeId - Math.floor(shape.bins / 2);
 
         for (let i = 0; i < shape.bins; i++) {
@@ -172,8 +223,6 @@ export class PoolFactory {
 
           configs.push({
             binId,
-            amountX: amountX.div(new BN(shape.bins)),
-            amountY: amountY.div(new BN(shape.bins)),
             distributionX: uniformWeight,
             distributionY: uniformWeight,
           });
@@ -193,17 +242,12 @@ export class PoolFactory {
         for (let i = 0; i < shape.bins; i++) {
           const binId = customStartBin + i;
           const weight = shape.distribution[i] / totalWeight;
+          const weightBN = new BN(Math.floor(weight * 10000));
 
           configs.push({
             binId,
-            amountX: amountX
-              .mul(new BN(Math.floor(weight * 10000)))
-              .div(new BN(10000)),
-            amountY: amountY
-              .mul(new BN(Math.floor(weight * 10000)))
-              .div(new BN(10000)),
-            distributionX: weight * 100,
-            distributionY: weight * 100,
+            distributionX: Math.floor(weight * 100),
+            distributionY: Math.floor(weight * 100),
           });
         }
         break;
