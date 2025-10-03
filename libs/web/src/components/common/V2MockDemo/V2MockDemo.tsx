@@ -9,6 +9,10 @@ import {
   mockAddLiquidityV2,
   mockRemoveLiquidityV2,
 } from "@/src/utils/mockConfig";
+import {
+  DEFAULT_MOCK_POOL_ID,
+  DEFAULT_BIN_STRATEGY,
+} from "@/src/utils/v2Defaults";
 
 export function V2MockDemo() {
   const [isLoading, setIsLoading] = useState(false);
@@ -26,16 +30,16 @@ export function V2MockDemo() {
   }
 
   const mockPools = getAllMockV2Pools();
-  const mockPositions = getMockUserPositions("1001");
+  const mockPositions = getMockUserPositions(DEFAULT_MOCK_POOL_ID);
 
   const handleMockAddLiquidity = async () => {
     setIsLoading(true);
     try {
       const result = await mockAddLiquidityV2({
-        poolId: "1001",
+        poolId: DEFAULT_MOCK_POOL_ID,
         amountX: "1000000000000000000", // 1 ETH
         amountY: "1000000000000000000", // 1 ETH
-        binConfig: {strategy: "single-active-bin"},
+        binConfig: {strategy: DEFAULT_BIN_STRATEGY},
       });
       setLastResult({type: "Add Liquidity", result});
     } catch (error) {
@@ -49,7 +53,7 @@ export function V2MockDemo() {
     setIsLoading(true);
     try {
       const result = await mockRemoveLiquidityV2({
-        poolId: "1001",
+        poolId: DEFAULT_MOCK_POOL_ID,
         binIds: [ACTIVE_BIN_ID.CENTER, ACTIVE_BIN_ID.CENTER + 1],
         amounts: {
           x: new BN("500000000000000000"),

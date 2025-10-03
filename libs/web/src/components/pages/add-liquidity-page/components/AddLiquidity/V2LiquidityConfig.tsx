@@ -22,6 +22,12 @@ import {
 import {cn} from "@/src/utils/cn";
 import {DEFAULT_SLIPPAGE_BASIS_POINT} from "@/src/utils/constants";
 import {Input} from "@/meshwave-ui/input";
+import {
+  UI_SLIDER_BIN_RANGE as SLIDER_BIN_RANGE,
+  UI_INPUT_DEBOUNCE_MS as DEFAULT_INPUT_DEBOUNCE,
+  UI_PRICE_RANGE_PERCENT,
+} from "@/src/utils/v2Defaults";
+import {DEFAULT_BIN_STEP} from "mira-dex-ts";
 
 export type LiquidityShape = "spot" | "curve" | "bidask";
 
@@ -87,11 +93,6 @@ interface V2LiquidityConfigProps {
   }) => void;
 }
 
-const DEFAULT_BIN_STEP = 25;
-const DEFAULT_BIN_NUMBER = 2000;
-const SLIDER_BIN_RANGE = 150; // Fixed range for slider (75 bins on each side of current price)
-const DEFAULT_INPUT_DEBOUNCE = 400;
-
 const INVALID_MSG =
   "Invalid range. The min price must be lower than the max price.";
 
@@ -106,7 +107,7 @@ export default function V2LiquidityConfig({
   onConfigChange,
 }: V2LiquidityConfigProps) {
   // Calculate initial price range as 20% difference on either side of current price
-  const priceRangePercent = 0.2; // 20%
+  const priceRangePercent = UI_PRICE_RANGE_PERCENT; // centralized
   const initialMinPrice = currentPrice * (1 - priceRangePercent);
   const initialMaxPrice = currentPrice * (1 + priceRangePercent);
 

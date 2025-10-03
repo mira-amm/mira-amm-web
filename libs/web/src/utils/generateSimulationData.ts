@@ -2,6 +2,12 @@ import {
   LiquidityShape,
   SimulationDataPoint,
 } from "../components/pages/bin-liquidity/components/simulated-distribution";
+import {
+  SIM_DEFAULT_MIN_PRICE,
+  SIM_DEFAULT_MAX_PRICE,
+  SIM_MIN_RANGE,
+  SIM_TOTAL_BARS,
+} from "@/src/utils/v2Defaults";
 
 export const generateSimulationData = (
   liquidityShape: LiquidityShape,
@@ -10,13 +16,13 @@ export const generateSimulationData = (
   const data: SimulationDataPoint[] = [];
 
   // Ensure we have a meaningful price range
-  const actualMinPrice = Math.min(1200, 1800);
-  const actualMaxPrice = Math.max(1200, 1800);
-  const priceRange = Math.max(actualMaxPrice - actualMinPrice, 200); // Minimum range of 200
+  const actualMinPrice = Math.min(SIM_DEFAULT_MIN_PRICE, SIM_DEFAULT_MAX_PRICE);
+  const actualMaxPrice = Math.max(SIM_DEFAULT_MIN_PRICE, SIM_DEFAULT_MAX_PRICE);
+  const priceRange = Math.max(actualMaxPrice - actualMinPrice, SIM_MIN_RANGE); // Minimum range
   const center = (actualMinPrice + actualMaxPrice) / 2;
 
   // Fixed total bars regardless of selected bins - prevents overflow
-  const totalBars = 120; // Always same amount of data
+  const totalBars = SIM_TOTAL_BARS; // Always same amount of data
   const mainBins = numBins; // User's selected bins in the center
   const extensionBars = totalBars - mainBins; // Remaining bars for context
   const leftExtension = Math.floor(extensionBars / 2);

@@ -5,6 +5,12 @@ import {BN, bn} from "fuels";
 import {useAddLiquidityV2} from "./useAddLiquidityV2";
 import {PoolTypeOption} from "../components/common/PoolTypeToggle/PoolTypeToggle";
 import {isV2MockEnabled, mockAddLiquidityV2} from "../utils/mockConfig";
+import {
+  DEFAULT_MOCK_POOL_ID,
+  DEFAULT_BIN_STRATEGY,
+  DEFAULT_PRICE_RANGE,
+  DEFAULT_NUM_BINS,
+} from "@/src/utils/v2Defaults";
 import {DeltaIdDistribution} from "../components/pages/add-liquidity-page/components/AddLiquidity/liquidityDistributionGenerator";
 
 interface UseLiquidityFormV2IntegrationProps {
@@ -57,26 +63,26 @@ export function useLiquidityFormV2Integration({
       // Mock mode for testing without contracts
       if (isV2MockEnabled() && !poolId) {
         const mockResult = await mockAddLiquidityV2({
-          poolId: "1001", // Use default mock pool
+          poolId: DEFAULT_MOCK_POOL_ID, // Use default mock pool
           amountX: firstAmount.toString(),
           amountY: secondAmount.toString(),
           binConfig: {
-            strategy: v2Config?.liquidityShape || "single-active-bin",
-            numBins: v2Config?.numBins || 1,
-            priceRange: v2Config?.priceRange || [0.8, 1.2],
+            strategy: v2Config?.liquidityShape || DEFAULT_BIN_STRATEGY,
+            numBins: v2Config?.numBins || DEFAULT_NUM_BINS,
+            priceRange: v2Config?.priceRange || DEFAULT_PRICE_RANGE,
             liquidityDistribution: v2Config?.liquidityDistribution,
           },
         });
 
         if (onPreview) {
           const previewData = {
-            poolId: "1001",
+            poolId: DEFAULT_MOCK_POOL_ID,
             firstAmount: firstAmount.toString(),
             secondAmount: secondAmount.toString(),
             type: "v2-concentrated",
-            binStrategy: v2Config?.liquidityShape || "single-active-bin",
-            numBins: v2Config?.numBins || 1,
-            priceRange: v2Config?.priceRange || [0.8, 1.2],
+            binStrategy: v2Config?.liquidityShape || DEFAULT_BIN_STRATEGY,
+            numBins: v2Config?.numBins || DEFAULT_NUM_BINS,
+            priceRange: v2Config?.priceRange || DEFAULT_PRICE_RANGE,
             liquidityDistribution: v2Config?.liquidityDistribution,
             isMock: true,
             mockResult,

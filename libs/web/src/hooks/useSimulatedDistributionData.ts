@@ -2,6 +2,15 @@
 
 import {useMemo} from "react";
 import {DEFAULT_BIN_STEP} from "mira-dex-ts";
+import {
+  DEFAULT_ASSET0_SYMBOL,
+  DEFAULT_ASSET1_SYMBOL,
+  DEFAULT_ASSET_PRICE,
+  DEFAULT_CURRENT_PRICE,
+  DEFAULT_LIQUIDITY_SHAPE,
+  DEFAULT_PRICE_RANGE,
+  DEFAULT_TOTAL_ASSET_AMOUNT,
+} from "@/src/utils/v2Defaults";
 import {useUserBinPositionsV2} from "./useUserBinPositionsV2";
 import {usePositionSummaryV2} from "./usePositionSummaryV2";
 import {useAssetMetadata} from "./useAssetMetadata";
@@ -40,7 +49,7 @@ export function useSimulatedDistributionData({
   assetYId,
   useMockData = true,
 }: UseSimulatedDistributionDataParams) {
-  const liquidityShape: LiquidityShape = "curve";
+  const liquidityShape: LiquidityShape = DEFAULT_LIQUIDITY_SHAPE;
   // Only fetch data for v2 pools
   const shouldFetch = poolType === "v2-concentrated";
 
@@ -69,7 +78,7 @@ export function useSimulatedDistributionData({
   );
 
   // Use current price from position data
-  const currentPrice = summary.averagePrice || 1.0;
+  const currentPrice = summary.averagePrice || DEFAULT_CURRENT_PRICE;
 
   // Generate distribution data
   const distributionData = useMemo((): SimulatedDistributionData | null => {
@@ -78,16 +87,16 @@ export function useSimulatedDistributionData({
     if (useMockData) {
       return {
         liquidityShape,
-        minPrice: 0.8,
-        maxPrice: 1.2,
-        currentPrice: 1.0,
+        minPrice: DEFAULT_PRICE_RANGE[0],
+        maxPrice: DEFAULT_PRICE_RANGE[1],
+        currentPrice: DEFAULT_CURRENT_PRICE,
         binStepBasisPoints: DEFAULT_BIN_STEP,
-        asset0Symbol: assetXMetadata.symbol || "Asset X",
-        asset1Symbol: assetYMetadata.symbol || "Asset Y",
-        asset0Price: 1.0,
-        asset1Price: 1.0,
-        totalAsset0Amount: 1000,
-        totalAsset1Amount: 1000,
+        asset0Symbol: assetXMetadata.symbol || DEFAULT_ASSET0_SYMBOL,
+        asset1Symbol: assetYMetadata.symbol || DEFAULT_ASSET1_SYMBOL,
+        asset0Price: DEFAULT_ASSET_PRICE,
+        asset1Price: DEFAULT_ASSET_PRICE,
+        totalAsset0Amount: DEFAULT_TOTAL_ASSET_AMOUNT,
+        totalAsset1Amount: DEFAULT_TOTAL_ASSET_AMOUNT,
       };
     }
 
@@ -97,8 +106,8 @@ export function useSimulatedDistributionData({
       maxPrice: summary.priceRange.max,
       currentPrice,
       binStepBasisPoints: DEFAULT_BIN_STEP,
-      asset0Symbol: assetXMetadata.symbol || "Asset X",
-      asset1Symbol: assetYMetadata.symbol || "Asset Y",
+      asset0Symbol: assetXMetadata.symbol || DEFAULT_ASSET0_SYMBOL,
+      asset1Symbol: assetYMetadata.symbol || DEFAULT_ASSET1_SYMBOL,
       asset0Price: assetXPrice ?? undefined,
       asset1Price: assetYPrice ?? undefined,
       totalAsset0Amount: summary.totalLiquidity.x.toNumber(),

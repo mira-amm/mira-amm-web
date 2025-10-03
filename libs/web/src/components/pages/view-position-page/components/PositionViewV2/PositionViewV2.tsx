@@ -1,5 +1,6 @@
 import {BN} from "fuels";
-import {ACTIVE_BIN_ID} from "mira-dex-ts";
+import {ACTIVE_BIN_ID, DEFAULT_BIN_STEP} from "mira-dex-ts";
+import {DEFAULT_CURRENT_PRICE} from "@/src/utils/v2Defaults";
 import {useUserBinPositionsV2, usePositionSummaryV2} from "@/src/hooks";
 import {PositionSummaryV2} from "@/src/components/common/PositionSummaryV2";
 import {ConcentratedLiquidityMetrics} from "@/src/components/common";
@@ -92,8 +93,8 @@ export function PositionViewV2({
         assetXId={assetXId}
         assetYId={assetYId}
         activeBinId={new BN(ACTIVE_BIN_ID.CENTER)} // Mock active bin ID
-        binStep={25}
-        currentPrice={1.0}
+        binStep={DEFAULT_BIN_STEP}
+        currentPrice={DEFAULT_CURRENT_PRICE}
       />
 
       {/* Action Buttons */}

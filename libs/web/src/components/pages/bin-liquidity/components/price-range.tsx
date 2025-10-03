@@ -14,6 +14,14 @@ import {
   getCurrentPriceSliderPosition,
   formatPriceForDisplay,
 } from "../../add-liquidity-page/components/AddLiquidity/priceSliderUtils";
+import {DEFAULT_BIN_STEP} from "mira-dex-ts";
+import {
+  UI_DEFAULT_NUM_BINS as DEFAULT_BIN_NUMBER,
+  UI_SLIDER_BIN_RANGE as SLIDER_BIN_RANGE,
+  UI_INPUT_DEBOUNCE_MS as DEFAULT_INPUT_DEBOUNCE,
+  UI_PRICE_RANGE_PERCENT,
+  UI_SLIDER_STEP,
+} from "@/src/utils/v2Defaults";
 import {cn} from "@/src/utils/cn";
 import {
   distributionToVisualizationData,
@@ -21,10 +29,7 @@ import {
   LiquidityDistributionResult,
 } from "../../add-liquidity-page/components/AddLiquidity/liquidityDistributionGenerator";
 
-const DEFAULT_BIN_STEP = 25;
-const DEFAULT_BIN_NUMBER = 2000;
-const SLIDER_BIN_RANGE = 150; // Fixed range for slider (75 bins on each side of current price)
-const DEFAULT_INPUT_DEBOUNCE = 400;
+// values replaced by centralized v2Defaults
 const INVALID_MSG =
   "Invalid range. The min price must be lower than the max price.";
 
@@ -62,7 +67,7 @@ const PriceRange = ({
   asset1Metadata: AssetMetadata;
 }) => {
   // Calculate initial price range as 20% difference on either side of current price
-  const priceRangePercent = 0.2; // 20%
+  const priceRangePercent = UI_PRICE_RANGE_PERCENT; // centralized
   const initialMinPrice = currentPrice * (1 - priceRangePercent);
   const initialMaxPrice = currentPrice * (1 + priceRangePercent);
 
@@ -104,7 +109,7 @@ const PriceRange = ({
   const sliderBounds = {
     sliderMin: 0,
     sliderMax: 1,
-    sliderStep: 0.001,
+    sliderStep: UI_SLIDER_STEP,
   };
 
   // Convert current price range to slider positions
@@ -185,7 +190,7 @@ const PriceRange = ({
       }
 
       // Generate liquidity distribution
-      const distribution = generateLiquidityDistribution({
+      const {liquidityDistribution} = generateLiquidityDistribution({
         numBins,
         binStep: binStepVal,
         currentPrice: currentPriceVal,
@@ -194,10 +199,10 @@ const PriceRange = ({
         totalLiquidityAmount: 10000,
       });
 
-      setLiquidityDistribution(distribution);
+      setLiquidityDistribution(liquidityDistribution);
 
       // Convert to visualization data
-      const vizData = distributionToVisualizationData(distribution);
+      const vizData = distributionToVisualizationData(liquidityDistribution);
       setVisualizationData(vizData);
     },
     [numBins, liquidityShape]
