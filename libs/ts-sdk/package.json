@@ -9,6 +9,12 @@
   "files": [
     "dist"
   ],
+  "scripts": {
+    "test:integration": "node scripts/run-integration-tests.js",
+    "test:integration:watch": "vitest test/integration/**/*.integration.test.ts",
+    "test:unit": "vitest run src/**/*.test.ts",
+    "test": "vitest run"
+  },
   "peerDependencies": {
     "fuels": "0.101.2"
   },
