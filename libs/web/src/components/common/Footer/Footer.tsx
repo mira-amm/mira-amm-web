@@ -1,4 +1,4 @@
-import {FeatureGuard, Logo, BrandText} from "@/src/components/common";
+import {Logo, BrandText} from "@/src/components/common";
 import {BlogLink, DiscordLink, XLink} from "@/src/utils/constants";
 import {DiscordIcon, XSocialIcon, GithubIcon} from "@/meshwave-ui/icons";
 import {ModeToggle} from "@/src/components/common/toggle-mode";
@@ -51,9 +51,7 @@ export default function Footer() {
             Contact us
           </a>
         </div>
-        <FeatureGuard>
-          <ModeToggle className="hidden" />
-        </FeatureGuard>
+        <ModeToggle className="hidden" />
         <div className="flex gap-3 lg:gap-4 text-content-tertiary">
           <a href="https://github.com/mira-amm" target="_blank" rel="noopener">
             <GithubIcon />
@@ -67,7 +65,7 @@ export default function Footer() {
         </div>
       </div>
       <div className="text-base text-center lg:text-right mt-[30px] text-content-tertiary/60">
-        &copy; 2025 <BrandText mira="Mira" microchain="Microchain" /> Finance
+        &copy; 2025 <BrandText microchain="Microchain" /> Finance
       </div>
     </footer>
   );

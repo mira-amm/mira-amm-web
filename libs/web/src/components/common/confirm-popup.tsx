@@ -22,7 +22,7 @@ export const ConfirmPopup: React.FC<{
         {/* Description */}
         <p className="px-[28px] pt-[12px] pb-[16px]">
           By accessing this website or using the{" "}
-          <BrandText mira="Mira Protocol" microchain="Microchain Protocol" />, I
+          <BrandText microchain="Microchain Protocol" />, I
           confirm that:
         </p>
 
@@ -43,7 +43,7 @@ export const ConfirmPopup: React.FC<{
           </p>
           <p>
             I will not access this site or use the{" "}
-            <BrandText mira="Mira Protocol" microchain="Microchain Protocol" />{" "}
+            <BrandText microchain="Microchain Protocol" />{" "}
             while located within the United States or any Prohibited Localities.
           </p>
           <p>
@@ -52,14 +52,14 @@ export const ConfirmPopup: React.FC<{
           </p>
           <p>
             I am lawfully permitted to access this site and use the{" "}
-            <BrandText mira="Mira DEX" microchain="Microchain DEX" />
+            <BrandText microchain="Microchain DEX" />
             protocol under the laws of the jurisdiction in which I reside and am
             located.
           </p>
           <p>
             I understand the risks associated with using decentralized
             protocols, including the{" "}
-            <BrandText mira="Mira Protocol" microchain="Microchain Protocol" />,
+            <BrandText microchain="Microchain Protocol" />,
             as outlined in the{" "}
             <a
               className="text-content-dimmed-light hover:text-content-primary"

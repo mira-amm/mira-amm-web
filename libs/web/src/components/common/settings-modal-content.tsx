@@ -1,5 +1,3 @@
-"use client";
-
 import {
   ChangeEvent,
   Dispatch,
@@ -10,43 +8,43 @@ import {
   FocusEvent,
   useRef,
 } from "react";
-
-import {Info} from "lucide-react";
 import {clsx} from "clsx";
-
-import {SlippageMode} from "@/src/components/common/Swap/Swap";
-
 import {useAnimationStore} from "@/src/stores/useGlitchScavengerHunt";
 
 const AutoSlippageValues = [10, 50, 100];
 
-export function SettingsModalContent({
+function SettingsModalContent({
   slippage,
-  slippageMode,
   setSlippage,
-  setSlippageMode,
   closeModal,
 }: {
   slippage: number;
-  slippageMode: SlippageMode;
   setSlippage: Dispatch<SetStateAction<number>>;
-  setSlippageMode: Dispatch<SetStateAction<SlippageMode>>;
   closeModal: VoidFunction;
 }) {
-  const [inputValue, setInputValue] = useState(`${slippage / 100}%`);
+  const [inputValue, setInputValue] = useState(`${slippage / 100}`);
   const inputRef = useRef<HTMLInputElement>(null);
 
   const handleSlippageChange = (event: ChangeEvent<HTMLInputElement>) => {
-    const value = event.target.value.replace("%", "");
-    setInputValue(value + "%");
+    const value = event.target.value;
+    setInputValue(value);
     useAnimationStore.getState().handleMagicInput(value);
   };
 
+  const DEFAULT_SLIPPAGE = 100;
+  const MAX_SLIPPAGE = 99.99;
+
   const handleInputBlur = (event: FocusEvent<HTMLInputElement>) => {
-    const value = event.target.value.replace("%", "");
-    const numericValue = parseFloat(value.replace(",", "."));
-    if (isNaN(numericValue) || numericValue <= 0 || numericValue >= 100) {
-      setSlippage(100);
+    const value = event.target.value;
+    const numericValue = parseFloat(value.replace(",", ".").trim());
+    if (
+      isNaN(numericValue) ||
+      numericValue <= 0 ||
+      numericValue > MAX_SLIPPAGE ||
+      !Number.isFinite(numericValue)
+    ) {
+      setSlippage(DEFAULT_SLIPPAGE);
+      setInputValue(`${DEFAULT_SLIPPAGE / 100}`);
       return;
     }
     setSlippage(Math.floor(Number((numericValue * 100).toFixed(2))));
@@ -54,13 +52,18 @@ export function SettingsModalContent({
 
   const handleKeyDown = (event: KeyboardEvent<HTMLInputElement>) => {
     if (event.key === "Backspace") {
-      let value = inputValue.replace("%", "");
+      let value = inputValue;
+      if (value.length === 0) return;
       value = value.slice(0, -1);
-      setInputValue(value + "%");
+      setInputValue(value);
+      if (value.length > 0) {
+        useAnimationStore.getState().handleMagicInput(value);
+      }
       event.preventDefault();
     }
     if (event.key === "Enter") {
       inputRef.current?.blur();
+      closeModal();
     }
   };
 
@@ -69,95 +72,64 @@ export function SettingsModalContent({
     closeModal();
   };
 
-  const handleSlippageModeChange = (mode: SlippageMode) => {
-    setSlippageMode(mode);
-    if (mode === "auto" && !AutoSlippageValues.includes(slippage)) {
-      setSlippage(100);
-    }
-  };
-
-  const isAutoMode = slippageMode === "auto";
-  const isCustomMode = slippageMode === "custom";
+  const numericSlippage = parseFloat(inputValue.replace(",", ".").trim());
+  const showSlippageWarning =
+    Number.isFinite(numericSlippage) && numericSlippage >= 20;
 
   return (
     <div className="flex flex-col gap-4">
       <div className="flex flex-col gap-2">
-        <p className="text-content-tertiary dark:text-white">
-          Slippage Tolerance
-        </p>
         <p className="text-content-tertiary dark:text-content-dimmed-light">
           The amount the price can change unfavorably before the trade reverts
         </p>
       </div>
-
-      <div className="flex flex-col gap-2">
-        <div className="flex gap-2">
-          <button
-            className={clsx(
-              "w-full px-3 py-[14px] rounded-lg text-content-dimmed-light bg-background-grey-dark hover:border dark:hover:border-accent-primary hover:border-black",
-              isAutoMode &&
-                "dark:border-accent-primary border border-content-tertiary bg-black dark:bg-background-grey-dark text-white"
-            )}
-            onClick={() => handleSlippageModeChange("auto")}
-          >
-            Auto
-          </button>
-          <button
-            className={clsx(
-              "w-full px-3 py-[14px] rounded-lg text-content-dimmed-light bg-background-grey-dark hover:border dark:hover:border-accent-primary hover:border-black",
-              isCustomMode &&
-                "dark:border-accent-primary border border-content-tertiary bg-black dark:bg-background-grey-dark text-white"
-            )}
-            onClick={() => handleSlippageModeChange("custom")}
-          >
-            Custom
-          </button>
+      <div className="flex gap-2 items-center">
+        <div className="flex flex-1">
+          {AutoSlippageValues.map((value, index) => (
+            <button
+              key={value}
+              className={clsx(
+                "w-full px-3 py-[14px] first:rounded-l-lg last:rounded-r-lg text-content-dimmed-light border bg-background-grey-dark hover:border dark:hover:text-content-primary dark:hover:border-accent-primary hover:border-black",
+                slippage === value &&
+                  "dark:border-accent-primary border border-black bg-black dark:bg-background-grey-dark text-white"
+              )}
+              onClick={() => handleSlippageButtonClick(value)}
+            >
+              {value / 100}%
+            </button>
+          ))}
         </div>
-
-        {isCustomMode && (
+        <div className="flex items-center justify-center">
+          <div className="flex justify-center items-center px-3">or</div>
+          <p
+            id="slippage-description"
+            className="text-content-tertiary dark:text-content-dimmed-light"
+          >
+            {/* existing description text */}
+          </p>
           <input
-            type="text"
+            type="number"
+            step="0.1"
             inputMode="decimal"
             pattern="^[0-9]*[.,]?[0-9]*$"
-            className="w-full px-3 py-[14px] rounded-lg text-content-dimmed-light bg-background-grey-dark focus:border-accent-primary focus:text-content-primary"
+            aria-label="Custom slippage percentage"
+            aria-describedby="slippage-description"
+            className="w-22 px-3 py-[14px] rounded-lg text-content-dimmed-light bg-background-grey-dark focus:border-accent-primary focus:text-content-primary"
             value={inputValue}
             onChange={handleSlippageChange}
             onKeyDown={handleKeyDown}
             onBlur={handleInputBlur}
             ref={inputRef}
           />
-        )}
-
-        {isAutoMode && (
-          <div className="flex gap-2">
-            {AutoSlippageValues.map((value) => (
-              <button
-                key={value}
-                className={clsx(
-                  "w-full px-3 py-[14px] rounded-lg text-content-dimmed-light bg-background-grey-dark hover:border dark:hover:text-content-primary hover:border-accent-primary dark:hover:border-accent-primary hover:border-black",
-                  slippage === value &&
-                    "dark:border-accent-primary border border-content-tertiary bg-black dark:bg-background-grey-dark text-white"
-                )}
-                onClick={() => handleSlippageButtonClick(value)}
-              >
-                {value / 100}%
-              </button>
-            ))}
-          </div>
-        )}
+        </div>
       </div>
-
-      {isCustomMode && (
-        <div className="flex flex-col gap-2">
-          <p className="flex items-center gap-2 text-content-tertiary dark:text-white">
-            <Info /> Pay attention
-          </p>
-          <p className="text-content-tertiary dark:text-content-dimmed-light">
-            Customized price impact limit may lead to loss of funds. Use it at
-            your own risk
-          </p>
+      {showSlippageWarning && (
+        <div className="text-accent-warning  text-sm">
+          Slippage high, your transaction might be front run.
         </div>
       )}
     </div>
   );
 }
+
+export default memo(SettingsModalContent);

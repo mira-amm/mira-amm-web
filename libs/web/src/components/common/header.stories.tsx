@@ -1,14 +1,14 @@
 import type {Meta, StoryObj} from "@storybook/react";
 import "../../../styles.css";
-import {Header} from "./header";
 
 import {QueryClient, QueryClientProvider} from "@tanstack/react-query";
 import {FuelProvider} from "@fuels/react";
 import {defaultConnectors} from "@fuels/connectors";
+import {Header} from "./header";
 const queryClient = new QueryClient();
 
 const meta = {
-  title: "🪙 Web/Layout & Navigation/Header",
+  title: "🪙 Web/Layout & Navigation/Header New",
   component: Header,
   tags: ["autodocs"],
   parameters: {

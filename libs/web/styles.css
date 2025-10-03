@@ -459,18 +459,3 @@
   margin-top: -4px;
 }
 /* remove liquidity range slider end */
-
-/* Brand switching CSS - SSR safe */
-html[data-brand='mira'] .brand-microchain,
-html:not([data-brand='microchain']) .brand-microchain {
-  display: none !important;
-}
-
-html[data-brand='microchain'] .brand-mira {
-  display: none !important;
-}
-
-/* Default: show mira when no data-brand is set */
-html:not([data-brand]) .brand-microchain {
-  display: none !important;
-}

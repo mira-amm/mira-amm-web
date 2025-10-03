@@ -55,16 +55,8 @@ export const instrumentSerif = Instrument_Serif({
 export {metadata};
 
 export default function Layout({children}: {readonly children: ReactNode}) {
-  // Get rebrand status for html attributes (server-side safe)
-  const rebrandEnabled = process.env.NEXT_PUBLIC_ENABLE_REBRAND_UI === "true";
-
   return (
-    <html
-      lang="en"
-      className={rebrandEnabled ? "" : "dark"}
-      data-brand={rebrandEnabled ? "microchain" : "mira"}
-      suppressHydrationWarning
-    >
+    <html lang="en" className="" suppressHydrationWarning>
       <head>
         <link rel="preload" as="image" href="images/loader.webp" />
         <link rel="stylesheet" href="https://use.typekit.net/joy1wau.css" />

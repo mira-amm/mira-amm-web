@@ -52,7 +52,6 @@ const MotionSVGComponent = motion(SVGComponent);
 
 interface BackgroundGlowProps {
   isVisible: boolean;
-  shouldRender: boolean;
 }
 
 export function BackgroundGlow({isVisible}: BackgroundGlowProps) {

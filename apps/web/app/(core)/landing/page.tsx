@@ -1,4 +1,4 @@
-import miraLogo from "@/meshwave-ui/src/components/icons/MiraLogo.png";
+import MicrochainTextLogo from "@/src/components/common/Logo/MicrochainTextLogo";
 import {
   HalbornIcon as Halborn,
   FuelGroup,
@@ -24,9 +24,8 @@ import {
   RoadMapIcon,
   StepsIcon,
 } from "@/src/components/common";
-import Image from "next/image";
 
-import {DiscordLink, XLink} from "@/src/utils/constants";
+import {DiscordLink, XLink, BlogLink} from "@/src/utils/constants";
 import {Swap} from "@/src/components/common/Swap/Swap";
 import {Button} from "@/meshwave-ui/Button";
 import Link from "next/link";
@@ -52,7 +51,7 @@ function HeroSection() {
           </Link>
           <a
             className="w-full"
-            href="https://mirror.xyz/miraly.eth/gIYyYWmf4_ofBY3mb9-AwcnwIfe4-1iK6kdUlJMjfn8"
+            href={BlogLink}
             target="_blank"
             rel="noopener noreferrer"
           >
@@ -134,7 +133,7 @@ function MainInfoSection() {
       >
         <article aria-labelledby="main-info-heading">
           <h2 id="main-info-heading" className="sr-only">
-            How MIRA Works
+            How Microchain Works
           </h2>
           <InfoBlocks title="Simple steps to maximize efficiency">
             <StepsBlock
@@ -179,7 +178,7 @@ function RoadmapSection() {
       aria-labelledby="roadmap-heading"
     >
       <MainInfo
-        title="MIRA's Roadmap"
+        title="Microchain's Roadmap"
         description="Join us in on a journey to the future of the internet"
       >
         <div
@@ -204,7 +203,7 @@ function RoadmapSection() {
           />
           <RoadMapBlock
             logo={<RoadMapIcon text="Mainnet" />}
-            title="MIRA DApps points program"
+            title="Microchain DApps points program"
             description="After Fuel goes live on the mainnet"
             done
           />
@@ -233,19 +232,13 @@ function WelcomeSection() {
       aria-labelledby="welcome-heading"
     >
       <figure className="flex flex-col items-center gap-5 mb-5 lg:gap-4">
-        <Image
-          className="w-20 h-20"
-          src={miraLogo.src}
-          alt="MIRA Logo"
-          width={320}
-          height={320}
-        />
+        <MicrochainTextLogo />
         <figcaption>
           <h2
             id="welcome-heading"
             className="text-5xl leading-tight text-center mt-3 font-[var(--font-prompt)] lg:text-3xl lg:leading-10"
           >
-            Welcome to MIRA
+            Welcome to Microchain
           </h2>
         </figcaption>
         <p className="font-normal text-lg leading-7 text-center text-content-dimmed-light mb-3 lg:text-base lg:leading-6">
@@ -287,7 +280,7 @@ function SocialSection() {
           rel="noopener noreferrer"
         >
           <DiscordIcon />
-          <p>MIRA Discord community</p>
+          <p>Microchain Discord community</p>
         </a>
         <a
           href={XLink}

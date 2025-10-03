@@ -4,7 +4,7 @@ import {buildPoolId, PoolId} from "mira-dex-ts";
 import {DefaultLocale} from "./constants";
 
 export const openNewTab = (url: string) => {
-  window.open(url, "_blank");
+  window.open(url, "_blank", "noopener,noreferrer");
 };
 
 export const assetsList = Array.from(coinsConfig.values());

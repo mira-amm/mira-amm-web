@@ -4,7 +4,7 @@ const LogoIconFooter = () => {
       width="200"
       height="17"
       viewBox="0 0 514 42"
-      fill="none"
+      fill="currentcolor"
       xmlns="http://www.w3.org/2000/svg"
     >
       <rect
