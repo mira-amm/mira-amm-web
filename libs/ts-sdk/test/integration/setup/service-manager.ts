@@ -33,6 +33,8 @@ export class ServiceManager {
   private processes: Map<string, ChildProcess> = new Map();
   private healthCheckInterval?: NodeJS.Timeout;
   private isShuttingDown = false;
+  private isStarting = false;
+  private startupPromise?: Promise<void>;
 
   constructor() {
     this.setupServices();
@@ -90,48 +92,91 @@ export class ServiceManager {
   async startServices(): Promise<void> {
     console.log("🚀 ServiceManager: Starting services...");
 
-    // Check if services are already running
-    const statuses = await this.checkAllServices();
-    const fuelNodeRunning =
-      statuses.find((s) => s.name === "Fuel Node")?.isRunning || false;
-    const indexerRunning =
-      statuses.find((s) => s.name === "Indexer")?.isRunning || false;
-
-    if (fuelNodeRunning && indexerRunning) {
-      console.log("♻️ ServiceManager: All services already running");
-      this.startHealthMonitoring();
+    // Use a lock to prevent concurrent startup attempts
+    if (this.isStarting) {
+      console.log("⏳ ServiceManager: Startup already in progress, waiting...");
+      await this.waitForStartupCompletion();
       return;
     }
 
-    // Check for port conflicts before starting
-    await this.checkPortConflicts();
+    this.isStarting = true;
 
-    // Start services in proper sequence: node first, then indexer
-    if (!fuelNodeRunning) {
-      console.log(
-        "🔧 ServiceManager: Fuel node not detected, starting via nx..."
-      );
-    }
-    if (!indexerRunning) {
-      console.log(
-        "🔧 ServiceManager: Indexer not detected, will start after node..."
-      );
-    }
+    // Create a promise to track this startup attempt
+    this.startupPromise = (async () => {
+      // Check if services are already running with retry logic
+      const statuses = await this.checkAllServices();
+      const fuelNodeRunning =
+        statuses.find((s) => s.name === "Fuel Node")?.isRunning || false;
+      const indexerRunning =
+        statuses.find((s) => s.name === "Indexer")?.isRunning || false;
 
-    // Start services using nx dev indexer command (starts both)
+      if (fuelNodeRunning && indexerRunning) {
+        console.log("♻️ ServiceManager: All services already running");
+        this.startHealthMonitoring();
+        return;
+      }
+
+      // If services are running but we're still trying to start them,
+      // there might be a race condition. Let's wait a bit and check again.
+      if (fuelNodeRunning || indexerRunning) {
+        console.log(
+          "⏳ ServiceManager: Some services detected, waiting for full startup..."
+        );
+        await new Promise((resolve) => setTimeout(resolve, 5000));
+
+        const recheckStatuses = await this.checkAllServices();
+        const recheckFuelNode =
+          recheckStatuses.find((s) => s.name === "Fuel Node")?.isRunning ||
+          false;
+        const recheckIndexer =
+          recheckStatuses.find((s) => s.name === "Indexer")?.isRunning || false;
+
+        if (recheckFuelNode && recheckIndexer) {
+          console.log(
+            "♻️ ServiceManager: All services now running after recheck"
+          );
+          this.startHealthMonitoring();
+          return;
+        }
+      }
+
+      // Only check for port conflicts if we're actually going to start services
+      await this.checkPortConflicts();
+
+      // Start services in proper sequence: node first, then indexer
+      if (!fuelNodeRunning) {
+        console.log(
+          "🔧 ServiceManager: Fuel node not detected, starting via nx..."
+        );
+      }
+      if (!indexerRunning) {
+        console.log(
+          "🔧 ServiceManager: Indexer not detected, will start after node..."
+        );
+      }
+
+      // Start services using nx dev indexer command (starts both)
+      try {
+        await this.startServicesViaNx();
+      } catch (error) {
+        await this.handleStartupFailure(error as Error);
+      }
+
+      // Wait for services to be ready with proper sequencing
+      await this.waitForServicesReady();
+
+      // Start health monitoring
+      this.startHealthMonitoring();
+
+      console.log("✅ ServiceManager: All services started and ready");
+    })();
+
     try {
-      await this.startServicesViaNx();
-    } catch (error) {
-      await this.handleStartupFailure(error as Error);
+      await this.startupPromise;
+    } finally {
+      this.isStarting = false;
+      this.startupPromise = undefined;
     }
-
-    // Wait for services to be ready with proper sequencing
-    await this.waitForServicesReady();
-
-    // Start health monitoring
-    this.startHealthMonitoring();
-
-    console.log("✅ ServiceManager: All services started and ready");
   }
 
   /**
@@ -353,6 +398,21 @@ export class ServiceManager {
           hasResolved = true;
           clearTimeout(timeout);
           reject(error);
+        }
+      });
+
+      // Handle process exit - this is crucial for catching nx task failures
+      process.on("exit", (code, signal) => {
+        if (!hasResolved && code !== 0) {
+          hasResolved = true;
+          clearTimeout(timeout);
+          reject(
+            new Error(
+              `nx dev indexer process exited with code ${code}${signal ? ` (signal: ${signal})` : ""}. ` +
+                `This usually indicates the dev:check task failed due to port conflicts or other startup issues. ` +
+                `Check the output above for specific error details.`
+            )
+          );
         }
       });
 
@@ -836,6 +896,15 @@ export class ServiceManager {
   ): void {
     for (const [serviceName] of this.services) {
       this.configureTimeouts(serviceName, startupTimeout, healthCheckTimeout);
+    }
+  }
+
+  /**
+   * Wait for startup completion if already in progress
+   */
+  private async waitForStartupCompletion(): Promise<void> {
+    if (this.startupPromise) {
+      await this.startupPromise;
     }
   }
 }
