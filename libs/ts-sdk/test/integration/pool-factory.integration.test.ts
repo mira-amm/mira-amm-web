@@ -22,7 +22,7 @@ describe("Pool Factory Integration Tests", () => {
     poolFactory = new PoolFactory(wallet, testEnvironment.getProxyContractId());
     tokenFactory = new TokenFactory(wallet);
     walletFactory = new WalletFactory();
-  });
+  }, 120000); // 2 minute timeout for service startup
 
   afterAll(async () => {
     await testEnvironment.stop();

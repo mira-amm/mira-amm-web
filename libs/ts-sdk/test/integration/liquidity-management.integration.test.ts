@@ -71,7 +71,7 @@ describe("Liquidity Management Integration Tests", () => {
     });
 
     console.log(`✅ Test pool created: ${testPool.toHex()}`);
-  });
+  }, 120000); // 2 minute timeout for service startup
 
   afterAll(async () => {
     await testEnvironment.stop();

@@ -32,7 +32,7 @@ describe("Pool Operations Integration Tests", () => {
     walletFactory = new WalletFactory();
 
     console.log("✅ Pool operations test setup completed");
-  });
+  }, 120000); // 2 minute timeout for service startup
 
   afterAll(async () => {
     await defaultTestRunner.teardown();
