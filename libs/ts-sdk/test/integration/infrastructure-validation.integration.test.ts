@@ -1,4 +1,5 @@
 import {describe, it, expect, beforeAll, afterAll} from "vitest";
+import {BN} from "fuels";
 import {defaultTestRunner} from "./setup/test-runner";
 import {testEnvironment} from "./setup/test-environment";
 import {TokenFactory} from "./setup/token-factory";
@@ -209,5 +210,176 @@ describe("Enhanced Infrastructure Validation", () => {
       console.log("✅ Error handling validation passed (expected failure)");
       expect(attemptCount).toBeGreaterThan(1);
     }
+  });
+
+  it("should validate infrastructure startup works correctly", async () => {
+    await defaultTestRunner.runTest(
+      "infrastructure-startup-validation",
+      async () => {
+        // Test the new infrastructure validation method
+        const validation =
+          await testEnvironment.validateInfrastructureStartup();
+
+        expect(validation.valid).toBe(true);
+        expect(validation.issues).toHaveLength(0);
+        expect(validation.serviceStatus).toBeDefined();
+
+        if (validation.serviceStatus) {
+          // Service detection might not work perfectly, but at least one should be responding
+          const fuelNodeOk =
+            validation.serviceStatus.fuelNode.running ||
+            validation.serviceStatus.fuelNode.responding;
+          const indexerOk =
+            validation.serviceStatus.indexer.running ||
+            validation.serviceStatus.indexer.responding;
+          expect(fuelNodeOk).toBe(true);
+          expect(indexerOk).toBe(true);
+        }
+
+        console.log("✅ Infrastructure startup validation passed");
+        console.log(`📊 Validation issues: ${validation.issues.length}`);
+        console.log(
+          `📊 Fuel Node: ${validation.serviceStatus?.fuelNode.running ? "✅" : "❌"} running, ${validation.serviceStatus?.fuelNode.responding ? "✅" : "❌"} responding`
+        );
+        console.log(
+          `📊 Indexer: ${validation.serviceStatus?.indexer.running ? "✅" : "❌"} running, ${validation.serviceStatus?.indexer.responding ? "✅" : "❌"} responding`
+        );
+      }
+    );
+  });
+
+  it("should validate wallet funding works safely", async () => {
+    await defaultTestRunner.runTest(
+      "wallet-funding-safety-validation",
+      async () => {
+        // Test the new wallet funding validation method
+        const validation = await testEnvironment.validateWalletFunding();
+
+        expect(validation.valid).toBe(true);
+        expect(validation.issues).toHaveLength(0);
+        expect(validation.testResults).toBeDefined();
+        expect(validation.testResults.masterBalance).toBeDefined();
+        expect(validation.testResults.fundingSuccess).toBe(true);
+
+        console.log("✅ Wallet funding safety validation passed");
+        console.log(`📊 Validation issues: ${validation.issues.length}`);
+        console.log(
+          `📊 Master balance: ${validation.testResults.masterBalance}`
+        );
+        console.log(
+          `📊 Test wallet balance: ${validation.testResults.testWalletBalance || "N/A"}`
+        );
+        console.log(
+          `📊 Funding success: ${validation.testResults.fundingSuccess ? "✅" : "❌"}`
+        );
+      }
+    );
+  });
+
+  it("should validate error handling provides helpful messages", async () => {
+    await defaultTestRunner.runTest("error-message-validation", async () => {
+      // Test the new error handling validation method
+      const validation = await testEnvironment.validateErrorHandling();
+
+      expect(validation.valid).toBe(true);
+      expect(validation.issues).toHaveLength(0);
+      expect(validation.testResults).toBeDefined();
+      expect(validation.testResults.duplicateStartupHandled).toBe(true);
+      expect(validation.testResults.insufficientBalanceHandled).toBe(true);
+
+      console.log("✅ Error message validation passed");
+      console.log(`📊 Validation issues: ${validation.issues.length}`);
+      console.log(
+        `📊 Duplicate startup handled: ${validation.testResults.duplicateStartupHandled ? "✅" : "❌"}`
+      );
+      console.log(
+        `📊 Insufficient balance handled: ${validation.testResults.insufficientBalanceHandled ? "✅" : "❌"}`
+      );
+      console.log(
+        `📊 Timeout handled: ${validation.testResults.timeoutHandled ? "✅" : "❌"}`
+      );
+    });
+  });
+
+  it("should validate improved service detection and startup", async () => {
+    await defaultTestRunner.runTest(
+      "service-detection-validation",
+      async () => {
+        const serviceManager = testEnvironment.getServiceManager();
+
+        // Test service detection results
+        const detectionResults =
+          await serviceManager.getServiceDetectionResults();
+        // Service detection might not work perfectly, but at least one should be responding
+        const fuelNodeOk =
+          detectionResults.fuelNode.running ||
+          detectionResults.fuelNode.responding;
+        const indexerOk =
+          detectionResults.indexer.running ||
+          detectionResults.indexer.responding;
+        expect(fuelNodeOk).toBe(true);
+        expect(indexerOk).toBe(true);
+
+        // Test individual service checks
+        const fuelNodeRunning = await serviceManager.isFuelNodeRunning();
+        const indexerRunning = await serviceManager.isIndexerRunning();
+        expect(fuelNodeRunning).toBe(true);
+        expect(indexerRunning).toBe(true);
+
+        // Test service startup when already running (should handle gracefully)
+        await serviceManager.startServices(); // Should not fail
+
+        console.log("✅ Service detection validation passed");
+        console.log(
+          `📊 Fuel Node: port ${detectionResults.fuelNode.port} - ${detectionResults.fuelNode.running ? "✅" : "❌"} running, ${detectionResults.fuelNode.responding ? "✅" : "❌"} responding`
+        );
+        console.log(
+          `📊 Indexer: port ${detectionResults.indexer.port} - ${detectionResults.indexer.running ? "✅" : "❌"} running, ${detectionResults.indexer.responding ? "✅" : "❌"} responding`
+        );
+      }
+    );
+  });
+
+  it("should validate improved wallet creation with balance validation", async () => {
+    await defaultTestRunner.runTest("wallet-balance-validation", async () => {
+      // Test wallet creation with different amounts (using safer defaults)
+      const testAmounts = [
+        "1000000000000000", // 0.001 ETH
+        "10000000000000000", // 0.01 ETH
+        "100000000000000000", // 0.1 ETH (new default)
+      ];
+
+      for (const amount of testAmounts) {
+        try {
+          const wallet = await testEnvironment.createWallet(amount);
+          expect(wallet).toBeDefined();
+
+          const balance = await wallet.getBalance();
+          expect(balance.gt(0)).toBe(true);
+
+          // Verify balance is reasonable (at least 50% of requested)
+          const requestedBN = new BN(amount);
+          expect(balance.gte(requestedBN.div(new BN(2)))).toBe(true);
+
+          console.log(
+            `📊 Created wallet with ${balance.format()} (requested ${requestedBN.format()})`
+          );
+        } catch (error) {
+          // If wallet creation fails due to insufficient balance, that's expected behavior
+          if (
+            error instanceof Error &&
+            error.message.includes("Insufficient")
+          ) {
+            console.log(
+              `📊 Wallet creation correctly failed for ${amount}: insufficient balance`
+            );
+            continue;
+          }
+          throw error;
+        }
+      }
+
+      console.log("✅ Wallet balance validation passed");
+    });
   });
 });

@@ -46,7 +46,7 @@ export class TestRunner {
   }
 
   /**
-   * Setup test environment
+   * Setup test environment with improved service management
    */
   async setup(): Promise<void> {
     if (this.isSetup) {
@@ -59,8 +59,38 @@ export class TestRunner {
       // Start test environment with enhanced infrastructure
       await testEnvironment.start();
 
+      // Validate infrastructure startup
+      console.log("🔍 TestRunner: Validating infrastructure startup...");
+      const infraValidation =
+        await testEnvironment.validateInfrastructureStartup();
+      if (!infraValidation.valid) {
+        console.error("❌ TestRunner: Infrastructure validation failed:");
+        infraValidation.issues.forEach((issue) =>
+          console.error(`  - ${issue}`)
+        );
+        throw new Error(
+          `Infrastructure validation failed: ${infraValidation.issues.join(", ")}`
+        );
+      }
+      console.log("✅ TestRunner: Infrastructure startup validation passed");
+
+      // Validate wallet funding
+      console.log("🔍 TestRunner: Validating wallet funding...");
+      const walletValidation = await testEnvironment.validateWalletFunding();
+      if (!walletValidation.valid) {
+        console.error("❌ TestRunner: Wallet funding validation failed:");
+        walletValidation.issues.forEach((issue) =>
+          console.error(`  - ${issue}`)
+        );
+        throw new Error(
+          `Wallet funding validation failed: ${walletValidation.issues.join(", ")}`
+        );
+      }
+      console.log("✅ TestRunner: Wallet funding validation passed");
+
       // Validate contracts if required
       if (this.config.validateContracts) {
+        console.log("🔍 TestRunner: Validating contracts...");
         const contractsValid = await testEnvironment.validateContracts();
         if (!contractsValid) {
           throw new Error(
@@ -70,12 +100,23 @@ export class TestRunner {
         console.log("✅ TestRunner: Contract validation passed");
       }
 
-      // Check service health
+      // Final service health check
       const servicesHealthy = await testEnvironment.checkServicesHealth();
       if (!servicesHealthy) {
         console.warn(
           "⚠️ TestRunner: Some services are not healthy, tests may fail"
         );
+
+        // Get detailed service status for diagnostics
+        const serviceManager = testEnvironment.getServiceManager();
+        const statuses = await serviceManager.checkAllServices();
+        console.warn("📊 TestRunner: Service status details:");
+        statuses.forEach((status) => {
+          const icon = status.isRunning ? "✅" : "❌";
+          console.warn(
+            `  ${icon} ${status.name}: ${status.isRunning ? "Healthy" : status.error}`
+          );
+        });
       } else {
         console.log("✅ TestRunner: All services are healthy");
       }
@@ -84,6 +125,24 @@ export class TestRunner {
       console.log("✅ TestRunner: Setup completed successfully");
     } catch (error) {
       console.error("❌ TestRunner: Setup failed:", error);
+
+      // Provide helpful error context
+      if (error instanceof Error) {
+        if (error.message.includes("Infrastructure validation failed")) {
+          console.error(
+            "💡 TestRunner: Try restarting services or checking port conflicts"
+          );
+        } else if (error.message.includes("Wallet funding validation failed")) {
+          console.error(
+            "💡 TestRunner: Check master wallet balance or reduce funding amounts"
+          );
+        } else if (error.message.includes("Contract validation failed")) {
+          console.error(
+            "💡 TestRunner: Ensure contracts are properly deployed and accessible"
+          );
+        }
+      }
+
       throw error;
     }
   }
@@ -136,10 +195,42 @@ export class TestRunner {
             `🔄 TestRunner: Retry attempt ${attempt} for "${testName}"`
           );
 
+          // Check service health before retry
+          const servicesHealthy = await testEnvironment.checkServicesHealth();
+          if (!servicesHealthy) {
+            console.warn(
+              `⚠️ TestRunner: Services unhealthy before retry, attempting recovery...`
+            );
+
+            try {
+              // Try to restart services
+              const serviceManager = testEnvironment.getServiceManager();
+              await serviceManager.startServices();
+
+              // Wait for services to be ready
+              await serviceManager.waitForServicesReady(30000); // 30s timeout
+              console.log(`✅ TestRunner: Service recovery successful`);
+            } catch (recoveryError) {
+              console.error(
+                `❌ TestRunner: Service recovery failed:`,
+                recoveryError
+              );
+              throw new Error(
+                `Service recovery failed before retry: ${recoveryError}`
+              );
+            }
+          }
+
           // Perform cleanup before retry
           if (!skipCleanup) {
             await testEnvironment.quickCleanup();
           }
+        }
+
+        // Pre-test service health check
+        const preTestHealthy = await testEnvironment.checkServicesHealth();
+        if (!preTestHealthy) {
+          throw new Error("Services are not healthy before test execution");
         }
 
         // Run test with timeout
@@ -159,6 +250,29 @@ export class TestRunner {
           error.message
         );
 
+        // Classify error type for better handling
+        const isInfrastructureError = this.isInfrastructureError(error);
+        if (isInfrastructureError) {
+          console.warn(
+            `⚠️ TestRunner: Infrastructure error detected: ${error.message}`
+          );
+
+          // Provide specific suggestions for infrastructure errors
+          if (error.message.includes("Connection refused")) {
+            console.warn(
+              "💡 TestRunner: Service connection failed, may need restart"
+            );
+          } else if (error.message.includes("timeout")) {
+            console.warn(
+              "💡 TestRunner: Service timeout, may need longer wait time"
+            );
+          } else if (error.message.includes("insufficient")) {
+            console.warn(
+              "💡 TestRunner: Insufficient balance, may need wallet funding"
+            );
+          }
+        }
+
         // Emergency cleanup on error
         try {
           if (!skipCleanup) {
@@ -170,12 +284,41 @@ export class TestRunner {
             cleanupError
           );
         }
+
+        // Don't retry infrastructure errors on the last attempt
+        if (attempt === retries && isInfrastructureError) {
+          console.error(
+            `❌ TestRunner: Infrastructure error on final attempt, not retrying`
+          );
+          break;
+        }
       }
     }
 
     throw (
       lastError ||
       new Error(`Test "${testName}" failed after ${retries + 1} attempts`)
+    );
+  }
+
+  /**
+   * Check if an error is infrastructure-related
+   */
+  private isInfrastructureError(error: Error): boolean {
+    const infrastructureKeywords = [
+      "Connection refused",
+      "ECONNREFUSED",
+      "timeout",
+      "Service",
+      "Port",
+      "insufficient",
+      "UTXO",
+      "balance",
+      "funding",
+    ];
+
+    return infrastructureKeywords.some((keyword) =>
+      error.message.toLowerCase().includes(keyword.toLowerCase())
     );
   }
 

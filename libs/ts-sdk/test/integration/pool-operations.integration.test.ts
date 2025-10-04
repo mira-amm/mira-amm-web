@@ -6,6 +6,7 @@ import {
   TokenFactory,
   WalletFactory,
   STANDARD_POOL_CONFIGS,
+  defaultTestRunner,
 } from "./setup";
 import {buildPoolIdV2} from "../../src/sdk/utils";
 import {PoolIdV2} from "../../src/sdk/model";
@@ -16,25 +17,35 @@ describe("Pool Operations Integration Tests", () => {
   let walletFactory: WalletFactory;
 
   beforeAll(async () => {
-    // Start test environment
-    await testEnvironment.start();
+    // Start test environment with improved infrastructure
+    console.log(
+      "🚀 Starting pool operations tests with improved infrastructure..."
+    );
+    await defaultTestRunner.setup();
 
-    // Initialize factories
-    const wallet = await testEnvironment.createWallet("1000000000000000000"); // 1 ETH
+    // Initialize factories with improved wallet creation
+    const wallet = await testEnvironment.createWallet("100000000000000000"); // 0.1 ETH (reduced from 1 ETH)
     const contractIds = testEnvironment.getContractIds();
 
     poolFactory = new PoolFactory(wallet, contractIds.simpleProxy);
     tokenFactory = new TokenFactory(wallet, contractIds.fungible);
     walletFactory = new WalletFactory();
+
+    console.log("✅ Pool operations test setup completed");
   });
 
   afterAll(async () => {
-    await testEnvironment.stop();
+    await defaultTestRunner.teardown();
   });
 
   beforeEach(async () => {
-    // Quick cleanup between tests for isolation
-    await testEnvironment.quickCleanup();
+    // Quick cleanup between tests for isolation with improved error handling
+    try {
+      await testEnvironment.quickCleanup();
+    } catch (error) {
+      console.warn("⚠️ Cleanup warning (non-fatal):", error);
+      // Continue with test - cleanup failures shouldn't block tests
+    }
   });
 
   describe("Pool Creation with USDC/FUEL and ETH/USDT pairs", () => {

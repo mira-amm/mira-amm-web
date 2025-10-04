@@ -60,7 +60,7 @@ export class WalletFactory {
   }
 
   /**
-   * Retry a function with exponential backoff
+   * Retry a function with exponential backoff and improved error handling
    */
   private async retryWithBackoff<T>(
     operation: () => Promise<T>,
@@ -80,7 +80,23 @@ export class WalletFactory {
           console.error(
             `❌ ${operationName} failed after ${maxRetries} attempts: ${lastError.message}`
           );
-          throw lastError;
+
+          // Provide helpful error context
+          if (lastError.message.includes("insufficient")) {
+            console.error(
+              "💡 Suggestion: Check wallet balances and reduce funding amounts"
+            );
+          } else if (lastError.message.includes("UTXO")) {
+            console.error(
+              "💡 Suggestion: UTXO conflict detected, try reducing concurrent operations"
+            );
+          } else if (lastError.message.includes("timeout")) {
+            console.error(
+              "💡 Suggestion: Network congestion detected, try increasing timeout"
+            );
+          }
+
+          throw new Error(`${operationName} failed: ${lastError.message}`);
         }
 
         const delay = baseDelay * Math.pow(2, attempt - 1);
@@ -96,7 +112,7 @@ export class WalletFactory {
   }
 
   /**
-   * Create a new test wallet with optional funding
+   * Create a new test wallet with improved safety and error handling
    */
   async createWallet(config: WalletConfig = {}): Promise<TestWallet> {
     this.walletCounter++;
@@ -108,28 +124,41 @@ export class WalletFactory {
     const wallet = WalletUnlocked.generate({provider: this.provider});
     const address = wallet.address.toB256();
 
-    // Fund with initial ETH balance if specified
+    // Fund with initial ETH balance if specified (using safer defaults)
     if (config.initialBalance) {
       const amount =
         typeof config.initialBalance === "string"
           ? new BN(config.initialBalance)
           : config.initialBalance;
 
-      // Validate master wallet has sufficient balance before transfer
-      const masterBalance = await this.masterWallet.getBalance();
-      if (masterBalance.lt(amount)) {
+      // Enhanced balance validation before transfer
+      const validation = await this.validateMasterWalletBalance(amount);
+      if (!validation.valid) {
         throw new Error(
-          `Insufficient master wallet balance. Required: ${amount.format()} ETH, Available: ${masterBalance.format()} ETH`
+          `Cannot create wallet ${walletName}: ${validation.issues.join(", ")}`
         );
       }
 
       console.log(`💰 Funding ${walletName} with ${amount.format()} ETH...`);
 
-      // Use retry logic for ETH transfer
+      // Use enhanced retry logic with exponential backoff
       await this.retryWithBackoff(
         async () => {
+          // Add small delay to prevent UTXO conflicts
+          await new Promise((resolve) => setTimeout(resolve, 100));
+
           const tx = await this.masterWallet.transfer(wallet.address, amount);
-          return await tx.waitForResult();
+          const result = await tx.waitForResult();
+
+          // Verify the transfer was successful
+          const newBalance = await wallet.getBalance();
+          if (newBalance.lt(amount.div(new BN(2)))) {
+            throw new Error(
+              `Transfer verification failed. Expected at least ${amount.div(new BN(2)).format()}, got ${newBalance.format()}`
+            );
+          }
+
+          return result;
         },
         3,
         1000,
@@ -236,7 +265,7 @@ export class WalletFactory {
   }
 
   /**
-   * Create wallets for specific test scenarios
+   * Create wallets for specific test scenarios with improved safety
    */
   async createScenarioWallets(): Promise<{
     liquidityProvider: TestWallet;
@@ -244,40 +273,49 @@ export class WalletFactory {
     poolCreator: TestWallet;
     observer: TestWallet;
   }> {
-    console.log("🎭 Creating scenario-specific wallets...");
+    console.log(
+      "🎭 Creating scenario-specific wallets with improved safety..."
+    );
 
-    // Liquidity provider - reduced amounts for safer testing
+    // Validate master wallet has sufficient balance for all scenario wallets
+    const totalRequired = new BN("400000000000000000"); // 0.4 ETH total (4 * 0.1 ETH)
+    const validation = await this.validateMasterWalletBalance(totalRequired);
+
+    if (!validation.valid) {
+      throw new Error(
+        `Cannot create scenario wallets: ${validation.issues.join(", ")}`
+      );
+    }
+
+    // Liquidity provider - safe amount for testing
     const liquidityProvider = await this.createWallet({
       name: "liquidity-provider",
-      initialBalance: "100000000000000000", // 0.1 ETH (reduced from 50 ETH)
-      // Remove token funding to avoid complex transfers
+      initialBalance: "100000000000000000", // 0.1 ETH (safe amount)
       description: "Wallet for providing liquidity to pools",
     });
 
-    // Trader - reduced amounts for safer testing
+    // Trader - safe amount for testing
     const trader = await this.createWallet({
       name: "trader",
-      initialBalance: "100000000000000000", // 0.1 ETH (reduced from 10 ETH)
-      // Remove token funding to avoid complex transfers
+      initialBalance: "100000000000000000", // 0.1 ETH (safe amount)
       description: "Wallet for executing swaps and trades",
     });
 
-    // Pool creator - reduced amounts for safer testing
+    // Pool creator - safe amount for testing
     const poolCreator = await this.createWallet({
       name: "pool-creator",
-      initialBalance: "100000000000000000", // 0.1 ETH (reduced from 5 ETH)
-      // Remove token funding to avoid complex transfers
+      initialBalance: "100000000000000000", // 0.1 ETH (safe amount)
       description: "Wallet for creating new pools",
     });
 
     // Observer - minimal balance for read operations
     const observer = await this.createWallet({
       name: "observer",
-      initialBalance: "100000000000000000", // 0.1 ETH (reduced from 1 ETH)
+      initialBalance: "100000000000000000", // 0.1 ETH (consistent amount)
       description: "Wallet for read-only operations and observations",
     });
 
-    console.log("✅ Created scenario wallets");
+    console.log("✅ Created scenario wallets with improved safety");
 
     return {
       liquidityProvider,
@@ -519,19 +557,25 @@ export class WalletFactory {
   }
 
   /**
-   * Create a wallet with specific token ratios for testing
+   * Create a wallet with specific token ratios for testing (safer approach)
    */
   async createBalancedWallet(
     name: string,
     tokenRatios: Array<{symbol: string; ratio: number}> // ratio is percentage (0-100)
   ): Promise<TestWallet> {
-    // Reduced total value for safer testing
-    const totalValue = 100; // $100 equivalent in USDC (reduced from $10k)
+    // Very conservative total value for safer testing
+    const totalValue = 10; // $10 equivalent in USDC (further reduced for safety)
+
+    // Validate ratios sum to 100%
+    const totalRatio = tokenRatios.reduce((sum, {ratio}) => sum + ratio, 0);
+    if (Math.abs(totalRatio - 100) > 0.01) {
+      throw new Error(`Token ratios must sum to 100%, got ${totalRatio}%`);
+    }
 
     const tokens = tokenRatios.map(({symbol, ratio}) => {
       const valueInUSDC = (totalValue * ratio) / 100;
 
-      // Convert to token amount based on rough price estimates
+      // Convert to token amount based on conservative price estimates
       let amount: BN;
       switch (symbol) {
         case "USDC":
@@ -560,12 +604,20 @@ export class WalletFactory {
       return {symbol, amount};
     });
 
-    return await this.createWallet({
+    // Create wallet with ETH only first (safer approach)
+    const wallet = await this.createWallet({
       name,
-      initialBalance: "100000000000000000", // 0.1 ETH for gas (reduced from 5 ETH)
-      // Remove token funding to avoid complex transfers - tokens can be added separately if needed
-      description: `Balanced wallet with specified token ratios`,
+      initialBalance: "100000000000000000", // 0.1 ETH for gas
+      description: `Balanced wallet with specified token ratios (${totalValue} USD equivalent)`,
     });
+
+    // Note: Token funding is intentionally removed to avoid complex transfers
+    // Tokens can be added separately using fundWallet() if needed for specific tests
+    console.log(
+      `💡 ${name}: Created with ETH only. Use fundWallet() to add tokens if needed.`
+    );
+
+    return wallet;
   }
 
   /**
