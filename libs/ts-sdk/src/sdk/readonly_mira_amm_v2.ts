@@ -283,16 +283,35 @@ export class ReadonlyMiraAmmV2 {
     poolIds: PoolIdV2[]
   ): Promise<(PoolMetadataV2 | null)[]> {
     try {
-      // Create batch calls using get_pool method for v2
-      const poolIdTransactions = poolIds.map((poolId) =>
+      // Create batch calls for pool info, reserves, and protocol fees
+      const poolInfoTransactions = poolIds.map((poolId) =>
         this.ammContract.functions.get_pool(poolIdV2Input(poolId))
       );
 
-      const {value} = await this.ammContract
-        .multiCall(poolIdTransactions)
-        .get();
+      const reservesTransactions = poolIds.map((poolId) =>
+        this.ammContract.functions.get_pool_reserves(poolIdV2Input(poolId))
+      );
 
-      if (!value || value.length !== poolIds.length) {
+      const protocolFeesTransactions = poolIds.map((poolId) =>
+        this.ammContract.functions.get_pool_protocol_fees(poolIdV2Input(poolId))
+      );
+
+      // Execute all batch calls
+      const [poolInfoResults, reservesResults, protocolFeesResults] =
+        await Promise.all([
+          this.ammContract.multiCall(poolInfoTransactions).get(),
+          this.ammContract.multiCall(reservesTransactions).get(),
+          this.ammContract.multiCall(protocolFeesTransactions).get(),
+        ]);
+
+      if (
+        !poolInfoResults.value ||
+        poolInfoResults.value.length !== poolIds.length ||
+        !reservesResults.value ||
+        reservesResults.value.length !== poolIds.length ||
+        !protocolFeesResults.value ||
+        protocolFeesResults.value.length !== poolIds.length
+      ) {
         throw new MiraV2Error(
           PoolCurveStateError.InvalidParameters,
           "Mismatch between pools and metadata results while fetching pool metadata in batch."
@@ -300,9 +319,11 @@ export class ReadonlyMiraAmmV2 {
       }
 
       return poolIds.map((poolId, index) => {
-        const poolResult = value[index];
+        const poolInfo = poolInfoResults.value[index];
+        const reserves = reservesResults.value[index];
+        const protocolFees = protocolFeesResults.value[index];
 
-        if (!poolResult) {
+        if (!poolInfo) {
           return null;
         }
 
@@ -310,19 +331,19 @@ export class ReadonlyMiraAmmV2 {
         return {
           poolId: poolId,
           pool: {
-            assetX: poolResult.pool.asset_x,
-            assetY: poolResult.pool.asset_y,
-            binStep: poolResult.pool.bin_step,
-            baseFactor: poolResult.pool.base_factor,
+            assetX: poolInfo.pool.asset_x,
+            assetY: poolInfo.pool.asset_y,
+            binStep: poolInfo.pool.bin_step,
+            baseFactor: poolInfo.pool.base_factor,
           },
-          activeId: poolResult.active_id,
+          activeId: poolInfo.active_id,
           reserves: {
-            x: poolResult.reserves.x,
-            y: poolResult.reserves.y,
+            x: reserves.x,
+            y: reserves.y,
           },
           protocolFees: {
-            x: poolResult.protocol_fees.x,
-            y: poolResult.protocol_fees.y,
+            x: protocolFees.x,
+            y: protocolFees.y,
           },
         };
       });

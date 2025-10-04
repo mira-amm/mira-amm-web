@@ -9,7 +9,6 @@ import {
   defaultTestRunner,
 } from "./setup";
 import {buildPoolIdV2} from "../../src/sdk/utils";
-import {PoolIdV2} from "../../src/sdk/model";
 
 describe("Pool Operations Integration Tests", () => {
   let poolFactory: PoolFactory;
@@ -29,7 +28,7 @@ describe("Pool Operations Integration Tests", () => {
 
     poolFactory = new PoolFactory(wallet, contractIds.simpleProxy);
     tokenFactory = new TokenFactory(wallet, contractIds.fungible);
-    walletFactory = new WalletFactory();
+    walletFactory = new WalletFactory(wallet.provider, wallet, tokenFactory);
 
     console.log("✅ Pool operations test setup completed");
   }, 120000); // 2 minute timeout for service startup
@@ -174,8 +173,8 @@ describe("Pool Operations Integration Tests", () => {
 
       const metadata = await poolFactory.getPoolInfo(poolId);
       expect(metadata).toBeDefined();
-      expect(metadata?.binStep).toBe(STANDARD_POOL_CONFIGS.STABLE.binStep);
-      expect(metadata?.baseFactor).toBe(
+      expect(metadata?.pool.binStep).toBe(STANDARD_POOL_CONFIGS.STABLE.binStep);
+      expect(metadata?.pool.baseFactor).toBe(
         STANDARD_POOL_CONFIGS.STABLE.baseFactor
       );
     });
@@ -196,8 +195,10 @@ describe("Pool Operations Integration Tests", () => {
 
       const metadata = await poolFactory.getPoolInfo(poolId);
       expect(metadata).toBeDefined();
-      expect(metadata?.binStep).toBe(STANDARD_POOL_CONFIGS.VOLATILE.binStep);
-      expect(metadata?.baseFactor).toBe(
+      expect(metadata?.pool.binStep).toBe(
+        STANDARD_POOL_CONFIGS.VOLATILE.binStep
+      );
+      expect(metadata?.pool.baseFactor).toBe(
         STANDARD_POOL_CONFIGS.VOLATILE.baseFactor
       );
     });
@@ -214,8 +215,8 @@ describe("Pool Operations Integration Tests", () => {
 
       const metadata = await poolFactory.getPoolInfo(poolId);
       expect(metadata).toBeDefined();
-      expect(metadata?.binStep).toBe(STANDARD_POOL_CONFIGS.EXOTIC.binStep);
-      expect(metadata?.baseFactor).toBe(
+      expect(metadata?.pool.binStep).toBe(STANDARD_POOL_CONFIGS.EXOTIC.binStep);
+      expect(metadata?.pool.baseFactor).toBe(
         STANDARD_POOL_CONFIGS.EXOTIC.baseFactor
       );
     });
@@ -277,10 +278,10 @@ describe("Pool Operations Integration Tests", () => {
       const stableMetadata = await poolFactory.getPoolInfo(stablePoolId);
       const volatileMetadata = await poolFactory.getPoolInfo(volatilePoolId);
 
-      expect(stableMetadata?.binStep).toBe(
+      expect(stableMetadata?.pool.binStep).toBe(
         STANDARD_POOL_CONFIGS.STABLE.binStep
       );
-      expect(volatileMetadata?.binStep).toBe(
+      expect(volatileMetadata?.pool.binStep).toBe(
         STANDARD_POOL_CONFIGS.VOLATILE.binStep
       );
     });
@@ -310,9 +311,8 @@ describe("Pool Operations Integration Tests", () => {
       const metadata = await poolFactory.getPoolInfo(poolId);
 
       expect(metadata).toBeDefined();
-      expect(metadata?.binStep).toBe(expectedConfig.binStep);
-      expect(metadata?.baseFactor).toBe(expectedConfig.baseFactor);
-      expect(metadata?.protocolShare).toBe(expectedConfig.protocolShare);
+      expect(metadata?.pool.binStep).toBe(expectedConfig.binStep);
+      expect(metadata?.pool.baseFactor).toBe(expectedConfig.baseFactor);
       expect(metadata?.activeId).toBeDefined();
     });
 
@@ -775,7 +775,7 @@ describe("Pool Operations Integration Tests", () => {
 
       expect(lookupResult.exists).toBe(true);
       expect(lookupResult.metadata).toBeDefined();
-      expect(lookupResult.metadata?.binStep).toBe(
+      expect(lookupResult.metadata?.pool.binStep).toBe(
         STANDARD_POOL_CONFIGS.STABLE.binStep
       );
     });
