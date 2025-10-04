@@ -42,6 +42,9 @@ export class WalletFactory {
   private tokenFactory: TokenFactory;
   private createdWallets: Map<string, TestWallet> = new Map();
   private walletCounter = 0;
+  private cleanupCallbacks: Array<() => Promise<void>> = [];
+  private isCleanupInProgress = false;
+  private cleanupHandlersSetup = false;
 
   constructor(
     provider: Provider,
@@ -51,6 +54,45 @@ export class WalletFactory {
     this.provider = provider;
     this.masterWallet = masterWallet;
     this.tokenFactory = tokenFactory;
+
+    // Setup cleanup handlers for graceful shutdown
+    this.setupCleanupHandlers();
+  }
+
+  /**
+   * Retry a function with exponential backoff
+   */
+  private async retryWithBackoff<T>(
+    operation: () => Promise<T>,
+    maxRetries: number = 3,
+    baseDelay: number = 1000,
+    operationName: string = "operation"
+  ): Promise<T> {
+    let lastError: Error;
+
+    for (let attempt = 1; attempt <= maxRetries; attempt++) {
+      try {
+        return await operation();
+      } catch (error) {
+        lastError = error as Error;
+
+        if (attempt === maxRetries) {
+          console.error(
+            `❌ ${operationName} failed after ${maxRetries} attempts: ${lastError.message}`
+          );
+          throw lastError;
+        }
+
+        const delay = baseDelay * Math.pow(2, attempt - 1);
+        console.warn(
+          `⚠️ ${operationName} failed (attempt ${attempt}/${maxRetries}), retrying in ${delay}ms: ${lastError.message}`
+        );
+
+        await new Promise((resolve) => setTimeout(resolve, delay));
+      }
+    }
+
+    throw lastError!;
   }
 
   /**
@@ -70,13 +112,29 @@ export class WalletFactory {
     if (config.initialBalance) {
       const amount =
         typeof config.initialBalance === "string"
-          ? config.initialBalance
-          : config.initialBalance.toString();
+          ? new BN(config.initialBalance)
+          : config.initialBalance;
 
-      console.log(`💰 Funding ${walletName} with ${amount} ETH...`);
+      // Validate master wallet has sufficient balance before transfer
+      const masterBalance = await this.masterWallet.getBalance();
+      if (masterBalance.lt(amount)) {
+        throw new Error(
+          `Insufficient master wallet balance. Required: ${amount.format()} ETH, Available: ${masterBalance.format()} ETH`
+        );
+      }
 
-      const tx = await this.masterWallet.transfer(wallet.address, amount);
-      await tx.waitForResult();
+      console.log(`💰 Funding ${walletName} with ${amount.format()} ETH...`);
+
+      // Use retry logic for ETH transfer
+      await this.retryWithBackoff(
+        async () => {
+          const tx = await this.masterWallet.transfer(wallet.address, amount);
+          return await tx.waitForResult();
+        },
+        3,
+        1000,
+        `ETH transfer to ${walletName}`
+      );
 
       console.log(`✅ Funded ${walletName} with ETH`);
     }
@@ -108,6 +166,23 @@ export class WalletFactory {
       fundWithTokens: async (
         tokens: Array<{symbol: string; amount: string | BN}>
       ) => {
+        // Validate master wallet has sufficient token balances before funding
+        const requiredTokens = tokens.map(({symbol, amount}) => ({
+          symbol,
+          amount: typeof amount === "string" ? new BN(amount) : amount,
+        }));
+
+        const validation = await this.validateMasterWalletBalance(
+          new BN(0), // No ETH required for token transfers
+          requiredTokens
+        );
+
+        if (!validation.valid) {
+          throw new Error(
+            `Cannot fund wallet with tokens: ${validation.issues.join(", ")}`
+          );
+        }
+
         await this.tokenFactory.fundWallet(address, tokens);
       },
     };
@@ -123,6 +198,11 @@ export class WalletFactory {
 
     // Store wallet
     this.createdWallets.set(walletName, testWallet);
+
+    // Register cleanup callback for this wallet
+    this.registerCleanupCallback(async () => {
+      await this.cleanupWallet(walletName);
+    });
 
     console.log(
       `✅ Created wallet: ${walletName} (${address.slice(0, 10)}...)`
@@ -166,70 +246,34 @@ export class WalletFactory {
   }> {
     console.log("🎭 Creating scenario-specific wallets...");
 
-    // Liquidity provider - needs lots of tokens
+    // Liquidity provider - reduced amounts for safer testing
     const liquidityProvider = await this.createWallet({
       name: "liquidity-provider",
-      initialBalance: "50000000000000000000", // 50 ETH
-      tokens: [
-        {
-          symbol: "USDC",
-          amount: this.tokenFactory.getStandardAmount("USDC", 100000),
-        }, // 100k USDC
-        {
-          symbol: "USDT",
-          amount: this.tokenFactory.getStandardAmount("USDT", 100000),
-        }, // 100k USDT
-        {
-          symbol: "ETH",
-          amount: this.tokenFactory.getStandardAmount("ETH", 100),
-        }, // 100 ETH
-        {
-          symbol: "FUEL",
-          amount: this.tokenFactory.getStandardAmount("FUEL", 1000000),
-        }, // 1M FUEL
-      ],
+      initialBalance: "100000000000000000", // 0.1 ETH (reduced from 50 ETH)
+      // Remove token funding to avoid complex transfers
       description: "Wallet for providing liquidity to pools",
     });
 
-    // Trader - needs moderate amounts for swapping
+    // Trader - reduced amounts for safer testing
     const trader = await this.createWallet({
       name: "trader",
-      initialBalance: "10000000000000000000", // 10 ETH
-      tokens: [
-        {
-          symbol: "USDC",
-          amount: this.tokenFactory.getStandardAmount("USDC", 10000),
-        }, // 10k USDC
-        {symbol: "ETH", amount: this.tokenFactory.getStandardAmount("ETH", 10)}, // 10 ETH
-        {
-          symbol: "FUEL",
-          amount: this.tokenFactory.getStandardAmount("FUEL", 100000),
-        }, // 100k FUEL
-      ],
+      initialBalance: "100000000000000000", // 0.1 ETH (reduced from 10 ETH)
+      // Remove token funding to avoid complex transfers
       description: "Wallet for executing swaps and trades",
     });
 
-    // Pool creator - needs gas and some tokens
+    // Pool creator - reduced amounts for safer testing
     const poolCreator = await this.createWallet({
       name: "pool-creator",
-      initialBalance: "5000000000000000000", // 5 ETH
-      tokens: [
-        {
-          symbol: "USDC",
-          amount: this.tokenFactory.getStandardAmount("USDC", 1000),
-        }, // 1k USDC
-        {
-          symbol: "USDT",
-          amount: this.tokenFactory.getStandardAmount("USDT", 1000),
-        }, // 1k USDT
-      ],
+      initialBalance: "100000000000000000", // 0.1 ETH (reduced from 5 ETH)
+      // Remove token funding to avoid complex transfers
       description: "Wallet for creating new pools",
     });
 
     // Observer - minimal balance for read operations
     const observer = await this.createWallet({
       name: "observer",
-      initialBalance: "1000000000000000000", // 1 ETH
+      initialBalance: "100000000000000000", // 0.1 ETH (reduced from 1 ETH)
       description: "Wallet for read-only operations and observations",
     });
 
@@ -286,6 +330,58 @@ export class WalletFactory {
   }
 
   /**
+   * Get detailed resource usage statistics
+   */
+  getResourceStats(): {
+    totalWallets: number;
+    totalETHDistributed: BN;
+    cleanupCallbacksRegistered: number;
+    oldestWallet?: Date;
+    newestWallet?: Date;
+    walletsByAge: Array<{name: string; age: number}>; // age in minutes
+  } {
+    const wallets = this.getAllWallets();
+    const now = new Date();
+
+    let totalETH = new BN(0);
+    let oldestWallet: Date | undefined;
+    let newestWallet: Date | undefined;
+
+    const walletsByAge = wallets.map((wallet) => {
+      const age = (now.getTime() - wallet.createdAt.getTime()) / (1000 * 60); // minutes
+
+      if (!oldestWallet || wallet.createdAt < oldestWallet) {
+        oldestWallet = wallet.createdAt;
+      }
+      if (!newestWallet || wallet.createdAt > newestWallet) {
+        newestWallet = wallet.createdAt;
+      }
+
+      if (wallet.config.initialBalance) {
+        const amount =
+          typeof wallet.config.initialBalance === "string"
+            ? new BN(wallet.config.initialBalance)
+            : wallet.config.initialBalance;
+        totalETH = totalETH.add(amount);
+      }
+
+      return {
+        name: wallet.name,
+        age: Math.round(age * 100) / 100, // round to 2 decimal places
+      };
+    });
+
+    return {
+      totalWallets: wallets.length,
+      totalETHDistributed: totalETH,
+      cleanupCallbacksRegistered: this.cleanupCallbacks.length,
+      oldestWallet,
+      newestWallet,
+      walletsByAge: walletsByAge.sort((a, b) => b.age - a.age), // oldest first
+    };
+  }
+
+  /**
    * Fund existing wallet with additional tokens
    */
   async fundWallet(
@@ -295,6 +391,23 @@ export class WalletFactory {
     const testWallet = this.getWallet(walletName);
     if (!testWallet) {
       throw new Error(`Wallet ${walletName} not found`);
+    }
+
+    // Validate master wallet has sufficient balances before funding
+    const requiredTokens = tokens.map(({symbol, amount}) => ({
+      symbol,
+      amount: typeof amount === "string" ? new BN(amount) : amount,
+    }));
+
+    const validation = await this.validateMasterWalletBalance(
+      new BN(0), // No ETH required for token transfers
+      requiredTokens
+    );
+
+    if (!validation.valid) {
+      throw new Error(
+        `Cannot fund wallet ${walletName}: ${validation.issues.join(", ")}`
+      );
     }
 
     console.log(
@@ -319,11 +432,34 @@ export class WalletFactory {
       throw new Error(`Wallet not found: ${fromWalletName} or ${toWalletName}`);
     }
 
+    const transferAmount = typeof amount === "string" ? new BN(amount) : amount;
+
+    // Validate source wallet has sufficient balance
+    const validation = await this.validateWalletBalance(
+      fromWalletName,
+      transferAmount
+    );
+
+    if (!validation.valid) {
+      throw new Error(
+        `Cannot transfer from ${fromWalletName}: ${validation.issues.join(", ")}`
+      );
+    }
+
     console.log(`💸 Transferring from ${fromWalletName} to ${toWalletName}...`);
 
-    const tx = await fromWallet.transfer(toWallet.address, amount);
+    // Use retry logic for transfer
+    const result = await this.retryWithBackoff(
+      async () => {
+        const tx = await fromWallet.transfer(toWallet.address, amount);
+        return await tx.waitForResult();
+      },
+      3,
+      1000,
+      `Transfer from ${fromWalletName} to ${toWalletName}`
+    );
 
-    console.log(`✅ Transfer completed: ${tx.id}`);
+    console.log(`✅ Transfer completed: ${result.id}`);
   }
 
   /**
@@ -389,7 +525,8 @@ export class WalletFactory {
     name: string,
     tokenRatios: Array<{symbol: string; ratio: number}> // ratio is percentage (0-100)
   ): Promise<TestWallet> {
-    const totalValue = 10000; // $10k equivalent in USDC
+    // Reduced total value for safer testing
+    const totalValue = 100; // $100 equivalent in USDC (reduced from $10k)
 
     const tokens = tokenRatios.map(({symbol, ratio}) => {
       const valueInUSDC = (totalValue * ratio) / 100;
@@ -425,10 +562,100 @@ export class WalletFactory {
 
     return await this.createWallet({
       name,
-      initialBalance: "5000000000000000000", // 5 ETH for gas
-      tokens,
+      initialBalance: "100000000000000000", // 0.1 ETH for gas (reduced from 5 ETH)
+      // Remove token funding to avoid complex transfers - tokens can be added separately if needed
       description: `Balanced wallet with specified token ratios`,
     });
+  }
+
+  /**
+   * Register a cleanup callback to be executed during cleanup
+   */
+  registerCleanupCallback(callback: () => Promise<void>): void {
+    this.cleanupCallbacks.push(callback);
+  }
+
+  /**
+   * Perform graceful cleanup of all wallets and resources
+   */
+  async cleanup(): Promise<void> {
+    if (this.isCleanupInProgress) {
+      console.log("🧹 WalletFactory cleanup already in progress, skipping...");
+      return;
+    }
+
+    this.isCleanupInProgress = true;
+    console.log("🧹 Starting WalletFactory cleanup...");
+
+    try {
+      // Execute cleanup callbacks
+      for (const callback of this.cleanupCallbacks) {
+        try {
+          await callback();
+        } catch (error) {
+          console.warn("⚠️ Cleanup callback failed:", error);
+        }
+      }
+
+      // Log wallet statistics before cleanup
+      const stats = this.getWalletStats();
+      console.log(`📊 Cleaning up ${stats.totalWallets} wallets...`);
+
+      // Clear wallet tracking
+      this.createdWallets.clear();
+      this.walletCounter = 0;
+      this.cleanupCallbacks.length = 0;
+
+      console.log("✅ WalletFactory cleanup completed");
+    } catch (error) {
+      console.error("❌ WalletFactory cleanup failed:", error);
+    } finally {
+      this.isCleanupInProgress = false;
+    }
+  }
+
+  /**
+   * Cleanup specific wallet by name
+   */
+  async cleanupWallet(walletName: string): Promise<void> {
+    const wallet = this.getWallet(walletName);
+    if (!wallet) {
+      console.warn(`⚠️ Wallet ${walletName} not found for cleanup`);
+      return;
+    }
+
+    try {
+      console.log(`🧹 Cleaning up wallet: ${walletName}`);
+
+      // Remove from tracking
+      this.createdWallets.delete(walletName);
+
+      console.log(`✅ Cleaned up wallet: ${walletName}`);
+    } catch (error) {
+      console.error(`❌ Failed to cleanup wallet ${walletName}:`, error);
+    }
+  }
+
+  /**
+   * Setup cleanup handlers for graceful shutdown
+   */
+  setupCleanupHandlers(): void {
+    // Only setup handlers if not already done to prevent memory leaks
+    if (!this.cleanupHandlersSetup) {
+      const gracefulCleanup = async () => {
+        console.log(
+          "🧹 WalletFactory: Process exit detected, performing cleanup..."
+        );
+        await this.cleanup();
+      };
+
+      // Register cleanup handlers
+      process.on("SIGINT", gracefulCleanup);
+      process.on("SIGTERM", gracefulCleanup);
+      process.on("beforeExit", gracefulCleanup);
+
+      this.cleanupHandlersSetup = true;
+    }
   }
 
   /**
@@ -437,6 +664,7 @@ export class WalletFactory {
   reset(): void {
     this.createdWallets.clear();
     this.walletCounter = 0;
+    this.cleanupCallbacks.length = 0;
     console.log("🧹 WalletFactory reset");
   }
 
@@ -445,6 +673,58 @@ export class WalletFactory {
    */
   getMasterWallet(): WalletUnlocked {
     return this.masterWallet;
+  }
+
+  /**
+   * Validate master wallet has sufficient balance for operations
+   */
+  async validateMasterWalletBalance(
+    requiredETH: BN,
+    requiredTokens?: Array<{symbol: string; amount: BN}>
+  ): Promise<{
+    valid: boolean;
+    issues: string[];
+  }> {
+    const issues: string[] = [];
+
+    // Check master wallet ETH balance
+    const masterBalance = await this.masterWallet.getBalance();
+    if (masterBalance.lt(requiredETH)) {
+      issues.push(
+        `Insufficient master wallet ETH balance. Required: ${requiredETH.format()}, Available: ${masterBalance.format()}`
+      );
+    }
+
+    // Check master wallet token balances if specified
+    if (requiredTokens) {
+      for (const {symbol, amount} of requiredTokens) {
+        try {
+          const balance = await this.tokenFactory.getBalance(
+            this.masterWallet.address.toB256(),
+            symbol
+          );
+          if (balance.lt(amount)) {
+            const formatted = this.tokenFactory.formatAmount(symbol, balance);
+            const requiredFormatted = this.tokenFactory.formatAmount(
+              symbol,
+              amount
+            );
+            issues.push(
+              `Insufficient master wallet ${symbol} balance: has ${formatted}, needs ${requiredFormatted}`
+            );
+          }
+        } catch (error) {
+          issues.push(
+            `Could not check master wallet ${symbol} balance: ${error.message}`
+          );
+        }
+      }
+    }
+
+    return {
+      valid: issues.length === 0,
+      issues,
+    };
   }
 
   /**

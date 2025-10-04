@@ -273,25 +273,48 @@ export class TestEnvironment {
       throw new Error("Test environment not initialized. Call start() first.");
     }
 
+    // Use reduced default balance if none specified
+    const balance = initialBalance || "100000000000000000"; // 0.1 ETH default (reduced from 10 ETH)
+
     // Queue wallet creation to prevent UTXO conflicts
     return (this.walletCreationQueue = this.walletCreationQueue.then(
       async () => {
         const newWallet = WalletUnlocked.generate({provider: this.provider});
 
-        if (initialBalance) {
-          // Add a small delay to prevent concurrent transactions
-          await new Promise((resolve) => setTimeout(resolve, 100));
+        // Add a small delay to prevent concurrent transactions
+        await new Promise((resolve) => setTimeout(resolve, 100));
 
-          // Transfer funds from default wallet
-          const tx = await this.wallet.transfer(
-            newWallet.address,
-            initialBalance
-          );
-          await tx.waitForResult();
+        // Retry logic for wallet funding
+        let retries = 3;
+        let lastError: Error;
 
-          console.log(
-            `💰 Created and funded wallet: ${newWallet.address.toB256()}`
-          );
+        while (retries > 0) {
+          try {
+            // Transfer funds from default wallet
+            const tx = await this.wallet!.transfer(newWallet.address, balance);
+            await tx.waitForResult();
+
+            console.log(
+              `💰 Created and funded wallet: ${newWallet.address.toB256()}`
+            );
+            break;
+          } catch (error) {
+            lastError = error as Error;
+            retries--;
+
+            if (retries === 0) {
+              console.error(
+                `❌ Failed to fund wallet after 3 attempts: ${lastError.message}`
+              );
+              throw lastError;
+            }
+
+            const delay = 1000 * (4 - retries); // 1s, 2s, 3s delays
+            console.warn(
+              `⚠️ Wallet funding failed, retrying in ${delay}ms: ${lastError.message}`
+            );
+            await new Promise((resolve) => setTimeout(resolve, delay));
+          }
         }
 
         // Register wallet with cleanup manager
@@ -316,29 +339,6 @@ export class TestEnvironment {
    */
   getConfig() {
     return TEST_CONFIG;
-  }
-
-  /**
-   * Stop the test environment
-   */
-  async stop(): Promise<void> {
-    console.log("🛑 Stopping test environment...");
-
-    if (this.nodeProcess) {
-      this.nodeProcess.kill();
-      this.nodeProcess = undefined;
-    }
-
-    if (this.indexerProcess) {
-      this.indexerProcess.kill();
-      this.indexerProcess = undefined;
-    }
-
-    this.provider = undefined;
-    this.wallet = undefined;
-    this.isInitialized = false;
-
-    console.log("✅ Test environment stopped");
   }
 
   /**
@@ -441,13 +441,18 @@ export class TestEnvironment {
   async stop(): Promise<void> {
     console.log("🛑 Stopping test environment...");
 
-    // Perform cleanup
-    if (this.cleanupManager) {
-      await this.cleanupManager.fullCleanup();
-    }
+    try {
+      // Perform cleanup
+      if (this.cleanupManager) {
+        await this.cleanupManager.fullCleanup();
+      }
 
-    // Stop services
-    await this.serviceManager.stopAllServices();
+      // Stop services
+      await this.serviceManager.stopAllServices();
+    } catch (error) {
+      console.error("⚠️ Error during cleanup:", error);
+      // Continue with shutdown even if cleanup fails
+    }
 
     // Reset state
     this.provider = undefined;
