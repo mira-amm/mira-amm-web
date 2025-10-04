@@ -11,6 +11,7 @@ export interface ServiceConfig {
   port: number;
   healthCheckQuery?: string;
   startupTimeout: number;
+  healthCheckTimeout: number;
 }
 
 /**
@@ -46,16 +47,18 @@ export class ServiceManager {
       name: "Fuel Node",
       url: "http://localhost:4000/v1/graphql",
       port: 4000,
-      healthCheckQuery: '{"query": "{ __typename }"}',
+      healthCheckQuery: '{"query": "{ nodeInfo { nodeVersion } }"}',
       startupTimeout: 30000,
+      healthCheckTimeout: 5000,
     });
 
     this.services.set("indexer", {
       name: "Indexer",
       url: "http://localhost:4350/graphql",
       port: 4350,
-      healthCheckQuery: '{"query": "{ __typename }"}',
-      startupTimeout: 30000,
+      healthCheckQuery: '{"query": "{ __schema { queryType { name } } }"}',
+      startupTimeout: 45000,
+      healthCheckTimeout: 10000,
     });
   }
 
@@ -89,23 +92,141 @@ export class ServiceManager {
 
     // Check if services are already running
     const statuses = await this.checkAllServices();
-    const allRunning = statuses.every((status) => status.isRunning);
+    const fuelNodeRunning =
+      statuses.find((s) => s.name === "Fuel Node")?.isRunning || false;
+    const indexerRunning =
+      statuses.find((s) => s.name === "Indexer")?.isRunning || false;
 
-    if (allRunning) {
+    if (fuelNodeRunning && indexerRunning) {
       console.log("♻️ ServiceManager: All services already running");
+      this.startHealthMonitoring();
       return;
     }
 
-    // Start services using nx dev indexer command
-    await this.startServicesViaNx();
+    // Check for port conflicts before starting
+    await this.checkPortConflicts();
 
-    // Wait for services to be ready
+    // Start services in proper sequence: node first, then indexer
+    if (!fuelNodeRunning) {
+      console.log(
+        "🔧 ServiceManager: Fuel node not detected, starting via nx..."
+      );
+    }
+    if (!indexerRunning) {
+      console.log(
+        "🔧 ServiceManager: Indexer not detected, will start after node..."
+      );
+    }
+
+    // Start services using nx dev indexer command (starts both)
+    try {
+      await this.startServicesViaNx();
+    } catch (error) {
+      await this.handleStartupFailure(error as Error);
+    }
+
+    // Wait for services to be ready with proper sequencing
     await this.waitForServicesReady();
 
     // Start health monitoring
     this.startHealthMonitoring();
 
     console.log("✅ ServiceManager: All services started and ready");
+  }
+
+  /**
+   * Diagnose common startup issues
+   */
+  private async diagnoseStartupIssues(): Promise<string[]> {
+    const issues: string[] = [];
+
+    // Check if ports are available
+    const portChecks = await Promise.all([
+      this.isPortInUse(4000),
+      this.isPortInUse(4350),
+    ]);
+
+    if (portChecks[0]) {
+      issues.push("Port 4000 (Fuel Node) is already in use by another process");
+    }
+    if (portChecks[1]) {
+      issues.push("Port 4350 (Indexer) is already in use by another process");
+    }
+
+    // Check if nx is available
+    try {
+      const {execSync} = require("child_process");
+      execSync("pnpm nx --version", {stdio: "pipe"});
+    } catch (error) {
+      issues.push(
+        "nx command not available - ensure pnpm and nx are installed"
+      );
+    }
+
+    // Check if we're in the right directory
+    const projectRoot = this.findProjectRoot();
+    if (!fs.existsSync(path.join(projectRoot, "pnpm-workspace.yaml"))) {
+      issues.push(
+        "Not in a valid pnpm workspace - cannot find pnpm-workspace.yaml"
+      );
+    }
+
+    // Check if indexer project exists
+    if (!fs.existsSync(path.join(projectRoot, "apps/indexer"))) {
+      issues.push("Indexer project not found at apps/indexer");
+    }
+
+    return issues;
+  }
+
+  /**
+   * Handle startup failure with detailed diagnostics
+   */
+  private async handleStartupFailure(error: Error): Promise<never> {
+    console.error("❌ ServiceManager: Service startup failed");
+    console.error("Error:", error.message);
+
+    // Run diagnostics
+    console.log("🔍 ServiceManager: Running diagnostics...");
+    const issues = await this.diagnoseStartupIssues();
+
+    if (issues.length > 0) {
+      console.error("🚨 ServiceManager: Detected issues:");
+      issues.forEach((issue, index) => {
+        console.error(`  ${index + 1}. ${issue}`);
+      });
+    }
+
+    // Provide helpful suggestions
+    console.log("💡 ServiceManager: Troubleshooting suggestions:");
+    console.log(
+      "  1. Ensure no other Fuel node or indexer processes are running"
+    );
+    console.log("  2. Check that ports 4000 and 4350 are available");
+    console.log("  3. Verify you're in the project root directory");
+    console.log(
+      "  4. Try running 'pnpm install' to ensure dependencies are installed"
+    );
+    console.log(
+      "  5. Try running 'pnpm nx dev indexer' manually to see detailed output"
+    );
+
+    // Check current service status
+    const statuses = await this.checkAllServices();
+    console.log("📊 ServiceManager: Current service status:");
+    statuses.forEach((status) => {
+      const icon = status.isRunning ? "✅" : "❌";
+      console.log(
+        `  ${icon} ${status.name}: ${status.isRunning ? "Running" : "Not running"}`
+      );
+      if (status.error) {
+        console.log(`     Error: ${status.error}`);
+      }
+    });
+
+    throw new Error(
+      `Service startup failed: ${error.message}. See diagnostics above for troubleshooting.`
+    );
   }
 
   /**
@@ -178,15 +299,51 @@ export class ServiceManager {
         const output = data.toString();
         console.error("[NX-DEV ERROR]", output);
 
-        // Don't fail on warnings, only on critical errors
-        if (
-          output.includes("EADDRINUSE") ||
-          output.includes("Permission denied")
-        ) {
+        // Handle specific error cases with detailed messages
+        if (output.includes("EADDRINUSE")) {
+          const portMatch = output.match(/port (\d+)/i);
+          const port = portMatch ? portMatch[1] : "unknown";
           if (!hasResolved) {
             hasResolved = true;
             clearTimeout(timeout);
-            reject(new Error(`Service startup failed: ${output}`));
+            reject(
+              new Error(
+                `Port ${port} is already in use. Please stop any existing Fuel node or indexer processes, ` +
+                  `or use 'lsof -ti:${port} | xargs kill -9' to force kill processes on this port.`
+              )
+            );
+          }
+        } else if (output.includes("Permission denied")) {
+          if (!hasResolved) {
+            hasResolved = true;
+            clearTimeout(timeout);
+            reject(
+              new Error(
+                `Permission denied error. This may be due to insufficient permissions or ` +
+                  `port access restrictions. Try running with appropriate permissions.`
+              )
+            );
+          }
+        } else if (output.includes("ENOENT") && output.includes("pnpm")) {
+          if (!hasResolved) {
+            hasResolved = true;
+            clearTimeout(timeout);
+            reject(
+              new Error(
+                `pnpm command not found. Please install pnpm: npm install -g pnpm`
+              )
+            );
+          }
+        } else if (output.includes("Cannot find project")) {
+          if (!hasResolved) {
+            hasResolved = true;
+            clearTimeout(timeout);
+            reject(
+              new Error(
+                `Indexer project not found. Ensure you're in the correct workspace directory ` +
+                  `and the indexer project exists at apps/indexer.`
+              )
+            );
           }
         }
       });
@@ -230,15 +387,109 @@ export class ServiceManager {
   }
 
   /**
+   * Check for port conflicts before starting services
+   */
+  private async checkPortConflicts(): Promise<void> {
+    const portChecks = Array.from(this.services.values()).map(
+      async (config) => {
+        const isPortInUse = await this.isPortInUse(config.port);
+        if (isPortInUse) {
+          // Check if it's our service or something else
+          const status = await this.checkServiceHealth(config);
+          if (!status.isRunning) {
+            // Try to identify what's using the port
+            const processInfo = await this.getPortProcessInfo(config.port);
+            throw new Error(
+              `Port ${config.port} is in use by another process, but ${config.name} is not responding.\n` +
+                `${processInfo ? `Process using port: ${processInfo}` : "Unable to identify the process."}\n` +
+                `Please stop the process using port ${config.port} or use 'lsof -ti:${config.port} | xargs kill -9' to force kill.`
+            );
+          }
+        }
+        return {port: config.port, inUse: isPortInUse, service: config.name};
+      }
+    );
+
+    const results = await Promise.all(portChecks);
+    const conflicts = results.filter((r) => r.inUse);
+
+    if (conflicts.length > 0) {
+      console.log("🔍 ServiceManager: Port usage detected:");
+      conflicts.forEach((conflict) => {
+        console.log(`  - Port ${conflict.port} (${conflict.service}): In use`);
+      });
+    }
+  }
+
+  /**
+   * Check if a port is in use
+   */
+  private async isPortInUse(port: number): Promise<boolean> {
+    return new Promise((resolve) => {
+      const net = require("net");
+      const server = net.createServer();
+
+      server.listen(port, () => {
+        server.once("close", () => {
+          resolve(false);
+        });
+        server.close();
+      });
+
+      server.on("error", () => {
+        resolve(true);
+      });
+    });
+  }
+
+  /**
+   * Get information about what process is using a port
+   */
+  private async getPortProcessInfo(port: number): Promise<string | null> {
+    try {
+      const {execSync} = require("child_process");
+      const result = execSync(`lsof -ti:${port}`, {
+        encoding: "utf8",
+        stdio: "pipe",
+      });
+      const pid = result.trim();
+
+      if (pid) {
+        try {
+          const processInfo = execSync(`ps -p ${pid} -o comm=`, {
+            encoding: "utf8",
+            stdio: "pipe",
+          });
+          return `PID ${pid} (${processInfo.trim()})`;
+        } catch {
+          return `PID ${pid}`;
+        }
+      }
+    } catch {
+      // lsof command failed or not available
+    }
+
+    return null;
+  }
+
+  /**
    * Wait for all services to be ready with health checks
    */
-  private async waitForServicesReady(maxWaitTime = 60000): Promise<void> {
+  private async waitForServicesReady(maxWaitTime?: number): Promise<void> {
     console.log("⏳ ServiceManager: Waiting for services to be ready...");
 
+    // Use the maximum startup timeout from all services if not specified
+    const defaultMaxWaitTime =
+      Math.max(
+        ...Array.from(this.services.values()).map((s) => s.startupTimeout)
+      ) + 15000; // Add 15s buffer
+
+    const actualMaxWaitTime = maxWaitTime || defaultMaxWaitTime;
     const startTime = Date.now();
     const pollInterval = 2000; // 2 seconds
+    let lastLogTime = 0;
 
-    while (Date.now() - startTime < maxWaitTime) {
+    while (Date.now() - startTime < actualMaxWaitTime) {
       const statuses = await this.checkAllServices();
       const allReady = statuses.every((status) => status.isRunning);
 
@@ -247,23 +498,38 @@ export class ServiceManager {
         return;
       }
 
-      // Log status of each service
-      statuses.forEach((status) => {
-        const statusIcon = status.isRunning ? "✅" : "⏳";
+      // Log status every 10 seconds to avoid spam
+      const currentTime = Date.now();
+      if (currentTime - lastLogTime > 10000) {
         console.log(
-          `${statusIcon} ${status.name}: ${status.isRunning ? "Ready" : "Not ready"}`
+          `⏳ ServiceManager: Waiting for services (${Math.round((currentTime - startTime) / 1000)}s elapsed)...`
         );
-        if (status.error) {
-          console.log(`   Error: ${status.error}`);
-        }
-      });
+        statuses.forEach((status) => {
+          const statusIcon = status.isRunning ? "✅" : "⏳";
+          console.log(
+            `  ${statusIcon} ${status.name}: ${status.isRunning ? "Ready" : "Not ready"}`
+          );
+          if (status.error) {
+            console.log(`     Error: ${status.error}`);
+          }
+        });
+        lastLogTime = currentTime;
+      }
 
       await new Promise((resolve) => setTimeout(resolve, pollInterval));
     }
 
-    throw new Error(
-      `Timeout waiting for services to be ready (${maxWaitTime}ms)`
-    );
+    // Provide detailed error information on timeout
+    const finalStatuses = await this.checkAllServices();
+    const failedServices = finalStatuses.filter((s) => !s.isRunning);
+
+    let errorMessage = `Timeout waiting for services to be ready (${actualMaxWaitTime}ms)\n`;
+    errorMessage += "Failed services:\n";
+    failedServices.forEach((service) => {
+      errorMessage += `  - ${service.name}: ${service.error || "Unknown error"}\n`;
+    });
+
+    throw new Error(errorMessage);
   }
 
   /**
@@ -285,27 +551,69 @@ export class ServiceManager {
    */
   async checkServiceHealth(config: ServiceConfig): Promise<ServiceStatus> {
     try {
+      const controller = new AbortController();
+      const timeoutId = setTimeout(
+        () => controller.abort(),
+        config.healthCheckTimeout
+      );
+
       const response = await fetch(config.url, {
         method: "POST",
         headers: {"Content-Type": "application/json"},
         body: config.healthCheckQuery || '{"query": "{ __typename }"}',
-        signal: AbortSignal.timeout(5000), // 5 second timeout
+        signal: controller.signal,
       });
+
+      clearTimeout(timeoutId);
+
+      if (!response.ok) {
+        const errorText = await response.text().catch(() => "Unknown error");
+        return {
+          name: config.name,
+          isRunning: false,
+          url: config.url,
+          lastChecked: new Date(),
+          error: `HTTP ${response.status}: ${errorText}`,
+        };
+      }
+
+      // Validate response is valid GraphQL
+      const responseData = await response.json();
+      if (responseData.errors && responseData.errors.length > 0) {
+        return {
+          name: config.name,
+          isRunning: false,
+          url: config.url,
+          lastChecked: new Date(),
+          error: `GraphQL errors: ${responseData.errors.map((e: any) => e.message).join(", ")}`,
+        };
+      }
 
       return {
         name: config.name,
-        isRunning: response.ok,
+        isRunning: true,
         url: config.url,
         lastChecked: new Date(),
-        error: response.ok ? undefined : `HTTP ${response.status}`,
       };
     } catch (error: any) {
+      let errorMessage = "Connection failed";
+
+      if (error.name === "AbortError") {
+        errorMessage = `Health check timeout (${config.healthCheckTimeout}ms)`;
+      } else if (error.code === "ECONNREFUSED") {
+        errorMessage = `Connection refused on port ${config.port}`;
+      } else if (error.code === "ENOTFOUND") {
+        errorMessage = "Service not found (DNS resolution failed)";
+      } else if (error.message) {
+        errorMessage = error.message;
+      }
+
       return {
         name: config.name,
         isRunning: false,
         url: config.url,
         lastChecked: new Date(),
-        error: error.message || "Connection failed",
+        error: errorMessage,
       };
     }
   }
@@ -402,23 +710,75 @@ export class ServiceManager {
   }
 
   /**
+   * Check if Fuel node is running on port 4000
+   */
+  async isFuelNodeRunning(): Promise<boolean> {
+    return this.isServiceRunning("fuel-node");
+  }
+
+  /**
+   * Check if indexer is running on port 4350
+   */
+  async isIndexerRunning(): Promise<boolean> {
+    return this.isServiceRunning("indexer");
+  }
+
+  /**
+   * Get detailed service detection results
+   */
+  async getServiceDetectionResults(): Promise<{
+    fuelNode: {running: boolean; port: number; responding: boolean};
+    indexer: {running: boolean; port: number; responding: boolean};
+  }> {
+    const fuelNodeConfig = this.services.get("fuel-node")!;
+    const indexerConfig = this.services.get("indexer")!;
+
+    const [fuelNodeStatus, indexerStatus] = await Promise.all([
+      this.checkServiceHealth(fuelNodeConfig),
+      this.checkServiceHealth(indexerConfig),
+    ]);
+
+    const [fuelNodePortInUse, indexerPortInUse] = await Promise.all([
+      this.isPortInUse(fuelNodeConfig.port),
+      this.isPortInUse(indexerConfig.port),
+    ]);
+
+    return {
+      fuelNode: {
+        running: fuelNodePortInUse,
+        port: fuelNodeConfig.port,
+        responding: fuelNodeStatus.isRunning,
+      },
+      indexer: {
+        running: indexerPortInUse,
+        port: indexerConfig.port,
+        responding: indexerStatus.isRunning,
+      },
+    };
+  }
+
+  /**
    * Wait for a specific service to be ready
    */
   async waitForService(
     serviceName: string,
-    maxWaitTime = 30000
+    maxWaitTime?: number
   ): Promise<void> {
     const config = this.services.get(serviceName);
     if (!config) {
       throw new Error(`Service ${serviceName} not configured`);
     }
 
-    console.log(`⏳ ServiceManager: Waiting for ${config.name} to be ready...`);
+    const actualMaxWaitTime = maxWaitTime || config.startupTimeout;
+    console.log(
+      `⏳ ServiceManager: Waiting for ${config.name} to be ready (timeout: ${actualMaxWaitTime}ms)...`
+    );
 
     const startTime = Date.now();
     const pollInterval = 1000; // 1 second
+    let lastStatus: ServiceStatus | null = null;
 
-    while (Date.now() - startTime < maxWaitTime) {
+    while (Date.now() - startTime < actualMaxWaitTime) {
       const status = await this.checkServiceHealth(config);
 
       if (status.isRunning) {
@@ -426,12 +786,57 @@ export class ServiceManager {
         return;
       }
 
+      // Log status changes
+      if (!lastStatus || lastStatus.error !== status.error) {
+        console.log(`⏳ ${config.name}: ${status.error || "Checking..."}`);
+        lastStatus = status;
+      }
+
       await new Promise((resolve) => setTimeout(resolve, pollInterval));
     }
 
+    const finalStatus = await this.checkServiceHealth(config);
     throw new Error(
-      `Timeout waiting for ${config.name} to be ready (${maxWaitTime}ms)`
+      `Timeout waiting for ${config.name} to be ready (${actualMaxWaitTime}ms). ` +
+        `Last error: ${finalStatus.error || "Unknown error"}`
     );
+  }
+
+  /**
+   * Configure service timeouts
+   */
+  configureTimeouts(
+    serviceName: string,
+    startupTimeout?: number,
+    healthCheckTimeout?: number
+  ): void {
+    const config = this.services.get(serviceName);
+    if (!config) {
+      throw new Error(`Service ${serviceName} not configured`);
+    }
+
+    if (startupTimeout !== undefined) {
+      config.startupTimeout = startupTimeout;
+    }
+    if (healthCheckTimeout !== undefined) {
+      config.healthCheckTimeout = healthCheckTimeout;
+    }
+
+    console.log(
+      `⚙️ ServiceManager: Updated timeouts for ${config.name}: startup=${config.startupTimeout}ms, healthCheck=${config.healthCheckTimeout}ms`
+    );
+  }
+
+  /**
+   * Configure timeouts for all services
+   */
+  configureAllTimeouts(
+    startupTimeout?: number,
+    healthCheckTimeout?: number
+  ): void {
+    for (const [serviceName] of this.services) {
+      this.configureTimeouts(serviceName, startupTimeout, healthCheckTimeout);
+    }
   }
 }
 
