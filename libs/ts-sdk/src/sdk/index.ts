@@ -96,6 +96,3 @@ export {
   calculateMaxAmountIn, // Calculate maximum input with slippage
   calculateBinLiquidity, // Calculate liquidity for specific bin
 } from "./math-v2";
-
-// Mock SDK for testing and development without blockchain interactions
-export * from "./mock";
