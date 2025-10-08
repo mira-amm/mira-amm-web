@@ -6,6 +6,13 @@
   "tags": [],
   "// targets": "to see all targets run: nx show project web --web",
   "targets": {
+    "dev": {
+      "// comment": "Run web app without any dependencies. Start indexer services separately."
+    },
+    "dev:local": {
+      "dependsOn": ["indexer:db:up"],
+      "// comment": "Run web app with local NX development (starts dev database automatically)"
+    },
     "test": {
       "dependsOn": ["build"],
       "command": "vitest",
