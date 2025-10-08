@@ -83,3 +83,6 @@ vitest.config.*.timestamp*
 !.vscode/extensions.json
 !.vscode/settings-example.json
 apps/microvisor/services/supabase/.branches
+
+/.pnpm-store
+/.fuels
