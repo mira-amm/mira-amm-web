@@ -191,24 +191,66 @@ export function validateDeadline(
   context?: ErrorContext
 ): void {
   const bnDeadline = new BN(deadline.toString());
-  const deadlineSeconds = bnDeadline.toNumber();
-  const currentTime = Math.floor(Date.now() / 1000);
+  const currentUnix = new BN(Math.floor(Date.now() / 1000).toString());
+  const maxDelta = new BN((options.maxDeadline || 3600).toString());
+  const TAI64_OFFSET = new BN(2).pow(new BN(62));
 
-  if (deadlineSeconds <= currentTime) {
-    throw new EnhancedMiraV2Error(
-      PoolCurveStateError.InvalidParameters,
-      "Deadline must be in the future",
-      {...context, deadline: deadlineSeconds, currentTime}
-    );
-  }
+  // Detect TAI64 vs Unix seconds. TAI64 values are >= 2^62.
+  const isTai64 = bnDeadline.gte(TAI64_OFFSET);
 
-  const maxDeadline = currentTime + (options.maxDeadline || 3600);
-  if (deadlineSeconds > maxDeadline) {
-    throw new EnhancedMiraV2Error(
-      PoolCurveStateError.InvalidParameters,
-      `Deadline cannot be more than ${options.maxDeadline || 3600} seconds in the future`,
-      {...context, deadline: deadlineSeconds, maxDeadline}
-    );
+  if (isTai64) {
+    const currentTai64 = TAI64_OFFSET.add(currentUnix);
+    const maxTai64 = currentTai64.add(maxDelta);
+
+    if (bnDeadline.lte(currentTai64)) {
+      throw new EnhancedMiraV2Error(
+        PoolCurveStateError.InvalidParameters,
+        "Deadline must be in the future",
+        {
+          ...context,
+          deadline: bnDeadline.toString(),
+          currentTimeTai64: currentTai64.toString(),
+        }
+      );
+    }
+
+    if (bnDeadline.gt(maxTai64)) {
+      throw new EnhancedMiraV2Error(
+        PoolCurveStateError.InvalidParameters,
+        `Deadline cannot be more than ${options.maxDeadline || 3600} seconds in the future`,
+        {
+          ...context,
+          deadline: bnDeadline.toString(),
+          maxTai64: maxTai64.toString(),
+        }
+      );
+    }
+  } else {
+    const maxUnix = currentUnix.add(maxDelta);
+
+    if (bnDeadline.lte(currentUnix)) {
+      throw new EnhancedMiraV2Error(
+        PoolCurveStateError.InvalidParameters,
+        "Deadline must be in the future",
+        {
+          ...context,
+          deadline: bnDeadline.toString(),
+          currentTime: currentUnix.toString(),
+        }
+      );
+    }
+
+    if (bnDeadline.gt(maxUnix)) {
+      throw new EnhancedMiraV2Error(
+        PoolCurveStateError.InvalidParameters,
+        `Deadline cannot be more than ${options.maxDeadline || 3600} seconds in the future`,
+        {
+          ...context,
+          deadline: bnDeadline.toString(),
+          maxDeadline: maxUnix.toString(),
+        }
+      );
+    }
   }
 }
 
@@ -249,7 +291,7 @@ export function validateLiquidityDistribution(
 
   // Validate distribution percentages sum to 100% (or close to it)
   if (distributionX) {
-    const totalX = distributionX.reduce(
+    const totalX = distributionX.reduce<number>(
       (sum, dist) => sum + Number(dist.toString()),
       0
     );
@@ -263,7 +305,7 @@ export function validateLiquidityDistribution(
   }
 
   if (distributionY) {
-    const totalY = distributionY.reduce(
+    const totalY = distributionY.reduce<number>(
       (sum, dist) => sum + Number(dist.toString()),
       0
     );

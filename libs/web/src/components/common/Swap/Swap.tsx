@@ -2,15 +2,9 @@
 
 import {useCallback, useEffect, useMemo, useRef, useState, memo} from "react";
 
-import {
-  B256Address,
-  BN,
-  bn,
-  ScriptTransactionRequest,
-  TransactionCost,
-} from "fuels";
+import {B256Address, BN, bn, ScriptTransactionRequest} from "fuels";
 import {useConnectUI, useIsConnected} from "@fuels/react";
-import {PoolId, PoolIdV2} from "mira-dex-ts";
+import {PoolId} from "mira-dex-ts";
 import {getIsRebrandEnabled} from "@/src/utils/isRebrandEnabled";
 
 import {Button} from "@/meshwave-ui/Button";
@@ -36,7 +30,6 @@ import {
   PoolTypeToggle,
   type PoolTypeOption,
 } from "@/src/components/common/PoolTypeToggle/PoolTypeToggle";
-import {SwapDebugPanel} from "@/src/components/common/SwapDebugPanel";
 import {createPoolKey, openNewTab} from "@/src/utils/common";
 
 import {PriceImpactNew} from "@/src/components/common/Swap/components/price-impact";
@@ -59,9 +52,6 @@ import {
   TradeState,
   useInitialSwapState,
   useDocumentTitle,
-  useRoutablePools,
-  useSwapData,
-  useAsset,
   type Pool,
 } from "@/src/hooks";
 import Image from "next/image";
@@ -306,17 +296,6 @@ export function Swap({isWidget}: {isWidget?: boolean}) {
     tradeState,
     error: previewError,
   } = useSwapPreview(swapState, activeMode, poolType);
-
-  // Get routing data for debug panel
-  const {sellAssetId, buyAssetId} = useSwapData(swapState);
-  const {asset: assetIn} = useAsset(sellAssetId);
-  const {asset: assetOut} = useAsset(buyAssetId);
-  const {routes: debugRoutes} = useRoutablePools(
-    assetIn,
-    assetOut,
-    !!assetIn && !!assetOut,
-    poolType
-  );
 
   // Handle pool type changes - reset amounts to force fresh calculations
   const handlePoolTypeChange = useCallback((newPoolType: PoolTypeOption) => {
@@ -910,17 +889,6 @@ export function Swap({isWidget}: {isWidget?: boolean}) {
           customTitle={customErrorTitle}
         />
       </FailureModal>
-
-      {/* Debug Panel - Remove in production */}
-      {process.env.NODE_ENV === "development" && (
-        <SwapDebugPanel
-          swapState={swapState}
-          poolType={poolType}
-          tradeState={tradeState}
-          trade={trade}
-          routes={debugRoutes}
-        />
-      )}
     </>
   );
 }
