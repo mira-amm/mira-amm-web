@@ -2,7 +2,7 @@
 
 import {useMemo} from "react";
 import type {PoolId} from "mira-dex-ts";
-import {bn} from "fuels";
+import {bn, BN} from "fuels";
 import {
   useAllAssetsCombination,
   useGetPoolsWithReserve,
@@ -44,28 +44,43 @@ export function useRoutablePools(
 
   // Convert V2 pools to Pool format
   const v2Pools = useMemo<Pool[]>(() => {
-    if (!v2PoolsData || !assetIn || !assetOut) return [];
+    if (!v2PoolsData || !assetIn || !assetOut) {
+      return [];
+    }
 
-    return v2PoolsData.map((pool) => ({
-      poolId: bn(pool.poolId), // Convert string ID to BN for V2
-      assetA:
+    const converted = v2PoolsData.map((pool) => {
+      // Get full asset data, preserving decimals and other metadata
+      const asset0 =
         pool.asset0.id === assetIn.assetId
-          ? {...assetIn}
+          ? assetIn
           : pool.asset0.id === assetOut.assetId
-            ? {...assetOut}
-            : {...assetIn, assetId: pool.asset0.id, symbol: pool.asset0.symbol},
-      assetB:
+            ? assetOut
+            : {...assetIn, assetId: pool.asset0.id, symbol: pool.asset0.symbol};
+
+      const asset1 =
         pool.asset1.id === assetOut.assetId
-          ? {...assetOut}
+          ? assetOut
           : pool.asset1.id === assetIn.assetId
-            ? {...assetIn}
+            ? assetIn
             : {
                 ...assetOut,
                 assetId: pool.asset1.id,
                 symbol: pool.asset1.symbol,
-              },
-      isStable: false, // V2 pools don't have stable/volatile distinction
-    }));
+              };
+
+      // Convert the large pool ID string to BN
+      // The pool ID from indexer is in the 'id' field, not 'poolId'
+      const poolIdBN = new BN(pool.id);
+
+      return {
+        poolId: poolIdBN,
+        assetA: asset0,
+        assetB: asset1,
+        isStable: false,
+      };
+    });
+
+    return converted;
   }, [v2PoolsData, assetIn, assetOut]);
 
   // Use the appropriate pools based on poolType
@@ -74,9 +89,11 @@ export function useRoutablePools(
   const isRefetching = poolType === "v2" ? false : v1Refetching;
 
   const routes = useMemo(() => {
-    if (!pools || !assetIn || !assetOut) return [];
+    if (!pools || !assetIn || !assetOut) {
+      return [];
+    }
     return computeAllRoutes(assetIn, assetOut, pools, 2);
-  }, [pools, assetIn, assetOut]);
+  }, [pools, assetIn, assetOut, poolType]);
 
   return {
     routes,

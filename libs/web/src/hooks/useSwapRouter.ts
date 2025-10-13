@@ -46,6 +46,14 @@ export function useSwapRouter(
   };
   error: string | null;
 } {
+  console.log("[useSwapRouter] Function called with:", {
+    tradeType,
+    amountSpecified: amountSpecified.toString(),
+    assetIn: assetIn?.symbol,
+    assetOut: assetOut?.symbol,
+    poolType,
+  });
+
   const amm = poolType === "v2" ? useReadonlyMiraV2() : useReadonlyMira();
 
   // Default cache options
@@ -71,10 +79,17 @@ export function useSwapRouter(
     [effectiveCacheOptions]
   );
 
-  const shouldFetch = useMemo(
-    () => !!assetIn && !!assetOut && amountSpecified.gt(0),
-    [assetIn, assetOut, amountSpecified]
-  );
+  const shouldFetch = useMemo(() => {
+    const result = !!assetIn && !!assetOut && amountSpecified.gt(0);
+    console.log("[useSwapRouter] shouldFetch:", {
+      result,
+      hasAssetIn: !!assetIn,
+      hasAssetOut: !!assetOut,
+      amountGtZero: amountSpecified.gt(0),
+      amount: amountSpecified.toString(),
+    });
+    return result;
+  }, [assetIn, assetOut, amountSpecified]);
 
   const {
     routes,
@@ -95,7 +110,16 @@ export function useSwapRouter(
     if (!routes.length) return null;
     return routes
       .map((route) =>
-        route.pools.map((pool) => pool.poolId.join("-")).join("|")
+        route.pools
+          .map((pool) => {
+            // Handle both V1 (array) and V2 (BN) pool IDs
+            if (Array.isArray(pool.poolId)) {
+              return pool.poolId.join("-");
+            } else {
+              return pool.poolId.toString();
+            }
+          })
+          .join("|")
       )
       .join("||");
   }, [routes]);
@@ -115,10 +139,12 @@ export function useSwapRouter(
         route.pools.map((pool) => pool.poolId)
       );
 
-      // Preload pools for new routes
-      amm.preloadPoolsForRoutes(poolPaths, ammCacheOptions).catch((error) => {
-        console.error("Failed to preload pools:", error);
-      });
+      // Preload pools for new routes (only if method exists - V1 has it, V2 might not)
+      if (amm.preloadPoolsForRoutes) {
+        amm.preloadPoolsForRoutes(poolPaths, ammCacheOptions).catch((error) => {
+          console.error("Failed to preload pools:", error);
+        });
+      }
       previousRouteSignature.current = routeSignature;
     }
   }, [
@@ -132,23 +158,48 @@ export function useSwapRouter(
     assetOut?.symbol,
   ]);
 
-  const {
-    data: quotes = [],
-    isLoading,
-    isRefetching,
-  } = useQuery({
-    queryKey: [
+  const queryKey = useMemo(
+    () => [
       "swapQuotes",
       tradeType,
       amountSpecified.toString(),
       assetIn?.assetId,
       assetOut?.assetId,
-      routes,
-      effectiveCacheOptions.enableCaching, // Include cache options in query key
+      routeSignature, // Use routeSignature instead of routes array to avoid identity issues
+      effectiveCacheOptions.enableCaching,
     ],
+    [
+      tradeType,
+      amountSpecified,
+      assetIn?.assetId,
+      assetOut?.assetId,
+      routeSignature,
+      effectiveCacheOptions.enableCaching,
+    ]
+  );
 
-    queryFn: () =>
-      amm && routes.length
+  console.log("[useSwapRouter] Query setup:", {
+    queryKey: JSON.stringify(queryKey),
+    enabled: shouldFetch,
+    hasRoutes: routes.length > 0,
+  });
+
+  const {
+    data: quotes = [],
+    isLoading,
+    isRefetching,
+    dataUpdatedAt,
+  } = useQuery({
+    queryKey,
+
+    queryFn: () => {
+      console.log("[useSwapRouter] ⚡ queryFn EXECUTING:", {
+        hasAmm: !!amm,
+        routeCount: routes.length,
+        timestamp: new Date().toISOString(),
+      });
+
+      return amm && routes.length
         ? getSwapQuotesBatch(
             amountSpecified,
             tradeType,
@@ -156,31 +207,44 @@ export function useSwapRouter(
             amm,
             ammCacheOptions
           )
-        : Promise.resolve([]),
+        : Promise.resolve([]);
+    },
 
-    staleTime: effectiveCacheOptions.enableCaching
-      ? effectiveCacheOptions.poolDataTTL
-      : 0,
-    gcTime: effectiveCacheOptions.enableCaching
-      ? effectiveCacheOptions.poolDataTTL
-      : 0, // Updated from cacheTime
-    refetchOnWindowFocus: true,
+    staleTime: 0, // FORCE: Always treat data as stale
+    gcTime: 0, // FORCE: Don't cache at all
+    refetchOnWindowFocus: false, // Disable to reduce noise
     refetchOnMount: true,
     enabled: shouldFetch,
-    initialData: shouldFetch ? undefined : [],
+    // Remove initialData to force fetch
+  });
+
+  console.log("[useSwapRouter] Query state:", {
+    quotesCount: quotes.length,
+    isLoading,
+    isRefetching,
+    dataUpdatedAt: new Date(dataUpdatedAt).toISOString(),
   });
 
   // NOTE: could've done return-foo, used 'if' statements to keep it debuggable in case it explodes later
   return useMemo(() => {
+    console.log("[useSwapRouter] Computing return:", {
+      isLoading,
+      routesLoading,
+      quotesCount: quotes.length,
+      quotes: quotes,
+    });
+
     if (isLoading || routesLoading) {
       return {tradeState: TradeState.LOADING, error: null};
     }
 
     if (!assetIn || !assetOut) {
+      console.log("[useSwapRouter] Missing assets");
       return {tradeState: TradeState.INVALID, error: null};
     }
 
     if (!quotes.length) {
+      console.log("[useSwapRouter] No quotes");
       return {
         tradeState: TradeState.NO_ROUTE_FOUND,
         error: null, // Fixed: added missing error property
@@ -196,6 +260,12 @@ export function useSwapRouter(
 
       return current.amountIn.lt(best.amountIn) ? current : best;
     }, null);
+
+    console.log("[useSwapRouter] Best quote:", {
+      hasBest: !!best,
+      amountIn: best?.amountIn.toString(),
+      amountOut: best?.amountOut.toString(),
+    });
 
     if (!best) {
       return {

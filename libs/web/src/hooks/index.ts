@@ -27,7 +27,11 @@ export {useSwap} from "./useSwap";
 export {useAssetList} from "./useAssetList";
 export {useAssetMinterContract} from "./useAssetMinterContract";
 export {usePoints, usePointsRank, usePointsRanks} from "./usePoints";
-export {useGetPoolsWithReserve, type Route} from "./useGetPoolsWithReserve";
+export {
+  useGetPoolsWithReserve,
+  type Route,
+  type Pool,
+} from "./useGetPoolsWithReserve";
 export {useAllAssetsCombination} from "./useAllAssetsCombination";
 export {useInitialSwapState} from "./useInitialSwapState";
 export {usePoolsData} from "./usePoolsData";
