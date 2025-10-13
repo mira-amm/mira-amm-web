@@ -16,6 +16,7 @@ import {
   useReadonlyMira,
   useMiraDexV2,
   useReadonlyMiraV2,
+  type Pool,
 } from "@/src/hooks";
 import {getMaxDeadline} from "@/src/utils/constants";
 import {type PoolTypeOption} from "@/src/components/common/PoolTypeToggle";
@@ -30,7 +31,7 @@ export function useSwap({
   swapState: SwapState;
   mode: CurrencyBoxMode;
   slippage: number;
-  pools: PoolId[] | undefined;
+  pools: Pool[] | undefined;
   poolType?: PoolTypeOption;
 }) {
   const {wallet} = useWallet();
@@ -62,12 +63,15 @@ export function useSwap({
     let tx: ScriptTransactionRequest;
     let txCost: BN;
 
+    // Extract pool IDs from Pool objects
+    const poolIds = pools.map((p) => p.poolId);
+
     if (mode === "sell") {
       const [_buyAsset, simulatedBuyAmount] =
         await activeReadonlyMira.previewSwapExactInput(
           sellAssetIdInput,
           sellAmount,
-          [...pools]
+          [...poolIds]
         );
       const buyAmountWithSlippage = simulatedBuyAmount
         .mul(bn(10_000).sub(bn(slippage)))
@@ -77,7 +81,7 @@ export function useSwap({
         sellAmount,
         sellAssetIdInput,
         buyAmountWithSlippage,
-        pools,
+        poolIds,
         getMaxDeadline(),
         undefined,
         {useAssembleTx: true, reserveGas: 10000}
@@ -90,7 +94,7 @@ export function useSwap({
         await activeReadonlyMira.previewSwapExactOutput(
           buyAssetIdInput,
           buyAmount,
-          [...pools]
+          [...poolIds]
         );
       const sellAmountWithSlippage = simulatedSellAmount
         .mul(bn(10_000).add(bn(slippage)))
@@ -100,7 +104,7 @@ export function useSwap({
           buyAmount,
           buyAssetIdInput,
           sellAmountWithSlippage,
-          pools,
+          poolIds,
           getMaxDeadline(),
           {useAssembleTx: true}
         );

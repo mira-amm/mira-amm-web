@@ -2,14 +2,14 @@ import {useMemo} from "react";
 import {useQuery} from "@tanstack/react-query";
 import {B256Address} from "fuels";
 import {PoolId} from "mira-dex-ts";
-import {useReadonlyMira, useAssetMetadata} from "@/src/hooks";
+import {useReadonlyMira, useAssetMetadata, type Pool} from "@/src/hooks";
 
 export const useReservesPrice = ({
   pools,
   sellAssetId,
   buyAssetId,
 }: {
-  pools: PoolId[] | undefined;
+  pools: Pool[] | undefined;
   sellAssetId: B256Address | null;
   buyAssetId: B256Address | null;
 }) => {
@@ -17,14 +17,25 @@ export const useReservesPrice = ({
   const sellMetadata = useAssetMetadata(sellAssetId);
   const buyMetadata = useAssetMetadata(buyAssetId);
 
+  const poolIds = useMemo(() => pools?.map((p) => p.poolId), [pools]);
+
   const stableKey = useMemo(() => {
-    const poolKey = pools?.map((id) => id.join("-")).join(",");
+    const poolKey = poolIds
+      ?.map((id) => {
+        // Handle both V1 (array) and V2 (BN) pool IDs
+        if (Array.isArray(id)) {
+          return id.join("-");
+        } else {
+          return id.toString();
+        }
+      })
+      .join(",");
     return ["reservesPrice", sellAssetId, buyAssetId, poolKey];
-  }, [pools, sellAssetId, buyAssetId]);
+  }, [poolIds, sellAssetId, buyAssetId]);
 
   const shouldFetch =
-    !!pools &&
-    !!pools.length &&
+    !!poolIds &&
+    !!poolIds.length &&
     !!miraAmm &&
     !!sellAssetId &&
     !!sellMetadata &&
@@ -37,7 +48,7 @@ export const useReservesPrice = ({
       const [_, previewPrice] = await miraAmm!.previewSwapExactInput(
         {bits: sellAssetId!},
         assetInputAmount,
-        pools!
+        poolIds!
       );
 
       return (
