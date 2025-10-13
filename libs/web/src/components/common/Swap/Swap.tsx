@@ -10,7 +10,7 @@ import {
   TransactionCost,
 } from "fuels";
 import {useConnectUI, useIsConnected} from "@fuels/react";
-import {PoolId} from "mira-dex-ts";
+import {PoolId, PoolIdV2} from "mira-dex-ts";
 import {getIsRebrandEnabled} from "@/src/utils/isRebrandEnabled";
 
 import {Button} from "@/meshwave-ui/Button";
@@ -32,6 +32,11 @@ import {
   triggerClassAnimation,
 } from "@/src/components/common";
 
+import {
+  PoolTypeToggle,
+  type PoolTypeOption,
+} from "@/src/components/common/PoolTypeToggle/PoolTypeToggle";
+import {SwapDebugPanel} from "@/src/components/common/SwapDebugPanel";
 import {createPoolKey, openNewTab} from "@/src/utils/common";
 
 import {PriceImpactNew} from "@/src/components/common/Swap/components/price-impact";
@@ -54,6 +59,10 @@ import {
   TradeState,
   useInitialSwapState,
   useDocumentTitle,
+  useRoutablePools,
+  useSwapData,
+  useAsset,
+  type Pool,
 } from "@/src/hooks";
 import Image from "next/image";
 
@@ -70,31 +79,31 @@ export type CurrencyBoxState = {assetId: string | null; amount: string};
 export type SwapState = Record<CurrencyBoxMode, CurrencyBoxState>;
 export type InputsState = Record<CurrencyBoxMode, {amount: string}>;
 
-// TODO: Remove pool type hardcoding
-// Changed to v2 for local development with binned liquidity pools
-const poolType = "v2";
 const initialInputsState: InputsState = {sell: {amount: ""}, buy: {amount: ""}};
 
 const lineSplitterClasses = "relative w-full h-px bg-background-grey-dark my-4";
 const currencyBoxWidgetBg = "bg-background-grey-dark";
 const overlayClasses = "fixed inset-0 w-full h-full backdrop-blur-[5px] z-[4]";
 
-const SwapRouteItem = memo(function SwapRouteItem({pool}: {pool: PoolId}) {
-  const firstAssetIcon = useAssetImage(pool[0].bits);
-  const secondAssetIcon = useAssetImage(pool[1].bits);
-  const fee = pool[2] ? 0.05 : 0.3;
+const SwapRouteItem = memo(function SwapRouteItem({pool}: {pool: Pool}) {
+  const firstAssetIcon = useAssetImage(pool.assetA.assetId);
+  const secondAssetIcon = useAssetImage(pool.assetB.assetId);
+  // For V1 pools, poolId is [AssetId, AssetId, boolean] where boolean is isStable
+  // For V2 pools, poolId is a BN, so we use a default fee
+  const isV1Pool = Array.isArray(pool.poolId);
+  const fee = isV1Pool ? (pool.poolId[2] ? 0.05 : 0.3) : 0.3; // Default to 0.3% for V2
 
   return (
     <div className="flex items-center gap-1">
       <Image
-        alt={`${pool[0].bits} icon`}
+        alt={`${pool.assetA.symbol} icon`}
         src={firstAssetIcon || ""}
         className="-mr-2 h-4 w-4"
         width={16}
         height={16}
       />
       <Image
-        alt={`${pool[1].bits} icon`}
+        alt={`${pool.assetB.symbol} icon`}
         src={secondAssetIcon || ""}
         className="h-4 w-4"
         width={16}
@@ -136,12 +145,12 @@ const PreviewSummary = memo(function PreviewSummary({
   previewLoading: boolean;
   tradeState: TradeState;
   exchangeRate: string | null;
-  pools: PoolId[];
+  pools: Pool[];
   feeValue: string;
   sellMetadataSymbol: string;
   txCost: number | null;
   txCostPending: boolean;
-  createPoolKeyFn: (pool: PoolId) => string;
+  createPoolKeyFn: (pool: Pool) => string;
   reservesPrice: number | undefined;
   previewPrice: number | undefined;
 }) {
@@ -247,6 +256,7 @@ export function Swap({isWidget}: {isWidget?: boolean}) {
   const [inputsState, setInputsState] =
     useState<InputsState>(initialInputsState);
   const [activeMode, setActiveMode] = useState<CurrencyBoxMode>("sell");
+  const [poolType, setPoolType] = useState<PoolTypeOption>("v2");
   const [slippage, setSlippage] = useState<number>(100);
   const [slippageMode, setSlippageMode] = useState<SlippageMode>("auto");
   const [txCostData, setTxCostData] = useState<{
@@ -297,8 +307,32 @@ export function Swap({isWidget}: {isWidget?: boolean}) {
     error: previewError,
   } = useSwapPreview(swapState, activeMode, poolType);
 
+  // Get routing data for debug panel
+  const {sellAssetId, buyAssetId} = useSwapData(swapState);
+  const {asset: assetIn} = useAsset(sellAssetId);
+  const {asset: assetOut} = useAsset(buyAssetId);
+  const {routes: debugRoutes} = useRoutablePools(
+    assetIn,
+    assetOut,
+    !!assetIn && !!assetOut,
+    poolType
+  );
+
+  // Handle pool type changes - reset amounts to force fresh calculations
+  const handlePoolTypeChange = useCallback((newPoolType: PoolTypeOption) => {
+    setPoolType(newPoolType);
+    // Reset amounts to force recalculation with new pool type
+    setSwapState((prev) => ({
+      sell: {...prev.sell, amount: ""},
+      buy: {...prev.buy, amount: ""},
+    }));
+    setInputsState(initialInputsState);
+    setReview(false);
+    setSwapButtonTitle("Review");
+  }, []);
+
   const pools = useMemo(
-    () => trade?.bestRoute?.pools.map((p) => p.poolId) ?? [],
+    () => trade?.bestRoute?.pools ?? [],
     [trade?.bestRoute?.pools]
   );
   const anotherMode = activeMode === "sell" ? "buy" : "sell";
@@ -593,8 +627,12 @@ export function Swap({isWidget}: {isWidget?: boolean}) {
 
   const feePercent = useMemo(() => {
     return (
-      trade?.bestRoute?.pools.reduce((acc, {poolId}) => {
-        return acc + (poolId[2] ? 0.05 : 0.3);
+      trade?.bestRoute?.pools.reduce((acc, pool) => {
+        // For V1 pools, poolId is [AssetId, AssetId, boolean] where boolean is isStable
+        // For V2 pools, poolId is a BN, so we use a default fee
+        const isV1Pool = Array.isArray(pool.poolId);
+        const fee = isV1Pool ? ((pool.poolId as PoolId)[2] ? 0.05 : 0.3) : 0.3;
+        return acc + fee;
       }, 0) ?? 0
     );
   }, [trade?.bestRoute?.pools]);
@@ -740,6 +778,13 @@ export function Swap({isWidget}: {isWidget?: boolean}) {
             />
           </div>
 
+          {/* Pool Type Toggle */}
+          <PoolTypeToggle
+            selectedType={poolType}
+            onTypeChange={handlePoolTypeChange}
+            className="mb-2"
+          />
+
           <CurrencyBox
             value={sellValue}
             assetId={swapState.sell.assetId}
@@ -865,6 +910,17 @@ export function Swap({isWidget}: {isWidget?: boolean}) {
           customTitle={customErrorTitle}
         />
       </FailureModal>
+
+      {/* Debug Panel - Remove in production */}
+      {process.env.NODE_ENV === "development" && (
+        <SwapDebugPanel
+          swapState={swapState}
+          poolType={poolType}
+          tradeState={tradeState}
+          trade={trade}
+          routes={debugRoutes}
+        />
+      )}
     </>
   );
 }

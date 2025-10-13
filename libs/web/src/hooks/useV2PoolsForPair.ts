@@ -8,7 +8,7 @@ import {SQDIndexerUrl} from "@/src/utils/constants";
 import type {CoinData} from "../utils/coinsConfig";
 
 export interface V2PoolInfo {
-  poolId: string; // Numeric string ID from indexer
+  id: string; // Numeric string ID from indexer (it's called 'id' not 'poolId')
   asset0: {
     id: string;
     symbol: string;
@@ -20,7 +20,6 @@ export interface V2PoolInfo {
   reserve0: string;
   reserve1: string;
   binStepBps: number;
-  baseFactor: number;
 }
 
 /**
@@ -54,7 +53,6 @@ export function useV2PoolsForPair(
         reserve0
         reserve1
         binStepBps
-        baseFactor
       }
     }
   `;
@@ -64,20 +62,37 @@ export function useV2PoolsForPair(
     queryFn: async () => {
       if (!assetIn || !assetOut) return [];
 
-      const result = await request<{pools: V2PoolInfo[]}>({
-        url: SQDIndexerUrl,
-        document: query,
-        variables: {
-          asset0: assetIn.assetId,
-          asset1: assetOut.assetId,
-        },
-      });
+      try {
+        const result = await request<{pools: V2PoolInfo[]}>({
+          url: SQDIndexerUrl,
+          document: query,
+          variables: {
+            asset0: assetIn.assetId,
+            asset1: assetOut.assetId,
+          },
+        });
 
-      return result.pools || [];
+        if (!result.pools || result.pools.length === 0) {
+          console.warn(
+            `[useV2PoolsForPair] No V2 pools found for ${assetIn.symbol}/${assetOut.symbol}`
+          );
+        }
+
+        return result.pools || [];
+      } catch (err) {
+        console.error("[useV2PoolsForPair] Error fetching V2 pools:", err);
+        throw err;
+      }
     },
     enabled: shouldFetch && !!assetIn && !!assetOut,
     staleTime: 10_000, // 10 seconds
+    retry: 1, // Only retry once to avoid long delays
   });
+
+  // Log error if query failed
+  if (error) {
+    console.error("[useV2PoolsForPair] Query error:", error);
+  }
 
   return {
     pools: data || [],

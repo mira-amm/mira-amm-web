@@ -20,16 +20,16 @@ export const PoolTypeToggle = memo<PoolTypeToggleProps>(
     return (
       <div
         className={cn(
-          "flex border border-border-secondary rounded-md overflow-hidden",
+          "flex rounded-md overflow-hidden",
           className
         )}
       >
         <button
           className={cn(
-            "px-3 py-2 text-sm  transition-colors duration-200 flex-1",
+            "px-3 py-2 text-sm cursor-pointer transition-colors duration-200 flex-1",
             selectedType === "v1"
-              ? "bg-accent-primary text-white dark:bg-accent-primary dark:text-black"
-              : "bg-background-primary text-content-secondary hover:bg-background-secondary dark:bg-background-secondary dark:text-content-tertiary dark:hover:bg-background-primary",
+              ? "bg-accent-primary-1 text-white dark:bg-accent-primary-1 dark:text-black"
+              : "text-content-secondary hover:bg-background-secondary bg-background-secondary dark:text-content-tertiary dark:hover:bg-background-primary",
             disabled && "opacity-50 cursor-not-allowed"
           )}
           onClick={() => !disabled && onTypeChange("v1")}
@@ -40,10 +40,10 @@ export const PoolTypeToggle = memo<PoolTypeToggleProps>(
         </button>
         <button
           className={cn(
-            "px-3 py-2 text-sm  transition-colors duration-200 flex-1",
+            "px-3 py-2 text-sm cursor-pointer transition-colors duration-200 flex-1",
             selectedType === "v2"
-              ? "bg-accent-primary text-white dark:bg-accent-primary dark:text-black"
-              : "bg-background-primary text-content-secondary hover:bg-background-secondary dark:bg-background-secondary dark:text-content-tertiary dark:hover:bg-background-primary",
+              ? "bg-accent-primary-1 text-white dark:bg-accent-primary-1 dark:text-black"
+              : "text-content-secondary hover:bg-background-secondary bg-background-secondary dark:text-content-tertiary dark:hover:bg-background-primary",
             disabled && "opacity-50 cursor-not-allowed"
           )}
           onClick={() => !disabled && onTypeChange("v2")}

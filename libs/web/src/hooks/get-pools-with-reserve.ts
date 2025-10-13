@@ -1,5 +1,5 @@
 import request, {gql} from "graphql-request";
-import {PoolId} from "mira-dex-ts";
+import {PoolId, PoolIdV2} from "mira-dex-ts";
 import {SQDIndexerUrl} from "../utils/constants";
 import type {CoinData} from "../utils/coinsConfig";
 
@@ -11,7 +11,7 @@ export type PoolReserveData = {
 export type Pool = {
   assetA: CoinData;
   assetB: CoinData;
-  poolId: PoolId;
+  poolId: PoolId | PoolIdV2; // Support both V1 (array) and V2 (BN) pool IDs
 } & PoolReserveData;
 
 function chunk<T>(arr: T[], size: number): T[][] {
