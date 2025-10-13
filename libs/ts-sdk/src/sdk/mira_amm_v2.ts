@@ -123,6 +123,16 @@ export class MiraAmmV2 {
   private _swapExactOutScript?: SwapExactOut;
 
   /**
+   * Normalize a deadline to TAI64 format expected by contracts.
+   * Accepts Unix seconds or TAI64; returns TAI64.
+   */
+  private normalizeDeadline(deadline: BigNumberish): BN {
+    const d = bn(deadline);
+    const TAI64_OFFSET = bn(2).pow(bn(62));
+    return d.gte(TAI64_OFFSET) ? d : TAI64_OFFSET.add(d);
+  }
+
+  /**
    * Creates a new MiraAmmV2 instance for executing v2 pool transactions
    *
    * @param account - Fuel account for signing transactions
@@ -577,6 +587,7 @@ export class MiraAmmV2 {
       // Call the swap exact in script
       // The script handles bin-to-bin routing within each pool automatically
       // Swaps start at the active bin and move through adjacent bins as needed
+      const normalizedDeadline = this.normalizeDeadline(deadline);
       let request = await this.swapExactInScript.functions
         .main(
           amountIn,
@@ -584,7 +595,7 @@ export class MiraAmmV2 {
           assetInput(assetIn),
           path,
           recipient,
-          deadline
+          normalizedDeadline
         )
         .addContracts([this.ammContract])
         .txParams(txParams ?? {})
@@ -680,6 +691,7 @@ export class MiraAmmV2 {
       const path = pools.map((poolId) => poolId);
 
       // Call the swap exact out script
+      const normalizedDeadline = this.normalizeDeadline(deadline);
       let request = await this.swapExactOutScript.functions
         .main(
           amountOut,
@@ -688,7 +700,7 @@ export class MiraAmmV2 {
           amountInMax,
           path,
           recipient,
-          deadline
+          normalizedDeadline
         )
         .addContracts([this.ammContract])
         .txParams(txParams ?? {})
@@ -743,11 +755,8 @@ export class MiraAmmV2 {
         .getTransactionRequest();
 
       // Debug: Log contract references in the transaction request
-      console.log("🔍 Transaction request contracts:", {
-        contractsLength: request.contracts?.length || 0,
-        contracts: request.contracts?.map((c) => c.contractId) || [],
-        ammContractId: this.ammContract.id.toB256(),
-      });
+      // Debug: Log AMM contract ID referenced
+      console.log("🔍 AMM Contract:", this.ammContract.id.toB256());
 
       return await this.prepareRequest(request, 0, [], [], options);
     }, context);

@@ -46,14 +46,6 @@ export function useSwapRouter(
   };
   error: string | null;
 } {
-  console.log("[useSwapRouter] Function called with:", {
-    tradeType,
-    amountSpecified: amountSpecified.toString(),
-    assetIn: assetIn?.symbol,
-    assetOut: assetOut?.symbol,
-    poolType,
-  });
-
   const amm = poolType === "v2" ? useReadonlyMiraV2() : useReadonlyMira();
 
   // Default cache options
@@ -81,13 +73,6 @@ export function useSwapRouter(
 
   const shouldFetch = useMemo(() => {
     const result = !!assetIn && !!assetOut && amountSpecified.gt(0);
-    console.log("[useSwapRouter] shouldFetch:", {
-      result,
-      hasAssetIn: !!assetIn,
-      hasAssetOut: !!assetOut,
-      amountGtZero: amountSpecified.gt(0),
-      amount: amountSpecified.toString(),
-    });
     return result;
   }, [assetIn, assetOut, amountSpecified]);
 
@@ -178,12 +163,6 @@ export function useSwapRouter(
     ]
   );
 
-  console.log("[useSwapRouter] Query setup:", {
-    queryKey: JSON.stringify(queryKey),
-    enabled: shouldFetch,
-    hasRoutes: routes.length > 0,
-  });
-
   const {
     data: quotes = [],
     isLoading,
@@ -193,12 +172,6 @@ export function useSwapRouter(
     queryKey,
 
     queryFn: () => {
-      console.log("[useSwapRouter] ⚡ queryFn EXECUTING:", {
-        hasAmm: !!amm,
-        routeCount: routes.length,
-        timestamp: new Date().toISOString(),
-      });
-
       return amm && routes.length
         ? getSwapQuotesBatch(
             amountSpecified,
@@ -218,33 +191,17 @@ export function useSwapRouter(
     // Remove initialData to force fetch
   });
 
-  console.log("[useSwapRouter] Query state:", {
-    quotesCount: quotes.length,
-    isLoading,
-    isRefetching,
-    dataUpdatedAt: new Date(dataUpdatedAt).toISOString(),
-  });
-
   // NOTE: could've done return-foo, used 'if' statements to keep it debuggable in case it explodes later
   return useMemo(() => {
-    console.log("[useSwapRouter] Computing return:", {
-      isLoading,
-      routesLoading,
-      quotesCount: quotes.length,
-      quotes: quotes,
-    });
-
     if (isLoading || routesLoading) {
       return {tradeState: TradeState.LOADING, error: null};
     }
 
     if (!assetIn || !assetOut) {
-      console.log("[useSwapRouter] Missing assets");
       return {tradeState: TradeState.INVALID, error: null};
     }
 
     if (!quotes.length) {
-      console.log("[useSwapRouter] No quotes");
       return {
         tradeState: TradeState.NO_ROUTE_FOUND,
         error: null, // Fixed: added missing error property
@@ -260,12 +217,6 @@ export function useSwapRouter(
 
       return current.amountIn.lt(best.amountIn) ? current : best;
     }, null);
-
-    console.log("[useSwapRouter] Best quote:", {
-      hasBest: !!best,
-      amountIn: best?.amountIn.toString(),
-      amountOut: best?.amountOut.toString(),
-    });
 
     if (!best) {
       return {
