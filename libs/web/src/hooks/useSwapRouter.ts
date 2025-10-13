@@ -6,7 +6,8 @@ import {
   type SwapQuote,
   TradeType,
 } from "./get-swap-quotes-batch";
-import {useReadonlyMira} from ".";
+import {useReadonlyMira} from "./useReadonlyMira";
+import {useReadonlyMiraV2} from "./useReadonlyMiraV2";
 import {type Route, useRoutablePools} from "@/src/hooks";
 import {CoinData} from "../utils/coinsConfig";
 import {type CacheOptions} from "mira-dex-ts";
@@ -34,7 +35,8 @@ export function useSwapRouter(
   amountSpecified: BN = bn(0),
   assetIn?: CoinData,
   assetOut?: CoinData,
-  cacheOptions?: SwapRouterCacheOptions
+  cacheOptions?: SwapRouterCacheOptions,
+  poolType: "v1" | "v2" = "v1"
 ): {
   tradeState: TradeState;
   trade?: {
@@ -44,7 +46,7 @@ export function useSwapRouter(
   };
   error: string | null;
 } {
-  const amm = useReadonlyMira();
+  const amm = poolType === "v2" ? useReadonlyMiraV2() : useReadonlyMira();
 
   // Default cache options
   const effectiveCacheOptions = useMemo(
@@ -83,7 +85,8 @@ export function useSwapRouter(
     assetOut,
     // fetches in the background
     shouldFetch ||
-      (effectiveCacheOptions.enableCaching && !!assetIn && !!assetOut)
+      (effectiveCacheOptions.enableCaching && !!assetIn && !!assetOut),
+    poolType
   );
 
   // Track route changes for preloading

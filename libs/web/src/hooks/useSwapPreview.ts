@@ -76,7 +76,8 @@ export function useSwapPreview(
     bn(debouncedValue),
     assetIn,
     assetOut,
-    cacheOptions
+    cacheOptions,
+    poolType
   );
 
   // For v2 pools, we might need to show a different error message when no routes are found

@@ -87,3 +87,4 @@ export {usePreviewAddLiquidity} from "./usePreviewAddLiquidity";
 export {useDocumentTitle} from "./useDocumentTitle";
 export {useProtocolStats} from "./useProtocolStats";
 export {usePoolConcentrationType} from "./usePoolConcentrationType";
+export {useV2PoolsForPair} from "./useV2PoolsForPair";

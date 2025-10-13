@@ -33,13 +33,13 @@ const AprCell = ({poolData}: {poolData: PoolData}) => {
 };
 
 const PoolCell = ({poolData}: {poolData: PoolData}) => {
-  const {isStablePool, poolId} = usePoolDetails(poolData);
+  const {isStablePool, asset0Id, asset1Id} = usePoolDetails(poolData);
   return (
     <div className="text-left  truncate">
       <div className="flex flex-col gap-2">
         <CoinPair
-          firstCoin={poolId[0].bits}
-          secondCoin={poolId[1].bits}
+          firstCoin={asset0Id}
+          secondCoin={asset1Id}
           isStablePool={isStablePool}
           poolType={poolData.poolType || "v1-volatile"}
           withPoolDetails
