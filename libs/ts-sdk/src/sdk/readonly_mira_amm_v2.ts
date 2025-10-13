@@ -553,7 +553,8 @@ export class ReadonlyMiraAmmV2 {
       pools,
       options
     );
-    return amountsIn[amountsIn.length - 1];
+    // For exact output, return the required input pair [inputAsset, requiredInput]
+    return amountsIn[0];
   }
 
   /**
@@ -616,7 +617,25 @@ export class ReadonlyMiraAmmV2 {
 
         // Get fee for this pool
         const fee = await this.fees(pools[i]);
-        const feeBps = fee.toNumber();
+        // Safely convert fee to number - fees should always be small (basis points)
+        let feeBps: number;
+        try {
+          if (fee.gt(Number.MAX_SAFE_INTEGER)) {
+            // This shouldn't happen for fees, but handle it gracefully
+            console.warn(
+              `[V2 SDK] Fee ${fee.toString()} too large, using default 30 bps`
+            );
+            feeBps = 30; // Default 0.3%
+          } else {
+            feeBps = fee.toNumber();
+          }
+        } catch (e) {
+          console.warn(
+            `[V2 SDK] Error converting fee to number, using default 30 bps:`,
+            e
+          );
+          feeBps = 30; // Default 0.3%
+        }
 
         // Use reserves for estimation (simplified for now)
         const reserves = poolMetadata.reserves;

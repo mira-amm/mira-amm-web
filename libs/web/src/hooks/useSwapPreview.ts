@@ -39,17 +39,6 @@ export function useSwapPreview(
     const amount = parseFloat(amountString);
     const amountValid = !isNaN(amount);
 
-    console.log("[useSwapPreview] Raw input:", {
-      mode,
-      tradeType,
-      amountString,
-      amountValid,
-      sellAmount: swapState.sell.amount,
-      buyAmount: swapState.buy.amount,
-      hasAssetIn: !!assetIn,
-      hasAssetOut: !!assetOut,
-    });
-
     if (!assetIn || !assetOut) return bn(0);
     const decimals =
       tradeType === TradeType.EXACT_IN ? assetIn.decimals : assetOut.decimals;
@@ -58,7 +47,6 @@ export function useSwapPreview(
       const parsed = amountValid
         ? bn.parseUnits(amountString, decimals)
         : bn(0);
-      console.log("[useSwapPreview] Parsed amount:", parsed.toString());
       return parsed;
     } catch (error) {
       console.error("Error parsing units:", error);
@@ -75,12 +63,6 @@ export function useSwapPreview(
 
   // passing as bn causes infinite render
   const debouncedValue = useDebounce(rawUserInputAmount.toString(), 100);
-
-  console.log("[useSwapPreview] Debounce flow:", {
-    rawUserInputAmountBN: rawUserInputAmount.toString(),
-    debouncedValue,
-    convertedBackToBN: bn(debouncedValue).toString(),
-  });
 
   // For now, v2 pools will use the same router but with different caching strategy
   // TODO: Implement v2-specific routing when v2 pools are available
