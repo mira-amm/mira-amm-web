@@ -31,8 +31,16 @@ export function ResponsivePools({
 
 function PoolItem({poolData}: {poolData: PoolData}) {
   const router = useRouter();
-  const {poolKey, aprValue, volumeValue, tvlValue, isStablePool, poolId} =
-    usePoolDetails(poolData);
+  const {
+    poolKey,
+    aprValue,
+    volumeValue,
+    tvlValue,
+    isStablePool,
+    poolId,
+    asset0Id,
+    asset1Id,
+  } = usePoolDetails(poolData);
 
   const handleAddClick = () => {
     router.push(getPoolNavigationUrl(poolId, "add"));
@@ -46,8 +54,8 @@ function PoolItem({poolData}: {poolData: PoolData}) {
     <div className="gap-5 p-6 border-border-secondary border-[12px] rounded-ten flex flex-col bg-[#F5F5F5]">
       <div className="flex flex-col gap-3">
         <CoinPair
-          firstCoin={poolId[0].bits}
-          secondCoin={poolId[1].bits}
+          firstCoin={asset0Id}
+          secondCoin={asset1Id}
           isStablePool={isStablePool}
           poolType={poolData.poolType || "v1-volatile"}
           withPoolDetails
