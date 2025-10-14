@@ -1,24 +1,19 @@
 "use client";
 
-import {useCallback, useEffect, useMemo, useRef, useState, memo} from "react";
-
+import {useCallback, useEffect, useMemo, useRef, useState} from "react";
+import {Rate, PriceAndRate, PreviewSummary} from "@/src/components/common/Swap/components";
 import {
   B256Address,
   BN,
   bn,
   ScriptTransactionRequest,
-  TransactionCost,
 } from "fuels";
 import {useConnectUI, useIsConnected} from "@fuels/react";
-import {PoolId} from "mira-dex-ts";
 import {getIsRebrandEnabled} from "@/src/utils/isRebrandEnabled";
-
 import {Button} from "@/meshwave-ui/Button";
-
 import {
   CoinsListModal,
   CurrencyBox,
-  ExchangeRate,
   SwapSuccessModal,
   SwapFailureModal,
   Logo,
@@ -27,17 +22,11 @@ import {
   SlippageSetting,
   FeatureGuard,
   SettingsModalContent,
-  PriceImpact,
   ConnectWallet,
   triggerClassAnimation,
 } from "@/src/components/common";
-
 import {createPoolKey, openNewTab} from "@/src/utils/common";
-
-import {PriceImpactNew} from "@/src/components/common/Swap/components/price-impact";
-
 import {FuelAppUrl} from "@/src/utils/constants";
-
 import {
   useExchangeRate,
   useSwapPreview,
@@ -49,20 +38,16 @@ import {
   useBalances,
   useModal,
   useSwap,
-  useAssetImage,
   useAssetPrice,
-  TradeState,
   useInitialSwapState,
   useDocumentTitle,
+  TradeState,
 } from "@/src/hooks";
-import Image from "next/image";
-
 import {useAnimationStore} from "@/src/stores/useGlitchScavengerHunt";
-import {ArrowUpDown, LoaderCircle} from "lucide-react";
+import {ArrowUpDown} from "lucide-react";
 import {cn} from "@/src/utils/cn";
 import {ConnectWalletNew} from "../connect-wallet-new";
 import SettingsModalContentNew from "../settings-modal-content-new";
-import LoaderBar from "../loader-bar";
 
 export type CurrencyBoxMode = "buy" | "sell";
 export type SlippageMode = "auto" | "custom";
@@ -75,163 +60,6 @@ const initialInputsState: InputsState = {sell: {amount: ""}, buy: {amount: ""}};
 const lineSplitterClasses = "relative w-full h-px bg-background-grey-dark my-4";
 const currencyBoxWidgetBg = "bg-background-grey-dark";
 const overlayClasses = "fixed inset-0 w-full h-full backdrop-blur-[5px] z-[4]";
-
-const SwapRouteItem = memo(function SwapRouteItem({pool}: {pool: PoolId}) {
-  const firstAssetIcon = useAssetImage(pool[0].bits);
-  const secondAssetIcon = useAssetImage(pool[1].bits);
-  const fee = pool[2] ? 0.05 : 0.3;
-
-  return (
-    <div className="flex items-center gap-1">
-      <Image
-        alt={`${pool[0].bits} icon`}
-        src={firstAssetIcon || ""}
-        className="-mr-2 h-4 w-4"
-        width={16}
-        height={16}
-      />
-      <Image
-        alt={`${pool[1].bits} icon`}
-        src={secondAssetIcon || ""}
-        className="h-4 w-4"
-        width={16}
-        height={16}
-      />
-      <p className="text-sm">({fee}%)</p>
-    </div>
-  );
-});
-
-const PriceSummarySkeletonLoader = ({
-  className = "w-[50%]",
-}: {
-  className?: string;
-}) => {
-  return (
-    <div
-      className={cn(
-        "bg-accent-primary/30 animate-pulse h-3 rounded-md",
-        className
-      )}
-    />
-  );
-};
-
-const PreviewSummary = memo(function PreviewSummary({
-  previewLoading,
-  tradeState,
-  exchangeRate,
-  pools,
-  feeValue,
-  sellMetadataSymbol,
-  txCost,
-  txCostPending,
-  createPoolKeyFn,
-  reservesPrice,
-  previewPrice,
-}: {
-  previewLoading: boolean;
-  tradeState: TradeState;
-  exchangeRate: string | null;
-  pools: PoolId[];
-  feeValue: string;
-  sellMetadataSymbol: string;
-  txCost: number | null;
-  txCostPending: boolean;
-  createPoolKeyFn: (pool: PoolId) => string;
-  reservesPrice: number | undefined;
-  previewPrice: number | undefined;
-}) {
-  return (
-    <div className="flex bg-background-primary dark:bg-background-secondary p-4 rounded-lg flex-col gap-2 text-accent-primary font-alt dark:text-content-tertiary leading-[16px]">
-      <div className="flex justify-between">
-        <p className="text-sm">Rate:</p>
-        {previewLoading || tradeState === TradeState.REFETCHING ? (
-          <PriceSummarySkeletonLoader className="w-[65%]" />
-        ) : (
-          <p className="text-sm">{exchangeRate}</p>
-        )}
-      </div>
-
-      <div className="flex justify-between">
-        <p className="text-sm">Routing:</p>
-        {previewLoading || tradeState === TradeState.REFETCHING ? (
-          <PriceSummarySkeletonLoader className="w-[35%]" />
-        ) : (
-          <div className="flex flex-wrap items-center gap-1">
-            {pools.map((pool, i) => (
-              <div
-                className="flex items-center gap-1"
-                key={createPoolKeyFn(pool)}
-              >
-                <SwapRouteItem pool={pool} />
-                {i !== pools.length - 1 && <span>+</span>}
-              </div>
-            ))}
-          </div>
-        )}
-      </div>
-
-      <div className="flex justify-between">
-        <p className="text-sm">Estimated fees:</p>
-        {previewLoading || tradeState === TradeState.REFETCHING ? (
-          <PriceSummarySkeletonLoader className="w-[35%]" />
-        ) : (
-          <p className="text-sm">
-            {feeValue} {sellMetadataSymbol}
-          </p>
-        )}
-      </div>
-
-      <div className="flex justify-between">
-        <p className="text-sm">Gas cost:</p>
-        {txCostPending ? (
-          <PriceSummarySkeletonLoader className="w-[35%]" />
-        ) : (
-          <p className="text-sm">{txCost?.toFixed(9)} ETH</p>
-        )}
-      </div>
-
-      <FeatureGuard>
-        <PriceImpactNew
-          reservesPrice={reservesPrice}
-          previewPrice={previewPrice}
-        />
-      </FeatureGuard>
-    </div>
-  );
-});
-
-const PriceAndRate = memo(function PriceAndRate({
-  swapState,
-  reservesPrice,
-  previewPrice,
-}: {
-  swapState: SwapState;
-  reservesPrice: number | undefined;
-  previewPrice: number | undefined;
-}) {
-  return (
-    <div className="flex justify-between">
-      <PriceImpact reservesPrice={reservesPrice} previewPrice={previewPrice} />
-      <div className="flex justify-end">
-        <ExchangeRate swapState={swapState} />
-      </div>
-    </div>
-  );
-});
-
-PriceAndRate.displayName = "PriceAndRate";
-
-const Rate = memo(function Rate({swapState}: {swapState: SwapState}) {
-  return (
-    <div className="flex justify-end">
-      <ExchangeRate swapState={swapState} />
-    </div>
-  );
-});
-
-Rate.displayName = "Rate";
 
 export function Swap({isWidget}: {isWidget?: boolean}) {
   const isClient = useIsClient();
