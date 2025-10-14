@@ -3,7 +3,7 @@ import {TradeState} from "@/src/hooks";
 import {PoolId} from "mira-dex-ts";
 import {SwapRouteItem} from "@/src/components/common/Swap/components/SwapRouteItem";
 import {FeatureGuard} from "@/src/components/common";
-import {PriceImpactNew} from "@/src/components/common/Swap/components/price-impact";
+import {PriceImpactNew} from "@/src/components/common/Swap/components/PriceImpact";
 import {cn} from "@/src/utils/cn";
 
 export const PreviewSummary = memo(function PreviewSummary({
