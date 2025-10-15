@@ -1,6 +1,6 @@
 "use client";
 
-import {useCallback, useEffect, useMemo, useRef, useState} from "react";
+import {useCallback, useEffect, useMemo, useRef} from "react";
 
 import {B256Address, bn} from "fuels";
 import {useConnectUI, useIsConnected} from "@fuels/react";
@@ -43,19 +43,18 @@ import {
   useAssetMetadata,
   useCheckEthBalance,
   useBalances,
-  useModal,
   useSwap,
   useAssetPrice,
   TradeState,
   useInitialSwapState,
   useDocumentTitle,
 } from "@/src/hooks";
+import {calculateFeePercent, calculateFeeValue, calculatePreviewPrice} from '@/src/utils/swapCalulcations'
 
-import {ArrowUpDown, LoaderCircle} from "lucide-react";
+import {ArrowUpDown} from "lucide-react";
 import {cn} from "@/src/utils/cn";
 import {ConnectWalletNew} from "../connect-wallet-new";
 import SettingsModalContentNew from "../settings-modal-content-new";
-import LoaderBar from "../loader-bar";
 
 const lineSplitterClasses = "relative w-full h-px bg-background-grey-dark my-4";
 const currencyBoxWidgetBg = "bg-background-grey-dark";
@@ -251,20 +250,15 @@ export function Swap({isWidget}: {isWidget?: boolean}) {
     exchangeRate,
   });
 
-  const feePercent = useMemo(() => {
-    return (
-      trade?.bestRoute?.pools.reduce((acc, {poolId}) => {
-        return acc + (poolId[2] ? 0.05 : 0.3);
-      }, 0) ?? 0
-    );
-  }, [trade?.bestRoute?.pools]);
+  const feePercent = useMemo(
+    () => calculateFeePercent(trade?.bestRoute?.pools),
+    [trade?.bestRoute?.pools]
+  );
 
-  const feeValue = useMemo(() => {
-    if (!sellValue || !sellMetadata.decimals) return "0";
-    const sellNum = parseFloat(sellValue);
-    const raw = (feePercent / 100) * sellNum;
-    return raw.toFixed(sellMetadata.decimals);
-  }, [sellValue, sellMetadata.decimals, feePercent])
+  const feeValue = useMemo(
+    () => calculateFeeValue(sellValue, feePercent, sellMetadata.decimals || 0),
+    [sellValue, feePercent, sellMetadata.decimals]
+  );
 
   // Reset review state when validation fails
   useEffect(() => {
@@ -283,12 +277,10 @@ export function Swap({isWidget}: {isWidget?: boolean}) {
     buyAssetId: swapState.buy.assetId,
   });
 
-  const previewPrice = useMemo(() => {
-    const s = parseFloat(swapState.sell.amount);
-    const b = parseFloat(swapState.buy.amount);
-    if (isNaN(s) || isNaN(b) || s === 0) return undefined;
-    return b / s;
-  }, [swapState.sell.amount, swapState.buy.amount]);
+  const previewPrice = useMemo(
+    () => calculatePreviewPrice(swapState.sell.amount, swapState.buy.amount),
+    [swapState.sell.amount, swapState.buy.amount]
+  );
 
   const sellAssetPrice = useAssetPrice(swapState.sell.assetId);
   const buyAssetPrice = useAssetPrice(swapState.buy.assetId);
