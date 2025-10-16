@@ -60,3 +60,5 @@ export {useSwapSettings} from "./useSwapSettings";
 export {useSwapModals} from "./useSwapModals";
 export {useSwapFormState} from "./useSwapFormState";
 export type {CurrencyBoxMode} from "./useSwapFormState";
+export type {SwapState} from "./useSwapFormState";
+export {useSwapDataLayer} from './useSwapDataLayer'

@@ -2,7 +2,7 @@
 
 import {useCallback, useEffect, useMemo, useRef} from "react";
 
-import {B256Address, bn} from "fuels";
+import {B256Address} from "fuels";
 import {useConnectUI, useIsConnected} from "@fuels/react";
 import {getIsRebrandEnabled} from "@/src/utils/isRebrandEnabled";
 
@@ -34,28 +34,19 @@ import {
   useSwapModals,
   useSwapValidation,
   useSwapTransaction,
+  useSwapDataLayer,
   CurrencyBoxMode,
 } from "@/src/hooks";
 
 import {
-  useExchangeRate,
-  useSwapPreview,
   useIsClient,
-  useReservesPrice,
-  useCheckActiveNetwork,
-  useAssetMetadata,
-  useCheckEthBalance,
-  useBalances,
   useSwap,
-  useAssetPrice,
   TradeState,
   useInitialSwapState,
-  useDocumentTitle,
 } from "@/src/hooks";
 import {
   calculateFeePercent,
   calculateFeeValue,
-  calculatePreviewPrice,
 } from "@/src/utils/swapCalculations";
 
 import {ArrowUpDown} from "lucide-react";
@@ -85,66 +76,12 @@ export function Swap({isWidget}: {isWidget?: boolean}) {
   const connect = isClient ? connectUI.connect : () => {};
   const isConnecting = isClient ? connectUI.isConnecting : false;
 
-  const {balances, balancesPending, refetchBalances} = useBalances();
-  const sellBalance = useMemo(
-    () =>
-      balances?.find((b) => b.assetId === formState.swapState.sell.assetId)
-        ?.amount ?? bn(0),
-    [balances, formState.swapState.sell.assetId]
-  );
-
-  const buyBalance = useMemo(
-    () =>
-      balances?.find((b) => b.assetId === formState.swapState.buy.assetId)
-        ?.amount ?? bn(0),
-    [balances, formState.swapState.buy.assetId]
-  );
-
-  const sellMetadata = useAssetMetadata(formState.swapState.sell.assetId);
-  const buyMetadata = useAssetMetadata(formState.swapState.buy.assetId);
-
-  // HACK: This is a bit of an ugly way to set document titles
-  useDocumentTitle(`Swap: ${sellMetadata.symbol} to ${buyMetadata.symbol}`);
-
-  const isValidNetwork = useCheckActiveNetwork();
-  const {
-    trade,
-    tradeState,
-    error: previewError,
-  } = useSwapPreview(formState.swapState, formState.activeMode);
-
-  const pools = useMemo(
-    () => trade?.bestRoute?.pools.map((p) => p.poolId) ?? [],
-    [trade?.bestRoute?.pools]
-  );
-  const anotherMode = formState.activeMode === "sell" ? "buy" : "sell";
-  const decimals = useMemo(
-    () =>
-      anotherMode === "sell" ? sellMetadata.decimals : buyMetadata.decimals,
-    [anotherMode, sellMetadata.decimals, buyMetadata.decimals]
-  );
-
-  const previewValueString = useMemo(() => {
-    if (
-      !trade ||
-      tradeState !== TradeState.VALID ||
-      !trade.amountIn ||
-      trade.amountIn.eq(0) ||
-      !trade.amountOut ||
-      trade.amountOut.eq(0) ||
-      !decimals
-    ) {
-      return "";
-    }
-    return formState.activeMode === "sell"
-      ? trade.amountOut.formatUnits(decimals)
-      : trade.amountIn.formatUnits(decimals);
-  }, [trade, tradeState, formState.activeMode, decimals]);
-
-  useEffect(() => {
-    if (!previewValueString) return;
-    formState.updateSwapStateAmount(anotherMode, previewValueString);
-  }, [previewValueString, anotherMode, formState]);
+  // Consolidated data fetching
+  const swapDataLayer = useSwapDataLayer({
+    swapState: formState.swapState,
+    activeMode: formState.activeMode,
+    updateSwapStateAmount: formState.updateSwapStateAmount,
+  });
 
   const handleCoinSelectorClick = useCallback(
     (mode: CurrencyBoxMode) => {
@@ -177,7 +114,7 @@ export function Swap({isWidget}: {isWidget?: boolean}) {
     swapState: formState.swapState,
     mode: formState.activeMode,
     slippage,
-    pools,
+    pools: swapDataLayer.pools,
   });
 
   const resetSwapErrors = useCallback(() => {
@@ -185,21 +122,18 @@ export function Swap({isWidget}: {isWidget?: boolean}) {
     resetSwap();
   }, [resetSwap, resetTxCost]);
 
-  const sufficientEthBalance = useCheckEthBalance(formState.swapState.sell);
-  const exchangeRate = useExchangeRate(formState.swapState);
-
   // Validation hook
   const validation = useSwapValidation({
     swapState: formState.swapState,
     sellValue: formState.sellValue,
     buyValue: formState.buyValue,
-    sellBalance,
-    sellMetadataDecimals: sellMetadata.decimals || 0,
-    isValidNetwork,
-    tradeState,
-    previewError: previewError || undefined,
+    sellBalance: swapDataLayer.sellBalance,
+    sellMetadataDecimals: swapDataLayer.sellMetadata.decimals || 0,
+    isValidNetwork: swapDataLayer.isValidNetwork,
+    tradeState: swapDataLayer.tradeState,
+    previewError: swapDataLayer.previewError || undefined,
     swapPending,
-    sufficientEthBalance,
+    sufficientEthBalance: swapDataLayer.sufficientEthBalance,
     review: false, // Will be updated by transaction hook
   });
 
@@ -209,20 +143,20 @@ export function Swap({isWidget}: {isWidget?: boolean}) {
     triggerSwap,
     openSuccess: modals.openSuccess,
     openFailure: modals.openFailure,
-    refetchBalances,
+    refetchBalances: swapDataLayer.refetchBalances,
     clearAmounts: formState.clearAmounts,
     swapState: formState.swapState,
     swapButtonTitle: validation.swapButtonTitle,
     setSwapButtonTitle: validation.setSwapButtonTitle,
-    sufficientEthBalance,
+    sufficientEthBalance: swapDataLayer.sufficientEthBalance,
     amountMissing: validation.amountMissing,
     swapPending,
-    exchangeRate,
+    exchangeRate: swapDataLayer.exchangeRate,
   });
 
   const feePercent = useMemo(
-    () => calculateFeePercent(trade?.bestRoute?.pools),
-    [trade?.bestRoute?.pools]
+    () => calculateFeePercent(swapDataLayer.trade?.bestRoute?.pools),
+    [swapDataLayer.trade?.bestRoute?.pools]
   );
 
   const feeValue = useMemo(
@@ -230,9 +164,9 @@ export function Swap({isWidget}: {isWidget?: boolean}) {
       calculateFeeValue(
         formState.sellValue,
         feePercent,
-        sellMetadata.decimals || 0
+        swapDataLayer.sellMetadata.decimals || 0
       ),
-    [formState.sellValue, feePercent, sellMetadata.decimals]
+    [formState.sellValue, feePercent, swapDataLayer.sellMetadata.decimals]
   );
 
   // Reset review state when validation fails
@@ -246,35 +180,17 @@ export function Swap({isWidget}: {isWidget?: boolean}) {
     transaction,
   ]);
 
-  const previewLoading = tradeState === TradeState.LOADING;
+  const previewLoading = swapDataLayer.tradeState === TradeState.LOADING;
   const inputPreviewLoading = previewLoading && formState.activeMode === "buy";
   const outputPreviewLoading =
     previewLoading && formState.activeMode === "sell";
-
-  const {reservesPrice} = useReservesPrice({
-    pools,
-    sellAssetId: formState.swapState.sell.assetId,
-    buyAssetId: formState.swapState.buy.assetId,
-  });
-
-  const previewPrice = useMemo(
-    () =>
-      calculatePreviewPrice(
-        formState.swapState.sell.amount,
-        formState.swapState.buy.amount
-      ),
-    [formState.swapState.sell.amount, formState.swapState.buy.amount]
-  );
-
-  const sellAssetPrice = useAssetPrice(formState.swapState.sell.assetId);
-  const buyAssetPrice = useAssetPrice(formState.swapState.buy.assetId);
 
   const isActionDisabled = useMemo(() => {
     return (
       (validation.swapDisabled &&
         !previewLoading &&
-        tradeState !== TradeState.REFETCHING &&
-        !balancesPending &&
+        swapDataLayer.tradeState !== TradeState.REFETCHING &&
+        !swapDataLayer.balancesPending &&
         (txCostPending || validation.amountMissing)) ||
       validation.showInsufficientBalance
     );
@@ -283,15 +199,15 @@ export function Swap({isWidget}: {isWidget?: boolean}) {
     validation.amountMissing,
     validation.showInsufficientBalance,
     previewLoading,
-    tradeState,
-    balancesPending,
+    swapDataLayer.tradeState,
+    swapDataLayer.balancesPending,
     txCostPending,
   ]);
 
   const isActionLoading = useMemo(() => {
     return (
-      balancesPending ||
-      tradeState === TradeState.REFETCHING ||
+      swapDataLayer.balancesPending ||
+      swapDataLayer.tradeState === TradeState.REFETCHING ||
       (previewLoading &&
         validation.swapButtonTitle !== "Insufficient balance") ||
       (!validation.amountMissing &&
@@ -299,8 +215,8 @@ export function Swap({isWidget}: {isWidget?: boolean}) {
         txCostPending)
     );
   }, [
-    balancesPending,
-    tradeState,
+    swapDataLayer.balancesPending,
+    swapDataLayer.tradeState,
     previewLoading,
     validation.swapButtonTitle,
     validation.amountMissing,
@@ -343,11 +259,11 @@ export function Swap({isWidget}: {isWidget?: boolean}) {
             value={formState.sellValue}
             assetId={formState.swapState.sell.assetId}
             mode="sell"
-            balance={sellBalance}
+            balance={swapDataLayer.sellBalance}
             setAmount={formState.setAmount("sell")}
             loading={inputPreviewLoading || swapPending}
             onCoinSelectorClick={handleCoinSelectorClick}
-            usdRate={sellAssetPrice.price}
+            usdRate={swapDataLayer.sellAssetPrice.price}
             className={isWidget ? currencyBoxWidgetBg : undefined}
           />
 
@@ -364,27 +280,27 @@ export function Swap({isWidget}: {isWidget?: boolean}) {
             value={formState.buyValue}
             assetId={formState.swapState.buy.assetId}
             mode="buy"
-            balance={buyBalance}
+            balance={swapDataLayer.buyBalance}
             setAmount={formState.setAmount("buy")}
             loading={outputPreviewLoading || swapPending}
             onCoinSelectorClick={handleCoinSelectorClick}
-            usdRate={buyAssetPrice.price}
+            usdRate={swapDataLayer.buyAssetPrice.price}
             className={isWidget ? currencyBoxWidgetBg : undefined}
           />
 
           {transaction.review && (
             <PreviewSummary
               previewLoading={previewLoading}
-              tradeState={tradeState}
-              exchangeRate={exchangeRate}
-              pools={pools}
+              tradeState={swapDataLayer.tradeState}
+              exchangeRate={swapDataLayer.exchangeRate}
+              pools={swapDataLayer.pools}
               feeValue={feeValue}
-              sellMetadataSymbol={sellMetadata.symbol ?? ""}
+              sellMetadataSymbol={swapDataLayer.sellMetadata.symbol ?? ""}
               txCost={transaction.txCost}
               txCostPending={txCostPending}
               createPoolKeyFn={createPoolKey}
-              reservesPrice={reservesPrice}
-              previewPrice={previewPrice}
+              reservesPrice={swapDataLayer.reservesPrice}
+              previewPrice={swapDataLayer.previewPrice}
             />
           )}
 
@@ -407,8 +323,8 @@ export function Swap({isWidget}: {isWidget?: boolean}) {
         <FeatureGuard
           fallback={
             <PriceAndRate
-              reservesPrice={reservesPrice}
-              previewPrice={previewPrice}
+              reservesPrice={swapDataLayer.reservesPrice}
+              previewPrice={swapDataLayer.previewPrice}
               swapState={formState.swapState}
             />
           }
@@ -440,7 +356,10 @@ export function Swap({isWidget}: {isWidget?: boolean}) {
       </FeatureGuard>
 
       <modals.CoinsModal title="Choose token">
-        <CoinsListModal selectCoin={handleCoinSelection} balances={balances} />
+        <CoinsListModal
+          selectCoin={handleCoinSelection}
+          balances={swapDataLayer.balances}
+        />
       </modals.CoinsModal>
 
       <modals.SuccessModal title={<></>}>
