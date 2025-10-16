@@ -6,8 +6,6 @@ import {B256Address, bn} from "fuels";
 import {useConnectUI, useIsConnected} from "@fuels/react";
 import {getIsRebrandEnabled} from "@/src/utils/isRebrandEnabled";
 
-import {Button} from "@/meshwave-ui/Button";
-
 import {
   CoinsListModal,
   CurrencyBox,
@@ -24,7 +22,12 @@ import {
 
 import {createPoolKey} from "@/src/utils/common";
 
-import {PreviewSummary, PriceAndRate, Rate} from "@/src/components/common/Swap/components";
+import {
+  PreviewSummary,
+  PriceAndRate,
+  Rate,
+  SwapActionButton,
+} from "@/src/components/common/Swap/components";
 import {
   useSwapFormState,
   useSwapSettings,
@@ -32,7 +35,7 @@ import {
   useSwapValidation,
   useSwapTransaction,
   CurrencyBoxMode,
-} from "@/src/hooks"
+} from "@/src/hooks";
 
 import {
   useExchangeRate,
@@ -49,7 +52,11 @@ import {
   useInitialSwapState,
   useDocumentTitle,
 } from "@/src/hooks";
-import {calculateFeePercent, calculateFeeValue, calculatePreviewPrice} from '@/src/utils/swapCalulcations'
+import {
+  calculateFeePercent,
+  calculateFeeValue,
+  calculatePreviewPrice,
+} from "@/src/utils/swapCalculations";
 
 import {ArrowUpDown} from "lucide-react";
 import {cn} from "@/src/utils/cn";
@@ -405,37 +412,16 @@ export function Swap({isWidget}: {isWidget?: boolean}) {
             <Rate swapState={swapState} />
           </FeatureGuard>
 
-          {!isConnected ? (
-            <Button
-              onClick={connect}
-              disabled={isConnecting}
-              size="2xl"
-              className={cn(
-                !isConnected &&
-                isRebrandingEnabled &&
-                "bg-accent-primary border-0 text-black hover:bg-accent-primary-1 shadow-none disabled:opacity-100"
-              )}
-            >
-              Connect Wallet
-            </Button>
-          ) : (
-            <Button
-              disabled={isActionDisabled}
-              onClick={handleSwapClick}
-              size="2xl"
-              className={cn(
-                isActionDisabled &&
-                isRebrandingEnabled &&
-                "bg-accent-primary border-0 text-black hover:bg-accent-primary-1 shadow-none disabled:opacity-100"
-              )}
-            >
-              {isActionLoading ? (
-                <Loader rebrand={isRebrandingEnabled} />
-              ) : (
-                swapButtonTitle
-              )}
-            </Button>
-          )}
+          <SwapActionButton
+            isConnected={isConnected}
+            isConnecting={isConnecting}
+            connect={connect}
+            isActionDisabled={isActionDisabled}
+            isActionLoading={isActionLoading}
+            handleSwapClick={handleSwapClick}
+            swapButtonTitle={swapButtonTitle}
+            isRebrandingEnabled={isRebrandingEnabled}
+          />
         </div>
 
         <FeatureGuard
