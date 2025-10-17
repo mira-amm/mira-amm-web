@@ -143,9 +143,15 @@ export function usePoolsData() {
         },
         swap_count: 0,
         create_time: 0,
-        // TODO: Implement proper pool type detection when indexer supports v2
-        // For now, assume all pools from indexer are v1-volatile
-        poolType: "v1-volatile" as const,
+        // Derive pool type from ID format: v1 uses "asset0-asset1-isStable", v2 is numeric
+        poolType: (() => {
+          // If the id does not contain dashes, treat as v2 concentrated liquidity
+          if (!pool.id.includes("-")) return "v2-concentrated" as const;
+          // Otherwise v1: third segment is stability flag
+          const parts = pool.id.split("-");
+          const isStable = parts[2] === "true";
+          return (isStable ? "v1-stable" : "v1-volatile") as const;
+        })(),
       };
     }
   );
