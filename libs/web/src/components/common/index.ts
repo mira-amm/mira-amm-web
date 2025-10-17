@@ -41,6 +41,7 @@ export {default as LogoIconFooter} from "./Logo/LogoIconFooter";
 export {default as LogoIcon} from "./Logo/LogoIcon";
 export {PriceImpact} from "./Swap/components/PriceImpact";
 export {ConnectWallet} from "./connect-wallet";
+export {ConnectWalletNew} from "./connect-wallet-new";
 export {triggerClassAnimation} from "./GlitchEffects/ClassAnimationTrigger";
 export {TransactionsHistory} from "./TransactionsHistory/TransactionsHistory";
 export {DisconnectMobile} from "./ConnectButton/DisconnectMobile";

@@ -1,13 +1,19 @@
 "use client";
 
 import {useCallback, useEffect, useMemo, useRef} from "react";
-
 import {B256Address} from "fuels";
 import {useConnectUI, useIsConnected} from "@fuels/react";
 import {getIsRebrandEnabled} from "@/src/utils/isRebrandEnabled";
-
-import {Loader, FeatureGuard, ConnectWallet} from "@/src/components/common";
-
+import {
+  calculateFeePercent,
+  calculateFeeValue,
+} from "@/src/utils/swapCalculations";
+import {
+  Loader,
+  FeatureGuard,
+  ConnectWallet,
+  ConnectWalletNew,
+} from "@/src/components/common";
 import {
   PriceAndRate,
   SwapCard,
@@ -21,22 +27,11 @@ import {
   useSwapTransaction,
   useSwapDataLayer,
   useSwapLoadingStates,
-  CurrencyBoxMode,
-} from "@/src/hooks";
-
-import {
   useIsClient,
   useSwap,
-  TradeState,
   useInitialSwapState,
+  CurrencyBoxMode,
 } from "@/src/hooks";
-import {
-  calculateFeePercent,
-  calculateFeeValue,
-} from "@/src/utils/swapCalculations";
-
-import {ConnectWalletNew} from "../connect-wallet-new";
-const overlayClasses = "fixed inset-0 w-full h-full backdrop-blur-[5px] z-[4]";
 
 export function Swap({isWidget}: {isWidget?: boolean}) {
   const isClient = useIsClient();
@@ -80,17 +75,7 @@ export function Swap({isWidget}: {isWidget?: boolean}) {
     [formState, modals]
   );
 
-  const {
-    fetchTxCost,
-    txCostPending,
-    txCostError,
-    resetTxCost,
-    triggerSwap,
-    swapPending,
-    swapResult,
-    swapError,
-    resetSwap,
-  } = useSwap({
+  const swap = useSwap({
     swapState: formState.swapState,
     mode: formState.activeMode,
     slippage,
@@ -98,9 +83,9 @@ export function Swap({isWidget}: {isWidget?: boolean}) {
   });
 
   const resetSwapErrors = useCallback(() => {
-    resetTxCost();
-    resetSwap();
-  }, [resetSwap, resetTxCost]);
+    swap.resetTxCost();
+    swap.resetSwap();
+  }, [swap]);
 
   // Validation hook
   const validation = useSwapValidation({
@@ -112,15 +97,15 @@ export function Swap({isWidget}: {isWidget?: boolean}) {
     isValidNetwork: swapDataLayer.isValidNetwork,
     tradeState: swapDataLayer.tradeState,
     previewError: swapDataLayer.previewError || undefined,
-    swapPending,
+    swapPending: swap.swapPending,
     sufficientEthBalance: swapDataLayer.sufficientEthBalance,
     review: false, // Will be updated by transaction hook
   });
 
   // Transaction hook
   const transaction = useSwapTransaction({
-    fetchTxCost,
-    triggerSwap,
+    fetchTxCost: swap.fetchTxCost,
+    triggerSwap: swap.triggerSwap,
     openSuccess: modals.openSuccess,
     openFailure: modals.openFailure,
     refetchBalances: swapDataLayer.refetchBalances,
@@ -130,7 +115,7 @@ export function Swap({isWidget}: {isWidget?: boolean}) {
     setSwapButtonTitle: validation.setSwapButtonTitle,
     sufficientEthBalance: swapDataLayer.sufficientEthBalance,
     amountMissing: validation.amountMissing,
-    swapPending,
+    swapPending: swap.swapPending,
     exchangeRate: swapDataLayer.exchangeRate,
   });
 
@@ -163,8 +148,8 @@ export function Swap({isWidget}: {isWidget?: boolean}) {
   const loadingStates = useSwapLoadingStates({
     tradeState: swapDataLayer.tradeState,
     balancesPending: swapDataLayer.balancesPending,
-    txCostPending,
-    swapPending,
+    txCostPending: swap.txCostPending,
+    swapPending: swap.swapPending,
     activeMode: formState.activeMode,
     swapDisabled: validation.swapDisabled,
     amountMissing: validation.amountMissing,
@@ -221,7 +206,9 @@ export function Swap({isWidget}: {isWidget?: boolean}) {
         />
       </div>
 
-      {loadingStates.swapPending && <div className={overlayClasses} />}
+      {loadingStates.swapPending && (
+        <div className="fixed inset-0 w-full h-full backdrop-blur-[5px] z-[4]" />
+      )}
 
       <SwapModals
         modals={modals}
@@ -232,9 +219,9 @@ export function Swap({isWidget}: {isWidget?: boolean}) {
         balances={swapDataLayer.balances}
         handleCoinSelection={handleCoinSelection}
         swapStateForPreview={transaction.swapStateForPreview}
-        swapResult={swapResult}
-        txCostError={txCostError}
-        swapError={swapError}
+        swapResult={swap.swapResult}
+        txCostError={swap.txCostError}
+        swapError={swap.swapError}
         resetSwapErrors={resetSwapErrors}
         customErrorTitle={transaction.customErrorTitle}
       />

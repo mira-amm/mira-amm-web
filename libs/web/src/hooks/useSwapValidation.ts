@@ -92,7 +92,7 @@ export function useSwapValidation({
       else if (showInsufficientBalance) title = "Insufficient balance";
       else if (!sufficientEthBalance) title = "Bridge more ETH to pay for gas";
       else if (!review && !amountMissing) title = "Review";
-      else title = swapButtonTitle;
+      else return; // Exit early to avoid unnecessary state update
     }
     setSwapButtonTitle(title);
   }, [
@@ -102,8 +102,7 @@ export function useSwapValidation({
     swapPending,
     sufficientEthBalance,
     showInsufficientBalance,
-    review,
-    swapButtonTitle,
+    review
   ]);
 
   return {
