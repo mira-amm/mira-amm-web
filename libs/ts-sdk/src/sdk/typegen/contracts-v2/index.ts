@@ -6,15 +6,15 @@
 
 /*
   Fuels version: 0.101.2
+  Forc version: 0.69.1
+  Fuel-Core version: 0.45.1
 */
 
-export {TestTargetContract} from "./TestTargetContract";
-export {TestTargetContractFactory} from "./TestTargetContractFactory";
-export {SimpleProxy} from "./SimpleProxy";
-export {SimpleProxyFactory} from "./SimpleProxyFactory";
-export {PoolCurveState} from "./PoolCurveState";
-export {PoolCurveStateFactory} from "./PoolCurveStateFactory";
-export {BinTreeTest} from "./BinTreeTest";
-export {BinTreeTestFactory} from "./BinTreeTestFactory";
-export {BasicHook} from "./BasicHook";
-export {BasicHookFactory} from "./BasicHookFactory";
+export { BasicHook } from './BasicHook';
+export { BasicHookFactory } from './BasicHookFactory';
+export { PoolCurveState } from './PoolCurveState';
+export { PoolCurveStateFactory } from './PoolCurveStateFactory';
+export { SimpleProxy } from './SimpleProxy';
+export { SimpleProxyFactory } from './SimpleProxyFactory';
+export { Fungible } from './Fungible';
+export { FungibleFactory } from './FungibleFactory';

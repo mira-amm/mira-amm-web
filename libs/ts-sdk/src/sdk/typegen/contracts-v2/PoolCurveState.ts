@@ -6,9 +6,11 @@
 
 /*
   Fuels version: 0.101.2
+  Forc version: 0.69.1
+  Fuel-Core version: 0.45.1
 */
 
-import {Contract as __Contract, Interface} from "fuels";
+import { Contract as __Contract, Interface } from "fuels";
 import type {
   Provider,
   Account,
@@ -21,3425 +23,3680 @@ import type {
   InvokeFunction,
   StdString,
   StrSlice,
-} from "fuels";
+} from 'fuels';
 
-import type {Option, Enum, Vec} from "./common";
+import type { Option, Enum, Vec } from "./common";
 
-export enum AccessErrorInput {
-  NotOwner = "NotOwner",
-}
-export enum AccessErrorOutput {
-  NotOwner = "NotOwner",
-}
-export enum AmountsMathErrorInput {
-  MultiplierTooLarge = "MultiplierTooLarge",
-}
-export enum AmountsMathErrorOutput {
-  MultiplierTooLarge = "MultiplierTooLarge",
-}
-export enum BurnErrorInput {
-  NotEnoughCoins = "NotEnoughCoins",
-  ZeroAmount = "ZeroAmount",
-}
-export enum BurnErrorOutput {
-  NotEnoughCoins = "NotEnoughCoins",
-  ZeroAmount = "ZeroAmount",
-}
-export type IdentityInput = Enum<{
-  Address: AddressInput;
-  ContractId: ContractIdInput;
-}>;
-export type IdentityOutput = Enum<{
-  Address: AddressOutput;
-  ContractId: ContractIdOutput;
-}>;
-export enum InitializationErrorInput {
-  CannotReinitialized = "CannotReinitialized",
-}
-export enum InitializationErrorOutput {
-  CannotReinitialized = "CannotReinitialized",
-}
-export enum MathErrorInput {
-  MulDivRoundDownOverflow = "MulDivRoundDownOverflow",
-  PowUnderflow = "PowUnderflow",
-}
-export enum MathErrorOutput {
-  MulDivRoundDownOverflow = "MulDivRoundDownOverflow",
-  PowUnderflow = "PowUnderflow",
-}
-export enum MintErrorInput {
-  ZeroAmount = "ZeroAmount",
-}
-export enum MintErrorOutput {
-  ZeroAmount = "ZeroAmount",
-}
-export type PoolCurveStateErrorInput = Enum<{
-  PoolAlreadyExists: undefined;
-  InvalidParameters: undefined;
-  PoolNotFound: undefined;
-  Unauthorized: undefined;
-  InvalidBinStep: undefined;
-  InvalidActiveId: undefined;
-  IdenticalAssets: undefined;
-  ZeroAddress: undefined;
-  MaxLiquidityPerBinExceeded: undefined;
-  ZeroShares: BigNumberish;
-  CompositionFactorFlawed: BigNumberish;
-  InvalidLPTokenBalance: undefined;
-  UnknownLPToken: undefined;
-  LPTokenFromWrongPool: undefined;
-  InsufficientAmountIn: undefined;
-  OutOfLiquidity: undefined;
-  InsufficientAmountOut: undefined;
-  AlreadyInitialized: undefined;
-  NotInitialized: undefined;
-  SwapNotPossible: undefined;
-}>;
-export type PoolCurveStateErrorOutput = Enum<{
-  PoolAlreadyExists: void;
-  InvalidParameters: void;
-  PoolNotFound: void;
-  Unauthorized: void;
-  InvalidBinStep: void;
-  InvalidActiveId: void;
-  IdenticalAssets: void;
-  ZeroAddress: void;
-  MaxLiquidityPerBinExceeded: void;
-  ZeroShares: number;
-  CompositionFactorFlawed: number;
-  InvalidLPTokenBalance: void;
-  UnknownLPToken: void;
-  LPTokenFromWrongPool: void;
-  InsufficientAmountIn: void;
-  OutOfLiquidity: void;
-  InsufficientAmountOut: void;
-  AlreadyInitialized: void;
-  NotInitialized: void;
-  SwapNotPossible: void;
-}>;
-export type StateInput = Enum<{
-  Uninitialized: undefined;
-  Initialized: IdentityInput;
-  Revoked: undefined;
-}>;
-export type StateOutput = Enum<{
-  Uninitialized: void;
-  Initialized: IdentityOutput;
-  Revoked: void;
-}>;
+export enum AccessErrorInput { NotOwner = 'NotOwner' };
+export enum AccessErrorOutput { NotOwner = 'NotOwner' };
+export enum AmountsMathErrorInput { MultiplierTooLarge = 'MultiplierTooLarge' };
+export enum AmountsMathErrorOutput { MultiplierTooLarge = 'MultiplierTooLarge' };
+export enum BinLiquidityChangeTypeInput { Mint = 'Mint', Burn = 'Burn' };
+export enum BinLiquidityChangeTypeOutput { Mint = 'Mint', Burn = 'Burn' };
+export enum BurnErrorInput { NotEnoughCoins = 'NotEnoughCoins', ZeroAmount = 'ZeroAmount' };
+export enum BurnErrorOutput { NotEnoughCoins = 'NotEnoughCoins', ZeroAmount = 'ZeroAmount' };
+export type IdentityInput = Enum<{ Address: AddressInput, ContractId: ContractIdInput }>;
+export type IdentityOutput = Enum<{ Address: AddressOutput, ContractId: ContractIdOutput }>;
+export enum InitializationErrorInput { CannotReinitialized = 'CannotReinitialized' };
+export enum InitializationErrorOutput { CannotReinitialized = 'CannotReinitialized' };
+export enum MathErrorInput { MulDivRoundDownOverflow = 'MulDivRoundDownOverflow', PowUnderflow = 'PowUnderflow' };
+export enum MathErrorOutput { MulDivRoundDownOverflow = 'MulDivRoundDownOverflow', PowUnderflow = 'PowUnderflow' };
+export enum MintErrorInput { ZeroAmount = 'ZeroAmount' };
+export enum MintErrorOutput { ZeroAmount = 'ZeroAmount' };
+export type PoolCurveStateErrorInput = Enum<{ PoolAlreadyExists: undefined, InvalidParameters: undefined, PoolNotFound: undefined, Unauthorized: undefined, InvalidBinStep: undefined, PriceTooHigh: BigNumberish, PriceTooLow: BigNumberish, InvalidActiveId: undefined, IdenticalAssets: undefined, ZeroAddress: undefined, MaxLiquidityPerBinExceeded: undefined, ZeroShares: BigNumberish, CompositionFactorFlawed: BigNumberish, InvalidLPTokenBalance: undefined, UnknownLPToken: undefined, LPTokenFromWrongPool: undefined, InsufficientAmountIn: undefined, OutOfLiquidity: undefined, InsufficientAmountOut: undefined, AlreadyInitialized: undefined, NotInitialized: undefined, SwapNotPossible: undefined }>;
+export type PoolCurveStateErrorOutput = Enum<{ PoolAlreadyExists: void, InvalidParameters: void, PoolNotFound: void, Unauthorized: void, InvalidBinStep: void, PriceTooHigh: number, PriceTooLow: number, InvalidActiveId: void, IdenticalAssets: void, ZeroAddress: void, MaxLiquidityPerBinExceeded: void, ZeroShares: number, CompositionFactorFlawed: number, InvalidLPTokenBalance: void, UnknownLPToken: void, LPTokenFromWrongPool: void, InsufficientAmountIn: void, OutOfLiquidity: void, InsufficientAmountOut: void, AlreadyInitialized: void, NotInitialized: void, SwapNotPossible: void }>;
+export type StateInput = Enum<{ Uninitialized: undefined, Initialized: IdentityInput, Revoked: undefined }>;
+export type StateOutput = Enum<{ Uninitialized: void, Initialized: IdentityOutput, Revoked: void }>;
 
-export type AddressInput = {bits: string};
+export type AddressInput = { bits: string };
 export type AddressOutput = AddressInput;
-export type AmountsInput = {x: BigNumberish; y: BigNumberish};
-export type AmountsOutput = {x: BN; y: BN};
-export type AssetInput = {id: AssetIdInput; amount: BigNumberish};
-export type AssetOutput = {id: AssetIdOutput; amount: BN};
-export type AssetIdInput = {bits: string};
+export type AmountsInput = { x: BigNumberish, y: BigNumberish };
+export type AmountsOutput = { x: BN, y: BN };
+export type AssetInput = { id: AssetIdInput, amount: BigNumberish };
+export type AssetOutput = { id: AssetIdOutput, amount: BN };
+export type AssetIdInput = { bits: string };
 export type AssetIdOutput = AssetIdInput;
-export type BurnLiquidityArgsInput = {
-  lp_assets: Vec<AssetIdInput>;
-  to: IdentityInput;
-};
-export type BurnLiquidityArgsOutput = {
-  lp_assets: Vec<AssetIdOutput>;
-  to: IdentityOutput;
-};
-export type BurnLiquidityEventInput = {
-  sender: IdentityInput;
-  to: IdentityInput;
-  pool_id: BigNumberish;
-  bin_ids: Vec<BigNumberish>;
-  amounts_withdrawn: Vec<AmountsInput>;
-  lp_token_burned: AssetIdInput;
-};
-export type BurnLiquidityEventOutput = {
-  sender: IdentityOutput;
-  to: IdentityOutput;
-  pool_id: BN;
-  bin_ids: Vec<number>;
-  amounts_withdrawn: Vec<AmountsOutput>;
-  lp_token_burned: AssetIdOutput;
-};
-export type CollectProtocolFeesEventInput = {
-  recipient: IdentityInput;
-  pool_id: BigNumberish;
-  amounts: AmountsInput;
-};
-export type CollectProtocolFeesEventOutput = {
-  recipient: IdentityOutput;
-  pool_id: BN;
-  amounts: AmountsOutput;
-};
-export type CompositionFeesEventInput = {
-  sender: IdentityInput;
-  pool_id: BigNumberish;
-  bin_id: BigNumberish;
-  total_fees: AmountsInput;
-  protocol_fees: AmountsInput;
-};
-export type CompositionFeesEventOutput = {
-  sender: IdentityOutput;
-  pool_id: BN;
-  bin_id: number;
-  total_fees: AmountsOutput;
-  protocol_fees: AmountsOutput;
-};
-export type ContractIdInput = {bits: string};
+export type BinLiquidityEventInput = { pool_id: BigNumberish, bin_id: BigNumberish, new_reserves: AmountsInput, new_total_shares: BigNumberish, triggered_by: BinLiquidityChangeTypeInput, position_id: AssetIdInput };
+export type BinLiquidityEventOutput = { pool_id: BN, bin_id: number, new_reserves: AmountsOutput, new_total_shares: BN, triggered_by: BinLiquidityChangeTypeOutput, position_id: AssetIdOutput };
+export type BurnLiquidityArgsInput = { lp_assets: Vec<AssetIdInput>, to: IdentityInput };
+export type BurnLiquidityArgsOutput = { lp_assets: Vec<AssetIdOutput>, to: IdentityOutput };
+export type BurnLiquidityEventInput = { sender: IdentityInput, to: IdentityInput, pool_id: BigNumberish, lp_token_burned: AssetIdInput };
+export type BurnLiquidityEventOutput = { sender: IdentityOutput, to: IdentityOutput, pool_id: BN, lp_token_burned: AssetIdOutput };
+export type CollectProtocolFeesEventInput = { recipient: IdentityInput, pool_id: BigNumberish, amounts: AmountsInput };
+export type CollectProtocolFeesEventOutput = { recipient: IdentityOutput, pool_id: BN, amounts: AmountsOutput };
+export type CompositionFeesEventInput = { sender: IdentityInput, pool_id: BigNumberish, bin_id: BigNumberish, total_fees: AmountsInput, protocol_fees: AmountsInput };
+export type CompositionFeesEventOutput = { sender: IdentityOutput, pool_id: BN, bin_id: number, total_fees: AmountsOutput, protocol_fees: AmountsOutput };
+export type ContractIdInput = { bits: string };
 export type ContractIdOutput = ContractIdInput;
-export type FeeRecipientSetEventInput = {
-  setter: IdentityInput;
-  old_recipient: Option<IdentityInput>;
-  new_recipient: IdentityInput;
-};
-export type FeeRecipientSetEventOutput = {
-  setter: IdentityOutput;
-  old_recipient: Option<IdentityOutput>;
-  new_recipient: IdentityOutput;
-};
-export type HookSetEventInput = {
-  setter: IdentityInput;
-  old_hook: Option<ContractIdInput>;
-  new_hook: ContractIdInput;
-};
-export type HookSetEventOutput = {
-  setter: IdentityOutput;
-  old_hook: Option<ContractIdOutput>;
-  new_hook: ContractIdOutput;
-};
-export type LiquidityConfigInput = {
-  bin_id: BigNumberish;
-  distribution_x: BigNumberish;
-  distribution_y: BigNumberish;
-};
-export type LiquidityConfigOutput = {
-  bin_id: number;
-  distribution_x: number;
-  distribution_y: number;
-};
-export type MintLiquidityArgsInput = {
-  pool_id: BigNumberish;
-  liquidity_configs: Vec<LiquidityConfigInput>;
-  to: IdentityInput;
-  refund_to: IdentityInput;
-};
-export type MintLiquidityArgsOutput = {
-  pool_id: BN;
-  liquidity_configs: Vec<LiquidityConfigOutput>;
-  to: IdentityOutput;
-  refund_to: IdentityOutput;
-};
-export type MintLiquidityEventInput = {
-  sender: IdentityInput;
-  to: IdentityInput;
-  pool_id: BigNumberish;
-  bin_ids: Vec<BigNumberish>;
-  amounts: Vec<AmountsInput>;
-  lp_token_minted: AssetIdInput;
-};
-export type MintLiquidityEventOutput = {
-  sender: IdentityOutput;
-  to: IdentityOutput;
-  pool_id: BN;
-  bin_ids: Vec<number>;
-  amounts: Vec<AmountsOutput>;
-  lp_token_minted: AssetIdOutput;
-};
-export type OwnershipSetInput = {new_owner: IdentityInput};
-export type OwnershipSetOutput = {new_owner: IdentityOutput};
-export type PoolInput = {
-  asset_x: AssetIdInput;
-  asset_y: AssetIdInput;
-  bin_step: BigNumberish;
-  base_factor: BigNumberish;
-};
-export type PoolOutput = {
-  asset_x: AssetIdOutput;
-  asset_y: AssetIdOutput;
-  bin_step: number;
-  base_factor: number;
-};
-export type PoolCreatedEventInput = {
-  creator: IdentityInput;
-  pool_id: BigNumberish;
-  asset_x: AssetIdInput;
-  asset_y: AssetIdInput;
-  bin_step: BigNumberish;
-  active_id: BigNumberish;
-};
-export type PoolCreatedEventOutput = {
-  creator: IdentityOutput;
-  pool_id: BN;
-  asset_x: AssetIdOutput;
-  asset_y: AssetIdOutput;
-  bin_step: number;
-  active_id: number;
-};
-export type PoolInfoInput = {pool: PoolInput; active_id: BigNumberish};
-export type PoolInfoOutput = {pool: PoolOutput; active_id: number};
-export type ProtocolFeesSetEventInput = {
-  setter: IdentityInput;
-  old_protocol_fees: Option<BigNumberish>;
-  new_protocol_fees: BigNumberish;
-};
-export type ProtocolFeesSetEventOutput = {
-  setter: IdentityOutput;
-  old_protocol_fees: Option<number>;
-  new_protocol_fees: number;
-};
-export type SwapArgsInput = {
-  pool_id: BigNumberish;
-  swap_for_y: boolean;
-  to: IdentityInput;
-};
-export type SwapArgsOutput = {
-  pool_id: BN;
-  swap_for_y: boolean;
-  to: IdentityOutput;
-};
-export type SwapEventInput = {
-  sender: IdentityInput;
-  to: IdentityInput;
-  pool_id: BigNumberish;
-  bin_id: BigNumberish;
-  amounts_in: AmountsInput;
-  amounts_out: AmountsInput;
-  total_fees: AmountsInput;
-  protocol_fees: AmountsInput;
-};
-export type SwapEventOutput = {
-  sender: IdentityOutput;
-  to: IdentityOutput;
-  pool_id: BN;
-  bin_id: number;
-  amounts_in: AmountsOutput;
-  amounts_out: AmountsOutput;
-  total_fees: AmountsOutput;
-  protocol_fees: AmountsOutput;
-};
-export type TotalSupplyEventInput = {
-  asset: AssetIdInput;
-  supply: BigNumberish;
-  sender: IdentityInput;
-};
-export type TotalSupplyEventOutput = {
-  asset: AssetIdOutput;
-  supply: BN;
-  sender: IdentityOutput;
-};
+export type FeeRecipientSetEventInput = { setter: IdentityInput, old_recipient: Option<IdentityInput>, new_recipient: IdentityInput };
+export type FeeRecipientSetEventOutput = { setter: IdentityOutput, old_recipient: Option<IdentityOutput>, new_recipient: IdentityOutput };
+export type HookSetEventInput = { setter: IdentityInput, old_hook: Option<ContractIdInput>, new_hook: ContractIdInput };
+export type HookSetEventOutput = { setter: IdentityOutput, old_hook: Option<ContractIdOutput>, new_hook: ContractIdOutput };
+export type LiquidityConfigInput = { bin_id: BigNumberish, distribution_x: BigNumberish, distribution_y: BigNumberish };
+export type LiquidityConfigOutput = { bin_id: number, distribution_x: number, distribution_y: number };
+export type MintLiquidityArgsInput = { pool_id: BigNumberish, liquidity_configs: Vec<LiquidityConfigInput>, to: IdentityInput, refund_to: IdentityInput };
+export type MintLiquidityArgsOutput = { pool_id: BN, liquidity_configs: Vec<LiquidityConfigOutput>, to: IdentityOutput, refund_to: IdentityOutput };
+export type MintLiquidityEventInput = { sender: IdentityInput, to: IdentityInput, pool_id: BigNumberish, lp_token_minted: AssetIdInput };
+export type MintLiquidityEventOutput = { sender: IdentityOutput, to: IdentityOutput, pool_id: BN, lp_token_minted: AssetIdOutput };
+export type OwnershipSetInput = { new_owner: IdentityInput };
+export type OwnershipSetOutput = { new_owner: IdentityOutput };
+export type PoolInput = { asset_x: AssetIdInput, asset_y: AssetIdInput, bin_step: BigNumberish, base_factor: BigNumberish };
+export type PoolOutput = { asset_x: AssetIdOutput, asset_y: AssetIdOutput, bin_step: number, base_factor: number };
+export type PoolCreatedEventInput = { creator: IdentityInput, pool_id: BigNumberish, asset_x: AssetIdInput, asset_y: AssetIdInput, bin_step: BigNumberish, active_id: BigNumberish };
+export type PoolCreatedEventOutput = { creator: IdentityOutput, pool_id: BN, asset_x: AssetIdOutput, asset_y: AssetIdOutput, bin_step: number, active_id: number };
+export type PoolInfoInput = { pool: PoolInput, active_id: BigNumberish };
+export type PoolInfoOutput = { pool: PoolOutput, active_id: number };
+export type ProtocolFeesSetEventInput = { setter: IdentityInput, old_protocol_fees: Option<BigNumberish>, new_protocol_fees: BigNumberish };
+export type ProtocolFeesSetEventOutput = { setter: IdentityOutput, old_protocol_fees: Option<number>, new_protocol_fees: number };
+export type SetDecimalsEventInput = { asset: AssetIdInput, decimals: BigNumberish, sender: IdentityInput };
+export type SetDecimalsEventOutput = { asset: AssetIdOutput, decimals: number, sender: IdentityOutput };
+export type SetNameEventInput = { asset: AssetIdInput, name: Option<StdString>, sender: IdentityInput };
+export type SetNameEventOutput = { asset: AssetIdOutput, name: Option<StdString>, sender: IdentityOutput };
+export type SetSymbolEventInput = { asset: AssetIdInput, symbol: Option<StdString>, sender: IdentityInput };
+export type SetSymbolEventOutput = { asset: AssetIdOutput, symbol: Option<StdString>, sender: IdentityOutput };
+export type SwapArgsInput = { pool_id: BigNumberish, swap_for_y: boolean, to: IdentityInput };
+export type SwapArgsOutput = { pool_id: BN, swap_for_y: boolean, to: IdentityOutput };
+export type SwapEventInput = { sender: IdentityInput, to: IdentityInput, pool_id: BigNumberish, bin_id: BigNumberish, amounts_in: AmountsInput, amounts_out: AmountsInput, total_fees: AmountsInput, protocol_fees: AmountsInput };
+export type SwapEventOutput = { sender: IdentityOutput, to: IdentityOutput, pool_id: BN, bin_id: number, amounts_in: AmountsOutput, amounts_out: AmountsOutput, total_fees: AmountsOutput, protocol_fees: AmountsOutput };
+export type TotalSupplyEventInput = { asset: AssetIdInput, supply: BigNumberish, sender: IdentityInput };
+export type TotalSupplyEventOutput = { asset: AssetIdOutput, supply: BN, sender: IdentityOutput };
 
 export type PoolCurveStateConfigurables = Partial<{
   DEPLOYER: AddressInput;
 }>;
 
 const abi = {
-  programType: "contract",
-  specVersion: "1.1",
-  encodingVersion: "1",
-  concreteTypes: [
+  "programType": "contract",
+  "specVersion": "1.1",
+  "encodingVersion": "1",
+  "concreteTypes": [
     {
-      type: "()",
-      concreteTypeId:
-        "2e38e77b22c314a449e91fafed92a43826ac6aa403ae6a8acb6cf58239fbaf5d",
+      "type": "()",
+      "concreteTypeId": "2e38e77b22c314a449e91fafed92a43826ac6aa403ae6a8acb6cf58239fbaf5d"
     },
     {
-      type: "(struct std::asset_id::AssetId, (struct interfaces::amm::Asset, struct interfaces::amm::Asset), (struct interfaces::amm::Asset, struct interfaces::amm::Asset))",
-      concreteTypeId:
-        "7a9a97b52fb23bc372ec01841f8304ea963ab023a4c8587c8670b59071e356ff",
-      metadataTypeId: 2,
+      "type": "(struct std::asset_id::AssetId, (struct interfaces::amm::Asset, struct interfaces::amm::Asset), (struct interfaces::amm::Asset, struct interfaces::amm::Asset))",
+      "concreteTypeId": "7a9a97b52fb23bc372ec01841f8304ea963ab023a4c8587c8670b59071e356ff",
+      "metadataTypeId": 2
     },
     {
-      type: "(u64, struct interfaces::amm::Asset, struct interfaces::amm::Asset)",
-      concreteTypeId:
-        "c51183840525b55473d095f06acd2ccd06b8db525a84a8c1c658a00619f3cb5f",
-      metadataTypeId: 3,
+      "type": "(u64, struct interfaces::amm::Asset, struct interfaces::amm::Asset)",
+      "concreteTypeId": "c51183840525b55473d095f06acd2ccd06b8db525a84a8c1c658a00619f3cb5f",
+      "metadataTypeId": 3
     },
     {
-      type: "(u64, u64, u64)",
-      concreteTypeId:
-        "9d715771850ece467c8bde9a83e15ee2d05965af9773c9d8a9cbd4572e85565b",
-      metadataTypeId: 1,
+      "type": "(u64, u64, u64)",
+      "concreteTypeId": "9d715771850ece467c8bde9a83e15ee2d05965af9773c9d8a9cbd4572e85565b",
+      "metadataTypeId": 1
     },
     {
-      type: "bool",
-      concreteTypeId:
-        "b760f44fa5965c2474a3b471467a22c43185152129295af588b022ae50b50903",
+      "type": "bool",
+      "concreteTypeId": "b760f44fa5965c2474a3b471467a22c43185152129295af588b022ae50b50903"
     },
     {
-      type: "enum asset::errors::BurnError",
-      concreteTypeId:
-        "f203855c462428b0c1353195089caec01fefe6014ac961baf68a6cdc693be4ed",
-      metadataTypeId: 5,
+      "type": "enum asset::errors::BurnError",
+      "concreteTypeId": "f203855c462428b0c1353195089caec01fefe6014ac961baf68a6cdc693be4ed",
+      "metadataTypeId": 5
     },
     {
-      type: "enum asset::errors::MintError",
-      concreteTypeId:
-        "a7872d30e6f10a2242b8cb0a19cfe87e3d6f4aedbe403592e06cb0699a8e5648",
-      metadataTypeId: 6,
+      "type": "enum asset::errors::MintError",
+      "concreteTypeId": "a7872d30e6f10a2242b8cb0a19cfe87e3d6f4aedbe403592e06cb0699a8e5648",
+      "metadataTypeId": 6
     },
     {
-      type: "enum interfaces::amm::PoolCurveStateError",
-      concreteTypeId:
-        "7afef619a265da4b784615cab85a98fd9c13fa6aa43700aa1d3381eedb3235e9",
-      metadataTypeId: 7,
+      "type": "enum interfaces::amm::PoolCurveStateError",
+      "concreteTypeId": "7afef619a265da4b784615cab85a98fd9c13fa6aa43700aa1d3381eedb3235e9",
+      "metadataTypeId": 8
     },
     {
-      type: "enum math::error::MathError",
-      concreteTypeId:
-        "3bf6db7bf73afd57c9b784ff4e688af8039dcab78fb122c5ff1be5a5a70eed84",
-      metadataTypeId: 8,
+      "type": "enum math::error::MathError",
+      "concreteTypeId": "3bf6db7bf73afd57c9b784ff4e688af8039dcab78fb122c5ff1be5a5a70eed84",
+      "metadataTypeId": 9
     },
     {
-      type: "enum ownership::errors::InitializationError",
-      concreteTypeId:
-        "b1fddf488ccb9e63d11888b2750bbd1280a1ae1c49f2d6637fd4cf1e930d1468",
-      metadataTypeId: 9,
+      "type": "enum ownership::errors::InitializationError",
+      "concreteTypeId": "b1fddf488ccb9e63d11888b2750bbd1280a1ae1c49f2d6637fd4cf1e930d1468",
+      "metadataTypeId": 10
     },
     {
-      type: "enum src5::AccessError",
-      concreteTypeId:
-        "f1247475d0d1466599267010f088190f8664dd31663a40c5d5e525d8e64b995d",
-      metadataTypeId: 10,
+      "type": "enum src5::AccessError",
+      "concreteTypeId": "f1247475d0d1466599267010f088190f8664dd31663a40c5d5e525d8e64b995d",
+      "metadataTypeId": 11
     },
     {
-      type: "enum src5::State",
-      concreteTypeId:
-        "287a382c1e0b1f11d12a422e77a248d27761327cd17515cc6e6369d528cf31ca",
-      metadataTypeId: 11,
+      "type": "enum src5::State",
+      "concreteTypeId": "287a382c1e0b1f11d12a422e77a248d27761327cd17515cc6e6369d528cf31ca",
+      "metadataTypeId": 12
     },
     {
-      type: "enum std::identity::Identity",
-      concreteTypeId:
-        "ab7cd04e05be58e3fc15d424c2c4a57f824a2a2d97d67252440a3925ebdc1335",
-      metadataTypeId: 12,
+      "type": "enum std::identity::Identity",
+      "concreteTypeId": "ab7cd04e05be58e3fc15d424c2c4a57f824a2a2d97d67252440a3925ebdc1335",
+      "metadataTypeId": 13
     },
     {
-      type: "enum std::option::Option<struct interfaces::amm::PoolInfo>",
-      concreteTypeId:
-        "703e41c0f4f9e400926cd6b573fdc22f3a50956843952741babf563bdd92131b",
-      metadataTypeId: 13,
-      typeArguments: [
-        "c377076f538690fa6af0ed1e6c0d25b48a5d9586e26e242427540350ffb4f2a1",
-      ],
+      "type": "enum std::option::Option<struct interfaces::amm::PoolInfo>",
+      "concreteTypeId": "703e41c0f4f9e400926cd6b573fdc22f3a50956843952741babf563bdd92131b",
+      "metadataTypeId": 14,
+      "typeArguments": [
+        "c377076f538690fa6af0ed1e6c0d25b48a5d9586e26e242427540350ffb4f2a1"
+      ]
     },
     {
-      type: "enum std::option::Option<struct std::string::String>",
-      concreteTypeId:
-        "7c06d929390a9aeeb8ffccf8173ac0d101a9976d99dda01cce74541a81e75ac0",
-      metadataTypeId: 13,
-      typeArguments: [
-        "9a7f1d3e963c10e0a4ea70a8e20a4813d1dc5682e28f74cb102ae50d32f7f98c",
-      ],
+      "type": "enum std::option::Option<struct std::string::String>",
+      "concreteTypeId": "7c06d929390a9aeeb8ffccf8173ac0d101a9976d99dda01cce74541a81e75ac0",
+      "metadataTypeId": 14,
+      "typeArguments": [
+        "9a7f1d3e963c10e0a4ea70a8e20a4813d1dc5682e28f74cb102ae50d32f7f98c"
+      ]
     },
     {
-      type: "enum std::option::Option<struct types::types::Amounts>",
-      concreteTypeId:
-        "9c066b1e77a8daa488768ee32902f91de88ed9a2f175f93d7b7202709f86808f",
-      metadataTypeId: 13,
-      typeArguments: [
-        "57d2e437e87f6bc31bc035d0bb8aad8c57dc720f196f55cfd6de1e387ca8823a",
-      ],
+      "type": "enum std::option::Option<struct types::types::Amounts>",
+      "concreteTypeId": "9c066b1e77a8daa488768ee32902f91de88ed9a2f175f93d7b7202709f86808f",
+      "metadataTypeId": 14,
+      "typeArguments": [
+        "57d2e437e87f6bc31bc035d0bb8aad8c57dc720f196f55cfd6de1e387ca8823a"
+      ]
     },
     {
-      type: "enum std::option::Option<u32>",
-      concreteTypeId:
-        "97a75a6d6e892f11f5032fa516e39675b76377c3313d64f465a2c77c34a9e600",
-      metadataTypeId: 13,
-      typeArguments: [
-        "d7649d428b9ff33d188ecbf38a7e4d8fd167fa01b2e10fe9a8f9308e52f1d7cc",
-      ],
+      "type": "enum std::option::Option<u32>",
+      "concreteTypeId": "97a75a6d6e892f11f5032fa516e39675b76377c3313d64f465a2c77c34a9e600",
+      "metadataTypeId": 14,
+      "typeArguments": [
+        "d7649d428b9ff33d188ecbf38a7e4d8fd167fa01b2e10fe9a8f9308e52f1d7cc"
+      ]
     },
     {
-      type: "enum std::option::Option<u64>",
-      concreteTypeId:
-        "d852149004cc9ec0bbe7dc4e37bffea1d41469b759512b6136f2e865a4c06e7d",
-      metadataTypeId: 13,
-      typeArguments: [
-        "1506e6f44c1d6291cdf46395a8e573276a4fa79e8ace3fc891e092ef32d1b0a0",
-      ],
+      "type": "enum std::option::Option<u64>",
+      "concreteTypeId": "d852149004cc9ec0bbe7dc4e37bffea1d41469b759512b6136f2e865a4c06e7d",
+      "metadataTypeId": 14,
+      "typeArguments": [
+        "1506e6f44c1d6291cdf46395a8e573276a4fa79e8ace3fc891e092ef32d1b0a0"
+      ]
     },
     {
-      type: "enum std::option::Option<u8>",
-      concreteTypeId:
-        "2da102c46c7263beeed95818cd7bee801716ba8303dddafdcd0f6c9efda4a0f1",
-      metadataTypeId: 13,
-      typeArguments: [
-        "c89951a24c6ca28c13fd1cfdc646b2b656d69e61a92b91023be7eb58eb914b6b",
-      ],
+      "type": "enum std::option::Option<u8>",
+      "concreteTypeId": "2da102c46c7263beeed95818cd7bee801716ba8303dddafdcd0f6c9efda4a0f1",
+      "metadataTypeId": 14,
+      "typeArguments": [
+        "c89951a24c6ca28c13fd1cfdc646b2b656d69e61a92b91023be7eb58eb914b6b"
+      ]
     },
     {
-      type: "enum types::types::AmountsMathError",
-      concreteTypeId:
-        "873ec71215da730c492a425de995a20014149a62d5b26d73fb83f3aaa8df3b00",
-      metadataTypeId: 14,
+      "type": "enum types::types::AmountsMathError",
+      "concreteTypeId": "873ec71215da730c492a425de995a20014149a62d5b26d73fb83f3aaa8df3b00",
+      "metadataTypeId": 15
     },
     {
-      type: "str",
-      concreteTypeId:
-        "8c25cb3686462e9a86d2883c5688a22fe738b0bbc85f458d2d2b5f3f667c6d5a",
+      "type": "str",
+      "concreteTypeId": "8c25cb3686462e9a86d2883c5688a22fe738b0bbc85f458d2d2b5f3f667c6d5a"
     },
     {
-      type: "struct interfaces::amm::Asset",
-      concreteTypeId:
-        "8a217b6781f0e24ac50353bfd4242fd0d50d2e6fe04d1a389c1fbf647b7e5a6e",
-      metadataTypeId: 17,
+      "type": "struct interfaces::amm::Asset",
+      "concreteTypeId": "8a217b6781f0e24ac50353bfd4242fd0d50d2e6fe04d1a389c1fbf647b7e5a6e",
+      "metadataTypeId": 18
     },
     {
-      type: "struct interfaces::amm::BurnLiquidityArgs",
-      concreteTypeId:
-        "17f7812db9a606b80fb81991f1ede490c5c2bcfed1546035964671f60459d91a",
-      metadataTypeId: 18,
+      "type": "struct interfaces::amm::BinLiquidityEvent",
+      "concreteTypeId": "9926e15a1a7dc3e7e7142a357b616eaefe7473ccf0f59e256a680b41561b64ca",
+      "metadataTypeId": 19
     },
     {
-      type: "struct interfaces::amm::BurnLiquidityEvent",
-      concreteTypeId:
-        "0fdbb5f9691f572070ea9b79b4d0712d66ec44139ed3386a09e97215cc21f300",
-      metadataTypeId: 19,
+      "type": "struct interfaces::amm::BurnLiquidityArgs",
+      "concreteTypeId": "17f7812db9a606b80fb81991f1ede490c5c2bcfed1546035964671f60459d91a",
+      "metadataTypeId": 20
     },
     {
-      type: "struct interfaces::amm::CollectProtocolFeesEvent",
-      concreteTypeId:
-        "a34b8d90bc80b419fe04ca0361937ad5daa87ff31c213b1511ce762cd7e3e026",
-      metadataTypeId: 20,
+      "type": "struct interfaces::amm::BurnLiquidityEvent",
+      "concreteTypeId": "0fdbb5f9691f572070ea9b79b4d0712d66ec44139ed3386a09e97215cc21f300",
+      "metadataTypeId": 21
     },
     {
-      type: "struct interfaces::amm::CompositionFeesEvent",
-      concreteTypeId:
-        "dd895018780e1f43ae426f8d07f7c6f2ce8ab40bf8c09470ee0bb0cdf6034b57",
-      metadataTypeId: 21,
+      "type": "struct interfaces::amm::CollectProtocolFeesEvent",
+      "concreteTypeId": "a34b8d90bc80b419fe04ca0361937ad5daa87ff31c213b1511ce762cd7e3e026",
+      "metadataTypeId": 22
     },
     {
-      type: "struct interfaces::amm::FeeRecipientSetEvent",
-      concreteTypeId:
-        "a3320eebdc489b862230f0bf84ae1f6cfc9d99e99de0e38a1c4b0df6d33e2ee7",
-      metadataTypeId: 22,
+      "type": "struct interfaces::amm::CompositionFeesEvent",
+      "concreteTypeId": "dd895018780e1f43ae426f8d07f7c6f2ce8ab40bf8c09470ee0bb0cdf6034b57",
+      "metadataTypeId": 23
     },
     {
-      type: "struct interfaces::amm::HookSetEvent",
-      concreteTypeId:
-        "c199dee1c39c955f6eb2646d4ed0292c670e2505d8eeb13950c46427dab0c9d1",
-      metadataTypeId: 23,
+      "type": "struct interfaces::amm::FeeRecipientSetEvent",
+      "concreteTypeId": "a3320eebdc489b862230f0bf84ae1f6cfc9d99e99de0e38a1c4b0df6d33e2ee7",
+      "metadataTypeId": 24
     },
     {
-      type: "struct interfaces::amm::MintLiquidityArgs",
-      concreteTypeId:
-        "0f6e3b13b49f7d12df3eb6c918e267d8899fe54f5d2c1c6d3a5d937858f8802d",
-      metadataTypeId: 25,
+      "type": "struct interfaces::amm::HookSetEvent",
+      "concreteTypeId": "c199dee1c39c955f6eb2646d4ed0292c670e2505d8eeb13950c46427dab0c9d1",
+      "metadataTypeId": 25
     },
     {
-      type: "struct interfaces::amm::MintLiquidityEvent",
-      concreteTypeId:
-        "dc1215cafbb4f78254704229d7cddd7f08df016f05ed6f9e0648d794da39213f",
-      metadataTypeId: 26,
+      "type": "struct interfaces::amm::MintLiquidityArgs",
+      "concreteTypeId": "0f6e3b13b49f7d12df3eb6c918e267d8899fe54f5d2c1c6d3a5d937858f8802d",
+      "metadataTypeId": 27
     },
     {
-      type: "struct interfaces::amm::Pool",
-      concreteTypeId:
-        "3a6dbf3cb7892f6095401b6df91dd102065a7927022feb965961ef73d6d786a8",
-      metadataTypeId: 27,
+      "type": "struct interfaces::amm::MintLiquidityEvent",
+      "concreteTypeId": "dc1215cafbb4f78254704229d7cddd7f08df016f05ed6f9e0648d794da39213f",
+      "metadataTypeId": 28
     },
     {
-      type: "struct interfaces::amm::PoolCreatedEvent",
-      concreteTypeId:
-        "a24327ebda5ee2b8f3305e3c7417bed2244f126392fff1437bfd651aa721cf9c",
-      metadataTypeId: 28,
+      "type": "struct interfaces::amm::Pool",
+      "concreteTypeId": "3a6dbf3cb7892f6095401b6df91dd102065a7927022feb965961ef73d6d786a8",
+      "metadataTypeId": 29
     },
     {
-      type: "struct interfaces::amm::PoolInfo",
-      concreteTypeId:
-        "c377076f538690fa6af0ed1e6c0d25b48a5d9586e26e242427540350ffb4f2a1",
-      metadataTypeId: 29,
+      "type": "struct interfaces::amm::PoolCreatedEvent",
+      "concreteTypeId": "a24327ebda5ee2b8f3305e3c7417bed2244f126392fff1437bfd651aa721cf9c",
+      "metadataTypeId": 30
     },
     {
-      type: "struct interfaces::amm::ProtocolFeesSetEvent",
-      concreteTypeId:
-        "9c5afa8755a58f5cba121bf216f5fed38a5b353ece928edfc533c67d95359006",
-      metadataTypeId: 30,
+      "type": "struct interfaces::amm::PoolInfo",
+      "concreteTypeId": "c377076f538690fa6af0ed1e6c0d25b48a5d9586e26e242427540350ffb4f2a1",
+      "metadataTypeId": 31
     },
     {
-      type: "struct interfaces::amm::SwapArgs",
-      concreteTypeId:
-        "d89d603fde2e4425aca4c360f29c6da38fd5247d267cddcf4fc28dc5a15869f5",
-      metadataTypeId: 31,
+      "type": "struct interfaces::amm::ProtocolFeesSetEvent",
+      "concreteTypeId": "9c5afa8755a58f5cba121bf216f5fed38a5b353ece928edfc533c67d95359006",
+      "metadataTypeId": 32
     },
     {
-      type: "struct interfaces::amm::SwapEvent",
-      concreteTypeId:
-        "3026fc72eb439d9a1e25326d13f1e75eac05f821863ca9cc2cf269bd8683a482",
-      metadataTypeId: 32,
+      "type": "struct interfaces::amm::SwapArgs",
+      "concreteTypeId": "d89d603fde2e4425aca4c360f29c6da38fd5247d267cddcf4fc28dc5a15869f5",
+      "metadataTypeId": 33
     },
     {
-      type: "struct ownership::events::OwnershipSet",
-      concreteTypeId:
-        "8c0d2488561c35a28ef795bb8bcc4c43999cdd1e3ecbd10c226e0a68660c54d4",
-      metadataTypeId: 33,
+      "type": "struct interfaces::amm::SwapEvent",
+      "concreteTypeId": "3026fc72eb439d9a1e25326d13f1e75eac05f821863ca9cc2cf269bd8683a482",
+      "metadataTypeId": 34
     },
     {
-      type: "struct src20::TotalSupplyEvent",
-      concreteTypeId:
-        "7a3907033239b7e20b602aaf2a1a55863934467688426a359aae8b410786d2ba",
-      metadataTypeId: 34,
+      "type": "struct ownership::events::OwnershipSet",
+      "concreteTypeId": "8c0d2488561c35a28ef795bb8bcc4c43999cdd1e3ecbd10c226e0a68660c54d4",
+      "metadataTypeId": 35
     },
     {
-      type: "struct std::address::Address",
-      concreteTypeId:
-        "f597b637c3b0f588fb8d7086c6f4735caa3122b85f0423b82e489f9bb58e2308",
-      metadataTypeId: 35,
+      "type": "struct src20::SetDecimalsEvent",
+      "concreteTypeId": "b6a606756ed20ecf9e047dfc134b0a9ba42ccc642956ce4205e784e82ee1daa1",
+      "metadataTypeId": 36
     },
     {
-      type: "struct std::asset_id::AssetId",
-      concreteTypeId:
-        "c0710b6731b1dd59799cf6bef33eee3b3b04a2e40e80a0724090215bbf2ca974",
-      metadataTypeId: 36,
+      "type": "struct src20::SetNameEvent",
+      "concreteTypeId": "2c4e26d9fde4e3c732683d47b93ece2ba27aa77cc27495ea42fe5491ef144f0d",
+      "metadataTypeId": 37
     },
     {
-      type: "struct std::contract_id::ContractId",
-      concreteTypeId:
-        "29c10735d33b5159f0c71ee1dbd17b36a3e69e41f00fab0d42e1bd9f428d8a54",
-      metadataTypeId: 39,
+      "type": "struct src20::SetSymbolEvent",
+      "concreteTypeId": "3dc850985943a7e8e5becd967e8b8eaa26a7dec1f75a1a80ace5b3bf622b1e1a",
+      "metadataTypeId": 38
     },
     {
-      type: "struct std::string::String",
-      concreteTypeId:
-        "9a7f1d3e963c10e0a4ea70a8e20a4813d1dc5682e28f74cb102ae50d32f7f98c",
-      metadataTypeId: 40,
+      "type": "struct src20::TotalSupplyEvent",
+      "concreteTypeId": "7a3907033239b7e20b602aaf2a1a55863934467688426a359aae8b410786d2ba",
+      "metadataTypeId": 39
     },
     {
-      type: "struct std::vec::Vec<struct interfaces::amm::Asset>",
-      concreteTypeId:
-        "da94b640eca7f3afc552d8ca2859fcad0e90931004beb23aeff68f201cdc53e7",
-      metadataTypeId: 42,
-      typeArguments: [
-        "8a217b6781f0e24ac50353bfd4242fd0d50d2e6fe04d1a389c1fbf647b7e5a6e",
-      ],
+      "type": "struct std::address::Address",
+      "concreteTypeId": "f597b637c3b0f588fb8d7086c6f4735caa3122b85f0423b82e489f9bb58e2308",
+      "metadataTypeId": 40
     },
     {
-      type: "struct types::types::Amounts",
-      concreteTypeId:
-        "57d2e437e87f6bc31bc035d0bb8aad8c57dc720f196f55cfd6de1e387ca8823a",
-      metadataTypeId: 43,
+      "type": "struct std::asset_id::AssetId",
+      "concreteTypeId": "c0710b6731b1dd59799cf6bef33eee3b3b04a2e40e80a0724090215bbf2ca974",
+      "metadataTypeId": 41
     },
     {
-      type: "u16",
-      concreteTypeId:
-        "29881aad8730c5ab11d275376323d8e4ff4179aae8ccb6c13fe4902137e162ef",
+      "type": "struct std::contract_id::ContractId",
+      "concreteTypeId": "29c10735d33b5159f0c71ee1dbd17b36a3e69e41f00fab0d42e1bd9f428d8a54",
+      "metadataTypeId": 44
     },
     {
-      type: "u256",
-      concreteTypeId:
-        "1b5759d94094368cfd443019e7ca5ec4074300e544e5ea993a979f5da627261e",
+      "type": "struct std::string::String",
+      "concreteTypeId": "9a7f1d3e963c10e0a4ea70a8e20a4813d1dc5682e28f74cb102ae50d32f7f98c",
+      "metadataTypeId": 45
     },
     {
-      type: "u32",
-      concreteTypeId:
-        "d7649d428b9ff33d188ecbf38a7e4d8fd167fa01b2e10fe9a8f9308e52f1d7cc",
+      "type": "struct std::vec::Vec<struct interfaces::amm::Asset>",
+      "concreteTypeId": "da94b640eca7f3afc552d8ca2859fcad0e90931004beb23aeff68f201cdc53e7",
+      "metadataTypeId": 47,
+      "typeArguments": [
+        "8a217b6781f0e24ac50353bfd4242fd0d50d2e6fe04d1a389c1fbf647b7e5a6e"
+      ]
     },
     {
-      type: "u64",
-      concreteTypeId:
-        "1506e6f44c1d6291cdf46395a8e573276a4fa79e8ace3fc891e092ef32d1b0a0",
+      "type": "struct types::types::Amounts",
+      "concreteTypeId": "57d2e437e87f6bc31bc035d0bb8aad8c57dc720f196f55cfd6de1e387ca8823a",
+      "metadataTypeId": 48
     },
     {
-      type: "u8",
-      concreteTypeId:
-        "c89951a24c6ca28c13fd1cfdc646b2b656d69e61a92b91023be7eb58eb914b6b",
+      "type": "u16",
+      "concreteTypeId": "29881aad8730c5ab11d275376323d8e4ff4179aae8ccb6c13fe4902137e162ef"
     },
+    {
+      "type": "u256",
+      "concreteTypeId": "1b5759d94094368cfd443019e7ca5ec4074300e544e5ea993a979f5da627261e"
+    },
+    {
+      "type": "u32",
+      "concreteTypeId": "d7649d428b9ff33d188ecbf38a7e4d8fd167fa01b2e10fe9a8f9308e52f1d7cc"
+    },
+    {
+      "type": "u64",
+      "concreteTypeId": "1506e6f44c1d6291cdf46395a8e573276a4fa79e8ace3fc891e092ef32d1b0a0"
+    },
+    {
+      "type": "u8",
+      "concreteTypeId": "c89951a24c6ca28c13fd1cfdc646b2b656d69e61a92b91023be7eb58eb914b6b"
+    }
   ],
-  metadataTypes: [
+  "metadataTypes": [
     {
-      type: "(_, _)",
-      metadataTypeId: 0,
-      components: [
+      "type": "(_, _)",
+      "metadataTypeId": 0,
+      "components": [
         {
-          name: "__tuple_element",
-          typeId: 17,
+          "name": "__tuple_element",
+          "typeId": 18
         },
         {
-          name: "__tuple_element",
-          typeId: 17,
+          "name": "__tuple_element",
+          "typeId": 18
+        }
+      ]
+    },
+    {
+      "type": "(_, _, _)",
+      "metadataTypeId": 1,
+      "components": [
+        {
+          "name": "__tuple_element",
+          "typeId": "1506e6f44c1d6291cdf46395a8e573276a4fa79e8ace3fc891e092ef32d1b0a0"
         },
+        {
+          "name": "__tuple_element",
+          "typeId": "1506e6f44c1d6291cdf46395a8e573276a4fa79e8ace3fc891e092ef32d1b0a0"
+        },
+        {
+          "name": "__tuple_element",
+          "typeId": "1506e6f44c1d6291cdf46395a8e573276a4fa79e8ace3fc891e092ef32d1b0a0"
+        }
+      ]
+    },
+    {
+      "type": "(_, _, _)",
+      "metadataTypeId": 2,
+      "components": [
+        {
+          "name": "__tuple_element",
+          "typeId": 41
+        },
+        {
+          "name": "__tuple_element",
+          "typeId": 0
+        },
+        {
+          "name": "__tuple_element",
+          "typeId": 0
+        }
+      ]
+    },
+    {
+      "type": "(_, _, _)",
+      "metadataTypeId": 3,
+      "components": [
+        {
+          "name": "__tuple_element",
+          "typeId": "1506e6f44c1d6291cdf46395a8e573276a4fa79e8ace3fc891e092ef32d1b0a0"
+        },
+        {
+          "name": "__tuple_element",
+          "typeId": 18
+        },
+        {
+          "name": "__tuple_element",
+          "typeId": 18
+        }
+      ]
+    },
+    {
+      "type": "b256",
+      "metadataTypeId": 4
+    },
+    {
+      "type": "enum asset::errors::BurnError",
+      "metadataTypeId": 5,
+      "components": [
+        {
+          "name": "NotEnoughCoins",
+          "typeId": "2e38e77b22c314a449e91fafed92a43826ac6aa403ae6a8acb6cf58239fbaf5d"
+        },
+        {
+          "name": "ZeroAmount",
+          "typeId": "2e38e77b22c314a449e91fafed92a43826ac6aa403ae6a8acb6cf58239fbaf5d"
+        }
+      ]
+    },
+    {
+      "type": "enum asset::errors::MintError",
+      "metadataTypeId": 6,
+      "components": [
+        {
+          "name": "ZeroAmount",
+          "typeId": "2e38e77b22c314a449e91fafed92a43826ac6aa403ae6a8acb6cf58239fbaf5d"
+        }
+      ]
+    },
+    {
+      "type": "enum interfaces::amm::BinLiquidityChangeType",
+      "metadataTypeId": 7,
+      "components": [
+        {
+          "name": "Mint",
+          "typeId": "2e38e77b22c314a449e91fafed92a43826ac6aa403ae6a8acb6cf58239fbaf5d"
+        },
+        {
+          "name": "Burn",
+          "typeId": "2e38e77b22c314a449e91fafed92a43826ac6aa403ae6a8acb6cf58239fbaf5d"
+        }
+      ]
+    },
+    {
+      "type": "enum interfaces::amm::PoolCurveStateError",
+      "metadataTypeId": 8,
+      "components": [
+        {
+          "name": "PoolAlreadyExists",
+          "typeId": "2e38e77b22c314a449e91fafed92a43826ac6aa403ae6a8acb6cf58239fbaf5d"
+        },
+        {
+          "name": "InvalidParameters",
+          "typeId": "2e38e77b22c314a449e91fafed92a43826ac6aa403ae6a8acb6cf58239fbaf5d"
+        },
+        {
+          "name": "PoolNotFound",
+          "typeId": "2e38e77b22c314a449e91fafed92a43826ac6aa403ae6a8acb6cf58239fbaf5d"
+        },
+        {
+          "name": "Unauthorized",
+          "typeId": "2e38e77b22c314a449e91fafed92a43826ac6aa403ae6a8acb6cf58239fbaf5d"
+        },
+        {
+          "name": "InvalidBinStep",
+          "typeId": "2e38e77b22c314a449e91fafed92a43826ac6aa403ae6a8acb6cf58239fbaf5d"
+        },
+        {
+          "name": "PriceTooHigh",
+          "typeId": "d7649d428b9ff33d188ecbf38a7e4d8fd167fa01b2e10fe9a8f9308e52f1d7cc"
+        },
+        {
+          "name": "PriceTooLow",
+          "typeId": "d7649d428b9ff33d188ecbf38a7e4d8fd167fa01b2e10fe9a8f9308e52f1d7cc"
+        },
+        {
+          "name": "InvalidActiveId",
+          "typeId": "2e38e77b22c314a449e91fafed92a43826ac6aa403ae6a8acb6cf58239fbaf5d"
+        },
+        {
+          "name": "IdenticalAssets",
+          "typeId": "2e38e77b22c314a449e91fafed92a43826ac6aa403ae6a8acb6cf58239fbaf5d"
+        },
+        {
+          "name": "ZeroAddress",
+          "typeId": "2e38e77b22c314a449e91fafed92a43826ac6aa403ae6a8acb6cf58239fbaf5d"
+        },
+        {
+          "name": "MaxLiquidityPerBinExceeded",
+          "typeId": "2e38e77b22c314a449e91fafed92a43826ac6aa403ae6a8acb6cf58239fbaf5d"
+        },
+        {
+          "name": "ZeroShares",
+          "typeId": "d7649d428b9ff33d188ecbf38a7e4d8fd167fa01b2e10fe9a8f9308e52f1d7cc"
+        },
+        {
+          "name": "CompositionFactorFlawed",
+          "typeId": "d7649d428b9ff33d188ecbf38a7e4d8fd167fa01b2e10fe9a8f9308e52f1d7cc"
+        },
+        {
+          "name": "InvalidLPTokenBalance",
+          "typeId": "2e38e77b22c314a449e91fafed92a43826ac6aa403ae6a8acb6cf58239fbaf5d"
+        },
+        {
+          "name": "UnknownLPToken",
+          "typeId": "2e38e77b22c314a449e91fafed92a43826ac6aa403ae6a8acb6cf58239fbaf5d"
+        },
+        {
+          "name": "LPTokenFromWrongPool",
+          "typeId": "2e38e77b22c314a449e91fafed92a43826ac6aa403ae6a8acb6cf58239fbaf5d"
+        },
+        {
+          "name": "InsufficientAmountIn",
+          "typeId": "2e38e77b22c314a449e91fafed92a43826ac6aa403ae6a8acb6cf58239fbaf5d"
+        },
+        {
+          "name": "OutOfLiquidity",
+          "typeId": "2e38e77b22c314a449e91fafed92a43826ac6aa403ae6a8acb6cf58239fbaf5d"
+        },
+        {
+          "name": "InsufficientAmountOut",
+          "typeId": "2e38e77b22c314a449e91fafed92a43826ac6aa403ae6a8acb6cf58239fbaf5d"
+        },
+        {
+          "name": "AlreadyInitialized",
+          "typeId": "2e38e77b22c314a449e91fafed92a43826ac6aa403ae6a8acb6cf58239fbaf5d"
+        },
+        {
+          "name": "NotInitialized",
+          "typeId": "2e38e77b22c314a449e91fafed92a43826ac6aa403ae6a8acb6cf58239fbaf5d"
+        },
+        {
+          "name": "SwapNotPossible",
+          "typeId": "2e38e77b22c314a449e91fafed92a43826ac6aa403ae6a8acb6cf58239fbaf5d"
+        }
+      ]
+    },
+    {
+      "type": "enum math::error::MathError",
+      "metadataTypeId": 9,
+      "components": [
+        {
+          "name": "MulDivRoundDownOverflow",
+          "typeId": "2e38e77b22c314a449e91fafed92a43826ac6aa403ae6a8acb6cf58239fbaf5d"
+        },
+        {
+          "name": "PowUnderflow",
+          "typeId": "2e38e77b22c314a449e91fafed92a43826ac6aa403ae6a8acb6cf58239fbaf5d"
+        }
+      ]
+    },
+    {
+      "type": "enum ownership::errors::InitializationError",
+      "metadataTypeId": 10,
+      "components": [
+        {
+          "name": "CannotReinitialized",
+          "typeId": "2e38e77b22c314a449e91fafed92a43826ac6aa403ae6a8acb6cf58239fbaf5d"
+        }
+      ]
+    },
+    {
+      "type": "enum src5::AccessError",
+      "metadataTypeId": 11,
+      "components": [
+        {
+          "name": "NotOwner",
+          "typeId": "2e38e77b22c314a449e91fafed92a43826ac6aa403ae6a8acb6cf58239fbaf5d"
+        }
+      ]
+    },
+    {
+      "type": "enum src5::State",
+      "metadataTypeId": 12,
+      "components": [
+        {
+          "name": "Uninitialized",
+          "typeId": "2e38e77b22c314a449e91fafed92a43826ac6aa403ae6a8acb6cf58239fbaf5d"
+        },
+        {
+          "name": "Initialized",
+          "typeId": 13
+        },
+        {
+          "name": "Revoked",
+          "typeId": "2e38e77b22c314a449e91fafed92a43826ac6aa403ae6a8acb6cf58239fbaf5d"
+        }
+      ]
+    },
+    {
+      "type": "enum std::identity::Identity",
+      "metadataTypeId": 13,
+      "components": [
+        {
+          "name": "Address",
+          "typeId": 40
+        },
+        {
+          "name": "ContractId",
+          "typeId": 44
+        }
+      ]
+    },
+    {
+      "type": "enum std::option::Option",
+      "metadataTypeId": 14,
+      "components": [
+        {
+          "name": "None",
+          "typeId": "2e38e77b22c314a449e91fafed92a43826ac6aa403ae6a8acb6cf58239fbaf5d"
+        },
+        {
+          "name": "Some",
+          "typeId": 16
+        }
       ],
+      "typeParameters": [
+        16
+      ]
     },
     {
-      type: "(_, _, _)",
-      metadataTypeId: 1,
-      components: [
+      "type": "enum types::types::AmountsMathError",
+      "metadataTypeId": 15,
+      "components": [
         {
-          name: "__tuple_element",
-          typeId:
-            "1506e6f44c1d6291cdf46395a8e573276a4fa79e8ace3fc891e092ef32d1b0a0",
-        },
-        {
-          name: "__tuple_element",
-          typeId:
-            "1506e6f44c1d6291cdf46395a8e573276a4fa79e8ace3fc891e092ef32d1b0a0",
-        },
-        {
-          name: "__tuple_element",
-          typeId:
-            "1506e6f44c1d6291cdf46395a8e573276a4fa79e8ace3fc891e092ef32d1b0a0",
-        },
-      ],
+          "name": "MultiplierTooLarge",
+          "typeId": "2e38e77b22c314a449e91fafed92a43826ac6aa403ae6a8acb6cf58239fbaf5d"
+        }
+      ]
     },
     {
-      type: "(_, _, _)",
-      metadataTypeId: 2,
-      components: [
-        {
-          name: "__tuple_element",
-          typeId: 36,
-        },
-        {
-          name: "__tuple_element",
-          typeId: 0,
-        },
-        {
-          name: "__tuple_element",
-          typeId: 0,
-        },
-      ],
+      "type": "generic T",
+      "metadataTypeId": 16
     },
     {
-      type: "(_, _, _)",
-      metadataTypeId: 3,
-      components: [
-        {
-          name: "__tuple_element",
-          typeId:
-            "1506e6f44c1d6291cdf46395a8e573276a4fa79e8ace3fc891e092ef32d1b0a0",
-        },
-        {
-          name: "__tuple_element",
-          typeId: 17,
-        },
-        {
-          name: "__tuple_element",
-          typeId: 17,
-        },
-      ],
+      "type": "raw untyped ptr",
+      "metadataTypeId": 17
     },
     {
-      type: "b256",
-      metadataTypeId: 4,
+      "type": "struct interfaces::amm::Asset",
+      "metadataTypeId": 18,
+      "components": [
+        {
+          "name": "id",
+          "typeId": 41
+        },
+        {
+          "name": "amount",
+          "typeId": "1506e6f44c1d6291cdf46395a8e573276a4fa79e8ace3fc891e092ef32d1b0a0"
+        }
+      ]
     },
     {
-      type: "enum asset::errors::BurnError",
-      metadataTypeId: 5,
-      components: [
+      "type": "struct interfaces::amm::BinLiquidityEvent",
+      "metadataTypeId": 19,
+      "components": [
         {
-          name: "NotEnoughCoins",
-          typeId:
-            "2e38e77b22c314a449e91fafed92a43826ac6aa403ae6a8acb6cf58239fbaf5d",
+          "name": "pool_id",
+          "typeId": "1b5759d94094368cfd443019e7ca5ec4074300e544e5ea993a979f5da627261e"
         },
         {
-          name: "ZeroAmount",
-          typeId:
-            "2e38e77b22c314a449e91fafed92a43826ac6aa403ae6a8acb6cf58239fbaf5d",
+          "name": "bin_id",
+          "typeId": "d7649d428b9ff33d188ecbf38a7e4d8fd167fa01b2e10fe9a8f9308e52f1d7cc"
         },
-      ],
+        {
+          "name": "new_reserves",
+          "typeId": 48
+        },
+        {
+          "name": "new_total_shares",
+          "typeId": "1b5759d94094368cfd443019e7ca5ec4074300e544e5ea993a979f5da627261e"
+        },
+        {
+          "name": "triggered_by",
+          "typeId": 7
+        },
+        {
+          "name": "position_id",
+          "typeId": 41
+        }
+      ]
     },
     {
-      type: "enum asset::errors::MintError",
-      metadataTypeId: 6,
-      components: [
+      "type": "struct interfaces::amm::BurnLiquidityArgs",
+      "metadataTypeId": 20,
+      "components": [
         {
-          name: "ZeroAmount",
-          typeId:
-            "2e38e77b22c314a449e91fafed92a43826ac6aa403ae6a8acb6cf58239fbaf5d",
-        },
-      ],
-    },
-    {
-      type: "enum interfaces::amm::PoolCurveStateError",
-      metadataTypeId: 7,
-      components: [
-        {
-          name: "PoolAlreadyExists",
-          typeId:
-            "2e38e77b22c314a449e91fafed92a43826ac6aa403ae6a8acb6cf58239fbaf5d",
-        },
-        {
-          name: "InvalidParameters",
-          typeId:
-            "2e38e77b22c314a449e91fafed92a43826ac6aa403ae6a8acb6cf58239fbaf5d",
-        },
-        {
-          name: "PoolNotFound",
-          typeId:
-            "2e38e77b22c314a449e91fafed92a43826ac6aa403ae6a8acb6cf58239fbaf5d",
-        },
-        {
-          name: "Unauthorized",
-          typeId:
-            "2e38e77b22c314a449e91fafed92a43826ac6aa403ae6a8acb6cf58239fbaf5d",
-        },
-        {
-          name: "InvalidBinStep",
-          typeId:
-            "2e38e77b22c314a449e91fafed92a43826ac6aa403ae6a8acb6cf58239fbaf5d",
-        },
-        {
-          name: "InvalidActiveId",
-          typeId:
-            "2e38e77b22c314a449e91fafed92a43826ac6aa403ae6a8acb6cf58239fbaf5d",
-        },
-        {
-          name: "IdenticalAssets",
-          typeId:
-            "2e38e77b22c314a449e91fafed92a43826ac6aa403ae6a8acb6cf58239fbaf5d",
-        },
-        {
-          name: "ZeroAddress",
-          typeId:
-            "2e38e77b22c314a449e91fafed92a43826ac6aa403ae6a8acb6cf58239fbaf5d",
-        },
-        {
-          name: "MaxLiquidityPerBinExceeded",
-          typeId:
-            "2e38e77b22c314a449e91fafed92a43826ac6aa403ae6a8acb6cf58239fbaf5d",
-        },
-        {
-          name: "ZeroShares",
-          typeId:
-            "d7649d428b9ff33d188ecbf38a7e4d8fd167fa01b2e10fe9a8f9308e52f1d7cc",
-        },
-        {
-          name: "CompositionFactorFlawed",
-          typeId:
-            "d7649d428b9ff33d188ecbf38a7e4d8fd167fa01b2e10fe9a8f9308e52f1d7cc",
-        },
-        {
-          name: "InvalidLPTokenBalance",
-          typeId:
-            "2e38e77b22c314a449e91fafed92a43826ac6aa403ae6a8acb6cf58239fbaf5d",
-        },
-        {
-          name: "UnknownLPToken",
-          typeId:
-            "2e38e77b22c314a449e91fafed92a43826ac6aa403ae6a8acb6cf58239fbaf5d",
-        },
-        {
-          name: "LPTokenFromWrongPool",
-          typeId:
-            "2e38e77b22c314a449e91fafed92a43826ac6aa403ae6a8acb6cf58239fbaf5d",
-        },
-        {
-          name: "InsufficientAmountIn",
-          typeId:
-            "2e38e77b22c314a449e91fafed92a43826ac6aa403ae6a8acb6cf58239fbaf5d",
-        },
-        {
-          name: "OutOfLiquidity",
-          typeId:
-            "2e38e77b22c314a449e91fafed92a43826ac6aa403ae6a8acb6cf58239fbaf5d",
-        },
-        {
-          name: "InsufficientAmountOut",
-          typeId:
-            "2e38e77b22c314a449e91fafed92a43826ac6aa403ae6a8acb6cf58239fbaf5d",
-        },
-        {
-          name: "AlreadyInitialized",
-          typeId:
-            "2e38e77b22c314a449e91fafed92a43826ac6aa403ae6a8acb6cf58239fbaf5d",
-        },
-        {
-          name: "NotInitialized",
-          typeId:
-            "2e38e77b22c314a449e91fafed92a43826ac6aa403ae6a8acb6cf58239fbaf5d",
-        },
-        {
-          name: "SwapNotPossible",
-          typeId:
-            "2e38e77b22c314a449e91fafed92a43826ac6aa403ae6a8acb6cf58239fbaf5d",
-        },
-      ],
-    },
-    {
-      type: "enum math::error::MathError",
-      metadataTypeId: 8,
-      components: [
-        {
-          name: "MulDivRoundDownOverflow",
-          typeId:
-            "2e38e77b22c314a449e91fafed92a43826ac6aa403ae6a8acb6cf58239fbaf5d",
-        },
-        {
-          name: "PowUnderflow",
-          typeId:
-            "2e38e77b22c314a449e91fafed92a43826ac6aa403ae6a8acb6cf58239fbaf5d",
-        },
-      ],
-    },
-    {
-      type: "enum ownership::errors::InitializationError",
-      metadataTypeId: 9,
-      components: [
-        {
-          name: "CannotReinitialized",
-          typeId:
-            "2e38e77b22c314a449e91fafed92a43826ac6aa403ae6a8acb6cf58239fbaf5d",
-        },
-      ],
-    },
-    {
-      type: "enum src5::AccessError",
-      metadataTypeId: 10,
-      components: [
-        {
-          name: "NotOwner",
-          typeId:
-            "2e38e77b22c314a449e91fafed92a43826ac6aa403ae6a8acb6cf58239fbaf5d",
-        },
-      ],
-    },
-    {
-      type: "enum src5::State",
-      metadataTypeId: 11,
-      components: [
-        {
-          name: "Uninitialized",
-          typeId:
-            "2e38e77b22c314a449e91fafed92a43826ac6aa403ae6a8acb6cf58239fbaf5d",
-        },
-        {
-          name: "Initialized",
-          typeId: 12,
-        },
-        {
-          name: "Revoked",
-          typeId:
-            "2e38e77b22c314a449e91fafed92a43826ac6aa403ae6a8acb6cf58239fbaf5d",
-        },
-      ],
-    },
-    {
-      type: "enum std::identity::Identity",
-      metadataTypeId: 12,
-      components: [
-        {
-          name: "Address",
-          typeId: 35,
-        },
-        {
-          name: "ContractId",
-          typeId: 39,
-        },
-      ],
-    },
-    {
-      type: "enum std::option::Option",
-      metadataTypeId: 13,
-      components: [
-        {
-          name: "None",
-          typeId:
-            "2e38e77b22c314a449e91fafed92a43826ac6aa403ae6a8acb6cf58239fbaf5d",
-        },
-        {
-          name: "Some",
-          typeId: 15,
-        },
-      ],
-      typeParameters: [15],
-    },
-    {
-      type: "enum types::types::AmountsMathError",
-      metadataTypeId: 14,
-      components: [
-        {
-          name: "MultiplierTooLarge",
-          typeId:
-            "2e38e77b22c314a449e91fafed92a43826ac6aa403ae6a8acb6cf58239fbaf5d",
-        },
-      ],
-    },
-    {
-      type: "generic T",
-      metadataTypeId: 15,
-    },
-    {
-      type: "raw untyped ptr",
-      metadataTypeId: 16,
-    },
-    {
-      type: "struct interfaces::amm::Asset",
-      metadataTypeId: 17,
-      components: [
-        {
-          name: "id",
-          typeId: 36,
-        },
-        {
-          name: "amount",
-          typeId:
-            "1506e6f44c1d6291cdf46395a8e573276a4fa79e8ace3fc891e092ef32d1b0a0",
-        },
-      ],
-    },
-    {
-      type: "struct interfaces::amm::BurnLiquidityArgs",
-      metadataTypeId: 18,
-      components: [
-        {
-          name: "lp_assets",
-          typeId: 42,
-          typeArguments: [
+          "name": "lp_assets",
+          "typeId": 47,
+          "typeArguments": [
             {
-              name: "",
-              typeId: 36,
-            },
-          ],
+              "name": "",
+              "typeId": 41
+            }
+          ]
         },
         {
-          name: "to",
-          typeId: 12,
-        },
-      ],
+          "name": "to",
+          "typeId": 13
+        }
+      ]
     },
     {
-      type: "struct interfaces::amm::BurnLiquidityEvent",
-      metadataTypeId: 19,
-      components: [
+      "type": "struct interfaces::amm::BurnLiquidityEvent",
+      "metadataTypeId": 21,
+      "components": [
         {
-          name: "sender",
-          typeId: 12,
+          "name": "sender",
+          "typeId": 13
         },
         {
-          name: "to",
-          typeId: 12,
+          "name": "to",
+          "typeId": 13
         },
         {
-          name: "pool_id",
-          typeId:
-            "1b5759d94094368cfd443019e7ca5ec4074300e544e5ea993a979f5da627261e",
+          "name": "pool_id",
+          "typeId": "1b5759d94094368cfd443019e7ca5ec4074300e544e5ea993a979f5da627261e"
         },
         {
-          name: "bin_ids",
-          typeId: 42,
-          typeArguments: [
+          "name": "lp_token_burned",
+          "typeId": 41
+        }
+      ]
+    },
+    {
+      "type": "struct interfaces::amm::CollectProtocolFeesEvent",
+      "metadataTypeId": 22,
+      "components": [
+        {
+          "name": "recipient",
+          "typeId": 13
+        },
+        {
+          "name": "pool_id",
+          "typeId": "1b5759d94094368cfd443019e7ca5ec4074300e544e5ea993a979f5da627261e"
+        },
+        {
+          "name": "amounts",
+          "typeId": 48
+        }
+      ]
+    },
+    {
+      "type": "struct interfaces::amm::CompositionFeesEvent",
+      "metadataTypeId": 23,
+      "components": [
+        {
+          "name": "sender",
+          "typeId": 13
+        },
+        {
+          "name": "pool_id",
+          "typeId": "1b5759d94094368cfd443019e7ca5ec4074300e544e5ea993a979f5da627261e"
+        },
+        {
+          "name": "bin_id",
+          "typeId": "d7649d428b9ff33d188ecbf38a7e4d8fd167fa01b2e10fe9a8f9308e52f1d7cc"
+        },
+        {
+          "name": "total_fees",
+          "typeId": 48
+        },
+        {
+          "name": "protocol_fees",
+          "typeId": 48
+        }
+      ]
+    },
+    {
+      "type": "struct interfaces::amm::FeeRecipientSetEvent",
+      "metadataTypeId": 24,
+      "components": [
+        {
+          "name": "setter",
+          "typeId": 13
+        },
+        {
+          "name": "old_recipient",
+          "typeId": 14,
+          "typeArguments": [
             {
-              name: "",
-              typeId:
-                "d7649d428b9ff33d188ecbf38a7e4d8fd167fa01b2e10fe9a8f9308e52f1d7cc",
-            },
-          ],
+              "name": "",
+              "typeId": 13
+            }
+          ]
         },
         {
-          name: "amounts_withdrawn",
-          typeId: 42,
-          typeArguments: [
+          "name": "new_recipient",
+          "typeId": 13
+        }
+      ]
+    },
+    {
+      "type": "struct interfaces::amm::HookSetEvent",
+      "metadataTypeId": 25,
+      "components": [
+        {
+          "name": "setter",
+          "typeId": 13
+        },
+        {
+          "name": "old_hook",
+          "typeId": 14,
+          "typeArguments": [
             {
-              name: "",
-              typeId: 43,
-            },
-          ],
+              "name": "",
+              "typeId": 44
+            }
+          ]
         },
         {
-          name: "lp_token_burned",
-          typeId: 36,
-        },
-      ],
+          "name": "new_hook",
+          "typeId": 44
+        }
+      ]
     },
     {
-      type: "struct interfaces::amm::CollectProtocolFeesEvent",
-      metadataTypeId: 20,
-      components: [
+      "type": "struct interfaces::amm::LiquidityConfig",
+      "metadataTypeId": 26,
+      "components": [
         {
-          name: "recipient",
-          typeId: 12,
+          "name": "bin_id",
+          "typeId": "d7649d428b9ff33d188ecbf38a7e4d8fd167fa01b2e10fe9a8f9308e52f1d7cc"
         },
         {
-          name: "pool_id",
-          typeId:
-            "1b5759d94094368cfd443019e7ca5ec4074300e544e5ea993a979f5da627261e",
+          "name": "distribution_x",
+          "typeId": "29881aad8730c5ab11d275376323d8e4ff4179aae8ccb6c13fe4902137e162ef"
         },
         {
-          name: "amounts",
-          typeId: 43,
-        },
-      ],
+          "name": "distribution_y",
+          "typeId": "29881aad8730c5ab11d275376323d8e4ff4179aae8ccb6c13fe4902137e162ef"
+        }
+      ]
     },
     {
-      type: "struct interfaces::amm::CompositionFeesEvent",
-      metadataTypeId: 21,
-      components: [
+      "type": "struct interfaces::amm::MintLiquidityArgs",
+      "metadataTypeId": 27,
+      "components": [
         {
-          name: "sender",
-          typeId: 12,
+          "name": "pool_id",
+          "typeId": "1b5759d94094368cfd443019e7ca5ec4074300e544e5ea993a979f5da627261e"
         },
         {
-          name: "pool_id",
-          typeId:
-            "1b5759d94094368cfd443019e7ca5ec4074300e544e5ea993a979f5da627261e",
-        },
-        {
-          name: "bin_id",
-          typeId:
-            "d7649d428b9ff33d188ecbf38a7e4d8fd167fa01b2e10fe9a8f9308e52f1d7cc",
-        },
-        {
-          name: "total_fees",
-          typeId: 43,
-        },
-        {
-          name: "protocol_fees",
-          typeId: 43,
-        },
-      ],
-    },
-    {
-      type: "struct interfaces::amm::FeeRecipientSetEvent",
-      metadataTypeId: 22,
-      components: [
-        {
-          name: "setter",
-          typeId: 12,
-        },
-        {
-          name: "old_recipient",
-          typeId: 13,
-          typeArguments: [
+          "name": "liquidity_configs",
+          "typeId": 47,
+          "typeArguments": [
             {
-              name: "",
-              typeId: 12,
-            },
-          ],
+              "name": "",
+              "typeId": 26
+            }
+          ]
         },
         {
-          name: "new_recipient",
-          typeId: 12,
+          "name": "to",
+          "typeId": 13
         },
-      ],
+        {
+          "name": "refund_to",
+          "typeId": 13
+        }
+      ]
     },
     {
-      type: "struct interfaces::amm::HookSetEvent",
-      metadataTypeId: 23,
-      components: [
+      "type": "struct interfaces::amm::MintLiquidityEvent",
+      "metadataTypeId": 28,
+      "components": [
         {
-          name: "setter",
-          typeId: 12,
+          "name": "sender",
+          "typeId": 13
         },
         {
-          name: "old_hook",
-          typeId: 13,
-          typeArguments: [
+          "name": "to",
+          "typeId": 13
+        },
+        {
+          "name": "pool_id",
+          "typeId": "1b5759d94094368cfd443019e7ca5ec4074300e544e5ea993a979f5da627261e"
+        },
+        {
+          "name": "lp_token_minted",
+          "typeId": 41
+        }
+      ]
+    },
+    {
+      "type": "struct interfaces::amm::Pool",
+      "metadataTypeId": 29,
+      "components": [
+        {
+          "name": "asset_x",
+          "typeId": 41
+        },
+        {
+          "name": "asset_y",
+          "typeId": 41
+        },
+        {
+          "name": "bin_step",
+          "typeId": "29881aad8730c5ab11d275376323d8e4ff4179aae8ccb6c13fe4902137e162ef"
+        },
+        {
+          "name": "base_factor",
+          "typeId": "d7649d428b9ff33d188ecbf38a7e4d8fd167fa01b2e10fe9a8f9308e52f1d7cc"
+        }
+      ]
+    },
+    {
+      "type": "struct interfaces::amm::PoolCreatedEvent",
+      "metadataTypeId": 30,
+      "components": [
+        {
+          "name": "creator",
+          "typeId": 13
+        },
+        {
+          "name": "pool_id",
+          "typeId": "1b5759d94094368cfd443019e7ca5ec4074300e544e5ea993a979f5da627261e"
+        },
+        {
+          "name": "asset_x",
+          "typeId": 41
+        },
+        {
+          "name": "asset_y",
+          "typeId": 41
+        },
+        {
+          "name": "bin_step",
+          "typeId": "29881aad8730c5ab11d275376323d8e4ff4179aae8ccb6c13fe4902137e162ef"
+        },
+        {
+          "name": "active_id",
+          "typeId": "d7649d428b9ff33d188ecbf38a7e4d8fd167fa01b2e10fe9a8f9308e52f1d7cc"
+        }
+      ]
+    },
+    {
+      "type": "struct interfaces::amm::PoolInfo",
+      "metadataTypeId": 31,
+      "components": [
+        {
+          "name": "pool",
+          "typeId": 29
+        },
+        {
+          "name": "active_id",
+          "typeId": "d7649d428b9ff33d188ecbf38a7e4d8fd167fa01b2e10fe9a8f9308e52f1d7cc"
+        }
+      ]
+    },
+    {
+      "type": "struct interfaces::amm::ProtocolFeesSetEvent",
+      "metadataTypeId": 32,
+      "components": [
+        {
+          "name": "setter",
+          "typeId": 13
+        },
+        {
+          "name": "old_protocol_fees",
+          "typeId": 14,
+          "typeArguments": [
             {
-              name: "",
-              typeId: 39,
-            },
-          ],
+              "name": "",
+              "typeId": "29881aad8730c5ab11d275376323d8e4ff4179aae8ccb6c13fe4902137e162ef"
+            }
+          ]
         },
         {
-          name: "new_hook",
-          typeId: 39,
-        },
-      ],
+          "name": "new_protocol_fees",
+          "typeId": "29881aad8730c5ab11d275376323d8e4ff4179aae8ccb6c13fe4902137e162ef"
+        }
+      ]
     },
     {
-      type: "struct interfaces::amm::LiquidityConfig",
-      metadataTypeId: 24,
-      components: [
+      "type": "struct interfaces::amm::SwapArgs",
+      "metadataTypeId": 33,
+      "components": [
         {
-          name: "bin_id",
-          typeId:
-            "d7649d428b9ff33d188ecbf38a7e4d8fd167fa01b2e10fe9a8f9308e52f1d7cc",
+          "name": "pool_id",
+          "typeId": "1b5759d94094368cfd443019e7ca5ec4074300e544e5ea993a979f5da627261e"
         },
         {
-          name: "distribution_x",
-          typeId:
-            "29881aad8730c5ab11d275376323d8e4ff4179aae8ccb6c13fe4902137e162ef",
+          "name": "swap_for_y",
+          "typeId": "b760f44fa5965c2474a3b471467a22c43185152129295af588b022ae50b50903"
         },
         {
-          name: "distribution_y",
-          typeId:
-            "29881aad8730c5ab11d275376323d8e4ff4179aae8ccb6c13fe4902137e162ef",
-        },
-      ],
+          "name": "to",
+          "typeId": 13
+        }
+      ]
     },
     {
-      type: "struct interfaces::amm::MintLiquidityArgs",
-      metadataTypeId: 25,
-      components: [
+      "type": "struct interfaces::amm::SwapEvent",
+      "metadataTypeId": 34,
+      "components": [
         {
-          name: "pool_id",
-          typeId:
-            "1b5759d94094368cfd443019e7ca5ec4074300e544e5ea993a979f5da627261e",
+          "name": "sender",
+          "typeId": 13
         },
         {
-          name: "liquidity_configs",
-          typeId: 42,
-          typeArguments: [
+          "name": "to",
+          "typeId": 13
+        },
+        {
+          "name": "pool_id",
+          "typeId": "1b5759d94094368cfd443019e7ca5ec4074300e544e5ea993a979f5da627261e"
+        },
+        {
+          "name": "bin_id",
+          "typeId": "d7649d428b9ff33d188ecbf38a7e4d8fd167fa01b2e10fe9a8f9308e52f1d7cc"
+        },
+        {
+          "name": "amounts_in",
+          "typeId": 48
+        },
+        {
+          "name": "amounts_out",
+          "typeId": 48
+        },
+        {
+          "name": "total_fees",
+          "typeId": 48
+        },
+        {
+          "name": "protocol_fees",
+          "typeId": 48
+        }
+      ]
+    },
+    {
+      "type": "struct ownership::events::OwnershipSet",
+      "metadataTypeId": 35,
+      "components": [
+        {
+          "name": "new_owner",
+          "typeId": 13
+        }
+      ]
+    },
+    {
+      "type": "struct src20::SetDecimalsEvent",
+      "metadataTypeId": 36,
+      "components": [
+        {
+          "name": "asset",
+          "typeId": 41
+        },
+        {
+          "name": "decimals",
+          "typeId": "c89951a24c6ca28c13fd1cfdc646b2b656d69e61a92b91023be7eb58eb914b6b"
+        },
+        {
+          "name": "sender",
+          "typeId": 13
+        }
+      ]
+    },
+    {
+      "type": "struct src20::SetNameEvent",
+      "metadataTypeId": 37,
+      "components": [
+        {
+          "name": "asset",
+          "typeId": 41
+        },
+        {
+          "name": "name",
+          "typeId": 14,
+          "typeArguments": [
             {
-              name: "",
-              typeId: 24,
-            },
-          ],
+              "name": "",
+              "typeId": 45
+            }
+          ]
         },
         {
-          name: "to",
-          typeId: 12,
-        },
-        {
-          name: "refund_to",
-          typeId: 12,
-        },
-      ],
+          "name": "sender",
+          "typeId": 13
+        }
+      ]
     },
     {
-      type: "struct interfaces::amm::MintLiquidityEvent",
-      metadataTypeId: 26,
-      components: [
+      "type": "struct src20::SetSymbolEvent",
+      "metadataTypeId": 38,
+      "components": [
         {
-          name: "sender",
-          typeId: 12,
+          "name": "asset",
+          "typeId": 41
         },
         {
-          name: "to",
-          typeId: 12,
-        },
-        {
-          name: "pool_id",
-          typeId:
-            "1b5759d94094368cfd443019e7ca5ec4074300e544e5ea993a979f5da627261e",
-        },
-        {
-          name: "bin_ids",
-          typeId: 42,
-          typeArguments: [
+          "name": "symbol",
+          "typeId": 14,
+          "typeArguments": [
             {
-              name: "",
-              typeId:
-                "d7649d428b9ff33d188ecbf38a7e4d8fd167fa01b2e10fe9a8f9308e52f1d7cc",
-            },
-          ],
+              "name": "",
+              "typeId": 45
+            }
+          ]
         },
         {
-          name: "amounts",
-          typeId: 42,
-          typeArguments: [
+          "name": "sender",
+          "typeId": 13
+        }
+      ]
+    },
+    {
+      "type": "struct src20::TotalSupplyEvent",
+      "metadataTypeId": 39,
+      "components": [
+        {
+          "name": "asset",
+          "typeId": 41
+        },
+        {
+          "name": "supply",
+          "typeId": "1506e6f44c1d6291cdf46395a8e573276a4fa79e8ace3fc891e092ef32d1b0a0"
+        },
+        {
+          "name": "sender",
+          "typeId": 13
+        }
+      ]
+    },
+    {
+      "type": "struct std::address::Address",
+      "metadataTypeId": 40,
+      "components": [
+        {
+          "name": "bits",
+          "typeId": 4
+        }
+      ]
+    },
+    {
+      "type": "struct std::asset_id::AssetId",
+      "metadataTypeId": 41,
+      "components": [
+        {
+          "name": "bits",
+          "typeId": 4
+        }
+      ]
+    },
+    {
+      "type": "struct std::bytes::Bytes",
+      "metadataTypeId": 42,
+      "components": [
+        {
+          "name": "buf",
+          "typeId": 43
+        },
+        {
+          "name": "len",
+          "typeId": "1506e6f44c1d6291cdf46395a8e573276a4fa79e8ace3fc891e092ef32d1b0a0"
+        }
+      ]
+    },
+    {
+      "type": "struct std::bytes::RawBytes",
+      "metadataTypeId": 43,
+      "components": [
+        {
+          "name": "ptr",
+          "typeId": 17
+        },
+        {
+          "name": "cap",
+          "typeId": "1506e6f44c1d6291cdf46395a8e573276a4fa79e8ace3fc891e092ef32d1b0a0"
+        }
+      ]
+    },
+    {
+      "type": "struct std::contract_id::ContractId",
+      "metadataTypeId": 44,
+      "components": [
+        {
+          "name": "bits",
+          "typeId": 4
+        }
+      ]
+    },
+    {
+      "type": "struct std::string::String",
+      "metadataTypeId": 45,
+      "components": [
+        {
+          "name": "bytes",
+          "typeId": 42
+        }
+      ]
+    },
+    {
+      "type": "struct std::vec::RawVec",
+      "metadataTypeId": 46,
+      "components": [
+        {
+          "name": "ptr",
+          "typeId": 17
+        },
+        {
+          "name": "cap",
+          "typeId": "1506e6f44c1d6291cdf46395a8e573276a4fa79e8ace3fc891e092ef32d1b0a0"
+        }
+      ],
+      "typeParameters": [
+        16
+      ]
+    },
+    {
+      "type": "struct std::vec::Vec",
+      "metadataTypeId": 47,
+      "components": [
+        {
+          "name": "buf",
+          "typeId": 46,
+          "typeArguments": [
             {
-              name: "",
-              typeId: 43,
-            },
-          ],
+              "name": "",
+              "typeId": 16
+            }
+          ]
         },
         {
-          name: "lp_token_minted",
-          typeId: 36,
-        },
+          "name": "len",
+          "typeId": "1506e6f44c1d6291cdf46395a8e573276a4fa79e8ace3fc891e092ef32d1b0a0"
+        }
       ],
+      "typeParameters": [
+        16
+      ]
     },
     {
-      type: "struct interfaces::amm::Pool",
-      metadataTypeId: 27,
-      components: [
+      "type": "struct types::types::Amounts",
+      "metadataTypeId": 48,
+      "components": [
         {
-          name: "asset_x",
-          typeId: 36,
+          "name": "x",
+          "typeId": "1506e6f44c1d6291cdf46395a8e573276a4fa79e8ace3fc891e092ef32d1b0a0"
         },
         {
-          name: "asset_y",
-          typeId: 36,
-        },
-        {
-          name: "bin_step",
-          typeId:
-            "29881aad8730c5ab11d275376323d8e4ff4179aae8ccb6c13fe4902137e162ef",
-        },
-        {
-          name: "base_factor",
-          typeId:
-            "d7649d428b9ff33d188ecbf38a7e4d8fd167fa01b2e10fe9a8f9308e52f1d7cc",
-        },
-      ],
-    },
-    {
-      type: "struct interfaces::amm::PoolCreatedEvent",
-      metadataTypeId: 28,
-      components: [
-        {
-          name: "creator",
-          typeId: 12,
-        },
-        {
-          name: "pool_id",
-          typeId:
-            "1b5759d94094368cfd443019e7ca5ec4074300e544e5ea993a979f5da627261e",
-        },
-        {
-          name: "asset_x",
-          typeId: 36,
-        },
-        {
-          name: "asset_y",
-          typeId: 36,
-        },
-        {
-          name: "bin_step",
-          typeId:
-            "29881aad8730c5ab11d275376323d8e4ff4179aae8ccb6c13fe4902137e162ef",
-        },
-        {
-          name: "active_id",
-          typeId:
-            "d7649d428b9ff33d188ecbf38a7e4d8fd167fa01b2e10fe9a8f9308e52f1d7cc",
-        },
-      ],
-    },
-    {
-      type: "struct interfaces::amm::PoolInfo",
-      metadataTypeId: 29,
-      components: [
-        {
-          name: "pool",
-          typeId: 27,
-        },
-        {
-          name: "active_id",
-          typeId:
-            "d7649d428b9ff33d188ecbf38a7e4d8fd167fa01b2e10fe9a8f9308e52f1d7cc",
-        },
-      ],
-    },
-    {
-      type: "struct interfaces::amm::ProtocolFeesSetEvent",
-      metadataTypeId: 30,
-      components: [
-        {
-          name: "setter",
-          typeId: 12,
-        },
-        {
-          name: "old_protocol_fees",
-          typeId: 13,
-          typeArguments: [
-            {
-              name: "",
-              typeId:
-                "29881aad8730c5ab11d275376323d8e4ff4179aae8ccb6c13fe4902137e162ef",
-            },
-          ],
-        },
-        {
-          name: "new_protocol_fees",
-          typeId:
-            "29881aad8730c5ab11d275376323d8e4ff4179aae8ccb6c13fe4902137e162ef",
-        },
-      ],
-    },
-    {
-      type: "struct interfaces::amm::SwapArgs",
-      metadataTypeId: 31,
-      components: [
-        {
-          name: "pool_id",
-          typeId:
-            "1b5759d94094368cfd443019e7ca5ec4074300e544e5ea993a979f5da627261e",
-        },
-        {
-          name: "swap_for_y",
-          typeId:
-            "b760f44fa5965c2474a3b471467a22c43185152129295af588b022ae50b50903",
-        },
-        {
-          name: "to",
-          typeId: 12,
-        },
-      ],
-    },
-    {
-      type: "struct interfaces::amm::SwapEvent",
-      metadataTypeId: 32,
-      components: [
-        {
-          name: "sender",
-          typeId: 12,
-        },
-        {
-          name: "to",
-          typeId: 12,
-        },
-        {
-          name: "pool_id",
-          typeId:
-            "1b5759d94094368cfd443019e7ca5ec4074300e544e5ea993a979f5da627261e",
-        },
-        {
-          name: "bin_id",
-          typeId:
-            "d7649d428b9ff33d188ecbf38a7e4d8fd167fa01b2e10fe9a8f9308e52f1d7cc",
-        },
-        {
-          name: "amounts_in",
-          typeId: 43,
-        },
-        {
-          name: "amounts_out",
-          typeId: 43,
-        },
-        {
-          name: "total_fees",
-          typeId: 43,
-        },
-        {
-          name: "protocol_fees",
-          typeId: 43,
-        },
-      ],
-    },
-    {
-      type: "struct ownership::events::OwnershipSet",
-      metadataTypeId: 33,
-      components: [
-        {
-          name: "new_owner",
-          typeId: 12,
-        },
-      ],
-    },
-    {
-      type: "struct src20::TotalSupplyEvent",
-      metadataTypeId: 34,
-      components: [
-        {
-          name: "asset",
-          typeId: 36,
-        },
-        {
-          name: "supply",
-          typeId:
-            "1506e6f44c1d6291cdf46395a8e573276a4fa79e8ace3fc891e092ef32d1b0a0",
-        },
-        {
-          name: "sender",
-          typeId: 12,
-        },
-      ],
-    },
-    {
-      type: "struct std::address::Address",
-      metadataTypeId: 35,
-      components: [
-        {
-          name: "bits",
-          typeId: 4,
-        },
-      ],
-    },
-    {
-      type: "struct std::asset_id::AssetId",
-      metadataTypeId: 36,
-      components: [
-        {
-          name: "bits",
-          typeId: 4,
-        },
-      ],
-    },
-    {
-      type: "struct std::bytes::Bytes",
-      metadataTypeId: 37,
-      components: [
-        {
-          name: "buf",
-          typeId: 38,
-        },
-        {
-          name: "len",
-          typeId:
-            "1506e6f44c1d6291cdf46395a8e573276a4fa79e8ace3fc891e092ef32d1b0a0",
-        },
-      ],
-    },
-    {
-      type: "struct std::bytes::RawBytes",
-      metadataTypeId: 38,
-      components: [
-        {
-          name: "ptr",
-          typeId: 16,
-        },
-        {
-          name: "cap",
-          typeId:
-            "1506e6f44c1d6291cdf46395a8e573276a4fa79e8ace3fc891e092ef32d1b0a0",
-        },
-      ],
-    },
-    {
-      type: "struct std::contract_id::ContractId",
-      metadataTypeId: 39,
-      components: [
-        {
-          name: "bits",
-          typeId: 4,
-        },
-      ],
-    },
-    {
-      type: "struct std::string::String",
-      metadataTypeId: 40,
-      components: [
-        {
-          name: "bytes",
-          typeId: 37,
-        },
-      ],
-    },
-    {
-      type: "struct std::vec::RawVec",
-      metadataTypeId: 41,
-      components: [
-        {
-          name: "ptr",
-          typeId: 16,
-        },
-        {
-          name: "cap",
-          typeId:
-            "1506e6f44c1d6291cdf46395a8e573276a4fa79e8ace3fc891e092ef32d1b0a0",
-        },
-      ],
-      typeParameters: [15],
-    },
-    {
-      type: "struct std::vec::Vec",
-      metadataTypeId: 42,
-      components: [
-        {
-          name: "buf",
-          typeId: 41,
-          typeArguments: [
-            {
-              name: "",
-              typeId: 15,
-            },
-          ],
-        },
-        {
-          name: "len",
-          typeId:
-            "1506e6f44c1d6291cdf46395a8e573276a4fa79e8ace3fc891e092ef32d1b0a0",
-        },
-      ],
-      typeParameters: [15],
-    },
-    {
-      type: "struct types::types::Amounts",
-      metadataTypeId: 43,
-      components: [
-        {
-          name: "x",
-          typeId:
-            "1506e6f44c1d6291cdf46395a8e573276a4fa79e8ace3fc891e092ef32d1b0a0",
-        },
-        {
-          name: "y",
-          typeId:
-            "1506e6f44c1d6291cdf46395a8e573276a4fa79e8ace3fc891e092ef32d1b0a0",
-        },
-      ],
-    },
+          "name": "y",
+          "typeId": "1506e6f44c1d6291cdf46395a8e573276a4fa79e8ace3fc891e092ef32d1b0a0"
+        }
+      ]
+    }
   ],
-  functions: [
+  "functions": [
     {
-      name: "constructor",
-      inputs: [
+      "name": "constructor",
+      "inputs": [
         {
-          name: "owner",
-          concreteTypeId:
-            "ab7cd04e05be58e3fc15d424c2c4a57f824a2a2d97d67252440a3925ebdc1335",
+          "name": "owner",
+          "concreteTypeId": "ab7cd04e05be58e3fc15d424c2c4a57f824a2a2d97d67252440a3925ebdc1335"
         },
         {
-          name: "hook",
-          concreteTypeId:
-            "29c10735d33b5159f0c71ee1dbd17b36a3e69e41f00fab0d42e1bd9f428d8a54",
+          "name": "hook",
+          "concreteTypeId": "29c10735d33b5159f0c71ee1dbd17b36a3e69e41f00fab0d42e1bd9f428d8a54"
         },
         {
-          name: "protocol_fees_bps",
-          concreteTypeId:
-            "29881aad8730c5ab11d275376323d8e4ff4179aae8ccb6c13fe4902137e162ef",
-        },
+          "name": "protocol_fees_bps",
+          "concreteTypeId": "29881aad8730c5ab11d275376323d8e4ff4179aae8ccb6c13fe4902137e162ef"
+        }
       ],
-      output:
-        "2e38e77b22c314a449e91fafed92a43826ac6aa403ae6a8acb6cf58239fbaf5d",
-      attributes: [
+      "output": "2e38e77b22c314a449e91fafed92a43826ac6aa403ae6a8acb6cf58239fbaf5d",
+      "attributes": [
         {
-          name: "storage",
-          arguments: ["write"],
-        },
-      ],
+          "name": "storage",
+          "arguments": [
+            "write"
+          ]
+        }
+      ]
     },
     {
-      name: "freeze",
-      inputs: [],
-      output:
-        "2e38e77b22c314a449e91fafed92a43826ac6aa403ae6a8acb6cf58239fbaf5d",
-      attributes: [
+      "name": "freeze",
+      "inputs": [],
+      "output": "2e38e77b22c314a449e91fafed92a43826ac6aa403ae6a8acb6cf58239fbaf5d",
+      "attributes": [
         {
-          name: "doc-comment",
-          arguments: [
-            " Prevents the initialization of the contract and its storage directly",
-          ],
+          "name": "doc-comment",
+          "arguments": [
+            " Prevents the initialization of the contract and its storage directly"
+          ]
         },
         {
-          name: "doc-comment",
-          arguments: [""],
+          "name": "doc-comment",
+          "arguments": [
+            ""
+          ]
         },
         {
-          name: "doc-comment",
-          arguments: [
-            " To be used when acting as an implementation contract for a SRC-14 Proxy",
-          ],
+          "name": "doc-comment",
+          "arguments": [
+            " To be used when acting as an implementation contract for a SRC-14 Proxy"
+          ]
         },
         {
-          name: "doc-comment",
-          arguments: [
-            " In that case the storage is initialized on the proxy itself and doensn't",
-          ],
+          "name": "doc-comment",
+          "arguments": [
+            " In that case the storage is initialized on the proxy itself and doensn't"
+          ]
         },
         {
-          name: "doc-comment",
-          arguments: [
-            " This is not strictly necessary from a security standpoint, but eliminates some confusion between",
-          ],
+          "name": "doc-comment",
+          "arguments": [
+            " This is not strictly necessary from a security standpoint, but eliminates some confusion between"
+          ]
         },
         {
-          name: "doc-comment",
-          arguments: [" Double storage"],
+          "name": "doc-comment",
+          "arguments": [
+            " Double storage"
+          ]
         },
         {
-          name: "doc-comment",
-          arguments: [""],
+          "name": "doc-comment",
+          "arguments": [
+            ""
+          ]
         },
         {
-          name: "doc-comment",
-          arguments: [" # Reverts"],
+          "name": "doc-comment",
+          "arguments": [
+            " # Reverts"
+          ]
         },
         {
-          name: "doc-comment",
-          arguments: [""],
+          "name": "doc-comment",
+          "arguments": [
+            ""
+          ]
         },
         {
-          name: "doc-comment",
-          arguments: [" When not called by deployer"],
+          "name": "doc-comment",
+          "arguments": [
+            " When not called by deployer"
+          ]
         },
         {
-          name: "storage",
-          arguments: ["write"],
-        },
-      ],
+          "name": "storage",
+          "arguments": [
+            "write"
+          ]
+        }
+      ]
     },
     {
-      name: "decimals",
-      inputs: [
+      "name": "decimals",
+      "inputs": [
         {
-          name: "asset",
-          concreteTypeId:
-            "c0710b6731b1dd59799cf6bef33eee3b3b04a2e40e80a0724090215bbf2ca974",
-        },
+          "name": "asset",
+          "concreteTypeId": "c0710b6731b1dd59799cf6bef33eee3b3b04a2e40e80a0724090215bbf2ca974"
+        }
       ],
-      output:
-        "2da102c46c7263beeed95818cd7bee801716ba8303dddafdcd0f6c9efda4a0f1",
-      attributes: [
+      "output": "2da102c46c7263beeed95818cd7bee801716ba8303dddafdcd0f6c9efda4a0f1",
+      "attributes": [
         {
-          name: "storage",
-          arguments: ["read"],
-        },
-      ],
+          "name": "storage",
+          "arguments": [
+            "read"
+          ]
+        }
+      ]
     },
     {
-      name: "name",
-      inputs: [
+      "name": "name",
+      "inputs": [
         {
-          name: "asset",
-          concreteTypeId:
-            "c0710b6731b1dd59799cf6bef33eee3b3b04a2e40e80a0724090215bbf2ca974",
-        },
+          "name": "asset",
+          "concreteTypeId": "c0710b6731b1dd59799cf6bef33eee3b3b04a2e40e80a0724090215bbf2ca974"
+        }
       ],
-      output:
-        "7c06d929390a9aeeb8ffccf8173ac0d101a9976d99dda01cce74541a81e75ac0",
-      attributes: [
+      "output": "7c06d929390a9aeeb8ffccf8173ac0d101a9976d99dda01cce74541a81e75ac0",
+      "attributes": [
         {
-          name: "storage",
-          arguments: ["read"],
-        },
-      ],
+          "name": "storage",
+          "arguments": [
+            "read"
+          ]
+        }
+      ]
     },
     {
-      name: "symbol",
-      inputs: [
+      "name": "symbol",
+      "inputs": [
         {
-          name: "asset",
-          concreteTypeId:
-            "c0710b6731b1dd59799cf6bef33eee3b3b04a2e40e80a0724090215bbf2ca974",
-        },
+          "name": "asset",
+          "concreteTypeId": "c0710b6731b1dd59799cf6bef33eee3b3b04a2e40e80a0724090215bbf2ca974"
+        }
       ],
-      output:
-        "7c06d929390a9aeeb8ffccf8173ac0d101a9976d99dda01cce74541a81e75ac0",
-      attributes: [
+      "output": "7c06d929390a9aeeb8ffccf8173ac0d101a9976d99dda01cce74541a81e75ac0",
+      "attributes": [
         {
-          name: "storage",
-          arguments: ["read"],
-        },
-      ],
+          "name": "storage",
+          "arguments": [
+            "read"
+          ]
+        }
+      ]
     },
     {
-      name: "total_assets",
-      inputs: [],
-      output:
-        "1506e6f44c1d6291cdf46395a8e573276a4fa79e8ace3fc891e092ef32d1b0a0",
-      attributes: [
+      "name": "total_assets",
+      "inputs": [],
+      "output": "1506e6f44c1d6291cdf46395a8e573276a4fa79e8ace3fc891e092ef32d1b0a0",
+      "attributes": [
         {
-          name: "storage",
-          arguments: ["read"],
-        },
-      ],
+          "name": "storage",
+          "arguments": [
+            "read"
+          ]
+        }
+      ]
     },
     {
-      name: "total_supply",
-      inputs: [
+      "name": "total_supply",
+      "inputs": [
         {
-          name: "asset",
-          concreteTypeId:
-            "c0710b6731b1dd59799cf6bef33eee3b3b04a2e40e80a0724090215bbf2ca974",
-        },
+          "name": "asset",
+          "concreteTypeId": "c0710b6731b1dd59799cf6bef33eee3b3b04a2e40e80a0724090215bbf2ca974"
+        }
       ],
-      output:
-        "d852149004cc9ec0bbe7dc4e37bffea1d41469b759512b6136f2e865a4c06e7d",
-      attributes: [
+      "output": "d852149004cc9ec0bbe7dc4e37bffea1d41469b759512b6136f2e865a4c06e7d",
+      "attributes": [
         {
-          name: "storage",
-          arguments: ["read"],
-        },
-      ],
+          "name": "storage",
+          "arguments": [
+            "read"
+          ]
+        }
+      ]
     },
     {
-      name: "owner",
-      inputs: [],
-      output:
-        "287a382c1e0b1f11d12a422e77a248d27761327cd17515cc6e6369d528cf31ca",
-      attributes: [
+      "name": "owner",
+      "inputs": [],
+      "output": "287a382c1e0b1f11d12a422e77a248d27761327cd17515cc6e6369d528cf31ca",
+      "attributes": [
         {
-          name: "storage",
-          arguments: ["read"],
-        },
-      ],
+          "name": "storage",
+          "arguments": [
+            "read"
+          ]
+        }
+      ]
     },
     {
-      name: "burn_liquidity",
-      inputs: [
+      "name": "burn_liquidity",
+      "inputs": [
         {
-          name: "args",
-          concreteTypeId:
-            "17f7812db9a606b80fb81991f1ede490c5c2bcfed1546035964671f60459d91a",
-        },
+          "name": "args",
+          "concreteTypeId": "17f7812db9a606b80fb81991f1ede490c5c2bcfed1546035964671f60459d91a"
+        }
       ],
-      output:
-        "da94b640eca7f3afc552d8ca2859fcad0e90931004beb23aeff68f201cdc53e7",
-      attributes: [
+      "output": "da94b640eca7f3afc552d8ca2859fcad0e90931004beb23aeff68f201cdc53e7",
+      "attributes": [
         {
-          name: "doc-comment",
-          arguments: [
-            " Burns liquidity tokens and withdraws underlying assets",
-          ],
+          "name": "doc-comment",
+          "arguments": [
+            " Burns liquidity tokens and withdraws underlying assets"
+          ]
         },
         {
-          name: "doc-comment",
-          arguments: [""],
+          "name": "doc-comment",
+          "arguments": [
+            ""
+          ]
         },
         {
-          name: "doc-comment",
-          arguments: [" This function burns LP tokens and returns the"],
+          "name": "doc-comment",
+          "arguments": [
+            " This function burns LP tokens and returns the"
+          ]
         },
         {
-          name: "doc-comment",
-          arguments: [
-            " underlying tokens to the user. Fees are automatically included in the",
-          ],
+          "name": "doc-comment",
+          "arguments": [
+            " underlying tokens to the user. Fees are automatically included in the"
+          ]
         },
         {
-          name: "doc-comment",
-          arguments: [" withdrawn amounts."],
+          "name": "doc-comment",
+          "arguments": [
+            " withdrawn amounts."
+          ]
         },
         {
-          name: "doc-comment",
-          arguments: [""],
+          "name": "doc-comment",
+          "arguments": [
+            ""
+          ]
         },
         {
-          name: "doc-comment",
-          arguments: [" # Arguments"],
+          "name": "doc-comment",
+          "arguments": [
+            " # Arguments"
+          ]
         },
         {
-          name: "doc-comment",
-          arguments: [""],
+          "name": "doc-comment",
+          "arguments": [
+            ""
+          ]
         },
         {
-          name: "doc-comment",
-          arguments: [
-            " * `args` - Burn liquidity arguments containting LP tokens to burn",
-          ],
+          "name": "doc-comment",
+          "arguments": [
+            " * `args` - Burn liquidity arguments containting LP tokens to burn"
+          ]
         },
         {
-          name: "doc-comment",
-          arguments: [""],
+          "name": "doc-comment",
+          "arguments": [
+            ""
+          ]
         },
         {
-          name: "doc-comment",
-          arguments: [" # Returns"],
+          "name": "doc-comment",
+          "arguments": [
+            " # Returns"
+          ]
         },
         {
-          name: "doc-comment",
-          arguments: [""],
+          "name": "doc-comment",
+          "arguments": [
+            ""
+          ]
         },
         {
-          name: "doc-comment",
-          arguments: [
-            " * `Vec<Asset>` - Array of assets withdrawn from the contract",
-          ],
+          "name": "doc-comment",
+          "arguments": [
+            " * `Vec<Asset>` - Array of assets withdrawn from the contract"
+          ]
         },
         {
-          name: "doc-comment",
-          arguments: [""],
+          "name": "doc-comment",
+          "arguments": [
+            ""
+          ]
         },
         {
-          name: "doc-comment",
-          arguments: [" # Reverts"],
+          "name": "doc-comment",
+          "arguments": [
+            " # Reverts"
+          ]
         },
         {
-          name: "doc-comment",
-          arguments: [""],
+          "name": "doc-comment",
+          "arguments": [
+            ""
+          ]
         },
         {
-          name: "doc-comment",
-          arguments: [" * When insufficient LP tokens are provided"],
+          "name": "doc-comment",
+          "arguments": [
+            " * When insufficient LP tokens are provided"
+          ]
         },
         {
-          name: "doc-comment",
-          arguments: [" * When user doesn't have approval to burn tokens"],
+          "name": "doc-comment",
+          "arguments": [
+            " * When user doesn't have approval to burn tokens"
+          ]
         },
         {
-          name: "doc-comment",
-          arguments: [""],
+          "name": "doc-comment",
+          "arguments": [
+            ""
+          ]
         },
         {
-          name: "doc-comment",
-          arguments: [" # Additional notes"],
+          "name": "doc-comment",
+          "arguments": [
+            " # Additional notes"
+          ]
         },
         {
-          name: "doc-comment",
-          arguments: [""],
+          "name": "doc-comment",
+          "arguments": [
+            ""
+          ]
         },
         {
-          name: "doc-comment",
-          arguments: [
-            " * LP tokens for multiple pools can be mixed in the same call.",
-          ],
+          "name": "doc-comment",
+          "arguments": [
+            " * Requires the LP tokens to be transfered to this contract before calling."
+          ]
         },
         {
-          name: "storage",
-          arguments: ["read", "write"],
+          "name": "doc-comment",
+          "arguments": [
+            " * This function SHOULD be called in the same transaction as the LP tokens are transfered to this contract,"
+          ]
         },
-      ],
+        {
+          "name": "doc-comment",
+          "arguments": [
+            "   otherwise the LP tokens might be burnt before this function is called, resulting in a loss of funds."
+          ]
+        },
+        {
+          "name": "doc-comment",
+          "arguments": [
+            " * All the LP tokens must be from the same pool."
+          ]
+        },
+        {
+          "name": "doc-comment",
+          "arguments": [
+            " * Verifying desired withdrawn amounts is implemented on script level."
+          ]
+        },
+        {
+          "name": "storage",
+          "arguments": [
+            "read",
+            "write"
+          ]
+        }
+      ]
     },
     {
-      name: "collect_protocol_fees",
-      inputs: [
+      "name": "collect_protocol_fees",
+      "inputs": [
         {
-          name: "pool_id",
-          concreteTypeId:
-            "1b5759d94094368cfd443019e7ca5ec4074300e544e5ea993a979f5da627261e",
-        },
+          "name": "pool_id",
+          "concreteTypeId": "1b5759d94094368cfd443019e7ca5ec4074300e544e5ea993a979f5da627261e"
+        }
       ],
-      output:
-        "57d2e437e87f6bc31bc035d0bb8aad8c57dc720f196f55cfd6de1e387ca8823a",
-      attributes: [
+      "output": "57d2e437e87f6bc31bc035d0bb8aad8c57dc720f196f55cfd6de1e387ca8823a",
+      "attributes": [
         {
-          name: "doc-comment",
-          arguments: [" Collects accumulated protocol fees"],
+          "name": "doc-comment",
+          "arguments": [
+            " Collects accumulated protocol fees"
+          ]
         },
         {
-          name: "doc-comment",
-          arguments: [""],
+          "name": "doc-comment",
+          "arguments": [
+            ""
+          ]
         },
         {
-          name: "doc-comment",
-          arguments: [
-            " This function allows the fee recipient to collect accumulated protocol fees",
-          ],
+          "name": "doc-comment",
+          "arguments": [
+            " This function allows the fee recipient to collect accumulated protocol fees"
+          ]
         },
         {
-          name: "doc-comment",
-          arguments: [
-            " from the specified pool. Only the designated fee recipient can call this function.",
-          ],
+          "name": "doc-comment",
+          "arguments": [
+            " from the specified pool. Only the designated fee recipient can call this function."
+          ]
         },
         {
-          name: "doc-comment",
-          arguments: [""],
+          "name": "doc-comment",
+          "arguments": [
+            ""
+          ]
         },
         {
-          name: "doc-comment",
-          arguments: [" # Arguments"],
+          "name": "doc-comment",
+          "arguments": [
+            " # Arguments"
+          ]
         },
         {
-          name: "doc-comment",
-          arguments: [""],
+          "name": "doc-comment",
+          "arguments": [
+            ""
+          ]
         },
         {
-          name: "doc-comment",
-          arguments: [" * `pool_id` - The ID of the pool to collect fees from"],
+          "name": "doc-comment",
+          "arguments": [
+            " * `pool_id` - The ID of the pool to collect fees from"
+          ]
         },
         {
-          name: "doc-comment",
-          arguments: [""],
+          "name": "doc-comment",
+          "arguments": [
+            ""
+          ]
         },
         {
-          name: "doc-comment",
-          arguments: [" # Returns"],
+          "name": "doc-comment",
+          "arguments": [
+            " # Returns"
+          ]
         },
         {
-          name: "doc-comment",
-          arguments: [""],
+          "name": "doc-comment",
+          "arguments": [
+            ""
+          ]
         },
         {
-          name: "doc-comment",
-          arguments: [
-            " * `Amounts` - Amounts of protocol fees collected for token X and Y",
-          ],
+          "name": "doc-comment",
+          "arguments": [
+            " * `Amounts` - Amounts of protocol fees collected for token X and Y"
+          ]
         },
         {
-          name: "doc-comment",
-          arguments: [""],
+          "name": "doc-comment",
+          "arguments": [
+            ""
+          ]
         },
         {
-          name: "doc-comment",
-          arguments: [" # Reverts"],
+          "name": "doc-comment",
+          "arguments": [
+            " # Reverts"
+          ]
         },
         {
-          name: "doc-comment",
-          arguments: [""],
+          "name": "doc-comment",
+          "arguments": [
+            ""
+          ]
         },
         {
-          name: "doc-comment",
-          arguments: [" * When called by non-fee recipient"],
+          "name": "doc-comment",
+          "arguments": [
+            " * When called by non-fee recipient"
+          ]
         },
         {
-          name: "doc-comment",
-          arguments: [" * When pool does not exist"],
+          "name": "doc-comment",
+          "arguments": [
+            " * When pool does not exist"
+          ]
         },
         {
-          name: "doc-comment",
-          arguments: [""],
+          "name": "doc-comment",
+          "arguments": [
+            ""
+          ]
         },
         {
-          name: "doc-comment",
-          arguments: [" # Additional notes"],
+          "name": "doc-comment",
+          "arguments": [
+            " # Additional notes"
+          ]
         },
         {
-          name: "doc-comment",
-          arguments: [""],
+          "name": "doc-comment",
+          "arguments": [
+            ""
+          ]
         },
         {
-          name: "doc-comment",
-          arguments: [
-            " * If no protocol fees are available, the function returns zero amounts without reverting",
-          ],
+          "name": "doc-comment",
+          "arguments": [
+            " * If no protocol fees are available, the function returns zero amounts without reverting"
+          ]
         },
         {
-          name: "doc-comment",
-          arguments: [
-            " * No event is emitted when there are no fees to collect",
-          ],
+          "name": "doc-comment",
+          "arguments": [
+            " * No event is emitted when there are no fees to collect"
+          ]
         },
         {
-          name: "storage",
-          arguments: ["read", "write"],
-        },
-      ],
+          "name": "storage",
+          "arguments": [
+            "read",
+            "write"
+          ]
+        }
+      ]
     },
     {
-      name: "create_pool",
-      inputs: [
+      "name": "create_pool",
+      "inputs": [
         {
-          name: "pool",
-          concreteTypeId:
-            "3a6dbf3cb7892f6095401b6df91dd102065a7927022feb965961ef73d6d786a8",
+          "name": "pool",
+          "concreteTypeId": "3a6dbf3cb7892f6095401b6df91dd102065a7927022feb965961ef73d6d786a8"
         },
         {
-          name: "active_id",
-          concreteTypeId:
-            "d7649d428b9ff33d188ecbf38a7e4d8fd167fa01b2e10fe9a8f9308e52f1d7cc",
-        },
+          "name": "active_id",
+          "concreteTypeId": "d7649d428b9ff33d188ecbf38a7e4d8fd167fa01b2e10fe9a8f9308e52f1d7cc"
+        }
       ],
-      output:
-        "1b5759d94094368cfd443019e7ca5ec4074300e544e5ea993a979f5da627261e",
-      attributes: [
+      "output": "1b5759d94094368cfd443019e7ca5ec4074300e544e5ea993a979f5da627261e",
+      "attributes": [
         {
-          name: "doc-comment",
-          arguments: [" Creates a new liquidity pool"],
+          "name": "doc-comment",
+          "arguments": [
+            " Creates a new liquidity pool"
+          ]
         },
         {
-          name: "doc-comment",
-          arguments: [""],
+          "name": "doc-comment",
+          "arguments": [
+            ""
+          ]
         },
         {
-          name: "doc-comment",
-          arguments: [" # Arguments"],
+          "name": "doc-comment",
+          "arguments": [
+            " # Arguments"
+          ]
         },
         {
-          name: "doc-comment",
-          arguments: [""],
+          "name": "doc-comment",
+          "arguments": [
+            ""
+          ]
         },
         {
-          name: "doc-comment",
-          arguments: [
-            " * `pool` - Basic pool data (asset_x, asset_y, bin_step)",
-          ],
+          "name": "doc-comment",
+          "arguments": [
+            " * `pool` - Basic pool data (asset_x, asset_y, bin_step)"
+          ]
         },
         {
-          name: "doc-comment",
-          arguments: [" * `active_id` - Initial active bin ID for the pool"],
+          "name": "doc-comment",
+          "arguments": [
+            " * `active_id` - Initial active bin ID for the pool"
+          ]
         },
         {
-          name: "doc-comment",
-          arguments: [" * `fee_params` - Static fee parameters for the pool"],
+          "name": "doc-comment",
+          "arguments": [
+            " * `fee_params` - Static fee parameters for the pool"
+          ]
         },
         {
-          name: "doc-comment",
-          arguments: [""],
+          "name": "doc-comment",
+          "arguments": [
+            ""
+          ]
         },
         {
-          name: "doc-comment",
-          arguments: [" # Returns"],
+          "name": "doc-comment",
+          "arguments": [
+            " # Returns"
+          ]
         },
         {
-          name: "doc-comment",
-          arguments: [""],
+          "name": "doc-comment",
+          "arguments": [
+            ""
+          ]
         },
         {
-          name: "doc-comment",
-          arguments: [" * `PoolId` - The ID of the newly created pool"],
+          "name": "doc-comment",
+          "arguments": [
+            " * `PoolId` - The ID of the newly created pool"
+          ]
         },
         {
-          name: "doc-comment",
-          arguments: [""],
+          "name": "doc-comment",
+          "arguments": [
+            ""
+          ]
         },
         {
-          name: "doc-comment",
-          arguments: [" # Reverts"],
+          "name": "doc-comment",
+          "arguments": [
+            " # Reverts"
+          ]
         },
         {
-          name: "doc-comment",
-          arguments: [""],
+          "name": "doc-comment",
+          "arguments": [
+            ""
+          ]
         },
         {
-          name: "doc-comment",
-          arguments: [" * When the pool is not initialized"],
+          "name": "doc-comment",
+          "arguments": [
+            " * When the pool is not initialized"
+          ]
         },
         {
-          name: "doc-comment",
-          arguments: [" * When pool_id already exists"],
+          "name": "doc-comment",
+          "arguments": [
+            " * When pool_id already exists"
+          ]
         },
         {
-          name: "doc-comment",
-          arguments: [
-            " * When bin step is below minimum or above maximum [1 to 10000]",
-          ],
+          "name": "doc-comment",
+          "arguments": [
+            " * When bin step is below minimum or above maximum [1 to 10000]"
+          ]
         },
         {
-          name: "doc-comment",
-          arguments: [" * When active_id provided does not have a valid price"],
+          "name": "doc-comment",
+          "arguments": [
+            " * When active_id provided does not have a valid price"
+          ]
         },
         {
-          name: "doc-comment",
-          arguments: [" * When identical asset addresses are provided"],
+          "name": "doc-comment",
+          "arguments": [
+            " * When identical asset addresses are provided"
+          ]
         },
         {
-          name: "doc-comment",
-          arguments: [""],
+          "name": "doc-comment",
+          "arguments": [
+            ""
+          ]
         },
         {
-          name: "doc-comment",
-          arguments: [" # Additional notes"],
+          "name": "doc-comment",
+          "arguments": [
+            " # Additional notes"
+          ]
         },
         {
-          name: "doc-comment",
-          arguments: [""],
+          "name": "doc-comment",
+          "arguments": [
+            ""
+          ]
         },
         {
-          name: "doc-comment",
-          arguments: [" * created with no liquidity in it"],
+          "name": "doc-comment",
+          "arguments": [
+            " * created with no liquidity in it"
+          ]
         },
         {
-          name: "doc-comment",
-          arguments: [
-            " * uses contract-level configurable lp fee and protocol share",
-          ],
+          "name": "doc-comment",
+          "arguments": [
+            " * uses contract-level configurable lp fee and protocol share"
+          ]
         },
         {
-          name: "storage",
-          arguments: ["read", "write"],
-        },
-      ],
+          "name": "storage",
+          "arguments": [
+            "read",
+            "write"
+          ]
+        }
+      ]
     },
     {
-      name: "get_base_fee",
-      inputs: [
+      "name": "get_base_fee",
+      "inputs": [
         {
-          name: "pool_id",
-          concreteTypeId:
-            "1b5759d94094368cfd443019e7ca5ec4074300e544e5ea993a979f5da627261e",
-        },
+          "name": "pool_id",
+          "concreteTypeId": "1b5759d94094368cfd443019e7ca5ec4074300e544e5ea993a979f5da627261e"
+        }
       ],
-      output:
-        "1506e6f44c1d6291cdf46395a8e573276a4fa79e8ace3fc891e092ef32d1b0a0",
-      attributes: [
+      "output": "1506e6f44c1d6291cdf46395a8e573276a4fa79e8ace3fc891e092ef32d1b0a0",
+      "attributes": [
         {
-          name: "doc-comment",
-          arguments: [
-            " Returns the calculated base fee for the specified pool",
-          ],
+          "name": "doc-comment",
+          "arguments": [
+            " Returns the calculated base fee for the specified pool"
+          ]
         },
         {
-          name: "doc-comment",
-          arguments: [""],
+          "name": "doc-comment",
+          "arguments": [
+            ""
+          ]
         },
         {
-          name: "doc-comment",
-          arguments: [
-            " This function calculates the LFJ base fee using the formula: baseFactor * binStep",
-          ],
+          "name": "doc-comment",
+          "arguments": [
+            " This function calculates the LFJ base fee using the formula: baseFactor * binStep"
+          ]
         },
         {
-          name: "doc-comment",
-          arguments: [" The result is returned in basis points."],
+          "name": "doc-comment",
+          "arguments": [
+            " The result is returned in basis points."
+          ]
         },
         {
-          name: "doc-comment",
-          arguments: [""],
+          "name": "doc-comment",
+          "arguments": [
+            ""
+          ]
         },
         {
-          name: "doc-comment",
-          arguments: [" # Argument"],
+          "name": "doc-comment",
+          "arguments": [
+            " # Argument"
+          ]
         },
         {
-          name: "doc-comment",
-          arguments: [""],
+          "name": "doc-comment",
+          "arguments": [
+            ""
+          ]
         },
         {
-          name: "doc-comment",
-          arguments: [" * `pool_id` - The ID of the pool to query"],
+          "name": "doc-comment",
+          "arguments": [
+            " * `pool_id` - The ID of the pool to query"
+          ]
         },
         {
-          name: "doc-comment",
-          arguments: [""],
+          "name": "doc-comment",
+          "arguments": [
+            ""
+          ]
         },
         {
-          name: "doc-comment",
-          arguments: [" # Returns"],
+          "name": "doc-comment",
+          "arguments": [
+            " # Returns"
+          ]
         },
         {
-          name: "doc-comment",
-          arguments: [""],
+          "name": "doc-comment",
+          "arguments": [
+            ""
+          ]
         },
         {
-          name: "doc-comment",
-          arguments: [" * `u64` - The calculated base fee if the pool exists"],
+          "name": "doc-comment",
+          "arguments": [
+            " * `u64` - The calculated base fee if the pool exists"
+          ]
         },
         {
-          name: "storage",
-          arguments: ["read"],
-        },
-      ],
+          "name": "storage",
+          "arguments": [
+            "read"
+          ]
+        }
+      ]
     },
     {
-      name: "get_bin",
-      inputs: [
+      "name": "get_bin",
+      "inputs": [
         {
-          name: "pool_id",
-          concreteTypeId:
-            "1b5759d94094368cfd443019e7ca5ec4074300e544e5ea993a979f5da627261e",
+          "name": "pool_id",
+          "concreteTypeId": "1b5759d94094368cfd443019e7ca5ec4074300e544e5ea993a979f5da627261e"
         },
         {
-          name: "bin_id",
-          concreteTypeId:
-            "d7649d428b9ff33d188ecbf38a7e4d8fd167fa01b2e10fe9a8f9308e52f1d7cc",
-        },
+          "name": "bin_id",
+          "concreteTypeId": "d7649d428b9ff33d188ecbf38a7e4d8fd167fa01b2e10fe9a8f9308e52f1d7cc"
+        }
       ],
-      output:
-        "9c066b1e77a8daa488768ee32902f91de88ed9a2f175f93d7b7202709f86808f",
-      attributes: [
+      "output": "9c066b1e77a8daa488768ee32902f91de88ed9a2f175f93d7b7202709f86808f",
+      "attributes": [
         {
-          name: "doc-comment",
-          arguments: [" Returns the amounts for a specific bin in a pool"],
+          "name": "doc-comment",
+          "arguments": [
+            " Returns the amounts for a specific bin in a pool"
+          ]
         },
         {
-          name: "doc-comment",
-          arguments: [""],
+          "name": "doc-comment",
+          "arguments": [
+            ""
+          ]
         },
         {
-          name: "doc-comment",
-          arguments: [" # Arguments"],
+          "name": "doc-comment",
+          "arguments": [
+            " # Arguments"
+          ]
         },
         {
-          name: "doc-comment",
-          arguments: [""],
+          "name": "doc-comment",
+          "arguments": [
+            ""
+          ]
         },
         {
-          name: "doc-comment",
-          arguments: [" * `pool_id` - The ID of the pool"],
+          "name": "doc-comment",
+          "arguments": [
+            " * `pool_id` - The ID of the pool"
+          ]
         },
         {
-          name: "doc-comment",
-          arguments: [" * `bin_id` - The ID of the bin to query"],
+          "name": "doc-comment",
+          "arguments": [
+            " * `bin_id` - The ID of the bin to query"
+          ]
         },
         {
-          name: "doc-comment",
-          arguments: [""],
+          "name": "doc-comment",
+          "arguments": [
+            ""
+          ]
         },
         {
-          name: "doc-comment",
-          arguments: [" # Returns"],
+          "name": "doc-comment",
+          "arguments": [
+            " # Returns"
+          ]
         },
         {
-          name: "doc-comment",
-          arguments: [""],
+          "name": "doc-comment",
+          "arguments": [
+            ""
+          ]
         },
         {
-          name: "doc-comment",
-          arguments: [
-            " * `Option<Amounts>` - The bin reserves if the bin exists and has liquidity",
-          ],
+          "name": "doc-comment",
+          "arguments": [
+            " * `Option<Amounts>` - The bin reserves if the bin exists and has liquidity"
+          ]
         },
         {
-          name: "storage",
-          arguments: ["read"],
-        },
-      ],
+          "name": "storage",
+          "arguments": [
+            "read"
+          ]
+        }
+      ]
     },
     {
-      name: "get_fee_recipient",
-      inputs: [],
-      output:
-        "ab7cd04e05be58e3fc15d424c2c4a57f824a2a2d97d67252440a3925ebdc1335",
-      attributes: [
+      "name": "get_fee_recipient",
+      "inputs": [],
+      "output": "ab7cd04e05be58e3fc15d424c2c4a57f824a2a2d97d67252440a3925ebdc1335",
+      "attributes": [
         {
-          name: "doc-comment",
-          arguments: [" Returns the current fee recipient address"],
+          "name": "doc-comment",
+          "arguments": [
+            " Returns the current fee recipient address"
+          ]
         },
         {
-          name: "doc-comment",
-          arguments: [""],
+          "name": "doc-comment",
+          "arguments": [
+            ""
+          ]
         },
         {
-          name: "doc-comment",
-          arguments: [" # Returns"],
+          "name": "doc-comment",
+          "arguments": [
+            " # Returns"
+          ]
         },
         {
-          name: "doc-comment",
-          arguments: [""],
+          "name": "doc-comment",
+          "arguments": [
+            ""
+          ]
         },
         {
-          name: "doc-comment",
-          arguments: [
-            " * `Identity` - The address that receives protocol fees",
-          ],
+          "name": "doc-comment",
+          "arguments": [
+            " * `Identity` - The address that receives protocol fees"
+          ]
         },
         {
-          name: "storage",
-          arguments: ["read"],
-        },
-      ],
+          "name": "storage",
+          "arguments": [
+            "read"
+          ]
+        }
+      ]
     },
     {
-      name: "get_hook",
-      inputs: [],
-      output:
-        "29c10735d33b5159f0c71ee1dbd17b36a3e69e41f00fab0d42e1bd9f428d8a54",
-      attributes: [
+      "name": "get_hook",
+      "inputs": [],
+      "output": "29c10735d33b5159f0c71ee1dbd17b36a3e69e41f00fab0d42e1bd9f428d8a54",
+      "attributes": [
         {
-          name: "doc-comment",
-          arguments: [" Returns the current hook contract ID"],
+          "name": "doc-comment",
+          "arguments": [
+            " Returns the current hook contract ID"
+          ]
         },
         {
-          name: "doc-comment",
-          arguments: [""],
+          "name": "doc-comment",
+          "arguments": [
+            ""
+          ]
         },
         {
-          name: "doc-comment",
-          arguments: [" # Returns"],
+          "name": "doc-comment",
+          "arguments": [
+            " # Returns"
+          ]
         },
         {
-          name: "doc-comment",
-          arguments: [""],
+          "name": "doc-comment",
+          "arguments": [
+            ""
+          ]
         },
         {
-          name: "doc-comment",
-          arguments: [" * `ContractId` - The ID of the hook contract"],
+          "name": "doc-comment",
+          "arguments": [
+            " * `ContractId` - The ID of the hook contract"
+          ]
         },
         {
-          name: "storage",
-          arguments: ["read"],
-        },
-      ],
+          "name": "storage",
+          "arguments": [
+            "read"
+          ]
+        }
+      ]
     },
     {
-      name: "get_next_non_empty_bin",
-      inputs: [
+      "name": "get_next_non_empty_bin",
+      "inputs": [
         {
-          name: "pool_id",
-          concreteTypeId:
-            "1b5759d94094368cfd443019e7ca5ec4074300e544e5ea993a979f5da627261e",
+          "name": "pool_id",
+          "concreteTypeId": "1b5759d94094368cfd443019e7ca5ec4074300e544e5ea993a979f5da627261e"
         },
         {
-          name: "swap_for_y",
-          concreteTypeId:
-            "b760f44fa5965c2474a3b471467a22c43185152129295af588b022ae50b50903",
+          "name": "swap_for_y",
+          "concreteTypeId": "b760f44fa5965c2474a3b471467a22c43185152129295af588b022ae50b50903"
         },
         {
-          name: "bin_id",
-          concreteTypeId:
-            "d7649d428b9ff33d188ecbf38a7e4d8fd167fa01b2e10fe9a8f9308e52f1d7cc",
-        },
+          "name": "bin_id",
+          "concreteTypeId": "d7649d428b9ff33d188ecbf38a7e4d8fd167fa01b2e10fe9a8f9308e52f1d7cc"
+        }
       ],
-      output:
-        "97a75a6d6e892f11f5032fa516e39675b76377c3313d64f465a2c77c34a9e600",
-      attributes: [
+      "output": "97a75a6d6e892f11f5032fa516e39675b76377c3313d64f465a2c77c34a9e600",
+      "attributes": [
         {
-          name: "doc-comment",
-          arguments: [
-            " Returns the next non-empty bin in the specified direction",
-          ],
+          "name": "doc-comment",
+          "arguments": [
+            " Returns the next non-empty bin in the specified direction"
+          ]
         },
         {
-          name: "doc-comment",
-          arguments: [""],
+          "name": "doc-comment",
+          "arguments": [
+            ""
+          ]
         },
         {
-          name: "doc-comment",
-          arguments: [
-            " This function is used during swaps to find the next bin with liquidity",
-          ],
+          "name": "doc-comment",
+          "arguments": [
+            " This function is used during swaps to find the next bin with liquidity"
+          ]
         },
         {
-          name: "doc-comment",
-          arguments: [" in the direction of the swap."],
+          "name": "doc-comment",
+          "arguments": [
+            " in the direction of the swap."
+          ]
         },
         {
-          name: "doc-comment",
-          arguments: [""],
+          "name": "doc-comment",
+          "arguments": [
+            ""
+          ]
         },
         {
-          name: "doc-comment",
-          arguments: [" # Arguments"],
+          "name": "doc-comment",
+          "arguments": [
+            " # Arguments"
+          ]
         },
         {
-          name: "doc-comment",
-          arguments: [""],
+          "name": "doc-comment",
+          "arguments": [
+            ""
+          ]
         },
         {
-          name: "doc-comment",
-          arguments: [" * `pool_id` - The ID of the pool"],
+          "name": "doc-comment",
+          "arguments": [
+            " * `pool_id` - The ID of the pool"
+          ]
         },
         {
-          name: "doc-comment",
-          arguments: [
-            " * `swap_for_y` - If true, search for higher bin IDs; if false, search for lower bin IDs",
-          ],
+          "name": "doc-comment",
+          "arguments": [
+            " * `swap_for_y` - If true, search for higher bin IDs; if false, search for lower bin IDs"
+          ]
         },
         {
-          name: "doc-comment",
-          arguments: [" * `bin_id` - The starting bin ID"],
+          "name": "doc-comment",
+          "arguments": [
+            " * `bin_id` - The starting bin ID"
+          ]
         },
         {
-          name: "doc-comment",
-          arguments: [""],
+          "name": "doc-comment",
+          "arguments": [
+            ""
+          ]
         },
         {
-          name: "doc-comment",
-          arguments: [" # Returns"],
+          "name": "doc-comment",
+          "arguments": [
+            " # Returns"
+          ]
         },
         {
-          name: "doc-comment",
-          arguments: [""],
+          "name": "doc-comment",
+          "arguments": [
+            ""
+          ]
         },
         {
-          name: "doc-comment",
-          arguments: [
-            " * `Option<BinId>` - The next non-empty bin ID if found",
-          ],
+          "name": "doc-comment",
+          "arguments": [
+            " * `Option<BinId>` - The next non-empty bin ID if found"
+          ]
         },
         {
-          name: "storage",
-          arguments: ["read"],
-        },
-      ],
+          "name": "storage",
+          "arguments": [
+            "read"
+          ]
+        }
+      ]
     },
     {
-      name: "get_pool",
-      inputs: [
+      "name": "get_pool",
+      "inputs": [
         {
-          name: "pool_id",
-          concreteTypeId:
-            "1b5759d94094368cfd443019e7ca5ec4074300e544e5ea993a979f5da627261e",
-        },
+          "name": "pool_id",
+          "concreteTypeId": "1b5759d94094368cfd443019e7ca5ec4074300e544e5ea993a979f5da627261e"
+        }
       ],
-      output:
-        "703e41c0f4f9e400926cd6b573fdc22f3a50956843952741babf563bdd92131b",
-      attributes: [
+      "output": "703e41c0f4f9e400926cd6b573fdc22f3a50956843952741babf563bdd92131b",
+      "attributes": [
         {
-          name: "doc-comment",
-          arguments: [" Returns pool information for the specified pool ID"],
+          "name": "doc-comment",
+          "arguments": [
+            " Returns pool information for the specified pool ID"
+          ]
         },
         {
-          name: "doc-comment",
-          arguments: [""],
+          "name": "doc-comment",
+          "arguments": [
+            ""
+          ]
         },
         {
-          name: "doc-comment",
-          arguments: [" # Arguments"],
+          "name": "doc-comment",
+          "arguments": [
+            " # Arguments"
+          ]
         },
         {
-          name: "doc-comment",
-          arguments: [""],
+          "name": "doc-comment",
+          "arguments": [
+            ""
+          ]
         },
         {
-          name: "doc-comment",
-          arguments: [" * `pool_id` - The ID of the pool to query"],
+          "name": "doc-comment",
+          "arguments": [
+            " * `pool_id` - The ID of the pool to query"
+          ]
         },
         {
-          name: "doc-comment",
-          arguments: [""],
+          "name": "doc-comment",
+          "arguments": [
+            ""
+          ]
         },
         {
-          name: "doc-comment",
-          arguments: [" # Returns"],
+          "name": "doc-comment",
+          "arguments": [
+            " # Returns"
+          ]
         },
         {
-          name: "doc-comment",
-          arguments: [""],
+          "name": "doc-comment",
+          "arguments": [
+            ""
+          ]
         },
         {
-          name: "doc-comment",
-          arguments: [" * `Option<PoolInfo>` - Pool information if it exists"],
+          "name": "doc-comment",
+          "arguments": [
+            " * `Option<PoolInfo>` - Pool information if it exists"
+          ]
         },
         {
-          name: "storage",
-          arguments: ["read"],
-        },
-      ],
+          "name": "storage",
+          "arguments": [
+            "read"
+          ]
+        }
+      ]
     },
     {
-      name: "get_pool_active_bin_id",
-      inputs: [
+      "name": "get_pool_active_bin_id",
+      "inputs": [
         {
-          name: "pool_id",
-          concreteTypeId:
-            "1b5759d94094368cfd443019e7ca5ec4074300e544e5ea993a979f5da627261e",
-        },
+          "name": "pool_id",
+          "concreteTypeId": "1b5759d94094368cfd443019e7ca5ec4074300e544e5ea993a979f5da627261e"
+        }
       ],
-      output:
-        "97a75a6d6e892f11f5032fa516e39675b76377c3313d64f465a2c77c34a9e600",
-      attributes: [
+      "output": "97a75a6d6e892f11f5032fa516e39675b76377c3313d64f465a2c77c34a9e600",
+      "attributes": [
         {
-          name: "doc-comment",
-          arguments: [
-            " Returns the current active bin ID for the specified pool",
-          ],
+          "name": "doc-comment",
+          "arguments": [
+            " Returns the current active bin ID for the specified pool"
+          ]
         },
         {
-          name: "doc-comment",
-          arguments: [""],
+          "name": "doc-comment",
+          "arguments": [
+            ""
+          ]
         },
         {
-          name: "doc-comment",
-          arguments: [
-            " The active bin represents the current price level of the pool.",
-          ],
+          "name": "doc-comment",
+          "arguments": [
+            " The active bin represents the current price level of the pool."
+          ]
         },
         {
-          name: "doc-comment",
-          arguments: [""],
+          "name": "doc-comment",
+          "arguments": [
+            ""
+          ]
         },
         {
-          name: "doc-comment",
-          arguments: [" # Arguments"],
+          "name": "doc-comment",
+          "arguments": [
+            " # Arguments"
+          ]
         },
         {
-          name: "doc-comment",
-          arguments: [""],
+          "name": "doc-comment",
+          "arguments": [
+            ""
+          ]
         },
         {
-          name: "doc-comment",
-          arguments: [" * `pool_id` - The ID of the pool to query"],
+          "name": "doc-comment",
+          "arguments": [
+            " * `pool_id` - The ID of the pool to query"
+          ]
         },
         {
-          name: "doc-comment",
-          arguments: [""],
+          "name": "doc-comment",
+          "arguments": [
+            ""
+          ]
         },
         {
-          name: "doc-comment",
-          arguments: [" # Returns"],
+          "name": "doc-comment",
+          "arguments": [
+            " # Returns"
+          ]
         },
         {
-          name: "doc-comment",
-          arguments: [""],
+          "name": "doc-comment",
+          "arguments": [
+            ""
+          ]
         },
         {
-          name: "doc-comment",
-          arguments: [
-            " * `Option<BinId>` - The active bin ID if the pool exists",
-          ],
+          "name": "doc-comment",
+          "arguments": [
+            " * `Option<BinId>` - The active bin ID if the pool exists"
+          ]
         },
         {
-          name: "storage",
-          arguments: ["read"],
-        },
-      ],
+          "name": "storage",
+          "arguments": [
+            "read"
+          ]
+        }
+      ]
     },
     {
-      name: "get_pool_protocol_fees",
-      inputs: [
+      "name": "get_pool_protocol_fees",
+      "inputs": [
         {
-          name: "pool_id",
-          concreteTypeId:
-            "1b5759d94094368cfd443019e7ca5ec4074300e544e5ea993a979f5da627261e",
-        },
+          "name": "pool_id",
+          "concreteTypeId": "1b5759d94094368cfd443019e7ca5ec4074300e544e5ea993a979f5da627261e"
+        }
       ],
-      output:
-        "57d2e437e87f6bc31bc035d0bb8aad8c57dc720f196f55cfd6de1e387ca8823a",
-      attributes: [
+      "output": "57d2e437e87f6bc31bc035d0bb8aad8c57dc720f196f55cfd6de1e387ca8823a",
+      "attributes": [
         {
-          name: "doc-comment",
-          arguments: [
-            " Returns the accumulated protocol fees for the specified pool",
-          ],
+          "name": "doc-comment",
+          "arguments": [
+            " Returns the accumulated protocol fees for the specified pool"
+          ]
         },
         {
-          name: "doc-comment",
-          arguments: [""],
+          "name": "doc-comment",
+          "arguments": [
+            ""
+          ]
         },
         {
-          name: "doc-comment",
-          arguments: [" # Arguments"],
+          "name": "doc-comment",
+          "arguments": [
+            " # Arguments"
+          ]
         },
         {
-          name: "doc-comment",
-          arguments: [""],
+          "name": "doc-comment",
+          "arguments": [
+            ""
+          ]
         },
         {
-          name: "doc-comment",
-          arguments: [" * `pool_id` - The ID of the pool to query"],
+          "name": "doc-comment",
+          "arguments": [
+            " * `pool_id` - The ID of the pool to query"
+          ]
         },
         {
-          name: "doc-comment",
-          arguments: [""],
+          "name": "doc-comment",
+          "arguments": [
+            ""
+          ]
         },
         {
-          name: "doc-comment",
-          arguments: [" # Returns"],
+          "name": "doc-comment",
+          "arguments": [
+            " # Returns"
+          ]
         },
         {
-          name: "doc-comment",
-          arguments: [""],
+          "name": "doc-comment",
+          "arguments": [
+            ""
+          ]
         },
         {
-          name: "doc-comment",
-          arguments: [
-            " * `Amounts` - Accumulated protocol fees for token X and Y",
-          ],
+          "name": "doc-comment",
+          "arguments": [
+            " * `Amounts` - Accumulated protocol fees for token X and Y"
+          ]
         },
         {
-          name: "storage",
-          arguments: ["read"],
-        },
-      ],
+          "name": "storage",
+          "arguments": [
+            "read"
+          ]
+        }
+      ]
     },
     {
-      name: "get_pool_reserves",
-      inputs: [
+      "name": "get_pool_reserves",
+      "inputs": [
         {
-          name: "pool_id",
-          concreteTypeId:
-            "1b5759d94094368cfd443019e7ca5ec4074300e544e5ea993a979f5da627261e",
-        },
+          "name": "pool_id",
+          "concreteTypeId": "1b5759d94094368cfd443019e7ca5ec4074300e544e5ea993a979f5da627261e"
+        }
       ],
-      output:
-        "57d2e437e87f6bc31bc035d0bb8aad8c57dc720f196f55cfd6de1e387ca8823a",
-      attributes: [
+      "output": "57d2e437e87f6bc31bc035d0bb8aad8c57dc720f196f55cfd6de1e387ca8823a",
+      "attributes": [
         {
-          name: "doc-comment",
-          arguments: [" Returns the current amounts for the specified pool"],
+          "name": "doc-comment",
+          "arguments": [
+            " Returns the current amounts for the specified pool"
+          ]
         },
         {
-          name: "doc-comment",
-          arguments: [""],
+          "name": "doc-comment",
+          "arguments": [
+            ""
+          ]
         },
         {
-          name: "doc-comment",
-          arguments: [" # Arguments"],
+          "name": "doc-comment",
+          "arguments": [
+            " # Arguments"
+          ]
         },
         {
-          name: "doc-comment",
-          arguments: [""],
+          "name": "doc-comment",
+          "arguments": [
+            ""
+          ]
         },
         {
-          name: "doc-comment",
-          arguments: [" * `pool_id` - The ID of the pool to query"],
+          "name": "doc-comment",
+          "arguments": [
+            " * `pool_id` - The ID of the pool to query"
+          ]
         },
         {
-          name: "doc-comment",
-          arguments: [""],
+          "name": "doc-comment",
+          "arguments": [
+            ""
+          ]
         },
         {
-          name: "doc-comment",
-          arguments: [" # Returns"],
+          "name": "doc-comment",
+          "arguments": [
+            " # Returns"
+          ]
         },
         {
-          name: "doc-comment",
-          arguments: [""],
+          "name": "doc-comment",
+          "arguments": [
+            ""
+          ]
         },
         {
-          name: "doc-comment",
-          arguments: [" * `Amounts` - Current amounts of token X and Y"],
+          "name": "doc-comment",
+          "arguments": [
+            " * `Amounts` - Current amounts of token X and Y"
+          ]
         },
         {
-          name: "storage",
-          arguments: ["read"],
-        },
-      ],
+          "name": "storage",
+          "arguments": [
+            "read"
+          ]
+        }
+      ]
     },
     {
-      name: "get_price_from_id",
-      inputs: [
+      "name": "get_price_from_id",
+      "inputs": [
         {
-          name: "pool_id",
-          concreteTypeId:
-            "1b5759d94094368cfd443019e7ca5ec4074300e544e5ea993a979f5da627261e",
+          "name": "pool_id",
+          "concreteTypeId": "1b5759d94094368cfd443019e7ca5ec4074300e544e5ea993a979f5da627261e"
         },
         {
-          name: "bin_id",
-          concreteTypeId:
-            "d7649d428b9ff33d188ecbf38a7e4d8fd167fa01b2e10fe9a8f9308e52f1d7cc",
-        },
+          "name": "bin_id",
+          "concreteTypeId": "d7649d428b9ff33d188ecbf38a7e4d8fd167fa01b2e10fe9a8f9308e52f1d7cc"
+        }
       ],
-      output:
-        "1b5759d94094368cfd443019e7ca5ec4074300e544e5ea993a979f5da627261e",
-      attributes: [
+      "output": "1b5759d94094368cfd443019e7ca5ec4074300e544e5ea993a979f5da627261e",
+      "attributes": [
         {
-          name: "doc-comment",
-          arguments: [" Returns the price corresponding to a given bin ID"],
+          "name": "doc-comment",
+          "arguments": [
+            " Returns the price corresponding to a given bin ID"
+          ]
         },
         {
-          name: "doc-comment",
-          arguments: [""],
+          "name": "doc-comment",
+          "arguments": [
+            ""
+          ]
         },
         {
-          name: "doc-comment",
-          arguments: [" # Arguments"],
+          "name": "doc-comment",
+          "arguments": [
+            " # Arguments"
+          ]
         },
         {
-          name: "doc-comment",
-          arguments: [""],
+          "name": "doc-comment",
+          "arguments": [
+            ""
+          ]
         },
         {
-          name: "doc-comment",
-          arguments: [" * `pool_id` - The ID of the pool"],
+          "name": "doc-comment",
+          "arguments": [
+            " * `pool_id` - The ID of the pool"
+          ]
         },
         {
-          name: "doc-comment",
-          arguments: [" * `bin_id` - The bin ID to get the price for"],
+          "name": "doc-comment",
+          "arguments": [
+            " * `bin_id` - The bin ID to get the price for"
+          ]
         },
         {
-          name: "doc-comment",
-          arguments: [""],
+          "name": "doc-comment",
+          "arguments": [
+            ""
+          ]
         },
         {
-          name: "doc-comment",
-          arguments: [" # Returns"],
+          "name": "doc-comment",
+          "arguments": [
+            " # Returns"
+          ]
         },
         {
-          name: "doc-comment",
-          arguments: [""],
+          "name": "doc-comment",
+          "arguments": [
+            ""
+          ]
         },
         {
-          name: "doc-comment",
-          arguments: [" * `Price` - The price if the pool exists"],
+          "name": "doc-comment",
+          "arguments": [
+            " * `Price` - The price if the pool exists"
+          ]
         },
         {
-          name: "doc-comment",
-          arguments: [""],
+          "name": "doc-comment",
+          "arguments": [
+            ""
+          ]
         },
         {
-          name: "doc-comment",
-          arguments: [" # Reverts"],
+          "name": "doc-comment",
+          "arguments": [
+            " # Reverts"
+          ]
         },
         {
-          name: "doc-comment",
-          arguments: [""],
+          "name": "doc-comment",
+          "arguments": [
+            ""
+          ]
         },
         {
-          name: "doc-comment",
-          arguments: [" * When pool does not exist"],
+          "name": "doc-comment",
+          "arguments": [
+            " * When pool does not exist"
+          ]
         },
         {
-          name: "storage",
-          arguments: ["read"],
-        },
-      ],
+          "name": "storage",
+          "arguments": [
+            "read"
+          ]
+        }
+      ]
     },
     {
-      name: "get_protocol_fees",
-      inputs: [],
-      output:
-        "29881aad8730c5ab11d275376323d8e4ff4179aae8ccb6c13fe4902137e162ef",
-      attributes: [
+      "name": "get_protocol_fees",
+      "inputs": [],
+      "output": "29881aad8730c5ab11d275376323d8e4ff4179aae8ccb6c13fe4902137e162ef",
+      "attributes": [
         {
-          name: "doc-comment",
-          arguments: [" Returns the current protocol fees in basis points"],
+          "name": "doc-comment",
+          "arguments": [
+            " Returns the current protocol fees in basis points"
+          ]
         },
         {
-          name: "doc-comment",
-          arguments: [""],
+          "name": "doc-comment",
+          "arguments": [
+            ""
+          ]
         },
         {
-          name: "doc-comment",
-          arguments: [" # Returns"],
+          "name": "doc-comment",
+          "arguments": [
+            " # Returns"
+          ]
         },
         {
-          name: "doc-comment",
-          arguments: [""],
+          "name": "doc-comment",
+          "arguments": [
+            ""
+          ]
         },
         {
-          name: "doc-comment",
-          arguments: [" * `u16` - The current protocol fees in basis points"],
+          "name": "doc-comment",
+          "arguments": [
+            " * `u16` - The current protocol fees in basis points"
+          ]
         },
         {
-          name: "storage",
-          arguments: ["read"],
-        },
-      ],
+          "name": "storage",
+          "arguments": [
+            "read"
+          ]
+        }
+      ]
     },
     {
-      name: "get_swap_in",
-      inputs: [
+      "name": "get_swap_in",
+      "inputs": [
         {
-          name: "pool_id",
-          concreteTypeId:
-            "1b5759d94094368cfd443019e7ca5ec4074300e544e5ea993a979f5da627261e",
+          "name": "pool_id",
+          "concreteTypeId": "1b5759d94094368cfd443019e7ca5ec4074300e544e5ea993a979f5da627261e"
         },
         {
-          name: "amount_out",
-          concreteTypeId:
-            "1506e6f44c1d6291cdf46395a8e573276a4fa79e8ace3fc891e092ef32d1b0a0",
+          "name": "amount_out",
+          "concreteTypeId": "1506e6f44c1d6291cdf46395a8e573276a4fa79e8ace3fc891e092ef32d1b0a0"
         },
         {
-          name: "swap_for_y",
-          concreteTypeId:
-            "b760f44fa5965c2474a3b471467a22c43185152129295af588b022ae50b50903",
-        },
+          "name": "swap_for_y",
+          "concreteTypeId": "b760f44fa5965c2474a3b471467a22c43185152129295af588b022ae50b50903"
+        }
       ],
-      output:
-        "9d715771850ece467c8bde9a83e15ee2d05965af9773c9d8a9cbd4572e85565b",
-      attributes: [
+      "output": "9d715771850ece467c8bde9a83e15ee2d05965af9773c9d8a9cbd4572e85565b",
+      "attributes": [
         {
-          name: "doc-comment",
-          arguments: [
-            " Calculates how much input is needed to get a specific output amount",
-          ],
+          "name": "doc-comment",
+          "arguments": [
+            " Calculates how much input is needed to get a specific output amount"
+          ]
         },
         {
-          name: "doc-comment",
-          arguments: [""],
+          "name": "doc-comment",
+          "arguments": [
+            ""
+          ]
         },
         {
-          name: "doc-comment",
-          arguments: [
-            " This function simulates a swap in the reverse direction - given a desired output amount,",
-          ],
+          "name": "doc-comment",
+          "arguments": [
+            " This function simulates a swap in the reverse direction - given a desired output amount,"
+          ]
         },
         {
-          name: "doc-comment",
-          arguments: [
-            " it calculates how much input (including fees) is needed to achieve that output.",
-          ],
+          "name": "doc-comment",
+          "arguments": [
+            " it calculates how much input (including fees) is needed to achieve that output."
+          ]
         },
         {
-          name: "doc-comment",
-          arguments: [
-            " It traverses bins starting from the active bin and accumulates the required input amounts.",
-          ],
+          "name": "doc-comment",
+          "arguments": [
+            " It traverses bins starting from the active bin and accumulates the required input amounts."
+          ]
         },
         {
-          name: "doc-comment",
-          arguments: [""],
+          "name": "doc-comment",
+          "arguments": [
+            ""
+          ]
         },
         {
-          name: "doc-comment",
-          arguments: [" # Arguments"],
+          "name": "doc-comment",
+          "arguments": [
+            " # Arguments"
+          ]
         },
         {
-          name: "doc-comment",
-          arguments: [""],
+          "name": "doc-comment",
+          "arguments": [
+            ""
+          ]
         },
         {
-          name: "doc-comment",
-          arguments: [" * `pool_id` - The ID of the pool to swap in"],
+          "name": "doc-comment",
+          "arguments": [
+            " * `pool_id` - The ID of the pool to swap in"
+          ]
         },
         {
-          name: "doc-comment",
-          arguments: [" * `amount_out` - The desired output amount"],
+          "name": "doc-comment",
+          "arguments": [
+            " * `amount_out` - The desired output amount"
+          ]
         },
         {
-          name: "doc-comment",
-          arguments: [
-            " * `swap_for_y` - If true, swap X for Y; if false, swap Y for X",
-          ],
+          "name": "doc-comment",
+          "arguments": [
+            " * `swap_for_y` - If true, swap X for Y; if false, swap Y for X"
+          ]
         },
         {
-          name: "doc-comment",
-          arguments: [" * `u64` - Total input amount needed (including fees)"],
+          "name": "doc-comment",
+          "arguments": [
+            " * `u64` - Total input amount needed (including fees)"
+          ]
         },
         {
-          name: "doc-comment",
-          arguments: [
-            " * `u64` - Amount of output that cannot be provided (remaining output)",
-          ],
+          "name": "doc-comment",
+          "arguments": [
+            " * `u64` - Amount of output that cannot be provided (remaining output)"
+          ]
         },
         {
-          name: "doc-comment",
-          arguments: [" * `u64` - Total fees for the swap"],
+          "name": "doc-comment",
+          "arguments": [
+            " * `u64` - Total fees for the swap"
+          ]
         },
         {
-          name: "doc-comment",
-          arguments: [""],
+          "name": "doc-comment",
+          "arguments": [
+            ""
+          ]
         },
         {
-          name: "doc-comment",
-          arguments: [" # Logic"],
+          "name": "doc-comment",
+          "arguments": [
+            " # Logic"
+          ]
         },
         {
-          name: "doc-comment",
-          arguments: [""],
+          "name": "doc-comment",
+          "arguments": [
+            ""
+          ]
         },
         {
-          name: "doc-comment",
-          arguments: [
-            " * Starts from the active bin and traverses bins in the swap direction",
-          ],
+          "name": "doc-comment",
+          "arguments": [
+            " * Starts from the active bin and traverses bins in the swap direction"
+          ]
         },
         {
-          name: "doc-comment",
-          arguments: [
-            " * For each bin, calculates how much input is needed to get the desired output",
-          ],
+          "name": "doc-comment",
+          "arguments": [
+            " * For each bin, calculates how much input is needed to get the desired output"
+          ]
         },
         {
-          name: "doc-comment",
-          arguments: [" * Accumulates fees and input amounts"],
+          "name": "doc-comment",
+          "arguments": [
+            " * Accumulates fees and input amounts"
+          ]
         },
         {
-          name: "doc-comment",
-          arguments: [
-            " * Returns when either the full output is achieved or no more liquidity is available",
-          ],
+          "name": "doc-comment",
+          "arguments": [
+            " * Returns when either the full output is achieved or no more liquidity is available"
+          ]
         },
         {
-          name: "storage",
-          arguments: ["read"],
-        },
-      ],
+          "name": "storage",
+          "arguments": [
+            "read"
+          ]
+        }
+      ]
     },
     {
-      name: "mint_liquidity",
-      inputs: [
+      "name": "mint_liquidity",
+      "inputs": [
         {
-          name: "args",
-          concreteTypeId:
-            "0f6e3b13b49f7d12df3eb6c918e267d8899fe54f5d2c1c6d3a5d937858f8802d",
-        },
+          "name": "args",
+          "concreteTypeId": "0f6e3b13b49f7d12df3eb6c918e267d8899fe54f5d2c1c6d3a5d937858f8802d"
+        }
       ],
-      output:
-        "7a9a97b52fb23bc372ec01841f8304ea963ab023a4c8587c8670b59071e356ff",
-      attributes: [
+      "output": "7a9a97b52fb23bc372ec01841f8304ea963ab023a4c8587c8670b59071e356ff",
+      "attributes": [
         {
-          name: "doc-comment",
-          arguments: [
-            " Mints liquidity tokens for the specified configuration",
-          ],
+          "name": "doc-comment",
+          "arguments": [
+            " Mints liquidity tokens for the specified configuration"
+          ]
         },
         {
-          name: "doc-comment",
-          arguments: [""],
+          "name": "doc-comment",
+          "arguments": [
+            ""
+          ]
         },
         {
-          name: "doc-comment",
-          arguments: [
-            " This function adds liquidity to the pool according to the provided configuration.",
-          ],
+          "name": "doc-comment",
+          "arguments": [
+            " This function adds liquidity to the pool according to the provided configuration."
+          ]
         },
         {
-          name: "doc-comment",
-          arguments: [
-            " The user must forward the tokens to this contract before calling.",
-          ],
+          "name": "doc-comment",
+          "arguments": [
+            " The user must forward the tokens to this contract before calling."
+          ]
         },
         {
-          name: "doc-comment",
-          arguments: [
-            " LP token is minted for the pool. That token represents liquidity provided to all the bins touched.",
-          ],
+          "name": "doc-comment",
+          "arguments": [
+            " LP token is minted for the pool. That token represents liquidity provided to all the bins touched."
+          ]
         },
         {
-          name: "doc-comment",
-          arguments: [""],
+          "name": "doc-comment",
+          "arguments": [
+            ""
+          ]
         },
         {
-          name: "doc-comment",
-          arguments: [" # Arguments"],
+          "name": "doc-comment",
+          "arguments": [
+            " # Arguments"
+          ]
         },
         {
-          name: "doc-comment",
-          arguments: [""],
+          "name": "doc-comment",
+          "arguments": [
+            ""
+          ]
         },
         {
-          name: "doc-comment",
-          arguments: [
-            " * `args` - Mint liquidity arguments containing amounts and configuration",
-          ],
+          "name": "doc-comment",
+          "arguments": [
+            " * `args` - Mint liquidity arguments containing amounts and configuration"
+          ]
         },
         {
-          name: "doc-comment",
-          arguments: [""],
+          "name": "doc-comment",
+          "arguments": [
+            ""
+          ]
         },
         {
-          name: "doc-comment",
-          arguments: [" # Returns"],
+          "name": "doc-comment",
+          "arguments": [
+            " # Returns"
+          ]
         },
         {
-          name: "doc-comment",
-          arguments: [""],
+          "name": "doc-comment",
+          "arguments": [
+            ""
+          ]
         },
         {
-          name: "doc-comment",
-          arguments: [" * `AssetId` - LP token minted"],
+          "name": "doc-comment",
+          "arguments": [
+            " * `AssetId` - LP token minted"
+          ]
         },
         {
-          name: "doc-comment",
-          arguments: [
-            " * `(Asset, Asset)` - Amounts of tokens actually added to the pool",
-          ],
+          "name": "doc-comment",
+          "arguments": [
+            " * `(Asset, Asset)` - Amounts of tokens actually added to the pool"
+          ]
         },
         {
-          name: "doc-comment",
-          arguments: [
-            " * `(Asset, Asset)` - Amounts of tokens refunded to the user",
-          ],
+          "name": "doc-comment",
+          "arguments": [
+            " * `(Asset, Asset)` - Amounts of tokens refunded to the user"
+          ]
         },
         {
-          name: "doc-comment",
-          arguments: [""],
+          "name": "doc-comment",
+          "arguments": [
+            ""
+          ]
         },
         {
-          name: "doc-comment",
-          arguments: [" # Reverts"],
+          "name": "doc-comment",
+          "arguments": [
+            " # Reverts"
+          ]
         },
         {
-          name: "doc-comment",
-          arguments: [""],
+          "name": "doc-comment",
+          "arguments": [
+            ""
+          ]
         },
         {
-          name: "doc-comment",
-          arguments: [" * When insufficient tokens are provided"],
+          "name": "doc-comment",
+          "arguments": [
+            " * When insufficient tokens are provided"
+          ]
         },
         {
-          name: "doc-comment",
-          arguments: [" * When slippage exceeds minimum amounts"],
+          "name": "doc-comment",
+          "arguments": [
+            " * When slippage exceeds minimum amounts"
+          ]
         },
         {
-          name: "doc-comment",
-          arguments: [" * When invalid liquidity configuration is provided"],
+          "name": "doc-comment",
+          "arguments": [
+            " * When invalid liquidity configuration is provided"
+          ]
         },
         {
-          name: "doc-comment",
-          arguments: [
-            " * Verifying desired contributed amounts is implemented on script level.",
-          ],
+          "name": "doc-comment",
+          "arguments": [
+            " * Verifying desired contributed amounts is implemented on script level."
+          ]
         },
         {
-          name: "doc-comment",
-          arguments: [""],
+          "name": "doc-comment",
+          "arguments": [
+            ""
+          ]
         },
         {
-          name: "doc-comment",
-          arguments: [" # Additional notes"],
+          "name": "doc-comment",
+          "arguments": [
+            " # Additional notes"
+          ]
         },
         {
-          name: "doc-comment",
-          arguments: [""],
+          "name": "doc-comment",
+          "arguments": [
+            ""
+          ]
         },
         {
-          name: "doc-comment",
-          arguments: [
-            " * The refunded amounts represent tokens that were sent but not needed for the liquidity provision",
-          ],
+          "name": "doc-comment",
+          "arguments": [
+            " * Requires the assets to be transfered to this contract before calling."
+          ]
         },
         {
-          name: "doc-comment",
-          arguments: [
-            " * The added amounts represent tokens that were successfully used to provide liquidity",
-          ],
+          "name": "doc-comment",
+          "arguments": [
+            " * This function SHOULD be called in the same transaction as the assets are transfered to this contract,"
+          ]
         },
         {
-          name: "storage",
-          arguments: ["read", "write"],
+          "name": "doc-comment",
+          "arguments": [
+            "   otherwise the assets might be used by other actors, resulting in a loss of funds."
+          ]
         },
-      ],
+        {
+          "name": "doc-comment",
+          "arguments": [
+            " * The refunded amounts represent tokens that were sent but not needed for the liquidity provision"
+          ]
+        },
+        {
+          "name": "doc-comment",
+          "arguments": [
+            " * The added amounts represent tokens that were successfully used to provide liquidity"
+          ]
+        },
+        {
+          "name": "storage",
+          "arguments": [
+            "read",
+            "write"
+          ]
+        }
+      ]
     },
     {
-      name: "set_fee_recipient",
-      inputs: [
+      "name": "set_fee_recipient",
+      "inputs": [
         {
-          name: "recipient",
-          concreteTypeId:
-            "ab7cd04e05be58e3fc15d424c2c4a57f824a2a2d97d67252440a3925ebdc1335",
-        },
+          "name": "recipient",
+          "concreteTypeId": "ab7cd04e05be58e3fc15d424c2c4a57f824a2a2d97d67252440a3925ebdc1335"
+        }
       ],
-      output:
-        "2e38e77b22c314a449e91fafed92a43826ac6aa403ae6a8acb6cf58239fbaf5d",
-      attributes: [
+      "output": "2e38e77b22c314a449e91fafed92a43826ac6aa403ae6a8acb6cf58239fbaf5d",
+      "attributes": [
         {
-          name: "doc-comment",
-          arguments: [" Sets the fee recipient address for protocol fees"],
+          "name": "doc-comment",
+          "arguments": [
+            " Sets the fee recipient address for protocol fees"
+          ]
         },
         {
-          name: "doc-comment",
-          arguments: [""],
+          "name": "doc-comment",
+          "arguments": [
+            ""
+          ]
         },
         {
-          name: "doc-comment",
-          arguments: [" # Arguments"],
+          "name": "doc-comment",
+          "arguments": [
+            " # Arguments"
+          ]
         },
         {
-          name: "doc-comment",
-          arguments: [""],
+          "name": "doc-comment",
+          "arguments": [
+            ""
+          ]
         },
         {
-          name: "doc-comment",
-          arguments: [
-            " * `recipient` - The address that will receive protocol fees",
-          ],
+          "name": "doc-comment",
+          "arguments": [
+            " * `recipient` - The address that will receive protocol fees"
+          ]
         },
         {
-          name: "doc-comment",
-          arguments: [""],
+          "name": "doc-comment",
+          "arguments": [
+            ""
+          ]
         },
         {
-          name: "doc-comment",
-          arguments: [" # Reverts"],
+          "name": "doc-comment",
+          "arguments": [
+            " # Reverts"
+          ]
         },
         {
-          name: "doc-comment",
-          arguments: [""],
+          "name": "doc-comment",
+          "arguments": [
+            ""
+          ]
         },
         {
-          name: "doc-comment",
-          arguments: [" * When called by non-owner"],
+          "name": "doc-comment",
+          "arguments": [
+            " * When called by non-owner"
+          ]
         },
         {
-          name: "storage",
-          arguments: ["read", "write"],
-        },
-      ],
+          "name": "storage",
+          "arguments": [
+            "read",
+            "write"
+          ]
+        }
+      ]
     },
     {
-      name: "set_hook",
-      inputs: [
+      "name": "set_hook",
+      "inputs": [
         {
-          name: "hook",
-          concreteTypeId:
-            "29c10735d33b5159f0c71ee1dbd17b36a3e69e41f00fab0d42e1bd9f428d8a54",
-        },
+          "name": "hook",
+          "concreteTypeId": "29c10735d33b5159f0c71ee1dbd17b36a3e69e41f00fab0d42e1bd9f428d8a54"
+        }
       ],
-      output:
-        "2e38e77b22c314a449e91fafed92a43826ac6aa403ae6a8acb6cf58239fbaf5d",
-      attributes: [
+      "output": "2e38e77b22c314a449e91fafed92a43826ac6aa403ae6a8acb6cf58239fbaf5d",
+      "attributes": [
         {
-          name: "doc-comment",
-          arguments: [" Sets a hook contract for this pool curve state"],
+          "name": "doc-comment",
+          "arguments": [
+            " Sets a hook contract for this pool curve state"
+          ]
         },
         {
-          name: "doc-comment",
-          arguments: [""],
+          "name": "doc-comment",
+          "arguments": [
+            ""
+          ]
         },
         {
-          name: "doc-comment",
-          arguments: [" # Arguments"],
+          "name": "doc-comment",
+          "arguments": [
+            " # Arguments"
+          ]
         },
         {
-          name: "doc-comment",
-          arguments: [""],
+          "name": "doc-comment",
+          "arguments": [
+            ""
+          ]
         },
         {
-          name: "doc-comment",
-          arguments: [" * `hook` - The contract ID of the hook to set"],
+          "name": "doc-comment",
+          "arguments": [
+            " * `hook` - The contract ID of the hook to set"
+          ]
         },
         {
-          name: "doc-comment",
-          arguments: [""],
+          "name": "doc-comment",
+          "arguments": [
+            ""
+          ]
         },
         {
-          name: "doc-comment",
-          arguments: [" # Reverts"],
+          "name": "doc-comment",
+          "arguments": [
+            " # Reverts"
+          ]
         },
         {
-          name: "doc-comment",
-          arguments: [""],
+          "name": "doc-comment",
+          "arguments": [
+            ""
+          ]
         },
         {
-          name: "doc-comment",
-          arguments: [" * When called by non-owner"],
+          "name": "doc-comment",
+          "arguments": [
+            " * When called by non-owner"
+          ]
         },
         {
-          name: "storage",
-          arguments: ["read", "write"],
-        },
-      ],
+          "name": "storage",
+          "arguments": [
+            "read",
+            "write"
+          ]
+        }
+      ]
     },
     {
-      name: "set_protocol_fees",
-      inputs: [
+      "name": "set_protocol_fees",
+      "inputs": [
         {
-          name: "protocol_fees_bps",
-          concreteTypeId:
-            "29881aad8730c5ab11d275376323d8e4ff4179aae8ccb6c13fe4902137e162ef",
-        },
+          "name": "protocol_fees_bps",
+          "concreteTypeId": "29881aad8730c5ab11d275376323d8e4ff4179aae8ccb6c13fe4902137e162ef"
+        }
       ],
-      output:
-        "2e38e77b22c314a449e91fafed92a43826ac6aa403ae6a8acb6cf58239fbaf5d",
-      attributes: [
+      "output": "2e38e77b22c314a449e91fafed92a43826ac6aa403ae6a8acb6cf58239fbaf5d",
+      "attributes": [
         {
-          name: "doc-comment",
-          arguments: [" Sets the protocol fees in basis points"],
+          "name": "doc-comment",
+          "arguments": [
+            " Sets the protocol fees in basis points"
+          ]
         },
         {
-          name: "doc-comment",
-          arguments: [""],
+          "name": "doc-comment",
+          "arguments": [
+            ""
+          ]
         },
         {
-          name: "doc-comment",
-          arguments: [" # Arguments"],
+          "name": "doc-comment",
+          "arguments": [
+            " # Arguments"
+          ]
         },
         {
-          name: "doc-comment",
-          arguments: [""],
+          "name": "doc-comment",
+          "arguments": [
+            ""
+          ]
         },
         {
-          name: "doc-comment",
-          arguments: [
-            " * `protocol_fees_bps` - Protocol fees in basis points (0-2500 basis points, max 25%)",
-          ],
+          "name": "doc-comment",
+          "arguments": [
+            " * `protocol_fees_bps` - Protocol fees in basis points (0-2500 basis points, max 25%)"
+          ]
         },
         {
-          name: "doc-comment",
-          arguments: [""],
+          "name": "doc-comment",
+          "arguments": [
+            ""
+          ]
         },
         {
-          name: "doc-comment",
-          arguments: [" # Reverts"],
+          "name": "doc-comment",
+          "arguments": [
+            " # Reverts"
+          ]
         },
         {
-          name: "doc-comment",
-          arguments: [""],
+          "name": "doc-comment",
+          "arguments": [
+            ""
+          ]
         },
         {
-          name: "doc-comment",
-          arguments: [" * When called by non-owner"],
+          "name": "doc-comment",
+          "arguments": [
+            " * When called by non-owner"
+          ]
         },
         {
-          name: "doc-comment",
-          arguments: [" * When protocol_fees_bps exceeds MAX_PROTOCOL_SHARE"],
+          "name": "doc-comment",
+          "arguments": [
+            " * When protocol_fees_bps exceeds MAX_PROTOCOL_SHARE"
+          ]
         },
         {
-          name: "storage",
-          arguments: ["read", "write"],
-        },
-      ],
+          "name": "storage",
+          "arguments": [
+            "read",
+            "write"
+          ]
+        }
+      ]
     },
     {
-      name: "swap",
-      inputs: [
+      "name": "swap",
+      "inputs": [
         {
-          name: "args",
-          concreteTypeId:
-            "d89d603fde2e4425aca4c360f29c6da38fd5247d267cddcf4fc28dc5a15869f5",
-        },
+          "name": "args",
+          "concreteTypeId": "d89d603fde2e4425aca4c360f29c6da38fd5247d267cddcf4fc28dc5a15869f5"
+        }
       ],
-      output:
-        "c51183840525b55473d095f06acd2ccd06b8db525a84a8c1c658a00619f3cb5f",
-      attributes: [
+      "output": "c51183840525b55473d095f06acd2ccd06b8db525a84a8c1c658a00619f3cb5f",
+      "attributes": [
         {
-          name: "doc-comment",
-          arguments: [" Executes a swap operation"],
+          "name": "doc-comment",
+          "arguments": [
+            " Executes a swap operation"
+          ]
         },
         {
-          name: "doc-comment",
-          arguments: [""],
+          "name": "doc-comment",
+          "arguments": [
+            ""
+          ]
         },
         {
-          name: "doc-comment",
-          arguments: [
-            " Performs a swap between the two tokens in the specified pool.",
-          ],
+          "name": "doc-comment",
+          "arguments": [
+            " Performs a swap between the two tokens in the specified pool."
+          ]
         },
         {
-          name: "doc-comment",
-          arguments: [
-            " The user must forward the input tokens to this contract before calling (a.k.a. multi-payable)",
-          ],
+          "name": "doc-comment",
+          "arguments": [
+            " The user must forward the input tokens to this contract before calling (a.k.a. multi-payable)"
+          ]
         },
         {
-          name: "doc-comment",
-          arguments: [
-            " The function will traverse multiple bins if necessary to complete the swap.",
-          ],
+          "name": "doc-comment",
+          "arguments": [
+            " The function will traverse multiple bins if necessary to complete the swap."
+          ]
         },
         {
-          name: "doc-comment",
-          arguments: [""],
+          "name": "doc-comment",
+          "arguments": [
+            ""
+          ]
         },
         {
-          name: "doc-comment",
-          arguments: [" # Arguments"],
+          "name": "doc-comment",
+          "arguments": [
+            " # Arguments"
+          ]
         },
         {
-          name: "doc-comment",
-          arguments: [""],
+          "name": "doc-comment",
+          "arguments": [
+            ""
+          ]
         },
         {
-          name: "doc-comment",
-          arguments: [
-            " * `args` - Swap arguments containing pool, amounts, and recipient",
-          ],
+          "name": "doc-comment",
+          "arguments": [
+            " * `args` - Swap arguments containing pool, amounts, and recipient"
+          ]
         },
         {
-          name: "doc-comment",
-          arguments: [""],
+          "name": "doc-comment",
+          "arguments": [
+            ""
+          ]
         },
         {
-          name: "doc-comment",
-          arguments: [" # Returns"],
+          "name": "doc-comment",
+          "arguments": [
+            " # Returns"
+          ]
         },
         {
-          name: "doc-comment",
-          arguments: [""],
+          "name": "doc-comment",
+          "arguments": [
+            ""
+          ]
         },
         {
-          name: "doc-comment",
-          arguments: [" * `u64` - Amount of tokens received"],
+          "name": "doc-comment",
+          "arguments": [
+            " * `u64` - Amount of tokens received"
+          ]
         },
         {
-          name: "doc-comment",
-          arguments: [
-            " * `(AssetId, u64)` - Protocol fees (asset ID and amount)",
-          ],
+          "name": "doc-comment",
+          "arguments": [
+            " * `(AssetId, u64)` - Protocol fees (asset ID and amount)"
+          ]
         },
         {
-          name: "doc-comment",
-          arguments: [" * `(AssetId, u64)` - LP fees (asset ID and amount)"],
+          "name": "doc-comment",
+          "arguments": [
+            " * `(AssetId, u64)` - LP fees (asset ID and amount)"
+          ]
         },
         {
-          name: "doc-comment",
-          arguments: [""],
+          "name": "doc-comment",
+          "arguments": [
+            ""
+          ]
         },
         {
-          name: "doc-comment",
-          arguments: [" # Reverts"],
+          "name": "doc-comment",
+          "arguments": [
+            " # Reverts"
+          ]
         },
         {
-          name: "doc-comment",
-          arguments: [""],
+          "name": "doc-comment",
+          "arguments": [
+            ""
+          ]
         },
         {
-          name: "doc-comment",
-          arguments: [" * When insufficient input tokens are provided"],
+          "name": "doc-comment",
+          "arguments": [
+            " * When insufficient input tokens are provided"
+          ]
         },
         {
-          name: "doc-comment",
-          arguments: [" * When slippage exceeds amount_out_min"],
+          "name": "doc-comment",
+          "arguments": [
+            " * When slippage exceeds amount_out_min"
+          ]
         },
         {
-          name: "doc-comment",
-          arguments: [" * When pool has insufficient liquidity"],
+          "name": "doc-comment",
+          "arguments": [
+            " * When pool has insufficient liquidity"
+          ]
         },
         {
-          name: "doc-comment",
-          arguments: [""],
+          "name": "doc-comment",
+          "arguments": [
+            ""
+          ]
         },
         {
-          name: "doc-comment",
-          arguments: [" # Additional notes"],
+          "name": "doc-comment",
+          "arguments": [
+            " # Additional notes"
+          ]
         },
         {
-          name: "doc-comment",
-          arguments: [""],
+          "name": "doc-comment",
+          "arguments": [
+            ""
+          ]
         },
         {
-          name: "doc-comment",
-          arguments: [" * Fees are collected in input token only."],
+          "name": "doc-comment",
+          "arguments": [
+            " * Fees are collected in input token only."
+          ]
         },
         {
-          name: "payable",
-          arguments: [],
+          "name": "payable",
+          "arguments": []
         },
         {
-          name: "storage",
-          arguments: ["read", "write"],
-        },
-      ],
-    },
+          "name": "storage",
+          "arguments": [
+            "read",
+            "write"
+          ]
+        }
+      ]
+    }
   ],
-  loggedTypes: [
+  "loggedTypes": [
     {
-      logId: "17376141311665587813",
-      concreteTypeId:
-        "f1247475d0d1466599267010f088190f8664dd31663a40c5d5e525d8e64b995d",
+      "logId": "17376141311665587813",
+      "concreteTypeId": "f1247475d0d1466599267010f088190f8664dd31663a40c5d5e525d8e64b995d"
     },
     {
-      logId: "8862791706670914123",
-      concreteTypeId:
-        "7afef619a265da4b784615cab85a98fd9c13fa6aa43700aa1d3381eedb3235e9",
+      "logId": "8862791706670914123",
+      "concreteTypeId": "7afef619a265da4b784615cab85a98fd9c13fa6aa43700aa1d3381eedb3235e9"
     },
     {
-      logId: "12825652816513834595",
-      concreteTypeId:
-        "b1fddf488ccb9e63d11888b2750bbd1280a1ae1c49f2d6637fd4cf1e930d1468",
+      "logId": "12825652816513834595",
+      "concreteTypeId": "b1fddf488ccb9e63d11888b2750bbd1280a1ae1c49f2d6637fd4cf1e930d1468"
     },
     {
-      logId: "10091762507985991074",
-      concreteTypeId:
-        "8c0d2488561c35a28ef795bb8bcc4c43999cdd1e3ecbd10c226e0a68660c54d4",
+      "logId": "10091762507985991074",
+      "concreteTypeId": "8c0d2488561c35a28ef795bb8bcc4c43999cdd1e3ecbd10c226e0a68660c54d4"
     },
     {
-      logId: "13950426381987648863",
-      concreteTypeId:
-        "c199dee1c39c955f6eb2646d4ed0292c670e2505d8eeb13950c46427dab0c9d1",
+      "logId": "13950426381987648863",
+      "concreteTypeId": "c199dee1c39c955f6eb2646d4ed0292c670e2505d8eeb13950c46427dab0c9d1"
     },
     {
-      logId: "11759477983193635718",
-      concreteTypeId:
-        "a3320eebdc489b862230f0bf84ae1f6cfc9d99e99de0e38a1c4b0df6d33e2ee7",
+      "logId": "11759477983193635718",
+      "concreteTypeId": "a3320eebdc489b862230f0bf84ae1f6cfc9d99e99de0e38a1c4b0df6d33e2ee7"
     },
     {
-      logId: "11266592876985159516",
-      concreteTypeId:
-        "9c5afa8755a58f5cba121bf216f5fed38a5b353ece928edfc533c67d95359006",
+      "logId": "11266592876985159516",
+      "concreteTypeId": "9c5afa8755a58f5cba121bf216f5fed38a5b353ece928edfc533c67d95359006"
     },
     {
-      logId: "10098701174489624218",
-      concreteTypeId:
-        "8c25cb3686462e9a86d2883c5688a22fe738b0bbc85f458d2d2b5f3f667c6d5a",
+      "logId": "10098701174489624218",
+      "concreteTypeId": "8c25cb3686462e9a86d2883c5688a22fe738b0bbc85f458d2d2b5f3f667c6d5a"
     },
     {
-      logId: "4320882217983868247",
-      concreteTypeId:
-        "3bf6db7bf73afd57c9b784ff4e688af8039dcab78fb122c5ff1be5a5a70eed84",
+      "logId": "4320882217983868247",
+      "concreteTypeId": "3bf6db7bf73afd57c9b784ff4e688af8039dcab78fb122c5ff1be5a5a70eed84"
     },
     {
-      logId: "17438928813468952752",
-      concreteTypeId:
-        "f203855c462428b0c1353195089caec01fefe6014ac961baf68a6cdc693be4ed",
+      "logId": "11035755714025735143",
+      "concreteTypeId": "9926e15a1a7dc3e7e7142a357b616eaefe7473ccf0f59e256a680b41561b64ca"
     },
     {
-      logId: "8807078256608655330",
-      concreteTypeId:
-        "7a3907033239b7e20b602aaf2a1a55863934467688426a359aae8b410786d2ba",
+      "logId": "17438928813468952752",
+      "concreteTypeId": "f203855c462428b0c1353195089caec01fefe6014ac961baf68a6cdc693be4ed"
     },
     {
-      logId: "1142707013283698464",
-      concreteTypeId:
-        "0fdbb5f9691f572070ea9b79b4d0712d66ec44139ed3386a09e97215cc21f300",
+      "logId": "8807078256608655330",
+      "concreteTypeId": "7a3907033239b7e20b602aaf2a1a55863934467688426a359aae8b410786d2ba"
     },
     {
-      logId: "11766654104212911129",
-      concreteTypeId:
-        "a34b8d90bc80b419fe04ca0361937ad5daa87ff31c213b1511ce762cd7e3e026",
+      "logId": "1142707013283698464",
+      "concreteTypeId": "0fdbb5f9691f572070ea9b79b4d0712d66ec44139ed3386a09e97215cc21f300"
     },
     {
-      logId: "11692232951518388920",
-      concreteTypeId:
-        "a24327ebda5ee2b8f3305e3c7417bed2244f126392fff1437bfd651aa721cf9c",
+      "logId": "11766654104212911129",
+      "concreteTypeId": "a34b8d90bc80b419fe04ca0361937ad5daa87ff31c213b1511ce762cd7e3e026"
     },
     {
-      logId: "1515152261580153489",
-      concreteTypeId:
-        "1506e6f44c1d6291cdf46395a8e573276a4fa79e8ace3fc891e092ef32d1b0a0",
+      "logId": "11692232951518388920",
+      "concreteTypeId": "a24327ebda5ee2b8f3305e3c7417bed2244f126392fff1437bfd651aa721cf9c"
     },
     {
-      logId: "9745445524166308620",
-      concreteTypeId:
-        "873ec71215da730c492a425de995a20014149a62d5b26d73fb83f3aaa8df3b00",
+      "logId": "1515152261580153489",
+      "concreteTypeId": "1506e6f44c1d6291cdf46395a8e573276a4fa79e8ace3fc891e092ef32d1b0a0"
     },
     {
-      logId: "15963378420215062339",
-      concreteTypeId:
-        "dd895018780e1f43ae426f8d07f7c6f2ce8ab40bf8c09470ee0bb0cdf6034b57",
+      "logId": "12071667014246140450",
+      "concreteTypeId": "a7872d30e6f10a2242b8cb0a19cfe87e3d6f4aedbe403592e06cb0699a8e5648"
     },
     {
-      logId: "12071667014246140450",
-      concreteTypeId:
-        "a7872d30e6f10a2242b8cb0a19cfe87e3d6f4aedbe403592e06cb0699a8e5648",
+      "logId": "3192531903561655239",
+      "concreteTypeId": "2c4e26d9fde4e3c732683d47b93ece2ba27aa77cc27495ea42fe5491ef144f0d"
     },
     {
-      logId: "15857761199475455874",
-      concreteTypeId:
-        "dc1215cafbb4f78254704229d7cddd7f08df016f05ed6f9e0648d794da39213f",
+      "logId": "4451896846918592488",
+      "concreteTypeId": "3dc850985943a7e8e5becd967e8b8eaa26a7dec1f75a1a80ace5b3bf622b1e1a"
     },
     {
-      logId: "3469738133439094170",
-      concreteTypeId:
-        "3026fc72eb439d9a1e25326d13f1e75eac05f821863ca9cc2cf269bd8683a482",
+      "logId": "13161214062477053647",
+      "concreteTypeId": "b6a606756ed20ecf9e047dfc134b0a9ba42ccc642956ce4205e784e82ee1daa1"
     },
+    {
+      "logId": "9745445524166308620",
+      "concreteTypeId": "873ec71215da730c492a425de995a20014149a62d5b26d73fb83f3aaa8df3b00"
+    },
+    {
+      "logId": "15963378420215062339",
+      "concreteTypeId": "dd895018780e1f43ae426f8d07f7c6f2ce8ab40bf8c09470ee0bb0cdf6034b57"
+    },
+    {
+      "logId": "15857761199475455874",
+      "concreteTypeId": "dc1215cafbb4f78254704229d7cddd7f08df016f05ed6f9e0648d794da39213f"
+    },
+    {
+      "logId": "3469738133439094170",
+      "concreteTypeId": "3026fc72eb439d9a1e25326d13f1e75eac05f821863ca9cc2cf269bd8683a482"
+    }
   ],
-  messagesTypes: [],
-  configurables: [
+  "messagesTypes": [],
+  "configurables": [
     {
-      name: "DEPLOYER",
-      concreteTypeId:
-        "f597b637c3b0f588fb8d7086c6f4735caa3122b85f0423b82e489f9bb58e2308",
-      offset: 140120,
-      indirect: false,
-    },
+      "name": "DEPLOYER",
+      "concreteTypeId": "f597b637c3b0f588fb8d7086c6f4735caa3122b85f0423b82e489f9bb58e2308",
+      "offset": 143272,
+      "indirect": false
+    }
   ],
-  errorCodes: {},
+  "errorCodes": {}
 };
 
 const storageSlots: StorageSlot[] = [
   {
-    key: "87719e9f8a28820b4cab1292b31a118177a59c4a5b4472c35ab8a3176e480603",
-    value: "0000000000000000000000000000000000000000000000000000000000000000",
+    "key": "87719e9f8a28820b4cab1292b31a118177a59c4a5b4472c35ab8a3176e480603",
+    "value": "0000000000000000000000000000000000000000000000000000000000000000"
   },
   {
-    key: "91305ebd79701ddf40a4bd6d7299fe62f8eeae70d7a4845d0c2416174b1c744d",
-    value: "0000000000000000000000000000000000000000000000000000000000000000",
+    "key": "91305ebd79701ddf40a4bd6d7299fe62f8eeae70d7a4845d0c2416174b1c744d",
+    "value": "0000000000000000000000000000000000000000000000000000000000000000"
   },
   {
-    key: "91305ebd79701ddf40a4bd6d7299fe62f8eeae70d7a4845d0c2416174b1c744e",
-    value: "0000000000000000000000000000000000000000000000000000000000000000",
+    "key": "91305ebd79701ddf40a4bd6d7299fe62f8eeae70d7a4845d0c2416174b1c744e",
+    "value": "0000000000000000000000000000000000000000000000000000000000000000"
   },
   {
-    key: "91a2b7e848325f3bd7f4c1b0f42cf543b33a4432db32108fea970020c7c0a8c3",
-    value: "0000000000000000000000000000000000000000000000000000000000000000",
+    "key": "91a2b7e848325f3bd7f4c1b0f42cf543b33a4432db32108fea970020c7c0a8c3",
+    "value": "0000000000000000000000000000000000000000000000000000000000000000"
   },
   {
-    key: "ad0db2b0fc00bf54d2d0159d8639f4a8f48be8403564992aaaac00d69daa3137",
-    value: "0000000000000000000000000000000000000000000000000000000000000000",
+    "key": "ad0db2b0fc00bf54d2d0159d8639f4a8f48be8403564992aaaac00d69daa3137",
+    "value": "0000000000000000000000000000000000000000000000000000000000000000"
   },
   {
-    key: "f6ba5cb64534d8f7e78dc5eb9baf587d158842adc8bd2bd9e2097881cdb19177",
-    value: "0000000000000000000000000000000000000000000000000000000000000000",
-  },
+    "key": "f6ba5cb64534d8f7e78dc5eb9baf587d158842adc8bd2bd9e2097881cdb19177",
+    "value": "0000000000000000000000000000000000000000000000000000000000000000"
+  }
 ];
 
 export class PoolCurveStateInterface extends Interface {
@@ -3485,14 +3742,7 @@ export class PoolCurveState extends __Contract {
 
   declare interface: PoolCurveStateInterface;
   declare functions: {
-    constructor: InvokeFunction<
-      [
-        owner: IdentityInput,
-        hook: ContractIdInput,
-        protocol_fees_bps: BigNumberish,
-      ],
-      void
-    >;
+    constructor: InvokeFunction<[owner: IdentityInput, hook: ContractIdInput, protocol_fees_bps: BigNumberish], void>;
     freeze: InvokeFunction<[], void>;
     decimals: InvokeFunction<[asset: AssetIdInput], Option<number>>;
     name: InvokeFunction<[asset: AssetIdInput], Option<StdString>>;
@@ -3500,56 +3750,32 @@ export class PoolCurveState extends __Contract {
     total_assets: InvokeFunction<[], BN>;
     total_supply: InvokeFunction<[asset: AssetIdInput], Option<BN>>;
     owner: InvokeFunction<[], StateOutput>;
-    burn_liquidity: InvokeFunction<
-      [args: BurnLiquidityArgsInput],
-      Vec<AssetOutput>
-    >;
-    collect_protocol_fees: InvokeFunction<
-      [pool_id: BigNumberish],
-      AmountsOutput
-    >;
+    burn_liquidity: InvokeFunction<[args: BurnLiquidityArgsInput], Vec<AssetOutput>>;
+    collect_protocol_fees: InvokeFunction<[pool_id: BigNumberish], AmountsOutput>;
     create_pool: InvokeFunction<[pool: PoolInput, active_id: BigNumberish], BN>;
     get_base_fee: InvokeFunction<[pool_id: BigNumberish], BN>;
-    get_bin: InvokeFunction<
-      [pool_id: BigNumberish, bin_id: BigNumberish],
-      Option<AmountsOutput>
-    >;
+    get_bin: InvokeFunction<[pool_id: BigNumberish, bin_id: BigNumberish], Option<AmountsOutput>>;
     get_fee_recipient: InvokeFunction<[], IdentityOutput>;
     get_hook: InvokeFunction<[], ContractIdOutput>;
-    get_next_non_empty_bin: InvokeFunction<
-      [pool_id: BigNumberish, swap_for_y: boolean, bin_id: BigNumberish],
-      Option<number>
-    >;
+    get_next_non_empty_bin: InvokeFunction<[pool_id: BigNumberish, swap_for_y: boolean, bin_id: BigNumberish], Option<number>>;
     get_pool: InvokeFunction<[pool_id: BigNumberish], Option<PoolInfoOutput>>;
-    get_pool_active_bin_id: InvokeFunction<
-      [pool_id: BigNumberish],
-      Option<number>
-    >;
-    get_pool_protocol_fees: InvokeFunction<
-      [pool_id: BigNumberish],
-      AmountsOutput
-    >;
+    get_pool_active_bin_id: InvokeFunction<[pool_id: BigNumberish], Option<number>>;
+    get_pool_protocol_fees: InvokeFunction<[pool_id: BigNumberish], AmountsOutput>;
     get_pool_reserves: InvokeFunction<[pool_id: BigNumberish], AmountsOutput>;
-    get_price_from_id: InvokeFunction<
-      [pool_id: BigNumberish, bin_id: BigNumberish],
-      BN
-    >;
+    get_price_from_id: InvokeFunction<[pool_id: BigNumberish, bin_id: BigNumberish], BN>;
     get_protocol_fees: InvokeFunction<[], number>;
-    get_swap_in: InvokeFunction<
-      [pool_id: BigNumberish, amount_out: BigNumberish, swap_for_y: boolean],
-      [BN, BN, BN]
-    >;
-    mint_liquidity: InvokeFunction<
-      [args: MintLiquidityArgsInput],
-      [AssetIdOutput, [AssetOutput, AssetOutput], [AssetOutput, AssetOutput]]
-    >;
+    get_swap_in: InvokeFunction<[pool_id: BigNumberish, amount_out: BigNumberish, swap_for_y: boolean], [BN, BN, BN]>;
+    mint_liquidity: InvokeFunction<[args: MintLiquidityArgsInput], [AssetIdOutput, [AssetOutput, AssetOutput], [AssetOutput, AssetOutput]]>;
     set_fee_recipient: InvokeFunction<[recipient: IdentityInput], void>;
     set_hook: InvokeFunction<[hook: ContractIdInput], void>;
     set_protocol_fees: InvokeFunction<[protocol_fees_bps: BigNumberish], void>;
     swap: InvokeFunction<[args: SwapArgsInput], [BN, AssetOutput, AssetOutput]>;
   };
 
-  constructor(id: string | Address, accountOrProvider: Account | Provider) {
+  constructor(
+    id: string | Address,
+    accountOrProvider: Account | Provider,
+  ) {
     super(id, abi, accountOrProvider);
   }
 }
