@@ -33,10 +33,10 @@ export function SwapModals({
   };
   slippage: number;
   slippageMode: SlippageMode;
-  setSlippage: (slippage: number) => void;
+  setSlippage: React.Dispatch<React.SetStateAction<number>>;
   setSlippageMode: React.Dispatch<React.SetStateAction<SlippageMode>>;
   balances: any[] | undefined;
-  handleCoinSelection: (assetId: string) => void;
+  handleCoinSelection: (assetId: string | null) => void;
   swapStateForPreview: React.MutableRefObject<SwapState>;
   swapResult: {id: string} | null | undefined;
   txCostError: any;

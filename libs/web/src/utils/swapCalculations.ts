@@ -15,9 +15,9 @@ export function calculateFeePercent(pools?: Array<{poolId: PoolId}>): number {
  * Calculate the fee value in the sell asset
  */
 export function calculateFeeValue(
-  sellValue: string,
+  sellValue: string | undefined,
   feePercent: number,
-  decimals: number
+  decimals: number | undefined,
 ): string {
   if (!sellValue || !decimals) return "0";
   const sellNum = parseFloat(sellValue);

@@ -1,3 +1,5 @@
+import {PoolId} from "mira-dex-ts";
+import {BN} from "fuels";
 import {
   CurrencyBox,
   Logo,
@@ -9,8 +11,7 @@ import {ArrowUpDown} from "lucide-react";
 import {cn} from "@/src/utils/cn";
 import {createPoolKey} from "@/src/utils/common";
 import {PreviewSummary, Rate, SwapActionButton} from ".";
-import type {CurrencyBoxMode} from "@/src/hooks";
-
+import type {CurrencyBoxMode, TradeState, SwapState} from "@/src/hooks";
 const lineSplitterClasses = "relative w-full h-px bg-background-grey-dark my-4";
 const currencyBoxWidgetBg = "bg-background-grey-dark";
 
@@ -43,21 +44,18 @@ export function SwapCard({
   formState: {
     sellValue: string;
     buyValue: string;
-    swapState: {
-      sell: {assetId: string | null};
-      buy: {assetId: string | null};
-    };
+    swapState: SwapState;
     setAmount: (mode: "sell" | "buy") => (amount: string) => void;
     swapAssets: () => void;
   };
   swapDataLayer: {
-    sellBalance: any;
-    buyBalance: any;
+    sellBalance: BN;
+    buyBalance: BN;
     sellAssetPrice: {price: number | null};
     buyAssetPrice: {price: number | null};
-    tradeState: any;
+    tradeState: TradeState;
     exchangeRate: string | null;
-    pools: any[];
+    pools: PoolId[];
     sellMetadata: {symbol?: string};
     reservesPrice: number | undefined;
     previewPrice: number | undefined;

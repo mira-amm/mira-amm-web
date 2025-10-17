@@ -19,6 +19,8 @@ export function useSwapTransaction({
  amountMissing,
  swapPending,
  exchangeRate,
+ review,
+ setReview
 }: {
   fetchTxCost: () => Promise<
     | {
@@ -39,13 +41,14 @@ export function useSwapTransaction({
   amountMissing: boolean;
   swapPending: boolean;
   exchangeRate: string | null;
+  review: boolean;
+  setReview: (review: boolean) => void;
 }) {
   const [txCostData, setTxCostData] = useState<{
     tx: ScriptTransactionRequest;
     txCost: BN;
   }>();
   const [txCost, setTxCost] = useState<number | null>(null);
-  const [review, setReview] = useState<boolean>(false);
   const [customErrorTitle, setCustomErrorTitle] = useState<string>("");
 
   const swapStateForPreview = useRef<SwapState>(swapState);
