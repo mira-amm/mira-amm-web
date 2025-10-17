@@ -4,3 +4,5 @@ export {SwapRouteItem} from "./SwapRouteItem";
 export {PreviewSummary} from "./PreviewSummary";
 export {PriceImpact, PriceImpactNew} from "./PriceImpact";
 export {SwapActionButton} from "./SwapActionButton";
+export {SwapCard} from "./SwapCard";
+export {SwapModals} from "./SwapModals";
