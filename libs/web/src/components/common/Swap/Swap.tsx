@@ -6,27 +6,12 @@ import {B256Address} from "fuels";
 import {useConnectUI, useIsConnected} from "@fuels/react";
 import {getIsRebrandEnabled} from "@/src/utils/isRebrandEnabled";
 
-import {
-  CoinsListModal,
-  CurrencyBox,
-  SwapSuccessModal,
-  SwapFailureModal,
-  Logo,
-  IconButton,
-  Loader,
-  SlippageSetting,
-  FeatureGuard,
-  SettingsModalContent,
-  ConnectWallet,
-} from "@/src/components/common";
-
-import {createPoolKey} from "@/src/utils/common";
+import {Loader, FeatureGuard, ConnectWallet} from "@/src/components/common";
 
 import {
-  PreviewSummary,
   PriceAndRate,
-  Rate,
-  SwapActionButton,
+  SwapCard,
+  SwapModals,
 } from "@/src/components/common/Swap/components";
 import {
   useSwapFormState,
@@ -35,6 +20,7 @@ import {
   useSwapValidation,
   useSwapTransaction,
   useSwapDataLayer,
+  useSwapLoadingStates,
   CurrencyBoxMode,
 } from "@/src/hooks";
 
@@ -49,13 +35,7 @@ import {
   calculateFeeValue,
 } from "@/src/utils/swapCalculations";
 
-import {ArrowUpDown} from "lucide-react";
-import {cn} from "@/src/utils/cn";
 import {ConnectWalletNew} from "../connect-wallet-new";
-import SettingsModalContentNew from "../settings-modal-content-new";
-
-const lineSplitterClasses = "relative w-full h-px bg-background-grey-dark my-4";
-const currencyBoxWidgetBg = "bg-background-grey-dark";
 const overlayClasses = "fixed inset-0 w-full h-full backdrop-blur-[5px] z-[4]";
 
 export function Swap({isWidget}: {isWidget?: boolean}) {
@@ -180,49 +160,17 @@ export function Swap({isWidget}: {isWidget?: boolean}) {
     transaction,
   ]);
 
-  const previewLoading = swapDataLayer.tradeState === TradeState.LOADING;
-  const inputPreviewLoading = previewLoading && formState.activeMode === "buy";
-  const outputPreviewLoading =
-    previewLoading && formState.activeMode === "sell";
-
-  const isActionDisabled = useMemo(() => {
-    return (
-      (validation.swapDisabled &&
-        !previewLoading &&
-        swapDataLayer.tradeState !== TradeState.REFETCHING &&
-        !swapDataLayer.balancesPending &&
-        (txCostPending || validation.amountMissing)) ||
-      validation.showInsufficientBalance
-    );
-  }, [
-    validation.swapDisabled,
-    validation.amountMissing,
-    validation.showInsufficientBalance,
-    previewLoading,
-    swapDataLayer.tradeState,
-    swapDataLayer.balancesPending,
+  const loadingStates = useSwapLoadingStates({
+    tradeState: swapDataLayer.tradeState,
+    balancesPending: swapDataLayer.balancesPending,
     txCostPending,
-  ]);
-
-  const isActionLoading = useMemo(() => {
-    return (
-      swapDataLayer.balancesPending ||
-      swapDataLayer.tradeState === TradeState.REFETCHING ||
-      (previewLoading &&
-        validation.swapButtonTitle !== "Insufficient balance") ||
-      (!validation.amountMissing &&
-        !validation.showInsufficientBalance &&
-        txCostPending)
-    );
-  }, [
-    swapDataLayer.balancesPending,
-    swapDataLayer.tradeState,
-    previewLoading,
-    validation.swapButtonTitle,
-    validation.amountMissing,
-    validation.showInsufficientBalance,
-    txCostPending,
-  ]);
+    swapPending,
+    activeMode: formState.activeMode,
+    swapDisabled: validation.swapDisabled,
+    amountMissing: validation.amountMissing,
+    showInsufficientBalance: validation.showInsufficientBalance,
+    swapButtonTitle: validation.swapButtonTitle,
+  });
 
   const isRebrandingEnabled = getIsRebrandEnabled();
 
@@ -239,86 +187,28 @@ export function Swap({isWidget}: {isWidget?: boolean}) {
           </FeatureGuard>
         )}
 
-        <div
-          className={cn(
-            "flex flex-col gap-4 p-5 pb-[18px] rounded-ten bg-background-grey-dark border-border-secondary border-[12px] dark:border-0 dark:bg-background-grey-dark",
-            swapPending && "z-[5]"
-          )}
-        >
-          <div className="flex items-center gap-[10px]  text-base leading-[19px] text-content-grey lg:text-xl lg:leading-[24px]">
-            <div className="flex-1 text-black dark:text-content-primary">
-              {isWidget ? <Logo /> : <p>Swap</p>}
-            </div>
-            <SlippageSetting
-              slippage={slippage}
-              openSettingsModal={modals.openSettingsModal}
-            />
-          </div>
-
-          <CurrencyBox
-            value={formState.sellValue}
-            assetId={formState.swapState.sell.assetId}
-            mode="sell"
-            balance={swapDataLayer.sellBalance}
-            setAmount={formState.setAmount("sell")}
-            loading={inputPreviewLoading || swapPending}
-            onCoinSelectorClick={handleCoinSelectorClick}
-            usdRate={swapDataLayer.sellAssetPrice.price}
-            className={isWidget ? currencyBoxWidgetBg : undefined}
-          />
-
-          <div className={lineSplitterClasses}>
-            <IconButton
-              className="group absolute top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2 w-8 h-8 flex justify-center items-center rounded-full dark:bg-background-primary dark:text-content-grey hover:text-content-primary bg-background-primary p-2"
-              onClick={formState.swapAssets}
-            >
-              <ArrowUpDown className="transition-transform duration-300 group-hover:rotate-180 text-white dark:text-content-dimmed-dark" />
-            </IconButton>
-          </div>
-
-          <CurrencyBox
-            value={formState.buyValue}
-            assetId={formState.swapState.buy.assetId}
-            mode="buy"
-            balance={swapDataLayer.buyBalance}
-            setAmount={formState.setAmount("buy")}
-            loading={outputPreviewLoading || swapPending}
-            onCoinSelectorClick={handleCoinSelectorClick}
-            usdRate={swapDataLayer.buyAssetPrice.price}
-            className={isWidget ? currencyBoxWidgetBg : undefined}
-          />
-
-          {transaction.review && (
-            <PreviewSummary
-              previewLoading={previewLoading}
-              tradeState={swapDataLayer.tradeState}
-              exchangeRate={swapDataLayer.exchangeRate}
-              pools={swapDataLayer.pools}
-              feeValue={feeValue}
-              sellMetadataSymbol={swapDataLayer.sellMetadata.symbol ?? ""}
-              txCost={transaction.txCost}
-              txCostPending={txCostPending}
-              createPoolKeyFn={createPoolKey}
-              reservesPrice={swapDataLayer.reservesPrice}
-              previewPrice={swapDataLayer.previewPrice}
-            />
-          )}
-
-          <FeatureGuard>
-            <Rate swapState={formState.swapState} />
-          </FeatureGuard>
-
-          <SwapActionButton
-            isConnected={isConnected}
-            isConnecting={isConnecting}
-            connect={connect}
-            isActionDisabled={isActionDisabled}
-            isActionLoading={isActionLoading}
-            handleSwapClick={transaction.handleSwapClick}
-            swapButtonTitle={validation.swapButtonTitle}
-            isRebrandingEnabled={isRebrandingEnabled}
-          />
-        </div>
+        <SwapCard
+          isWidget={isWidget}
+          swapPending={loadingStates.swapPending}
+          slippage={slippage}
+          openSettingsModal={modals.openSettingsModal}
+          formState={formState}
+          swapDataLayer={swapDataLayer}
+          inputPreviewLoading={loadingStates.inputPreviewLoading}
+          outputPreviewLoading={loadingStates.outputPreviewLoading}
+          handleCoinSelectorClick={handleCoinSelectorClick}
+          transaction={transaction}
+          previewLoading={loadingStates.previewLoading}
+          txCostPending={loadingStates.txCostPending}
+          feeValue={feeValue}
+          isConnected={isConnected}
+          isConnecting={isConnecting}
+          connect={connect}
+          isActionDisabled={loadingStates.isActionDisabled}
+          isActionLoading={loadingStates.isActionLoading}
+          validation={validation}
+          isRebrandingEnabled={isRebrandingEnabled}
+        />
 
         <FeatureGuard
           fallback={
@@ -331,51 +221,23 @@ export function Swap({isWidget}: {isWidget?: boolean}) {
         />
       </div>
 
-      {swapPending && <div className={overlayClasses} />}
+      {loadingStates.swapPending && <div className={overlayClasses} />}
 
-      <FeatureGuard
-        fallback={
-          <modals.SettingsModal title="Settings">
-            <SettingsModalContent
-              slippage={slippage}
-              slippageMode={slippageMode}
-              setSlippage={setSlippage}
-              setSlippageMode={setSlippageMode}
-              closeModal={modals.closeSettingsModal}
-            />
-          </modals.SettingsModal>
-        }
-      >
-        <modals.SettingsModal title={`Slippage tolerance: ${slippage / 100}%`}>
-          <SettingsModalContentNew
-            slippage={slippage}
-            setSlippage={setSlippage}
-            closeModal={modals.closeSettingsModal}
-          />
-        </modals.SettingsModal>
-      </FeatureGuard>
-
-      <modals.CoinsModal title="Choose token">
-        <CoinsListModal
-          selectCoin={handleCoinSelection}
-          balances={swapDataLayer.balances}
-        />
-      </modals.CoinsModal>
-
-      <modals.SuccessModal title={<></>}>
-        <SwapSuccessModal
-          swapState={transaction.swapStateForPreview.current}
-          transactionHash={swapResult?.id}
-        />
-      </modals.SuccessModal>
-
-      <modals.FailureModal title={<></>} onClose={resetSwapErrors}>
-        <SwapFailureModal
-          error={txCostError || swapError}
-          closeModal={modals.closeFailureModal}
-          customTitle={transaction.customErrorTitle}
-        />
-      </modals.FailureModal>
+      <SwapModals
+        modals={modals}
+        slippage={slippage}
+        slippageMode={slippageMode}
+        setSlippage={setSlippage}
+        setSlippageMode={setSlippageMode}
+        balances={swapDataLayer.balances}
+        handleCoinSelection={handleCoinSelection}
+        swapStateForPreview={transaction.swapStateForPreview}
+        swapResult={swapResult}
+        txCostError={txCostError}
+        swapError={swapError}
+        resetSwapErrors={resetSwapErrors}
+        customErrorTitle={transaction.customErrorTitle}
+      />
     </>
   );
 }
