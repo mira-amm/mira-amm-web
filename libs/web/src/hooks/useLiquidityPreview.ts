@@ -43,14 +43,15 @@ export const useLiquidityPreview = ({
     amount: isFirstToken ? firstAmount : secondAmount,
     isFirstToken,
     isStablePool,
-    fetchCondition: !emptyPool,
+    fetchCondition: enableAutoSync && !emptyPool,
   });
 
   useEffect(() => {
+    if (!enableAutoSync) return;
     if (previewError && onPreviewError) {
       onPreviewError(previewError);
     }
-  }, [previewError, onPreviewError]);
+  }, [previewError, onPreviewError, enableAutoSync]);
 
   useEffect(() => {
     if (data && enableAutoSync) {
