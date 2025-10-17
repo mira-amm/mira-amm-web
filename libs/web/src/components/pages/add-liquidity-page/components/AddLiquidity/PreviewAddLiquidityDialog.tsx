@@ -1,12 +1,17 @@
 import CoinPair from "@/src/components/common/CoinPair/CoinPair";
 import {Coin, TransactionFailureModal} from "@/src/components/common";
-import {useAddLiquidity, useModal, useAssetMetadata} from "@/src/hooks";
+import {
+  useAddLiquidity,
+  useAddLiquidityV2,
+  useModal,
+  useAssetMetadata,
+} from "@/src/hooks";
 import AddLiquiditySuccessModal from "@/src/components/pages/add-liquidity-page/components/AddLiquiditySuccessModal/AddLiquiditySuccessModal";
 import {useRouter} from "next/navigation";
 import {Dispatch, SetStateAction, useCallback} from "react";
 import {BN} from "fuels";
 import {Button} from "@/meshwave-ui/Button";
-import {getUiPoolTypeFromPoolId} from "@/src/utils/poolTypeDetection";
+import {mapUiPoolTypeFromStableFlag} from "@/src/utils/poolTypeDetection";
 
 export type AddLiquidityPreviewData = {
   assets: {
@@ -23,6 +28,7 @@ export type AddLiquidityPreviewData = {
   numBins?: number;
   priceRange?: [number, number];
   liquidityDistribution?: any;
+  deltaDistribution?: any;
   isMock?: boolean;
   mockResult?: any;
 };
@@ -49,11 +55,14 @@ export default function PreviewAddLiquidityDialog({
   const firstAssetAmount = assets[0].amount;
   const secondAssetAmount = assets[1].amount;
 
+  const isV2 = previewData.type === "v2-concentrated";
+
+  // V1 add liquidity hook
   const {
-    data,
-    mutateAsync,
-    isPending,
-    error: addLiquidityError,
+    data: v1Data,
+    mutateAsync: v1MutateAsync,
+    isPending: v1IsPending,
+    error: v1Error,
   } = useAddLiquidity({
     firstAsset: previewData.assets[0].assetId,
     firstAssetAmount,
@@ -62,6 +71,27 @@ export default function PreviewAddLiquidityDialog({
     isPoolStable: isStablePool,
     slippage,
   });
+
+  // V2 add liquidity hook (concentrated/binned pools)
+  const v2PoolId = new BN(poolId || "0");
+  const {
+    data: v2Data,
+    mutateAsync: v2MutateAsync,
+    isPending: v2IsPending,
+    error: v2Error,
+  } = useAddLiquidityV2({
+    poolId: v2PoolId,
+    firstAssetAmount,
+    secondAssetAmount,
+    slippage,
+    liquidityDistribution: previewData.liquidityDistribution,
+    deltaDistribution: (previewData as any).deltaDistribution,
+  });
+
+  const data = isV2 ? v2Data : v1Data;
+  const mutateAsync = isV2 ? v2MutateAsync : v1MutateAsync;
+  const isPending = isV2 ? v2IsPending : v1IsPending;
+  const addLiquidityError = isV2 ? v2Error : v1Error;
 
   const firstAssetAmountString = firstAssetAmount.formatUnits(
     firstAssetMetadata.decimals
@@ -91,7 +121,9 @@ export default function PreviewAddLiquidityDialog({
   }, [router]);
 
   const feeText = isStablePool ? "0.05%" : "0.3%";
-  const isV2 = previewData.type === "v2-concentrated";
+  const uiPoolType = isV2
+    ? "v2-concentrated"
+    : mapUiPoolTypeFromStableFlag(isStablePool);
 
   return (
     <>
@@ -102,7 +134,7 @@ export default function PreviewAddLiquidityDialog({
               firstCoin={assets[0].assetId}
               secondCoin={assets[1].assetId}
               isStablePool={isStablePool}
-              poolType={getUiPoolTypeFromPoolId(poolId)}
+              poolType={uiPoolType}
               withPoolDetails
             />
             {isV2 && (
@@ -165,7 +197,7 @@ export default function PreviewAddLiquidityDialog({
           </div>
         </div>
 
-        <Button loading={isPending} onClick={handleAddLiquidity}>
+        <Button disabled={isPending} onClick={handleAddLiquidity}>
           Add Liquidity
         </Button>
 
