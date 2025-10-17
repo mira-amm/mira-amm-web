@@ -14,6 +14,7 @@ import type {
   LiquidityDistributionResult,
   DeltaIdDistribution,
 } from "@/src/components/pages/add-liquidity-page/components/AddLiquidity/liquidityDistributionGenerator";
+import {computeIdSlippageFromBps} from "@/src/components/pages/add-liquidity-page/components/AddLiquidity/liquidityDistributionUtils";
 
 export function useAddLiquidityV2({
   poolId,
@@ -49,8 +50,50 @@ export function useAddLiquidityV2({
       .mul(bn(10_000).sub(bn(slippage)))
       .div(bn(10_000));
 
-    const activeIdDesired = deltaDistribution?.activeIdDesired;
-    const idSlippage = deltaDistribution?.idSlippage;
+    // Align desired active bin and id slippage with on-chain values to satisfy script checks
+    const [chainActiveId, poolMeta] = await Promise.all([
+      readonlyMiraV2?.getActiveBin(poolId),
+      readonlyMiraV2?.poolMetadata(poolId),
+    ]);
+
+    // Prefer chain active bin to avoid InvalidIdSlippage reverts
+    let activeIdDesired =
+      chainActiveId ??
+      (deltaDistribution?.activeIdDesired as unknown as number | undefined);
+
+    // Normalize idSlippage using pool binStep and provided slippage bps
+    let normalizedIdSlippage: number | undefined;
+    let binStepBps: number | undefined = (poolMeta as any)?.pool?.binStep;
+    // Handle BN-like values
+    if (binStepBps && typeof (binStepBps as any).toNumber === "function") {
+      binStepBps = (binStepBps as any).toNumber();
+    }
+    if (typeof binStepBps === "number") {
+      normalizedIdSlippage = computeIdSlippageFromBps(binStepBps, slippage);
+    }
+
+    // Use provided idSlippage if any, but make sure it's not lower than normalized
+    let idSlippage: number | undefined =
+      deltaDistribution?.idSlippage as unknown as number | undefined;
+    if (typeof normalizedIdSlippage === "number") {
+      if (typeof idSlippage === "number") {
+        idSlippage = Math.max(idSlippage, normalizedIdSlippage);
+      } else {
+        idSlippage = normalizedIdSlippage;
+      }
+    }
+
+    // Final guard: ensure idSlippage covers the difference between desired and chain active id
+    if (
+      typeof chainActiveId === "number" &&
+      typeof activeIdDesired === "number"
+    ) {
+      const diff = Math.abs(activeIdDesired - chainActiveId);
+      if (typeof idSlippage !== "number" || diff > idSlippage) {
+        idSlippage = diff;
+      }
+    }
+
     const deltaIds = deltaDistribution?.deltaIds;
     const distributionX = deltaDistribution?.distributionX;
     const distributionY = deltaDistribution?.distributionY;
