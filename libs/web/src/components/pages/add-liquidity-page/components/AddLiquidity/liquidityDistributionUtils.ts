@@ -51,6 +51,33 @@ export function computeDistributionBpsForRaw(
   return percentArrayToBps(normalizedPercent);
 }
 
+/**
+ * Renormalize basis points array to sum to 10000 after filtering
+ * This is needed when we remove zero-allocation bins
+ */
+export function renormalizeBps(bpsArray: number[]): number[] {
+  if (bpsArray.length === 0) return [];
+  const sum = bpsArray.reduce((a, b) => a + b, 0);
+  if (sum === 0) return bpsArray;
+  if (sum === 10000) return bpsArray;
+
+  // Scale values to sum to 10000
+  const scaled = bpsArray.map((v) => Math.round((v / sum) * 10000));
+  const scaledSum = scaled.reduce((a, b) => a + b, 0);
+
+  // Adjust for rounding errors
+  if (scaledSum !== 10000) {
+    const diff = 10000 - scaledSum;
+    const idx = scaled.reduce(
+      (bestIdx, val, i, arr) => (val > arr[bestIdx] ? i : bestIdx),
+      0
+    );
+    scaled[idx] = Math.max(0, scaled[idx] + diff);
+  }
+
+  return scaled;
+}
+
 export function computeUtilizationRate(
   totalLiquidityX: number,
   totalLiquidityY: number,
