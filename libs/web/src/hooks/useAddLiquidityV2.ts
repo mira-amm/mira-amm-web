@@ -94,9 +94,39 @@ export function useAddLiquidityV2({
       }
     }
 
-    const deltaIds = deltaDistribution?.deltaIds;
-    const distributionX = deltaDistribution?.distributionX;
-    const distributionY = deltaDistribution?.distributionY;
+    let deltaIds = deltaDistribution?.deltaIds;
+    let distributionX = deltaDistribution?.distributionX;
+    let distributionY = deltaDistribution?.distributionY;
+
+    // Filter out bins with zero liquidity to avoid ZeroShares error
+    // The contract will revert if we try to add liquidity to a bin where both
+    // the amount and resulting shares would be zero
+    if (deltaIds && distributionX && distributionY) {
+      const originalLength = deltaIds.length;
+      const filteredIndices: number[] = [];
+      for (let i = 0; i < deltaIds.length; i++) {
+        const distX = distributionX[i];
+        const distY = distributionY[i];
+        // Keep bins that have non-zero allocation for at least one asset
+        // Zero is acceptable if the other asset has allocation
+        const hasNonZeroAllocation =
+          (typeof distX === "number" && distX > 0) ||
+          (typeof distY === "number" && distY > 0);
+        if (hasNonZeroAllocation) {
+          filteredIndices.push(i);
+        }
+      }
+
+      // Only apply filter if we have valid bins remaining
+      if (
+        filteredIndices.length > 0 &&
+        filteredIndices.length < originalLength
+      ) {
+        deltaIds = filteredIndices.map((i) => deltaIds![i]);
+        distributionX = filteredIndices.map((i) => distributionX![i]);
+        distributionY = filteredIndices.map((i) => distributionY![i]);
+      }
+    }
 
     const {transactionRequest: txRequest} = await miraV2.addLiquidity(
       poolId,

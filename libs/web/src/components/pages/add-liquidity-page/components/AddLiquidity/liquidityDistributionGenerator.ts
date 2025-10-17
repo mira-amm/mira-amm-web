@@ -5,8 +5,9 @@ import {
   computeIdSlippageFromBps,
   computeDistributionBpsForRaw,
   computeUtilizationRate,
+  renormalizeBps,
+  calculateBinLiquidity,
 } from "./liquidityDistributionUtils";
-import {calculateBinLiquidity} from "./liquidityDistributionUtils";
 
 export interface BinLiquidityData {
   binId: number;
@@ -172,6 +173,35 @@ export function generateLiquidityDistribution(
 
     distributionX = computeDistributionBpsForRaw(accRawX, totalX);
     distributionY = computeDistributionBpsForRaw(accRawY, totalY);
+
+    // Filter out bins where both distributions are zero to prevent ZeroShares error
+    // This can happen after normalization when bins have very small allocations
+    const filteredIndices: number[] = [];
+    for (let i = 0; i < deltaIds.length; i++) {
+      const distX = distributionX[i];
+      const distY = distributionY[i];
+      // Keep bins that have non-zero allocation for at least one asset
+      if (distX > 0 || distY > 0) {
+        filteredIndices.push(i);
+      }
+    }
+
+    // Apply filter if we have valid bins, otherwise fall back to active bin
+    if (filteredIndices.length > 0) {
+      deltaIds = filteredIndices.map((i) => deltaIds[i]);
+      distributionX = filteredIndices.map((i) => distributionX[i]);
+      distributionY = filteredIndices.map((i) => distributionY[i]);
+
+      // Renormalize distributions to sum to 10000 after filtering
+      // This ensures the contract receives valid percentage allocations
+      distributionX = renormalizeBps(distributionX);
+      distributionY = renormalizeBps(distributionY);
+    } else {
+      // Fallback: all liquidity to active bin
+      deltaIds = [{Positive: 0}];
+      distributionX = [10000];
+      distributionY = [10000];
+    }
   }
 
   const deltaDistribution: DeltaIdDistribution = {
