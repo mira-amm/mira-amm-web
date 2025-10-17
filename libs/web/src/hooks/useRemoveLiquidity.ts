@@ -5,7 +5,7 @@ import {useWallet} from "@fuels/react";
 import {useMutation} from "@tanstack/react-query";
 import {useMiraDex} from "@/src/hooks";
 import {PoolId} from "mira-dex-ts";
-import {DefaultTxParams, MaxDeadline} from "@/src/utils/constants";
+import {DefaultTxParams, getMaxDeadline} from "@/src/utils/constants";
 
 export function useRemoveLiquidity({
   pool,
@@ -41,7 +41,7 @@ export function useRemoveLiquidity({
       liquidityAmount,
       minCoinAAmount,
       minCoinBAmount,
-      MaxDeadline,
+      getMaxDeadline(),
       DefaultTxParams,
       {
         useAssembleTx: true,
