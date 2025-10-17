@@ -11,9 +11,10 @@ export type UnifiedPoolMetadata = {
   assets: [string, string];
   reserves: {x: BN; y: BN};
   // v2 specific fields
-  activeBin?: BN;
+  activeId?: number;
   binStep?: number;
   baseFactor?: number;
+  protocolFees?: {x: BN; y: BN};
 };
 
 export function useUnifiedPoolsMetadata(pools: UnifiedPoolId[] | undefined) {
@@ -38,8 +39,8 @@ export function useUnifiedPoolsMetadata(pools: UnifiedPoolId[] | undefined) {
               results.push({
                 poolId,
                 type: poolId[2] ? "v1-stable" : "v1-volatile", // Third element indicates stable
-                assets: [poolId[0], poolId[1]],
-                reserves: metadata.reserves,
+                assets: [poolId[0].bits, poolId[1].bits],
+                reserves: {x: metadata.reserve0, y: metadata.reserve1},
               });
             }
           } else {
@@ -50,11 +51,15 @@ export function useUnifiedPoolsMetadata(pools: UnifiedPoolId[] | undefined) {
                 results.push({
                   poolId,
                   type: "v2-concentrated",
-                  assets: [metadata.assetX, metadata.assetY],
+                  assets: [
+                    metadata.pool.assetX.bits,
+                    metadata.pool.assetY.bits,
+                  ],
                   reserves: metadata.reserves,
-                  activeBin: metadata.activeBin,
-                  binStep: metadata.binStep,
-                  baseFactor: metadata.baseFactor,
+                  activeId: metadata.activeId,
+                  binStep: metadata.pool.binStep,
+                  baseFactor: metadata.pool.baseFactor,
+                  protocolFees: metadata.protocolFees,
                 });
               }
             } catch (error) {

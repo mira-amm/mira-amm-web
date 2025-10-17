@@ -3,41 +3,29 @@ import {
   SetStateAction,
   useCallback,
   useEffect,
+  useMemo,
   useState,
 } from "react";
 import {Button} from "@/meshwave-ui/Button";
 import {useConnectUI, useIsConnected} from "@fuels/react";
 import {PoolId} from "mira-dex-ts";
 import {useDocumentTitle} from "usehooks-ts";
-import {clsx} from "clsx";
 import {BN} from "fuels";
 
 import CoinInput from "@/src/components/pages/add-liquidity-page/components/CoinInput/CoinInput";
 import {Info, TransactionFailureModal} from "@/src/components/common";
 import CoinPair from "@/src/components/common/CoinPair/CoinPair";
 import {AprBadge} from "@/src/components/common/AprBadge/AprBadge";
-import {PoolTypeOption} from "@/src/components/common/PoolTypeToggle/PoolTypeToggle";
 import {usePoolNameAndMatch} from "@/src/hooks/usePoolNameAndMatch";
 import {useModal} from "@/src/hooks";
 import {AddLiquidityPreviewData} from "@/src/components/pages/add-liquidity-page/components/AddLiquidity/PreviewAddLiquidityDialog";
+import {APRTooltip} from "@/src/components/pages/add-liquidity-page/components/AddLiquidity/addLiquidityTooltips";
 
-import {
-  APRTooltip,
-  StablePoolTooltip,
-  VolatilePoolTooltip,
-} from "@/src/components/pages/add-liquidity-page/components/AddLiquidity/addLiquidityTooltips";
-import {cn} from "@/src/utils/cn";
-
-import {usePoolAssets} from "@/src/hooks/usePoolAssets";
+import {usePoolAssetsV2} from "@/src/hooks/usePoolAssetsV2";
 import {useLiquidityForm} from "@/src/hooks/useLiquidityForm";
 import {useLiquidityFormV2Integration} from "@/src/hooks/useLiquidityFormV2Integration";
-import {
-  getUiPoolTypeFromPoolId,
-  isV2PoolId,
-} from "@/src/utils/poolTypeDetection";
-import {isV2MockEnabled} from "@/src/utils/mockConfig";
 import {MockModeIndicator} from "@/src/components/common/MockModeIndicator/MockModeIndicator";
-import V2LiquidityConfig from "./V2LiquidityConfig";
+import V2LiquidityConfig from "@/src/components/pages/add-liquidity-page/components/AddLiquidity/V2LiquidityConfig";
 
 // Reusable heading component with consistent styling
 const SectionHeading = ({children}: {children: React.ReactNode}) => (
@@ -46,23 +34,18 @@ const SectionHeading = ({children}: {children: React.ReactNode}) => (
   </h3>
 );
 
-const AddLiquidityDialog = ({
+const V2AddLiquidityDialog = ({
   poolId,
   setPreviewData,
   poolKey,
 }: {
-  poolId: PoolId;
+  poolId: BN;
   setPreviewData: Dispatch<SetStateAction<AddLiquidityPreviewData | null>>;
   poolKey: string;
 }) => {
   const [FailureModal, openFailureModal, closeFailureModal] = useModal();
   const {isConnected, isPending: isConnecting} = useIsConnected();
   const {connect} = useConnectUI();
-
-  // Detect if this is a v2 pool and manage pool type state
-  const isV2PoolDetected = isV2PoolId(poolId);
-
-  const poolType = "v2";
 
   // V2 liquidity configuration state
   const [v2Config, setV2Config] = useState<{
@@ -71,13 +54,10 @@ const AddLiquidityDialog = ({
     numBins: number;
     binResults?: any;
     liquidityDistribution?: any;
+    deltaDistribution?: any;
   } | null>(null);
 
-  // Convert v1 PoolId to v2 pool ID if needed
-  const v2PoolId =
-    isV2PoolDetected && poolId instanceof BN ? poolId : undefined;
-
-  // Get pool assets info
+  // Get pool assets info (V2-compatible)
   const {
     firstAssetId,
     secondAssetId,
@@ -85,7 +65,21 @@ const AddLiquidityDialog = ({
     secondAssetBalance,
     asset0Price,
     asset1Price,
-  } = usePoolAssets(poolKey);
+  } = usePoolAssetsV2(poolId);
+
+  // Create a mock V1-style poolId for form hooks that expect V1 format
+  // This allows us to reuse V1 form logic while working with V2 pools
+  const mockPoolIdForForm: PoolId = useMemo(() => {
+    if (!firstAssetId || !secondAssetId) {
+      // Fallback if assets aren't loaded yet
+      return [{bits: ""}, {bits: ""}, false];
+    }
+    return [
+      {bits: firstAssetId},
+      {bits: secondAssetId},
+      false, // V2 pools don't have stable/volatile distinction
+    ];
+  }, [firstAssetId, secondAssetId]);
 
   // Check if the pool with rewards matches the current pool
   const {isMatching} = usePoolNameAndMatch(poolKey);
@@ -95,7 +89,7 @@ const AddLiquidityDialog = ({
     openFailureModal();
   }, [openFailureModal]);
 
-  // Handle preview data for both v1 and v2 (mock/real) flows
+  // Handle preview data for v2 flows
   const handlePreview = useCallback(
     (data: any) => {
       const assets =
@@ -103,11 +97,11 @@ const AddLiquidityDialog = ({
           ? data.assets
           : [
               {
-                assetId: firstAssetId || poolId[0].bits,
+                assetId: firstAssetId || "",
                 amount: new BN(data?.firstAmount || "0"),
               },
               {
-                assetId: secondAssetId || poolId[1].bits,
+                assetId: secondAssetId || "",
                 amount: new BN(data?.secondAmount || "0"),
               },
             ];
@@ -115,13 +109,19 @@ const AddLiquidityDialog = ({
       const preview: AddLiquidityPreviewData = {
         ...(data || {}),
         assets,
-        isStablePool:
-          typeof data?.isStablePool === "boolean" ? data.isStablePool : false,
+        isStablePool: false, // V2 pools don't have stable/volatile distinction
+        type: "v2-concentrated",
+        poolId: poolId.toString(),
+        binStrategy: v2Config?.liquidityShape,
+        numBins: v2Config?.numBins,
+        priceRange: v2Config?.priceRange,
+        liquidityDistribution: v2Config?.liquidityDistribution,
+        deltaDistribution: v2Config?.deltaDistribution,
       };
 
       setPreviewData(preview);
     },
-    [setPreviewData, firstAssetId, secondAssetId, poolId]
+    [setPreviewData, firstAssetId, secondAssetId, poolId, v2Config]
   );
 
   const {
@@ -132,48 +132,31 @@ const AddLiquidityDialog = ({
     setAmountForCoin,
     clearFirstAmount,
     clearSecondAmount,
-    isStablePool,
     aprValue,
     tvlValue,
     isFetching,
     isFirstToken,
-    buttonTitle,
-    buttonDisabled,
-    handleButtonClick,
     asset0Metadata,
     asset1Metadata,
     previewError,
   } = useLiquidityForm({
-    poolId,
+    poolId: mockPoolIdForForm, // Use mock V1-style poolId for compatibility
     firstAssetBalance,
     secondAssetBalance,
     onPreview: handlePreview,
     onPreviewError: handlePreviewError,
-    enableAutoSync: poolType !== "v2",
+    enableAutoSync: false, // V2 doesn't auto-sync amounts
   });
 
   // V2 integration for concentrated liquidity
   const v2Integration = useLiquidityFormV2Integration({
-    poolType,
+    poolType: "v2",
     firstAmount: firstAmount || new BN(0),
     secondAmount: secondAmount || new BN(0),
-    poolId: v2PoolId,
+    poolId: poolId,
     onPreview: handlePreview,
     v2Config, // Pass the v2 configuration to the integration hook
   });
-
-  // Use v2 logic if pool type is v2, otherwise use v1 logic
-  const finalButtonTitle = v2Integration.shouldUseV2
-    ? v2Integration.v2ButtonTitle || buttonTitle
-    : buttonTitle;
-
-  const finalButtonDisabled = v2Integration.shouldUseV2
-    ? v2Integration.v2ButtonDisabled
-    : buttonDisabled;
-
-  const finalHandleButtonClick = v2Integration.shouldUseV2
-    ? v2Integration.handleV2ButtonClick
-    : handleButtonClick;
 
   // Set document title
   useDocumentTitle(
@@ -184,21 +167,15 @@ const AddLiquidityDialog = ({
   const currentPrice =
     asset1Price && asset0Price ? asset1Price / asset0Price : 1;
   const isOutOfRangeLow = Boolean(
-    poolType === "v2" &&
-      v2Config &&
-      currentPrice !== null &&
-      currentPrice < v2Config.priceRange[0]
+    v2Config && currentPrice !== null && currentPrice < v2Config.priceRange[0]
   );
   const isOutOfRangeHigh = Boolean(
-    poolType === "v2" &&
-      v2Config &&
-      currentPrice !== null &&
-      currentPrice > v2Config.priceRange[1]
+    v2Config && currentPrice !== null && currentPrice > v2Config.priceRange[1]
   );
 
   // Clear the irrelevant amount when out of range
   useEffect(() => {
-    if (poolType !== "v2" || !v2Config || currentPrice === null) return;
+    if (!v2Config || currentPrice === null) return;
     if (isOutOfRangeLow) {
       // Price below range → only second asset (asset1) is needed → clear first
       clearFirstAmount();
@@ -207,7 +184,6 @@ const AddLiquidityDialog = ({
       clearSecondAmount();
     }
   }, [
-    poolType,
     v2Config,
     currentPrice,
     isOutOfRangeLow,
@@ -230,8 +206,8 @@ const AddLiquidityDialog = ({
           <CoinPair
             firstCoin={firstAssetId}
             secondCoin={secondAssetId}
-            isStablePool={isStablePool}
-            poolType={getUiPoolTypeFromPoolId(poolId)}
+            isStablePool={false}
+            poolType="v2-concentrated"
             withPoolDetails
           />
 
@@ -262,39 +238,7 @@ const AddLiquidityDialog = ({
         </div>
       </div>
 
-      <div className="flex w-full gap-3 mb-6">
-        <div
-          role="button"
-          className={cn(
-            "flex w-full flex-col items-start gap-[10px] rounded-lg bg-background-secondary dark:bg-background-secondary p-[12px_16px] text-content-dimmed-light cursor-not-allowed",
-            !isStablePool &&
-              "border dark:border-accent-primary dark:text-content-primary bg-background-primary text-white"
-          )}
-        >
-          <div className="flex w-full">
-            <p className="flex-1 text-left ">Volatile pool</p>
-            <Info tooltipText={VolatilePoolTooltip} />
-          </div>
-          <p className="text-sm">0.30% fee tier</p>
-        </div>
-
-        <div
-          role="button"
-          className={cn(
-            "flex w-full flex-col items-start gap-[10px] rounded-lg bg-background-secondary dark:bg-background-secondary p-[12px_16px] text-content-dimmed-light cursor-not-allowed",
-            isStablePool &&
-              "border dark:border-accent-primary dark:text-content-primary bg-background-primary text-white"
-          )}
-        >
-          <div className="flex w-full">
-            <p className="flex-1 text-left ">Stable pool</p>
-            <Info tooltipText={StablePoolTooltip} />
-          </div>
-          <p className="text-sm">0.05% fee tier</p>
-        </div>
-      </div>
-
-      {/* Main content layout - Single column for all pool types */}
+      {/* Main content layout */}
       <div className="flex flex-col gap-6 mb-6">
         {/* Deposit amounts */}
         <div className="space-y-4">
@@ -304,7 +248,7 @@ const AddLiquidityDialog = ({
               assetId={firstAssetId}
               value={firstAmountInput}
               loading={!isFirstToken && isFetching}
-              setAmount={(val) => setAmountForCoin(poolId[0].bits, val)}
+              setAmount={(val) => setAmountForCoin(firstAssetId || "", val)}
               balance={firstAssetBalance}
               usdRate={asset0Price || undefined}
               isOutOfRange={isOutOfRangeLow}
@@ -313,13 +257,37 @@ const AddLiquidityDialog = ({
               assetId={secondAssetId}
               value={secondAmountInput}
               loading={isFirstToken && isFetching}
-              setAmount={(val) => setAmountForCoin(poolId[1].bits, val)}
+              setAmount={(val) => setAmountForCoin(secondAssetId || "", val)}
               balance={secondAssetBalance}
               usdRate={asset1Price || undefined}
               isOutOfRange={isOutOfRangeHigh}
             />
           </div>
         </div>
+
+        {/* V2 Configuration (Liquidity Shape, Price Range, Distribution) */}
+        <V2LiquidityConfig
+          asset0Metadata={asset0Metadata}
+          asset1Metadata={asset1Metadata}
+          currentPrice={currentPrice}
+          asset0Price={asset0Price || undefined}
+          asset1Price={asset1Price || undefined}
+          totalAsset0Amount={
+            firstAmount
+              ? parseFloat(
+                  firstAmount.formatUnits(asset0Metadata.decimals || 0)
+                )
+              : undefined
+          }
+          totalAsset1Amount={
+            secondAmount
+              ? parseFloat(
+                  secondAmount.formatUnits(asset1Metadata.decimals || 0)
+                )
+              : undefined
+          }
+          onConfigChange={setV2Config}
+        />
       </div>
 
       {/* Connect/Submit Button */}
@@ -329,11 +297,11 @@ const AddLiquidityDialog = ({
         </Button>
       ) : (
         <Button
-          disabled={finalButtonDisabled}
-          onClick={finalHandleButtonClick}
+          disabled={v2Integration.v2ButtonDisabled}
+          onClick={v2Integration.handleV2ButtonClick}
           size="2xl"
         >
-          {poolType === "v2" ? "Input amounts" : finalButtonTitle}
+          {v2Integration.v2ButtonTitle || "Input amounts"}
         </Button>
       )}
 
@@ -347,4 +315,4 @@ const AddLiquidityDialog = ({
   );
 };
 
-export default AddLiquidityDialog;
+export default V2AddLiquidityDialog;

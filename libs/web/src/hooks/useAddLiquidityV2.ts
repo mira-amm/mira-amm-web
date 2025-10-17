@@ -7,7 +7,7 @@ import {useWallet} from "@fuels/react";
 import {
   DEFAULT_SLIPPAGE_BASIS_POINT,
   DefaultTxParams,
-  MaxDeadline,
+  getMaxDeadlineV2,
 } from "@/src/utils/constants";
 import {bn, BN} from "fuels";
 import type {
@@ -61,7 +61,7 @@ export function useAddLiquidityV2({
       secondAssetAmount,
       minAsset0Amount,
       minAsset1Amount,
-      MaxDeadline,
+      getMaxDeadlineV2(),
       activeIdDesired,
       idSlippage,
       deltaIds,

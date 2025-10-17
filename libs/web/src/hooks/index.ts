@@ -27,11 +27,7 @@ export {useSwap} from "./useSwap";
 export {useAssetList} from "./useAssetList";
 export {useAssetMinterContract} from "./useAssetMinterContract";
 export {usePoints, usePointsRank, usePointsRanks} from "./usePoints";
-export {
-  useGetPoolsWithReserve,
-  type Route,
-  type Pool,
-} from "./useGetPoolsWithReserve";
+export {useGetPoolsWithReserve, type Route} from "./useGetPoolsWithReserve";
 export {useAllAssetsCombination} from "./useAllAssetsCombination";
 export {useInitialSwapState} from "./useInitialSwapState";
 export {usePoolsData} from "./usePoolsData";
@@ -92,3 +88,5 @@ export {useDocumentTitle} from "./useDocumentTitle";
 export {useProtocolStats} from "./useProtocolStats";
 export {usePoolConcentrationType} from "./usePoolConcentrationType";
 export {useV2PoolsForPair} from "./useV2PoolsForPair";
+export {usePoolsMetadataV2} from "./usePoolsMetadataV2";
+export {usePoolAssetsV2} from "./usePoolAssetsV2";

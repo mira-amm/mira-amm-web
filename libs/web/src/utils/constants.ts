@@ -1,4 +1,4 @@
-import {bn, CHAIN_IDS, TxParams} from "fuels";
+import {bn, BN, CHAIN_IDS, TxParams} from "fuels";
 import {getBrandText} from "./brandName";
 import verifiedAssets from "./verified-assets.json";
 
@@ -76,6 +76,14 @@ export const DefaultTxParams: TxParams = {
 // Create a deadline 1 hour (3600 seconds) in the future
 // This is a function to ensure we always get a fresh timestamp
 export const getMaxDeadline = () => Math.floor(Date.now() / 1000) + 3600;
+
+// V2 contracts use TAI64 seconds; SDK validation supports TAI64 with a 3600s window.
+// Return current time + 30 minutes in TAI64 to be safely within the window.
+export const getMaxDeadlineV2 = () => {
+  const nowSec = Math.floor(Date.now() / 1000);
+  const TAI64_OFFSET = new BN(2).pow(new BN(62));
+  return TAI64_OFFSET.add(new BN(nowSec + 1800));
+};
 
 export const DiscordLink = "https://discord.gg/9HzukDUKSq" as const;
 export const XLink = "https://x.com/MicrochainDLM" as const;

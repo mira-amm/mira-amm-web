@@ -4,7 +4,7 @@ import {useMutation} from "@tanstack/react-query";
 import {useMiraDexV2} from "@/src/hooks";
 import {useCallback} from "react";
 import {useWallet} from "@fuels/react";
-import {DefaultTxParams, MaxDeadline} from "@/src/utils/constants";
+import {DefaultTxParams, getMaxDeadlineV2} from "@/src/utils/constants";
 import {bn, BN} from "fuels";
 
 export interface RemoveLiquidityV2Params {
@@ -48,7 +48,7 @@ export function useRemoveLiquidityV2({
       amounts,
       adjustedMinAmountX,
       adjustedMinAmountY,
-      MaxDeadline,
+      getMaxDeadlineV2(),
       DefaultTxParams,
       {
         useAssembleTx: true,

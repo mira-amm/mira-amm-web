@@ -2,8 +2,8 @@ import {Suspense} from "react";
 import AddLiquidityPage from "./add-liquidity-page";
 import {Loader} from "@/src/components/common";
 import {getIsRebrandEnabled} from "@/src/utils/isRebrandEnabled";
-import AddBinLiquidityPage from "@/src/components/pages/bin-liquidity/add-bin-liquidity-page";
-import AddLiquidityWithRouting from "./add-liquidity-with-routing";
+import V2AddLiquidityPage from "./v2-add-liquidity-page";
+import {parsePoolKey, detectPoolType} from "@/src/utils/poolTypeDetection";
 
 type PageProps = {
   searchParams: Promise<{[key: string]: string | undefined}>;
@@ -12,18 +12,27 @@ type PageProps = {
 export default async function Page({searchParams}: PageProps) {
   const isRebrandEnabled = getIsRebrandEnabled();
 
-  const {pool, binned} = await searchParams;
+  const {pool} = await searchParams;
 
   const render = () => {
     if (!pool) return <AddLiquidityPage />;
 
-    // Legacy binned parameter support
-    if (binned === "true") {
-      return <AddBinLiquidityPage poolKey={pool} />;
-    }
+    // Detect pool type server-side
+    try {
+      const unifiedPoolId = parsePoolKey(pool);
+      const poolType = detectPoolType(unifiedPoolId);
 
-    // Use routing component that detects pool type automatically
-    return <AddLiquidityWithRouting poolKey={pool} />;
+      // Render appropriate component based on pool type
+      if (poolType === "v2") {
+        return <V2AddLiquidityPage />;
+      }
+
+      return <AddLiquidityPage />;
+    } catch (error) {
+      console.error("Failed to parse pool key:", error);
+      // Fallback to v1 page if parsing fails
+      return <AddLiquidityPage />;
+    }
   };
 
   return (
