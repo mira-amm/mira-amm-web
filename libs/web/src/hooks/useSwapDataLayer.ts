@@ -14,7 +14,6 @@ import {
   SwapState,
 } from "@/src/hooks";
 import {calculatePreviewPrice} from "@/src/utils/swapCalculations";
-// import type {SwapState} from "@/src/hooks/useSwapFormState";
 
 export function useSwapDataLayer({
   swapState,

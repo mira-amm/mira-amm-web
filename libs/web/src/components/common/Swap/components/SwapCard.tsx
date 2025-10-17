@@ -53,8 +53,8 @@ export function SwapCard({
   swapDataLayer: {
     sellBalance: any;
     buyBalance: any;
-    sellAssetPrice: {price: number | null | undefined};
-    buyAssetPrice: {price: number | null | undefined};
+    sellAssetPrice: {price: number | null};
+    buyAssetPrice: {price: number | null};
     tradeState: any;
     exchangeRate: string | null;
     pools: any[];
