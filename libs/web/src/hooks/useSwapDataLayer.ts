@@ -13,15 +13,21 @@ import {
   TradeState,
   SwapState,
 } from "@/src/hooks";
-import {calculatePreviewPrice} from "@/src/utils/swapCalculations";
+import {
+  calculatePreviewPrice,
+  calculateFeePercent,
+  calculateFeeValue,
+} from "@/src/utils/swapCalculations";
 
 export function useSwapDataLayer({
   swapState,
   activeMode,
+  sellValue,
   updateSwapStateAmount,
 }: {
   swapState: SwapState;
   activeMode: "buy" | "sell";
+  sellValue?: string;
   updateSwapStateAmount: (mode: "buy" | "sell", amount: string) => void;
 }) {
   const {balances, balancesPending, refetchBalances} = useBalances();
@@ -105,6 +111,21 @@ export function useSwapDataLayer({
   const sellAssetPrice = useAssetPrice(swapState.sell.assetId);
   const buyAssetPrice = useAssetPrice(swapState.buy.assetId);
 
+  const feePercent = useMemo(
+    () => calculateFeePercent(trade?.bestRoute?.pools),
+    [trade?.bestRoute?.pools]
+  );
+
+  const feeValue = useMemo(
+    () =>
+      calculateFeeValue(
+        sellValue,
+        feePercent,
+        sellMetadata.decimals
+      ),
+    [sellValue, feePercent, sellMetadata.decimals]
+  );
+
   return {
     balances,
     balancesPending,
@@ -124,5 +145,7 @@ export function useSwapDataLayer({
     previewPrice,
     sellAssetPrice,
     buyAssetPrice,
+    feePercent,
+    feeValue,
   };
 }

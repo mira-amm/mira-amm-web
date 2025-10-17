@@ -1,13 +1,9 @@
 "use client";
 
-import {useCallback, useEffect, useMemo, useRef} from "react";
+import {useCallback, useEffect, useState, useRef} from "react";
 import {B256Address} from "fuels";
 import {useConnectUI, useIsConnected} from "@fuels/react";
 import {getIsRebrandEnabled} from "@/src/utils/isRebrandEnabled";
-import {
-  calculateFeePercent,
-  calculateFeeValue,
-} from "@/src/utils/swapCalculations";
 import {
   Loader,
   FeatureGuard,
@@ -36,6 +32,7 @@ import {
 export function Swap({isWidget}: {isWidget?: boolean}) {
   const isClient = useIsClient();
   const initialSwapState = useInitialSwapState(isWidget);
+  const [review, setReview] = useState(false);
 
   // Custom hooks for state management
   const modals = useSwapModals();
@@ -54,6 +51,7 @@ export function Swap({isWidget}: {isWidget?: boolean}) {
   // Consolidated data fetching
   const swapDataLayer = useSwapDataLayer({
     swapState: formState.swapState,
+    sellValue: formState.sellValue,
     activeMode: formState.activeMode,
     updateSwapStateAmount: formState.updateSwapStateAmount,
   });
@@ -99,7 +97,7 @@ export function Swap({isWidget}: {isWidget?: boolean}) {
     previewError: swapDataLayer.previewError || undefined,
     swapPending: swap.swapPending,
     sufficientEthBalance: swapDataLayer.sufficientEthBalance,
-    review: false, // Will be updated by transaction hook
+    review,
   });
 
   // Transaction hook
@@ -117,33 +115,9 @@ export function Swap({isWidget}: {isWidget?: boolean}) {
     amountMissing: validation.amountMissing,
     swapPending: swap.swapPending,
     exchangeRate: swapDataLayer.exchangeRate,
+    review,
+    setReview,
   });
-
-  const feePercent = useMemo(
-    () => calculateFeePercent(swapDataLayer.trade?.bestRoute?.pools),
-    [swapDataLayer.trade?.bestRoute?.pools]
-  );
-
-  const feeValue = useMemo(
-    () =>
-      calculateFeeValue(
-        formState.sellValue,
-        feePercent,
-        swapDataLayer.sellMetadata.decimals || 0
-      ),
-    [formState.sellValue, feePercent, swapDataLayer.sellMetadata.decimals]
-  );
-
-  // Reset review state when validation fails
-  useEffect(() => {
-    if (validation.amountMissing || validation.showInsufficientBalance) {
-      transaction.setReview(false);
-    }
-  }, [
-    validation.amountMissing,
-    validation.showInsufficientBalance,
-    transaction,
-  ]);
 
   const loadingStates = useSwapLoadingStates({
     tradeState: swapDataLayer.tradeState,
@@ -156,6 +130,13 @@ export function Swap({isWidget}: {isWidget?: boolean}) {
     showInsufficientBalance: validation.showInsufficientBalance,
     swapButtonTitle: validation.swapButtonTitle,
   });
+
+  // Reset review state when validation fails
+  useEffect(() => {
+    if (validation.amountMissing || validation.showInsufficientBalance) {
+      setReview(false);
+    }
+  }, [validation.amountMissing, validation.showInsufficientBalance]);
 
   const isRebrandingEnabled = getIsRebrandEnabled();
 
@@ -185,7 +166,7 @@ export function Swap({isWidget}: {isWidget?: boolean}) {
           transaction={transaction}
           previewLoading={loadingStates.previewLoading}
           txCostPending={loadingStates.txCostPending}
-          feeValue={feeValue}
+          feeValue={swapDataLayer.feeValue}
           isConnected={isConnected}
           isConnecting={isConnecting}
           connect={connect}

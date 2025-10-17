@@ -1,5 +1,5 @@
 import {memo} from "react";
-import {SwapState} from "@/src/components/common/Swap/Swap";
+import {SwapState} from "@/src/hooks";
 import {ExchangeRate} from "@/src/components/common";
 
 export const Rate = memo(function Rate({swapState}: {swapState: SwapState}) {
