@@ -53,10 +53,15 @@ const CoinPair = ({
   const {symbol: firstSymbol} = useAssetMetadata(firstCoin);
   const {symbol: secondSymbol} = useAssetMetadata(secondCoin);
 
-  const feeText = isStablePool ? "0.05%" : "0.3%";
-  const poolDescription = `${isStablePool ? "Stable" : "Volatile"}: ${feeText}`;
-
+  const defaultFeeText = isStablePool ? "0.05%" : "0.3%";
   const config = poolTypeConfig[poolType ?? "v1-volatile"];
+  const displayFeeText = config?.fee ?? defaultFeeText;
+  const typeLabel =
+    poolType === "v2-concentrated"
+      ? "Concentrated"
+      : isStablePool
+        ? "Stable"
+        : "Volatile";
 
   return (
     <div
@@ -96,13 +101,13 @@ const CoinPair = ({
 
         {withFeeBelow && (
           <p className="text-sm leading-[14px] text-content-tertiary lg:text-sm">
-            {feeText}
+            {defaultFeeText}
           </p>
         )}
 
         {withPoolDescription && (
           <p className="text-sm leading-[14px] text-accent-alert">
-            {poolDescription}
+            {typeLabel}: {displayFeeText}
           </p>
         )}
 
@@ -112,10 +117,10 @@ const CoinPair = ({
               {config.shortLabel}
             </span>
             <span className="rounded-lg bg-background-secondary px-2 py-0.5 text-content-tertiary text-xs font-medium">
-              {isStablePool ? "Stable" : "Volatile"}
+              {typeLabel}
             </span>
             <span className="rounded-lg bg-background-secondary px-2 py-0.5 text-content-tertiary text-xs font-medium font-alt">
-              {feeText}
+              {displayFeeText}
             </span>
           </div>
         )}
@@ -123,7 +128,7 @@ const CoinPair = ({
 
       {withFee && (
         <p className="text-sm leading-[14px] text-content-tertiary font-alt">
-          {feeText}
+          {displayFeeText}
         </p>
       )}
     </div>
