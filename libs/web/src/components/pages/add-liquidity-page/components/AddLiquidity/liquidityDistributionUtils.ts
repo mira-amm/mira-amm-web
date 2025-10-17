@@ -128,20 +128,24 @@ export function calculateBinLiquidity(
       } else if (distanceFromActive === 1) {
         weight = 0.15;
         if (isBelow) {
-          liquidityX = (totalLiquidity * weight) / binPrice;
-          liquidityY = 0;
-        } else {
+          // Bins below active: only Y tokens (lower price)
           liquidityX = 0;
           liquidityY = totalLiquidity * weight;
+        } else {
+          // Bins above active: only X tokens (higher price)
+          liquidityX = (totalLiquidity * weight) / binPrice;
+          liquidityY = 0;
         }
       } else {
         weight = 0.15 / Math.max(1, numBins - 3);
         if (isBelow) {
-          liquidityX = (totalLiquidity * weight) / binPrice;
-          liquidityY = 0;
-        } else {
+          // Bins below active: only Y tokens (lower price)
           liquidityX = 0;
           liquidityY = totalLiquidity * weight;
+        } else {
+          // Bins above active: only X tokens (higher price)
+          liquidityX = (totalLiquidity * weight) / binPrice;
+          liquidityY = 0;
         }
       }
       break;
@@ -158,11 +162,13 @@ export function calculateBinLiquidity(
         liquidityX = (totalLiquidity * weight * 0.5) / currentPrice;
         liquidityY = totalLiquidity * weight * 0.5;
       } else if (isBelow) {
-        liquidityX = (totalLiquidity * weight) / binPrice;
-        liquidityY = 0;
-      } else {
+        // Bins below active: only Y tokens (lower price)
         liquidityX = 0;
         liquidityY = totalLiquidity * weight;
+      } else {
+        // Bins above active: only X tokens (higher price)
+        liquidityX = (totalLiquidity * weight) / binPrice;
+        liquidityY = 0;
       }
       break;
     }
@@ -176,11 +182,13 @@ export function calculateBinLiquidity(
         const sideWeight = 0.45 / Math.floor(numBins / 2);
         weight = sideWeight;
         if (isBelow) {
-          liquidityX = (totalLiquidity * weight) / binPrice;
-          liquidityY = 0;
-        } else {
+          // Bins below active: only Y tokens (lower price)
           liquidityX = 0;
           liquidityY = totalLiquidity * weight;
+        } else {
+          // Bins above active: only X tokens (higher price)
+          liquidityX = (totalLiquidity * weight) / binPrice;
+          liquidityY = 0;
         }
       }
       break;
@@ -191,11 +199,13 @@ export function calculateBinLiquidity(
         liquidityX = (totalLiquidity * weight * 0.5) / currentPrice;
         liquidityY = totalLiquidity * weight * 0.5;
       } else if (isBelow) {
-        liquidityX = (totalLiquidity * weight) / binPrice;
-        liquidityY = 0;
-      } else {
+        // Bins below active: only Y tokens (lower price)
         liquidityX = 0;
         liquidityY = totalLiquidity * weight;
+      } else {
+        // Bins above active: only X tokens (higher price)
+        liquidityX = (totalLiquidity * weight) / binPrice;
+        liquidityY = 0;
       }
   }
 
