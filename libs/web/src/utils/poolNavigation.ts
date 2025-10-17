@@ -20,13 +20,8 @@ export function getPoolNavigationUrl(
 
   switch (action) {
     case "add":
-      if (poolType === "v2") {
-        // Route to v2-specific add liquidity page
-        return `/liquidity/add-v2?pool=${poolKey}`;
-      } else {
-        // Route to v1 add liquidity page
-        return `/liquidity/add?pool=${poolKey}`;
-      }
+      // Route to v1 add liquidity page
+      return `/liquidity/add?pool=${poolKey}`;
 
     case "view":
       if (poolType === "v2") {

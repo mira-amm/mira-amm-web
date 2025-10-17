@@ -5,7 +5,7 @@ import {useWallet} from "@fuels/react";
 import {useMutation} from "@tanstack/react-query";
 import {ACTIVE_BIN_ID} from "mira-dex-ts";
 
-import {DefaultTxParams, getMaxDeadline} from "@/src/utils/constants";
+import {DefaultTxParams, getMaxDeadlineV2} from "@/src/utils/constants";
 import {useAssetMinterContract} from "./useAssetMinterContract";
 import {useAssetMetadata, useMiraDexV2} from "@/src/hooks";
 
@@ -71,7 +71,7 @@ export function useCreatePoolV2({
         activeBinIdUint,
         firstCoinAmountToUse,
         secondCoinAmountToUse,
-        getMaxDeadline(),
+        getMaxDeadlineV2(),
         [
           {
             binId: activeBinIdUint.toNumber(), // Convert BN to number for LiquidityConfig
