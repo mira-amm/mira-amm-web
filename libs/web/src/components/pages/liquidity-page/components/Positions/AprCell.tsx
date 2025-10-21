@@ -5,13 +5,24 @@ import {usePoolAPR} from "@/src/hooks";
 import {createPoolKey} from "@/src/utils/common";
 import {AprBadge} from "@/src/components/common/AprBadge/AprBadge";
 import {DefaultLocale} from "@/src/utils/constants";
+import type {UnifiedPosition} from "./Positions";
 
-const AprCell = ({position}: {position: Position}) => {
+const AprCell = ({position}: {position: Position | UnifiedPosition}) => {
   const assetIdA = position.token0Item.token0Position[0].bits;
   const assetIdB = position.token1Item.token1Position[0].bits;
-  const isStablePool = position.isStable;
+
+  // Handle both V1 and V2 positions
+  // For APR queries, we always need a V1-style PoolId (asset pair + stability)
+  // V2 positions are always volatile (not stable)
+  const isStablePool = (position as any).isV2
+    ? false
+    : (position as Position).isStable;
   const poolId = buildPoolId(assetIdA, assetIdB, isStablePool);
-  const poolKey = createPoolKey(poolId);
+
+  // For pool key, use the actual poolId (BN for V2, built poolId for V1)
+  const poolKey = (position as any).isV2
+    ? createPoolKey(position.poolId)
+    : createPoolKey(poolId);
   const {apr} = usePoolAPR(poolId);
   const {isMatching} = usePoolNameAndMatch(poolKey);
 
