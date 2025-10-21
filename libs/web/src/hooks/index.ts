@@ -90,3 +90,5 @@ export {usePoolConcentrationType} from "./usePoolConcentrationType";
 export {useV2PoolsForPair} from "./useV2PoolsForPair";
 export {usePoolsMetadataV2} from "./usePoolsMetadataV2";
 export {usePoolAssetsV2} from "./usePoolAssetsV2";
+export {useV2Positions} from "./useV2Positions";
+export type {V2PositionSummary} from "./useV2Positions";
