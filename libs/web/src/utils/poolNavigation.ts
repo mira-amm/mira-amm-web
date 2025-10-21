@@ -24,13 +24,8 @@ export function getPoolNavigationUrl(
       return `/liquidity/add?pool=${poolKey}`;
 
     case "view":
-      if (poolType === "v2") {
-        // Route to v2-specific pool view page
-        return `/liquidity/pool-v2/${poolKey}`;
-      } else {
-        // Route to v1 pool view page
-        return `/liquidity/position?pool=${poolKey}`;
-      }
+      // Route to pool view page
+      return `/liquidity/position?pool=${poolKey}`;
 
     case "manage":
       if (poolType === "v2") {
