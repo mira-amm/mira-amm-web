@@ -50,3 +50,5 @@ export * from "./PoolTypeIndicator";
 export {PositionManagementDashboard} from "./PositionManagementDashboard";
 export * from "./IndividualBinLiquidityModals";
 export * from "./ConcentratedLiquidityMetrics";
+export {PageSuspense} from "./page-suspense";
+export {PoolRouter} from "./pool-router";
