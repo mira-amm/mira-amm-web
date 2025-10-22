@@ -83,7 +83,7 @@ export function useSwapTransaction({
       return;
     }
     if (!sufficientEthBalance) {
-      openNewTab(`${FuelAppUrl}/bridge?from=eth&to=fuel&auto_close=true&=true`);
+      openNewTab(`${FuelAppUrl}/bridge?from=eth&to=fuel&auto_close=true`);
       return;
     }
     if (amountMissing || swapPending || exchangeRate === null) return;

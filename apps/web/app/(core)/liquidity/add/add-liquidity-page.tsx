@@ -16,9 +16,7 @@ import {
   SettingsModalContent,
   SlippageSetting,
 } from "@/src/components/common";
-import {useModal} from "@/src/hooks";
-
-import {SlippageMode} from "@/src/components/common/Swap/Swap";
+import {useModal, type SlippageMode} from "@/src/hooks";
 import SettingsModalContentNew from "@/src/components/common/settings-modal-content-new";
 
 export default function AddLiquidityPage() {

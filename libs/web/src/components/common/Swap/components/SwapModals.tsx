@@ -7,6 +7,7 @@ import {
 } from "@/src/components/common";
 import SettingsModalContentNew from "../../settings-modal-content-new";
 import type {SwapState, SlippageMode} from "@/src/hooks";
+import type {Dispatch, SetStateAction, RefObject} from "react";
 
 export function SwapModals({
   modals,
@@ -33,11 +34,11 @@ export function SwapModals({
   };
   slippage: number;
   slippageMode: SlippageMode;
-  setSlippage: React.Dispatch<React.SetStateAction<number>>;
-  setSlippageMode: React.Dispatch<React.SetStateAction<SlippageMode>>;
+  setSlippage: Dispatch<SetStateAction<number>>;
+  setSlippageMode: Dispatch<SetStateAction<SlippageMode>>;
   balances: any[] | undefined;
   handleCoinSelection: (assetId: string | null) => void;
-  swapStateForPreview: React.MutableRefObject<SwapState>;
+  swapStateForPreview: RefObject<SwapState>;
   swapResult: {id: string} | null | undefined;
   txCostError: any;
   swapError: any;
