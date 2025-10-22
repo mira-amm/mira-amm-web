@@ -77,7 +77,9 @@ export const PreviewSummary = memo(function PreviewSummary({
         {txCostPending ? (
           <PriceSummarySkeletonLoader className="w-[35%]" />
         ) : (
-          <p className="text-sm">{txCost?.toFixed(9)} ETH</p>
+          <p className="text-sm">
+            {txCost != null ? `${txCost.toFixed(9)} ETH` : "—"}
+          </p>
         )}
       </div>
 
