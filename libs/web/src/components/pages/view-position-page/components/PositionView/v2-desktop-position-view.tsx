@@ -19,18 +19,6 @@ import {PoolType} from "@/src/components/common/PoolTypeIndicator";
 import {getPoolNavigationUrl} from "@/src/utils/poolNavigation";
 import {cn} from "@/src/utils/cn";
 
-const MOCK = {
-  liquidityShape: "curve",
-  minPrice: 134.54718564908973,
-  maxPrice: 201.82077847363456,
-  numBins: 163,
-  currentPrice: 168.18398206136214,
-  asset0Price: 0.00594471,
-  asset1Price: 0.999805,
-  totalAsset0Amount: 1,
-  totalAsset1Amount: 1,
-};
-
 export interface AssetData {
   amount: string;
   metadata: {
@@ -65,6 +53,7 @@ export function V2DesktopPositionView({
   formattedTvlValue,
   positionPath,
   nftAssetId,
+  binStep,
   assetA,
   assetB,
   feesA,
@@ -78,6 +67,7 @@ export function V2DesktopPositionView({
   formattedTvlValue: string;
   positionPath: string;
   nftAssetId?: string;
+  binStep?: number;
   assetA: AssetData;
   assetB: AssetData;
   feesA?: FeeData;
@@ -95,17 +85,18 @@ export function V2DesktopPositionView({
     );
   };
 
-  const {
-    liquidityShape,
-    minPrice,
-    maxPrice,
-    numBins,
-    currentPrice,
-    asset0Price,
-    asset1Price,
-    totalAsset0Amount,
-    totalAsset1Amount,
-  } = MOCK;
+  // Get asset prices from indexer
+  const {price: asset0PriceUSD} = useAssetPriceFromIndexer(pool[0].bits);
+  const {price: asset1PriceUSD} = useAssetPriceFromIndexer(pool[1].bits);
+
+  // Calculate current price from position stats (middle of range as approximation)
+  const currentPrice = positionStats
+    ? (positionStats.minPrice + positionStats.maxPrice) / 2
+    : 0;
+
+  // Parse amounts for distribution chart
+  const totalAsset0Amount = parseFloat(assetA.amount) || 0;
+  const totalAsset1Amount = parseFloat(assetB.amount) || 0;
 
   const [selectedTime, setSelectedtime] = useState(TimeData[1]);
 
@@ -201,23 +192,26 @@ export function V2DesktopPositionView({
           </div>
         </div>
 
-        {positionStats && (
-          <div className="border-b border-background-grey-light">
-            <SimulatedDistribution
-              liquidityShape={liquidityShape as "spot" | "curve" | "bidask"}
-              minPrice={positionStats.minPrice}
-              maxPrice={positionStats.maxPrice}
-              currentPrice={currentPrice}
-              binStepBasisPoints={25} // Default 25 basis points (0.25%) - should be passed from pool metadata
-              asset0Symbol={assetA.metadata.symbol}
-              asset1Symbol={assetB.metadata.symbol}
-              asset0Price={asset0Price}
-              asset1Price={asset1Price}
-              totalAsset0Amount={totalAsset0Amount}
-              totalAsset1Amount={totalAsset1Amount}
-            />
-          </div>
-        )}
+        {positionStats &&
+          totalAsset0Amount > 0 &&
+          totalAsset1Amount > 0 &&
+          binStep && (
+            <div className="border-b border-background-grey-light">
+              <SimulatedDistribution
+                liquidityShape="curve"
+                minPrice={positionStats.minPrice}
+                maxPrice={positionStats.maxPrice}
+                currentPrice={currentPrice}
+                binStepBasisPoints={binStep}
+                asset0Symbol={assetA.metadata.symbol || "Token A"}
+                asset1Symbol={assetB.metadata.symbol || "Token B"}
+                asset0Price={asset0PriceUSD || 0}
+                asset1Price={asset1PriceUSD || 0}
+                totalAsset0Amount={totalAsset0Amount}
+                totalAsset1Amount={totalAsset1Amount}
+              />
+            </div>
+          )}
 
         <DepositAmount assetId={pool[0].bits} amount={assetA.amount} />
         <DepositAmount assetId={pool[1].bits} amount={assetB.amount} />
