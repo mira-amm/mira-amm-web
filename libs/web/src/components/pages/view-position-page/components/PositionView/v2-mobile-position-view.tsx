@@ -42,6 +42,7 @@ interface PositionStats {
   numBins: number;
   minPrice: number;
   maxPrice: number;
+  liquidityShape: "spot" | "curve" | "bidask";
 }
 
 export function V2MobilePositionView({

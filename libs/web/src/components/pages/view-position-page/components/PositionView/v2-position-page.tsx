@@ -154,6 +154,7 @@ export function V2PositionView({
           numBins: totals.numBins,
           minPrice: totals.minPrice,
           maxPrice: totals.maxPrice,
+          liquidityShape: totals.liquidityShape,
         }}
       />
       <V2DesktopPositionView
@@ -186,6 +187,7 @@ export function V2PositionView({
           numBins: totals.numBins,
           minPrice: totals.minPrice,
           maxPrice: totals.maxPrice,
+          liquidityShape: totals.liquidityShape,
         }}
       />
     </>
