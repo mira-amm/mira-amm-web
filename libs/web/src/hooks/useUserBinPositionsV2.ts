@@ -2,8 +2,10 @@
 
 import {useQuery} from "@tanstack/react-query";
 import {useReadonlyMiraV2} from "@/src/hooks";
-import {BN, Address} from "fuels";
+import {BN} from "fuels";
 import {useWallet} from "@fuels/react";
+import request, {gql} from "graphql-request";
+import {SQDIndexerUrl} from "../utils/constants";
 import {
   isV2MockEnabled,
   getMockUserPositions,
@@ -62,34 +64,104 @@ export function useUserBinPositionsV2(poolId: BN | undefined) {
       }
 
       try {
-        // Get user's bin positions from the v2 SDK
-        const positions = await readonlyMiraV2.getUserBinPositions(
-          poolId,
-          Address.fromString(userAddress.toString())
-        );
+        // Query the indexer for user's positions in this pool
+        const query = gql`
+          query GetUserPositions($poolId: String!, $userAddress: String!) {
+            actions(
+              where: {
+                type_eq: ADD_LIQUIDITY_V2
+                pool: {id_eq: $poolId}
+                recipient_eq: $userAddress
+              }
+              orderBy: timestamp_DESC
+            ) {
+              id
+              position {
+                id
+                binPositions(where: {bin: {pool: {id_eq: $poolId}}}) {
+                  bin {
+                    binId
+                    isActive
+                    price
+                  }
+                  liquidityShares
+                  redeemableReserveX
+                  redeemableReserveY
+                  feesX
+                  feesY
+                }
+              }
+            }
+          }
+        `;
+
+        const result = await request<{
+          actions: Array<{
+            id: string;
+            position: {
+              id: string;
+              binPositions: Array<{
+                bin: {
+                  binId: number;
+                  isActive: boolean;
+                  price: string;
+                };
+                liquidityShares: string;
+                redeemableReserveX: string;
+                redeemableReserveY: string;
+                feesX: string;
+                feesY: string;
+              }>;
+            };
+          }>;
+        }>({
+          url: SQDIndexerUrl,
+          document: query,
+          variables: {
+            poolId: poolId.toString(),
+            userAddress: userAddress.toString().toLowerCase(),
+          },
+        });
+
+        console.log("Indexer query result:", result);
+
+        // Transform indexer data to V2BinPosition format
+        const positions: any[] = [];
+        const seenBins = new Set<number>();
+
+        for (const action of result.actions) {
+          if (!action.position) continue;
+
+          for (const binPosition of action.position.binPositions) {
+            // Skip if we've already seen this bin (in case of multiple actions)
+            if (seenBins.has(binPosition.bin.binId)) continue;
+            seenBins.add(binPosition.bin.binId);
+
+            // Only include bins with non-zero liquidity
+            if (new BN(binPosition.liquidityShares).gt(0)) {
+              positions.push({
+                binId: binPosition.bin.binId,
+                lpToken: action.position.id, // NFT asset ID
+                lpTokenAmount: new BN(binPosition.liquidityShares),
+                underlyingAmounts: {
+                  x: new BN(binPosition.redeemableReserveX),
+                  y: new BN(binPosition.redeemableReserveY),
+                },
+                price: parseFloat(binPosition.bin.price),
+                feesEarned: {
+                  x: new BN(binPosition.feesX),
+                  y: new BN(binPosition.feesY),
+                },
+                isActive: binPosition.bin.isActive,
+              });
+            }
+          }
+        }
 
         return positions;
-
-        // // Get the active bin to determine which positions are active - uint representation
-        // const activeBinIdUint = await readonlyMiraV2.getActiveBin(poolId);
-
-        // // Transform the positions to our interface format
-        // const transformedPositions: V2BinPosition[] = positions.map(
-        //   (position) => ({
-        //     binId: new BN(position.binId),
-        //     lpToken: position.lpToken?.bits || "unknown", // Convert AssetId to string
-        //     lpTokenAmount: position.lpTokenAmount,
-        //     underlyingAmounts: position.underlyingAmounts,
-        //     price: position.price || 0,
-        //     feesEarned: position.feesEarned || {x: new BN(0), y: new BN(0)},
-        //     isActive: new BN(position.binId).eq(activeBinIdUint),
-        //   })
-        // );
-
-        // return transformedPositions;
       } catch (error) {
         console.error("Failed to fetch user bin positions:", error);
-        return [];
+        throw error;
       }
     },
     enabled: Boolean(readonlyMiraV2 && poolId && userAddress),
