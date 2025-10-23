@@ -41,6 +41,7 @@ export interface PositionStats {
   numBins: number;
   minPrice: number;
   maxPrice: number;
+  liquidityShape: "spot" | "curve" | "bidask";
 }
 
 const TimeData = ["24H", "7D", "30D"];
@@ -197,7 +198,7 @@ export function V2DesktopPositionView({
           binStep && (
             <div className="border-b border-background-grey-light">
               <SimulatedDistribution
-                liquidityShape="curve"
+                liquidityShape={positionStats.liquidityShape}
                 minPrice={positionStats.minPrice}
                 maxPrice={positionStats.maxPrice}
                 currentPrice={currentPrice}

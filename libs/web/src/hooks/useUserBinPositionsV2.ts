@@ -13,6 +13,58 @@ import {
   mockDelay,
 } from "../utils/mockConfig";
 
+/**
+ * Determines the liquidity distribution shape based on bin positions
+ * TODO: - remember to discuss this.
+ */
+function determineLiquidityShape(positions: V2BinPosition[]): LiquidityShape {
+  if (positions.length === 0) return "curve";
+
+  // Sort positions by binId for analysis
+  const sortedPositions = [...positions].sort(
+    (a, b) => Number(a.binId.toString()) - Number(b.binId.toString())
+  );
+
+  // Spot: 1-3 consecutive bins (very concentrated)
+  if (positions.length <= 3) {
+    const binIds = sortedPositions.map((p) => Number(p.binId.toString()));
+    const isConsecutive = binIds.every(
+      (id, i) => i === 0 || id === binIds[i - 1] + 1
+    );
+    if (isConsecutive) return "spot";
+  }
+
+  // Bid-Ask: Check for two separate clusters with significant gap
+  if (positions.length >= 4) {
+    const binIds = sortedPositions.map((p) => Number(p.binId.toString()));
+
+    // Find the largest gap between consecutive bins
+    let maxGap = 0;
+    let maxGapIndex = 0;
+    for (let i = 1; i < binIds.length; i++) {
+      const gap = binIds[i] - binIds[i - 1];
+      if (gap > maxGap) {
+        maxGap = gap;
+        maxGapIndex = i;
+      }
+    }
+
+    // If there's a significant gap (more than 20% of total range), it's likely bid-ask
+    const totalRange = binIds[binIds.length - 1] - binIds[0];
+    if (maxGap > totalRange * 0.2 && maxGap > 5) {
+      // Check both clusters have reasonable size
+      const leftClusterSize = maxGapIndex;
+      const rightClusterSize = positions.length - maxGapIndex;
+      if (leftClusterSize >= 2 && rightClusterSize >= 2) {
+        return "bidask";
+      }
+    }
+  }
+
+  // Default: Curve (continuous distribution)
+  return "curve";
+}
+
 export interface V2BinPosition {
   binId: BN;
   lpToken: string; // AssetId as string
@@ -23,6 +75,8 @@ export interface V2BinPosition {
   isActive: boolean;
 }
 
+export type LiquidityShape = "spot" | "curve" | "bidask";
+
 export interface V2PositionTotals {
   totalX: BN;
   totalY: BN;
@@ -31,6 +85,7 @@ export interface V2PositionTotals {
   numBins: number;
   minPrice: number;
   maxPrice: number;
+  liquidityShape: LiquidityShape;
 }
 
 export function useUserBinPositionsV2(poolId: BN | undefined) {
@@ -193,10 +248,11 @@ export function useUserBinPositionsV2(poolId: BN | undefined) {
         numBins: 0,
         minPrice: 0,
         maxPrice: 0,
+        liquidityShape: "curve" as LiquidityShape,
       };
     }
 
-    return positions.reduce(
+    const aggregated = positions.reduce(
       (acc, position) => ({
         totalX: acc.totalX.add(position.underlyingAmounts.x),
         totalY: acc.totalY.add(position.underlyingAmounts.y),
@@ -216,6 +272,14 @@ export function useUserBinPositionsV2(poolId: BN | undefined) {
         maxPrice: -Infinity,
       }
     );
+
+    // Determine liquidity shape based on bin distribution
+    const liquidityShape = determineLiquidityShape(positions);
+
+    return {
+      ...aggregated,
+      liquidityShape,
+    };
   }, [query.data]);
 
   return {
