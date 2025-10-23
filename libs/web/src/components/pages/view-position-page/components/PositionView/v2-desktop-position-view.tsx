@@ -41,6 +41,21 @@ export interface AssetData {
   reserve?: number;
 }
 
+export interface FeeData {
+  amount: string;
+  metadata: {
+    name?: string;
+    symbol?: string;
+    decimals?: number;
+  } & {isLoading: boolean};
+}
+
+export interface PositionStats {
+  numBins: number;
+  minPrice: number;
+  maxPrice: number;
+}
+
 const TimeData = ["24H", "7D", "30D"];
 
 export function V2DesktopPositionView({
@@ -51,6 +66,10 @@ export function V2DesktopPositionView({
   positionPath,
   assetA,
   assetB,
+  feesA,
+  feesB,
+  binPositions,
+  positionStats,
 }: {
   pool: PoolId;
   isStablePool: boolean;
@@ -59,6 +78,10 @@ export function V2DesktopPositionView({
   positionPath: string;
   assetA: AssetData;
   assetB: AssetData;
+  feesA?: FeeData;
+  feesB?: FeeData;
+  binPositions?: any[];
+  positionStats?: PositionStats;
 }) {
   const renderRemoveLiquidity = () => {
     const removePath = getPoolNavigationUrl(pool, "remove");
@@ -147,8 +170,18 @@ export function V2DesktopPositionView({
 
       <div className="w-full p-4 rounded-xl flex flex-col gap-4 bg-background-grey-dark border-border-secondary border-[12px]">
         <div className="flex justify-between items-center mb-4">
-          <div className="text-content-primary text-base leading-[19px]">
-            Your liquidity
+          <div className="flex flex-col gap-1">
+            <div className="text-content-primary text-base leading-[19px]">
+              Your liquidity
+            </div>
+            {positionStats && (
+              <div className="text-content-tertiary text-sm">
+                {positionStats.numBins} bin
+                {positionStats.numBins !== 1 ? "s" : ""} • Range: $
+                {positionStats.minPrice.toFixed(4)} - $
+                {positionStats.maxPrice.toFixed(4)}
+              </div>
+            )}
           </div>
           <div className="flex items-center space-x-4">
             <div className="flex items-center">
@@ -166,54 +199,23 @@ export function V2DesktopPositionView({
           </div>
         </div>
 
-        <div className="border-b border-background-grey-light">
-          <SimulatedDistribution
-            liquidityShape={liquidityShape as "spot" | "curve" | "bidask"}
-            minPrice={minPrice}
-            maxPrice={maxPrice}
-            currentPrice={currentPrice}
-            binStepBasisPoints={25} // Default 25 basis points (0.25%) - should be passed from pool metadata
-            asset0Symbol={assetA.metadata.symbol}
-            asset1Symbol={assetB.metadata.symbol}
-            asset0Price={asset0Price}
-            asset1Price={asset1Price}
-            totalAsset0Amount={totalAsset0Amount}
-            totalAsset1Amount={totalAsset1Amount}
-          />
-        </div>
-
-        <DepositAmount assetId={pool[0].bits} amount={assetA.amount} />
-        <DepositAmount assetId={pool[1].bits} amount={assetB.amount} />
-        {formattedTvlValue && (
-          <div className="w-full h-0.5 bg-content-grey-dark dark:bg-white opacity-10" />
-        )}
-
-        <TotalDeposit
-          assetAId={pool[0].bits}
-          assetAmount={assetA.amount}
-          assetBId={pool[0].bits}
-          assetBmount={assetB.amount}
-        />
-      </div>
-
-      <div className="w-full p-4 rounded-xl flex flex-col gap-4 bg-background-grey-dark border-border-secondary border-[12px]">
-        <div className="flex justify-between items-center mb-4 border-b border-background-grey-light pb-4">
-          <div className="flex flex-col">
-            <div className="text-content-primary text-base leading-[19px]">
-              Fees earned
-            </div>
-            <div className="text-content-tertiary text-sm">
-              Last refreshed on Jun 28 2025, 2:00 PM
-            </div>
-          </div>
-          <div className="flex items-center space-x-4">
-            <ButtonGroup
-              items={TimeData}
-              value={selectedTime}
-              onChange={handleButtonClick}
+        {positionStats && (
+          <div className="border-b border-background-grey-light">
+            <SimulatedDistribution
+              liquidityShape={liquidityShape as "spot" | "curve" | "bidask"}
+              minPrice={positionStats.minPrice}
+              maxPrice={positionStats.maxPrice}
+              currentPrice={currentPrice}
+              binStepBasisPoints={25} // Default 25 basis points (0.25%) - should be passed from pool metadata
+              asset0Symbol={assetA.metadata.symbol}
+              asset1Symbol={assetB.metadata.symbol}
+              asset0Price={asset0Price}
+              asset1Price={asset1Price}
+              totalAsset0Amount={totalAsset0Amount}
+              totalAsset1Amount={totalAsset1Amount}
             />
           </div>
-        </div>
+        )}
 
         <DepositAmount assetId={pool[0].bits} amount={assetA.amount} />
         <DepositAmount assetId={pool[1].bits} amount={assetB.amount} />
@@ -222,13 +224,48 @@ export function V2DesktopPositionView({
         )}
 
         <TotalDeposit
-          title="Total in this period"
           assetAId={pool[0].bits}
           assetAmount={assetA.amount}
-          assetBId={pool[0].bits}
+          assetBId={pool[1].bits}
           assetBmount={assetB.amount}
         />
       </div>
+
+      {feesA && feesB && (
+        <div className="w-full p-4 rounded-xl flex flex-col gap-4 bg-background-grey-dark border-border-secondary border-[12px]">
+          <div className="flex justify-between items-center mb-4 border-b border-background-grey-light pb-4">
+            <div className="flex flex-col">
+              <div className="text-content-primary text-base leading-[19px]">
+                Fees earned
+              </div>
+              <div className="text-content-tertiary text-sm">
+                Cumulative fees from all bins
+              </div>
+            </div>
+            <div className="flex items-center space-x-4">
+              <ButtonGroup
+                items={TimeData}
+                value={selectedTime}
+                onChange={handleButtonClick}
+              />
+            </div>
+          </div>
+
+          <DepositAmount assetId={pool[0].bits} amount={feesA.amount} />
+          <DepositAmount assetId={pool[1].bits} amount={feesB.amount} />
+          {formattedTvlValue && (
+            <div className="w-full h-0.5 bg-content-grey-dark dark:bg-white opacity-10" />
+          )}
+
+          <TotalDeposit
+            title="Total fees earned:"
+            assetAId={pool[0].bits}
+            assetAmount={feesA.amount}
+            assetBId={pool[1].bits}
+            assetBmount={feesB.amount}
+          />
+        </div>
+      )}
 
       <PromoBlock
         icon={<PromoSparkle />}
