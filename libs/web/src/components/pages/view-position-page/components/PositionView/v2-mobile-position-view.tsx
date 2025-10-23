@@ -29,6 +29,21 @@ interface AssetData {
   reserve?: number;
 }
 
+interface FeeData {
+  amount: string;
+  metadata: {
+    name?: string;
+    symbol?: string;
+    decimals?: number;
+  } & {isLoading: boolean};
+}
+
+interface PositionStats {
+  numBins: number;
+  minPrice: number;
+  maxPrice: number;
+}
+
 export function V2MobilePositionView({
   pool,
   isStablePool,
@@ -37,6 +52,9 @@ export function V2MobilePositionView({
   positionPath,
   assetA,
   assetB,
+  feesA,
+  feesB,
+  positionStats,
 }: {
   pool: PoolId;
   isStablePool: boolean;
@@ -45,6 +63,9 @@ export function V2MobilePositionView({
   positionPath: string;
   assetA: AssetData;
   assetB: AssetData;
+  feesA?: FeeData;
+  feesB?: FeeData;
+  positionStats?: PositionStats;
 }) {
   const renderRemoveLiquidity = () => {
     const removePath = getPoolNavigationUrl(pool, "remove");
@@ -69,7 +90,17 @@ export function V2MobilePositionView({
       </div>
 
       <div className="flex flex-col gap-[15px] p-4 rounded-ten bg-background-grey-dark border-border-secondary border-[12px]">
-        <p className="text-base leading-[19px]">Your position</p>
+        <div className="flex flex-col gap-1">
+          <p className="text-base leading-[19px]">Your position</p>
+          {positionStats && (
+            <p className="text-content-tertiary text-sm">
+              {positionStats.numBins} bin
+              {positionStats.numBins !== 1 ? "s" : ""} • Range: $
+              {positionStats.minPrice.toFixed(4)} - $
+              {positionStats.maxPrice.toFixed(4)}
+            </p>
+          )}
+        </div>
         <AprDisplay pool={pool} />
         <div className="flex justify-between">
           <CoinWithAmount
@@ -82,6 +113,27 @@ export function V2MobilePositionView({
           />
         </div>
       </div>
+
+      {feesA && feesB && (
+        <div className="flex flex-col gap-[15px] p-4 rounded-ten bg-background-grey-dark border-border-secondary border-[12px]">
+          <div className="flex flex-col gap-1">
+            <p className="text-base leading-[19px]">Fees earned</p>
+            <p className="text-content-tertiary text-sm">
+              Cumulative fees from all bins
+            </p>
+          </div>
+          <div className="flex justify-between">
+            <CoinWithAmount
+              assetId={pool[0].bits}
+              amount={formatDisplayAmount(feesA.amount)}
+            />
+            <CoinWithAmount
+              assetId={pool[1].bits}
+              amount={formatDisplayAmount(feesB.amount)}
+            />
+          </div>
+        </div>
+      )}
 
       <MiraBlock pool={pool} />
 
