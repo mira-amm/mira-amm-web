@@ -14,8 +14,11 @@ export default async function Page({searchParams}: PageProps) {
       <PoolRouter
         pool={pool}
         renderV1={({poolKey}) => <PositionPage poolKey={poolKey} />}
-        renderV2={({poolKey, unifiedPoolId}) => (
-          <V2PositionPage poolKey={poolKey} unifiedPoolId={unifiedPoolId} />
+        renderV2={({poolKey, unifiedPoolIdString}) => (
+          <V2PositionPage
+            poolKey={poolKey}
+            unifiedPoolIdString={unifiedPoolIdString}
+          />
         )}
       />
     </PageSuspense>
