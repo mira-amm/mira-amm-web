@@ -3,44 +3,66 @@
 import Link from "next/link";
 import {ChevronLeft} from "lucide-react";
 import {PoolId} from "mira-dex-ts";
-import {bn, formatUnits} from "fuels";
+import {BN, bn, formatUnits} from "fuels";
 
 import {getPoolNavigationUrl} from "@/src/utils/poolNavigation";
 
-import {usePositionData, useAssetMetadata, usePoolAPR} from "@/src/hooks";
+import {
+  usePositionData,
+  useAssetMetadata,
+  usePoolAPR,
+  UnifiedPoolId,
+  useUserBinPositionsV2,
+} from "@/src/hooks";
 
 import {getUiPoolTypeFromPoolId} from "@/src/utils/poolTypeDetection";
 import {V2DesktopPositionView} from "./v2-desktop-position-view";
 import {V2MobilePositionView} from "./v2-mobile-position-view";
+import {useUnifiedPoolAssets} from "@/src/hooks/useUnifiedPoolAssets";
 
-export function V2PositionView({pool}: {pool: PoolId}) {
-  const assetAMetadata = useAssetMetadata(pool[0].bits);
-  const assetBMetadata = useAssetMetadata(pool[1].bits);
+export function V2PositionView({
+  poolKey,
+  unifiedPoolId,
+}: {
+  poolKey?: string;
+  unifiedPoolId: UnifiedPoolId;
+}) {
+  const {firstAssetId, secondAssetId} = useUnifiedPoolAssets(poolKey ?? "");
 
-  const isStablePool = pool[2];
-  const uiPoolType = getUiPoolTypeFromPoolId(pool);
+  const assetAMetadata = useAssetMetadata(firstAssetId);
+  const assetBMetadata = useAssetMetadata(secondAssetId);
 
-  const {assets} = usePositionData({pool});
-  const {apr} = usePoolAPR(pool);
+  const {data} = useUserBinPositionsV2(unifiedPoolId as BN);
 
-  const tvlValue = apr?.tvlUSD;
-  const coinReserveA = apr?.reserve0;
-  const coinReserveB = apr?.reserve1;
+  console.log("v2-data", {
+    assetAMetadata,
+    assetBMetadata,
+    data,
+  });
 
-  const [assetA, assetB] = assets || [
-    [pool[0], bn(0)],
-    [pool[1], bn(0)],
-  ];
+  // const uiPoolType = getUiPoolTypeFromPoolId(unifiedPoolId);
 
-  const coinAAmount = formatUnits(assetA[1], assetAMetadata.decimals);
+  // const {assets} = usePositionData({pool});
+  // const {apr} = usePoolAPR(pool);
 
-  const coinBAmount = formatUnits(assetB[1], assetBMetadata.decimals);
+  // const tvlValue = apr?.tvlUSD;
+  // const coinReserveA = apr?.reserve0;
+  // const coinReserveB = apr?.reserve1;
 
-  const formattedTvlValue = tvlValue
-    ? parseFloat(tvlValue?.toFixed(2)).toLocaleString()
-    : "";
+  // const [assetA, assetB] = assets || [
+  //   [pool[0], bn(0)],
+  //   [pool[1], bn(0)],
+  // ];
 
-  const positionPath = getPoolNavigationUrl(pool, "add");
+  // const coinAAmount = formatUnits(assetA[1], assetAMetadata.decimals);
+
+  // const coinBAmount = formatUnits(assetB[1], assetBMetadata.decimals);
+
+  // const formattedTvlValue = tvlValue
+  //   ? parseFloat(tvlValue?.toFixed(2)).toLocaleString()
+  //   : "";
+
+  // const positionPath = getPoolNavigationUrl(pool, "add");
 
   return (
     <>
@@ -51,9 +73,10 @@ export function V2PositionView({pool}: {pool: PoolId}) {
         <ChevronLeft className="size-5" />
         Back
       </Link>
-      <V2MobilePositionView
+      just some data
+      {/* <V2MobilePositionView
         pool={pool}
-        isStablePool={isStablePool}
+        isStablePool={false}
         poolType={uiPoolType}
         formattedTvlValue={formattedTvlValue}
         positionPath={positionPath}
@@ -70,7 +93,7 @@ export function V2PositionView({pool}: {pool: PoolId}) {
       />
       <V2DesktopPositionView
         pool={pool}
-        isStablePool={isStablePool}
+        isStablePool={false}
         poolType={uiPoolType}
         formattedTvlValue={formattedTvlValue}
         positionPath={positionPath}
@@ -84,7 +107,7 @@ export function V2PositionView({pool}: {pool: PoolId}) {
           metadata: assetBMetadata,
           reserve: coinReserveB,
         }}
-      />
+      /> */}
     </>
   );
 }
