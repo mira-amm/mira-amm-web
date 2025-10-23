@@ -2299,8 +2299,12 @@ export class ReadonlyMiraAmmV2 {
   private generateLPAssetIdForBin(poolId: PoolIdV2, binId: number): AssetId {
     // This is a simplified implementation
     // In practice, you'd need to follow the exact same logic as the contract
+
+    // Ensure poolId is a BN instance
+    const poolIdBN = poolId instanceof BN ? poolId : new BN(poolId);
+
     const binIdBytes = new BN(binId).toBytes();
-    const poolIdBytes = poolId.toBytes();
+    const poolIdBytes = poolIdBN.toBytes();
     const combined = new Uint8Array(poolIdBytes.length + binIdBytes.length);
     combined.set(poolIdBytes);
     combined.set(binIdBytes, poolIdBytes.length);

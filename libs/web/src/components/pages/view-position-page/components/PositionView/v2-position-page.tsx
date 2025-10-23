@@ -32,7 +32,11 @@ export function V2PositionView({
   const assetAMetadata = useAssetMetadata(firstAssetId);
   const assetBMetadata = useAssetMetadata(secondAssetId);
 
-  const {data} = useUserBinPositionsV2(unifiedPoolId as BN);
+  // Ensure poolId is a BN instance for v2 pools
+  const poolIdBN =
+    unifiedPoolId instanceof BN ? unifiedPoolId : new BN(unifiedPoolId as any);
+
+  const {data} = useUserBinPositionsV2(poolIdBN);
 
   console.log("v2-data", {
     assetAMetadata,
