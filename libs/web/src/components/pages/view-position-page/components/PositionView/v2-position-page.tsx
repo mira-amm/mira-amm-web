@@ -8,11 +8,11 @@ import {BN, bn, formatUnits} from "fuels";
 import {getPoolNavigationUrl} from "@/src/utils/poolNavigation";
 
 import {
-  usePositionData,
   useAssetMetadata,
   usePoolAPR,
   UnifiedPoolId,
   useUserBinPositionsV2,
+  useUnifiedPoolsMetadata,
 } from "@/src/hooks";
 
 import {getUiPoolTypeFromPoolId} from "@/src/utils/poolTypeDetection";
@@ -38,6 +38,12 @@ export function V2PositionView({
     unifiedPoolId instanceof BN ? unifiedPoolId : new BN(unifiedPoolId as any);
 
   const {data: binPositions, isLoading} = useUserBinPositionsV2(poolIdBN);
+
+  const {unifiedPoolsMetadata} = useUnifiedPoolsMetadata(
+    poolIdBN ? [poolIdBN] : undefined
+  );
+  const poolMetadata = unifiedPoolsMetadata?.[0];
+  const binStep = poolMetadata?.binStep; // Don't default - only show distribution if we have real data
 
   // Calculate totals across all bins
   const totals = useMemo(() => {
@@ -93,16 +99,6 @@ export function V2PositionView({
     binPositions && binPositions.length > 0
       ? binPositions[0].lpToken
       : undefined;
-
-  console.log("v2-data", {
-    assetAMetadata,
-    assetBMetadata,
-    binPositions,
-    totals,
-    coinAAmount,
-    coinBAmount,
-    nftAssetId,
-  });
 
   // Create a PoolId-like structure for compatibility with existing components
   // For V2 pools, we default to volatile (false) since V2 doesn't use the stable concept
@@ -174,6 +170,7 @@ export function V2PositionView({
         formattedTvlValue={formattedTvlValue}
         positionPath={positionPath}
         nftAssetId={nftAssetId}
+        binStep={binStep ?? undefined}
         assetA={{
           amount: coinAAmount,
           metadata: assetAMetadata,
@@ -205,6 +202,7 @@ export function V2PositionView({
         formattedTvlValue={formattedTvlValue}
         positionPath={positionPath}
         nftAssetId={nftAssetId}
+        binStep={binStep ?? undefined}
         assetA={{
           amount: coinAAmount,
           metadata: assetAMetadata,
