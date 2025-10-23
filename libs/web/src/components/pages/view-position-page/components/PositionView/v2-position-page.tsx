@@ -88,6 +88,12 @@ export function V2PositionView({
   const feesAAmount = formatUnits(totals.feesX, assetAMetadata.decimals || 9);
   const feesBAmount = formatUnits(totals.feesY, assetBMetadata.decimals || 9);
 
+  // Get the NFT asset ID (all bins in a position share the same NFT ID)
+  const nftAssetId =
+    binPositions && binPositions.length > 0
+      ? binPositions[0].lpToken
+      : undefined;
+
   console.log("v2-data", {
     assetAMetadata,
     assetBMetadata,
@@ -95,6 +101,7 @@ export function V2PositionView({
     totals,
     coinAAmount,
     coinBAmount,
+    nftAssetId,
   });
 
   // Create a PoolId-like structure for compatibility with existing components
@@ -166,6 +173,7 @@ export function V2PositionView({
         poolType={uiPoolType}
         formattedTvlValue={formattedTvlValue}
         positionPath={positionPath}
+        nftAssetId={nftAssetId}
         assetA={{
           amount: coinAAmount,
           metadata: assetAMetadata,
@@ -196,6 +204,7 @@ export function V2PositionView({
         poolType={uiPoolType}
         formattedTvlValue={formattedTvlValue}
         positionPath={positionPath}
+        nftAssetId={nftAssetId}
         assetA={{
           amount: coinAAmount,
           metadata: assetAMetadata,

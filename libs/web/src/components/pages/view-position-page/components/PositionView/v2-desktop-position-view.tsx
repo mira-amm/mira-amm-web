@@ -64,6 +64,7 @@ export function V2DesktopPositionView({
   poolType,
   formattedTvlValue,
   positionPath,
+  nftAssetId,
   assetA,
   assetB,
   feesA,
@@ -76,6 +77,7 @@ export function V2DesktopPositionView({
   poolType?: PoolType;
   formattedTvlValue: string;
   positionPath: string;
+  nftAssetId?: string;
   assetA: AssetData;
   assetB: AssetData;
   feesA?: FeeData;
@@ -133,7 +135,7 @@ export function V2DesktopPositionView({
       </div>
 
       <div className="flex gap-3 w-full">
-        <MiraBlock pool={pool} />
+        <MiraBlock pool={pool} isV2={true} nftAssetId={nftAssetId} />
         <div className="p-4 w-1/2 rounded-lg flex flex-col gap-4 bg-background-grey-dark border-border-secondary border-[11px]">
           <p className="text-base leading-[19px] border-b border-background-grey-light pb-3">
             Pool reserves

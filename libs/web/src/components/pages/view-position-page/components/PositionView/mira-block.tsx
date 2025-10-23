@@ -13,15 +13,33 @@ import {Copy} from "lucide-react";
 import {cn} from "@/src/utils/cn";
 import {getIsRebrandEnabled} from "@/src/utils/isRebrandEnabled";
 
-export function MiraBlock({pool}: {pool: PoolId}) {
-  const {lpTokenBalance} = usePositionData({pool});
-  const lpTokenDisplayValue = formatUnits(lpTokenBalance || "0", 9);
-  const lpTokenAssetId = getLPAssetId(DEFAULT_AMM_CONTRACT_ID, pool);
-  const formattedLpTokenAssetId = useFormattedAddress(lpTokenAssetId.bits);
+export function MiraBlock({
+  pool,
+  isV2 = false,
+  nftAssetId,
+}: {
+  pool: PoolId;
+  isV2?: boolean;
+  nftAssetId?: string;
+}) {
+  // For V2 pools, skip the V1-specific hooks to avoid errors
+  const {lpTokenBalance} = usePositionData({pool: isV2 ? undefined : pool});
+  const lpTokenDisplayValue = isV2
+    ? "N/A"
+    : formatUnits(lpTokenBalance || "0", 9);
+
+  // Only call getLPAssetId for V1 pools
+  const lpTokenAssetId = isV2
+    ? null
+    : getLPAssetId(DEFAULT_AMM_CONTRACT_ID, pool);
+  const assetIdToDisplay = isV2 ? nftAssetId : lpTokenAssetId?.bits;
+  const formattedAssetId = useFormattedAddress(assetIdToDisplay || "");
 
   const handleCopy = useCallback(async () => {
-    await navigator.clipboard.writeText(lpTokenAssetId.bits);
-  }, [lpTokenAssetId.bits]);
+    if (assetIdToDisplay) {
+      await navigator.clipboard.writeText(assetIdToDisplay);
+    }
+  }, [assetIdToDisplay]);
 
   const isEnabled = getIsRebrandEnabled();
 
@@ -46,13 +64,29 @@ export function MiraBlock({pool}: {pool: PoolId}) {
         </div>
       </FeatureGuard>
 
-      <p className="text-base text-white">{lpTokenDisplayValue} LP tokens</p>
-      <p className="text-base flex justify-between items-center text-white">
-        Asset ID: {formattedLpTokenAssetId}
-        <IconButton onClick={handleCopy}>
-          <Copy className="w-4 h-4" />
-        </IconButton>
-      </p>
+      {isV2 ? (
+        <>
+          <p className="text-base text-white">NFT Position</p>
+          <p className="text-base flex justify-between items-center text-white">
+            Asset ID: {formattedAssetId}
+            <IconButton onClick={handleCopy}>
+              <Copy className="w-4 h-4" />
+            </IconButton>
+          </p>
+        </>
+      ) : (
+        <>
+          <p className="text-base text-white">
+            {lpTokenDisplayValue} LP tokens
+          </p>
+          <p className="text-base flex justify-between items-center text-white">
+            Asset ID: {formattedAssetId}
+            <IconButton onClick={handleCopy}>
+              <Copy className="w-4 h-4" />
+            </IconButton>
+          </p>
+        </>
+      )}
     </div>
   );
 }

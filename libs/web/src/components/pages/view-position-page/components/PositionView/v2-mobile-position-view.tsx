@@ -50,6 +50,7 @@ export function V2MobilePositionView({
   poolType,
   formattedTvlValue,
   positionPath,
+  nftAssetId,
   assetA,
   assetB,
   feesA,
@@ -61,6 +62,7 @@ export function V2MobilePositionView({
   poolType?: PoolType;
   formattedTvlValue: string;
   positionPath: string;
+  nftAssetId?: string;
   assetA: AssetData;
   assetB: AssetData;
   feesA?: FeeData;
@@ -135,7 +137,7 @@ export function V2MobilePositionView({
         </div>
       )}
 
-      <MiraBlock pool={pool} />
+      <MiraBlock pool={pool} isV2={true} nftAssetId={nftAssetId} />
 
       <div className="flex flex-col gap-3 my-[10px]">
         <p className="text-base leading-[19px]">Pool reserves</p>
