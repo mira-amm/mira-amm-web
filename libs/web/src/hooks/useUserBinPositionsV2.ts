@@ -5,6 +5,7 @@ import {useReadonlyMiraV2} from "@/src/hooks";
 import {BN} from "fuels";
 import {useWallet} from "@fuels/react";
 import request, {gql} from "graphql-request";
+import {useMemo} from "react";
 import {SQDIndexerUrl} from "../utils/constants";
 import {
   isV2MockEnabled,
@@ -22,13 +23,23 @@ export interface V2BinPosition {
   isActive: boolean;
 }
 
+export interface V2PositionTotals {
+  totalX: BN;
+  totalY: BN;
+  feesX: BN;
+  feesY: BN;
+  numBins: number;
+  minPrice: number;
+  maxPrice: number;
+}
+
 export function useUserBinPositionsV2(poolId: BN | undefined) {
   const readonlyMiraV2 = useReadonlyMiraV2();
   const {wallet} = useWallet();
 
   const userAddress = wallet?.address;
 
-  return useQuery({
+  const query = useQuery({
     queryKey: [
       "userBinPositionsV2",
       poolId?.toString(),
@@ -168,6 +179,49 @@ export function useUserBinPositionsV2(poolId: BN | undefined) {
     staleTime: 30000, // 30 seconds
     refetchInterval: 60000, // Refetch every minute
   });
+
+  // Calculate totals from positions
+  const totals: V2PositionTotals = useMemo(() => {
+    const positions = query.data;
+
+    if (!positions || positions.length === 0) {
+      return {
+        totalX: new BN(0),
+        totalY: new BN(0),
+        feesX: new BN(0),
+        feesY: new BN(0),
+        numBins: 0,
+        minPrice: 0,
+        maxPrice: 0,
+      };
+    }
+
+    return positions.reduce(
+      (acc, position) => ({
+        totalX: acc.totalX.add(position.underlyingAmounts.x),
+        totalY: acc.totalY.add(position.underlyingAmounts.y),
+        feesX: acc.feesX.add(position.feesEarned.x),
+        feesY: acc.feesY.add(position.feesEarned.y),
+        numBins: acc.numBins + 1,
+        minPrice: Math.min(acc.minPrice, position.price),
+        maxPrice: Math.max(acc.maxPrice, position.price),
+      }),
+      {
+        totalX: new BN(0),
+        totalY: new BN(0),
+        feesX: new BN(0),
+        feesY: new BN(0),
+        numBins: 0,
+        minPrice: Infinity,
+        maxPrice: -Infinity,
+      }
+    );
+  }, [query.data]);
+
+  return {
+    ...query,
+    totals,
+  };
 }
 
 // Hook to get total position value across all bins

@@ -3,7 +3,7 @@
 import Link from "next/link";
 import {ChevronLeft} from "lucide-react";
 import {PoolId} from "mira-dex-ts";
-import {BN, bn, formatUnits} from "fuels";
+import {BN, formatUnits} from "fuels";
 
 import {getPoolNavigationUrl} from "@/src/utils/poolNavigation";
 
@@ -19,7 +19,6 @@ import {getUiPoolTypeFromPoolId} from "@/src/utils/poolTypeDetection";
 import {V2DesktopPositionView} from "./v2-desktop-position-view";
 import {V2MobilePositionView} from "./v2-mobile-position-view";
 import {useUnifiedPoolAssets} from "@/src/hooks/useUnifiedPoolAssets";
-import {useMemo} from "react";
 
 export function V2PositionView({
   poolKey,
@@ -37,55 +36,17 @@ export function V2PositionView({
   const poolIdBN =
     unifiedPoolId instanceof BN ? unifiedPoolId : new BN(unifiedPoolId as any);
 
-  const {data: binPositions, isLoading} = useUserBinPositionsV2(poolIdBN);
+  const {
+    data: binPositions,
+    isLoading,
+    totals,
+  } = useUserBinPositionsV2(poolIdBN);
 
   const {unifiedPoolsMetadata} = useUnifiedPoolsMetadata(
     poolIdBN ? [poolIdBN] : undefined
   );
   const poolMetadata = unifiedPoolsMetadata?.[0];
   const binStep = poolMetadata?.binStep; // Don't default - only show distribution if we have real data
-
-  // Calculate totals across all bins
-  const totals = useMemo(() => {
-    if (!binPositions || binPositions.length === 0) {
-      return {
-        totalX: bn(0),
-        totalY: bn(0),
-        feesX: bn(0),
-        feesY: bn(0),
-        numBins: 0,
-        minPrice: 0,
-        maxPrice: 0,
-      };
-    }
-
-    let totalX = bn(0);
-    let totalY = bn(0);
-    let feesX = bn(0);
-    let feesY = bn(0);
-    let minPrice = Infinity;
-    let maxPrice = -Infinity;
-
-    binPositions.forEach((position) => {
-      totalX = totalX.add(position.underlyingAmounts.x);
-      totalY = totalY.add(position.underlyingAmounts.y);
-      feesX = feesX.add(position.feesEarned.x);
-      feesY = feesY.add(position.feesEarned.y);
-
-      if (position.price < minPrice) minPrice = position.price;
-      if (position.price > maxPrice) maxPrice = position.price;
-    });
-
-    return {
-      totalX,
-      totalY,
-      feesX,
-      feesY,
-      numBins: binPositions.length,
-      minPrice,
-      maxPrice,
-    };
-  }, [binPositions]);
 
   // Format amounts for display
   const coinAAmount = formatUnits(totals.totalX, assetAMetadata.decimals || 9);
