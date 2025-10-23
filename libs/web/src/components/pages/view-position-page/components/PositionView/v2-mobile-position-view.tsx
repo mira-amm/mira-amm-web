@@ -53,6 +53,7 @@ export function V2MobilePositionView({
   positionPath,
   nftAssetId,
   binStep,
+  chartData,
   assetA,
   assetB,
   feesA,
@@ -66,6 +67,7 @@ export function V2MobilePositionView({
   positionPath: string;
   nftAssetId?: string;
   binStep?: number;
+  chartData?: any[];
   assetA: AssetData;
   assetB: AssetData;
   feesA?: FeeData;

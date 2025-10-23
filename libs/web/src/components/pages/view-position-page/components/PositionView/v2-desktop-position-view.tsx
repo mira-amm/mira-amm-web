@@ -54,11 +54,11 @@ export function V2DesktopPositionView({
   positionPath,
   nftAssetId,
   binStep,
+  chartData,
   assetA,
   assetB,
   feesA,
   feesB,
-  binPositions,
   positionStats,
 }: {
   pool: PoolId;
@@ -68,11 +68,11 @@ export function V2DesktopPositionView({
   positionPath: string;
   nftAssetId?: string;
   binStep?: number;
+  chartData?: any[];
   assetA: AssetData;
   assetB: AssetData;
   feesA?: FeeData;
   feesB?: FeeData;
-  binPositions?: any[];
   positionStats?: PositionStats;
 }) {
   const renderRemoveLiquidity = () => {
@@ -198,6 +198,7 @@ export function V2DesktopPositionView({
           binStep && (
             <div className="border-b border-background-grey-light">
               <SimulatedDistribution
+                data={chartData}
                 liquidityShape={positionStats.liquidityShape}
                 minPrice={positionStats.minPrice}
                 maxPrice={positionStats.maxPrice}

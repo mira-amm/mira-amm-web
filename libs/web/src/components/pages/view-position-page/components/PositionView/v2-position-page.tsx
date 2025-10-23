@@ -19,6 +19,59 @@ import {getUiPoolTypeFromPoolId} from "@/src/utils/poolTypeDetection";
 import {V2DesktopPositionView} from "./v2-desktop-position-view";
 import {V2MobilePositionView} from "./v2-mobile-position-view";
 import {useUnifiedPoolAssets} from "@/src/hooks/useUnifiedPoolAssets";
+import type {V2BinPosition} from "@/src/hooks/useUserBinPositionsV2";
+
+// Convert bin positions to LiquidityData format for SimulatedDistribution
+function convertBinPositionsToLiquidityData(
+  positions: V2BinPosition[],
+  asset0Decimals: number,
+  asset1Decimals: number,
+  currentPrice: number
+) {
+  if (!positions || positions.length === 0) return undefined;
+
+  // Sort by binId for display
+  const sorted = [...positions].sort(
+    (a, b) => Number(a.binId.toString()) - Number(b.binId.toString())
+  );
+
+  // Find max amounts for height normalization
+  const maxAmount0 = Math.max(
+    ...sorted.map((p) =>
+      parseFloat(formatUnits(p.underlyingAmounts.x, asset0Decimals))
+    )
+  );
+  const maxAmount1 = Math.max(
+    ...sorted.map((p) =>
+      parseFloat(formatUnits(p.underlyingAmounts.y, asset1Decimals))
+    )
+  );
+  const maxAmount = Math.max(maxAmount0, maxAmount1);
+  const maxHeight = 120;
+
+  return sorted.map((position, index) => {
+    const amount0 = parseFloat(
+      formatUnits(position.underlyingAmounts.x, asset0Decimals)
+    );
+    const amount1 = parseFloat(
+      formatUnits(position.underlyingAmounts.y, asset1Decimals)
+    );
+
+    // Calculate heights based on amounts (normalized to max height)
+    const assetAHeight = maxAmount > 0 ? (amount0 / maxAmount) * maxHeight : 0;
+    const assetBHeight = maxAmount > 0 ? (amount1 / maxAmount) * maxHeight : 0;
+
+    return {
+      binId: Number(position.binId.toString()),
+      price: position.price.toFixed(4),
+      asset0Value: amount0,
+      asset1Value: amount1,
+      assetAHeight,
+      assetBHeight,
+      showPrice: index === 0 || index === sorted.length - 1, // Show first and last
+    };
+  });
+}
 
 export function V2PositionView({
   poolKey,
@@ -60,6 +113,16 @@ export function V2PositionView({
     binPositions && binPositions.length > 0
       ? binPositions[0].lpToken
       : undefined;
+
+  // Convert bin positions to chart data
+  const chartData = binPositions
+    ? convertBinPositionsToLiquidityData(
+        binPositions,
+        assetAMetadata.decimals || 9,
+        assetBMetadata.decimals || 9,
+        (totals.minPrice + totals.maxPrice) / 2
+      )
+    : undefined;
 
   // Create a PoolId-like structure for compatibility with existing components
   // For V2 pools, we default to volatile (false) since V2 doesn't use the stable concept
@@ -132,6 +195,7 @@ export function V2PositionView({
         positionPath={positionPath}
         nftAssetId={nftAssetId}
         binStep={binStep ?? undefined}
+        chartData={chartData}
         assetA={{
           amount: coinAAmount,
           metadata: assetAMetadata,
@@ -165,6 +229,7 @@ export function V2PositionView({
         positionPath={positionPath}
         nftAssetId={nftAssetId}
         binStep={binStep ?? undefined}
+        chartData={chartData}
         assetA={{
           amount: coinAAmount,
           metadata: assetAMetadata,
