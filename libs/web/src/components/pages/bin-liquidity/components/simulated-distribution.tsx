@@ -195,6 +195,16 @@ export default function SimulatedDistribution({
   );
 
   useEffect(() => {
+    // If data is provided, use it directly
+    if (data && data.length > 0) {
+      // Limit display to maximum 50 bins to prevent overflow
+      const maxDisplayBins = 50;
+      const finalData = combineBins(data, maxDisplayBins);
+      setSimulationData(finalData);
+      return;
+    }
+
+    // Otherwise, generate data based on parameters
     if (
       minPrice !== undefined &&
       maxPrice !== undefined &&
@@ -217,7 +227,14 @@ export default function SimulatedDistribution({
       // No data to render when props are not provided
       setSimulationData(null);
     }
-  }, [liquidityShape, minPrice, maxPrice, currentPrice, binStepBasisPoints]);
+  }, [
+    data,
+    liquidityShape,
+    minPrice,
+    maxPrice,
+    currentPrice,
+    binStepBasisPoints,
+  ]);
 
   // Don't render anything if we don't have data yet
   if (!simulationData) {
