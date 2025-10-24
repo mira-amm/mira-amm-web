@@ -17,6 +17,7 @@ import {PoolType} from "@/src/components/common/PoolTypeIndicator";
 
 import {getPoolNavigationUrl} from "@/src/utils/poolNavigation";
 import {TotalDeposit} from "./total-deposit";
+import {UnifiedPoolId} from "@/src/hooks";
 
 export interface AssetData {
   amount: string;
@@ -48,6 +49,7 @@ const TimeData = ["24H", "7D", "30D"];
 
 export function V2DesktopPositionView({
   pool,
+  unifiedPoolId,
   isStablePool,
   poolType,
   formattedTvlValue,
@@ -62,6 +64,7 @@ export function V2DesktopPositionView({
   positionStats,
 }: {
   pool: PoolId;
+  unifiedPoolId: UnifiedPoolId;
   isStablePool: boolean;
   poolType?: PoolType;
   formattedTvlValue: string;
@@ -76,7 +79,7 @@ export function V2DesktopPositionView({
   positionStats?: PositionStats;
 }) {
   const renderRemoveLiquidity = () => {
-    const removePath = getPoolNavigationUrl(pool, "remove");
+    const removePath = getPoolNavigationUrl(unifiedPoolId, "remove");
 
     return (
       <Link href={removePath}>
