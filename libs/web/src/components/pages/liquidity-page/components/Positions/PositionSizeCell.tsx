@@ -25,7 +25,7 @@ const PositionSizeCell = ({
 
   return (
     <div className="text-center text-base font-alt">
-      {size ? `$${size.toFixed(2)}` : "checking..."}
+      {size ? `$${size.toFixed(2)}` : ""}
     </div>
   );
 };
