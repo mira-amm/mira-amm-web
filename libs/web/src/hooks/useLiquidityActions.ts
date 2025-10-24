@@ -43,8 +43,6 @@ export const useLiquidityActions = ({
 
     if (onPreview) {
       onPreview(previewData);
-    } else {
-      console.log(previewData);
     }
   }, [
     sufficientEthBalance,

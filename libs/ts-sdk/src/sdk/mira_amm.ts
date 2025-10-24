@@ -82,12 +82,6 @@ export class MiraAmm {
   static async deploy(wallet: Account): Promise<MiraAmm> {
     const { waitForResult } = await MiraAmmContractFactory.deploy(wallet);
     const { contract, transactionResult } = await waitForResult();
-    console.log(
-      "Deployed MiraAmm contract with status:",
-      transactionResult.status,
-      "and id:",
-      contract.id.toB256()
-    );
     return new MiraAmm(wallet, contract.id.toB256());
   }
 

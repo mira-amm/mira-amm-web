@@ -754,10 +754,6 @@ export class MiraAmmV2 {
         .txParams(txParams ?? {})
         .getTransactionRequest();
 
-      // Debug: Log contract references in the transaction request
-      // Debug: Log AMM contract ID referenced
-      console.log("🔍 AMM Contract:", this.ammContract.id.toB256());
-
       return await this.prepareRequest(request, 0, [], [], options);
     }, context);
   }
