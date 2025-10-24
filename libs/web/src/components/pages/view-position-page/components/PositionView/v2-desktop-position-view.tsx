@@ -211,8 +211,8 @@ export function V2DesktopPositionView({
                 asset1Symbol={assetB.metadata.symbol || "Token B"}
                 asset0Price={asset0PriceUSD || 0}
                 asset1Price={asset1PriceUSD || 0}
-                totalAsset0Amount={totalAsset0Amount}
-                totalAsset1Amount={totalAsset1Amount}
+                totalAsset0Amount={chartData ? undefined : totalAsset0Amount}
+                totalAsset1Amount={chartData ? undefined : totalAsset1Amount}
               />
             </div>
           )}

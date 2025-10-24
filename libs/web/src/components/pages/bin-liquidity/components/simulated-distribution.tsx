@@ -245,34 +245,51 @@ export default function SimulatedDistribution({
   const asset0P = asset0Price ?? 1;
   const asset1P = asset1Price ?? 1;
 
-  // Treat generated assetAHeight/assetBHeight as distribution weights for token amounts
-  const totalWeight0 = simulationData.reduce(
-    (sum, d) => sum + Math.max(d.assetAHeight, 0),
-    0
-  );
-  const totalWeight1 = simulationData.reduce(
-    (sum, d) => sum + Math.max(d.assetBHeight, 0),
-    0
-  );
+  // When actual data is provided, use asset0Value/asset1Value directly
+  // Otherwise, treat heights as weights to redistribute totals
+  const hasActualValues =
+    data && data.length > 0 && data[0].asset0Value !== undefined;
 
-  // Compute per-bin deposited amounts based on provided totals (fallback to weights if totals are not provided)
-  const hasTotal0 = totalAsset0Amount !== undefined;
-  const hasTotal1 = totalAsset1Amount !== undefined;
-  const perBinDeposits = simulationData.map((d) => {
-    const weight0 = Math.max(d.assetAHeight, 0);
-    const weight1 = Math.max(d.assetBHeight, 0);
-    const amount0 = hasTotal0
-      ? totalWeight0 > 0
-        ? (weight0 / totalWeight0) * (totalAsset0Amount as number)
-        : 0
-      : weight0;
-    const amount1 = hasTotal1
-      ? totalWeight1 > 0
-        ? (weight1 / totalWeight1) * (totalAsset1Amount as number)
-        : 0
-      : weight1;
-    return {amount0, amount1};
-  });
+  let perBinDeposits: {amount0: number; amount1: number}[];
+
+  if (hasActualValues) {
+    // Use actual values from the data directly
+    perBinDeposits = simulationData.map((d) => ({
+      amount0: d.asset0Value || 0,
+      amount1: d.asset1Value || 0,
+    }));
+  } else {
+    // Fall back to using heights as weights for distribution
+    const totalWeight0 = simulationData.reduce(
+      (sum, d) => sum + Math.max(d.assetAHeight, 0),
+      0
+    );
+    const totalWeight1 = simulationData.reduce(
+      (sum, d) => sum + Math.max(d.assetBHeight, 0),
+      0
+    );
+
+    const hasTotal0 = totalAsset0Amount !== undefined;
+    const hasTotal1 = totalAsset1Amount !== undefined;
+
+    perBinDeposits = simulationData.map((d) => {
+      const weight0 = Math.max(d.assetAHeight, 0);
+      const weight1 = Math.max(d.assetBHeight, 0);
+
+      const amount0 = hasTotal0
+        ? totalWeight0 > 0
+          ? (weight0 / totalWeight0) * (totalAsset0Amount as number)
+          : 0
+        : weight0;
+      const amount1 = hasTotal1
+        ? totalWeight1 > 0
+          ? (weight1 / totalWeight1) * (totalAsset1Amount as number)
+          : 0
+        : weight1;
+
+      return {amount0, amount1};
+    });
+  }
 
   // Compute per-bin total values and max for scaling
   const perBinValues = perBinDeposits.map(
