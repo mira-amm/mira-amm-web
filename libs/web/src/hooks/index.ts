@@ -61,15 +61,9 @@ export {usePositionData} from "./usePositionData";
 export {useRoutablePools} from "./useRoutablePools";
 export {useRemoveLiquidity} from "./useRemoveLiquidity";
 export {useRemoveLiquidityV2} from "./useRemoveLiquidityV2";
-export {
-  useUserBinPositionsV2,
-  useUserTotalPositionV2,
-} from "./useUserBinPositionsV2";
+export {useUserBinPositionsV2} from "./useUserBinPositionsV2";
 export type {V2BinPosition} from "./useUserBinPositionsV2";
-export {
-  useRemoveAllBinsV2,
-  useRemoveSpecificBinsV2,
-} from "./useRemoveAllBinsV2";
+export {useRemoveAllBinsV2} from "./useRemoveAllBinsV2";
 export {usePositionSummaryV2} from "./usePositionSummaryV2";
 export type {PositionSummaryV2} from "./usePositionSummaryV2";
 export {useLiquidityFormV2Integration} from "./useLiquidityFormV2Integration";
