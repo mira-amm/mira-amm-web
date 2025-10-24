@@ -553,8 +553,7 @@ export class ReadonlyMiraAmmV2 {
       pools,
       options
     );
-    // For exact output, return the required input pair [inputAsset, requiredInput]
-    return amountsIn[0];
+    return amountsIn[amountsIn.length - 1];
   }
 
   /**
@@ -720,7 +719,7 @@ export class ReadonlyMiraAmmV2 {
 
       let currentAsset = assetIdOut;
       let currentAmount = amount;
-      amounts.unshift([currentAsset, currentAmount]);
+      amounts.push([currentAsset, currentAmount]);
 
       // Process pools in reverse order for amounts in calculation
       for (let i = pools.length - 1; i >= 0; i--) {
@@ -766,7 +765,7 @@ export class ReadonlyMiraAmmV2 {
             );
           }
 
-          amounts.unshift([inputAsset, amountInNeeded]);
+          amounts.push([inputAsset, amountInNeeded]);
           currentAsset = inputAsset;
           currentAmount = amountInNeeded;
         } catch (error) {
