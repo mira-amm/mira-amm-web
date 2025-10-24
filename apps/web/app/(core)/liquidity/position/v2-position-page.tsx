@@ -1,6 +1,6 @@
 "use client";
 
-import {V2PositionView} from "@/src/components/pages/view-position-page/components/PositionView/v2-position-page";
+import {V2PositionView} from "@/src/components/pages/view-position-page/components/PositionView/v2-position-view";
 import {BN} from "fuels";
 import {useMemo} from "react";
 
