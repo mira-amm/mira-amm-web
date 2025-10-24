@@ -18,6 +18,7 @@ import {getIsRebrandEnabled} from "@/src/utils/isRebrandEnabled";
 import {PoolType} from "@/src/components/common/PoolTypeIndicator";
 
 import {getPoolNavigationUrl} from "@/src/utils/poolNavigation";
+import {UnifiedPoolId} from "@/src/hooks";
 
 interface AssetData {
   amount: string;
@@ -47,6 +48,7 @@ interface PositionStats {
 
 export function V2MobilePositionView({
   pool,
+  unifiedPoolId,
   isStablePool,
   poolType,
   formattedTvlValue,
@@ -61,6 +63,7 @@ export function V2MobilePositionView({
   positionStats,
 }: {
   pool: PoolId;
+  unifiedPoolId: UnifiedPoolId;
   isStablePool: boolean;
   poolType?: PoolType;
   formattedTvlValue: string;
@@ -75,7 +78,7 @@ export function V2MobilePositionView({
   positionStats?: PositionStats;
 }) {
   const renderRemoveLiquidity = () => {
-    const removePath = getPoolNavigationUrl(pool, "remove");
+    const removePath = getPoolNavigationUrl(unifiedPoolId, "remove");
 
     return (
       <Link href={removePath}>

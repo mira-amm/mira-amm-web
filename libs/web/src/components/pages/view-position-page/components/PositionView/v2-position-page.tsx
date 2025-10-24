@@ -133,7 +133,7 @@ export function V2PositionView({
   ] as PoolId;
 
   const uiPoolType = getUiPoolTypeFromPoolId(unifiedPoolId);
-  const positionPath = getPoolNavigationUrl(pool, "add");
+  const positionPath = getPoolNavigationUrl(unifiedPoolId, "add");
 
   // Get pool APR data for TVL
   const {apr} = usePoolAPR(pool);
@@ -189,6 +189,7 @@ export function V2PositionView({
       </Link>
       <V2MobilePositionView
         pool={pool}
+        unifiedPoolId={unifiedPoolId}
         isStablePool={false}
         poolType={uiPoolType}
         formattedTvlValue={formattedTvlValue}
@@ -223,6 +224,7 @@ export function V2PositionView({
       />
       <V2DesktopPositionView
         pool={pool}
+        unifiedPoolId={unifiedPoolId}
         isStablePool={false}
         poolType={uiPoolType}
         formattedTvlValue={formattedTvlValue}
