@@ -115,7 +115,7 @@ export function V2DesktopPositionView({
             firstCoin={pool[0].bits}
             secondCoin={pool[1].bits}
             isStablePool={isStablePool}
-            poolType={poolType ?? (isStablePool ? "v1-stable" : "v1-volatile")}
+            poolType={poolType}
             withPoolDetails
           />
         </div>
