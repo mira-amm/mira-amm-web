@@ -1,7 +1,7 @@
 "use client";
 
 import {useState, useCallback} from "react";
-import {useRouter, useSearchParams} from "next/navigation";
+import {useRouter} from "next/navigation";
 import {ChevronLeft, X} from "lucide-react";
 import {PoolId} from "mira-dex-ts";
 import {createPoolIdFromIdString} from "@/src/utils/common";
@@ -21,10 +21,12 @@ import {
 } from "@/src/hooks";
 import SettingsModalContentNew from "@/src/components/common/settings-modal-content-new";
 
-export default function RemoveLiquidityPage() {
+export default function RemoveLiquidityPage({
+  poolKey,
+}: {
+  poolKey: string | undefined;
+}) {
   const router = useRouter();
-  const query = useSearchParams();
-  const poolKey = query.get("pool");
   const poolId = poolKey ? createPoolIdFromIdString(poolKey) : null;
 
   const [SettingsModal, openSettingsModal, closeSettingsModal] = useModal();
