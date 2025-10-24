@@ -463,9 +463,20 @@ export function validateAddLiquidityParams(
 /**
  * Validate remove liquidity parameters
  */
+/**
+ * Validates parameters for removing liquidity from a v2 pool
+ *
+ * @param poolId - The v2 pool ID
+ * @param lpAssetIds - Array of position NFT asset IDs (hex strings)
+ * @param amountAMin - Minimum amount of token A to receive
+ * @param amountBMin - Minimum amount of token B to receive
+ * @param deadline - Transaction deadline (TAI64 timestamp)
+ * @param options - Validation options
+ * @param context - Error context for enhanced error messages
+ */
 export function validateRemoveLiquidityParams(
   poolId: PoolIdV2,
-  binIds: BigNumberish[],
+  lpAssetIds: string[],
   amountAMin: BigNumberish,
   amountBMin: BigNumberish,
   deadline: BigNumberish,
@@ -477,15 +488,31 @@ export function validateRemoveLiquidityParams(
   validateAmount(amountBMin, "amountBMin", {allowZeroAmounts: true}, context);
   validateDeadline(deadline, options, context);
 
-  if (!binIds || binIds.length === 0) {
+  // Validate position NFT IDs
+  if (!lpAssetIds || lpAssetIds.length === 0) {
     throw new EnhancedMiraV2Error(
       PoolCurveStateError.InvalidParameters,
-      "At least one bin ID must be provided for liquidity removal",
+      "At least one position NFT ID must be provided for liquidity removal",
       context
     );
   }
 
-  binIds.forEach((binId, index) => {
-    validateBinId(binId, {...context, binIndex: index});
+  // Validate each position NFT ID is a valid hex string
+  lpAssetIds.forEach((assetId, index) => {
+    if (typeof assetId !== "string" || !assetId.startsWith("0x")) {
+      throw new EnhancedMiraV2Error(
+        PoolCurveStateError.InvalidParameters,
+        `Invalid position NFT ID at index ${index}: must be a hex string starting with 0x`,
+        {...context, assetIndex: index}
+      );
+    }
+    // Validate it's a valid 32-byte hex string (66 characters: 0x + 64 hex chars)
+    if (assetId.length !== 66) {
+      throw new EnhancedMiraV2Error(
+        PoolCurveStateError.InvalidParameters,
+        `Invalid position NFT ID at index ${index}: must be 66 characters (0x + 64 hex chars)`,
+        {...context, assetIndex: index}
+      );
+    }
   });
 }
