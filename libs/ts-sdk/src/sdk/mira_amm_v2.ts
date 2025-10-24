@@ -354,20 +354,47 @@ export class MiraAmmV2 {
   }
 
   /**
-   * Removes liquidity from specific bins in a v2 pool
+   * Removes liquidity from a v2 pool using position NFT IDs
+   *
+   * **IMPORTANT: Mira V2 Architecture**
+   * Unlike Joe V2 which uses per-bin fungible LP tokens, Mira V2 uses Position NFTs.
+   * When you add liquidity to multiple bins, you receive ONE position NFT that represents
+   * ownership of shares across all those bins. The shares themselves are stored on-chain
+   * in the contract's `lp_shares_per_token` storage map.
+   *
+   * **Usage:**
+   * - Pass the actual position NFT asset IDs (obtained from indexer or add liquidity response)
+   * - Do NOT pass bin IDs - this method expects position NFT IDs
+   * - Multiple bins can share the same position NFT, so deduplicate before calling
    *
    * @param poolId - The v2 pool ID (BN)
-   * @param binIds - Array of bin IDs to remove liquidity from
+   * @param lpAssetIds - Array of position NFT asset IDs (as hex strings starting with 0x)
    * @param amountAMin - Minimum amount of token A to receive (slippage protection)
    * @param amountBMin - Minimum amount of token B to receive (slippage protection)
-   * @param deadline - Transaction deadline timestamp
+   * @param deadline - Transaction deadline timestamp (TAI64 format for V2)
    * @param txParams - Transaction parameters
    * @param options - Prepare request options
    * @returns Transaction with gas price
+   *
+   * @example
+   * ```typescript
+   * // Get position NFT IDs from your positions (e.g., from indexer)
+   * const positionNFTs = userPositions.map(p => p.lpToken);
+   * const uniqueNFTs = [...new Set(positionNFTs)]; // Deduplicate
+   *
+   * const tx = await miraV2.removeLiquidity(
+   *   poolId,
+   *   uniqueNFTs,  // Position NFT IDs, NOT bin IDs
+   *   minAmountX,
+   *   minAmountY,
+   *   getMaxDeadlineV2(),
+   *   DefaultTxParams
+   * );
+   * ```
    */
   async removeLiquidity(
     poolId: PoolIdV2,
-    binIds: BigNumberish[],
+    lpAssetIds: string[],
     amountAMin: BigNumberish,
     amountBMin: BigNumberish,
     deadline: BigNumberish,
@@ -379,7 +406,7 @@ export class MiraAmmV2 {
     // Validate input parameters
     validateRemoveLiquidityParams(
       poolId,
-      binIds,
+      lpAssetIds,
       amountAMin,
       amountBMin,
       deadline,
@@ -388,7 +415,7 @@ export class MiraAmmV2 {
     );
 
     return withErrorHandling(async () => {
-      // Get pool metadata to determine asset order and validate pool exists
+      // Get pool metadata to validate pool exists and get asset configuration
       const poolMetadata = await this.ammContract.functions
         .get_pool(poolIdV2Input(poolId))
         .get();
@@ -402,25 +429,14 @@ export class MiraAmmV2 {
 
       const pool = poolMetadata.value.pool;
 
-      // Generate LP asset IDs for each bin
-      // In v2, each bin has its own unique LP token (unlike v1's single LP token per pool)
-      // This allows users to have positions in specific price ranges
-      const lpAssets: AssetId[] = [];
-      for (const binId of binIds) {
-        // LP asset ID is derived from pool ID + bin ID to ensure uniqueness
-        // Each bin's LP token represents ownership of liquidity at that specific price point
-        const binSubId = sha256(
-          arrayify(
-            hexlify(
-              concat([arrayify(poolId.toHex()), arrayify(bn(binId).toHex())])
-            )
-          )
-        );
-        const lpAssetId = getAssetId(this.ammContract.id.toB256(), binSubId);
-        lpAssets.push(lpAssetId);
-      }
+      // Convert position NFT asset IDs to AssetId objects for the script
+      // Each position NFT represents ownership of shares across one or more bins
+      // The contract looks up the shares from the lp_shares_per_token storage map
+      const lpAssets: AssetId[] = lpAssetIds.map((assetId) => ({
+        bits: assetId,
+      }));
 
-      // Prepare the RemoveLiquidityParameters
+      // Prepare the RemoveLiquidityParameters for the remove_liquidity script
       const removeLiquidityParams = {
         pool: {
           asset_x: pool.asset_x,
@@ -430,22 +446,29 @@ export class MiraAmmV2 {
         },
         amount_x_min: amountAMin,
         amount_y_min: amountBMin,
-        lp_assets: lpAssets.map(assetInput),
+        lp_assets: lpAssets.map(assetInput), // Position NFT IDs
         to: addressInput(this.account.address),
         deadline,
       };
 
       // Call the remove liquidity script
+      // The script will:
+      // 1. Transfer the position NFTs to the contract
+      // 2. Look up the shares for each NFT from lp_shares_per_token
+      // 3. Remove liquidity from all bins associated with those shares
+      // 4. Burn the position NFTs
+      // 5. Transfer underlying tokens back to the user
       let request = await this.removeLiquidityScript.functions
         .main(removeLiquidityParams)
         .addContracts([this.ammContract])
         .txParams(txParams ?? {})
         .getTransactionRequest();
 
-      // Prepare input assets for funding (LP tokens)
+      // Prepare input assets for funding
+      // Each position NFT has a balance of 1 (they are NFTs, not fungible tokens)
       const inputAssets = lpAssets.map((assetId) => ({
         assetId: assetId.bits,
-        amount: bn(1), // Placeholder amount, actual amount will be determined by available LP tokens
+        amount: bn(1), // Position NFTs have a balance of 1
       }));
 
       return await this.prepareRequest(request, 2, inputAssets, [], options);
