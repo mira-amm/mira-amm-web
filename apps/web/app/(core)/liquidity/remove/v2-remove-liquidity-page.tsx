@@ -21,8 +21,10 @@ export default function V2RemoveLiquidityPage({
   }, [unifiedPoolIdString]);
 
   // Fetch pool metadata to get asset IDs
-  const {unifiedPoolsMetadata, unifiedPoolsMetadataPending: isLoadingPoolMetadata} =
-    useUnifiedPoolsMetadata(unifiedPoolId ? [unifiedPoolId] : undefined);
+  const {
+    unifiedPoolsMetadata,
+    unifiedPoolsMetadataPending: isLoadingPoolMetadata,
+  } = useUnifiedPoolsMetadata(unifiedPoolId ? [unifiedPoolId] : undefined);
 
   const poolMetadata = unifiedPoolsMetadata?.[0];
   const assetXId = poolMetadata?.assets?.[0];
@@ -33,7 +35,7 @@ export default function V2RemoveLiquidityPage({
   const assetYMetadata = useAssetMetadata(assetYId || "");
 
   const handleOnClose = useCallback(() => {
-    router.back();
+    router.push("/liquidity");
   }, [router]);
 
   // Prepare asset data for RemoveBinLiquidity component
