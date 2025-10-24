@@ -170,14 +170,14 @@ export function V2DesktopPositionView({
             <div className="text-content-primary text-base leading-[19px]">
               Your liquidity
             </div>
-            {positionStats && (
+            {/* {positionStats && (
               <div className="text-content-tertiary text-sm">
                 {positionStats.numBins} bin
                 {positionStats.numBins !== 1 ? "s" : ""} • Range: $
                 {positionStats.minPrice.toFixed(4)} - $
                 {positionStats.maxPrice.toFixed(4)}
               </div>
-            )}
+            )} */}
           </div>
           <div className="flex items-center space-x-4">
             <div className="flex items-center">
