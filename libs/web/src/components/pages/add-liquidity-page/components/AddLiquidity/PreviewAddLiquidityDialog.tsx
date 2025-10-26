@@ -6,6 +6,7 @@ import {useRouter} from "next/navigation";
 import {Dispatch, SetStateAction, useCallback} from "react";
 import {BN} from "fuels";
 import {Button} from "@/meshwave-ui/Button";
+import {getPoolFeeTier} from "@/src/constants/pools";
 
 export type AddLiquidityPreviewData = {
   assets: {
@@ -78,7 +79,7 @@ export default function PreviewAddLiquidityDialog({
     router.push("/liquidity");
   }, [router]);
 
-  const feeText = isStablePool ? "0.05%" : "0.3%";
+  const feeText = getPoolFeeTier(isStablePool);
 
   return (
     <>

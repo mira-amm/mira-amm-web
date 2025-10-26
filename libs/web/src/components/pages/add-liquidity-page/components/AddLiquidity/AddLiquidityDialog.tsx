@@ -41,6 +41,7 @@ import {
   VolatilePoolTooltip,
 } from "@/src/components/pages/add-liquidity-page/components/AddLiquidity/addLiquidityTooltips";
 import {cn} from "@/src/utils/cn";
+import {POOL_TYPE_LABELS, POOL_FEE_TIERS} from "@/src/constants/pools";
 
 const AddLiquidityDialog = ({
   poolId,
@@ -294,10 +295,12 @@ const AddLiquidityDialog = ({
               )}
             >
               <div className="flex w-full">
-                <p className="flex-1 text-left">Volatile pool</p>
+                <p className="flex-1 text-left">
+                  {POOL_TYPE_LABELS.VOLATILE_POOL}
+                </p>
                 <Info tooltipText={VolatilePoolTooltip} />
               </div>
-              <p>0.30% fee tier</p>
+              <p>{POOL_FEE_TIERS.VOLATILE} fee tier</p>
             </div>
 
             <div
@@ -309,10 +312,12 @@ const AddLiquidityDialog = ({
               )}
             >
               <div className="flex w-full">
-                <p className="flex-1 text-left">Stable pool</p>
+                <p className="flex-1 text-left">
+                  {POOL_TYPE_LABELS.STABLE_POOL}
+                </p>
                 <Info tooltipText={StablePoolTooltip} />
               </div>
-              <p>0.05% fee tier</p>
+              <p>{POOL_FEE_TIERS.STABLE} fee tier</p>
             </div>
           </div>
         </div>

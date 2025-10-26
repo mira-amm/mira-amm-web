@@ -4,6 +4,7 @@ import {useAssetImage} from "@/src/hooks/useAssetImage";
 import {B256Address} from "fuels";
 import {useAssetMetadata} from "@/src/hooks";
 import Image from "next/image";
+import {getPoolFeeTier, getPoolDescription} from "@/src/constants/pools";
 
 type Props = {
   firstCoin: B256Address;
@@ -27,8 +28,8 @@ const CoinPair = ({
   const {symbol: firstSymbol} = useAssetMetadata(firstCoin);
   const {symbol: secondSymbol} = useAssetMetadata(secondCoin);
 
-  const feeText = isStablePool ? "0.05%" : "0.3%";
-  const poolDescription = `${isStablePool ? "Stable" : "Volatile"}: ${feeText}`;
+  const feeText = getPoolFeeTier(isStablePool);
+  const poolDescription = getPoolDescription(isStablePool);
 
   return (
     <div

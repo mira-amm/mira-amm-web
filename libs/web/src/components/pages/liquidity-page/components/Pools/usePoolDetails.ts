@@ -2,13 +2,14 @@ import {useMemo} from "react";
 import {PoolData} from "@/src/hooks/usePoolsData";
 import {DefaultLocale} from "@/src/utils/constants";
 import {createPoolIdFromIdString, createPoolKey} from "@/src/utils/common";
+import {getPoolFeeTier, getPoolDescription} from "@/src/constants/pools";
 
 export function usePoolDetails(poolData: PoolData) {
   const poolId = createPoolIdFromIdString(poolData.id);
   const poolKey = createPoolKey(poolId);
   const isStablePool = poolId[2];
-  const feeText = isStablePool ? "0.05%" : "0.3%";
-  const poolDescription = `${isStablePool ? "Stable" : "Volatile"}: ${feeText}`;
+  const feeText = getPoolFeeTier(isStablePool);
+  const poolDescription = getPoolDescription(isStablePool);
 
   const {aprValue, volumeValue, tvlValue} = useMemo(() => {
     let aprValue = "n/a";

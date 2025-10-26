@@ -15,6 +15,7 @@ import {createPoolKey, openNewTab} from "@/src/utils/common";
 import {Info, CoinsListModal} from "@/src/components/common";
 import {StablePoolTooltip, VolatilePoolTooltip} from "./CreatePoolTooltips";
 import {CreatePoolPreviewData} from "./PreviewCreatePoolDialog";
+import {POOL_TYPE_LABELS, POOL_FEE_TIERS} from "@/src/constants/pools";
 
 import {
   useAssetBalance,
@@ -261,10 +262,12 @@ export function CreatePoolDialog({
               role="button"
             >
               <div className="flex w-full">
-                <p className="flex-1 text-left">Volatile pool</p>
+                <p className="flex-1 text-left">
+                  {POOL_TYPE_LABELS.VOLATILE_POOL}
+                </p>
                 <Info tooltipText={VolatilePoolTooltip} />
               </div>
-              <p>0.30% fee tier</p>
+              <p>{POOL_FEE_TIERS.VOLATILE} fee tier</p>
             </div>
 
             <button
@@ -280,10 +283,12 @@ export function CreatePoolDialog({
               role="button"
             >
               <div className="flex w-full">
-                <p className="flex-1 text-left">Stable pool</p>
+                <p className="flex-1 text-left">
+                  {POOL_TYPE_LABELS.STABLE_POOL}
+                </p>
                 <Info tooltipText={StablePoolTooltip} />
               </div>
-              <p>0.05% fee tier</p>
+              <p>{POOL_FEE_TIERS.STABLE} fee tier</p>
             </button>
           </div>
         </div>

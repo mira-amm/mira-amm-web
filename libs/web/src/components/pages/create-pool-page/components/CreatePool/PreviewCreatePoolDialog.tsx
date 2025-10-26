@@ -5,6 +5,7 @@ import CoinPair from "@/src/components/common/CoinPair/CoinPair";
 import {Coin} from "@/src/components/common";
 import {useCreatePool, useModal, useAssetMetadata} from "@/src/hooks";
 import CreatePoolSuccessModal from "../CreatePoolSuccessModal/CreatePoolSuccessModal";
+import {getPoolFeeTier} from "@/src/constants/pools";
 
 export type CreatePoolPreviewData = {
   assets: {
@@ -50,7 +51,7 @@ const PreviewCreatePoolDialog = ({
     router.push("/liquidity");
   }, [router]);
 
-  const feeText = isStablePool ? "0.05%" : "0.3%";
+  const feeText = getPoolFeeTier(isStablePool);
 
   return (
     <>
