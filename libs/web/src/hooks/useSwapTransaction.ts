@@ -1,5 +1,5 @@
 import {useState, useCallback, useRef} from "react";
-import {BN, ScriptTransactionRequest} from "fuels";
+import {BN, ScriptTransactionRequest, TransactionResult} from "fuels";
 import {triggerClassAnimation} from "@/src/components/common";
 import {openNewTab} from "@/src/utils/common";
 import {FuelAppUrl} from "@/src/utils/constants";
@@ -29,7 +29,7 @@ export function useSwapTransaction({
   }
     | undefined
   >;
-  triggerSwap: (tx: ScriptTransactionRequest) => Promise<any>;
+  triggerSwap: (tx: ScriptTransactionRequest) =>  Promise<{isStatusPreConfirmationSuccess: boolean, waitForResult: Promise<TransactionResult<void>>, id: string} | undefined>;
   openSuccess: () => void;
   openFailure: () => void;
   refetchBalances: () => Promise<any>;
