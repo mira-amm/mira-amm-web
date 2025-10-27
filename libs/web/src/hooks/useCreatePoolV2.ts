@@ -6,7 +6,6 @@ import {useMutation} from "@tanstack/react-query";
 import {ACTIVE_BIN_ID} from "mira-dex-ts";
 
 import {DefaultTxParams, getMaxDeadlineV2} from "@/src/utils/constants";
-import {useAssetMinterContract} from "./useAssetMinterContract";
 import {useAssetMetadata, useMiraDexV2} from "@/src/hooks";
 
 export function useCreatePoolV2({
@@ -26,21 +25,19 @@ export function useCreatePoolV2({
 }) {
   const miraV2 = useMiraDexV2();
   const {wallet} = useWallet();
-  const firstAssetContract = useAssetMinterContract(firstAsset);
-  const secondAssetContract = useAssetMinterContract(secondAsset);
   const firstAssetMetadata = useAssetMetadata(firstAsset);
   const secondAssetMetadata = useAssetMetadata(secondAsset);
 
   const mutationFn = useCallback(async () => {
-    if (
-      !miraV2 ||
-      !wallet ||
-      !firstAssetContract.contractId ||
-      !secondAssetContract.contractId ||
-      !firstAssetContract.subId ||
-      !secondAssetContract.subId
-    ) {
+    if (!miraV2 || !wallet || !firstAsset || !secondAsset) {
       return;
+    }
+
+    // Validate that assets are different
+    if (firstAsset === secondAsset) {
+      throw new Error(
+        "Cannot create a pool with identical assets. Please select two different assets."
+      );
     }
 
     const firstCoinAmountToUse = bn.parseUnits(
@@ -52,10 +49,10 @@ export function useCreatePoolV2({
       secondAssetMetadata.decimals || 0
     );
 
-    // Create pool input structure for v2
+    // Create pool input structure for v2 - use full asset IDs, not just contract IDs
     const poolInput = {
-      assetX: {bits: firstAssetContract.contractId} as any,
-      assetY: {bits: secondAssetContract.contractId} as any,
+      assetX: {bits: firstAsset} as any,
+      assetY: {bits: secondAsset} as any,
       binStep: new BN(binStep),
       baseFactor: new BN(baseFactor),
     };
@@ -81,7 +78,7 @@ export function useCreatePoolV2({
         ],
         DefaultTxParams,
         {
-          reserveGas: 10000,
+          fundTransaction: true,
         }
       );
 
@@ -90,8 +87,8 @@ export function useCreatePoolV2({
   }, [
     miraV2,
     wallet,
-    firstAssetContract,
-    secondAssetContract,
+    firstAsset,
+    secondAsset,
     firstAssetMetadata,
     secondAssetMetadata,
     firstAssetAmount,

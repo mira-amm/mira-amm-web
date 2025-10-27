@@ -216,12 +216,18 @@ export function CreatePoolDialog({
     !secondAmount ||
     firstAmount === "0" ||
     secondAmount === "0";
+  const identicalAssets =
+    firstAssetId !== null &&
+    secondAssetId !== null &&
+    firstAssetId === secondAssetId;
 
   let buttonTitle = "Preview creation";
   if (!isValidNetwork) {
     buttonTitle = "Incorrect network";
   } else if (oneOfAssetsIsNotSelected) {
     buttonTitle = "Choose assets";
+  } else if (identicalAssets) {
+    buttonTitle = "Assets must be different";
   } else if (insufficientBalance) {
     buttonTitle = "Insufficient balance";
   } else if (!sufficientEthBalance) {
@@ -234,6 +240,7 @@ export function CreatePoolDialog({
     !isValidNetwork ||
     poolExists ||
     oneOfAssetsIsNotSelected ||
+    identicalAssets ||
     oneOfAmountsIsEmpty ||
     insufficientBalance;
 
@@ -249,12 +256,16 @@ export function CreatePoolDialog({
 
   const handleAssetSelection = useCallback(
     (selectedAssetId: B256Address | null) => {
+      // If selecting for the first asset
       if (activeAssetForAssetSelector.current === firstAssetId) {
+        // If the selected asset is the same as the second asset, swap them
         if (selectedAssetId === secondAssetId) {
           setSecondAssetId(firstAssetId);
         }
         setFirstAssetId(selectedAssetId);
       } else {
+        // If selecting for the second asset
+        // If the selected asset is the same as the first asset, swap them
         if (selectedAssetId === firstAssetId) {
           setFirstAssetId(secondAssetId);
         }
@@ -548,6 +559,14 @@ export function CreatePoolDialog({
         </div>
       )}
 
+      {identicalAssets && (
+        <Alert variant="destructive">
+          <AlertDescription>
+            You cannot create a pool with identical assets. Please select two
+            different assets for your pool.
+          </AlertDescription>
+        </Alert>
+      )}
       {poolExists && (
         <div className="flex items-center gap-2 p-3 rounded-lg bg-background-primary">
           <div className="w-5 h-5 flex items-center justify-center rounded-full bg-content-dimmed-dark">
