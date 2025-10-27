@@ -355,9 +355,11 @@ export function CreatePoolDialog({
                 secondCoin={secondAssetId}
                 isStablePool={poolType === "stable"}
                 poolType={
-                  poolsMetadata?.[0]?.poolId
-                    ? getUiPoolTypeFromPoolId(poolsMetadata[0].poolId)
-                    : undefined
+                  poolType === "concentrated"
+                    ? "v2-concentrated"
+                    : poolType === "stable"
+                      ? "v1-stable"
+                      : "v1-volatile"
                 }
                 withPoolDetails
               />

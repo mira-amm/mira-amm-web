@@ -88,7 +88,13 @@ const PreviewCreatePoolDialog = ({
             firstCoin={previewData.assets[0].assetId}
             secondCoin={previewData.assets[1].assetId}
             isStablePool={poolType === "stable"}
-            poolType={getUiPoolTypeFromPoolId(poolConcentrationtype.poolId)}
+            poolType={
+              poolType === "concentrated"
+                ? "v2-concentrated"
+                : poolType === "stable"
+                  ? "v1-stable"
+                  : "v1-volatile"
+            }
             withPoolDetails
           />
         </div>
