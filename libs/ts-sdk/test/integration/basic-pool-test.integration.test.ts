@@ -1,5 +1,5 @@
 import {describe, it, expect, beforeAll} from "vitest";
-import {BN} from "fuels";
+import {BN, WalletUnlocked} from "fuels";
 import {testEnvironment} from "./setup/test-environment";
 import {TokenFactory} from "./setup/token-factory";
 import {MiraAmmV2} from "../../src/sdk/mira_amm_v2";
@@ -11,6 +11,8 @@ describe("Basic Pool Creation Test", () => {
   let miraAmm: MiraAmmV2;
   let readonlyAmm: ReadonlyMiraAmmV2;
 
+  let wallet: WalletUnlocked; // Store wallet reference for the test
+
   beforeAll(async () => {
     console.log("🧪 Starting basic pool creation test...");
 
@@ -18,7 +20,7 @@ describe("Basic Pool Creation Test", () => {
     await testEnvironment.start();
 
     // Create a unique wallet for this test to avoid UTXO conflicts
-    const wallet = await testEnvironment.createWallet("100000000000"); // 100,000 ETH for testing
+    wallet = await testEnvironment.createWallet("100000000000"); // 100,000 ETH for testing
     const contractIds = testEnvironment.getContractIds();
 
     // Initialize factories and SDK instances
@@ -56,7 +58,8 @@ describe("Basic Pool Creation Test", () => {
       8000 // baseFactor
     );
 
-    console.log(`🎯 Expected pool ID: ${expectedPoolId.toHex()}`);
+    console.log(`🎯 Expected pool ID (hex): ${expectedPoolId.toHex()}`);
+    console.log(`🎯 Expected pool ID (decimal): ${expectedPoolId.toString()}`);
 
     // Try to create the pool, but handle PoolAlreadyExists
     try {
@@ -66,19 +69,18 @@ describe("Basic Pool Creation Test", () => {
           assetY: {bits: usdc.assetId},
           binStep: 20,
           baseFactor: 8000,
-          protocolShare: 0,
         },
         8388608 // activeId
       );
 
       console.log("📤 Submitting pool creation transaction...");
-      const transaction = await testEnvironment
-        .getWallet()
-        .sendTransaction(transactionWithGas.transactionRequest);
+      const transaction = await wallet.sendTransaction(
+        transactionWithGas.transactionRequest
+      );
       const result = await transaction.waitForResult();
 
-      console.log(`✅ Transaction completed: ${result.transactionId}`);
-      console.log(`📊 Transaction status: ${result.status?.type}`);
+      console.log(`✅ Transaction completed: ${transaction.id}`);
+      console.log(`📊 Transaction status: ${result.status}`);
     } catch (error: any) {
       if (error.message?.includes("PoolAlreadyExists")) {
         console.log("♻️ Pool already exists, proceeding to query it");
@@ -90,22 +92,26 @@ describe("Basic Pool Creation Test", () => {
     // First, let's check if the indexer can see the pool
     console.log("🔍 Querying indexer for pool creation...");
 
+    // Add a small delay to allow the indexer to process the transaction
+    await new Promise((resolve) => setTimeout(resolve, 2000));
+
     try {
       const indexerUrl = testEnvironment.getConfig().indexer.url;
 
-      // Query the indexer for pools
+      // Query the indexer for pools (using correct schema field names)
       const poolsQuery = {
         query: `
           query GetPools {
             pools {
               id
-              assetX
-              assetY
-              binStep
-              baseFactor
-              activeId
-              reserveX
-              reserveY
+              asset0 { id symbol }
+              asset1 { id symbol }
+              binStepBps
+              baseFee
+              activeBinId
+              reserve0
+              reserve1
+              protocolVersion
             }
           }
         `,
@@ -128,27 +134,45 @@ describe("Basic Pool Creation Test", () => {
           const pools = indexerData.data.pools;
           console.log(`📈 Found ${pools.length} pools in indexer`);
 
-          // Look for our specific pool
-          const ourPool = pools.find(
-            (pool: any) =>
-              pool.id === expectedPoolId.toHex() ||
-              pool.id === expectedPoolId.toString()
-          );
+          // Look for our specific pool (compare in both hex and decimal formats)
+          const ourPool = pools.find((pool: any) => {
+            // Indexer stores pool ID as decimal string, so compare as decimal
+            const poolIdDecimal = pool.id;
+            const expectedDecimal = expectedPoolId.toString();
+
+            return poolIdDecimal === expectedDecimal;
+          });
 
           if (ourPool) {
-            console.log("✅ Our pool found in indexer:");
-            console.log(`  Pool ID: ${ourPool.id}`);
-            console.log(`  Asset X: ${ourPool.assetX}`);
-            console.log(`  Asset Y: ${ourPool.assetY}`);
-            console.log(`  Bin Step: ${ourPool.binStep}`);
-            console.log(`  Base Factor: ${ourPool.baseFactor}`);
+            console.log("✅ Our pool found in indexer!");
+            console.log(`  Pool ID (decimal): ${ourPool.id}`);
+            console.log(`  Pool ID (hex): ${new BN(ourPool.id).toHex()}`);
+            console.log(
+              `  Asset 0: ${ourPool.asset0.id} (${ourPool.asset0.symbol})`
+            );
+            console.log(
+              `  Asset 1: ${ourPool.asset1.id} (${ourPool.asset1.symbol})`
+            );
+            console.log(`  Bin Step: ${ourPool.binStepBps}`);
+            console.log(`  Base Fee: ${ourPool.baseFee}`);
+            console.log(`  Active Bin ID: ${ourPool.activeBinId}`);
+            console.log(`  Protocol Version: ${ourPool.protocolVersion}`);
+
+            // Validate the pool parameters match
+            expect(ourPool.binStepBps).toBe(20);
+            expect(ourPool.activeBinId).toBe(8388608);
+            expect(ourPool.asset0.id).toBe(eth.assetId);
+            expect(ourPool.asset1.id).toBe(usdc.assetId);
           } else {
             console.log("⚠️ Our pool not found in indexer results");
-            console.log(`Expected ID: ${expectedPoolId.toHex()}`);
+            console.log(`Expected ID (hex): ${expectedPoolId.toHex()}`);
+            console.log(`Expected ID (decimal): ${expectedPoolId.toString()}`);
             if (pools.length > 0) {
               console.log("Available pool IDs:");
               pools.forEach((pool: any, idx: number) => {
-                console.log(`  ${idx + 1}. ${pool.id}`);
+                console.log(
+                  `  ${idx + 1}. ${pool.id} (hex: ${new BN(pool.id).toHex()})`
+                );
               });
             }
           }
@@ -156,7 +180,9 @@ describe("Basic Pool Creation Test", () => {
           console.log("⚠️ No pools data in indexer response");
         }
       } else {
+        const errorText = await indexerResponse.text();
         console.log(`⚠️ Indexer request failed: ${indexerResponse.status}`);
+        console.log(`Error response: ${errorText}`);
       }
     } catch (indexerError) {
       console.log("⚠️ Indexer query failed:", indexerError);
@@ -164,9 +190,15 @@ describe("Basic Pool Creation Test", () => {
 
     // Now try the SDK readonly query
     console.log("🔍 Attempting to query pool metadata via SDK...");
+    console.log(`Using pool ID (hex): ${expectedPoolId.toHex()}`);
+    console.log(`Using pool ID (decimal): ${expectedPoolId.toString()}`);
+    console.log(`AMM Contract ID: ${readonlyAmm.id()}`);
 
     try {
-      const poolMetadata = await readonlyAmm.poolMetadata(expectedPoolId);
+      // Try with cache disabled to get fresh data
+      const poolMetadata = await readonlyAmm.poolMetadata(expectedPoolId, {
+        useCache: false,
+      });
 
       if (poolMetadata) {
         console.log("✅ Pool found via SDK! Metadata:");
@@ -186,7 +218,7 @@ describe("Basic Pool Creation Test", () => {
         console.log("❌ SDK pool metadata is null/undefined");
         console.log("🔧 This confirms the SDK readonly contract has issues");
       }
-    } catch (sdkError) {
+    } catch (sdkError: any) {
       console.log("❌ Failed to query pool via SDK:", sdkError);
       console.log("🔧 This confirms the SDK readonly contract has issues");
     }
