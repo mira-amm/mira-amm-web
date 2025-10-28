@@ -24,10 +24,12 @@ const AprCell = ({position}: {position: Position | UnifiedPosition}) => {
   const {isMatching} = usePoolNameAndMatch(poolKey);
 
   const aprValue = apr
-    ? `${apr.apr.toLocaleString(DefaultLocale, {
-        minimumFractionDigits: 2,
-        maximumFractionDigits: 2,
-      })}%`
+    ? apr.apr === 0 || !isFinite(apr.apr)
+      ? "n/a"
+      : `${apr.apr.toLocaleString(DefaultLocale, {
+          minimumFractionDigits: 2,
+          maximumFractionDigits: 2,
+        })}%`
     : null;
 
   const tvlValue = apr?.tvlUSD;

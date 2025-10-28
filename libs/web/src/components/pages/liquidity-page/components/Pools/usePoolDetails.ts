@@ -33,7 +33,7 @@ export function usePoolDetails(poolData: PoolData) {
     if (poolData.details) {
       const {apr, volume, tvl} = poolData.details;
 
-      if (apr && apr > 0) {
+      if (apr && apr > 0 && isFinite(apr)) {
         aprValue = `${apr.toLocaleString(DefaultLocale, {
           minimumFractionDigits: 2,
           maximumFractionDigits: 2,

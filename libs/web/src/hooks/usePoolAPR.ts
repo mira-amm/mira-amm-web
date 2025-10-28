@@ -31,7 +31,10 @@ export function usePoolAPR(pool: UnifiedPoolId) {
         (acc: number, snapshot: any) => acc + parseFloat(snapshot.feesUSD),
         0
       );
-      const apr = (fees24h / parseFloat(result.poolById.tvlUSD)) * 365 * 100;
+
+      const tvlUSD = parseFloat(result.poolById.tvlUSD);
+      // If TVL is 0 APR should be 0 to avoid infinity
+      const apr = tvlUSD > 0 ? (fees24h / tvlUSD) * 365 * 100 : 0;
 
       const reserve0 = parseFloat(result.poolById.reserve0Decimal) || 0;
       const reserve1 = parseFloat(result.poolById.reserve1Decimal) || 0;

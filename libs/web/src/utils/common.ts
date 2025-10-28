@@ -214,6 +214,8 @@ export const formatDisplayAmount = (amount: string | number) => {
 // The `apr` value represents percentage points (e.g., 1 represents 1%, not 100%).
 export const formatAprValue = (apr?: {apr: number}): string | null => {
   if (!apr) return null;
+  // Show "n/a" when APR is 0, Infinity, or NaN
+  if (apr.apr === 0 || !isFinite(apr.apr)) return "n/a";
   return `${apr.apr.toLocaleString(DefaultLocale, {
     minimumFractionDigits: 2,
     maximumFractionDigits: 2,
