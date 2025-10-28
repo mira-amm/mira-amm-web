@@ -4,14 +4,10 @@ import {PoolData} from "@/src/hooks/usePoolsData";
 import {DefaultLocale} from "@/src/utils/constants";
 import {createPoolIdFromIdString, createPoolKey} from "@/src/utils/common";
 
-// Check if pool ID is V2 format (numeric) vs V1 format (dash-separated)
-function isV2Pool(poolId: string): boolean {
-  return !poolId.includes("-");
-}
-
 export function usePoolDetails(poolData: PoolData) {
-  // Detect pool version and handle accordingly
-  const isV2 = isV2Pool(poolData.id);
+  // Detect pool version from poolType field (or fallback to ID format check)
+  const isV2 =
+    poolData.poolType === "v2-concentrated" || !poolData.id.includes("-");
 
   // For V1 pools: use the existing logic
   // For V2 pools: use the numeric ID directly

@@ -14,8 +14,16 @@ import {getPoolNavigationUrl} from "@/src/utils/poolNavigation";
 const cellBase = "whitespace-nowrap overflow-hidden text-ellipsis text-center";
 
 export function DesktopPoolRow({poolData}: {poolData: PoolData}) {
-  const {poolKey, aprValue, volumeValue, tvlValue, isStablePool, poolId} =
-    usePoolDetails(poolData);
+  const {
+    poolKey,
+    aprValue,
+    volumeValue,
+    tvlValue,
+    isStablePool,
+    poolId,
+    asset0Id,
+    asset1Id,
+  } = usePoolDetails(poolData);
 
   const tvlActual = parseInt(tvlValue?.replace(/[^0-9]+/g, ""), 10);
   const {isMatching} = usePoolNameAndMatch(poolKey);
@@ -25,8 +33,8 @@ export function DesktopPoolRow({poolData}: {poolData: PoolData}) {
       <TableCell className={cn(cellBase, "text-left w-[230px] truncate")}>
         <div className="flex flex-col gap-2">
           <CoinPair
-            firstCoin={poolId[0].bits}
-            secondCoin={poolId[1].bits}
+            firstCoin={asset0Id}
+            secondCoin={asset1Id}
             isStablePool={isStablePool}
             poolType={poolData.poolType || "v1-volatile"}
             withPoolDetails
