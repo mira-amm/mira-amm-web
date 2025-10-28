@@ -1,10 +1,13 @@
-import {PoolId} from "mira-dex-ts";
-import {usePoolAPR, usePoolsMetadata} from "@/src/hooks";
+import {usePoolAPR, useUnifiedPoolsMetadata} from "@/src/hooks";
 import {DefaultLocale} from "@/src/utils/constants";
+import {UnifiedPoolId} from "@/src/utils/poolTypeDetection";
 
-export const usePoolInfo = (poolId: PoolId) => {
+export const usePoolInfo = (poolId: UnifiedPoolId) => {
   const {apr} = usePoolAPR(poolId);
-  const {poolsMetadata} = usePoolsMetadata([poolId]);
+  // Use unified metadata to support both V1 and V2 pools
+  const {unifiedPoolsMetadata, unifiedPoolsMetadataPending} =
+    useUnifiedPoolsMetadata([poolId]);
+  const poolMetadata = unifiedPoolsMetadata?.[0];
 
   const aprValue =
     apr !== undefined
@@ -16,8 +19,9 @@ export const usePoolInfo = (poolId: PoolId) => {
 
   const tvlValue = apr?.tvlUSD;
 
+  // Check if pool is empty using unified metadata (works for both V1 and V2)
   const emptyPool = Boolean(
-    poolsMetadata?.[0]?.reserve0.eq(0) && poolsMetadata?.[0].reserve1.eq(0)
+    poolMetadata?.reserves?.x.eq(0) && poolMetadata?.reserves?.y.eq(0)
   );
 
   return {
@@ -25,6 +29,7 @@ export const usePoolInfo = (poolId: PoolId) => {
     aprValue,
     tvlValue,
     emptyPool,
-    poolsMetadata,
+    poolMetadata,
+    isLoadingMetadata: unifiedPoolsMetadataPending,
   };
 };

@@ -124,8 +124,9 @@ export function V2PositionView({
       )
     : undefined;
 
-  // Create a PoolId-like structure for compatibility with existing components
+  // Create a PoolId-like structure for compatibility with child components
   // For V2 pools, we default to volatile (false) since V2 doesn't use the stable concept
+  // Note: This is only for display/compatibility - APR queries use the actual V2 pool ID
   const pool: PoolId = [
     {bits: firstAssetId},
     {bits: secondAssetId},
@@ -135,8 +136,8 @@ export function V2PositionView({
   const uiPoolType = getUiPoolTypeFromPoolId(unifiedPoolId);
   const positionPath = getPoolNavigationUrl(unifiedPoolId, "add");
 
-  // Get pool APR data for TVL
-  const {apr} = usePoolAPR(pool);
+  // Get pool APR data for TVL using the actual V2 pool ID
+  const {apr} = usePoolAPR(poolIdBN);
   const tvlValue = apr?.tvlUSD;
   const formattedTvlValue = tvlValue
     ? parseFloat(tvlValue?.toFixed(2)).toLocaleString()
