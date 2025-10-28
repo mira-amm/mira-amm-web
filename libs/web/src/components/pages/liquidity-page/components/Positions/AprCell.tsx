@@ -12,17 +12,14 @@ const AprCell = ({position}: {position: Position | UnifiedPosition}) => {
   const assetIdB = position.token1Item.token1Position[0].bits;
 
   // Handle both V1 and V2 positions
-  // For APR queries, we always need a V1-style PoolId (asset pair + stability)
-  // V2 positions are always volatile (not stable)
-  const isStablePool = (position as any).isV2
-    ? false
-    : (position as Position).isStable;
-  const poolId = buildPoolId(assetIdA, assetIdB, isStablePool);
+  // For V2 positions, use the actual poolId (BN)
+  // For V1 positions, build the poolId from assets
+  const isV2 = (position as any).isV2;
+  const poolId = isV2
+    ? position.poolId
+    : buildPoolId(assetIdA, assetIdB, (position as Position).isStable);
 
-  // For pool key, use the actual poolId (BN for V2, built poolId for V1)
-  const poolKey = (position as any).isV2
-    ? createPoolKey(position.poolId)
-    : createPoolKey(poolId);
+  const poolKey = createPoolKey(poolId);
   const {apr} = usePoolAPR(poolId);
   const {isMatching} = usePoolNameAndMatch(poolKey);
 

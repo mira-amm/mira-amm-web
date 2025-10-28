@@ -1,11 +1,10 @@
 import {useQuery} from "@tanstack/react-query";
-import {PoolId} from "mira-dex-ts";
-import {createPoolIdString} from "@/src/utils/common";
 import {SQDIndexerUrl} from "@/src/utils/constants";
 import request, {gql} from "graphql-request";
+import {poolIdToString, UnifiedPoolId} from "@/src/utils/poolTypeDetection";
 
-export function usePoolAPR(pool: PoolId) {
-  const poolIdString = createPoolIdString(pool);
+export function usePoolAPR(pool: UnifiedPoolId) {
+  const poolIdString = poolIdToString(pool);
 
   const {data, isPending} = useQuery({
     queryKey: ["poolAPR", poolIdString],
@@ -13,7 +12,7 @@ export function usePoolAPR(pool: PoolId) {
       const time24HoursAgo = Math.floor(Date.now() / 1000) - 24 * 60 * 60;
       const query = gql`
         query MyQuery {
-          poolById(id: "${createPoolIdString(pool)}") {
+          poolById(id: "${poolIdString}") {
             snapshots(where: {timestamp_gt: ${time24HoursAgo}}, orderBy: timestamp_ASC) {
               feesUSD
             }
