@@ -65,6 +65,7 @@ const V2AddLiquidityDialog = ({
     secondAssetBalance,
     asset0Price,
     asset1Price,
+    binStep,
   } = usePoolAssetsV2(poolId);
 
   // Create a mock V1-style poolId for form hooks that expect V1 format
@@ -272,6 +273,7 @@ const V2AddLiquidityDialog = ({
           currentPrice={currentPrice}
           asset0Price={asset0Price || undefined}
           asset1Price={asset1Price || undefined}
+          binStep={binStep}
           totalAsset0Amount={
             firstAmount
               ? parseFloat(
