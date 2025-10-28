@@ -75,6 +75,7 @@ interface V2LiquidityConfigProps {
   currentPrice: number;
   asset0Price?: number;
   asset1Price?: number;
+  binStep?: number;
   totalAsset0Amount?: number;
   totalAsset1Amount?: number;
   onConfigChange?: (config: {
@@ -101,10 +102,13 @@ export default function V2LiquidityConfig({
   currentPrice,
   asset0Price,
   asset1Price,
+  binStep: binStepProp,
   totalAsset0Amount,
   totalAsset1Amount,
   onConfigChange,
 }: V2LiquidityConfigProps) {
+  // Use the pool's bin step if provided, otherwise fall back to default
+  const binStep = binStepProp ?? DEFAULT_BIN_STEP;
   // Calculate initial price range as 20% difference on either side of current price
   const priceRangePercent = 0.2; // 20%
   const initialMinPrice = currentPrice * (1 - priceRangePercent);
@@ -120,7 +124,7 @@ export default function V2LiquidityConfig({
   const initialBins = calculateBinsBetweenPrices(
     initialMinPrice,
     initialMaxPrice,
-    DEFAULT_BIN_STEP
+    binStep
   );
   const [numBins, setNumBins] = useState<number>(initialBins);
 
@@ -132,10 +136,10 @@ export default function V2LiquidityConfig({
 
   // local string states for text inputs + "typing" flags
   const [minPriceInput, setMinPriceInput] = useState(
-    formatPriceForDisplay(initialMinPrice, DEFAULT_BIN_STEP)
+    formatPriceForDisplay(initialMinPrice, binStep)
   );
   const [maxPriceInput, setMaxPriceInput] = useState(
-    formatPriceForDisplay(initialMaxPrice, DEFAULT_BIN_STEP)
+    formatPriceForDisplay(initialMaxPrice, binStep)
   );
   const [isTypingMin, setIsTypingMin] = useState(false);
   const [isTypingMax, setIsTypingMax] = useState(false);
@@ -157,13 +161,13 @@ export default function V2LiquidityConfig({
   const minSliderPosition = priceToSliderPosition(
     minPrice,
     currentPrice,
-    DEFAULT_BIN_STEP,
+    binStep,
     SLIDER_BIN_RANGE
   );
   const maxSliderPosition = priceToSliderPosition(
     maxPrice,
     currentPrice,
-    DEFAULT_BIN_STEP,
+    binStep,
     SLIDER_BIN_RANGE
   );
 
@@ -172,13 +176,13 @@ export default function V2LiquidityConfig({
         priceToSliderPosition(
           currentPrice * (1 - priceRangePercent),
           currentPrice,
-          DEFAULT_BIN_STEP,
+          binStep,
           SLIDER_BIN_RANGE
         ),
         priceToSliderPosition(
           currentPrice * (1 + priceRangePercent),
           currentPrice,
-          DEFAULT_BIN_STEP,
+          binStep,
           SLIDER_BIN_RANGE
         ),
       ]
@@ -211,7 +215,7 @@ export default function V2LiquidityConfig({
   // Get current price position (should always be 0.5)
   const currentPricePosition = getCurrentPriceSliderPosition(
     currentPrice,
-    DEFAULT_BIN_STEP,
+    binStep,
     SLIDER_BIN_RANGE
   );
 
@@ -285,7 +289,7 @@ export default function V2LiquidityConfig({
 
   const handleMinPriceChange = (value: number) => {
     // Align price to nearest bin boundary
-    const alignedPrice = alignPriceToBin(value, currentPrice, DEFAULT_BIN_STEP);
+    const alignedPrice = alignPriceToBin(value, currentPrice, binStep);
 
     // Validate: min must be strictly lower than current max
     if (alignedPrice >= maxPrice) {
@@ -301,15 +305,15 @@ export default function V2LiquidityConfig({
     const calculatedBins = calculateBinsBetweenPrices(
       alignedPrice,
       maxPrice,
-      DEFAULT_BIN_STEP
+      binStep
     );
     setNumBins(calculatedBins);
-    calculateResults(alignedPrice, maxPrice, DEFAULT_BIN_STEP, currentPrice);
+    calculateResults(alignedPrice, maxPrice, binStep, currentPrice);
   };
 
   const handleMaxPriceChange = (value: number) => {
     // Align price to nearest bin boundary
-    const alignedPrice = alignPriceToBin(value, currentPrice, DEFAULT_BIN_STEP);
+    const alignedPrice = alignPriceToBin(value, currentPrice, binStep);
 
     // Validate: max must be strictly greater than current min
     if (alignedPrice <= minPrice) {
@@ -324,10 +328,10 @@ export default function V2LiquidityConfig({
     const calculatedBins = calculateBinsBetweenPrices(
       minPrice,
       alignedPrice,
-      DEFAULT_BIN_STEP
+      binStep
     );
     setNumBins(calculatedBins);
-    calculateResults(minPrice, alignedPrice, DEFAULT_BIN_STEP, currentPrice);
+    calculateResults(minPrice, alignedPrice, binStep, currentPrice);
   };
 
   const handleSliderChange = (newSliderRange: [number, number]) => {
@@ -342,27 +346,19 @@ export default function V2LiquidityConfig({
     const computedMin = sliderPositionToPrice(
       newSliderRange[0],
       currentPrice,
-      DEFAULT_BIN_STEP,
+      binStep,
       SLIDER_BIN_RANGE
     );
     const computedMax = sliderPositionToPrice(
       newSliderRange[1],
       currentPrice,
-      DEFAULT_BIN_STEP,
+      binStep,
       SLIDER_BIN_RANGE
     );
 
     // Align to bin boundaries
-    const alignedMin = alignPriceToBin(
-      computedMin,
-      currentPrice,
-      DEFAULT_BIN_STEP
-    );
-    const alignedMax = alignPriceToBin(
-      computedMax,
-      currentPrice,
-      DEFAULT_BIN_STEP
-    );
+    const alignedMin = alignPriceToBin(computedMin, currentPrice, binStep);
+    const alignedMax = alignPriceToBin(computedMax, currentPrice, binStep);
 
     let finalMinPrice = minPrice;
     let finalMaxPrice = maxPrice;
@@ -392,24 +388,19 @@ export default function V2LiquidityConfig({
 
     // keep inputs in sync when not typing
     if (!isTypingMin && finalMinPrice !== minPrice) {
-      setMinPriceInput(formatPriceForDisplay(finalMinPrice, DEFAULT_BIN_STEP));
+      setMinPriceInput(formatPriceForDisplay(finalMinPrice, binStep));
     }
     if (!isTypingMax && finalMaxPrice !== maxPrice) {
-      setMaxPriceInput(formatPriceForDisplay(finalMaxPrice, DEFAULT_BIN_STEP));
+      setMaxPriceInput(formatPriceForDisplay(finalMaxPrice, binStep));
     }
 
     const calculatedBins = calculateBinsBetweenPrices(
       finalMinPrice,
       finalMaxPrice,
-      DEFAULT_BIN_STEP
+      binStep
     );
     setNumBins(calculatedBins);
-    calculateResults(
-      finalMinPrice,
-      finalMaxPrice,
-      DEFAULT_BIN_STEP,
-      currentPrice
-    );
+    calculateResults(finalMinPrice, finalMaxPrice, binStep, currentPrice);
   };
 
   const handleNumBinsChange = (newNumBins: number) => {
@@ -419,7 +410,7 @@ export default function V2LiquidityConfig({
     setNumBins(newNumBins);
     const newMaxPrice = TradeUtils.calculateMaxPriceFromBins(
       minPrice,
-      DEFAULT_BIN_STEP,
+      binStep,
       newNumBins
     );
 
@@ -433,9 +424,9 @@ export default function V2LiquidityConfig({
     setPriceRange([minPrice, newMaxPrice]);
     // sync text inputs
     if (!isTypingMax) {
-      setMaxPriceInput(formatPriceForDisplay(newMaxPrice, DEFAULT_BIN_STEP));
+      setMaxPriceInput(formatPriceForDisplay(newMaxPrice, binStep));
     }
-    calculateResults(minPrice, newMaxPrice, DEFAULT_BIN_STEP, currentPrice);
+    calculateResults(minPrice, newMaxPrice, binStep, currentPrice);
   };
 
   const resetPrice = () => {
@@ -443,15 +434,15 @@ export default function V2LiquidityConfig({
     setHasCustomMinPrice(false);
     setHasCustomMaxPrice(false);
 
-    setMinPriceInput(formatPriceForDisplay(initialMinPrice, DEFAULT_BIN_STEP));
-    setMaxPriceInput(formatPriceForDisplay(initialMaxPrice, DEFAULT_BIN_STEP));
+    setMinPriceInput(formatPriceForDisplay(initialMinPrice, binStep));
+    setMaxPriceInput(formatPriceForDisplay(initialMaxPrice, binStep));
     setIsTypingMin(false);
     setIsTypingMax(false);
 
     const calculatedBins = calculateBinsBetweenPrices(
       initialMinPrice,
       initialMaxPrice,
-      DEFAULT_BIN_STEP
+      binStep
     );
     setNumBins(calculatedBins);
     setRangeError(null);
@@ -482,8 +473,15 @@ export default function V2LiquidityConfig({
     if (!isCurrentPriceValid) return;
     if (!Number.isFinite(minPrice) || !Number.isFinite(maxPrice)) return;
     if (minPrice <= 0 || maxPrice <= 0) return;
-    calculateResults(minPrice, maxPrice, DEFAULT_BIN_STEP, currentPrice);
-  }, [minPrice, maxPrice, calculateResults, currentPrice, isCurrentPriceValid]);
+    calculateResults(minPrice, maxPrice, binStep, currentPrice);
+  }, [
+    minPrice,
+    maxPrice,
+    calculateResults,
+    currentPrice,
+    isCurrentPriceValid,
+    binStep,
+  ]);
 
   // When currentPrice becomes valid for the first time (or changes),
   // initialize the default 20% price range if user hasn't set custom values
@@ -495,28 +493,30 @@ export default function V2LiquidityConfig({
     const newMax = currentPrice * (1 + priceRangePercent);
 
     setPriceRange([newMin, newMax]);
-    setMinPriceInput(formatPriceForDisplay(newMin, DEFAULT_BIN_STEP));
-    setMaxPriceInput(formatPriceForDisplay(newMax, DEFAULT_BIN_STEP));
-    const calculatedBins = calculateBinsBetweenPrices(
-      newMin,
-      newMax,
-      DEFAULT_BIN_STEP
-    );
+    setMinPriceInput(formatPriceForDisplay(newMin, binStep));
+    setMaxPriceInput(formatPriceForDisplay(newMax, binStep));
+    const calculatedBins = calculateBinsBetweenPrices(newMin, newMax, binStep);
     setNumBins(calculatedBins);
     setRangeError(null);
-  }, [isCurrentPriceValid, currentPrice, hasCustomMinPrice, hasCustomMaxPrice]);
+  }, [
+    isCurrentPriceValid,
+    currentPrice,
+    hasCustomMinPrice,
+    hasCustomMaxPrice,
+    binStep,
+  ]);
 
   // when priceRange changes externally (slider/reset), update text inputs if not typing
   useEffect(() => {
     if (!isTypingMin) {
-      setMinPriceInput(formatPriceForDisplay(minPrice, DEFAULT_BIN_STEP));
+      setMinPriceInput(formatPriceForDisplay(minPrice, binStep));
     }
-  }, [minPrice, isTypingMin]);
+  }, [minPrice, isTypingMin, binStep]);
   useEffect(() => {
     if (!isTypingMax) {
-      setMaxPriceInput(formatPriceForDisplay(maxPrice, DEFAULT_BIN_STEP));
+      setMaxPriceInput(formatPriceForDisplay(maxPrice, binStep));
     }
-  }, [maxPrice, isTypingMax]);
+  }, [maxPrice, isTypingMax, binStep]);
 
   // commit debounced text edits
   useEffect(() => {
@@ -576,7 +576,7 @@ export default function V2LiquidityConfig({
         >
           <span className="text-sm">Active Bin:</span>
           <span className="text-sm font-alt">
-            {formatPriceForDisplay(currentPrice, DEFAULT_BIN_STEP)}
+            {formatPriceForDisplay(currentPrice, binStep)}
           </span>
           <span className="text-sm">
             {asset0Metadata.symbol} per {asset1Metadata.symbol}
@@ -639,7 +639,7 @@ export default function V2LiquidityConfig({
                 value={
                   isTypingMin
                     ? minPriceInput
-                    : formatPriceForDisplay(minPrice, DEFAULT_BIN_STEP)
+                    : formatPriceForDisplay(minPrice, binStep)
                 }
                 onChange={(e) => {
                   setIsTypingMin(true);
@@ -649,9 +649,7 @@ export default function V2LiquidityConfig({
                   const parsed = parsePriceString(minPriceInput);
                   if (parsed !== null) handleMinPriceChange(parsed);
                   setIsTypingMin(false);
-                  setMinPriceInput(
-                    formatPriceForDisplay(minPrice, DEFAULT_BIN_STEP)
-                  );
+                  setMinPriceInput(formatPriceForDisplay(minPrice, binStep));
                   setRangeError(null);
                 }}
                 className="font-alt"
@@ -674,7 +672,7 @@ export default function V2LiquidityConfig({
                 value={
                   isTypingMax
                     ? maxPriceInput
-                    : formatPriceForDisplay(maxPrice, DEFAULT_BIN_STEP)
+                    : formatPriceForDisplay(maxPrice, binStep)
                 }
                 onChange={(e) => {
                   setIsTypingMax(true);
@@ -684,9 +682,7 @@ export default function V2LiquidityConfig({
                   const parsed = parsePriceString(maxPriceInput);
                   if (parsed !== null) handleMaxPriceChange(parsed);
                   setIsTypingMax(false);
-                  setMaxPriceInput(
-                    formatPriceForDisplay(maxPrice, DEFAULT_BIN_STEP)
-                  );
+                  setMaxPriceInput(formatPriceForDisplay(maxPrice, binStep));
                   setRangeError(null);
                 }}
                 className="font-alt"
@@ -771,7 +767,7 @@ export default function V2LiquidityConfig({
               minPrice={minPrice}
               maxPrice={maxPrice}
               currentPrice={currentPrice}
-              binStepBasisPoints={DEFAULT_BIN_STEP}
+              binStepBasisPoints={binStep}
               asset0Symbol={asset0Metadata.symbol}
               asset1Symbol={asset1Metadata.symbol}
               asset0Price={asset0Price}

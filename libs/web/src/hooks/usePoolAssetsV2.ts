@@ -20,13 +20,14 @@ export const usePoolAssetsV2 = (poolId: BN) => {
   const {unifiedPoolsMetadata, unifiedPoolsMetadataPending: isMetadataLoading} =
     usePoolsMetadataV2(poolId ? [poolId] : undefined);
 
-  // Extract asset IDs based on pool type
-  const {firstAssetId, secondAssetId, isStablePool} = useMemo(() => {
+  // Extract asset IDs and bin step based on pool type
+  const {firstAssetId, secondAssetId, isStablePool, binStep} = useMemo(() => {
     if (!poolId) {
       return {
         firstAssetId: "",
         secondAssetId: "",
         isStablePool: false,
+        binStep: undefined,
       };
     }
 
@@ -44,6 +45,7 @@ export const usePoolAssetsV2 = (poolId: BN) => {
           firstAssetId: "",
           secondAssetId: "",
           isStablePool: false,
+          binStep: undefined,
         };
       }
 
@@ -51,6 +53,7 @@ export const usePoolAssetsV2 = (poolId: BN) => {
         firstAssetId: typeof asset0 === "string" ? asset0 : asset0.bits || "",
         secondAssetId: typeof asset1 === "string" ? asset1 : asset1.bits || "",
         isStablePool: false, // V2 pools don't have stable/volatile distinction
+        binStep: metadata.binStep,
       };
     }
 
@@ -58,6 +61,7 @@ export const usePoolAssetsV2 = (poolId: BN) => {
       firstAssetId: "",
       secondAssetId: "",
       isStablePool: false,
+      binStep: undefined,
     };
   }, [unifiedPoolsMetadata]);
 
@@ -76,6 +80,7 @@ export const usePoolAssetsV2 = (poolId: BN) => {
     firstAssetId,
     secondAssetId,
     isStablePool,
+    binStep,
     asset0Metadata,
     asset1Metadata,
     firstAssetBalance,
