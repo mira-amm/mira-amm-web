@@ -6,6 +6,7 @@ import {
   useAssetPrice,
   useAssetBalance,
   useBalances,
+  useAssetPriceFromIndexer,
 } from "@/src/hooks";
 import {usePoolsMetadataV2} from "./usePoolsMetadataV2";
 
@@ -67,8 +68,8 @@ export const usePoolAssetsV2 = (poolId: BN) => {
   const firstAssetBalance = useAssetBalance(balances, firstAssetId || "");
   const secondAssetBalance = useAssetBalance(balances, secondAssetId || "");
 
-  const {price: asset0Price} = useAssetPrice(firstAssetId || "");
-  const {price: asset1Price} = useAssetPrice(secondAssetId || "");
+  const {price: asset0Price} = useAssetPriceFromIndexer(firstAssetId || "");
+  const {price: asset1Price} = useAssetPriceFromIndexer(secondAssetId || "");
 
   return {
     poolId,
