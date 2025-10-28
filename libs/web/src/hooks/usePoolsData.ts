@@ -124,7 +124,8 @@ export function usePoolsData() {
         (acc: number, snapshot: any) => acc + parseFloat(snapshot.feesUSD),
         0
       );
-      const apr = (fees24h / parseFloat(pool.tvlUSD)) * 365 * 100;
+      const tvlUSD = parseFloat(pool.tvlUSD);
+      const apr = tvlUSD > 0 ? (fees24h / tvlUSD) * 365 * 100 : 0;
 
       // Determine pool type based on protocolVersion and isStable
       const poolType: "v1-volatile" | "v1-stable" | "v2-concentrated" =
