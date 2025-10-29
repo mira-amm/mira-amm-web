@@ -74,8 +74,8 @@ export interface IPoolDataCacheV2 {
   ): Map<number, CachedBinData>;
 
   // Fee cache (per-pool in v2)
-  getPoolFee(poolId: PoolIdV2): number | null;
-  setPoolFee(poolId: PoolIdV2, fee: number, ttl?: number): void;
+  getPoolFee(poolId: PoolIdV2): string | null;
+  setPoolFee(poolId: PoolIdV2, fee: string, ttl?: number): void;
 
   // Cache management
   isStale(poolId: PoolIdV2, binId?: number): boolean;

@@ -24,7 +24,7 @@ export interface CachedBinDataExtended extends CachedBinData {
  * Cached fee data for v2 pools
  */
 export interface CachedPoolFee {
-  fee: number;
+  fee: string;
   timestamp: number;
   ttl: number;
   fetchedAt: number;
@@ -327,7 +327,7 @@ export class PoolDataCacheV2 implements IPoolDataCacheV2 {
   /**
    * Get pool fee from cache
    */
-  getPoolFee(poolId: PoolIdV2): number | null {
+  getPoolFee(poolId: PoolIdV2): string | null {
     const key = generateFeeCacheKey(poolId);
     if (this.config.enableStats) {
       this.stats.totalRequests++;
@@ -368,7 +368,7 @@ export class PoolDataCacheV2 implements IPoolDataCacheV2 {
   /**
    * Store pool fee in cache
    */
-  setPoolFee(poolId: PoolIdV2, fee: number, ttl?: number): void {
+  setPoolFee(poolId: PoolIdV2, fee: string, ttl?: number): void {
     const key = generateFeeCacheKey(poolId);
     const now = Date.now();
     const effectiveTTL = ttl ?? this.config.feeTTL;
