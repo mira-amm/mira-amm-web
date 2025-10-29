@@ -399,30 +399,8 @@ export class ReadonlyMiraAmmV2 {
 
       const fee = result.value;
 
-      // Cache the fee (convert BN to number for caching)
-      // Handle large BN values that can't be safely converted to number
-      let feeAsNumber: number;
-      try {
-        // Check if the fee is within safe integer range
-        if (fee.gt(Number.MAX_SAFE_INTEGER)) {
-          console.warn(
-            `[V2 SDK] Fee for pool ${poolId.toString()} exceeds safe integer range, using approximation`
-          );
-          // For very large fees, use the string representation (this shouldn't happen for fees)
-          feeAsNumber = parseInt(fee.toString().slice(0, 15)); // Take first 15 digits as approximation
-        } else {
-          feeAsNumber = fee.toNumber();
-        }
-      } catch (conversionError) {
-        console.error(
-          `[V2 SDK] Error converting fee to number:`,
-          conversionError
-        );
-        // Fallback: use a safe approximation
-        feeAsNumber = 30; // Default fee of 0.30% (30 basis points)
-      }
-
-      this.poolCache.setPoolFee(poolId, feeAsNumber);
+      // Cache the fee as string to preserve precision
+      this.poolCache.setPoolFee(poolId, fee.toString());
 
       return fee;
     } catch (error) {
@@ -616,25 +594,6 @@ export class ReadonlyMiraAmmV2 {
 
         // Get fee for this pool
         const fee = await this.fees(pools[i]);
-        // Safely convert fee to number - fees should always be small (basis points)
-        let feeBps: number;
-        try {
-          if (fee.gt(Number.MAX_SAFE_INTEGER)) {
-            // This shouldn't happen for fees, but handle it gracefully
-            console.warn(
-              `[V2 SDK] Fee ${fee.toString()} too large, using default 30 bps`
-            );
-            feeBps = 30; // Default 0.3%
-          } else {
-            feeBps = fee.toNumber();
-          }
-        } catch (e) {
-          console.warn(
-            `[V2 SDK] Error converting fee to number, using default 30 bps:`,
-            e
-          );
-          feeBps = 30; // Default 0.3%
-        }
 
         // Use reserves for estimation (simplified for now)
         const reserves = poolMetadata.reserves;
@@ -651,7 +610,7 @@ export class ReadonlyMiraAmmV2 {
         // Simplified constant product calculation with fees
         // amountInAfterFee = amountIn * (10000 - fee) / 10000
         const amountInAfterFee = currentAmount
-          .mul(new BN(10000 - feeBps))
+          .mul(new BN(10000).sub(fee))
           .div(new BN(10000));
 
         // amountOut = (amountInAfterFee * outputReserve) / (inputReserve + amountInAfterFee)
