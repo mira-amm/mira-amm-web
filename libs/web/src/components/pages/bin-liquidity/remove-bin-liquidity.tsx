@@ -36,7 +36,7 @@ const RemoveBinLiquidity = ({
   const {connect} = useConnectUI();
 
   // V2 position management
-  const {data: v2Positions, isLoading: v2Loading} =
+  const {data: v2Positions, totals, isLoading: v2Loading} =
     useUserBinPositionsV2(v2PoolId);
 
   const {mutateAsync: removeAllBinsV2, isPending: v2RemovePending} =
@@ -89,8 +89,8 @@ const RemoveBinLiquidity = ({
           <PriceSummary
             assetA={assetA}
             assetB={assetB}
-            userPositions={v2Positions}
             slippage={50}
+            totals={totals}
           />
 
           {!isConnected ? (

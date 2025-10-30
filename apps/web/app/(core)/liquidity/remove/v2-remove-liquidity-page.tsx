@@ -4,7 +4,7 @@ import {BN} from "fuels";
 import {useMemo, useCallback} from "react";
 import {useRouter} from "next/navigation";
 import RemoveBinLiquidity from "@/src/components/pages/bin-liquidity/remove-bin-liquidity";
-import {useUnifiedPoolsMetadata, useAssetMetadata} from "@/src/hooks";
+import {useUnifiedPoolsMetadata, useAssetMetadata, useUserBinPositionsV2} from "@/src/hooks";
 
 export default function V2RemoveLiquidityPage({
   poolKey,
@@ -34,6 +34,9 @@ export default function V2RemoveLiquidityPage({
   const assetXMetadata = useAssetMetadata(assetXId || "");
   const assetYMetadata = useAssetMetadata(assetYId || "");
 
+  // Fetch user positions to get the amounts they'll receive
+  const {totals, isLoading: isLoadingPositions} = useUserBinPositionsV2(unifiedPoolId);
+
   const handleOnClose = useCallback(() => {
     router.push("/liquidity");
   }, [router]);
@@ -41,30 +44,34 @@ export default function V2RemoveLiquidityPage({
   // Prepare asset data for RemoveBinLiquidity component
   const assetA = useMemo(
     () => ({
-      amount: "0", // Amount not needed for remove liquidity
+      amount: assetXMetadata.decimals
+        ? totals.totalX.formatUnits(assetXMetadata.decimals)
+        : "0",
       metadata: {
         name: assetXMetadata.name,
         symbol: assetXMetadata.symbol,
         decimals: assetXMetadata.decimals,
-        isLoading: assetXMetadata.isLoading || isLoadingPoolMetadata,
+        isLoading: assetXMetadata.isLoading || isLoadingPoolMetadata || isLoadingPositions,
       },
       reserve: 0, // Reserve not needed for remove liquidity
     }),
-    [assetXMetadata, isLoadingPoolMetadata]
+    [assetXMetadata, isLoadingPoolMetadata, isLoadingPositions, totals.totalX]
   );
 
   const assetB = useMemo(
     () => ({
-      amount: "0", // Amount not needed for remove liquidity
+      amount: assetYMetadata.decimals
+        ? totals.totalY.formatUnits(assetYMetadata.decimals)
+        : "0",
       metadata: {
         name: assetYMetadata.name,
         symbol: assetYMetadata.symbol,
         decimals: assetYMetadata.decimals,
-        isLoading: assetYMetadata.isLoading || isLoadingPoolMetadata,
+        isLoading: assetYMetadata.isLoading || isLoadingPoolMetadata || isLoadingPositions,
       },
       reserve: 0, // Reserve not needed for remove liquidity
     }),
-    [assetYMetadata, isLoadingPoolMetadata]
+    [assetYMetadata, isLoadingPoolMetadata, isLoadingPositions, totals.totalY]
   );
 
   return (
