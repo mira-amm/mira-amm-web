@@ -715,6 +715,7 @@ export class ReadonlyMiraAmmV2 {
 
     try {
       // For amounts in, we work backwards through the pools
+      // Result should be: [output, intermediate..., input] order
       const amounts: Asset[] = [];
 
       // Get pool metadata to determine asset order for each hop
@@ -722,7 +723,9 @@ export class ReadonlyMiraAmmV2 {
 
       let currentAsset = assetIdOut;
       let currentAmount = amount;
-      amounts.unshift([currentAsset, currentAmount]);
+
+      // Add output first
+      amounts.push([currentAsset, currentAmount]);
 
       // Process pools in reverse order for amounts in calculation
       for (let i = pools.length - 1; i >= 0; i--) {
@@ -774,7 +777,8 @@ export class ReadonlyMiraAmmV2 {
             );
           }
 
-          amounts.unshift([inputAsset, requiredInput]);
+          // Add to end to maintain [output, ..., input] order
+          amounts.push([inputAsset, requiredInput]);
           currentAsset = inputAsset;
           currentAmount = requiredInput;
         } catch (error) {
