@@ -8,6 +8,10 @@ import {
   useQueryParams,
   withDefault,
 } from "use-query-params";
+import {
+  calculatePoolTVL,
+  calculatePoolAPR,
+} from "@/src/utils/poolTvlCalculation";
 
 export type PoolData = {
   id: string;
@@ -75,10 +79,12 @@ export function usePoolsData() {
               asset1 {
                 id
                 symbol
+                price
               }
               asset0 {
                 id
                 symbol
+                price
               }
               snapshots(where: { timestamp_gt: ${timestamp24hAgo} }) {
                 volumeUSD
@@ -124,8 +130,17 @@ export function usePoolsData() {
         (acc: number, snapshot: any) => acc + parseFloat(snapshot.feesUSD),
         0
       );
-      const tvlUSD = parseFloat(pool.tvlUSD);
-      const apr = tvlUSD > 0 ? (fees24h / tvlUSD) * 365 * 100 : 0;
+
+      const tvlUSD = calculatePoolTVL({
+        reserve0Decimal: pool.reserve0Decimal,
+        reserve1Decimal: pool.reserve1Decimal,
+        price0: pool.asset0.price,
+        price1: pool.asset1.price,
+        protocolVersion: pool.protocolVersion,
+        indexerTvlUSD: pool.tvlUSD,
+      });
+
+      const apr = calculatePoolAPR(fees24h, tvlUSD);
 
       // Determine pool type based on protocolVersion and isStable
       const poolType: "v1-volatile" | "v1-stable" | "v2-concentrated" =
@@ -150,7 +165,7 @@ export function usePoolsData() {
               acc + parseFloat(snapshot.volumeUSD),
             0
           ),
-          tvl: parseFloat(pool.tvlUSD),
+          tvl: tvlUSD,
         },
         swap_count: 0,
         create_time: 0,
