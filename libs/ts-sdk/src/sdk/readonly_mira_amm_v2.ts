@@ -25,6 +25,7 @@ import {
   poolContainsAssetV2,
   assetInput,
   addressInput,
+  binIdToPrice,
 } from "./utils";
 
 import {
@@ -34,12 +35,6 @@ import {
 } from "./errors/v2-errors";
 
 import {validatePoolId, validateAssetId, validateBinId} from "./validation";
-
-import {
-  calculateSwapOutput,
-  getSwapParameters,
-  validateReserves,
-} from "./math/swap-math";
 
 import type {CacheOptions} from "./cache";
 import {
@@ -405,7 +400,7 @@ export class ReadonlyMiraAmmV2 {
 
       const fee = result.value;
 
-      // Cache the fee as string to preserve precision
+      // Cache the fee (convert BN to string for caching)
       this.poolCache.setPoolFee(poolId, fee.toString());
 
       return fee;
@@ -543,9 +538,8 @@ export class ReadonlyMiraAmmV2 {
   /**
    * Get amounts out for multi-hop trades through v2 pools
    *
-   * NOTE: V2 contract doesn't have a readonly method for exact input swaps.
-   * We use a simplified estimation based on pool reserves.
-   * For production use, consider calling the actual swap to get exact amounts.
+   * NOTE: For exact input swaps, we must fetch real bin data and calculate client-side
+   * because the contract only provides get_swap_in (for exact OUTPUT swaps).
    */
   async getAmountsOut(
     assetIdIn: AssetId,
@@ -569,12 +563,12 @@ export class ReadonlyMiraAmmV2 {
     }
 
     try {
-      // For v2, we need to estimate the swap output
-      // The contract doesn't have a readonly method for exact input (only exact output via get_swap_in)
-      // So we use a simplified constant product estimation based on total reserves
+      // For v2, simulate swap calculation through binned liquidity in each pool
+      // Unlike v1's simple constant product formula, v2 swaps traverse multiple bins
+      // Each bin has its own reserves and price, providing more accurate price discovery
       const amounts: Asset[] = [[assetIdIn, amount]];
 
-      // Get pool metadata to determine asset order and reserves for each hop
+      // Get pool metadata to determine asset order and bin structure for each hop
       const poolMetadataList = await this.poolMetadataBatch(pools, options);
 
       let currentAsset = assetIdIn;
@@ -589,43 +583,92 @@ export class ReadonlyMiraAmmV2 {
           );
         }
 
-        // Get swap parameters (output asset, direction, reserves)
-        const {outputAsset, inputReserve, outputReserve} = getSwapParameters(
-          currentAsset,
-          poolMetadata.pool.assetX,
-          poolMetadata.pool.assetY,
-          poolMetadata.reserves
-        );
+        // Determine output asset for this hop based on input asset
+        const outputAsset =
+          poolMetadata.pool.assetX.bits === currentAsset.bits
+            ? poolMetadata.pool.assetY
+            : poolMetadata.pool.assetX;
 
-        // Validate reserves
+        // Determine swap direction: swapForY = true means X->Y, false means Y->X
+        // This affects which bins the swap will traverse (higher bins for X->Y, lower for Y->X)
+        const swapForY = poolMetadata.pool.assetX.bits === currentAsset.bits;
+
         try {
-          validateReserves(inputReserve, outputReserve);
+          // Fetch real bin data and calculate client-side
+          // The contract doesn't have a get_swap_out function for exact input swaps
+          // We need to query bin reserves and simulate the swap locally
+
+          const activeBinId = poolMetadata.activeId;
+
+          // Determine bin range to fetch based on swap direction and amount
+          // Estimate how many bins we might traverse
+          const estimatedBinRange = this.estimateBinRange(
+            currentAmount,
+            poolMetadata,
+            swapForY
+          );
+
+          // Generate bin IDs to fetch based on swap direction
+          // For X->Y (swapForY=true), we traverse UPWARD (higher bin IDs)
+          // For Y->X (swapForY=false), we traverse DOWNWARD (lower bin IDs)
+          const binsToFetch: number[] = [];
+
+          if (swapForY) {
+            // Fetch active bin + bins above it
+            for (let i = 0; i <= estimatedBinRange * 2; i++) {
+              binsToFetch.push(activeBinId + i);
+            }
+          } else {
+            // Fetch active bin + bins below it
+            for (let i = 0; i <= estimatedBinRange * 2; i++) {
+              binsToFetch.push(activeBinId - i);
+            }
+          }
+
+          // Fetch bin data in batch
+          const binReservesMap = await this.fetchBinDataBatch(
+            pools[i],
+            binsToFetch
+          );
+
+          // Ensure the active bin is in the map (fallback to poolMetadata reserves)
+          if (
+            !binReservesMap.has(activeBinId) &&
+            !poolMetadata.reserves.x.eq(0) &&
+            !poolMetadata.reserves.y.eq(0)
+          ) {
+            binReservesMap.set(activeBinId, {
+              x: poolMetadata.reserves.x,
+              y: poolMetadata.reserves.y,
+            });
+          }
+
+          // Calculate swap output using client-side bin traversal
+          const outputAmount = this.calculateSwapOutputWithBinData(
+            currentAmount,
+            poolMetadata,
+            binReservesMap,
+            swapForY
+          );
+
+          if (outputAmount.lte(0)) {
+            throw new MiraV2Error(
+              PoolCurveStateError.SwapNotPossible,
+              `No liquidity available for swap in pool ${pools[i].toString()}`
+            );
+          }
+
+          amounts.push([outputAsset, outputAmount]);
+          currentAsset = outputAsset;
+          currentAmount = outputAmount;
         } catch (error) {
           throw new MiraV2Error(
-            PoolCurveStateError.OutOfLiquidity,
-            `Pool ${pools[i].toString()} has no liquidity`
-          );
-        }
-
-        // Get fee and calculate output
-        const fee = await this.fees(pools[i]);
-        const outputAmount = calculateSwapOutput(
-          currentAmount,
-          inputReserve,
-          outputReserve,
-          fee
-        );
-
-        if (outputAmount.eq(0)) {
-          throw new MiraV2Error(
             PoolCurveStateError.SwapNotPossible,
-            `No output from swap in pool ${pools[i].toString()}`
+            `Swap calculation failed for pool ${pools[i].toString()}: ${
+              error instanceof Error ? error.message : String(error)
+            }`
           );
         }
-
-        amounts.push([outputAsset, outputAmount]);
-        currentAsset = outputAsset;
-        currentAmount = outputAmount;
       }
 
       return amounts;
@@ -635,7 +678,9 @@ export class ReadonlyMiraAmmV2 {
       }
       throw new MiraV2Error(
         PoolCurveStateError.SwapNotPossible,
-        `Failed to calculate amounts out: ${error instanceof Error ? error.message : String(error)}`,
+        `Failed to calculate amounts out: ${
+          error instanceof Error ? error.message : String(error)
+        }`,
         {assetIdIn, assetAmountIn, pools, error}
       );
     }
@@ -643,7 +688,9 @@ export class ReadonlyMiraAmmV2 {
 
   /**
    * Get amounts in for multi-hop trades through v2 pools
-   * Uses the contract's get_swap_in method which calculates required input for a desired output
+   *
+   * Now correctly uses get_swap_in which takes the DESIRED OUTPUT
+   * and returns the REQUIRED INPUT amount.
    */
   async getAmountsIn(
     assetIdOut: AssetId,
@@ -667,8 +714,7 @@ export class ReadonlyMiraAmmV2 {
     }
 
     try {
-      // For exact output swaps, we work backwards through the pools
-      // using get_swap_in to calculate the required input for each hop
+      // For amounts in, we work backwards through the pools
       const amounts: Asset[] = [];
 
       // Get pool metadata to determine asset order for each hop
@@ -676,7 +722,7 @@ export class ReadonlyMiraAmmV2 {
 
       let currentAsset = assetIdOut;
       let currentAmount = amount;
-      amounts.push([currentAsset, currentAmount]);
+      amounts.unshift([currentAsset, currentAmount]);
 
       // Process pools in reverse order for amounts in calculation
       for (let i = pools.length - 1; i >= 0; i--) {
@@ -695,43 +741,51 @@ export class ReadonlyMiraAmmV2 {
             : poolMetadata.pool.assetX;
 
         // Determine swap direction
-        // When we want to receive currentAsset as output, swap_for_y depends on which asset it is
+        // For exact output: if we want Y out, we're swapping X for Y (swapForY = true)
         const swapForY = poolMetadata.pool.assetY.bits === currentAsset.bits;
 
         try {
-          // Use get_swap_in to calculate required input for the desired output
-          // get_swap_in(pool_id, amount_out, swap_for_y) -> (amount_in, amount_out_left, fee)
+          // Use get_swap_in CORRECTLY
+          // get_swap_in takes the DESIRED OUTPUT and returns REQUIRED INPUT
+          // Parameters: (pool_id, amount_out, swap_for_y)
+          // Returns: [required_input, remaining_output, fees]
           const swapResult = await this.ammContract.functions
-            .get_swap_in(poolIdV2Input(pools[i]), currentAmount, swapForY)
+            .get_swap_in(
+              poolIdV2Input(pools[i]),
+              currentAmount, // This is the OUTPUT we want
+              swapForY
+            )
             .get();
 
           if (!swapResult.value) {
             throw new MiraV2Error(
               PoolCurveStateError.SwapNotPossible,
-              `No liquidity available for swap in pool ${pools[i].toString()}`
+              `Failed to calculate required input for pool ${pools[i].toString()}`
             );
           }
 
-          const [amountInNeeded, amountOutLeft] = swapResult.value;
+          const [requiredInput, remainingOutput, fees] = swapResult.value;
 
-          // Ensure we can get the full desired output
-          if (amountOutLeft.gt(0)) {
+          // Check if the swap is fully possible
+          if (remainingOutput.gt(0)) {
             throw new MiraV2Error(
               PoolCurveStateError.OutOfLiquidity,
-              `Insufficient liquidity in pool ${pools[i].toString()}: can only provide ${currentAmount.sub(amountOutLeft)} out of ${currentAmount} requested`
+              `Insufficient liquidity for desired output in pool ${pools[i].toString()}. Remaining output: ${remainingOutput.toString()}`
             );
           }
 
-          amounts.push([inputAsset, amountInNeeded]);
+          amounts.unshift([inputAsset, requiredInput]);
           currentAsset = inputAsset;
-          currentAmount = amountInNeeded;
+          currentAmount = requiredInput;
         } catch (error) {
           if (error instanceof MiraV2Error) {
             throw error;
           }
           throw new MiraV2Error(
             PoolCurveStateError.SwapNotPossible,
-            `Swap calculation failed for pool ${pools[i].toString()}: ${error instanceof Error ? error.message : String(error)}`
+            `Reverse swap calculation failed for pool ${pools[i].toString()}: ${
+              error instanceof Error ? error.message : String(error)
+            }`
           );
         }
       }
@@ -743,7 +797,9 @@ export class ReadonlyMiraAmmV2 {
       }
       throw new MiraV2Error(
         PoolCurveStateError.SwapNotPossible,
-        `Failed to calculate amounts in: ${error instanceof Error ? error.message : String(error)}`,
+        `Failed to calculate amounts in: ${
+          error instanceof Error ? error.message : String(error)
+        }`,
         {assetIdOut, assetAmountOut, pools, error}
       );
     }
@@ -766,16 +822,9 @@ export class ReadonlyMiraAmmV2 {
       )
     );
 
-    const mapped = results.map((r, i) => {
-      if (r.status === "fulfilled") {
-        return r.value[r.value.length - 1];
-      } else {
-        console.error(`[V2 SDK] Route ${i} failed:`, r.reason);
-        return undefined;
-      }
-    });
-
-    return mapped;
+    return results.map((r) =>
+      r.status === "fulfilled" ? r.value[r.value.length - 1] : undefined
+    );
   }
 
   /**
@@ -830,15 +879,13 @@ export class ReadonlyMiraAmmV2 {
     poolId: PoolIdV2,
     binId: BigNumberish
   ): Promise<Amounts | null> {
-    const binIdNum = Number(binId);
-    const context = createErrorContext("getBinLiquidity", {
-      poolId,
-      binId: binIdNum,
-    });
+    const context = createErrorContext("getBinLiquidity", {poolId, binId});
     validatePoolId(poolId, context);
-    validateBinId(binIdNum, context);
+    validateBinId(binId, context);
 
     return withErrorHandling(async () => {
+      const binIdNum = Number(binId);
+
       // Check cache first for bin-specific data
       // Each bin maintains its own liquidity reserves independently
       const cached = this.poolCache.getBinData(poolId, binIdNum);
@@ -1716,39 +1763,49 @@ export class ReadonlyMiraAmmV2 {
     poolId: PoolIdV2,
     price: BN
   ): Promise<number> {
-    // Fallback calculation (contract doesn't have get_id_from_price method)
-    const poolMetadata = await this.poolMetadata(poolId);
-    if (!poolMetadata) {
-      throw new MiraV2Error(
-        PoolCurveStateError.PoolNotFound,
-        `Pool ${poolId.toString()} not found`
-      );
+    try {
+      const result = await this.ammContract.functions
+        .get_id_from_price(poolIdV2Input(poolId), price)
+        .get();
+
+      return result.value;
+    } catch (error) {
+      // Fallback calculation if contract method fails
+      const poolMetadata = await this.poolMetadata(poolId);
+      if (!poolMetadata) {
+        throw new MiraV2Error(
+          PoolCurveStateError.PoolNotFound,
+          `Pool ${poolId.toString()} not found`
+        );
+      }
+
+      // Simplified calculation: binId = log(price / basePrice) / log(1 + binStep/10000)
+      const binStep = poolMetadata.pool.binStep;
+      const basePrice = new BN(10000);
+
+      if (price.eq(basePrice)) {
+        return 0;
+      }
+
+      // Simplified logarithmic calculation
+      const ratio = price.gt(basePrice)
+        ? price.div(basePrice).toNumber()
+        : basePrice.div(price).toNumber();
+
+      const stepRatio = 1 + binStep / 10000;
+      const binId = Math.round(Math.log(ratio) / Math.log(stepRatio));
+
+      return price.gt(basePrice) ? binId : -binId;
     }
-
-    // Simplified calculation: binId = log(price / basePrice) / log(1 + binStep/10000)
-    const binStep = poolMetadata.pool.binStep;
-    const basePrice = new BN(10000);
-
-    if (price.eq(basePrice)) {
-      return 0;
-    }
-
-    // Simplified logarithmic calculation
-    const ratio = price.gt(basePrice)
-      ? price.div(basePrice).toNumber()
-      : basePrice.div(price).toNumber();
-
-    const stepRatio = 1 + binStep / 10000;
-    const binId = Math.round(Math.log(ratio) / Math.log(stepRatio));
-
-    return price.gt(basePrice) ? binId : -binId;
   }
 
   /**
    * Clear all caches
    */
   clearCache(): void {
-    this.poolCache.clear();
+    this.poolMetadataCache.clear();
+    this.poolFeeCache.clear();
+    this.binDataCache.clear();
   }
 
   /**
@@ -1759,11 +1816,10 @@ export class ReadonlyMiraAmmV2 {
     poolFeeEntries: number;
     binDataEntries: number;
   } {
-    const stats = this.poolCache.getStats();
     return {
-      poolMetadataEntries: stats.poolMetadataHits + stats.poolMetadataMisses,
-      poolFeeEntries: stats.feeHits + stats.feeMisses,
-      binDataEntries: stats.binDataHits + stats.binDataMisses,
+      poolMetadataEntries: this.poolMetadataCache.size,
+      poolFeeEntries: this.poolFeeCache.size,
+      binDataEntries: this.binDataCache.size,
     };
   }
 
@@ -1979,6 +2035,227 @@ export class ReadonlyMiraAmmV2 {
           preloadRange: 10,
         });
         break;
+    }
+  }
+
+  /**
+   * Fetch bin reserves data for multiple bins in batch
+   *
+   * @param poolId - Pool identifier
+   * @param binIds - Array of bin IDs to fetch
+   * @returns Map of bin ID to reserves
+   */
+  private async fetchBinDataBatch(
+    poolId: PoolIdV2,
+    binIds: number[]
+  ): Promise<Map<number, Amounts>> {
+    const binTransactions = binIds.map((binId) =>
+      this.ammContract.functions.get_bin(poolIdV2Input(poolId), binId)
+    );
+
+    const {value: binResults} = await this.ammContract
+      .multiCall(binTransactions)
+      .get();
+
+    const binDataMap = new Map<number, Amounts>();
+
+    if (!binResults) {
+      return binDataMap;
+    }
+
+    for (let i = 0; i < binIds.length; i++) {
+      const binResult = binResults[i];
+      if (binResult && (!binResult.x.eq(0) || !binResult.y.eq(0))) {
+        binDataMap.set(binIds[i], {
+          x: binResult.x,
+          y: binResult.y,
+        });
+      }
+    }
+
+    return binDataMap;
+  }
+
+  /**
+   * Calculate swap output amount using real bin data
+   *
+   * Simulates traversing through bins and consuming liquidity to calculate
+   * the exact output amount for a given input.
+   *
+   * @param amountIn - Input amount to swap
+   * @param poolMetadata - Pool metadata with active bin and fee info
+   * @param binReservesMap - Map of bin ID to actual reserves
+   * @param swapForY - Swap direction (true = X->Y, false = Y->X)
+   * @returns Output amount after traversing bins
+   */
+  private calculateSwapOutputWithBinData(
+    amountIn: BN,
+    poolMetadata: PoolMetadataV2,
+    binReservesMap: Map<number, Amounts>,
+    swapForY: boolean
+  ): BN {
+    let remainingAmountIn = amountIn;
+    let totalAmountOut = new BN(0);
+    let currentBinId = poolMetadata.activeId;
+    const maxBinTraversal = 100; // Safety limit to prevent infinite loops
+    let binsTraversed = 0;
+
+    // Determine fetched bin range to avoid traversing unknown bins indefinitely
+    const fetchedBinIds = Array.from(binReservesMap.keys());
+    if (fetchedBinIds.length === 0) {
+      return new BN(0);
+    }
+    const minFetchedBinId = Math.min(...fetchedBinIds);
+    const maxFetchedBinId = Math.max(...fetchedBinIds);
+
+    // Get base fee for the pool
+    const baseFee = new BN(poolMetadata.pool.binStep)
+      .mul(new BN(poolMetadata.pool.baseFactor))
+      .div(new BN(10000));
+
+    while (remainingAmountIn.gt(0) && binsTraversed < maxBinTraversal) {
+      // Stop if we move outside the fetched range; return what we have
+      if (currentBinId < minFetchedBinId || currentBinId > maxFetchedBinId) {
+        break;
+      }
+      // Get reserves for current bin
+      const binReserves = binReservesMap.get(currentBinId);
+
+      if (
+        !binReserves ||
+        (swapForY && binReserves.y.eq(0)) ||
+        (!swapForY && binReserves.x.eq(0))
+      ) {
+        // No liquidity in this bin, move to next
+        currentBinId = swapForY ? currentBinId + 1 : currentBinId - 1;
+        binsTraversed++;
+        continue;
+      }
+
+      // Determine input and output reserves based on swap direction
+      const inputReserve = swapForY ? binReserves.x : binReserves.y;
+      const outputReserve = swapForY ? binReserves.y : binReserves.x;
+
+      if (inputReserve.eq(0) || outputReserve.eq(0)) {
+        currentBinId = swapForY ? currentBinId + 1 : currentBinId - 1;
+        binsTraversed++;
+        continue;
+      }
+
+      // Calculate how much input we can use in this bin
+      const amountInThisBin = BN.min(remainingAmountIn, inputReserve);
+
+      // Apply fee (fees are calculated from gross amount)
+      const feeAmount = amountInThisBin.mul(baseFee).div(new BN(10000));
+      const amountInAfterFee = amountInThisBin.sub(feeAmount);
+
+      // Use price-based calculation (matches contract)
+      // Contract uses: output = (input_after_fees * price) / SCALE for X→Y
+      // Or: output = (input_after_fees * SCALE) / price for Y→X
+      const SCALE = new BN(10).pow(18);
+      const binPrice = binIdToPrice(currentBinId, poolMetadata.pool.binStep);
+
+      let calculatedOutput: BN;
+      if (swapForY) {
+        // Swap X for Y: output Y = input X * price / SCALE
+        calculatedOutput = amountInAfterFee.mul(binPrice).div(SCALE);
+      } else {
+        // Swap Y for X: output X = input Y * SCALE / price
+        calculatedOutput = amountInAfterFee.mul(SCALE).div(binPrice);
+      }
+
+      // Respect bin's output reserve limit (can't get more than available)
+      const amountOutThisBin = BN.min(calculatedOutput, outputReserve);
+
+      // If we can't get full calculated output, we need to reduce input
+      // This happens when bin doesn't have enough output reserves
+      if (amountOutThisBin.lt(calculatedOutput)) {
+        // Calculate how much input would produce this output
+        let adjustedInput: BN;
+        if (swapForY) {
+          // Reverse: input = output * SCALE / price
+          adjustedInput = amountOutThisBin.mul(SCALE).div(binPrice);
+        } else {
+          // Reverse: input = output * price / SCALE
+          adjustedInput = amountOutThisBin.mul(binPrice).div(SCALE);
+        }
+        // Add fees back to get gross input needed
+        const adjustedGrossInput = adjustedInput
+          .mul(new BN(10000))
+          .div(new BN(10000).sub(baseFee))
+          .add(new BN(1)); // Round up
+
+        const actualInputUsed = BN.min(adjustedGrossInput, amountInThisBin);
+        totalAmountOut = totalAmountOut.add(amountOutThisBin);
+        remainingAmountIn = remainingAmountIn.sub(actualInputUsed);
+
+        // Move to next bin since this one is depleted
+        currentBinId = swapForY ? currentBinId + 1 : currentBinId - 1;
+      } else {
+        // Full calculated output available
+        totalAmountOut = totalAmountOut.add(amountOutThisBin);
+        remainingAmountIn = remainingAmountIn.sub(amountInThisBin);
+
+        // If we have remaining input, decide whether to move to next bin
+        if (remainingAmountIn.gt(0)) {
+          // Move to next bin if we've consumed significant liquidity in current bin
+          if (
+            amountInThisBin.gte(inputReserve.mul(new BN(95)).div(new BN(100)))
+          ) {
+            currentBinId = swapForY ? currentBinId + 1 : currentBinId - 1;
+          }
+        }
+      }
+
+      binsTraversed++;
+    }
+
+    // If we couldn't consume all input within fetched bins or traversal cap,
+    // return the best estimate rather than throwing to keep previews responsive
+
+    return totalAmountOut;
+  }
+
+  /**
+   * Estimate how many bins to fetch for a swap
+   *
+   * Provides a reasonable estimate based on swap amount relative to pool reserves.
+   *
+   * @param amountIn - Input amount
+   * @param poolMetadata - Pool metadata
+   * @param swapForY - Swap direction
+   * @returns Estimated number of bins to fetch on each side of active bin
+   */
+  private estimateBinRange(
+    amountIn: BN,
+    poolMetadata: PoolMetadataV2,
+    swapForY: boolean
+  ): number {
+    // Get relevant reserve
+    const relevantReserve = swapForY
+      ? poolMetadata.reserves.x
+      : poolMetadata.reserves.y;
+
+    if (relevantReserve.eq(0)) {
+      return 20; // Default range if no liquidity info
+    }
+
+    // Calculate percentage of pool being swapped
+    const swapPercentage = amountIn.mul(new BN(100)).div(relevantReserve);
+
+    // Estimate bins needed:
+    // - Small swaps (< 1%): 10 bins
+    // - Medium swaps (1-10%): 20 bins
+    // - Large swaps (10-50%): 50 bins
+    // - Very large swaps (> 50%): 100 bins
+    if (swapPercentage.lt(new BN(1))) {
+      return 10;
+    } else if (swapPercentage.lt(new BN(10))) {
+      return 20;
+    } else if (swapPercentage.lt(new BN(50))) {
+      return 50;
+    } else {
+      return 100;
     }
   }
 

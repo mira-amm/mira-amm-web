@@ -17,6 +17,7 @@ import {
   LiquidityConfig,
   Amounts,
 } from "./model";
+import {ACTIVE_BIN_ID} from "./constants";
 import {
   ContractIdInput,
   IdentityInput,
@@ -268,22 +269,27 @@ export function deltaToBinId(delta: BinIdDelta): number {
 }
 
 export function binIdToPrice(binId: number, binStep: number): BN {
-  // Price calculation: price = (1 + binStep / 10000) ^ binId
-  // For testing purposes, we treat binId 0 as the center price (1.0)
+  // Mira V2 uses 2^23 (8388608) as the center bin ID (like Trader Joe V2)
+  // Price calculation: price = (1 + binStep / 10000) ^ (binId - CENTER_BIN_ID)
   const SCALE = new BN(10).pow(18); // 18 decimal precision
+  const CENTER_BIN_ID = ACTIVE_BIN_ID.CENTER;
+  
+  // Calculate offset from center
+  const offsetFromCenter = binId - CENTER_BIN_ID;
+  
+  if (offsetFromCenter === 0) {
+    return SCALE; // Price = 1.0 at center bin
+  }
+
   const binStepBN = new BN(binStep);
   const base = SCALE.add(binStepBN.mul(SCALE).div(new BN(10000)));
 
-  if (binId === 0) {
-    return SCALE; // Price = 1.0 scaled at bin ID 0
-  }
-
   let result = SCALE;
-  const absBinId = Math.abs(binId);
+  const absOffset = Math.abs(offsetFromCenter);
 
   // Use exponentiation by squaring for efficiency
   let basePower = base;
-  let exp = absBinId;
+  let exp = absOffset;
 
   while (exp > 0) {
     if (exp % 2 === 1) {
@@ -293,8 +299,8 @@ export function binIdToPrice(binId: number, binStep: number): BN {
     exp = Math.floor(exp / 2);
   }
 
-  // If binId is negative, take reciprocal
-  if (binId < 0) {
+  // If offset is negative, take reciprocal
+  if (offsetFromCenter < 0) {
     result = SCALE.mul(SCALE).div(result);
   }
 
@@ -302,20 +308,23 @@ export function binIdToPrice(binId: number, binStep: number): BN {
 }
 
 export function priceToBinId(price: BN, binStep: number): number {
-  // Inverse of binIdToPrice: binId = log(price) / log(1 + binStep / 10000)
+  // Inverse of binIdToPrice: binId = CENTER_BIN_ID + offset
+  // where offset = log(price) / log(1 + binStep / 10000)
   // Using binary search for more accurate results
   const SCALE = new BN(10).pow(18);
+  const CENTER_BIN_ID = ACTIVE_BIN_ID.CENTER;
   const targetPrice = price;
 
   // Handle edge cases
   if (targetPrice.eq(SCALE)) {
-    return 0; // Price = 1.0 corresponds to bin ID 0
+    return CENTER_BIN_ID; // Price = 1.0 corresponds to center bin
   }
 
-  // Binary search bounds - reasonable range for testing
-  let low = -1000;
-  let high = 1000;
-  let bestBinId = 0;
+  // Binary search bounds - reasonable range around center
+  // Search within +/- 1000 bins from center
+  let low = CENTER_BIN_ID - 1000;
+  let high = CENTER_BIN_ID + 1000;
+  let bestBinId = CENTER_BIN_ID;
   let bestDiff = new BN(2).pow(256); // Max BN value
 
   while (low <= high) {

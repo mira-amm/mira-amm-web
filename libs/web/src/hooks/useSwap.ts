@@ -67,81 +67,28 @@ export function useSwap({
     const poolIds = pools.map((p) => p.poolId);
 
     if (mode === "sell") {
-      // For v2 exact-input, preview can overestimate.
-      // Use getAmountsIn in a small binary search to find the max output we can afford,
-      // then apply slippage for a safe minOut.
-      if (isV2) {
-        const [_, previewOut] = await activeReadonlyMira.previewSwapExactInput(
+      const [_buyAsset, simulatedBuyAmount] =
+        await activeReadonlyMira.previewSwapExactInput(
           sellAssetIdInput,
           sellAmount,
           [...poolIds]
         );
+      const buyAmountWithSlippage = simulatedBuyAmount
+        .mul(bn(10_000).sub(bn(slippage)))
+        .div(bn(10_000));
 
-        let low = bn(1);
-        let high = previewOut;
-        // Binary search the feasible output range [low, high]
-        // Stop after 18 iterations to cap RPC calls
-        for (let i = 0; i < 18; i++) {
-          const mid = low.add(high).div(bn(2));
-          try {
-            const amountsIn = await activeReadonlyMira.getAmountsIn(
-              buyAssetIdInput,
-              mid,
-              [...poolIds]
-            );
-            const requiredInput = amountsIn[0][1];
-            if (requiredInput.lte(sellAmount)) {
-              low = mid;
-            } else {
-              high = mid.sub(bn(1));
-            }
-          } catch {
-            high = mid.sub(bn(1));
-          }
-        }
-        const safeMaxOut = low;
-        const buyAmountWithSlippage = safeMaxOut
-          .mul(bn(10_000).sub(bn(slippage)))
-          .div(bn(10_000));
+      const {transactionRequest, gasPrice} = await activeMiraDex.swapExactInput(
+        sellAmount,
+        sellAssetIdInput,
+        buyAmountWithSlippage,
+        poolIds,
+        getMaxDeadline(),
+        undefined,
+        {reserveGas: 10000, useAssembleTx: true}
+      );
 
-        const {transactionRequest, gasPrice} =
-          await activeMiraDex.swapExactInput(
-            sellAmount,
-            sellAssetIdInput,
-            buyAmountWithSlippage,
-            poolIds,
-            getMaxDeadline(),
-            undefined,
-            {reserveGas: 10000}
-          );
-
-        tx = transactionRequest;
-        txCost = gasPrice;
-      } else {
-        const [_buyAsset, simulatedBuyAmount] =
-          await activeReadonlyMira.previewSwapExactInput(
-            sellAssetIdInput,
-            sellAmount,
-            [...poolIds]
-          );
-        const buyAmountWithSlippage = simulatedBuyAmount
-          .mul(bn(10_000).sub(bn(slippage)))
-          .div(bn(10_000));
-
-        const {transactionRequest, gasPrice} =
-          await activeMiraDex.swapExactInput(
-            sellAmount,
-            sellAssetIdInput,
-            buyAmountWithSlippage,
-            poolIds,
-            getMaxDeadline(),
-            undefined,
-            {reserveGas: 10000}
-          );
-
-        tx = transactionRequest;
-        txCost = gasPrice;
-      }
+      tx = transactionRequest;
+      txCost = gasPrice;
     } else {
       const [_sellAsset, simulatedSellAmount] =
         await activeReadonlyMira.previewSwapExactOutput(
@@ -159,7 +106,8 @@ export function useSwap({
           sellAmountWithSlippage,
           poolIds,
           getMaxDeadline(),
-          undefined
+          undefined,
+          {reserveGas: 10000, useAssembleTx: true}
         );
 
       tx = transactionRequest;
