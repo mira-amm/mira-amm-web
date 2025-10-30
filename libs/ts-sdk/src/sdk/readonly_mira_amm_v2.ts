@@ -35,6 +35,12 @@ import {
 
 import {validatePoolId, validateAssetId, validateBinId} from "./validation";
 
+import {
+  calculateSwapOutput,
+  getSwapParameters,
+  validateReserves,
+} from "./math/swap-math";
+
 import type {CacheOptions} from "./cache";
 import {
   DEFAULT_CACHE_OPTIONS,
@@ -583,40 +589,32 @@ export class ReadonlyMiraAmmV2 {
           );
         }
 
-        // Determine output asset for this hop based on input asset
-        const outputAsset =
-          poolMetadata.pool.assetX.bits === currentAsset.bits
-            ? poolMetadata.pool.assetY
-            : poolMetadata.pool.assetX;
+        // Get swap parameters (output asset, direction, reserves)
+        const {outputAsset, inputReserve, outputReserve} = getSwapParameters(
+          currentAsset,
+          poolMetadata.pool.assetX,
+          poolMetadata.pool.assetY,
+          poolMetadata.reserves
+        );
 
-        // Determine swap direction
-        const swapForY = poolMetadata.pool.assetX.bits === currentAsset.bits;
-
-        // Get fee for this pool
-        const fee = await this.fees(pools[i]);
-
-        // Use reserves for estimation (simplified for now)
-        const reserves = poolMetadata.reserves;
-        const inputReserve = swapForY ? reserves.x : reserves.y;
-        const outputReserve = swapForY ? reserves.y : reserves.x;
-
-        if (inputReserve.eq(0) || outputReserve.eq(0)) {
+        // Validate reserves
+        try {
+          validateReserves(inputReserve, outputReserve);
+        } catch (error) {
           throw new MiraV2Error(
             PoolCurveStateError.OutOfLiquidity,
             `Pool ${pools[i].toString()} has no liquidity`
           );
         }
 
-        // Simplified constant product calculation with fees
-        // amountInAfterFee = amountIn * (10000 - fee) / 10000
-        const amountInAfterFee = currentAmount
-          .mul(new BN(10000).sub(fee))
-          .div(new BN(10000));
-
-        // amountOut = (amountInAfterFee * outputReserve) / (inputReserve + amountInAfterFee)
-        const outputAmount = amountInAfterFee
-          .mul(outputReserve)
-          .div(inputReserve.add(amountInAfterFee));
+        // Get fee and calculate output
+        const fee = await this.fees(pools[i]);
+        const outputAmount = calculateSwapOutput(
+          currentAmount,
+          inputReserve,
+          outputReserve,
+          fee
+        );
 
         if (outputAmount.eq(0)) {
           throw new MiraV2Error(
