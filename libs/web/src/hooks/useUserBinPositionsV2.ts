@@ -152,6 +152,7 @@ export function useUserBinPositionsV2(poolId: BN | undefined) {
                     binId
                     isActive
                     price
+                    priceDecimalFormat
                     reserveXDecimal
                     reserveYDecimal
                   }
@@ -180,6 +181,7 @@ export function useUserBinPositionsV2(poolId: BN | undefined) {
                   binId: number;
                   isActive: boolean;
                   price: string;
+                  priceDecimalFormat: string;
                   reserveXDecimal: string;
                   reserveYDecimal: string;
                 };
@@ -250,7 +252,7 @@ export function useUserBinPositionsV2(poolId: BN | undefined) {
                   x: binPosition.initialReservesXDecimals,
                   y: binPosition.initialReservesYDecimals,
                 },
-                price: parseFloat(binPosition.bin.price),
+                price: parseFloat(binPosition.bin.priceDecimalFormat || '0'),
                 feesEarned: {
                   x: feesX,
                   y: feesY,

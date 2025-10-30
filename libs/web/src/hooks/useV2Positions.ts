@@ -105,6 +105,7 @@ export function useV2Positions(): {
                 bin {
                   binId
                   price
+                  priceDecimalFormat
                   reserveXDecimal
                   reserveYDecimal
                 }
@@ -180,7 +181,7 @@ export function useV2Positions(): {
               const binPositions: V2BinPosition[] = indexerBinPositions.map(
                 (binPos: any) => {
                   const binId = binPos.bin.binId;
-                  const price = parseFloat(binPos.bin.price || "0");
+                  const price = parseFloat(binPos.bin.priceDecimalFormat || '0');
 
                   // Calculate fees as difference between redeemable and initial reserves
                   const redeemableX = new BN(binPos.redeemableReserveX);
