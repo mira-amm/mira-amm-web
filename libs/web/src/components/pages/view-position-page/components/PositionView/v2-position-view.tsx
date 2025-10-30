@@ -36,26 +36,33 @@ function convertBinPositionsToLiquidityData(
   );
 
   // Find max amounts for height normalization
+  // Prefer using decimal fields from indexer for accuracy
   const maxAmount0 = Math.max(
     ...sorted.map((p) =>
-      parseFloat(formatUnits(p.underlyingAmounts.x, asset0Decimals))
+      p.underlyingAmountsDecimals?.x
+        ? parseFloat(p.underlyingAmountsDecimals.x)
+        : parseFloat(formatUnits(p.underlyingAmounts.x, asset0Decimals))
     )
   );
   const maxAmount1 = Math.max(
     ...sorted.map((p) =>
-      parseFloat(formatUnits(p.underlyingAmounts.y, asset1Decimals))
+      p.underlyingAmountsDecimals?.y
+        ? parseFloat(p.underlyingAmountsDecimals.y)
+        : parseFloat(formatUnits(p.underlyingAmounts.y, asset1Decimals))
     )
   );
   const maxAmount = Math.max(maxAmount0, maxAmount1);
   const maxHeight = 120;
 
   return sorted.map((position, index) => {
-    const amount0 = parseFloat(
-      formatUnits(position.underlyingAmounts.x, asset0Decimals)
-    );
-    const amount1 = parseFloat(
-      formatUnits(position.underlyingAmounts.y, asset1Decimals)
-    );
+    // Use decimal fields from indexer for more accurate display
+    const amount0 = position.underlyingAmountsDecimals?.x
+      ? parseFloat(position.underlyingAmountsDecimals.x)
+      : parseFloat(formatUnits(position.underlyingAmounts.x, asset0Decimals));
+
+    const amount1 = position.underlyingAmountsDecimals?.y
+      ? parseFloat(position.underlyingAmountsDecimals.y)
+      : parseFloat(formatUnits(position.underlyingAmounts.y, asset1Decimals));
 
     // Calculate heights based on amounts (normalized to max height)
     const assetAHeight = maxAmount > 0 ? (amount0 / maxAmount) * maxHeight : 0;
