@@ -392,34 +392,35 @@ export function calculatePriceImpact(spotPrice: BN, effectivePrice: BN): BN {
 
 /**
  * Helper function to get bin reserves at a specific bin ID
- * This is a simplified version - in practice, this would query the contract
+ *
+ * Now supports using real bin data from the binReserves map.
+ * Falls back to active bin reserves only if no bin data is provided.
+ *
+ * @param poolMetadata - Pool metadata, optionally with binReserves map
+ * @param binId - Bin ID to query
+ * @returns Bin reserves or null if not available
  */
 function getBinReservesAtId(
-  poolMetadata: PoolMetadataV2,
+  poolMetadata: PoolMetadataV2 & {binReserves?: Map<number, Amounts>},
   binId: number
 ): Amounts | null {
-  // This is a placeholder implementation
-  // In the actual implementation, this would query bin-specific reserves from the contract
+  // If real bin reserves are provided, use them
+  if (poolMetadata.binReserves) {
+    const binData = poolMetadata.binReserves.get(binId);
+    if (binData) {
+      return binData;
+    }
+    // Bin not found in provided data
+    return null;
+  }
+
+  // Fallback: Only return active bin reserves if no bin data provided
+  // This maintains backward compatibility but is less accurate
   if (binId === poolMetadata.activeId) {
     return poolMetadata.reserves;
   }
 
-  // For testing purposes, simulate some liquidity in adjacent bins
-  const distance = Math.abs(binId - poolMetadata.activeId);
-  if (distance <= 5) {
-    // Simulate decreasing liquidity as we move away from active bin
-    const liquidityFactor = Math.max(0.1, 1 - distance * 0.15);
-    return {
-      x: poolMetadata.reserves.x
-        .mul(new BN(Math.floor(liquidityFactor * 1000)))
-        .div(new BN(1000)),
-      y: poolMetadata.reserves.y
-        .mul(new BN(Math.floor(liquidityFactor * 1000)))
-        .div(new BN(1000)),
-    };
-  }
-
-  // For bins far from active, return null to indicate no liquidity
+  // No bin data available and not active bin
   return null;
 }
 
