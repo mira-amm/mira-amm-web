@@ -70,6 +70,9 @@ export interface V2BinPosition {
   lpToken: string; // AssetId as string
   lpTokenAmount: BN;
   underlyingAmounts: {x: BN; y: BN};
+  underlyingAmountsDecimals?: {x: string; y: string}; // Decimal representation
+  initialAmounts?: {x: BN; y: BN};
+  initialAmountsDecimals?: {x: string; y: string}; // Decimal representation
   price: number;
   feesEarned: {x: BN; y: BN};
   isActive: boolean;
@@ -149,12 +152,18 @@ export function useUserBinPositionsV2(poolId: BN | undefined) {
                     binId
                     isActive
                     price
+                    reserveXDecimal
+                    reserveYDecimal
                   }
                   liquidityShares
+                  initialReserveX
+                  initialReserveY
+                  initialReservesXDecimals
+                  initialReservesYDecimals
                   redeemableReserveX
                   redeemableReserveY
-                  feesX
-                  feesY
+                  redeemableReservesXDecimals
+                  redeemableReservesYDecimals
                 }
               }
             }
@@ -171,12 +180,18 @@ export function useUserBinPositionsV2(poolId: BN | undefined) {
                   binId: number;
                   isActive: boolean;
                   price: string;
+                  reserveXDecimal: string;
+                  reserveYDecimal: string;
                 };
                 liquidityShares: string;
+                initialReserveX: string;
+                initialReserveY: string;
+                initialReservesXDecimals: string;
+                initialReservesYDecimals: string;
                 redeemableReserveX: string;
                 redeemableReserveY: string;
-                feesX: string;
-                feesY: string;
+                redeemableReservesXDecimals: string;
+                redeemableReservesYDecimals: string;
               }>;
             };
           }>;
@@ -205,18 +220,40 @@ export function useUserBinPositionsV2(poolId: BN | undefined) {
 
             // Only include bins with non-zero liquidity
             if (new BN(binPosition.liquidityShares).gt(0)) {
+              // Calculate fees as difference between redeemable and initial reserves
+              const redeemableX = new BN(binPosition.redeemableReserveX);
+              const redeemableY = new BN(binPosition.redeemableReserveY);
+              const initialX = new BN(binPosition.initialReserveX);
+              const initialY = new BN(binPosition.initialReserveY);
+
+              const feesX = redeemableX.sub(initialX);
+
+              const feesY = redeemableY.sub(initialY);
+
               positions.push({
                 binId: binPosition.bin.binId,
                 lpToken: action.position.id, // NFT asset ID
                 lpTokenAmount: new BN(binPosition.liquidityShares),
                 underlyingAmounts: {
-                  x: new BN(binPosition.redeemableReserveX),
-                  y: new BN(binPosition.redeemableReserveY),
+                  x: redeemableX,
+                  y: redeemableY,
+                },
+                underlyingAmountsDecimals: {
+                  x: binPosition.redeemableReservesXDecimals,
+                  y: binPosition.redeemableReservesYDecimals,
+                },
+                initialAmounts: {
+                  x: initialX,
+                  y: initialY,
+                },
+                initialAmountsDecimals: {
+                  x: binPosition.initialReservesXDecimals,
+                  y: binPosition.initialReservesYDecimals,
                 },
                 price: parseFloat(binPosition.bin.price),
                 feesEarned: {
-                  x: new BN(binPosition.feesX),
-                  y: new BN(binPosition.feesY),
+                  x: feesX,
+                  y: feesY,
                 },
                 isActive: binPosition.bin.isActive,
               });

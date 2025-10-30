@@ -99,17 +99,24 @@ export function useV2Positions(): {
                 }
                 binStepBps
                 activeBinId
+                feesUSD
               }
               binPositions {
                 bin {
                   binId
                   price
+                  reserveXDecimal
+                  reserveYDecimal
                 }
                 liquidityShares
+                initialReserveX
+                initialReserveY
+                initialReservesXDecimals
+                initialReservesYDecimals
                 redeemableReserveX
                 redeemableReserveY
-                feesX
-                feesY
+                redeemableReservesXDecimals
+                redeemableReservesYDecimals
               }
             }
           }
@@ -175,18 +182,43 @@ export function useV2Positions(): {
                   const binId = binPos.bin.binId;
                   const price = parseFloat(binPos.bin.price || "0");
 
+                  // Calculate fees as difference between redeemable and initial reserves
+                  const redeemableX = new BN(binPos.redeemableReserveX);
+                  const redeemableY = new BN(binPos.redeemableReserveY);
+                  const initialX = new BN(binPos.initialReserveX);
+                  const initialY = new BN(binPos.initialReserveY);
+
+                  const feesX = redeemableX.gt(initialX)
+                    ? redeemableX.sub(initialX)
+                    : new BN(0);
+                  const feesY = redeemableY.gt(initialY)
+                    ? redeemableY.sub(initialY)
+                    : new BN(0);
+
                   return {
                     binId: new BN(binId),
                     lpToken: `${poolIdStr}-bin-${binId}`,
                     lpTokenAmount: new BN(binPos.liquidityShares),
                     underlyingAmounts: {
-                      x: new BN(binPos.redeemableReserveX),
-                      y: new BN(binPos.redeemableReserveY),
+                      x: redeemableX,
+                      y: redeemableY,
+                    },
+                    underlyingAmountsDecimals: {
+                      x: binPos.redeemableReservesXDecimals,
+                      y: binPos.redeemableReservesYDecimals,
+                    },
+                    initialAmounts: {
+                      x: initialX,
+                      y: initialY,
+                    },
+                    initialAmountsDecimals: {
+                      x: binPos.initialReservesXDecimals,
+                      y: binPos.initialReservesYDecimals,
                     },
                     price,
                     feesEarned: {
-                      x: new BN(binPos.feesX || "0"),
-                      y: new BN(binPos.feesY || "0"),
+                      x: feesX,
+                      y: feesY,
                     },
                     isActive:
                       activeBinIdUint !== null && binId === activeBinIdUint,
