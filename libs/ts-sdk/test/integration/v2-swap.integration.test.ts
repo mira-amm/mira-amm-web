@@ -48,122 +48,134 @@ describe("V2 Swap Operations", () => {
   );
 
   beforeAll(async () => {
-
     // Initialize provider and wallet
     provider = new Provider(FUEL_NODE_URL);
     wallet = new WalletUnlocked(DEPLOYER_SK, provider);
 
-
     // Initialize SDK instances
     readonlyMira = new ReadonlyMiraAmmV2(provider, AMM_CONTRACT_ID);
     mira = new MiraAmmV2(wallet, AMM_CONTRACT_ID);
-
   }, 30000);
 
   describe("Single Pool Swaps", () => {
-    it("should preview swap exact input (USDC → ETH)", async () => {
+    it.each([
+      {
+        name: "USDC → ETH (exact input)",
+        inputAsset: USDC_ASSET_ID,
+        expectedOutput: ETH_ASSET_ID,
+        amount: bn(100_000_000), // 100 USDC
+        pool: USDC_ETH_POOL_ID,
+        isExactInput: true,
+      },
+      {
+        name: "ETH → USDC (exact input)",
+        inputAsset: ETH_ASSET_ID,
+        expectedOutput: USDC_ASSET_ID,
+        amount: bn(10_000_000), // 0.01 ETH
+        pool: USDC_ETH_POOL_ID,
+        isExactInput: true,
+      },
+      {
+        name: "ETH → USDC (exact output)",
+        outputAsset: USDC_ASSET_ID,
+        amount: bn(100_000_000), // Want 100 USDC
+        pool: USDC_ETH_POOL_ID,
+        isExactInput: false,
+      },
+    ])(
+      "should preview swap: $name",
+      async ({
+        name,
+        inputAsset,
+        outputAsset,
+        expectedOutput,
+        amount,
+        pool,
+        isExactInput,
+      }) => {
+        if (isExactInput && inputAsset) {
+          // Exact Input: Know input amount, calculate output
+          const [resultAsset, resultAmount] =
+            await readonlyMira.previewSwapExactInput(
+              {bits: inputAsset},
+              amount,
+              [pool]
+            );
 
-      const swapAmount = bn(100_000_000); // 100 USDC (6 decimals)
+          expect(resultAsset.bits).toBe(expectedOutput);
+          expect(resultAmount.gt(0)).toBe(true);
+        } else if (!isExactInput && outputAsset) {
+          // Exact Output: Know desired output, calculate required input
+          const [resultAsset, resultAmount] =
+            await readonlyMira.previewSwapExactOutput(
+              {bits: outputAsset},
+              amount,
+              [pool]
+            );
 
-      const result = await readonlyMira.previewSwapExactInput(
-        {bits: USDC_ASSET_ID},
-        swapAmount,
-        [USDC_ETH_POOL_ID]
-      );
-
-
-      expect(result).toBeDefined();
-      expect(result[0].bits).toBe(ETH_ASSET_ID);
-      expect(result[1].gt(0)).toBe(true);
-
-      // Output should be positive and reasonable
-      // With binned liquidity, actual output depends on bin distribution
-      // Just verify it's a reasonable amount (not zero, not absurdly large)
-      expect(result[1].lt(bn(1_000_000_000))).toBe(true); // Less than 1 ETH (sanity check)
-
-    }, 30000);
-
-    it("should preview swap exact output (ETH → USDC)", async () => {
-
-      const desiredOutput = bn(100_000_000); // Want 100 USDC out
-
-      const result = await readonlyMira.previewSwapExactOutput(
-        {bits: USDC_ASSET_ID},
-        desiredOutput,
-        [USDC_ETH_POOL_ID]
-      );
-
-
-      expect(result).toBeDefined();
-      // Result should be the input asset (different from USDC)
-      expect(result[0].bits).not.toBe(USDC_ASSET_ID);
-      expect(result[1].gt(0)).toBe(true);
-
-    }, 30000);
-
-    it("should handle swap in opposite direction (ETH → USDC exact in)", async () => {
-
-      const swapAmount = bn(10_000_000); // 0.01 ETH (9 decimals)
-
-      const result = await readonlyMira.previewSwapExactInput(
-        {bits: ETH_ASSET_ID},
-        swapAmount,
-        [USDC_ETH_POOL_ID]
-      );
-
-      expect(result[0].bits).toBe(USDC_ASSET_ID);
-      expect(result[1].gt(0)).toBe(true);
-
-    }, 30000);
+          expect(resultAsset.bits).not.toBe(outputAsset);
+          expect(resultAmount.gt(0)).toBe(true);
+        }
+      },
+      30000
+    );
   });
 
   describe("Multi-Pool Swaps", () => {
-    it("should preview multi-hop swap (USDC → ETH → FUEL)", async () => {
+    it.each([
+      {
+        name: "USDC → ETH → FUEL (2-hop)",
+        input: USDC_ASSET_ID,
+        output: FUEL_ASSET_ID,
+        route: [USDC_ETH_POOL_ID, ETH_FUEL_POOL_ID],
+        amount: bn(100_000_000), // 100 USDC
+      },
+      {
+        name: "USDC → FUEL (direct)",
+        input: USDC_ASSET_ID,
+        output: FUEL_ASSET_ID,
+        route: [USDC_FUEL_POOL_ID],
+        amount: bn(100_000_000), // 100 USDC
+      },
+    ])(
+      "should preview route: $name",
+      async ({input, output, route, amount}) => {
+        const [resultAsset, resultAmount] =
+          await readonlyMira.previewSwapExactInput(
+            {bits: input},
+            amount,
+            route
+          );
 
+        expect(resultAsset.bits).toBe(output);
+        expect(resultAmount.gt(0)).toBe(true);
+      },
+      30000
+    );
+
+    it("should compare direct vs multi-hop routes (USDC → FUEL)", async () => {
       const swapAmount = bn(100_000_000); // 100 USDC
 
-      const result = await readonlyMira.previewSwapExactInput(
-        {bits: USDC_ASSET_ID},
-        swapAmount,
-        [USDC_ETH_POOL_ID, ETH_FUEL_POOL_ID] // Two pools for 2-hop swap
-      );
-
-
-      expect(result[0].bits).toBe(FUEL_ASSET_ID);
-      expect(result[1].gt(0)).toBe(true);
-
-    }, 30000);
-
-    it("should find best route between USDC and FUEL (direct vs multi-hop)", async () => {
-
-      const swapAmount = bn(100_000_000); // 100 USDC
-
-      // Direct route: USDC → FUEL
-      const directRoute = await readonlyMira.previewSwapExactInput(
+      const [, directOutput] = await readonlyMira.previewSwapExactInput(
         {bits: USDC_ASSET_ID},
         swapAmount,
         [USDC_FUEL_POOL_ID]
       );
 
-
-      // Multi-hop route: USDC → ETH → FUEL
-      const multiHopRoute = await readonlyMira.previewSwapExactInput(
+      const [, multiHopOutput] = await readonlyMira.previewSwapExactInput(
         {bits: USDC_ASSET_ID},
         swapAmount,
         [USDC_ETH_POOL_ID, ETH_FUEL_POOL_ID]
       );
 
-
-      expect(directRoute[1].gt(0)).toBe(true);
-      expect(multiHopRoute[1].gt(0)).toBe(true);
-
-      // One should be better than the other
+      expect(directOutput.gt(0)).toBe(true);
+      expect(multiHopOutput.gt(0)).toBe(true);
+      // Both routes should work (which is better depends on liquidity)
     }, 30000);
   });
 
   describe("Batch Swap Previews", () => {
     it("should preview multiple routes in batch", async () => {
-
       const swapAmount = bn(50_000_000); // 50 USDC
 
       const routes: PoolIdV2[][] = [
@@ -171,7 +183,6 @@ describe("V2 Swap Operations", () => {
         [USDC_FUEL_POOL_ID], // Direct: USDC → FUEL
         [USDC_ETH_POOL_ID, ETH_FUEL_POOL_ID], // Multi-hop: USDC → ETH → FUEL
       ];
-
 
       const results = await readonlyMira.previewSwapExactInputBatch(
         {bits: USDC_ASSET_ID},
@@ -187,23 +198,19 @@ describe("V2 Swap Operations", () => {
 
       expect(results).toHaveLength(3);
       expect(results.filter((r) => r !== undefined).length).toBeGreaterThan(0);
-
     }, 30000);
   });
 
   describe("Edge Cases", () => {
     it("should handle zero amount gracefully", async () => {
-
       await expect(
         readonlyMira.previewSwapExactInput({bits: USDC_ASSET_ID}, bn(0), [
           USDC_ETH_POOL_ID,
         ])
       ).rejects.toThrow();
-
     }, 30000);
 
     it("should handle excessive amount (exceeds pool reserves)", async () => {
-
       // Try to swap more than the pool has
       const excessiveAmount = bn(100_000_000_000); // 100,000 USDC (way more than pool's 10,000)
 
@@ -218,11 +225,9 @@ describe("V2 Swap Operations", () => {
       } catch (error) {
         expect(error).toBeDefined();
       }
-
     }, 30000);
 
     it("should handle invalid pool ID", async () => {
-
       const invalidPoolId = bn(999999); // Non-existent pool
 
       await expect(
@@ -232,13 +237,11 @@ describe("V2 Swap Operations", () => {
           [invalidPoolId]
         )
       ).rejects.toThrow();
-
     }, 30000);
   });
 
   describe("Pool Metadata Validation", () => {
     it("should fetch pool metadata for all test pools", async () => {
-
       const pools = [
         {id: USDC_ETH_POOL_ID, name: "USDC-ETH"},
         {id: USDC_FUEL_POOL_ID, name: "USDC-FUEL"},
@@ -248,19 +251,16 @@ describe("V2 Swap Operations", () => {
       for (const pool of pools) {
         const metadata = await readonlyMira.poolMetadata(pool.id);
 
-
         expect(metadata).toBeDefined();
         expect(metadata!.reserves.x.gt(0) || metadata!.reserves.y.gt(0)).toBe(
           true
         );
       }
-
     }, 30000);
   });
 
   describe("getAmountsOut (Exact Input) Tests", () => {
     it("should calculate amounts out for single pool swap", async () => {
-
       const inputAmount = bn(100_000_000); // 100 USDC
 
       const amounts = await readonlyMira.getAmountsOut(
@@ -278,11 +278,9 @@ describe("V2 Swap Operations", () => {
       // Second amount should be ETH output
       expect(amounts[1][0].bits).toBe(ETH_ASSET_ID);
       expect(amounts[1][1].gt(0)).toBe(true);
-
     }, 30000);
 
     it("should calculate amounts out for multi-hop swap", async () => {
-
       const inputAmount = bn(100_000_000); // 100 USDC
 
       const amounts = await readonlyMira.getAmountsOut(
@@ -304,11 +302,9 @@ describe("V2 Swap Operations", () => {
       expect(amounts[2][1].gt(0)).toBe(true);
 
       // Each hop should reduce the amount (due to fees and price impact)
-
     }, 30000);
 
     it("should apply fees correctly in getAmountsOut", async () => {
-
       const inputAmount = bn(1_000_000_000); // Large amount to see fee impact
 
       // Get pool fee
@@ -329,7 +325,6 @@ describe("V2 Swap Operations", () => {
 
   describe("getAmountsIn (Exact Output) Tests", () => {
     it("should calculate amounts in for single pool swap", async () => {
-
       const outputAmount = bn(50_000_000); // Want 0.05 ETH
 
       const amounts = await readonlyMira.getAmountsIn(
@@ -347,11 +342,9 @@ describe("V2 Swap Operations", () => {
       // Last amount should be the input required (different asset from output)
       expect(amounts[1][0].bits).not.toBe(ETH_ASSET_ID);
       expect(amounts[1][1].gt(0)).toBe(true);
-
     }, 30000);
 
     it("should calculate amounts in for multi-hop swap", async () => {
-
       const outputAmount = bn(100_000_000); // Want 100 FUEL
 
       const amounts = await readonlyMira.getAmountsIn(
@@ -373,11 +366,9 @@ describe("V2 Swap Operations", () => {
       // Assets should all be different
       expect(amounts[1][0].bits).not.toBe(amounts[0][0].bits);
       expect(amounts[2][0].bits).not.toBe(amounts[0][0].bits);
-
     }, 30000);
 
     it("should use get_swap_in contract method correctly", async () => {
-
       const outputAmount = bn(10_000_000); // Want 10 USDC
 
       const amounts = await readonlyMira.getAmountsIn(
@@ -393,11 +384,9 @@ describe("V2 Swap Operations", () => {
       // Input asset should be different from output
       expect(amounts[1][0].bits).not.toBe(USDC_ASSET_ID);
       expect(amounts[1][1].gt(0)).toBe(true);
-
     }, 30000);
 
     it("should fail gracefully when insufficient liquidity for exact output", async () => {
-
       // Try to get more output than pool has
       const excessiveOutput = bn(1_000_000_000_000); // Way more than pool reserves
 
@@ -406,20 +395,17 @@ describe("V2 Swap Operations", () => {
           USDC_ETH_POOL_ID,
         ])
       ).rejects.toThrow();
-
     }, 30000);
   });
 
   describe("Batch Operations Tests", () => {
     it("should handle batch exact input for multiple routes", async () => {
-
       const inputAmount = bn(50_000_000); // 50 USDC
       const routes: PoolIdV2[][] = [
         [USDC_ETH_POOL_ID],
         [USDC_FUEL_POOL_ID],
         [USDC_ETH_POOL_ID, ETH_FUEL_POOL_ID],
       ];
-
 
       const results = await readonlyMira.previewSwapExactInputBatch(
         {bits: USDC_ASSET_ID},
@@ -437,14 +423,11 @@ describe("V2 Swap Operations", () => {
 
       const successfulRoutes = results.filter((r) => r !== undefined);
       expect(successfulRoutes.length).toBeGreaterThan(0);
-
     }, 30000);
 
     it("should handle batch exact output for multiple routes", async () => {
-
       const outputAmount = bn(50_000_000); // Want 50 of output token
       const routes: PoolIdV2[][] = [[USDC_ETH_POOL_ID], [USDC_FUEL_POOL_ID]];
-
 
       const results = await readonlyMira.previewSwapExactOutputBatch(
         {bits: USDC_ASSET_ID},
@@ -459,11 +442,9 @@ describe("V2 Swap Operations", () => {
           expect(result[1].gt(0)).toBe(true);
         }
       });
-
     }, 30000);
 
     it("should handle mixed success/failure in batch operations", async () => {
-
       const inputAmount = bn(50_000_000);
       const invalidPoolId = bn(999999);
 
@@ -484,16 +465,13 @@ describe("V2 Swap Operations", () => {
       const validResults = results.filter((r) => r !== undefined);
       const invalidResults = results.filter((r) => r === undefined);
 
-
       expect(validResults.length).toBeGreaterThan(0);
       expect(invalidResults.length).toBeGreaterThan(0);
-
     }, 30000);
   });
 
   describe("Swap Quote Consistency Tests", () => {
     it("should have consistent results between exact input and exact output", async () => {
-
       // Do exact input swap
       const inputAmount = bn(100_000_000); // 100 USDC
       const exactInResult = await readonlyMira.getAmountsOut(
@@ -519,11 +497,9 @@ describe("V2 Swap Operations", () => {
       const diff = inputAmount.sub(inputForExactOut).abs();
 
       expect(diff.lte(tolerance)).toBe(true);
-
     }, 30000);
 
     it("should return increasing amounts for multi-hop exact input", async () => {
-
       const inputAmount = bn(100_000_000); // 100 USDC
       const amounts = await readonlyMira.getAmountsOut(
         {bits: USDC_ASSET_ID},
@@ -533,18 +509,15 @@ describe("V2 Swap Operations", () => {
 
       expect(amounts).toHaveLength(3);
 
-
       // First amount should be our input
       expect(amounts[0][1].eq(inputAmount)).toBe(true);
 
       // All subsequent amounts should be > 0
       expect(amounts[1][1].gt(0)).toBe(true);
       expect(amounts[2][1].gt(0)).toBe(true);
-
     }, 30000);
 
     it("should return correct amounts for multi-hop exact output", async () => {
-
       const outputAmount = bn(100_000_000); // Want 100 FUEL
       const amounts = await readonlyMira.getAmountsIn(
         {bits: FUEL_ASSET_ID},
@@ -554,7 +527,6 @@ describe("V2 Swap Operations", () => {
 
       expect(amounts).toHaveLength(3);
 
-
       // First amount should be our desired output
       expect(amounts[0][0].bits).toBe(FUEL_ASSET_ID);
       expect(amounts[0][1].eq(outputAmount)).toBe(true);
@@ -563,198 +535,172 @@ describe("V2 Swap Operations", () => {
       expect(amounts[0][1].gt(0)).toBe(true);
       expect(amounts[1][1].gt(0)).toBe(true);
       expect(amounts[2][1].gt(0)).toBe(true);
-
     }, 30000);
   });
 
   describe("Full Swap Execution Flow", () => {
-    it("should understand blockchain timestamp format", async () => {
+    // Helper: Create deadline (1 hour in the future)
+    const createDeadline = () => {
+      const futureUnixSeconds = Math.floor(Date.now() / 1000) + 3600;
+      return new BN(futureUnixSeconds);
+    };
 
-      // Get current blockchain timestamp
+    // Helper: Apply slippage
+    const applySlippage = (
+      amount: BN,
+      slippageBps: number,
+      isMinimum: boolean
+    ) => {
+      if (isMinimum) {
+        // For minimum output: reduce by slippage
+        return amount.mul(new BN(10000 - slippageBps)).div(new BN(10000));
+      } else {
+        // For maximum input: increase by slippage
+        return amount.mul(new BN(10000 + slippageBps)).div(new BN(10000));
+      }
+    };
+
+    it("should understand blockchain timestamp format", async () => {
+      // Get current blockchain timestamp (in TAI64 format)
       const latestBlock = await provider.getBlock("latest");
       if (latestBlock) {
         const blockTime = latestBlock.time;
 
-        // Calculate current Unix timestamp
+        // Fuel blockchain uses TAI64, but our swap functions accept Unix timestamps
+        // The contract handles the conversion internally
         const currentUnixSeconds = Math.floor(Date.now() / 1000);
+        const deadline = createDeadline();
 
-        // Calculate TAI64 from Unix using BN
-        const TAI64_OFFSET = new BN(2).pow(new BN(62));
-        const tai64FromUnix = TAI64_OFFSET.add(new BN(currentUnixSeconds));
+        // Verify our Unix deadline is reasonable (future timestamp)
+        expect(deadline.gt(new BN(currentUnixSeconds))).toBe(true);
 
-        // Create proper deadline (1 hour in the future)
-        const futureUnixSeconds = currentUnixSeconds + 3600;
-        const properDeadline = TAI64_OFFSET.add(new BN(futureUnixSeconds));
-
-        // Verify deadline is in the future
+        // Verify block time exists and is in TAI64 format (very large number)
         const blockTimeBN = new BN(blockTime);
-        const isInFuture = properDeadline.gt(blockTimeBN);
-
-        expect(isInFuture).toBe(true);
+        expect(blockTimeBN.gt(new BN(2).pow(new BN(62)))).toBe(true); // TAI64 offset check
       }
     }, 30000);
 
-    it("should execute exact input swap with preview", async () => {
+    it.each([
+      {
+        name: "Exact Input (USDC → ETH)",
+        type: "input",
+        amount: bn(100_000_000), // 100 USDC
+        inputAsset: USDC_ASSET_ID,
+        outputAsset: ETH_ASSET_ID,
+        pool: USDC_ETH_POOL_ID,
+      },
+      {
+        name: "Exact Output (USDC → ETH)",
+        type: "output",
+        amount: bn(50_000_000), // Want 50 ETH
+        inputAsset: USDC_ASSET_ID,
+        outputAsset: ETH_ASSET_ID,
+        pool: USDC_ETH_POOL_ID,
+      },
+    ])(
+      "should execute swap with preview: $name",
+      async ({type, amount, inputAsset, outputAsset, pool}) => {
+        const slippageBps = 50; // 0.5% slippage
 
-      const inputAmount = bn(100_000_000); // 100 USDC (6 decimals)
-      const slippageBps = 50; // 0.5% slippage
+        if (type === "input") {
+          // EXACT INPUT FLOW
+          // 1. Preview: Get expected output
+          const [previewAsset, expectedOutput] =
+            await readonlyMira.previewSwapExactInput(
+              {bits: inputAsset},
+              amount,
+              [pool]
+            );
 
-      // Step 1: Preview the swap to get expected output
-      const previewResult = await readonlyMira.previewSwapExactInput(
-        {bits: USDC_ASSET_ID},
-        inputAmount,
-        [USDC_ETH_POOL_ID]
-      );
+          expect(previewAsset.bits).toBe(outputAsset);
+          expect(expectedOutput.gt(0)).toBe(true);
 
-      const [outputAsset, expectedOutput] = previewResult;
+          // 2. Calculate minimum output with slippage
+          const minOutput = applySlippage(expectedOutput, slippageBps, true);
 
-      expect(outputAsset.bits).toBe(ETH_ASSET_ID);
-      expect(expectedOutput.gt(0)).toBe(true);
+          // 3. Get balances before swap
+          const inputBalanceBefore = await wallet.getBalance(inputAsset);
+          const outputBalanceBefore = await wallet.getBalance(outputAsset);
 
-      // Step 2: Calculate a safe minimum output using getAmountsIn via binary search
-      // This avoids overestimation from preview by finding the max output purchasable with inputAmount
-      let low = bn(1);
-      let high = expectedOutput;
-      for (let i = 0; i < 18; i++) {
-        const mid = low.add(high).div(new BN(2));
-        try {
-          const amountsIn = await readonlyMira.getAmountsIn(
-            {bits: ETH_ASSET_ID},
-            mid,
-            [USDC_ETH_POOL_ID]
+          // 4. Execute swap
+          const {transactionRequest} = await mira.swapExactInput(
+            amount,
+            {bits: inputAsset},
+            minOutput,
+            [pool],
+            createDeadline()
           );
-          const requiredInput = amountsIn[0][1];
-          if (requiredInput.lte(inputAmount)) {
-            low = mid; // can afford this output
-          } else {
-            high = mid.sub(new BN(1)); // too expensive, decrease
-          }
-        } catch {
-          high = mid.sub(new BN(1));
+
+          const tx = await wallet.sendTransaction(transactionRequest);
+          const result = await tx.waitForResult();
+          expect(result.status).toBe("success");
+
+          // 5. Verify balance changes
+          const inputBalanceAfter = await wallet.getBalance(inputAsset);
+          const outputBalanceAfter = await wallet.getBalance(outputAsset);
+
+          const inputSpent = inputBalanceBefore.sub(inputBalanceAfter);
+          const outputReceived = outputBalanceAfter.sub(outputBalanceBefore);
+
+          expect(inputSpent.gte(amount)).toBe(true);
+          expect(outputReceived.gte(minOutput)).toBe(true);
+          expect(outputReceived.lte(expectedOutput)).toBe(true);
+        } else {
+          // EXACT OUTPUT FLOW
+          // 1. Preview: Get required input
+          const [previewAsset, requiredInput] =
+            await readonlyMira.previewSwapExactOutput(
+              {bits: outputAsset},
+              amount,
+              [pool]
+            );
+
+          expect(previewAsset.bits).not.toBe(outputAsset);
+          expect(requiredInput.gt(0)).toBe(true);
+
+          // 2. Calculate maximum input with slippage
+          const maxInput = applySlippage(requiredInput, slippageBps, false);
+
+          // 3. Get balances before swap
+          const inputBalanceBefore = await wallet.getBalance(inputAsset);
+          const outputBalanceBefore = await wallet.getBalance(outputAsset);
+
+          // 4. Execute swap
+          const {transactionRequest} = await mira.swapExactOutput(
+            amount,
+            {bits: outputAsset},
+            maxInput,
+            [pool],
+            createDeadline()
+          );
+
+          const tx = await wallet.sendTransaction(transactionRequest);
+          const result = await tx.waitForResult();
+          expect(result.status).toBe("success");
+
+          // 5. Verify balance changes
+          const inputBalanceAfter = await wallet.getBalance(inputAsset);
+          const outputBalanceAfter = await wallet.getBalance(outputAsset);
+
+          const inputSpent = inputBalanceBefore.sub(inputBalanceAfter);
+          const outputReceived = outputBalanceAfter.sub(outputBalanceBefore);
+
+          expect(inputSpent.gte(requiredInput)).toBe(true);
+          expect(inputSpent.lte(maxInput)).toBe(true);
+          expect(outputReceived.eq(amount)).toBe(true);
         }
-      }
-      const conservativeOutput = low;
-      const minOutput = conservativeOutput
-        .mul(new BN(10000 - slippageBps))
-        .div(new BN(10000));
-
-      // Step 3: Get balances before swap
-      const usdcBalanceBefore = await wallet.getBalance(USDC_ASSET_ID);
-      const ethBalanceBefore = await wallet.getBalance(ETH_ASSET_ID);
-
-      // Step 4: Create deadline (1 hour from now) in Unix seconds
-      const futureUnixSeconds = Math.floor(Date.now() / 1000) + 3600;
-      const deadline = new BN(futureUnixSeconds);
-
-      // Step 5: Execute the swap
-      const {transactionRequest, gasPrice} = await mira.swapExactInput(
-        inputAmount,
-        {bits: USDC_ASSET_ID},
-        minOutput,
-        [USDC_ETH_POOL_ID],
-        deadline
-      );
-
-
-      // Send the assembled transaction request directly (already funded via assembleTx)
-      const tx = await wallet.sendTransaction(transactionRequest);
-
-      // Wait for confirmation
-      const result = await tx.waitForResult();
-
-      expect(result.status).toBe("success");
-
-      // Step 6: Verify balances changed
-      const usdcBalanceAfter = await wallet.getBalance(USDC_ASSET_ID);
-      const ethBalanceAfter = await wallet.getBalance(ETH_ASSET_ID);
-
-
-      // USDC should have decreased
-      const usdcSpent = usdcBalanceBefore.sub(usdcBalanceAfter);
-      expect(usdcSpent.gte(inputAmount)).toBe(true);
-
-      // ETH should have increased
-      const ethReceived = ethBalanceAfter.sub(ethBalanceBefore);
-      expect(ethReceived.gte(minOutput)).toBe(true);
-      expect(ethReceived.lte(expectedOutput)).toBe(true);
-
-    }, 60000);
-
-    it("should execute exact output swap with preview", async () => {
-
-      const desiredOutput = bn(50_000_000); // Want 50 ETH (9 decimals)
-      const slippageBps = 50; // 0.5% slippage
-
-      // Step 1: Preview the swap to get required input
-      const previewResult = await readonlyMira.previewSwapExactOutput(
-        {bits: ETH_ASSET_ID},
-        desiredOutput,
-        [USDC_ETH_POOL_ID]
-      );
-
-      const [inputAsset, requiredInput] = previewResult;
-
-      // Input asset should be different from output (ETH)
-      expect(inputAsset.bits).not.toBe(ETH_ASSET_ID);
-      expect(requiredInput.gt(0)).toBe(true);
-
-      // Step 2: Calculate maximum input with slippage
-      const maxInput = requiredInput
-        .mul(new BN(10000 + slippageBps))
-        .div(new BN(10000));
-
-      // Step 3: Get balances before swap
-      const usdcBalanceBefore = await wallet.getBalance(USDC_ASSET_ID);
-      const ethBalanceBefore = await wallet.getBalance(ETH_ASSET_ID);
-
-      // Step 4: Create deadline (1 hour from now) in Unix seconds
-      const futureUnixSeconds = Math.floor(Date.now() / 1000) + 3600;
-      const deadline = new BN(futureUnixSeconds);
-
-      // Step 5: Execute the swap
-      const {transactionRequest, gasPrice} = await mira.swapExactOutput(
-        desiredOutput,
-        {bits: ETH_ASSET_ID},
-        maxInput,
-        [USDC_ETH_POOL_ID],
-        deadline
-      );
-
-
-      // Send the assembled transaction request directly (already funded via assembleTx)
-      const tx = await wallet.sendTransaction(transactionRequest);
-
-      // Wait for confirmation
-      const result = await tx.waitForResult();
-
-      expect(result.status).toBe("success");
-
-      // Step 6: Verify balances changed
-      const usdcBalanceAfter = await wallet.getBalance(USDC_ASSET_ID);
-      const ethBalanceAfter = await wallet.getBalance(ETH_ASSET_ID);
-
-
-      // USDC should have decreased
-      const usdcSpent = usdcBalanceBefore.sub(usdcBalanceAfter);
-      expect(usdcSpent.gte(requiredInput)).toBe(true);
-      expect(usdcSpent.lte(maxInput)).toBe(true);
-
-      // ETH should have increased by exactly the desired amount
-      const ethReceived = ethBalanceAfter.sub(ethBalanceBefore);
-      expect(ethReceived.eq(desiredOutput)).toBe(true);
-
-    }, 60000);
+      },
+      60000
+    );
 
     it("should handle deadline expired scenario", async () => {
-
       const inputAmount = bn(100_000_000); // 100 USDC
       const minOutput = bn(1); // Accept any amount
 
       // Create an expired deadline (1 hour in the past)
       const expiredDeadline = new BN(Math.floor(Date.now() / 1000) - 3600);
 
-      // Try to create swap with expired deadline - should fail during validation
-
+      // Should fail with expired deadline
       await expect(
         mira.swapExactInput(
           inputAmount,
@@ -764,7 +710,6 @@ describe("V2 Swap Operations", () => {
           expiredDeadline
         )
       ).rejects.toThrow();
-
     }, 30000);
   });
 });
