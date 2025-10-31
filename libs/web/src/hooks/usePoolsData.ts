@@ -70,6 +70,8 @@ export function usePoolsData() {
               reserve0Decimal
               reserve1Decimal
               tvlUSD
+              isStable
+              protocolVersion
               asset1 {
                 id
                 symbol
@@ -124,6 +126,14 @@ export function usePoolsData() {
       );
       const apr = (fees24h / parseFloat(pool.tvlUSD)) * 365 * 100;
 
+      // Determine pool type based on protocolVersion and isStable
+      const poolType: "v1-volatile" | "v1-stable" | "v2-concentrated" =
+        pool.protocolVersion === 2
+          ? "v2-concentrated"
+          : pool.isStable
+            ? "v1-stable"
+            : "v1-volatile";
+
       return {
         id: pool.id,
         reserve_0: pool.reserve0Decimal,
@@ -143,9 +153,7 @@ export function usePoolsData() {
         },
         swap_count: 0,
         create_time: 0,
-        // TODO: Implement proper pool type detection when indexer supports v2
-        // For now, assume all pools from indexer are v1-volatile
-        poolType: "v1-volatile" as const,
+        poolType,
       };
     }
   );
