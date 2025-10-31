@@ -35,9 +35,14 @@ export function useV2PoolsForPair(
     query V2Pools($asset0: String, $asset1: String) {
       pools(
         where: {
-          OR: [
-            {AND: [{asset0: {id_eq: $asset0}}, {asset1: {id_eq: $asset1}}]}
-            {AND: [{asset0: {id_eq: $asset1}}, {asset1: {id_eq: $asset0}}]}
+          AND: [
+            {protocolVersion_eq: 2}
+            {
+              OR: [
+                {AND: [{asset0: {id_eq: $asset0}}, {asset1: {id_eq: $asset1}}]}
+                {AND: [{asset0: {id_eq: $asset1}}, {asset1: {id_eq: $asset0}}]}
+              ]
+            }
           ]
         }
       ) {
