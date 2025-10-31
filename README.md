@@ -32,8 +32,8 @@
     <a href="https://github.com/mira-amm/mira-amm-web/actions/workflows/lint.yml">
         <img src="https://github.com/mira-amm/mira-amm-web/actions/workflows/lint.yml/badge.svg" alt="Lint">
     </a>
-    <a href="https://github.com/mira-amm/mira-amm-web/actions/workflows/test_unit.yml">
-        <img src="https://github.com/mira-amm/mira-amm-web/actions/workflows/test_unit.yml/badge.svg" alt="Unit Tests">
+    <a href="https://github.com/mira-amm/mira-amm-web/actions/workflows/TEST.yaml">
+        <img src="https://github.com/mira-amm/mira-amm-web/actions/workflows/TEST.yaml/badge.svg" alt="Unit Tests">
     </a>
     <!-- <a href="https://github.com/mira-amm/mira-amm-web/actions/workflows/test_e2e.yml"> -->
     <!--     <img src="https://github.com/mira-amm/mira-amm-web/actions/workflows/test_e2e.yml/badge.svg" alt="End-to-End Tests"> -->
