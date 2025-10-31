@@ -87,12 +87,14 @@ export function useSwapPreview(
 
   // For v2 pools, we might need to show a different error message when no routes are found
   return useMemo(() => {
-    if (poolType === "v2" && result.tradeState === TradeState.NO_ROUTE_FOUND) {
+    // Only show the custom V2 error if user has entered an amount
+    const hasAmount = bn(debouncedValue).gt(0);
+    if (poolType === "v2" && result.tradeState === TradeState.NO_ROUTE_FOUND && hasAmount) {
       return {
         ...result,
         error: "No concentrated liquidity pools available for this pair",
       };
     }
     return result;
-  }, [result, poolType]);
+  }, [result, poolType, debouncedValue]);
 }
