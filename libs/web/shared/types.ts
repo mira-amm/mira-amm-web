@@ -19,6 +19,9 @@ export namespace SQDIndexerResponses {
     creationTx: string;
     creator?: string;
     feeBps?: number;
+    protocolVersion: number;
+    binStepBps?: number;
+    baseFee?: number;
     pool?: {
       id: string;
       name: string;
@@ -30,6 +33,7 @@ export namespace SQDIndexerResponses {
   }
 
   export interface Action {
+    id: string;
     pool: Pool;
     recipient: string;
     asset0: {
@@ -48,8 +52,11 @@ export namespace SQDIndexerResponses {
     reserves1After: string;
     type:
       | SQDIndexerTypes.ActionTypes.SWAP
+      | SQDIndexerTypes.ActionTypes.SWAP_V2
       | SQDIndexerTypes.ActionTypes.JOIN
-      | SQDIndexerTypes.ActionTypes.EXIT;
+      | SQDIndexerTypes.ActionTypes.JOIN_V2
+      | SQDIndexerTypes.ActionTypes.EXIT
+      | SQDIndexerTypes.ActionTypes.EXIT_V2;
     transaction: string;
     timestamp: number;
     blockNumber: number;
