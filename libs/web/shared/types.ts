@@ -197,3 +197,75 @@ export namespace GeckoTerminalQueryResponses {
     pair: Pair;
   }
 }
+
+// Types used by CoinMarketCap for queries
+export namespace CoinMarketCapResponses {
+  // Summary Endpoint Response
+  export interface SummaryItem {
+    trading_pairs: string;
+    base_currency: string;
+    quote_currency: string;
+    last_price: number;
+    lowest_ask: number;
+    highest_bid: number;
+    base_volume: number;
+    quote_volume: number;
+    price_change_percent_24h: number;
+    highest_price_24h: number;
+    lowest_price_24h: number;
+  }
+
+  export type SummaryResponse = SummaryItem[];
+
+  // Assets Endpoint Response
+  export interface Asset {
+    name: string;
+    unified_cryptoasset_id: string | null;
+    can_withdraw: boolean;
+    can_deposit: boolean;
+    min_withdraw: string;
+    max_withdraw: string;
+    maker_fee: string;
+    taker_fee: string;
+    contractAddress: string;
+    contractAddressUrl: string;
+  }
+
+  export type AssetsResponse = Record<string, Asset>;
+
+  // Ticker Endpoint Response
+  export interface TickerItem {
+    base_id: string;
+    quote_id: string;
+    last_price: string;
+    base_volume: string;
+    quote_volume: string;
+    isFrozen: number; // 0 = enabled, 1 = disabled
+  }
+
+  export type TickerResponse = Record<string, TickerItem>;
+
+  // Orderbook Endpoint Response
+  export interface OrderbookResponse {
+    timestamp: number; // Unix timestamp in milliseconds
+    bids: Array<[string, string]>; // [price, quantity]
+    asks: Array<[string, string]>; // [price, quantity]
+  }
+
+  // Trades Endpoint Response
+  export interface Trade {
+    trade_id: string;
+    price: string;
+    base_volume: string;
+    quote_volume: string;
+    timestamp: number; // Unix timestamp in milliseconds
+    type: "buy" | "sell";
+  }
+
+  export type TradesResponse = Trade[];
+
+  // Error Response
+  export interface ErrorResponse {
+    error: string;
+  }
+}
