@@ -41,6 +41,7 @@ describe("GET /api/events", () => {
     const mockActions = {
       actions: [
         {
+          id: "action1",
           pool: {id: "pool1"},
           asset0: {id: "asset0", decimals: 6},
           asset1: {id: "asset1", decimals: 9},
@@ -57,6 +58,7 @@ describe("GET /api/events", () => {
           blockNumber: 1,
         },
         {
+          id: "action2",
           pool: {id: "pool2"},
           asset0: {id: "asset0", decimals: 9},
           asset1: {id: "asset1", decimals: 9},
@@ -106,7 +108,7 @@ describe("GET /api/events", () => {
           eventType: "swap",
           asset0In: "0.000000300",
           asset1Out: "0.000001001",
-          priceNative: 0.29970029970029965,
+          priceNative: 3.336666666666667, // asset1Out / asset0In = 0.000001001 / 0.000000300
         },
       ],
     });
@@ -115,6 +117,57 @@ describe("GET /api/events", () => {
       url: SQDIndexerUrl,
       document: "dummy_query",
       variables: {fromBlock: 100, toBlock: 200},
+    });
+  });
+
+  it("should handle V2 liquidity events", async () => {
+    const req = new NextRequest(
+      "http://localhost:3000/api/events/?fromBlock=10&toBlock=20"
+    );
+
+    const mockActions = {
+      actions: [
+        {
+          id: "action-v2",
+          pool: {id: "pool-v2"},
+          asset0: {id: "asset0", decimals: 9},
+          asset1: {id: "asset1", decimals: 6},
+          amount1Out: "0",
+          amount1In: "1000",
+          amount0Out: "0",
+          amount0In: "500",
+          reserves0After: "5000",
+          reserves1After: "10000",
+          type: "ADD_LIQUIDITY_V2",
+          transaction: "txn-v2",
+          recipient: "recipient-v2",
+          timestamp: 111111,
+          blockNumber: 12,
+        },
+      ],
+    };
+
+    mockRequest.mockResolvedValueOnce(mockActions);
+
+    const res = await GET(req);
+    expect(res.status).toBe(200);
+    const json = await res.json();
+
+    expect(json).toEqual({
+      events: [
+        {
+          block: {blockNumber: 12, blockTimestamp: 111111},
+          txnId: "txn-v2",
+          txnIndex: 0,
+          eventIndex: 0,
+          maker: "recipient-v2",
+          pairId: "pool-v2",
+          reserves: {asset0: "0.000005000", asset1: "0.010000"},
+          eventType: "join",
+          amount0: "0.000000500",
+          amount1: "0.001000",
+        },
+      ],
     });
   });
 
@@ -142,5 +195,93 @@ describe("GET /api/events", () => {
     expect(await res.json()).toEqual({
       error: "Failed to fetch events data",
     });
+  });
+
+  it("should properly index transactions and events within a block", async () => {
+    const req = new NextRequest(
+      "http://localhost:3000/api/events/?fromBlock=100&toBlock=200"
+    );
+
+    const mockActions = {
+      actions: [
+        // Block 1, Transaction 1, Event 1
+        {
+          id: "action1",
+          pool: {id: "pool1"},
+          asset0: {id: "asset0", decimals: 9},
+          asset1: {id: "asset1", decimals: 9},
+          amount1Out: "1000",
+          amount1In: "0",
+          amount0Out: "0",
+          amount0In: "500",
+          reserves0After: "1000",
+          reserves1After: "2000",
+          type: "SWAP",
+          transaction: "txn1",
+          recipient: "recipient1",
+          timestamp: 1234567890,
+          blockNumber: 1,
+        },
+        // Block 1, Transaction 1, Event 2
+        {
+          id: "action2",
+          pool: {id: "pool2"},
+          asset0: {id: "asset0", decimals: 9},
+          asset1: {id: "asset1", decimals: 9},
+          amount1Out: "2000",
+          amount1In: "0",
+          amount0Out: "0",
+          amount0In: "600",
+          reserves0After: "1500",
+          reserves1After: "3000",
+          type: "SWAP",
+          transaction: "txn1",
+          recipient: "recipient1",
+          timestamp: 1234567890,
+          blockNumber: 1,
+        },
+        // Block 1, Transaction 2, Event 1
+        {
+          id: "action3",
+          pool: {id: "pool3"},
+          asset0: {id: "asset0", decimals: 9},
+          asset1: {id: "asset1", decimals: 9},
+          amount1Out: "3000",
+          amount1In: "0",
+          amount0Out: "0",
+          amount0In: "700",
+          reserves0After: "2000",
+          reserves1After: "4000",
+          type: "SWAP",
+          transaction: "txn2",
+          recipient: "recipient2",
+          timestamp: 1234567890,
+          blockNumber: 1,
+        },
+      ],
+    };
+
+    mockRequest.mockResolvedValueOnce(mockActions);
+
+    const res = await GET(req);
+    expect(res.status).toBe(200);
+    const json = await res.json();
+
+    expect(json.events).toHaveLength(3);
+    
+    // Verify first event in first transaction
+    expect(json.events[0].txnIndex).toBe(0);
+    expect(json.events[0].eventIndex).toBe(0);
+    expect(json.events[0].txnId).toBe("txn1");
+
+    // Verify second event in first transaction
+    expect(json.events[1].txnIndex).toBe(0);
+    expect(json.events[1].eventIndex).toBe(1);
+    expect(json.events[1].txnId).toBe("txn1");
+
+    // Verify first event in second transaction
+    expect(json.events[2].txnIndex).toBe(1);
+    expect(json.events[2].eventIndex).toBe(0);
+    expect(json.events[2].txnId).toBe("txn2");
   });
 });

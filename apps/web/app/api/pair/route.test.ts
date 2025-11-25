@@ -42,6 +42,9 @@ const rawPool = {
   creationBlock: 100,
   creationTime: 1_610_000_000,
   creationTx: "0xtx",
+  protocolVersion: 2,
+  binStepBps: 100,
+  baseFee: 500,
 };
 const expectedPair = {
   id: poolId,
@@ -51,6 +54,7 @@ const expectedPair = {
   createdAtBlockNumber: rawPool.creationBlock,
   createdAtBlockTimestamp: rawPool.creationTime,
   createdAtTxnId: rawPool.creationTx,
+  feeBps: 5, // (100 * 500) / 10000 = 5
 };
 
 beforeAll(() => {

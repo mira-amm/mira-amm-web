@@ -26,6 +26,9 @@ export const fetchPoolById = async (
         creationBlock
         creationTime
         creationTx
+        protocolVersion
+        binStepBps
+        baseFee
       }
     }
   `;
@@ -45,15 +48,31 @@ export const fetchPoolById = async (
 
 export const createPairFromPool = (
   pool: SQDIndexerResponses.Pool
-): GeckoTerminalQueryResponses.Pair => ({
-  id: pool.id,
-  dexKey: "mira",
-  asset0Id: pool.asset0.id,
-  asset1Id: pool.asset1.id,
-  createdAtBlockNumber: pool.creationBlock,
-  createdAtBlockTimestamp: pool.creationTime,
-  createdAtTxnId: pool.creationTx,
-});
+): GeckoTerminalQueryResponses.Pair => {
+  // Calculate feeBps based on protocol version
+  // V2 pools: fee = (binStepBps * baseFee) / 10000
+  // V1 pools: standard 0.3% fee (30 bps)
+  let feeBps: number | undefined;
+
+  if (pool.protocolVersion === 2 && pool.binStepBps && pool.baseFee) {
+    // For V2 pools, calculate the effective fee in basis points
+    feeBps = (pool.binStepBps * pool.baseFee) / 10000;
+  } else if (pool.protocolVersion === 1) {
+    // V1 pools have a standard 0.3% fee
+    feeBps = 30;
+  }
+
+  return {
+    id: pool.id,
+    dexKey: "mira",
+    asset0Id: pool.asset0.id,
+    asset1Id: pool.asset1.id,
+    createdAtBlockNumber: pool.creationBlock,
+    createdAtBlockTimestamp: pool.creationTime,
+    createdAtTxnId: pool.creationTx,
+    feeBps,
+  };
+};
 
 export async function GET(req: NextRequest) {
   try {
