@@ -1,7 +1,8 @@
 import {useQuery} from "@tanstack/react-query";
 import {ZeroBytes32} from "fuels";
-import {BASE_ASSET_CONTRACT, ETH_ASSET_ID} from "../utils/constants";
+import {BASE_ASSET_CONTRACT, ETH_ASSET_ID, SQDIndexerUrl} from "../utils/constants";
 import {useAssetList} from "./useAssetList";
+import {getCurrentNetworkConfig} from "@/src/stores/useNetworkStore";
 
 export const useAssetMinterContract = (
   assetId: string | null
@@ -13,7 +14,7 @@ export const useAssetMinterContract = (
   }
 
   const {data, isLoading} = useQuery({
-    queryKey: ["assetMinter", assetId, assets?.length],
+    queryKey: ["assetMinter", assetId, assets?.length, SQDIndexerUrl],
     queryFn: async () => {
       if (assetId === ETH_ASSET_ID) {
         return {
@@ -33,8 +34,9 @@ export const useAssetMinterContract = (
         }
       }
 
+      const networkConfig = getCurrentNetworkConfig();
       const req = await fetch(
-        `https://mainnet-explorer.fuel.network/assets/${assetId}`
+        `${networkConfig.explorerUrl}/assets/${assetId}`
       );
       const res = await req.json();
 

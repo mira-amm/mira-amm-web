@@ -9,7 +9,7 @@ import {clsx} from "clsx";
 import {
   Logo,
   MobileMenu,
-  MainnetLabel,
+  NetworkSelector,
   DisconnectMobile,
   IconButton,
   ConnectWallet,
@@ -125,7 +125,7 @@ export function Header({pathName}: {isHomePage?: boolean; pathName?: string}) {
         </div>
 
         <div className="hidden lg:flex items-center gap-6">
-          <MainnetLabel />
+          <NetworkSelector />
           <ConnectWallet />
         </div>
       </section>

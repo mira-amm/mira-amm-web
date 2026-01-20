@@ -131,7 +131,7 @@ export function useCoinListModal(
 
           let assetIcon = eachAsset?.icon;
           if (!assetIcon) {
-            assetIcon = assetImages?.[eachAsset.assetId].image || undefined;
+            assetIcon = assetImages?.[eachAsset.assetId]?.image || undefined;
           }
 
           const updatedAsset = {

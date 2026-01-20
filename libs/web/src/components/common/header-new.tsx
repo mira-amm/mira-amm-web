@@ -2,7 +2,7 @@
 
 import {useMemo} from "react";
 import {usePathname} from "next/navigation";
-import {Logo} from "@/src/components/common";
+import {Logo, NetworkSelector} from "@/src/components/common";
 import {FuelAppUrl} from "@/src/utils/constants";
 import {ConnectWalletNew} from "./connect-wallet-new";
 import {Navigation, type NavLink} from "./navigation";
@@ -51,10 +51,12 @@ export function HeaderNew({
           />
         </div>
 
-        <div className="hidden sm:flex! items-center flex-1 justify-end gap-2">
+        <div className="hidden sm:flex! items-center flex-1 justify-end gap-3">
+          <NetworkSelector />
           <ConnectWalletNew size="small" />
         </div>
         <div className="flex sm:hidden items-center flex-1 justify-end gap-2">
+          <NetworkSelector />
           <ConnectWalletNew size="large" />
         </div>
       </section>

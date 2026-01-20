@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import {useState, useCallback} from "react";
-import {Menu, X} from "lucide-react";
+import {Menu, X, Wifi, WifiOff} from "lucide-react";
 import {createPortal} from "react-dom";
 import {useIsClient, useScrollLock} from "usehooks-ts";
 import {clsx} from "clsx";
@@ -10,12 +10,18 @@ import {clsx} from "clsx";
 import {LogoIcon} from "@/meshwave-ui/icons";
 import {BlogLink, DiscordLink, XLink} from "@/src/utils/constants";
 import {useFaucetLink} from "@/src/hooks/useFaucetLink";
+import {
+  useNetworkStore,
+  NETWORK_CONFIGS,
+  type NetworkId,
+} from "@/src/stores/useNetworkStore";
 
 export function MobileMenu() {
   const [expanded, setExpanded] = useState(false);
   const {lock, unlock} = useScrollLock({autoLock: false});
   const isClient = useIsClient();
   const faucetLink = useFaucetLink();
+  const {selectedNetwork, setNetwork} = useNetworkStore();
 
   const toggleExpanded = useCallback(() => {
     setExpanded((prev) => {
@@ -24,6 +30,12 @@ export function MobileMenu() {
       return next;
     });
   }, [lock, unlock]);
+
+  const handleNetworkSwitch = (networkId: NetworkId) => {
+    if (networkId !== selectedNetwork) {
+      setNetwork(networkId);
+    }
+  };
 
   const menu = (
     <div
@@ -70,15 +82,57 @@ export function MobileMenu() {
         >
           Points
         </Link>
-        <a
-          href={faucetLink}
-          target="_blank"
-          rel="noopener noreferrer"
-          onClick={toggleExpanded}
-          className="hover:text-white"
-        >
-          Faucet
-        </a>
+
+        {/* Network Selector */}
+        <div className="border-t border-content-dimmed-dark/20 pt-4 mt-2">
+          <p className="text-xs text-content-dimmed-light mb-3">Network</p>
+          <div className="flex gap-2">
+            {(Object.keys(NETWORK_CONFIGS) as NetworkId[]).map((networkId) => {
+              const config = NETWORK_CONFIGS[networkId];
+              const isSelected = selectedNetwork === networkId;
+              const isMainnet = networkId === "mainnet";
+
+              return (
+                <button
+                  key={networkId}
+                  onClick={() => handleNetworkSwitch(networkId)}
+                  className={clsx(
+                    "flex items-center gap-2 px-4 py-2 rounded-full text-sm transition-colors",
+                    isSelected
+                      ? isMainnet
+                        ? "bg-green-400/20 text-green-400 border border-green-400/50"
+                        : "bg-yellow-400/20 text-yellow-400 border border-yellow-400/50"
+                      : "bg-background-grey-light/30 text-content-dimmed-light"
+                  )}
+                >
+                  {isMainnet ? (
+                    <Wifi className="w-4 h-4" />
+                  ) : (
+                    <WifiOff className="w-4 h-4" />
+                  )}
+                  {config.name}
+                </button>
+              );
+            })}
+          </div>
+          {selectedNetwork === "testnet" && (
+            <p className="text-xs text-yellow-400/80 mt-2">
+              ⚠️ Using test tokens with no real value
+            </p>
+          )}
+        </div>
+
+        <div className="border-t border-content-dimmed-dark/20 pt-4">
+          <a
+            href={faucetLink}
+            target="_blank"
+            rel="noopener noreferrer"
+            onClick={toggleExpanded}
+            className="hover:text-white"
+          >
+            Faucet
+          </a>
+        </div>
         <a
           href={DiscordLink}
           target="_blank"

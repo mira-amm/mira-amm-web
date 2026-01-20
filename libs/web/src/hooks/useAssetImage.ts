@@ -14,7 +14,7 @@ export const useAssetImage = (assetId: string | null): string => {
   const {assets, isLoading: isLoadingAsset} = useAssetList();
 
   const {data, isLoading, error} = useQuery<string | null>({
-    queryKey: ["assetImage", assetId, assets?.length],
+    queryKey: ["assetImage", assetId, assets?.length, SQDIndexerUrl],
     queryFn: async () => {
       const asset = assets?.find(
         (asset) => asset.assetId.toLowerCase() === assetId?.toLowerCase()
@@ -36,7 +36,8 @@ export const useAssetImage = (assetId: string | null): string => {
         url: SQDIndexerUrl,
       });
 
-      if (results.assetById.image) {
+      // Asset might not exist in indexer (e.g., new testnet assets)
+      if (results.assetById?.image) {
         return results.assetById.image;
       }
 
@@ -77,7 +78,7 @@ const buildDynamicAssetQuery = (assetIds: string[]) => {
 
 export const useFetchMultiAssetImages = (assetIds: string[] | undefined) => {
   return useQuery<AssetImageMap>({
-    queryKey: ["asset-images", assetIds?.join("-")],
+    queryKey: ["asset-images", assetIds?.join("-"), SQDIndexerUrl],
     enabled: !!assetIds && assetIds.length > 0,
     queryFn: assetIds
       ? async () => {

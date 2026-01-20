@@ -13,9 +13,59 @@ function getLocalContractIds() {
 
 // Use local contract ID if available, otherwise use production contract ID
 const localContracts = getLocalContractIds();
-export const DEFAULT_AMM_CONTRACT_ID =
-  localContracts?.simpleProxy ||
-  ("0x2e40f2b244b98ed6b8204b3de0156c6961f98525c8162f80162fcf53eebd90e7" as const);
+
+// V1 Contract ID - dynamic based on selected network
+function getV1ContractId(): string {
+  // Local development takes priority
+  if (localContracts?.simpleProxy) {
+    return localContracts.simpleProxy;
+  }
+  
+  // Check localStorage for selected network (client-side only)
+  if (typeof window !== "undefined") {
+    try {
+      const stored = localStorage.getItem("mira-selected-network");
+      if (stored) {
+        const parsed = JSON.parse(stored);
+        if (parsed?.state?.selectedNetwork === "testnet") {
+          // Testnet V1 contract (from Pavel)
+          return "0xd5a716d967a9137222219657d7877bd8c79c64e1edb5de9f2901c98ebe74da80";
+        }
+      }
+    } catch {
+      // Ignore parse errors, use default
+    }
+  }
+  // Default to mainnet V1 contract
+  return "0x2e40f2b244b98ed6b8204b3de0156c6961f98525c8162f80162fcf53eebd90e7";
+}
+
+export const DEFAULT_AMM_CONTRACT_ID = getV1ContractId();
+
+// V2 Contract ID (concentrated liquidity / binned liquidity)
+// Dynamic based on selected network
+function getV2ContractId(): string {
+  // Check localStorage for selected network (client-side only)
+  if (typeof window !== "undefined") {
+    try {
+      const stored = localStorage.getItem("mira-selected-network");
+      if (stored) {
+        const parsed = JSON.parse(stored);
+        if (parsed?.state?.selectedNetwork === "testnet") {
+          // Testnet V2 contract (from Pavel)
+          return "0x826908f28ebcab59bbe8c2cc9f0e9b2e12a244517cadce0aba6f534ecbbc2c2b";
+        }
+      }
+    } catch {
+      // Ignore parse errors, use default
+    }
+  }
+  // Default to mainnet V2 contract (same as V1 for now since V2 not on mainnet yet)
+  // TODO: Update with actual mainnet V2 contract when deployed
+  return "0x2e40f2b244b98ed6b8204b3de0156c6961f98525c8162f80162fcf53eebd90e7";
+}
+
+export const DEFAULT_AMM_V2_CONTRACT_ID = getV2ContractId();
 
 // Function to get asset ID from verified-assets.json based on symbol and environment
 function getAssetIdFromVerifiedAssets(symbol: string): string {
@@ -91,21 +141,89 @@ export const XLink = "https://x.com/MicrochainDLM" as const;
 export const BlogLink =
   "https://mirror.xyz/0xBE101110E07430Cf585123864a55f51e53ABc339" as const;
 
-// TODO: Use env variables for values below to separate dev/prod | testnet/mainnet
-// Support local development with chain ID 0, otherwise use mainnet
-export const ValidNetworkChainId =
-  process.env.NEXT_PUBLIC_FUEL_PROVIDER_URL?.includes("localhost")
-    ? 0 // Local testnet uses chain ID 0
-    : CHAIN_IDS.fuel.mainnet;
+// Dynamic chain ID based on selected network
+function getValidNetworkChainId(): number {
+  // Local development uses chain ID 0
+  if (process.env.NEXT_PUBLIC_FUEL_PROVIDER_URL?.includes("localhost")) {
+    return 0;
+  }
 
-// Support local development with environment variables
-export const NetworkUrl: string =
-  process.env.NEXT_PUBLIC_FUEL_PROVIDER_URL ||
-  "https://mainnet.fuel.network/v1/graphql";
+  // Check localStorage for selected network (client-side only)
+  if (typeof window !== "undefined") {
+    try {
+      const stored = localStorage.getItem("mira-selected-network");
+      if (stored) {
+        const parsed = JSON.parse(stored);
+        if (parsed?.state?.selectedNetwork === "testnet") {
+          // Fuel testnet chain ID - accept any chain ID when on testnet
+          // since we can't know the exact testnet chain ID beforehand
+          return -1; // Special value to indicate "any network is valid"
+        }
+      }
+    } catch {
+      // Ignore parse errors, use default
+    }
+  }
 
-export const SQDIndexerUrl =
-  process.env.NEXT_PUBLIC_SUBSQUID_ENDPOINT ||
-  ("https://mira-dex.squids.live/mira-indexer@v4/api/graphql" as const);
+  // Default to mainnet
+  return CHAIN_IDS.fuel.mainnet;
+}
+
+export const ValidNetworkChainId = getValidNetworkChainId();
+
+// Dynamic network URL based on selected network
+function getNetworkUrl(): string {
+  if (process.env.NEXT_PUBLIC_FUEL_PROVIDER_URL) {
+    return process.env.NEXT_PUBLIC_FUEL_PROVIDER_URL;
+  }
+
+  // Check localStorage for selected network (client-side only)
+  if (typeof window !== "undefined") {
+    try {
+      const stored = localStorage.getItem("mira-selected-network");
+      if (stored) {
+        const parsed = JSON.parse(stored);
+        if (parsed?.state?.selectedNetwork === "testnet") {
+          return "https://testnet.fuel.network/v1/graphql";
+        }
+      }
+    } catch {
+      // Ignore parse errors, use default
+    }
+  }
+
+  return "https://mainnet.fuel.network/v1/graphql";
+}
+
+export const NetworkUrl: string = getNetworkUrl();
+
+// Dynamic indexer URL based on selected network
+// The network store persists to localStorage and reloads page on switch
+function getSelectedIndexerUrl(): string {
+  if (process.env.NEXT_PUBLIC_SUBSQUID_ENDPOINT) {
+    return process.env.NEXT_PUBLIC_SUBSQUID_ENDPOINT;
+  }
+
+  // Check localStorage for selected network (client-side only)
+  if (typeof window !== "undefined") {
+    try {
+      const stored = localStorage.getItem("mira-selected-network");
+      if (stored) {
+        const parsed = JSON.parse(stored);
+        if (parsed?.state?.selectedNetwork === "testnet") {
+          return "https://mira-dex.squids.live/mira-testnet-indexer@test/api/graphql";
+        }
+      }
+    } catch {
+      // Ignore parse errors, use default
+    }
+  }
+
+  // Default to mainnet
+  return "https://mira-dex.squids.live/mira-indexer@v4/api/graphql";
+}
+
+export const SQDIndexerUrl = getSelectedIndexerUrl();
 export const MainnetUrl = "https://mainnet-explorer.fuel.network";
 export const ApiBaseUrl = "https://prod.api.microchain.systems" as const;
 

@@ -97,7 +97,8 @@ export function usePoolsData() {
   `;
 
   const {data, isLoading} = useQuery<any>({
-    queryKey: ["pools", page, orderBy, search],
+    // Include SQDIndexerUrl in query key so cache is network-specific
+    queryKey: ["pools", page, orderBy, search, SQDIndexerUrl],
     queryFn: () =>
       request({
         url: SQDIndexerUrl,

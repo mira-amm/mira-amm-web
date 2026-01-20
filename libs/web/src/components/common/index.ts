@@ -19,6 +19,7 @@ export {MobileMenu} from "./mobile-menu";
 export {Header} from "./header";
 export {ConfirmPopup} from "./confirm-popup";
 export {MainnetLabel} from "./mainnet-label";
+export {NetworkSelector} from "./network-selector";
 export {Loader} from "./loader";
 export {CoinWithAmount} from "./coin-with-amount";
 export {TransactionFailureModal} from "./transaction-failure-modal";

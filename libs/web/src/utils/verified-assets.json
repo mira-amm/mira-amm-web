@@ -935,5 +935,61 @@
         "chainId": 9889
       }
     ]
+  },
+  {
+    "name": "Mock USDC",
+    "symbol": "mUSDC",
+    "icon": "",
+    "networks": [
+      {
+        "type": "fuel",
+        "chain": "testnet",
+        "decimals": 6,
+        "assetId": "0x02223454885e5de4e0d5dcbc19dc654bb2c5820b12955d716ee314b5cf0281a9",
+        "chainId": 0
+      }
+    ]
+  },
+  {
+    "name": "Mock BTC",
+    "symbol": "mBTC",
+    "icon": "",
+    "networks": [
+      {
+        "type": "fuel",
+        "chain": "testnet",
+        "decimals": 9,
+        "assetId": "0x304c09238b060a56c8e40c52cd6f3caea22e9acb0c465e2f022f7aab468b3aae",
+        "chainId": 0
+      }
+    ]
+  },
+  {
+    "name": "Mock BNB",
+    "symbol": "mBNB",
+    "icon": "",
+    "networks": [
+      {
+        "type": "fuel",
+        "chain": "testnet",
+        "decimals": 9,
+        "assetId": "0xcddbcaaf6fefe02a2f11d40c65e1939313211a4b821b11f80bc8994dc2930212",
+        "chainId": 0
+      }
+    ]
+  },
+  {
+    "name": "Mock ETH",
+    "symbol": "mETH",
+    "icon": "",
+    "networks": [
+      {
+        "type": "fuel",
+        "chain": "testnet",
+        "decimals": 9,
+        "assetId": "0xaedd7f783e841380a9ff6bd8936a35daeb2b58ce71cdf925182befd9abd4fb39",
+        "chainId": 0
+      }
+    ]
   }
 ]

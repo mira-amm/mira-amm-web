@@ -1,6 +1,6 @@
 import {ReactNode} from "react";
 import {FuelProvider} from "@fuels/react";
-import {CHAIN_IDS, Network, Provider} from "fuels";
+import {Provider} from "fuels";
 import {isMobile} from "react-device-detect";
 import {
   BakoSafeConnector,
@@ -14,11 +14,12 @@ import {
 import {createConfig, http, injected} from "@wagmi/core";
 import {mainnet} from "@wagmi/core/chains";
 import {walletConnect} from "@wagmi/connectors";
-import {NetworkUrl, ValidNetworkChainId} from "@/src/utils/constants";
 import {getBrandText} from "@/src/utils/brandName";
+import {getCurrentNetworkConfig} from "@/src/stores/useNetworkStore";
 
 // Creates a protection for SRR
-const FUEL_CONFIG = createFuelConfig(() => {
+const createFuelConfigForNetwork = () => {
+  const networkConfig = getCurrentNetworkConfig();
   const WalletConnectProjectId = "35b967d8f17700b2de24f0abee77e579";
   const brandText = getBrandText();
 
@@ -42,12 +43,12 @@ const FUEL_CONFIG = createFuelConfig(() => {
     ],
   });
 
-  const fuelProvider = new Provider(NetworkUrl);
+  const fuelProvider = new Provider(networkConfig.providerUrl);
 
   const externalConnectorConfig: Partial<{
     chainId: number;
     fuelProvider: Provider;
-  }> = {chainId: ValidNetworkChainId, fuelProvider};
+  }> = {chainId: networkConfig.chainId, fuelProvider};
 
   const fueletWalletConnector = new FueletWalletConnector();
   const burnerWalletConnector = new BurnerWalletConnector({
@@ -74,15 +75,19 @@ const FUEL_CONFIG = createFuelConfig(() => {
       ...(isMobile ? [] : [fuelWalletConnector, bakoSafeConnector]),
     ],
   };
-});
+};
+
+const FUEL_CONFIG = createFuelConfig(createFuelConfigForNetwork);
 
 export function FuelProviderWrapper({children}: {children: ReactNode}) {
+  const networkConfig = getCurrentNetworkConfig();
+
   return (
     <FuelProvider
       networks={[
         {
-          chainId: ValidNetworkChainId,
-          url: NetworkUrl,
+          chainId: networkConfig.chainId,
+          url: networkConfig.providerUrl,
         },
       ]}
       fuelConfig={FUEL_CONFIG}

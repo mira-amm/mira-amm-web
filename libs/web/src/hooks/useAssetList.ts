@@ -22,11 +22,12 @@ export const useAssetList = (): {
   assets?: CoinDataWithPrice[];
   isLoading: boolean;
 } => {
-  const {verifiedAssetsForChain, isLoading: isVerifiedAssetsLoading} =
+  const {verifiedAssetsForChain, chainId, isLoading: isVerifiedAssetsLoading} =
     useVerifiedAssetsForChain();
 
   const {data, isLoading} = useQuery({
-    queryKey: ["assets"],
+    // Include chainId in query key so cache is network-specific
+    queryKey: ["assets", chainId, SQDIndexerUrl],
     queryFn: async () => {
       const query = gql`
         query MyQuery {
