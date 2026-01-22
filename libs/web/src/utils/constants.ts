@@ -123,6 +123,12 @@ export const DefaultTxParams: TxParams = {
   maxFee: 275_000,
 } as const;
 
+// V2 concentrated liquidity operations require more gas due to multi-bin processing
+export const DefaultV2TxParams: TxParams = {
+  gasLimit: 50_000_000,
+  maxFee: 1_000_000,
+} as const;
+
 // Create a deadline 1 hour (3600 seconds) in the future
 // This is a function to ensure we always get a fresh timestamp
 export const getMaxDeadline = () => Math.floor(Date.now() / 1000) + 3600;
@@ -227,7 +233,25 @@ export const SQDIndexerUrl = getSelectedIndexerUrl();
 export const MainnetUrl = "https://mainnet-explorer.fuel.network";
 export const ApiBaseUrl = "https://prod.api.microchain.systems" as const;
 
-export const FuelAppUrl = "https://app.fuel.network" as const;
+// Network-aware Fuel explorer URL for transaction links
+function getSelectedFuelAppUrl(): string {
+  if (typeof window !== "undefined") {
+    try {
+      const stored = localStorage.getItem("mira-selected-network");
+      if (stored) {
+        const parsed = JSON.parse(stored);
+        if (parsed?.state?.selectedNetwork === "testnet") {
+          return "https://app-testnet.fuel.network";
+        }
+      }
+    } catch {
+      // Ignore parse errors
+    }
+  }
+  return "https://app.fuel.network";
+}
+
+export const FuelAppUrl = getSelectedFuelAppUrl();
 
 export const FuelAssetPriceUrl =
   " https://explorer-indexer-mainnet.fuel.network/assets" as const;

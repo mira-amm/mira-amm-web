@@ -102,6 +102,7 @@ export function useUserBinPositionsV2(poolId: BN | undefined) {
       "userBinPositionsV2",
       poolId?.toString(),
       userAddress?.toString(),
+      SQDIndexerUrl,
     ],
     queryFn: async () => {
       // Mock mode for testing without contracts

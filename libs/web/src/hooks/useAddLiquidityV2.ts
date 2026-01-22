@@ -6,7 +6,7 @@ import {useCallback} from "react";
 import {useWallet} from "@fuels/react";
 import {
   DEFAULT_SLIPPAGE_BASIS_POINT,
-  DefaultTxParams,
+  DefaultV2TxParams,
   getMaxDeadlineV2,
 } from "@/src/utils/constants";
 import {bn, BN} from "fuels";
@@ -140,7 +140,7 @@ export function useAddLiquidityV2({
       deltaIds,
       distributionX,
       distributionY,
-      DefaultTxParams,
+      DefaultV2TxParams,
       {
         fundTransaction: true,
       }
