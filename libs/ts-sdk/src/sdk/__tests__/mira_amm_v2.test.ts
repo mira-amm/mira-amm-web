@@ -216,6 +216,7 @@ describe("MiraAmmV2", () => {
     mockAccount = {
       address: {toB256: () => "0xuser123"},
       provider: {
+        url: "https://testnet.fuel.network/v1/graphql",
         getBaseAssetId: vi
           .fn()
           .mockResolvedValue({toString: () => "0xbaseAsset"}),
@@ -233,7 +234,8 @@ describe("MiraAmmV2", () => {
       getResourcesToSpend: vi.fn().mockResolvedValue([]),
     } as any;
 
-    miraAmmV2 = new MiraAmmV2(mockAccount);
+    // Disable blob scripts in tests to avoid loader initialization issues with mocks
+    miraAmmV2 = new MiraAmmV2(mockAccount, undefined, {useBlobScripts: false});
   });
 
   describe("addLiquidity", () => {
@@ -1064,6 +1066,46 @@ describe("MiraAmmV2", () => {
       const customContractId = "0xcustomcontract";
       const amm = new MiraAmmV2(mockAccount, customContractId);
       expect(amm.id()).toBe("0x1234567890abcdef");
+    });
+
+    it("should enable useBlobScripts by default on testnet (blobs deployed)", () => {
+      // mockAccount has testnet URL, and testnet blobs are deployed
+      const amm = new MiraAmmV2(mockAccount);
+      expect(amm.isUsingBlobScripts()).toBe(true);
+    });
+
+    it("should allow disabling useBlobScripts explicitly", () => {
+      // Even though testnet blobs are available, can be explicitly disabled
+      const amm = new MiraAmmV2(mockAccount, undefined, {useBlobScripts: false});
+      expect(amm.isUsingBlobScripts()).toBe(false);
+    });
+
+    it("should detect testnet from provider URL and enable blob scripts", () => {
+      const testnetAccount = {
+        ...mockAccount,
+        provider: {
+          ...mockAccount.provider,
+          url: "https://testnet.fuel.network/v1/graphql",
+        },
+      } as any;
+
+      const amm = new MiraAmmV2(testnetAccount);
+      // Testnet has blob IDs configured, so blob scripts should be enabled
+      expect(amm.isUsingBlobScripts()).toBe(true);
+    });
+
+    it("should detect mainnet from provider URL and disable blob scripts (not yet deployed)", () => {
+      const mainnetAccount = {
+        ...mockAccount,
+        provider: {
+          ...mockAccount.provider,
+          url: "https://mainnet.fuel.network/v1/graphql",
+        },
+      } as any;
+
+      const amm = new MiraAmmV2(mainnetAccount);
+      // Mainnet does not have blob IDs configured yet
+      expect(amm.isUsingBlobScripts()).toBe(false);
     });
   });
 });

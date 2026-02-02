@@ -124,9 +124,10 @@ export const DefaultTxParams: TxParams = {
 } as const;
 
 // V2 concentrated liquidity operations require more gas due to multi-bin processing
+// Each bin update is gas-intensive; adding to many bins may require significant gas
 export const DefaultV2TxParams: TxParams = {
-  gasLimit: 50_000_000,
-  maxFee: 1_000_000,
+  gasLimit: 100_000_000, // 100M gas for multi-bin operations
+  maxFee: 2_000_000,
 } as const;
 
 // Create a deadline 1 hour (3600 seconds) in the future
