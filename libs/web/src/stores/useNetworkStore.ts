@@ -65,19 +65,28 @@ export const useNetworkStore = create<NetworkState>()(
       },
 
       getConfig: () => {
-        return NETWORK_CONFIGS[get().selectedNetwork];
+        const network = get().selectedNetwork;
+        return NETWORK_CONFIGS[network] ?? NETWORK_CONFIGS.mainnet;
       },
     }),
     {
       name: NETWORK_STORAGE_KEY,
       partialize: (state) => ({selectedNetwork: state.selectedNetwork}),
+      // Validate persisted state to handle invalid localStorage values
+      onRehydrateStorage: () => (state) => {
+        if (state && !NETWORK_CONFIGS[state.selectedNetwork]) {
+          state.selectedNetwork = "mainnet";
+        }
+      },
     }
   )
 );
 
 // Helper function to get current network config (can be used outside React)
 export const getCurrentNetworkConfig = (): NetworkConfig => {
-  return NETWORK_CONFIGS[useNetworkStore.getState().selectedNetwork];
+  const selectedNetwork = useNetworkStore.getState().selectedNetwork;
+  // Fallback to mainnet if selected network is invalid
+  return NETWORK_CONFIGS[selectedNetwork] ?? NETWORK_CONFIGS.mainnet;
 };
 
 // Helper to check if we're on testnet

@@ -1,4 +1,6 @@
-import {ReactNode} from "react";
+"use client";
+
+import {ReactNode, useMemo} from "react";
 import {FuelProvider} from "@fuels/react";
 import {Provider} from "fuels";
 import {isMobile} from "react-device-detect";
@@ -15,12 +17,16 @@ import {createConfig, http, injected} from "@wagmi/core";
 import {mainnet} from "@wagmi/core/chains";
 import {walletConnect} from "@wagmi/connectors";
 import {getBrandText} from "@/src/utils/brandName";
-import {getCurrentNetworkConfig} from "@/src/stores/useNetworkStore";
+import {
+  getCurrentNetworkConfig,
+  NETWORK_CONFIGS,
+  type NetworkConfig,
+} from "@/src/stores/useNetworkStore";
 
-// Creates a protection for SRR
-const createFuelConfigForNetwork = () => {
-  const networkConfig = getCurrentNetworkConfig();
-  const WalletConnectProjectId = "35b967d8f17700b2de24f0abee77e579";
+const WalletConnectProjectId = "35b967d8f17700b2de24f0abee77e579";
+
+// Creates fuel config for a specific network config
+const createFuelConfigForNetwork = (networkConfig: NetworkConfig) => {
   const brandText = getBrandText();
 
   const wagmiConfig = createConfig({
@@ -66,7 +72,7 @@ const createFuelConfigForNetwork = () => {
     ...externalConnectorConfig,
   });
 
-  return {
+  return createFuelConfig(() => ({
     connectors: [
       fueletWalletConnector,
       // burnerWalletConnector,
@@ -74,13 +80,19 @@ const createFuelConfigForNetwork = () => {
       solanaConnector,
       ...(isMobile ? [] : [fuelWalletConnector, bakoSafeConnector]),
     ],
-  };
+  }));
 };
 
-const FUEL_CONFIG = createFuelConfig(createFuelConfigForNetwork);
-
 export function FuelProviderWrapper({children}: {children: ReactNode}) {
-  const networkConfig = getCurrentNetworkConfig();
+  // Get network config - always fallback to mainnet if undefined
+  const networkConfig = getCurrentNetworkConfig() ?? NETWORK_CONFIGS.mainnet;
+
+  // Memoize fuel config to avoid recreating on every render
+  const fuelConfig = useMemo(
+    () => createFuelConfigForNetwork(networkConfig),
+    [networkConfig.id]
+  );
+
 
   return (
     <FuelProvider
@@ -90,7 +102,7 @@ export function FuelProviderWrapper({children}: {children: ReactNode}) {
           url: networkConfig.providerUrl,
         },
       ]}
-      fuelConfig={FUEL_CONFIG}
+      fuelConfig={fuelConfig}
       uiConfig={{suggestBridge: false}}
       theme="dark"
     >

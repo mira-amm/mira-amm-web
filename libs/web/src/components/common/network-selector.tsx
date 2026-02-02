@@ -21,7 +21,8 @@ interface NetworkSelectorProps {
 
 export function NetworkSelector({className}: NetworkSelectorProps) {
   const {selectedNetwork, setNetwork} = useNetworkStore();
-  const currentConfig = NETWORK_CONFIGS[selectedNetwork];
+  const currentConfig =
+    NETWORK_CONFIGS[selectedNetwork] ?? NETWORK_CONFIGS.mainnet;
 
   const isMainnet = selectedNetwork === "mainnet";
 
