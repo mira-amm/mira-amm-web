@@ -1,9 +1,9 @@
 "use client";
 
-import {useMemo} from "react";
+import {useEffect, useMemo, useState} from "react";
 import {usePathname} from "next/navigation";
 import {Logo, NetworkSelector} from "@/src/components/common";
-import {FuelAppUrl} from "@/src/utils/constants";
+import {useNetworkStore, NETWORK_CONFIGS} from "@/src/stores/useNetworkStore";
 import {ConnectWalletNew} from "./connect-wallet-new";
 import {Navigation, type NavLink} from "./navigation";
 
@@ -14,6 +14,13 @@ export function HeaderNew({
   pathName?: string;
 }) {
   const pathname = pathName ?? usePathname();
+  const networkConfig = useNetworkStore((s) => s.getConfig());
+  // Default to mainnet explorer URL for SSR, update on client via store hydration
+  const [explorerUrl, setExplorerUrl] = useState(NETWORK_CONFIGS.mainnet.explorerUrl);
+
+  useEffect(() => {
+    setExplorerUrl(networkConfig.explorerUrl);
+  }, [networkConfig.explorerUrl]);
 
   const navLinks = useMemo(
     () => [
@@ -25,12 +32,14 @@ export function HeaderNew({
       },
       {href: "/points", label: "Points", match: pathname.includes("/points")},
       {
-        href: `${FuelAppUrl}/bridge?from=eth&to=fuel&auto_close=true&=true`,
+        href: explorerUrl
+          ? `${explorerUrl}/bridge?from=eth&to=fuel&auto_close=true&=true`
+          : "",
         label: "Bridge",
         external: true,
       },
     ],
-    [pathname]
+    [pathname, explorerUrl]
   );
 
   return (
@@ -45,7 +54,7 @@ export function HeaderNew({
 
         <div className="flex">
           <Navigation
-            navLinks={navLinks}
+            navLinks={navLinks.filter((link) => link.href)}
             size="small"
             className="gap-4 mx-auto"
           />

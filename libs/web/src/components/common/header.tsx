@@ -16,10 +16,10 @@ import {
 } from "@/src/components/common";
 
 import {
-  FuelAppUrl,
   POINTS_LEARN_MORE_URL,
   POINTS_PROMO_TITLE,
 } from "@/src/utils/constants";
+import {useNetworkStore, NETWORK_CONFIGS} from "@/src/stores/useNetworkStore";
 
 import {PointsIcon} from "@/meshwave-ui/icons";
 
@@ -28,6 +28,13 @@ const PROMO_BANNER_STORAGE_KEY = "fuel-boost-program-promo-banner-closed";
 export function Header({pathName}: {isHomePage?: boolean; pathName?: string}) {
   const pathname = pathName ?? usePathname();
   const [isPromoShown, setIsPromoShown] = useState(false);
+  const networkConfig = useNetworkStore((s) => s.getConfig());
+  // Default to mainnet explorer URL for SSR, update on client via store hydration
+  const [explorerUrl, setExplorerUrl] = useState(NETWORK_CONFIGS.mainnet.explorerUrl);
+
+  useEffect(() => {
+    setExplorerUrl(networkConfig.explorerUrl);
+  }, [networkConfig.explorerUrl]);
 
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -51,12 +58,14 @@ export function Header({pathName}: {isHomePage?: boolean; pathName?: string}) {
       },
       {href: "/points", label: "Points", match: pathname.includes("/points")},
       {
-        href: `${FuelAppUrl}/bridge?from=eth&to=fuel&auto_close=true&=true`,
+        href: explorerUrl
+          ? `${explorerUrl}/bridge?from=eth&to=fuel&auto_close=true&=true`
+          : "",
         label: "Bridge",
         external: true,
       },
     ],
-    [pathname]
+    [pathname, explorerUrl]
   );
 
   return (
@@ -92,7 +101,7 @@ export function Header({pathName}: {isHomePage?: boolean; pathName?: string}) {
         <div className="flex items-center gap-6 lg:gap-10">
           <Logo />
           <nav className="hidden lg:flex gap-6 items-center">
-            {navLinks.map(({href, label, match, external}) =>
+            {navLinks.filter((link) => link.href).map(({href, label, match, external}) =>
               external ? (
                 <a
                   key={label}

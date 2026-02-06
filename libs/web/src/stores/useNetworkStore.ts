@@ -1,7 +1,7 @@
 import {create} from "zustand";
 import {persist} from "zustand/middleware";
 
-export type NetworkId = "mainnet" | "testnet";
+export type NetworkId = "mainnet" | "testnet" | "local";
 
 export interface NetworkConfig {
   id: NetworkId;
@@ -40,6 +40,17 @@ export const NETWORK_CONFIGS: Record<NetworkId, NetworkConfig> = {
     // V2 concentrated liquidity (binned) contract on testnet (from Pavel)
     v2ContractId:
       "0x826908f28ebcab59bbe8c2cc9f0e9b2e12a244517cadce0aba6f534ecbbc2c2b",
+  },
+  local: {
+    id: "local",
+    name: "Local",
+    chainId: 31337, // Local fuel-core uses chainId 31337 to avoid collision with testnet (chainId 0)
+    providerUrl: "http://127.0.0.1:4000/v1/graphql",
+    explorerUrl: "", // No explorer for local
+    indexerUrl: "http://127.0.0.1:4350/graphql", // Must be 127.0.0.1 not localhost for isLocal detection
+    // Contract IDs from env vars — change every restart of `pnpm fuels dev`
+    contractId: process.env.NEXT_PUBLIC_LOCAL_PROXY_CONTRACT_ID ?? "",
+    v2ContractId: process.env.NEXT_PUBLIC_LOCAL_V2_CONTRACT_ID ?? "",
   },
 };
 
@@ -82,6 +93,11 @@ export const useNetworkStore = create<NetworkState>()(
   )
 );
 
+// Helper to read selected network outside React (replaces duplicated localStorage reads)
+export function getSelectedNetwork(): NetworkId {
+  return useNetworkStore.getState().selectedNetwork;
+}
+
 // Helper function to get current network config (can be used outside React)
 export const getCurrentNetworkConfig = (): NetworkConfig => {
   const selectedNetwork = useNetworkStore.getState().selectedNetwork;
@@ -92,4 +108,9 @@ export const getCurrentNetworkConfig = (): NetworkConfig => {
 // Helper to check if we're on testnet
 export const isTestnet = (): boolean => {
   return useNetworkStore.getState().selectedNetwork === "testnet";
+};
+
+// Helper to check if we're on local
+export const isLocal = (): boolean => {
+  return useNetworkStore.getState().selectedNetwork === "local";
 };
