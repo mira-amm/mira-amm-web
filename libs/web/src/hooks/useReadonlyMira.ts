@@ -7,7 +7,7 @@ export function useReadonlyMira() {
   const provider = useProvider();
 
   return useMemo(() => {
-    if (provider) {
+    if (provider && DEFAULT_AMM_CONTRACT_ID) {
       return new ReadonlyMiraAmm(provider, DEFAULT_AMM_CONTRACT_ID);
     }
   }, [provider]);

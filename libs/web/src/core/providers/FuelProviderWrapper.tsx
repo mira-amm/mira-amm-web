@@ -28,6 +28,7 @@ const WalletConnectProjectId = "35b967d8f17700b2de24f0abee77e579";
 // Creates fuel config for a specific network config
 const createFuelConfigForNetwork = (networkConfig: NetworkConfig) => {
   const brandText = getBrandText();
+  const isLocalNetwork = networkConfig.id === "local";
 
   const wagmiConfig = createConfig({
     syncConnectedChain: false,
@@ -62,6 +63,19 @@ const createFuelConfigForNetwork = (networkConfig: NetworkConfig) => {
   });
   const fuelWalletConnector = new FuelWalletConnector();
   const bakoSafeConnector = new BakoSafeConnector();
+
+  // Skip WalletConnect and Solana connectors for local — they crash on chainId 31337
+  // which is not in the Fuel SDK connector registry
+  if (isLocalNetwork) {
+    return createFuelConfig(() => ({
+      connectors: [
+        fueletWalletConnector,
+        burnerWalletConnector,
+        ...(isMobile ? [] : [fuelWalletConnector, bakoSafeConnector]),
+      ],
+    }));
+  }
+
   const walletConnectConnector = new WalletConnectConnector({
     projectId: WalletConnectProjectId,
     wagmiConfig: wagmiConfig as any,

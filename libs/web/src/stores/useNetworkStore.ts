@@ -54,6 +54,12 @@ export const NETWORK_CONFIGS: Record<NetworkId, NetworkConfig> = {
   },
 };
 
+// Networks available in the UI — local is only shown during development
+export const AVAILABLE_NETWORK_IDS: NetworkId[] =
+  process.env.NODE_ENV === "development"
+    ? ["mainnet", "testnet", "local"]
+    : ["mainnet", "testnet"];
+
 interface NetworkState {
   selectedNetwork: NetworkId;
   setNetwork: (network: NetworkId) => void;
@@ -84,8 +90,9 @@ export const useNetworkStore = create<NetworkState>()(
       name: NETWORK_STORAGE_KEY,
       partialize: (state) => ({selectedNetwork: state.selectedNetwork}),
       // Validate persisted state to handle invalid localStorage values
+      // Also reset to mainnet if "local" is persisted but unavailable (e.g., production build)
       onRehydrateStorage: () => (state) => {
-        if (state && !NETWORK_CONFIGS[state.selectedNetwork]) {
+        if (state && !AVAILABLE_NETWORK_IDS.includes(state.selectedNetwork)) {
           state.selectedNetwork = "mainnet";
         }
       },

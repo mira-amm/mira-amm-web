@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import {useState, useCallback} from "react";
-import {Menu, X, Wifi, WifiOff} from "lucide-react";
+import {Menu, Monitor, X, Wifi, WifiOff} from "lucide-react";
 import {createPortal} from "react-dom";
 import {useIsClient, useScrollLock} from "usehooks-ts";
 import {clsx} from "clsx";
@@ -13,6 +13,7 @@ import {useFaucetLink} from "@/src/hooks/useFaucetLink";
 import {
   useNetworkStore,
   NETWORK_CONFIGS,
+  AVAILABLE_NETWORK_IDS,
   type NetworkId,
 } from "@/src/stores/useNetworkStore";
 
@@ -86,11 +87,24 @@ export function MobileMenu() {
         {/* Network Selector */}
         <div className="border-t border-content-dimmed-dark/20 pt-4 mt-2">
           <p className="text-xs text-content-dimmed-light mb-3">Network</p>
-          <div className="flex gap-2">
-            {(Object.keys(NETWORK_CONFIGS) as NetworkId[]).map((networkId) => {
+          <div className="flex gap-2 flex-wrap">
+            {AVAILABLE_NETWORK_IDS.map((networkId) => {
               const config = NETWORK_CONFIGS[networkId];
               const isSelected = selectedNetwork === networkId;
-              const isMainnet = networkId === "mainnet";
+
+              const selectedStyle =
+                networkId === "mainnet"
+                  ? "bg-green-400/20 text-green-400 border border-green-400/50"
+                  : networkId === "local"
+                    ? "bg-blue-400/20 text-blue-400 border border-blue-400/50"
+                    : "bg-yellow-400/20 text-yellow-400 border border-yellow-400/50";
+
+              const NetworkIcon =
+                networkId === "mainnet"
+                  ? Wifi
+                  : networkId === "local"
+                    ? Monitor
+                    : WifiOff;
 
               return (
                 <button
@@ -99,17 +113,11 @@ export function MobileMenu() {
                   className={clsx(
                     "flex items-center gap-2 px-4 py-2 rounded-full text-sm transition-colors",
                     isSelected
-                      ? isMainnet
-                        ? "bg-green-400/20 text-green-400 border border-green-400/50"
-                        : "bg-yellow-400/20 text-yellow-400 border border-yellow-400/50"
+                      ? selectedStyle
                       : "bg-background-grey-light/30 text-content-dimmed-light"
                   )}
                 >
-                  {isMainnet ? (
-                    <Wifi className="w-4 h-4" />
-                  ) : (
-                    <WifiOff className="w-4 h-4" />
-                  )}
+                  <NetworkIcon className="w-4 h-4" />
                   {config.name}
                 </button>
               );
@@ -117,7 +125,12 @@ export function MobileMenu() {
           </div>
           {selectedNetwork === "testnet" && (
             <p className="text-xs text-yellow-400/80 mt-2">
-              ⚠️ Using test tokens with no real value
+              Using test tokens with no real value
+            </p>
+          )}
+          {selectedNetwork === "local" && (
+            <p className="text-xs text-blue-400/80 mt-2">
+              Using local fuel-core node
             </p>
           )}
         </div>

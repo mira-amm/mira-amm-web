@@ -9,7 +9,7 @@ export function useMiraDex() {
   const {wallet} = useWallet();
 
   return useMemo(() => {
-    if (wallet) {
+    if (wallet && DEFAULT_AMM_CONTRACT_ID) {
       return new MiraAmm(wallet, DEFAULT_AMM_CONTRACT_ID);
     }
   }, [wallet]);

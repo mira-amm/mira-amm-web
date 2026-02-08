@@ -59,10 +59,10 @@
         "type": "fuel",
         "chain": "local_testnet",
         "decimals": 9,
-        "chainId": 0,
-        "contractId": "0x53876459bec697d96528d00c0edac97048c7f5df5b7d5f62678a49ccef3f0b21",
+        "chainId": 31337,
+        "contractId": "0xb89d4720ca3a81b63d0457d11559d75795edd883c42da3f9a63c2e4b8008979d",
         "subId": "0x0000000000000000000000000000000000000000000000000000000000000002",
-        "assetId": "0xb93970be997249264374ebea04431aa5897f7343de77aa2aae79909b577fff24"
+        "assetId": "0x54d385ef3a12c5e1fd649e393554a88c333f0014b7b298fbd256fbfefcc2a617"
       }
     ]
   },
@@ -121,10 +121,10 @@
         "type": "fuel",
         "chain": "local_testnet",
         "decimals": 9,
-        "chainId": 0,
-        "contractId": "0x53876459bec697d96528d00c0edac97048c7f5df5b7d5f62678a49ccef3f0b21",
+        "chainId": 31337,
+        "contractId": "0xb89d4720ca3a81b63d0457d11559d75795edd883c42da3f9a63c2e4b8008979d",
         "subId": "0x0000000000000000000000000000000000000000000000000000000000000001",
-        "assetId": "0xa45644779d87dc9b4b1b670c94918b6828fda7eca31a0ca29518baf718c64005"
+        "assetId": "0x6c16c66fcb97fc912356934f5c0cb8720097dc3214ba5dc3b6b416e8110b9fdc"
       }
     ]
   },
@@ -314,7 +314,7 @@
         "type": "fuel",
         "chain": "local_testnet",
         "decimals": 9,
-        "chainId": 0,
+        "chainId": 31337,
         "contractId": "0x53876459bec697d96528d00c0edac97048c7f5df5b7d5f62678a49ccef3f0b21",
         "subId": "0x0000000000000000000000000000000000000000000000000000000000000003",
         "assetId": "0x79378e93fe8080807422a2c003d961a7399541cf8946ed0c1dcb7a5f70aec569"
@@ -530,10 +530,10 @@
         "type": "fuel",
         "chain": "local_testnet",
         "decimals": 6,
-        "chainId": 0,
-        "contractId": "0x53876459bec697d96528d00c0edac97048c7f5df5b7d5f62678a49ccef3f0b21",
+        "chainId": 31337,
+        "contractId": "0xb89d4720ca3a81b63d0457d11559d75795edd883c42da3f9a63c2e4b8008979d",
         "subId": "0x0000000000000000000000000000000000000000000000000000000000000004",
-        "assetId": "0xf7de9fe5445c84e949b9a257830458af0af0e071723c55319c89b954c3f65ec0"
+        "assetId": "0xf7e58639285ca5e341e9d51af2c334b2293bf5c12e721b8c9de466a3e4f66233"
       }
     ]
   },
@@ -592,10 +592,10 @@
         "type": "fuel",
         "chain": "local_testnet",
         "decimals": 6,
-        "chainId": 0,
-        "contractId": "0x53876459bec697d96528d00c0edac97048c7f5df5b7d5f62678a49ccef3f0b21",
+        "chainId": 31337,
+        "contractId": "0xb89d4720ca3a81b63d0457d11559d75795edd883c42da3f9a63c2e4b8008979d",
         "subId": "0x0000000000000000000000000000000000000000000000000000000000000000",
-        "assetId": "0xa75f04c2a6858712f56e4b735cb4bb690a666455e95175d8eed25b2e2ede2836"
+        "assetId": "0x680871143727c0f98b15163d6be7a2f422c2b25dc989bd0bbc65a54434898e1a"
       }
     ]
   },
@@ -989,6 +989,22 @@
         "decimals": 9,
         "assetId": "0xaedd7f783e841380a9ff6bd8936a35daeb2b58ce71cdf925182befd9abd4fb39",
         "chainId": 0
+      }
+    ]
+  },
+  {
+    "name": "Bitcoin",
+    "symbol": "BTC",
+    "icon": "https://verified-assets.fuel.network/images/btc.svg",
+    "networks": [
+      {
+        "type": "fuel",
+        "chain": "local_testnet",
+        "decimals": 8,
+        "chainId": 31337,
+        "contractId": "0xb89d4720ca3a81b63d0457d11559d75795edd883c42da3f9a63c2e4b8008979d",
+        "subId": "0x0000000000000000000000000000000000000000000000000000000000000003",
+        "assetId": "0x7292cf68df14867398ad5f6a1fb6da5f71f090001ccda44473d43688ef16e5a8"
       }
     ]
   }

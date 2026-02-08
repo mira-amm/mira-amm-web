@@ -1,7 +1,7 @@
 "use client";
 
 import {clsx} from "clsx";
-import {ChevronDown, Wifi, WifiOff} from "lucide-react";
+import {ChevronDown, Monitor, Wifi, WifiOff} from "lucide-react";
 import {FuelIcon} from "@/meshwave-ui/icons";
 import {
   DropdownMenu,
@@ -12,8 +12,21 @@ import {
 import {
   useNetworkStore,
   NETWORK_CONFIGS,
+  AVAILABLE_NETWORK_IDS,
   type NetworkId,
 } from "@/src/stores/useNetworkStore";
+
+const NETWORK_STYLES: Record<NetworkId, {
+  text: string;
+  bg: string;
+  iconBg: string;
+  label: string;
+  Icon: typeof Wifi;
+}> = {
+  mainnet: {text: "text-green-400", bg: "bg-green-400/20", iconBg: "bg-green-400/20", label: "Production", Icon: Wifi},
+  testnet: {text: "text-yellow-400", bg: "bg-yellow-400/20", iconBg: "bg-yellow-400/20", label: "Testing", Icon: WifiOff},
+  local: {text: "text-blue-400", bg: "bg-blue-400/20", iconBg: "bg-blue-400/20", label: "Development", Icon: Monitor},
+};
 
 interface NetworkSelectorProps {
   className?: string;
@@ -24,7 +37,15 @@ export function NetworkSelector({className}: NetworkSelectorProps) {
   const currentConfig =
     NETWORK_CONFIGS[selectedNetwork] ?? NETWORK_CONFIGS.mainnet;
 
-  const isMainnet = selectedNetwork === "mainnet";
+  const triggerColor =
+    selectedNetwork === "mainnet"
+      ? "text-green-400"
+      : selectedNetwork === "local"
+        ? "text-blue-400 bg-blue-400/10 border-blue-400/30"
+        : "text-yellow-400 bg-yellow-400/10 border-yellow-400/30";
+
+  const pulseColor =
+    selectedNetwork === "local" ? "bg-blue-400" : "bg-yellow-400";
 
   return (
     <DropdownMenu modal={false}>
@@ -34,16 +55,14 @@ export function NetworkSelector({className}: NetworkSelectorProps) {
             "flex items-center gap-2 px-3 py-2 rounded-full cursor-pointer font-normal transition-colors",
             "hover:bg-background-grey-light/50",
             "border border-transparent hover:border-content-dimmed-dark/20",
-            isMainnet
-              ? "text-green-400"
-              : "text-yellow-400 bg-yellow-400/10 border-yellow-400/30",
+            triggerColor,
             className
           )}
         >
           <div className="relative">
             <FuelIcon />
-            {!isMainnet && (
-              <span className="absolute -top-1 -right-1 w-2 h-2 bg-yellow-400 rounded-full animate-pulse" />
+            {selectedNetwork !== "mainnet" && (
+              <span className={clsx("absolute -top-1 -right-1 w-2 h-2 rounded-full animate-pulse", pulseColor)} />
             )}
           </div>
           <span className="text-sm">{currentConfig.name}</span>
@@ -59,10 +78,11 @@ export function NetworkSelector({className}: NetworkSelectorProps) {
           Select Network
         </div>
 
-        {(Object.keys(NETWORK_CONFIGS) as NetworkId[]).map((networkId) => {
+        {AVAILABLE_NETWORK_IDS.map((networkId) => {
           const config = NETWORK_CONFIGS[networkId];
           const isSelected = selectedNetwork === networkId;
-          const isMainnetOption = networkId === "mainnet";
+          const style = NETWORK_STYLES[networkId];
+          const {Icon} = style;
 
           return (
             <DropdownMenuItem
@@ -80,27 +100,20 @@ export function NetworkSelector({className}: NetworkSelectorProps) {
               <div
                 className={clsx(
                   "flex items-center justify-center w-8 h-8 rounded-full",
-                  isMainnetOption ? "bg-green-400/20" : "bg-yellow-400/20"
+                  style.iconBg
                 )}
               >
-                {isMainnetOption ? (
-                  <Wifi className="w-4 h-4 text-green-400" />
-                ) : (
-                  <WifiOff className="w-4 h-4 text-yellow-400" />
-                )}
+                <Icon className={clsx("w-4 h-4", style.text)} />
               </div>
 
               <div className="flex flex-col">
                 <span
-                  className={clsx(
-                    "text-sm font-medium",
-                    isMainnetOption ? "text-green-400" : "text-yellow-400"
-                  )}
+                  className={clsx("text-sm font-medium", style.text)}
                 >
                   {config.name}
                 </span>
                 <span className="text-xs text-content-dimmed-light">
-                  {isMainnetOption ? "Production" : "Testing"}
+                  {style.label}
                 </span>
               </div>
 
@@ -115,7 +128,12 @@ export function NetworkSelector({className}: NetworkSelectorProps) {
 
         {selectedNetwork === "testnet" && (
           <div className="px-3 py-2 text-xs text-yellow-400/80 border-t border-content-dimmed-dark/20 bg-yellow-400/5">
-            ⚠️ Testnet uses test tokens with no real value
+            Testnet uses test tokens with no real value
+          </div>
+        )}
+        {selectedNetwork === "local" && (
+          <div className="px-3 py-2 text-xs text-blue-400/80 border-t border-content-dimmed-dark/20 bg-blue-400/5">
+            Using local fuel-core node
           </div>
         )}
       </DropdownMenuContent>

@@ -85,19 +85,24 @@ export function useV2PoolsForPair(
 
         return result.pools || [];
       } catch (err) {
-        console.error("[useV2PoolsForPair] Error fetching V2 pools:", err);
+        // 400 errors indicate schema mismatch (e.g., indexer doesn't support V2 fields yet)
+        const is400 = err instanceof Error && err.message.includes("Code: 400");
+        if (!is400) {
+          console.error("[useV2PoolsForPair] Error fetching V2 pools:", err);
+        }
         throw err;
       }
     },
     enabled: shouldFetch && !!assetIn && !!assetOut,
     staleTime: 10_000, // 10 seconds
-    retry: 1, // Only retry once to avoid long delays
+    retry: (failureCount, err) => {
+      // Don't retry 400 errors (schema mismatch)
+      if (err instanceof Error && err.message.includes("Code: 400")) {
+        return false;
+      }
+      return failureCount < 1;
+    },
   });
-
-  // Log error if query failed
-  if (error) {
-    console.error("[useV2PoolsForPair] Query error:", error);
-  }
 
   return {
     pools: data || [],

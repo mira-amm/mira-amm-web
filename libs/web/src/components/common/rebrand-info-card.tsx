@@ -33,7 +33,12 @@ export const RebrandInfoCard: React.FC<RebrandInfoCardProps> = ({
     REBRAND_CARD_DISMISSED_KEY,
     false
   );
+  const [mounted, setMounted] = useState(false);
   const [Modal, openModal, closeModal] = useModal();
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   const handleDismiss = () => {
     setIsDismissed(true);
@@ -48,8 +53,9 @@ export const RebrandInfoCard: React.FC<RebrandInfoCardProps> = ({
     setIsDismissed(true);
   };
 
+  // Don't render until mounted (avoids SSR/client mismatch with localStorage)
   // Don't render if dismissed
-  if (isDismissed) {
+  if (!mounted || isDismissed) {
     return null;
   }
 
