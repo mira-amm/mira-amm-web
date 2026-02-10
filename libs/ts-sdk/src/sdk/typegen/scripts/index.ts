@@ -5,16 +5,16 @@
 /* eslint-disable @typescript-eslint/consistent-type-imports */
 
 /*
-  Fuels version: 0.101.2
+  Fuels version: 0.102.0
 */
 
-export {SwapExactOutputScriptLoader} from "./SwapExactOutputScriptLoader";
-export {SwapExactOutputScript} from "./SwapExactOutputScript";
-export {SwapExactInputScriptLoader} from "./SwapExactInputScriptLoader";
-export {SwapExactInputScript} from "./SwapExactInputScript";
-export {RemoveLiquidityScriptLoader} from "./RemoveLiquidityScriptLoader";
-export {RemoveLiquidityScript} from "./RemoveLiquidityScript";
-export {CreatePoolAndAddLiquidityScriptLoader} from "./CreatePoolAndAddLiquidityScriptLoader";
-export {CreatePoolAndAddLiquidityScript} from "./CreatePoolAndAddLiquidityScript";
-export {AddLiquidityScriptLoader} from "./AddLiquidityScriptLoader";
-export {AddLiquidityScript} from "./AddLiquidityScript";
+export { SwapExactOutputScriptLoader } from './SwapExactOutputScriptLoader';
+export { SwapExactOutputScript } from './SwapExactOutputScript';
+export { SwapExactInputScriptLoader } from './SwapExactInputScriptLoader';
+export { SwapExactInputScript } from './SwapExactInputScript';
+export { RemoveLiquidityScriptLoader } from './RemoveLiquidityScriptLoader';
+export { RemoveLiquidityScript } from './RemoveLiquidityScript';
+export { CreatePoolAndAddLiquidityScriptLoader } from './CreatePoolAndAddLiquidityScriptLoader';
+export { CreatePoolAndAddLiquidityScript } from './CreatePoolAndAddLiquidityScript';
+export { AddLiquidityScriptLoader } from './AddLiquidityScriptLoader';
+export { AddLiquidityScript } from './AddLiquidityScript';
