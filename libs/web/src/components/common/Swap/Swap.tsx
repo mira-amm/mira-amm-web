@@ -6,6 +6,7 @@ import {B256Address, BN, bn, ScriptTransactionRequest} from "fuels";
 import {useConnectUI, useIsConnected} from "@fuels/react";
 import {PoolId} from "mira-dex-ts";
 import {getIsRebrandEnabled} from "@/src/utils/isRebrandEnabled";
+import {SQDIndexerUrl} from "@/src/utils/constants";
 
 import {Button} from "@/meshwave-ui/Button";
 
@@ -246,7 +247,8 @@ export function Swap({isWidget}: {isWidget?: boolean}) {
   const [inputsState, setInputsState] =
     useState<InputsState>(initialInputsState);
   const [activeMode, setActiveMode] = useState<CurrencyBoxMode>("sell");
-  const [poolType, setPoolType] = useState<PoolTypeOption>("v2");
+  const isLocal = SQDIndexerUrl.includes("127.0.0.1");
+  const [poolType, setPoolType] = useState<PoolTypeOption>(isLocal ? "v1" : "v2");
   const [slippage, setSlippage] = useState<number>(100);
   const [slippageMode, setSlippageMode] = useState<SlippageMode>("auto");
   const [txCostData, setTxCostData] = useState<{

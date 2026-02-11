@@ -13,10 +13,15 @@ import {
 import { DEFAULT_AMM_CONTRACT_ID } from "./constants";
 
 import {
+  AddLiquidityScript,
   AddLiquidityScriptLoader,
+  CreatePoolAndAddLiquidityScript,
   CreatePoolAndAddLiquidityScriptLoader,
+  RemoveLiquidityScript,
   RemoveLiquidityScriptLoader,
+  SwapExactInputScript,
   SwapExactInputScriptLoader,
+  SwapExactOutputScript,
   SwapExactOutputScriptLoader,
 } from "./typegen/scripts";
 
@@ -45,37 +50,50 @@ type TransactionWithGasPrice = {
   gasPrice: BN;
 };
 
+export type MiraAmmOptions = {
+  contractId?: string;
+  useScriptLoader?: boolean;
+};
+
 export class MiraAmm {
   private readonly account: Account;
   private readonly ammContract: MiraAmmContract;
-  private readonly addLiquidityScriptLoader: AddLiquidityScriptLoader;
-  private readonly createPoolAndAddLiquidityScriptLoader: CreatePoolAndAddLiquidityScriptLoader;
-  private readonly removeLiquidityScriptLoader: RemoveLiquidityScriptLoader;
-  private readonly swapExactInputScriptLoader: SwapExactInputScriptLoader;
-  private readonly swapExactOutputScriptLoader: SwapExactOutputScriptLoader;
+  private readonly addLiquidityScript: AddLiquidityScript | AddLiquidityScriptLoader;
+  private readonly createPoolAndAddLiquidityScript: CreatePoolAndAddLiquidityScript | CreatePoolAndAddLiquidityScriptLoader;
+  private readonly removeLiquidityScript: RemoveLiquidityScript | RemoveLiquidityScriptLoader;
+  private readonly swapExactInputScript: SwapExactInputScript | SwapExactInputScriptLoader;
+  private readonly swapExactOutputScript: SwapExactOutputScript | SwapExactOutputScriptLoader;
 
-  constructor(account: Account, contractIdOpt?: string) {
-    const contractId = contractIdOpt ?? DEFAULT_AMM_CONTRACT_ID;
+  constructor(account: Account, contractIdOrOpts?: string | MiraAmmOptions) {
+    const opts = typeof contractIdOrOpts === "string"
+      ? { contractId: contractIdOrOpts }
+      : contractIdOrOpts ?? {};
+    const contractId = opts.contractId ?? DEFAULT_AMM_CONTRACT_ID;
+    const useLoader = opts.useScriptLoader !== false;
     const contractIdConfigurables = {
       AMM_CONTRACT_ID: contractIdInput(contractId),
     };
     this.account = account;
     this.ammContract = new MiraAmmContract(contractId, account);
-    this.addLiquidityScriptLoader = new AddLiquidityScriptLoader(
-      account
+    this.addLiquidityScript = (useLoader
+      ? new AddLiquidityScriptLoader(account)
+      : new AddLiquidityScript(account)
     ).setConfigurableConstants(contractIdConfigurables);
-    this.createPoolAndAddLiquidityScriptLoader =
-      new CreatePoolAndAddLiquidityScriptLoader(
-        account
-      ).setConfigurableConstants(contractIdConfigurables);
-    this.removeLiquidityScriptLoader = new RemoveLiquidityScriptLoader(
-      account
+    this.createPoolAndAddLiquidityScript = (useLoader
+      ? new CreatePoolAndAddLiquidityScriptLoader(account)
+      : new CreatePoolAndAddLiquidityScript(account)
     ).setConfigurableConstants(contractIdConfigurables);
-    this.swapExactInputScriptLoader = new SwapExactInputScriptLoader(
-      account
+    this.removeLiquidityScript = (useLoader
+      ? new RemoveLiquidityScriptLoader(account)
+      : new RemoveLiquidityScript(account)
     ).setConfigurableConstants(contractIdConfigurables);
-    this.swapExactOutputScriptLoader = new SwapExactOutputScriptLoader(
-      account
+    this.swapExactInputScript = (useLoader
+      ? new SwapExactInputScriptLoader(account)
+      : new SwapExactInputScript(account)
+    ).setConfigurableConstants(contractIdConfigurables);
+    this.swapExactOutputScript = (useLoader
+      ? new SwapExactOutputScriptLoader(account)
+      : new SwapExactOutputScript(account)
     ).setConfigurableConstants(contractIdConfigurables);
   }
 
@@ -105,7 +123,7 @@ export class MiraAmm {
       assetA.bits === poolId[0].bits
         ? [amountADesired, amountBDesired, amountAMin, amountBMin]
         : [amountBDesired, amountADesired, amountBMin, amountAMin];
-    let request = await this.addLiquidityScriptLoader.functions
+    let request = await this.addLiquidityScript.functions
       .main(
         poolIdInput(poolId),
         amount0Desired,
@@ -157,7 +175,7 @@ export class MiraAmm {
       tokenAContract === token0Contract
         ? [amountADesired, amountBDesired]
         : [amountBDesired, amountADesired];
-    let request = await this.createPoolAndAddLiquidityScriptLoader.functions
+    let request = await this.createPoolAndAddLiquidityScript.functions
       .main(
         contractIdInput(token0Contract),
         token0SubId,
@@ -249,7 +267,7 @@ export class MiraAmm {
       assetA.bits === poolId[0].bits
         ? [amountAMin, amountBMin]
         : [amountBMin, amountAMin];
-    let request = await this.removeLiquidityScriptLoader.functions
+    let request = await this.removeLiquidityScript.functions
       .main(
         poolIdInput(poolId),
         liquidity,
@@ -281,7 +299,7 @@ export class MiraAmm {
     txParams?: TxParams,
     options?: PrepareRequestOptions
   ): Promise<TransactionWithGasPrice> {
-    let request = await this.swapExactInputScriptLoader.functions
+    let request = await this.swapExactInputScript.functions
       .main(
         amountIn,
         assetInput(assetIn),
@@ -313,7 +331,7 @@ export class MiraAmm {
     txParams?: TxParams,
     options?: PrepareRequestOptions
   ): Promise<TransactionWithGasPrice> {
-    let request = await this.swapExactOutputScriptLoader.functions
+    let request = await this.swapExactOutputScript.functions
       .main(
         amountOut,
         assetInput(assetOut),
