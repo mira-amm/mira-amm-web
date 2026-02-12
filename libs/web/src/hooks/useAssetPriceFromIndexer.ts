@@ -9,10 +9,8 @@ export const useAssetPriceFromIndexer = (
     queryKey: ["price", assetId],
     queryFn: async () => {
       const query = gql`
-        query {
-          asset: assetById(
-            id: "${assetId}"
-          ) {
+        query AssetPrice($id: String!) {
+          asset: assetById(id: $id) {
             price
           }
         }
@@ -20,6 +18,7 @@ export const useAssetPriceFromIndexer = (
       const response = await request<{asset: {price: string} | null}>({
         document: query,
         url: SQDIndexerUrl,
+        variables: {id: assetId},
       });
       return response;
     },

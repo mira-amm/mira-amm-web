@@ -201,7 +201,7 @@ function getSelectedFuelAppUrl(): string {
 export const FuelAppUrl = getSelectedFuelAppUrl();
 
 export const FuelAssetPriceUrl =
-  " https://explorer-indexer-mainnet.fuel.network/assets" as const;
+  "https://explorer-indexer-mainnet.fuel.network/assets" as const;
 
 export const EthDecimals = 9 as const;
 export const MinEthValue = 0.0001 as const;
