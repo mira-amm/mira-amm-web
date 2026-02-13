@@ -14,7 +14,16 @@ export function UnknownCoinListItem({
   const {asset: metadata, isLoading} = useAsset(assetId);
 
   if (isLoading) return <SkeletonLoader isLoading count={1} textLines={1} />;
-  if (!metadata) return <div className="px-4 py-2">Asset not found</div>;
+
+  // If metadata is not found, create a fallback with minimal info
+  // This allows users to select unknown/mock tokens on testnet
+  const assetData = metadata || {
+    assetId,
+    name: "Unknown Token",
+    symbol: assetId.slice(0, 10) + "...",
+    decimals: 9, // Default decimals for Fuel assets
+    icon: undefined,
+  };
 
   return (
     <div
@@ -22,7 +31,7 @@ export function UnknownCoinListItem({
       className="px-4 py-2 rounded-lg hover:bg-background-grey-dark cursor-pointer"
     >
       <CoinListItem
-        assetData={{...metadata, userBalance: balance, isVerified: false}}
+        assetData={{...assetData, userBalance: balance, isVerified: false}}
       />
     </div>
   );

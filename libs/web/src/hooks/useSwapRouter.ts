@@ -46,7 +46,9 @@ export function useSwapRouter(
   };
   error: string | null;
 } {
-  const amm = poolType === "v2" ? useReadonlyMiraV2() : useReadonlyMira();
+  const ammV1 = useReadonlyMira();
+  const ammV2 = useReadonlyMiraV2();
+  const amm = poolType === "v2" ? ammV2 : ammV1;
 
   // Default cache options
   const effectiveCacheOptions = useMemo(

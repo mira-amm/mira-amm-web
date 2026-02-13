@@ -17,6 +17,7 @@ import {useLiquidityForm} from "@/src/hooks/useLiquidityForm";
 import {useLiquidityFormV2Integration} from "@/src/hooks/useLiquidityFormV2Integration";
 import {BN} from "fuels";
 import {getUiPoolTypeFromPoolId} from "@/src/utils/poolTypeDetection";
+import {isV2Available} from "@/src/stores/useNetworkStore";
 
 const AddBinLiquidityPage = ({
   poolKey,
@@ -29,8 +30,9 @@ const AddBinLiquidityPage = ({
 }) => {
   const {isConnected, isPending: isConnecting} = useIsConnected();
   const {connect} = useConnectUI();
+  // Force V1 when V2 is not deployed on the current network
   const [selectedPoolType, setSelectedPoolType] =
-    useState<PoolTypeOption>(poolType);
+    useState<PoolTypeOption>(isV2Available() ? poolType : "v1");
 
   // Use the pool assets hook
   const {

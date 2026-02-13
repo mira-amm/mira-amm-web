@@ -1,6 +1,8 @@
-import {ReactNode} from "react";
+"use client";
+
+import {ReactNode, useMemo} from "react";
 import {FuelProvider} from "@fuels/react";
-import {CHAIN_IDS, Network, Provider} from "fuels";
+import {Provider} from "fuels";
 import {isMobile} from "react-device-detect";
 import {
   BakoSafeConnector,
@@ -14,13 +16,19 @@ import {
 import {createConfig, http, injected} from "@wagmi/core";
 import {mainnet} from "@wagmi/core/chains";
 import {walletConnect} from "@wagmi/connectors";
-import {NetworkUrl, ValidNetworkChainId} from "@/src/utils/constants";
 import {getBrandText} from "@/src/utils/brandName";
+import {
+  getCurrentNetworkConfig,
+  NETWORK_CONFIGS,
+  type NetworkConfig,
+} from "@/src/stores/useNetworkStore";
 
-// Creates a protection for SRR
-const FUEL_CONFIG = createFuelConfig(() => {
-  const WalletConnectProjectId = "35b967d8f17700b2de24f0abee77e579";
+const WalletConnectProjectId = "35b967d8f17700b2de24f0abee77e579";
+
+// Creates fuel config for a specific network config
+const createFuelConfigForNetwork = (networkConfig: NetworkConfig) => {
   const brandText = getBrandText();
+  const isLocalNetwork = networkConfig.id === "local";
 
   const wagmiConfig = createConfig({
     syncConnectedChain: false,
@@ -42,12 +50,12 @@ const FUEL_CONFIG = createFuelConfig(() => {
     ],
   });
 
-  const fuelProvider = new Provider(NetworkUrl);
+  const fuelProvider = new Provider(networkConfig.providerUrl);
 
   const externalConnectorConfig: Partial<{
     chainId: number;
     fuelProvider: Provider;
-  }> = {chainId: ValidNetworkChainId, fuelProvider};
+  }> = {chainId: networkConfig.chainId, fuelProvider};
 
   const fueletWalletConnector = new FueletWalletConnector();
   const burnerWalletConnector = new BurnerWalletConnector({
@@ -55,6 +63,19 @@ const FUEL_CONFIG = createFuelConfig(() => {
   });
   const fuelWalletConnector = new FuelWalletConnector();
   const bakoSafeConnector = new BakoSafeConnector();
+
+  // Skip WalletConnect and Solana connectors for local — they crash on chainId 31337
+  // which is not in the Fuel SDK connector registry
+  if (isLocalNetwork) {
+    return createFuelConfig(() => ({
+      connectors: [
+        fueletWalletConnector,
+        burnerWalletConnector,
+        ...(isMobile ? [] : [fuelWalletConnector, bakoSafeConnector]),
+      ],
+    }));
+  }
+
   const walletConnectConnector = new WalletConnectConnector({
     projectId: WalletConnectProjectId,
     wagmiConfig: wagmiConfig as any,
@@ -65,7 +86,7 @@ const FUEL_CONFIG = createFuelConfig(() => {
     ...externalConnectorConfig,
   });
 
-  return {
+  return createFuelConfig(() => ({
     connectors: [
       fueletWalletConnector,
       // burnerWalletConnector,
@@ -73,19 +94,29 @@ const FUEL_CONFIG = createFuelConfig(() => {
       solanaConnector,
       ...(isMobile ? [] : [fuelWalletConnector, bakoSafeConnector]),
     ],
-  };
-});
+  }));
+};
 
 export function FuelProviderWrapper({children}: {children: ReactNode}) {
+  // Get network config - always fallback to mainnet if undefined
+  const networkConfig = getCurrentNetworkConfig() ?? NETWORK_CONFIGS.mainnet;
+
+  // Memoize fuel config to avoid recreating on every render
+  const fuelConfig = useMemo(
+    () => createFuelConfigForNetwork(networkConfig),
+    [networkConfig.id]
+  );
+
+
   return (
     <FuelProvider
       networks={[
         {
-          chainId: ValidNetworkChainId,
-          url: NetworkUrl,
+          chainId: networkConfig.chainId,
+          url: networkConfig.providerUrl,
         },
       ]}
-      fuelConfig={FUEL_CONFIG}
+      fuelConfig={fuelConfig}
       uiConfig={{suggestBridge: false}}
       theme="dark"
     >

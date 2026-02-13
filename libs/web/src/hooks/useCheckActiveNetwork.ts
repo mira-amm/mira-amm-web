@@ -8,6 +8,13 @@ export function useCheckActiveNetwork() {
 
   useEffect(() => {
     const checkNetwork = async () => {
+      // If ValidNetworkChainId is -1, it means we're on testnet and any chain is valid
+      // This is because testnet chain IDs can vary
+      if (ValidNetworkChainId === -1) {
+        setIsValid(true);
+        return;
+      }
+
       const chainId = await wallet?.provider.getChainId();
       setIsValid(chainId === ValidNetworkChainId);
     };

@@ -64,9 +64,8 @@ export function usePoolsData() {
   const timestamp24hAgo = Math.floor(Date.now() / 1000) - 24 * 60 * 60;
 
   const query = gql`
-    query PoolsConnection($first: Int!, $after: String, $orderBy: [PoolOrderByInput!]!, $poolWhereInput: PoolWhereInput) {
+    query PoolsConnection($first: Int!, $after: String, $orderBy: [PoolOrderByInput!]!, $poolWhereInput: PoolWhereInput, $timestamp24hAgo: Int!) {
       poolsConnection(first: $first, after: $after, orderBy: $orderBy, where: $poolWhereInput ) {
-        totalCount
         totalCount
         edges {
             node {
@@ -86,7 +85,7 @@ export function usePoolsData() {
                 symbol
                 price
               }
-              snapshots(where: { timestamp_gt: ${timestamp24hAgo} }) {
+              snapshots(where: { timestamp_gt: $timestamp24hAgo }) {
                 volumeUSD
                 feesUSD
               }
@@ -97,7 +96,8 @@ export function usePoolsData() {
   `;
 
   const {data, isLoading} = useQuery<any>({
-    queryKey: ["pools", page, orderBy, search],
+    // Include SQDIndexerUrl in query key so cache is network-specific
+    queryKey: ["pools", page, orderBy, search, SQDIndexerUrl],
     queryFn: () =>
       request({
         url: SQDIndexerUrl,
@@ -106,6 +106,7 @@ export function usePoolsData() {
           first: ITEMS_IN_PAGE,
           after: page === 1 ? null : String((page - 1) * ITEMS_IN_PAGE),
           orderBy,
+          timestamp24hAgo,
           poolWhereInput: {
             OR: [
               {asset0: {symbol_containsInsensitive: search}},

@@ -4,7 +4,7 @@ import {useMutation, useQueryClient} from "@tanstack/react-query";
 import {useMiraDexV2} from "@/src/hooks";
 import {useCallback} from "react";
 import {useWallet} from "@fuels/react";
-import {DefaultTxParams, getMaxDeadlineV2} from "@/src/utils/constants";
+import {DefaultV2TxParams, getMaxDeadlineV2} from "@/src/utils/constants";
 import {bn, BN} from "fuels";
 import {V2BinPosition} from "./useUserBinPositionsV2";
 import {isV2MockEnabled, mockRemoveLiquidityV2} from "../utils/mockConfig";
@@ -93,7 +93,7 @@ export function useRemoveAllBinsV2({
         minAmountX,
         minAmountY,
         getMaxDeadlineV2(),
-        DefaultTxParams,
+        DefaultV2TxParams,
         {
           fundTransaction: true,
         }

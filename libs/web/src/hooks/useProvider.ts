@@ -4,7 +4,7 @@ import {useQuery} from "@tanstack/react-query";
 
 export function useProvider() {
   const {data} = useQuery({
-    queryKey: ["provider"],
+    queryKey: ["provider", NetworkUrl],
     queryFn: () => new Provider(NetworkUrl),
     staleTime: Infinity,
   });

@@ -36,6 +36,7 @@ import {
   isV2PoolId,
 } from "@/src/utils/poolTypeDetection";
 import {isV2MockEnabled} from "@/src/utils/mockConfig";
+import {isV2Available} from "@/src/stores/useNetworkStore";
 import {MockModeIndicator} from "@/src/components/common/MockModeIndicator/MockModeIndicator";
 import V2LiquidityConfig from "./V2LiquidityConfig";
 
@@ -62,7 +63,8 @@ const AddLiquidityDialog = ({
   // Detect if this is a v2 pool and manage pool type state
   const isV2PoolDetected = isV2PoolId(poolId);
 
-  const poolType = "v2";
+  // Default to v2 only when V2 is deployed on the current network
+  const poolType: PoolTypeOption = isV2Available() ? "v2" : "v1";
 
   // V2 liquidity configuration state
   const [v2Config, setV2Config] = useState<{

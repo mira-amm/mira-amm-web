@@ -13,10 +13,12 @@
     "test:integration": "node scripts/run-integration-tests.js",
     "test:integration:watch": "vitest test/integration/**/*.integration.test.ts",
     "test:unit": "vitest run src/**/*.test.ts",
-    "test": "vitest run"
+    "test": "vitest run",
+    "deploy:v2-blobs:testnet": "PROVIDER_URL=https://testnet.fuel.network/v1/graphql npx tsx scripts/deploy-v2-blobs.ts",
+    "deploy:v2-blobs:mainnet": "PROVIDER_URL=https://mainnet.fuel.network/v1/graphql npx tsx scripts/deploy-v2-blobs.ts"
   },
   "peerDependencies": {
-    "fuels": "0.101.2"
+    "fuels": "0.102.0"
   },
   "devDependencies": {
     "@types/node": "^24.3.0",

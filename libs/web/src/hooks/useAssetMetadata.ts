@@ -1,10 +1,8 @@
 import {useQuery} from "@tanstack/react-query";
-import {B256Address, Contract, Provider} from "fuels";
+import {B256Address, Contract} from "fuels";
 import {NetworkUrl} from "../utils/constants";
-import {useAssetMinterContract, useAssetList} from "@/src/hooks";
+import {useAssetMinterContract, useAssetList, useProvider} from "@/src/hooks";
 import src20Abi from "@/src/abis/src20-abi.json";
-
-const providerPromise = new Provider(NetworkUrl);
 
 export function useAssetMetadata(assetId: B256Address | null): {
   name?: string;
@@ -12,12 +10,13 @@ export function useAssetMetadata(assetId: B256Address | null): {
   decimals?: number;
 } & {isLoading: boolean} {
   const {assets, isLoading: isLoadingAsset} = useAssetList();
+  const provider = useProvider();
 
   const {contractId, isLoading: contractLoading} =
     useAssetMinterContract(assetId);
 
   const {data, isLoading: metadataLoading} = useQuery({
-    queryKey: ["assetMetadata", contractId, assetId, assets?.length],
+    queryKey: ["assetMetadata", contractId, assetId, assets?.length, NetworkUrl],
     queryFn: async () => {
       const asset = assets?.find(
         (asset) => asset.assetId.toLowerCase() === assetId?.toLowerCase()
@@ -32,8 +31,12 @@ export function useAssetMetadata(assetId: B256Address | null): {
         };
       }
 
-      const provider = providerPromise;
-      const src20Contract = new Contract(contractId!, src20Abi, provider);
+      // For SRC20 fallback, we need contractId and provider
+      if (!contractId || !provider) {
+        return {name: undefined, symbol: undefined, decimals: undefined};
+      }
+
+      const src20Contract = new Contract(contractId, src20Abi, provider);
 
       const result = await src20Contract
         .multiCall([
@@ -46,7 +49,7 @@ export function useAssetMetadata(assetId: B256Address | null): {
           new Contract(
             "0x0ceafc5ef55c66912e855917782a3804dc489fb9e27edfd3621ea47d2a281156",
             src20Abi,
-            provider!
+            provider
           ),
         ])
         .get();
@@ -57,8 +60,9 @@ export function useAssetMetadata(assetId: B256Address | null): {
         decimals: result.value[2],
       };
     },
+    // Allow query to run even without contractId - we only need it for SRC20 fallback
     enabled:
-      !!assetId && !!contractId && !isLoadingAsset && assets !== undefined,
+      !!assetId && !isLoadingAsset && assets !== undefined,
     staleTime: Infinity,
   });
 

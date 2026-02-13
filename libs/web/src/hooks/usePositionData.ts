@@ -6,7 +6,7 @@ import {DEFAULT_AMM_CONTRACT_ID} from "@/src/utils/constants";
 
 export function usePositionData({pool}: {pool?: PoolId}) {
   const mira = useReadonlyMira();
-  const lpTokenAssetId = pool
+  const lpTokenAssetId = pool && DEFAULT_AMM_CONTRACT_ID
     ? getLPAssetId(DEFAULT_AMM_CONTRACT_ID, pool)
     : null;
   const {balances} = useBalances();

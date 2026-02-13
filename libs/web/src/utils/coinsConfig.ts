@@ -1,4 +1,5 @@
 import verifiedAssets from "./verified-assets.json";
+import {getSelectedNetwork} from "@/src/stores/useNetworkStore";
 
 // TODO: Consider removing this type as we won't probably know the list of all coins ahead of time
 export type CoinName = string | null;
@@ -25,8 +26,8 @@ export const assetHandleToSymbol = new Map<string, string>();
 
 // Helper function to get the appropriate network data based on chain ID
 export const getNetworkDataForChain = (asset: any, chainId: number) => {
-  // For local development, look for local_testnet chain specifically
-  if (process.env.NEXT_PUBLIC_FUEL_PROVIDER_URL?.includes("localhost")) {
+  // For local development (chainId 31337), look for local_testnet chain specifically
+  if (chainId === 31337) {
     const localNetwork = asset.networks?.find(
       (network: any) =>
         network.type === "fuel" && network.chain === "local_testnet"
@@ -34,7 +35,7 @@ export const getNetworkDataForChain = (asset: any, chainId: number) => {
     return localNetwork || null; // Return null if no local_testnet network found (don't fallback)
   }
 
-  // For production, find the fuel network that matches the specified chain ID
+  // For production/testnet, find the fuel network that matches the specified chain ID
   const fuelNetwork = asset.networks?.find(
     (network: any) => network.type === "fuel" && network.chainId === chainId
   );
@@ -146,31 +147,42 @@ export const coinsConfig: Map<CoinName, CoinData> = initAssetsConfig();
 
 // Function to get asset ID from verified-assets.json based on symbol and environment
 function getAssetIdFromVerifiedAssets(symbol: string): string {
-  const asset = verifiedAssets.find((asset: any) => asset.symbol === symbol);
+  const asset = verifiedAssets.find((a: any) => a.symbol === symbol);
   if (!asset) {
     throw new Error(
       `Asset with symbol ${symbol} not found in verified-assets.json`
     );
   }
 
+  const network = getSelectedNetwork();
+
   // For local development, look for local_testnet chain
-  if (process.env.NEXT_PUBLIC_FUEL_PROVIDER_URL?.includes("localhost")) {
+  if (network === "local") {
     const localNetwork = asset.networks?.find(
-      (network: any) =>
-        network.type === "fuel" && network.chain === "local_testnet"
+      (n: any) =>
+        n.type === "fuel" && n.chain === "local_testnet"
     );
     if (localNetwork?.assetId) {
       return localNetwork.assetId;
     }
-    // Fallback to mainnet if local not found (shouldn't happen in proper setup)
     console.warn(
       `Local testnet asset ID not found for ${symbol}, falling back to mainnet`
     );
   }
 
-  // For production, find the mainnet fuel network (chainId 9889)
+  // For testnet, look for testnet chain
+  if (network === "testnet") {
+    const testnetNetwork = asset.networks?.find(
+      (n: any) => n.type === "fuel" && n.chain === "testnet"
+    );
+    if (testnetNetwork?.assetId) {
+      return testnetNetwork.assetId;
+    }
+  }
+
+  // For mainnet (or fallback), find the mainnet fuel network (chainId 9889)
   const mainnetNetwork = asset.networks?.find(
-    (network: any) => network.type === "fuel" && network.chainId === 9889
+    (n: any) => n.type === "fuel" && n.chainId === 9889
   );
   if (mainnetNetwork?.assetId) {
     return mainnetNetwork.assetId;
@@ -178,7 +190,7 @@ function getAssetIdFromVerifiedAssets(symbol: string): string {
 
   // Final fallback: any fuel network
   const anyFuelNetwork = asset.networks?.find(
-    (network: any) => network.type === "fuel"
+    (n: any) => n.type === "fuel"
   );
   if (anyFuelNetwork?.assetId) {
     return anyFuelNetwork.assetId;

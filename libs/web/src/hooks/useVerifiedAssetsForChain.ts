@@ -1,16 +1,9 @@
-import {useMemo} from "react";
+"use client";
+
+import {useMemo, useState, useEffect} from "react";
 import assets from "../utils/verified-assets.json";
 import {getNetworkDataForChain, CoinData} from "../utils/coinsConfig";
-
-// Simple function to get chainId from environment variables
-function getChainId(): number {
-  // If we're in local development (NEXT_PUBLIC_FUEL_PROVIDER_URL contains localhost), use chainId 0
-  // Otherwise use mainnet chainId 9889
-  // Note: We use chain name "local_testnet" for filtering, not chainId
-  return process.env.NEXT_PUBLIC_FUEL_PROVIDER_URL?.includes("localhost")
-    ? 0
-    : 9889;
-}
+import {getSelectedNetwork, NETWORK_CONFIGS} from "@/src/stores/useNetworkStore";
 
 // Move the logic outside of React hooks to avoid re-render issues
 function getVerifiedAssetsForChain(chainId: number): CoinData[] {
@@ -43,10 +36,17 @@ function getVerifiedAssetsForChain(chainId: number): CoinData[] {
 }
 
 export function useVerifiedAssetsForChain() {
-  // Simple: get chainId from environment variables
-  const chainId = getChainId();
+  // Use state to ensure proper client-side hydration
+  // Default to mainnet for SSR, then update on client
+  const [chainId, setChainId] = useState(9889);
+  const [isLoading, setIsLoading] = useState(true);
 
-  // This will only recalculate if the component re-mounts (which is rare)
+  useEffect(() => {
+    // Only runs on client - get the actual chainId from the network store
+    setChainId(NETWORK_CONFIGS[getSelectedNetwork()].chainId);
+    setIsLoading(false);
+  }, []);
+
   const verifiedAssetsForChain = useMemo(() => {
     return getVerifiedAssetsForChain(chainId);
   }, [chainId]);
@@ -54,6 +54,6 @@ export function useVerifiedAssetsForChain() {
   return {
     verifiedAssetsForChain,
     chainId,
-    isLoading: false,
+    isLoading,
   };
 }

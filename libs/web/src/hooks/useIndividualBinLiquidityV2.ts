@@ -4,7 +4,7 @@ import {useMutation, useQueryClient} from "@tanstack/react-query";
 import {useMiraDexV2} from "@/src/hooks";
 import {useCallback} from "react";
 import {useWallet} from "@fuels/react";
-import {DefaultTxParams, getMaxDeadlineV2} from "@/src/utils/constants";
+import {DefaultV2TxParams, getMaxDeadlineV2} from "@/src/utils/constants";
 import {bn, BN} from "fuels";
 import {
   isV2MockEnabled,
@@ -96,7 +96,7 @@ export function useAddLiquidityToBin() {
         deltaIds,
         distributionX,
         distributionY,
-        DefaultTxParams,
+        DefaultV2TxParams,
         {
           useAssembleTx: true,
         }
@@ -198,7 +198,7 @@ export function useRemoveLiquidityFromBin() {
         minAmountX,
         minAmountY,
         getMaxDeadlineV2(),
-        DefaultTxParams,
+        DefaultV2TxParams,
         {
           useAssembleTx: true,
         }
@@ -318,7 +318,7 @@ export function usePartialRemoveLiquidityFromBin() {
         minAmountX,
         minAmountY,
         getMaxDeadlineV2(),
-        DefaultTxParams,
+        DefaultV2TxParams,
         {
           useAssembleTx: true,
         }

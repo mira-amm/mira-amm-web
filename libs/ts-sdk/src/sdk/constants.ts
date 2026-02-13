@@ -59,3 +59,34 @@ export const V2_TRANSACTION_CONFIG = {
   DEFAULT_DEADLINE_MINUTES: 20, // 20 minutes
   MAX_DEADLINE_MINUTES: 60, // 1 hour
 } as const;
+
+/**
+ * V2 Script Blob IDs
+ *
+ * These are the blob IDs for V2 scripts deployed on-chain. Using blob-based loader scripts
+ * reduces transaction size from ~10-12KB to ~400 bytes per transaction.
+ *
+ * To deploy new blobs, run:
+ *   cd libs/ts-sdk && pnpm deploy:v2-blobs:testnet
+ */
+export const V2_SCRIPT_BLOB_IDS: Record<
+  string,
+  {
+    swapExactIn?: string;
+    swapExactOut?: string;
+    addLiquidity?: string;
+    removeLiquidity?: string;
+  }
+> = {
+  // Testnet blob IDs - deployed using scripts/deploy-v2-blobs.ts
+  testnet: {
+    swapExactIn: "0x81fd09c472ed015b049312fb6d92ef1401641633043ed6c12cd6d5006c0258b7",
+    swapExactOut: "0x534eb865242c6628d532515d789f194cdf037e3d7b71128e1bf4d4028ac08b7e",
+    addLiquidity: "0xde8a6ab4aa325a31f0095097340212966a0d8fb61be71fde01ff678382b58d5b",
+    removeLiquidity: "0x32ab5e53f2ab250c762feb8b1ce2fac99988fe7e8e12bc5603325ab7da8fc681",
+  },
+  // Mainnet blob IDs - deploy after testnet validation
+  mainnet: {
+    // TODO: Deploy after testnet validation
+  },
+} as const;

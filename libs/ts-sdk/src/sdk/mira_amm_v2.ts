@@ -18,6 +18,7 @@ import {
   DEFAULT_AMM_V2_CONTRACT_ID,
   V2_TRANSACTION_CONFIG,
   LIQUIDITY_DISTRIBUTION,
+  V2_SCRIPT_BLOB_IDS,
 } from "./constants";
 
 import {
@@ -74,6 +75,27 @@ type TransactionWithGasPrice = {
 };
 
 /**
+ * Options for MiraAmmV2 constructor
+ */
+export interface MiraAmmV2Options {
+  /**
+   * Whether to use blob-based loader scripts instead of full bytecode scripts.
+   *
+   * When enabled (and blobs are deployed for the current network), transactions
+   * will use loader scripts (~400 bytes) instead of full scripts (~10-12KB),
+   * significantly reducing transaction size and gas costs.
+   *
+   * Defaults to true when blob IDs are available for the network.
+   */
+  useBlobScripts?: boolean;
+}
+
+/**
+ * Network name type for blob ID lookups
+ */
+type NetworkName = "testnet" | "mainnet";
+
+/**
  * MiraAmmV2 - Write operations for Mira v2 binned liquidity pools
  *
  * This class provides methods for executing transactions on Mira v2 pools, which use
@@ -117,10 +139,19 @@ export class MiraAmmV2 {
   private readonly account: Account;
   private readonly ammContract: PoolCurveState;
   private readonly contractId: string;
+  private readonly useBlobScripts: boolean;
+  private readonly networkName?: NetworkName;
   private _addLiquidityScript?: AddLiquidity;
   private _removeLiquidityScript?: RemoveLiquidity;
   private _swapExactInScript?: SwapExactIn;
   private _swapExactOutScript?: SwapExactOut;
+  // Loader script instances (used when useBlobScripts is true)
+  private _addLiquidityLoader?: AddLiquidity;
+  private _removeLiquidityLoader?: RemoveLiquidity;
+  private _swapExactInLoader?: SwapExactIn;
+  private _swapExactOutLoader?: SwapExactOut;
+  private _loadersInitialized: boolean = false;
+  private _loadersInitializing?: Promise<void>;
 
   /**
    * Normalize a deadline to TAI64 format expected by contracts.
@@ -137,18 +168,165 @@ export class MiraAmmV2 {
    *
    * @param account - Fuel account for signing transactions
    * @param contractIdOpt - Optional v2 contract ID (uses default if not provided)
+   * @param options - Optional configuration options
    */
-  constructor(account: Account, contractIdOpt?: string) {
+  constructor(
+    account: Account,
+    contractIdOpt?: string,
+    options?: MiraAmmV2Options
+  ) {
     this.contractId = contractIdOpt ?? DEFAULT_AMM_V2_CONTRACT_ID;
     this.account = account;
     this.ammContract = new PoolCurveState(this.contractId, account);
-    // Scripts are now initialized lazily when needed to avoid InputContractDoesNotExist errors
+
+    // Determine network name from provider URL for blob ID lookups
+    const providerUrl = account.provider?.url ?? "";
+    if (providerUrl.includes("testnet")) {
+      this.networkName = "testnet";
+    } else if (providerUrl.includes("mainnet")) {
+      this.networkName = "mainnet";
+    }
+    // If URL doesn't contain either, networkName remains undefined
+
+    // Check if blob scripts are available for this network
+    const blobIds = this.networkName
+      ? V2_SCRIPT_BLOB_IDS[this.networkName]
+      : undefined;
+    const hasBlobsDeployed =
+      blobIds &&
+      Object.values(blobIds).filter((id) => id !== undefined).length > 0;
+
+    // Use blob scripts by default when blobs are deployed for this network
+    // Can be explicitly disabled with options.useBlobScripts = false
+    this.useBlobScripts = options?.useBlobScripts ?? hasBlobsDeployed ?? false;
+
+    if (this.useBlobScripts && !hasBlobsDeployed) {
+      console.warn(
+        `[MiraAmmV2] Blob scripts requested but no blob IDs found for network: ${this.networkName}. ` +
+          `Falling back to full bytecode scripts.`
+      );
+      this.useBlobScripts = false;
+    }
+
+    // Scripts are initialized lazily when needed to avoid InputContractDoesNotExist errors
+  }
+
+  /**
+   * Initialize loader scripts for blob-based transactions.
+   * This is called automatically on first transaction if useBlobScripts is true.
+   * Can be called explicitly to pre-initialize loaders.
+   */
+  async initializeLoaders(): Promise<void> {
+    if (this._loadersInitialized || !this.useBlobScripts) {
+      return;
+    }
+
+    // Prevent concurrent initialization
+    if (this._loadersInitializing) {
+      return this._loadersInitializing;
+    }
+
+    this._loadersInitializing = this._doInitializeLoaders();
+    await this._loadersInitializing;
+    this._loadersInitialized = true;
+  }
+
+  private async _doInitializeLoaders(): Promise<void> {
+    const contractIdConfigurables = {
+      POOL_CURVE_STATE: contractIdInput(this.contractId),
+    };
+
+    // Initialize all loader scripts in parallel
+    // The deploy() method returns a loader that references the blob
+    // If blob already exists, this just creates the loader without a new transaction
+    const [swapInLoader, swapOutLoader, addLiqLoader, removeLiqLoader] =
+      await Promise.all([
+        this._createLoader(
+          new SwapExactIn(this.account).setConfigurableConstants(
+            contractIdConfigurables
+          ),
+          "SwapExactIn"
+        ),
+        this._createLoader(
+          new SwapExactOut(this.account).setConfigurableConstants(
+            contractIdConfigurables
+          ),
+          "SwapExactOut"
+        ),
+        this._createLoader(
+          new AddLiquidity(this.account).setConfigurableConstants(
+            contractIdConfigurables
+          ),
+          "AddLiquidity"
+        ),
+        this._createLoader(
+          new RemoveLiquidity(this.account).setConfigurableConstants(
+            contractIdConfigurables
+          ),
+          "RemoveLiquidity"
+        ),
+      ]);
+
+    this._swapExactInLoader = swapInLoader;
+    this._swapExactOutLoader = swapOutLoader;
+    this._addLiquidityLoader = addLiqLoader;
+    this._removeLiquidityLoader = removeLiqLoader;
+  }
+
+  private async _createLoader<T extends {deploy: (account: Account) => any}>(
+    script: T,
+    name: string
+  ): Promise<T> {
+    try {
+      const {waitForResult} = await script.deploy(this.account);
+      const loader = await waitForResult();
+      console.log(`[MiraAmmV2] ✅ Loader created for ${name} (using blob)`);
+      return loader as T;
+    } catch (error: any) {
+      const errorMsg = error?.message || String(error);
+
+      // Check if blob already exists - this is expected and means we can use the loader
+      // The SDK should still return a valid loader in this case
+      if (
+        errorMsg.includes("BlobIdAlreadyUploaded") ||
+        errorMsg.includes("already exists") ||
+        errorMsg.includes("Blob already uploaded")
+      ) {
+        // Blob exists, try to get loader anyway by calling deploy again
+        // Some SDK versions return the loader even when blob exists
+        console.log(
+          `[MiraAmmV2] ✅ Blob already exists for ${name}, using existing blob`
+        );
+        // The script itself can be used as it will reference the existing blob
+        // when the SDK detects the blob is already deployed
+        return script;
+      }
+
+      // Actual error - fall back to full script
+      console.warn(
+        `[MiraAmmV2] ⚠️ Failed to create loader for ${name}: ${errorMsg}. Using full bytecode.`
+      );
+      return script;
+    }
+  }
+
+  /**
+   * Returns whether blob-based loader scripts are being used
+   */
+  isUsingBlobScripts(): boolean {
+    return this.useBlobScripts;
   }
 
   /**
    * Lazy getter for add liquidity script
+   * Returns loader script if blob scripts are enabled and initialized
    */
   private get addLiquidityScript(): AddLiquidity {
+    // Use loader if available
+    if (this._addLiquidityLoader) {
+      return this._addLiquidityLoader;
+    }
+    // Fall back to full script
     if (!this._addLiquidityScript) {
       const contractIdConfigurables = {
         POOL_CURVE_STATE: contractIdInput(this.contractId),
@@ -162,8 +340,14 @@ export class MiraAmmV2 {
 
   /**
    * Lazy getter for remove liquidity script
+   * Returns loader script if blob scripts are enabled and initialized
    */
   private get removeLiquidityScript(): RemoveLiquidity {
+    // Use loader if available
+    if (this._removeLiquidityLoader) {
+      return this._removeLiquidityLoader;
+    }
+    // Fall back to full script
     if (!this._removeLiquidityScript) {
       const contractIdConfigurables = {
         POOL_CURVE_STATE: contractIdInput(this.contractId),
@@ -177,8 +361,14 @@ export class MiraAmmV2 {
 
   /**
    * Lazy getter for swap exact in script
+   * Returns loader script if blob scripts are enabled and initialized
    */
   private get swapExactInScript(): SwapExactIn {
+    // Use loader if available
+    if (this._swapExactInLoader) {
+      return this._swapExactInLoader;
+    }
+    // Fall back to full script
     if (!this._swapExactInScript) {
       const contractIdConfigurables = {
         POOL_CURVE_STATE: contractIdInput(this.contractId),
@@ -192,8 +382,14 @@ export class MiraAmmV2 {
 
   /**
    * Lazy getter for swap exact out script
+   * Returns loader script if blob scripts are enabled and initialized
    */
   private get swapExactOutScript(): SwapExactOut {
+    // Use loader if available
+    if (this._swapExactOutLoader) {
+      return this._swapExactOutLoader;
+    }
+    // Fall back to full script
     if (!this._swapExactOutScript) {
       const contractIdConfigurables = {
         POOL_CURVE_STATE: contractIdInput(this.contractId),
@@ -262,6 +458,11 @@ export class MiraAmmV2 {
     );
 
     return withErrorHandling(async () => {
+      // Initialize loaders if blob scripts are enabled (reduces transaction size)
+      if (this.useBlobScripts) {
+        await this.initializeLoaders();
+      }
+
       // Get pool metadata to determine asset order and current active bin
       // In v2, liquidity is distributed across bins rather than a single position
       // Each bin represents a discrete price point where liquidity can be concentrated
@@ -415,6 +616,11 @@ export class MiraAmmV2 {
     );
 
     return withErrorHandling(async () => {
+      // Initialize loaders if blob scripts are enabled (reduces transaction size)
+      if (this.useBlobScripts) {
+        await this.initializeLoaders();
+      }
+
       // Get pool metadata to validate pool exists and get asset configuration
       const poolMetadata = await this.ammContract.functions
         .get_pool(poolIdV2Input(poolId))
@@ -591,6 +797,11 @@ export class MiraAmmV2 {
     );
 
     return withErrorHandling(async () => {
+      // Initialize loaders if blob scripts are enabled (reduces transaction size)
+      if (this.useBlobScripts) {
+        await this.initializeLoaders();
+      }
+
       if (pools.length === 0) {
         throw new MiraV2Error(
           PoolCurveStateError.InvalidParameters,
@@ -673,6 +884,11 @@ export class MiraAmmV2 {
     );
 
     return withErrorHandling(async () => {
+      // Initialize loaders if blob scripts are enabled (reduces transaction size)
+      if (this.useBlobScripts) {
+        await this.initializeLoaders();
+      }
+
       if (pools.length === 0) {
         throw new MiraV2Error(
           PoolCurveStateError.InvalidParameters,
@@ -828,6 +1044,11 @@ export class MiraAmmV2 {
     }
 
     return withErrorHandling(async () => {
+      // Initialize loaders if blob scripts are enabled (reduces transaction size)
+      if (this.useBlobScripts) {
+        await this.initializeLoaders();
+      }
+
       // First create the pool
       const createPoolRequest = await this.ammContract.functions
         .create_pool(

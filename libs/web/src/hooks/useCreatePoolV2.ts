@@ -5,7 +5,7 @@ import {useWallet} from "@fuels/react";
 import {useMutation} from "@tanstack/react-query";
 import {ACTIVE_BIN_ID} from "mira-dex-ts";
 
-import {DefaultTxParams, getMaxDeadlineV2} from "@/src/utils/constants";
+import {DefaultV2TxParams, getMaxDeadlineV2} from "@/src/utils/constants";
 import {useAssetMetadata, useMiraDexV2} from "@/src/hooks";
 
 export function useCreatePoolV2({
@@ -76,7 +76,7 @@ export function useCreatePoolV2({
             distributionY: 100, // 100% of Y tokens in active bin
           },
         ],
-        DefaultTxParams,
+        DefaultV2TxParams,
         {
           fundTransaction: true,
         }
