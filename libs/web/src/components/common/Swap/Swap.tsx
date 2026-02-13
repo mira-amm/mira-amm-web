@@ -6,7 +6,7 @@ import {B256Address, BN, bn, ScriptTransactionRequest} from "fuels";
 import {useConnectUI, useIsConnected} from "@fuels/react";
 import {PoolId} from "mira-dex-ts";
 import {getIsRebrandEnabled} from "@/src/utils/isRebrandEnabled";
-import {SQDIndexerUrl} from "@/src/utils/constants";
+import {isV2Available} from "@/src/stores/useNetworkStore";
 
 import {Button} from "@/meshwave-ui/Button";
 
@@ -247,8 +247,7 @@ export function Swap({isWidget}: {isWidget?: boolean}) {
   const [inputsState, setInputsState] =
     useState<InputsState>(initialInputsState);
   const [activeMode, setActiveMode] = useState<CurrencyBoxMode>("sell");
-  const isLocal = SQDIndexerUrl.includes("127.0.0.1");
-  const [poolType, setPoolType] = useState<PoolTypeOption>(isLocal ? "v1" : "v2");
+  const [poolType, setPoolType] = useState<PoolTypeOption>(isV2Available() ? "v2" : "v1");
   const [slippage, setSlippage] = useState<number>(100);
   const [slippageMode, setSlippageMode] = useState<SlippageMode>("auto");
   const [txCostData, setTxCostData] = useState<{
@@ -759,12 +758,14 @@ export function Swap({isWidget}: {isWidget?: boolean}) {
             />
           </div>
 
-          {/* Pool Type Toggle */}
-          <PoolTypeToggle
-            selectedType={poolType}
-            onTypeChange={handlePoolTypeChange}
-            className="mb-2"
-          />
+          {/* Pool Type Toggle — only shown when V2 is deployed on this network */}
+          {isV2Available() && (
+            <PoolTypeToggle
+              selectedType={poolType}
+              onTypeChange={handlePoolTypeChange}
+              className="mb-2"
+            />
+          )}
 
           <CurrencyBox
             value={sellValue}

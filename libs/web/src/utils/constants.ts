@@ -30,9 +30,8 @@ function getV2ContractId(): string {
   if (network === "testnet") {
     return "0x826908f28ebcab59bbe8c2cc9f0e9b2e12a244517cadce0aba6f534ecbbc2c2b";
   }
-  // Default to mainnet V2 contract (same as V1 for now since V2 not on mainnet yet)
-  // TODO: Update with actual mainnet V2 contract when deployed
-  return "0x2e40f2b244b98ed6b8204b3de0156c6961f98525c8162f80162fcf53eebd90e7";
+  // V2 not deployed on mainnet yet — return empty to disable V2 features
+  return "";
 }
 
 export const DEFAULT_AMM_V2_CONTRACT_ID = getV2ContractId();

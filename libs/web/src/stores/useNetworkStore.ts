@@ -121,3 +121,9 @@ export const isTestnet = (): boolean => {
 export const isLocal = (): boolean => {
   return useNetworkStore.getState().selectedNetwork === "local";
 };
+
+// Helper to check if V2 (concentrated liquidity) is available on the current network
+export const isV2Available = (): boolean => {
+  const config = getCurrentNetworkConfig();
+  return Boolean(config.v2ContractId);
+};
