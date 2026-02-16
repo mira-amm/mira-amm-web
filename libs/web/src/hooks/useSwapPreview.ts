@@ -1,6 +1,6 @@
 import {useMemo} from "react";
 import {BN, bn} from "fuels";
-import {CurrencyBoxMode, SwapState} from "@/src/components/common/Swap/Swap";
+import type {CurrencyBoxMode, SwapState} from "./useSwapFormState";
 import {
   useSwapData,
   useAsset,

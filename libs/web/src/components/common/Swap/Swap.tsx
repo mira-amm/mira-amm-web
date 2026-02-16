@@ -61,7 +61,7 @@ export function Swap({isWidget}: {isWidget?: boolean}) {
       modals.openCoinsModal();
       modeForCoinSelector.current = mode;
     },
-    [modals]
+    [modals.openCoinsModal]
   );
 
   const handleCoinSelection = useCallback(
@@ -70,7 +70,7 @@ export function Swap({isWidget}: {isWidget?: boolean}) {
       formState.selectCoin(mode)(assetId as B256Address);
       modals.closeCoinsModal();
     },
-    [formState, modals]
+    [formState.selectCoin, modals.closeCoinsModal]
   );
 
   const swap = useSwap({
@@ -83,7 +83,7 @@ export function Swap({isWidget}: {isWidget?: boolean}) {
   const resetSwapErrors = useCallback(() => {
     swap.resetTxCost();
     swap.resetSwap();
-  }, [swap]);
+  }, [swap.resetTxCost, swap.resetSwap]);
 
   // Validation hook
   const validation = useSwapValidation({

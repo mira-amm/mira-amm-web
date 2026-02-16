@@ -32,7 +32,7 @@ export function useSwapTransaction({
   triggerSwap: (tx: ScriptTransactionRequest) =>  Promise<{isStatusPreConfirmationSuccess: boolean, waitForResult: Promise<TransactionResult<void>>, id: string} | undefined>;
   openSuccess: () => void;
   openFailure: () => void;
-  refetchBalances: () => Promise<any>;
+  refetchBalances: () => Promise<unknown>;
   clearAmounts: () => void;
   swapState: SwapState;
   swapButtonTitle: string;

@@ -1,5 +1,5 @@
 import Link from "next/link";
-import {SwapState} from "@/src/components/common/Swap/Swap";
+import type {SwapState} from "@/src/hooks";
 import {FuelAppUrl} from "@/src/utils/constants";
 import {useAssetMetadata} from "@/src/hooks";
 import {Button} from "@/meshwave-ui/Button";

@@ -1,5 +1,5 @@
 import {useEffect, useMemo, useState} from "react";
-import {SwapState} from "@/src/components/common/Swap/Swap";
+import type {SwapState} from "./useSwapFormState";
 import {ETH_ASSET_ID, FUEL_ASSET_ID} from "@/src/utils/constants";
 
 const b256Regex = /^0x[0-9a-fA-F]{64}$/;
