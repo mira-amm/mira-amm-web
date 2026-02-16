@@ -2,10 +2,7 @@
 
 import {useMemo} from "react";
 
-import type {
-  CurrencyBoxMode,
-  SwapState,
-} from "@/src/components/common/Swap/Swap";
+import type {CurrencyBoxMode, SwapState} from "./useSwapFormState";
 
 import {DefaultLocale} from "@/src/utils/constants";
 import {useAssetMetadata} from "@/src/hooks";

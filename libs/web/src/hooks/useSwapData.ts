@@ -1,7 +1,7 @@
 import {useMemo} from "react";
 import {AssetIdInput} from "mira-dex-ts";
 
-import {SwapState} from "@/src/components/common/Swap/Swap";
+import type {SwapState} from "./useSwapFormState";
 import {useAssetMetadata} from "@/src/hooks";
 
 export function useSwapData(swapState: SwapState): {

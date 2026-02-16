@@ -2,7 +2,7 @@
 
 import {useState} from "react";
 import {ExchangeIcon} from "@/meshwave-ui/icons";
-import {CurrencyBoxMode, SwapState} from "@/src/components/common/Swap/Swap";
+import type {CurrencyBoxMode, SwapState} from "@/src/hooks";
 import {useExchangeRate} from "@/src/hooks/useExchangeRate";
 import {useAnimationStore} from "@/src/stores/useGlitchScavengerHunt";
 

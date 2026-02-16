@@ -61,6 +61,6 @@ export type {SlippageMode} from "./useSwapSettings";
 export {useSwapModals} from "./useSwapModals";
 export {useSwapFormState} from "./useSwapFormState";
 export type {CurrencyBoxMode} from "./useSwapFormState";
-export type {SwapState} from "./useSwapFormState";
+export type {SwapState, CurrencyBoxState} from "./useSwapFormState";
 export {useSwapDataLayer} from "./useSwapDataLayer";
 export {useSwapLoadingStates} from "./useSwapLoadingStates";

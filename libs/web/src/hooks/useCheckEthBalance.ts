@@ -1,7 +1,7 @@
 import {useBalances} from "@/src/hooks";
 import {useMemo} from "react";
 import {ETH_ASSET_ID, EthDecimals, MinEthValueBN} from "@/src/utils/constants";
-import {CurrencyBoxState} from "@/src/components/common/Swap/Swap";
+import type {CurrencyBoxState} from "./useSwapFormState";
 import {bn, BN} from "fuels";
 import {useAssetBalance} from "@/src/hooks/useAssetBalance";
 

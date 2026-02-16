@@ -7,7 +7,18 @@ import {
 } from "@/src/components/common";
 import SettingsModalContentNew from "../../settings-modal-content-new";
 import type {SwapState, SlippageMode} from "@/src/hooks";
-import type {Dispatch, SetStateAction, RefObject} from "react";
+import type {CoinQuantity} from "fuels";
+import type {Dispatch, ReactNode, ReactPortal, SetStateAction, RefObject} from "react";
+
+type ModalComponent = (props: {
+  title: string | ReactNode;
+  titleClassName?: string;
+  children: ReactNode;
+  className?: string;
+  onClose?: VoidFunction;
+  noBackground?: boolean;
+  showCloseIcon?: boolean;
+}) => ReactPortal | null;
 
 export function SwapModals({
   modals,
@@ -25,23 +36,23 @@ export function SwapModals({
   customErrorTitle,
 }: {
   modals: {
-    SettingsModal: any;
+    SettingsModal: ModalComponent;
     closeSettingsModal: () => void;
-    CoinsModal: any;
-    SuccessModal: any;
-    FailureModal: any;
+    CoinsModal: ModalComponent;
+    SuccessModal: ModalComponent;
+    FailureModal: ModalComponent;
     closeFailureModal: () => void;
   };
   slippage: number;
   slippageMode: SlippageMode;
   setSlippage: Dispatch<SetStateAction<number>>;
   setSlippageMode: Dispatch<SetStateAction<SlippageMode>>;
-  balances: any[] | undefined;
+  balances: CoinQuantity[] | undefined;
   handleCoinSelection: (assetId: string | null) => void;
   swapStateForPreview: RefObject<SwapState>;
   swapResult: {id: string} | null | undefined;
-  txCostError: any;
-  swapError: any;
+  txCostError: Error | null;
+  swapError: Error | null;
   resetSwapErrors: () => void;
   customErrorTitle: string;
 }) {

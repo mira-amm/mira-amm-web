@@ -6,10 +6,7 @@ import {useWallet} from "@fuels/react";
 import {PoolId} from "mira-dex-ts";
 import {useMutation} from "@tanstack/react-query";
 
-import type {
-  CurrencyBoxMode,
-  SwapState,
-} from "@/src/components/common/Swap/Swap";
+import type {CurrencyBoxMode, SwapState} from "./useSwapFormState";
 import {useMiraDex, useSwapData, useReadonlyMira} from "@/src/hooks";
 import {MaxDeadline} from "@/src/utils/constants";
 
