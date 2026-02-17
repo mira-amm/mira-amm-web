@@ -381,49 +381,49 @@ export const calculateNetAssetFlows = (
   const assetFlows = new Map<string, AssetFlow>();
 
   actions.forEach((action) => {
-    // Process asset0
+    // Process asset0 (fall back to action fields for unregistered assets)
     const asset0 = findAssetBySymbol(action.asset0.symbol, assets);
-    if (asset0 && asset0.assetId) {
-      const asset0Key = asset0.assetId.toLowerCase();
+    const asset0Id =
+      asset0?.assetId ||
+      action.asset0.assetId ||
+      `unknown_${action.asset0.symbol}`;
+    const asset0Key = asset0Id.toLowerCase();
 
-      if (!assetFlows.has(asset0Key)) {
-        assetFlows.set(asset0Key, {
-          symbol: asset0.symbol,
-          assetId: asset0.assetId,
-          decimals: asset0.decimals,
-          netAmount: BigInt(0),
-        });
-      }
-
-      const flow = assetFlows.get(asset0Key)!;
-      const amountIn = safeStringToBigInt(action.amount0In || "0");
-      const amountOut = safeStringToBigInt(action.amount0Out || "0");
-
-      // net_amount = amount_out - amount_in
-      flow.netAmount += amountOut - amountIn;
+    if (!assetFlows.has(asset0Key)) {
+      assetFlows.set(asset0Key, {
+        symbol: asset0?.symbol || action.asset0.symbol,
+        assetId: asset0Id,
+        decimals: asset0?.decimals ?? action.asset0.decimals,
+        netAmount: BigInt(0),
+      });
     }
 
-    // Process asset1
+    const flow0 = assetFlows.get(asset0Key)!;
+    const amount0In = safeStringToBigInt(action.amount0In || "0");
+    const amount0Out = safeStringToBigInt(action.amount0Out || "0");
+    flow0.netAmount += amount0Out - amount0In;
+
+    // Process asset1 (fall back to action fields for unregistered assets)
     const asset1 = findAssetBySymbol(action.asset1.symbol, assets);
-    if (asset1 && asset1.assetId) {
-      const asset1Key = asset1.assetId.toLowerCase();
+    const asset1Id =
+      asset1?.assetId ||
+      action.asset1.assetId ||
+      `unknown_${action.asset1.symbol}`;
+    const asset1Key = asset1Id.toLowerCase();
 
-      if (!assetFlows.has(asset1Key)) {
-        assetFlows.set(asset1Key, {
-          symbol: asset1.symbol,
-          assetId: asset1.assetId,
-          decimals: asset1.decimals,
-          netAmount: BigInt(0),
-        });
-      }
-
-      const flow = assetFlows.get(asset1Key)!;
-      const amountIn = safeStringToBigInt(action.amount1In || "0");
-      const amountOut = safeStringToBigInt(action.amount1Out || "0");
-
-      // net_amount = amount_out - amount_in
-      flow.netAmount += amountOut - amountIn;
+    if (!assetFlows.has(asset1Key)) {
+      assetFlows.set(asset1Key, {
+        symbol: asset1?.symbol || action.asset1.symbol,
+        assetId: asset1Id,
+        decimals: asset1?.decimals ?? action.asset1.decimals,
+        netAmount: BigInt(0),
+      });
     }
+
+    const flow1 = assetFlows.get(asset1Key)!;
+    const amount1In = safeStringToBigInt(action.amount1In || "0");
+    const amount1Out = safeStringToBigInt(action.amount1Out || "0");
+    flow1.netAmount += amount1Out - amount1In;
   });
 
   return Array.from(assetFlows.values());
