@@ -27,7 +27,6 @@ export const ClientSplashScreen = () => {
 
     // Listen for video end to pause on last frame and start fade
     const handleVideoEnd = () => {
-      console.log("Video ended, pausing on last frame");
       if (videoRef.current) {
         videoRef.current.pause();
         // Start fade out after a brief pause on last frame
@@ -45,7 +44,6 @@ export const ClientSplashScreen = () => {
     // Fallback timer in case video doesn't end properly
     const fallbackTimer = setTimeout(() => {
       if (videoRef.current && !videoRef.current.ended) {
-        console.info("Fallback: video taking too long, forcing end");
         handleVideoEnd();
       }
     }, MAX_SPLASH_DURATION);
