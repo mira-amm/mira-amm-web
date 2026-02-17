@@ -41,7 +41,7 @@ export type PoolData = {
     asset_0_symbol: CoinName;
     asset_1_symbol: CoinName;
     apr: number | null;
-    volume: string;
+    volume: number;
     tvl: number;
   };
   swap_count: number;

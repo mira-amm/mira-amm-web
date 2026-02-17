@@ -470,17 +470,21 @@ export const createConsolidatedTransaction = (
     asset0 =
       findAssetBySymbol(inputAsset.symbol, assets) ||
       ({
+        name: inputAsset.symbol,
         symbol: inputAsset.symbol,
         assetId: inputAsset.assetId,
         decimals: inputAsset.decimals,
+        price: 0,
       } as CoinDataWithPrice);
 
     asset1 =
       findAssetBySymbol(outputAsset.symbol, assets) ||
       ({
+        name: outputAsset.symbol,
         symbol: outputAsset.symbol,
         assetId: outputAsset.assetId,
         decimals: outputAsset.decimals,
+        price: 0,
       } as CoinDataWithPrice);
 
     // Convert negative net amount to positive for input
@@ -497,17 +501,21 @@ export const createConsolidatedTransaction = (
       asset0 =
         asset0 ||
         ({
+          name: firstAction.asset0.symbol,
           symbol: firstAction.asset0.symbol,
           assetId: `unknown_${firstAction.asset0.symbol}`,
           decimals: firstAction.asset0.decimals,
+          price: 0,
         } as CoinDataWithPrice);
 
       asset1 =
         asset1 ||
         ({
+          name: firstAction.asset1.symbol,
           symbol: firstAction.asset1.symbol,
           assetId: `unknown_${firstAction.asset1.symbol}`,
           decimals: firstAction.asset1.decimals,
+          price: 0,
         } as CoinDataWithPrice);
     }
 
