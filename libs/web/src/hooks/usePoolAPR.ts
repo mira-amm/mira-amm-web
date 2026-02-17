@@ -4,6 +4,15 @@ import {createPoolIdString} from "@/src/utils/common";
 import {SQDIndexerUrl} from "@/src/utils/constants";
 import request, {gql} from "graphql-request";
 
+interface PoolAPRResponse {
+  poolById: {
+    snapshots: {feesUSD: string}[];
+    tvlUSD: string;
+    reserve0Decimal: string;
+    reserve1Decimal: string;
+  };
+}
+
 export function usePoolAPR(pool: PoolId) {
   const poolIdString = createPoolIdString(pool);
 
@@ -24,12 +33,13 @@ export function usePoolAPR(pool: PoolId) {
         }
       `;
 
-      const result = await request<any>({
+      const result = await request<PoolAPRResponse>({
         url: SQDIndexerUrl,
         document: query,
       });
       const fees24h = result.poolById.snapshots.reduce(
-        (acc: number, snapshot: any) => acc + parseFloat(snapshot.feesUSD),
+        (acc: number, snapshot: {feesUSD: string}) =>
+          acc + parseFloat(snapshot.feesUSD),
         0
       );
       const apr = (fees24h / parseFloat(result.poolById.tvlUSD)) * 365 * 100;

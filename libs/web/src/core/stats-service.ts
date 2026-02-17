@@ -8,6 +8,7 @@ import type {
   ProtocolStatsData,
   QueryVariables,
   PoolData,
+  PoolSnapshot,
 } from "../types/protocol-stats";
 
 /**
@@ -157,7 +158,7 @@ export class StatsService {
   /**
    * Calculate volume from snapshot array with error handling
    */
-  private calculateVolumeFromSnapshots(snapshots: any[]): number {
+  private calculateVolumeFromSnapshots(snapshots: PoolSnapshot[]): number {
     if (!Array.isArray(snapshots)) {
       return 0;
     }
@@ -173,7 +174,7 @@ export class StatsService {
   /**
    * Sanitize and validate numeric values
    */
-  private sanitizeNumber(value: any): number {
+  private sanitizeNumber(value: unknown): number {
     if (typeof value === "number" && !isNaN(value) && isFinite(value)) {
       return Math.max(0, value); // Ensure non-negative
     }
