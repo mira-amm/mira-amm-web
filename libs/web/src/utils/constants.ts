@@ -103,7 +103,6 @@ export const POINTS_TOOLTIP =
 export const POINTS_RANK_TOOLTIP =
   "Your rank is determined by the amount of points you have accumulated.";
 
-// TODO: Add the url for the points learn more
 export const POINTS_LEARN_MORE_URL =
   "https://mirror.xyz/miraly.eth/W2W1Zv8jKS-70OY64cF-qneyPgLngG4ItRv9PMmxHeY";
 
