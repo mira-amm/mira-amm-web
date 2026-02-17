@@ -27,7 +27,7 @@ export const checkIfCoinVerified = ({
   assetId: string;
   verifiedAssetData: VerifiedAssets;
 }) => {
-  const coin = verifiedAssetData?.find((i: any) => i.symbol === symbol);
-  const verifiedAsset = coin?.networks?.find((i: any) => i.assetId === assetId);
+  const coin = verifiedAssetData?.find((i: Asset) => i.symbol === symbol);
+  const verifiedAsset = coin?.networks?.find((i: Network) => i.assetId === assetId);
   return !!verifiedAsset;
 };

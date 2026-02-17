@@ -9,6 +9,28 @@ import {
   withDefault,
 } from "use-query-params";
 
+interface PoolSnapshot {
+  volumeUSD: string;
+  feesUSD: string;
+}
+
+interface PoolNodeFromQuery {
+  id: string;
+  reserve0Decimal: string;
+  reserve1Decimal: string;
+  tvlUSD: string;
+  asset0: {id: string; symbol: string};
+  asset1: {id: string; symbol: string};
+  snapshots: PoolSnapshot[];
+}
+
+interface PoolsConnectionResponse {
+  poolsConnection: {
+    totalCount: number;
+    edges: {node: PoolNodeFromQuery}[];
+  };
+}
+
 export type PoolData = {
   id: string;
   reserve_0: string;
@@ -86,7 +108,7 @@ export function usePoolsData() {
     }
   `;
 
-  const {data, isLoading} = useQuery<any>({
+  const {data, isLoading} = useQuery<PoolsConnectionResponse>({
     queryKey: ["pools", page, orderBy, search],
     queryFn: () =>
       request({
@@ -113,11 +135,12 @@ export function usePoolsData() {
   );
 
   const dataTransformed = data?.poolsConnection?.edges.map(
-    (poolNode: any): PoolData => {
+    (poolNode: {node: PoolNodeFromQuery}): PoolData => {
       const pool = poolNode.node;
-      // const volume24h = pool.snapshots.reduce((acc: number, snapshot: any) => acc + parseFloat(snapshot.volumeUSD), 0);
+      // const volume24h = pool.snapshots.reduce((acc: number, snapshot: PoolSnapshot) => acc + parseFloat(snapshot.volumeUSD), 0);
       const fees24h = pool.snapshots.reduce(
-        (acc: number, snapshot: any) => acc + parseFloat(snapshot.feesUSD),
+        (acc: number, snapshot: PoolSnapshot) =>
+          acc + parseFloat(snapshot.feesUSD),
         0
       );
       const apr = (fees24h / parseFloat(pool.tvlUSD)) * 365 * 100;
@@ -133,7 +156,7 @@ export function usePoolsData() {
           asset_1_symbol: pool.asset1.symbol as CoinName,
           apr,
           volume: pool.snapshots.reduce(
-            (acc: number, snapshot: any) =>
+            (acc: number, snapshot: PoolSnapshot) =>
               acc + parseFloat(snapshot.volumeUSD),
             0
           ),
