@@ -610,30 +610,26 @@ export const transformSubquidResponseToInternalFormat = (
           // Handle single transactions using existing logic
           const primaryAction = sortedActions[0];
 
-          // Find matching assets for pool_id construction
-          const asset0 = findAssetBySymbol(primaryAction.asset0.symbol, assets);
-          const asset1 = findAssetBySymbol(primaryAction.asset1.symbol, assets);
+          // Find matching assets for pool_id construction, with fallback
+          const asset0 =
+            findAssetBySymbol(primaryAction.asset0.symbol, assets) ||
+            ({
+              name: primaryAction.asset0.symbol,
+              symbol: primaryAction.asset0.symbol,
+              assetId: `unknown_${primaryAction.asset0.symbol}`,
+              decimals: primaryAction.asset0.decimals,
+              price: 0,
+            } as CoinDataWithPrice);
 
-          if (!asset0 || !asset1) {
-            console.warn(`Assets not found for transaction ${txHash}:`, {
-              asset0Symbol: primaryAction.asset0.symbol,
-              asset1Symbol: primaryAction.asset1.symbol,
-              availableAssets: assets.map((a) => ({
-                symbol: a.symbol,
-                assetId: a.assetId,
-              })),
-            });
-            return; // Skip this transaction if assets not found
-          }
-
-          // Validate asset IDs
-          if (!asset0.assetId || !asset1.assetId) {
-            console.warn(`Invalid asset IDs for transaction ${txHash}:`, {
-              asset0: asset0,
-              asset1: asset1,
-            });
-            return;
-          }
+          const asset1 =
+            findAssetBySymbol(primaryAction.asset1.symbol, assets) ||
+            ({
+              name: primaryAction.asset1.symbol,
+              symbol: primaryAction.asset1.symbol,
+              assetId: `unknown_${primaryAction.asset1.symbol}`,
+              decimals: primaryAction.asset1.decimals,
+              price: 0,
+            } as CoinDataWithPrice);
 
           // Create pool_id from asset IDs
           const poolId = `${asset0.assetId}_${asset1.assetId}`;
