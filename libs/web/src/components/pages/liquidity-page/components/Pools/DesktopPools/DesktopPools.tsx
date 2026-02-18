@@ -66,6 +66,8 @@ const ActionCell = ({poolData}: {poolData: PoolData}) => {
 
 export function DesktopPools({
   poolsData,
+  orderBy,
+  handleSort,
 }: {
   poolsData: PoolData[] | undefined;
   orderBy: string;
@@ -99,6 +101,7 @@ export function DesktopPools({
       key: "tvl",
       header: "$ TVL",
       align: "center",
+      sortKey: "tvlUSD",
       render: (poolData) => <TvlCell poolData={poolData} />,
     },
     {
@@ -122,6 +125,8 @@ export function DesktopPools({
         columns={columns}
         emptyMessage="No pools available"
         className="w-full"
+        onSort={handleSort}
+        orderBy={orderBy}
       />
     </div>
   );
