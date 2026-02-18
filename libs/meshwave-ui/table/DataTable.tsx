@@ -1,6 +1,7 @@
 "use client";
 
 import {cn} from "@/shadcn-ui/utils";
+import {ArrowDown, ArrowUp} from "lucide-react";
 import * as React from "react";
 import {Divider} from "../divider";
 
@@ -11,6 +12,8 @@ interface DataTableProps<T> {
   emptyMessage?: string;
   loading?: boolean;
   loadingCount?: number;
+  onSort?: (key: string) => void;
+  orderBy?: string;
 }
 
 interface DataTableColumn<T> {
@@ -19,6 +22,7 @@ interface DataTableColumn<T> {
   render: (item: T) => React.ReactNode;
   className?: string;
   align?: "left" | "center" | "right";
+  sortKey?: string;
 }
 
 function DataTable<T>({
@@ -28,6 +32,8 @@ function DataTable<T>({
   emptyMessage = "No data available",
   loading = false,
   loadingCount = 3,
+  onSort,
+  orderBy,
 }: DataTableProps<T>) {
   if (loading) {
     return <DataTableLoader columns={columns} count={loadingCount} />;
@@ -55,20 +61,34 @@ function DataTable<T>({
           gridTemplateColumns: `2fr repeat(${columns.length - 1}, 1fr)`,
         }}
       >
-        {columns.map((column) => (
-          <div
-            key={column.key}
-            className={cn(
-              "text-content-tertiary flex items-center justify-center min-h-[40px]",
-              column.align === "center" && "text-center",
-              column.align === "right" && "text-right justify-end",
-              column.align === "left" && "text-left justify-start",
-              column.className
-            )}
-          >
-            {column.header}
-          </div>
-        ))}
+        {columns.map((column) => {
+          const isSortable = column.sortKey && onSort;
+          const [activeKey, activeDir] = orderBy?.split("_") ?? [];
+          const isActive = isSortable && activeKey === column.sortKey;
+
+          return (
+            <div
+              key={column.key}
+              className={cn(
+                "text-content-tertiary flex items-center justify-center min-h-[40px] gap-1",
+                column.align === "center" && "text-center",
+                column.align === "right" && "text-right justify-end",
+                column.align === "left" && "text-left justify-start",
+                isSortable && "cursor-pointer select-none",
+                column.className
+              )}
+              onClick={isSortable ? () => onSort(column.sortKey!) : undefined}
+            >
+              {column.header}
+              {isActive &&
+                (activeDir === "ASC" ? (
+                  <ArrowUp className="h-3.5 w-3.5" />
+                ) : (
+                  <ArrowDown className="h-3.5 w-3.5" />
+                ))}
+            </div>
+          );
+        })}
       </div>
 
       <Divider size="sm" className="hidden md:block" />
