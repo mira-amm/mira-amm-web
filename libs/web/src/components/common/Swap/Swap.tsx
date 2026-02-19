@@ -548,8 +548,6 @@ export function Swap({isWidget}: {isWidget?: boolean}) {
           openSuccess();
           triggerClassAnimation("dino");
           await refetchBalances();
-          // TODO: use variable outputs
-          // check this after rebrand
           await result.waitForResult;
         }
       } else {
