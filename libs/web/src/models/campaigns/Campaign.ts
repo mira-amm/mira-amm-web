@@ -132,7 +132,6 @@ export class SentioJSONCampaignService implements CampaignService {
               const response = await fetch(this.apiUrl, options);
               const json = await response.json();
               if (json.code === 16) {
-                console.log(json.message);
                 throw new Error(json.message);
               }
 
