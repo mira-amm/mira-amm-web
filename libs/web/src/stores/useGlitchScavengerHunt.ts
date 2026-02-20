@@ -476,7 +476,6 @@ export const useAnimationStore = create<AnimationState>()(
       }
 
       const updateHintText = () => {
-        console.log("5 minutes have passed!");
         if (count === 0) set({hintText: HINT_1});
         if (count === 1) set({hintText: HINT_2});
         if (count === 2) set({hintText: HINT_3});

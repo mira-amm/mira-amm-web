@@ -91,7 +91,6 @@ export class SentioJSONUserRewardsService implements UserRewardsService {
     const userId = params.userId.toLowerCase();
 
     if (!addressPattern.test(userId)) {
-      console.log(`Invalid wallet address: ${userId}`);
       throw new Error(`Invalid wallet address: ${userId}`);
     }
 
@@ -136,17 +135,14 @@ export class SentioJSONUserRewardsService implements UserRewardsService {
       // check the validity of the json data
 
       if (!addressPattern.test(userId)) {
-        console.log(`Invalid wallet address: ${userId}`);
         throw new Error(`Invalid wallet address: ${userId}`);
       }
 
       if (!timestampPattern.test(epochStart)) {
-        console.log(`Invalid epoch start time: ${epochStart}`);
         throw new Error(`Invalid epoch start time: ${epochStart}`);
       }
 
       if (!timestampPattern.test(epochEnd)) {
-        console.log(`Invalid epoch end time: ${epochEnd}`);
         throw new Error(`Invalid epoch end time: ${epochEnd}`);
       }
 
@@ -171,22 +167,15 @@ export class SentioJSONUserRewardsService implements UserRewardsService {
       const json = await response.json();
 
       if (json.code) {
-        console.log(json.message);
         throw new Error(json.message);
       }
       if (json.result.rows.length == 0) {
-        console.log(
-          `Failed to fetch ${lpToken} rewards for user ${userId} in epoch ${epochStart} to ${epochEnd}`
-        );
         throw new NotFoundError(
           `Failed to fetch ${lpToken} rewards for user ${userId} in epoch ${epochStart} to ${epochEnd}`
         );
       }
       const fuelRewards = json.result.rows[0].FuelRewards;
       if (fuelRewards == null) {
-        console.log(
-          `Failed to fetch ${lpToken} rewards for user ${userId} in epoch ${epochStart} to ${epochEnd}`
-        );
         throw new NotFoundError(
           `Failed to fetch ${lpToken} rewards for user ${userId} in epoch ${epochStart} to ${epochEnd}`
         );

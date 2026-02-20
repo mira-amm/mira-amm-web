@@ -27,7 +27,6 @@ export const ClientSplashScreen = () => {
 
     // Listen for video end to pause on last frame and start fade
     const handleVideoEnd = () => {
-      console.log("Video ended, pausing on last frame");
       if (videoRef.current) {
         videoRef.current.pause();
         // Start fade out after a brief pause on last frame

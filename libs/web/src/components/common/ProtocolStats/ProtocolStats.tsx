@@ -11,14 +11,7 @@ import {ProtocolStatsProps} from "@/src/types";
  * Uses TanStack Query for data fetching, caching, and background updates
  */
 export function ProtocolStats({className}: ProtocolStatsProps) {
-  console.log("🔄 ProtocolStats component rendering...");
   const {data, isLoading, isError, error, refetch} = useProtocolStats();
-  console.log("📊 ProtocolStats state:", {
-    data,
-    isLoading,
-    isError,
-    error: error?.message,
-  });
 
   // Handle error state
   if (isError && error) {
