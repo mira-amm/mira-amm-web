@@ -99,8 +99,6 @@ export function useSwapTransaction({
           openSuccess();
           triggerClassAnimation("dino");
           await refetchBalances();
-          // TODO: use variable outputs
-          // check this after rebrand
           await result.waitForResult;
         }
       } else {
