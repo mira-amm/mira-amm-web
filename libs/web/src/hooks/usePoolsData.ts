@@ -83,7 +83,6 @@ export function usePoolsData() {
     query PoolsConnection($first: Int!, $after: String, $orderBy: [PoolOrderByInput!]!, $poolWhereInput: PoolWhereInput) {
       poolsConnection(first: $first, after: $after, orderBy: $orderBy, where: $poolWhereInput ) {
         totalCount
-        totalCount
         edges {
             node {
               id
@@ -137,7 +136,6 @@ export function usePoolsData() {
   const dataTransformed = data?.poolsConnection?.edges.map(
     (poolNode: {node: PoolNodeFromQuery}): PoolData => {
       const pool = poolNode.node;
-      // const volume24h = pool.snapshots.reduce((acc: number, snapshot: PoolSnapshot) => acc + parseFloat(snapshot.volumeUSD), 0);
       const fees24h = pool.snapshots.reduce(
         (acc: number, snapshot: PoolSnapshot) =>
           acc + parseFloat(snapshot.feesUSD),
