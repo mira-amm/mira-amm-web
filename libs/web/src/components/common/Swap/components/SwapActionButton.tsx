@@ -36,7 +36,8 @@ export function SwapActionButton({
     </Button>
   ) : (
     <Button
-      disabled={isActionDisabled}
+      disabled={isActionDisabled || isActionLoading}
+      aria-busy={isActionLoading || undefined}
       onClick={handleSwapClick}
       size="2xl"
       className={cn(
