@@ -114,7 +114,7 @@ export class FileCachedPointsPerUserService implements PointsPerUserService {
 
       parsedPoints = totalEntry?.points || [];
       totalCount = parsedPoints.length;
-    } catch (e) {
+    } catch {
       // If data doesn't exist or can't be read, fetch and save the latest points
       parsedPoints = await this.updateLatestPoints();
     }
@@ -243,7 +243,14 @@ export class FileCachedPointsPerUserService implements PointsPerUserService {
           return result;
         }
       } catch (error) {
-        // Job not finished yet, retry after interval
+        const isExpectedRetry =
+          error instanceof Error && error.message === "Job not finished yet";
+        if (!isExpectedRetry) {
+          console.warn(
+            `Points polling unexpected error (attempt ${attempt + 1}/${maxRetries}):`,
+            error instanceof Error ? error.message : error
+          );
+        }
       }
 
       await new Promise((resolve) =>
