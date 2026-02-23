@@ -41,7 +41,7 @@ export function SwapActionButton({
       onClick={handleSwapClick}
       size="2xl"
       className={cn(
-        isActionDisabled &&
+        (isActionDisabled || isActionLoading) &&
           isRebrandingEnabled &&
           "bg-accent-primary border-0 text-black hover:bg-accent-primary-1 shadow-none disabled:opacity-100"
       )}
