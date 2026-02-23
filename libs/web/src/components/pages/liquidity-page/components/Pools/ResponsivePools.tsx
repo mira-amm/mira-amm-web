@@ -37,10 +37,6 @@ function PoolItem({poolData}: {poolData: PoolData}) {
     router.push(`/liquidity/add?pool=${poolKey}`);
   };
 
-  // card box
-  // it has the border, gap 20px,
-  // padding of approximately 30px
-  // TODO: Background color is not dark gray
   return (
     <div className="gap-5 p-6 border-border-secondary border-[12px] rounded-ten flex flex-col bg-[#F5F5F5]">
       <CoinPair

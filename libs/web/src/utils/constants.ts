@@ -28,7 +28,6 @@ export const XLink = "https://x.com/MicrochainDLM" as const;
 export const BlogLink =
   "https://mirror.xyz/0xBE101110E07430Cf585123864a55f51e53ABc339" as const;
 
-// TODO: Use env variables for values below to separate dev/prod | testnet/mainnet
 export const ValidNetworkChainId = CHAIN_IDS.fuel.mainnet;
 export const NetworkUrl: string = "https://mainnet.fuel.network/v1/graphql";
 
@@ -103,7 +102,6 @@ export const POINTS_TOOLTIP =
 export const POINTS_RANK_TOOLTIP =
   "Your rank is determined by the amount of points you have accumulated.";
 
-// TODO: Add the url for the points learn more
 export const POINTS_LEARN_MORE_URL =
   "https://mirror.xyz/miraly.eth/W2W1Zv8jKS-70OY64cF-qneyPgLngG4ItRv9PMmxHeY";
 
