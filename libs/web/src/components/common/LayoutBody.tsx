@@ -12,8 +12,13 @@ import {
   ClientSplashWrapper,
 } from "@/src/components/common";
 import Footer from "@/src/components/common/Footer/Footer";
-import GlitchEffects from "@/src/components/common/GlitchEffects/GlitchEffects";
 import {getIsRebrandEnabled} from "@/src/utils/isRebrandEnabled";
+import dynamic from "next/dynamic";
+
+const GlitchEffects = dynamic(
+  () => import("@/src/components/common/GlitchEffects/GlitchEffects"),
+  {ssr: false}
+);
 
 interface LayoutBodyProps {
   children: ReactNode;

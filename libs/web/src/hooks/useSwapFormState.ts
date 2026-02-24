@@ -28,14 +28,22 @@ export function useSwapFormState(
         buy: string | null;
       }
     ) => {
-      const stored = JSON.parse(
-        localStorage.getItem("swapCoins") ?? "null"
-      ) ?? {
+      let stored: {sell: string | null; buy: string | null} | null = null;
+      try {
+        stored = JSON.parse(localStorage.getItem("swapCoins") ?? "null");
+      } catch {
+        // localStorage unavailable or corrupted data
+      }
+      const current = stored ?? {
         sell: initialSwapState.sell.assetId,
         buy: initialSwapState.buy.assetId,
       };
-      const next = updater(stored);
-      localStorage.setItem("swapCoins", JSON.stringify(next));
+      const next = updater(current);
+      try {
+        localStorage.setItem("swapCoins", JSON.stringify(next));
+      } catch {
+        // localStorage unavailable
+      }
     },
     [initialSwapState]
   );

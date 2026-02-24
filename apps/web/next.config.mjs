@@ -27,6 +27,9 @@ const nextConfig = {
       },
     ];
   },
+  experimental: {
+    optimizePackageImports: ["lucide-react"],
+  },
   webpack: (config, options) => {
     config.module.rules.push({
       test: /\.(mp3)$/,

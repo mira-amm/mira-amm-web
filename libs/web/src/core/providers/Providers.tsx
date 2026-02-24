@@ -9,8 +9,14 @@ import {
   PersistQueryClientOptions,
 } from "@tanstack/react-query-persist-client";
 import {createSyncStoragePersister} from "@tanstack/query-sync-storage-persister";
-import {ReactQueryDevtools} from "@tanstack/react-query-devtools";
 import {Toaster} from "sonner";
+import dynamic from "next/dynamic";
+
+const ReactQueryDevtools = dynamic(
+  () =>
+    import("@tanstack/react-query-devtools").then((m) => m.ReactQueryDevtools),
+  {ssr: false}
+);
 
 import {FuelProviderWrapper} from "@/src/core/providers/FuelProviderWrapper";
 import {DisclaimerWrapper} from "@/src/core/providers/DisclaimerWrapper";
