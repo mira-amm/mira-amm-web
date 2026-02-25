@@ -27,7 +27,7 @@ const PROMO_BANNER_STORAGE_KEY = "fuel-boost-program-promo-banner-closed";
 
 export function Header({pathName}: {isHomePage?: boolean; pathName?: string}) {
   const routePathname = usePathname();
-  const pathname = pathName ?? routePathname;
+  const pathname = pathName ?? routePathname ?? "";
   const [isPromoShown, setIsPromoShown] = useState(false);
 
   useEffect(() => {

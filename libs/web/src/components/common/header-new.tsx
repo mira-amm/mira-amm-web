@@ -17,7 +17,7 @@ export function HeaderNew({
   pathName?: string;
 }) {
   const routePathname = usePathname();
-  const pathname = pathName ?? routePathname;
+  const pathname = pathName ?? routePathname ?? "";
 
   const navLinks = useMemo(
     () => [
