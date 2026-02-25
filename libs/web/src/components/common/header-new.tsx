@@ -16,7 +16,8 @@ export function HeaderNew({
   isHomePage?: boolean;
   pathName?: string;
 }) {
-  const pathname = pathName ?? usePathname();
+  const routePathname = usePathname();
+  const pathname = pathName ?? routePathname;
 
   const navLinks = useMemo(
     () => [
