@@ -69,6 +69,33 @@ interface AnimationState {
 const ANIMATION_CALLS_KEY = "animation-calls";
 const ANIMATION_COUNT_KEY = "animation-count";
 
+const DEFAULT_CALLED_ANIMATIONS = {
+  tripleClickTokenSwap: false,
+  magicInput: false,
+  tripleClickCurrencySwap: false,
+};
+
+function getStoredAnimationCalls() {
+  if (typeof window === "undefined") return DEFAULT_CALLED_ANIMATIONS;
+  try {
+    return JSON.parse(
+      localStorage.getItem(ANIMATION_CALLS_KEY) ||
+        JSON.stringify(DEFAULT_CALLED_ANIMATIONS)
+    );
+  } catch {
+    return DEFAULT_CALLED_ANIMATIONS;
+  }
+}
+
+function getStoredAnimationCount() {
+  if (typeof window === "undefined") return 0;
+  try {
+    return parseInt(localStorage.getItem(ANIMATION_COUNT_KEY) || "0");
+  } catch {
+    return 0;
+  }
+}
+
 export const useAnimationStore = create<AnimationState>()(
   subscribeWithSelector((set, get) => ({
     masterEnabled:
@@ -85,21 +112,8 @@ export const useAnimationStore = create<AnimationState>()(
     lastClicks: [],
     intervalId: null,
     isGlobalActive: false,
-    calledAnimations:
-      typeof window !== "undefined"
-        ? JSON.parse(
-            localStorage.getItem(ANIMATION_CALLS_KEY) ||
-              '{"tripleClickTokenSwap":false,"magicInput":false,"tripleClickCurrencySwap":false}'
-          )
-        : {
-            tripleClickTokenSwap: false,
-            magicInput: false,
-            tripleClickCurrencySwap: false,
-          },
-    animationCallCount:
-      typeof window !== "undefined"
-        ? parseInt(localStorage.getItem(ANIMATION_COUNT_KEY) || "0")
-        : 0,
+    calledAnimations: getStoredAnimationCalls(),
+    animationCallCount: getStoredAnimationCount(),
 
     isTriggeredManually: false,
     hintText: "",
@@ -207,11 +221,15 @@ export const useAnimationStore = create<AnimationState>()(
           initializeHintListener(newCount);
 
           if (typeof window !== "undefined") {
-            localStorage.setItem(
-              ANIMATION_CALLS_KEY,
-              JSON.stringify(newCalledAnimations)
-            );
-            localStorage.setItem(ANIMATION_COUNT_KEY, newCount.toString());
+            try {
+              localStorage.setItem(
+                ANIMATION_CALLS_KEY,
+                JSON.stringify(newCalledAnimations)
+              );
+              localStorage.setItem(ANIMATION_COUNT_KEY, newCount.toString());
+            } catch {
+              // localStorage unavailable
+            }
           }
         }, TOKEN_ANIMATION_DELAY);
       } else {
@@ -288,11 +306,18 @@ export const useAnimationStore = create<AnimationState>()(
               initializeHintListener(newCount);
 
               if (typeof window !== "undefined") {
-                localStorage.setItem(
-                  ANIMATION_CALLS_KEY,
-                  JSON.stringify(newCalledAnimations)
-                );
-                localStorage.setItem(ANIMATION_COUNT_KEY, newCount.toString());
+                try {
+                  localStorage.setItem(
+                    ANIMATION_CALLS_KEY,
+                    JSON.stringify(newCalledAnimations)
+                  );
+                  localStorage.setItem(
+                    ANIMATION_COUNT_KEY,
+                    newCount.toString()
+                  );
+                } catch {
+                  // localStorage unavailable
+                }
               }
             }
           }, checkInterval);
@@ -363,11 +388,15 @@ export const useAnimationStore = create<AnimationState>()(
           });
           initializeHintListener(newCount);
           if (typeof window !== "undefined") {
-            localStorage.setItem(
-              ANIMATION_CALLS_KEY,
-              JSON.stringify(newCalledAnimations)
-            );
-            localStorage.setItem(ANIMATION_COUNT_KEY, newCount.toString());
+            try {
+              localStorage.setItem(
+                ANIMATION_CALLS_KEY,
+                JSON.stringify(newCalledAnimations)
+              );
+              localStorage.setItem(ANIMATION_COUNT_KEY, newCount.toString());
+            } catch {
+              // localStorage unavailable
+            }
           }
         }, OTHER_ANIMATION_DELAY);
       } else {
@@ -391,11 +420,15 @@ export const useAnimationStore = create<AnimationState>()(
       });
 
       if (typeof window !== "undefined") {
-        localStorage.setItem(
-          ANIMATION_CALLS_KEY,
-          JSON.stringify(defaultCalled)
-        );
-        localStorage.setItem(ANIMATION_COUNT_KEY, "0");
+        try {
+          localStorage.setItem(
+            ANIMATION_CALLS_KEY,
+            JSON.stringify(defaultCalled)
+          );
+          localStorage.setItem(ANIMATION_COUNT_KEY, "0");
+        } catch {
+          // localStorage unavailable
+        }
       }
     },
 
