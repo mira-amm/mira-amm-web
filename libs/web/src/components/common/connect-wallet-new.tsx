@@ -37,6 +37,153 @@ const PowerIndicator = ({isConnected}: {isConnected: boolean}) => (
   </div>
 );
 
+interface ActionButtonProps {
+  isConnected: boolean;
+  connect: () => void;
+  disconnect: () => void;
+  isWalletLoading: boolean;
+}
+
+const ActionButton = ({
+  isConnected,
+  connect,
+  disconnect,
+  isWalletLoading,
+}: ActionButtonProps) => {
+  if (!isConnected) {
+    return (
+      <Button
+        onClick={connect}
+        disabled={isWalletLoading}
+        size="xs"
+        className="rounded uppercase px-4"
+      >
+        Connect
+      </Button>
+    );
+  }
+
+  return (
+    <Button
+      onClick={() => disconnect()}
+      size="xs"
+      variant="secondary"
+      className="bg-accent-secondary hover:bg-accent-secondary-1 rounded uppercase px-4 text-black transition-colors duration-300"
+    >
+      Disconnect
+    </Button>
+  );
+};
+
+interface RightPanelProps {
+  isConnected: boolean;
+  rightPanelWidth: string;
+  textSize: string;
+  formattedAddress: string | null;
+  open: boolean;
+  onToggle: () => void;
+}
+
+const RightPanel = ({
+  isConnected,
+  rightPanelWidth,
+  textSize,
+  formattedAddress,
+  open,
+  onToggle,
+}: RightPanelProps) => {
+  if (!isConnected) {
+    return (
+      <div
+        className={cn(
+          "bg-black rounded-ten font-alt text-accent-primary uppercase px-3 tracking-tight flex justify-left items-center",
+          rightPanelWidth,
+          textSize
+        )}
+      >
+        No wallet connected
+      </div>
+    );
+  }
+
+  return (
+    <div
+      onClick={onToggle}
+      className={cn(
+        "bg-black rounded-ten text-accent-primary font-alt uppercase px-3 tracking-tight flex justify-between items-center cursor-pointer",
+        rightPanelWidth,
+        textSize
+      )}
+    >
+      {formattedAddress}
+      {open ? (
+        <ChevronUp className="text-content-dimmed-dark text-mc-blue" />
+      ) : (
+        <ChevronDown className="text-content-dimmed-dark text-mc-blue" />
+      )}
+    </div>
+  );
+};
+
+interface WalletDropdownMenuProps {
+  onCopy: () => void;
+  onExplorerClick: () => void;
+  onTxHistoryClick: () => void;
+  onDisconnect: () => void;
+  onClose: () => void;
+}
+
+const WalletDropdownMenu = ({
+  onCopy,
+  onExplorerClick,
+  onTxHistoryClick,
+  onDisconnect,
+  onClose,
+}: WalletDropdownMenuProps) => (
+  <div className="absolute left-0 mt-2 w-full border-[12px] border-border-secondary dark:border-0 bg-background-grey-dark dark:bg-[#262834] px-2 py-2.5 rounded-ten z-50">
+    <div
+      onClick={() => {
+        onCopy();
+        onClose();
+      }}
+      className="hover:bg-background-tertiary dark:hover:bg-background-secondary p-2 rounded-ten cursor-pointer flex items-center gap-2"
+    >
+      <CopyIcon className="size-4 dark:text-white" />
+      Copy Address
+    </div>
+    <div
+      onClick={() => {
+        onExplorerClick();
+        onClose();
+      }}
+      className="hover:bg-background-tertiary dark:hover:bg-background-secondary p-2 rounded-ten cursor-pointer flex items-center gap-2"
+    >
+      <ExternalLink className="size-4 dark:text-white" />
+      View in Explorer
+    </div>
+    <div
+      onClick={() => {
+        onTxHistoryClick();
+        onClose();
+      }}
+      className="hover:bg-background-tertiary dark:hover:bg-background-secondary p-2 rounded-ten cursor-pointer flex items-center gap-2"
+    >
+      <ArrowLeftRight className="size-4 dark:text-white" />
+      Transaction History
+    </div>
+    <div
+      onClick={() => {
+        onDisconnect();
+        onClose();
+      }}
+      className="hover:bg-background-tertiary dark:hover:bg-background-secondary p-2 rounded-ten cursor-pointer flex items-center gap-2"
+    >
+      <LogOutIcon className="size-4 dark:text-white" />
+      Disconnect
+    </div>
+  </div>
+);
+
 export function ConnectWalletNew({
   size = "large",
   className,
@@ -101,122 +248,10 @@ export function ConnectWalletNew({
 
   const handleTxHistoryClick = () => setHistoryOpened(true);
 
-  // Common styles
+  // Derived styles
   const containerWidth = size === "large" ? "w-[90vw]" : "w-[341.82px]";
   const rightPanelWidth = size === "large" ? "w-full" : "w-[239.82px]";
   const textSize = size === "large" ? "text-sm" : "text-sm";
-
-  // Action button component
-  const ActionButton = () => {
-    if (!isConnected) {
-      return (
-        <Button
-          onClick={connect}
-          disabled={isWalletLoading}
-          size="xs"
-          className="rounded uppercase px-4"
-        >
-          Connect
-        </Button>
-      );
-    }
-
-    return (
-      <Button
-        onClick={() => disconnect()}
-        size="xs"
-        variant="secondary"
-        className="bg-accent-secondary hover:bg-accent-secondary-1 rounded uppercase px-4 text-black transition-colors duration-300"
-      >
-        Disconnect
-      </Button>
-    );
-  };
-
-  // Right panel component
-  const RightPanel = () => {
-    if (!isConnected) {
-      return (
-        <div
-          className={cn(
-            "bg-black rounded-ten font-alt text-accent-primary uppercase px-3 tracking-tight flex justify-left items-center",
-            rightPanelWidth,
-            textSize
-          )}
-        >
-          No wallet connected
-        </div>
-      );
-    }
-
-    return (
-      <div
-        onClick={() => setOpen((prev) => !prev)}
-        className={cn(
-          "bg-black rounded-ten text-accent-primary font-alt uppercase px-3 tracking-tight flex justify-between items-center cursor-pointer",
-          rightPanelWidth,
-          textSize
-        )}
-      >
-        {formattedAddress}
-        {open ? (
-          <ChevronUp className="text-content-dimmed-dark text-mc-blue" />
-        ) : (
-          <ChevronDown className="text-content-dimmed-dark text-mc-blue" />
-        )}
-      </div>
-    );
-  };
-
-  // Dropdown menu component
-  const DropdownMenu = () => {
-    if (!open || !isConnected) return null;
-
-    return (
-      <div className="absolute left-0 mt-2 w-full border-[12px] border-border-secondary dark:border-0 bg-background-grey-dark dark:bg-[#262834] px-2 py-2.5 rounded-ten z-50">
-        <div
-          onClick={() => {
-            handleCopy();
-            setOpen(false);
-          }}
-          className="hover:bg-background-tertiary dark:hover:bg-background-secondary p-2 rounded-ten cursor-pointer flex items-center gap-2"
-        >
-          <CopyIcon className="size-4 dark:text-white" />
-          Copy Address
-        </div>
-        <div
-          onClick={() => {
-            handleExplorerClick();
-            setOpen(false);
-          }}
-          className="hover:bg-background-tertiary dark:hover:bg-background-secondary p-2 rounded-ten cursor-pointer flex items-center gap-2"
-        >
-          <ExternalLink className="size-4 dark:text-white" />
-          View in Explorer
-        </div>
-        <div
-          onClick={() => {
-            handleTxHistoryClick();
-            setOpen(false);
-          }}
-          className="hover:bg-background-tertiary dark:hover:bg-background-secondary p-2 rounded-ten cursor-pointer flex items-center gap-2"
-        >
-          <ArrowLeftRight className="size-4 dark:text-white" />
-          Transaction History
-        </div>
-        <div
-          onClick={() => {
-            disconnect();
-            setOpen(false);
-          }}
-          className="hover:bg-background-tertiary dark:hover:bg-background-secondary p-2 rounded-ten cursor-pointer flex items-center gap-2"
-        >
-          <LogOutIcon className="size-4 dark:text-white" />
-          Disconnect
-        </div>
-      </div>
-    );
-  };
 
   return (
     <>
@@ -228,11 +263,31 @@ export function ConnectWalletNew({
           <div className="flex gap-x-1.5! dark:bg-background-grey-dark">
             <div>
               <PowerIndicator isConnected={isConnected} />
-              <ActionButton />
+              <ActionButton
+                isConnected={isConnected}
+                connect={connect}
+                disconnect={disconnect}
+                isWalletLoading={isWalletLoading}
+              />
             </div>
-            <RightPanel />
+            <RightPanel
+              isConnected={isConnected}
+              rightPanelWidth={rightPanelWidth}
+              textSize={textSize}
+              formattedAddress={formattedAddress}
+              open={open}
+              onToggle={() => setOpen((prev) => !prev)}
+            />
           </div>
-          <DropdownMenu />
+          {open && isConnected && (
+            <WalletDropdownMenu
+              onCopy={handleCopy}
+              onExplorerClick={handleExplorerClick}
+              onTxHistoryClick={handleTxHistoryClick}
+              onDisconnect={disconnect}
+              onClose={() => setOpen(false)}
+            />
+          )}
         </div>
       </div>
 
