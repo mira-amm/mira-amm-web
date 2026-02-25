@@ -26,19 +26,26 @@ import {PointsIcon} from "@/meshwave-ui/icons";
 const PROMO_BANNER_STORAGE_KEY = "fuel-boost-program-promo-banner-closed";
 
 export function Header({pathName}: {isHomePage?: boolean; pathName?: string}) {
-  const pathname = pathName ?? usePathname();
+  const routePathname = usePathname();
+  const pathname = pathName ?? routePathname ?? "";
   const [isPromoShown, setIsPromoShown] = useState(false);
 
   useEffect(() => {
-    if (typeof window !== "undefined") {
+    try {
       const bannerClosed = localStorage.getItem(PROMO_BANNER_STORAGE_KEY);
       setIsPromoShown(!bannerClosed);
+    } catch {
+      // localStorage unavailable — keep banner hidden
     }
   }, []);
 
   const handleCloseBanner = useCallback(() => {
     setIsPromoShown(false);
-    localStorage.setItem(PROMO_BANNER_STORAGE_KEY, "true");
+    try {
+      localStorage.setItem(PROMO_BANNER_STORAGE_KEY, "true");
+    } catch {
+      // localStorage unavailable — banner will reappear next visit
+    }
   }, []);
 
   const navLinks = useMemo(
