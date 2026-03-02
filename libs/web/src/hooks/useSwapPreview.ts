@@ -1,6 +1,6 @@
 import {useMemo} from "react";
 import {BN, bn} from "fuels";
-import {CurrencyBoxMode, SwapState} from "@/src/components/common/Swap/Swap";
+import type {CurrencyBoxMode, SwapState} from "./useSwapFormState";
 import {
   useSwapData,
   useAsset,
@@ -89,7 +89,11 @@ export function useSwapPreview(
   return useMemo(() => {
     // Only show the custom V2 error if user has entered an amount
     const hasAmount = bn(debouncedValue).gt(0);
-    if (poolType === "v2" && result.tradeState === TradeState.NO_ROUTE_FOUND && hasAmount) {
+    if (
+      poolType === "v2" &&
+      result.tradeState === TradeState.NO_ROUTE_FOUND &&
+      hasAmount
+    ) {
       return {
         ...result,
         error: "No concentrated liquidity pools available for this pair",

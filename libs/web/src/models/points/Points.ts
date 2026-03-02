@@ -37,7 +37,6 @@ export class FileCachedPointsPerUserService implements PointsPerUserService {
   async updateLatestPoints(): Promise<PointsResponse[]> {
     // get the current epochs from the epochConfigService
     const epochs = this.epochConfigService.getEpochsByRewardAssetId("Points");
-    console.log("epochs", epochs);
     const cacheData = new Map<number | "TOTAL", CacheEntry>();
 
     // Fetch and cache points for each epoch
@@ -107,9 +106,6 @@ export class FileCachedPointsPerUserService implements PointsPerUserService {
         !totalEntry ||
         new Date(totalEntry.expiresAt) < new Date(Date.now())
       ) {
-        console.log(
-          `Points cache is older than ${POINTS_CACHE_EXPIRATION_MS / 1000 / ONE_MINUTE_IN_SECONDS} minutes, updating in the background...`
-        );
         // update the points cache non-blocking
         Promise.resolve().then(async () => {
           this.updateLatestPoints();
@@ -118,11 +114,8 @@ export class FileCachedPointsPerUserService implements PointsPerUserService {
 
       parsedPoints = totalEntry?.points || [];
       totalCount = parsedPoints.length;
-    } catch (e) {
+    } catch {
       // If data doesn't exist or can't be read, fetch and save the latest points
-      console.log(
-        "Points data not found or invalid, fetching latest points..."
-      );
       parsedPoints = await this.updateLatestPoints();
     }
 
@@ -168,8 +161,6 @@ export class FileCachedPointsPerUserService implements PointsPerUserService {
         rewardRates
       );
 
-      console.log("Sentio job triggered, resultUrl:", resultUrl);
-
       return await this.pollForResults(this.apiKey, resultUrl);
     } catch (error) {
       console.error("Error fetching latest points:", error);
@@ -208,8 +199,6 @@ export class FileCachedPointsPerUserService implements PointsPerUserService {
       },
       body: JSON.stringify(data),
     });
-
-    console.log("Sentio job response:", response);
 
     const json = await response.json();
     return {
@@ -254,9 +243,14 @@ export class FileCachedPointsPerUserService implements PointsPerUserService {
           return result;
         }
       } catch (error) {
-        console.log(
-          `Attempt ${attempt + 1}/${maxRetries}: Job not finished yet, retrying in ${RESULT_POLL_INTERVAL_MS}ms...`
-        );
+        const isExpectedRetry =
+          error instanceof Error && error.message === "Job not finished yet";
+        if (!isExpectedRetry) {
+          console.warn(
+            `Points polling unexpected error (attempt ${attempt + 1}/${maxRetries}):`,
+            error instanceof Error ? error.message : error
+          );
+        }
       }
 
       await new Promise((resolve) =>

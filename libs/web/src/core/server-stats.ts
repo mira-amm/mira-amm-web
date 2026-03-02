@@ -19,8 +19,6 @@ export async function fetchProtocolStatsSSR(): Promise<ServerStatsResult> {
   const startTime = Date.now();
 
   try {
-    console.log("SSR: Fetching protocol stats via API route...");
-
     // Use the API route we created for consistent caching
     const baseUrl = process.env.VERCEL_URL
       ? `https://${process.env.VERCEL_URL}`
@@ -38,9 +36,6 @@ export async function fetchProtocolStatsSSR(): Promise<ServerStatsResult> {
     }
 
     const result = await response.json();
-    const duration = Date.now() - startTime;
-
-    console.log(`SSR: Protocol stats fetched successfully in ${duration}ms`);
 
     return {
       data: result.data,

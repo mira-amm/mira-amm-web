@@ -1,6 +1,7 @@
 "use client";
 import {ReactNode} from "react";
 import {clsx} from "clsx";
+import type {NextFontWithVariable} from "next/dist/compiled/@next/font/dist/types";
 import {getBrandText} from "@/src/utils/brandName";
 import {useAnimationStore} from "@/src/stores/useGlitchScavengerHunt";
 import {Providers} from "@/src/core/providers/Providers";
@@ -16,12 +17,12 @@ import {getIsRebrandEnabled} from "@/src/utils/isRebrandEnabled";
 
 interface LayoutBodyProps {
   children: ReactNode;
-  inter: any;
-  prompt: any;
-  jetBrainsMono: any;
-  ibmPlexMono: any;
-  vt323: any;
-  instrumentSerif: any;
+  inter: NextFontWithVariable;
+  prompt: NextFontWithVariable;
+  jetBrainsMono: NextFontWithVariable;
+  ibmPlexMono: NextFontWithVariable;
+  vt323: NextFontWithVariable;
+  instrumentSerif: NextFontWithVariable;
 }
 
 export const LayoutBody = ({

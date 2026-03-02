@@ -6,7 +6,7 @@ import {ChevronDown} from "lucide-react";
 
 import {Coin, FeatureGuard, TextButton} from "@/src/components/common";
 
-import {CurrencyBoxMode} from "@/src/components/common/Swap/Swap";
+import type {CurrencyBoxMode} from "@/src/hooks";
 import {MinEthValueBN} from "@/src/utils/constants";
 import {useAssetMetadata} from "@/src/hooks";
 import fiatValueFormatter from "@/src/utils/abbreviateNumber";

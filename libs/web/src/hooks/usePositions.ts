@@ -10,6 +10,14 @@ import {
   mapUiPoolTypeFromStableFlag,
 } from "@/src/utils/poolTypeDetection";
 
+interface PoolFromQuery {
+  id: string;
+  lpToken: {id: string};
+  asset0: {id: string; price: string};
+  asset1: {id: string; price: string};
+  isStable: boolean;
+}
+
 export interface Position {
   poolId: PoolId;
   lpAssetId: string;
@@ -61,13 +69,13 @@ export function usePositions(): {
         }
       `;
 
-      const result = await request<{pools: any[]}>({
+      const result = await request<{pools: PoolFromQuery[]}>({
         url: SQDIndexerUrl,
         document: query,
       });
 
       const settledPools = await Promise.allSettled(
-        result.pools.map(async (pool: any) => {
+        result.pools.map(async (pool: PoolFromQuery) => {
           const poolId = createPoolIdFromIdString(pool.id);
           const lpBalance = balances!.find(
             (balance) => balance.assetId === pool.lpToken.id

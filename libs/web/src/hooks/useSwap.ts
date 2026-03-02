@@ -1,38 +1,31 @@
 "use client";
 
 import {useCallback} from "react";
-import {BN, bn, ScriptTransactionRequest} from "fuels";
+import {BN, bn} from "fuels";
 import {useWallet} from "@fuels/react";
 import {PoolId} from "mira-dex-ts";
 import {useMutation} from "@tanstack/react-query";
 
-import type {
-  CurrencyBoxMode,
-  SwapState,
-} from "@/src/components/common/Swap/Swap";
+import type {CurrencyBoxMode, SwapState} from "./useSwapFormState";
 import {
   useMiraDex,
   useSwapData,
   useReadonlyMira,
   useMiraDexV2,
   useReadonlyMiraV2,
-  type Pool,
 } from "@/src/hooks";
 import {getMaxDeadline} from "@/src/utils/constants";
-import {type PoolTypeOption} from "@/src/components/common/PoolTypeToggle";
 
 export function useSwap({
   swapState,
   mode,
   slippage,
   pools,
-  poolType = "v1",
 }: {
   swapState: SwapState;
   mode: CurrencyBoxMode;
   slippage: number;
-  pools: Pool[] | undefined;
-  poolType?: PoolTypeOption;
+  pools: (PoolId | BN)[] | undefined;
 }) {
   const {wallet} = useWallet();
   const miraDex = useMiraDex();
@@ -48,10 +41,10 @@ export function useSwap({
       return;
     }
 
-    // Determine which SDK to use based on pool type
-    const isV2 = poolType === "v2";
-    const activeMiraDex = isV2 ? miraDexV2 : miraDex;
-    const activeReadonlyMira = isV2 ? readonlyMiraV2 : readonlyMira;
+    // Determine if this is a V2 swap based on pool ID types
+    const hasV2Pools = pools.some((p) => !Array.isArray(p));
+    const activeMiraDex = hasV2Pools ? miraDexV2 : miraDex;
+    const activeReadonlyMira = hasV2Pools ? readonlyMiraV2 : readonlyMira;
 
     if (!activeMiraDex || !activeReadonlyMira) {
       return;
@@ -63,15 +56,15 @@ export function useSwap({
     let tx: any;
     let txCost: BN;
 
-    // Extract pool IDs from Pool objects
-    const poolIds = pools.map((p) => p.poolId);
+    // Cast pools to the appropriate type based on protocol version
+    const typedPools = pools as any[];
 
     if (mode === "sell") {
       const [_buyAsset, simulatedBuyAmount] =
         await activeReadonlyMira.previewSwapExactInput(
           sellAssetIdInput,
           sellAmount,
-          [...poolIds]
+          [...typedPools]
         );
       const buyAmountWithSlippage = simulatedBuyAmount
         .mul(bn(10_000).sub(bn(slippage)))
@@ -81,7 +74,7 @@ export function useSwap({
         sellAmount,
         sellAssetIdInput,
         buyAmountWithSlippage,
-        poolIds,
+        typedPools,
         getMaxDeadline(),
         undefined,
         {reserveGas: 10000, useAssembleTx: true}
@@ -94,7 +87,7 @@ export function useSwap({
         await activeReadonlyMira.previewSwapExactOutput(
           buyAssetIdInput,
           buyAmount,
-          [...poolIds]
+          [...typedPools]
         );
       const sellAmountWithSlippage = simulatedSellAmount
         .mul(bn(10_000).add(bn(slippage)))
@@ -104,7 +97,7 @@ export function useSwap({
           buyAmount,
           buyAssetIdInput,
           sellAmountWithSlippage,
-          poolIds,
+          typedPools,
           getMaxDeadline(),
           undefined,
           {reserveGas: 10000, useAssembleTx: true}
@@ -121,7 +114,6 @@ export function useSwap({
     miraDexV2,
     readonlyMira,
     readonlyMiraV2,
-    poolType,
     swapState.buy.amount,
     sellDecimals,
     swapState.sell.amount,

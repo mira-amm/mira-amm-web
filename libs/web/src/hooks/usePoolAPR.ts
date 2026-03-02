@@ -7,6 +7,18 @@ import {
   calculatePoolAPR,
 } from "@/src/utils/poolTvlCalculation";
 
+interface PoolAPRResponse {
+  poolById: {
+    snapshots: {feesUSD: string}[];
+    tvlUSD: string;
+    reserve0Decimal: string;
+    reserve1Decimal: string;
+    protocolVersion: string;
+    asset0: {price: string};
+    asset1: {price: string};
+  };
+}
+
 export function usePoolAPR(pool: UnifiedPoolId) {
   const poolIdString = poolIdToString(pool);
 
@@ -34,12 +46,13 @@ export function usePoolAPR(pool: UnifiedPoolId) {
         }
       `;
 
-      const result = await request<any>({
+      const result = await request<PoolAPRResponse>({
         url: SQDIndexerUrl,
         document: query,
       });
       const fees24h = result.poolById.snapshots.reduce(
-        (acc: number, snapshot: any) => acc + parseFloat(snapshot.feesUSD),
+        (acc: number, snapshot: {feesUSD: string}) =>
+          acc + parseFloat(snapshot.feesUSD),
         0
       );
 

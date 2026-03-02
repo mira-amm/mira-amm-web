@@ -14,7 +14,7 @@ import {
 import {Info} from "lucide-react";
 import {clsx} from "clsx";
 
-import {SlippageMode} from "@/src/components/common/Swap/Swap";
+import type {SlippageMode} from "@/src/hooks";
 
 import {useAnimationStore} from "@/src/stores/useGlitchScavengerHunt";
 

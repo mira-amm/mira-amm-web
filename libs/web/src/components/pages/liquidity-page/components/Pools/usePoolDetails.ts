@@ -39,8 +39,8 @@ export function usePoolDetails(poolData: PoolData) {
           maximumFractionDigits: 2,
         })}%`;
       }
-      if (volume && parseFloat(volume) > 0) {
-        volumeValue = `$${parseFloat(volume).toLocaleString(DefaultLocale, {
+      if (volume && volume > 0) {
+        volumeValue = `$${volume.toLocaleString(DefaultLocale, {
           maximumFractionDigits: 0,
         })}`;
       }

@@ -27,7 +27,6 @@ export const ClientSplashScreen = () => {
 
     // Listen for video end to pause on last frame and start fade
     const handleVideoEnd = () => {
-      console.log("Video ended, pausing on last frame");
       if (videoRef.current) {
         videoRef.current.pause();
         // Start fade out after a brief pause on last frame
@@ -69,9 +68,7 @@ export const ClientSplashScreen = () => {
       >
         {videoError ? (
           <div className="text-black text-center">
-            <h1 className="text-6xl lg:text-8xl mb-4">
-              {brandText.name}
-            </h1>
+            <h1 className="text-6xl lg:text-8xl mb-4">{brandText.name}</h1>
             <p className="text-xl lg:text-2xl text-gray-600">
               {rebrandEnabled
                 ? "The future of decentralized finance"
