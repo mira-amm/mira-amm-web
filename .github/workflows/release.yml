@@ -33,6 +33,15 @@ jobs:
       - name: 📦 Install Packages
         run: pnpm install;
 
+      - name: 🔑 Verify GH_TOKEN secret is configured
+        env:
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
+        run: |
+          if [ -z "$GH_TOKEN" ]; then
+            echo "::error::GH_TOKEN secret is not set or has expired. A GitHub PAT with 'repo' scope is required for NX releases. Please update the GH_TOKEN secret in Settings → Secrets and variables → Actions."
+            exit 1
+          fi
+
       - name: 📒 Dry Run Release
         if: github.ref_name != 'main'
         env:
