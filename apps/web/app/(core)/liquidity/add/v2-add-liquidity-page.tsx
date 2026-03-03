@@ -14,7 +14,7 @@ import {SlippageMode} from "@/src/components/common/Swap/Swap";
 import SettingsModalContentNew from "@/src/components/common/settings-modal-content-new";
 import {parsePoolKey} from "@/src/utils/poolTypeDetection";
 import V2AddLiquidityDialog from "./components/V2AddLiquidityDialog";
-import { BN } from "fuels";
+import {BN} from "fuels";
 
 export default function V2AddLiquidityPage() {
   const router = useRouter();
