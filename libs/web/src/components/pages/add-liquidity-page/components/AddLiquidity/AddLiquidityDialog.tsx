@@ -6,33 +6,19 @@ import {
   useState,
 } from "react";
 import {Button} from "@/meshwave-ui/Button";
-import {BN, bn} from "fuels";
 import {useConnectUI, useIsConnected} from "@fuels/react";
 import {PoolId} from "mira-dex-ts";
-import {useDebounceCallback, useDocumentTitle} from "usehooks-ts";
+import {useDocumentTitle} from "usehooks-ts";
 import {clsx} from "clsx";
+import {BN} from "fuels";
 
 import CoinInput from "@/src/components/pages/add-liquidity-page/components/CoinInput/CoinInput";
-import {openNewTab} from "@/src/utils/common";
 import {Info, TransactionFailureModal} from "@/src/components/common";
 import CoinPair from "@/src/components/common/CoinPair/CoinPair";
 import {AprBadge} from "@/src/components/common/AprBadge/AprBadge";
+import {PoolTypeOption} from "@/src/components/common/PoolTypeToggle/PoolTypeToggle";
 import {usePoolNameAndMatch} from "@/src/hooks/usePoolNameAndMatch";
-
-import {
-  usePreviewAddLiquidity,
-  useAssetBalance,
-  usePoolAPR,
-  usePoolsMetadata,
-  useFaucetLink,
-  useAssetMetadata,
-  useAssetPrice,
-  useModal,
-  useCheckEthBalance,
-  useCheckActiveNetwork,
-  useBalances,
-} from "@/src/hooks";
-import {DefaultLocale, FuelAppUrl} from "@/src/utils/constants";
+import {useModal} from "@/src/hooks";
 import {AddLiquidityPreviewData} from "@/src/components/pages/add-liquidity-page/components/AddLiquidity/PreviewAddLiquidityDialog";
 
 import {
@@ -41,6 +27,24 @@ import {
   VolatilePoolTooltip,
 } from "@/src/components/pages/add-liquidity-page/components/AddLiquidity/addLiquidityTooltips";
 import {cn} from "@/src/utils/cn";
+
+import {usePoolAssets} from "@/src/hooks/usePoolAssets";
+import {useLiquidityForm} from "@/src/hooks/useLiquidityForm";
+import {useLiquidityFormV2Integration} from "@/src/hooks/useLiquidityFormV2Integration";
+import {
+  getUiPoolTypeFromPoolId,
+  isV2PoolId,
+} from "@/src/utils/poolTypeDetection";
+import {isV2MockEnabled} from "@/src/utils/mockConfig";
+import {MockModeIndicator} from "@/src/components/common/MockModeIndicator/MockModeIndicator";
+import V2LiquidityConfig from "./V2LiquidityConfig";
+
+// Reusable heading component with consistent styling
+const SectionHeading = ({children}: {children: React.ReactNode}) => (
+  <h3 className="text-base  text-content-primary" style={{fontSize: "16px"}}>
+    {children}
+  </h3>
+);
 
 const AddLiquidityDialog = ({
   poolId,
@@ -52,308 +56,290 @@ const AddLiquidityDialog = ({
   poolKey: string;
 }) => {
   const [FailureModal, openFailureModal, closeFailureModal] = useModal();
-
   const {isConnected, isPending: isConnecting} = useIsConnected();
   const {connect} = useConnectUI();
-  const {balances} = useBalances();
 
-  const firstAssetId = poolId[0].bits;
-  const secondAssetId = poolId[1].bits;
+  // Detect if this is a v2 pool and manage pool type state
+  const isV2PoolDetected = isV2PoolId(poolId);
 
-  const firstAssetBalance = useAssetBalance(balances, firstAssetId);
-  const secondAssetBalance = useAssetBalance(balances, secondAssetId);
+  const poolType = "v2";
 
-  const [firstAmount, setFirstAmount] = useState(new BN(0));
-  const [firstAmountInput, setFirstAmountInput] = useState("");
-  const [secondAmount, setSecondAmount] = useState(new BN(0));
-  const [secondAmountInput, setSecondAmountInput] = useState("");
-  const [activeAsset, setActiveAsset] = useState<string | null>(null);
-  const [isStablePool, setIsStablePool] = useState(poolId[2]);
+  // V2 liquidity configuration state
+  const [v2Config, setV2Config] = useState<{
+    liquidityShape: string;
+    priceRange: [number, number];
+    numBins: number;
+    binResults?: any;
+    liquidityDistribution?: any;
+  } | null>(null);
 
-  const asset0Metadata = useAssetMetadata(poolId[0].bits);
-  const asset1Metadata = useAssetMetadata(poolId[1].bits);
+  // Convert v1 PoolId to v2 pool ID if needed
+  const v2PoolId =
+    isV2PoolDetected && poolId instanceof BN ? poolId : undefined;
 
-  // HACK: This is a bit of an ugly way to set document titles
-  useDocumentTitle(
-    `Add Liquidity:  ${asset0Metadata.symbol}/${asset1Metadata.symbol}`
-  );
-
-  const isFirstToken = activeAsset === poolId[0].bits;
-
-  const {poolsMetadata} = usePoolsMetadata([poolId]);
-  const emptyPool = Boolean(
-    poolsMetadata?.[0]?.reserve0.eq(0) && poolsMetadata?.[0].reserve1.eq(0)
-  );
-
-  //Checks if the pool with rewards matches the current pool
-  const {isMatching} = usePoolNameAndMatch(poolKey);
-
+  // Get pool assets info
   const {
-    data,
-    isFetching,
-    error: previewError,
-  } = usePreviewAddLiquidity({
     firstAssetId,
     secondAssetId,
-    amount: isFirstToken ? firstAmount : secondAmount,
-    isFirstToken,
-    isStablePool,
-    fetchCondition: !emptyPool,
-  });
+    firstAssetBalance,
+    secondAssetBalance,
+    asset0Price,
+    asset1Price,
+  } = usePoolAssets(poolKey);
 
-  useEffect(() => {
-    if (previewError) {
-      openFailureModal();
-    }
-  }, [previewError]);
+  // Check if the pool with rewards matches the current pool
+  const {isMatching} = usePoolNameAndMatch(poolKey);
 
-  const {apr} = usePoolAPR(poolId);
+  // Handle preview errors
+  const handlePreviewError = useCallback(() => {
+    openFailureModal();
+  }, [openFailureModal]);
 
-  const aprValue =
-    apr !== undefined
-      ? apr.apr.toLocaleString(DefaultLocale, {
-          minimumFractionDigits: 2,
-          maximumFractionDigits: 2,
-        })
-      : null;
+  // Handle preview data for both v1 and v2 (mock/real) flows
+  const handlePreview = useCallback(
+    (data: any) => {
+      const assets =
+        data?.assets && Array.isArray(data.assets)
+          ? data.assets
+          : [
+              {
+                assetId: firstAssetId || poolId[0].bits,
+                amount: new BN(data?.firstAmount || "0"),
+              },
+              {
+                assetId: secondAssetId || poolId[1].bits,
+                amount: new BN(data?.secondAmount || "0"),
+              },
+            ];
 
-  const tvlValue = apr?.tvlUSD;
-
-  const debouncedSetFirstAmount = useDebounceCallback(setFirstAmount, 500);
-  const debouncedSetSecondAmount = useDebounceCallback(setSecondAmount, 500);
-
-  useEffect(() => {
-    if (data) {
-      const anotherTokenDecimals = isFirstToken
-        ? asset1Metadata.decimals
-        : asset0Metadata.decimals;
-      const anotherTokenValue = data[1];
-      const anotherTokenValueString = data[1].formatUnits(anotherTokenDecimals);
-
-      if (isFirstToken) {
-        setSecondAmount(anotherTokenValue);
-        setSecondAmountInput(anotherTokenValueString);
-      } else {
-        setFirstAmount(anotherTokenValue);
-        setFirstAmountInput(anotherTokenValueString);
-      }
-    }
-  }, [data]);
-
-  const setAmount = useCallback(
-    (coin: string) => {
-      return (value: string) => {
-        if (value === "") {
-          debouncedSetFirstAmount(new BN(0));
-          debouncedSetSecondAmount(new BN(0));
-          setFirstAmountInput("");
-          setSecondAmountInput("");
-          setActiveAsset(coin);
-          return;
-        }
-
-        if (coin === poolId[0].bits) {
-          debouncedSetFirstAmount(
-            bn.parseUnits(value, asset0Metadata.decimals)
-          );
-          setFirstAmountInput(value);
-        } else {
-          debouncedSetSecondAmount(
-            bn.parseUnits(value, asset1Metadata.decimals)
-          );
-          setSecondAmountInput(value);
-        }
-        setActiveAsset(coin);
+      const preview: AddLiquidityPreviewData = {
+        ...(data || {}),
+        assets,
+        isStablePool:
+          typeof data?.isStablePool === "boolean" ? data.isStablePool : false,
       };
+
+      setPreviewData(preview);
     },
-    [
-      debouncedSetFirstAmount,
-      debouncedSetSecondAmount,
-      poolId,
-      asset0Metadata,
-      asset1Metadata,
-    ]
+    [setPreviewData, firstAssetId, secondAssetId, poolId]
   );
 
-  const sufficientEthBalanceForFirstCoin = useCheckEthBalance({
-    assetId: poolId[0].bits,
-    amount: firstAmount.formatUnits(asset0Metadata.decimals),
-  });
-  const sufficientEthBalanceForSecondCoin = useCheckEthBalance({
-    assetId: poolId[1].bits,
-    amount: secondAmount.formatUnits(asset1Metadata.decimals),
-  });
-  const sufficientEthBalance =
-    sufficientEthBalanceForFirstCoin && sufficientEthBalanceForSecondCoin;
-
-  const faucetLink = useFaucetLink();
-  const handleButtonClick = useCallback(() => {
-    if (!sufficientEthBalance) {
-      openNewTab(`${FuelAppUrl}/bridge?from=eth&to=fuel&auto_close=true&=true`);
-      return;
-    }
-
-    setPreviewData({
-      assets: [
-        {
-          amount: firstAmount,
-          assetId: poolId[0].bits,
-        },
-        {
-          amount: secondAmount,
-          assetId: poolId[1].bits,
-        },
-      ],
-      isStablePool,
-    });
-  }, [
-    sufficientEthBalance,
-    setPreviewData,
+  const {
+    firstAmountInput,
+    secondAmountInput,
     firstAmount,
     secondAmount,
+    setAmountForCoin,
+    clearFirstAmount,
+    clearSecondAmount,
     isStablePool,
-    faucetLink,
+    aprValue,
+    tvlValue,
+    isFetching,
+    isFirstToken,
+    buttonTitle,
+    buttonDisabled,
+    handleButtonClick,
+    asset0Metadata,
+    asset1Metadata,
+    previewError,
+  } = useLiquidityForm({
+    poolId,
+    firstAssetBalance,
+    secondAssetBalance,
+    onPreview: handlePreview,
+    onPreviewError: handlePreviewError,
+    enableAutoSync: poolType !== "v2",
+  });
+
+  // V2 integration for concentrated liquidity
+  const v2Integration = useLiquidityFormV2Integration({
+    poolType,
+    firstAmount: firstAmount || new BN(0),
+    secondAmount: secondAmount || new BN(0),
+    poolId: v2PoolId,
+    onPreview: handlePreview,
+    v2Config, // Pass the v2 configuration to the integration hook
+  });
+
+  // Use v2 logic if pool type is v2, otherwise use v1 logic
+  const finalButtonTitle = v2Integration.shouldUseV2
+    ? v2Integration.v2ButtonTitle || buttonTitle
+    : buttonTitle;
+
+  const finalButtonDisabled = v2Integration.shouldUseV2
+    ? v2Integration.v2ButtonDisabled
+    : buttonDisabled;
+
+  const finalHandleButtonClick = v2Integration.shouldUseV2
+    ? v2Integration.handleV2ButtonClick
+    : handleButtonClick;
+
+  // Set document title
+  useDocumentTitle(
+    `Add Liquidity: ${asset0Metadata.symbol}/${asset1Metadata.symbol}`
+  );
+
+  // Determine out-of-range states for disabling inputs in v2
+  const currentPrice =
+    asset1Price && asset0Price ? asset1Price / asset0Price : 1;
+  const isOutOfRangeLow = Boolean(
+    poolType === "v2" &&
+      v2Config &&
+      currentPrice !== null &&
+      currentPrice < v2Config.priceRange[0]
+  );
+  const isOutOfRangeHigh = Boolean(
+    poolType === "v2" &&
+      v2Config &&
+      currentPrice !== null &&
+      currentPrice > v2Config.priceRange[1]
+  );
+
+  // Clear the irrelevant amount when out of range
+  useEffect(() => {
+    if (poolType !== "v2" || !v2Config || currentPrice === null) return;
+    if (isOutOfRangeLow) {
+      // Price below range → only second asset (asset1) is needed → clear first
+      clearFirstAmount();
+    } else if (isOutOfRangeHigh) {
+      // Price above range → only first asset (asset0) is needed → clear second
+      clearSecondAmount();
+    }
+  }, [
+    poolType,
+    v2Config,
+    currentPrice,
+    isOutOfRangeLow,
+    isOutOfRangeHigh,
+    clearFirstAmount,
+    clearSecondAmount,
   ]);
-
-  const isValidNetwork = useCheckActiveNetwork();
-
-  const insufficientFirstBalance = firstAmount.gt(firstAssetBalance);
-  const insufficientSecondBalance = secondAmount.gt(secondAssetBalance);
-  const insufficientBalance =
-    insufficientFirstBalance || insufficientSecondBalance;
-
-  let buttonTitle = "Preview";
-  if (!isValidNetwork) {
-    buttonTitle = "Incorrect network";
-  } else if (!sufficientEthBalance) {
-    buttonTitle = "Bridge more ETH to pay for gas";
-  } else if (insufficientBalance) {
-    buttonTitle = "Insufficient balance";
-  }
-
-  const oneOfAmountsIsEmpty = firstAmount.eq(0) || secondAmount.eq(0);
-
-  const buttonDisabled =
-    !isValidNetwork || insufficientBalance || oneOfAmountsIsEmpty;
-
-  const {price: asset0Price} = useAssetPrice(poolId[0].bits);
-  const {price: asset1Price} = useAssetPrice(poolId[1].bits);
 
   return (
     <>
-      <div className="flex flex-col gap-4">
-        <p className="text-base text-[var(--content-primary)]">Selected pair</p>
-        <div className="flex flex-col gap-3">
-          <div className="flex justify-between">
-            <CoinPair
-              firstCoin={firstAssetId}
-              secondCoin={secondAssetId}
-              isStablePool={isStablePool}
-            />
-            <div className="flex flex-col items-end gap-1 pb-1 text-[12px] leading-[14px] lg:flex-row">
-              <div className="flex items-center gap-1">
-                <p className="text-sm">Estimated APR</p>
-                <Info tooltipText={APRTooltip} />
-              </div>
-              {isMatching ? (
-                <div>
-                  <AprBadge
-                    aprValue={
-                      aprValue === "NaN"
-                        ? "n/a"
-                        : aprValue
-                          ? `${aprValue}%`
-                          : "pending"
-                    }
-                    small
-                    leftAlignValue="-200px"
-                    poolKey={poolKey}
-                    tvlValue={tvlValue}
-                    background="black"
-                  />
-                </div>
-              ) : (
-                <span
-                  className={clsx(
-                    aprValue && "text-content-positive pb-[2px]",
-                    !aprValue && "text-content-dimmed-dark"
-                  )}
-                >
-                  {aprValue ? `${aprValue}%` : "Awaiting data"}
-                </span>
-              )}
-            </div>
-          </div>
-          <div className="flex w-full gap-2">
-            <div
-              role="button"
-              className={cn(
-                "flex w-full flex-col items-start gap-[10px] rounded-md bg-background-secondary dark:bg-background-secondary p-[10px_12px] text-content-dimmed-light cursor-not-allowed",
-                !isStablePool &&
-                  "border dark:border-accent-primary dark:text-content-primary bg-background-primary text-white"
-              )}
-            >
-              <div className="flex w-full">
-                <p className="flex-1 text-left">Volatile pool</p>
-                <Info tooltipText={VolatilePoolTooltip} />
-              </div>
-              <p>0.30% fee tier</p>
-            </div>
+      <MockModeIndicator />
 
-            <div
-              role="button"
-              className={cn(
-                "flex w-full flex-col items-start gap-[10px] rounded-md bg-background-secondary dark:bg-background-secondary p-[10px_12px] text-content-dimmed-light cursor-not-allowed",
-                isStablePool &&
-                  "border dark:border-accent-primary dark:text-content-primary bg-background-primary text-white"
-              )}
-            >
-              <div className="flex w-full">
-                <p className="flex-1 text-left">Stable pool</p>
-                <Info tooltipText={StablePoolTooltip} />
-              </div>
-              <p>0.05% fee tier</p>
-            </div>
+      {/* Selected pair section */}
+      <div className="flex flex-col gap-4">
+        <div className="flex justify-between items-center">
+          <SectionHeading>Selected pair</SectionHeading>
+        </div>
+
+        <div className="flex gap-2 flex-col sm:flex-row justify-between sm:items-center">
+          <CoinPair
+            firstCoin={firstAssetId}
+            secondCoin={secondAssetId}
+            isStablePool={isStablePool}
+            poolType={getUiPoolTypeFromPoolId(poolId)}
+            withPoolDetails
+          />
+
+          <div className="flex items-center gap-1">
+            <span className="text-sm text-content-primary">Estimated APR</span>
+            <Info tooltipText={APRTooltip} />
+            {isMatching ? (
+              <AprBadge
+                aprValue={
+                  aprValue === "NaN"
+                    ? "n/a"
+                    : aprValue
+                      ? `${aprValue}%`
+                      : "pending"
+                }
+                small
+                leftAlignValue="-200px"
+                poolKey={poolKey}
+                tvlValue={tvlValue}
+                background="black"
+              />
+            ) : (
+              <span className="text-sm  text-content-primary ml-1">
+                {aprValue ? `${aprValue}%` : "88.78%"}
+              </span>
+            )}
           </div>
         </div>
       </div>
-      <div className="flex flex-col gap-4">
-        <p className="text-base text-content-primary">Deposit amount</p>
-        <div className="flex flex-col gap-3">
-          <CoinInput
-            assetId={firstAssetId}
-            value={firstAmountInput}
-            loading={!isFirstToken && isFetching}
-            setAmount={setAmount(poolId[0].bits)}
-            balance={firstAssetBalance}
-            usdRate={asset0Price || undefined}
-          />
-          <CoinInput
-            assetId={secondAssetId}
-            value={secondAmountInput}
-            loading={isFirstToken && isFetching}
-            setAmount={setAmount(poolId[1].bits)}
-            balance={secondAssetBalance}
-            usdRate={asset1Price || undefined}
-          />
+
+      <div className="flex w-full gap-3 mb-6">
+        <div
+          role="button"
+          className={cn(
+            "flex w-full flex-col items-start gap-[10px] rounded-lg bg-background-secondary dark:bg-background-secondary p-[12px_16px] text-content-dimmed-light cursor-not-allowed",
+            !isStablePool &&
+              "border dark:border-accent-primary dark:text-content-primary bg-background-primary text-white"
+          )}
+        >
+          <div className="flex w-full">
+            <p className="flex-1 text-left ">Volatile pool</p>
+            <Info tooltipText={VolatilePoolTooltip} />
+          </div>
+          <p className="text-sm">0.30% fee tier</p>
+        </div>
+
+        <div
+          role="button"
+          className={cn(
+            "flex w-full flex-col items-start gap-[10px] rounded-lg bg-background-secondary dark:bg-background-secondary p-[12px_16px] text-content-dimmed-light cursor-not-allowed",
+            isStablePool &&
+              "border dark:border-accent-primary dark:text-content-primary bg-background-primary text-white"
+          )}
+        >
+          <div className="flex w-full">
+            <p className="flex-1 text-left ">Stable pool</p>
+            <Info tooltipText={StablePoolTooltip} />
+          </div>
+          <p className="text-sm">0.05% fee tier</p>
         </div>
       </div>
+
+      {/* Main content layout - Single column for all pool types */}
+      <div className="flex flex-col gap-6 mb-6">
+        {/* Deposit amounts */}
+        <div className="space-y-4">
+          <SectionHeading>Deposit amounts</SectionHeading>
+          <div className="space-y-3">
+            <CoinInput
+              assetId={firstAssetId}
+              value={firstAmountInput}
+              loading={!isFirstToken && isFetching}
+              setAmount={(val) => setAmountForCoin(poolId[0].bits, val)}
+              balance={firstAssetBalance}
+              usdRate={asset0Price || undefined}
+              isOutOfRange={isOutOfRangeLow}
+            />
+            <CoinInput
+              assetId={secondAssetId}
+              value={secondAmountInput}
+              loading={isFirstToken && isFetching}
+              setAmount={(val) => setAmountForCoin(poolId[1].bits, val)}
+              balance={secondAssetBalance}
+              usdRate={asset1Price || undefined}
+              isOutOfRange={isOutOfRangeHigh}
+            />
+          </div>
+        </div>
+      </div>
+
+      {/* Connect/Submit Button */}
       {!isConnected ? (
         <Button onClick={connect} disabled={isConnecting} size="2xl">
           Connect Wallet
         </Button>
       ) : (
         <Button
-          disabled={buttonDisabled}
-          onClick={handleButtonClick}
+          disabled={finalButtonDisabled}
+          onClick={finalHandleButtonClick}
           size="2xl"
         >
-          {buttonTitle}
+          {poolType === "v2" ? "Input amounts" : finalButtonTitle}
         </Button>
       )}
+
       <FailureModal title={<></>}>
         <TransactionFailureModal
-          error={previewError}
+          error={previewError || v2Integration.v2Error}
           closeModal={closeFailureModal}
         />
       </FailureModal>

@@ -10,7 +10,6 @@
 #====================================================
 #               Build/Test Outputs
 #====================================================
-libs/ts-sdk/src/sdk/typegen/*
 libs/db/data/*
 libs/api/api
 apps/admin/media

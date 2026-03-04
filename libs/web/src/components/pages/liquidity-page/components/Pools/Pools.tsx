@@ -103,6 +103,16 @@ export function Pools() {
         </div>
       )}
 
+      {/* Show create pool button prominently when no pools and not loading */}
+      {!isLoading && data && data.length === 0 && isConnected && (
+        <div className="flex flex-col items-center gap-4 py-8 px-4 rounded-ten bg-background-grey-dark">
+          <p className="text-content-tertiary">No pools available</p>
+          <Link href="/liquidity/create-pool">
+            <Button>Create Pool</Button>
+          </Link>
+        </div>
+      )}
+
       {data && data.length > 0 && (
         <div className="flex justify-center items-center lg:justify-between lg:items-center">
           <p

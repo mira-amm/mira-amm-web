@@ -15,7 +15,10 @@ export function IconButton({
   className?: string;
   type?: "button" | "submit" | "reset";
   isDisabled?: boolean;
-} & Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, "onClick" | "type" | "disabled" | "className">) {
+} & Omit<
+  React.ButtonHTMLAttributes<HTMLButtonElement>,
+  "onClick" | "type" | "disabled" | "className"
+>) {
   return (
     <button
       type={type ?? "button"}

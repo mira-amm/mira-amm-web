@@ -18,7 +18,7 @@ export default function PromoBlock({
     <a
       href={link}
       target="_blank"
-      className="w-full flex gap-2.5 p-3 rounded-lg bg-background-grey-dark border-border-secondary border-[12px] dark:border-0 dark:bg-background-grey-dark group"
+      className="w-full flex gap-2.5 p-3 rounded-lg bg-background-grey-dark border-border-secondary border-[12px] group"
       rel="noopener noreferrer"
     >
       <div

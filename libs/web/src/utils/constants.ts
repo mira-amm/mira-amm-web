@@ -1,26 +1,89 @@
-import {bn, CHAIN_IDS, TxParams} from "fuels";
+import {bn, BN, CHAIN_IDS, TxParams} from "fuels";
 import {getBrandText} from "./brandName";
+import verifiedAssets from "./verified-assets.json";
 
+// Function to get local contract IDs when in local development
+function getLocalContractIds() {
+  // Environment variables are available in both server and client environments
+  return {
+    simpleProxy: process.env.NEXT_PUBLIC_LOCAL_PROXY_CONTRACT_ID,
+    fungible: process.env.NEXT_PUBLIC_LOCAL_FUNGIBLE_CONTRACT_ID,
+  };
+}
+
+// Use local contract ID if available, otherwise use production contract ID
+const localContracts = getLocalContractIds();
 export const DEFAULT_AMM_CONTRACT_ID =
-  "0x2e40f2b244b98ed6b8204b3de0156c6961f98525c8162f80162fcf53eebd90e7" as const;
+  localContracts?.simpleProxy ||
+  ("0x2e40f2b244b98ed6b8204b3de0156c6961f98525c8162f80162fcf53eebd90e7" as const);
 
-export const ETH_ASSET_ID =
-  "0xf8f8b6283d7fa5b672b530cbb84fcccb4ff8dc40f8176ef4544ddb1f1952ad07";
+// Function to get asset ID from verified-assets.json based on symbol and environment
+function getAssetIdFromVerifiedAssets(symbol: string): string {
+  const asset = verifiedAssets.find((asset: any) => asset.symbol === symbol);
+  if (!asset) {
+    throw new Error(
+      `Asset with symbol ${symbol} not found in verified-assets.json`
+    );
+  }
+
+  // For local development, look for local_testnet chain
+  if (process.env.NEXT_PUBLIC_FUEL_PROVIDER_URL?.includes("localhost")) {
+    const localNetwork = asset.networks?.find(
+      (network: any) =>
+        network.type === "fuel" && network.chain === "local_testnet"
+    );
+    if (localNetwork?.assetId) {
+      return localNetwork.assetId;
+    }
+    // Fallback to mainnet if local not found (shouldn't happen in proper setup)
+    console.warn(
+      `Local testnet asset ID not found for ${symbol}, falling back to mainnet`
+    );
+  }
+
+  // For production, find the mainnet fuel network (chainId 9889)
+  const mainnetNetwork = asset.networks?.find(
+    (network: any) => network.type === "fuel" && network.chainId === 9889
+  );
+  if (mainnetNetwork?.assetId) {
+    return mainnetNetwork.assetId;
+  }
+
+  // Final fallback: any fuel network
+  const anyFuelNetwork = asset.networks?.find(
+    (network: any) => network.type === "fuel"
+  );
+  if (anyFuelNetwork?.assetId) {
+    return anyFuelNetwork.assetId;
+  }
+
+  throw new Error(`No fuel network found for asset ${symbol}`);
+}
+
+// Asset IDs - dynamically sourced from verified-assets.json
+export const ETH_ASSET_ID = getAssetIdFromVerifiedAssets("ETH");
+export const FUEL_ASSET_ID = getAssetIdFromVerifiedAssets("FUEL");
+export const USDC_ASSET_ID = getAssetIdFromVerifiedAssets("USDC");
+
 export const BASE_ASSET_CONTRACT =
   "0x7e2becd64cd598da59b4d1064b711661898656c6b1f4918a787156b8965dc83c";
-
-export const USDC_ASSET_ID =
-  "0x286c479da40dc953bddc3bb4c453b608bba2e0ac483b077bd475174115395e6b";
-
-export const FUEL_ASSET_ID =
-  "0x1d5d97005e41cae2187a895fd8eab0506111e0e2f3331cd3912c15c24e3c1d82";
 
 export const DefaultTxParams: TxParams = {
   gasLimit: 2_000_000,
   maxFee: 275_000,
 } as const;
 
-export const MaxDeadline = 4_294_967_295 as const;
+// Create a deadline 1 hour (3600 seconds) in the future
+// This is a function to ensure we always get a fresh timestamp
+export const getMaxDeadline = () => Math.floor(Date.now() / 1000) + 3600;
+
+// V2 contracts use TAI64 seconds; SDK validation supports TAI64 with a 3600s window.
+// Return current time + 30 minutes in TAI64 to be safely within the window.
+export const getMaxDeadlineV2 = () => {
+  const nowSec = Math.floor(Date.now() / 1000);
+  const TAI64_OFFSET = new BN(2).pow(new BN(62));
+  return TAI64_OFFSET.add(new BN(nowSec + 1800));
+};
 
 export const DiscordLink = "https://discord.gg/9HzukDUKSq" as const;
 export const XLink = "https://x.com/MicrochainDLM" as const;
@@ -28,11 +91,20 @@ export const XLink = "https://x.com/MicrochainDLM" as const;
 export const BlogLink =
   "https://mirror.xyz/0xBE101110E07430Cf585123864a55f51e53ABc339" as const;
 
-export const ValidNetworkChainId = CHAIN_IDS.fuel.mainnet;
-export const NetworkUrl: string = "https://mainnet.fuel.network/v1/graphql";
+// Support local development with chain ID 0, otherwise use mainnet
+export const ValidNetworkChainId =
+  process.env.NEXT_PUBLIC_FUEL_PROVIDER_URL?.includes("localhost")
+    ? 0 // Local testnet uses chain ID 0
+    : CHAIN_IDS.fuel.mainnet;
+
+// Support local development with environment variables
+export const NetworkUrl: string =
+  process.env.NEXT_PUBLIC_FUEL_PROVIDER_URL ||
+  "https://mainnet.fuel.network/v1/graphql";
 
 export const SQDIndexerUrl =
-  "https://mira-dex.squids.live/mira-indexer@v4/api/graphql" as const;
+  process.env.NEXT_PUBLIC_SUBSQUID_ENDPOINT ||
+  ("https://mira-dex.squids.live/mira-indexer@v4/api/graphql" as const);
 export const MainnetUrl = "https://mainnet-explorer.fuel.network";
 export const ApiBaseUrl = "https://prod.api.microchain.systems" as const;
 
@@ -115,3 +187,8 @@ export const SENTIO_POINTS_ENDPOINT =
 
 export const TickerTapeText =
   "🚀 BREAKING: MIRA IS NOW MICROCHAIN • COMING SOON: IMPROVED CAPITAL EFFICIENCY • ⛽ $FUEL COMMUNITY RALLIES IN ANTICIPATION";
+
+export const fuelUsdcPoolKey =
+  "0x1d5d97005e41cae2187a895fd8eab0506111e0e2f3331cd3912c15c24e3c1d82-0x286c479da40dc953bddc3bb4c453b608bba2e0ac483b077bd475174115395e6b-false";
+
+export const DEFAULT_SLIPPAGE_BASIS_POINT = 50;

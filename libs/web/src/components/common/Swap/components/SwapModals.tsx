@@ -8,7 +8,13 @@ import {
 import SettingsModalContentNew from "../../settings-modal-content-new";
 import type {SwapState, SlippageMode} from "@/src/hooks";
 import type {CoinQuantity} from "fuels";
-import type {Dispatch, ReactNode, ReactPortal, SetStateAction, RefObject} from "react";
+import type {
+  Dispatch,
+  ReactNode,
+  ReactPortal,
+  SetStateAction,
+  RefObject,
+} from "react";
 
 type ModalComponent = (props: {
   title: string | ReactNode;

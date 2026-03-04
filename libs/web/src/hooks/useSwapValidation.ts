@@ -102,7 +102,7 @@ export function useSwapValidation({
     swapPending,
     sufficientEthBalance,
     showInsufficientBalance,
-    review
+    review,
   ]);
 
   return {

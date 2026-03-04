@@ -1,5 +1,4 @@
-import {PageElement, PageElements, By, isVisible} from "@serenity-js/web";
-import {isPresent} from "@serenity-js/assertions";
+import {PageElement, PageElements, By} from "@serenity-js/web";
 
 export const connectWalletButton = () =>
   PageElements.located(By.cssContainingText("button", "Connect Wallet")).last();
@@ -18,10 +17,10 @@ export const sellInput = () =>
 export const buyInput = () => PageElements.located(By.css("div input")).last();
 
 export const sellCoinButton = () =>
-  PageElements.located(By.css("main input+button")).first();
+  PageElement.located(By.css("[data-testid='sell-coin-selector']"));
 
 export const buyCoinButton = () =>
-  PageElements.located(By.css("main input+button")).last();
+  PageElement.located(By.css("[data-testid='buy-coin-selector']"));
 
 export const swapConvertButton = () =>
   PageElements.located(By.css("main button svg")).nth(3);

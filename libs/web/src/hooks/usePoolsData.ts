@@ -8,6 +8,10 @@ import {
   useQueryParams,
   withDefault,
 } from "use-query-params";
+import {
+  calculatePoolTVL,
+  calculatePoolAPR,
+} from "@/src/utils/poolTvlCalculation";
 
 interface PoolSnapshot {
   volumeUSD: string;
@@ -46,6 +50,8 @@ export type PoolData = {
   };
   swap_count: number;
   create_time: number;
+  // New field for pool type
+  poolType?: "v1-volatile" | "v1-stable" | "v2-concentrated";
 };
 
 export type MoreInfo = {
@@ -89,13 +95,17 @@ export function usePoolsData() {
               reserve0Decimal
               reserve1Decimal
               tvlUSD
+              isStable
+              protocolVersion
               asset1 {
                 id
                 symbol
+                price
               }
               asset0 {
                 id
                 symbol
+                price
               }
               snapshots(where: { timestamp_gt: ${timestamp24hAgo} }) {
                 volumeUSD
@@ -141,7 +151,25 @@ export function usePoolsData() {
           acc + parseFloat(snapshot.feesUSD),
         0
       );
-      const apr = (fees24h / parseFloat(pool.tvlUSD)) * 365 * 100;
+
+      const tvlUSD = calculatePoolTVL({
+        reserve0Decimal: pool.reserve0Decimal,
+        reserve1Decimal: pool.reserve1Decimal,
+        price0: pool.asset0.price,
+        price1: pool.asset1.price,
+        protocolVersion: pool.protocolVersion,
+        indexerTvlUSD: pool.tvlUSD,
+      });
+
+      const apr = calculatePoolAPR(fees24h, tvlUSD);
+
+      // Determine pool type based on protocolVersion and isStable
+      const poolType: "v1-volatile" | "v1-stable" | "v2-concentrated" =
+        pool.protocolVersion === 2
+          ? "v2-concentrated"
+          : pool.isStable
+            ? "v1-stable"
+            : "v1-volatile";
 
       return {
         id: pool.id,
@@ -158,10 +186,11 @@ export function usePoolsData() {
               acc + parseFloat(snapshot.volumeUSD),
             0
           ),
-          tvl: parseFloat(pool.tvlUSD),
+          tvl: tvlUSD,
         },
         swap_count: 0,
         create_time: 0,
+        poolType,
       };
     }
   );

@@ -23,8 +23,11 @@ import {
   TableHeader,
   TableRow,
 } from "@/meshwave-ui/table";
+import {PoolId} from "mira-dex-ts";
+import {getUiPoolTypeFromPoolId} from "@/src/utils/poolTypeDetection";
 
 type Props = {
+  poolId: PoolId;
   coinA: B256Address;
   coinB: B256Address;
   isStablePool: boolean;
@@ -41,6 +44,7 @@ type Props = {
 };
 
 const RemoveLiquidityModalContent = ({
+  poolId,
   coinA,
   coinB,
   isStablePool,
@@ -102,6 +106,8 @@ const RemoveLiquidityModalContent = ({
         firstCoin={coinA}
         secondCoin={coinB}
         isStablePool={isStablePool}
+        poolType={getUiPoolTypeFromPoolId(poolId)}
+        withPoolDetails
       />
 
       <div className="flex justify-between items-center">
@@ -132,7 +138,7 @@ const RemoveLiquidityModalContent = ({
       >
         <TableHeader>
           <TableRow>
-            <TableHead></TableHead>
+            <TableHead className=""></TableHead>
             <TableHead className="py-4">{coinAMetadata.symbol}</TableHead>
             <TableHead className="text-right py-4">
               {coinBMetadata.symbol}
@@ -140,7 +146,7 @@ const RemoveLiquidityModalContent = ({
           </TableRow>
         </TableHeader>
         <TableBody>
-          <TableRow clasName="border-none">
+          <TableRow className="border-none">
             <TableCell className="py-4">Current position</TableCell>
             <TableCell className="py-4">{currentCoinAValue}</TableCell>
             <TableCell className="text-right py-4">
@@ -179,8 +185,7 @@ const RemoveLiquidityModalContent = ({
         </Button>
         <Button
           onClick={handleRemoveLiquidity}
-          disabled={withdrawalDisabled}
-          loading={isLoading}
+          disabled={withdrawalDisabled || isLoading}
           block
         >
           {buttonTitle}

@@ -7,6 +7,7 @@ import {usePoolDetails} from "../usePoolDetails";
 import CoinPair from "@/src/components/common/CoinPair/CoinPair";
 import {AprBadge} from "@/src/components/common/AprBadge/AprBadge";
 import {usePoolNameAndMatch} from "@/src/hooks/usePoolNameAndMatch";
+import {getPoolNavigationUrl} from "@/src/utils/poolNavigation";
 
 const AprCell = ({poolData}: {poolData: PoolData}) => {
   const {poolKey, aprValue, tvlValue} = usePoolDetails(poolData);
@@ -32,15 +33,18 @@ const AprCell = ({poolData}: {poolData: PoolData}) => {
 };
 
 const PoolCell = ({poolData}: {poolData: PoolData}) => {
-  const {isStablePool, poolId} = usePoolDetails(poolData);
+  const {isStablePool, asset0Id, asset1Id} = usePoolDetails(poolData);
   return (
-    <div className="text-left w-[230px] truncate">
-      <CoinPair
-        firstCoin={poolId[0].bits}
-        secondCoin={poolId[1].bits}
-        isStablePool={isStablePool}
-        withPoolDescription
-      />
+    <div className="text-left  truncate">
+      <div className="flex flex-col gap-2">
+        <CoinPair
+          firstCoin={asset0Id}
+          secondCoin={asset1Id}
+          isStablePool={isStablePool}
+          poolType={poolData.poolType || "v1-volatile"}
+          withPoolDetails
+        />
+      </div>
     </div>
   );
 };
@@ -56,9 +60,9 @@ const TvlCell = ({poolData}: {poolData: PoolData}) => {
 };
 
 const ActionCell = ({poolData}: {poolData: PoolData}) => {
-  const {poolKey} = usePoolDetails(poolData);
+  const {poolId} = usePoolDetails(poolData);
   return (
-    <Link href={`/liquidity/add?pool=${poolKey}`}>
+    <Link href={getPoolNavigationUrl(poolId, "add")}>
       <Button variant="outline">Add Liquidity</Button>
     </Link>
   );
@@ -117,6 +121,27 @@ export function DesktopPools({
       render: (poolData) => <ActionCell poolData={poolData} />,
     },
   ];
+
+  // If there are no pools but user is connected, show the create pool button prominently
+  if (poolsData.length === 0 && isConnected) {
+    return (
+      <div className="hidden md:flex w-full flex-col items-center gap-4 py-8 px-4 rounded-ten bg-background-grey-dark">
+        <p className="text-content-tertiary">No pools available</p>
+        <Link href="/liquidity/create-pool">
+          <Button>Create Pool</Button>
+        </Link>
+      </div>
+    );
+  }
+
+  // If there are no pools and user is not connected, show regular empty message
+  if (poolsData.length === 0) {
+    return (
+      <div className="hidden md:flex w-full flex-col items-center gap-2 py-7 px-4 rounded-ten bg-background-grey-dark border-border-secondary border-[12px]">
+        <p className="text-content-tertiary">No pools available</p>
+      </div>
+    );
+  }
 
   return (
     <div className="hidden md:flex! w-full">

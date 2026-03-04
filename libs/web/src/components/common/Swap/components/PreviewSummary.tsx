@@ -1,6 +1,7 @@
 import {memo} from "react";
 import {TradeState} from "@/src/hooks";
 import {PoolId} from "mira-dex-ts";
+import {BN} from "fuels";
 import {SwapRouteItem} from "@/src/components/common/Swap/components/SwapRouteItem";
 import {FeatureGuard} from "@/src/components/common";
 import {PriceImpactNew} from "@/src/components/common/Swap/components/PriceImpact";
@@ -22,12 +23,12 @@ export const PreviewSummary = memo(function PreviewSummary({
   previewLoading: boolean;
   tradeState: TradeState;
   exchangeRate: string | null;
-  pools: PoolId[];
+  pools: (PoolId | BN)[];
   feeValue: string;
   sellMetadataSymbol: string;
   txCost: number | null;
   txCostPending: boolean;
-  createPoolKeyFn: (pool: PoolId) => string;
+  createPoolKeyFn: (pool: PoolId | BN) => string;
   reservesPrice: number | undefined;
   previewPrice: number | undefined;
 }) {

@@ -1,19 +1,21 @@
-import {Suspense} from "react";
 import AddLiquidityPage from "./add-liquidity-page";
-import {Loader} from "@/src/components/common";
-import {getIsRebrandEnabled} from "@/src/utils/isRebrandEnabled";
+import V2AddLiquidityPage from "./v2-add-liquidity-page";
+import {PageSuspense, PoolRouter} from "@/src/components/common";
 
-export default function Page() {
-  const isRebrandEnabled = getIsRebrandEnabled();
+type PageProps = {
+  searchParams: Promise<{[key: string]: string | undefined}>;
+};
+
+export default async function Page({searchParams}: PageProps) {
+  const {pool} = await searchParams;
+
   return (
-    <Suspense
-      fallback={
-        <div className="flex justify-center items-center">
-          <Loader color="gray" rebrand={isRebrandEnabled} />
-        </div>
-      }
-    >
-      <AddLiquidityPage />
-    </Suspense>
+    <PageSuspense>
+      <PoolRouter
+        pool={pool}
+        renderV1={() => <AddLiquidityPage />}
+        renderV2={() => <V2AddLiquidityPage />}
+      />
+    </PageSuspense>
   );
 }

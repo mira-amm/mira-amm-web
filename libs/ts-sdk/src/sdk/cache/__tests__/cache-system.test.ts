@@ -8,13 +8,21 @@ import {PoolId, PoolMetadata} from "../../model";
 import type {CacheOptions} from "../";
 import {Provider} from "fuels";
 import {PoolDataCache} from "../pool-data-cache";
-import {vi} from "vitest";
+import {vi, beforeEach, afterEach} from "vitest";
 
 // Mock the Provider and MiraAmmContract
 vi.mock("fuels");
 vi.mock("../../typegen/contracts/MiraAmmContract");
 
 describe("Cache System Tests", () => {
+  beforeEach(() => {
+    vi.useFakeTimers();
+  });
+
+  afterEach(() => {
+    vi.useRealTimers();
+  });
+
   describe("ReadonlyMiraAmm - Cached Pool Metadata Fetching", () => {
     let readonlyAmm: ReadonlyMiraAmm;
     let mockProvider: any;
@@ -120,8 +128,8 @@ describe("Cache System Tests", () => {
         // First call
         await readonlyAmm.poolMetadataBatch([mockPoolId], options);
 
-        // Wait for cache to become stale
-        await new Promise((resolve) => setTimeout(resolve, 1100));
+        // Fast-forward time to make cache stale
+        vi.advanceTimersByTime(1100);
 
         // Second call - should refresh stale data
         await readonlyAmm.poolMetadataBatch([mockPoolId], options);
@@ -142,8 +150,8 @@ describe("Cache System Tests", () => {
         // First call
         await readonlyAmm.poolMetadataBatch([mockPoolId], options);
 
-        // Wait for cache to become stale
-        await new Promise((resolve) => setTimeout(resolve, 1100));
+        // Fast-forward time to make cache stale
+        vi.advanceTimersByTime(1100);
 
         // Second call - should use stale data
         await readonlyAmm.poolMetadataBatch([mockPoolId], options);
@@ -232,8 +240,8 @@ describe("Cache System Tests", () => {
         // Should be available immediately
         expect(cache.getPoolMetadata(poolId)).toMatchObject(metadata);
 
-        // Wait for TTL to expire
-        await new Promise((resolve) => setTimeout(resolve, 100));
+        // Fast-forward time to expire TTL
+        vi.advanceTimersByTime(100);
 
         // Should be expired
         expect(cache.getPoolMetadata(poolId)).toBeNull();
@@ -257,8 +265,8 @@ describe("Cache System Tests", () => {
         // Should be available immediately
         expect(cache.getPoolMetadata(poolId)).toMatchObject(metadata);
 
-        // Wait for TTL to expire
-        await new Promise((resolve) => setTimeout(resolve, 100));
+        // Fast-forward time to expire TTL
+        vi.advanceTimersByTime(100);
 
         // Should be expired
         expect(cache.getPoolMetadata(poolId)).toBeNull();
@@ -379,8 +387,8 @@ describe("Cache System Tests", () => {
         expect(cache.hasValidCache(poolId)).toBe(true);
         expect(cache.isStale(poolId)).toBe(false);
 
-        // Wait for TTL to expire
-        await new Promise((resolve) => setTimeout(resolve, 1100));
+        // Fast-forward time to expire TTL
+        vi.advanceTimersByTime(1100);
         expect(cache.hasValidCache(poolId)).toBe(false);
         expect(cache.isStale(poolId)).toBe(true);
       });

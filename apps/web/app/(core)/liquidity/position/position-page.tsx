@@ -1,13 +1,11 @@
 "use client";
 
-import {useRouter, useSearchParams} from "next/navigation";
+import {useRouter} from "next/navigation";
 import {createPoolIdFromPoolKey, isPoolIdValid} from "@/src/utils/common";
 import {PositionView} from "@/src/components/pages/view-position-page/components/PositionView/PositionView";
 
-export default function PositionPage() {
+export default function PositionPage({poolKey}: {poolKey?: string}) {
   const router = useRouter();
-  const query = useSearchParams();
-  const poolKey = query.get("pool");
   const poolId = poolKey ? createPoolIdFromPoolKey(poolKey) : null;
 
   if (!poolId || !isPoolIdValid(poolId)) {

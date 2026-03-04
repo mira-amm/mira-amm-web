@@ -15,6 +15,9 @@ import {MiraBlock} from "./mira-block";
 import {formatDisplayAmount} from "@/src/utils/common";
 import {PromoSparkle} from "@/meshwave-ui/src/components/icons";
 import {getIsRebrandEnabled} from "@/src/utils/isRebrandEnabled";
+import {PoolType} from "@/src/components/common/PoolTypeIndicator";
+
+import {getPoolNavigationUrl} from "@/src/utils/poolNavigation";
 
 interface AssetData {
   amount: string;
@@ -29,20 +32,30 @@ interface AssetData {
 export function MobilePositionView({
   pool,
   isStablePool,
+  poolType,
   formattedTvlValue,
   positionPath,
   assetA,
   assetB,
-  handleWithdrawLiquidity,
 }: {
   pool: PoolId;
   isStablePool: boolean;
+  poolType?: PoolType;
   formattedTvlValue: string;
   positionPath: string;
   assetA: AssetData;
   assetB: AssetData;
-  handleWithdrawLiquidity: () => void;
 }) {
+  const renderRemoveLiquidity = () => {
+    const removePath = getPoolNavigationUrl(pool, "remove");
+
+    return (
+      <Link href={removePath}>
+        <Button variant="outline">Remove Liquidity</Button>
+      </Link>
+    );
+  };
+
   return (
     <section className="flex flex-col gap-3 mobileOnly">
       <div className="flex items-start justify-between">
@@ -50,11 +63,12 @@ export function MobilePositionView({
           firstCoin={pool[0].bits}
           secondCoin={pool[1].bits}
           isStablePool={isStablePool}
-          withPoolDescription
+          poolType={poolType ?? (isStablePool ? "v1-stable" : "v1-volatile")}
+          withPoolDetails
         />
       </div>
 
-      <div className="flex flex-col gap-[15px] p-4 rounded-ten bg-background-grey-dark border-border-secondary border-[12px] dark:border-0 dark:bg-background-grey-dark">
+      <div className="flex flex-col gap-[15px] p-4 rounded-ten bg-background-grey-dark border-border-secondary border-[12px]">
         <p className="text-base leading-[19px]">Your position</p>
         <AprDisplay pool={pool} />
         <div className="flex justify-between">
@@ -110,16 +124,7 @@ export function MobilePositionView({
           </Button>
         </Link>
       </div>
-      <div className="w-full self-start">
-        <Button
-          variant="outline"
-          onClick={handleWithdrawLiquidity}
-          size="lg"
-          block
-        >
-          Remove Liquidity
-        </Button>
-      </div>
+      <div className="w-full self-start">{renderRemoveLiquidity()}</div>
 
       <PromoBlock
         icon={<PromoSparkle />}

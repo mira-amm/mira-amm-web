@@ -10,11 +10,23 @@ export default defineConfig({
     watch: false,
     globals: true,
     environment: "node",
-    include: ["src/**/*.{test,spec}.{js,mjs,cjs,ts,mts,cts,jsx,tsx}"],
+    // Run integration tests sequentially to avoid UTXO conflicts
+    poolOptions: {
+      forks: {
+        singleFork: true,
+      },
+    },
+    include: [
+      "src/**/*.{test,spec}.{js,mjs,cjs,ts,mts,cts,jsx,tsx}",
+      "test/**/*.{test,spec}.{js,mjs,cjs,ts,mts,cts,jsx,tsx}",
+    ],
     reporters: ["default"],
     coverage: {
       reportsDirectory: "../../coverage/libs/mira-v1-ts",
       provider: "v8" as const,
+    },
+    typecheck: {
+      tsconfig: "./tsconfig.test.json",
     },
   },
   resolve: {

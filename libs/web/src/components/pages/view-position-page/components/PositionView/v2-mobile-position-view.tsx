@@ -1,0 +1,200 @@
+import React from "react";
+import Link from "next/link";
+import {PoolId} from "mira-dex-ts";
+
+import {Button} from "@/meshwave-ui/Button";
+import CoinPair from "@/src/components/common/CoinPair/CoinPair";
+import {Loader, CoinWithAmount} from "@/src/components/common";
+import PromoBlock from "@/src/components/pages/liquidity-page/components/PromoBlock/PromoBlock";
+
+import {AprDisplay} from "./apr-display";
+import {ReserveItem} from "./reserve-item";
+import {ExchangeRate} from "./exchange-rate";
+import {MiraBlock} from "./mira-block";
+
+import {formatDisplayAmount} from "@/src/utils/common";
+import {PromoSparkle} from "@/meshwave-ui/src/components/icons";
+import {getIsRebrandEnabled} from "@/src/utils/isRebrandEnabled";
+import {PoolType} from "@/src/components/common/PoolTypeIndicator";
+
+import {getPoolNavigationUrl} from "@/src/utils/poolNavigation";
+import {UnifiedPoolId} from "@/src/hooks";
+
+interface AssetData {
+  amount: string;
+  metadata: {
+    name?: string;
+    symbol?: string;
+    decimals?: number;
+  } & {isLoading: boolean};
+  reserve?: number;
+}
+
+interface FeeData {
+  amount: string;
+  metadata: {
+    name?: string;
+    symbol?: string;
+    decimals?: number;
+  } & {isLoading: boolean};
+}
+
+interface PositionStats {
+  numBins: number;
+  minPrice: number;
+  maxPrice: number;
+  liquidityShape: "spot" | "curve" | "bidask";
+}
+
+export function V2MobilePositionView({
+  pool,
+  unifiedPoolId,
+  isStablePool,
+  poolType,
+  formattedTvlValue,
+  positionPath,
+  nftAssetId,
+  binStep,
+  chartData,
+  assetA,
+  assetB,
+  feesA,
+  feesB,
+  positionStats,
+}: {
+  pool: PoolId;
+  unifiedPoolId: UnifiedPoolId;
+  isStablePool: boolean;
+  poolType?: PoolType;
+  formattedTvlValue: string;
+  positionPath: string;
+  nftAssetId?: string;
+  binStep?: number;
+  chartData?: any[];
+  assetA: AssetData;
+  assetB: AssetData;
+  feesA?: FeeData;
+  feesB?: FeeData;
+  positionStats?: PositionStats;
+}) {
+  const renderRemoveLiquidity = () => {
+    const removePath = getPoolNavigationUrl(unifiedPoolId, "remove");
+
+    return (
+      <Link href={removePath}>
+        <Button variant="outline">Remove Liquidity</Button>
+      </Link>
+    );
+  };
+
+  return (
+    <section className="flex flex-col gap-3 mobileOnly">
+      <div className="flex items-start justify-between">
+        <CoinPair
+          firstCoin={pool[0].bits}
+          secondCoin={pool[1].bits}
+          isStablePool={isStablePool}
+          poolType={poolType}
+          withPoolDetails
+        />
+      </div>
+
+      <div className="flex flex-col gap-[15px] p-4 rounded-ten bg-background-grey-dark border-border-secondary border-[12px]">
+        <div className="flex flex-col gap-1">
+          <p className="text-base leading-[19px]">Your position</p>
+          {positionStats && (
+            <p className="text-content-tertiary text-sm">
+              {positionStats.numBins} bin
+              {positionStats.numBins !== 1 ? "s" : ""} • Range: $
+              {positionStats.minPrice.toFixed(4)} - $
+              {positionStats.maxPrice.toFixed(4)}
+            </p>
+          )}
+        </div>
+        <AprDisplay pool={pool} />
+        <div className="flex justify-between">
+          <CoinWithAmount
+            assetId={pool[0].bits}
+            amount={formatDisplayAmount(assetA.amount)}
+          />
+          <CoinWithAmount
+            assetId={pool[1].bits}
+            amount={formatDisplayAmount(assetB.amount)}
+          />
+        </div>
+      </div>
+
+      {feesA && feesB && (
+        <div className="flex flex-col gap-[15px] p-4 rounded-ten bg-background-grey-dark border-border-secondary border-[12px]">
+          <div className="flex flex-col gap-1">
+            <p className="text-base leading-[19px]">Fees earned</p>
+            <p className="text-content-tertiary text-sm">
+              Cumulative fees from all bins
+            </p>
+          </div>
+          <div className="flex justify-between">
+            <CoinWithAmount
+              assetId={pool[0].bits}
+              amount={formatDisplayAmount(feesA.amount)}
+            />
+            <CoinWithAmount
+              assetId={pool[1].bits}
+              amount={formatDisplayAmount(feesB.amount)}
+            />
+          </div>
+        </div>
+      )}
+
+      <MiraBlock pool={pool} isV2={true} nftAssetId={nftAssetId} />
+
+      <div className="flex flex-col gap-3 my-[10px]">
+        <p className="text-base leading-[19px]">Pool reserves</p>
+        <ReserveItem
+          reserve={assetA.reserve}
+          assetId={pool[0].bits}
+          amount={assetA.amount}
+        />
+        <ReserveItem
+          reserve={assetB.reserve}
+          assetId={pool[1].bits}
+          amount={assetB.amount}
+        />
+
+        <div className="w-full h-px border border-white opacity-10" />
+        <div className="flex items-center justify-between text-content-tertiary">
+          <p className="text-base font-normal leading-[19px]">
+            Total value locked
+          </p>
+          {formattedTvlValue ? (
+            <p className="text-content-tertiary">${formattedTvlValue}</p>
+          ) : (
+            <Loader color="gray" rebrand={getIsRebrandEnabled()} />
+          )}
+        </div>
+        <ExchangeRate
+          assetBMetadata={assetB.metadata}
+          assetAMetadata={assetA.metadata}
+          coinAAmount={assetA.amount}
+          coinBAmount={assetB.amount}
+        />
+      </div>
+
+      <div className="w-full self-start">
+        <Link href={positionPath}>
+          <Button size="lg" block>
+            Add Liquidity
+          </Button>
+        </Link>
+      </div>
+      <div className="w-full self-start">{renderRemoveLiquidity()}</div>
+
+      <PromoBlock
+        icon={<PromoSparkle />}
+        title="Learn about providing liquidity"
+        link="https://mirror.xyz/miraly.eth"
+        linkText="Click here and check our v3 LP walkthrough"
+        background="black"
+      />
+    </section>
+  );
+}

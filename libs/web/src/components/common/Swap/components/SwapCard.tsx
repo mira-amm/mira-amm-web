@@ -55,7 +55,7 @@ export function SwapCard({
     buyAssetPrice: {price: number | null};
     tradeState: TradeState;
     exchangeRate: string | null;
-    pools: PoolId[];
+    pools: (PoolId | BN)[];
     sellMetadata: {symbol?: string};
     reservesPrice: number | undefined;
     previewPrice: number | undefined;
@@ -115,7 +115,12 @@ export function SwapCard({
           className="group absolute top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2 w-8 h-8 flex justify-center items-center rounded-full dark:bg-background-primary dark:text-content-grey hover:text-content-primary bg-background-primary p-2"
           type="button"
           aria-label="Switch tokens"
-          isDisabled={swapPending || inputPreviewLoading || outputPreviewLoading || txCostPending}
+          isDisabled={
+            swapPending ||
+            inputPreviewLoading ||
+            outputPreviewLoading ||
+            txCostPending
+          }
           onClick={formState.swapAssets}
         >
           <ArrowUpDown className="transition-transform duration-300 group-hover:rotate-180 text-white dark:text-content-dimmed-dark" />

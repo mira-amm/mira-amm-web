@@ -3,9 +3,9 @@ import {PriceImpact, ExchangeRate} from "@/src/components/common";
 import type {SwapState} from "@/src/hooks";
 
 export const PriceAndRate = memo(function PriceAndRate({
- swapState,
- reservesPrice,
- previewPrice,
+  swapState,
+  reservesPrice,
+  previewPrice,
 }: {
   swapState: SwapState;
   reservesPrice: number | undefined;

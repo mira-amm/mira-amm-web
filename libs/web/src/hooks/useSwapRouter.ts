@@ -6,7 +6,8 @@ import {
   type SwapQuote,
   TradeType,
 } from "./get-swap-quotes-batch";
-import {useReadonlyMira} from ".";
+import {useReadonlyMira} from "./useReadonlyMira";
+import {useReadonlyMiraV2} from "./useReadonlyMiraV2";
 import {type Route, useRoutablePools} from "@/src/hooks";
 import {CoinData} from "../utils/coinsConfig";
 import {type CacheOptions} from "mira-dex-ts";
@@ -34,7 +35,8 @@ export function useSwapRouter(
   amountSpecified: BN = bn(0),
   assetIn?: CoinData,
   assetOut?: CoinData,
-  cacheOptions?: SwapRouterCacheOptions
+  cacheOptions?: SwapRouterCacheOptions,
+  poolType: "v1" | "v2" = "v1"
 ): {
   tradeState: TradeState;
   trade?: {
@@ -44,7 +46,7 @@ export function useSwapRouter(
   };
   error: string | null;
 } {
-  const amm = useReadonlyMira();
+  const amm = poolType === "v2" ? useReadonlyMiraV2() : useReadonlyMira();
 
   // Default cache options
   const effectiveCacheOptions = useMemo(
@@ -69,10 +71,10 @@ export function useSwapRouter(
     [effectiveCacheOptions]
   );
 
-  const shouldFetch = useMemo(
-    () => !!assetIn && !!assetOut && amountSpecified.gt(0),
-    [assetIn, assetOut, amountSpecified]
-  );
+  const shouldFetch = useMemo(() => {
+    const result = !!assetIn && !!assetOut && amountSpecified.gt(0);
+    return result;
+  }, [assetIn, assetOut, amountSpecified]);
 
   const {
     routes,
@@ -83,7 +85,8 @@ export function useSwapRouter(
     assetOut,
     // fetches in the background
     shouldFetch ||
-      (effectiveCacheOptions.enableCaching && !!assetIn && !!assetOut)
+      (effectiveCacheOptions.enableCaching && !!assetIn && !!assetOut),
+    poolType
   );
 
   // Track route changes for preloading
@@ -92,7 +95,16 @@ export function useSwapRouter(
     if (!routes.length) return null;
     return routes
       .map((route) =>
-        route.pools.map((pool) => pool.poolId.join("-")).join("|")
+        route.pools
+          .map((pool) => {
+            // Handle both V1 (array) and V2 (BN) pool IDs
+            if (Array.isArray(pool.poolId)) {
+              return pool.poolId.join("-");
+            } else {
+              return pool.poolId.toString();
+            }
+          })
+          .join("|")
       )
       .join("||");
   }, [routes]);
@@ -112,10 +124,12 @@ export function useSwapRouter(
         route.pools.map((pool) => pool.poolId)
       );
 
-      // Preload pools for new routes
-      amm.preloadPoolsForRoutes(poolPaths, ammCacheOptions).catch((error) => {
-        console.error("Failed to preload pools:", error);
-      });
+      // Preload pools for new routes (only if method exists - V1 has it, V2 might not)
+      if (amm.preloadPoolsForRoutes) {
+        amm.preloadPoolsForRoutes(poolPaths, ammCacheOptions).catch((error) => {
+          console.error("Failed to preload pools:", error);
+        });
+      }
       previousRouteSignature.current = routeSignature;
     }
   }, [
@@ -129,23 +143,36 @@ export function useSwapRouter(
     assetOut?.symbol,
   ]);
 
-  const {
-    data: quotes = [],
-    isLoading,
-    isRefetching,
-  } = useQuery({
-    queryKey: [
+  const queryKey = useMemo(
+    () => [
       "swapQuotes",
       tradeType,
       amountSpecified.toString(),
       assetIn?.assetId,
       assetOut?.assetId,
-      routes,
-      effectiveCacheOptions.enableCaching, // Include cache options in query key
+      routeSignature, // Use routeSignature instead of routes array to avoid identity issues
+      effectiveCacheOptions.enableCaching,
     ],
+    [
+      tradeType,
+      amountSpecified,
+      assetIn?.assetId,
+      assetOut?.assetId,
+      routeSignature,
+      effectiveCacheOptions.enableCaching,
+    ]
+  );
 
-    queryFn: () =>
-      amm && routes.length
+  const {
+    data: quotes = [],
+    isLoading,
+    isRefetching,
+    dataUpdatedAt,
+  } = useQuery({
+    queryKey,
+
+    queryFn: () => {
+      return amm && routes.length
         ? getSwapQuotesBatch(
             amountSpecified,
             tradeType,
@@ -153,18 +180,15 @@ export function useSwapRouter(
             amm,
             ammCacheOptions
           )
-        : Promise.resolve([]),
+        : Promise.resolve([]);
+    },
 
-    staleTime: effectiveCacheOptions.enableCaching
-      ? effectiveCacheOptions.poolDataTTL
-      : 0,
-    gcTime: effectiveCacheOptions.enableCaching
-      ? effectiveCacheOptions.poolDataTTL
-      : 0, // Updated from cacheTime
-    refetchOnWindowFocus: true,
+    staleTime: 0, // FORCE: Always treat data as stale
+    gcTime: 0, // FORCE: Don't cache at all
+    refetchOnWindowFocus: false, // Disable to reduce noise
     refetchOnMount: true,
     enabled: shouldFetch,
-    initialData: shouldFetch ? undefined : [],
+    // Remove initialData to force fetch
   });
 
   // NOTE: could've done return-foo, used 'if' statements to keep it debuggable in case it explodes later

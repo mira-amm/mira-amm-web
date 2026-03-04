@@ -6,30 +6,39 @@ import {FuelAppUrl} from "@/src/utils/constants";
 import type {SwapState} from "./useSwapFormState";
 
 export function useSwapTransaction({
- fetchTxCost,
- triggerSwap,
- openSuccess,
- openFailure,
- refetchBalances,
- clearAmounts,
- swapState,
- swapButtonTitle,
- setSwapButtonTitle,
- sufficientEthBalance,
- amountMissing,
- swapPending,
- exchangeRate,
- review,
- setReview
+  fetchTxCost,
+  triggerSwap,
+  openSuccess,
+  openFailure,
+  refetchBalances,
+  clearAmounts,
+  swapState,
+  swapButtonTitle,
+  setSwapButtonTitle,
+  sufficientEthBalance,
+  amountMissing,
+  swapPending,
+  exchangeRate,
+  review,
+  setReview,
 }: {
   fetchTxCost: () => Promise<
     | {
-    tx: ScriptTransactionRequest;
-    txCost: BN;
-  }
+        tx: ScriptTransactionRequest;
+        txCost: BN;
+      }
     | undefined
   >;
-  triggerSwap: (tx: ScriptTransactionRequest) =>  Promise<{isStatusPreConfirmationSuccess: boolean, waitForResult: Promise<TransactionResult<void>>, id: string} | undefined>;
+  triggerSwap: (
+    tx: ScriptTransactionRequest
+  ) => Promise<
+    | {
+        isStatusPreConfirmationSuccess: boolean;
+        waitForResult: Promise<TransactionResult<void>>;
+        id: string;
+      }
+    | undefined
+  >;
   openSuccess: () => void;
   openFailure: () => void;
   refetchBalances: () => Promise<unknown>;

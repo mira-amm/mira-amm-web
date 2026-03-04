@@ -4,7 +4,7 @@ import {bn} from "fuels";
 import {useWallet} from "@fuels/react";
 import {useMutation} from "@tanstack/react-query";
 
-import {DefaultTxParams, MaxDeadline} from "@/src/utils/constants";
+import {DefaultTxParams, getMaxDeadline} from "@/src/utils/constants";
 import {useAssetMinterContract} from "./useAssetMinterContract";
 import {useAssetMetadata, useMiraDex} from "@/src/hooks";
 
@@ -58,7 +58,7 @@ export function useCreatePool({
         isPoolStable,
         firstCoinAmountToUse,
         secondCoinAmountToUse,
-        MaxDeadline,
+        getMaxDeadline(),
         DefaultTxParams,
         {
           useAssembleTx: true,

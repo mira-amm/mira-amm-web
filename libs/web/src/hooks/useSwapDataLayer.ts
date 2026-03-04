@@ -117,12 +117,7 @@ export function useSwapDataLayer({
   );
 
   const feeValue = useMemo(
-    () =>
-      calculateFeeValue(
-        sellValue,
-        feePercent,
-        sellMetadata.decimals
-      ),
+    () => calculateFeeValue(sellValue, feePercent, sellMetadata.decimals),
     [sellValue, feePercent, sellMetadata.decimals]
   );
 

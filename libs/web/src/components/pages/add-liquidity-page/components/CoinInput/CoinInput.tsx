@@ -1,10 +1,11 @@
 import {Coin} from "@/src/components/common";
-import {ChangeEvent, memo, useCallback} from "react";
+import {ChangeEvent, memo, useCallback, useMemo} from "react";
 import {TextButton} from "@/src/components/common";
 import {MinEthValueBN} from "@/src/utils/constants";
 import {BN} from "fuels";
 import {useAssetMetadata} from "@/src/hooks";
 import fiatValueFormatter from "@/src/utils/abbreviateNumber";
+import {cn} from "@/src/utils/cn";
 
 const CoinInput = ({
   assetId,
@@ -14,6 +15,7 @@ const CoinInput = ({
   balance,
   usdRate,
   onAssetClick,
+  isOutOfRange,
 }: {
   assetId: string | null;
   value: string;
@@ -22,6 +24,7 @@ const CoinInput = ({
   balance: BN;
   usdRate: number | undefined;
   onAssetClick?: VoidFunction;
+  isOutOfRange?: boolean;
 }) => {
   const metadata = useAssetMetadata(assetId);
   const balanceValue = balance.formatUnits(metadata.decimals || 0);
@@ -53,8 +56,23 @@ const CoinInput = ({
       ? fiatValueFormatter(numericValue * usdRate!)
       : null;
 
+  const hasInsufficientBalance =
+    value.trim().length > 0 &&
+    !isNaN(numericValue) &&
+    numericValue > parseFloat(balanceValue);
+
+  const isDisabled = useMemo(
+    () => loading || isOutOfRange,
+    [loading, isOutOfRange]
+  );
+
   return (
-    <div className="min-h-[65px] flex items-center gap-1 p-3 rounded-lg bg-background-secondary">
+    <div
+      className={cn(
+        "min-h-[65px] flex items-center gap-1 p-3 rounded-lg bg-background-secondary border border-background-grey-light",
+        hasInsufficientBalance ? "ring-1 ring-red-500" : "ring-0"
+      )}
+    >
       <div className="flex flex-col gap-1 items-start flex-1">
         <input
           type="text"
@@ -63,12 +81,29 @@ const CoinInput = ({
           placeholder="0"
           minLength={1}
           value={value}
-          disabled={loading}
+          disabled={isDisabled}
           onChange={handleChange}
-          className="w-full  text-content-primary text-sm leading-4 bg-transparent border-none disabled:text-content-dimmed-dark lg:text-base lg:leading-[19px]"
+          aria-invalid={hasInsufficientBalance}
+          className={cn(
+            "w-full text-content-primary text-sm leading-4 bg-transparent border-none lg:text-base lg:leading-[19px] font-alt",
+            hasInsufficientBalance ? "outline-none" : "",
+            isDisabled && "text-gray-400/40 cursor-not-allowed"
+          )}
         />
+
+        {hasInsufficientBalance && (
+          <p className="min-h-[16px] text-xs leading-4 text-red-500 lg:min-h-[18px] lg:text-sm lg:leading-[18px]">
+            Insufficient balance
+          </p>
+        )}
+
         {usdValue !== null && (
-          <p className="min-h-[16px] text-xs leading-4 text-content-tertiary lg:min-h-[18px] lg:text-sm lg:leading-[18px]">
+          <p
+            className={cn(
+              "min-h-[16px] text-xs leading-4 lg:min-h-[18px] lg:text-sm lg:leading-[18px] font-alt",
+              hasInsufficientBalance ? "text-red-400" : "text-content-tertiary"
+            )}
+          >
             {usdValue}
           </p>
         )}
@@ -81,7 +116,7 @@ const CoinInput = ({
           onClick={onAssetClick}
         />
         {balance.gt(0) && (
-          <span className="text-xs leading-4 text-content-tertiary lg:text-sm lg:leading-[18px]">
+          <span className="text-xs leading-4 text-content-tertiary lg:text-sm lg:leading-[18px] font-alt">
             Balance: {balanceValue}&nbsp;
             <TextButton onClick={handleMaxClick}>Max</TextButton>
           </span>

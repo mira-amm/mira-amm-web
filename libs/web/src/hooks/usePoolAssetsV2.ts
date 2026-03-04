@@ -1,0 +1,93 @@
+import {useMemo} from "react";
+import {BN} from "fuels";
+
+import {
+  useAssetMetadata,
+  useAssetPrice,
+  useAssetBalance,
+  useBalances,
+  useAssetPriceFromIndexer,
+} from "@/src/hooks";
+import {usePoolsMetadataV2} from "./usePoolsMetadataV2";
+
+/**
+ * Hook to get pool assets information for both V2 pools
+ */
+export const usePoolAssetsV2 = (poolId: BN) => {
+  const {balances} = useBalances();
+
+  // For V2 pools, fetch metadata to get asset IDs
+  const {unifiedPoolsMetadata, unifiedPoolsMetadataPending: isMetadataLoading} =
+    usePoolsMetadataV2(poolId ? [poolId] : undefined);
+
+  // Extract asset IDs and bin step based on pool type
+  const {firstAssetId, secondAssetId, isStablePool, binStep} = useMemo(() => {
+    if (!poolId) {
+      return {
+        firstAssetId: "",
+        secondAssetId: "",
+        isStablePool: false,
+        binStep: undefined,
+      };
+    }
+
+    if (unifiedPoolsMetadata.length > 0) {
+      // V2 pool - extract from metadata
+      const metadata = unifiedPoolsMetadata[0];
+
+      // Safely extract asset IDs with proper null checks
+      const asset0 = metadata.assets?.[0] as any;
+      const asset1 = metadata.assets?.[1] as any;
+
+      if (!asset0 || !asset1) {
+        // Metadata not fully loaded yet
+        return {
+          firstAssetId: "",
+          secondAssetId: "",
+          isStablePool: false,
+          binStep: undefined,
+        };
+      }
+
+      return {
+        firstAssetId: typeof asset0 === "string" ? asset0 : asset0.bits || "",
+        secondAssetId: typeof asset1 === "string" ? asset1 : asset1.bits || "",
+        isStablePool: false, // V2 pools don't have stable/volatile distinction
+        binStep: metadata.binStep,
+      };
+    }
+
+    return {
+      firstAssetId: "",
+      secondAssetId: "",
+      isStablePool: false,
+      binStep: undefined,
+    };
+  }, [unifiedPoolsMetadata]);
+
+  // Only fetch asset data if we have valid asset IDs
+  const asset0Metadata = useAssetMetadata(firstAssetId || "");
+  const asset1Metadata = useAssetMetadata(secondAssetId || "");
+
+  const firstAssetBalance = useAssetBalance(balances, firstAssetId || "");
+  const secondAssetBalance = useAssetBalance(balances, secondAssetId || "");
+
+  const {price: asset0Price} = useAssetPriceFromIndexer(firstAssetId || "");
+  const {price: asset1Price} = useAssetPriceFromIndexer(secondAssetId || "");
+
+  return {
+    poolId,
+    firstAssetId,
+    secondAssetId,
+    isStablePool,
+    binStep,
+    asset0Metadata,
+    asset1Metadata,
+    firstAssetBalance,
+    secondAssetBalance,
+    asset0Price,
+    asset1Price,
+    isMetadataLoading,
+    isLoading: isMetadataLoading || !firstAssetId || !secondAssetId,
+  };
+};

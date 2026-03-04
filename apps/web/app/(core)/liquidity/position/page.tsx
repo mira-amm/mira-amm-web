@@ -1,20 +1,26 @@
-"use client";
-
-import {Suspense} from "react";
+import {PageSuspense, PoolRouter} from "@/src/components/common";
 import PositionPage from "./position-page";
-import {Loader} from "@/src/components/common";
-import {getIsRebrandEnabled} from "@/src/utils/isRebrandEnabled";
+import V2PositionPage from "./v2-position-page";
 
-export default function Page() {
+type PageProps = {
+  searchParams: Promise<{[key: string]: string | undefined}>;
+};
+
+export default async function Page({searchParams}: PageProps) {
+  const {pool} = await searchParams;
+
   return (
-    <Suspense
-      fallback={
-        <div className="flex justify-center items-center">
-          <Loader color="gray" rebrand={getIsRebrandEnabled()} />
-        </div>
-      }
-    >
-      <PositionPage />
-    </Suspense>
+    <PageSuspense>
+      <PoolRouter
+        pool={pool}
+        renderV1={({poolKey}) => <PositionPage poolKey={poolKey} />}
+        renderV2={({poolKey, unifiedPoolIdString}) => (
+          <V2PositionPage
+            poolKey={poolKey}
+            unifiedPoolIdString={unifiedPoolIdString}
+          />
+        )}
+      />
+    </PageSuspense>
   );
 }

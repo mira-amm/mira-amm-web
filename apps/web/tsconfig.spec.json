@@ -2,7 +2,8 @@
   "extends": "./tsconfig.json",
   "compilerOptions": {
     "outDir": "../../dist/out-tsc",
-    "types": ["vitest/globals", "vitest/importMeta", "vite/client", "node", "vitest", "@nx/react/typings/image.d.ts"]
+    "types": ["vitest/globals", "vitest/importMeta", "vite/client", "node", "vitest", "@nx/react/typings/image.d.ts"],
+    "composite": true
   },
   "include": [
     "vite.config.ts",

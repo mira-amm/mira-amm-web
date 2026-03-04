@@ -5,6 +5,10 @@ import request, {gql} from "graphql-request";
 import {Asset, PoolId} from "mira-dex-ts";
 import {createPoolIdFromIdString} from "../utils/common";
 import {SQDIndexerUrl} from "../utils/constants";
+import {
+  UiPoolType,
+  mapUiPoolTypeFromStableFlag,
+} from "@/src/utils/poolTypeDetection";
 
 interface PoolFromQuery {
   id: string;
@@ -18,6 +22,7 @@ export interface Position {
   poolId: PoolId;
   lpAssetId: string;
   isStable: boolean;
+  poolType: UiPoolType;
   token0Item: {
     token0Position: Asset;
     price: number;
@@ -102,6 +107,7 @@ export function usePositions(): {
               poolId,
               lpAssetId: pool.lpToken.id,
               isStable: pool.isStable,
+              poolType: mapUiPoolTypeFromStableFlag(pool.isStable),
               token0Item,
               token1Item,
             };

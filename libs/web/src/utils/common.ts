@@ -1,6 +1,6 @@
 import {CoinName, coinsConfig} from "@/src/utils/coinsConfig";
-import {B256Address} from "fuels";
-import {buildPoolId, PoolId} from "mira-dex-ts";
+import {B256Address, BN} from "fuels";
+import {buildPoolId, PoolId, PoolIdV2} from "mira-dex-ts";
 import {DefaultLocale} from "./constants";
 
 export const openNewTab = (url: string) => {
@@ -17,9 +17,23 @@ export const StablePoolKey = "true" as const;
 export const VolatilePoolKey = "false" as const;
 
 // Entity used as query param for position/pool pages in format 'ETH-USDT-stable', mutually convertible with pool id
-export const createPoolKey = (poolId: PoolId) => {
-  const poolStability = poolId[2] ? StablePoolKey : VolatilePoolKey;
-  return `${poolId[0].bits}-${poolId[1].bits}-${poolStability}`;
+// For V2 pools, returns the pool ID as a string since V2 uses BN pool IDs
+// Can accept either a PoolId/PoolIdV2 or a Pool object
+export const createPoolKey = (
+  poolOrId: PoolId | PoolIdV2 | {poolId: PoolId | PoolIdV2}
+) => {
+  // Extract poolId if a Pool object was passed
+  const poolId = "poolId" in poolOrId ? poolOrId.poolId : poolOrId;
+
+  // Check if it's a V2 pool (BN) or V1 pool (array)
+  if (typeof poolId === "object" && "toNumber" in poolId) {
+    // V2 pool ID is a BN
+    return (poolId as PoolIdV2).toString();
+  }
+  // V1 pool ID is [AssetId, AssetId, boolean]
+  const v1PoolId = poolId as PoolId;
+  const poolStability = v1PoolId[2] ? StablePoolKey : VolatilePoolKey;
+  return `${v1PoolId[0].bits}-${v1PoolId[1].bits}-${poolStability}`;
 };
 
 // TODO: Reconsider this function, maybe have an API call for /pools?
@@ -200,6 +214,8 @@ export const formatDisplayAmount = (amount: string | number) => {
 // The `apr` value represents percentage points (e.g., 1 represents 1%, not 100%).
 export const formatAprValue = (apr?: {apr: number}): string | null => {
   if (!apr) return null;
+  // Show "n/a" when APR is 0, Infinity, or NaN
+  if (apr.apr === 0 || !isFinite(apr.apr)) return "n/a";
   return `${apr.apr.toLocaleString(DefaultLocale, {
     minimumFractionDigits: 2,
     maximumFractionDigits: 2,

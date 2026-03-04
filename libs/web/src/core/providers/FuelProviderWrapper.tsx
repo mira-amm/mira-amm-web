@@ -14,7 +14,7 @@ import {
 import {createConfig, http, injected} from "@wagmi/core";
 import {mainnet} from "@wagmi/core/chains";
 import {walletConnect} from "@wagmi/connectors";
-import {NetworkUrl} from "@/src/utils/constants";
+import {NetworkUrl, ValidNetworkChainId} from "@/src/utils/constants";
 import {getBrandText} from "@/src/utils/brandName";
 
 // Creates a protection for SRR
@@ -47,7 +47,7 @@ const FUEL_CONFIG = createFuelConfig(() => {
   const externalConnectorConfig: Partial<{
     chainId: number;
     fuelProvider: Provider;
-  }> = {chainId: CHAIN_IDS.fuel.mainnet, fuelProvider};
+  }> = {chainId: ValidNetworkChainId, fuelProvider};
 
   const fueletWalletConnector = new FueletWalletConnector();
   const burnerWalletConnector = new BurnerWalletConnector({
@@ -81,7 +81,7 @@ export function FuelProviderWrapper({children}: {children: ReactNode}) {
     <FuelProvider
       networks={[
         {
-          chainId: CHAIN_IDS.fuel.mainnet,
+          chainId: ValidNetworkChainId,
           url: NetworkUrl,
         },
       ]}

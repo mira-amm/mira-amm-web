@@ -6,7 +6,9 @@ export {TradeType} from "./get-swap-quotes-batch";
 export {useIsClient} from "./useIsClient";
 export * from "../utils/brandName";
 export {useVerifiedAssets} from "./useVerifiedAssets";
+export {useVerifiedAssetsForChain} from "./useVerifiedAssetsForChain";
 export {useAddLiquidity} from "./useAddLiquidity";
+export {useAddLiquidityV2} from "./useAddLiquidityV2";
 export {useModal} from "./useModal";
 export {useDebounce} from "./useDebounce";
 
@@ -16,9 +18,11 @@ export {useAssetMetadata} from "./useAssetMetadata";
 export {useBalances} from "./useBalances";
 export {useProvider} from "./useProvider";
 export {useReadonlyMira} from "./useReadonlyMira";
+export {useReadonlyMiraV2} from "./useReadonlyMiraV2";
 export {useCheckEthBalance} from "./useCheckEthBalance";
 export {useFormattedAddress} from "./useFormattedAddress";
 export {useMiraDex} from "./useMiraDex";
+export {useMiraDexV2} from "./useMiraDexV2";
 export {useSwap} from "./useSwap";
 export {useAssetList} from "./useAssetList";
 export {useAssetMinterContract} from "./useAssetMinterContract";
@@ -34,6 +38,11 @@ export {useExchangeRate} from "./useExchangeRate";
 export {useReservesPrice} from "./useReservesPrice";
 export {useSwapData} from "./useSwapData";
 export {usePoolsMetadata} from "./usePoolsMetadata";
+export {useUnifiedPoolsMetadata} from "./useUnifiedPoolsMetadata";
+export type {
+  UnifiedPoolId,
+  UnifiedPoolMetadata,
+} from "./useUnifiedPoolsMetadata";
 export {useAssetPriceFromIndexer} from "./useAssetPriceFromIndexer";
 
 export {useExchangeRateV2} from "./useExchangeRateV2";
@@ -41,6 +50,7 @@ export {useExchangeRateV2} from "./useExchangeRateV2";
 export {usePoolAPR} from "./usePoolAPR";
 export {usePositions} from "./usePositions";
 export {useCreatePool} from "./useCreatePool";
+export {useCreatePoolV2} from "./useCreatePoolV2";
 export {useFaucetLink} from "./useFaucetLink";
 export {useSHA256Hash} from "./useSHA256Hash";
 export {useWeb3Connection} from "./useWeb3Connection";
@@ -50,10 +60,32 @@ export {usePoolNameAndMatch} from "./usePoolNameAndMatch";
 export {usePositionData} from "./usePositionData";
 export {useRoutablePools} from "./useRoutablePools";
 export {useRemoveLiquidity} from "./useRemoveLiquidity";
+export {useRemoveLiquidityV2} from "./useRemoveLiquidityV2";
+export {useUserBinPositionsV2} from "./useUserBinPositionsV2";
+export type {V2BinPosition} from "./useUserBinPositionsV2";
+export {useRemoveAllBinsV2} from "./useRemoveAllBinsV2";
+export {usePositionSummaryV2} from "./usePositionSummaryV2";
+export type {PositionSummaryV2} from "./usePositionSummaryV2";
+export {useLiquidityFormV2Integration} from "./useLiquidityFormV2Integration";
 export {useWalletTransactions} from "./useWalletTransactions";
+export {
+  useAddLiquidityToBin,
+  useRemoveLiquidityFromBin,
+  usePartialRemoveLiquidityFromBin,
+} from "./useIndividualBinLiquidityV2";
+export type {
+  AddLiquidityToBinParams,
+  RemoveLiquidityFromBinParams,
+} from "./useIndividualBinLiquidityV2";
 export {usePreviewAddLiquidity} from "./usePreviewAddLiquidity";
 export {useDocumentTitle} from "./useDocumentTitle";
 export {useProtocolStats} from "./useProtocolStats";
+export {usePoolConcentrationType} from "./usePoolConcentrationType";
+export {useV2PoolsForPair} from "./useV2PoolsForPair";
+export {usePoolsMetadataV2} from "./usePoolsMetadataV2";
+export {usePoolAssetsV2} from "./usePoolAssetsV2";
+export {useV2Positions} from "./useV2Positions";
+export type {V2PositionSummary} from "./useV2Positions";
 export {useSwapValidation} from "./useSwapValidation";
 export {useSwapTransaction} from "./useSwapTransaction";
 export {useSwapSettings} from "./useSwapSettings";

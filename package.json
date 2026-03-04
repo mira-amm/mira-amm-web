@@ -54,6 +54,7 @@
     "@radix-ui/react-scroll-area": "catalog:ui",
     "@radix-ui/react-select": "catalog:ui",
     "@radix-ui/react-separator": "catalog:ui",
+    "@radix-ui/react-slider": "^1.3.5",
     "@radix-ui/react-slot": "catalog:ui",
     "@radix-ui/react-tabs": "catalog:ui",
     "@radix-ui/react-tooltip": "catalog:ui",
@@ -322,6 +323,17 @@
             "nx format:rust:check"
           ],
           "parallel": false
+        }
+      },
+      "dev:local": {
+        "executor": "nx:run-commands",
+        "options": {
+          "commands": [
+            "nx dev indexer",
+            "nx dev web"
+          ],
+          "parallel": true,
+          "envFile": ".env.dev.local"
         }
       }
     }

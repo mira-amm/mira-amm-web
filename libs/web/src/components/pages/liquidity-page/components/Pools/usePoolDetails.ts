@@ -1,14 +1,29 @@
 import {useMemo} from "react";
+import {bn} from "fuels";
 import {PoolData} from "@/src/hooks/usePoolsData";
 import {DefaultLocale} from "@/src/utils/constants";
 import {createPoolIdFromIdString, createPoolKey} from "@/src/utils/common";
 
 export function usePoolDetails(poolData: PoolData) {
-  const poolId = createPoolIdFromIdString(poolData.id);
-  const poolKey = createPoolKey(poolId);
-  const isStablePool = poolId[2];
-  const feeText = isStablePool ? "0.05%" : "0.3%";
-  const poolDescription = `${isStablePool ? "Stable" : "Volatile"}: ${feeText}`;
+  // Detect pool version from poolType field (or fallback to ID format check)
+  const isV2 =
+    poolData.poolType === "v2-concentrated" || !poolData.id.includes("-");
+
+  // For V1 pools: use the existing logic
+  // For V2 pools: use the numeric ID directly
+  const poolId = isV2 ? bn(poolData.id) : createPoolIdFromIdString(poolData.id);
+  const poolKey = isV2 ? poolData.id : createPoolKey(poolId);
+
+  // Extract asset IDs for display (needed for CoinPair component)
+  const asset0Id = isV2 ? poolData.details.asset0Id : (poolId as any)[0].bits;
+  const asset1Id = isV2 ? poolData.details.asset1Id : (poolId as any)[1].bits;
+
+  // V2 pools don't have stable/volatile distinction
+  const isStablePool = isV2 ? false : (poolId as any)[2];
+  const feeText = isV2 ? "Variable" : isStablePool ? "0.05%" : "0.3%";
+  const poolDescription = isV2
+    ? "Concentrated Liquidity"
+    : `${isStablePool ? "Stable" : "Volatile"}: ${feeText}`;
 
   const {aprValue, volumeValue, tvlValue} = useMemo(() => {
     let aprValue = "n/a";
@@ -18,7 +33,7 @@ export function usePoolDetails(poolData: PoolData) {
     if (poolData.details) {
       const {apr, volume, tvl} = poolData.details;
 
-      if (apr && apr > 0) {
+      if (apr && apr > 0 && isFinite(apr)) {
         aprValue = `${apr.toLocaleString(DefaultLocale, {
           minimumFractionDigits: 2,
           maximumFractionDigits: 2,
@@ -42,6 +57,8 @@ export function usePoolDetails(poolData: PoolData) {
   return {
     poolId,
     poolKey,
+    asset0Id,
+    asset1Id,
     aprValue,
     volumeValue,
     tvlValue,
