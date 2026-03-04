@@ -127,6 +127,7 @@ export function CurrencyBox({
         )}
 
         <button
+          data-testid={mode ? `${mode}-coin-selector` : "coin-selector"}
           onClick={handleCoinSelectorClick}
           disabled={loading}
           className={cn(

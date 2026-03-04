@@ -9,6 +9,7 @@ import {
   Press,
   Text,
   isVisible,
+  isEnabled,
 } from "@serenity-js/web";
 
 import {
@@ -119,6 +120,7 @@ export const SelectToken = {
     into: (button: PageElement<unknown>) =>
       Task.where(
         `#actor selects token ${token}`,
+        Wait.upTo(Duration.ofSeconds(10)).until(button, isEnabled()),
         Click.on(button),
         Wait.until(searchInput(), isVisible()),
         Enter.theValue("").into(searchInput()),
