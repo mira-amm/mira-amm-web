@@ -103,10 +103,10 @@ async function processFile(filePath) {
     const result = await processor.process(content);
     const errors = result.data.mermaidErrors || [];
 
-    return errors;
+    return {errors, processingFailed: false};
   } catch (error) {
     console.error(`❌ Error processing ${filePath}: ${error.message}`);
-    return [];
+    return {errors: [], processingFailed: true};
   }
 }
 
@@ -180,10 +180,12 @@ Examples:
   console.log(`Found ${markdownFiles.length} markdown files\n`);
 
   let totalErrors = 0;
+  let failedFiles = 0;
   const allErrors = [];
-
+  
   for (const filePath of markdownFiles) {
-    const errors = await processFile(filePath);
+    const {errors, processingFailed} = await processFile(filePath);
+    if (processingFailed) failedFiles++;
     if (errors.length > 0) {
       totalErrors += errors.length;
       allErrors.push({file: filePath, errors});
@@ -192,22 +194,27 @@ Examples:
 
   console.log("\n===================================");
 
-  if (totalErrors === 0) {
+  if (totalErrors === 0 && failedFiles === 0) {
     console.log("✅ All mermaid diagrams are valid!");
     process.exit(0);
   } else {
-    console.log(`❌ Found ${totalErrors} invalid mermaid diagram(s)\n`);
+    if (failedFiles > 0) {
+      console.log(`❌ Failed to process ${failedFiles} file(s)\n`);
+    }
+    if (totalErrors > 0) {
+      console.log(`❌ Found ${totalErrors} invalid mermaid diagram(s)\n`);
 
-    console.log("📍 Error Details:");
-    console.log("------------------");
+      console.log("📍 Error Details:");
+      console.log("------------------");
 
-    for (const {file, errors} of allErrors) {
-      console.log(`\n📄 ${file}:`);
-      for (const error of errors) {
-        console.log(
-          `   ❌ Line ${error.line}: ${error.message.split("\n")[0]}`
-        );
-        console.log(`      Content: ${error.content}`);
+      for (const {file, errors} of allErrors) {
+        console.log(`\n📄 ${file}:`);
+        for (const error of errors) {
+          console.log(
+            `   ❌ Line ${error.line}: ${error.message.split("\n")[0]}`
+          );
+          console.log(`      Content: ${error.content}`);
+        }
       }
     }
 
