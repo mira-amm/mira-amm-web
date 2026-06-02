@@ -50,6 +50,7 @@ export {usePoolNameAndMatch} from "./usePoolNameAndMatch";
 export {usePositionData} from "./usePositionData";
 export {useRoutablePools} from "./useRoutablePools";
 export {useRemoveLiquidity} from "./useRemoveLiquidity";
+export {useKnownAssetLiquidityPositions} from "./useKnownAssetLiquidityPositions";
 export {useWalletTransactions} from "./useWalletTransactions";
 export {usePreviewAddLiquidity} from "./usePreviewAddLiquidity";
 export {useDocumentTitle} from "./useDocumentTitle";
