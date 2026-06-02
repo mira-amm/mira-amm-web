@@ -3,7 +3,7 @@ import {useCallback} from "react";
 import {bn, BN} from "fuels";
 import {useWallet} from "@fuels/react";
 import {useMutation} from "@tanstack/react-query";
-import {useMiraDex} from "@/src/hooks";
+import {useMiraDex} from "@/src/hooks/useMiraDex";
 import {PoolId} from "mira-dex-ts";
 import {DefaultTxParams, MaxDeadline} from "@/src/utils/constants";
 
@@ -13,12 +13,14 @@ export function useRemoveLiquidity({
   lpTokenBalance,
   coinAAmountToWithdraw,
   coinBAmountToWithdraw,
+  slippageBps = 100,
 }: {
   pool: PoolId;
   liquidityPercentage: number;
   lpTokenBalance: BN | undefined;
   coinAAmountToWithdraw: BN;
   coinBAmountToWithdraw: BN;
+  slippageBps?: number;
 }) {
   const mira = useMiraDex();
   const {wallet} = useWallet();
@@ -32,9 +34,13 @@ export function useRemoveLiquidity({
       .mul(new BN(liquidityPercentage))
       .div(new BN(100));
 
-    // TODO: get slippage from UI
-    const minCoinAAmount = coinAAmountToWithdraw.mul(bn(99)).div(bn(100));
-    const minCoinBAmount = coinBAmountToWithdraw.mul(bn(99)).div(bn(100));
+    const minMultiplierBps = Math.max(0, 10_000 - slippageBps);
+    const minCoinAAmount = coinAAmountToWithdraw
+      .mul(bn(minMultiplierBps))
+      .div(bn(10_000));
+    const minCoinBAmount = coinBAmountToWithdraw
+      .mul(bn(minMultiplierBps))
+      .div(bn(10_000));
 
     const {transactionRequest: txRequest} = await mira.removeLiquidity(
       pool,
@@ -60,6 +66,7 @@ export function useRemoveLiquidity({
     lpTokenBalance,
     coinAAmountToWithdraw,
     coinBAmountToWithdraw,
+    slippageBps,
   ]);
 
   const {data, mutateAsync, error, isPending} = useMutation({

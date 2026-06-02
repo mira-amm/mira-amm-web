@@ -14,6 +14,7 @@ import {
 import Footer from "@/src/components/common/Footer/Footer";
 import GlitchEffects from "@/src/components/common/GlitchEffects/GlitchEffects";
 import {getIsRebrandEnabled} from "@/src/utils/isRebrandEnabled";
+import {IndexerOutageBanner} from "@/src/components/common/IndexerOutageBanner";
 
 interface LayoutBodyProps {
   children: ReactNode;
@@ -69,6 +70,7 @@ export const LayoutBody = ({
             <FeatureGuard fallback={<Header />}>
               <HeaderNew />
             </FeatureGuard>
+            <IndexerOutageBanner />
             <main className="flex-1 flex flex-col">{children}</main>
             <Footer />
             {glitchScavengerHuntEnabled && <GlitchEffects />}
