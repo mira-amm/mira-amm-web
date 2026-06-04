@@ -18,6 +18,22 @@ function shortId(id: string) {
   return `${id.slice(0, 10)}...${id.slice(-8)}`;
 }
 
+function clampNumber(value: number, min: number, max: number) {
+  if (!Number.isFinite(value)) {
+    return min;
+  }
+
+  return Math.min(max, Math.max(min, value));
+}
+
+function sanitizePercentage(value: string | number) {
+  return clampNumber(Number(value), 0, 100);
+}
+
+function sanitizeSlippagePercent(value: string | number) {
+  return clampNumber(Number(value), 0, 100);
+}
+
 function poolLabel(position: KnownAssetLiquidityPosition) {
   return `${position.assetA.symbol}/${position.assetB.symbol} ${
     position.isStable ? "stable" : "volatile"
@@ -47,9 +63,16 @@ function RemovePositionPanel({
       ? position.assetA
       : position.assetB;
 
-  const coinAAmountToWithdraw = asset0[1].mul(bn(percentage)).div(bn(100));
-  const coinBAmountToWithdraw = asset1[1].mul(bn(percentage)).div(bn(100));
-  const slippageBps = Math.max(0, Math.round(slippagePercent * 100));
+  const sanitizedPercentage = sanitizePercentage(percentage);
+  const sanitizedSlippagePercent = sanitizeSlippagePercent(slippagePercent);
+  const percentageBps = Math.round(sanitizedPercentage * 100);
+  const coinAAmountToWithdraw = asset0[1]
+    .mul(bn(percentageBps))
+    .div(bn(10_000));
+  const coinBAmountToWithdraw = asset1[1]
+    .mul(bn(percentageBps))
+    .div(bn(10_000));
+  const slippageBps = Math.round(sanitizedSlippagePercent * 100);
   const minMultiplier = Math.max(0, 10_000 - slippageBps);
   const minCoinAAmount = coinAAmountToWithdraw
     .mul(bn(minMultiplier))
@@ -60,7 +83,7 @@ function RemovePositionPanel({
 
   const {removeLiquidity, isPending} = useRemoveLiquidity({
     pool: position.poolId,
-    liquidityPercentage: percentage,
+    liquidityPercentage: sanitizedPercentage,
     lpTokenBalance: position.lpTokenBalance,
     coinAAmountToWithdraw,
     coinBAmountToWithdraw,
@@ -83,7 +106,10 @@ function RemovePositionPanel({
   }
 
   const removeDisabled =
-    isPending || !isValidNetwork || percentage <= 0 || percentage > 100;
+    isPending ||
+    !isValidNetwork ||
+    sanitizedPercentage <= 0 ||
+    sanitizedPercentage > 100;
 
   return (
     <section className="flex flex-col gap-4 rounded border border-border-secondary p-4">
@@ -117,7 +143,9 @@ function RemovePositionPanel({
           min={0}
           max={100}
           value={percentage}
-          onChange={(event) => setPercentage(Number(event.target.value))}
+          onChange={(event) =>
+            setPercentage(sanitizePercentage(event.target.value))
+          }
         />
       </label>
       <input
@@ -125,7 +153,9 @@ function RemovePositionPanel({
         min={0}
         max={100}
         value={percentage}
-        onChange={(event) => setPercentage(Number(event.target.value))}
+        onChange={(event) =>
+          setPercentage(sanitizePercentage(event.target.value))
+        }
       />
 
       <label className="flex flex-col gap-1 text-sm">
@@ -137,7 +167,9 @@ function RemovePositionPanel({
           max={100}
           step={0.1}
           value={slippagePercent}
-          onChange={(event) => setSlippagePercent(Number(event.target.value))}
+          onChange={(event) =>
+            setSlippagePercent(sanitizeSlippagePercent(event.target.value))
+          }
         />
       </label>
 
@@ -204,6 +236,7 @@ export default function BasicRemoveLiquidityPage() {
     data: positions,
     isLoading,
     candidateCount,
+    failedCandidates,
     refetch,
     refetchBalances,
   } = useKnownAssetLiquidityPositions();
@@ -254,6 +287,14 @@ export default function BasicRemoveLiquidityPage() {
       {isConnected && !isLoading && positions?.length === 0 && (
         <p className="rounded border border-border-secondary p-4">
           No known-asset LP balances found in this wallet.
+        </p>
+      )}
+
+      {isConnected && !isLoading && failedCandidates.length > 0 && (
+        <p className="rounded border border-border-secondary p-4 text-sm text-accent-alert">
+          {failedCandidates.length.toLocaleString(DefaultLocale)} matched LP{" "}
+          {failedCandidates.length === 1 ? "position" : "positions"} could not
+          be scanned. Retry if an expected position is missing.
         </p>
       )}
 

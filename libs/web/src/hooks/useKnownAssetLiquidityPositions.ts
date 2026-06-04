@@ -20,6 +20,15 @@ export type KnownAssetLiquidityPosition = {
   underlyingAssets: [Asset, Asset];
 };
 
+export type FailedKnownAssetLiquidityCandidate = {
+  poolId: PoolId;
+  lpAssetId: string;
+  isStable: boolean;
+  assetA: CoinData;
+  assetB: CoinData;
+  reason: unknown;
+};
+
 type CandidatePool = {
   poolId: PoolId;
   lpAssetId: string;
@@ -27,6 +36,11 @@ type CandidatePool = {
   assetA: CoinData;
   assetB: CoinData;
   lpTokenBalance: BN;
+};
+
+type KnownAssetLiquidityPositionsResult = {
+  positions: KnownAssetLiquidityPosition[];
+  failedCandidates: FailedKnownAssetLiquidityCandidate[];
 };
 
 function getKnownPoolCandidates(): Omit<CandidatePool, "lpTokenBalance">[] {
@@ -114,20 +128,51 @@ export function useKnownAssetLiquidityPositions() {
         })
       );
 
-      return settledPositions
-        .filter(
-          (
-            result
-          ): result is PromiseFulfilledResult<KnownAssetLiquidityPosition> =>
-            result.status === "fulfilled"
-        )
-        .map((result) => result.value);
+      const positions: KnownAssetLiquidityPosition[] = [];
+      const failedCandidates: FailedKnownAssetLiquidityCandidate[] = [];
+
+      settledPositions.forEach((result, index) => {
+        if (result.status === "fulfilled") {
+          positions.push(result.value);
+          return;
+        }
+
+        const candidate = matchingCandidates[index];
+
+        console.error("Failed to fetch known-asset liquidity position", {
+          lpAssetId: candidate.lpAssetId,
+          poolId: {
+            assetA: candidate.poolId[0].bits,
+            assetB: candidate.poolId[1].bits,
+            isStable: candidate.poolId[2],
+          },
+          assetA: candidate.assetA.symbol,
+          assetB: candidate.assetB.symbol,
+          reason: result.reason,
+        });
+
+        failedCandidates.push({
+          poolId: candidate.poolId,
+          lpAssetId: candidate.lpAssetId,
+          isStable: candidate.isStable,
+          assetA: candidate.assetA,
+          assetB: candidate.assetB,
+          reason: result.reason,
+        });
+      });
+
+      return {
+        positions,
+        failedCandidates,
+      } satisfies KnownAssetLiquidityPositionsResult;
     },
     enabled: Boolean(mira) && Boolean(balances),
   });
 
   return {
     ...query,
+    data: query.data?.positions,
+    failedCandidates: query.data?.failedCandidates ?? [],
     isLoading: balancesPending || query.isLoading,
     candidateCount: knownPoolCandidates.length,
     refetchBalances,
